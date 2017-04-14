@@ -212,7 +212,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
                 cli.loopOnList(players,
                     (clh) => clh.chooseFromList(players,
                         "Players in the maps:", "No players found.",
-                        "Player to add resources for: ", false).key,
+                        "Player to add resources for: ", false),
                 "Choose another player?", (Player player, clh) {
                         while (clh.inputBoolean("Keep going? ")) {
                             if (clh.inputBooleanInSeries(

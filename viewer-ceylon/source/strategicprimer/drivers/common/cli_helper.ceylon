@@ -45,8 +45,8 @@ shared interface ICLIHelper satisfies Obtainable {
             "The list."
             Element[] list,
             "How to ask the user to choose an item from the list."
-            todo("Take Entry(ICLIHelper) now?")
-            Integer(ICLIHelper) choice,
+            todo("Should this take the list too?")
+            <Integer->Element?>(ICLIHelper) choice,
             "The prompt to use to ask if the user wants to continue."
             String prompt,
             "What to do with the chosen item in the list."
@@ -57,7 +57,8 @@ shared interface ICLIHelper satisfies Obtainable {
             "The list."
             MutableList<Element> list,
             "How to ask the user to choose an item from the list."
-            Integer(ICLIHelper) choice,
+            todo("Take the list too?")
+            <Integer->Element?>(ICLIHelper) choice,
             "The prompt to use to ask if the user wants to continue."
             String prompt,
             """What to do if the user chooses "add a new one"."""
@@ -170,37 +171,43 @@ shared class CLIHelper satisfies ICLIHelper {
     "Ask the user to choose an item from the list, and if he does carry out an
      operation on it and then ask if he wants to do another."
     shared actual void loopOnList<Element>(Element[] list,
-            Integer(ICLIHelper) choice, String prompt,
+            <Integer->Element?>(ICLIHelper) choice, String prompt,
             Anything(Element, ICLIHelper) operation)
             given Element satisfies Object {
         MutableList<Element> temp = ArrayList { *list };
-        variable Integer number = choice(this);
-        while (number >= 0, number < temp.size) {
-            assert (exists item = temp.delete(number));
-            operation(item, this);
-            if (temp.empty || !inputBoolean(prompt)) {
+        while (!temp.empty) {
+            Integer->Element? chosen = choice(this);
+            if (exists item = chosen.item) {
+                temp.delete(chosen.key);
+                operation(item, this);
+                if (!inputBoolean(prompt)) {
+                    break;
+                }
+            } else {
                 break;
             }
-            number = choice(this);
         }
     }
     "Ask the user to choose an item from the list, and if he does carry out an
      operation on it and then ask if he wants to do another."
     shared actual void loopOnMutableList<Element>(MutableList<Element> list,
-            Integer(ICLIHelper) choice, String prompt, ListAmendment<Element> addition,
-            Anything(Element, ICLIHelper) operation) given Element satisfies Object {
-        variable Integer number = choice(this);
-        while (number <= list.size) {
+            <Integer->Element?>(ICLIHelper) choice, String prompt,
+            ListAmendment<Element> addition, Anything(Element, ICLIHelper) operation)
+            given Element satisfies Object {
+        while (true) {
+            value chosen = choice(this);
             Element item;
-            if (exists temp = list.get(number)) {
+            if (exists temp = chosen.item) {
                 item = temp;
-            } else {
+            } else if (chosen.key <= list.size ) {
                 if (exists temp = addition(list, this)) {
                     item = temp;
                 } else {
                     println("Select the new item at the next prompt.");
                     continue;
                 }
+            } else {
+                break;
             }
             operation(item, this);
             if (!inputBoolean(prompt)) {

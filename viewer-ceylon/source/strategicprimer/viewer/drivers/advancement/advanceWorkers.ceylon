@@ -15,6 +15,6 @@ void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli) {
     IUnit[] units = [*model.getUnits(player).filter((unit) => !unit.empty)];
     cli.loopOnList(units, (clh) => clh.chooseFromList(units,
         "``player.name``'s units:", "No unadvanced units remain.",
-        "Chosen unit: ", false).key,
+        "Chosen unit: ", false),
         "Choose another unit? ", advanceWorkersInUnit);
 }
