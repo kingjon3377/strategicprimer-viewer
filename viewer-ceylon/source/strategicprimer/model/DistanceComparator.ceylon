@@ -25,14 +25,13 @@ shared class DistanceComparator(base) {
             distance(firstPoint) <=> distance(secondPoint);
     """Returns a String describing how far a point is from "HQ", which the base point is
        presumed to be."""
-    todo("""Take an optional parameter to substitute for "HQ".""")
-    shared String distanceString(Point point) {
+    shared String distanceString(Point point, String name = "HQ") {
         Integer dist = distance(point);
         assert (dist >= 0);
         if (dist == 0) {
-            return " (at HQ)";
+            return " (at ``name``)";
         } else {
-            return " (``Float.format(sqrt(dist.float), 0, 1)`` tiles from HQ)";
+            return " (``Float.format(sqrt(dist.float), 0, 1)`` tiles from ``name``)";
         }
     }
 }
