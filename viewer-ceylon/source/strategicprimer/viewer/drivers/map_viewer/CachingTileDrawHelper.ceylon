@@ -57,47 +57,47 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
             backgroundShape = Rectangle(0, 0, width, height);
             rivers.clear();
             rivers.put(River.east, Rectangle2D.Double(
-                width * DrawingNumericConstants.riverLongDimension,
-                height * DrawingNumericConstants.riverShortStart,
-                width * DrawingNumericConstants.riverLongDimension,
-                height * DrawingNumericConstants.riverShortDimension));
+                width * drawingNumericConstants.riverLongDimension,
+                height * drawingNumericConstants.riverShortStart,
+                width * drawingNumericConstants.riverLongDimension,
+                height * drawingNumericConstants.riverShortDimension));
             rivers.put(River.lake, Ellipse2D.Double(
-                width * DrawingNumericConstants.lakeStart,
-                height * DrawingNumericConstants.lakeStart,
-                width * DrawingNumericConstants.riverLongDimension,
-                height * DrawingNumericConstants.riverLongDimension));
+                width * drawingNumericConstants.lakeStart,
+                height * drawingNumericConstants.lakeStart,
+                width * drawingNumericConstants.riverLongDimension,
+                height * drawingNumericConstants.riverLongDimension));
             rivers.put(River.north, Rectangle2D.Double(
-                width * DrawingNumericConstants.riverShortStart, 0.0,
-                width * DrawingNumericConstants.riverShortDimension,
-                height * DrawingNumericConstants.riverLongDimension));
+                width * drawingNumericConstants.riverShortStart, 0.0,
+                width * drawingNumericConstants.riverShortDimension,
+                height * drawingNumericConstants.riverLongDimension));
             rivers.put(River.south, Rectangle2D.Double(
-                width * DrawingNumericConstants.riverShortStart,
-                height * DrawingNumericConstants.riverLongDimension,
-                width * DrawingNumericConstants.riverShortDimension,
-                height * DrawingNumericConstants.riverLongDimension));
+                width * drawingNumericConstants.riverShortStart,
+                height * drawingNumericConstants.riverLongDimension,
+                width * drawingNumericConstants.riverShortDimension,
+                height * drawingNumericConstants.riverLongDimension));
             rivers.put(River.west, Rectangle2D.Double(0.0,
-                height * DrawingNumericConstants.riverShortStart,
-                width * DrawingNumericConstants.riverLongDimension,
-                height * DrawingNumericConstants.riverShortDimension));
+                height * drawingNumericConstants.riverShortStart,
+                width * drawingNumericConstants.riverLongDimension,
+                height * drawingNumericConstants.riverShortDimension));
             fortress = Rectangle2D.Double(
-                (width * DrawingNumericConstants.fortStart) - 1.0,
-                (height * DrawingNumericConstants.fortStart) - 1.0,
-                width * DrawingNumericConstants.fortSize,
-                height * DrawingNumericConstants.fortSize);
-            unit = Ellipse2D.Double(width * DrawingNumericConstants.unitSize,
-                height * DrawingNumericConstants.unitSize,
-                width * DrawingNumericConstants.unitSize,
-                height * DrawingNumericConstants.unitSize);
+                (width * drawingNumericConstants.fortStart) - 1.0,
+                (height * drawingNumericConstants.fortStart) - 1.0,
+                width * drawingNumericConstants.fortSize,
+                height * drawingNumericConstants.fortSize);
+            unit = Ellipse2D.Double(width * drawingNumericConstants.unitSize,
+                height * drawingNumericConstants.unitSize,
+                width * drawingNumericConstants.unitSize,
+                height * drawingNumericConstants.unitSize);
             event = Polygon(
                 createJavaIntArray({
-                    halfEven(width * DrawingNumericConstants.eventStart)
+                    halfEven(width * drawingNumericConstants.eventStart)
                         .plus(approximatelyZero).integer,
-                    halfEven(width * DrawingNumericConstants.eventOther)
+                    halfEven(width * drawingNumericConstants.eventOther)
                         .plus(approximatelyZero).integer, width}),
                 createJavaIntArray({0,
-                    halfEven(height * DrawingNumericConstants.eventOther)
+                    halfEven(height * drawingNumericConstants.eventOther)
                         .plus(approximatelyZero).integer,
-                    halfEven(height * DrawingNumericConstants.eventOther)
+                    halfEven(height * drawingNumericConstants.eventOther)
                         .plus(approximatelyZero).integer}), 3);
         }
     }

@@ -31,45 +31,45 @@ class DirectTileDrawHelper() satisfies TileDrawHelper {
         switch (river)
         case (River.east) {
             pen.fillRect(
-                halfEven(width * DrawingNumericConstants.riverLongDimension)
+                halfEven(width * drawingNumericConstants.riverLongDimension)
                     .integer + xCoordinate,
-                halfEven(height * DrawingNumericConstants.riverShortStart)
+                halfEven(height * drawingNumericConstants.riverShortStart)
                     .integer + yCoordinate,
-                halfEven(width * DrawingNumericConstants.riverLongDimension)
+                halfEven(width * drawingNumericConstants.riverLongDimension)
                     .integer,
-                halfEven(height * DrawingNumericConstants.riverShortDimension)
+                halfEven(height * drawingNumericConstants.riverShortDimension)
                     .integer);
         }
         case (River.lake) {
             pen.fillOval(
-                halfEven(width * DrawingNumericConstants.lakeStart).integer + xCoordinate,
-                halfEven(height * DrawingNumericConstants.lakeStart).integer
+                halfEven(width * drawingNumericConstants.lakeStart).integer + xCoordinate,
+                halfEven(height * drawingNumericConstants.lakeStart).integer
                 + yCoordinate,
-                halfEven(width * DrawingNumericConstants.riverLongDimension).integer,
-                halfEven(height * DrawingNumericConstants.riverLongDimension).integer);
+                halfEven(width * drawingNumericConstants.riverLongDimension).integer,
+                halfEven(height * drawingNumericConstants.riverLongDimension).integer);
         }
         case (River.north) {
             pen.fillRect(
-                halfEven(width * DrawingNumericConstants.riverShortStart).integer
+                halfEven(width * drawingNumericConstants.riverShortStart).integer
                 + xCoordinate, yCoordinate,
-                halfEven(width * DrawingNumericConstants.riverShortDimension).integer,
-                halfEven(height * DrawingNumericConstants.riverLongDimension).integer);
+                halfEven(width * drawingNumericConstants.riverShortDimension).integer,
+                halfEven(height * drawingNumericConstants.riverLongDimension).integer);
         }
         case (River.south) {
             pen.fillRect(
-                halfEven(width * DrawingNumericConstants.riverShortStart).integer
+                halfEven(width * drawingNumericConstants.riverShortStart).integer
                 + xCoordinate,
-                halfEven(height * DrawingNumericConstants.riverLongDimension).integer +
+                halfEven(height * drawingNumericConstants.riverLongDimension).integer +
                 yCoordinate,
-                halfEven(width * DrawingNumericConstants.riverShortDimension).integer,
-                halfEven(height * DrawingNumericConstants.riverLongDimension).integer);
+                halfEven(width * drawingNumericConstants.riverShortDimension).integer,
+                halfEven(height * drawingNumericConstants.riverLongDimension).integer);
         }
         case (River.west) {
             pen.fillRect(xCoordinate,
-                halfEven(height * DrawingNumericConstants.riverShortStart).integer +
+                halfEven(height * drawingNumericConstants.riverShortStart).integer +
                 yCoordinate,
-                halfEven(width * DrawingNumericConstants.riverLongDimension).integer,
-                halfEven(height * DrawingNumericConstants.riverShortDimension).integer);
+                halfEven(width * drawingNumericConstants.riverLongDimension).integer,
+                halfEven(height * drawingNumericConstants.riverShortDimension).integer);
         }
     }
     shared actual void drawTile(Graphics pen, IMapNG map, Point location,
@@ -92,37 +92,37 @@ class DirectTileDrawHelper() satisfies TileDrawHelper {
             if (hasAnyForts(map, location)) {
                 context.color = fortColor;
                 context.fillRect(
-                    halfEven(dimensions.x * DrawingNumericConstants.fortStart - 1.0)
+                    halfEven(dimensions.x * drawingNumericConstants.fortStart - 1.0)
                         .integer + coordinates.x,
-                    halfEven(dimensions.y * DrawingNumericConstants.fortStart - 1.0)
+                    halfEven(dimensions.y * drawingNumericConstants.fortStart - 1.0)
                         .integer + coordinates.y,
-                    halfEven(dimensions.x * DrawingNumericConstants.fortSize).integer,
-                    halfEven(dimensions.y * DrawingNumericConstants.fortSize).integer);
+                    halfEven(dimensions.x * drawingNumericConstants.fortSize).integer,
+                    halfEven(dimensions.y * drawingNumericConstants.fortSize).integer);
             }
             if (hasAnyUnits(map, location)) {
                 context.color = unitColor;
                 context.fillOval(
-                    halfEven(dimensions.x * DrawingNumericConstants.unitSize).integer +
+                    halfEven(dimensions.x * drawingNumericConstants.unitSize).integer +
                     coordinates.x,
-                    halfEven(dimensions.y * DrawingNumericConstants.unitSize).integer +
+                    halfEven(dimensions.y * drawingNumericConstants.unitSize).integer +
                     coordinates.y,
-                    halfEven(dimensions.x * DrawingNumericConstants.unitSize).integer,
-                    halfEven(dimensions.y * DrawingNumericConstants.unitSize).integer);
+                    halfEven(dimensions.x * drawingNumericConstants.unitSize).integer,
+                    halfEven(dimensions.y * drawingNumericConstants.unitSize).integer);
             } // Java version had else-if here, not just if
             if (hasEvent(map, location)) {
                 context.color = eventColor;
                 context.fillPolygon(
                     createJavaIntArray({
                         halfEven(dimensions.x *
-                        DrawingNumericConstants.eventStart).integer + coordinates.x,
+                        drawingNumericConstants.eventStart).integer + coordinates.x,
                         halfEven(dimensions.x *
-                        DrawingNumericConstants.eventOther).integer + coordinates.x,
+                        drawingNumericConstants.eventOther).integer + coordinates.x,
                         dimensions.x + coordinates.x}),
                     createJavaIntArray({coordinates.y,
                         halfEven(dimensions.y *
-                        DrawingNumericConstants.eventOther).integer + coordinates.y,
+                        drawingNumericConstants.eventOther).integer + coordinates.y,
                         halfEven(dimensions.y *
-                        DrawingNumericConstants.eventOther).integer + coordinates.y}),
+                        drawingNumericConstants.eventOther).integer + coordinates.y}),
                     3);
             }
         } finally {
