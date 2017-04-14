@@ -386,22 +386,23 @@ test
 void testChooseFromList() {
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
             PlayerImpl(2, "two")], "test desc", "none present", "prompt", false), {"0"},
-        {"test desc", "0: one", "1: two", "prompt"}, 0,
+        {"test desc", "0: one", "1: two", "prompt"}, 0->PlayerImpl(1, "one"),
         "chooseFromList chooses the one specified by the user",
         "chooseFromList prompted the user");
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
             PlayerImpl(2, "two")], "test desc", "none present", "prompt", true), {"1"},
-        {"test desc", "0: one", "1: two", "prompt"}, 1,
+        {"test desc", "0: one", "1: two", "prompt"}, 1->PlayerImpl(2, "two"),
         "chooseFromList chooses the one specified by the user",
         "chooseFromList prompted the user");
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one")],
         "test desc", "none present", "prompt", true), {},
-        {"test desc", "Automatically choosing only item, one.", ""}, 0,
+        {"test desc", "Automatically choosing only item, one.", ""},
+        0->PlayerImpl(1, "one"),
         "chooseFromList chooses only choice when this is specified",
         "chooseFromList automatically chose only choice");
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one")],
             "test desc", "none present", "prompt", false), {"0"},
-        {"test desc", "0: one", "prompt"}, 0,
+        {"test desc", "0: one", "prompt"}, 0->PlayerImpl(1, "one"),
         "chooseFromList doesn't always auto-choose only choice",
         "chooseFromList didn't automatically choose only choice");
 }
@@ -410,21 +411,21 @@ test
 void testChooseFromListMore() {
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
             PlayerImpl(2, "two")], "test desc", "none present", "prompt ", false),
-        {"-1", "0"}, {"test desc", "0: one", "1: two", "prompt prompt "}, 0,
-        "chooseFromList prompts again when negative index given",
+        {"-1", "0"}, {"test desc", "0: one", "1: two", "prompt prompt "},
+        0->PlayerImpl(1, "one"), "chooseFromList prompts again when negative index given",
         "chooseFromList prompts again when negative index given");
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
             PlayerImpl(2, "two")], "test desc", "none present", "prompt", false), {"3"},
-        {"test desc", "0: one", "1: two", "prompt"}, 3,
+        {"test desc", "0: one", "1: two", "prompt"}, 3->null,
         "chooseFromList allows too-large choice",
         "chooseFromList allows too-large choice");
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
             PlayerImpl(2, "two")], "test desc", "none present", "prompt", true), {"0"},
-        {"test desc", "0: one", "1: two", "prompt"}, 0,
+        {"test desc", "0: one", "1: two", "prompt"}, 0->PlayerImpl(1, "one"),
         "chooseFromList asks even if 'auto' when multiple items",
         "chooseFromList prompted the user");
     assertCLI((cli) => cli.chooseFromList([], "test desc", "none present",
-            "prompt", false), {}, {"none present", ""}, -1,
+            "prompt", false), {}, {"none present", ""}, -1->null,
         "chooseFromList handles no-item case", "chooseFromList didn't prompt the user");
 }
 "Test inputNumber"
@@ -580,21 +581,21 @@ test
 void testChooseStringFromList() {
     assertCLI((cli) => cli.chooseStringFromList(["one", "two"],
         "test desc", "none present", "prompt", false), {"0"},
-        {"test desc", "0: one", "1: two", "prompt"}, 0,
+        {"test desc", "0: one", "1: two", "prompt"}, 0->"one",
         "chooseStringFromList chooses the one specified by the user",
         "chooseStringFromList prompts the user");
     assertCLI((cli) => cli.chooseStringFromList(["one",
             "two", "three"], "test desc", "none present",
             "prompt two", true), {"1"},
-        {"test desc", "0: one", "1: two", "2: three", "prompt two"}, 1,
+        {"test desc", "0: one", "1: two", "2: three", "prompt two"}, 1->"two",
         "chooseStringFromList chooses the one specified by the user",
         "chooseStringFromList prompts the user");
     assertCLI((cli) => cli.chooseStringFromList(["one"], "test desc", "none present",
         "prompt", true), {}, {"test desc", "Automatically choosing only item, one.", ""},
-        0, "chooseStringFromList automatically chooses only choice when told to",
+        0->"one", "chooseStringFromList automatically chooses only choice when told to",
         "chooseStringFromList automatically chose only choice");
     assertCLI((cli) => cli.chooseStringFromList(["one"], "test desc", "none present",
-            "prompt", false), {"0"}, {"test desc", "0: one", "prompt"}, 0,
+            "prompt", false), {"0"}, {"test desc", "0: one", "prompt"}, 0->"one",
         "chooseStringFromList doesn't always auto-choose",
         "chooseStringFromList didn't automatically choose only choice");
 }
@@ -603,21 +604,21 @@ test
 void testChooseStringFromListMore() {
     assertCLI((cli) => cli.chooseStringFromList(["zero", "one", "two"],
             "test desc", "none present", "prompt", true), {"1"},
-        {"test desc", "0: zero", "1: one", "2: two", "prompt"}, 1,
+        {"test desc", "0: zero", "1: one", "2: two", "prompt"}, 1->"one",
         "chooseStringFromList doesn't auto-choose when more than one item",
         "chooseStringFromList doesn't auto-choose when more than one item");
     assertCLI((cli) => cli.chooseStringFromList(["one", "two"],
             "test desc", "none present", "prompt", false),
-        {"-1", "0"}, {"test desc", "0: one", "1: two", "promptprompt"}, 0,
+        {"-1", "0"}, {"test desc", "0: one", "1: two", "promptprompt"}, 0->"one",
         "chooseStringFromList prompts again when negative index given",
         "chooseStringFromList prompts again when negative index given");
     assertCLI((cli) => cli.chooseStringFromList(["one",
             "two"], "test desc", "none present", "prompt", false), {"3"},
-        {"test desc", "0: one", "1: two", "prompt"}, 3,
+        {"test desc", "0: one", "1: two", "prompt"}, 3->null,
         "chooseStringFromList allows too-large choice",
         "chooseStringFromList allows too-large choice");
     assertCLI((cli) => cli.chooseStringFromList([], "test desc", "none present",
-            "prompt", false), {}, {"none present", ""}, -1,
+            "prompt", false), {}, {"none present", ""}, -1->null,
         "chooseStringFromList handles empty list",
         "chooseStringFromList handles empty list");
 }
