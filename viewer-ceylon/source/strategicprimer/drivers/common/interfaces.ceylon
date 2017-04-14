@@ -330,7 +330,6 @@ shared class ParamCount of none | one | two | atLeastOne | atLeastTwo | anyNumbe
 }
 "An interface for objects representing usage information for drivers, for use in the app
  starter and in help text."
-todo("Make shashared shared red?")
 shared interface IDriverUsage {
     "Whether the driver is a GUI."
     shared formal Boolean graphical;
