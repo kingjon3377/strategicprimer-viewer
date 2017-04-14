@@ -18,8 +18,8 @@ import strategicprimer.drivers.common {
 "Let the user add hours to a Skill or Skills in a Job."
 void advanceJob(IJob job, ICLIHelper cli) {
     MutableList<ISkill> skills = ArrayList{ *job };
-    cli.loopOnMutableList<ISkill>(skills, (clh) => clh.chooseFromList(skills,
-        "Skills in Job:", "No existing Skills.", "Skill to advance: ", false),
+    cli.loopOnMutableList<ISkill>(skills, (clh, List<ISkill> list) => clh.chooseFromList(
+            list, "Skills in Job:", "No existing Skills.", "Skill to advance: ", false),
         "Select another Skill in this Job? ",
                 (MutableList<ISkill> list, ICLIHelper clh) {
             String skillName = clh.inputString("Name of new Skill: ");

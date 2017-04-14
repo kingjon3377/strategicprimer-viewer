@@ -20,8 +20,8 @@ void advanceWorkersInJob(String jobName, ICLIHelper cli, IWorker* workers) {
     MutableList<ISkill> skills = ArrayList {
         for (skill in ProxyJob(jobName, false, *workers)) skill
     };
-    cli.loopOnMutableList(skills, (clh) => clh.chooseFromList(skills,
-        "Skills in Jobs:", "No existing skills.", "Skill to advance: ", false),
+    cli.loopOnMutableList(skills, (clh, List<ISkill> list) => clh.chooseFromList(list,
+            "Skills in Jobs:", "No existing skills.", "Skill to advance: ", false),
         "Select another Skill in this Job? ",
                 (MutableList<ISkill> list, clh) {
             String skillName = clh.inputString("Name of new Skill: ");

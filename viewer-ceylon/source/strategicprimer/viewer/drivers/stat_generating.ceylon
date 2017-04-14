@@ -158,7 +158,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         Worker[] workers = [
             for (member in unit)
                 if (is Worker member, !member.stats exists) member ];
-        cli.loopOnList(workers, (clh) => clh.chooseFromList(workers,
+        cli.loopOnList(workers, (clh, List<Worker> list) => clh.chooseFromList(list,
                 "Which worker do you want to enter stats for?",
                 "There are no workers without stats in that unit.",
                 "Worker to modify: ", false), "Choose another worker? ",
@@ -168,8 +168,8 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
      particular player."
     void enterStatsForPlayer(IExplorationModel model, Player player, ICLIHelper cli) {
         IUnit[] units = [*removeStattedUnits(*model.getUnits(player))];
-        cli.loopOnList(units, (clh) =>
-            clh.chooseFromList(units, "Which unit contains the worker in question?",
+        cli.loopOnList(units, (clh, List<IUnit> list) =>
+            clh.chooseFromList(list, "Which unit contains the worker in question?",
                 "All that player's units already have stats.", "Unit selection: ",
                 false),
             "Choose another unit? ", (IUnit unit, clh) =>
@@ -178,7 +178,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for workers already in the maps."
     void enterStats(IExplorationModel model, ICLIHelper cli) {
         Player[] players = [*model.playerChoices];
-        cli.loopOnList(players, (clh) => clh.chooseFromList(players,
+        cli.loopOnList(players, (clh, List<Player> list) => clh.chooseFromList(list,
                 "Which player owns the worker in question?",
                 "There are no players shared by all the maps.", "Player selection: ",
                 true), "Choose another player?", (Player player, clh) =>
@@ -331,7 +331,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         MutableList<IUnit> units = ArrayList{
             *removeStattedUnits(*model.getUnits(player))
         };
-        cli.loopOnMutableList(units, (clh) => clh.chooseFromList(units,
+        cli.loopOnMutableList(units, (clh, List<IUnit> list) => clh.chooseFromList(list,
                 "Which unit contains the worker in question? (Select -1 to create new.)",
                 "There are no units owned by that player.", "Unit selection: ",
                 false), "Choose another unit? ", (MutableList<out IUnit> list, clh) {
@@ -355,7 +355,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Allow the user to create randomly-generated workers."
     void createWorkers(IExplorationModel model, IDRegistrar idf, ICLIHelper cli) {
         Player[] players = [*model.playerChoices];
-        cli.loopOnList(players, (clh) => clh.chooseFromList(players,
+        cli.loopOnList(players, (clh, List<Player> list) => clh.chooseFromList(list,
                 "Which player owns the new worker(s)?",
                 "There are no players shared by all the maps.",
                 "Player selection: ", false), "Choose another player? ",

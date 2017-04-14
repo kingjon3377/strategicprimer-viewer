@@ -210,7 +210,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
             IDRegistrar idf = createIDFactory(model.allMaps.map((pair) => pair.first));
             try {
                 cli.loopOnList(players,
-                    (clh) => clh.chooseFromList(players,
+                    (clh, List<Player> list) => clh.chooseFromList(list,
                         "Players in the maps:", "No players found.",
                         "Player to add resources for: ", false),
                 "Choose another player?", (Player player, clh) {

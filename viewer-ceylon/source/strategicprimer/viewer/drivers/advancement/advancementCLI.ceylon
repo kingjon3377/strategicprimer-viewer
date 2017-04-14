@@ -38,8 +38,9 @@ shared object advancementCLI satisfies SimpleCLIDriver {
         Player[] playerList = [*workerModel.players];
         try {
             cli.loopOnList(playerList,
-                        (clh) => clh.chooseFromList(playerList, "Available players:",
-                    "No players found.", "Chosen player: ", false),
+                        (clh, List<Player> list) => clh.chooseFromList(list,
+                            "Available players:", "No players found.", "Chosen player: ",
+                            false),
                 "Select another player? ",
                         (Player player, clh) => advanceWorkers(workerModel, player, clh));
         } catch (IOException except) {
