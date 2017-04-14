@@ -31,7 +31,6 @@ interface YAReader<out Item, in Value=Item> given Item satisfies Object {
             "The parent tag"
             QName parent,
             "The stream of XML events to read more from"
-            todo("Change to Ceylon Iterable")
             {XMLEvent*} stream);
     "Write an object to the stream."
     throws(`class IOException`, "on I/O error in writing")

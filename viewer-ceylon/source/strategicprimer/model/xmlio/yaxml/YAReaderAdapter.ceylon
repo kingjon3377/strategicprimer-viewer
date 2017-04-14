@@ -72,7 +72,6 @@ class YAReaderAdapter(
         YAUnitReader(warning, idFactory, players), YAWorkerReader(warning, idFactory) };
     "Parse an object from XML."
     throws(`class SPFormatException`, "on SP format problems")
-    todo("Use Ceylon Iterable instead")
     shared Object parse(StartElement element, QName parent, {XMLEvent*} stream) {
         // Since all implementations of necessity check the tag's namespace, we leave that
         // to them.
