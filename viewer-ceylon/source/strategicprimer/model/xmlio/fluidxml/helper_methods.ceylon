@@ -223,7 +223,7 @@ void writeImage(
         HasImage obj) {
     String image = obj.image;
     if (image != obj.defaultImage) {
-        writeNonEmptyAttribute(ostream, "image", image);
+        writeNonEmptyAttributes(ostream, "image"->image);
     }
 }
 
@@ -309,41 +309,37 @@ void writeAttributes(
 }
 
 "Write an attribute whose value is an integer."
-todo("As [[writeAttributes]], take a sequence of Entries")
 throws(`class XMLStreamException`, "on I/O error")
-void writeIntegerAttribute(
+void writeIntegerAttributes(
         "The stream to write to"
         XMLStreamWriter ostream,
-        "The name of the attribute to write"
-        String name,
-        "The value of the attribute"
-        Integer item) => writeAttributes(ostream, name->item.string);
+        "The names and values of the attribute to write"
+        <String->Integer>* items) =>
+        writeAttributes(ostream, *items.map((key->item) => key->(item.string)));
 
 "Write an attribute if its value is nonempty."
-todo("As [[writeAttributes]], take a sequence of Entries")
 throws(`class XMLStreamException`, "on I/O error")
-void writeNonEmptyAttribute(
+void writeNonEmptyAttributes(
         "The stream to write to"
         XMLStreamWriter ostream,
-        "The name of the attribute to write."
-        String name,
-        "The value of the attribute"
-        String item) {
-    if (!item.empty) {
-        ostream.writeAttribute(spNamespace, name, item);
+        "The names and values of the attributes to write."
+        <String->String>* items) {
+    for (name->item in items) {
+        if (!item.empty) {
+            ostream.writeAttribute(spNamespace, name, item);
+        }
     }
 }
 
 "Write an attribute whose value is a Boolean value."
-todo("Take a stream of Entries", "Combine with writeAttributes() via union type")
+todo("Combine with writeAttributes() via union type")
 throws(`class XMLStreamException`, "on error creating XML")
-void writeBooleanAttribute(
+void writeBooleanAttributes(
         "The stream to write to"
         XMLStreamWriter ostream,
-        "The name of the attribute to write"
-        String name,
-        "Its value"
-        Boolean item) => writeAttributes(ostream, name->item.string);
+        "The names and values of the attribute to write"
+        <String->Boolean>* items) =>
+        writeAttributes(ostream, *items.map((name->item) => name->(item.string)));
 
 """If the specified tag has an "owner" property, return the player it indicates; otherwise
    warn about its absence and return the "independent" player from the player

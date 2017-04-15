@@ -133,12 +133,11 @@ void writeVillage(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Village obj) {
         writeTag(ostream, "village", indent, true);
         writeAttributes(ostream, "status"->obj.status.string);
-        writeNonEmptyAttribute(ostream, "name", obj.name);
-        writeIntegerAttribute(ostream, "id", obj.id);
-        writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
+        writeNonEmptyAttributes(ostream, "name"->obj.name);
+        writeIntegerAttributes(ostream, "id"->obj.id, "owner"->obj.owner.playerId);
         writeAttributes(ostream, "race"->obj.race);
         writeImage(ostream, obj);
-        writeNonEmptyAttribute(ostream, "portrait", obj.portrait);
+        writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
     } else {
         throw IllegalArgumentException("Can only write Villages");
     }
@@ -149,12 +148,12 @@ void writeTown(XMLStreamWriter ostream, Object obj, Integer indent) {
         writeTag(ostream, obj.kind, indent, true);
         writeAttributes(ostream, "status"->obj.status.string,
             "size"->obj.townSize.string);
-        writeIntegerAttribute(ostream, "dc", obj.dc);
-        writeNonEmptyAttribute(ostream, "name", obj.name);
-        writeIntegerAttribute(ostream, "id", obj.id);
-        writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
+        writeIntegerAttributes(ostream, "dc"->obj.dc);
+        writeNonEmptyAttributes(ostream, "name"->obj.name);
+        writeIntegerAttributes(ostream, "id"->obj.id);
+        writeIntegerAttributes(ostream, "owner"->obj.owner.playerId);
         writeImage(ostream, obj);
-        writeNonEmptyAttribute(ostream, "portrait", obj.portrait);
+        writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
     } else {
         throw IllegalArgumentException("Can only write AbstractTowns");
     }

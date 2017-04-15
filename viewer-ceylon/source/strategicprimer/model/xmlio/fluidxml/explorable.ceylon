@@ -98,12 +98,12 @@ void writeAdventure(XMLStreamWriter ostream, Object obj, Integer indent) {
     // TODO: Create helper method for this idiom, to allow us to condense these methods
     if (is AdventureFixture obj) {
         writeTag(ostream, "adventure", indent, true);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeIntegerAttributes(ostream, "id"->obj.id);
         if (!obj.owner.independent) {
-            writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
+            writeIntegerAttributes(ostream, "owner"->obj.owner.playerId);
         }
-        writeNonEmptyAttribute(ostream, "brief", obj.briefDescription);
-        writeNonEmptyAttribute(ostream, "full", obj.fullDescription);
+        writeNonEmptyAttributes(ostream, "brief"->obj.briefDescription,
+            "full"->obj.fullDescription);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write AdventureFixtures");
@@ -114,9 +114,8 @@ void writePortal(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Portal obj) {
         writeTag(ostream, "portal", indent, true);
         writeAttributes(ostream, "world"->obj.destinationWorld);
-        writeIntegerAttribute(ostream, "row", obj.destinationCoordinates.row);
-        writeIntegerAttribute(ostream, "column", obj.destinationCoordinates.column);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeIntegerAttributes(ostream, "row"->obj.destinationCoordinates.row,
+            "column"->obj.destinationCoordinates.column, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Portals");
@@ -126,8 +125,7 @@ void writePortal(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writeCave(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Cave obj) {
         writeTag(ostream, "cave", indent, true);
-        writeIntegerAttribute(ostream, "dc", obj.dc);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeIntegerAttributes(ostream, "dc"->obj.dc, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Caves");
@@ -137,8 +135,7 @@ void writeCave(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writeBattlefield(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Battlefield obj) {
         writeTag(ostream, "battlefield", indent, true);
-        writeIntegerAttribute(ostream, "dc", obj.dc);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeIntegerAttributes(ostream, "dc"->obj.dc, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Battlefields");
@@ -149,7 +146,7 @@ void writeTextFixture(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is TextFixture obj) {
         writeTag(ostream, "text", indent, false);
         if (obj.turn != -1) {
-            writeIntegerAttribute(ostream, "turn", obj.turn);
+            writeIntegerAttributes(ostream, "turn"->obj.turn);
         }
         writeImage(ostream, obj);
         ostream.writeCharacters(obj.text.trimmed);

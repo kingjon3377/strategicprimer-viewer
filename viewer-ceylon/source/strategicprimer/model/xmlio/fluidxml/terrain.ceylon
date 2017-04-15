@@ -67,8 +67,8 @@ void writeGround(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Ground obj) {
         writeTag(ostream, "ground", indent, true);
         writeAttributes(ostream, "kind"->obj.kind);
-        writeBooleanAttribute(ostream, "exposed", obj.exposed);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeBooleanAttributes(ostream, "exposed"->obj.exposed);
+        writeIntegerAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Ground");
@@ -80,9 +80,9 @@ void writeForest(XMLStreamWriter ostream, Object obj, Integer indent) {
         writeTag(ostream, "forest", indent, true);
         writeAttributes(ostream, "kind"->obj.kind);
         if (obj.rows) {
-            writeBooleanAttribute(ostream, "rows", true);
+            writeBooleanAttributes(ostream, "rows"->true);
         }
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeIntegerAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Forests");

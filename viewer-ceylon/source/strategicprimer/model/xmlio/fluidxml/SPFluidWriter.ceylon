@@ -157,7 +157,7 @@ shared class SPFluidWriter() satisfies SPWriter {
     void writePlayer(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if (is Player obj) {
             writeTag(ostream, "player", indentation, true);
-            writeIntegerAttribute(ostream, "number", obj.playerId);
+            writeIntegerAttributes(ostream, "number"->obj.playerId);
             writeAttributes(ostream, "code_name"->obj.name);
         } else {
             throw IllegalArgumentException("Can only write Player");
@@ -174,7 +174,7 @@ shared class SPFluidWriter() satisfies SPWriter {
                 if (is HasKind obj) {
                     writeAttributes(ostream, "kind"->obj.kind);
                 }
-                writeIntegerAttribute(ostream, "id", obj.id);
+                writeIntegerAttributes(ostream, "id"->obj.id);
                 if (is HasImage obj) {
                     writeImage(ostream, obj);
                 }
@@ -192,7 +192,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         }
         writeTag(ostream, tag, indentation, false);
         if (turn >= 0) {
-            writeIntegerAttribute(ostream, "turn", turn);
+            writeIntegerAttributes(ostream, "turn"->turn);
         }
         ostream.writeCharacters(text);
         ostream.writeEndElement();
@@ -203,13 +203,12 @@ shared class SPFluidWriter() satisfies SPWriter {
             Boolean empty = obj.empty && obj.allOrders.filter(nonemptyOrders).empty &&
                         obj.allResults.filter(nonemptyOrders).empty;
             writeTag(ostream, "unit", indentation, empty);
-            writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
-            writeNonEmptyAttribute(ostream, "kind", obj.kind);
-            writeNonEmptyAttribute(ostream, "name", obj.name);
-            writeIntegerAttribute(ostream, "id", obj.id);
+            writeIntegerAttributes(ostream, "owner"->obj.owner.playerId);
+            writeNonEmptyAttributes(ostream, "kind"->obj.kind, "name"->obj.name);
+            writeIntegerAttributes(ostream, "id"->obj.id);
             writeImage(ostream, obj);
             if (is HasPortrait obj) {
-                writeNonEmptyAttribute(ostream, "portrait", obj.portrait);
+                writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
             }
             for (turn->orders in obj.allOrders) {
                 writeUnitOrders(ostream, indentation + 1, turn, "orders", orders.trimmed);
@@ -232,14 +231,14 @@ shared class SPFluidWriter() satisfies SPWriter {
     void writeFortress(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if (is Fortress obj) {
             writeTag(ostream, "fortress", indentation, false);
-            writeIntegerAttribute(ostream, "owner", obj.owner.playerId);
-            writeNonEmptyAttribute(ostream, "name", obj.name);
+            writeIntegerAttributes(ostream, "owner"->obj.owner.playerId);
+            writeNonEmptyAttributes(ostream, "name"->obj.name);
             if (TownSize.small != obj.townSize) {
                 writeAttributes(ostream, "size"->obj.townSize.string);
             }
-            writeIntegerAttribute(ostream, "id", obj.id);
+            writeIntegerAttributes(ostream, "id"->obj.id);
             writeImage(ostream, obj);
-            writeNonEmptyAttribute(ostream, "portrait", obj.portrait);
+            writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
             if (!obj.empty) {
                 for (member in obj) {
                     writeSPObjectImpl(ostream, member, indentation + 1);
@@ -254,14 +253,12 @@ shared class SPFluidWriter() satisfies SPWriter {
     void writeMap(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if (is IMapNG obj) {
             writeTag(ostream, "view", indentation, false);
-            writeIntegerAttribute(ostream, "current_player",
-                obj.currentPlayer.playerId);
-            writeIntegerAttribute(ostream, "current_turn", obj.currentTurn);
+            writeIntegerAttributes(ostream, "current_player"->obj.currentPlayer.playerId,
+                "current_turn"->obj.currentTurn);
             writeTag(ostream, "map", indentation + 1, false);
             MapDimensions dimensions = obj.dimensions;
-            writeIntegerAttribute(ostream, "version", dimensions.version);
-            writeIntegerAttribute(ostream, "rows", dimensions.rows);
-            writeIntegerAttribute(ostream, "columns", dimensions.columns);
+            writeIntegerAttributes(ostream, "version"->dimensions.version,
+                "rows"->dimensions.rows, "columns"->dimensions.columns);
             for (player in obj.players) {
                 writePlayer(ostream, player, indentation + 2);
             }
@@ -274,11 +271,10 @@ shared class SPFluidWriter() satisfies SPWriter {
                         if (rowEmpty) {
                             writeTag(ostream, "row", indentation + 2, false);
                             rowEmpty = false;
-                            writeIntegerAttribute(ostream, "index", i);
+                            writeIntegerAttributes(ostream, "index"->i);
                         }
                         writeTag(ostream, "tile", indentation + 3, false);
-                        writeIntegerAttribute(ostream, "row", i);
-                        writeIntegerAttribute(ostream, "column", j);
+                        writeIntegerAttributes(ostream, "row"->i, "column"->j);
                         if (TileType.notVisible != terrain) {
                             writeAttributes(ostream, "kind"->terrain.xml);
                         }

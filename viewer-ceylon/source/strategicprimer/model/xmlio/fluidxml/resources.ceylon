@@ -247,32 +247,32 @@ StoneDeposit readStone(StartElement element, QName parent, {XMLEvent*} stream,
 void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is ResourcePile obj) {
         writeTag(ostream, "resource", indent, true);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeIntegerAttributes(ostream, "id"->obj.id);
         writeAttributes(ostream, "kind"->obj.kind, "contents"->obj.contents);
         switch (quantity = obj.quantity.number)
         case (is Integer) {
-            writeIntegerAttribute(ostream, "quantity", quantity);
+            writeIntegerAttributes(ostream, "quantity"->quantity);
         }
         case (is Decimal) {
             if (quantity.scale > 0) {
                 // TODO: Java used BigDecimal.toPlainString(), while this evaluates to .toString().
                 writeAttributes(ostream, "quantity"->quantity.string);
             } else {
-                writeIntegerAttribute(ostream, "quantity", quantity.integer);
+                writeIntegerAttributes(ostream, "quantity"->quantity.integer);
             }
         }
         case (is Float) {
             writeAttributes(ostream, "quantity"->quantity.string);
         }
         case (is Whole) {
-            writeIntegerAttribute(ostream, "quantity", quantity.integer);
+            writeIntegerAttributes(ostream, "quantity"->quantity.integer);
         }
         else {
             throw IllegalArgumentException("ResourcePile with non-Integer, non-Decimal quantity");
         }
         writeAttributes(ostream, "unit"->obj.quantity.units);
         if (obj.created >= 0) {
-            writeIntegerAttribute(ostream, "created", obj.created);
+            writeIntegerAttributes(ostream, "created"->obj.created);
         }
         writeImage(ostream, obj);
     } else {
@@ -284,7 +284,7 @@ void writeCache(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is CacheFixture obj) {
         writeTag(ostream, "cache", indent, true);
         writeAttributes(ostream, "kind"->obj.kind, "contents"->obj.contents);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeIntegerAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write CacheFixtures");
@@ -295,9 +295,9 @@ void writeMeadow(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Meadow obj) {
         writeTag(ostream, (obj.field) then "field" else "meadow", indent, true);
         writeAttributes(ostream, "kind"->obj.kind);
-        writeBooleanAttribute(ostream, "cultivated", obj.cultivated);
+        writeBooleanAttributes(ostream, "cultivated"->obj.cultivated);
         writeAttributes(ostream, "status"->obj.status.string);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeIntegerAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Meadows");
@@ -307,9 +307,9 @@ void writeMeadow(XMLStreamWriter ostream, Object obj, Integer indent) {
 void writeGrove(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Grove obj) {
         writeTag(ostream, (obj.orchard) then "orchard" else "grove", indent, true);
-        writeBooleanAttribute(ostream, "cultivated", obj.cultivated);
+        writeBooleanAttributes(ostream, "cultivated"->obj.cultivated);
         writeAttributes(ostream, "kind"->obj.kind);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeIntegerAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Groves");
@@ -320,7 +320,7 @@ void writeMine(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Mine obj) {
         writeTag(ostream, "mine", indent, true);
         writeAttributes(ostream, "kind"->obj.kind, "status"->obj.status.string);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeIntegerAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Mines");
@@ -331,9 +331,8 @@ void writeMineral(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is MineralVein obj) {
         writeTag(ostream, "mineral", indent, true);
         writeAttributes(ostream, "kind"->obj.kind);
-        writeBooleanAttribute(ostream, "exposed", obj.exposed);
-        writeIntegerAttribute(ostream, "dc", obj.dc);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeBooleanAttributes(ostream, "exposed"->obj.exposed);
+        writeIntegerAttributes(ostream, "dc"->obj.dc, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write MineralVeins");
@@ -344,8 +343,7 @@ void writeStone(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is StoneDeposit obj) {
         writeTag(ostream, "stone", indent, true);
         writeAttributes(ostream, "kind"->obj.stone.string);
-        writeIntegerAttribute(ostream, "dc", obj.dc);
-        writeIntegerAttribute(ostream, "id", obj.id);
+        writeIntegerAttributes(ostream, "dc"->obj.dc, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write StoneDeposits");
