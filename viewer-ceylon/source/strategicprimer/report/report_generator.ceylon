@@ -23,7 +23,8 @@ import strategicprimer.model.map {
     IMapNG,
     FixtureIterable,
     TileFixture,
-    invalidPoint
+    invalidPoint,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures {
     TerrainFixture
@@ -120,6 +121,7 @@ void createSubReports(StringBuilder builder,
 todo("Consider generating Markdown instead of HTML. OTOH, we'd have to keep a list nesting
       level parameter or something.")
 shared String createReport(IMapNG map, Player player = map.currentPlayer) {
+    MapDimensions dimensions = map.dimensions;
     StringBuilder builder = StringBuilder();
     builder.append("""<html>
                       <head><title>Strategic Primer map summary report</title></head>
@@ -128,17 +130,18 @@ shared String createReport(IMapNG map, Player player = map.currentPlayer) {
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     Point hq = findHQ(map, player);
     Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-        DistanceComparator(hq).compare, byIncreasing(IFixture.hash));
+        DistanceComparator(hq, dimensions).compare, byIncreasing(IFixture.hash));
     createSubReports(builder, fixtures, map, player,
-        FortressReportGenerator(comparator, player, hq),
-        UnitReportGenerator(comparator, player, hq), TextReportGenerator(comparator, hq),
-        TownReportGenerator(comparator, player, hq),
-        FortressMemberReportGenerator(comparator, player, hq),
-        ExplorableReportGenerator(comparator, player, hq),
-        HarvestableReportGenerator(comparator, hq),
-        AnimalReportGenerator(comparator, hq),
-        VillageReportGenerator(comparator, player, hq),
-        ImmortalsReportGenerator(comparator, hq));
+        FortressReportGenerator(comparator, player, dimensions, hq),
+        UnitReportGenerator(comparator, player, dimensions, hq),
+        TextReportGenerator(comparator, dimensions, hq),
+        TownReportGenerator(comparator, player, dimensions, hq),
+        FortressMemberReportGenerator(comparator, player, dimensions, hq),
+        ExplorableReportGenerator(comparator, player, dimensions, hq),
+        HarvestableReportGenerator(comparator, dimensions, hq),
+        AnimalReportGenerator(comparator, dimensions, hq),
+        VillageReportGenerator(comparator, player, dimensions, hq),
+        ImmortalsReportGenerator(comparator, dimensions, hq));
     builder.append("""</body>
                       </html>
                       """);
@@ -155,6 +158,7 @@ shared String createReport(IMapNG map, Player player = map.currentPlayer) {
 }
 "Create a slightly abbreviated report, omitting the player's fortresses and units."
 shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPlayer) {
+    MapDimensions dimensions = map.dimensions;
     StringBuilder builder = StringBuilder();
     builder.append(
         """<html>
@@ -164,7 +168,7 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     Point hq = findHQ(map, player);
     Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-        DistanceComparator(findHQ(map, player)).compare,
+        DistanceComparator(findHQ(map, player), dimensions).compare,
         byIncreasing(IFixture.hash));
     for ([loc, fixture] in fixtures.items) {
         if (is IUnit|Fortress fixture, fixture.owner == player) {
@@ -173,15 +177,16 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
     }
     fixtures.coalesce();
     createSubReports(builder, fixtures, map, player,
-        FortressMemberReportGenerator(comparator, player, hq),
-        FortressReportGenerator(comparator, player, hq),
-        UnitReportGenerator(comparator, player, hq), TextReportGenerator(comparator, hq),
-        TownReportGenerator(comparator, player, hq),
-        ExplorableReportGenerator(comparator, player, hq),
-        HarvestableReportGenerator(comparator, hq),
-        AnimalReportGenerator(comparator, hq),
-        VillageReportGenerator(comparator, player, hq),
-        ImmortalsReportGenerator(comparator, hq));
+        FortressMemberReportGenerator(comparator, player, dimensions, hq),
+        FortressReportGenerator(comparator, player, dimensions, hq),
+        UnitReportGenerator(comparator, player, dimensions, hq),
+        TextReportGenerator(comparator, dimensions, hq),
+        TownReportGenerator(comparator, player, dimensions, hq),
+        ExplorableReportGenerator(comparator, player, dimensions, hq),
+        HarvestableReportGenerator(comparator, dimensions, hq),
+        AnimalReportGenerator(comparator, dimensions, hq),
+        VillageReportGenerator(comparator, player, dimensions, hq),
+        ImmortalsReportGenerator(comparator, dimensions, hq));
     builder.append("""</body>
                       </html>
                       """);
@@ -210,20 +215,22 @@ void createSubReportsIR(IReportNode root,
 shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer) {
     IReportNode retval = RootReportNode("Strategic Primer map summary report");
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
+    MapDimensions dimensions = map.dimensions;
     Point hq = findHQ(map, player);
     Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-        DistanceComparator(findHQ(map, player)).compare,
+        DistanceComparator(findHQ(map, player), dimensions).compare,
         byIncreasing(IFixture.hash));
     createSubReportsIR(retval, fixtures, map, player,
-        FortressReportGenerator(comparator, player, hq),
-        UnitReportGenerator(comparator, player, hq), TextReportGenerator(comparator, hq),
-        TownReportGenerator(comparator, player, hq),
-        ExplorableReportGenerator(comparator, player, hq),
-        HarvestableReportGenerator(comparator, hq),
-        FortressMemberReportGenerator(comparator, player, hq),
-        AnimalReportGenerator(comparator, hq),
-        VillageReportGenerator(comparator, player, hq),
-        ImmortalsReportGenerator(comparator, hq));
+        FortressReportGenerator(comparator, player, dimensions, hq),
+        UnitReportGenerator(comparator, player, dimensions, hq),
+        TextReportGenerator(comparator, dimensions, hq),
+        TownReportGenerator(comparator, player, dimensions, hq),
+        ExplorableReportGenerator(comparator, player, dimensions, hq),
+        HarvestableReportGenerator(comparator, dimensions, hq),
+        FortressMemberReportGenerator(comparator, player, dimensions, hq),
+        AnimalReportGenerator(comparator, dimensions, hq),
+        VillageReportGenerator(comparator, player, dimensions, hq),
+        ImmortalsReportGenerator(comparator, dimensions, hq));
     return retval;
 }
 "Create a slightly abbreviated report, omitting the player's fortresses and units, in
@@ -231,9 +238,10 @@ shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer)
 shared IReportNode createAbbreviatedReportIR(IMapNG map,
         Player player = map.currentPlayer) {
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
+    MapDimensions dimensions = map.dimensions;
     Point hq = findHQ(map, player);
     Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-        DistanceComparator(hq).compare,
+        DistanceComparator(hq, dimensions).compare,
         byIncreasing(IFixture.hash));
     for ([loc, fixture] in fixtures.items) {
         if (is IUnit|Fortress fixture, fixture.owner == player) {
@@ -244,15 +252,15 @@ shared IReportNode createAbbreviatedReportIR(IMapNG map,
     IReportNode retval = RootReportNode(
         "Strategic Primer map summary abbreviated report");
     createSubReportsIR(retval, fixtures, map, player,
-        FortressMemberReportGenerator(comparator, player, hq),
-        FortressReportGenerator(comparator, player, hq),
-        UnitReportGenerator(comparator, player, hq),
-        TextReportGenerator(comparator, hq),
-        TownReportGenerator(comparator, player, hq),
-        ExplorableReportGenerator(comparator, player, hq),
-        HarvestableReportGenerator(comparator, hq),
-        AnimalReportGenerator(comparator, hq),
-        VillageReportGenerator(comparator, player, hq),
-        ImmortalsReportGenerator(comparator, hq));
+        FortressMemberReportGenerator(comparator, player, dimensions, hq),
+        FortressReportGenerator(comparator, player, dimensions, hq),
+        UnitReportGenerator(comparator, player, dimensions, hq),
+        TextReportGenerator(comparator, dimensions, hq),
+        TownReportGenerator(comparator, player, dimensions, hq),
+        ExplorableReportGenerator(comparator, player, dimensions, hq),
+        HarvestableReportGenerator(comparator, dimensions, hq),
+        AnimalReportGenerator(comparator, dimensions, hq),
+        VillageReportGenerator(comparator, player, dimensions, hq),
+        ImmortalsReportGenerator(comparator, dimensions, hq));
     return retval;
 }

@@ -1,20 +1,22 @@
 import lovelace.util.common {
     DelayedRemovalMap
 }
-import strategicprimer.model.map.fixtures.towns {
-    Fortress
-}
+
 import strategicprimer.model {
     DistanceComparator
 }
 import strategicprimer.model.map {
     Player,
     IFixture,
-    Point
+    Point,
+    MapDimensions
+}
+import strategicprimer.model.map.fixtures.towns {
+    Fortress
 }
 "A tabular report generator for fortresses."
-shared class FortressTabularReportGenerator(Player player, Point hq)
-        satisfies ITableGenerator<Fortress> {
+shared class FortressTabularReportGenerator(Player player, Point hq,
+        MapDimensions dimensions) satisfies ITableGenerator<Fortress> {
     "The header fields are Distance, Location, Owner, and Name."
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Name"];
     "The file-name to (by default) write this table to."
@@ -38,7 +40,7 @@ shared class FortressTabularReportGenerator(Player player, Point hq)
     shared actual Comparison comparePairs([Point, Fortress] one,
             [Point, Fortress] two) {
         Comparison(Point, Point) comparator =
-                DistanceComparator(hq).compare;
+                DistanceComparator(hq, dimensions).compare;
         Fortress first = one.rest.first;
         Fortress second = two.rest.first;
         Comparison cmp = comparator(one.first, two.first);

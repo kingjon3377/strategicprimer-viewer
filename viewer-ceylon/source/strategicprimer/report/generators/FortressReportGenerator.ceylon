@@ -18,7 +18,8 @@ import strategicprimer.model.map {
     IFixture,
     River,
     IMapNG,
-    invalidPoint
+    invalidPoint,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures {
     Implement,
@@ -48,11 +49,15 @@ import strategicprimer.report.nodes {
     ComplexReportNode
 }
 "A report generator for fortresses."
-shared class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer, Point hq = invalidPoint)
-        extends AbstractReportGenerator<Fortress>(comp, DistanceComparator(hq)) {
-    IReportGenerator<IUnit> urg = UnitReportGenerator(comp, currentPlayer, hq);
+shared class FortressReportGenerator(
+        Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
+        MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<Fortress>(comp,
+            DistanceComparator(hq, dimensions)) {
+    IReportGenerator<IUnit> urg =
+            UnitReportGenerator(comp, currentPlayer, dimensions, hq);
     IReportGenerator<FortressMember> memberReportGenerator =
-            FortressMemberReportGenerator(comp, currentPlayer, hq);
+            FortressMemberReportGenerator(comp, currentPlayer, dimensions, hq);
     String terrain(IMapNG map, Point point,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
         StringBuilder builder = StringBuilder();

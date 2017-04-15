@@ -25,7 +25,8 @@ import strategicprimer.model.map {
     Player,
     IFixture,
     IMapNG,
-    invalidPoint
+    invalidPoint,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures.towns {
     TownStatus,
@@ -45,8 +46,8 @@ import strategicprimer.report.nodes {
 "A report generator for towns."
 todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, Point hq = invalidPoint)
-        extends AbstractReportGenerator<ITownFixture>(comp, DistanceComparator(hq)) {
+        Player currentPlayer, MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<ITownFixture>(comp, DistanceComparator(hq, dimensions)) {
     {TownStatus+} statuses = {TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
         TownStatus.burned};
     "Separate towns by status."
@@ -75,10 +76,10 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             ITownFixture item = entry.first;
             Point loc = entry.rest.first;
             if (is Village item) {
-                VillageReportGenerator(comp, currentPlayer)
+                VillageReportGenerator(comp, currentPlayer, dimensions) // TODO: pass in HQ?
                     .produce(fixtures, map, ostream, [item, loc]);
             } else if (is Fortress item) {
-                FortressReportGenerator(comp, currentPlayer)
+                FortressReportGenerator(comp, currentPlayer, dimensions) // TODO: pass in HQ?
                     .produce(fixtures, map, ostream, [item, loc]);
             } else if (is AbstractTown item) {
                 fixtures.remove(item.id);
@@ -136,10 +137,10 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             ITownFixture item = entry.first;
             Point loc = entry.rest.first;
             if (is Village item) {
-                return VillageReportGenerator(comp, currentPlayer)
+                return VillageReportGenerator(comp, currentPlayer, dimensions) // TODO: Pass in HQ?
                     .produceRIR(fixtures, map, [item, loc]);
             } else if (is Fortress item) {
-                return FortressReportGenerator(comp, currentPlayer)
+                return FortressReportGenerator(comp, currentPlayer, dimensions) // TODO: pass in HQ?
                     .produceRIR(fixtures, map, [item, loc]);
             } else if (is AbstractTown item) {
                 fixtures.remove(item.id);

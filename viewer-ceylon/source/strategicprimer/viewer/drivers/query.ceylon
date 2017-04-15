@@ -353,7 +353,7 @@ object queryCLI satisfies SimpleDriver {
             }
             considered.add(current);
         }
-        return retval.sort(DistanceComparator(base).compare).first;
+        return retval.sort(DistanceComparator(base, dimensions).compare).first;
     }
     "Print a usage message for the REPL"
     void replUsage(ICLIHelper cli) {

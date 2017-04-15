@@ -148,7 +148,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         report.rootVisible = true;
         assert (is DefaultMutableTreeNode root = reportModel.root);
         report.expandPath(TreePath(root.path));
-        DistanceComparator calculator = DistanceComparator(findHQ());
+        DistanceComparator calculator = DistanceComparator(findHQ(), model.mapDimensions);
         object renderer extends DefaultTreeCellRenderer() {
             shared actual Component getTreeCellRendererComponent(JTree tree, Object val,
                     Boolean selected, Boolean expanded, Boolean leaf, Integer row,

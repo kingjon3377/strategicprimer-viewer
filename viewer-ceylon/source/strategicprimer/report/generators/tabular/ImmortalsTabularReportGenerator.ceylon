@@ -3,18 +3,20 @@ import lovelace.util.common {
     comparingOn
 }
 
+import strategicprimer.model {
+    DistanceComparator
+}
 import strategicprimer.model.map {
     IFixture,
-    Point
+    Point,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures.mobile {
     Immortal
 }
-import strategicprimer.model {
-    DistanceComparator
-}
 """A tabular report generator for "immortals.""""
-shared class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator<Immortal> {
+shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
+        satisfies ITableGenerator<Immortal> {
     "The header row for this table."
     shared actual [String+] headerRow = ["Distance", "Location", "Immortal"];
     "The file-name to (by default) write this table to."
@@ -31,7 +33,7 @@ shared class ImmortalsTabularReportGenerator(Point hq) satisfies ITableGenerator
             [Point, Immortal] two) {
         return comparing(comparingOn(
                     ([Point, Immortal] pair) => pair.first,
-            DistanceComparator(hq).compare),
+            DistanceComparator(hq, dimensions).compare),
             comparingOn<[Point, Immortal], Integer>(
                         ([Point, Immortal] pair) => pair.rest.first.hash, increasing),
             comparingOn<[Point, Immortal], Integer>((pair) => pair.rest.first.hash,

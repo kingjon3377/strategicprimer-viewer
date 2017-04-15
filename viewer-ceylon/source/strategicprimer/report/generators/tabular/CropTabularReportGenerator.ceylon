@@ -1,28 +1,31 @@
-import lovelace.util.common {
-    DelayedRemovalMap
-}
 import ceylon.language.meta {
     typeOf=type
 }
-import strategicprimer.model.map.fixtures.terrain {
-    Forest
+
+import lovelace.util.common {
+    DelayedRemovalMap
 }
+
 import strategicprimer.model {
     DistanceComparator
 }
 import strategicprimer.model.map {
     TileFixture,
     IFixture,
-    Point
+    Point,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures.resources {
     Grove,
     Meadow,
     Shrub
 }
+import strategicprimer.model.map.fixtures.terrain {
+    Forest
+}
 "A tabular report generator for crops---forests, groves, orchards, fields, meadows, and
  shrubs"
-shared class CropTabularReportGenerator(Point hq)
+shared class CropTabularReportGenerator(Point hq, MapDimensions dimensions)
         satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Kind", "Cultivation",
@@ -69,7 +72,7 @@ shared class CropTabularReportGenerator(Point hq)
         Forest|Shrub|Meadow|Grove second = two.rest.first;
         Comparison cropCmp = first.kind.compare(second.kind);
         if (cropCmp == equal) {
-            Comparison cmp = DistanceComparator(hq).compare(
+            Comparison cmp = DistanceComparator(hq, dimensions).compare(
                 one.first, two.first);
             if (cmp == equal) {
                 return comparing(byIncreasing<TileFixture, Integer>(

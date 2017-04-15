@@ -3,20 +3,21 @@ import lovelace.util.common {
     comparingOn
 }
 
+import strategicprimer.model {
+    DistanceComparator
+}
 import strategicprimer.model.map {
     Player,
     IFixture,
-    Point
+    Point,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal
 }
-import strategicprimer.model {
-    DistanceComparator
-}
 "A tabular report generator for units."
-shared class UnitTabularReportGenerator(Player player, Point hq)
+shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions dimensions)
         satisfies ITableGenerator<IUnit> {
     "The header row for this table."
     shared actual [String+] headerRow =
@@ -47,7 +48,7 @@ shared class UnitTabularReportGenerator(Player player, Point hq)
     shared actual Comparison comparePairs([Point, IUnit] one, [Point, IUnit] two) {
         return comparing(
             comparingOn(([Point, IUnit] pair) => pair.first,
-                DistanceComparator(hq).compare),
+                DistanceComparator(hq, dimensions).compare),
             comparingOn(([Point, IUnit] pair) =>
                 pair.rest.first.owner, increasing<Player>),
             comparingOn(([Point, IUnit] pair) => pair.rest.first.kind,

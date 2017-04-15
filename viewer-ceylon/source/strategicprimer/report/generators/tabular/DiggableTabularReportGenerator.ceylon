@@ -1,12 +1,14 @@
 import lovelace.util.common {
     DelayedRemovalMap
 }
+
 import strategicprimer.model {
     DistanceComparator
 }
 import strategicprimer.model.map {
     IFixture,
-    Point
+    Point,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures {
     Ground,
@@ -19,7 +21,8 @@ import strategicprimer.model.map.fixtures.resources {
 }
 "A tabular report generator for resources that can be mined---mines, mineral veins, stone
  deposits, and Ground."
-shared class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<MineralFixture> {
+shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
+        satisfies ITableGenerator<MineralFixture> {
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Kind", "Product",
         "Status"];
@@ -61,7 +64,7 @@ shared class DiggableTabularReportGenerator(Point hq) satisfies ITableGenerator<
         return comparing(
             byIncreasing(([Point, MineralFixture] pair) => pair.rest.first.kind),
                     ([Point, MineralFixture] first, [Point, MineralFixture] second) =>
-            DistanceComparator(hq).compare(first.first, second.first),
+            DistanceComparator(hq, dimensions).compare(first.first, second.first),
             byIncreasing(([Point, MineralFixture] pair) => pair.rest.first.hash))
         (one, two);
     }

@@ -6,7 +6,8 @@ import strategicprimer.model.map {
     IFixture,
     IMapNG,
     Player,
-    Point
+    Point,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures {
     TerrainFixture
@@ -28,19 +29,20 @@ import strategicprimer.report.generators.tabular {
 shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     Player player = map.currentPlayer;
+    MapDimensions dimensions = map.dimensions;
     Point hq = findHQ(map, player);
     /*{ITableGenerator<out Object>*}*/ value generators = {
-        FortressTabularReportGenerator(player, hq),
-        UnitTabularReportGenerator(player, hq),
-        AnimalTabularReportGenerator(hq),
-        WorkerTabularReportGenerator(hq),
-        VillageTabularReportGenerator(player, hq),
-        TownTabularReportGenerator(player, hq),
-        CropTabularReportGenerator(hq),
-        DiggableTabularReportGenerator(hq),
+        FortressTabularReportGenerator(player, hq, dimensions),
+        UnitTabularReportGenerator(player, hq, dimensions),
+        AnimalTabularReportGenerator(hq, dimensions),
+        WorkerTabularReportGenerator(hq, dimensions),
+        VillageTabularReportGenerator(player, hq, dimensions),
+        TownTabularReportGenerator(player, hq, dimensions),
+        CropTabularReportGenerator(hq, dimensions),
+        DiggableTabularReportGenerator(hq, dimensions),
         ResourceTabularReportGenerator(),
-        ImmortalsTabularReportGenerator(hq),
-        ExplorableTabularReportGenerator(player, hq)
+        ImmortalsTabularReportGenerator(hq, dimensions),
+        ExplorableTabularReportGenerator(player, hq, dimensions)
     };
     for (generator in generators) {
         generator.produceTable(source(generator.tableName), fixtures);

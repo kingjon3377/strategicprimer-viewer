@@ -16,7 +16,8 @@ import strategicprimer.model.map {
     Point,
     IFixture,
     IMapNG,
-    invalidPoint
+    invalidPoint,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures.mobile {
     Animal
@@ -31,8 +32,9 @@ import strategicprimer.report.nodes {
     SectionListReportNode
 }
 "A report generator for sightings of animals."
-shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = invalidPoint)
-        extends AbstractReportGenerator<Animal>(comp, DistanceComparator(hq)) {
+shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
+        MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<Animal>(comp, DistanceComparator(hq, dimensions)) {
     "Produce the sub-report about animals or an individual Animal."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, [Animal, Point]? entry) {

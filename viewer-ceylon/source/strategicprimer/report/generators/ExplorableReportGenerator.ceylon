@@ -28,7 +28,8 @@ import strategicprimer.model.map {
     IMapNG,
     invalidPoint,
     IFixture,
-    Player
+    Player,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures.explorable {
     ExplorableFixture,
@@ -50,8 +51,8 @@ import strategicprimer.report.nodes {
 "A report generator for caves, battlefields, adventure hooks, and portals."
 todo("Use union type instead of interface, here and elsewhere")
 shared class ExplorableReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, Point hq = invalidPoint)
-        extends AbstractReportGenerator<ExplorableFixture>(comp, DistanceComparator(hq)) {
+        Player currentPlayer, MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<ExplorableFixture>(comp, DistanceComparator(hq, dimensions)) {
     "Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
      hook, or the report on all such."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,

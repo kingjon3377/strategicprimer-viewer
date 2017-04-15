@@ -16,7 +16,8 @@ import strategicprimer.model.map {
     Player,
     IFixture,
     IMapNG,
-    invalidPoint
+    invalidPoint,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures {
     ResourcePile,
@@ -41,15 +42,16 @@ import strategicprimer.report.nodes {
 }
 "A report generator for units."
 shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, Point hq = invalidPoint)
-        extends AbstractReportGenerator<IUnit>(comp, DistanceComparator(hq)) {
+        Player currentPlayer, MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<IUnit>(comp, DistanceComparator(hq, dimensions)) {
     IReportGenerator<FortressMember> memberReportGenerator =
-            FortressMemberReportGenerator(comp, currentPlayer);
-    IReportGenerator<Animal> animalReportGenerator = AnimalReportGenerator(comp, hq);
+            FortressMemberReportGenerator(comp, currentPlayer, dimensions); // TODO: Pass in HQ?
+    IReportGenerator<Animal> animalReportGenerator =
+            AnimalReportGenerator(comp, dimensions, hq);
     IReportGenerator<IWorker> ourWorkerReportGenerator = WorkerReportGenerator(comp,
-        true, hq);
+        true, dimensions, hq);
     IReportGenerator<IWorker> otherWorkerReportGenerator = WorkerReportGenerator(comp,
-        false, hq);
+        false, dimensions, hq);
     "Produce the sub-sub-report about a unit's orders and results."
     void produceOrders(IUnit item, Anything(String) formatter) {
         if (!item.allOrders.empty || !item.allResults.empty) {

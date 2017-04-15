@@ -1,16 +1,18 @@
 import lovelace.util.common {
     DelayedRemovalMap
 }
-import strategicprimer.model.map.fixtures {
-    TextFixture
-}
+
 import strategicprimer.model {
     DistanceComparator
 }
 import strategicprimer.model.map {
     Player,
     IFixture,
-    Point
+    Point,
+    MapDimensions
+}
+import strategicprimer.model.map.fixtures {
+    TextFixture
 }
 import strategicprimer.model.map.fixtures.explorable {
     ExplorableFixture,
@@ -21,7 +23,8 @@ import strategicprimer.model.map.fixtures.explorable {
 }
 "A tabular report generator for things that can be explored and are not covered elsewhere:
   caves, battlefields, adventure hooks, and portals."
-shared class ExplorableTabularReportGenerator(Player player, Point hq)
+shared class ExplorableTabularReportGenerator(Player player, Point hq,
+        MapDimensions dimensions)
         satisfies ITableGenerator<ExplorableFixture|TextFixture> {
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Brief Description",
@@ -84,7 +87,7 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq)
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, ExplorableFixture|TextFixture] one,
             [Point, ExplorableFixture|TextFixture] two) {
-        Comparison cmp = DistanceComparator(hq).compare(one.first, two.first);
+        Comparison cmp = DistanceComparator(hq, dimensions).compare(one.first, two.first);
         if (cmp == equal) {
             return one.rest.first.string.compare(two.rest.first.string);
         } else {

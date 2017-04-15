@@ -14,7 +14,8 @@ import strategicprimer.model.map {
     Point,
     IFixture,
     IMapNG,
-    invalidPoint
+    invalidPoint,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures.mobile {
     IWorker
@@ -37,8 +38,9 @@ import strategicprimer.report.nodes {
     emptyReportNode
 }
 "A report generator for Workers."
-class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Boolean details, Point hq = invalidPoint)
-        extends AbstractReportGenerator<IWorker>(comp, DistanceComparator(hq)) {
+class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
+            Boolean details, MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<IWorker>(comp, DistanceComparator(hq, dimensions)) {
     "Produce the sub-sub-report on a worker's stats."
     String statsString(WorkerStats stats) {
         return "He or she has the following stats: ``stats.hitPoints`` / ``stats

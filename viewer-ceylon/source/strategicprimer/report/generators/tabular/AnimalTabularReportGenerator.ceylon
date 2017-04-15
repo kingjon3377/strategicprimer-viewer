@@ -1,18 +1,21 @@
 import lovelace.util.common {
     DelayedRemovalMap
 }
-import strategicprimer.model.map.fixtures.mobile {
-    Animal
-}
+
 import strategicprimer.model {
     DistanceComparator
 }
 import strategicprimer.model.map {
     IFixture,
-    Point
+    Point,
+    MapDimensions
+}
+import strategicprimer.model.map.fixtures.mobile {
+    Animal
 }
 "A report generator for sightings of animals."
-shared class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<Animal> {
+shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions)
+        satisfies ITableGenerator<Animal> {
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Kind"];
     "The file-name to (by default) write this table to."
@@ -36,7 +39,7 @@ shared class AnimalTabularReportGenerator(Point hq) satisfies ITableGenerator<An
     }
     "Compare two pairs of Animals and locations."
     shared actual Comparison comparePairs([Point, Animal] one, [Point, Animal] two) {
-        Comparison cmp = DistanceComparator(hq).compare(one.first, two.first);
+        Comparison cmp = DistanceComparator(hq, dimensions).compare(one.first, two.first);
         if (cmp == equal) {
             Comparison(Animal, Animal) compareBools(Boolean(Animal) func) {
                 Comparison retval(Boolean first, Boolean second) {

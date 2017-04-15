@@ -21,7 +21,8 @@ import strategicprimer.model.map {
     IMapNG,
     invalidPoint,
     IFixture,
-    Player
+    Player,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures {
     ResourcePile,
@@ -42,8 +43,8 @@ import strategicprimer.report.nodes {
 }
 "A report generator for equipment and resources."
 shared class FortressMemberReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, Point hq = invalidPoint)
-        extends AbstractReportGenerator<FortressMember>(comp, DistanceComparator(hq)) {
+        Player currentPlayer, MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<FortressMember>(comp, DistanceComparator(hq, dimensions)) {
     "Produces a sub-report on a resource or piece of equipment, or on all fortress
      members. All fixtures referred to in this report are removed from the collection.
      This method should probably never actually be called and do anything without an
@@ -55,8 +56,8 @@ shared class FortressMemberReportGenerator(Comparison([Point, IFixture], [Point,
             FortressMember item = entry.first;
             Point loc = entry.rest.first;
             if (is IUnit item) {
-                UnitReportGenerator(pairComparator, currentPlayer, hq).produce(fixtures, map,
-                    ostream, [item, loc]);
+                UnitReportGenerator(pairComparator, currentPlayer, dimensions, hq)
+                    .produce(fixtures, map, ostream, [item, loc]);
             } else if (is ResourcePile item) {
                 fixtures.remove(item.id);
                 if (item.quantity.units.empty) {
@@ -149,7 +150,7 @@ shared class FortressMemberReportGenerator(Comparison([Point, IFixture], [Point,
             FortressMember item = entry.first;
             Point loc = entry.rest.first;
             if (is IUnit item) {
-                return UnitReportGenerator(pairComparator, currentPlayer, hq)
+                return UnitReportGenerator(pairComparator, currentPlayer, dimensions, hq)
                     .produceRIR(fixtures, map, [item, loc]);
             } else if (is ResourcePile item) {
                 fixtures.remove(item.id);

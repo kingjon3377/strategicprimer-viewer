@@ -25,7 +25,7 @@ shared sealed abstract class AbstractReportGenerator<T>(
         shared Comparison([Point, IFixture], [Point, IFixture]) pairComparator,
         todo("Take Point and initialize distCalculator here instead of taking it as a parameter")
         shared DistanceComparator distCalculator =
-                DistanceComparator(invalidPoint))
+                DistanceComparator(invalidPoint, null))
         satisfies IReportGenerator<T> given T satisfies IFixture {
     "A list that produces HTML in its [[string]] attribute."
     shared class HtmlList(shared actual String header, {String*} initial = {})

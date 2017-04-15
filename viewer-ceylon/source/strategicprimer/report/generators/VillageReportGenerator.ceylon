@@ -17,7 +17,8 @@ import strategicprimer.model.map {
     IFixture,
     IMapNG,
     invalidPoint,
-    Player
+    Player,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures.towns {
     Village
@@ -32,8 +33,10 @@ import strategicprimer.report.nodes {
     emptyReportNode
 }
 "A report generator for Villages."
-shared class VillageReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer, Point hq = invalidPoint)
-        extends AbstractReportGenerator<Village>(comp, DistanceComparator(hq)) {
+shared class VillageReportGenerator(
+        Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
+        MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<Village>(comp, DistanceComparator(hq, dimensions)) {
     "Produce the (very brief) report for a particular village (we're probably in the
      middle of a bulleted list, but we don't assume that), or the report on all known
      villages."

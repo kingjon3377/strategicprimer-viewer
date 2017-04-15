@@ -14,7 +14,8 @@ import strategicprimer.model.map {
     Point,
     IFixture,
     IMapNG,
-    invalidPoint
+    invalidPoint,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures {
     TextFixture
@@ -28,8 +29,10 @@ import strategicprimer.report.nodes {
     emptyReportNode
 }
 "A report generator for arbitrary-text notes."
-shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp, Point hq = invalidPoint)
-        extends AbstractReportGenerator<TextFixture>(comp, DistanceComparator(hq)) {
+shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
+        MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<TextFixture>(comp,
+            DistanceComparator(hq, dimensions)) {
     "Produce the part of the report dealing with arbitrary-text notes. If an individual
      note is specified, this does *not* remove it from the collection, because this
      method doesn't know the synthetic ID # that was assigned to it."

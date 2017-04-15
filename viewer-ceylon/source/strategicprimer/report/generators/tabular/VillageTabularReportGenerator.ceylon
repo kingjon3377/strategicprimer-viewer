@@ -3,20 +3,21 @@ import lovelace.util.common {
     comparingOn
 }
 
+import strategicprimer.model {
+    DistanceComparator
+}
 import strategicprimer.model.map {
     Player,
     IFixture,
-    Point
+    Point,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures.towns {
     Village
 }
-import strategicprimer.model {
-    DistanceComparator
-}
 "A tabular report generator for villages."
-shared class VillageTabularReportGenerator(Player player, Point hq)
-        satisfies ITableGenerator<Village> {
+shared class VillageTabularReportGenerator(Player player, Point hq,
+        MapDimensions dimensions) satisfies ITableGenerator<Village> {
     "The header of this table."
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Name"];
     "The file-name to (by default) write this table to."
@@ -33,7 +34,7 @@ shared class VillageTabularReportGenerator(Player player, Point hq)
             [Point, Village] two) {
         return comparing(
             comparingOn(([Point, Village] pair) => pair.first,
-                DistanceComparator(hq).compare),
+                DistanceComparator(hq, dimensions).compare),
             comparingOn(([Point, Village] pair) => pair.rest.first.owner,
                 increasing<Player>),
             comparingOn(([Point, Village] pair) => pair.rest.first.name,

@@ -20,7 +20,8 @@ import strategicprimer.model.map {
     Point,
     IMapNG,
     invalidPoint,
-    IFixture
+    IFixture,
+    MapDimensions
 }
 import strategicprimer.model.map.fixtures.resources {
     HarvestableFixture,
@@ -45,11 +46,12 @@ import strategicprimer.report.nodes {
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
 shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Point hq = invalidPoint)
-        extends AbstractReportGenerator<HarvestableFixture>(comp, DistanceComparator(hq)) {
+        MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<HarvestableFixture>(comp,
+            DistanceComparator(hq, dimensions)) {
     "Convert a Map from kinds to Points to a HtmlList."
     HeadedList<String>&MutableList<String> mapToList(Map<String, MutableList<Point>> map,
-            String heading) {
+            String heading) { // TODO: convert to =>
         return HtmlList(heading, map.items.map(Object.string).sort(increasing));
     }
     """Produce the sub-report(s) dealing with "harvestable" fixture(s). All fixtures
