@@ -298,7 +298,6 @@ void writeTag(
 
 "Write attributes to XML."
 throws(`class XMLStreamException`, "on I/O error")
-todo("Convert to writeAttributes(XMLStreamWriter, <String->String>*)")
 void writeAttributes(
         "The stream to write to"
         XMLStreamWriter ostream,
