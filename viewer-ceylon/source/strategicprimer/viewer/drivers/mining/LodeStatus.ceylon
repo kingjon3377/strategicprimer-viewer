@@ -15,28 +15,27 @@ class LodeStatus of
      same state, not the next state higher."
     Float notHigherProbability;
     "Delegating constructor."
-    todo("Change default parameters to those that are more common")
-    abstract new delegated(Integer qty, Float lowerChance = 1.0,
-            Float notHigherChance = 1.0) {
+    abstract new delegated(Integer qty, Float lowerChance = 0.5,
+            Float notHigherChance = 0.8) {
         ratio = qty;
         lowerProbability = lowerChance;
         notHigherProbability = notHigherChance;
     }
     "The vein is not present."
     todo("Replace with null?")
-    shared new none extends delegated(-1) {}
+    shared new none extends delegated(-1, 1.0, 1.0) {}
     "There is very little ore: one part ore per 16,384 parts other rock."
-    shared new minimal extends delegated(16384, 0.4, 0.8) {}
+    shared new minimal extends delegated(16384, 0.4) {}
     "There is quite little ore: one part ore per 4096 parts other rock."
-    shared new veryPoor extends delegated(4096, 0.5, 0.8) {}
+    shared new veryPoor extends delegated(4096) {}
     "There is little ore: one part ore per 1096 parts other rock."
-    shared new poor extends delegated(1096, 0.5, 0.8) {}
+    shared new poor extends delegated(1096) {}
     "There is a fair amount of ore: one part ore per 256 parts other rock."
-    shared new fair extends delegated(256, 0.5, 0.8) {}
+    shared new fair extends delegated(256) {}
     "There is quite a bit of ore: one part ore per 16 parts other rock."
-    shared new good extends delegated(16, 0.5, 0.8) {}
+    shared new good extends delegated(16) {}
     "There is a relatively high ratio of ore: one part ore per 4 parts other rock."
-    shared new veryGood extends delegated(4, 0.5, 0.8) {}
+    shared new veryGood extends delegated(4) {}
     "The mother-lode: one part ore per one part other rock."
     shared new motherLode extends delegated(1, 0.7, 1.0) {}
     "The next lower status."
