@@ -193,6 +193,8 @@ shared class SPMenu() extends JMenuBar() {
             openSecondaryViewerItem.enabled = false;
         }
         fileMenu.addSeparator();
+        fileMenu.add(createMenuItem("Close", KeyEvent.vkW,
+            createAccelerator(KeyEvent.vkW), "Close this window", handler));
         if (platform.systemIsMac) {
             Application.application.setAboutHandler((AppEvent.AboutEvent event) {
                 Object source = WindowList.getWindows(true, false).iterable.coalesced
