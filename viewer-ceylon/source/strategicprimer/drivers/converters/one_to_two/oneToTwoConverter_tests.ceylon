@@ -119,7 +119,6 @@ ISPReader newReader = testReaderFactory.newReader;
 SPWriter oldWriter = testReaderFactory.oldWriter;
 SPWriter newWriter = testReaderFactory.newWriter;
 "Create an ExplorationRunner initialized with test data."
-todo("Which tables are actually needed?")
 ExplorationRunner initializeRunner() {
     ExplorationRunner retval = ExplorationRunner();
     for (table in {"boreal_major_tree", "fruit_trees", "grain", "major_rock",
