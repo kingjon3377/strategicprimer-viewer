@@ -28,7 +28,7 @@ import ceylon.language.meta.model {
 }
 "An object encapsulating the mapping from tile-types to colors."
 object colorHelper {
-    String wrap(String wrapped) => "<html<p>``wrapped``</p></html>";
+    String wrap(String wrapped) => "<html><p>``wrapped``</p></html>";
     "Descriptions of the types."
     suppressWarnings("deprecation")
     Map<TileType, String> descriptions = HashMap {
