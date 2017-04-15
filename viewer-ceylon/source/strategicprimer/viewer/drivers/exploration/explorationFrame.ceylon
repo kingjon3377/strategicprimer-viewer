@@ -23,7 +23,8 @@ import java.awt {
 }
 import java.awt.event {
     KeyEvent,
-    ActionEvent
+    ActionEvent,
+    ActionListener
 }
 import java.lang {
     JInteger=Integer,
@@ -42,7 +43,6 @@ import javax.swing {
     ListModel,
     JPanel,
     SwingList=JList,
-    AbstractAction,
     JComponent,
     JLabel,
     ListCellRenderer,
@@ -333,9 +333,8 @@ SPFrame explorationFrame(IExplorationModel model,
                     matchers);
                 // At some point we tried wrapping the button in a JScrollPane.
                 tilesPanel.add(dtb);
-                todo("Does this really need to extend AbstractAction now?")
-                object ecl extends AbstractAction()
-                        satisfies MovementCostSource&SelectionChangeSource {
+                object ecl satisfies MovementCostSource&SelectionChangeSource&
+                        ActionListener {
                     MutableList<MovementCostListener> movementListeners =
                             ArrayList<MovementCostListener>();
                     MutableList<SelectionChangeListener> selectionListeners =
