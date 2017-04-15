@@ -26,15 +26,14 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
         }
         levelNum = level;
     }
-    "Add a skill. Returns false if an equal skill was already in the collection, and true
+    "Add a skill. Does nothing if an equal skill was already in the collection, and true
      otherwise."
-    todo("Is the return value really needed?")
-    shared actual Boolean addSkill(ISkill skill) {
+    todo("What should we do with matching but non-equal skill?")
+    shared actual void addSkill(ISkill skill) {
         if (exists existing = skillSet.get(skill.name), existing == skill) {
-                return false;
+                return;
         } else {
             skillSet.put(skill.name, skill);
-            return true;
         }
     }
     for (skill in skills) {

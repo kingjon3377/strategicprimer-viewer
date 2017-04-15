@@ -56,12 +56,9 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&Pr
     shared actual Iterator<ISkill> iterator() => proxiedSkills.iterator();
     "Add a skill; returns false if we were already proxying a skill by that name, and true
      otherwise."
-    shared actual Boolean addSkill(ISkill skill) {
-        if (proxiedSkills.map(ISkill.name).any(skill.name.equals)) {
-            return false;
-        } else {
+    shared actual void addSkill(ISkill skill) {
+        if (!proxiedSkills.map(ISkill.name).any(skill.name.equals)) {
             proxiedSkills.add(ProxySkill(skill.name, parallel, *proxiedJobs));
-            return true;
         }
     }
     "The lowest level among proxied jobs."

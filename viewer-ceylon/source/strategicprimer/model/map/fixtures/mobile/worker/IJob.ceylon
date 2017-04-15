@@ -22,8 +22,8 @@ shared interface IJob satisfies HasName&{ISkill*}&Subsettable<IJob> {
 	 that.
 
 	 Returns whether this changed the collection of skills."
-	todo("Remove that limitation", "Make void instead of Boolean?")
-	shared formal Boolean addSkill(ISkill skill);
+	todo("Remove that limitation")
+	shared formal void addSkill(ISkill skill);
 	"The worker's Job level in this Job. Cannot be negative."
 	todo("Move variability, and addSkill(), to a mutator interface?")
 	shared formal variable Integer level;
