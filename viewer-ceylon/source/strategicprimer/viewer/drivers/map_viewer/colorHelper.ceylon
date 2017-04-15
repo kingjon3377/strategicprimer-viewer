@@ -31,7 +31,7 @@ object colorHelper {
     String wrap(String wrapped) => "<html><p>``wrapped``</p></html>";
     "Descriptions of the types."
     suppressWarnings("deprecation")
-    Map<TileType, String> descriptions = HashMap {
+    Map<TileType, String> descriptions = map {
         TileType.borealForest->wrap("Boreal Forest"),
         TileType.desert->wrap("Desert"),
         TileType.jungle->wrap("Jungle"),
@@ -46,7 +46,7 @@ object colorHelper {
     "A map from types of features to the colors they can make the tile be. Used to
       show that a tile is forested, e.g., even when that is normally represented by
        an icon and there's a higher icon on the tile."
-    Map<ClassOrInterface<TileFixture>, Color> featureColors = HashMap {
+    Map<ClassOrInterface<TileFixture>, Color> featureColors = map {
         `Forest`->Color(0, 117, 0),
         `Oasis`->Color(72, 218, 164),
         `Sandbar`->Color(249, 233, 28),
@@ -54,8 +54,8 @@ object colorHelper {
     };
     "A map from map versions to maps from tile-types to colors."
     suppressWarnings("deprecation")
-    Map<Integer, Map<TileType, Color>> colors = HashMap {
-        1->HashMap {
+    Map<Integer, Map<TileType, Color>> colors = map {
+        1->map {
             TileType.borealForest->Color(72, 218, 164),
             TileType.desert->Color(249, 233, 28),
             TileType.jungle->Color(229, 46, 46),
@@ -66,7 +66,7 @@ object colorHelper {
             TileType.temperateForest->Color(72, 250, 72),
             TileType.tundra->Color(153, 153, 153)
         },
-        2->HashMap {
+        2->map {
             TileType.desert->Color(249, 233, 28),
             TileType.jungle->Color(229, 46, 46),
             TileType.notVisible->Color.white,
