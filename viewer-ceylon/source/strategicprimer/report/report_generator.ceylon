@@ -36,7 +36,6 @@ import strategicprimer.model.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.report.generators {
-    pairComparator,
     AnimalReportGenerator,
     VillageReportGenerator,
     FortressReportGenerator,
