@@ -207,8 +207,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
     object mapSizeListener extends ComponentAdapter() {
         shared actual void componentResized(ComponentEvent event) {
             Integer tileSize = scaleZoom(model.zoomLevel, model.mapDimensions.version);
-            Integer visibleColumns = event.component.width / tileSize;
-            Integer visibleRows = event.component.height / tileSize;
+            Integer visibleColumns = retval.width / tileSize;
+            Integer visibleRows = retval.height / tileSize;
             variable Integer minimumColumn = model.visibleDimensions.minimumColumn;
             variable Integer maximumColumn = model.visibleDimensions.maximumColumn;
             variable Integer minimumRow = model.visibleDimensions.minimumRow;
