@@ -73,7 +73,6 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&Proxy
                 }
             }
         } else {
-            // TODO: figure out how to use "Ceylon-native" RNG interfaces
             Random random = DefaultRandom(condition);
             for (job in proxied) {
                 variable Boolean unmodified = true;
