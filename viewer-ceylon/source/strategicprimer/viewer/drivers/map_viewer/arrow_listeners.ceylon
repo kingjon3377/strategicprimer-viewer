@@ -28,29 +28,13 @@ Map<Integer, String> arrowInputs = map {
     KeyEvent.vkNumpad9->"up-right", KeyEvent.vkNumpad7->"up-left",
     KeyEvent.vkNumpad3->"down-right", KeyEvent.vkNumpad1->"down-left"
 };
-Anything(T) join<T>(Anything(T) first, Anything(T) second) {
-    void retval(T arg) {
-        first(arg);
-        second(arg);
+Anything() join(Anything() first, Anything() second) {
+    void retval() {
+        first();
+        second();
     }
     return retval;
 }
-"A map from Strings representing arrow-key key codes to the actions that should be mapped
- to them."
-Map<String, Anything(DirectionSelectionChanger)> arrowActions =
-        map {
-            "up"->DirectionSelectionChanger.up, "down"->DirectionSelectionChanger.down,
-            "left"->DirectionSelectionChanger.left,
-            "right"->DirectionSelectionChanger.right,
-            "up-right"->join(DirectionSelectionChanger.up,
-                DirectionSelectionChanger.right),
-            "up-left"->join(DirectionSelectionChanger.up,
-                DirectionSelectionChanger.left),
-            "down-right"->join(DirectionSelectionChanger.down,
-                DirectionSelectionChanger.right),
-            "down-left"->join(DirectionSelectionChanger.down,
-                DirectionSelectionChanger.left)
-        };
 Iterable<Entry<Integer, String>> maybe(Boolean condition,
         Iterable<Entry<Integer, String>> ifTrue) {
     if (condition) {
@@ -96,9 +80,22 @@ void setUpArrowListeners(DirectionSelectionChanger selListener, InputMap inputMa
         inputMap.put(KeyStroke.getKeyStroke(stroke, 0), action);
         inputMap.put(KeyStroke.getKeyStroke(stroke, fiveMask), "ctrl-``action``");
     }
+    "A map from Strings representing arrow-key key codes to the actions that should be mapped
+     to them."
+    Map<String, Anything()> arrowActions =
+            map {
+                "up"->selListener.up,
+                "down"->selListener.down,
+                "left"->selListener.left,
+                "right"->selListener.right,
+                "up-right"->join(selListener.up, selListener.right),
+                "up-left"->join(selListener.up, selListener.left),
+                "down-right"->join(selListener.down, selListener.right),
+                "down-left"->join(selListener.down, selListener.left)
+            };
     for (action->consumer in arrowActions) {
-        actionMap.put(action, DirectionListener(() => consumer(selListener)));
-        actionMap.put(action, DirectionListener(() => consumer(selListener), 5));
+        actionMap.put(action, DirectionListener(consumer));
+        actionMap.put("ctrl-``action``", DirectionListener(consumer, 5));
     }
     Integer jumpModifier = platform.shortcutMask;
     for (stroke->action in jumpInputs) {
@@ -110,20 +107,12 @@ void setUpArrowListeners(DirectionSelectionChanger selListener, InputMap inputMa
     inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk3, InputEvent.shiftDownMask), "end");
     inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk6, InputEvent.shiftDownMask), "caret");
     inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk4, InputEvent.shiftDownMask), "dollar");
-    Anything() join(Anything(DirectionSelectionChanger) first,
-            Anything(DirectionSelectionChanger) second) {
-        void retval() {
-            first(selListener);
-            second(selListener);
-        }
-        return retval;
-    }
-    actionMap.put("ctrl-home", DirectionListener(join(DirectionSelectionChanger.jumpUp,
-        DirectionSelectionChanger.jumpLeft)));
+    actionMap.put("ctrl-home", DirectionListener(join(selListener.jumpUp,
+        selListener.jumpLeft)));
     actionMap.put("home", DirectionListener(() => selListener.jumpUp()));
-    actionMap.put("ctrl-end", DirectionListener(join(DirectionSelectionChanger.jumpDown,
-        DirectionSelectionChanger.jumpRight)));
-    actionMap.put("end", DirectionListener(() => selListener.jumpDown()));
-    actionMap.put("caret", DirectionListener(() => selListener.jumpLeft()));
-    actionMap.put("dollar", DirectionListener(() => selListener.jumpRight()));
+    actionMap.put("ctrl-end", DirectionListener(join(selListener.jumpDown,
+        selListener.jumpRight)));
+    actionMap.put("end", DirectionListener(selListener.jumpDown));
+    actionMap.put("caret", DirectionListener(selListener.jumpLeft));
+    actionMap.put("dollar", DirectionListener(selListener.jumpRight));
 }
