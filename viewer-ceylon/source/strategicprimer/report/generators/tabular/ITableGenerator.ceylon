@@ -19,7 +19,8 @@ import lovelace.util.common {
 import strategicprimer.model.map {
     Player,
     IFixture,
-    Point
+    Point,
+    MapDimensions
 }
 "A regular expression to mtch quote characters."
 Regex quotePattern = regex("\"", true);
@@ -63,15 +64,30 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
     "Given two points, return a number sufficiently proportional to the distance between
      them for ordering points based on distance from a base. The default implementation
      returns the *square* of the distance, for efficiency."
-    todo("Reflect the toroidal topology of the map")
-    shared default Integer distance(Point first, Point second) =>
-            ((first.column - second.column) * (first.column - second.column)) +
-            ((first.row - second.row) * (first.row - second.row));
+    shared default Integer distance(Point first, Point second, MapDimensions dimensions) {
+        Integer colDistRaw = (first.column - second.column).magnitude;
+        Integer rowDistRaw = (first.row - second.row).magnitude;
+        Integer colDist;
+        Integer rowDist;
+        if (exists dimensions, colDistRaw > dimensions.columns / 2) {
+            colDist = dimensions.columns - colDistRaw;
+        } else {
+            colDist = colDistRaw;
+        }
+        if (exists dimensions, rowDistRaw > dimensions.rows / 2) {
+            rowDist = dimensions.rows - rowDistRaw;
+        } else {
+            rowDist = rowDistRaw;
+        }
+        return (colDist * colDist) + (rowDist * rowDist);
+    }
     "A String showing the distance between two points, suitable to be displayed, rounded
      to a tenth of a tile. This default implementation just takes the square root of
      [[distance]] and formats it."
-    shared default String distanceString(Point first, Point second) =>
-            Float.format(sqrt(distance(first, second).float), 1, 1);
+    shared default String distanceString(Point first, Point second,
+                MapDimensions dimensions) =>
+            Float.format(sqrt(distance(first, second, dimensions).float),
+                1, 1);
     "The CSV header row to print at the top of the report, not including the newline."
     shared formal [String+] headerRow;
     "Compare two Point-fixture pairs."

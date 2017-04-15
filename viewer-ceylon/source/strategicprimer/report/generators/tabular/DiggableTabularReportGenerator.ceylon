@@ -54,7 +54,7 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
         else {
             return false;
         }
-        writeRow(ostream, distanceString(loc, hq), loc.string, classField, item.kind,
+        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, classField, item.kind,
             statusField);
         return true;
     }

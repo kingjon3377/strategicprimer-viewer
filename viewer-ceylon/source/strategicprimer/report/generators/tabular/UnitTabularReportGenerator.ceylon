@@ -28,7 +28,7 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
     shared actual Boolean produce(Anything(String) ostream,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IUnit item,
             Point loc) {
-        writeRow(ostream, distanceString(loc, hq), loc.string,
+        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string,
             ownerString(player, item.owner), item.kind, item.name,
             item.allOrders.last?.item else "");
         for (member in item) {

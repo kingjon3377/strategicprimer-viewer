@@ -25,7 +25,7 @@ shared class FortressTabularReportGenerator(Player player, Point hq,
     shared actual Boolean produce(Anything(String) ostream,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Fortress item, Point loc) {
-        writeRow(ostream, distanceString(loc, hq), loc.string,
+        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string,
             ownerString(player, item.owner), item.name);
         // Players shouldn't be able to see the contents of others' fortresses
         // in other tables.

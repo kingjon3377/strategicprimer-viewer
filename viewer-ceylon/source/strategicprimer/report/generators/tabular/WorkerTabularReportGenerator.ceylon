@@ -29,14 +29,14 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions) sa
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IWorker item,
             Point loc) {
         if (exists stats = item.stats) {
-            writeRow(ostream, distanceString(loc, hq), loc.string, item.name,
+            writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, item.name,
                 stats.hitPoints.string, stats.maxHitPoints.string,
             for (stat in { stats.strength, stats.dexterity, stats.constitution,
                 stats.intelligence, stats.wisdom, stats.charisma })
             WorkerStats.getModifierString(stat) );
         } else {
-            writeRow(ostream, distanceString(loc, hq), loc.string, item.name,
-            *(0..9).map((num) => "---"));
+            writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, item.name,
+                *(0..9).map((num) => "---"));
         }
         return true;
     }

@@ -25,7 +25,7 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
     shared actual Boolean produce(Anything(String) ostream,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Immortal item,
             Point loc) {
-        writeRow(ostream, distanceString(loc, hq), loc.string, item.string);
+        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, item.string);
         return true;
     }
     "Compare two Point-fixture pairs."

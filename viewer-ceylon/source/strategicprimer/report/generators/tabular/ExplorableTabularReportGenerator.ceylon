@@ -81,7 +81,8 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq,
         else {
             return false;
         }
-        writeRow(ostream, distanceString(loc, hq), loc.string, brief, owner, longDesc);
+        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, brief, owner,
+            longDesc);
         return true;
     }
     "Compare two Point-fixture pairs."

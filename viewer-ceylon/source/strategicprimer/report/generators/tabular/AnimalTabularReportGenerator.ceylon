@@ -34,7 +34,7 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions)
         } else {
             kind = item.kind;
         }
-        writeRow(ostream, distanceString(loc, hq), loc.string, kind);
+        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, kind);
         return true;
     }
     "Compare two pairs of Animals and locations."

@@ -39,7 +39,7 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
     shared actual Boolean produce(Anything(String) ostream,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             AbstractTown item, Point loc) {
-        writeRow(ostream, distanceString(loc, hq), loc.string,
+        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string,
             ownerString(player, item.owner), item.kind, item.townSize.string,
             item.status.string, item.name);
         return true;
