@@ -134,8 +134,8 @@ void writeVillage(XMLStreamWriter ostream, Object obj, Integer indent) {
         writeTag(ostream, "village", indent, true);
         writeAttributes(ostream, "status"->obj.status.string);
         writeNonEmptyAttributes(ostream, "name"->obj.name);
-        writeIntegerAttributes(ostream, "id"->obj.id, "owner"->obj.owner.playerId);
-        writeAttributes(ostream, "race"->obj.race);
+        writeAttributes(ostream, "id"->obj.id, "owner"->obj.owner.playerId,
+            "race"->obj.race);
         writeImage(ostream, obj);
         writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
     } else {
@@ -147,11 +147,9 @@ void writeTown(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is AbstractTown obj) {
         writeTag(ostream, obj.kind, indent, true);
         writeAttributes(ostream, "status"->obj.status.string,
-            "size"->obj.townSize.string);
-        writeIntegerAttributes(ostream, "dc"->obj.dc);
+            "size"->obj.townSize.string, "dc"->obj.dc);
         writeNonEmptyAttributes(ostream, "name"->obj.name);
-        writeIntegerAttributes(ostream, "id"->obj.id);
-        writeIntegerAttributes(ostream, "owner"->obj.owner.playerId);
+        writeAttributes(ostream, "id"->obj.id, "owner"->obj.owner.playerId);
         writeImage(ostream, obj);
         writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
     } else {

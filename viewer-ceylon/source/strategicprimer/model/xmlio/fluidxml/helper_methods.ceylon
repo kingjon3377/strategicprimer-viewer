@@ -302,20 +302,15 @@ void writeAttributes(
         "The stream to write to"
         XMLStreamWriter ostream,
         "The name and values of the attributes to write"
-        <String->String>* attributes) {
+        <String-><String|Integer|Boolean>>* attributes) {
     for (name->item in attributes) {
-        ostream.writeAttribute(spNamespace, name, item);
+        if (is String item) {
+            ostream.writeAttribute(spNamespace, name, item);
+        } else {
+            ostream.writeAttribute(spNamespace, name, item.string);
+        }
     }
 }
-
-"Write an attribute whose value is an integer."
-throws(`class XMLStreamException`, "on I/O error")
-void writeIntegerAttributes(
-        "The stream to write to"
-        XMLStreamWriter ostream,
-        "The names and values of the attribute to write"
-        <String->Integer>* items) =>
-        writeAttributes(ostream, *items.map((key->item) => key->(item.string)));
 
 "Write an attribute if its value is nonempty."
 throws(`class XMLStreamException`, "on I/O error")
@@ -330,16 +325,6 @@ void writeNonEmptyAttributes(
         }
     }
 }
-
-"Write an attribute whose value is a Boolean value."
-todo("Combine with writeAttributes() via union type")
-throws(`class XMLStreamException`, "on error creating XML")
-void writeBooleanAttributes(
-        "The stream to write to"
-        XMLStreamWriter ostream,
-        "The names and values of the attribute to write"
-        <String->Boolean>* items) =>
-        writeAttributes(ostream, *items.map((name->item) => name->(item.string)));
 
 """If the specified tag has an "owner" property, return the player it indicates; otherwise
    warn about its absence and return the "independent" player from the player

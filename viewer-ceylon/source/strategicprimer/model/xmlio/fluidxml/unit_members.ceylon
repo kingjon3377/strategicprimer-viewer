@@ -121,7 +121,7 @@ void writeWorker(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if ("human" != obj.race) {
             writeAttributes(ostream, "race"->obj.race);
         }
-        writeIntegerAttributes(ostream, "id"->obj.id);
+        writeAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);
         if (is HasPortrait obj) {
             writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
@@ -144,7 +144,7 @@ void writeWorker(XMLStreamWriter ostream, Object obj, Integer indentation) {
 void writeStats(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is WorkerStats obj) {
         writeTag(ostream, "stats", indentation, true);
-        writeIntegerAttributes(ostream, "hp"->obj.hitPoints, "max"->obj.maxHitPoints,
+        writeAttributes(ostream, "hp"->obj.hitPoints, "max"->obj.maxHitPoints,
             "str"->obj.strength, "dex"->obj.dexterity, "con"->obj.constitution,
             "int"->obj.intelligence, "wis"->obj.wisdom, "cha"->obj.charisma);
     } else {
@@ -159,8 +159,7 @@ void writeJob(XMLStreamWriter ostream, Object obj, Integer indentation) {
             return;
         }
         writeTag(ostream, "job", indentation, !hasSkills);
-        writeAttributes(ostream, "name"->obj.name);
-        writeIntegerAttributes(ostream, "level"->obj.level);
+        writeAttributes(ostream, "name"->obj.name, "level"->obj.level);
         for (skill in obj) {
             writeSkill(ostream, skill, indentation + 1);
         }
@@ -177,8 +176,8 @@ void writeSkill(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is ISkill obj) {
         if (!obj.empty) {
             writeTag(ostream, "skill", indentation, true);
-            writeAttributes(ostream, "name"->obj.name);
-            writeIntegerAttributes(ostream, "level"->obj.level, "hours"->obj.hours);
+            writeAttributes(ostream, "name"->obj.name, "level"->obj.level,
+                "hours"->obj.hours);
         }
     } else {
         throw IllegalArgumentException("Can only write ISkills");
@@ -216,13 +215,13 @@ void writeAnimal(XMLStreamWriter ostream, Object obj, Integer indentation) {
             writeAttributes(ostream, "traces"->"");
         }
         if (obj.talking) {
-            writeBooleanAttributes(ostream, "talking"->true);
+            writeAttributes(ostream, "talking"->true);
         }
         if ("wild" != obj.status) {
             writeAttributes(ostream, "status"->obj.status);
         }
         if (!obj.traces) {
-            writeIntegerAttributes(ostream, "id"->obj.id);
+            writeAttributes(ostream, "id"->obj.id);
         }
         writeImage(ostream, obj);
     } else {
@@ -233,7 +232,7 @@ void writeAnimal(XMLStreamWriter ostream, Object obj, Integer indentation) {
 void writeSimpleImmortal(XMLStreamWriter ostream, Object obj, Integer indentation) {
     if (is SimpleImmortal obj) {
         writeTag(ostream, obj.kind, indentation, true);
-        writeIntegerAttributes(ostream, "id"->obj.id);
+        writeAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write SimpleImmortals");

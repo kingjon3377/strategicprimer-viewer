@@ -157,8 +157,7 @@ shared class SPFluidWriter() satisfies SPWriter {
     void writePlayer(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if (is Player obj) {
             writeTag(ostream, "player", indentation, true);
-            writeIntegerAttributes(ostream, "number"->obj.playerId);
-            writeAttributes(ostream, "code_name"->obj.name);
+            writeAttributes(ostream, "number"->obj.playerId, "code_name"->obj.name);
         } else {
             throw IllegalArgumentException("Can only write Player");
         }
@@ -174,7 +173,7 @@ shared class SPFluidWriter() satisfies SPWriter {
                 if (is HasKind obj) {
                     writeAttributes(ostream, "kind"->obj.kind);
                 }
-                writeIntegerAttributes(ostream, "id"->obj.id);
+                writeAttributes(ostream, "id"->obj.id);
                 if (is HasImage obj) {
                     writeImage(ostream, obj);
                 }
@@ -192,7 +191,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         }
         writeTag(ostream, tag, indentation, false);
         if (turn >= 0) {
-            writeIntegerAttributes(ostream, "turn"->turn);
+            writeAttributes(ostream, "turn"->turn);
         }
         ostream.writeCharacters(text);
         ostream.writeEndElement();
@@ -203,9 +202,9 @@ shared class SPFluidWriter() satisfies SPWriter {
             Boolean empty = obj.empty && obj.allOrders.filter(nonemptyOrders).empty &&
                         obj.allResults.filter(nonemptyOrders).empty;
             writeTag(ostream, "unit", indentation, empty);
-            writeIntegerAttributes(ostream, "owner"->obj.owner.playerId);
+            writeAttributes(ostream, "owner"->obj.owner.playerId);
             writeNonEmptyAttributes(ostream, "kind"->obj.kind, "name"->obj.name);
-            writeIntegerAttributes(ostream, "id"->obj.id);
+            writeAttributes(ostream, "id"->obj.id);
             writeImage(ostream, obj);
             if (is HasPortrait obj) {
                 writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
@@ -231,12 +230,12 @@ shared class SPFluidWriter() satisfies SPWriter {
     void writeFortress(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if (is Fortress obj) {
             writeTag(ostream, "fortress", indentation, false);
-            writeIntegerAttributes(ostream, "owner"->obj.owner.playerId);
+            writeAttributes(ostream, "owner"->obj.owner.playerId);
             writeNonEmptyAttributes(ostream, "name"->obj.name);
             if (TownSize.small != obj.townSize) {
                 writeAttributes(ostream, "size"->obj.townSize.string);
             }
-            writeIntegerAttributes(ostream, "id"->obj.id);
+            writeAttributes(ostream, "id"->obj.id);
             writeImage(ostream, obj);
             writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
             if (!obj.empty) {
@@ -253,11 +252,11 @@ shared class SPFluidWriter() satisfies SPWriter {
     void writeMap(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if (is IMapNG obj) {
             writeTag(ostream, "view", indentation, false);
-            writeIntegerAttributes(ostream, "current_player"->obj.currentPlayer.playerId,
+            writeAttributes(ostream, "current_player"->obj.currentPlayer.playerId,
                 "current_turn"->obj.currentTurn);
             writeTag(ostream, "map", indentation + 1, false);
             MapDimensions dimensions = obj.dimensions;
-            writeIntegerAttributes(ostream, "version"->dimensions.version,
+            writeAttributes(ostream, "version"->dimensions.version,
                 "rows"->dimensions.rows, "columns"->dimensions.columns);
             for (player in obj.players) {
                 writePlayer(ostream, player, indentation + 2);
@@ -271,10 +270,10 @@ shared class SPFluidWriter() satisfies SPWriter {
                         if (rowEmpty) {
                             writeTag(ostream, "row", indentation + 2, false);
                             rowEmpty = false;
-                            writeIntegerAttributes(ostream, "index"->i);
+                            writeAttributes(ostream, "index"->i);
                         }
                         writeTag(ostream, "tile", indentation + 3, false);
-                        writeIntegerAttributes(ostream, "row"->i, "column"->j);
+                        writeAttributes(ostream, "row"->i, "column"->j);
                         if (TileType.notVisible != terrain) {
                             writeAttributes(ostream, "kind"->terrain.xml);
                         }

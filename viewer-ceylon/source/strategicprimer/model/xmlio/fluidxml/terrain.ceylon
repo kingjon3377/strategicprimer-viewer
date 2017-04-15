@@ -66,9 +66,7 @@ Forest readForest(StartElement element, QName parent, {XMLEvent*} stream,
 void writeGround(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Ground obj) {
         writeTag(ostream, "ground", indent, true);
-        writeAttributes(ostream, "kind"->obj.kind);
-        writeBooleanAttributes(ostream, "exposed"->obj.exposed);
-        writeIntegerAttributes(ostream, "id"->obj.id);
+        writeAttributes(ostream, "kind"->obj.kind, "exposed"->obj.exposed, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Ground");
@@ -80,9 +78,9 @@ void writeForest(XMLStreamWriter ostream, Object obj, Integer indent) {
         writeTag(ostream, "forest", indent, true);
         writeAttributes(ostream, "kind"->obj.kind);
         if (obj.rows) {
-            writeBooleanAttributes(ostream, "rows"->true);
+            writeAttributes(ostream, "rows"->true);
         }
-        writeIntegerAttributes(ostream, "id"->obj.id);
+        writeAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);
     } else {
         throw IllegalArgumentException("Can only write Forests");
