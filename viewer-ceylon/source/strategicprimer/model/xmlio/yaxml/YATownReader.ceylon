@@ -67,12 +67,11 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         requireNonEmptyParameter(element, "name", false);
         spinUntilEnd(element.name, stream);
         Integer idNum = getOrGenerateID(element);
-        Random rng = DefaultRandom(idNum);
         value status = TownStatus.parse(getParameter(element, "status"));
         if (is TownStatus status) {
             Village retval = Village(status, getParameter(element, "name", ""), idNum,
                 getOwnerOrIndependent(element), getParameter(element, "race",
-                    randomRace((bound) => rng.nextInteger(bound))));
+                    randomRace(DefaultRandom(idNum))));
             retval.image = getParameter(element, "image", "");
             retval.portrait =getParameter(element, "portrait", "");
             return retval;

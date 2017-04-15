@@ -14,6 +14,6 @@ module strategicprimer.model "0.4.9900" {
 	shared import ceylon.math "1.3.2";
 	import lovelace.util.jvm "0.1.0";
 	import ceylon.regex "1.3.2";
-	import ceylon.random "1.3.2";
+	shared import ceylon.random "1.3.2";
 	shared import ceylon.file "1.3.2";
 }

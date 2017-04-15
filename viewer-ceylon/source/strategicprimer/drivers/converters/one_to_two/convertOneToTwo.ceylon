@@ -136,9 +136,8 @@ shared IMapNG convertOneToTwo(
 		if (!oldCopy.isLocationEmpty(point)) {
 			Integer idNum = idFactory.createID();
 			if (is IMutableMapNG oldCopy) {
-				Random rng = DefaultRandom(idNum);
 				oldCopy.addFixture(point, Village(TownStatus.active, "", idNum,
-					independent, randomRace((bound) => rng.nextInteger(bound))));
+					independent, randomRace(DefaultRandom(idNum))));
 			}
 			{TileFixture*} fixtures = {oldCopy.getGround(point),
 				oldCopy.getForest(point), *oldCopy.getOtherFixtures(point)}.coalesced;

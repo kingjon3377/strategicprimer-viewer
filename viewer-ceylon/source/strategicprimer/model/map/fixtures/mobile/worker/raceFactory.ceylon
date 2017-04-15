@@ -9,6 +9,9 @@ import lovelace.util.jvm {
 import lovelace.util.common {
     todo
 }
+import ceylon.random {
+    Random
+}
 
 """A list of races for use in the map. All of them are equally likely except
    human, which is more likely than the others put together."""
@@ -24,10 +27,9 @@ void testRaceSetup() {
         "With non-human races and the filler-count of 'human', list should be size 20.");
 }
 "Select a race at random."
-todo("Take a [[Ceylon Random|ceylon.random::Random]] instead of an Integer(Integer)")
 shared String randomRace(
-        "A random-integer function taking its upper bound as a parameter."
-        Integer(Integer) random = (Integer bound) => singletonRandom.nextInteger(bound)) {
-    assert (exists retval = races[random(races.size)]);
+        "The RNG to use to determine the result."
+        Random random = singletonRandom) {
+    assert (exists retval = random.nextElement(races));
     return retval;
 }
