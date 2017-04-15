@@ -5,6 +5,9 @@ import ceylon.math.float {
 import strategicprimer.model.map {
     Point
 }
+import lovelace.util.common {
+    todo
+}
 "A class to compare [[Point]]s based on their distance to a specified point (such as a
  player's HQ)."
 shared class DistanceComparator(base) {
@@ -13,6 +16,7 @@ shared class DistanceComparator(base) {
     "Returns a value that is proportional to the distance from the base to the given
      point: in fact the *square* of the distance, to avoid taking an expensive square
      root."
+    todo("Take toroidal topology of map into account")
     Integer distance(Point point) =>
             ((point.column - base.column) * (point.column - base.column)) +
                 ((point.row - base.row) * (point.row - base.row));
