@@ -21,7 +21,6 @@ import strategicprimer.model.map.fixtures.explorable {
 }
 import strategicprimer.model.map.fixtures.resources {
     MineralVein,
-    MineralKind,
     StoneDeposit,
     StoneKind
 }
@@ -47,7 +46,10 @@ class LegacyTable() satisfies EncounterTable {
                 retval.add(Town(status, size, 0, "", 0, player));
             }
         }
-        for (mineral in `MineralKind`.caseValues) {
+        assert (exists mineralKindFile = `module strategicprimer.drivers.exploration.old`
+            .resourceByPath("mineral_kinds.txt"));
+        String mineralKindsList = mineralKindFile.textContent();
+        for (mineral in mineralKindsList.lines.map(String.trimmed)) {
             retval.add(MineralVein(mineral.string, true, 0, 0));
             retval.add(MineralVein(mineral.string, false, 0, 0));
         }

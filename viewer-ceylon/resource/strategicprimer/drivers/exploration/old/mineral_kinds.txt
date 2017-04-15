@@ -1,0 +1,5 @@
+iron
+copper
+gold
+silver
+coal
