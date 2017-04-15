@@ -57,6 +57,15 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             }
         }
     }
+    static Integer constrainToRange(Integer val, Integer min, Integer max) {
+        if (val < min) {
+            return min;
+        } else if (val > max) {
+            return max;
+        } else {
+            return val;
+        }
+    }
     IViewerModel model;
     JScrollBar horizontalBar;
     JScrollBar verticalBar;
@@ -68,21 +77,48 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         mapDimensions = mapModel.mapDimensions;
         Point selectedPoint = mapModel.selection;
         horizontalBar = horizontal;
-        horizontal.model.setRangeProperties(largest(selectedPoint.column, 0), 1, 0,
+        horizontal.model.setRangeProperties(constrainToRange(selectedPoint.column,
+            0, mapDimensions.columns - 1), 1, 0,
             mapDimensions.columns - visibleDimensions.width, false);
         horizontal.inputVerifier = LocalInputVerifier.horizontal(() => mapDimensions,
                     () => visibleDimensions);
         verticalBar = vertical;
-        vertical.model.setRangeProperties(largest(selectedPoint.row, 0), 1, 0,
+        vertical.model.setRangeProperties(constrainToRange(selectedPoint.row, 0,
+            mapDimensions.rows - 1), 1, 0,
             mapDimensions.rows - visibleDimensions.height, false);
         vertical.inputVerifier = LocalInputVerifier.vertical(() => mapDimensions,
                     () => visibleDimensions);
         object adjustmentListener satisfies AdjustmentListener {
             shared actual void adjustmentValueChanged(AdjustmentEvent event) {
                 VisibleDimensions oldDimensions = model.visibleDimensions;
-                VisibleDimensions newDimensions = VisibleDimensions(verticalBar.\ivalue,
-                    verticalBar.\ivalue + visibleDimensions.height, horizontalBar.\ivalue,
-                    horizontalBar.\ivalue + visibleDimensions.width);
+                Integer newColumn = horizontalBar.\ivalue;
+                Integer newRow = verticalBar.\ivalue;
+                Integer newMinColumn;
+                Integer newMaxColumn;
+                if (oldDimensions.minimumColumn > newColumn) {
+                    newMinColumn = newColumn;
+                    newMaxColumn = newColumn + visibleDimensions.width - 1;
+                } else if (oldDimensions.maximumColumn < newColumn) {
+                    newMaxColumn = newColumn;
+                    newMinColumn = newColumn - visibleDimensions.width + 1;
+                } else {
+                    newMaxColumn = oldDimensions.maximumColumn;
+                    newMinColumn = oldDimensions.minimumColumn;
+                }
+                Integer newMinRow;
+                Integer newMaxRow;
+                if (oldDimensions.minimumRow > newRow) {
+                    newMinRow = newRow;
+                    newMaxRow = newRow + visibleDimensions.height - 1;
+                } else if (oldDimensions.maximumColumn < newColumn) {
+                    newMaxRow = newColumn;
+                    newMinRow = newRow - visibleDimensions.height + 1;
+                } else {
+                    newMaxRow = oldDimensions.maximumRow;
+                    newMinRow = oldDimensions.minimumRow;
+                }
+                VisibleDimensions newDimensions = VisibleDimensions(newMinRow,
+                    newMaxRow, newMinColumn, newMaxColumn);
                 if (oldDimensions != newDimensions) {
                     model.visibleDimensions = newDimensions;
                 }
