@@ -144,12 +144,12 @@ class Ver2TileDrawHelper(
                 .first) {
                 assert (is TerrainFixture topTerrain);
                 return colorHelper.getFeatureColor(topTerrain);
-            } else if (map.isMountainous(location)) {
+            } else if (map.mountainous(location)) {
                 return colorHelper.mountainColor;
             }
         }
         return colorHelper.get(map.dimensions.version,
-            map.getBaseTerrain(location));
+            map.baseTerrain(location));
     }
     "Return either a loaded image or, if the specified image fails to load, the generic
      one."
@@ -198,17 +198,17 @@ class Ver2TileDrawHelper(
             pen.color = getFixtureColor(map, location);
         } else {
             pen.color = colorHelper.get(map.dimensions.version,
-                map.getBaseTerrain(location));
+                map.baseTerrain(location));
         }
         pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
-        if (!map.getRivers(location).empty) {
-            pen.drawImage(getRiverImage(map.getRivers(location)), coordinates.x,
+        if (!map.rivers(location).empty) {
+            pen.drawImage(getRiverImage(map.rivers(location)), coordinates.x,
                 coordinates.y, dimensions.x, dimensions.y, observerWrapper);
         }
         if (exists top = getTopFixture(map, location)) {
             pen.drawImage(getImageForFixture(top), coordinates.x, coordinates.y,
                 dimensions.x, dimensions.y, observerWrapper);
-        } else if (map.isMountainous(location)) {
+        } else if (map.mountainous(location)) {
             pen.drawImage(getImage("mountain.png"), coordinates.x, coordinates.y,
                 dimensions.x, dimensions.y, observerWrapper);
         }
@@ -222,10 +222,10 @@ class Ver2TileDrawHelper(
                 coordinateFactory(width, height));
     "The drawable fixtures at the given location."
     {TileFixture*} getDrawableFixtures(IMapNG map, Point location) {
-        Ground? ground = map.getGround(location);
-        Forest? forest = map.getForest(location);
+        Ground? ground = map.ground(location);
+        Forest? forest = map.forest(location);
         {TileFixture?*} allFixtures = {ground, forest,
-            *map.getOtherFixtures(location)};
+            *map.otherFixtures(location)};
         return allFixtures.coalesced
             .filter((fixture) => !fixture is TileTypeFixture).filter(filter)
             .sort(compareFixtures);
@@ -245,7 +245,7 @@ class Ver2TileDrawHelper(
     Boolean hasTerrainFixture(IMapNG map, Point location) {
         if (getDrawableFixtures(map, location).any((fixture) => fixture is TerrainFixture)) {
             return true;
-        } else if (getDrawableFixtures(map, location).first exists, map.isMountainous(location)) {
+        } else if (getDrawableFixtures(map, location).first exists, map.mountainous(location)) {
             return true;
         } else {
             return false;
@@ -257,7 +257,7 @@ class Ver2TileDrawHelper(
         if (hasTerrainFixture(map, location), exists top = getTopFixture(map, location)) {
             if (exists bottom = getDrawableFixtures(map, location).reduce((TileFixture? partial, element) => element)) {
                 return top != bottom;
-            } else if (map.isMountainous(location)) {
+            } else if (map.mountainous(location)) {
                 return true;
             } else {
                 return false;

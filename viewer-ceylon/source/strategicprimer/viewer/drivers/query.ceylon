@@ -173,7 +173,7 @@ object queryCLI satisfies SimpleDriver {
             "Owner of workers to count: ", true);
         if (exists player = choice.item) {
             Integer count = sum { 0, for (location in map.locations)
-                countWorkersInIterable(player, map.getOtherFixtures(location)) };
+                countWorkersInIterable(player, map.otherFixtures(location)) };
             cli.println("``player.name`` has ``count`` workers");
         }
     }
@@ -311,9 +311,9 @@ object queryCLI satisfies SimpleDriver {
     "Give the data about a tile that the player is supposed to automatically know if he
      has a fortress on it."
     void fortressInfo(IMapNG map, Point location, ICLIHelper cli) {
-        cli.println("Terrain is ``map.getBaseTerrain(location)``");
+        cli.println("Terrain is ``map.baseTerrain(location)``");
         {TileFixture*} fixtures = {
-            map.getGround(location), map.getForest(location), *map.getOtherFixtures(location)
+            map.ground(location), map.forest(location), *map.otherFixtures(location)
         }.coalesced;
         Ground[] ground = [ for (fixture in fixtures) if (is Ground fixture) fixture ];
         Forest[] forests = [ for (fixture in fixtures) if (is Forest fixture) fixture ];
@@ -338,7 +338,7 @@ object queryCLI satisfies SimpleDriver {
         MutableSet<Point> considered = HashSet<Point>();
         MutableList<Point> retval = ArrayList<Point>();
         while (exists current = queue.accept()) {
-            TileType currentTerrain = map.getBaseTerrain(current);
+            TileType currentTerrain = map.baseTerrain(current);
             if (considered.contains(current)) {
                 continue;
             } else if (currentTerrain == TileType.notVisible) {

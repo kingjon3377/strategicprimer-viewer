@@ -89,37 +89,37 @@ shared IMapNG decreaseResolution(IMapNG old) {
 				pointFactory((row * 2) + 1, column * 2),
 				pointFactory((row * 2) + 1, (column * 2) + 1) ];
 			retval.setBaseTerrain(point,
-				consensus([ *subPoints.map(old.getBaseTerrain) ]));
+				consensus([ *subPoints.map(old.baseTerrain) ]));
 			for (oldPoint in subPoints) {
-				if (old.isMountainous(oldPoint)) {
+				if (old.mountainous(oldPoint)) {
 					retval.setMountainous(point, true);
 				}
-				if (exists ground = old.getGround(oldPoint)) {
-					if (retval.getGround(point) exists) {
+				if (exists ground = old.ground(oldPoint)) {
+					if (retval.ground(point) exists) {
 						retval.addFixture(point, ground);
 					} else {
 						retval.setGround(point, ground);
 					}
 				}
-				if (exists forest = old.getForest(oldPoint)) {
-					if (retval.getForest(point) exists) {
+				if (exists forest = old.forest(oldPoint)) {
+					if (retval.forest(point) exists) {
 						retval.addFixture(point, forest);
 					} else {
 						retval.setForest(point, forest);
 					}
 				}
-				for (fixture in old.getOtherFixtures(oldPoint)) {
+				for (fixture in old.otherFixtures(oldPoint)) {
 					retval.addFixture(point, fixture);
 				}
 			}
 			MutableSet<River> upperLeftRivers = HashSet<River> {
-				*old.getRivers(subPoints[0]) };
+				*old.rivers(subPoints[0]) };
 			MutableSet<River> upperRightRivers = HashSet<River> {
-				*old.getRivers(subPoints[1]) };
+				*old.rivers(subPoints[1]) };
 			MutableSet<River> lowerLeftRivers =HashSet<River> {
-				*old.getRivers(subPoints[2]) };
+				*old.rivers(subPoints[2]) };
 			MutableSet<River> lowerRightRivers = HashSet<River> {
-				*old.getRivers(subPoints[3]) };
+				*old.rivers(subPoints[3]) };
 			upperLeftRivers.removeAll({River.east, River.south});
 			upperRightRivers.removeAll({River.west, River.south});
 			lowerLeftRivers.removeAll({River.east, River.north});
@@ -136,9 +136,9 @@ void initialize(IMutableMapNG map, Point point, TileType? terrain, TileFixture* 
 		map.setBaseTerrain(point, terrain);
 	}
 	for (fixture in fixtures) {
-		if (is Ground fixture, !map.getGround(point) exists) {
+		if (is Ground fixture, !map.ground(point) exists) {
 			map.setGround(point, fixture);
-		} else if (is Forest fixture, !map.getForest(point) exists) {
+		} else if (is Forest fixture, !map.forest(point) exists) {
 			map.setForest(point, fixture);
 		} else {
 			map.addFixture(point, fixture);
@@ -159,10 +159,10 @@ void testResolutionReduction() {
 
 	IMapNG converted = decreaseResolution(start);
 	Point zeroPoint = pointFactory(0, 0);
-	assertTrue(converted.getOtherFixtures(zeroPoint)
+	assertTrue(converted.otherFixtures(zeroPoint)
 		.containsEvery({fixture, fixtureTwo, fixtureThree, fixtureFour}),
 		"Combined tile should contain fixtures from all four original tiles");
-	assertEquals(converted.getBaseTerrain(zeroPoint), TileType.desert,
+	assertEquals(converted.baseTerrain(zeroPoint), TileType.desert,
 		"Combined tile has type of most of input tiles");
 }
 test
@@ -186,19 +186,19 @@ void testMoreReduction() {
 
 	IMapNG converted = decreaseResolution(start);
 	Point zeroPoint = pointFactory(0, 0);
-	assertTrue(converted.isMountainous(zeroPoint),
+	assertTrue(converted.mountainous(zeroPoint),
 		"One mountainous point makes the reduced point mountainous");
-	assertEquals(converted.getGround(zeroPoint), groundOne, "Ground carries over");
-	assertEquals(converted.getForest(zeroPoint), forestOne, "Forest carries over");
-	assertTrue(converted.getOtherFixtures(zeroPoint)
+	assertEquals(converted.ground(zeroPoint), groundOne, "Ground carries over");
+	assertEquals(converted.forest(zeroPoint), forestOne, "Forest carries over");
+	assertTrue(converted.otherFixtures(zeroPoint)
 		.containsEvery({groundTwo, forestTwo}),
 		"Ground and forest carry over even when already set");
-	assertTrue(converted.getRivers(zeroPoint)
+	assertTrue(converted.rivers(zeroPoint)
 		.containsEvery({River.lake, River.north}),
 		"Non-interior rivers carry over");
-	assertFalse(converted.getRivers(zeroPoint).containsAny({River.east, River.south}),
+	assertFalse(converted.rivers(zeroPoint).containsAny({River.east, River.south}),
 		"Interior rivers do not carry over");
-	assertEquals(converted.getBaseTerrain(zeroPoint), TileType.steppe,
+	assertEquals(converted.baseTerrain(zeroPoint), TileType.steppe,
 		"Combined tile has most common terrain type among inputs");
 }
 test

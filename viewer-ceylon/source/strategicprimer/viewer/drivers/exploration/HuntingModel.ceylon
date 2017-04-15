@@ -36,8 +36,8 @@ shared class HuntingModel {
     MapDimensions dimensions = map.dimensions;
     {String*} fishKinds = set {
         for (point in map.locations)
-            if (map.getBaseTerrain(point) == TileType.ocean)
-                for (fixture in map.getOtherFixtures(point))
+            if (map.baseTerrain(point) == TileType.ocean)
+                for (fixture in map.otherFixtures(point))
                     if (is Animal fixture)
                         fixture.kind
     };
@@ -50,7 +50,7 @@ shared class HuntingModel {
     "Plants in the map."
     MutableMap<Point, MutableList<String>> plants = HashMap<Point, MutableList<String>>();
     for (point in map.locations) {
-        for (fixture in map.getOtherFixtures(point)) {
+        for (fixture in map.otherFixtures(point)) {
             if (is Animal fixture, !fixture.talking, !fixture.traces) {
                 String kind = fixture.kind;
                 MutableList<String> list;
@@ -80,7 +80,7 @@ shared class HuntingModel {
         }
         if (exists plantList = plants.get(point)) {
             Integer length = plantList.size - 1;
-            TileType tileType = map.getBaseTerrain(point);
+            TileType tileType = map.baseTerrain(point);
             Integer nothings;
             switch (tileType)
             case (TileType.desert|TileType.tundra) { nothings = length * 3; }

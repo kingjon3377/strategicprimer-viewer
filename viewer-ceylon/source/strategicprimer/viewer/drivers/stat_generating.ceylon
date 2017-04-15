@@ -124,13 +124,13 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Find a fixture in a map by ID number."
     IFixture? find(IMapNG map, Integer id) {
         for (location in map.locations) {
-            if (exists forest = map.getForest(location), forest.id == id) {
+            if (exists forest = map.forest(location), forest.id == id) {
                 return forest;
-            } else if (exists ground = map.getGround(location), ground.id == id) {
+            } else if (exists ground = map.ground(location), ground.id == id) {
                 return ground;
             }
             else if (exists result = findInIterable(id,
-                    *map.getOtherFixtures(location))) {
+                    *map.otherFixtures(location))) {
                 return result;
             }
         }
@@ -393,7 +393,7 @@ class TileContentsGenerator(IMapNG map) {
             "Tile-contents generator requires a tables directory");
     }
     shared void generateTileContents(Point point,
-            TileType terrain = map.getBaseTerrain(point)) {
+            TileType terrain = map.baseTerrain(point)) {
         Integer reps = (random() * 4).integer + 1;
         for (i in 0..reps) {
             process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
@@ -456,7 +456,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     todo("Just use TileType now we have union types available")
     suppressWarnings("deprecation")
     SimpleTerrain getTerrain(IMapNG map, Point location) {
-        switch (map.getBaseTerrain(location))
+        switch (map.baseTerrain(location))
         case (TileType.jungle|TileType.borealForest|TileType.temperateForest) {
             return forested;
         }
@@ -464,9 +464,9 @@ object todoFixerCLI satisfies SimpleCLIDriver {
             return unforested; }
         case (TileType.ocean) { return ocean; }
         case (TileType.plains|TileType.steppe) {
-            if (map.isMountainous(location)) {
+            if (map.mountainous(location)) {
                 return unforested;
-            } else if (map.getForest(location) exists) {
+            } else if (map.forest(location) exists) {
                 return forested;
             } else {
                 return unforested;
@@ -476,8 +476,8 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     "Search for and fix aquatic villages with non-aquatic races."
     void fixAllVillages(IMapNG map, ICLIHelper cli) {
         Village[] villages = [ for (point in map.locations)
-            if (map.getBaseTerrain(point) == TileType.ocean)
-                for (fixture in map.getOtherFixtures(point))
+            if (map.baseTerrain(point) == TileType.ocean)
+                for (fixture in map.otherFixtures(point))
                     if (is Village fixture, landRaces.contains(fixture.race))
                         fixture ];
         if (nonempty villages) {
@@ -538,7 +538,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     void fixAllUnits(IMapNG map, ICLIHelper cli) {
         for (point in map.locations) {
             SimpleTerrain terrain = getTerrain(map, point);
-            for (fixture in map.getOtherFixtures(point)) {
+            for (fixture in map.otherFixtures(point)) {
                 if (is Unit fixture, "TODO" == fixture.kind) {
                     fixUnit(fixture, terrain, cli);
                 }

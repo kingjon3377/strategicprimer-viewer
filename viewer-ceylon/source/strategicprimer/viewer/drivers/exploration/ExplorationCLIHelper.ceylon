@@ -100,9 +100,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 zero = false;
             }
             for ([map, file] in model.subordinateMaps) {
-                if (is Ground fixture, !map.getGround(destPoint) exists) {
+                if (is Ground fixture, !map.ground(destPoint) exists) {
                     map.setGround(destPoint, fixture.copy(false));
-                } else if (is Forest fixture, !map.getForest(destPoint) exists) {
+                } else if (is Forest fixture, !map.forest(destPoint) exists) {
                     map.setForest(destPoint, fixture.copy(false));
                 } else {
                     map.addFixture(destPoint, fixture.copy(zero));
@@ -143,8 +143,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         MutableList<TileFixture> constants = ArrayList<TileFixture>();
         IMutableMapNG map = model.map;
         MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
-        for (fixture in {map.getGround(destPoint), map.getForest(destPoint),
-            *map.getOtherFixtures(destPoint)}.coalesced) {
+        for (fixture in {map.ground(destPoint), map.forest(destPoint),
+            *map.otherFixtures(destPoint)}.coalesced) {
             if (shouldAlwaysNotice(mover, fixture)) {
                 constants.add(fixture);
             } else if (shouldSometimesNotice(mover, speed, fixture)) {
@@ -152,7 +152,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
         }
         String tracks;
-        if (TileType.ocean == model.map.getBaseTerrain(destPoint)) {
+        if (TileType.ocean == model.map.baseTerrain(destPoint)) {
             tracks = huntingModel.fish(destPoint, 1).first else HuntingModel.noResults;
         } else {
             tracks = huntingModel.hunt(destPoint, 1).first else HuntingModel.noResults;
@@ -170,7 +170,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
         }
         String mtn;
-        if (map.isMountainous(destPoint)) {
+        if (map.mountainous(destPoint)) {
             mtn = "mountainous ";
             for (pair in model.subordinateMaps) {
                 pair.first.setMountainous(destPoint, true);
@@ -179,7 +179,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             mtn = "";
         }
         cli.println("The explorer comes to ``destPoint``, a ``mtn``tile with terrain ``
-        map.getBaseTerrain(destPoint)``");
+        map.baseTerrain(destPoint)``");
         {TileFixture*} noticed = selectNoticed(allFixtures, identity<TileFixture>,
                 mover, speed);
         if (noticed.empty) {

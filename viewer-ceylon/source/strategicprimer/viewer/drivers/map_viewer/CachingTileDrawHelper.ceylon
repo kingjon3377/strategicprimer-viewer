@@ -105,14 +105,14 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
     shared actual void drawTileTranslated(Graphics pen, IMapNG map, Point location,
             Integer width, Integer height) {
         assert (is Graphics2D pen);
-        TileType terrain = map.getBaseTerrain(location);
+        TileType terrain = map.baseTerrain(location);
         pen.color = colorHelper.get(map.dimensions.version, terrain);
         pen.fill(backgroundShape);
         pen.color = Color.black;
         pen.draw(backgroundShape);
         if (TileType.notVisible != terrain) {
             pen.color = Color.\iBLUE;
-            for (river in map.getRivers(location)) {
+            for (river in map.rivers(location)) {
                 if (exists shape = rivers.get(river)) {
                     pen.fill(shape);
                 }

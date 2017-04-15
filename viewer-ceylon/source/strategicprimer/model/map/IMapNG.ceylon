@@ -32,6 +32,8 @@ import strategicprimer.model.map.fixtures.terrain {
 
  We also include several of the features that, in the first implementation, were in a
  MapView class that wrapped the SPMap class."
+todo("Possibly renaming this and subtypes to drop NG suffix first, redesign interface to
+      take advantage of [[Correspondence]] interface's syntax sugar.")
 shared interface IMapNG satisfies Subsettable<IMapNG>&Comparable<IMapNG> {
     "The dimensions (and version) of the map."
     shared formal MapDimensions dimensions;
@@ -42,27 +44,20 @@ shared interface IMapNG satisfies Subsettable<IMapNG>&Comparable<IMapNG> {
           dimensions that callers have modified anyway")
     shared formal {Point*} locations;
     "The base terrain at the given point."
-    todo("Drop `get` prefix?")
-    shared formal TileType getBaseTerrain(Point location);
+    shared formal TileType baseTerrain(Point location);
     "Whether the given location is mountainous."
-    todo("Drop `is` prefix?")
-    shared formal Boolean isMountainous(Point location);
+    shared formal Boolean mountainous(Point location);
     "The rivers, if any, at the given location."
-    todo("Drop `get` prefix?")
-    shared formal {River*} getRivers(Point location);
+    shared formal {River*} rivers(Point location);
     "The forest (or first forest) at the given location."
-    todo("Drop `get` prefix?")
-    shared formal Forest? getForest(Point location);
+    shared formal Forest? forest(Point location);
     "The primary Ground at the given location"
-    todo("Drop `get` prefix?")
-    shared formal Ground? getGround(Point location);
+    shared formal Ground? ground(Point location);
     "Any fixtures, other than the main ground and forest, at the given location."
-    todo("Drop `get` prefix?")
-    shared formal {TileFixture*} getOtherFixtures(Point location);
+    shared formal {TileFixture*} otherFixtures(Point location);
     "All fixtures at the given location, including primary forest and ground."
-    todo("Drop `get` prefix?")
-    shared default {TileFixture*} getAllFixtures(Point location) =>
-            {getGround(location), getForest(location), *getOtherFixtures(location)}
+    shared default {TileFixture*} allFixtures(Point location) =>
+            { ground(location), forest(location), *otherFixtures(location)}
                 .coalesced;
     "The current turn."
     shared formal Integer currentTurn;
@@ -76,10 +71,9 @@ shared interface IMapNG satisfies Subsettable<IMapNG>&Comparable<IMapNG> {
             Player? player);
     "A location is empty if it has no terrain, no Ground, no Forest, no rivers, and no
      other fixtures"
-    todo("Drop `is` prefix?")
-    shared default Boolean isLocationEmpty(Point location) =>
-            TileType.notVisible == getBaseTerrain(location) && !isMountainous(location)
-                && getRivers(location).empty && getAllFixtures(location).empty;
+    shared default Boolean locationEmpty(Point location) =>
+            TileType.notVisible == baseTerrain(location) && !mountainous(location)
+                && rivers(location).empty && allFixtures(location).empty;
     "Strict-subset calculations should skip caches, text fixtures, and animal tracks."
     shared default Boolean shouldSkip(TileFixture fixture) {
         if (is Animal fixture) {

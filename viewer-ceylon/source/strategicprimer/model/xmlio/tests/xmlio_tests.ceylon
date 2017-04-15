@@ -689,7 +689,7 @@ void testTileSerializationTwo() {
         Unit(PlayerImpl(2, ""), "explorer", "name one", 1));
     five.addFixture(pointFactory(2, 3),
         Unit(PlayerImpl(2, ""), "explorer", "name two", 2));
-    assertEquals(five.getOtherFixtures(pointFactory(2, 3)).size, 2,
+    assertEquals(five.otherFixtures(pointFactory(2, 3)).size, 2,
         "Just checking ...");
     assertSerialization("Multiple units should come through", five);
     String xmlTwoLogical =

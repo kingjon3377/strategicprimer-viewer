@@ -175,7 +175,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         if (is River child) {
             map.addRivers(currentTile, child);
         } else if (is Ground child) {
-            if (exists oldGround = map.getGround(currentTile)) {
+            if (exists oldGround = map.ground(currentTile)) {
                 if (child.exposed, !oldGround.exposed) {
                     map.setGround(currentTile, child);
                     map.addFixture(currentTile, oldGround);
@@ -187,7 +187,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
                 map.setGround(currentTile, child);
             }
         } else if (is Forest child) {
-            if (exists oldForest = map.getForest(currentTile)) {
+            if (exists oldForest = map.forest(currentTile)) {
                 if (oldForest != child) {
                     // TODO: Should we do additional ordering of Forests?
                     map.addFixture(currentTile, child);

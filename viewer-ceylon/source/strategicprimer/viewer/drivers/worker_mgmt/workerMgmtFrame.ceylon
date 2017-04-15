@@ -102,7 +102,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
     Point findHQ() {
         variable Point retval = invalidPoint;
         for (location in model.map.locations) {
-            for (fixture in model.map.getOtherFixtures(location)) {
+            for (fixture in model.map.otherFixtures(location)) {
                 if (is Fortress fixture, fixture.owner == model.map.currentPlayer) {
                     if ("HQ" == fixture.name) {
                         return location;

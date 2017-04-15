@@ -371,7 +371,7 @@ SPFrame explorationFrame(IExplorationModel model,
                      and references to methods for doing them."
                     {[String, Anything()]*} explorerActions = {["Should the explorer swear any villages on this tile?", () {
                         model.swearVillages();
-                        for (fixture in model.map.getOtherFixtures(model.selectedUnitLocation)) {
+                        for (fixture in model.map.otherFixtures(model.selectedUnitLocation)) {
                             if (is Village fixture) {
                                 selectedValuesList.add(fixture);
                             }
@@ -401,18 +401,18 @@ SPFrame explorationFrame(IExplorationModel model,
                                     MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
                                     for ([map, file] in model.subordinateMaps) {
                                         map.setBaseTerrain(destPoint, model.map
-                                            .getBaseTerrain(destPoint));
+                                            .baseTerrain(destPoint));
                                         for (fixture in fixtures) {
                                             if (is TileTypeFixture fixture) {
                                                 // Skip it! It'll corrupt the output XML!
                                                 continue ;
                                             } else if (is Ground fixture,
-                                                !map.getGround(destPoint) exists) {
+                                                !map.ground(destPoint) exists) {
                                                 map.setGround(destPoint, fixture.copy(false));
                                             } else if (is Forest fixture,
-                                                !map.getForest(destPoint) exists) {
+                                                !map.forest(destPoint) exists) {
                                                 map.setForest(destPoint, fixture.copy(false));
-                                            } else if (!map.getAllFixtures(destPoint)
+                                            } else if (!map.allFixtures(destPoint)
                                                     .any((that) => fixture == that)) {
                                                 Boolean zero;
                                                 if (is HasOwner fixture, fixture.owner != player) {
@@ -487,7 +487,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                 Point currentLocation = model.selectedUnitLocation;
                                 if (currentLocation.valid) {
                                     {String*}(Point, Integer) tracksSource;
-                                    if (TileType.ocean == model.map.getBaseTerrain(currentLocation)) {
+                                    if (TileType.ocean == model.map.baseTerrain(currentLocation)) {
                                         tracksSource = huntingModel.fish;
                                     } else {
                                         tracksSource = huntingModel.hunt;

@@ -73,7 +73,7 @@ terrainChangingMenu(Integer mapVersion, IViewerModel model) {
         shared actual void selectedPointChanged(Point? old, Point newPoint) {
             point = newPoint;
             if (newPoint.valid,
-                TileType.notVisible != model.map.getBaseTerrain(newPoint)) {
+                TileType.notVisible != model.map.baseTerrain(newPoint)) {
                 newUnitItem.enabled = true;
             } else {
                 newUnitItem.enabled = false;

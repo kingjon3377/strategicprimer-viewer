@@ -84,12 +84,12 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.
             return getUnitsImpl(map.locations
-                .flatMap((point) => map.getOtherFixtures(point)), player);
+                .flatMap((point) => map.otherFixtures(point)), player);
         } else {
             value temp = allMaps
                     .map(([IMutableMapNG, JPath?] pair) => pair.first)
                     .flatMap(IMapNG.locations)
-                    .flatMap((point) => getUnitsImpl(map.getOtherFixtures(point), player));
+                    .flatMap((point) => getUnitsImpl(map.otherFixtures(point), player));
             MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
                     TreeMap<Integer, IUnit&ProxyFor<IUnit>>((x, y) => x<=>y);
             for (unit in temp) {
@@ -113,7 +113,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     "Add the given unit at the given location in all maps."
     void addUnitAtLocation(IUnit unit, Point location) {
         void impl(IMutableMapNG map) {
-            for (fixture in map.getOtherFixtures(location)) {
+            for (fixture in map.otherFixtures(location)) {
                 if (is Fortress fixture, fixture.owner == unit.owner) {
                     fixture.addMember(unit.copy(false));
                     return;
@@ -133,7 +133,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     "Add a unit to all the maps, at the location of its owner's HQ in the main map."
     shared actual void addUnit(IUnit unit) {
         for (point in map.locations) {
-            for (fixture in map.getOtherFixtures(point)) {
+            for (fixture in map.otherFixtures(point)) {
                 if (is Fortress fixture, "HQ" == fixture.name, fixture.owner == unit.owner) {
                     addUnitAtLocation(unit, point);
                     return;

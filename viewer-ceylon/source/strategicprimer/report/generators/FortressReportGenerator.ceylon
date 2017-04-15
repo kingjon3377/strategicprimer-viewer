@@ -56,17 +56,17 @@ shared class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixt
     String terrain(IMapNG map, Point point,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
         StringBuilder builder = StringBuilder();
-        builder.append("Surrounding terrain: ``map.getBaseTerrain(point)``");
+        builder.append("Surrounding terrain: ``map.baseTerrain(point)``");
         variable Boolean unforested = true;
-        if (exists forest = map.getForest(point)) {
+        if (exists forest = map.forest(point)) {
             builder.append(", forested with ``forest.kind``");
             fixtures.remove(forest.id);
             unforested = false;
         }
-        if (map.isMountainous(point)) {
+        if (map.mountainous(point)) {
             builder.append(", mountainous");
         }
-        for (fixture in map.getOtherFixtures(point)) {
+        for (fixture in map.otherFixtures(point)) {
             if (unforested, is Forest fixture) {
                 unforested = false;
                 builder.append(", forested with ``fixture.kind``");
@@ -129,7 +129,7 @@ shared class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixt
                      <li>Located at ``loc`` ``distCalculator.distanceString(loc)``</li>
                      <li>``terrain(map, loc, fixtures)``</li>
                      ");
-            riversToString(ostream, *map.getRivers(loc));
+            riversToString(ostream, *map.rivers(loc));
             MutableList<IUnit> units = ArrayList<IUnit>();
             MutableList<Implement> equipment = ArrayList<Implement>();
             MutableMap<String, MutableList<ResourcePile>> resources =
@@ -257,7 +257,7 @@ shared class FortressReportGenerator(Comparison([Point, IFixture], [Point, IFixt
             retval.appendNode(SimpleReportNode("Located at ``loc`` ``distCalculator
                 .distanceString(loc)``", loc));
             // This is a no-op if no rivers, so avoid an if
-            riversToNode(loc, retval, *map.getRivers(loc));
+            riversToNode(loc, retval, *map.rivers(loc));
             IReportNode units = ListReportNode("Units on the tile:");
             IReportNode resources = ListReportNode("Resources:", loc);
             MutableMap<String,IReportNode> resourceKinds = HashMap<String,IReportNode>();

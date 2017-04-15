@@ -23,10 +23,10 @@ shared IDRegistrar createIDFactory(IMapNG|{IMapNG*}|{IFixture*} arg) {
 void recursiveRegister(IDRegistrar factory, IMapNG|{IMapNG*}|{IFixture*} arg) {
     if (is IMapNG map = arg) {
         for (location in map.locations) {
-            Ground? tempGround = map.getGround(location);
-            Forest? tempForest = map.getForest(location);
+            Ground? tempGround = map.ground(location);
+            Forest? tempForest = map.forest(location);
             recursiveRegister(factory, {tempGround, tempForest,
-                   *map.getOtherFixtures(location)}.coalesced);
+                   *map.otherFixtures(location)}.coalesced);
         }
     } else if (is {IMapNG*} model = arg) {
         for (map in model) {

@@ -58,7 +58,7 @@ todo("""Return null instead of an "invalid" Point when not found?""")
 Point findHQ(IMapNG map, Player player) {
     variable Point? retval = null;
     for (location in map.locations) {
-        for (fixture in map.getOtherFixtures(location)) {
+        for (fixture in map.otherFixtures(location)) {
             if (is Fortress fixture, fixture.owner == player) {
                 if ("hq" == fixture.name) {
                     return location;
@@ -99,8 +99,8 @@ DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
         }
     }
     for (location in map.locations) {
-        for (IFixture fixture in {map.getGround(location), map.getForest(location),
-                *map.getOtherFixtures(location)}.coalesced) {
+        for (IFixture fixture in {map.ground(location), map.forest(location),
+                *map.otherFixtures(location)}.coalesced) {
             addToMap(location, fixture);
         }
     }

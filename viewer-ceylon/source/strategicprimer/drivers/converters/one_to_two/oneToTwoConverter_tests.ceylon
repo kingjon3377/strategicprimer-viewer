@@ -105,9 +105,9 @@ void initialize(IMutableMapNG map, Point point, TileType? terrain, TileFixture* 
         map.setBaseTerrain(point, terrain);
     }
     for (fixture in fixtures) {
-        if (is Ground fixture, !map.getGround(point) exists) {
+        if (is Ground fixture, !map.ground(point) exists) {
             map.setGround(point, fixture);
-        } else if (is Forest fixture, !map.getForest(point) exists) {
+        } else if (is Forest fixture, !map.forest(point) exists) {
             map.setForest(point, fixture);
         } else {
             map.addFixture(point, fixture);

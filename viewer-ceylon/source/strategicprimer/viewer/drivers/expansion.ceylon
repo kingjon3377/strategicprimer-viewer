@@ -72,7 +72,7 @@ object expansionDriver satisfies SimpleCLIDriver {
                 IMutableMapNG map = pair.first;
                 Player currentPlayer = map.currentPlayer;
                 Boolean containsSwornVillage(Point point) {
-                    for (fixture in map.getOtherFixtures(point)) {
+                    for (fixture in map.otherFixtures(point)) {
                         if (is ITownFixture fixture, currentPlayer == fixture.owner) {
                             return true;
                         }
@@ -94,24 +94,24 @@ object expansionDriver satisfies SimpleCLIDriver {
                     if (containsSwornVillage(point)) {
                         for (neighbor in surroundingPointIterable(point,
                                 map.dimensions)) {
-                            if (map.getBaseTerrain(neighbor) == TileType.notVisible) {
+                            if (map.baseTerrain(neighbor) == TileType.notVisible) {
                                 map.setBaseTerrain(neighbor,
-                                    master.getBaseTerrain(neighbor));
-                                if (master.isMountainous(neighbor)) {
+                                    master.baseTerrain(neighbor));
+                                if (master.mountainous(neighbor)) {
                                     map.setMountainous(neighbor, true);
                                 }
                             }
                             MutableList<TileFixture> possibilities =
                                     ArrayList<TileFixture>();
-                            if (exists ground = master.getGround(neighbor)) {
+                            if (exists ground = master.ground(neighbor)) {
                                 possibilities.add(ground);
                             }
-                            if (exists forest = master.getForest(neighbor)) {
+                            if (exists forest = master.forest(neighbor)) {
                                 possibilities.add(forest);
                             }
-                            for (fixture in master.getOtherFixtures(neighbor)) {
+                            for (fixture in master.otherFixtures(neighbor)) {
                                 if (fixture is CacheFixture ||
-                                        map.getOtherFixtures(neighbor)
+                                        map.otherFixtures(neighbor)
                                             .contains(fixture)) {
                                     continue;
                                 } else if (shouldAlwaysNotice(mock, fixture)) {
@@ -152,10 +152,10 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
     "The first method to customize for each use: whether a point is suitable for the
      kind of fixture we're creating."
     Boolean isSuitable(IMapNG map, Point location) {
-        TileType terrain = map.getBaseTerrain(location);
+        TileType terrain = map.baseTerrain(location);
         // Hares won't appear in mountains, forests, or ocean.
-        if (map.isMountainous(location) || TileType.ocean == terrain ||
-                TileType.notVisible == terrain || map.getForest(location) exists) {
+        if (map.mountainous(location) || TileType.ocean == terrain ||
+                TileType.notVisible == terrain || map.forest(location) exists) {
             return false;
         } else {
             suitableCount++;

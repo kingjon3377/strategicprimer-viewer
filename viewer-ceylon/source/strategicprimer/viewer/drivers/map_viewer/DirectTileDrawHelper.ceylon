@@ -72,15 +72,15 @@ object directTileDrawHelper satisfies TileDrawHelper {
         Graphics context = pen.create();
         try {
             context.color = colorHelper.get(map.dimensions.version,
-                map.getBaseTerrain(location));
+                map.baseTerrain(location));
             context.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
             context.color = Color.black;
             context.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
-            if (TileType.notVisible == map.getBaseTerrain(location)) {
+            if (TileType.notVisible == map.baseTerrain(location)) {
                 return;
             }
             context.color = Color.\iBLUE;
-            for (river in map.getRivers(location)) {
+            for (river in map.rivers(location)) {
                 drawRiver(context, river, coordinates.x, coordinates.y, dimensions.x,
                     dimensions.y);
             }

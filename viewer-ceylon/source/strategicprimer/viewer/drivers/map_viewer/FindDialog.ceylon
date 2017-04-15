@@ -142,7 +142,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         }
         if (exists result = PointIterator(model.mapDimensions, !backwards.selected,
                 !vertically.selected, model.selection).find(
-                    (point) => model.map.getAllFixtures(point).any(
+                    (point) => model.map.allFixtures(point).any(
                         (fixture) => matches(pattern, idNum, fixture, caseSensitivity)))) {
             log.info("Found in point ``result``");
             model.selection = result;
@@ -194,10 +194,10 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             }
         }
         for (point in model.map.locations) {
-            if (!model.map.getRivers(point).empty) {
+            if (!model.map.rivers(point).empty) {
                 populate(RiverFixture());
             }
-            populate(model.map.getAllFixtures(point));
+            populate(model.map.allFixtures(point));
         }
     });
     contentPane = horizontalSplit(0.6, 0.6, contentPanel,

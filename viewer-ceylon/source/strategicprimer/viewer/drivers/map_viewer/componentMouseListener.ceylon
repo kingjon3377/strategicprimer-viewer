@@ -53,9 +53,9 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             }
             builder.append(fixture.string);
         }
-        Ground? ground = map.getGround(point);
-        Forest? forest = map.getForest(point);
-        {TileFixture*} stream = {ground, forest, *map.getOtherFixtures(point)}
+        Ground? ground = map.ground(point);
+        Forest? forest = map.forest(point);
+        {TileFixture*} stream = {ground, forest, *map.otherFixtures(point)}
             .coalesced.filter(zof).sort(comparator);
         if (exists top = stream.first) {
             accept(top);
@@ -80,10 +80,10 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
                     .plus(0.1).integer);
             if (point.valid, point.row < mapDimensions.rows,
                 point.column < mapDimensions.columns) {
-                String mountainString = (model.map.isMountainous(point))
+                String mountainString = (model.map.mountainous(point))
                 then ", mountainous" else "";
                 return "<html><body>``point``: ``model.map
-                    .getBaseTerrain(point)````mountainString``<br />``
+                    .baseTerrain(point)````mountainString``<br />``
                 terrainFixturesAndTop(point)``</body></html>";
             } else {
                 return null;

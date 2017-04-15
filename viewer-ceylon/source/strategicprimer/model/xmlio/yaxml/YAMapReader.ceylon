@@ -74,7 +74,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
     "Add a fixture to a point in a map, accounting for the special cases."
     void addFixture(IMutableMapNG map, Point point, TileFixture fixture) {
         if (is Ground fixture) {
-            if (exists oldGround = map.getGround(point)) {
+            if (exists oldGround = map.ground(point)) {
                 if (fixture.exposed, !oldGround.exposed) {
                     map.setGround(point, fixture);
                     map.addFixture(point, oldGround);
@@ -85,7 +85,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 map.setGround(point, fixture);
             }
         } else if (is Forest fixture) {
-            if (exists oldForest = map.getForest(point)) {
+            if (exists oldForest = map.forest(point)) {
                 if (oldForest != fixture) {
                     map.addFixture(point, fixture);
                 }
@@ -286,8 +286,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
             variable Boolean rowEmpty = true;
             for (j in 0..(dimensions.columns)) {
                 Point loc = pointFactory(i, j);
-                TileType terrain = obj.getBaseTerrain(loc);
-                if (!obj.isLocationEmpty(loc)) {
+                TileType terrain = obj.baseTerrain(loc);
+                if (!obj.locationEmpty(loc)) {
                     if (rowEmpty) {
                         rowEmpty = false;
                         writeTag(ostream, "row", tabs + 2);
@@ -302,28 +302,28 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     }
                     ostream(">");
                     variable Boolean needEol = true;
-                    if (obj.isMountainous(loc)) {
+                    if (obj.mountainous(loc)) {
                         eolIfNeeded(true, ostream);
                         needEol = false;
                         writeTag(ostream, "mountain", tabs + 4);
                         closeLeafTag(ostream);
                     }
-                    for (river in obj.getRivers(loc)) {
+                    for (river in obj.rivers(loc)) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeRiver(ostream, river, tabs + 4);
                     }
-                    if (exists ground = obj.getGround(loc)) {
+                    if (exists ground = obj.ground(loc)) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeChild(ostream, ground, tabs + 4);
                     }
-                    if (exists forest = obj.getForest(loc)) {
+                    if (exists forest = obj.forest(loc)) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeChild(ostream, forest, tabs + 4);
                     }
-                    for (fixture in obj.getOtherFixtures(loc)) {
+                    for (fixture in obj.otherFixtures(loc)) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeChild(ostream, fixture, tabs + 4);

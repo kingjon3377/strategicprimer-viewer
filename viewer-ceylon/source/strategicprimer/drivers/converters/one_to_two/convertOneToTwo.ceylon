@@ -95,9 +95,9 @@ shared IMapNG convertOneToTwo(
 	"Add a fixture to a tile if this is the main map."
 	void addFixture(Point point, TileFixture fixture) {
 		if (main) {
-			if (is Ground fixture, !retval.getGround(point) exists) {
+			if (is Ground fixture, !retval.ground(point) exists) {
 				retval.setGround(point, fixture);
-			} else if (is Forest fixture, !retval.getForest(point) exists) {
+			} else if (is Forest fixture, !retval.forest(point) exists) {
 				retval.setForest(point, fixture);
 			} else {
 				retval.addFixture(point, fixture);
@@ -107,21 +107,21 @@ shared IMapNG convertOneToTwo(
 	"Convert a tile. That is, change it from a forest or mountain type to the proper
 	 replacement type plus the proper fixture, and also add the proper Ground."
 	void convertSubTile(Point point) {
-		TileType originalTerrain = retval.getBaseTerrain(point);
+		TileType originalTerrain = retval.baseTerrain(point);
 		if (TileType.mountain == originalTerrain) {
 			retval.setMountainous(point, true);
-		} else if (!retval.getForest(point) exists,
-			retval.getOtherFixtures(point).narrow<Forest>().empty,
+		} else if (!retval.forest(point) exists,
+			retval.otherFixtures(point).narrow<Forest>().empty,
 			(TileType.temperateForest == originalTerrain ||
 			TileType.borealForest == originalTerrain)) {
 			retval.setForest(point, Forest(runner.getPrimaryTree(point,
-				originalTerrain, retval.getAllFixtures(point),
+				originalTerrain, retval.allFixtures(point),
 				retval.dimensions), false, idFactory.createID()));
 		}
 		retval.setBaseTerrain(point, equivalentTerrain(originalTerrain));
 		addFixture(point, Ground(idFactory.createID(),
-			runner.getPrimaryRock(point, retval.getBaseTerrain(point),
-				retval.getAllFixtures(point), retval.dimensions), false));
+			runner.getPrimaryRock(point, retval.baseTerrain(point),
+				retval.allFixtures(point), retval.dimensions), false));
 	}
 	"Convert a single version-1 tile to the equivalent version-2 tiles."
 	{Point*} convertTile(Point point) {
@@ -130,22 +130,22 @@ shared IMapNG convertOneToTwo(
 		pointFactory(point.row * expansionFactor + i,
 			point.column * expansionFactor + j) ];
 		for (subtile in initial) {
-			retval.setBaseTerrain(subtile, oldCopy.getBaseTerrain(point));
+			retval.setBaseTerrain(subtile, oldCopy.baseTerrain(point));
 			convertSubTile(subtile);
 		}
-		if (!oldCopy.isLocationEmpty(point)) {
+		if (!oldCopy.locationEmpty(point)) {
 			Integer idNum = idFactory.createID();
 			if (is IMutableMapNG oldCopy) {
 				oldCopy.addFixture(point, Village(TownStatus.active, "", idNum,
 					independent, randomRace(DefaultRandom(idNum))));
 			}
-			{TileFixture*} fixtures = {oldCopy.getGround(point),
-				oldCopy.getForest(point), *oldCopy.getOtherFixtures(point)}.coalesced;
+			{TileFixture*} fixtures = {oldCopy.ground(point),
+				oldCopy.forest(point), *oldCopy.otherFixtures(point)}.coalesced;
 			void riversAt(Point? point, River* rivers) {
 				assert (exists point);
 				retval.addRivers(point, *rivers);
 			}
-			for (river in oldCopy.getRivers(point)) {
+			for (river in oldCopy.rivers(point)) {
 				assert (expansionFactor == 4); // the river-dispersion algorithm is tuned
 				switch (river)
 				case (River.east) {
@@ -175,13 +175,13 @@ shared IMapNG convertOneToTwo(
 				if (!shuffledFixtures.front exists) {
 					break;
 				} else if (exists currentSubtile = shuffledInitial.accept()) {
-					if (retval.getOtherFixtures(point).every(
+					if (retval.otherFixtures(point).every(
 								(fixture) =>
 						fixture is Forest|Ground|Sandbar|Shrub|Meadow|Hill),
 						exists fixture = shuffledFixtures.accept()) {
 						if (is ITownFixture fixture) {
 							{TileFixture*} toRemove = {
-								for (suspect in retval.getOtherFixtures(point))
+								for (suspect in retval.otherFixtures(point))
 								if (is Forest suspect) suspect };
 							for (suspect in toRemove) {
 								retval.removeFixture(point, suspect);
@@ -218,7 +218,7 @@ shared IMapNG convertOneToTwo(
 		pointFactory(row, column) }.filter((element) => point != element);
 		Boolean adjacentToTown() {
 			for (neighbor in neighbors) {
-				for (fixture in retval.getOtherFixtures(neighbor)) {
+				for (fixture in retval.otherFixtures(neighbor)) {
 					if (is ITownFixture fixture) {
 						return true;
 					}
@@ -229,8 +229,8 @@ shared IMapNG convertOneToTwo(
 		}
 		Boolean adjacentWater() {
 			for (neighbor in neighbors) {
-				if (retval.getBaseTerrain(neighbor) == TileType.ocean ||
-				!retval.getRivers(neighbor).empty) {
+				if (retval.baseTerrain(neighbor) == TileType.ocean ||
+				!retval.rivers(neighbor).empty) {
 					return true;
 				}
 			} else {
@@ -238,40 +238,40 @@ shared IMapNG convertOneToTwo(
 			}
 		}
 		try {
-			if (TileType.ocean != retval.getBaseTerrain(point)) {
+			if (TileType.ocean != retval.baseTerrain(point)) {
 				if (adjacentToTown(), rng.nextFloat() < 0.6) {
 					Integer id = idFactory.createID();
 					if (rng.nextBoolean()) {
-						Ground? tempGround = retval.getGround(point);
-						Forest? tempForest = retval.getForest(point);
+						Ground? tempGround = retval.ground(point);
+						Forest? tempForest = retval.forest(point);
 						addFixture(point, Meadow(runner.recursiveConsultTable("grain",
-							point, retval.getBaseTerrain(point),
+							point, retval.baseTerrain(point),
 							{tempGround, tempForest,
-								*retval.getOtherFixtures(point)}.coalesced,
+								*retval.otherFixtures(point)}.coalesced,
 							retval.dimensions), true,
 							true, id, FieldStatus.random(id)));
 					} else {
-						Ground? tempGround = retval.getGround(point);
-						Forest? tempForest = retval.getForest(point);
+						Ground? tempGround = retval.ground(point);
+						Forest? tempForest = retval.forest(point);
 						addFixture(point, Grove(true, true,
 							runner.recursiveConsultTable("fruit_trees", point,
-								retval.getBaseTerrain(point),
+								retval.baseTerrain(point),
 								{tempGround, tempForest,
-									*retval.getOtherFixtures(point)}.coalesced,
+									*retval.otherFixtures(point)}.coalesced,
 								retval.dimensions), id));
 					}
-				} else if (TileType.desert == retval.getBaseTerrain(point)) {
+				} else if (TileType.desert == retval.baseTerrain(point)) {
 					Boolean watered = adjacentWater();
 					if ((watered && rng.nextFloat() < desertToPlains) ||
-					!retval.getRivers(point).empty &&
+					!retval.rivers(point).empty &&
 					rng.nextFloat() < 0.6) {
 						retval.setBaseTerrain(point, TileType.plains);
 					}
 				} else if (rng.nextFloat() < addForestProbability) {
 					String forestType = runner.recursiveConsultTable(
-						"temperate_major_tree", point, retval.getBaseTerrain(point),
-						retval.getAllFixtures(point), retval.dimensions);
-					if (exists existingForest = retval.getForest(point),
+						"temperate_major_tree", point, retval.baseTerrain(point),
+						retval.allFixtures(point), retval.dimensions);
+					if (exists existingForest = retval.forest(point),
 						forestType == existingForest.kind) {
 						// do nothing
                         } else {

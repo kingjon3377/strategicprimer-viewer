@@ -65,13 +65,13 @@ void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
     for (location in map.locations) {
         MutableList<TileFixture> fixtures = ArrayList<TileFixture>();
         MutableList<TileFixture> toRemove = ArrayList<TileFixture>();
-        if (exists ground = map.getGround(location)) {
+        if (exists ground = map.ground(location)) {
             fixtures.add(ground);
         }
-        if (exists forest = map.getForest(location)) {
+        if (exists forest = map.forest(location)) {
             fixtures.add(forest);
         }
-        for (fixture in map.getOtherFixtures(location)) {
+        for (fixture in map.otherFixtures(location)) {
             if (is IUnit fixture, fixture.kind.contains("TODO")) {
                 continue;
             } else if (is CacheFixture fixture) {

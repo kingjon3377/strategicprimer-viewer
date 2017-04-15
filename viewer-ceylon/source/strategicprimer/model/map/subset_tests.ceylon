@@ -256,7 +256,7 @@ void testSubsetsAndCopy() {
     assertIsSubset(clone, zero, "unfilled map is still a subset of zeroed clone");
     // DCs, the only thing zeroed out in *map* copy() at the moment, are ignored by
     // equals().
-    for (fixture in clone.getOtherFixtures(pointFactory(0, 0))) {
+    for (fixture in clone.otherFixtures(pointFactory(0, 0))) {
         if (is AbstractTown fixture) {
             assertEquals(fixture.dc, 0, "Copied map didn't copy DCs");
         }

@@ -73,17 +73,17 @@ object echoDriver satisfies UtilityDriver {
             }
             IDRegistrar idFactory = createIDFactory(map);
             for (location in map.locations) {
-                if (exists mainForest = map.getForest(location), mainForest.id < 0) {
+                if (exists mainForest = map.forest(location), mainForest.id < 0) {
                     Integer id = 1147200 + location.row * 176 + location.column;
                     idFactory.register(id);
                     mainForest.id = id;
                 }
-                if (exists mainGround = map.getGround(location), mainGround.id < 0) {
+                if (exists mainGround = map.ground(location), mainGround.id < 0) {
                     Integer id = 1171484 + location.row * 176 + location.column;
                     idFactory.register(id);
                     mainGround.id = id;
                 }
-                for (fixture in map.getOtherFixtures(location)) {
+                for (fixture in map.otherFixtures(location)) {
                     if (is Forest fixture, fixture.id < 0) {
                         fixture.id = idFactory.createID();
                     } else if (is Ground fixture, fixture.id < 0) {
@@ -116,18 +116,18 @@ object forestFixerDriver satisfies SimpleCLIDriver {
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map");
     {Forest*} extractForests(IMapNG map, Point location) {
-        {Forest*} retval = { for (fixture in map.getOtherFixtures(location))
+        {Forest*} retval = { for (fixture in map.otherFixtures(location))
         if (is Forest fixture) fixture };
-        if (exists forest = map.getForest(location)) {
+        if (exists forest = map.forest(location)) {
             return retval.follow(forest);
         } else {
             return retval;
         }
     }
     {Ground*} extractGround(IMapNG map, Point location) {
-        {Ground*} retval = { for (fixture in map.getOtherFixtures(location))
+        {Ground*} retval = { for (fixture in map.otherFixtures(location))
         if (is Ground fixture) fixture };
-        if (exists ground = map.getGround(location)) {
+        if (exists ground = map.ground(location)) {
             return retval.follow(ground);
         } else {
             return retval;

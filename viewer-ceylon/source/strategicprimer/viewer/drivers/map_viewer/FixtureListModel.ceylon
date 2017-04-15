@@ -46,11 +46,11 @@ shared class FixtureListModel(IMutableMapNG map,
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         clear();
         currentTracks.clear();
-        TileType base = map.getBaseTerrain(newPoint);
+        TileType base = map.baseTerrain(newPoint);
         if (TileType.notVisible != base) {
             addElement(TileTypeFixture(base));
         }
-        {River*} rivers = map.getRivers(newPoint);
+        {River*} rivers = map.rivers(newPoint);
         if (!rivers.empty) {
             if (is TileFixture rivers) {
                 addElement(rivers);
@@ -58,24 +58,24 @@ shared class FixtureListModel(IMutableMapNG map,
                 addElement(RiverFixture(*rivers));
             }
         }
-        Ground? ground = map.getGround(newPoint);
-        Forest? forest = map.getForest(newPoint);
+        Ground? ground = map.ground(newPoint);
+        Forest? forest = map.forest(newPoint);
         for (fixture in {ground, forest,
-            *map.getOtherFixtures(newPoint)}.coalesced) {
+            *map.otherFixtures(newPoint)}.coalesced) {
             addElement(fixture);
         }
     }
     "Add a tile fixture to the current tile. Note that this modifies the map, not
      just the list."
     shared void addFixture(TileFixture fixture) {
-        if (is Ground fixture, !map.getGround(point) exists) {
+        if (is Ground fixture, !map.ground(point) exists) {
             map.setGround(point, fixture);
             selectedPointChanged(null, point);
-        } else if (is Forest fixture, !map.getForest(point) exists) {
+        } else if (is Forest fixture, !map.forest(point) exists) {
             map.setForest(point, fixture);
             selectedPointChanged(null, point);
         } else if (is TileTypeFixture fixture) {
-            if (map.getBaseTerrain(point) != fixture.tileType) {
+            if (map.baseTerrain(point) != fixture.tileType) {
                 map.setBaseTerrain(point, fixture.tileType);
                 selectedPointChanged(null, point);
             }
@@ -93,12 +93,12 @@ shared class FixtureListModel(IMutableMapNG map,
                 if (removeElement(fixture)) { // no-op if it wasn't *our* terrain
                     map.setBaseTerrain(point, TileType.notVisible);
                 }
-            } else if (is Ground fixture, exists ground = map.getGround(point),
+            } else if (is Ground fixture, exists ground = map.ground(point),
                 fixture == ground) {
                 if (removeElement(fixture)) {
                     map.setGround(point, null);
                 }
-            } else if (is Forest fixture, exists forest = map.getForest(point),
+            } else if (is Forest fixture, exists forest = map.forest(point),
                 fixture == forest) {
                 if (removeElement(fixture)) {
                     map.setForest(point, null);

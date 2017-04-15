@@ -161,15 +161,15 @@ object mapCheckerCLI satisfies UtilityDriver {
         }
         for (checker in extraChecks) {
             for (location in map.locations) {
-                TileType terrain = map.getBaseTerrain(location);
-                if (exists forest = map.getForest(location)) {
+                TileType terrain = map.baseTerrain(location);
+                if (exists forest = map.forest(location)) {
                     contentCheck(checker, terrain, location, warner, forest);
                 }
-                if (exists ground = map.getGround(location)) {
+                if (exists ground = map.ground(location)) {
                     contentCheck(checker, terrain, location, warner, ground);
                 }
                 contentCheck(checker, terrain, location, warner,
-                    *map.getOtherFixtures(location));
+                    *map.otherFixtures(location));
             }
         }
     }

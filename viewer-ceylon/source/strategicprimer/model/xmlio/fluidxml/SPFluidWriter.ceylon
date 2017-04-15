@@ -269,8 +269,8 @@ shared class SPFluidWriter() satisfies SPWriter {
                 variable Boolean rowEmpty = true;
                 for (j in 0..(dimensions.columns)) {
                     Point loc = pointFactory(i, j);
-                    TileType terrain = obj.getBaseTerrain(loc);
-                    if (!obj.isLocationEmpty(loc)) {
+                    TileType terrain = obj.baseTerrain(loc);
+                    if (!obj.locationEmpty(loc)) {
                         if (rowEmpty) {
                             writeTag(ostream, "row", indentation + 2, false);
                             rowEmpty = false;
@@ -283,23 +283,23 @@ shared class SPFluidWriter() satisfies SPWriter {
                             writeAttributes(ostream, "kind"->terrain.xml);
                         }
                         variable Boolean anyContents = false;
-                        if (obj.isMountainous(loc)) {
+                        if (obj.mountainous(loc)) {
                             anyContents = true;
                             writeTag(ostream, "mountain", indentation + 4, true);
                         }
-                        for (river in obj.getRivers(loc)) {
+                        for (river in obj.rivers(loc)) {
                             anyContents = true;
                             writeSPObjectImpl(ostream, river, indentation + 4);
                         }
-                        if (exists ground = obj.getGround(loc)) {
+                        if (exists ground = obj.ground(loc)) {
                             anyContents = true;
                             writeSPObjectImpl(ostream, ground, indentation + 4);
                         }
-                        if (exists forest = obj.getForest(loc)) {
+                        if (exists forest = obj.forest(loc)) {
                             anyContents = true;
                             writeSPObjectImpl(ostream, forest, indentation + 4);
                         }
-                        for (fixture in obj.getOtherFixtures(loc)) {
+                        for (fixture in obj.otherFixtures(loc)) {
                             anyContents = true;
                             writeSPObjectImpl(ostream, fixture, indentation + 4);
                         }

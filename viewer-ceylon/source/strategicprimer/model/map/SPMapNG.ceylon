@@ -68,9 +68,9 @@ shared class SPMapNG satisfies IMutableMapNG {
     MapDimensions mapDimensions;
     """The ground under various locations. If there's more than one at a point, others go
         in the "other fixtures" collection."""
-    MutableMap<Point, Ground> ground = HashMap<Point, Ground>();
+    MutableMap<Point, Ground> groundMap = HashMap<Point, Ground>();
     "The rivers in the map."
-    MutableMap<Point, {River*}> rivers = HashMap<Point, {River*}>();
+    MutableMap<Point, {River*}> riversMap = HashMap<Point, {River*}>();
     "The current turn."
     shared actual variable Integer currentTurn;
     shared new (MapDimensions dimensions, IMutablePlayerCollection players,
@@ -86,20 +86,20 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The locations in the map."
     shared actual {Point*} locations => PointIterator(dimensions, true, true);
     "The base terrain at the given location."
-    shared actual TileType getBaseTerrain(Point location) =>
+    shared actual TileType baseTerrain(Point location) =>
             terrain.get(location) else TileType.notVisible;
     "Whether the given location is mountainous."
-    shared actual Boolean isMountainous(Point location) => mountains.contains(location);
+    shared actual Boolean mountainous(Point location) => mountains.contains(location);
     "The rivers, if any, at the given location."
-    shared actual {River*} getRivers(Point location) =>
-            {*(rivers.get(location) else {})};
+    shared actual {River*} rivers(Point location) =>
+            {*(riversMap.get(location) else {})};
     "The primary forest, if any, at the given location."
-    shared actual Forest? getForest(Point location) => forests.get(location);
+    shared actual Forest? forest(Point location) => forests.get(location);
     "The base ground, if any known, at the given location."
-    shared actual Ground? getGround(Point location) => ground.get(location);
+    shared actual Ground? ground(Point location) => groundMap.get(location);
     "Any fixtures other than rivers, primary forest, and primary ground at the given
      location."
-    shared actual {TileFixture*} getOtherFixtures(Point location) =>
+    shared actual {TileFixture*} otherFixtures(Point location) =>
             {*(fixtures.get(location) else {})};
     "The current player."
     shared actual Player currentPlayer => playerCollection.currentPlayer;
@@ -133,13 +133,13 @@ shared class SPMapNG satisfies IMutableMapNG {
     }
     "Add rivers at a location."
     shared actual void addRivers(Point location, River* addedRivers) {
-        {River*} existing = rivers.get(location) else {};
-        rivers.put(location, set {*existing}.union(set {*addedRivers}));
+        {River*} existing = riversMap.get(location) else {};
+        riversMap.put(location, set {*existing}.union(set {*addedRivers}));
     }
     "Remove rivers from the given location."
     shared actual void removeRivers(Point location, River* removedRivers) {
-        if (exists existing = rivers.get(location)) {
-            rivers.put(location, set {*existing}
+        if (exists existing = riversMap.get(location)) {
+            riversMap.put(location, set {*existing}
                 .complement(set {*removedRivers}));
         }
     }
@@ -154,15 +154,15 @@ shared class SPMapNG satisfies IMutableMapNG {
     "Set the main ground at a location."
     shared actual void setGround(Point location, Ground? newGround) {
         if (exists newGround) {
-            ground.put(location, newGround);
+            groundMap.put(location, newGround);
         } else {
-            ground.remove(location);
+            groundMap.remove(location);
         }
     }
     """Add a fixture at a location, and return whether the "all fixtures at this point"
        set has an additional member as a result of this."""
     shared actual Boolean addFixture(Point location, TileFixture fixture) {
-        if ({getForest(location), getGround(location)}.coalesced
+        if ({ forest(location), ground(location)}.coalesced
                 .any((existing) => existing.equalsIgnoringID(fixture))) {
             return false;
         }
@@ -220,11 +220,11 @@ shared class SPMapNG satisfies IMutableMapNG {
                     obj.players.containsEvery(players), currentTurn == obj.currentTurn,
                     currentPlayer == obj.currentPlayer) {
                 for (point in locations) {
-                    {TileFixture*} ourFixtures = getAllFixtures(point);
-                    {TileFixture*} theirFixtures = obj.getAllFixtures(point);
-                    if (getBaseTerrain(point) !=obj.getBaseTerrain(point) ||
-                    isMountainous(point) !=obj.isMountainous(point) ||
-                    set { *getRivers(point) } !=set { *obj.getRivers(point) } ||
+                    {TileFixture*} ourFixtures = allFixtures(point);
+                    {TileFixture*} theirFixtures = obj.allFixtures(point);
+                    if (baseTerrain(point) !=obj.baseTerrain(point) ||
+                    mountainous(point) !=obj.mountainous(point) ||
+                    set { *rivers(point) } !=set { *obj.rivers(point) } ||
                     !ourFixtures.containsEvery(theirFixtures) ||
                     !theirFixtures.containsEvery(ourFixtures)) {
                         return false;
@@ -256,25 +256,25 @@ shared class SPMapNG satisfies IMutableMapNG {
         builder.append("Contents:");
         builder.appendNewline();
         for (location in locations) {
-            if (isLocationEmpty(location)) {
+            if (locationEmpty(location)) {
                 continue;
             }
             builder.append("At ``location``");
-            if (getBaseTerrain(location) != TileType.notVisible) {
-                builder.append("terrain: ``getBaseTerrain(location)``, ");
+            if (baseTerrain(location) != TileType.notVisible) {
+                builder.append("terrain: ``baseTerrain(location)``, ");
             }
-            if (isMountainous(location)) {
+            if (mountainous(location)) {
                 builder.append("mountains, ");
             }
-            if (exists ground = getGround(location)) {
-                builder.append("ground: ``ground``");
+            if (exists localGround = ground(location)) {
+                builder.append("ground: ``localGround``");
             }
-            if (exists forest = getForest(location)) {
-                builder.append("forest: ``forest``");
+            if (exists localForest = forest(location)) {
+                builder.append("forest: ``localForest``");
             }
-            if (!getRivers(location).empty) {
+            if (!rivers(location).empty) {
                 builder.append("rivers:");
-                for (river in getRivers(location)) {
+                for (river in rivers(location)) {
                     builder.append(" ``river``");
                 }
                 builder.append(", ");
@@ -312,9 +312,9 @@ shared class SPMapNG satisfies IMutableMapNG {
             MutableMap<Integer, IUnit> ourUnits = HashMap<Integer, IUnit>();
             for (point in locations) {
                 void localReport(String string) => report("At ``point``:\t``string``");
-                if (!{getBaseTerrain(point), TileType.notVisible}
-                        .contains(obj.getBaseTerrain(point))) {
-                    if (TileType.notVisible == getBaseTerrain(point)) {
+                if (!{ baseTerrain(point), TileType.notVisible}
+                        .contains(obj.baseTerrain(point))) {
+                    if (TileType.notVisible == baseTerrain(point)) {
                         localReport("Has terrain information we don't");
                     } else {
                         localReport("Base terrain differs");
@@ -322,29 +322,29 @@ shared class SPMapNG satisfies IMutableMapNG {
                     retval = false; // return false;
                     continue;
                 }
-                if (obj.isMountainous(point), !isMountainous(point)) {
+                if (obj.mountainous(point), !mountainous(point)) {
                     localReport("Has mountains we don't");
                     retval = false; // return false;
                 }
-                if (exists forest = obj.getForest(point)) {
+                if (exists forest = obj.forest(point)) {
                     // There are *far* too many false positives if we don't check the
                     // "other fixtures," because of the way we represent this in the XML.
                     // If we ever start a new campaign with a different data
                     // representation---perhaps a database---we should remove this check.
-                    if (!getAllFixtures(point).contains(forest)) {
+                    if (!allFixtures(point).contains(forest)) {
                         localReport("Has forest we don't");
                         retval = false; // return false;
                     }
                 }
-                if (exists ground = obj.getGround(point)) {
-                    if (exists ourGround = getGround(point)) {
+                if (exists theirGround = obj.ground(point)) {
+                    if (exists ourGround = ground(point)) {
                         // There are *far* too many false positives if we don't check the
                         // "other fixtures," because of the way we represent this in the
                         // XML. If we ever start a new campaign with a different data
                         // representation---perhaps a database---we should remove this
                         // check. Except for the 'exposed' (kind == kind) bit.
-                        if (ground != ourGround, !getAllFixtures(point).narrow<Ground>()
-                                .any((item) => item.kind == ground.kind)) {
+                        if (theirGround != ourGround, !allFixtures(point).narrow<Ground>()
+                                .any((item) => item.kind == theirGround.kind)) {
                             localReport("Has ground we don't");
                             retval = false; // return false;
                         }
@@ -356,7 +356,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                 ourFixtures.clear();
                 ourSubsettables.clear();
                 ourUnits.clear();
-                for (fixture in getAllFixtures(point)) {
+                for (fixture in allFixtures(point)) {
                     Integer idNum = fixture.id;
                     if (is IUnit fixture) {
                         ourUnits.put(idNum, fixture);
@@ -373,7 +373,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                         ourFixtures.add(fixture);
                     }
                 }
-                {TileFixture*} theirFixtures = obj.getOtherFixtures(point);
+                {TileFixture*} theirFixtures = obj.otherFixtures(point);
                 for (fixture in theirFixtures) {
                     if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
                         continue;
@@ -414,8 +414,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                         break;
                     }
                 }
-                if (!set { *obj.getRivers(point) }
-                        .complement(set { *getRivers(point) }).empty) {
+                if (!set { *obj.rivers(point) }
+                        .complement(set { *rivers(point) }).empty) {
                     localReport("Extra river(s)");
                     retval = false; // return false;
                     break;
@@ -441,21 +441,21 @@ shared class SPMapNG satisfies IMutableMapNG {
         IMutableMapNG retval = SPMapNG(dimensions, playerCollection.copy(),
             currentTurn);
         for (point in locations) {
-            retval.setBaseTerrain(point, getBaseTerrain(point));
-            if (exists grd = getGround(point)) {
+            retval.setBaseTerrain(point, baseTerrain(point));
+            if (exists grd = ground(point)) {
                 retval.setGround(point, grd.copy(false));
             } else {
                 retval.setGround(point, null);
             }
-            if (exists forest = getForest(point)) {
+            if (exists forest = forest(point)) {
                 retval.setForest(point, forest.copy(false));
             } else {
                 retval.setForest(point, null);
             }
-            retval.setMountainous(point, isMountainous(point));
-            retval.addRivers(point, *getRivers(point));
+            retval.setMountainous(point, mountainous(point));
+            retval.addRivers(point, *rivers(point));
             // TODO: what other fixtures should we zero, or skip?
-            for (fixture in getOtherFixtures(point)) {
+            for (fixture in otherFixtures(point)) {
                 retval.addFixture(point,
                     fixture.copy(zero && shouldZero(fixture, player)));
             }

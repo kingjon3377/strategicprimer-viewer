@@ -47,13 +47,13 @@ shared interface TileDrawHelper {
     "Whether the given map has any fortresses at the given location."
     todo("Move out of the interface")
     shared default Boolean hasAnyForts(IMapNG map, Point location) =>
-            !map.getOtherFixtures(location).narrow<Fortress>().empty;
+            !map.otherFixtures(location).narrow<Fortress>().empty;
     "Whether the given map has any units at the given location."
     todo("Move out of the interface")
     shared default Boolean hasAnyUnits(IMapNG map, Point location) =>
-            !map.getOtherFixtures(location).narrow<IUnit>().empty;
+            !map.otherFixtures(location).narrow<IUnit>().empty;
     """Whether the given map has any "events" at the given location."""
     todo("Move out of the interface")
     shared default Boolean hasEvent(IMapNG map, Point location) =>
-            !map.getAllFixtures(location).narrow<IEvent>().empty;
+            !map.allFixtures(location).narrow<IEvent>().empty;
 }
