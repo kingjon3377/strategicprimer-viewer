@@ -23,8 +23,7 @@ import strategicprimer.model.map {
 
 "A [[TileDrawHelper]] for version-1 maps that draws directly instead of creating Shapes,
  which proves more efficent in practice."
-todo("Convert to an object?")
-class DirectTileDrawHelper() satisfies TileDrawHelper {
+object directTileDrawHelper satisfies TileDrawHelper {
     void drawRiver(Graphics pen, River river, Integer xCoordinate,
             Integer yCoordinate, Integer width, Integer height) {
         // TODO: Add some small number to floats before .integer?

@@ -13,7 +13,7 @@ import strategicprimer.model.map {
     TileFixture
 }
 "A version-1 tile-draw-helper."
-TileDrawHelper verOneHelper = DirectTileDrawHelper(); // CachingTileDrawHelper();
+TileDrawHelper verOneHelper = directTileDrawHelper; // CachingTileDrawHelper();
 "A factory method for [[TileDrawHelper]]s."
 todo("split so ver-1 omits ZOF etc. and ver-2 requires it as non-null?")
 shared TileDrawHelper tileDrawHelperFactory(

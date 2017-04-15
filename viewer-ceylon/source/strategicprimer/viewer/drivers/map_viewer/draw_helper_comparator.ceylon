@@ -14,7 +14,7 @@ import java.util.\ifunction {
 
 import strategicprimer.viewer.drivers.map_viewer {
     CachingTileDrawHelper,
-    DirectTileDrawHelper,
+    directTileDrawHelper,
     Ver2TileDrawHelper
 }
 import strategicprimer.drivers.common {
@@ -173,7 +173,7 @@ object dummyPredicate satisfies Predicate<TileFixture> {
 }
 {[TileDrawHelper, String, Accumulator]*} helpers = {
     [CachingTileDrawHelper(), "Caching:", Accumulator()],
-    [DirectTileDrawHelper(), "Direct:", Accumulator()],
+    [directTileDrawHelper, "Direct:", Accumulator()],
     [Ver2TileDrawHelper(dummyObserver, dummyFilter,
         {FixtureMatcher(dummyFilter, "test")}),
         "Ver. 2:", Accumulator()]
