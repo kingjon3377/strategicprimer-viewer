@@ -53,7 +53,6 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 	shared actual String string => "Player collection with ``players.size`` players";
 	"Add a player to the collection. Returns true if the collection changed as a result of
 	 this call"
-	todo("Do we really need the return value?")
 	shared actual void add(Player player) {
 		if (player.independent) {
 			independentPlayer = player;
