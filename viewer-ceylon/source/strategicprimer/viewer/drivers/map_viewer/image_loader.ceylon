@@ -25,6 +25,13 @@ import java.awt {
     Image,
     Graphics
 }
+import ceylon.interop.java {
+    javaClassFromInstance,
+    javaClassFromDeclaration
+}
+import strategicprimer.viewer.drivers {
+    SPFrame
+}
 "The size of fixture icons."
 Integer fixtureIconSize = 28;
 "Create a very simple background icon for a terrain type"
@@ -51,7 +58,8 @@ shared Image loadImage(String file) {
     if (exists cached = imageCache.get(file)) {
         return cached;
     } else {
-        try (res = ResourceInputStream("images/``file``")) {
+        try (res = ResourceInputStream("images/``file``",
+                `module strategicprimer.viewer`, javaClassFromDeclaration(`class SPFrame`))) {
             if (exists image = ImageIO.read(res)) {
                 imageCache.put(file, image);
                 return image;
