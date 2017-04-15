@@ -70,7 +70,6 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "The currently selected point in the main map."
     variable Point selPoint = invalidPoint;
     "The currently selected point in the map."
-    todo("Rename to `selection`")
     shared actual Point selection => selPoint;
     assign selection {
         Point oldSel = selPoint;
