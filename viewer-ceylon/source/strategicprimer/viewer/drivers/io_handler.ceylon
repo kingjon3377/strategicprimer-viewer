@@ -120,8 +120,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             });
         }
         case ("save") {
-            JPath? givenFile = mapModel.mapFile; // TODO: inline into exists
-            if (exists givenFile) {
+            if (exists givenFile = mapModel.mapFile) {
                 try {
                     writeMap(parsePath(givenFile.string), mapModel.map);
                 } catch (IOException except) {
