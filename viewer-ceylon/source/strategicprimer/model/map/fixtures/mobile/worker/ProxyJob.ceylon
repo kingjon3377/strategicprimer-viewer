@@ -101,7 +101,6 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&Pr
     shared actual Iterable<IJob> proxied => {*proxiedJobs};
     """Whether all of the Jobs this is a proxy for are "empty," i.e. having no levels and
        containing no Skills that report either levels or hours of experience."""
-    todo("When porting IJob, make sure to rename this")
     shared actual Boolean emptyJob => proxiedJobs.every(IJob.emptyJob);
     "Get a Skill by name."
     shared actual ISkill getSkill(String skillName) {
