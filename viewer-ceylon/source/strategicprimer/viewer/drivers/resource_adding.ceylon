@@ -372,7 +372,7 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
             return;
         }
         Integer quantity = implementQuantityModel.number.intValue();
-        for (i in 0..quantity) {
+        for (i in 0:quantity) {
             model.addResource(Implement(kind, idf.createID()), currentPlayer);
         }
         logAddition("``quantity`` x ``kind``");

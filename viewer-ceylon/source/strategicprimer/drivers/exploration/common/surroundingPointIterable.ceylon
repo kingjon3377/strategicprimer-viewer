@@ -27,9 +27,9 @@ shared {Point*} surroundingPointIterable(Point startingPoint, MapDimensions dime
         }
     }
     MutableList<Point> points = ArrayList<Point>();
-    for (inner in (0..(radius + 1)).reversed) {
+    for (inner in (0..(radius)).reversed) {
         Integer lowerBound = 0 - inner;
-        Integer upperBound = inner + 1;
+        Integer upperBound = inner;
         for (row in lowerBound..upperBound) {
             for (column in lowerBound..upperBound) {
                 points.add(pointFactory(roundRow(startingPoint.row + row),

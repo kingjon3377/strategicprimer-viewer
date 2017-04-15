@@ -115,7 +115,7 @@ object zeroToOneConverter {
 	addXML("""<fortification status="abandoned" size="small" dc="0" />""", 224, 228, 232);
 	addXML("""<town status="burned" size="small" dc="0" />""", 225, 229, 233);
 	addXML("""<fortification status="burned" size="small" dc="0" />""", 226, 230, 234);
-	addXML("""<battlefield dc="0" />""", *(235..241));
+	addXML("""<battlefield dc="0" />""", *(235..240));
 	addXML("""<city status="ruined" size="medium" dc="0" />""", 241, 243);
 	addXML("""<fortification status="ruined" size="medium" dc="0" />""", 242, 244);
 	addXML("""<city status="ruined" size="large" dc="0" />""", 245);

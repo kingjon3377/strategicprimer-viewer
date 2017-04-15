@@ -187,7 +187,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Let the user enter which Jobs a worker's levels are in."
     void enterWorkerJobs(ICLIHelper cli, IWorker worker, Integer levels) {
-        for (i in 0..levels) {
+        for (i in 0:levels) {
             String jobName = cli.inputString("Which Job does worker have a level in? ");
             IJob job = worker.getJob(jobName);
             job.level = job.level + 1;
@@ -237,7 +237,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         Integer conBonus = WorkerStats.getModifier(base.constitution +
             racialBonus.constitution);
         variable Integer hp = 8 + conBonus;
-        for (level in 0..levels) {
+        for (level in 0:levels) {
             hp = hp + die(8) + conBonus;
         }
         return WorkerStats.adjusted(hp, base, racialBonus);
@@ -258,7 +258,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     void createWorkersForUnit(IMultiMapModel model, IDRegistrar idf, IFixture unit,
             ICLIHelper cli) {
         Integer count = cli.inputNumber("How many workers to generate? ");
-        for (i in 0..count) {
+        for (i in 0:count) {
             String race = randomRace();
             String name = cli.inputString("Worker is a ``race``. Worker name: ");
             Worker worker = Worker(name, race, idf.createID());
@@ -295,7 +295,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
             names = ArrayList<String>();
             cli.println("No such file.");
         }
-        for (i in 0..count) {
+        for (i in 0:count) {
             String name;
             if (exists temp = names.accept()) {
                 name = temp;
@@ -395,7 +395,7 @@ class TileContentsGenerator(IMapNG map) {
     shared void generateTileContents(Point point,
             TileType terrain = map.baseTerrain(point)) {
         Integer reps = (random() * 4).integer + 1;
-        for (i in 0..reps) {
+        for (i in 0:reps) {
             process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
                 {}, map.dimensions));
         }

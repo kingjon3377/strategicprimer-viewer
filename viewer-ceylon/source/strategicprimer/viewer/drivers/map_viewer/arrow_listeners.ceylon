@@ -20,7 +20,7 @@ import lovelace.util.jvm {
 }
 "A map from key-codes for arrow keys and the numeric keypad to Strings we will use to
  represent them."
-Map<Integer, String> arrowInputs = HashMap<Integer, String> {
+Map<Integer, String> arrowInputs = map {
     KeyEvent.vkUp->"up", KeyEvent.vkDown->"down", KeyEvent.vkRight->"right",
     KeyEvent.vkLeft->"left", KeyEvent.vkKpDown->"down", KeyEvent.vkNumpad2->"down",
     KeyEvent.vkKpRight->"right", KeyEvent.vkNumpad6->"right", KeyEvent.vkKpUp->"up",
@@ -38,7 +38,7 @@ Anything(T) join<T>(Anything(T) first, Anything(T) second) {
 "A map from Strings representing arrow-key key codes to the actions that should be mapped
  to them."
 Map<String, Anything(DirectionSelectionChanger)> arrowActions =
-        HashMap<String, Anything(DirectionSelectionChanger)> {
+        map {
             "up"->DirectionSelectionChanger.up, "down"->DirectionSelectionChanger.down,
             "left"->DirectionSelectionChanger.left,
             "right"->DirectionSelectionChanger.right,
@@ -61,7 +61,7 @@ Iterable<Entry<Integer, String>> maybe(Boolean condition,
 }
 """A map from key-codes that are used, when modified with a platgform-specific modifier,
    for "jumping," to the Strings we'll use to represent them."""
-Map<Integer, String> jumpInputs = HashMap<Integer, String> {
+Map<Integer, String> jumpInputs = map {
     KeyEvent.vkHome->"ctrl-home", KeyEvent.vkEnd->"ctrl-end",
     *maybe(platform.systemIsMac, {
         KeyEvent.vkUp->"home", KeyEvent.vkKpUp->"home", KeyEvent.vkNumpad8->"home",
@@ -71,18 +71,18 @@ Map<Integer, String> jumpInputs = HashMap<Integer, String> {
         KeyEvent.vkNumpad6->"dollar"})
 };
 "A map from other key-codes to the Strings we'll use to represent them"
-Map<Integer, String> otherInputs = HashMap<Integer, String> {
+Map<Integer, String> otherInputs = map {
     KeyEvent.vkHome->"home", KeyEvent.vk0->"home", KeyEvent.vkNumpad0->"home",
     KeyEvent.vkEnd->"end", KeyEvent.vkNumberSign->"end", KeyEvent.vkDollar->"dollar",
     KeyEvent.vkCircumflex->"caret", '#'.integer->"end",'^'.integer->"caret"
 };
 void repeat<T>(Anything(T) func, T args, Integer times) {
-    for (i in 0..times) {
+    for (i in 0:times) {
         func(args);
     }
 }
 void repeatVoid(Anything() func, Integer times) {
-    for (i in 0..times) {
+    for (i in 0:times) {
         func();
     }
 }

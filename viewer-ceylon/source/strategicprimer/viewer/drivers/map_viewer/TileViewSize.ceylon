@@ -6,7 +6,7 @@ import lovelace.util.common {
     todo
 }
 "How big, in pixels, the GUI representation of a tile should be at the specified zoom
- level.."
+ level."
 todo("Even better zoom support", "tests")
 Integer scaleZoom(Integer zoomLevel, Integer mapVersion) {
     switch (mapVersion)

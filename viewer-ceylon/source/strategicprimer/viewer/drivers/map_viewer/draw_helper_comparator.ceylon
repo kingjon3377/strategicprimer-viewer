@@ -43,7 +43,7 @@ variable Boolean usePointCache = false;
 Integer first(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
     BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
-    for (rep in 0..reps) {
+    for (rep in 0:reps) {
         image.flush();
         for (point in map.locations) {
             helper.drawTileTranslated(image.createGraphics(), map, point, tileSize,
@@ -60,7 +60,7 @@ Integer second(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
     Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
-    for (rep in 0..reps) {
+    for (rep in 0:reps) {
         image.flush();
         for (point in map.locations) {
             helper.drawTile(image.createGraphics(), map, point,
@@ -75,7 +75,7 @@ Integer second(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize
 Integer third(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
     BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
-    for (rep in 0..reps) {
+    for (rep in 0:reps) {
         image.flush();
         Graphics pen = image.createGraphics();
         for (point in map.locations) {
@@ -92,7 +92,7 @@ Integer fourth(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
-    for (rep in 0..reps) {
+    for (rep in 0:reps) {
         image.flush();
         Graphics pen = image.createGraphics();
         Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
@@ -113,7 +113,7 @@ Integer fifthOne(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSi
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
-    for (rep in 0..reps) {
+    for (rep in 0:reps) {
         image.flush();
         Graphics pen = image.createGraphics();
         Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
@@ -134,7 +134,7 @@ Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSi
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
-    for (rep in 0..reps) {
+    for (rep in 0:reps) {
         image.flush();
         Graphics pen = image.createGraphics();
         Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);

@@ -51,7 +51,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
          empty tiles show to the right of or below the map)."
         shared actual Boolean verify(JComponent input) {
             if (is JScrollBar input) {
-                return (0..(mapDimension() - visibleDimension())).contains(input.\ivalue);
+                return (0:(mapDimension() - visibleDimension())).contains(input.\ivalue);
             } else {
                 return false;
             }

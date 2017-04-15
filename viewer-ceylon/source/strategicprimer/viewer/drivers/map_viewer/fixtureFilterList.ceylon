@@ -47,7 +47,7 @@ SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
     object retval extends SwingList<FixtureMatcher>(matcherListModel)
             satisfies ZOrderFilter {
         shared actual Boolean shouldDisplay(TileFixture fixture) {
-            for (i in 0..matcherListModel.size) {
+            for (i in 0:matcherListModel.size) {
                 FixtureMatcher matcher = matcherListModel.getElementAt(i);
                 if (matcher.matches(fixture)) {
                     return matcher.displayed;
@@ -64,7 +64,7 @@ SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
     ListSelectionModel selectionModel = retval.selectionModel;
     selectionModel.selectionMode = ListSelectionModel.multipleIntervalSelection;
     selectionModel.addListSelectionListener((ListSelectionEvent event) {
-        for (i in 0.. matcherListModel.size) {
+        for (i in 0:matcherListModel.size) {
             matcherListModel.getElementAt(i).displayed = selectionModel.isSelectedIndex(i);
         }
     });

@@ -261,9 +261,9 @@ shared class SPFluidWriter() satisfies SPWriter {
             for (player in obj.players) {
                 writePlayer(ostream, player, indentation + 2);
             }
-            for (i in 0..(dimensions.rows)) {
+            for (i in 0:(dimensions.rows)) {
                 variable Boolean rowEmpty = true;
-                for (j in 0..(dimensions.columns)) {
+                for (j in 0:(dimensions.columns)) {
                     Point loc = pointFactory(i, j);
                     TileType terrain = obj.baseTerrain(loc);
                     if (!obj.locationEmpty(loc)) {

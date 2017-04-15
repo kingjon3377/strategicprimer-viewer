@@ -87,7 +87,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
             void handleMouseEvent(MouseEvent event) {
                 if (event.popupTrigger, event.clickCount == 1) {
                     Integer index = locationToIndex(event.point);
-                    if ((0..listModel.size).contains(index)) {
+                    if ((0:listModel.size).contains(index)) {
                         fixtureEditMenu(listModel.elementAt(index), players)
                             .show(event.component, event.x, event.y);
                     }

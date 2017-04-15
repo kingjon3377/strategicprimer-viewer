@@ -75,8 +75,8 @@ shared object miningCLI satisfies UtilityDriver {
             if (is Nil loc = path.resource) {
                 value file = loc.createFile();
                 try (writer = file.Overwriter()) {
-                    for (row in 0..(lowerRight.row + 1)) {
-                        for (col in 0..(lowerRight.column + 1)) {
+                    for (row in 0..(lowerRight.row)) {
+                        for (col in 0..(lowerRight.column)) {
                             writer.write("``model.statusAt(
                                 pointFactory(row, col)).ratio``,");
                         }

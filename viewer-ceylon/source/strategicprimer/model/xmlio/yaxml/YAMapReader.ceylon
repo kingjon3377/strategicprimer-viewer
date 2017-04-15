@@ -282,9 +282,9 @@ class YAMapReader("The Warning instance to use" Warning warner,
         for (player in obj.players) {
             playerReader.write(ostream, player, tabs + 2);
         }
-        for (i in 0..(dimensions.rows)) {
+        for (i in 0:(dimensions.rows)) {
             variable Boolean rowEmpty = true;
-            for (j in 0..(dimensions.columns)) {
+            for (j in 0:(dimensions.columns)) {
                 Point loc = pointFactory(i, j);
                 TileType terrain = obj.baseTerrain(loc);
                 if (!obj.locationEmpty(loc)) {
