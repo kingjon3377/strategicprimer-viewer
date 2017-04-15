@@ -54,28 +54,22 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 	"Add a player to the collection. Returns true if the collection changed as a result of
 	 this call"
 	todo("Do we really need the return value?")
-	shared actual Boolean add(Player player) {
+	shared actual void add(Player player) {
 		if (player.independent) {
 			independentPlayer = player;
 		}
-		Boolean retval = !players.items.contains(player);
 		players.put(player.playerId, player);
-		return retval;
 	}
 	"Remove a player from the collection. Returns true if the collection changed as a
 	 result of this call."
-	shared actual Boolean remove(Player|Integer obj) {
-		Boolean retval;
+	shared actual void remove(Player|Integer obj) {
 		switch (obj)
 		case (is Integer) {
-			retval = players.defines(obj);
 			players.remove(obj);
 		}
 		case (is Player) {
-			retval = players.items.contains(obj);
 			players.remove(obj.playerId);
 		}
-		return retval;
 	}
 	"""The player for "independent" fixtures."""
 	shared actual Player independent = independentPlayer;
