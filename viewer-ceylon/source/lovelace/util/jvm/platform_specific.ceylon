@@ -11,9 +11,6 @@ import javax.swing {
     JComponent
 }
 
-import lovelace.util.common {
-    todo
-}
 "Set a String/String property pair in a way that won't blow up at runtime due to
  the difference between Ceylon and Java strings."
 void setStringProperty(JComponent component, String key, String val) =>

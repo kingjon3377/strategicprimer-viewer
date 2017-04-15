@@ -28,8 +28,7 @@ import lovelace.util.jvm {
     centeredHorizontalBox,
     listenedButton,
     createHotKey,
-    BorderedPanel,
-    ActionWrapper
+    BorderedPanel
 }
 
 import strategicprimer.drivers.common {

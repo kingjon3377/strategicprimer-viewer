@@ -15,7 +15,6 @@ import javax.swing {
 
 import lovelace.util.jvm {
     createHotKey,
-    ActionWrapper,
     platform
 }
 "A superclass to perform setup common to dialogs."

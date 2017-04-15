@@ -14,9 +14,6 @@ import javax.xml.stream.events {
     XMLEvent
 }
 
-import lovelace.util.common {
-    todo
-}
 """An interface for XML readers that can read multiple related types, in the sixth
    generation of SP XML I/O ("yet another SP XML reader")."""
 interface YAReader<out Item, in Value=Item> given Item satisfies Object {

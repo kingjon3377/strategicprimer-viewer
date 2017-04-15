@@ -1,6 +1,5 @@
 import lovelace.util.common {
-    DelayedRemovalMap,
-    todo
+    DelayedRemovalMap
 }
 
 import strategicprimer.model.map {

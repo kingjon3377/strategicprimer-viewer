@@ -24,8 +24,7 @@ import java.awt.event {
     MouseEvent
 }
 import lovelace.util.jvm {
-    createHotKey,
-    ActionWrapper
+    createHotKey
 }
 import java.awt {
     Component

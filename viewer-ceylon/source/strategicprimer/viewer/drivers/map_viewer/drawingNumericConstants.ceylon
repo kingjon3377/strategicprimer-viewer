@@ -1,6 +1,3 @@
-import lovelace.util.common {
-    todo
-}
 "An object to hold numeric constants useful for drawing tiles' contents."
 object drawingNumericConstants {
     "The part of a tile's width or height that a river's short dimension should occupy."

@@ -1,6 +1,3 @@
-import lovelace.util.common {
-    todo
-}
 "An interface for objects that can tell others when they've finished something."
 interface CompletionSource {
 	"Notify the given listener when we finish something in future."

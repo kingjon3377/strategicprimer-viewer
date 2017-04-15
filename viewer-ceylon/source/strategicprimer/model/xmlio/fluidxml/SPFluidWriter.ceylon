@@ -14,10 +14,6 @@ import java.lang {
     IllegalArgumentException,
     IllegalStateException
 }
-import java.nio.file {
-    JPath=Path,
-    JFiles=Files
-}
 
 import javax.xml.stream {
     XMLStreamWriter,

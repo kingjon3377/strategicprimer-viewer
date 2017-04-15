@@ -46,7 +46,6 @@ import lovelace.util.jvm {
     listenedButton,
     createHotKey,
     FormattedLabel,
-    ActionWrapper,
     horizontalSplit,
     BorderedPanel,
     verticalSplit

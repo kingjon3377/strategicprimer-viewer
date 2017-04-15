@@ -2,10 +2,6 @@ import ceylon.math.float {
     sqrt
 }
 
-import lovelace.util.common {
-    todo
-}
-
 import strategicprimer.model.map {
     Point
 }

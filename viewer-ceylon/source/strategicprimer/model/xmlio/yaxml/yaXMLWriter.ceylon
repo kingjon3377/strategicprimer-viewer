@@ -1,10 +1,6 @@
 import java.io {
     IOException
 }
-import java.nio.file {
-    JPath=Path,
-    JFiles=Files
-}
 
 import strategicprimer.model.map {
     IMapNG

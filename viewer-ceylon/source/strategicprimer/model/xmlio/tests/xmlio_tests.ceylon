@@ -15,8 +15,7 @@ import ceylon.test {
 }
 
 import java.io {
-    StringReader,
-    StringWriter
+    StringReader
 }
 import java.lang {
     IllegalArgumentException

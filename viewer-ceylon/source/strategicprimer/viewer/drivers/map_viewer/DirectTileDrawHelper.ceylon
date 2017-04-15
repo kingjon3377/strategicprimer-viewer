@@ -10,10 +10,6 @@ import java.awt {
     Color
 }
 
-import lovelace.util.common {
-    todo
-}
-
 import strategicprimer.model.map {
     Point,
     River,

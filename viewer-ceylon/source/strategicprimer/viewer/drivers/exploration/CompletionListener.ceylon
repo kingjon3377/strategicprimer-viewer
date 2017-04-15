@@ -2,9 +2,6 @@ import java.util {
     EventListener
 }
 
-import lovelace.util.common {
-    todo
-}
 "An interface for objects that want to start something when another object has finished
  whatever it's doing."
 interface CompletionListener satisfies EventListener {
