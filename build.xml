@@ -31,7 +31,6 @@
     <path id="viewer.classpath">
       <pathelement location="${bin_dir}" />
       <!-- See comment in paths.properties -->
-      <pathelement location="${nullness.jar.path}" />
       <pathelement location="${windowmenu.jar.path}" />
     </path>
     <filelist id="apple.extensions.fileset" />
@@ -40,7 +39,6 @@
     <path id="viewer.classpath">
       <pathelement location="${bin_dir}" />
       <!-- See comment in paths.properties -->
-      <pathelement location="${nullness.jar.path}" />
       <pathelement location="${windowmenu.jar.path}" />
       <pathelement location="${apple.extensions.path}" />
     </path>
