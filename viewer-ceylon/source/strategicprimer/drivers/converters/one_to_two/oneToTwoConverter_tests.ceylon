@@ -122,8 +122,8 @@ SPWriter newWriter = testReaderFactory.newWriter;
 todo("Which tables are actually needed?")
 ExplorationRunner initializeRunner() {
     ExplorationRunner retval = ExplorationRunner();
-    for (table in {"boreal_major_tree", "fruit_trees", "grain", "main", "major_rock",
-            "minor_rock", "temperate_major_tree"}) {
+    for (table in {"boreal_major_tree", "fruit_trees", "grain", "major_rock",
+            "temperate_major_tree"}) {
         assert (exists tableAsResource = `module strategicprimer.drivers.converters`
             .resourceByPath("tables/``table``"));
         value tableText = tableAsResource.textContent();
