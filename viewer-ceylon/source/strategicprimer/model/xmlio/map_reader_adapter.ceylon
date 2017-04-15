@@ -37,14 +37,8 @@ IMapReader reader = yaXMLReader;
 SPWriter writer = yaXMLWriter;
 "Turn a series of Strings into a series of equvalent Paths, optionally omitting the
  first."
-todo("Do we really need dropFirst in Ceylon?")
-shared {JPath*} namesToFiles(Boolean dropFirst, String* names) {
-    if (dropFirst) {
-        return {for (name in names.rest) JPaths.get(name) };
-    } else {
-        return { for (name in names) JPaths.get(name) };
-    }
-}
+shared {JPath*} namesToFiles(String* names) =>
+        { for (name in names) JPaths.get(name) };
 "Read a map from a file or a stream.."
 todo("Add a default value for Warning argument", "Port to use ceylon.file or ceylon.io")
 shared IMutableMapNG readMap(JPath|JReader file, Warning warner) {
@@ -59,8 +53,6 @@ shared void writeMap(Path file, IMapNG map) => writer.write(file, map);
 test
 void testNamesToFiles() {
     JPath[] expected = [ JPaths.get("two"), JPaths.get("three"), JPaths.get("four") ];
-    assertEquals([*namesToFiles(false, "two", "three", "four")], expected,
-        "Returns all names when dropFirst is false");
-    assertEquals([*namesToFiles(true, "one", "two", "three", "four")], expected,
-        "Drops first name when dropFirst is true");
+    assertEquals([*namesToFiles("two", "three", "four")], expected,
+        "Returns all names");
 }

@@ -168,7 +168,7 @@ shared interface SimpleDriver satisfies ISPDriver {
             assert (exists firstArg = args.first);
             assert (nonempty temp = args.map(javaString).sequence());
             IMultiMapModel mapModel = readMultiMapModel(warningLevels.default, JPaths.get(firstArg),
-                *namesToFiles(false, *args.rest));
+                *namesToFiles(*args.rest));
             for (pair in mapModel.allMaps) {
                 turnFixer(pair.first);
             }
@@ -285,7 +285,7 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
         // We declare this as IMultiMapModel so we can correct the current turn in all
         // maps if needed.
         IMultiMapModel model = readMultiMapModel(warningLevels.ignore, JPaths.get(firstArg),
-            *namesToFiles(false, *args.rest));
+            *namesToFiles(*args.rest));
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {
