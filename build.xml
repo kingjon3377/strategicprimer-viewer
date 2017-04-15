@@ -52,6 +52,7 @@
       <fileset dir="${basedir}" includes="icon_*px.png" />
       <fileset dir="${basedir}" includes="icon.ic*" />
     </delete>
+    <delete dir="${basedir}/viewer-ceylon/modules" />
   </target>
   <target depends="clean" name="cleanall">
     <delete dir="${release}" />
