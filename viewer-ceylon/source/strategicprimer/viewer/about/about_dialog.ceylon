@@ -37,7 +37,7 @@ shared JDialog aboutDialog(Component? parentComponent, String? app) {
     JDialog retval = SPDialog(asFrame(parentComponent), "About");
     retval.setLayout(BorderLayout());
     assert (exists resource =
-            `module strategicprimer.viewer`.resourceByPath("/images/about.html"));
+            `module strategicprimer.viewer`.resourceByPath("images/about.html"));
     Regex matcher = regex("App Name Here", true);
     String html = matcher.replace(resource.textContent(),
         app else "Strategic Primer Assistive Programs");
