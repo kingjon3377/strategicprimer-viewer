@@ -127,8 +127,16 @@ object zeroToOneConverter {
 		return tag == QName(spNamespace, desired) || tag == QName(desired);
 	}
 	void printAttribute(Anything(String) ostream, Attribute attribute) {
-		// TODO: namespace
-		ostream(" ``attribute.name.localPart``=\"``attribute.\ivalue``\"");
+		QName name = attribute.name;
+		// TODO: handle prefix-absent-but-namespace-URI-present case
+		// TODO: Omit prefix if the same as the tag's prefix
+		String namespace = name.prefix;
+		if (!namespace.empty) {
+			ostream(" ``namespace``:");
+		} else {
+			ostream(" ");
+		}
+		ostream("``attribute.name.localPart``=\"``attribute.\ivalue``\"");
 	}
 	"Convert the version attribute of the map"
 	void convertMap(Anything(String) ostream, StartElement element, {Attribute*} attributes) {
