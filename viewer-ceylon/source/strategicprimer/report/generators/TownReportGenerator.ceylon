@@ -76,10 +76,10 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             ITownFixture item = entry.first;
             Point loc = entry.rest.first;
             if (is Village item) {
-                VillageReportGenerator(comp, currentPlayer, dimensions) // TODO: pass in HQ?
+                VillageReportGenerator(comp, currentPlayer, dimensions, hq)
                     .produce(fixtures, map, ostream, [item, loc]);
             } else if (is Fortress item) {
-                FortressReportGenerator(comp, currentPlayer, dimensions) // TODO: pass in HQ?
+                FortressReportGenerator(comp, currentPlayer, dimensions, hq)
                     .produce(fixtures, map, ostream, [item, loc]);
             } else if (is AbstractTown item) {
                 fixtures.remove(item.id);
@@ -137,10 +137,10 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             ITownFixture item = entry.first;
             Point loc = entry.rest.first;
             if (is Village item) {
-                return VillageReportGenerator(comp, currentPlayer, dimensions) // TODO: Pass in HQ?
+                return VillageReportGenerator(comp, currentPlayer, dimensions, hq)
                     .produceRIR(fixtures, map, [item, loc]);
             } else if (is Fortress item) {
-                return FortressReportGenerator(comp, currentPlayer, dimensions) // TODO: pass in HQ?
+                return FortressReportGenerator(comp, currentPlayer, dimensions, hq)
                     .produceRIR(fixtures, map, [item, loc]);
             } else if (is AbstractTown item) {
                 fixtures.remove(item.id);
