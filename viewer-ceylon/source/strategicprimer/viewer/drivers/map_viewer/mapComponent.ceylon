@@ -61,9 +61,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             Integer tileSize = scaleZoom(model.zoomLevel,
                 model.mapDimensions.version);
             VisibleDimensions dimensions = model.visibleDimensions;
-            return Rectangle(0, 0,
-                (dimensions.maximumColumn - dimensions.minimumColumn) * tileSize,
-                (dimensions.maximumRow - dimensions.minimumRow) * tileSize);
+            return Rectangle(0, 0, dimensions.width * tileSize,
+                dimensions.height * tileSize);
         }
     }
     void fixVisibility() {
