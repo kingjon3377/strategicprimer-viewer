@@ -123,11 +123,13 @@ shared interface SimpleDriver satisfies ISPDriver {
             turnFixer = (IMutableMapNG map) {};
         }
         if (args.size == 0) {
-            if ({ ParamCount.none, ParamCount.anyNumber }.contains(desiderata)) {
+            switch (desiderata)
+            case (ParamCount.none|ParamCount.anyNumber) {
                 // FIXME: Make "no-arg" form take CLI and options
                 // The Java version called startDriver(cli, options), which recurses.
                 startDriverNoArgs();
-            } else if ({ ParamCount.two, ParamCount.atLeastTwo }.contains(desiderata)) {
+            }
+            case (ParamCount.two|ParamCount.atLeastTwo) {
                 if (exists masterPath = askUserForFile(), exists subordinatePath = askUserForFile()) {
                     IMultiMapModel mapModel = readMultiMapModel(warningLevels.default, masterPath,
                         subordinatePath);
@@ -138,15 +140,19 @@ shared interface SimpleDriver satisfies ISPDriver {
                 } else {
                     throw IncorrectUsageException(usage);
                 }
-            } else if (exists chosenFile = askUserForFile()){
-                // TODO: Maybe just use readMapModel() here?
-                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
-                    chosenFile);
-                for (pair in mapModel.allMaps) {
-                    turnFixer(pair.first);
+            }
+            case (ParamCount.one) {
+                if (exists chosenFile = askUserForFile()) {
+                    // TODO: Maybe just use readMapModel() here?
+                    IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                        chosenFile);
+                    for (pair in mapModel.allMaps) {
+                        turnFixer(pair.first);
+                    }
+                    startDriverOnModel(cli, options, mapModel);
                 }
-                startDriverOnModel(cli, options, mapModel);
-            } else {
+            }
+            else {
                 throw IncorrectUsageException(usage);
             }
         } else if (ParamCount.none == desiderata) {
