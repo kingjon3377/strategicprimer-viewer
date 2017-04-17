@@ -6,9 +6,6 @@ import strategicprimer.model.map {
     Point,
     MapDimensions
 }
-import lovelace.util.common {
-    todo
-}
 "A class to compare [[Point]]s based on their distance to a specified point (such as a
  player's HQ)."
 shared class DistanceComparator(base, dimensions) {

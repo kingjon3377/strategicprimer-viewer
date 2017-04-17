@@ -11,7 +11,6 @@ import ceylon.regex {
 }
 
 import lovelace.util.common {
-    todo,
     DelayedRemovalMap,
     comparingOn
 }

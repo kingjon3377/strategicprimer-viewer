@@ -26,7 +26,6 @@ import java.awt {
     Graphics
 }
 import ceylon.interop.java {
-    javaClassFromInstance,
     javaClassFromDeclaration
 }
 import strategicprimer.viewer.drivers {

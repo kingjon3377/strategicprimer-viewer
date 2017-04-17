@@ -38,7 +38,6 @@ import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException
 }
 import ceylon.random {
-    Random,
     DefaultRandom
 }
 Town readTown(StartElement element, QName parent, {XMLEvent*} stream,

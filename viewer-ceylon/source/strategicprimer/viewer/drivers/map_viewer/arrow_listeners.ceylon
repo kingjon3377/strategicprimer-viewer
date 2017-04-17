@@ -1,7 +1,3 @@
-import ceylon.collection {
-    HashMap
-}
-
 import java.awt.event {
     KeyEvent,
     ActionEvent,

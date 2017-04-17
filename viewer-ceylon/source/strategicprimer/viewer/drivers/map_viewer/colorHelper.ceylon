@@ -1,6 +1,3 @@
-import ceylon.collection {
-    HashMap
-}
 import java.lang {
     IllegalArgumentException
 }

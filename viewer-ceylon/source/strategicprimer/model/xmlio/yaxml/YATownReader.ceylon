@@ -43,7 +43,6 @@ import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException
 }
 import ceylon.random {
-    Random,
     DefaultRandom
 }
 "A reader for fortresses, villages, and other towns."
