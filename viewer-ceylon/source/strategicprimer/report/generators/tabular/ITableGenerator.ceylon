@@ -68,12 +68,12 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         Integer rowDistRaw = (first.row - second.row).magnitude;
         Integer colDist;
         Integer rowDist;
-        if (exists dimensions, colDistRaw > dimensions.columns / 2) {
+        if (colDistRaw > dimensions.columns / 2) {
             colDist = dimensions.columns - colDistRaw;
         } else {
             colDist = colDistRaw;
         }
-        if (exists dimensions, rowDistRaw > dimensions.rows / 2) {
+        if (rowDistRaw > dimensions.rows / 2) {
             rowDist = dimensions.rows - rowDistRaw;
         } else {
             rowDist = rowDistRaw;
