@@ -168,7 +168,6 @@ shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IF
                     fixtures.remove(item.id);
                 }
             }
-            // TODO: make sure that mapToList() returns a sorted list
             {HeadedList<String>+} all = {mapToList(minerals, "<h5>Mineral Deposits</h5>"),
                 mapToList(stone, "<h5>Exposed Stone Deposits</h5>"),
                 mapToList(shrubs, "<h5>Shrubs, Small Trees, etc.</h5>") };
