@@ -51,9 +51,8 @@ shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IF
             DistanceComparator(hq, dimensions)) {
     "Convert a Map from kinds to Points to a HtmlList."
     HeadedList<String>&MutableList<String> mapToList(Map<String, MutableList<Point>> map,
-            String heading) { // TODO: convert to =>
-        return HtmlList(heading, map.items.map(Object.string).sort(increasing));
-    }
+            String heading) =>
+            HtmlList(heading, map.items.map(Object.string).sort(increasing));
     """Produce the sub-report(s) dealing with "harvestable" fixture(s). All fixtures
        referred to in this report are to be removed from the collection. Caves and
        battlefields, though HarvestableFixtures, are presumed to have been handled
