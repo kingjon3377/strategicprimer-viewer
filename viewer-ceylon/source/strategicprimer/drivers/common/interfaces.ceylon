@@ -93,7 +93,8 @@ shared interface SimpleDriver satisfies ISPDriver {
     "(Try to) run the driver. If the driver does not need arguments, it should
      override this default method to support that; otherwise, this will throw,
      because nearly all drivers do need arguments."
-    shared default void startDriverNoArgs() {
+    shared default void startDriverNoArgs(ICLIHelper cli = CLIHelper(),
+            SPOptions options = SPOptionsImpl()) {
         throw DriverFailedException(
             IllegalStateException("Driver does not support no-arg operation"),
             "Driver does not support no-arg operation");
@@ -125,9 +126,7 @@ shared interface SimpleDriver satisfies ISPDriver {
         if (args.size == 0) {
             switch (desiderata)
             case (ParamCount.none|ParamCount.anyNumber) {
-                // FIXME: Make "no-arg" form take CLI and options
-                // The Java version called startDriver(cli, options), which recurses.
-                startDriverNoArgs();
+                startDriverNoArgs(cli, options);
             }
             case (ParamCount.two|ParamCount.atLeastTwo) {
                 if (exists masterPath = askUserForFile(), exists subordinatePath = askUserForFile()) {
@@ -251,7 +250,7 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
         switch (usage.paramsWanted)
         case (ParamCount.none) {
             if (args.size == 0) {
-                super.startDriverNoArgs();
+                super.startDriverNoArgs(cli, options);
                 return;
             } else {
                 throw IncorrectUsageException(usage);
@@ -259,7 +258,7 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
         }
         case (ParamCount.anyNumber) {
             if (args.size == 0) {
-                super.startDriverNoArgs();
+                super.startDriverNoArgs(cli, options);
                 return;
             }
         }
