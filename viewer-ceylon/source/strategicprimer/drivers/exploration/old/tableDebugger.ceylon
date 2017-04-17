@@ -76,12 +76,10 @@ object tableDebugger satisfies SimpleCLIDriver {
         }
         set.remove(table);
     }
-    todo("If a CLIHelper was passed in, write to it")
     shared actual void startDriverNoArgs(ICLIHelper cli, SPOptions options) {
-        // TODO: Use `cli` instead of `process.writeLine`
-        runner.verboseGlobalRecursiveCheck((String line) => process.writeLine(line));
+        runner.verboseGlobalRecursiveCheck((String line) => cli.println(line));
         EncounterTable mainTable = runner.getTable("main");
         debugSingleTable("", "", mainTable, "main",
-                    (string) => process.writeLine(string), HashSet<EncounterTable>());
+                    (string) => cli.println(string), HashSet<EncounterTable>());
     }
 }
