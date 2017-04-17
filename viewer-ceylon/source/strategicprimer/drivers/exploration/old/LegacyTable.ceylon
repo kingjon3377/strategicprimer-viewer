@@ -32,7 +32,6 @@ import strategicprimer.model.map.fixtures.towns {
     TownStatus
 }
 """An [[EncounterTable]] for legacy "events"."""
-suppressWarnings("deprecation")
 class LegacyTable() satisfies EncounterTable {
     {IEvent*} createEvents() {
         Player player = PlayerImpl(-1, "Independent");
