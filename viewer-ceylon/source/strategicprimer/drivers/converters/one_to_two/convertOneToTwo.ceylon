@@ -212,10 +212,13 @@ shared IMapNG convertOneToTwo(
 	}
 	Random rng = DefaultRandom(maxIterations);
 	for (point in randomize(converted, rng)) {
-		// TODO: wrap around edges of map
-		{Point*} neighbors = { for (row in (point.row - 1)..(point.row + 1))
-		for (column in (point.column - 1)..(point.column + 1))
-		pointFactory(row, column) }.filter((element) => point != element);
+		{Point*} neighbors = {
+			for (row in ((point.row - 1)..(point.row + 1))
+				.map((num) => num.modulo(retval.dimensions.rows)))
+			for (column in ((point.column - 1)..(point.column + 1))
+				.map((num) => num.modulo(retval.dimensions.columns)))
+			pointFactory(row, column)
+		}.filter((element) => point != element);
 		Boolean adjacentToTown() {
 			for (neighbor in neighbors) {
 				for (fixture in retval.otherFixtures(neighbor)) {
