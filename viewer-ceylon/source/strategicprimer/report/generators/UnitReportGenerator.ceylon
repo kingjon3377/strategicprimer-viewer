@@ -45,7 +45,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         Player currentPlayer, MapDimensions dimensions, Point hq = invalidPoint)
         extends AbstractReportGenerator<IUnit>(comp, DistanceComparator(hq, dimensions)) {
     IReportGenerator<FortressMember> memberReportGenerator =
-            FortressMemberReportGenerator(comp, currentPlayer, dimensions); // TODO: Pass in HQ?
+            FortressMemberReportGenerator(comp, currentPlayer, dimensions, hq);
     IReportGenerator<Animal> animalReportGenerator =
             AnimalReportGenerator(comp, dimensions, hq);
     IReportGenerator<IWorker> ourWorkerReportGenerator = WorkerReportGenerator(comp,
