@@ -143,12 +143,9 @@ shared interface SimpleDriver satisfies ISPDriver {
             }
             case (ParamCount.one) {
                 if (exists chosenFile = askUserForFile()) {
-                    // TODO: Maybe just use readMapModel() here?
-                    IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
-                        chosenFile);
-                    for (pair in mapModel.allMaps) {
-                        turnFixer(pair.first);
-                    }
+                    IDriverModel mapModel = readMapModel(chosenFile,
+                        warningLevels.default);
+                    turnFixer(mapModel.map);
                     startDriverOnModel(cli, options, mapModel);
                 }
             }
