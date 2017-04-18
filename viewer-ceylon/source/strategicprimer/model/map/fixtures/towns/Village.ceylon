@@ -99,11 +99,12 @@ shared class Village(status, name, id, owner, race)
     "The required Perception check to find the village."
     shared actual Integer dc => (TownStatus.active == status) then 15 else 30;
     "Clone the object."
-    todo("Omit portrait if `zero`?")
     shared actual Village copy(Boolean zero) {
         Village retval = Village(status, name, id, owner, race);
         retval.image = image;
-        retval.portrait = portrait;
+        if (!zero) {
+            retval.portrait = portrait;
+        }
         return retval;
     }
 }
