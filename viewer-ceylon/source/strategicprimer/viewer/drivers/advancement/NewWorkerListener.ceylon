@@ -7,12 +7,11 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.map.fixtures.mobile {
-    Worker
+    IWorker
 }
 "An interface for things that want to accept a new user-created worker."
 todo("Drop this interface, as the only implementer is also the only user of that method?")
 interface NewWorkerListener satisfies EventListener {
     "Add the new worker."
-    todo("Take [[strategicprimer.model.map.fixtures.mobile::IWorker]] instead?")
-    shared formal void addNewWorker(Worker worker);
+    shared formal void addNewWorker(IWorker worker);
 }

@@ -30,7 +30,8 @@ import strategicprimer.model.idreg {
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
-    Worker
+    Worker,
+    IWorker
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats,
@@ -48,7 +49,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         satisfies ActionListener&UnitSelectionListener&NewWorkerListener {
     "The currently selected unit"
     variable IUnit? selectedUnit = null;
-    shared actual void addNewWorker(Worker worker) {
+    shared actual void addNewWorker(IWorker worker) {
         if (exists local = selectedUnit) {
             model.addUnitMember(local, worker);
         } else {
