@@ -147,8 +147,8 @@ shared class SPMenu() extends JMenuBar() {
         JMenu fileMenu = JMenu("File");
         fileMenu.mnemonic = KeyEvent.vkF;
         JMenuItem newItem = createMenuItem("New", KeyEvent.vkN,
-            createAccelerator(KeyEvent.vkN),
-            "Create a new, empty map the same size as the current one", handler);
+            "Create a new, empty map the same size as the current one", handler,
+            createAccelerator(KeyEvent.vkN));
         fileMenu.add(newItem);
         if (!model is IViewerModel) {
             newItem.enabled = false;
@@ -158,19 +158,18 @@ shared class SPMenu() extends JMenuBar() {
             `` map from file";
         String saveCaption = "Save ``desc`` map to the file it was loaded from";
         String saveAsCaption = "Save ``desc`` map to file";
-        fileMenu.add(createMenuItem("Load", KeyEvent.vkL, createAccelerator(KeyEvent.vkO),
-            loadCaption, handler));
-        JMenuItem loadSecondaryItem = createMenuItem("Load secondary", KeyEvent.vkE,
-            createAccelerator(KeyEvent.vkO, HotKeyModifier.shift),
-            "Load an additional secondary map from file", handler);
+        fileMenu.add(createMenuItem("Load", KeyEvent.vkL, loadCaption, handler,
+            createAccelerator(KeyEvent.vkO)));
+        JMenuItem loadSecondaryItem = createMenuItem("Load secondary",
+            KeyEvent.vkE, "Load an additional secondary map from file", handler,
+            createAccelerator(KeyEvent.vkO, HotKeyModifier.shift));
         fileMenu.add(loadSecondaryItem);
-        fileMenu.add(createMenuItem("Save", KeyEvent.vkS, createAccelerator(KeyEvent.vkS),
-            saveCaption, handler));
-        fileMenu.add(createMenuItem("Save As", KeyEvent.vkA,
-            createAccelerator(KeyEvent.vkS, HotKeyModifier.shift), saveAsCaption,
-            handler));
+        fileMenu.add(createMenuItem("Save", KeyEvent.vkS, saveCaption, handler,
+            createAccelerator(KeyEvent.vkS)));
+        fileMenu.add(createMenuItem("Save As", KeyEvent.vkA, saveAsCaption, handler,
+            createAccelerator(KeyEvent.vkS, HotKeyModifier.shift)));
         JMenuItem saveAllItem = createMenuItem("Save All", KeyEvent.vkV,
-            createAccelerator(KeyEvent.vkL), "Save all maps to their files", handler);
+            "Save all maps to their files", handler, createAccelerator(KeyEvent.vkL));
         fileMenu.add(saveAllItem);
         if (!model is IMultiMapModel) {
             loadSecondaryItem.enabled = false;
@@ -178,23 +177,23 @@ shared class SPMenu() extends JMenuBar() {
         }
         fileMenu.addSeparator();
         JMenuItem openViewerItem = createMenuItem("Open in map viwer", KeyEvent.vkM,
-            createAccelerator(KeyEvent.vkM),
-            "Open the main map in the map viewer for a broader view", handler);
+            "Open the main map in the map viewer for a broader view", handler,
+            createAccelerator(KeyEvent.vkM));
         fileMenu.add(openViewerItem);
         if (model is IViewerModel) {
             openViewerItem.enabled = false;
         }
         JMenuItem openSecondaryViewerItem = createMenuItem(
             "Open secondary map in map viewer", KeyEvent.vkE,
-            createAccelerator(KeyEvent.vkE),
-            "Open the first secondary map in the map vieer for a broader view", handler);
+            "Open the first secondary map in the map vieer for a broader view",
+            handler, createAccelerator(KeyEvent.vkE));
         fileMenu.add(openSecondaryViewerItem);
         if (model is IViewerModel || !model is IMultiMapModel) {
             openSecondaryViewerItem.enabled = false;
         }
         fileMenu.addSeparator();
-        fileMenu.add(createMenuItem("Close", KeyEvent.vkW,
-            createAccelerator(KeyEvent.vkW), "Close this window", handler));
+        fileMenu.add(createMenuItem("Close", KeyEvent.vkW, "Close this window",
+            handler, createAccelerator(KeyEvent.vkW)));
         if (platform.systemIsMac) {
             Application.application.setAboutHandler((AppEvent.AboutEvent event) {
                 Object source = WindowList.getWindows(true, false).iterable.coalesced
@@ -203,11 +202,11 @@ shared class SPMenu() extends JMenuBar() {
                     "About"));
             });
         } else {
-            fileMenu.add(createMenuItem("About", KeyEvent.vkB,
-                createAccelerator(KeyEvent.vkB), "Show development credits", handler));
+            fileMenu.add(createMenuItem("About", KeyEvent.vkB, "Show development credits",
+                handler, createAccelerator(KeyEvent.vkB)));
             fileMenu.addSeparator();
-            fileMenu.add(createMenuItem("Quit", KeyEvent.vkQ,
-                createAccelerator(KeyEvent.vkQ), "Quit the application", handler));
+            fileMenu.add(createMenuItem("Quit", KeyEvent.vkQ, "Quit the application",
+                handler, createAccelerator(KeyEvent.vkQ)));
         }
         return fileMenu;
     }
@@ -219,45 +218,36 @@ shared class SPMenu() extends JMenuBar() {
         KeyStroke findStroke = createAccelerator(findKey);
         KeyStroke nextStroke = createAccelerator(KeyEvent.vkG);
         JMenuItem gotoTileItem = createMenuItem("Go to tile", KeyEvent.vkT,
-            createAccelerator(KeyEvent.vkT), "Go to a tile by coordinates", handler);
-        JMenuItem findItem = createMenuItem("Find a fixture", findKey, findStroke,
-            "Find a fixture by name, kind or ID #", handler);
+            "Go to a tile by coordinates", handler, createAccelerator(KeyEvent.vkT));
+        JMenuItem findItem = createMenuItem("Find a fixture", findKey,
+            "Find a fixture by name, kind or ID #", handler, findStroke,
+            KeyStroke.getKeyStroke(KeyEvent.vkSlash, 0));
         Integer nextKey = KeyEvent.vkN;
-        JMenuItem nextItem = createMenuItem("Find next", nextKey, nextStroke,
-            "Find the next fixture matching the pattern", handler);
+        JMenuItem nextItem = createMenuItem("Find next", nextKey,
+            "Find the next fixture matching the pattern", handler, nextStroke,
+            KeyStroke.getKeyStroke(nextKey, 0));
         if (!model is IViewerModel) {
             gotoTileItem.enabled = false;
             findItem.enabled = false;
             nextItem.enabled = false;
         }
         retval.add(gotoTileItem);
-        InputMap findInput = findItem.getInputMap(JComponent.whenInFocusedWindow);
-        findInput.put(KeyStroke.getKeyStroke(KeyEvent.vkSlash, 0),
-            findInput.get(findStroke));
         retval.add(findItem);
-        InputMap nextInput = nextItem.getInputMap(JComponent.whenInFocusedWindow);
-        nextInput.put(KeyStroke.getKeyStroke(nextKey, 0), nextInput.get(nextStroke));
         retval.add(nextItem);
         retval.addSeparator();
         // vkPlus only works on non-US keyboards, but we leave it as the primary hot-key
         // because it's the best to *show* in the menu.
         KeyStroke plusKey = createAccelerator(KeyEvent.vkPlus);
-        JMenuItem zoomInItem = createMenuItem("Zoom in", KeyEvent.vkI, plusKey,
-            "Increase the visible size of each tile", handler);
-        InputMap zoomInInputMap = zoomInItem.getInputMap(JComponent.whenInFocusedWindow);
-        zoomInInputMap.put(createAccelerator(KeyEvent.vkEquals), inputMap.get(plusKey));
-        zoomInInputMap.put(createAccelerator(KeyEvent.vkEquals, HotKeyModifier.shift),
-            inputMap.get(plusKey));
-        zoomInInputMap.put(createAccelerator(KeyEvent.vkAdd), inputMap.get(plusKey));
+        JMenuItem zoomInItem = createMenuItem("Zoom in", KeyEvent.vkI,
+            "Increase the visible size of each tile", handler, plusKey,
+            createAccelerator(KeyEvent.vkEquals),
+            createAccelerator(KeyEvent.vkEquals, HotKeyModifier.shift),
+            createAccelerator(KeyEvent.vkAdd));
         retval.add(zoomInItem);
-        retval.add(createMenuItem("Zoom out", KeyEvent.vkO,
-            createAccelerator(KeyEvent.vkMinus), "Decrease the visible size of each tile",
-            handler));
-        retval.add(createMenuItem("Reset zoom", KeyEvent.vkR,
-            createAccelerator(KeyEvent.vk0), "Reset the zoom level", handler));
+        retval.add(createMenuItem("Zoom out", KeyEvent.vkO, "Decrease the visible size of each tile", handler, createAccelerator(KeyEvent.vkMinus)));
+        retval.add(createMenuItem("Reset zoom", KeyEvent.vkR, "Reset the zoom level", handler, createAccelerator(KeyEvent.vk0)));
         retval.addSeparator();
-        retval.add(createMenuItem("Center", KeyEvent.vkC, createAccelerator(KeyEvent.vkC),
-            "Center the view on the selected tile", handler));
+        retval.add(createMenuItem("Center", KeyEvent.vkC, "Center the view on the selected tile", handler, createAccelerator(KeyEvent.vkC)));
         return retval;
     }
     """Create the "view" menu."""
@@ -268,23 +258,23 @@ shared class SPMenu() extends JMenuBar() {
         // We *create* these items here (early) so that we can enable or disable them
         // without an extra branch.
         {JMenuItem*} treeItems = {
-            createMenuItem("Reload tree", KeyEvent.vkR, createAccelerator(KeyEvent.vkR),
-                "Refresh the view of the workers", handler),
-            createMenuItem("Expand All", KeyEvent.vkX, null,
+            createMenuItem("Reload tree", KeyEvent.vkR, "Refresh the view of the workers",
+                handler, createAccelerator(KeyEvent.vkR)),
+            createMenuItem("Expand All", KeyEvent.vkX,
                 "Expand all nodes in the unit tree", handler),
-            createMenuItem("Expand Unit Kinds", KeyEvent.vkK, null,
+            createMenuItem("Expand Unit Kinds", KeyEvent.vkK,
                 "Expand all unit kinds to show the units", handler),
-            createMenuItem("Collapse All", KeyEvent.vkC, null,
+            createMenuItem("Collapse All", KeyEvent.vkC,
                 "Collapse all nodes in the unit tree", handler)
         };
         JMenuItem currentPlayerItem;
         if (is IWorkerModel model) {
             currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
-                createAccelerator(KeyEvent.vkP),
-                "Look at a different player's units and workers", handler);
+                "Look at a different player's units and workers", handler,
+                createAccelerator(KeyEvent.vkP));
         } else {
             currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
-                null, "Mark a player as the current player in the map", handler);
+                "Mark a player as the current player in the map", handler);
             for (item in treeItems) {
                 item.enabled = false;
             }

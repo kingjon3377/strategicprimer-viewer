@@ -300,25 +300,28 @@ shared KeyStroke createAccelerator(Integer key, HotKeyModifier* modifiers) {
     return KeyStroke.getKeyStroke(key, mask);
 }
 "Create a menu item."
-todo("Take accelerators as a sequenced parameter at the end, to simplify callers who want
-      more than one, and when multiple provided handle them properly.")
 shared JMenuItem createMenuItem(
         "The text of the item"
         String item,
         "The mnemonic key"
         Integer mnemonic,
-        "The keyboard accelerator (hot-key), if one is wanted"
-        KeyStroke? accelerator,
         "The description to show to accessibility software."
         String description,
         "The listener to handle when the item is selected."
-        Anything(ActionEvent) listener) {
+        Anything(ActionEvent) listener,
+        "The keyboard accelerators (hot-keys). The first one is shown in the menu, but all
+         are listened for."
+        KeyStroke* accelerators) {
     JMenuItem menuItem = JMenuItem(item, mnemonic);
-    menuItem.accelerator = accelerator;
+    if (exists accelerator = accelerators.first) {
+        menuItem.accelerator = accelerator;
+    }
     menuItem.accessibleContext.accessibleDescription = description;
     menuItem.addActionListener(listener);
-    menuItem.getInputMap(JComponent.whenInFocusedWindow).put(accelerator,
-        menuItem.action);
+    InputMap inputMap = menuItem.getInputMap(JComponent.whenInFocusedWindow);
+    for (accelerator in accelerators) {
+        inputMap.put(accelerator, menuItem.action);
+    }
     return menuItem;
 }
 String formatter(String format, Object* args) {
