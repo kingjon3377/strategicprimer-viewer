@@ -22,7 +22,7 @@ import strategicprimer.model.map {
 object directTileDrawHelper satisfies TileDrawHelper {
     void drawRiver(Graphics pen, River river, Integer xCoordinate,
             Integer yCoordinate, Integer width, Integer height) {
-        // TODO: Add some small number to floats before .integer?
+        // TODO: Add some small number (`runtime.epsilon`?) to floats before .integer?
         switch (river)
         case (River.east) {
             pen.fillRect(
