@@ -33,9 +33,7 @@ import javax.swing {
     JMenuBar,
     JMenu,
     JMenuItem,
-    KeyStroke,
-    InputMap,
-    JComponent
+    KeyStroke
 }
 
 import lovelace.util.common {
