@@ -1,0 +1,199 @@
+aardvark	14
+adeopapposaur dinosaur	7
+agilisaur dinosaur	7
+ahool	7
+albatross	7
+alligator	14
+alpaca	14
+ankylosaur dinosaur	28
+anteater	14
+antelope	14
+ape	14
+archaeopteryx	7
+armadillo	14
+badger	14
+bass	14
+bat	7
+bear	14
+beaver	14
+bison	14
+blackbird	7
+boar	14
+bobcat	14
+butterfly	7
+buzzard	7
+camel	14
+capybara	14
+caribou	14
+carp	14
+cat	7
+catfish	14
+cattle	14
+cheetah	14
+chicken	7
+chipmunk	14
+cod	14
+cormorant	7
+cow	14
+coypu	14
+crab	7
+crocodile	14
+crow	7
+deer	14
+dingo	14
+dodo	7
+dog	14
+dolphin	14
+donkey	14
+duck	7
+dugong	14
+eagle	7
+eel	14
+elephant	28
+elk	14
+eoraptor dinosaur	7
+europasaur dinosaur	14
+europasaurus dinosaur	14
+ferret	14
+finch	7
+flounder	14
+fox	14
+frog	14
+fruit bat	14
+game hen	7
+goat	14
+goose	7
+gopher	14
+grayling	14
+great auk	14
+grouper	14
+guaibasaur dinosaur	7
+guinea pig	14
+gull	7
+haddock	14
+halibut	14
+hare	14
+hedgehog	14
+herring	14
+hippo	14
+horse	14
+howler monkey	14
+hydra	28
+impala	14
+kangaroo	14
+kraken	28
+krill	7
+lark	7
+leopard	14
+lesothosaur dinosaur	7
+leyesaur dinosaur	14
+lion	14
+lizard	7
+llama	14
+lobster	14
+lungfish	14
+mackerel	14
+magpie	7
+magyarosaur dinosaur	14
+manatee	14
+manticore	28
+mastadon	28
+mesosaur	14
+mink	14
+mongoose	14
+moose	14
+mountain goat	14
+mountain lion	14
+mouse	7
+musk ox	14
+muskrat	14
+mussel	14
+octopus	14
+okapi	14
+opossum	14
+otter	14
+owl	7
+oyster	14
+parrot	7
+pegasus	14
+pelican	7
+penguin	14
+petrel	7
+pheasant	7
+pigeon	7
+platypus	14
+plesiousaur	21
+poison dart frog	14
+polar bear	14
+porpoise	14
+prairie dog	7
+psittacosaur dinosaur	7
+quail	7
+rabbit	7
+raccoon	14
+rat	7
+reindeer	14
+rhinoceros	14
+robin	7
+saber-tooth tiger	14
+salamander	7
+salmon	14
+saltopus dinosaur	7
+sardine	14
+sea cucumber	7
+sea hippo	14
+sea lion	14
+sea snake	14
+sea turtle	14
+sea urchin	7
+seal	14
+shad	14
+shark	14
+sheep	14
+shrimp	7
+silkworm	14
+silver fox	14
+skunk	14
+sloth	14
+snail	7
+snake	14
+snowbird	14
+spider monkey	14
+squid	14
+squirrel	7
+stegocerad dinosaur	14
+stegosaur dinosaur	28
+sturgeon	14
+swallow	7
+swan	7
+tapir	14
+tern	7
+thescelosaur dinosaur	14
+thrush	7
+thunderbird	14
+tiger	14
+toad	7
+trout	14
+tuna	14
+turkey	7
+turtle	14
+unaysaur dinosaur	7
+unicorn	21
+valdosaur dinosaur	14
+walrus	14
+warthog	14
+water buffalo	14
+weasel	14
+whale	28
+whiting	14
+wild dog	14
+wildebeest	14
+wolf	14
+wolverine	14
+wolves	14
+wren	7
+wyvern	14
+yak	14
+yandusaur dinosaur	14
+zebra	14
+zebu	14
