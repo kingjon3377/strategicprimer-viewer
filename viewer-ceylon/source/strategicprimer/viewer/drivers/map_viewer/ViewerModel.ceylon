@@ -116,8 +116,9 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         if (visDimensions != visibleDimensions) {
             VisibleDimensions oldDimensions = visDimensions;
             visDimensions = visibleDimensions;
-            // TODO: should we notify listeners before or after the change? Do they use the
-            // params we pass them, or get them from us?
+            // We notify listeners after the change, since one object's
+            // dimensionsChanged() delegates to repaint(). (The other uses the parameter
+            // we provide for robustness.)
             for (listener in gpListeners) {
                 listener.dimensionsChanged(oldDimensions, visDimensions);
             }
