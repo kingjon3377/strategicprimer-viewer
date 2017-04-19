@@ -11,7 +11,7 @@ import strategicprimer.model.map.fixtures {
 }
 "An animal or group of animals."
 todo("Add more features (population, to start with)")
-shared class Animal(kind, traces, talking, status, id)
+shared class Animal(kind, traces, talking, status, id, born = -1)
 		satisfies MobileFixture&HasMutableImage&HasKind&UnitMember {
 	"ID number."
 	shared actual Integer id;
@@ -26,6 +26,8 @@ shared class Animal(kind, traces, talking, status, id)
 	shared actual variable String image = "";
 	"What kind of animal this is"
 	shared actual String kind;
+	"The turn the animal was born, or -1 if it is an adult (or if this is traces ...)"
+	shared variable Integer born;
 	shared actual String shortDescription =>
 			"``(traces) then "traces of " else ""````(talking) then "talking " else ""````kind``";
 	"Default image filename"
@@ -48,7 +50,7 @@ shared class Animal(kind, traces, talking, status, id)
 				return equalsIgnoringID(obj);
 			} else {
 				return kind == obj.kind && traces == obj.traces && talking == obj.talking
-					&& status == obj.status && id == obj.id;
+					&& status == obj.status && id == obj.id && born == obj.born;
 			}
 		} else {
 			return false;
@@ -68,6 +70,7 @@ shared class Animal(kind, traces, talking, status, id)
 	todo("Should be variable, either read from XML or computed from kind using some other
 	      read-from-file data.") // FIXME
 	shared actual Integer dc => (traces) then 12 else 22;
+	todo("Check turn of birth?")
 	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
 		if (obj.id == id) {
 			if (is Animal obj) {

@@ -1242,6 +1242,7 @@ void testAnimalSerialization() {
         "<animal xmlns:sp=\"``spNamespace``\" sp:kind=\"animalNine\"
          sp:talking=\"true\" sp:traces=\"true\" sp:status=\"tame\" sp:id=\"5\" />",
         Animal("animalNine", true, true, "tame", 5).equals);
+    // TODO: Test that 'born' property is preserved
 }
 
 test

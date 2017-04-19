@@ -64,7 +64,8 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         value talking = Boolean.parse(getParameter(element, "talking", "false"));
         if (is Boolean talking) {
             return Animal(getParameter(element, "kind"), tracks, talking,
-                getParameter(element, "status", "wild"), idNum);
+                getParameter(element, "status", "wild"), idNum,
+                getIntegerParameter(element, "born", -1));
         } else {
             // TODO: Is there a better exception for this case?
             throw MissingPropertyException(element, "talking", talking);
@@ -115,6 +116,11 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             }
             if (!obj.traces) {
                 writeProperty(ostream, "id", obj.id);
+                if (obj.born >= 0) {
+                    // TODO: Write if, but only if, the 'born' turn is less than the animal
+                    // kind's age of maturity before the current turn.
+                    writeProperty(ostream, "born", obj.born);
+                }
             }
             writeImageXML(ostream, obj);
         } else if (is SimpleImmortal obj) {

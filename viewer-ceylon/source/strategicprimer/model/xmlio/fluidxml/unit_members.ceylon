@@ -201,7 +201,7 @@ Animal readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
         return setImage(
             Animal(getAttribute(element, "kind"), traces,
                 talking, getAttribute(element, "status", "wild"),
-                id), element, warner);
+                id, getIntegerAttribute(element, "born", -1)), element, warner);
     } else {
         throw MissingPropertyException(element, "talking", talking);
     }
@@ -222,6 +222,11 @@ void writeAnimal(XMLStreamWriter ostream, Object obj, Integer indentation) {
         }
         if (!obj.traces) {
             writeAttributes(ostream, "id"->obj.id);
+            if (obj.born >= 0) {
+                // TODO: Write if, but only if, the 'born' turn is less than the animal
+                // kind's age of maturity before the current turn.
+                writeAttributes(ostream, "born"->obj.born);
+            }
         }
         writeImage(ostream, obj);
     } else {
