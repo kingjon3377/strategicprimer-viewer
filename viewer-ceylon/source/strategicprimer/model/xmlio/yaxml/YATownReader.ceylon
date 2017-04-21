@@ -11,7 +11,8 @@ import javax.xml.namespace {
 }
 import javax.xml.stream.events {
     XMLEvent,
-    StartElement
+    StartElement,
+    EndElement
 }
 
 import strategicprimer.model.idreg {
@@ -33,7 +34,8 @@ import strategicprimer.model.map.fixtures.towns {
     AbstractTown,
     City,
     Fortification,
-    Town
+    Town,
+    CommunityStats
 }
 import strategicprimer.model.xmlio {
     Warning
@@ -45,12 +47,20 @@ import strategicprimer.model.xmlio.exceptions {
 import ceylon.random {
     DefaultRandom
 }
+import strategicprimer.model.map.fixtures {
+    ResourcePile
+}
+import ceylon.collection {
+    Stack,
+    LinkedList
+}
 "A reader for fortresses, villages, and other towns."
 class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players)
         extends YAAbstractReader<ITownFixture>(warner, idRegistrar) {
+    value resourceReader = YAResourcePileReader(warner, idRegistrar);
     value memberReaders = {
         YAUnitReader(warner, idRegistrar, players),
-        YAResourcePileReader(warner, idRegistrar), YAImplementReader(warner, idRegistrar)
+        resourceReader, YAImplementReader(warner, idRegistrar)
     };
     """If the tag has an "owner" parameter, return the player it indicates; otherwise
        trigger a warning and return the "independent" player."""
@@ -61,6 +71,61 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             warner.handle(MissingPropertyException(element, "owner"));
             return players.independent;
         }
+    }
+    CommunityStats parseCommunityStats(StartElement element, QName parent,
+            {XMLEvent*} stream) {
+        requireTag(element, parent, "population");
+        CommunityStats retval = CommunityStats(getIntegerParameter(element, "size"));
+        variable String? current = null;
+        Stack<StartElement> stack = LinkedList<StartElement>();
+        stack.push(element);
+        for (event in stream) {
+            if (is EndElement event, event.name == element.name) {
+                break;
+            } else if (is StartElement event, isSPStartElement(event)) {
+                switch (event.name.localPart)
+                case ("expertise") {
+                    retval.setSkillLevel(getParameter(event, "skill"),
+                        getIntegerParameter(event, "level"));
+                    stack.push(event);
+                }
+                case ("claim") {
+                    retval.addWorkedField(getIntegerParameter(event, "resource"));
+                    stack.push(event);
+                }
+                case ("production"|"consumption") {
+                    if (current is Null) {
+                        current = event.name.localPart;
+                        stack.push(event);
+                    } else {
+                        assert (exists top = stack.top);
+                        throw UnwantedChildException(top.name, event);
+                    }
+                }
+                case ("resource") {
+                    assert (exists top = stack.top);
+                    Anything(ResourcePile) lambda;
+                    switch (current)
+                    case ("production") {
+                        lambda = retval.yearlyProduction.add;
+                    }
+                    case ("consumption") {
+                        lambda = retval.yearlyConsumption.add;
+                    }
+                    else {
+                        throw UnwantedChildException(top.name, event);
+                    }
+                    lambda(resourceReader.read(event, top.name, stream));
+                }
+                else {}
+            } else if (is EndElement event, exists top = stack.top, event.name == top.name) {
+                stack.pop();
+                if (top == element) {
+                    break;
+                }
+            }
+        }
+        return retval;
     }
     ITownFixture parseVillage(StartElement element, {XMLEvent*} stream) {
         requireNonEmptyParameter(element, "name", false);
@@ -149,6 +214,39 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         writeImageXML(ostream, obj);
         writeNonemptyProperty(ostream, "portrait", obj.portrait);
         closeLeafTag(ostream);
+    }
+    void writeCommunityStats(Anything(String) ostream, CommunityStats obj, Integer tabs) {
+        writeTag(ostream, "population", tabs);
+        writeProperty(ostream, "size", obj.population);
+        finishParentTag(ostream);
+        for (skill->level in obj.highestSkillLevels) {
+            writeTag(ostream, "expertise", tabs + 1);
+            writeProperty(ostream, "skill", skill);
+            writeProperty(ostream, "level", level);
+            closeLeafTag(ostream);
+        }
+        for (claim in obj.workedFields) {
+            writeTag(ostream, "claim", tabs + 1);
+            writeProperty(ostream, "resource", claim);
+            closeLeafTag(ostream);
+        }
+        if (!obj.yearlyProduction.empty) {
+            writeTag(ostream, "production", tabs + 1);
+            finishParentTag(ostream);
+            for (resource in obj.yearlyProduction) {
+                resourceReader.write(ostream, resource, tabs + 2);
+            }
+            closeTag(ostream, tabs + 1, "production");
+        }
+        if (!obj.yearlyConsumption.empty) {
+            writeTag(ostream, "consumption", tabs + 1);
+            finishParentTag(ostream);
+            for (resource in obj.yearlyConsumption) {
+                resourceReader.write(ostream, resource, tabs + 2);
+            }
+            closeTag(ostream, tabs + 1, "consumption");
+        }
+        closeTag(ostream, tabs, "population");
     }
     shared actual Boolean isSupportedTag(String tag) =>
             {"village", "fortress", "town", "city", "fortification"}

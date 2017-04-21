@@ -10,7 +10,8 @@ import javax.xml.stream {
 }
 import javax.xml.stream.events {
     StartElement,
-    XMLEvent
+    XMLEvent,
+    EndElement
 }
 
 import strategicprimer.model.idreg {
@@ -29,16 +30,25 @@ import strategicprimer.model.map.fixtures.towns {
     AbstractTown,
     City,
     Town,
-    Fortification
+    Fortification,
+    CommunityStats
 }
 import strategicprimer.model.xmlio {
     Warning
 }
 import strategicprimer.model.xmlio.exceptions {
-    MissingPropertyException
+    MissingPropertyException,
+    UnwantedChildException
 }
 import ceylon.random {
     DefaultRandom
+}
+import ceylon.collection {
+    Stack,
+    LinkedList
+}
+import strategicprimer.model.map.fixtures {
+    ResourcePile
 }
 Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
@@ -128,6 +138,62 @@ Village readVillage(StartElement element, QName parent, {XMLEvent*} stream,
     }
 }
 
+CommunityStats readCommunityStats(StartElement element, QName parent, {XMLEvent*} stream,
+        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
+    requireTag(element, parent, "population");
+    CommunityStats retval = CommunityStats(getIntegerAttribute(element, "size"));
+    variable String? current = null;
+    Stack<StartElement> stack = LinkedList<StartElement>();
+    stack.push(element);
+    for (event in stream) {
+        if (is EndElement event, event.name == element.name) {
+            break;
+        } else if (is StartElement event, isSPStartElement(event)) {
+            switch (event.name.localPart)
+            case ("expertise") {
+                retval.setSkillLevel(getAttribute(event, "skill"),
+                    getIntegerAttribute(event, "level"));
+                stack.push(event);
+            }
+            case ("claim") {
+                retval.addWorkedField(getIntegerAttribute(event, "resource"));
+                stack.push(event);
+            }
+            case ("production"|"consumption") {
+                if (current is Null) {
+                    current = event.name.localPart;
+                    stack.push(event);
+                } else {
+                    assert (exists top = stack.top);
+                    throw UnwantedChildException(top.name, event);
+                }
+            }
+            case ("resource") {
+                assert (exists top = stack.top);
+                Anything(ResourcePile) lambda;
+                switch (current)
+                case ("production") {
+                    lambda = retval.yearlyProduction.add;
+                }
+                case ("consumption") {
+                    lambda = retval.yearlyConsumption.add;
+                }
+                else {
+                    throw UnwantedChildException(top.name, event);
+                }
+                lambda(readResource(event, top.name, stream, players, warner, idFactory));
+            }
+            else {}
+        } else if (is EndElement event, exists top = stack.top, event.name == top.name) {
+            stack.pop();
+            if (top == element) {
+                break;
+            }
+        }
+    }
+    return retval;
+}
+
 void writeVillage(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Village obj) {
         writeTag(ostream, "village", indent, true);
@@ -153,5 +219,37 @@ void writeTown(XMLStreamWriter ostream, Object obj, Integer indent) {
         writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
     } else {
         throw IllegalArgumentException("Can only write AbstractTowns");
+    }
+}
+
+void writeCommunityStats(XMLStreamWriter ostream, Object obj, Integer indent) {
+    if (is CommunityStats obj) {
+        writeTag(ostream, "population", indent, false);
+        writeAttributes(ostream, "size"->obj.population);
+        for (skill->level in obj.highestSkillLevels) {
+            writeTag(ostream, "expertise", indent + 1, true);
+            writeAttributes(ostream, "skill"->skill, "level"->level);
+        }
+        for (claim in obj.workedFields) {
+            writeTag(ostream, "claim", indent + 1, true);
+            writeAttributes(ostream, "resource"->claim);
+        }
+        if (!obj.yearlyProduction.empty) {
+            writeTag(ostream, "production", indent + 1, false);
+            for (resource in obj.yearlyProduction) {
+                writeResource(ostream, resource, indent + 2);
+            }
+            ostream.writeEndElement();
+        }
+        if (!obj.yearlyConsumption.empty) {
+            writeTag(ostream, "consumption", indent + 1, false);
+            for (resource in obj.yearlyConsumption) {
+                writeResource(ostream, resource, indent + 2);
+            }
+            ostream.writeEndElement();
+        }
+        ostream.writeEndElement();
+    } else {
+        throw IllegalArgumentException("Can only write CommunityStats");
     }
 }

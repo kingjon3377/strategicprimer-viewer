@@ -1,0 +1,67 @@
+import ceylon.collection {
+    MutableMap,
+    HashMap,
+    MutableSet,
+    HashSet
+}
+
+import lovelace.util.common {
+    todo
+}
+import strategicprimer.model.map.fixtures {
+    ResourcePile
+}
+todo("Convert to an interface, or otherwise provide an alternative for non-active
+      communities to suggest contents to be found there",
+    "Allow towns to contain Workers, so inhabitants players know about can be represented")
+shared class CommunityStats(populationCount) {
+    "Approximately how many adults live in the community."
+    variable Integer populationCount;
+    "Population cannot be negative"
+    assert (populationCount >= 0);
+    "Approximately how many adults live in the community."
+    shared Integer population => populationCount;
+    assign population {
+        "Population cannot be negative"
+        assert (population >= 0);
+        populationCount = population;
+    }
+    MutableMap<String, Integer> skillLevels = HashMap<String, Integer>();
+    "The highest Job (skill) levels in the community."
+    shared Map<String, Integer> highestSkillLevels => map { *skillLevels };
+    "Set the highest level in the community for the given Job"
+    shared void setSkillLevel(String skill, Integer level) {
+        "Skill level cannot be negative; zero removes the skill entirely"
+        assert (level >= 0);
+        if (level == 0) {
+            skillLevels.remove(skill);
+        } else {
+            skillLevels.put(skill, level);
+        }
+    }
+    "ID numbers of fields, orchards, and the like that this community cultivates. We don't
+     have references to the [[HarvestableFixture]] objects themselves, because that would
+     require XML parsing to grow an additional pass, but every number here should be the
+     ID number of a [[HarvestableFixture]] that is not claimed by any other community."
+    MutableSet<Integer> workedFieldIDs = HashSet<Integer>();
+    "ID numbers of fields, orchards, and the like that this community cultivates. We don't
+     have references to the [[HarvestableFixture]] objects themselves, because that would
+     require XML parsing to grow an additional pass, but every number here should be the
+     ID number of a [[HarvestableFixture]] that is not claimed by any other community."
+    shared {Integer*} workedFields => {*workedFieldIDs};
+    "Add a field (or orchard, or other harvestable resource source) (ID number) to the
+     collection of worked fields."
+    shared void addWorkedField(Integer fieldID) => workedFieldIDs.add(fieldID);
+    "Remove a harvestable resource source (ID number) from the collection of such sources
+      worked by this community"
+    shared void removeWorkedField(Integer fieldID) => workedFieldIDs.remove(fieldID);
+    "The set of resources produced each year."
+    todo("Should we really expose this as a [[MutableSet]], instead of merely a [[Set]]
+          modified by mutators on this class?")
+    shared MutableSet<ResourcePile> yearlyProduction = HashSet<ResourcePile>();
+    "The set of resources consumed each year. (Though substitutions of like resources are
+     to be expected.)"
+    todo("Should we really expose this as a [[MutableSet]], instead of merely a [[Set]]
+          modified by mutators on this class?")
+    shared MutableSet<ResourcePile> yearlyConsumption = HashSet<ResourcePile>();
+}
