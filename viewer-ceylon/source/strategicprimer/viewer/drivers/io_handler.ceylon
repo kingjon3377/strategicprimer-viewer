@@ -3,7 +3,9 @@ import ceylon.language.meta.model {
 }
 
 import java.awt {
-    Component
+    Component,
+    JFileDialog=FileDialog,
+    Frame
 }
 import java.awt.event {
     ActionListener,
@@ -11,7 +13,9 @@ import java.awt.event {
 }
 import java.io {
     FileNotFoundException,
-    IOException
+    IOException,
+    FilenameFilter,
+    JFile=File
 }
 import java.lang {
     InterruptedException
@@ -40,7 +44,8 @@ import lovelace.util.common {
     todo
 }
 import lovelace.util.jvm {
-    showErrorDialog
+    showErrorDialog,
+    platform
 }
 
 import strategicprimer.model.map {
@@ -71,19 +76,28 @@ FileFilter mapExtensionsFilter = FileNameExtensionFilter(
     "Strategic Primer world map files", "map", "xml");
 "A factory method for [[JFileChooser]] taking a [[FileFilter]] to apply in the same
  operation."
-JFileChooser filteredFileChooser(
+JFileChooser|JFileDialog filteredFileChooser(
         "The current directory."
         String current = ".",
         "The filter to apply."
         FileFilter filter = mapExtensionsFilter) {
-    JFileChooser retval = JFileChooser(current);
-    retval.fileFilter = filter;
-    return retval;
+    if (platform.systemIsMac) {
+        JFileDialog retval = JFileDialog(null of Frame?);
+        retval.filenameFilter = object satisfies FilenameFilter {
+            shared actual Boolean accept(JFile dir, String name) =>
+                    filter.accept(JFile(dir, name));
+        };
+        return retval;
+    } else {
+        JFileChooser retval = JFileChooser(current);
+        retval.fileFilter = filter;
+        return retval;
+    }
 }
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
 shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
-        JFileChooser fileChooser = filteredFileChooser()) satisfies ActionListener {
+        JFileChooser|JFileDialog fileChooser = filteredFileChooser()) satisfies ActionListener {
     shared actual void actionPerformed(ActionEvent event) {
         value temp = event.source;
         Component? source;
@@ -206,22 +220,54 @@ shared class FileChooser {
                 else "No file was selected", cause) { }
     Integer(Component?) chooserFunction;
     variable JPath? storedFile;
-    JFileChooser chooser;
+    JFileChooser|JFileDialog chooser;
+    todo("Allow the user to choose multiple files")
     shared new open(JPath? loc = null,
-            JFileChooser fileChooser = filteredFileChooser()) {
-        chooserFunction = fileChooser.showOpenDialog;
+            JFileChooser|JFileDialog fileChooser = filteredFileChooser()) {
+        switch (fileChooser)
+        case (is JFileChooser) {
+            chooserFunction = fileChooser.showOpenDialog;
+        }
+        case (is JFileDialog) {
+            fileChooser.mode = JFileDialog.load;
+            chooserFunction = (Component? component) {
+                fileChooser.setVisible(true);
+                return 0;
+            };
+        }
         storedFile = loc;
         chooser = fileChooser;
     }
-    shared new save(JPath? loc, JFileChooser fileChooser = filteredFileChooser()) {
-        chooserFunction = fileChooser.showSaveDialog;
+    shared new save(JPath? loc, JFileChooser|JFileDialog fileChooser = filteredFileChooser()) {
+        switch (fileChooser)
+        case (is JFileChooser) {
+            chooserFunction = fileChooser.showSaveDialog;
+        }
+        case (is JFileDialog) {
+            fileChooser.mode = JFileDialog.save;
+            chooserFunction = (Component? component) {
+                fileChooser.setVisible(true);
+                return 0;
+            };
+        }
         storedFile = loc;
         chooser = fileChooser;
     }
     shared new custom(JPath? loc, String approveText,
-            JFileChooser fileChooser = filteredFileChooser()) {
-        chooserFunction = (Component? component) =>
-                fileChooser.showDialog(component, approveText);
+            JFileChooser|JFileDialog fileChooser = filteredFileChooser()) {
+        switch (fileChooser)
+        case (is JFileChooser) {
+            chooserFunction = (Component? component) =>
+                    fileChooser.showDialog(component, approveText);
+        }
+        case (is JFileDialog) {
+            // TODO: Is it possible to use a custom action in AWT?
+            fileChooser.mode = JFileDialog.save;
+            chooserFunction = (Component? component) {
+                fileChooser.setVisible(true);
+                return 0;
+            };
+        }
         storedFile = loc;
         chooser = fileChooser;
     }
@@ -246,20 +292,36 @@ shared class FileChooser {
             return temp;
         } else if (SwingUtilities.eventDispatchThread) {
             Integer status = chooserFunction(null);
-            if (status == JFileChooser.approveOption) {
-                assert (exists temp = chooser.selectedFile);
-                return temp.toPath();
+            if (is JFileChooser chooser) {
+                if (status == JFileChooser.approveOption) {
+                    assert (exists temp = chooser.selectedFile);
+                    return temp.toPath();
+                } else {
+                    log.info("Chooser function returned ``status``");
+                }
             } else {
-                log.info("Chooser function returned ``status``");
+                if (exists temp = chooser.files.iterable.first) {
+                    return temp.toPath();
+                } else {
+                    log.info("User failed to choose");
+                }
             }
         } else {
             invoke(() {
                 Integer status = chooserFunction(null);
-                if (status == JFileChooser.approveOption) {
-                    assert (exists temp = chooser.selectedFile);
-                    storedFile = temp.toPath();
+                if (is JFileChooser chooser) {
+                    if (status == JFileChooser.approveOption) {
+                        assert (exists temp = chooser.selectedFile);
+                        storedFile = temp.toPath();
+                    } else {
+                        log.info("Chooser function returned ``status``");
+                    }
                 } else {
-                    log.info("Chooser function returned ``status``");
+                    if (exists temp = chooser.files.iterable.first) {
+                        storedFile = temp.toPath();
+                    } else {
+                        log.info("User failed to choose");
+                    }
                 }
             });
         }
