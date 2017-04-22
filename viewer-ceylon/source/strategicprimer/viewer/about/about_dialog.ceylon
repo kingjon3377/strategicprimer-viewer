@@ -19,7 +19,8 @@ import javax.swing {
 }
 import lovelace.util.jvm {
     listenedButton,
-    centeredHorizontalBox
+    centeredHorizontalBox,
+    platform
 }
 import strategicprimer.viewer.drivers {
     SPDialog
@@ -47,9 +48,16 @@ shared JDialog aboutDialog(Component? parentComponent, String? app) {
     JEditorPane pane = JEditorPane("text/html", html);
     pane.caretPosition = 0; // scroll to the top
     pane.editable = false;
-    JScrollPane scrollPane = JScrollPane(pane,
-        ScrollPaneConstants.verticalScrollbarAsNeeded,
-        ScrollPaneConstants.horizontalScrollbarAsNeeded);
+    JScrollPane scrollPane;
+    if (platform.systemIsMac) {
+        scrollPane = JScrollPane(pane,
+            ScrollPaneConstants.verticalScrollbarAlways,
+            ScrollPaneConstants.horizontalScrollbarAlways);
+    } else {
+        scrollPane = JScrollPane(pane,
+            ScrollPaneConstants.verticalScrollbarAsNeeded,
+            ScrollPaneConstants.horizontalScrollbarAsNeeded);
+    }
     scrollPane.minimumSize =Dimension(300, 400);
     scrollPane.preferredSize =Dimension(400, 500);
     retval.add(scrollPane, javaString(BorderLayout.center));

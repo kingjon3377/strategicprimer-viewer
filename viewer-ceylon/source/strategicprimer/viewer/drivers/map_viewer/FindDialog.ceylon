@@ -200,9 +200,18 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             populate(model.map.allFixtures(point));
         }
     });
+    JScrollPane scrollPane;
+    if (platform.systemIsMac) {
+        scrollPane = JScrollPane(filterList,
+            ScrollPaneConstants.verticalScrollbarAlways,
+            ScrollPaneConstants.horizontalScrollbarAlways);
+    } else {
+        scrollPane = JScrollPane(filterList,
+            ScrollPaneConstants.verticalScrollbarAsNeeded,
+            ScrollPaneConstants.horizontalScrollbarAsNeeded);
+    }
     contentPane = horizontalSplit(0.6, 0.6, contentPanel,
         BorderedPanel.verticalPanel(JLabel("Find only ..."),
-            JScrollPane(filterList, ScrollPaneConstants.verticalScrollbarAsNeeded,
-                ScrollPaneConstants.horizontalScrollbarAsNeeded), null));
+            scrollPane, null));
     pack();
 }
