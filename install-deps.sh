@@ -10,9 +10,9 @@ wget http://javagraphics.java.net/jars/WindowMenu.jar
 wget http://central.maven.org/maven2/com/yuvimasory/orange-extensions/1.3.0/orange-extensions-1.3.0.jar
 sudo apt-get update -qq
 sudo apt-get install genisoimage
-wget https://github.com/tofi86/universalJavaApplicationStub/archive/v2.0.1.tar.gz -O \
-        universalJavaApplicationStub-2.0.1.tar.gz
-tar xzf universalJavaApplicationStub-2.0.1.tar.gz
+wget https://github.com/tofi86/universalJavaApplicationStub/archive/v2.0.2.tar.gz -O \
+        universalJavaApplicationStub-2.0.2.tar.gz
+tar xzf universalJavaApplicationStub-2.0.2.tar.gz
 if test -n "${TRAVIS_TAG}"; then
     echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\)$@s:SNAPSHOT:\1:@' | \
         sed -f - -i version.properties
