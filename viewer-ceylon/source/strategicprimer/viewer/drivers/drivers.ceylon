@@ -190,6 +190,7 @@ String usageMessage(IDriverUsage usage, Boolean verbose) {
     }
     return builder.string;
 }
+suppressWarnings("expressionTypeNothing")
 shared void run() {
     addLogWriter(logWriter);
     System.setProperty("com.apple.mrj.application.apple.menu.about.name",

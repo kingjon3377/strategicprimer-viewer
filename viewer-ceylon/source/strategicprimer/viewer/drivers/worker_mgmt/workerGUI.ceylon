@@ -44,6 +44,7 @@ shared object workerGUI satisfies SimpleDriver {
         longDescription = "Organize the members of a player's units.";
         supportedOptionsTemp = [ "--current-turn=NN", "--print-empty" ];
     };
+    suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IWorkerModel model) {

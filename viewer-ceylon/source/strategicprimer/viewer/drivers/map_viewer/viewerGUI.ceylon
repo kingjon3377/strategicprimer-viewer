@@ -48,6 +48,7 @@ shared object viewerGUI satisfies SimpleDriver {
         longDescription = "Look at the map visually. This is probably the app you want.";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
+    suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IViewerModel model) {

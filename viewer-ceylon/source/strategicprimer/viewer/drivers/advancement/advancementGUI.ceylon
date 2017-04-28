@@ -43,6 +43,7 @@ shared object advancementGUI satisfies SimpleDriver {
                              worker's Jobs, and his or her level in each Skill in each Job.""";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
+    suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         IWorkerModel workerModel;

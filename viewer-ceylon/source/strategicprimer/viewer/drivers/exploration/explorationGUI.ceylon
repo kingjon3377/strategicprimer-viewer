@@ -40,6 +40,7 @@ shared object explorationGUI satisfies SimpleDriver {
         longDescription = "Move a unit around the map, updating the player's map with what it sees.";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
+    suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         IExplorationModel explorationModel;
