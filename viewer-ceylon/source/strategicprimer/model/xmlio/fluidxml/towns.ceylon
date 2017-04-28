@@ -54,7 +54,6 @@ Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "town");
     requireNonEmptyAttribute(element, "name", false, warner);
-    spinUntilEnd(element.name, stream);
     value size = TownSize.parse(getAttribute(element, "size"));
     if (is TownSize size) {
         value status = TownStatus.parse(getAttribute(element, "status"));
@@ -64,6 +63,18 @@ Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
                 getOrGenerateID(element, warner, idFactory),
                 getPlayerOrIndependent(element, warner, players));
             fix.portrait =getAttribute(element, "portrait", "");
+            for (event in stream) {
+                if (is StartElement event, isSPStartElement(event)) {
+                    if (!fix.population exists) {
+                        fix.population = readCommunityStats(event, element.name, stream,
+                            players, warner, idFactory);
+                    } else {
+                        throw UnwantedChildException(element.name, event);
+                    }
+                } else if (is EndElement event, event.name == element.name) {
+                    break;
+                }
+            }
             return setImage(fix, element, warner);
         } else {
             throw MissingPropertyException(element, "status", status);
@@ -77,7 +88,6 @@ Fortification readFortification(StartElement element, QName parent, {XMLEvent*} 
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "fortification");
     requireNonEmptyAttribute(element, "name", false, warner);
-    spinUntilEnd(element.name, stream);
     value size = TownSize.parse(getAttribute(element, "size"));
     if (is TownSize size) {
         value status = TownStatus.parse(getAttribute(element, "status"));
@@ -88,6 +98,18 @@ Fortification readFortification(StartElement element, QName parent, {XMLEvent*} 
                 getOrGenerateID(element, warner, idFactory),
                 getPlayerOrIndependent(element, warner, players));
             fix.portrait =getAttribute(element, "portrait", "");
+            for (event in stream) {
+                if (is StartElement event, isSPStartElement(event)) {
+                    if (!fix.population exists) {
+                        fix.population = readCommunityStats(event, element.name, stream,
+                            players, warner, idFactory);
+                    } else {
+                        throw UnwantedChildException(element.name, event);
+                    }
+                } else if (is EndElement event, event.name == element.name) {
+                    break;
+                }
+            }
             return setImage(fix, element, warner);
         } else {
             throw MissingPropertyException(element, "status", status);
@@ -101,7 +123,6 @@ City readCity(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "city");
     requireNonEmptyAttribute(element, "name", false, warner);
-    spinUntilEnd(element.name, stream);
     value size = TownSize.parse(getAttribute(element, "size"));
     if (is TownSize size) {
         value status = TownStatus.parse(getAttribute(element, "status"));
@@ -111,6 +132,18 @@ City readCity(StartElement element, QName parent, {XMLEvent*} stream,
                 getOrGenerateID(element, warner, idFactory),
                 getPlayerOrIndependent(element, warner, players));
             fix.portrait =getAttribute(element, "portrait", "");
+            for (event in stream) {
+                if (is StartElement event, isSPStartElement(event)) {
+                    if (!fix.population exists) {
+                        fix.population = readCommunityStats(event, element.name, stream,
+                            players, warner, idFactory);
+                    } else {
+                        throw UnwantedChildException(element.name, event);
+                    }
+                } else if (is EndElement event, event.name == element.name) {
+                    break;
+                }
+            }
             return setImage(fix, element, warner);
         } else {
             throw MissingPropertyException(element, "status", status);
@@ -124,7 +157,6 @@ Village readVillage(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "village");
     requireNonEmptyAttribute(element, "name", false, warner);
-    spinUntilEnd(element.name, stream);
     Integer idNum = getOrGenerateID(element, warner, idFactory);
     value status = TownStatus.parse(getAttribute(element, "status"));
     if (is TownStatus status) {
@@ -132,6 +164,18 @@ Village readVillage(StartElement element, QName parent, {XMLEvent*} stream,
             getPlayerOrIndependent(element, warner, players),
             getAttribute(element, "race", randomRace(DefaultRandom(idNum))));
         retval.portrait =getAttribute(element, "portrait", "");
+        for (event in stream) {
+            if (is StartElement event, isSPStartElement(event)) {
+                if (!retval.population exists) {
+                    retval.population = readCommunityStats(event, element.name, stream,
+                        players, warner, idFactory);
+                } else {
+                    throw UnwantedChildException(element.name, event);
+                }
+            } else if (is EndElement event, event.name == element.name) {
+                break;
+            }
+        }
         return setImage(retval, element, warner);
     } else {
         throw MissingPropertyException(element, "status", status);
@@ -196,13 +240,17 @@ CommunityStats readCommunityStats(StartElement element, QName parent, {XMLEvent*
 
 void writeVillage(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is Village obj) {
-        writeTag(ostream, "village", indent, true);
+        writeTag(ostream, "village", indent, !obj.population exists);
         writeAttributes(ostream, "status"->obj.status.string);
         writeNonEmptyAttributes(ostream, "name"->obj.name);
         writeAttributes(ostream, "id"->obj.id, "owner"->obj.owner.playerId,
             "race"->obj.race);
         writeImage(ostream, obj);
         writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
+        if (exists population = obj.population) {
+            writeCommunityStats(ostream, population, indent);
+            ostream.writeEndElement();
+        }
     } else {
         throw IllegalArgumentException("Can only write Villages");
     }
@@ -210,13 +258,17 @@ void writeVillage(XMLStreamWriter ostream, Object obj, Integer indent) {
 
 void writeTown(XMLStreamWriter ostream, Object obj, Integer indent) {
     if (is AbstractTown obj) {
-        writeTag(ostream, obj.kind, indent, true);
+        writeTag(ostream, obj.kind, indent, !obj.population exists);
         writeAttributes(ostream, "status"->obj.status.string,
             "size"->obj.townSize.string, "dc"->obj.dc);
         writeNonEmptyAttributes(ostream, "name"->obj.name);
         writeAttributes(ostream, "id"->obj.id, "owner"->obj.owner.playerId);
         writeImage(ostream, obj);
         writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
+        if (exists population = obj.population) {
+            writeCommunityStats(ostream, population, indent);
+            ostream.writeEndElement();
+        }
     } else {
         throw IllegalArgumentException("Can only write AbstractTowns");
     }

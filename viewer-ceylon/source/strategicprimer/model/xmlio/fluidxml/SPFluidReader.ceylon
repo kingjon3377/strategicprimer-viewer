@@ -444,6 +444,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         "river"->readRiver,
         "lake"->readLake,
         "player"->readPlayer,
+        "population"->readCommunityStats,
         *simpleImmortalReaders
     };
     shared actual Type readXML<Type>(JPath file, JReader istream, Warning warner)

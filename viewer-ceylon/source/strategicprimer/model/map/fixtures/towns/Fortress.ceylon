@@ -43,6 +43,9 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
     "The members of the fortress."
     todo("Should this perhaps be a Set?")
     MutableList<FortressMember> members = ArrayList<FortressMember>();
+    "A Fortress's contents aren't handled like those of other towns."
+    todo("OTOH, should they be?")
+    shared actual CommunityStats? population = null;
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "The name of an image to use as a portrait."

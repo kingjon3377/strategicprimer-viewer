@@ -64,4 +64,42 @@ shared class CommunityStats(populationCount) {
     todo("Should we really expose this as a [[MutableSet]], instead of merely a [[Set]]
           modified by mutators on this class?")
     shared MutableSet<ResourcePile> yearlyConsumption = HashSet<ResourcePile>();
+    shared actual String string {
+        StringBuilder builder = StringBuilder();
+        builder.append("Community stats:");
+        builder.appendNewline();
+        builder.append("Population: ``population``");
+        builder.appendNewline();
+        builder.append("Skills: ");
+        for (skill->level in skillLevels) {
+            builder.append("- ``skill``: Level ``level``");
+            builder.appendNewline();
+        }
+        builder.append("ID #s of worked fields: ");
+        builder.append(", ".join(workedFieldIDs));
+        builder.appendNewline();
+        builder.append("Yearly Resource Production:");
+        builder.appendNewline();
+        for (resource in yearlyProduction) {
+            builder.append("- ``resource``");
+            builder.appendNewline();
+        }
+        builder.append("Yearly Resource Consumption:");
+        builder.appendNewline();
+        for (resource in yearlyConsumption) {
+            builder.append("- ``resource``");
+            builder.appendNewline();
+        }
+        return builder.string;
+    }
+    shared actual Boolean equals(Object that) {
+        if (is CommunityStats that) {
+            return population == that.population && skillLevels == that.skillLevels &&
+                workedFieldIDs == that.workedFieldIDs &&
+                yearlyProduction == that.yearlyProduction &&
+                yearlyConsumption == that.yearlyConsumption;
+        } else {
+            return false;
+        }
+    }
 }

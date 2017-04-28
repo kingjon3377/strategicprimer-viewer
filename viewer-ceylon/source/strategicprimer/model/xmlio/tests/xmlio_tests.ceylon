@@ -114,7 +114,8 @@ import strategicprimer.model.map.fixtures.towns {
     Town,
     Fortification,
     City,
-    Fortress
+    Fortress,
+    CommunityStats
 }
 import strategicprimer.model.xmlio {
     ISPReader,
@@ -444,6 +445,9 @@ void testVillageSerialization(TownStatus status, String race) {
         "<village name=\"name\" status=\"``status``\" id=\"0\" />", "owner", true);
     assertImageSerialization("Village image property is preserved", thirdVillage);
     assertPortraitSerialization("Village portrait property is preserved", thirdVillage);
+    Village fourthVillage = Village(status, "villageName", 4, owner, race);
+    fourthVillage.population = CommunityStats(1);
+    assertSerialization("Village can have community stats", fourthVillage);
 }
 
 {[TownSize, TownStatus]*} townParameters =
@@ -473,6 +477,15 @@ void testCitySerialization(TownSize size, TownStatus status) {
          name=\"name\" dc=\"0\" id=\"0\" />", "owner", true);
     assertImageSerialization("City image property is preserved", thirdCity);
     assertPortraitSerialization("City portrait property is preserved", thirdCity);
+    City fourthCity = City(status, size, 30, "cityName", 4, owner);
+    CommunityStats population = CommunityStats(2);
+    population.addWorkedField(5);
+    population.setSkillLevel("citySkill", 1);
+    population.yearlyConsumption.add(ResourcePile(5, "cityResource", "citySpecific",
+        Quantity(1, "cityUnit")));
+    fourthCity.population = population;
+    assertSerialization("Community-stats can be serialized", population);
+    assertSerialization("City can have community-stats", fourthCity);
 }
 
 test
@@ -499,6 +512,15 @@ void testFortificationSerialization(TownSize size, TownStatus status) {
          name=\"name\" dc=\"0\" id=\"0\" />", "owner", true);
     assertImageSerialization("Fortification image property is preserved", thirdFort);
     assertPortraitSerialization("Fortification portrait property is preserved", thirdFort);
+    Fortification fourthFort = Fortification(status, size, 40, "fortName", 4, owner);
+    CommunityStats population = CommunityStats(3);
+    population.addWorkedField(7);
+    population.addWorkedField(12);
+    population.setSkillLevel("fortSkill", 3);
+    population.yearlyProduction.add(ResourcePile(5, "fortResource", "fortSpecific",
+        Quantity(1, "fortUnit")));
+    fourthFort.population = population;
+    assertSerialization("Fortification can have community-stats", fourthFort);
 }
 
 test
@@ -525,6 +547,18 @@ void testTownSerialization(TownSize size, TownStatus status) {
          name=\"name\" dc=\"0\" id=\"0\" />", "owner", true);
     assertImageSerialization("Town image property is preserved", thirdTown);
     assertPortraitSerialization("Town portrait property is preserved", thirdTown);
+    Town  fourthTown = Town (status, size, 40, "townName", 4, owner);
+    CommunityStats population = CommunityStats(3);
+    population.addWorkedField(9);
+    population.addWorkedField(23);
+    population.setSkillLevel("townSkill", 3);
+    population.setSkillLevel("secondSkill", 5);
+    population.yearlyProduction.add(ResourcePile(5, "townResource", "townSpecific",
+        Quantity(1, "TownUnit")));
+    population.yearlyProduction.add(ResourcePile(8, "townResource", "secondSpecific",
+        Quantity(2, "townUnit")));
+    fourthTown.population = population;
+    assertSerialization("Fortification can have community-stats", fourthTown);
 }
 
 {[StoneKind]*} stoneParameters = `StoneKind`.caseValues.map((val) => [val]);

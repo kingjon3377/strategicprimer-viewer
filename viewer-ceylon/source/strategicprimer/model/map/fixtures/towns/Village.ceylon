@@ -25,6 +25,8 @@ shared class Village(status, name, id, owner, race)
     shared actual String defaultImage = "village.png";
     "A filename of an image to use as a portrait of the village."
     shared actual variable String portrait = "";
+    "The contents of the village."
+    shared actual variable CommunityStats? population = null;
     "A short description of the village."
     shared actual String shortDescription {
         StringBuilder builder = StringBuilder();
@@ -47,8 +49,20 @@ shared class Village(status, name, id, owner, race)
      owner."
     shared actual Boolean equals(Object obj) {
         if (is Village obj) {
-            return status == obj.status && name == obj.name && id == obj.id &&
-                owner == obj.owner && race == obj.race;
+            if (status == obj.status && name == obj.name && id == obj.id &&
+                    owner == obj.owner && race == obj.race) {
+                if (exists ours = population) {
+                    if (exists theirs = obj.population) {
+                        return ours == theirs;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return !obj.population exists;
+                }
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -59,8 +73,20 @@ shared class Village(status, name, id, owner, race)
      and race."
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is Village fixture) {
-            return status == fixture.status && name == fixture.name &&
-                owner == fixture.owner;
+            if (status == fixture.status && name == fixture.name &&
+                    owner == fixture.owner) {
+                if (exists ours = population) {
+                    if (exists theirs = fixture.population) {
+                        return ours == theirs;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return !fixture.population exists;
+                }
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

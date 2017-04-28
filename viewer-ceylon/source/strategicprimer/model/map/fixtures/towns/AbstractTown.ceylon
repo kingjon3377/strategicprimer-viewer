@@ -27,15 +27,31 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc) satisfies 
     shared actual variable String image = "";
     "The filename of an image to use as a portrait."
     shared actual variable String portrait = "";
+    "The contents of the town."
+    shared actual variable CommunityStats? population = null;
     "Exploration-result text for the town."
     shared actual String text => "There is a ``(townSize == TownSize.medium) then
             "medium-size" else townSize.string`` ``(status == TownStatus.burned) then
             "burned-out" else status.string`` ``kind````name.empty then "" else
             ", ``name``,"`` here.";
     "A helper method for equals() that checks everything except the type of the object."
-    shared Boolean equalsContents(AbstractTown fixture) => fixture.townSize == townSize &&
-            fixture.name == name && fixture.status == status &&
-            fixture.owner == owner;
+    shared Boolean equalsContents(AbstractTown fixture) {
+        if (fixture.townSize == townSize &&
+                fixture.name == name && fixture.status == status &&
+                fixture.owner == owner) {
+            if (exists ours = population) {
+                if (exists theirs = fixture.population) {
+                    return ours == theirs;
+                } else {
+                    return false;
+                }
+            } else {
+                return !fixture.population exists;
+            }
+        } else {
+            return false;
+        }
+    }
     shared actual default Boolean equals(Object obj) {
         if (is AbstractTown obj) {
             return id == obj.id && equalsContents(obj);

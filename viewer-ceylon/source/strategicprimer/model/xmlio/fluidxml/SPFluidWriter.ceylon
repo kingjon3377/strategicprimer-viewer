@@ -81,7 +81,8 @@ import strategicprimer.model.map.fixtures.towns {
     TownSize,
     Village,
     AbstractTown,
-    Fortress
+    Fortress,
+    CommunityStats
 }
 import strategicprimer.model.xmlio {
     SPWriter,
@@ -354,6 +355,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         `Village`->writeVillage,
         `AbstractTown`->writeTown,
         `IMapNG`->writeMap,
-        `Player`->writePlayer
+        `Player`->writePlayer,
+        `CommunityStats`->writeCommunityStats
     };
 }

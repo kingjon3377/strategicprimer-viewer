@@ -50,6 +50,9 @@ import strategicprimer.model.xmlio {
 import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException
 }
+import strategicprimer.model.map.fixtures.towns {
+    CommunityStats
+}
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
 "A class to hide the complexity of YAXML from callers."
@@ -60,6 +63,8 @@ class YAReaderAdapter(
     IMutablePlayerCollection players = PlayerCollection();
     "The map reader"
     YAMapReader mapReader = YAMapReader(warning, idFactory, players);
+    "The reader for towns, etc."
+    YATownReader townReader = YATownReader(warning, idFactory, players);
     "The set of readers."
     value readers = { YAAdventureReader(warning, idFactory, players),
         YAExplorableReader(warning, idFactory), YAGroundReader(warning, idFactory),
@@ -67,7 +72,7 @@ class YAReaderAdapter(
         YAMobileReader(warning, idFactory), YAPlayerReader(warning, idFactory),
         YAPortalReader(warning, idFactory), YAResourcePileReader(warning, idFactory),
         YAResourceReader(warning, idFactory), YATerrainReader(warning, idFactory),
-        YATextReader(warning, idFactory), YATownReader(warning, idFactory, players),
+        YATextReader(warning, idFactory), townReader,
         YAUnitReader(warning, idFactory, players), YAWorkerReader(warning, idFactory) };
     "Parse an object from XML."
     throws(`class SPFormatException`, "on SP format problems")
@@ -78,6 +83,10 @@ class YAReaderAdapter(
         // Handle rivers specially.
         if ("river" == tag || "lake" == tag) {
             return mapReader.parseRiver(element, parent);
+        }
+        // Handle "population" specially.
+        if ("population" == tag) {
+            return townReader.parseCommunityStats(element, parent, stream);
         }
         for (reader in readers) {
             if (reader.isSupportedTag(tag)) {
@@ -120,6 +129,8 @@ class YAReaderAdapter(
             YAWorkerReader.writeJob(ostream, obj, indent);
         } else if (is ISkill obj) {
             YAWorkerReader.writeSkill(ostream, obj, indent);
+        } else if (is CommunityStats obj) {
+            townReader.writeCommunityStats(ostream, obj, indent);
         } else {
             for (reader in readers) {
                 if (reader.canWrite(obj)) {

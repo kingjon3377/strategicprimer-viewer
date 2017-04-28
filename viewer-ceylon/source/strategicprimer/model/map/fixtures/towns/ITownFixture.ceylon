@@ -12,4 +12,6 @@ shared interface ITownFixture satisfies TileFixture&HasName&HasMutableOwner&HasP
     shared formal TownSize townSize;
     """A description of what kind of "town" this is."""
     shared formal String kind;
+    "A summary of the town's contents."
+    shared formal CommunityStats? population;
 }

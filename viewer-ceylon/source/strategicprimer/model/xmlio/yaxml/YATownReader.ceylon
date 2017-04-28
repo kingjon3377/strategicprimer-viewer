@@ -72,7 +72,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             return players.independent;
         }
     }
-    CommunityStats parseCommunityStats(StartElement element, QName parent,
+    shared CommunityStats parseCommunityStats(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "population");
         CommunityStats retval = CommunityStats(getIntegerParameter(element, "size"));
@@ -129,7 +129,6 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     }
     ITownFixture parseVillage(StartElement element, {XMLEvent*} stream) {
         requireNonEmptyParameter(element, "name", false);
-        spinUntilEnd(element.name, stream);
         Integer idNum = getOrGenerateID(element);
         value status = TownStatus.parse(getParameter(element, "status"));
         if (is TownStatus status) {
@@ -138,6 +137,18 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     randomRace(DefaultRandom(idNum))));
             retval.image = getParameter(element, "image", "");
             retval.portrait =getParameter(element, "portrait", "");
+            for (event in stream) {
+                if (is StartElement event, isSPStartElement(event)) {
+                    if (retval.population exists) {
+                        throw UnwantedChildException(element.name, event);
+                    } else {
+                        retval.population = parseCommunityStats(event, element.name,
+                            stream);
+                    }
+                } else if (isMatchingEnd(element.name, event)) {
+                    break;
+                }
+            }
             return retval;
         } else {
             throw MissingPropertyException(element, "status", status);
@@ -163,7 +174,18 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 else {
                     throw IllegalStateException("Unhandled town tag");
                 }
-                spinUntilEnd(element.name, stream);
+                for (event in stream) {
+                    if (is StartElement event, isSPStartElement(event)) {
+                        if (retval.population exists) {
+                            throw UnwantedChildException(element.name, event);
+                        } else {
+                            retval.population = parseCommunityStats(event, element.name,
+                                stream);
+                        }
+                    } else if (isMatchingEnd(element.name, event)) {
+                        break;
+                    }
+                }
                 retval.image = getParameter(element, "image", "");
                 retval.portrait = getParameter(element, "portrait", "");
                 return retval;
@@ -213,9 +235,15 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         writeProperty(ostream, "owner", obj.owner.playerId);
         writeImageXML(ostream, obj);
         writeNonemptyProperty(ostream, "portrait", obj.portrait);
-        closeLeafTag(ostream);
+        if (exists temp = obj.population) {
+            finishParentTag(ostream);
+            writeCommunityStats(ostream, temp, tabs + 1);
+            closeTag(ostream, tabs, obj.kind);
+        } else {
+            closeLeafTag(ostream);
+        }
     }
-    void writeCommunityStats(Anything(String) ostream, CommunityStats obj, Integer tabs) {
+    shared void writeCommunityStats(Anything(String) ostream, CommunityStats obj, Integer tabs) {
         writeTag(ostream, "population", tabs);
         writeProperty(ostream, "size", obj.population);
         finishParentTag(ostream);
@@ -272,7 +300,13 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             writeProperty(ostream, "race", obj.race);
             writeImageXML(ostream, obj);
             writeNonemptyProperty(ostream, "portrait", obj.portrait);
-            closeLeafTag(ostream);
+            if (exists temp = obj.population) {
+                finishParentTag(ostream);
+                writeCommunityStats(ostream, temp, tabs + 1);
+                closeTag(ostream, tabs, "village");
+            } else {
+                closeLeafTag(ostream);
+            }
         } else if (is Fortress obj) {
             writeTag(ostream, "fortress", tabs);
             writeProperty(ostream, "owner", obj.owner.playerId);
