@@ -24,6 +24,7 @@ shared void clearPointCache() => pointCache.clear();
  driver|strategicprimer.viewer.drivers::echoDriver]], not any more realistic test, though)
  it appeared that the cache is faster as the map's size and complexity increased, so I
  decided to leave it."
+suppressWarnings("doclink")
 shared Point pointFactory(Integer row, Integer column, Boolean useCache = true) {
 	if (useCache) {
 		if (exists inner = pointCache.get(row)) {
