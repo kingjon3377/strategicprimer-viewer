@@ -11,6 +11,7 @@ import strategicprimer.model.map.fixtures {
     IEvent
 }
 "An abstract superclass for towns etc."
+todo("Satisfy Subsettable")
 shared abstract class AbstractTown(status, townSize, name, owner, dc) satisfies IEvent&HasMutableImage&ITownFixture {
     "The status of the town, fortification, or city"
     shared actual TownStatus status;

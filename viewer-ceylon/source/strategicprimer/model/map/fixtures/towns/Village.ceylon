@@ -109,6 +109,11 @@ shared class Village(status, name, id, owner, race)
                 report("In village ``name`` (ID #``id``):\tDominant race differs");
             } else if (owner.playerId != obj.owner.playerId, !obj.owner.independent) {
                 report("In village ``name`` (ID #``id``):\tOwners differ");
+            } else if (exists temp = population) {
+                return temp.isSubset(obj.population,
+                            (str) => report("In village ``name`` (ID #``id``):\t``str``"));
+            } else if (obj.population exists) {
+                report("In village ``name`` (ID #``id``):\tHas extra population details");
             } else {
                 return true;
             }
