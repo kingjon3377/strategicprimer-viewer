@@ -6,11 +6,10 @@ shared Comparison(Type, Type) ceylonComparator<Type>(
         Integer(Type?, Type?)|Integer(Type, Type)|JComparator<Type> comparator) {
     return (Type x, Type y) {
         Integer temp;
-        if (is JComparator<out Anything> comparator) {
-            assert (is JComparator<Type> comparator);
-            temp = comparator.compare(x, y);
-        } else {
+        if (is Integer(Type?, Type?)|Integer(Type, Type) comparator) {
             temp = comparator(x, y);
+        } else {
+            temp = comparator.compare(x, y);
         }
         if (temp < 0) {
             return smaller;
