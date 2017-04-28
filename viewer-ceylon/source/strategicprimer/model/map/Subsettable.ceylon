@@ -1,5 +1,5 @@
 "An interface to let us check converted player maps against the main map."
-shared interface Subsettable<Element> given Element satisfies Object {
+shared interface Subsettable<Element> {
 	"""Test whether an object is a "strict" subset of this one."""
 	shared formal Boolean isSubset(
 			"The thing that might be a subset."
