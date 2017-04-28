@@ -16,6 +16,9 @@ shared class Town("The status of the town" TownStatus townStatus,
         Town retval = Town(super.status, super.townSize, (zero) then 0 else discoverDC, townName, id,
             player);
         retval.image = image;
+        if (!zero) {
+            retval.population = population;
+        }
         return retval;
     }
 }

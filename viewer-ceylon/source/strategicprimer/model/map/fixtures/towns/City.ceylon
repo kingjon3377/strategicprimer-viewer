@@ -15,6 +15,9 @@ shared class City("The status of the city" TownStatus townStatus,
     shared actual City copy(Boolean zero) {
         City retval = City(status, townSize, (zero) then 0 else dc, name, id, owner);
         retval.image = image;
+        if (!zero) {
+            retval.population = population;
+        }
         return retval;
     }
 }

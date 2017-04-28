@@ -127,6 +127,7 @@ shared class Village(status, name, id, owner, race)
         retval.image = image;
         if (!zero) {
             retval.portrait = portrait;
+            retval.population = population;
         }
         return retval;
     }
