@@ -59,6 +59,8 @@ shared class Speed of hurried|normal|observant|careful|meticulous satisfies HasN
     shared new careful extends delegate(2.0, 0, "Careful") {}
     "Painstaking searches."
     shared new meticulous extends delegate(2.5, 2, "Meticulous") {}
+    "A description to use in GUI menus."
+    shared actual String string => name;
 }
 "A model for exploration drivers."
 shared interface IExplorationModel
