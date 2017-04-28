@@ -489,8 +489,8 @@ SPFrame explorationFrame(IExplorationModel model,
                                     } else {
                                         tracksSource = huntingModel.hunt;
                                     }
-                                    assert (exists possibleTracks = tracksSource(currentLocation, 1).first);
-                                    if (HuntingModel.noResults != possibleTracks) {
+                                    if (exists possibleTracks = tracksSource(currentLocation, 1).first,
+                                            HuntingModel.noResults != possibleTracks) {
                                         Animal animal = Animal(possibleTracks, true, false, "wild", -1);
                                         assert (is FixtureListModel listModel = mainList.model);
                                         Integer index = listModel.size;
