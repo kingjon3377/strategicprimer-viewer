@@ -252,7 +252,15 @@ shared class SPMenu() extends JMenuBar() {
         retval.add(createMenuItem("Zoom out", KeyEvent.vkO, "Decrease the visible size of each tile", handler, createAccelerator(KeyEvent.vkMinus)));
         retval.add(createMenuItem("Reset zoom", KeyEvent.vkR, "Reset the zoom level", handler, createAccelerator(KeyEvent.vk0)));
         retval.addSeparator();
-        retval.add(createMenuItem("Center", KeyEvent.vkC, "Center the view on the selected tile", handler, createAccelerator(KeyEvent.vkC)));
+        KeyStroke centerHotkey;
+        if (platform.systemIsMac) {
+            centerHotkey = createAccelerator(KeyEvent.vkL);
+        } else {
+            centerHotkey = createAccelerator(KeyEvent.vkC);
+        }
+        retval.add(createMenuItem("Center", KeyEvent.vkC,
+            "Center the view on the selected tile", handler,
+            centerHotkey));
         return retval;
     }
     """Create the "view" menu."""
