@@ -174,7 +174,7 @@ shared class SPMenu() extends JMenuBar() {
             saveAllItem.enabled = false;
         }
         fileMenu.addSeparator();
-        JMenuItem openViewerItem = createMenuItem("Open in map viwer", KeyEvent.vkM,
+        JMenuItem openViewerItem = createMenuItem("Open in map viewer", KeyEvent.vkM,
             "Open the main map in the map viewer for a broader view", handler,
             createAccelerator(KeyEvent.vkM));
         fileMenu.add(openViewerItem);
