@@ -174,9 +174,16 @@ shared class SPMenu() extends JMenuBar() {
             saveAllItem.enabled = false;
         }
         fileMenu.addSeparator();
+        KeyStroke openViewerHotkey;
+        if (platform.systemIsMac) {
+            openViewerHotkey = KeyStroke.getKeyStroke(KeyEvent.vkM,
+                KeyEvent.altDownMask);
+        } else {
+            openViewerHotkey = createAccelerator(KeyEvent.vkM);
+        }
         JMenuItem openViewerItem = createMenuItem("Open in map viewer", KeyEvent.vkM,
             "Open the main map in the map viewer for a broader view", handler,
-            createAccelerator(KeyEvent.vkM));
+            openViewerHotkey);
         fileMenu.add(openViewerItem);
         if (model is IViewerModel) {
             openViewerItem.enabled = false;
