@@ -125,7 +125,29 @@ shared class Village(status, name, id, owner, race)
     }
     shared actual String kind => "village";
     "The required Perception check to find the village."
-    shared actual Integer dc => (TownStatus.active == status) then 15 else 30;
+    shared actual Integer dc {
+        if (TownStatus.active == status) {
+            if (exists temp = population) {
+                if (temp.population < 10) {
+                    return 20;
+                } else if (temp.population < 15) {
+                    return 17;
+                } else if (temp.population < 20) {
+                    return 15;
+                } else if (temp.population < 50) {
+                    return 12;
+                } else if (temp.population < 100) {
+                    return 10;
+                } else {
+                    return 5;
+                }
+            } else {
+                return 15;
+            }
+        } else {
+            return 30;
+        }
+    }
     "Clone the object."
     shared actual Village copy(Boolean zero) {
         Village retval = Village(status, name, id, owner, race);

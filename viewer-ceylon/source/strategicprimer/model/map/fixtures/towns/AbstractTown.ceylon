@@ -23,6 +23,8 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc) satisfies 
     "The player that owns the town, fortification, or city"
     shared actual variable Player owner;
     "The DC to discover the town, fortification, or city"
+    todo("Provide reasonable default, depending on [[population]] members as well as
+          [[status]] and [[size]]")
     shared actual Integer dc;
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
