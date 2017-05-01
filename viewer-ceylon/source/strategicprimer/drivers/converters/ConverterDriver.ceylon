@@ -51,7 +51,8 @@ class ConverterDriver(
         longOption = "--convert";
         paramsWanted = ParamCount.one;
         shortDescription = "Convert a map's format";
-        longDescription = "Convert a map. At present, this means reducing its resolution.";
+        longDescription = "Convert a map. At present, this means reducing its
+                           resolution.";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     "Run the driver."
@@ -61,7 +62,8 @@ class ConverterDriver(
             for (filename in arguments) {
                 cli.print("Reading ``filename ``... ");
                 try {
-                    IMutableMapNG old = readMap(Paths.get(filename), warningLevels.default);
+                    IMutableMapNG old = readMap(Paths.get(filename),
+                        warningLevels.default);
                     if (options.hasOption("--current-turn")) {
                         value currentTurn =
                                 Integer.parse(options.getArgument("--current-turn"));
@@ -69,7 +71,7 @@ class ConverterDriver(
                             old.currentTurn = currentTurn;
                         } else {
                             log.error(
-                                "Current turn passed on the command line must be an integer",
+                                "Current turn passed as an option must be an integer",
                                 currentTurn);
                         }
                     }

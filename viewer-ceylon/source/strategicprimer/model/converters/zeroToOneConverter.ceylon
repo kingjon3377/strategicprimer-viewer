@@ -139,7 +139,8 @@ object zeroToOneConverter {
 		ostream("``attribute.name.localPart``=\"``attribute.\ivalue``\"");
 	}
 	"Convert the version attribute of the map"
-	void convertMap(Anything(String) ostream, StartElement element, {Attribute*} attributes) {
+	void convertMap(Anything(String) ostream, StartElement element,
+			{Attribute*} attributes) {
 		ostream("<");
 		if (XMLConstants.defaultNsPrefix != element.name.namespaceURI) {
 			ostream("``element.name.prefix``:");
@@ -180,7 +181,8 @@ object zeroToOneConverter {
 		}
 		ostream(">");
 	}
-	void convertTile(Anything(String) ostream, StartElement element, {Attribute*} attributes) {
+	void convertTile(Anything(String) ostream, StartElement element,
+			{Attribute*} attributes) {
 		ostream("<");
 		if (XMLConstants.defaultNsPrefix != element.name.namespaceURI) {
 			ostream("``element.name.prefix``:");
@@ -236,7 +238,8 @@ object zeroToOneConverter {
 		ostream(operatingSystem.newline);
 	}
 }
-void initialize(IMutableMapNG map, Point point, TileType? terrain, TileFixture* fixtures) {
+void initialize(IMutableMapNG map, Point point, TileType? terrain,
+		TileFixture* fixtures) {
 	if (exists terrain, terrain != TileType.notVisible) {
 		map.setBaseTerrain(point, terrain);
 	}

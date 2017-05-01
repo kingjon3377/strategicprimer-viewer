@@ -19,7 +19,8 @@ JTree&SkillSelectionSource jobsTree(JobTreeModel jtModel) {
                 ArrayList<SkillSelectionListener>();
         shared actual void addSkillSelectionListener(SkillSelectionListener listener) =>
                 listeners.add(listener);
-        shared actual void removeSkillSelectionListener(SkillSelectionListener listener) =>
+        shared actual void removeSkillSelectionListener(
+                SkillSelectionListener listener) =>
                 listeners.remove(listener);
         jtModel.selectionModel = selectionModel;
         rootVisible = false;

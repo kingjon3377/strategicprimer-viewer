@@ -40,7 +40,8 @@ import strategicprimer.report.nodes {
 "A report generator for Workers."
 class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
             Boolean details, MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<IWorker>(comp, DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<IWorker>(comp,
+            DistanceComparator(hq, dimensions)) {
     "Produce the sub-sub-report on a worker's stats."
     String statsString(WorkerStats stats) {
         return "He or she has the following stats: ``stats.hitPoints`` / ``stats
@@ -122,20 +123,21 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
      paragraph or bullet point), or on all workers (not that this'll ever be called like
      that, but we'll implement it properly anyway)."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, [IWorker, Point]? entry) {
         if (exists entry) {
             IWorker worker = entry.first;
             Point loc = entry.rest.first;
             if (details) {
-                IReportNode retval = ComplexReportNode("``worker.name``, a ``worker.race``",
-                    loc);
+                IReportNode retval =
+                        ComplexReportNode("``worker.name``, a ``worker.race``", loc);
                 if (exists stats = worker.stats) {
                     retval.appendNode(SimpleReportNode(statsString(stats)));
                 }
                 if (!worker.empty) {
                     IReportNode jobs = ListReportNode(
-                        "(S)he has training or experience in the following Jobs (Skills):",
+                        "Has training or experience in the following Jobs (Skills):",
                         loc);
                     for (job in worker) {
                         jobs.appendNode(produceJobRIR(job, loc));

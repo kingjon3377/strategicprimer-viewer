@@ -30,8 +30,8 @@ shared interface IMutableMapNG satisfies IMapNG {
          "all fixtures at this point" has an additional member as a result of this
          operation."""
     shared formal Boolean addFixture(Point location, TileFixture fixture);
-    """Remove a fixture from the "other fixtures" collection at a location. This may or may
-       not remove it from the other "buckets"."""
+    """Remove a fixture from the "other fixtures" collection at a location. This may or
+       may not remove it from the other "buckets"."""
     shared formal void removeFixture(Point location, TileFixture fixture);
     "The current player."
     shared actual formal variable Player currentPlayer;

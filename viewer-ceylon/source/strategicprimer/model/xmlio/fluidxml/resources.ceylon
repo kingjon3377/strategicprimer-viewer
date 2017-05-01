@@ -255,7 +255,7 @@ void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
         }
         case (is Decimal) {
             if (quantity.scale > 0) {
-                // TODO: Java used BigDecimal.toPlainString(), while this evaluates to .toString().
+                // TODO: Java used BigDecimal.toPlainString(); this is .toString().
                 writeAttributes(ostream, "quantity"->quantity.string);
             } else {
                 writeAttributes(ostream, "quantity"->quantity.integer);
@@ -268,7 +268,8 @@ void writeResource(XMLStreamWriter ostream, Object obj, Integer indent) {
             writeAttributes(ostream, "quantity"->quantity.integer);
         }
         else {
-            throw IllegalArgumentException("ResourcePile with non-Integer, non-Decimal quantity");
+            throw IllegalArgumentException(
+                "ResourcePile with non-Integer, non-Decimal quantity");
         }
         writeAttributes(ostream, "unit"->obj.quantity.units);
         if (obj.created >= 0) {

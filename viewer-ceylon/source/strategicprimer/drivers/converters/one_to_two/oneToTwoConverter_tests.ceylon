@@ -96,7 +96,8 @@ void assertModuloID(IMapNG map, String serialized, Anything(String) err) {
             "Actual is at least subset of expected converted, modulo IDs");
     }
 }
-void initialize(IMutableMapNG map, Point point, TileType? terrain, TileFixture* fixtures) {
+void initialize(IMutableMapNG map, Point point, TileType? terrain,
+        TileFixture* fixtures) {
     if (exists terrain, terrain != TileType.notVisible) {
         map.setBaseTerrain(point, terrain);
     }
@@ -247,8 +248,10 @@ shared void testOneToTwoConversion() {
     outOne.clear();
     outTwo.clear();
     assertEquals(
-        converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outTwo, str)),
-        converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outOne, str)),
+        converted.isSubset(convertOneToTwo(original, runner, true),
+                    (String str) => writeLine(outTwo, str)),
+        converted.isSubset(convertOneToTwo(original, runner, true),
+                    (String str) => writeLine(outOne, str)),
         "Products of two runs are both or neither subsets of expected");
     assertEquals(outTwo.string, outOne.string,
         "Two runs produce identical results");
@@ -378,8 +381,10 @@ shared void testMoreOneToTwoConversion() {
     outOne.clear();
     outTwo.clear();
     assertEquals(
-        converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outTwo, str)),
-        converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outOne, str)),
+        converted.isSubset(convertOneToTwo(original, runner, true),
+                    (String str) => writeLine(outTwo, str)),
+        converted.isSubset(convertOneToTwo(original, runner, true),
+                    (String str) => writeLine(outOne, str)),
         "Products of two runs are both or neither subsets of expected");
     assertEquals(outTwo.string, outOne.string,
         "Two runs produce identical results");
@@ -407,7 +412,8 @@ shared void testThirdOneToTwoConversion() {
     initialize(original, pointFactory(0, 0), TileType.notVisible, groundOne());
     original.addPlayer(independent);
     initialize(original, pointFactory(0, 1), TileType.borealForest,
-        Forest("ttree1", false, 1), Hill(1), Animal("animalKind", false, false, "wild", 2),
+        Forest("ttree1", false, 1), Hill(1),
+        Animal("animalKind", false, false, "wild", 2),
         Mine("mineral", TownStatus.active, 3), AdventureFixture(independent,
             "briefDescription", "fullDescription", 4),
         SimpleImmortal(SimpleImmortalKind.simurgh, 5),
@@ -568,8 +574,10 @@ shared void testThirdOneToTwoConversion() {
     outOne.clear();
     outTwo.clear();
     assertEquals(
-        converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outTwo, str)),
-        converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outOne, str)),
+        converted.isSubset(convertOneToTwo(original, runner, true),
+                    (String str) => writeLine(outTwo, str)),
+        converted.isSubset(convertOneToTwo(original, runner, true),
+                    (String str) => writeLine(outOne, str)),
         "Products of two runs are both or neither subsets of expected");
     assertEquals(outTwo.string, outOne.string,
         "Two runs produce identical results");
@@ -698,8 +706,10 @@ shared void testFourthOneToTwoConversion() {
     outOne.clear();
     outTwo.clear();
     assertEquals(
-        converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outTwo, str)),
-        converted.isSubset(convertOneToTwo(original, runner, true), (String str) => writeLine(outOne, str)),
+        converted.isSubset(convertOneToTwo(original, runner, true),
+                    (String str) => writeLine(outTwo, str)),
+        converted.isSubset(convertOneToTwo(original, runner, true),
+                    (String str) => writeLine(outOne, str)),
         "Products of two runs are both or neither subsets of expected");
     assertEquals(outTwo.string, outOne.string,
         "Two runs produce identical results");

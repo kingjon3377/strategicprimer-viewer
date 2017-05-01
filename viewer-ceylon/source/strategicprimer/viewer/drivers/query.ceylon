@@ -118,7 +118,8 @@ object largeMammals extends MammalModel(3.0, 40) { }
 "The model for roughly-goat-sized mammals."
 object smallMammals extends MammalModel(1.5, 30) { }
 "Models of (game statistics for) herding poultry."
-abstract class PoultryModel(production, poundsCoefficient, dailyTimePerHead, extraChoresInterval) of chickens | turkeys | pigeons satisfies HerdModel {
+abstract class PoultryModel(production, poundsCoefficient, dailyTimePerHead,
+        extraChoresInterval) of chickens | turkeys | pigeons satisfies HerdModel {
     "The number of eggs produced per head per turn."
     Float production;
     "The amount produced per head per turn."
@@ -230,7 +231,8 @@ object queryCLI satisfies SimpleDriver {
             Integer flockPerHerder) {
         cli.println("Taking the day's two milkings together, tending the animals takes ``
             flockPerHerder * animal.dailyTimePerHead`` minutes, or ``flockPerHerder *
-            (animal.dailyTimePerHead - 10)``, plus ``animal.dailyTimeFloor`` to gather them");
+            (animal.dailyTimePerHead - 10)``, plus ``animal.dailyTimeFloor
+            `` to gather them");
         Quantity base = animal.scaledProduction(count);
         Float production = base.floatNumber;
         cli.println("This produces ``Float.format(production, 0,
@@ -359,16 +361,16 @@ object queryCLI satisfies SimpleDriver {
     void replUsage(ICLIHelper cli) {
         cli.println("The following commands are supported:");
         cli.println(
-            "Fortress: Print what a player automatically knows about his fortress's tile.");
+            "Fortress: Show what a player automatically knows about a fortress's tile.");
         Integer encounters = hunterHours * hourlyEncounters;
-        cli.println("Hunt/fIsh: Generates up to ``encounters`` encounters with animals.`");
-        cli.println("Gather: Generates up to ``
+        cli.println("Hunt/fIsh: Generate up to ``encounters`` encounters with animals.`");
+        cli.println("Gather: Generate up to ``
             encounters`` encounters with fields, meadows, groves,");
         cli.println("orchards, or shrubs.");
         cli.println(
             "hErd: Determine the output from and time required for maintaining a herd.");
         cli.println(
-            "Trap: Switch to the trap-modeling program to run trapping or fish-trapping.");
+            "Trap: Switch to a trap-modeling program to run trapping or fish-trapping.");
         cli.println("Distance: Report the distance between two points.");
         cli.println("Count: Count how many workers belong to a player.");
         cli.println("Unexplored: Find the nearest unexplored tile not behind water.");

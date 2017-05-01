@@ -36,7 +36,8 @@ import strategicprimer.report.nodes {
 shared class VillageReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<Village>(comp, DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<Village>(comp, DistanceComparator(hq,
+            dimensions)) {
     "Produce the (very brief) report for a particular village (we're probably in the
      middle of a bulleted list, but we don't assume that), or the report on all known
      villages."
@@ -67,7 +68,8 @@ shared class VillageReportGenerator(
                         "<h4>Villages pledged to your service:</h4>", villageComparator);
             HeadedMap<Village, Point>&MutableMap<Village, Point> independents =
                     HeadedMapImpl<Village, Point>(
-                        "<h4>Villages you think are independent:</h4>", villageComparator);
+                        "<h4>Villages you think are independent:</h4>",
+                        villageComparator);
             MutableMap<Player, HeadedMap<Village, Point>
             &MutableMap<Village, Point>> others =
                     HashMap<Player, HeadedMap<Village, Point>
@@ -109,7 +111,8 @@ shared class VillageReportGenerator(
     }
     "Produce the (very brief) report for a particular village, or the report on all
      known villages."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, [Village, Point]? entry) {
         if (exists entry) {
             Village item = entry.first;
@@ -117,7 +120,8 @@ shared class VillageReportGenerator(
             fixtures.remove(item.id);
             if (item.owner.independent) {
                 return SimpleReportNode("At ``loc``: ``item.name``, a(n) ``item
-                    .race`` village, independent ``distCalculator.distanceString(loc)``", loc);
+                    .race`` village, independent ``distCalculator.distanceString(loc)``",
+                    loc);
             } else if (item.owner == currentPlayer) {
                 return SimpleReportNode("At ``loc``: ``item.name``, a(n) ``item
                     .race`` village, sworn to you ``distCalculator

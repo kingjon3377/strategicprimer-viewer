@@ -116,7 +116,8 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         return retval;
     }
     Player defaultPlayer = PlayerImpl(-1, "proxied");
-    shared actual Player owner => getCommonValue(IUnit.owner, defaultPlayer, defaultPlayer);
+    shared actual Player owner =>
+            getCommonValue(IUnit.owner, defaultPlayer, defaultPlayer);
     shared actual String kind {
         if (parallel) {
             return getCommonValue(IUnit.kind, "proxied", "proxied");
@@ -154,7 +155,8 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         log.warn("ProxyUnit.compare called");
         return super.compare(fixture);
     }
-    shared actual String defaultImage => getCommonValue(IUnit.defaultImage, "", "unit.png");
+    shared actual String defaultImage => getCommonValue(IUnit.defaultImage, "",
+        "unit.png");
     shared actual String image => getCommonValue(IUnit.image, "", "");
     assign image {
         log.warn("ProxyUnit.image setter called");
@@ -183,8 +185,10 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         if (!parallel) {
             return {}.iterator();
         } // else
-        MutableMap<Integer, UnitMember&ProxyFor<UnitMember>|IWorker&ProxyFor<IWorker>> map =
-                naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|IWorker&ProxyFor<IWorker>>({});
+        MutableMap<Integer, UnitMember&ProxyFor<UnitMember>|
+                    IWorker&ProxyFor<IWorker>> map =
+                naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|
+                    IWorker&ProxyFor<IWorker>>({});
         for (unit in proxiedList) {
             for (member in unit) {
                 UnitMember&ProxyFor<UnitMember>|IWorker&ProxyFor<IWorker> proxy;

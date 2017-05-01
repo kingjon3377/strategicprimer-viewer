@@ -64,7 +64,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
        [[strategicprimer.model.map.fixtures.resources::StoneDeposit]] and
        [[strategicprimer.model.map.fixtures.resources::MineralVein]] compares DCs."""
     static Boolean areDiggablesEqual(IFixture firstFixture, IFixture secondFixture) =>
-            firstFixture == secondFixture || firstFixture.copy(true) == secondFixture.copy(true);
+            firstFixture == secondFixture || firstFixture.copy(true) == secondFixture
+                .copy(true);
     "If a unit's motion could be observed by someone allied to another (non-independent)
      player (which at present means the unit is moving *to* a tile two or fewer tiles away
      from the watcher), print a message saying so to stdout."
@@ -72,7 +73,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         MapDimensions dimensions = map.dimensions;
         for (point in surroundingPointIterable(dest, dimensions).distinct) {
             for (fixture in map.otherFixtures(point)) {
-                if (is HasOwner fixture, !fixture.owner.independent, fixture.owner != unit.owner) {
+                if (is HasOwner fixture, !fixture.owner.independent,
+                        fixture.owner != unit.owner) {
                     process.writeLine("Motion to ``dest`` could be observed by ``fixture
                         .shortDescription`` at ``point``");
                 }

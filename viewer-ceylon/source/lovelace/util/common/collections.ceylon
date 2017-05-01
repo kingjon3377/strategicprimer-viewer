@@ -6,8 +6,10 @@ import ceylon.collection {
     MutableSet
 }
 
-"A MutableMap that actually executes the removal of elements only when the coalesce() method is called."
-shared interface DelayedRemovalMap<Key, Item> satisfies MutableMap<Key, Item> given Key satisfies Object {
+"A MutableMap that actually executes the removal of elements only when the coalesce()
+ method is called."
+shared interface DelayedRemovalMap<Key, Item> satisfies MutableMap<Key, Item>
+        given Key satisfies Object {
     "Apply all scheduled and pending removals."
     shared formal void coalesce();
 }

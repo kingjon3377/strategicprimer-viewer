@@ -43,8 +43,8 @@ import strategicprimer.model.xmlio.exceptions {
 "A reader for resource-bearing [[strategicprimer.model.map::TileFixture]]s."
 class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         extends YAAbstractReader<HarvestableFixture>(warner, idRegistrar) {
-    {String*} supportedTags = set { "cache", "grove", "orchard", "field", "meadow", "mine",
-        "mineral", "shrub", "stone"};
+    {String*} supportedTags = set { "cache", "grove", "orchard", "field", "meadow",
+        "mine", "mineral", "shrub", "stone"};
     HarvestableFixture createMeadow(StartElement element, Boolean field, Integer idNum) {
         requireNonEmptyParameter(element, "status", false);
         value cultivated = Boolean.parse(getParameter(element, "cultivated"));
@@ -139,7 +139,8 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         retval.image = getParameter(element, "image", "");
         return retval;
     }
-    shared actual void write(Anything(String) ostream, HarvestableFixture obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, HarvestableFixture obj,
+            Integer indent) {
         if (is CacheFixture obj) {
             writeTag(ostream, "cache", indent);
             writeProperty(ostream, "kind", obj.kind);

@@ -251,7 +251,8 @@ shared class FortressReportGenerator(
     }
     "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
      this report are removed from the collection."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, [Fortress, Point]? entry) {
         if (exists entry) {
             Fortress item = entry.first;
@@ -272,8 +273,8 @@ shared class FortressReportGenerator(
                 if (is IUnit member) {
                     units.appendNode(urg.produceRIR(fixtures, map, [member, loc]));
                 } else if (is Implement member) {
-                    equipment.appendNode(memberReportGenerator.produceRIR(fixtures, map, [member,
-                        loc]));
+                    equipment.appendNode(memberReportGenerator.produceRIR(fixtures, map,
+                        [member, loc]));
                 } else if (is ResourcePile member) {
                     IReportNode node;
                     if (exists temp = resourceKinds.get(member.kind)) {
@@ -282,11 +283,11 @@ shared class FortressReportGenerator(
                         node = ListReportNode("``member.kind``:");
                         resourceKinds.put(member.kind, node);
                     }
-                    node.appendNode(memberReportGenerator.produceRIR(fixtures, map, [member,
-                        loc]));
+                    node.appendNode(memberReportGenerator.produceRIR(fixtures, map,
+                        [member, loc]));
                 } else {
-                    contents.appendNode(memberReportGenerator.produceRIR(fixtures, map, [member,
-                        loc]));
+                    contents.appendNode(memberReportGenerator.produceRIR(fixtures, map,
+                        [member, loc]));
                 }
             }
             for (node in resourceKinds.items) {

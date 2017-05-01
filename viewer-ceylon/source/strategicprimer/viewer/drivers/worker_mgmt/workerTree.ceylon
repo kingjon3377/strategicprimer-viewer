@@ -79,10 +79,11 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         {Player*} players,
         "How to get the current turn"
         Integer() turnSource,
-        """Whether we should visually warn if orders contain substrings indicating remaining
-           work or if a unit named "unassigned" is nonempty"""
+        """Whether we should visually warn if orders contain substrings indicating
+           remaining work or if a unit named "unassigned" is nonempty"""
         Boolean orderCheck) {
-    object retval extends JTree() satisfies UnitMemberSelectionSource&UnitSelectionSource {
+    object retval extends JTree()
+            satisfies UnitMemberSelectionSource&UnitSelectionSource {
         model = wtModel;
         rootVisible = false;
         dragEnabled = true;
@@ -92,7 +93,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             shared actual Integer getSourceActions(JComponent component) =>
                     TransferHandler.move;
             "Create a transferable representing the selected node(s)."
-            shared actual UnitMemberTransferable? createTransferable(JComponent component) {
+            shared actual UnitMemberTransferable? createTransferable(
+                    JComponent component) {
                 value paths = selectionModel.selectionPaths;
                 MutableList<[UnitMember, IUnit]> toTransfer =
                         ArrayList<[UnitMember, IUnit]>();
@@ -146,7 +148,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                             assert (is  [UnitMember, IUnit][] list =
                                     trans.getTransferData(UnitMemberTransferable.flavor));
                             for (pair in list) {
-                                wtModel.moveMember(pair.first, pair.rest.first, tempTarget);
+                                wtModel.moveMember(pair.first, pair.rest.first,
+                                    tempTarget);
                             }
                             return true;
                         } catch (UnsupportedFlavorException except) {
@@ -175,7 +178,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 pen.color = Color.\iRED;
                 Float margin = 0.15;
                 Integer firstCorner = halfEven(imageSize * margin).integer + 1;
-                Integer firstDimension = halfEven(imageSize * (1.0 - (margin * 2.0))).integer;
+                Integer firstDimension = halfEven(imageSize * (1.0 - (margin * 2.0)))
+                    .integer;
                 Integer firstArcDimension = halfEven(imageSize * (margin / 2.0)).integer;
                 pen.fillRoundRect(firstCorner, firstCorner, firstDimension,
                     firstDimension, firstArcDimension, firstArcDimension);
@@ -265,7 +269,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         if (is WorkerTreeModelAlt.WorkerTreeNode<IUnit> child) {
                             IUnit unit = child.userObjectNarrowed;
                             if (!unit.empty) {
-                                String orders = unit.getLatestOrders(turnSource()).lowercased;
+                                String orders = unit.getLatestOrders(turnSource())
+                                    .lowercased;
                                 if (orders.contains("fixme"),
                                     is DefaultTreeCellRenderer component) {
                                     component.backgroundSelectionColor = Color.pink;

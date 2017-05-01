@@ -55,8 +55,10 @@ Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,
     for (event in stream) {
         if (is StartElement event, isSPStartElement(event)) {
             switch (event.name.localPart)
-            case ("job") { retval.addJob(readJob(event, element.name, stream, players, warner, idFactory)); }
-            case ("stats") { retval.stats = readStats(event, element.name, stream, players, warner, idFactory); }
+            case ("job") { retval.addJob(readJob(event, element.name, stream, players,
+                warner, idFactory)); }
+            case ("stats") { retval.stats = readStats(event, element.name, stream,
+                players, warner, idFactory); }
             else { throw UnwantedChildException(element.name, event); }
         } else if (is EndElement event, element.name == event.name) {
             break;
@@ -76,7 +78,8 @@ IJob readJob(StartElement element, QName parent, {XMLEvent*} stream,
     for (event in stream) {
         if (is StartElement event, isSPStartElement(event)) {
             if ("skill" == event.name.localPart) {
-                retval.addSkill(readSkill(event, element.name, stream, players, warner, idFactory));
+                retval.addSkill(readSkill(event, element.name, stream, players, warner,
+                    idFactory));
             } else {
                 throw UnwantedChildException(element.name, event);
             }

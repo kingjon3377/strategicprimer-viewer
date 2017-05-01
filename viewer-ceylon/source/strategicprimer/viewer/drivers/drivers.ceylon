@@ -107,10 +107,12 @@ Map<String, ISPDriver[2]> createCache() {
             log.warn("``guiUsage.shortDescription`` is CLI but passed as GUI");
         }
         if (cliUsage.shortOption != guiUsage.shortOption) {
-            log.warn("Short options don't match between ``cliUsage.shortDescription`` and ``guiUsage.shortDescription``");
+            log.warn("Short options don't match between ``
+                        cliUsage.shortDescription`` and ``guiUsage.shortDescription``");
         }
         if (cliUsage.longOption != guiUsage.longOption) {
-            log.warn("Long options don't match between ``cliUsage.shortDescription`` and ``guiUsage.shortDescription``");
+            log.warn("Long options don't match between ``
+                        cliUsage.shortDescription`` and ``guiUsage.shortDescription``");
         }
         cache.put(cliUsage.shortOption, [cliDriver, guiDriver]);
         cache.put(cliUsage.longOption, [cliDriver, guiDriver]);
@@ -240,7 +242,7 @@ shared void run() {
                     if (exists temp = currentDrivers) {
                         SPOptions currentOptionsTyped = currentOptions;
                         if (gui) {
-                            // TODO: catch and log a DriverFailedException inside the lambda
+                            // TODO: catch and log a DriverFailedException inside lambda
                             SwingUtilities.invokeLater(() =>
                                 temp.rest.first.startDriverOnArguments(cli,
                                     currentOptionsTyped, *others));
@@ -273,8 +275,8 @@ shared void run() {
                 if (gui) {
                     // TODO: catch and log a DriverFailedException inside the lambda
                     SwingUtilities.invokeLater(() =>
-                        drivers.rest.first.startDriverOnArguments(cli, currentOptionsTyped,
-                            *others));
+                        drivers.rest.first.startDriverOnArguments(cli,
+                            currentOptionsTyped, *others));
                 } else {
                     drivers.first.startDriverOnArguments(cli, currentOptionsTyped,
                         *others);
@@ -293,7 +295,8 @@ shared void run() {
                 } else {
                     ISPDriver[] driversList = [*driverCache.items.map(Tuple.first)];
                     value choice = cli.chooseFromList(driversList,
-                        "CLI apps available:", "No applications available", "App to start: ", true);
+                        "CLI apps available:", "No applications available",
+                        "App to start: ", true);
                     if (exists chosenDriver = choice.item) {
                         chosenDriver.startDriverOnArguments(cli, options, *others);
                     }
@@ -376,7 +379,8 @@ object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
         longOption = "--duplicates";
         paramsWanted = ParamCount.one;
         shortDescription = "Remove duplicate fixtures";
-        longDescription = "Remove duplicate fixtures (identical except ID# and on the same tile) from a map.";
+        longDescription = "Remove duplicate fixtures (identical except ID# and on the
+                           same tile) from a map.";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     "Run the driver"

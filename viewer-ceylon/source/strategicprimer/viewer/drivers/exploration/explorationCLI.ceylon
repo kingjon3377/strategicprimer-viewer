@@ -29,10 +29,12 @@ shared object explorationCLI satisfies SimpleCLIDriver {
         longOption = "--explore";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Run exploration.";
-        longDescription = "Move a unit around the map, updating the player's map with what it sees.";
+        longDescription = "Move a unit around the map, updating the player's map with
+                           what it sees.";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         IExplorationModel explorationModel;
         if (is IExplorationModel model) {
             explorationModel = model;
@@ -41,7 +43,8 @@ shared object explorationCLI satisfies SimpleCLIDriver {
         }
         try {
             ExplorationCLIHelper eCLI = ExplorationCLIHelper(explorationModel, cli);
-            if (exists player = eCLI.choosePlayer(), exists unit = eCLI.chooseUnit(player)) {
+            if (exists player = eCLI.choosePlayer(),
+                    exists unit = eCLI.chooseUnit(player)) {
                 explorationModel.selectedUnit = unit;
                 eCLI.moveUntilDone();
             }

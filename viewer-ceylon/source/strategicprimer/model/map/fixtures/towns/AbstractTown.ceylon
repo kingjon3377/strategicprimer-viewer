@@ -12,7 +12,8 @@ import strategicprimer.model.map.fixtures {
 }
 "An abstract superclass for towns etc."
 todo("Satisfy Subsettable")
-shared abstract class AbstractTown(status, townSize, name, owner, dc) satisfies IEvent&HasMutableImage&ITownFixture {
+shared abstract class AbstractTown(status, townSize, name, owner, dc)
+        satisfies IEvent&HasMutableImage&ITownFixture {
     "The status of the town, fortification, or city"
     shared actual TownStatus status;
     "The size of the town, fortification, or city"
@@ -86,8 +87,8 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc) satisfies 
             return "An independent ``townSize`` ``status`` ``kind`` ``(name.empty) then
                 "with no name" else "named ``name``"``";
         } else {
-            return "A ``townSize`` ``status`` ``kind`` ``(name.empty) then "with no name" else
-                "named ``name``"``, owned by ``(owner.current) then "you" else
+            return "A ``townSize`` ``status`` ``kind`` ``(name.empty) then "with no name"
+                else "named ``name``"``, owned by ``(owner.current) then "you" else
                 owner.name``";
         }
     }

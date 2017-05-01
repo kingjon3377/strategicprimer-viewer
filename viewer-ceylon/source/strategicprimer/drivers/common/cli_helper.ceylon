@@ -329,8 +329,8 @@ shared class CLIHelper satisfies ICLIHelper {
         }
     }
     "Have the user choose an item from a list."
-    shared actual Integer->String? chooseStringFromList(String[] items, String description,
-            String none, String prompt, Boolean auto) {
+    shared actual Integer->String? chooseStringFromList(String[] items,
+            String description, String none, String prompt, Boolean auto) {
         return chooseFromListImpl<String>(items, description, none, prompt, auto,
                     (String x) => x);
     }
@@ -445,7 +445,7 @@ void testInputNumber() {
         "inputNumber asks again on non-numeric input");
     // https://github.com/ceylon/ceylon/issues/5448
 //    try (cli = CLIHelper(ArrayList { "" }.accept, noop)) {
-//        assertThatException(() => cli.inputNumber("test prompt")).hasType(`IOException`);
+//       assertThatException(() => cli.inputNumber("test prompt")).hasType(`IOException`);
 //    }
 }
 "Test inputDecimal"
@@ -473,7 +473,8 @@ void testInputString() {
     assertCLI((cli) => cli.inputString("string prompt"), {"first"}, "string prompt",
         "first", "inputString returns the entered string", "inputString displays prompt");
     assertCLI((cli) => cli.inputString("second prompt"), {"second"}, "second prompt",
-        "second", "inputString returns the entered string", "inputString displays prompt");
+        "second", "inputString returns the entered string",
+        "inputString displays prompt");
     assertCLI((cli) => cli.inputString("third prompt"), {}, "third prompt", "",
         "inputString returns empty on EOF", "inputString displays prompt");
 }

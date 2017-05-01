@@ -89,7 +89,8 @@ class MiningModel(initial, seed, kind) {
      to [[LodeStatus]]es."
     Map<Point, LodeStatus> data = map {
         *unnormalized
-            .map((key->status) => pointFactory(key.row, key.column - minimumColumn)->status)
+            .map((key->status) => pointFactory(key.row,
+                key.column - minimumColumn)->status)
     };
     "The farthest row and column we reached."
     shared Point maximumPoint = pointFactory(max(data.keys.map(Point.row)) else 0,

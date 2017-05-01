@@ -6,7 +6,7 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    DelayedRemovalMap
+    DRMap=DelayedRemovalMap
 }
 
 import strategicprimer.model {
@@ -34,9 +34,10 @@ import strategicprimer.report.nodes {
 "A report generator for sightings of animals."
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<Animal>(comp, DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<Animal>(comp,
+            DistanceComparator(hq, dimensions)) {
     "Produce the sub-report about animals or an individual Animal."
-    shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, [Animal, Point]? entry) {
         if (exists entry) {
             Animal item = entry.first;
@@ -97,7 +98,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
         }
     }
     "Produce the sub-report about animals or an individual Animal."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer,[Point,IFixture]> fixtures,
+    shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures,
             IMapNG map, [Animal, Point]? entry) {
         if (exists entry) {
             Animal item = entry.first;

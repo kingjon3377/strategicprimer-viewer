@@ -35,7 +35,8 @@ import strategicprimer.model.map.fixtures.resources {
 }
 "A list to let the user select which fixtures ought to be searched."
 SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
-    DefaultListModel<FixtureMatcher> matcherListModel = ReorderableListModel<FixtureMatcher>();
+    DefaultListModel<FixtureMatcher> matcherListModel =
+            ReorderableListModel<FixtureMatcher>();
     for (matcher in {simpleMatcher<Ground>(Ground.exposed, "Ground (exposed)"),
         simpleMatcher<Ground>((Ground ground) => !ground.exposed, "Ground"),
         simpleMatcher<Grove>(Grove.orchard, "Orchards"),
@@ -65,7 +66,8 @@ SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
     selectionModel.selectionMode = ListSelectionModel.multipleIntervalSelection;
     selectionModel.addListSelectionListener((ListSelectionEvent event) {
         for (i in 0:matcherListModel.size) {
-            matcherListModel.getElementAt(i).displayed = selectionModel.isSelectedIndex(i);
+            matcherListModel.getElementAt(i).displayed =
+                selectionModel.isSelectedIndex(i);
         }
     });
     DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();

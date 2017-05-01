@@ -51,7 +51,8 @@ import strategicprimer.drivers.exploration.common {
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         satisfies MovementCostSource {
     HuntingModel huntingModel = HuntingModel(model.map);
-    MutableList<Anything(Integer)|MovementCostListener> listeners = ArrayList<Anything(Integer)|MovementCostListener>();
+    MutableList<Anything(Integer)|MovementCostListener> listeners =
+            ArrayList<Anything(Integer)|MovementCostListener>();
     shared actual void addMovementCostListener(MovementCostListener listener) =>
             listeners.add(listener);
     shared actual void removeMovementCostListener(MovementCostListener listener) =>

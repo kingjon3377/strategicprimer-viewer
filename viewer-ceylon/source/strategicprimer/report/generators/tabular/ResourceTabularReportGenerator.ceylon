@@ -95,7 +95,8 @@ shared class ResourceTabularReportGenerator()
                 if (is CacheFixture|Implement|ResourcePile resource = item.rest.first)
                 [key, [item.first, resource]]}
                     .sort(comparingOn(
-                            ([Integer, [Point, CacheFixture|Implement|ResourcePile]] pair) =>
+                            ([Integer,
+                                [Point, CacheFixture|Implement|ResourcePile]] pair) =>
                     pair.rest.first, comparePairs));
         writeRow(ostream, headerRow.first, *headerRow.rest);
         MutableMap<String, Integer> implementCounts = HashMap<String, Integer>();

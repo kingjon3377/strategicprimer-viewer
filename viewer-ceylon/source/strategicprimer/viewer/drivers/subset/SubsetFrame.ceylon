@@ -100,8 +100,8 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
                 printParagraph(except.message, LabelTextColor.red);
                 throw except;
             } catch (SPFormatException except) {
-                printParagraph("ERROR: SP map format error at line ``except.line`` in file ``
-                path``; see following error message for details",
+                printParagraph("ERROR: SP map format error at line ``except.line
+                        `` in file ``path``; see following error message for details",
                     LabelTextColor.red);
                 printParagraph(except.message, LabelTextColor.red);
                 throw except;
@@ -133,15 +133,17 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
         printParagraph("Testing ``filename`` ...");
         try (formatter = Formatter(htmlWriter)) {
             if (mainMap.isSubset(map,
-                        (String string) => formatter.format("%s: %s", filename, string))) {
+                        (String string) => formatter.format("%s: %s", filename,
+                            string))) {
                 printParagraph("OK", LabelTextColor.green);
             } else {
                 printParagraph("WARN", LabelTextColor.yellow);
             }
         }
     }
-    """Read a map from file and test it against the main map to see if it's a strict subset.
-       This method "eats" (but logs) all (anticipated) errors in reading the file."""
+    """Read a map from file and test it against the main map to see if it's a strict
+       subset. This method "eats" (but logs) all (anticipated) errors in reading the
+       file."""
     shared void testFile(JPath path) {
         printParagraph("Testing ``path`` ...");
         IMapNG map;
@@ -158,7 +160,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
             return;
         } catch (XMLStreamException except) {
             printParagraph(
-                "FAIL: Malformed XML in the file; see following error message for details",
+                "FAIL: Malformed XML; see following error message for details",
                 LabelTextColor.red);
             printParagraph(except.message, LabelTextColor.red);
             log.error("Malformed XML in file ``path``", except);

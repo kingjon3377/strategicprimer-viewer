@@ -16,7 +16,8 @@ import strategicprimer.model.map {
 }
 todo("Convert to an interface, or otherwise provide an alternative for non-active
       communities to suggest contents to be found there",
-    "Allow towns to contain Workers, so inhabitants players know about can be represented")
+    "Allow towns to contain Workers, so inhabitants players know about can be
+     represented")
 shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStats?> {
     "Approximately how many adults live in the community."
     variable Integer populationCount;
@@ -122,7 +123,8 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
             } else {
                 for (resource in other.yearlyProduction) {
                     if (yearlyProduction.contains(resource) ||
-                            yearlyProduction.any((ours) => ours.isSubset(resource, noop))) {
+                            yearlyProduction.any((ours) =>
+                                ours.isSubset(resource, noop))) {
                         continue;
                     } else {
                         report("Produces a resource we don't, or more than we do: ``
@@ -132,7 +134,8 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
                 }
                 for (resource in other.yearlyConsumption) {
                     if (yearlyConsumption.contains(resource) ||
-                            yearlyConsumption.any((ours) => ours.isSubset(resource, noop))) {
+                            yearlyConsumption.any(
+                                        (ours) => ours.isSubset(resource, noop))) {
                         continue;
                     } else {
                         report("Consumes a resource we don't, or more than we do: ``

@@ -2,9 +2,12 @@ import lovelace.util.common {
     todo
 }
 "Possible tile types."
-todo("Ought to include swamp, if not other additional types, for use in other worlds' maps")
+todo("Ought to include swamp, if not other additional types, for use in other worlds'
+      maps")
 suppressWarnings("deprecation")
-shared class TileType of tundra|desert|mountain|borealForest|temperateForest|ocean|plains|jungle|steppe|notVisible {
+shared class TileType
+		of tundra|desert|mountain|borealForest|temperateForest|ocean|plains|jungle|steppe
+			|notVisible {
 	"All tile types the given version supports."
 	todo("Write tests for this")
 	shared static {TileType*} valuesForVersion(Integer version) =>

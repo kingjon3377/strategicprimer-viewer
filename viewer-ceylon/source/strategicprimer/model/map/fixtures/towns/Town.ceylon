@@ -13,8 +13,8 @@ shared class Town("The status of the town" TownStatus townStatus,
     shared actual String kind => "town";
     shared actual String defaultImage = "town.png";
     shared actual Town copy(Boolean zero) {
-        Town retval = Town(super.status, super.townSize, (zero) then 0 else discoverDC, townName, id,
-            player);
+        Town retval = Town(super.status, super.townSize, (zero) then 0 else discoverDC,
+            townName, id, player);
         retval.image = image;
         if (!zero) {
             retval.population = population;

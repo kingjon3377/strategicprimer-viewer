@@ -258,7 +258,8 @@ void assertSerialization(String message, Object obj,
         for (deprecated in `Boolean`.caseValues) {
             try (stringReader = StringReader(createSerializedForm(obj,
                     deprecated))) {
-                assertEquals(reader.readXML<Object>(fakeFilename, stringReader, warner), obj, message);
+                assertEquals(reader.readXML<Object>(fakeFilename, stringReader, warner),
+                    obj, message);
             }
         }
     }
@@ -324,8 +325,8 @@ void assertDeprecatedDeserialization<Type>(
         String tag) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertEquals(reader.readXML<Type>(fakeFilename, stringReader, warningLevels.ignore), expected,
-                message);
+            assertEquals(reader.readXML<Type>(fakeFilename, stringReader,
+                warningLevels.ignore), expected, message);
         }
     }
     assertDeprecatedProperty<Type>(xml, property, preferred, tag, true);
@@ -344,7 +345,8 @@ void assertMissingPropertyDeserialization<Type>(
         String property) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertEquals(reader.readXML<Type>(fakeFilename, stringReader, warningLevels.ignore), expected, message);
+            assertEquals(reader.readXML<Type>(fakeFilename, stringReader,
+                warningLevels.ignore), expected, message);
         }
     }
     assertMissingProperty<Type>(xml, property, true);
@@ -362,7 +364,8 @@ void assertForwardDeserialization<Type>(
         Boolean(Type) assertion) given Type satisfies Object {
     for (reader in {oldReader, newReader}) {
         try (stringReader = StringReader(xml)) {
-            assertTrue(assertion(reader.readXML<Type>(fakeFilename, stringReader, warningLevels.die)), message);
+            assertTrue(assertion(reader.readXML<Type>(fakeFilename, stringReader,
+                warningLevels.die)), message);
         }
     }
 }
@@ -420,7 +423,8 @@ String encapsulateTileString(String str) {
             <tile row=\"1\" column=\"1\" kind=\"plains\">``str``</tile></map>";
 }
 
-{[TownStatus, String]*} villageParameters = `TownStatus`.caseValues.product(races.distinct);
+{[TownStatus, String]*} villageParameters =
+        `TownStatus`.caseValues.product(races.distinct);
 
 test
 parameters(`value villageParameters`)
@@ -433,8 +437,8 @@ void testVillageSerialization(TownStatus status, String race) {
     Village thirdVillage = Village(status, "", 3, owner, race);
     for (deprecated in {true, false}) {
         assertMissingPropertyDeserialization(
-            "Village serialization with no or empty name does The Right Thing", thirdVillage,
-            createSerializedForm(thirdVillage, deprecated), "name");
+            "Village serialization with no or empty name does The Right Thing",
+            thirdVillage, createSerializedForm(thirdVillage, deprecated), "name");
     }
     assertUnwantedChild<Village>("<village status=\"``status``\"><village /></village>",
         false);
@@ -492,8 +496,8 @@ test
 parameters(`value townParameters`)
 void testFortificationSerialization(TownSize size, TownStatus status) {
     Player owner = PlayerImpl(-1, "");
-    assertSerialization("First Fortification serialization test, status ``status``, size ``size``",
-        Fortification(status, size, 10, "one", 0, owner));
+    assertSerialization("First Fortification serialization test, status ``status
+        ``, size ``size``", Fortification(status, size, 10, "one", 0, owner));
     assertSerialization(
         "Second Fortification serialization test, status ``status``, size ``size``",
         Fortification(status, size, 40, "two", 1, owner));
@@ -511,7 +515,8 @@ void testFortificationSerialization(TownSize size, TownStatus status) {
         "<fortification status=\"``status``\" size=\"``size``\"
          name=\"name\" dc=\"0\" id=\"0\" />", "owner", true);
     assertImageSerialization("Fortification image property is preserved", thirdFort);
-    assertPortraitSerialization("Fortification portrait property is preserved", thirdFort);
+    assertPortraitSerialization("Fortification portrait property is preserved",
+        thirdFort);
     Fortification fourthFort = Fortification(status, size, 40, "fortName", 4, owner);
     CommunityStats population = CommunityStats(3);
     population.addWorkedField(7);
@@ -760,7 +765,8 @@ void testTileSerializationTwo() {
             assertEquals(serializedForm, xmlTwoAlphabetical, "Multiple units");
         } catch (AssertionError two) {
             try {
-                assertEquals(serializedForm, xmlTwoLogical.replace("\" />", "\"/>"), "Multiple units");
+                assertEquals(serializedForm, xmlTwoLogical.replace("\" />", "\"/>"),
+                    "Multiple units");
             } catch (AssertionError three) {
                 throw MultipleFailureException([one, two, three]);
             }
@@ -811,7 +817,8 @@ void testTileSerializationThree() {
     six.setForest(pointFactory(1, 0), Forest("pine", false, 19));
     six.addFixture(pointFactory(1, 1), Animal("beaver", false, false, "wild", 18));
     for (deprecated in {true, false}) {
-        assertMissingPropertyDeserialization("Not-visible tiles with contents are serialized",
+        assertMissingPropertyDeserialization(
+            "Not-visible tiles with contents are serialized",
             six, createSerializedForm(six, deprecated), "kind");
     }
 }
@@ -902,7 +909,8 @@ void testNamespacedSerialization() {
         "<map xmlns=\"``spNamespace``\" version=\"2\" rows=\"1\" columns=\"1\"
          current_player=\"1\" xmlns:xy=\"xyzzy\"><player number=\"1\"
          code_name=\"playerOne\" /><xy:xyzzy><row index=\"0\"><tile row=\"0\"
-         column=\"0\" kind=\"steppe\"><xy:hill id=\"0\" /></tile></row></xy:xyzzy></map>");
+         column=\"0\" kind=\"steppe\"><xy:hill id=\"0\" /></tile></row></xy:xyzzy></map>
+         ");
     try {
         assertMapDeserialization("Root tag must be in supported namespace", firstMap,
             """<map xmlns="xyzzy" version="2" rows="1" columns="1" current_player="1">
@@ -1242,7 +1250,8 @@ void testFortressMemberSerialization() {
         Quantity(15, "pounds"));
     resource.created = 5;
     assertSerialization("Resource pile can know what turn it was created", resource);
-    assertSerialization("Resource pile can have non-integer quantity", ResourcePile(5, "resourceKind", "specificKind2",
+    assertSerialization("Resource pile can have non-integer quantity", ResourcePile(5,
+        "resourceKind", "specificKind2",
         Quantity(decimalNumber(3) / decimalNumber(2), "cubic feet")));
 }
 

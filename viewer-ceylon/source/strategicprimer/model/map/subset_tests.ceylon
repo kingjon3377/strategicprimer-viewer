@@ -134,14 +134,16 @@ void testFortressSubset() {
     requireMatching(firstFort,
         Fortress(PlayerImpl(1, "one"), "fTwo", fortId, TownSize.small), "same name");
     requireMatching(firstFort,
-        Fortress(PlayerImpl(1, "one"), "fOne", 3, TownSize.small), "identity or ID equality");
+        Fortress(PlayerImpl(1, "one"), "fOne", 3, TownSize.small),
+        "identity or ID equality");
     Fortress fifthFort = Fortress(PlayerImpl(1, "one"), "fOne", fortId, TownSize.small);
     fifthFort.addMember(Unit(PlayerImpl(2, "two"), "unit_type", "unit_name", 4));
     assertIsSubset<Fortress, IFixture>(fifthFort, firstFort,
         "Fortress without is a subset of fortress with unit");
     assertNotSubset<Fortress, IFixture>(firstFort, fifthFort,
         "Fortress with is not a subset of fortress without unit");
-    Fortress sixthFort = Fortress(PlayerImpl(1, "one"), "unknown", fortId, TownSize.small);
+    Fortress sixthFort = Fortress(PlayerImpl(1, "one"), "unknown", fortId,
+        TownSize.small);
     assertIsSubset<Fortress, IFixture>(firstFort, sixthFort,
         """Fortress named "unknown" can be subset""");
     assertNotSubset<Fortress, IFixture>(sixthFort, firstFort,
@@ -187,7 +189,8 @@ void testMapSubset() {
     firstMap.addFixture(pointFactory(1, 1), Animal("animal", true, false, "status", 5));
     assertIsSubset(secondMap, firstMap, "Subset calculation ignores animal tracks");
     firstMap.addFixture(pointFactory(1, 1), Animal("animal", false, true, "status", 7));
-    assertNotSubset(secondMap, firstMap, "Subset calculation does not ignore other fixtures");
+    assertNotSubset(secondMap, firstMap,
+        "Subset calculation does not ignore other fixtures");
 }
 
 "Test map subset calculations to ensure that off-by-one errors are caught."
@@ -250,7 +253,8 @@ void testSubsetsAndCopy() {
     firstMap.addFixture(pointFactory(1, 1), TextFixture("text", -1));
     firstMap.addFixture(pointFactory(1, 1), Animal("animal", true, false, "status", 5));
     firstMap.addFixture(pointFactory(0, 0),
-        Fortification(TownStatus.burned, TownSize.large, 15, "fortification", 6, PlayerImpl(0, "")));
+        Fortification(TownStatus.burned, TownSize.large, 15, "fortification", 6,
+            PlayerImpl(0, "")));
     assertEquals(firstMap.copy(false, null), firstMap, "Cloned map equals original");
     IMapNG clone = firstMap.copy(true, null);
     assertIsSubset(clone, zero, "unfilled map is still a subset of zeroed clone");

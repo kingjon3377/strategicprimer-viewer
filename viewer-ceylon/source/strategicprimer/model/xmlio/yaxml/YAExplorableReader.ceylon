@@ -49,7 +49,8 @@ class YAExplorableReader(Warning warning, IDRegistrar idRegistrar)
         retval.image = getParameter(element, "image", "");
         return retval;
     }
-    shared actual void write(Anything(String) ostream, ExplorableFixture obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, ExplorableFixture obj,
+            Integer indent) {
         switch (obj)
         case (is Battlefield) { writeTag(ostream, "battlefield", indent); }
         case (is Cave) { writeTag(ostream, "cave", indent); }

@@ -83,8 +83,8 @@ shared object viewerGUI satisfies SimpleDriver {
                 // Java version had topRow + dimensions.rows and
                 // leftColumn + dimensions.columns as max row and column; this seems
                 // plainly wrong.
-                model.visibleDimensions = VisibleDimensions(topRow, topRow + visible.height,
-                    leftColumn, leftColumn + visible.width);
+                model.visibleDimensions = VisibleDimensions(topRow,
+                    topRow + visible.height, leftColumn, leftColumn + visible.width);
             }, "center");
             SwingUtilities.invokeLater(() {
                 SPFrame&IViewerFrame frame = viewerFrame(model,

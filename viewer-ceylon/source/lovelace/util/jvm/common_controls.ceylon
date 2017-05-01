@@ -252,8 +252,8 @@ shared JSplitPane verticalSplit(Float dividerLocation, Float resizeWeight, Compo
     return retval;
 }
 see(`function verticalSplit`)
-shared JSplitPane horizontalSplit(Float dividerLocation, Float resizeWeight, Component left,
-        Component right) {
+shared JSplitPane horizontalSplit(Float dividerLocation, Float resizeWeight,
+        Component left, Component right) {
     JSplitPane retval = JSplitPane(JSplitPane.horizontalSplit, true, left, right);
     retval.setDividerLocation(dividerLocation);
     retval.resizeWeight = resizeWeight;

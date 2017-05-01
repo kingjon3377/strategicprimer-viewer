@@ -30,7 +30,8 @@ shared object strategyExportCLI satisfies SimpleDriver {
         paramsWanted = ParamCount.one;
         shortDescription = "Export a proto-strategy";
         longDescription = "Create a proto-strategy using orders stored in the map";
-        supportedOptionsTemp = [ "--current-turn=NN", "--print-empty", "--export=filename.txt" ];
+        supportedOptionsTemp = [ "--current-turn=NN", "--print-empty",
+            "--export=filename.txt" ];
     };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {

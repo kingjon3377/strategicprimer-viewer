@@ -131,7 +131,8 @@ shared IMapNG decreaseResolution(IMapNG old) {
 	}
 	return retval;
 }
-void initialize(IMutableMapNG map, Point point, TileType? terrain, TileFixture* fixtures) {
+void initialize(IMutableMapNG map, Point point, TileType? terrain,
+		TileFixture* fixtures) {
 	if (exists terrain, terrain != TileType.notVisible) {
 		map.setBaseTerrain(point, terrain);
 	}

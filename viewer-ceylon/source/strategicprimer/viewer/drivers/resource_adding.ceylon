@@ -182,8 +182,8 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
         }
     }
     "Ask the user to enter a resource."
-    void enterResource(IDRegistrar idf, ResourceManagementDriverModel model, ICLIHelper cli,
-            Player player) {
+    void enterResource(IDRegistrar idf, ResourceManagementDriverModel model,
+            ICLIHelper cli, Player player) {
         String kind = getResourceKind(cli);
         String origContents = getResourceContents(kind, cli);
         String units = getResourceUnits(origContents, cli);
@@ -233,7 +233,8 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
         }
     }
 }
-"A window to let the user enter resources etc. Note that this is not a dialog to enter one resource and close."
+"A window to let the user enter resources etc. Note that this is not a dialog to enter one
+ resource and close."
 SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
         Anything(ActionEvent) menuHandler) {
     IDRegistrar idf = createIDFactory(model.allMaps.map((pair) => pair.first));
@@ -253,9 +254,10 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
     }
     JPanel resourcePanel = boxPanel(BoxAxis.lineAxis);
     StreamingLabel logLabel = StreamingLabel();
+    String css = """color:white; margin-bottom: 0.5em; margin-top: 0.5em;""";
     void logAddition(String addend) {
         logLabel.append(
-                "<p style=\"color:white; margin-bottom: 0.5em; margin-top: 0.5em;\">Added ``
+                "<p style=\"``css``\">Added ``
                 addend`` for ``currentPlayer.name``");
     }
     "Extends [[ImprovedComboBox]] to keep a running collection of values."

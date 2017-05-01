@@ -40,7 +40,8 @@ shared object advancementGUI satisfies SimpleDriver {
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "View a player's workers and manage their advancement";
         longDescription = """View a player's units, the workers in those units, each
-                             worker's Jobs, and his or her level in each Skill in each Job.""";
+                             worker's Jobs, and his or her level in each Skill in each
+                             Job.""";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     suppressWarnings("expressionTypeNothing")
@@ -60,7 +61,8 @@ shared object advancementGUI satisfies SimpleDriver {
         menuHandler.register(pcml, "change current player");
         menuHandler.register((event) => process.exit(0), "quit");
         SwingUtilities.invokeLater(() {
-            SPFrame&PlayerChangeListener frame = advancementFrame(workerModel, menuHandler);
+            SPFrame&PlayerChangeListener frame = advancementFrame(workerModel,
+                menuHandler);
             pcml.addPlayerChangeListener(frame);
             menuHandler.register((event) =>
             frame.playerChanged(model.map.currentPlayer, model.map.currentPlayer),

@@ -51,7 +51,8 @@ import strategicprimer.report.nodes {
 shared class ImmortalsReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, MapDimensions dimensions,
         Point hq = invalidPoint)
-        extends AbstractReportGenerator<Immortal>(comp, DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<Immortal>(comp,
+            DistanceComparator(hq, dimensions)) {
     "Produce a report on an individual immortal, or on all immortals."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, [Immortal, Point]? entry) {
@@ -129,7 +130,8 @@ shared class ImmortalsReportGenerator(
     }
     "Produce a report node on an individual immortal, or the intermediate-representation
      report on all immortals."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, [Immortal, Point]? entry) {
         if (exists entry) {
             Immortal item = entry.first;

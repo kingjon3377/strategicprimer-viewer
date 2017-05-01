@@ -15,7 +15,8 @@ import strategicprimer.model.map.fixtures.mobile {
     ProxyFor
 }
 "An IJob implementation to let the Job tree operate on a whole unit at once."
-shared class ProxyJob(name, parallel, IWorker* proxiedWorkers) satisfies IJob&ProxyFor<IJob> {
+shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
+        satisfies IJob&ProxyFor<IJob> {
     """If false, the worker containing this is representing all the workers in a single
        unit; if true, it is representing corresponding workers in corresponding units in
        different maps. Thus, if true, we should use the same "random" seed repeatedly in

@@ -76,8 +76,8 @@ void setUpArrowListeners(DirectionSelectionChanger selListener, InputMap inputMa
         inputMap.put(KeyStroke.getKeyStroke(stroke, 0), action);
         inputMap.put(KeyStroke.getKeyStroke(stroke, fiveMask), "ctrl-``action``");
     }
-    "A map from Strings representing arrow-key key codes to the actions that should be mapped
-     to them."
+    "A map from Strings representing arrow-key key codes to the actions that should be
+     mapped to them."
     Map<String, Anything()> arrowActions =
             map {
                 "up"->selListener.up,
@@ -102,7 +102,8 @@ void setUpArrowListeners(DirectionSelectionChanger selListener, InputMap inputMa
     }
     inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk3, InputEvent.shiftDownMask), "end");
     inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk6, InputEvent.shiftDownMask), "caret");
-    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk4, InputEvent.shiftDownMask), "dollar");
+    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk4, InputEvent.shiftDownMask),
+        "dollar");
     actionMap.put("ctrl-home", DirectionListener(join(selListener.jumpUp,
         selListener.jumpLeft)));
     actionMap.put("home", DirectionListener(() => selListener.jumpUp()));

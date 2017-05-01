@@ -28,7 +28,8 @@ void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
         cli.println("No workers in unit.");
     } else {
         MutableList<IJob> jobs = ArrayList { *ProxyWorker.fromUnit(unit) };
-        cli.loopOnMutableList(jobs, (ICLIHelper clh, List<IJob> list) => clh.chooseFromList(
+        cli.loopOnMutableList(jobs,
+                    (ICLIHelper clh, List<IJob> list) => clh.chooseFromList(
             list, "Jobs in workers:", "No existing jobs.",
             "Job to advance: ", false),
             "Select another Job in these workers? ",

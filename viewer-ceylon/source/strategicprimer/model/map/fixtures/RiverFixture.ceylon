@@ -16,7 +16,8 @@ import strategicprimer.model.map {
 }
 "A Fixture to encapsulate the rivers on a tile, so we can show a chit for rivers."
 todo("We'd like to remove this class")
-shared class RiverFixture(River* initial) satisfies TileFixture&{River*}&SubsettableFixture {
+shared class RiverFixture(River* initial)
+		satisfies TileFixture&{River*}&SubsettableFixture {
 	"The Set we're using to hold the Rivers."
 	MutableSet<River> riversSet = HashSet<River> { *initial };
 	shared actual RiverFixture copy(Boolean zero) => RiverFixture(*riversSet);
@@ -50,7 +51,8 @@ shared class RiverFixture(River* initial) satisfies TileFixture&{River*}&Subsett
 			return false;
 		}
 	}
-	"""We return a constant "ID" because this is really a container for a collection of Rivers.
+	"""We return a constant "ID" because this is really a container for a collection of
+	   Rivers.
 
 	   Perhaps rivers should have IDs (and names ..), though."""
 	todo("Investigate how FreeCol does it")

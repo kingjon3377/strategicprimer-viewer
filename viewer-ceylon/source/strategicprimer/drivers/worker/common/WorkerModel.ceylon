@@ -134,7 +134,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     shared actual void addUnit(IUnit unit) {
         for (point in map.locations) {
             for (fixture in map.otherFixtures(point)) {
-                if (is Fortress fixture, "HQ" == fixture.name, fixture.owner == unit.owner) {
+                if (is Fortress fixture, "HQ" == fixture.name,
+                        fixture.owner == unit.owner) {
                     addUnitAtLocation(unit, point);
                     return;
                 }

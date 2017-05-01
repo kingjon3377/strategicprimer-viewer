@@ -29,7 +29,8 @@ todo("Test how this works with Ceylon 'resources'",
     "Use Ceylon's metamodel when it supports binary access")
 shared class ResourceInputStream(String filename,
         Module sourceModule=`module lovelace.util.jvm`,
-        JClass<out Object> sourceClass=javaClass<ResourceInputStream>()) extends InputStream() {
+        JClass<out Object> sourceClass=javaClass<ResourceInputStream>())
+        extends InputStream() {
     InputStream factory() {
         try {
             return BufferedInputStream(FileInputStream(filename));
@@ -64,7 +65,8 @@ shared class ResourceInputStream(String filename,
                     if (exists temp = javaClassFromInstance(mod).getResourceAsStream(
                             "/``mod.name.replace(".", "/")``/``filename``")) {
                         return temp;
-                    } else if (exists temp = javaClassFromInstance(mod).getResourceAsStream(
+                    } else if (exists temp =
+                                javaClassFromInstance(mod).getResourceAsStream(
                             "``mod.name.replace(".", "/")``/``filename``")) {
                         return temp;
                     }

@@ -17,7 +17,7 @@ import java.lang {
 
 import lovelace.util.common {
     todo,
-    DelayedRemovalMap
+    DRMap=DelayedRemovalMap
 }
 
 import strategicprimer.model {
@@ -50,12 +50,14 @@ import strategicprimer.report.nodes {
 }
 "A report generator for caves, battlefields, adventure hooks, and portals."
 todo("Use union type instead of interface, here and elsewhere")
-shared class ExplorableReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<ExplorableFixture>(comp, DistanceComparator(hq, dimensions)) {
+shared class ExplorableReportGenerator(
+        Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
+        MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<ExplorableFixture>(comp,
+            DistanceComparator(hq, dimensions)) {
     "Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
      hook, or the report on all such."
-    shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, [ExplorableFixture, Point]? entry) {
         if (exists entry) {
             ExplorableFixture item = entry.first;
@@ -125,21 +127,21 @@ shared class ExplorableReportGenerator(Comparison([Point, IFixture], [Point, IFi
                          ");
             }
             writeMap(ostream, adventures,
-                        (AdventureFixture key->Point val, formatter) => produce(fixtures, map,
-                    formatter, [key, val]));
+                        (AdventureFixture key->Point val, formatter) => produce(fixtures,
+                            map, formatter, [key, val]));
         }
     }
     "Produces a more verbose sub-report on a cave or battlefield, or the report section on
      all such."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, [ExplorableFixture, Point]? entry) {
         if (exists entry) {
             ExplorableFixture item = entry.first;
             Point loc = entry.rest.first;
             if (is Cave item) {
                 fixtures.remove(item.id);
-                return SimpleReportNode("Caves beneath ``loc`` ``distCalculator.distanceString(loc)``",
-                    loc);
+                return SimpleReportNode("Caves beneath ``loc`` ``distCalculator
+                    .distanceString(loc)``", loc);
             } else if (is Battlefield item) {
                 fixtures.remove(item.id);
                 return SimpleReportNode(
@@ -165,9 +167,8 @@ shared class ExplorableReportGenerator(Comparison([Point, IFixture], [Point, IFi
                 }
             } else if (is Portal item) {
                 fixtures.remove(item.id);
-                return SimpleReportNode("A portal to another world at ``loc`` ``distCalculator
-                    .distanceString(loc)``",
-                    loc);
+                return SimpleReportNode("A portal to another world at ``loc`` ``
+                    distCalculator.distanceString(loc)``", loc);
             } else {
                 throw IllegalArgumentException("Unexpected ExplorableFixture type");
             }
@@ -181,8 +182,8 @@ shared class ExplorableReportGenerator(Comparison([Point, IFixture], [Point, IFi
             IReportNode adventures = SectionListReportNode(4, "Possible Adventures");
             Map<Type<IFixture>, IReportNode> nodes =
                     HashMap<Type<IFixture>, IReportNode> {
-                        entries = { `Portal`->portals, `Battlefield`->battles, `Cave`->caves,
-                            `AdventureFixture`->adventures };
+                        entries = { `Portal`->portals, `Battlefield`->battles,
+                            `Cave`->caves, `AdventureFixture`->adventures };
                     };
             for ([loc, item] in values) {
                 if (is ExplorableFixture fixture = item,

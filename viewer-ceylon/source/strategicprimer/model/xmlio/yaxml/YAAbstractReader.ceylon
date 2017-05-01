@@ -139,7 +139,8 @@ abstract class YAAbstractReader<Element>
         return retval;
     }
     "Write a property to XML."
-    shared static void writeProperty(Anything(String) ostream, String name, String|Integer val) {
+    shared static void writeProperty(Anything(String) ostream, String name,
+            String|Integer val) {
         switch (val)
         case (is String) {
             ostream(" ``simpleQuote(name)``=\"``simpleQuote(val)``\"");
@@ -147,7 +148,8 @@ abstract class YAAbstractReader<Element>
         case (is Integer) { writeProperty(ostream, name, val.string); }
     }
     "Write a property to XML only if its value is nonempty."
-    shared static void writeNonemptyProperty(Anything(String) ostream, String name, String val) {
+    shared static void writeNonemptyProperty(Anything(String) ostream, String name,
+            String val) {
         if (!val.empty) {
             writeProperty(ostream, name, val);
         }

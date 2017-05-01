@@ -58,7 +58,8 @@ shared Image loadImage(String file) {
         return cached;
     } else {
         try (res = ResourceInputStream("images/``file``",
-                `module strategicprimer.viewer`, javaClassFromDeclaration(`class SPFrame`))) {
+                `module strategicprimer.viewer`,
+                    javaClassFromDeclaration(`class SPFrame`))) {
             if (exists image = ImageIO.read(res)) {
                 imageCache.put(file, image);
                 return image;

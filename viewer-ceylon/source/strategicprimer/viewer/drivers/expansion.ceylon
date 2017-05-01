@@ -61,7 +61,8 @@ object expansionDriver satisfies SimpleCLIDriver {
         longOption = "--expand";
         paramsWanted = ParamCount.atLeastTwo;
         shortDescription = "Expand a player's map.";
-        longDescription = "Ensure a player's map covers all terrain allied villages can see.";
+        longDescription = "Ensure a player's map covers all terrain allied villages can
+                           see.";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
@@ -144,7 +145,8 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
         longOption = "--populate";
         paramsWanted = ParamCount.one;
         shortDescription = "Add missing fixtures to a map";
-        longDescription = "Add specified kinds of fixtures to suitable points throughout a map";
+        longDescription = "Add specified kinds of fixtures to suitable points throughout
+                           a map";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     variable Integer suitableCount = 0;

@@ -132,7 +132,8 @@ object tabularReportCLI satisfies SimpleDriver {
         void createReports(IMapNG map, JPath? mapFile) {
             if (exists mapFile) {
                 try {
-                    createTabularReports(map, filenameFunction(parsePath(mapFile.string)));
+                    createTabularReports(map,
+                        filenameFunction(parsePath(mapFile.string)));
                 } catch (IOException|IOError except) {
                     throw DriverFailedException(except);
                 }

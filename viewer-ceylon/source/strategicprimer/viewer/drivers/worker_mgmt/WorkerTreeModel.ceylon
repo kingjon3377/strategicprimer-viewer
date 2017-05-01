@@ -105,7 +105,8 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
     shared actual void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
         Integer oldIndex = getIndexOfChild(old, member);
         TreeModelEvent removedEvent = TreeModelEvent(this,
-            TreePath(createJavaObjectArray({ root, old })), createJavaIntArray({ oldIndex }),
+            TreePath(createJavaObjectArray({ root, old })),
+            createJavaIntArray({ oldIndex }),
             createJavaObjectArray({ member }));
         TreeModelEvent removedChangeEvent = TreeModelEvent(this,
             TreePath(createJavaObjectArray({ root, old })));

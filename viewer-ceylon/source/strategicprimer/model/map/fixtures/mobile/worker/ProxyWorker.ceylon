@@ -103,7 +103,8 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
     shared actual Integer id {
         if (parallel) {
             return workers.map(IWorker.id)
-                .reduce<Integer>((left, right) => (left == right) then left else -1) else -1;
+                .reduce<Integer>((left, right) =>
+                    (left == right) then left else -1) else -1;
         } else {
             return -1;
         }

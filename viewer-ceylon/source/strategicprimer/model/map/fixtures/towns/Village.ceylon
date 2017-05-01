@@ -111,7 +111,7 @@ shared class Village(status, name, id, owner, race)
                 report("In village ``name`` (ID #``id``):\tOwners differ");
             } else if (exists temp = population) {
                 return temp.isSubset(obj.population,
-                            (str) => report("In village ``name`` (ID #``id``):\t``str``"));
+                            (st) => report("In village ``name`` (ID #``id``):\t``st``"));
             } else if (obj.population exists) {
                 report("In village ``name`` (ID #``id``):\tHas extra population details");
             } else {

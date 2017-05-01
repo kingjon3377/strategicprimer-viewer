@@ -1,4 +1,5 @@
-shared T? chooseFromList<T>(String? header, String prompt, Boolean auto, [String, T]* choices) {
+shared T? chooseFromList<T>(String? header, String prompt, Boolean auto,
+        [String, T]* choices) {
     if (nonempty choices) {
         if (exists header) {
             print(header);

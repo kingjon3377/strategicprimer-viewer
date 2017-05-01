@@ -37,7 +37,8 @@ shared object explorationGUI satisfies SimpleDriver {
         longOption = "--explore";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Run exploration.";
-        longDescription = "Move a unit around the map, updating the player's map with what it sees.";
+        longDescription = "Move a unit around the map, updating the player's map with what
+                           it sees.";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     suppressWarnings("expressionTypeNothing")

@@ -89,7 +89,8 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         longOption = "--stats";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Enter worker stats or generate new workers.";
-        longDescription = "Enter stats for existing workers or generate new workers randomly.";
+        longDescription = "Enter stats for existing workers or generate new workers
+                           randomly.";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     "The units in the given collection that have workers without stats."
@@ -375,7 +376,8 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
                     "Enter pregenerated stats for existing workers?")) {
                 enterStats(model, cli);
             } else {
-                createWorkers(model, createIDFactory(model.allMaps.map((pair) => pair.first)), cli);
+                createWorkers(model, createIDFactory(model.allMaps
+                    .map((pair) => pair.first)), cli);
             }
         } else {
             startDriverOnModel(cli, options, ExplorationModel.copyConstructor(model));
@@ -409,7 +411,8 @@ TileContentsGenerator tileContentsInstance(String filename) {
         return retval;
     } else {
         TileContentsGenerator retval =
-                TileContentsGenerator(readMap(JPaths.get(filename), warningLevels.default));
+                TileContentsGenerator(readMap(JPaths.get(filename),
+                    warningLevels.default));
         tileContentsInstances.put(filename, retval);
         return retval;
     }

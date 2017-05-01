@@ -31,7 +31,8 @@ shared class PointIterator(dimensions, forwards, horizontal,
             Integer startRow;
             "The column where we started."
             Integer startColumn;
-            """Wrap negative values to the provided "wrap" value, but return positive values."""
+            """Wrap negative values to the provided "wrap" value, but return positive
+               values."""
             Integer wrap(Integer item, Integer wrap) => if (item<0) then wrap else item;
             if (exists selection) {
                 startRow = wrap(selection.row, maxRow);

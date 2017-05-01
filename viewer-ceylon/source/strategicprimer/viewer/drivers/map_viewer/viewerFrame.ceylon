@@ -65,7 +65,8 @@ shared SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel,
         shared actual IViewerModel model = driverModel;
         shared actual String windowName = "Map Viewer";
     }
-    AbstractTableModel&{FixtureMatcher*}&ZOrderFilter&Comparator<TileFixture> tableModel = fixtureFilterTableModel();
+    AbstractTableModel&{FixtureMatcher*}&ZOrderFilter&Comparator<TileFixture> tableModel =
+            fixtureFilterTableModel();
     JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
     mapPanel = mapComponent(driverModel, tableModel.shouldDisplay, tableModel);
     tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint());

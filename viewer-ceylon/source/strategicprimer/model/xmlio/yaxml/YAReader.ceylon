@@ -42,7 +42,8 @@ interface YAReader<out Item, in Value=Item> given Item satisfies Object {
     "Write the given object, when the caller knows the object is the right type but the
      typechecker doesn't. This will probably crash the program if the types don't in fact
      match."
-    shared default void writeRaw(Anything(String) ostream, Object obj, Integer indentation) {
+    shared default void writeRaw(Anything(String) ostream, Object obj,
+            Integer indentation) {
         assert (is Value obj);
         write(ostream, obj, indentation);
     }

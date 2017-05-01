@@ -131,8 +131,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             extends DefaultTreeModel(PlayerNode(player, driverModel), true) {
         model = driverModel;
     }
-    void moveProxied(UnitMember&ProxyFor<out UnitMember> member, ProxyUnit old, ProxyUnit newOwner,
-            UnitNode newNode, MutableTreeNode node) {
+    void moveProxied(UnitMember&ProxyFor<out UnitMember> member, ProxyUnit old,
+            ProxyUnit newOwner, UnitNode newNode, MutableTreeNode node) {
         assert (is PlayerNode playerNode = root);
         if (old.proxied.size == newOwner.proxied.size,
             old.proxied.size == member.proxied.size) {
@@ -191,7 +191,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             if (exists oldNode) {
                 oldNode.remove(node);
             }
-            if (is ProxyFor<out UnitMember> member, is ProxyUnit old, is ProxyUnit newOwner) {
+            if (is ProxyFor<out UnitMember> member, is ProxyUnit old,
+                    is ProxyUnit newOwner) {
                 moveProxied(member, old, newOwner, newNode, node);
             } else {
                 old.removeMember(member);
@@ -295,7 +296,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 ObjectArray<Object> pathSubset;
                 if (is MutableTreeNode lastParent = pathOne.array.exceptLast.last,
                     lastParent.childCount == 0) {
-                    assert (exists lastParentParent = pathOne.array.exceptLast.exceptLast.last);
+                    assert (exists lastParentParent =
+                            pathOne.array.exceptLast.exceptLast.last);
                     Integer parentIndex = lastParentParent.getIndex(lastParent);
                     pathSubset = createJavaObjectArray<Object>(pathOne.array.exceptLast);
                     lastParent.removeFromParent();

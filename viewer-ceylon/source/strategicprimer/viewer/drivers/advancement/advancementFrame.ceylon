@@ -45,7 +45,8 @@ import strategicprimer.drivers.common {
     PlayerChangeListener
 }
 "A GUI to let a user manage workers."
-SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker menuHandler) {
+SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
+        MenuBroker menuHandler) {
     IMapNG map = model.map;
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(map.currentPlayer, model);
     JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
@@ -80,20 +81,18 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model, MenuBroker men
         }
         shared actual String windowName = "Worker Advancement";
     }
+    JLabel html(String string) => JLabel("<html><p align=\"left\">``string``</p></html>");
     retval.contentPane = horizontalSplit(0.5, 0.5,
         BorderedPanel.verticalPanel(playerLabel,
             JScrollPane(tree), listenedButton("Add worker to selected unit ...",
                 newWorkerListener)),
         verticalSplit(0.5, 0.3, BorderedPanel.verticalPanel(
-            JLabel("<html><p align=\"left\">Worker's Jobs and Skills:</p></html>"),
-            JScrollPane(jobsTreeObject), null),
+            html("Worker's Jobs and Skills:"), JScrollPane(jobsTreeObject), null),
             BorderedPanel.verticalPanel(null,
                 BorderedPanel.verticalPanel(
-                    BorderedPanel.verticalPanel(
-                        JLabel("<html><p align=\"left\">Add a job to the worker:</p></html>"), null,
+                    BorderedPanel.verticalPanel(html("Add a job to the worker:"), null,
                         jobAdditionPanel), null,
-                    BorderedPanel.verticalPanel(
-                        JLabel("<html><p align=\"left\">Add a Skill to the selected Job:</p></html>"),
+                    BorderedPanel.verticalPanel(html("Add a Skill to the selected Job:"),
                         null, skillAdditionPanel)), hoursAdditionPanel)));
     retval.playerChanged(null, map.currentPlayer);
     retval.jMenuBar = workerMenu(menuHandler.actionPerformed, retval, model);

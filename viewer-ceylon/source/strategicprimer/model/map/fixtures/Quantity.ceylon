@@ -18,7 +18,8 @@ import lovelace.util.common {
 }
 shared alias SPNumber=>Integer|Float|Decimal|Whole;
 "A number paired with its units. This class is immutable."
-shared class Quantity(number, units) satisfies Subsettable<Quantity>&Comparable<Quantity> {
+shared class Quantity(number, units)
+		satisfies Subsettable<Quantity>&Comparable<Quantity> {
 	"The numeric quantity."
 	shared /*Number<out Object>*/SPNumber number;
 	"That quantity as a Float"

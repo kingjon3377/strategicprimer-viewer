@@ -75,7 +75,8 @@ shared EncounterTable loadTable(String?()|File argument) {
                     } else {
                         String left = splitted.first;
                         assert (exists right = splitted.rest.reduce(
-                                    (String partial, element) => "``partial`` ``element``"));
+                                    (String partial, element) =>
+                                    "``partial`` ``element``"));
                         value leftNum = Integer.parse(left);
                         if (is Integer leftNum) {
                             list.add([leftNum, right]);
@@ -105,7 +106,8 @@ shared EncounterTable loadTable(String?()|File argument) {
                         String left = splitted.first;
                         // TODO: Catch TileType-parsing failure and handle more gracefully
                         assert (exists right = splitted.rest.reduce(
-                                    (String partial, element) => "``partial`` ``element``"));
+                                    (String partial, element) =>
+                                    "``partial`` ``element``"));
                         value leftVal = TileType.parse(left);
                         if (is TileType leftVal) {
                             list.add(leftVal->right);

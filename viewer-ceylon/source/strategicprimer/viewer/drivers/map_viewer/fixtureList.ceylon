@@ -123,7 +123,8 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
         }
         shared actual void dragEnter(DropTargetDragEvent dtde) => handleDrag(dtde);
         shared actual void dragOver(DropTargetDragEvent dtde) => handleDrag(dtde);
-        shared actual void dropActionChanged(DropTargetDragEvent dtde) => handleDrag(dtde);
+        shared actual void dropActionChanged(DropTargetDragEvent dtde) =>
+                handleDrag(dtde);
         void handleDrop(Transferable trans) {
             ObjectArray<DataFlavor>? flavors = trans.transferDataFlavors;
             if (exists flavors) {

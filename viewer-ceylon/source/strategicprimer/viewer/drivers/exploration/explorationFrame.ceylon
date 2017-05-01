@@ -313,13 +313,13 @@ SPFrame explorationFrame(IExplorationModel model,
                 secondMap = model.map;
             }
             for (direction in {Direction.northwest,
-                Direction.north,
-                Direction.northeast,
-                Direction.west, Direction.nowhere,
-                Direction.east,
-                Direction.southwest,
-                Direction.south,
-                Direction.southeast}) {
+                    Direction.north,
+                    Direction.northeast,
+                    Direction.west, Direction.nowhere,
+                    Direction.east,
+                    Direction.southwest,
+                    Direction.south,
+                    Direction.southeast}) {
                 SelectionChangeSupport mainPCS = SelectionChangeSupport();
                 SwingList<TileFixture>&SelectionChangeListener mainList =
                         fixtureList(tilesPanel, FixtureListModel(model.map, true),
@@ -343,7 +343,8 @@ SPFrame explorationFrame(IExplorationModel model,
                             SelectionChangeListener listener) =>
                             selectionListeners.remove(listener);
                     shared actual void addMovementCostListener(
-                            MovementCostListener listener) => movementListeners.add(listener);
+                            MovementCostListener listener) =>
+                            movementListeners.add(listener);
                     shared actual void removeMovementCostListener(
                             MovementCostListener listener) =>
                             movementListeners.remove(listener);
@@ -366,9 +367,12 @@ SPFrame explorationFrame(IExplorationModel model,
                     "A list of things the explorer can do: pairs of explanations (in the
                      form of questions to ask the user to see if the explorer does them)
                      and references to methods for doing them."
-                    {[String, Anything()]*} explorerActions = {["Should the explorer swear any villages on this tile?", () {
+                    {[String, Anything()]*} explorerActions = {[
+                            "Should the explorer swear any villages on this tile?", () {
                         model.swearVillages();
-                        for (fixture in model.map.otherFixtures(model.selectedUnitLocation)) {
+                        // TODO: Use Iterable.narrow() instead of the loop
+                        for (fixture in model.map.otherFixtures(model
+                                .selectedUnitLocation)) {
                             if (is Village fixture) {
                                 selectedValuesList.add(fixture);
                             }
@@ -395,7 +399,8 @@ SPFrame explorationFrame(IExplorationModel model,
                                     Point destPoint = model.selectedUnitLocation;
                                     Player player = model.selectedUnit ?. owner else
                                     PlayerImpl(- 1, "no-one");
-                                    MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
+                                    MutableSet<CacheFixture> caches =
+                                            HashSet<CacheFixture>();
                                     for ([map, file] in model.subordinateMaps) {
                                         map.setBaseTerrain(destPoint, model.map
                                             .baseTerrain(destPoint));
@@ -405,14 +410,17 @@ SPFrame explorationFrame(IExplorationModel model,
                                                 continue ;
                                             } else if (is Ground fixture,
                                                 !map.ground(destPoint) exists) {
-                                                map.setGround(destPoint, fixture.copy(false));
+                                                map.setGround(destPoint,
+                                                    fixture.copy(false));
                                             } else if (is Forest fixture,
                                                 !map.forest(destPoint) exists) {
-                                                map.setForest(destPoint, fixture.copy(false));
+                                                map.setForest(destPoint,
+                                                    fixture.copy(false));
                                             } else if (!map.allFixtures(destPoint)
                                                     .any((that) => fixture == that)) {
                                                 Boolean zero;
-                                                if (is HasOwner fixture, fixture.owner != player) {
+                                                if (is HasOwner fixture,
+                                                        fixture.owner != player) {
                                                     zero = true;
                                                 } else {
                                                     zero = false;
@@ -429,7 +437,8 @@ SPFrame explorationFrame(IExplorationModel model,
                                         model.map.removeFixture(destPoint, cache);
                                     }
                                 } catch (TraversalImpossibleException except) {
-                                    log.debug("Attempted movement to impassable destination",
+                                    log.debug(
+                                        "Attempted movement to impassable destination",
                                         except);
                                     Point selection = model.selectedUnitLocation;
                                     for (listener in selectionListeners) {
@@ -474,25 +483,31 @@ SPFrame explorationFrame(IExplorationModel model,
                                         ArrayList<[Integer, TileFixture]>();
                                 MutableList<[Integer, TileFixture]> possibles =
                                         ArrayList<[Integer, TileFixture]>();
-                                for (index->fixture in ListModelWrapper(mainList.model).indexed) {
+                                for (index->fixture in ListModelWrapper(mainList.model)
+                                        .indexed) {
                                     if (shouldAlwaysNotice(selectedUnit, fixture)) {
                                         constants.add([index, fixture]);
-                                    } else if (shouldSometimesNotice(selectedUnit, speedSource(), fixture)) {
+                                    } else if (shouldSometimesNotice(selectedUnit,
+                                            speedSource(), fixture)) {
                                         possibles.add([index, fixture]);
                                     }
                                 }
                                 Point currentLocation = model.selectedUnitLocation;
                                 if (currentLocation.valid) {
                                     {String*}(Point, Integer) tracksSource;
-                                    if (TileType.ocean == model.map.baseTerrain(currentLocation)) {
+                                    if (TileType.ocean == model.map
+                                            .baseTerrain(currentLocation)) {
                                         tracksSource = huntingModel.fish;
                                     } else {
                                         tracksSource = huntingModel.hunt;
                                     }
-                                    if (exists possibleTracks = tracksSource(currentLocation, 1).first,
+                                    if (exists possibleTracks =
+                                                tracksSource(currentLocation, 1).first,
                                             HuntingModel.noResults != possibleTracks) {
-                                        Animal animal = Animal(possibleTracks, true, false, "wild", -1);
-                                        assert (is FixtureListModel listModel = mainList.model);
+                                        Animal animal = Animal(possibleTracks, true,
+                                            false, "wild", -1);
+                                        assert (is FixtureListModel listModel =
+                                                mainList.model);
                                         Integer index = listModel.size;
                                         listModel.addFixture(animal);
                                         possibles.add([index, animal]);
@@ -500,7 +515,8 @@ SPFrame explorationFrame(IExplorationModel model,
                                     }
                                 }
                                 constants.addAll(selectNoticed(randomize(possibles),
-                                            ([Integer, TileFixture] tuple) => tuple.rest.first,
+                                            ([Integer, TileFixture] tuple) => tuple.rest
+                                                .first,
                                     selectedUnit, speedSource()));
                                 IntArray indices = createJavaIntArray(
                                     {for ([index, fixture] in constants) index});

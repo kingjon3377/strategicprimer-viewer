@@ -166,7 +166,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                 Rectangle bounds = boundsCheck(context.clipBounds);
                 MapDimensions mapDimensions = model.mapDimensions;
                 Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
-                void drawMapPortion(Integer minX, Integer minY, Integer maxX, Integer maxY) {
+                void drawMapPortion(Integer minX, Integer minY, Integer maxX,
+                        Integer maxY) {
                     Integer minRow = model.visibleDimensions.minimumRow;
                     Integer maxRow = model.visibleDimensions.maximumRow;
                     Integer minCol = model.visibleDimensions.minimumColumn;

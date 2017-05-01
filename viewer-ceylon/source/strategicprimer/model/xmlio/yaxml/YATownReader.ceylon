@@ -118,7 +118,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     lambda(resourceReader.read(event, top.name, stream));
                 }
                 else {}
-            } else if (is EndElement event, exists top = stack.top, event.name == top.name) {
+            } else if (is EndElement event, exists top = stack.top,
+                    event.name == top.name) {
                 stack.pop();
                 if (top == element) {
                     break;
@@ -243,7 +244,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             closeLeafTag(ostream);
         }
     }
-    shared void writeCommunityStats(Anything(String) ostream, CommunityStats obj, Integer tabs) {
+    shared void writeCommunityStats(Anything(String) ostream,
+            CommunityStats obj, Integer tabs) {
         writeTag(ostream, "population", tabs);
         writeProperty(ostream, "size", obj.population);
         finishParentTag(ostream);
@@ -321,7 +323,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             if (!obj.empty) {
                 ostream(operatingSystem.newline);
                 for (member in obj) {
-                    if (exists reader = memberReaders.find((yar) => yar.canWrite(member))) {
+                    if (exists reader = memberReaders
+                            .find((yar) => yar.canWrite(member))) {
                         reader.writeRaw(ostream, member, tabs + 1);
                     } else {
                         log.error("Unhandled FortressMember type ``

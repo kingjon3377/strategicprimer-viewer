@@ -21,7 +21,8 @@ import ceylon.collection {
 }
 "Whether neither of two collections of Jobs contains a nonempty Job the other does not."
 Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
-        set { *first.filter((job) => !job.emptyJob) } == set { *second.filter((job) => !job.emptyJob) };
+        set { *first.filter((job) => !job.emptyJob) } ==
+            set { *second.filter((job) => !job.emptyJob) };
 "Whether two nullable values are either neither present or both present and equal."
 Boolean nullablesEqual(Anything one, Anything two) {
     if (exists one) {

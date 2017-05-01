@@ -12,7 +12,8 @@ import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
 "An enumeration of directions of possible travel."
-shared class Direction of north|northeast|east|southeast|south|southwest|west|northwest|nowhere {
+shared class Direction
+        of north|northeast|east|southeast|south|southwest|west|northwest|nowhere {
     "North."
     shared new north {}
     "Northeast."

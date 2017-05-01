@@ -129,7 +129,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
     }
     IViewerModel getViewerModel() {
         for (frame in WindowList.getFrames(false, true, true)) {
-            if (is IViewerFrame frame, anythingEqual(frame.model.mapFile, model.mapFile)) {
+            if (is IViewerFrame frame,
+                    anythingEqual(frame.model.mapFile, model.mapFile)) {
                 frame.toFront();
                 if (frame.extendedState == Frame.iconified) {
                     frame.extendedState = Frame.normal;
@@ -208,7 +209,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         value ordersPanelObj = ordersPanel(mainMap.currentTurn, mainMap.currentPlayer,
                     (Player player, String kind) => model.getUnits(player, kind),
                     (IUnit unit, Integer turn) => unit.getLatestOrders(turn),
-                    (IUnit unit, Integer turn, String orders) => unit.setOrders(turn, orders));
+                    (IUnit unit, Integer turn, String orders) => unit
+                        .setOrders(turn, orders));
         tree.addTreeSelectionListener(ordersPanelObj);
         DefaultTreeModel reportModel = DefaultTreeModel(simpleReportNode(
             "Please wait, loading report ..."));
@@ -229,7 +231,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
             listenedButton("Add New Unit", (event) => newUnitFrame.setVisible(true)),
             ordersPanelObj, listenedButton("Export a proto-strategy",
-                        (ActionEvent event) => FileChooser.save(null, JFileChooser(".", null))
+                        (ActionEvent event) => FileChooser.save(null,
+                            JFileChooser(".", null))
                     .call((file) => strategyExporter.writeStrategy(
                     parsePath(file.string).resource, treeModel.dismissed))));
         contentPane = horizontalSplit(0.5, 0.5, verticalSplit(2.0 / 3.0, 2.0 / 3.0,

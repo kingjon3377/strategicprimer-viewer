@@ -45,7 +45,8 @@ import strategicprimer.report.nodes {
 }
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
-shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
+shared class HarvestableReportGenerator(
+        Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Point hq = invalidPoint)
         extends AbstractReportGenerator<HarvestableFixture>(comp,
             DistanceComparator(hq, dimensions)) {
@@ -116,7 +117,8 @@ shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IF
                             byIncreasing(Mine.id)));
             HeadedMap<Meadow, Point>&MutableMap<Meadow, Point> meadows =
                     HeadedMapImpl<Meadow, Point>(
-                        "<h5>Meadows and Fields</h5>", comparing(byIncreasing(Meadow.kind),
+                        "<h5>Meadows and Fields</h5>",
+                        comparing(byIncreasing(Meadow.kind),
                             byIncreasing((Meadow meadow) => meadow.status.ordinal),
                             byIncreasing(Meadow.id)));
             HeadedMap<Grove, Point>&MutableMap<Grove, Point> groves =
@@ -126,7 +128,8 @@ shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IF
                     HeadedMapImpl<CacheFixture, Point>(
                         "<h5>Caches collected by your explorers and workers:</h5>",
                         comparing(byIncreasing(CacheFixture.kind),
-                            byIncreasing(CacheFixture.contents), byIncreasing(CacheFixture.id)));
+                            byIncreasing(CacheFixture.contents),
+                            byIncreasing(CacheFixture.id)));
             for ([point, item] in values) {
                 // TODO: Use a Map by type (or at least a switch); now we have reified
                 // generics we can even handle differently based on whether a List or Map
@@ -205,7 +208,8 @@ shared class HarvestableReportGenerator(Comparison([Point, IFixture], [Point, IF
     }
     """Produce the sub-report(s) dealing with "harvestable" fixture(s). All fixtures
        referred to in this report are to be removed from the collection."""
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, [HarvestableFixture, Point]? entry) {
         if (exists entry) {
             HarvestableFixture item = entry.first;

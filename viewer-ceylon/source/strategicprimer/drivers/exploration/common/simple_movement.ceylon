@@ -104,8 +104,9 @@ Integer movementCost(
     }
 }
 
-"Check whether a unit moving at the given relative speed might notice the given fixture. Units do not notice themselves, do not
- notice themselves, and do not notice null fixtures."
+"Check whether a unit moving at the given relative speed might notice the given fixture.
+ Units do not notice themselves, do not notice themselves, and do not notice null
+ fixtures."
 todo("We now check DCs on Events, but ignore relevant skills other than Perception. And
       now a lot more things have DCs for which those other skills are relevant.")
 shared Boolean shouldSometimesNotice(
@@ -169,8 +170,8 @@ shared Boolean shouldAlwaysNotice(HasOwner unit, TileFixture? fixture) {
 "Choose what the mover should in fact find from the list of things he or she might find.
  Since some callers need to have a list of Pairs instead of TileFixtures, we take a
  function for getting the fixtures out of the list."
-shared {Element*} selectNoticed<Element>({Element*} possibilities, TileFixture(Element) getter,
-        IUnit mover, Speed speed) {
+shared {Element*} selectNoticed<Element>({Element*} possibilities,
+        TileFixture(Element) getter, IUnit mover, Speed speed) {
     {Element*} local = randomize(possibilities);
     variable Integer perception = highestPerception(mover) + speed.perceptionModifier;
     MutableList<Element> retval = ArrayList<Element>();
@@ -185,4 +186,5 @@ shared {Element*} selectNoticed<Element>({Element*} possibilities, TileFixture(E
 }
 "An exception thrown to signal traversal is impossible."
 todo("Ocean isn't impassable to everything, of course.") // FIXME
-shared class TraversalImpossibleException() extends Exception("Traversal is impossible.") {}
+shared class TraversalImpossibleException()
+        extends Exception("Traversal is impossible.") {}

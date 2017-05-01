@@ -33,5 +33,6 @@ void advanceWorkersInJob(String jobName, ICLIHelper cli, IWorker* workers) {
                 skills.add(skill);
             }
             return skills.find((item) => skillName == item.name);
-        }, (ISkill skill, clh) => advanceWorkersInSkill(jobName, skill.name, clh, *workers));
+        }, (ISkill skill, clh) =>
+                advanceWorkersInSkill(jobName, skill.name, clh, *workers));
 }

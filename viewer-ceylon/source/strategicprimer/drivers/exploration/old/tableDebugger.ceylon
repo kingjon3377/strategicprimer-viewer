@@ -25,8 +25,8 @@ import strategicprimer.drivers.common {
     ICLIHelper
 }
 
-"""A driver to help debug "exploration tables", which were the second "exploration results" framework
-   I implemented."""
+"""A driver to help debug "exploration tables", which were the second "exploration
+   results" framework I implemented."""
 object tableDebugger satisfies SimpleCLIDriver {
     ExplorationRunner runner = ExplorationRunner();
     if (is Directory directory = parsePath("tables").resource) {
@@ -34,10 +34,11 @@ object tableDebugger satisfies SimpleCLIDriver {
     } else {
         throw IllegalStateException("Table debugger requires a tables directory");
     }
-    shared actual IDriverUsage usage = DriverUsage(false, "-T", "--table-debug", ParamCount.none,
-        "Debug old-model encounter tables",
+    shared actual IDriverUsage usage = DriverUsage(false, "-T", "--table-debug",
+        ParamCount.none, "Debug old-model encounter tables",
         "See whether old-model encounter tables refer to a nonexistent table");
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         log.warn("tableDebugger doesn't need a driver model");
         startDriverNoArgs();
     }

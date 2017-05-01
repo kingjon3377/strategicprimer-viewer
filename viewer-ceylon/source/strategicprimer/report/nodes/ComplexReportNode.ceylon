@@ -10,7 +10,8 @@ import strategicprimer.report {
 }
 "A node for cases where a [[SimpleReportNode]] is not enough, because we *can* have
  children, but there isn't a *header*, and children shouldn't be wrapped in a list."
-shared class ComplexReportNode(String textArg = "", Point? pointArg = null) extends SimpleReportNode(textArg, pointArg) {
+shared class ComplexReportNode(String textArg = "", Point? pointArg = null)
+        extends SimpleReportNode(textArg, pointArg) {
     shared actual default void produce(Anything(String) stream) {
         stream(text);
         for (node in this) {

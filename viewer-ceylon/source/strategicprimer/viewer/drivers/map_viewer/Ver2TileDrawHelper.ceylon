@@ -243,9 +243,11 @@ class Ver2TileDrawHelper(
             getDrawableFixtures(map, location).first;
     """Whether there is a "terrain fixture" at the gtiven location."""
     Boolean hasTerrainFixture(IMapNG map, Point location) {
-        if (getDrawableFixtures(map, location).any((fixture) => fixture is TerrainFixture)) {
+        if (getDrawableFixtures(map, location)
+                .any((fixture) => fixture is TerrainFixture)) {
             return true;
-        } else if (getDrawableFixtures(map, location).first exists, map.mountainous(location)) {
+        } else if (getDrawableFixtures(map, location).first exists,
+                map.mountainous(location)) {
             return true;
         } else {
             return false;
@@ -255,7 +257,8 @@ class Ver2TileDrawHelper(
      at the given location"
     Boolean needsFixtureColor(IMapNG map, Point location) {
         if (hasTerrainFixture(map, location), exists top = getTopFixture(map, location)) {
-            if (exists bottom = getDrawableFixtures(map, location).reduce((TileFixture? partial, element) => element)) {
+            if (exists bottom = getDrawableFixtures(map, location)
+                    .reduce((TileFixture? partial, element) => element)) {
                 return top != bottom;
             } else if (map.mountainous(location)) {
                 return true;

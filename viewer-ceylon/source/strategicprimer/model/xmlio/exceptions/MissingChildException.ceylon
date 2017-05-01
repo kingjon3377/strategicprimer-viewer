@@ -10,7 +10,8 @@ import strategicprimer.model.xmlio {
 }
 "A custom exception for when a tag requires a child and it isn't there."
 shared class MissingChildException(context)
-		extends SPFormatException("Tag ``context.name.localPart`` missing a child", context.location) {
+		extends SPFormatException("Tag ``context.name.localPart`` missing a child",
+			context.location) {
 	"The current tag (the one that needs a child"
 	StartElement context;
 	"The current tag"

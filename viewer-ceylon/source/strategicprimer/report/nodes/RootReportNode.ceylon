@@ -23,7 +23,8 @@ shared class RootReportNode(variable String title)
         }
     }
     shared actual void add(MutableTreeNode node) => appendNode(node);
-    shared actual Integer htmlSize => 72 + title.size + Integer.sum(map(IReportNode.htmlSize));
+    shared actual Integer htmlSize =>
+            72 + title.size + Integer.sum(map(IReportNode.htmlSize));
     shared actual void produce(Anything(String) stream) {
         stream("<html>
                 <head><title>```title``</tile></head>

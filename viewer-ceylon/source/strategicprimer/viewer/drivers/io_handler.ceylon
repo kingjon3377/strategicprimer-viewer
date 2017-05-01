@@ -97,7 +97,8 @@ JFileChooser|JFileDialog filteredFileChooser(
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
 shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
-        JFileChooser|JFileDialog fileChooser = filteredFileChooser()) satisfies ActionListener {
+        JFileChooser|JFileDialog fileChooser = filteredFileChooser())
+        satisfies ActionListener {
     shared actual void actionPerformed(ActionEvent event) {
         value temp = event.source;
         Component? source;
@@ -167,7 +168,8 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             if (is IMultiMapModel mapModel) {
                 FileChooser.open(null).call((path) {
                     try {
-                        mapModel.addSubordinateMap(readMap(path, warningLevels.default), path);
+                        mapModel.addSubordinateMap(readMap(path, warningLevels.default),
+                            path);
                     } catch (IOException|SPFormatException|XMLStreamException except) {
                         handleError(except, path.string);
                     }
@@ -200,7 +202,8 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             }
         }
         case ("open in map viewer") {
-            viewerGUI.startDriverOnModel(cli, options, ViewerModel.copyConstructor(mapModel));
+            viewerGUI.startDriverOnModel(cli, options,
+                ViewerModel.copyConstructor(mapModel));
         }
         case ("open secondary map in map viewer") {
             if (is IMultiMapModel mapModel,
@@ -238,7 +241,8 @@ shared class FileChooser {
         storedFile = loc;
         chooser = fileChooser;
     }
-    shared new save(JPath? loc, JFileChooser|JFileDialog fileChooser = filteredFileChooser()) {
+    shared new save(JPath? loc,
+            JFileChooser|JFileDialog fileChooser = filteredFileChooser()) {
         switch (fileChooser)
         case (is JFileChooser) {
             chooserFunction = fileChooser.showSaveDialog;

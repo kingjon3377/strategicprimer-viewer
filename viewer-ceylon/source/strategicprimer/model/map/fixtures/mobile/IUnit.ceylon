@@ -103,7 +103,8 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
                     localSimpleReport("Kinds differ");
                     return false;
                 }
-                Map<Integer, UnitMember> ours = createMap { *map((member) => member.id->member) };
+                Map<Integer, UnitMember> ours =
+                        createMap { *map((member) => member.id->member) };
                 variable Boolean retval = true;
                 void localReport(String string) =>
                         report("In unit of kind ``kind`` named ``name`` (ID #``id``):\t");

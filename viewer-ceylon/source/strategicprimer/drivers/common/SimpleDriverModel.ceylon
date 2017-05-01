@@ -28,8 +28,8 @@ shared class SimpleDriverModel satisfies IDriverModel {
     variable IMutableMapNG mainMap;
     "The filename from which the map was loaded, if known."
     variable JPath? mainMapFile;
-    shared new (IMutableMapNG map = SPMapNG(MapDimensionsImpl(-1, -1, -1), PlayerCollection(), -1),
-            JPath? file = null) {
+    shared new (IMutableMapNG map = SPMapNG(MapDimensionsImpl(-1, -1, -1),
+            PlayerCollection(), -1), JPath? file = null) {
         mainMap = map;
         mapDim = mainMap.dimensions;
         mainMapFile = file;

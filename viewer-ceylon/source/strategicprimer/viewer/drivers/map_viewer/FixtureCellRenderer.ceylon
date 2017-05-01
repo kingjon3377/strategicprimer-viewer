@@ -75,7 +75,8 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
     "Set a component's height given a fixed with."
     by("http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/")
     static void setComponentPreferredSize(JComponent component, Integer width) {
-        assert (is View view = component.getClientProperty(javaString(BasicHTML.propertyKey)));
+        assert (is View view = component.getClientProperty(
+            javaString(BasicHTML.propertyKey)));
         view.setSize(width.float, 0.0);
         Integer wid = ceiling(view.getPreferredSpan(View.xAxis)).integer;
         Integer height = ceiling(view.getPreferredSpan(View.yAxis)).integer;

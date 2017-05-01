@@ -143,7 +143,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         if (exists result = PointIterator(model.mapDimensions, !backwards.selected,
                 !vertically.selected, model.selection).find(
                     (point) => model.map.allFixtures(point).any(
-                        (fixture) => matches(pattern, idNum, fixture, caseSensitivity)))) {
+                        (fixture) => matches(pattern, idNum, fixture,
+                            caseSensitivity)))) {
             log.info("Found in point ``result``");
             model.selection = result;
         }

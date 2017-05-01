@@ -110,7 +110,8 @@ shared class PlayerChangeMenuListener(IDriverModel model)
  override previous ones."
 shared class MenuBroker() satisfies ActionListener {
     """The mapping from "actions" to listeners to handle them."""
-    MutableMap<String, Anything(ActionEvent)> mapping = HashMap<String, Anything(ActionEvent)>();
+    MutableMap<String, Anything(ActionEvent)> mapping =
+            HashMap<String, Anything(ActionEvent)>();
     "Rgister a listener for a series of action commands."
     shared void register(ActionListener|Anything(ActionEvent) listener, String* actions) {
         Anything(ActionEvent) actual;
@@ -249,8 +250,11 @@ shared class SPMenu() extends JMenuBar() {
             createAccelerator(KeyEvent.vkEquals, HotKeyModifier.shift),
             createAccelerator(KeyEvent.vkAdd));
         retval.add(zoomInItem);
-        retval.add(createMenuItem("Zoom out", KeyEvent.vkO, "Decrease the visible size of each tile", handler, createAccelerator(KeyEvent.vkMinus)));
-        retval.add(createMenuItem("Reset zoom", KeyEvent.vkR, "Reset the zoom level", handler, createAccelerator(KeyEvent.vk0)));
+        retval.add(createMenuItem("Zoom out", KeyEvent.vkO,
+            "Decrease the visible size of each tile", handler,
+            createAccelerator(KeyEvent.vkMinus)));
+        retval.add(createMenuItem("Reset zoom", KeyEvent.vkR, "Reset the zoom level",
+            handler, createAccelerator(KeyEvent.vk0)));
         retval.addSeparator();
         KeyStroke centerHotkey;
         if (platform.systemIsMac) {

@@ -129,9 +129,10 @@ shared interface SimpleDriver satisfies ISPDriver {
                 startDriverNoArgs(cli, options);
             }
             case (ParamCount.two|ParamCount.atLeastTwo) {
-                if (exists masterPath = askUserForFile(), exists subordinatePath = askUserForFile()) {
-                    IMultiMapModel mapModel = readMultiMapModel(warningLevels.default, masterPath,
-                        subordinatePath);
+                if (exists masterPath = askUserForFile(),
+                        exists subordinatePath = askUserForFile()) {
+                    IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                        masterPath, subordinatePath);
                     for (pair in mapModel.allMaps) {
                         turnFixer(pair.first);
                     }
@@ -169,8 +170,8 @@ shared interface SimpleDriver satisfies ISPDriver {
         } else {
             assert (exists firstArg = args.first);
             assert (nonempty temp = args.map(javaString).sequence());
-            IMultiMapModel mapModel = readMultiMapModel(warningLevels.default, JPaths.get(firstArg),
-                *namesToFiles(*args.rest));
+            IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                JPaths.get(firstArg), *namesToFiles(*args.rest));
             for (pair in mapModel.allMaps) {
                 turnFixer(pair.first);
             }
@@ -286,8 +287,8 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
         assert (nonempty temp = args.map(javaString).sequence());
         // We declare this as IMultiMapModel so we can correct the current turn in all
         // maps if needed.
-        IMultiMapModel model = readMultiMapModel(warningLevels.ignore, JPaths.get(firstArg),
-            *namesToFiles(*args.rest));
+        IMultiMapModel model = readMultiMapModel(warningLevels.ignore,
+            JPaths.get(firstArg), *namesToFiles(*args.rest));
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {

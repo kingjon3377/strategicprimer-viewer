@@ -74,7 +74,8 @@ import strategicprimer.model.map.fixtures.towns {
     Fortress
 }
 "A class to allow the Z-order of fixtures to be represented as a table."
-shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&Comparator<TileFixture> fixtureFilterTableModel() {
+shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
+        Comparator<TileFixture> fixtureFilterTableModel() {
     FixtureMatcher trivialMatcher(ClassModel<TileFixture> type,
             String description = "``type.declaration.name``s") {
         return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
@@ -120,7 +121,8 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&Comp
         trivialMatcher(`MineralVein`, "Mineral Veins"),
         trivialMatcher(`Fairy`, "Fairies"), trivialMatcher(`Giant`),
         trivialMatcher(`Dragon`), trivialMatcher(`Cave`), trivialMatcher(`Battlefield`),
-        complements<Animal>((Animal animal) => !animal.traces, "Animals", "Animal tracks"),
+        complements<Animal>((Animal animal) => !animal.traces, "Animals",
+            "Animal tracks"),
         complements<Grove>(Grove.orchard, "Orchards", "Groves"),
         // TODO: Rivers are usually handled specially, so should this really be included?
         trivialMatcher(`RiverFixture`, "Rivers"),

@@ -13,10 +13,12 @@ shared InputStream loadResource(String filename) {
     try {
         return FileInputStream(filename);
     } catch (FileNotFoundException except) {
-        // We want to use `module strategicprimer.viewer`.resourceByPath(filename) , but there's no API
-        // for *binary* contents of a Resource ... but this still doesn't work ...
+        // We want to use `module strategicprimer.viewer`.resourceByPath(filename) , but
+        // there's no API for *binary* contents of a Resource ... but this still doesn't
+        // work ...
         // FIXME: What prefix do we need?
-        if (exists retval = currentThread().contextClassLoader.getResourceAsStream("``filename``")) {
+        if (exists retval = currentThread().contextClassLoader
+                .getResourceAsStream("``filename``")) {
             return retval;
         } else {
             throw except;

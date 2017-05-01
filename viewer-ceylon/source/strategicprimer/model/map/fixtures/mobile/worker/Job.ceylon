@@ -40,7 +40,9 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
         addSkill(skill);
     }
     "Clone the Job."
-    shared actual IJob copy() => Job(name, level, *skillSet.items.map((skill) => skill.copy()));
+    // TODO: Use collect() instead of map()?
+    shared actual IJob copy() =>
+            Job(name, level, *skillSet.items.map((skill) => skill.copy()));
     "An iterator over (the worker's level in) the Skills in this Job."
     shared actual Iterator<ISkill> iterator() => skillSet.items.iterator();
     "A Job is equal to another object iff it is a Job with the same name and level and
@@ -70,7 +72,7 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
             for (skill in obj) {
                 if (exists ours = skillSet.get(skill.name)) {
                     retval = retval && ours.isSubset(skill,
-                                (String string) => report("In Job ``name``:\t``string``"));
+                                (String str) => report("In Job ``name``:\t``str``"));
                 } else {
                     report("In Job ``name``:\tExtra skill ``skill.name``");
                     retval = false;

@@ -63,7 +63,8 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         }
         return retval;
     }
-    shared actual void write(Anything(String) ostream, TerrainFixture obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, TerrainFixture obj,
+            Integer indent) {
         if (is Forest obj) {
             writeTag(ostream, "forest", indent);
             writeProperty(ostream, "kind", obj.kind);

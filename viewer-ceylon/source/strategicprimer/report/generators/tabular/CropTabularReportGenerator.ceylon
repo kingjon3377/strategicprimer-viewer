@@ -61,8 +61,8 @@ shared class CropTabularReportGenerator(Point hq, MapDimensions dimensions)
             cultivation = (item.cultivated) then "cultivated" else "wild";
             status = "---";
         }
-        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, kind, cultivation, status,
-            crop);
+        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, kind,
+            cultivation, status, crop);
         return true;
     }
     "Compare two Point-fixture pairs."

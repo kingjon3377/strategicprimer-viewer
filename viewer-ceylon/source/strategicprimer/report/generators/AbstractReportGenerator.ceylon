@@ -23,7 +23,8 @@ import strategicprimer.model.map {
 todo("Make as many methods static as possible")
 shared sealed abstract class AbstractReportGenerator<T>(
         shared Comparison([Point, IFixture], [Point, IFixture]) pairComparator,
-        todo("Take Point and initialize distCalculator here instead of taking it as a parameter")
+        todo("Take Point and initialize distCalculator here instead of taking it as a
+              parameter")
         shared DistanceComparator distCalculator =
                 DistanceComparator(invalidPoint, null))
         satisfies IReportGenerator<T> given T satisfies IFixture {

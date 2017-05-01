@@ -143,8 +143,8 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         if (mutex) {
             mutex = false;
             visibleDimensions = newDimensions;
-            horizontalBar.model.setRangeProperties(largest(model.selection.column, 0), 1, 0,
-                mapDimensions.columns - newDimensions.width, false);
+            horizontalBar.model.setRangeProperties(largest(model.selection.column, 0), 1,
+                0, mapDimensions.columns - newDimensions.width, false);
             verticalBar.model.setRangeProperties(largest(model.selection.row, 0), 1, 0,
                 mapDimensions.rows - newDimensions.height, false);
             mutex = true;

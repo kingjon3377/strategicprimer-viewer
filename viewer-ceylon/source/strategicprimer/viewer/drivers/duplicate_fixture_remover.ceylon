@@ -59,8 +59,8 @@ void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
         return cli.inputBooleanInSeries(
             "Remove '``fixture.shortDescription``', of class '``classDeclaration(fixture)
                 .name``', ID #``fixture.id``, which matches '``matching
-                .shortDescription``', of class '``classDeclaration(matching).name``', ID #``
-                matching.id``?", "duplicate");
+                .shortDescription``', of class '``classDeclaration(matching).name
+                ``', ID #``matching.id``?", "duplicate");
     }
     for (location in map.locations) {
         MutableList<TileFixture> fixtures = ArrayList<TileFixture>();

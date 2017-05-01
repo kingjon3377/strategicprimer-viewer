@@ -81,7 +81,8 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
     }
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
-    shared actual MobileFixture read(StartElement element, QName parent, {XMLEvent*} stream) {
+    shared actual MobileFixture read(StartElement element, QName parent,
+            {XMLEvent*} stream) {
         requireTag(element, parent, *supportedTags);
         MobileFixture twoParam(MobileFixture(String, Integer) constr) =>
             constr(getParameter(element, "kind"), getOrGenerateID(element));
@@ -99,7 +100,8 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         }
         return retval;
     }
-    shared actual void write(Anything(String) ostream, MobileFixture obj, Integer indent) {
+    shared actual void write(Anything(String) ostream, MobileFixture obj,
+            Integer indent) {
         if (is IUnit obj) {
             throw IllegalArgumentException("Unit handled elsewhere");
         } else if (is Animal obj) {
@@ -117,8 +119,8 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             if (!obj.traces) {
                 writeProperty(ostream, "id", obj.id);
                 if (obj.born >= 0) {
-                    // TODO: Write if, but only if, the 'born' turn is less than the animal
-                    // kind's age of maturity before the current turn.
+                    // TODO: Write if, but only if, the 'born' turn is less than the
+                    // animal kind's age of maturity before the current turn.
                     writeProperty(ostream, "born", obj.born);
                 }
             }

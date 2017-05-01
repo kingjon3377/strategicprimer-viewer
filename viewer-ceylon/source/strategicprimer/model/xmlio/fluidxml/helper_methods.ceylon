@@ -52,7 +52,8 @@ import strategicprimer.model.xmlio.exceptions {
 NumberFormat numParser = NumberFormat.integerInstance;
 
 "Require that an XML tag be one of the specified tags."
-throws(`class SPFormatException`, "on a tag other than one, or not in a namespace, we accept")
+throws(`class SPFormatException`,
+    "on a tag other than one, or not in a namespace, we accept")
 void requireTag(
         "The tag to check."
         StartElement element,

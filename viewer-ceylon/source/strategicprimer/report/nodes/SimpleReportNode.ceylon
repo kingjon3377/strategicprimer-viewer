@@ -10,7 +10,8 @@ import strategicprimer.report {
     IReportNode
 }
 "A simple node representing plain text. Any children are ignored!"
-shared class SimpleReportNode(variable String nodeText, shared actual variable Point? localPoint = null)
+shared class SimpleReportNode(variable String nodeText,
+        shared actual variable Point? localPoint = null)
         extends DefaultMutableTreeNode(nodeText) satisfies IReportNode {
     shared actual String text => nodeText;
     assign text {

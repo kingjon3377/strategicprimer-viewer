@@ -192,7 +192,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Produce a sub-sub-report on a unit (we assume we're already in the middle of a
      paragraph or bullet point), or the part of the report dealing with all units not
      already covered."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, [IUnit, Point]? entry) {
         if (exists entry) {
             IUnit item = entry.first;

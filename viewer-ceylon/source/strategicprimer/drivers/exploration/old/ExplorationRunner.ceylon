@@ -203,15 +203,19 @@ shared class ExplorationRunner() {
             "The dimensions of the map."
             MapDimensions mapDimensions) {
         if (terrain == TileType.borealForest || terrain == TileType.temperateForest) {
-            return "The primary rock type here is ``getPrimaryRock(location, terrain, fixtures, mapDimensions)``.
-                    The main kind of tree is ``getPrimaryTree(location, terrain, fixtures, mapDimensions)``.
+            return "The primary rock type here is ``getPrimaryRock(location, terrain,
+                        fixtures, mapDimensions)``.
+                    The main kind of tree is ``getPrimaryTree(location, terrain, fixtures,
+                        mapDimensions)``.
                     ";
         } else {
-            return "The primary rock type here is ``getPrimaryRock(location, terrain, fixtures, mapDimensions)``.
+            return "The primary rock type here is ``getPrimaryRock(location, terrain,
+                        fixtures, mapDimensions)``.
                     ";
         }
     }
-    "Add a table. This is shared so that tests can use it, but shouldn't be used beyond that."
+    "Add a table. This is shared so that tests can use it, but shouldn't be used beyond
+     that."
     todo("If Ceylon ever gets a more nuanced visibility model, revise this",
         "Move tests *into* this class instead")
     shared void loadTable(String name, EncounterTable table) => tables.put(name, table);
@@ -332,13 +336,15 @@ test
 void testRecursiveCheck() {
     ExplorationRunner runner = ExplorationRunner();
     runner.loadTable("existent_table", ConstantTable("exists"));
-    assertTrue(runner.recursiveCheck("non-existent-table"), "base case of non-existent table");
+    assertTrue(runner.recursiveCheck("non-existent-table"),
+        "base case of non-existent table");
     assertFalse(runner.recursiveCheck("existent_table"), "base case of existing table");
     runner.loadTable("referent_one", ConstantTable("#existent_table#"));
     runner.loadTable("referent_two", ConstantTable("( #existent_table# )"));
     runner.loadTable("referent_three", QuadrantTable(1, "#referent_one#",
         "#referent_two#"));
-    assertFalse(runner.recursiveCheck("referent_three"), "recursive case to exercise cache-hits");
+    assertFalse(runner.recursiveCheck("referent_three"),
+        "recursive case to exercise cache-hits");
     runner.loadTable("false_referent", ConstantTable("#nonexistent#"));
     assertTrue(runner.recursiveCheck("false_referent"), "reference to nonexistent table");
 }

@@ -66,7 +66,8 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     StatLabel intLabel = StatLabel(WorkerStats.intelligence);
     StatLabel wisLabel = StatLabel(WorkerStats.wisdom);
     StatLabel chaLabel = StatLabel(WorkerStats.charisma);
-    StatLabel[6] statLabels = [strLabel, dexLabel, conLabel, intLabel, wisLabel, chaLabel];
+    StatLabel[6] statLabels = [strLabel, dexLabel, conLabel, intLabel, wisLabel,
+        chaLabel];
     JLabel caption(String string) {
         return JLabel("<html><b>``string``:</b></html>");
     }

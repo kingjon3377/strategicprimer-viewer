@@ -59,7 +59,8 @@ object oneToTwoConverter satisfies SimpleDriver {
     }
     void writeConvertedMap(JPath old, IMapNG map) {
         try {
-            writeMap(parsePath(old.string).siblingPath("``old.fileName``.converted.xml"), map);
+            writeMap(parsePath(old.string).siblingPath("``old.fileName``.converted.xml"),
+                map);
         } catch (IOException except) {
             throw DriverFailedException(except,
                 "I/O error writing to ``old.fileName``.converted.xml");

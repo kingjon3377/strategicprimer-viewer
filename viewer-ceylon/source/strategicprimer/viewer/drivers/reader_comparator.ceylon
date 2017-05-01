@@ -33,8 +33,8 @@ import strategicprimer.drivers.common {
 
 "A driver for comparing map readers."
 object readerComparator satisfies UtilityDriver {
-    shared actual IDriverUsage usage = DriverUsage(false, "-t", "--test", ParamCount.atLeastOne,
-        "Test map readers",
+    shared actual IDriverUsage usage = DriverUsage(false, "-t", "--test",
+        ParamCount.atLeastOne, "Test map readers",
         "Test map-reading implementations by comparing their results on the same file.");
     "Compare the two readers' performance on the given files."
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
@@ -49,11 +49,13 @@ object readerComparator satisfies UtilityDriver {
             if (is File file) {
                 String contents = readAll(file);
                 Integer startOne = system.nanoseconds;
-                IMapNG mapOne = one.readMapFromStream(path, StringReader(contents), warner);
+                IMapNG mapOne = one.readMapFromStream(path, StringReader(contents),
+                    warner);
                 Integer endOne = system.nanoseconds;
                 print("Old method took ``endOne - startOne``");
                 Integer startTwo = system.nanoseconds;
-                IMapNG mapTwo = two.readMapFromStream(path, StringReader(contents), warner);
+                IMapNG mapTwo = two.readMapFromStream(path, StringReader(contents),
+                    warner);
                 Integer endTwo = system.nanoseconds;
                 print("New method took ``endTwo - startTwo``");
                 if (mapOne == mapTwo) {

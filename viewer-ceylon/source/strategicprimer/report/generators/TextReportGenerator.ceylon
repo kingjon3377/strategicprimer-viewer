@@ -78,7 +78,8 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      report intermediate representation. If an individual note is specified, this does
      *not* remove it from the collection, because this method doesn't know the synthetic
      ID # that was assigned to it."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, [TextFixture, Point]? entry) {
         if (exists entry) {
             TextFixture item = entry.first;

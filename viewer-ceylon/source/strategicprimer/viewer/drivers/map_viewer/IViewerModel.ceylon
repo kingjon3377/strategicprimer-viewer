@@ -8,7 +8,8 @@ import strategicprimer.drivers.common {
 }
 "An interface for a model behind the map viewer, handling the selected tile and visible
  dimensions."
-shared interface IViewerModel satisfies IDriverModel&SelectionChangeSource&GraphicalParamsSource {
+shared interface IViewerModel
+        satisfies IDriverModel&SelectionChangeSource&GraphicalParamsSource {
     "The coordinates of the currently selected tile."
     shared formal variable Point selection;
     "The visible dimensions of the map."

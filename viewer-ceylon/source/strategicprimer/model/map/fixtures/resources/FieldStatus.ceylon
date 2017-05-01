@@ -45,6 +45,7 @@ FieldStatus|ParseException parseFieldStatus(String status) {
     return ParseException("Failed to parse FieldStatus from '``status``'");
 }
 FieldStatus randomStatus(Integer seed) {
-    assert (exists retval = DefaultRandom(seed).nextElement(sort<FieldStatus>(`FieldStatus`.caseValues)));
+    assert (exists retval = DefaultRandom(seed).nextElement(
+        sort<FieldStatus>(`FieldStatus`.caseValues)));
     return retval;
 }

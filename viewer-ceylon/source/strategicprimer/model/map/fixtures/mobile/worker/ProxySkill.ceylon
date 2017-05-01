@@ -15,7 +15,8 @@ import ceylon.random {
 }
 "An implementation of ISkill whose operations act on multiple workers at once."
 todo("Figure out how we can make this satisfy ProxyFor<ISkill>?")
-class ProxySkill(name, parallel, IJob* proxiedJobsStream) satisfies ISkill&ProxyFor<IJob> {
+class ProxySkill(name, parallel, IJob* proxiedJobsStream)
+        satisfies ISkill&ProxyFor<IJob> {
     """If false, the worker containing this is representing all the workers in a single
        unit; if true, it is representing corresponding workers in corresponding units in
        different maps. Thus, if true, we should use the same "random" seed repeatedly in

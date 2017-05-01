@@ -58,7 +58,8 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
                 }
             }
         }
-        // Clear if OK and no skill selected, on Cancel, and after successfully adding skill
+        // Clear if OK and no skill selected, on Cancel, and after successfully adding
+        // skill
         hours.text = "";
     };
     JButton okButton = listenedButton("OK", okListener);

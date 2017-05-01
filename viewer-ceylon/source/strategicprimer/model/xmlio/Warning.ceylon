@@ -13,8 +13,8 @@ shared object warningLevels {
 	shared Warning die => package.die;
 	shared Warning custom(Anything(Exception)|Anything(String) handler =
 			process.writeLine) => CustomWarningHandler(handler);
-	"The default warning handler. This is provided so that it can in theory be changed later in
-	 one place rather than everywhere."
+	"The default warning handler. This is provided so that it can in theory be changed
+	 later in one place rather than everywhere."
 	shared Warning default => warn;
 }
 "Don't do anything with warnings."
@@ -38,7 +38,8 @@ shared object die satisfies Warning {
 	}
 }
 "A warning handler that takes a user-provided handler."
-shared class CustomWarningHandler(Anything(Exception)|Anything(String) handler = process.writeLine)
+shared class CustomWarningHandler(
+		Anything(Exception)|Anything(String) handler = process.writeLine)
 		satisfies Warning {
 	shared actual void handle(Exception warning);
 	if (is Anything(Exception) handler) {

@@ -20,8 +20,8 @@ import java.nio.file {
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to check whether player maps are subsets of the main map."
 shared object subsetCLI satisfies SimpleDriver {
-    shared actual IDriverUsage usage = DriverUsage(false, "-s", "--subset", ParamCount.atLeastTwo,
-        "Check players' maps against master",
+    shared actual IDriverUsage usage = DriverUsage(false, "-s", "--subset",
+        ParamCount.atLeastTwo, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.");
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,

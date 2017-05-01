@@ -47,7 +47,8 @@ import strategicprimer.report.nodes {
 todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         Player currentPlayer, MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<ITownFixture>(comp, DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<ITownFixture>(comp, DistanceComparator(hq,
+            dimensions)) {
     {TownStatus+} statuses = {TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
         TownStatus.burned};
     "Separate towns by status."
@@ -70,8 +71,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      in, handling it is delegated to its dedicated report-generating classes. The
      all-towns report omits fortresses and villages, and is sorted in a way that I hope
      is helpful. We remove the town(s) from the set of fixtures."
-    shared actual void produce(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures, IMapNG map,
-            Anything(String) ostream, [ITownFixture, Point]? entry) {
+    shared actual void produce(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, [ITownFixture, Point]? entry) {
         if (exists entry) {
             ITownFixture item = entry.first;
             Point loc = entry.rest.first;
@@ -85,7 +86,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 fixtures.remove(item.id);
                 ostream("At ``loc``: ``item.name``, ");
                 if (item.owner.independent) {
-                    ostream("an independent ``item.townSize`` ``item.status`` ``item.kind``");
+                    ostream("an independent ``item.townSize`` ``item.status`` ``item
+                        .kind``");
                 } else if (item.owner == currentPlayer) {
                     ostream("a ``item.townSize`` ``item.status`` allied with you");
                 } else {
@@ -131,7 +133,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Produce a report for a town or towns. Handling of fortresses and villages passed as
      [[entry]] is delegated to their dedicated report-generating classes. We remove the
      town from the set of fixtures."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
             IMapNG map, [ITownFixture, Point]? entry) {
         if (exists entry) {
             ITownFixture item = entry.first;
@@ -145,8 +148,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             } else if (is AbstractTown item) {
                 fixtures.remove(item.id);
                 if (item.owner.independent) {
-                    return SimpleReportNode("At ``loc``: ``item.name``, an independent ``item.townSize`` ``item
-                        .status`` ``item.kind`` ``distCalculator
+                    return SimpleReportNode("At ``loc``: ``item.name``, an independent ``
+                        item.townSize`` ``item.status`` ``item.kind`` ``distCalculator
                         .distanceString(loc)``", loc);
                 } else if (item.owner == currentPlayer) {
                     return SimpleReportNode("At ``loc``: ``item.name``, a ``item.townSize

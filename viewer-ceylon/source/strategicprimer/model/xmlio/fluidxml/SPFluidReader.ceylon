@@ -102,7 +102,8 @@ import strategicprimer.model.xmlio.io_impl {
 }
 "The main reader-from-XML class in the 'fluid XML' implementation."
 shared class SPFluidReader() satisfies IMapReader&ISPReader {
-    alias LocalXMLReader=>Object(StartElement, QName, {XMLEvent*}, IMutablePlayerCollection, Warning, IDRegistrar);
+    alias LocalXMLReader=>Object(StartElement, QName, {XMLEvent*},
+        IMutablePlayerCollection, Warning, IDRegistrar);
     late Map<String, LocalXMLReader> readers;
     Object readSPObject(StartElement element, QName parent,
             {XMLEvent*} stream, IMutablePlayerCollection players, Warning warner,
@@ -171,7 +172,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             map.setMountainous(currentTile, true);
             return;
         }
-        Object child = readSPObject(element, parent.name, stream, players, warner, idFactory);
+        Object child = readSPObject(element, parent.name, stream, players, warner,
+            idFactory);
         if (is River child) {
             map.addRivers(currentTile, child);
         } else if (is Ground child) {
@@ -222,7 +224,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
-                parseTileChild(map, element, stream, players, warner, idFactory, loc, event);
+                parseTileChild(map, element, stream, players, warner, idFactory, loc,
+                    event);
                 continue;
             } else if (is EndElement event, element.name == event.name) {
                 break;
@@ -468,6 +471,6 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             return readMapFromStream(file, istream, warner);
         }
     }
-    shared actual IMutableMapNG readMapFromStream(JPath file, JReader istream, Warning warner) =>
-            readXML<IMutableMapNG>(file, istream, warner);
+    shared actual IMutableMapNG readMapFromStream(JPath file, JReader istream,
+            Warning warner) => readXML<IMutableMapNG>(file, istream, warner);
 }

@@ -54,7 +54,8 @@ shared object advancementCLI satisfies SimpleCLIDriver {
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "View a player's workers and manage their advancement";
         longDescription = """View a player's units, the workers in those units, each
-                             worker's Jobs, and his or her level in each Skill in each Job.""";
+                             worker's Jobs, and his or her level in each Skill in each
+                             Job.""";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
 }

@@ -16,7 +16,8 @@ import strategicprimer.model.xmlio {
     Warning
 }
 "A reader for portals."
-class YAPortalReader(Warning warning, IDRegistrar idRegistrar) extends YAAbstractReader<Portal>(warning, idRegistrar) {
+class YAPortalReader(Warning warning, IDRegistrar idRegistrar)
+        extends YAAbstractReader<Portal>(warning, idRegistrar) {
     shared actual Portal read(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, "portal");
         Portal retval = Portal(getParameter(element, "world"), parsePoint(element),

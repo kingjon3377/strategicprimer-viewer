@@ -42,9 +42,11 @@ import strategicprimer.report.nodes {
     emptyReportNode
 }
 "A report generator for equipment and resources."
-shared class FortressMemberReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<FortressMember>(comp, DistanceComparator(hq, dimensions)) {
+shared class FortressMemberReportGenerator(
+            Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
+            MapDimensions dimensions, Point hq = invalidPoint)
+        extends AbstractReportGenerator<FortressMember>(comp,
+            DistanceComparator(hq, dimensions)) {
     "Produces a sub-report on a resource or piece of equipment, or on all fortress
      members. All fixtures referred to in this report are removed from the collection.
      This method should probably never actually be called and do anything without an
@@ -144,7 +146,8 @@ shared class FortressMemberReportGenerator(Comparison([Point, IFixture], [Point,
      This method should probably never actually be called and do anything without an
      [[entry]], since nearly all resources will be in fortresses and should be reported
      as such, but we'll handle this properly anyway."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, [FortressMember, Point]? entry) {
         if (exists entry) {
             FortressMember item = entry.first;
