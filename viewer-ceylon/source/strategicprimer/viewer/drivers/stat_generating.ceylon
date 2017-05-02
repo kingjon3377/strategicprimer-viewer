@@ -204,19 +204,31 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         }
         return retval;
     }
+    MutableMap<String, WorkerStats> racialBonuses = HashMap<String, WorkerStats>();
+    WorkerStats loadRacialBonus(String race) {
+        if (exists retval = racialBonuses.get(race)) {
+            return retval;
+        } else if (exists resource = `module strategicprimer.model`
+                .resourceByPath("racial_stat_adjustments/``race``.txt")) {
+            value parsed = resource.textContent().lines.map(Integer.parse)
+                .narrow<Integer>().sequence();
+            assert (is Integer[6] temp = [parsed[0], parsed[1], parsed[2], parsed[3],
+                parsed[4], parsed[5]]);
+            WorkerStats retval = WorkerStats.factory(*temp);
+            racialBonuses.put(race, retval);
+            return retval;
+        } else {
+            log.warn("No stat adjustments found for ``race``");
+            return WorkerStats.factory(0, 0, 0, 0, 0, 0);
+        }
+    }
     "Create randomly-generated stats for a worker, with racial adjustments applied."
     WorkerStats createWorkerStats(String race, Integer levels, ICLIHelper cli) {
         Integer die(Integer max) => (random() * max).integer + 1;
         WorkerStats base = WorkerStats.random(() => die(6) + die(6) + die(6));
         Integer lowestScore = getMinIndex(base.array);
         WorkerStats racialBonus;
-        switch (race)
-        case ("dwarf") { racialBonus = WorkerStats.factory(2, 0, 2, 0, 0, -2); }
-        case ("elf") { racialBonus = WorkerStats.factory(-1, 2, 0, 1, 0, 0); }
-        case ("gnome") { racialBonus = WorkerStats.factory(-2, 1, -1, 2, 0, 0); }
-        case ("half-elf") { racialBonus = WorkerStats.factory(0, 1, 0, 1, 0, 0); }
-        case ("Danan") { racialBonus = WorkerStats.factory(-2, 1, 1, 1, -2, 1); }
-        else { // treat undefined as human
+        if (race == "human") {
             Integer chosenBonus = cli.chooseStringFromList(["Strength", "Dexterity",
                     "Constitution", "Intelligence", "Wisdom", "Charisma", "Lowest"],
                 "Character is a ``race``; which stat should get a +2 bonus?", "",
@@ -234,6 +246,8 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
             case (3) { racialBonus = WorkerStats.factory(0, 0, 0, 2, 0, 0); }
             case (4) { racialBonus = WorkerStats.factory(0, 0, 0, 0, 2, 0); }
             else { racialBonus = WorkerStats.factory(0, 0, 0, 0, 0, 2); }
+        } else {
+            racialBonus = loadRacialBonus(race);
         }
         Integer conBonus = WorkerStats.getModifier(base.constitution +
             racialBonus.constitution);
