@@ -175,4 +175,6 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
         }
         testMap(map, path);
     }
+    shared actual void acceptDroppedFile(JPath file) => testFile(file);
+    shared actual Boolean supportsDroppedFiles = true;
 }

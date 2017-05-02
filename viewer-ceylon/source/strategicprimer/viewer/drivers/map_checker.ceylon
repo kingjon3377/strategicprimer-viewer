@@ -208,6 +208,8 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
         }, (text) => printParagraph(text, LabelTextColor.red),
             warningLevels.custom(customPrinter));
     }
+    shared actual void acceptDroppedFile(JPath file) => check(file);
+    shared actual Boolean supportsDroppedFiles = true;
 }
 "A driver to check every map file in a list for errors and report the results in a
  window."

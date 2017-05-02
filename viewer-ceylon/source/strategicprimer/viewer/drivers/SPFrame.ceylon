@@ -7,7 +7,43 @@ import java.nio.file {
 
 import javax.swing {
     JFrame,
-    WindowConstants
+    WindowConstants,
+    TransferHandler
+}
+import java.awt.datatransfer {
+    DataFlavor
+}
+import java.io {
+	JFile=File
+}
+import java.util {
+	JList=List
+}
+"A [[TransferHandler]] to allow SP apps to accept dropped files."
+class FileDropHandler() extends TransferHandler() {
+	shared late SPFrame app;
+	shared actual Boolean canImport(TransferSupport support) => support.drop &&
+		app.supportsDroppedFiles &&
+		support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+	shared actual Boolean importData(TransferSupport support) {
+		if (!support.drop ||
+		!support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+			return false;
+		}
+		JList<JFile> payload;
+		try {
+			value temp = support.transferable.getTransferData(DataFlavor.javaFileListFlavor);
+			assert (is JList<JFile> temp);
+			payload = temp;
+		} catch (Exception except) {
+			// TODO: log
+			return false;
+		}
+		for (file in payload) {
+			app.acceptDroppedFile(file.toPath());
+		}
+		return true;
+	}
 }
 "An intermediate subclass of JFrame to take care of some common setup things that can't be
  done in an interface."
@@ -21,4 +57,11 @@ shared abstract class SPFrame(String windowTitle, JPath? file, Dimension? minSiz
 	if (exists minSize) {
 		setMinimumSize(minSize);
 	}
+	"Whether this app supports having files dropped on it."
+	shared formal Boolean supportsDroppedFiles;
+	"Handle a dropped file."
+	shared default void acceptDroppedFile(JPath file) {}
+	FileDropHandler temp = FileDropHandler();
+	transferHandler = temp;
+	temp.app = this;
 }

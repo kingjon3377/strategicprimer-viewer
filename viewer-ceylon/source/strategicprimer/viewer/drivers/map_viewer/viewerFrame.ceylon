@@ -1,30 +1,20 @@
 import com.bric.window {
     WindowMenu
 }
-import lovelace.util.common {
-    todo,
-    Comparator
-}
+
 import java.awt {
     Dimension,
     Component
 }
-import strategicprimer.drivers.common {
-    VersionChangeListener,
-    MapChangeListener,
-    SelectionChangeListener
+import java.awt.event {
+    WindowEvent,
+    WindowAdapter,
+    ActionEvent
 }
-import strategicprimer.model.map {
-    TileFixture
+import java.nio.file {
+    JPath=Path
 }
-import javax.swing.table {
-    AbstractTableModel,
-    TableColumn
-}
-import strategicprimer.viewer.drivers {
-    SPFrame,
-    SPMenu
-}
+
 import javax.swing {
     JPanel,
     JScrollPane,
@@ -33,15 +23,20 @@ import javax.swing {
     DropMode,
     JButton,
     JLabel,
-    JTable
+    JTable,
+    SwingUtilities
 }
 import javax.swing.event {
     TableModelEvent
 }
-import java.awt.event {
-    WindowEvent,
-    WindowAdapter,
-    ActionEvent
+import javax.swing.table {
+    AbstractTableModel,
+    TableColumn
+}
+
+import lovelace.util.common {
+    todo,
+    Comparator
 }
 import lovelace.util.jvm {
     centeredHorizontalBox,
@@ -50,6 +45,23 @@ import lovelace.util.jvm {
     horizontalSplit,
     BorderedPanel,
     verticalSplit
+}
+
+import strategicprimer.drivers.common {
+    VersionChangeListener,
+    MapChangeListener,
+    SelectionChangeListener,
+    readMapModel
+}
+import strategicprimer.model.map {
+    TileFixture
+}
+import strategicprimer.viewer.drivers {
+    SPFrame,
+    SPMenu
+}
+import strategicprimer.model.xmlio {
+    warningLevels
 }
 "An interface for the map viewer main window, to hold the method needed by the worker
  management app."
@@ -64,6 +76,14 @@ shared SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel,
             satisfies IViewerFrame {
         shared actual IViewerModel model = driverModel;
         shared actual String windowName = "Map Viewer";
+        // TODO: Keep track of whether the map has been modified and if not replace it
+        // instead of opening a new window
+        shared actual void acceptDroppedFile(JPath file) =>
+                SwingUtilities.invokeLater(() =>
+                    viewerFrame(ViewerModel.copyConstructor(
+                        readMapModel(file, warningLevels.default)),
+                        menuHandler).setVisible(true));
+        shared actual Boolean supportsDroppedFiles = true;
     }
     AbstractTableModel&{FixtureMatcher*}&ZOrderFilter&Comparator<TileFixture> tableModel =
             fixtureFilterTableModel();

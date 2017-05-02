@@ -82,6 +82,13 @@ import strategicprimer.drivers.common {
     SimpleCLIDriver,
     SPOptionsImpl
 }
+import com.apple.eawt {
+    AppEvent,
+    Application
+}
+import com.bric.window {
+    WindowList
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."
@@ -192,6 +199,15 @@ String usageMessage(IDriverUsage usage, Boolean verbose) {
     }
     return builder.string;
 }
+void handleDroppedFiles(AppEvent.OpenFilesEvent openFilesEvent) {
+    SPFrame? topWindow = WindowList.getWindows(true, false).iterable
+        .narrow<SPFrame>().last;
+    if (exists topWindow) {
+        for (file in openFilesEvent.files) {
+            topWindow.acceptDroppedFile(file.toPath());
+        }
+    }
+}
 suppressWarnings("expressionTypeNothing")
 shared void run() {
     addLogWriter(logWriter);
@@ -202,6 +218,7 @@ shared void run() {
     System.setProperty("apple.laf.useScreenMenuBar", "true");
     SPOptionsImpl options = SPOptionsImpl();
     Map<String, ISPDriver[2]> driverCache = createCache();
+    Application.application.setOpenFileHandler(handleDroppedFiles);
     object appStarter satisfies ISPDriver {
         shared actual IDriverUsage usage = DriverUsage(true, "-p", "--app-starter",
             ParamCount.anyNumber, "App Chooser",
@@ -340,6 +357,7 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
     object frame extends SPFrame("SP App Chooser", null) {
         shared actual String windowName = "SP App Chooser";
+        shared actual Boolean supportsDroppedFiles = false;
     }
     JButton button(String desc, ISPDriver() target) {
         object retval extends JButton(desc) satisfies ActionListener&Runnable {

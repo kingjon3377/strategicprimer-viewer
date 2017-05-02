@@ -186,6 +186,7 @@
       shortname="SPHelpers" stubfile="${stub-script-path}"
       icon="icon.icns" useJavaXKey="true">
       <javaproperty name="apple.eawt.quitStrategy" value="CLOSE_ALL_WINDOWS" />
+      <documenttype name="Strategic Primer map files" extensions="map xml" role="Editor" />
     </jarbundler>
     <tar destfile="${release}/${basename}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">

@@ -44,6 +44,12 @@ import strategicprimer.drivers.worker.common {
 import strategicprimer.drivers.common {
     PlayerChangeListener
 }
+import java.nio.file {
+    JPath=Path
+}
+import strategicprimer.model.xmlio {
+    readMap
+}
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
         MenuBroker menuHandler) {
@@ -80,6 +86,9 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
             treeModel.playerChanged(old, newPlayer);
         }
         shared actual String windowName = "Worker Advancement";
+        shared actual void acceptDroppedFile(JPath file) =>
+                model.addSubordinateMap(readMap(file), file);
+        shared actual Boolean supportsDroppedFiles = true;
     }
     JLabel html(String string) => JLabel("<html><p align=\"left\">``string``</p></html>");
     retval.contentPane = horizontalSplit(0.5, 0.5,

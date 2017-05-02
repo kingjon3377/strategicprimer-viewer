@@ -86,6 +86,9 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu
 }
+import strategicprimer.model.xmlio {
+    readMap
+}
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
     shared new fromMap(IMutableMapNG map, JPath? file) extends
@@ -397,6 +400,9 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
             resourceLabel.setArgs(currentPlayer.name);
             implementLabel.setArgs(currentPlayer.name);
         }
+        shared actual void acceptDroppedFile(JPath file) =>
+                model.addSubordinateMap(readMap(file), file);
+        shared actual Boolean supportsDroppedFiles = true;
     }
     retval.add(verticalSplit(0.2, 0.1, mainPanel, scrolledLog));
     retval.jMenuBar = workerMenu(menuHandler, retval, model);

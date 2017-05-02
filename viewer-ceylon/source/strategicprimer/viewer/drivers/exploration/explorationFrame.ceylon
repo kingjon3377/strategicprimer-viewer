@@ -128,6 +128,12 @@ import strategicprimer.drivers.common {
 import ceylon.random {
     randomize
 }
+import strategicprimer.model.xmlio {
+    readMap
+}
+import java.nio.file {
+    JPath=Path
+}
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,
         Anything(ActionEvent) menuHandler) {
@@ -559,6 +565,9 @@ SPFrame explorationFrame(IExplorationModel model,
                 }
             }
         }
+        shared actual void acceptDroppedFile(JPath file) =>
+                model.addSubordinateMap(readMap(file), file);
+        shared actual Boolean supportsDroppedFiles = true;
         explorerSelectingPanel.addCompletionListener(swapper);
         explorationPanel.addCompletionListener(swapper);
         add(explorerSelectingPanel);

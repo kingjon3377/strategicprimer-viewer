@@ -96,6 +96,12 @@ import strategicprimer.viewer.drivers.map_viewer {
     ViewerModel,
     IViewerModel
 }
+import strategicprimer.model.xmlio {
+    readMap
+}
+import java.nio.file {
+    JPath=Path
+}
 "A window to let the player manage units."
 SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         IWorkerModel model, MenuBroker menuHandler) {
@@ -266,6 +272,9 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             playerLabel.setArgs(newPlayer.name, platform.shortcutDescription);
         }
         shared actual String windowName = "Worker Management";
+        shared actual void acceptDroppedFile(JPath file) =>
+                model.addSubordinateMap(readMap(file), file);
+        shared actual Boolean supportsDroppedFiles = true;
     }
     retval.jMenuBar = workerMenu(menuHandler.actionPerformed, retval, model);
     retval.pack();
