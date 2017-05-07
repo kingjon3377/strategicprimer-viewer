@@ -113,12 +113,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Find a fixture in a map by ID number."
     IFixture? find(IMapNG map, Integer id) {
         for (location in map.locations) {
-            if (exists forest = map.forest(location), forest.id == id) {
-                return forest;
-            } else if (exists ground = map.ground(location), ground.id == id) {
-                return ground;
-            } else if (exists result = findInIterable(id,
-                    *map.otherFixtures(location))) {
+            if (exists result = findInIterable(id, *map.allFixtures(location))) {
                 return result;
             }
         }
