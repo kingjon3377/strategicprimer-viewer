@@ -95,9 +95,9 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     "The units in the given collection that have workers without stats."
-    {IUnit*} removeStattedUnits(IUnit* units) => units.filter(
+    IUnit[] removeStattedUnits(IUnit* units) => units.filter(
                 (unit) => unit.narrow<Worker>().map(Worker.stats)
-                    .any((stats) => !stats exists));
+                    .any((stats) => !stats exists)).sequence();
     "Find a fixture in a given iterable with the given ID."
     IFixture? findInIterable(Integer id, IFixture* fixtures) {
         for (fixture in fixtures) {
@@ -150,7 +150,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for workers already in the maps that belong to one
      particular player."
     void enterStatsForPlayer(IExplorationModel model, Player player, ICLIHelper cli) {
-        IUnit[] units = [*removeStattedUnits(*model.getUnits(player))];
+        IUnit[] units = removeStattedUnits(*model.getUnits(player));
         cli.loopOnList(units, (clh, List<IUnit> list) =>
             clh.chooseFromList(list, "Which unit contains the worker in question?",
                 "All that player's units already have stats.", "Unit selection: ",
