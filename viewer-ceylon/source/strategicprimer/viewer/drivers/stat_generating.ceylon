@@ -115,8 +115,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
                 return forest;
             } else if (exists ground = map.ground(location), ground.id == id) {
                 return ground;
-            }
-            else if (exists result = findInIterable(id,
+            } else if (exists result = findInIterable(id,
                     *map.otherFixtures(location))) {
                 return result;
             }
