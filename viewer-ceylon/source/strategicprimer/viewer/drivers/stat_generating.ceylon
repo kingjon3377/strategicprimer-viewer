@@ -150,11 +150,11 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for workers already in the maps that belong to one
      particular player."
     void enterStatsForPlayer(IExplorationModel model, Player player, ICLIHelper cli) {
-        IUnit[] units = removeStattedUnits(*model.getUnits(player));
-        cli.loopOnList(units, (clh, List<IUnit> list) =>
-            clh.chooseFromList(list, "Which unit contains the worker in question?",
-                "All that player's units already have stats.", "Unit selection: ",
-                false),
+        cli.loopOnList(removeStattedUnits(*model.getUnits(player)),
+                    (clh, List<IUnit> list) => clh.chooseFromList(list,
+                        "Which unit contains the worker in question?",
+                        "All that player's units already have stats.", "Unit selection: ",
+                        false),
             "Choose another unit? ", (IUnit unit, clh) =>
                 enterStatsInUnit(model, unit, clh));
     }
