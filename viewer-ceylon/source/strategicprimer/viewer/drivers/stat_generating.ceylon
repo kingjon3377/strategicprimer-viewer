@@ -94,21 +94,9 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     "The units in the given collection that have workers without stats."
-    {IUnit*} removeStattedUnits(IUnit* units) {
-        return units.filter((unit) {
-            variable Boolean retval = false;
-            for (member in unit) {
-                if (is Worker member) {
-                    if (is Null stats = member.stats) {
-                        return false;
-                    } else {
-                        retval = true;
-                    }
-                }
-            }
-            return retval;
-        });
-    }
+    {IUnit*} removeStattedUnits(IUnit* units) => units.filter(
+                (unit) => unit.narrow<Worker>().map(Worker.stats)
+                    .any((stats) => !stats exists));
     "Find a fixture in a given iterable with the given ID."
     IFixture? findInIterable(Integer id, IFixture* fixtures) {
         for (fixture in fixtures) {
