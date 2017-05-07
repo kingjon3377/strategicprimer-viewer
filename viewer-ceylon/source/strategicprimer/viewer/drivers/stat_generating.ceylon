@@ -138,9 +138,8 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for workers already in the maps that are part of one
      particular unit."
     void enterStatsInUnit(IMultiMapModel model, IUnit unit, ICLIHelper cli) {
-        Worker[] workers = [
-            for (member in unit)
-                if (is Worker member, !member.stats exists) member ];
+        Worker[] workers = unit.narrow<Worker>()
+            .filter((worker) => !worker.stats exists).sequence();
         cli.loopOnList(workers, (clh, List<Worker> list) => clh.chooseFromList(list,
                 "Which worker do you want to enter stats for?",
                 "There are no workers without stats in that unit.",
@@ -160,7 +159,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Let the user enter stats for workers already in the maps."
     void enterStats(IExplorationModel model, ICLIHelper cli) {
-        Player[] players = [*model.playerChoices];
+        Player[] players = model.playerChoices.sequence();
         cli.loopOnList(players, (clh, List<Player> list) => clh.chooseFromList(list,
                 "Which player owns the worker in question?",
                 "There are no players shared by all the maps.", "Player selection: ",
@@ -351,7 +350,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Allow the user to create randomly-generated workers."
     void createWorkers(IExplorationModel model, IDRegistrar idf, ICLIHelper cli) {
-        Player[] players = [*model.playerChoices];
+        Player[] players = model.playerChoices.sequence();
         cli.loopOnList(players, (clh, List<Player> list) => clh.chooseFromList(list,
                 "Which player owns the new worker(s)?",
                 "There are no players shared by all the maps.",
