@@ -36,7 +36,6 @@ import strategicprimer.model.map {
     IFixture,
     TileType,
     IMapNG,
-    FixtureIterable,
     pointFactory
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -102,7 +101,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         for (fixture in fixtures) {
             if (fixture.id == id) {
                 return fixture;
-            } else if (is FixtureIterable<out IFixture> fixture,
+            } else if (is Iterable<IFixture> fixture,
                     exists result = findInIterable(id, *fixture)) {
                 return result;
             }
