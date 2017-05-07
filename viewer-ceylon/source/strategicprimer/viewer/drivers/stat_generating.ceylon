@@ -19,7 +19,8 @@ import java.lang {
     IllegalStateException
 }
 import java.nio.file {
-    JPaths=Paths
+    JPaths=Paths,
+    JPath=Path
 }
 
 import lovelace.util.common {
@@ -36,7 +37,8 @@ import strategicprimer.model.map {
     IFixture,
     TileType,
     IMapNG,
-    pointFactory
+    pointFactory,
+    IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.mobile {
     Worker,
@@ -132,8 +134,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for one worker in particular."
     void enterStatsForWorker(IMultiMapModel model, Integer id, ICLIHelper cli) {
         WorkerStats stats = enterStatsCollection(cli);
-        for (pair in model.allMaps) {
-            IMapNG map = pair.first;
+        for (map in model.allMaps.map(([IMutableMapNG, JPath?] pair) => pair.first)) {
             if (is Worker fixture = find(map, id), !fixture.stats exists) {
                 fixture.stats = stats;
             }
