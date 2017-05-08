@@ -8,23 +8,14 @@ import ceylon.collection {
 import ceylon.file {
     File,
     parsePath,
-    Directory,
     lines
 }
 import ceylon.math.float {
     random
 }
 
-import java.lang {
-    IllegalStateException
-}
 import java.nio.file {
-    JPaths=Paths,
     JPath=Path
-}
-
-import lovelace.util.common {
-    todo
 }
 
 import strategicprimer.model.idreg {
@@ -35,9 +26,7 @@ import strategicprimer.model.map {
     Point,
     Player,
     IFixture,
-    TileType,
     IMapNG,
-    pointFactory,
     IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -50,17 +39,6 @@ import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats,
     IJob,
     randomRace
-}
-import strategicprimer.model.map.fixtures.towns {
-    Village
-}
-import strategicprimer.model.xmlio {
-    readMap,
-    warningLevels
-}
-import strategicprimer.drivers.exploration.old {
-    loadAllTables,
-    ExplorationRunner
 }
 import strategicprimer.drivers.common {
     IMultiMapModel,
@@ -75,10 +53,6 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
     ExplorationModel
-}
-import ceylon.random {
-    DefaultRandom,
-    Random
 }
 
 "A driver to let the user enter pre-generated stats for existing workers or generate new
@@ -375,183 +349,6 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
             }
         } else {
             startDriverOnModel(cli, options, ExplorationModel.copyConstructor(model));
-        }
-    }
-}
-"A class to non-interactively generate a tile's contents."
-todo("Figure out how to run the Ceylon version repeatedly on a single JVM")
-class TileContentsGenerator(IMapNG map) {
-    ExplorationRunner runner = ExplorationRunner();
-    if (is Directory directory = parsePath("tables").resource) {
-        loadAllTables(directory, runner);
-    } else {
-        throw IllegalStateException(
-            "Tile-contents generator requires a tables directory");
-    }
-    shared void generateTileContents(Point point,
-            TileType terrain = map.baseTerrain(point)) {
-        Integer reps = (random() * 4).integer + 1;
-        for (i in 0:reps) {
-            process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
-                {}, map.dimensions));
-        }
-    }
-}
-todo("What's the Ceylon equivalent of Collections.synchronizedMap()?")
-MutableMap<String, TileContentsGenerator> tileContentsInstances =
-        HashMap<String, TileContentsGenerator>();
-TileContentsGenerator tileContentsInstance(String filename) {
-    if (exists retval = tileContentsInstances.get(filename)) {
-        return retval;
-    } else {
-        TileContentsGenerator retval =
-                TileContentsGenerator(readMap(JPaths.get(filename),
-                    warningLevels.default));
-        tileContentsInstances.put(filename, retval);
-        return retval;
-    }
-}
-shared void tileContentsGenerator() {
-    // FIXME: Does process.arguments get reset properly when called from NailGun or equiv?
-    String[] args = process.arguments;
-    if (exists filename = args[0], exists second = args[1],
-            is Integer row = Integer.parse(second), exists third = args[2],
-            is Integer column = Integer.parse(third)) {
-        tileContentsInstance(filename).generateTileContents(pointFactory(row, column));
-    } else {
-        process.writeErrorLine("Usage: tileContentsGenerator map_name.xml row col");
-    }
-}
-abstract class SimpleTerrain() of unforested | forested | ocean { }
-"Plains, desert, and mountains"
-object unforested extends SimpleTerrain() { }
-"Temperate forest, boreal forest, and steppe"
-object forested extends SimpleTerrain() { }
-"Ocean."
-object ocean extends SimpleTerrain() { }
-"""A hackish driver to fix TODOs (missing content) in the map, namely units with "TODO"
-   for their "kind" and aquatic villages with non-aquatic races."""
-todo("Write tests of this functionality")
-object todoFixerCLI satisfies SimpleCLIDriver {
-    "A list of unit kinds (jobs) for plains etc."
-    MutableList<String> plainsList = ArrayList<String>();
-    "A list of unit kinds (jobs) for forest and jungle."
-    MutableList<String> forestList = ArrayList<String>();
-    "A list of unit kinds (jobs) for ocean."
-    MutableList<String> oceanList = ArrayList<String>();
-    "A map from village IDs to races."
-    MutableMap<Integer, String> raceMap = HashMap<Integer, String>();
-    "A list of aqautic races."
-    MutableList<String> raceList = ArrayList<String>();
-    "How many units we've fixed."
-    variable Integer count = -1;
-    shared actual IDriverUsage usage = DriverUsage(false, "-o", "--fix-todos",
-        ParamCount.atLeastOne, "Fix TODOs in maps",
-        "Fix TODOs in unit kinds and aquatic villages with non-aquatic races");
-    "Get the simplified-terrain-model instance covering the map's terrain at the given
-     location."
-    todo("Just use TileType now we have union types available")
-    suppressWarnings("deprecation")
-    SimpleTerrain getTerrain(IMapNG map, Point location) {
-        switch (map.baseTerrain(location))
-        case (TileType.jungle|TileType.borealForest|TileType.temperateForest) {
-            return forested;
-        }
-        case (TileType.desert|TileType.mountain|TileType.tundra|TileType.notVisible) {
-            return unforested; }
-        case (TileType.ocean) { return ocean; }
-        case (TileType.plains|TileType.steppe) {
-            if (map.mountainous(location)) {
-                return unforested;
-            } else if (map.forest(location) exists) {
-                return forested;
-            } else {
-                return unforested;
-            }
-        }
-    }
-    "Search for and fix aquatic villages with non-aquatic races."
-    void fixAllVillages(IMapNG map, ICLIHelper cli) {
-        Village[] villages = [ for (point in map.locations)
-            if (map.baseTerrain(point) == TileType.ocean)
-                for (fixture in map.otherFixtures(point))
-                    if (is Village fixture, landRaces.contains(fixture.race))
-                        fixture ];
-        if (nonempty villages) {
-            if (raceList.empty) {
-                while (true) {
-                    String race = cli.inputString("Next aquatic race: ").trimmed;
-                    if (race.empty) {
-                        break;
-                    }
-                    raceList.add(race);
-                }
-            }
-            for (village in villages) {
-                if (exists race = raceMap.get(village.id)) {
-                    village.race = race;
-                } else {
-                    Random rng = DefaultRandom(village.id);
-                    assert (exists race = rng.nextElement(raceList));
-                    village.race = race;
-                    raceMap.put(village.id, race);
-                }
-            }
-        }
-    }
-    "Fix a stubbed-out kind for a unit."
-    void fixUnit(Unit unit, SimpleTerrain terrain, ICLIHelper cli) {
-        Random rng = DefaultRandom(unit.id);
-        count++;
-        MutableList<String> jobList;
-        String description;
-        switch (terrain)
-        case (unforested) {
-            jobList = plainsList;
-            description = "plains, desert, or mountains";
-        }
-        case (forested) {
-            jobList = forestList;
-            description = "forest or jungle";
-        }
-        case (ocean) {
-            jobList = oceanList;
-            description = "ocean";
-        }
-        for (job in jobList) {
-            if (rng.nextBoolean()) {
-                cli.println("Setting unit with ID #``
-                    unit.id`` (``count`` / 5328) to kind ``job``");
-                unit.kind = job;
-                return;
-            }
-        }
-        String kind = cli.inputString(
-            "What's the next possible kind for ``description``? ");
-        unit.kind = kind;
-        jobList.add(kind);
-    }
-    "Search for and fix units with kinds missing."
-    void fixAllUnits(IMapNG map, ICLIHelper cli) {
-        for (point in map.locations) {
-            SimpleTerrain terrain = getTerrain(map, point);
-            for (fixture in map.otherFixtures(point)) {
-                if (is Unit fixture, "TODO" == fixture.kind) {
-                    fixUnit(fixture, terrain, cli);
-                }
-            }
-        }
-    }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is IMultiMapModel model) {
-            for (pair in model.allMaps) {
-                fixAllUnits(pair.first, cli);
-                fixAllVillages(pair.first, cli);
-            }
-        } else {
-            fixAllUnits(model.map, cli);
-            fixAllVillages(model.map, cli);
         }
     }
 }
