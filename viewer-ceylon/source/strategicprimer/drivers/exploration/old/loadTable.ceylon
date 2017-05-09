@@ -35,12 +35,16 @@ import ceylon.logging {
 
 Logger log = logger(`module strategicprimer.drivers.exploration.old`);
 // Made shared so the oneToTwoConverter tests can get tables as classpath resources and
-// load them from there
-shared EncounterTable loadTable(String?()|File argument) {
+// load them from there. Also used by the 'town contents' generator.
+shared EncounterTable loadTable(String?()|File|Resource argument) {
     if (is File argument) {
         try (reader = argument.Reader()) {
             return loadTable(reader.readLine);
         }
+    } else if (is Resource argument) {
+        String text = argument.textContent();
+        {String+} split = text.split('\n'.equals);
+        return loadTable(ArrayList { *split }.accept);
     } else {
         if (exists line = argument()) {
             switch (line[0])

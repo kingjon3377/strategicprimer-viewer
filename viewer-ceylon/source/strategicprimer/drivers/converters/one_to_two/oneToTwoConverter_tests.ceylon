@@ -1,6 +1,3 @@
-import ceylon.collection {
-    ArrayList
-}
 import ceylon.file {
     parsePath,
     Nil,
@@ -122,10 +119,8 @@ ExplorationRunner initializeRunner() {
             "temperate_major_tree"}) {
         assert (exists tableAsResource = `module strategicprimer.drivers.converters`
             .resourceByPath("tables/``table``"));
-        value tableText = tableAsResource.textContent();
-        value tableSplit = tableText.split('\n'.equals);
         retval.loadTable(table,
-            loadTable(ArrayList { *tableSplit }.accept));
+            loadTable(tableAsResource));
     }
     return retval;
 }
