@@ -155,6 +155,8 @@ Map<String, ISPDriver[2]> createCache() {
     choice(tabularReportCLI);
     // TODO: Write GUI to allow user to visually explore a mine
     choice(miningCLI);
+    // TODO: Write GUI to allow user to generate or enter town contents
+    choice(townGeneratingCLI);
     return cache;
 }
 "Create the usage message for a particular driver."
