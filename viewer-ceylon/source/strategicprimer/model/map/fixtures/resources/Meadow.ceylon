@@ -34,8 +34,8 @@ shared class Meadow(kind, field, cultivated, id, status)
     shared actual String defaultImage = (field) then "field.png" else "meadow.png";
     shared actual String shortDescription {
         if (field) {
-            return (cultivated) then "Wild or abandoned ``kind`` field"
-                else "``kind`` field";
+            return (cultivated) then "``kind`` field"
+                else "Wild or abandoned ``kind`` field";
         } else {
             return "``kind`` meadow";
         }
