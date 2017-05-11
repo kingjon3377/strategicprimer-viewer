@@ -202,7 +202,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
                 newUnitDialog(mainMap.currentPlayer,
                     createIDFactory(mainMap));
         IWorkerTreeModel treeModel = WorkerTreeModelAlt(mainMap.currentPlayer, model);
-        JTree tree = workerTree(treeModel, mainMap.players, () => mainMap.currentTurn,
+        value tree = workerTree(treeModel, mainMap.players, () => mainMap.currentTurn,
             true);
         newUnitFrame.addNewUnitListener(treeModel);
         Integer keyMask = platform.shortcutMask;
@@ -233,6 +233,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
                     (IUnit unit, Integer turn) => unit.getResults(turn), null);
         tree.addTreeSelectionListener(resultsPanel);
         JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel);
+        tree.addUnitMemberListener(mdp);
         StrategyExporter strategyExporter = StrategyExporter(model, options);
         BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
             listenedButton("Add New Unit", (event) => newUnitFrame.setVisible(true)),
