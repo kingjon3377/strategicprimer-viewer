@@ -248,9 +248,7 @@ shared class HarvestableReportGenerator(
             fixtures.remove(item.id);
             return retval;
         } else {
-            MutableList<[Point, IFixture]> values =
-                    ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator) };
+            value values = fixtures.items.sort(pairComparator);
             MutableMap<String, IReportNode> stone = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> shrubs = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> minerals = HashMap<String, IReportNode>();
