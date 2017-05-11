@@ -43,6 +43,9 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 import strategicprimer.viewer.drivers.map_viewer {
     loadImage
 }
+import ceylon.interop.java {
+    javaString
+}
 "A panel to show the details of the currently selected unit-member."
 JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     JPanel statPanel = JPanel();
@@ -190,6 +193,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
         }
         portraitComponent.repaint();
     }
+    // TODO: Use BorderedPanel?
     object retval extends JPanel(BorderLayout()) satisfies UnitMemberListener {
         shared actual void memberSelected(UnitMember? old, UnitMember? selected) {
             if (is ProxyFor<out UnitMember> selected) {
@@ -216,7 +220,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
         }
     }
     retval.add(JLabel("<html><h2>Unit Member Details:</h2></html>"),
-        BorderLayout.pageStart);
+        javaString(BorderLayout.pageStart));
     retval.add(split);
     recache();
     return retval;
