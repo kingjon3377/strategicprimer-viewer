@@ -44,7 +44,7 @@ shared class SectionListReportNode(Integer level, variable String header,
     shared actual default Integer hash => level + text.hash /*.or(children().hash)*/;
     shared actual default void appendNode(MutableTreeNode newChild) {
         if (isNonEmptyNode(newChild)) {
-            add(newChild);
+            super.add(newChild);
         }
     }
     shared actual void add(MutableTreeNode node) => appendNode(node);

@@ -19,7 +19,7 @@ shared class SectionReportNode(Integer level, variable String header,
         extends DefaultMutableTreeNode(header) satisfies IReportNode {
     shared actual void appendNode(MutableTreeNode node) {
         if (isNonEmptyNode(node)) {
-            add(node);
+            super.add(node);
         }
     }
     shared actual void add(MutableTreeNode node) => appendNode(node);

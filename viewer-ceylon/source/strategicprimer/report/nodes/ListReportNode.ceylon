@@ -21,7 +21,7 @@ shared class ListReportNode(variable String initialText,
     Integer perChildBoilerPlate = "<li></li>".size + 1;
     shared actual void appendNode(MutableTreeNode node) {
         if (isNonEmptyNode(node)) {
-            add(node);
+            super.add(node);
         }
     }
     shared actual void add(MutableTreeNode node) => appendNode(node);
