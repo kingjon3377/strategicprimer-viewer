@@ -113,7 +113,7 @@ void writeRivers(XMLStreamWriter ostream, Object obj, Integer indent) {
         writeTag(ostream, "river", indent, true);
         writeAttributes(ostream, "direction"->obj.description);
     } else if (is {River*} obj) {
-        for (river in obj) {
+        for (river in sort(obj)) {
             writeRivers(ostream, river, indent);
         }
     } else {

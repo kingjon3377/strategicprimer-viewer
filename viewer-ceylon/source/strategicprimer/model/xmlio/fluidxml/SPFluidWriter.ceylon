@@ -283,7 +283,7 @@ shared class SPFluidWriter() satisfies SPWriter {
                             anyContents = true;
                             writeTag(ostream, "mountain", indentation + 4, true);
                         }
-                        for (river in obj.rivers(loc)) {
+                        for (river in sort(obj.rivers(loc))) {
                             anyContents = true;
                             writeSPObjectImpl(ostream, river, indentation + 4);
                         }

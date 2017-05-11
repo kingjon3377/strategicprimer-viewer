@@ -100,7 +100,7 @@ class YAReaderAdapter(
     todo("Test this")
     throws(`class IOException`, "on I/O error")
     void writeAllRivers(Anything(String) ostream, {River*} rivers, Integer indent) {
-        for (river in rivers) {
+        for (river in sort(rivers)) {
             mapReader.writeRiver(ostream, river, indent);
         }
     }

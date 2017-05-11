@@ -308,7 +308,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                         writeTag(ostream, "mountain", tabs + 4);
                         closeLeafTag(ostream);
                     }
-                    for (river in obj.rivers(loc)) {
+                    for (river in sort(obj.rivers(loc))) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeRiver(ostream, river, tabs + 4);
