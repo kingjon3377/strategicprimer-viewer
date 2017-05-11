@@ -36,7 +36,7 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&
        and delegating to the HTML representation."""
     todo("Implement more efficiently")
     shared actual default Comparison compare(IReportNode node) =>
-            htmlProduct.compare(node.htmlProduct);
+            text.compare(node.text);
     "Add children iff they have children of their own."
     shared default void addIfNonEmpty(MutableTreeNode* children) {
         for (child in children) {
