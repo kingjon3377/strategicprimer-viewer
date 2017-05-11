@@ -376,12 +376,9 @@ SPFrame explorationFrame(IExplorationModel model,
                     {[String, Anything()]*} explorerActions = {[
                             "Should the explorer swear any villages on this tile?", () {
                         model.swearVillages();
-                        // TODO: Use Iterable.narrow() instead of the loop
                         for (fixture in model.map.otherFixtures(model
-                                .selectedUnitLocation)) {
-                            if (is Village fixture) {
+                                    .selectedUnitLocation).narrow<Village>()) {
                                 selectedValuesList.add(fixture);
-                            }
                         }
                     }], ["Should the explorer dig to find what kind of ground is here?",
                         model.dig]};
