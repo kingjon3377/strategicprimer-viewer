@@ -57,9 +57,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         if (!item.allOrders.empty || !item.allResults.empty) {
             formatter("""Orders and Results:<ul>
                          """);
-            // TODO: Use ceylon.language::sort instead of passing a trivial lambda to .sort()
-            for (turn in set { *item.allOrders.keys }.union(set { *item.allResults.keys })
-                    .sort((x, y) => x <=> y)) {
+            for (turn in sort(set { *item.allOrders.keys }
+                    .union(set { *item.allResults.keys }))) {
                 formatter("<li>Turn ``turn``:<ul>
                            ");
                 String orders = item.getOrders(turn);
@@ -242,9 +241,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             }
             retval.addIfNonEmpty(workers, animals, equipment, resources, others);
             ListReportNode ordersNode = ListReportNode("Orders and Results:");
-            // TODO: Use ceylon.language::sort instead of passing a trivial lambda to .sort()
-            for (turn in set { *item.allOrders.keys}.union(set {*item.allResults.keys})
-                    .sort((x, y) => x <=> y)) {
+            for (turn in sort(set { *item.allOrders.keys}
+                    .union(set {*item.allResults.keys}))) {
                 ListReportNode current = ListReportNode("Turn ``turn``:");
                 String orders = item.getOrders(turn);
                 if (!orders.empty) {
