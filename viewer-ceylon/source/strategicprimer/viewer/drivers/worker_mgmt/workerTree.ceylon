@@ -82,6 +82,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         """Whether we should visually warn if orders contain substrings indicating
            remaining work or if a unit named "unassigned" is nonempty"""
         Boolean orderCheck) {
+    DefaultTreeCellRenderer defaultStorer = DefaultTreeCellRenderer();
     object retval extends JTree()
             satisfies UnitMemberSelectionSource&UnitSelectionSource {
         model = wtModel;
@@ -261,6 +262,11 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     } else if (orderCheck, orders.contains("todo"), !internal.empty) {
                         component.backgroundSelectionColor = Color.yellow;
                         component.backgroundNonSelectionColor = Color.yellow;
+                    } else {
+                        component.backgroundSelectionColor = defaultStorer
+                            .backgroundSelectionColor;
+                        component.backgroundNonSelectionColor = defaultStorer
+                            .backgroundNonSelectionColor;
                     }
                 } else if (orderCheck,
                     is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
@@ -279,6 +285,11 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                                     break;
                                 } else if (orders.contains("todo")) {
                                     shouldWarn = true;
+                                } else if (is DefaultTreeCellRenderer component){
+                                    component.backgroundSelectionColor = defaultStorer
+                                        .backgroundSelectionColor;
+                                    component.backgroundNonSelectionColor = defaultStorer
+                                        .backgroundNonSelectionColor;
                                 }
                             }
                         }
