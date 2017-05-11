@@ -5,8 +5,7 @@ import ceylon.language.meta {
 import java.awt {
     Image,
     Graphics,
-    GridLayout,
-    BorderLayout
+    GridLayout
 }
 import java.io {
     IOException
@@ -23,7 +22,8 @@ import javax.swing {
 import lovelace.util.jvm {
     FunctionalGroupLayout,
     verticalSplit,
-    horizontalSplit
+    horizontalSplit,
+    BorderedPanel
 }
 
 import strategicprimer.model.map {
@@ -42,9 +42,6 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 }
 import strategicprimer.viewer.drivers.map_viewer {
     loadImage
-}
-import ceylon.interop.java {
-    javaString
 }
 "A panel to show the details of the currently selected unit-member."
 JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
@@ -193,8 +190,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
         }
         portraitComponent.repaint();
     }
-    // TODO: Use BorderedPanel?
-    object retval extends JPanel(BorderLayout()) satisfies UnitMemberListener {
+    object retval extends BorderedPanel() satisfies UnitMemberListener {
         shared actual void memberSelected(UnitMember? old, UnitMember? selected) {
             if (is ProxyFor<out UnitMember> selected) {
                 if (selected.parallel) {
@@ -219,9 +215,8 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             }
         }
     }
-    retval.add(JLabel("<html><h2>Unit Member Details:</h2></html>"),
-        javaString(BorderLayout.pageStart));
-    retval.add(split);
+    retval.pageStart = JLabel("<html><h2>Unit Member Details:</h2></html>");
+    retval.center = split;
     recache();
     return retval;
 }
