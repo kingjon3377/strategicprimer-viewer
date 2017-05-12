@@ -101,8 +101,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         ArrayList<[UnitMember, IUnit]>();
                 for (path in paths) {
                     if (exists last = path.lastPathComponent,
-                        exists parentPath = path.parentPath,
-                        exists parentObj = parentPath.lastPathComponent) {
+                            exists parentObj = path.parentPath?.lastPathComponent) {
                         if (is IUnit parent = wtModel.getModelObject(parentObj),
                             is UnitMember selection = wtModel.getModelObject(last)) {
                             toTransfer.add([selection, parent]);
@@ -120,10 +119,9 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             "Whether a drag here is possible."
             shared actual Boolean canImport(TransferSupport support) {
                 if (support.isDataFlavorSupported(UnitMemberTransferable.flavor),
-                    is JTree.DropLocation dropLocation = support.dropLocation,
-                    exists path = dropLocation.path,
-                    exists last = path.lastPathComponent,
-                    is IUnit|UnitMember lastObj = wtModel.getModelObject(last)) {
+                        is JTree.DropLocation dropLocation = support.dropLocation,
+                        exists last = dropLocation.path?.lastPathComponent,
+                        is IUnit|UnitMember lastObj = wtModel.getModelObject(last)) {
                     return true;
                 } else {
                     return false;
@@ -307,8 +305,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             if (getRowForLocation(event.x, event.y) == -1) {
                 return null;
             }
-            if (exists path = getPathForLocation(event.x, event.y),
-                exists pathLast = path.lastPathComponent) {
+            if (exists pathLast =
+                    getPathForLocation(event.x, event.y)?.lastPathComponent) {
                 if (is IWorker localNode = wtModel.getModelObject(pathLast)) {
                     if (exists stats = localNode.stats) {
                         StringBuilder temp = StringBuilder();
@@ -352,8 +350,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 => selectionListeners.remove(listener);
         object tsl satisfies TreeSelectionListener {
             shared actual void valueChanged(TreeSelectionEvent event) {
-                if (exists path = event.newLeadSelectionPath,
-                    exists pathLast = path.lastPathComponent) {
+                if (exists pathLast = event.newLeadSelectionPath?.lastPathComponent) {
                     Object? sel = wtModel.getModelObject(pathLast);
                     if (is UnitMember? sel) {
                         for (listener in memberListeners) {
@@ -384,7 +381,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
     }
     object tml satisfies TreeModelListener {
         shared actual void treeStructureChanged(TreeModelEvent event) {
-            if (exists path = event.treePath, exists parent = path.parentPath) {
+            if (exists parent = event.treePath?.parentPath) {
                 retval.expandPath(parent);
             }
             variable Integer i = 0;
@@ -405,7 +402,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             retval.updateUI();
         }
         shared actual void treeNodesChanged(TreeModelEvent event) {
-            if (exists path = event.treePath, exists parent = path.parentPath) {
+            if (exists parent = event.treePath?.parentPath) {
                 retval.expandPath(parent);
             }
             retval.updateUI();
@@ -416,8 +413,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
     object treeMouseListener extends MouseAdapter() {
         void handleMouseEvent(MouseEvent event) {
             if (event.popupTrigger, event.clickCount == 1,
-                exists path = retval.getClosestPathForLocation(event.x, event.y),
-                exists pathEnd = path.lastPathComponent,
+                exists pathEnd = retval
+                    .getClosestPathForLocation(event.x, event.y)?.lastPathComponent,
                 is IFixture obj = wtModel.getModelObject(pathEnd)) {
                 fixtureEditMenu(obj, players, wtModel).show(event.component, event.x,
                     event.y);
