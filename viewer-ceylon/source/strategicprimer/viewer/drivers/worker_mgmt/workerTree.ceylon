@@ -210,7 +210,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             String jobCSL(IWorker worker) {
                 StringBuilder builder = StringBuilder();
                 if (exists first = worker.first) {
-                    builder.append(" (```first.name`` ``first.level``");
+                    builder.append(" (``first.name`` ``first.level``");
                     for (job in worker.rest) {
                         builder.append(", ``job.name`` ``job.level``");
                     }
