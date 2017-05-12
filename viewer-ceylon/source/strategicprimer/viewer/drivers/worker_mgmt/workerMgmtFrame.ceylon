@@ -127,10 +127,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             } else {
                 return false;
             }
-        } else if (exists two) {
-            return false;
         } else {
-            return true;
+            return !two exists;
         }
     }
     IViewerModel getViewerModel() {
