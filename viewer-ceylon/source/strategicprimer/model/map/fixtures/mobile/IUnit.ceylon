@@ -11,7 +11,6 @@ import lovelace.util.common {
 
 import strategicprimer.model.map {
     HasImage,
-    FixtureIterable,
     IFixture,
     HasOwner,
     HasKind,
@@ -23,7 +22,7 @@ import strategicprimer.model.map.fixtures {
 }
 "An interface for units."
 shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
-        FixtureIterable<UnitMember>&FortressMember&HasOwner {
+        {UnitMember*}&FortressMember&HasOwner {
     "The unit's orders history, a mapping from turns to the orders for those turns."
     shared formal SortedMap<Integer, String> allOrders;
     "Get the unit's orders for the given turn."

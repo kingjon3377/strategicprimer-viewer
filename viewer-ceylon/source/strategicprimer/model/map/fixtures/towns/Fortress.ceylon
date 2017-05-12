@@ -13,7 +13,6 @@ import ceylon.language {
 import strategicprimer.model.map {
     Player,
     HasMutableName,
-    FixtureIterable,
     HasMutableImage,
     TileFixture,
     IFixture
@@ -31,7 +30,7 @@ todo("Enforce that only-one-per-player-per-tile restriction",
     "FIXME: We need something about buildings yet")
 shared class Fortress(owner, name, id, townSize = TownSize.small)
         satisfies HasMutableImage&ITownFixture&HasMutableName&
-            FixtureIterable<FortressMember>&SubsettableFixture {
+        {FortressMember*}&SubsettableFixture {
     "The player who owns the fortress."
     shared actual variable Player owner;
     "The name of the fortress."
