@@ -176,15 +176,13 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         ToolTipManager.sharedInstance().registerComponent(report);
         object reportMouseHandler extends MouseAdapter() {
             shared actual void mousePressed(MouseEvent event) {
-                if (exists selPath = report.getPathForLocation(event.x, event.y)) {
-                    value node = selPath.lastPathComponent;
-                    if (platform.hotKeyPressed(event), is IReportNode node) {
-                        Point point = node.point;
-                        if (point.valid) {
-                            IViewerModel viewerModel = getViewerModel();
-                            SwingUtilities.invokeLater(() =>
-                                viewerModel.selection = point);
-                        }
+                if (exists selPath = report.getPathForLocation(event.x, event.y),
+                        platform.hotKeyPressed(event),
+                        is IReportNode node = selPath.lastPathComponent) {
+                    Point point = node.point;
+                    if (point.valid) {
+                        IViewerModel viewerModel = getViewerModel();
+                        SwingUtilities.invokeLater(() => viewerModel.selection = point);
                     }
                 }
             }
