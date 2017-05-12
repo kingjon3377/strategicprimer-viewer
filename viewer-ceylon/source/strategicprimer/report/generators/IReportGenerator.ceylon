@@ -18,7 +18,7 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
         shared formal String header;
     }
     "A Map that knows what its title should be when its contents are written to HTML."
-    shared /* static */ interface HeadedMap<Key, Value> satisfies Map<Key, Value>
+    shared /* static */ interface HeadedMap<out Key, Value> satisfies Map<Key, Value>
             given Key satisfies Object{
         "The header text."
         shared formal String header;

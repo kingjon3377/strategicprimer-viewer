@@ -179,26 +179,12 @@ shared class HarvestableReportGenerator(
             !all.every(HeadedList.empty)) {
                 ostream("""<h4>Resource Sources</h4>
                        """);
-                for (HeadedMap<out HarvestableFixture, Point> mapping in {caches, groves,
-                    meadows, mines}) {
-                    // TODO: use writeMap(), as in commented-out code
-                    if (!mapping.empty) {
-                        ostream("``mapping.header``
-                                 <ul>
-                                 ");
-                        for (key->val in mapping) {
-                            ostream("<li>");
-                            produce(fixtures, map, ostream, [key, val]);
-                            ostream("""</li>
-                                   """);
-                        }
-                        ostream("""</ul>
-                               """);
-                    }
-                    //writeMap(ostream, mapping,
-                    //  (JMap.Entry<out HarvestableFixture, Point> entry, formatter) =>
-                    //     produce(fixtures, map, currentPlayer, entry.key, entry.\ivalue,
-                    //          formatter));
+                for (HeadedMap<HarvestableFixture, Point> mapping in {caches, groves,
+                        meadows, mines}) {
+                    writeMap(ostream, mapping,
+                                (HarvestableFixture->Point entry,
+                                    Anything(String) formatter) => produce(fixtures, map,
+                                    formatter, [entry.key, entry.item]));
                 }
                 for (list in all) {
                     ostream(list.string);
