@@ -313,7 +313,6 @@ object queryCLI satisfies SimpleDriver {
      has a fortress on it."
     void fortressInfo(IMapNG map, Point location, ICLIHelper cli) {
         cli.println("Terrain is ``map.baseTerrain(location)``");
-        {TileFixture*} fixtures = map.allFixtures(location);
         Ground[] ground = map.allFixtures(location).narrow<Ground>().sequence();
         Forest[] forests = map.allFixtures(location).narrow<Forest>().sequence();
         if (nonempty ground) {
