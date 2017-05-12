@@ -83,7 +83,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     JLabel intCaption = caption("Int");
     JLabel wisCaption = caption("Wis");
     JLabel chaCaption = caption("Cha");
-    JLabel jobsCaption = JLabel("Job Levels");
+    JLabel jobsCaption = caption("Job Levels");
     JPanel jobsPanel = JPanel(GridLayout(0, 1));
     statLayout.setVerticalGroup(statLayout.sequentialGroupOf(
         statLayout.parallelGroupOf(typeCaption, typeLabel),
