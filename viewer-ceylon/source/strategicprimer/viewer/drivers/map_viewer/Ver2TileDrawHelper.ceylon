@@ -100,37 +100,27 @@ class Ver2TileDrawHelper(
         set {River.east,River.south,River.west,River.lake}->"riv30.png",
         set {River.north,River.east,River.south,River.west,River.lake}->"riv31.png"
     };
-    "Log, but otherwise ignore, file-not-found or other I/O error from loading an image."
-    todo("Essentially inline this")
-    void logLoadingError(IOException except,
-            "The file we were trying to load from" String filename,
-            "True if this was the fallback image (making this error more serious)"
-            Boolean fallback) {
-        if (except is FileNotFoundException || except is NoSuchFileException) {
-            String message = "Image ``filename`` not found";
-            if (fallback) {
-                log.error(message, except);
-            } else {
-                log.info(message, except);
-            }
-        } else {
-            log.error("I/O error while loading image ``filename``", except);
-        }
-    }
     for (file in {"trees.png", "mountain.png"}) {
         try {
             loadImage(file);
+        } catch (FileNotFoundException|NoSuchFileException except) {
+            log.info("Image ``file`` not found", except);
         } catch (IOException except) {
-            logLoadingError(except, file, false);
+            log.error("I/O error while loading image ``file``", except);
         }
     }
     "Create the fallback image---made a method so the object reference can be immutable"
     Image createFallbackImage() {
+        Image fallbackFallback = BufferedImage(1, 1, BufferedImage.typeIntArgb);
+        String filename = "event_fallback.png";
         try {
-            return loadImage("event_fallback.png");
+            return loadImage(filename);
+        } catch (FileNotFoundException|NoSuchFileException except) {
+            log.error("Image ``filename`` not found", except);
+            return fallbackFallback;
         } catch (IOException except) {
-            logLoadingError(except, "event_fallback.png", true);
-            return BufferedImage(1, 1, BufferedImage.typeIntArgb);
+            log.error("I/O error while loading image ``filename``", except);
+            return fallbackFallback;
         }
     }
     "A fallback image for when an image file is missing or fails to load."
