@@ -4,7 +4,6 @@ import strategicprimer.model.idreg {
 }
 import strategicprimer.model.map {
     IMapNG,
-    FixtureIterable,
     IFixture
 }
 import strategicprimer.model.map.fixtures {
@@ -41,7 +40,7 @@ void recursiveRegister(IDRegistrar factory, IMapNG|{IMapNG*}|{IFixture*} arg) {
                 // is unused
                 factory.register(id);
             }
-            if (is FixtureIterable<out IFixture> fixture) {
+            if (is {IFixture*} fixture) {
                 recursiveRegister(factory, fixture);
             }
         }

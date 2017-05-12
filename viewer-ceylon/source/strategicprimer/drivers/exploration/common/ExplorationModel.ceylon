@@ -24,7 +24,6 @@ import strategicprimer.model.map {
     IMapNG,
     TileType,
     TileFixture,
-    FixtureIterable,
     invalidPoint,
     pointFactory,
     IFixture,
@@ -115,7 +114,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Ground? ground = map.ground(point);
         Forest? forest = map.forest(point);
         return {ground, forest, *map.otherFixtures(point)}.coalesced.flatMap((element) {
-            if (is FixtureIterable<out IFixture> element) {
+            if (is {IFixture*} element) {
                 return {element, *element};
             } else {
                 return {element};

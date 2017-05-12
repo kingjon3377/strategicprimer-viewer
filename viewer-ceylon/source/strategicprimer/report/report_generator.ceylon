@@ -21,7 +21,6 @@ import strategicprimer.model.map {
     Player,
     IFixture,
     IMapNG,
-    FixtureIterable,
     TileFixture,
     invalidPoint,
     MapDimensions
@@ -92,7 +91,7 @@ DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
                 existing`` and ``val``");
             }
         }
-        if (is FixtureIterable<out IFixture> fixture) {
+        if (is {IFixture*} fixture) {
             for (inner in fixture) {
                 addToMap(location, inner);
             }

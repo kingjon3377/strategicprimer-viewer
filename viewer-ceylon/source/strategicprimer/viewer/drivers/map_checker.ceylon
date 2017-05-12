@@ -36,7 +36,6 @@ import strategicprimer.model.map {
     Point,
     IFixture,
     IMapNG,
-    FixtureIterable,
     TileType
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -164,7 +163,7 @@ object mapCheckerCLI satisfies UtilityDriver {
     void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
             IFixture* list) {
         for (fixture in list) {
-            if (is FixtureIterable<out IFixture> fixture) {
+            if (is {IFixture*} fixture) {
                 contentCheck(checker, terrain, context, warner, *fixture);
             }
             checker.check(terrain, context, fixture, warner);

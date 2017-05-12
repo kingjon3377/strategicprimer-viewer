@@ -31,8 +31,7 @@ import java.math {
 import strategicprimer.model.map {
     IFixture,
     IMutableMapNG,
-    TileFixture,
-    FixtureIterable
+    TileFixture
 }
 import strategicprimer.model.map.fixtures {
     ResourcePile,
@@ -82,7 +81,7 @@ void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
                 toRemove.add(fixture);
             } else {
                 fixtures.add(fixture);
-                if (is FixtureIterable<out IFixture> fixture) {
+                if (is {IFixture*} fixture) {
                     coalesceResources(fixture, cli);
                 }
             }
@@ -97,7 +96,7 @@ void coalesceResources({IFixture*} stream, ICLIHelper cli) {
     MutableMap<[String, String, String, Integer], MutableList<ResourcePile>> resources =
             HashMap<[String, String, String, Integer], MutableList<ResourcePile>>();
     for (fixture in stream) {
-        if (is FixtureIterable<out IFixture> fixture) {
+        if (is {IFixture*} fixture) {
             coalesceResources(fixture, cli);
         } else if (is ResourcePile fixture) {
             [String, String, String, Integer] key = [fixture.kind, fixture.contents,

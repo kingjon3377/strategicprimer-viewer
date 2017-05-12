@@ -55,7 +55,6 @@ import strategicprimer.model.map {
     TileType,
     IMapNG,
     TileFixture,
-    FixtureIterable,
     HasName,
     MapDimensions
 }
@@ -160,7 +159,7 @@ object queryCLI satisfies SimpleDriver {
         for (fixture in fixtures) {
             if (is IWorker fixture, is HasOwner fixtures, player == fixtures) {
                 retval++;
-            } else if (is FixtureIterable<out TileFixture> fixture) {
+            } else if (is {TileFixture*} fixture) {
                 retval += countWorkersInIterable(player, fixture);
             }
         }

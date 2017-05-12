@@ -32,7 +32,6 @@ import strategicprimer.model.map {
     HasOwner,
     IFixture,
     TileFixture,
-    FixtureIterable,
     HasName,
     HasKind,
     PointIterator
@@ -113,7 +112,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             Boolean caseSensitivity) {
         if (matchesSimple(pattern, idNum, fixture, caseSensitivity)) {
             return true;
-        } else if (is FixtureIterable<out IFixture> fixture) {
+        } else if (is {IFixture*} fixture) {
             return fixture.any(
                         (member) => matches(pattern, idNum, member, caseSensitivity));
         } else {
