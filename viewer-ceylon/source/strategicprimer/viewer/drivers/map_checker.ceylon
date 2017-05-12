@@ -51,13 +51,17 @@ import strategicprimer.model.map.fixtures.resources {
     StoneKind
 }
 import strategicprimer.model.map.fixtures.towns {
-    Village
+    Village,
+    ITownFixture
 }
 import strategicprimer.model.xmlio {
     Warning,
     warningLevels,
     readMap,
     SPFormatException
+}
+import strategicprimer.model.map.fixtures {
+    ResourcePile
 }
 
 """An interface for checks of a map's *contents* that we don't want the XML-*reading*
@@ -122,7 +126,36 @@ object suspiciousSkillCheck satisfies Checker {
         }
     }
 }
-{Checker+} extraChecks = { lateriteChecker, aquaticVillageChecker, suspiciousSkillCheck };
+{String+} placeholderKinds = { "various", "unknown" };
+{String+} placeholderUnits = { "unit", "units" };
+object resourcePlaceholderChecker satisfies Checker {
+    shared actual void check(TileType terrain, Point context, IFixture fixture,
+            Warning warner) {
+        if (is ResourcePile fixture) {
+            if (placeholderKinds.contains(fixture.kind)) {
+                warner.handle(SPContentWarning(context,
+                    "Resource pile, ID #``fixture.id``, has placeholder kind: ``fixture
+                        .kind``"));
+            } else if (placeholderKinds.contains(fixture.contents)) {
+                warner.handle(SPContentWarning(context,
+                    "ResourcePile, ID #``fixture.id``, has placeholder contents: ``fixture
+                        .contents``"));
+            } else if (placeholderUnits.contains(fixture.quantity.units)) {
+                warner.handle(SPContentWarning(context,
+                    "ResourcePile, ID #``fixture.id``, has placeholder units"));
+            }
+        } else if (is ITownFixture fixture, exists stats = fixture.population) {
+            for (resource in stats.yearlyConsumption) {
+                check(terrain, context, resource, warner);
+            }
+            for (resource in stats.yearlyProduction) {
+                check(terrain, context, resource, warner);
+            }
+        }
+    }
+}
+{Checker+} extraChecks = { lateriteChecker, aquaticVillageChecker, suspiciousSkillCheck,
+    resourcePlaceholderChecker };
 "A driver to check every map file in a list for errors."
 object mapCheckerCLI satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, "-k", "--check",
