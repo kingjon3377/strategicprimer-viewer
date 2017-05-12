@@ -16,6 +16,8 @@ shared interface EncounterTable {
             Point point,
             "The terrain there."
             TileType terrain,
+            "Whether the tile is mountainous."
+            Boolean mountainous,
             "The fixtures on the tile, if any."
             {TileFixture*} fixtures,
             "The dimensions of the map."

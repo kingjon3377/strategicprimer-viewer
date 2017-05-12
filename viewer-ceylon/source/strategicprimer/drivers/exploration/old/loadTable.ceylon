@@ -147,14 +147,14 @@ void testLoadQuadrantTable() {
     EncounterTable result = loadTable(data.accept);
     Point point = pointFactory(0, 0);
     MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
-    assertEquals("one",result.generateEvent(point, TileType.tundra,
+    assertEquals("one",result.generateEvent(point, TileType.tundra, false,
         {}, dimensions), "loading quadrant table");
     Point pointTwo = pointFactory(36, 30);
-    assertEquals("one",result.generateEvent(point, TileType.ocean,
+    assertEquals("one",result.generateEvent(point, TileType.ocean, false,
         {}, dimensions), "quadrant table isn't a terrain table");
-    assertEquals(result.generateEvent(pointTwo, TileType.tundra,
+    assertEquals(result.generateEvent(pointTwo, TileType.tundra, false,
         {}, dimensions), "five", "quadrant table isn't a constant table");
-    assertEquals(result.generateEvent(pointTwo, TileType.tundra,
+    assertEquals(result.generateEvent(pointTwo, TileType.tundra, false,
         {}, MapDimensionsImpl(35, 32, 2)), "six",
         "quadrant table can use alternate dimensions");
     assertThatException(() => loadTable(LinkedList{"quadrant"}.accept));
@@ -173,26 +173,27 @@ object mockPoint satisfies Point {
 test
 void testLoadRandomTable() {
     EncounterTable result = loadTable(LinkedList{"random", "0 one", "99 two"}.accept);
-    assertEquals(result.generateEvent(mockPoint, TileType.tundra, {},
+    assertEquals(result.generateEvent(mockPoint, TileType.tundra, false, {},
         mockDimensions), "one", "loading random table");
 }
 test
 void testLoadTerrainTable() {
     EncounterTable result = loadTable(LinkedList{"terrain", "tundra one",
         "plains two", "ocean three"}.accept);
-    assertEquals(result.generateEvent(mockPoint, TileType.tundra,
+    assertEquals(result.generateEvent(mockPoint, TileType.tundra, false,
         {}, mockDimensions), "one",
         "loading terrain table: tundra");
-    assertEquals(result.generateEvent(mockPoint, TileType.plains,
+    assertEquals(result.generateEvent(mockPoint, TileType.plains, false,
         {}, mockDimensions), "two", "loading terrain table: plains");
-    assertEquals(result.generateEvent(mockPoint, TileType.ocean,
+    assertEquals(result.generateEvent(mockPoint, TileType.ocean, false,
         {}, mockDimensions), "three",
         "loading terrain table: ocean");
+    // TODO: test ver-1-equivalent testing
 }
 test
 void testLoadConstantTable() {
     EncounterTable result = loadTable(LinkedList{"constant", "one"}.accept);
-    assertEquals(result.generateEvent(mockPoint, TileType.plains,
+    assertEquals(result.generateEvent(mockPoint, TileType.plains, false,
         {}, mockDimensions), "one");
 }
 test

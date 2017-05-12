@@ -115,13 +115,14 @@ shared IMapNG convertOneToTwo(
 			(TileType.temperateForest == originalTerrain ||
 			TileType.borealForest == originalTerrain)) {
 			retval.setForest(point, Forest(runner.getPrimaryTree(point,
-				originalTerrain, retval.allFixtures(point),
+				originalTerrain, retval.mountainous(point), retval.allFixtures(point),
 				retval.dimensions), false, idFactory.createID()));
 		}
 		retval.setBaseTerrain(point, equivalentTerrain(originalTerrain));
 		addFixture(point, Ground(idFactory.createID(),
 			runner.getPrimaryRock(point, retval.baseTerrain(point),
-				retval.allFixtures(point), retval.dimensions), false));
+				retval.mountainous(point), retval.allFixtures(point), retval.dimensions),
+			false));
 	}
 	"Convert a single version-1 tile to the equivalent version-2 tiles."
 	{Point*} convertTile(Point point) {
@@ -245,20 +246,22 @@ shared IMapNG convertOneToTwo(
 				if (adjacentToTown(), rng.nextFloat() < 0.6) {
 					Integer id = idFactory.createID();
 					if (rng.nextBoolean()) {
+						// TODO: use retval.allFixtures() instead
 						Ground? tempGround = retval.ground(point);
 						Forest? tempForest = retval.forest(point);
 						addFixture(point, Meadow(runner.recursiveConsultTable("grain",
-							point, retval.baseTerrain(point),
+							point, retval.baseTerrain(point), retval.mountainous(point),
 							{tempGround, tempForest,
 								*retval.otherFixtures(point)}.coalesced,
 							retval.dimensions), true,
 							true, id, FieldStatus.random(id)));
 					} else {
+						// TODO: use retval.allFixtures() instead, and check throughout
 						Ground? tempGround = retval.ground(point);
 						Forest? tempForest = retval.forest(point);
 						addFixture(point, Grove(true, true,
 							runner.recursiveConsultTable("fruit_trees", point,
-								retval.baseTerrain(point),
+								retval.baseTerrain(point), retval.mountainous(point),
 								{tempGround, tempForest,
 									*retval.otherFixtures(point)}.coalesced,
 								retval.dimensions), id));
@@ -273,7 +276,8 @@ shared IMapNG convertOneToTwo(
 				} else if (rng.nextFloat() < addForestProbability) {
 					String forestType = runner.recursiveConsultTable(
 						"temperate_major_tree", point, retval.baseTerrain(point),
-						retval.allFixtures(point), retval.dimensions);
+						retval.mountainous(point), retval.allFixtures(point),
+						retval.dimensions);
 					if (exists existingForest = retval.forest(point),
 						forestType == existingForest.kind) {
 						// do nothing

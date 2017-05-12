@@ -7,9 +7,6 @@ import strategicprimer.model.map {
     MapDimensions,
     Point
 }
-import lovelace.util.common {
-    todo
-}
 import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
@@ -18,13 +15,13 @@ import strategicprimer.model.map.fixtures.terrain {
 class TerrainTable(<TileType->String>* items) satisfies EncounterTable {
     Map<TileType, String> mapping = map { *items };
     suppressWarnings("deprecation")
-    todo("Add a Boolean parameter to interface for whether the tile is mountainous")
     shared actual String generateEvent(Point point, TileType terrain,
-            {TileFixture*} fixtures, MapDimensions mapDimensions) {
+            Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
         TileType actual;
-        // TODO: Once we can, set it to `mountain` if tile is mountainous
         Boolean forested = !fixtures.narrow<Forest>().empty;
-        if (terrain == TileType.plains, forested) {
+        if (mountainous) {
+            actual = TileType.mountain;
+        } else if (terrain == TileType.plains, forested) {
             actual = TileType.temperateForest;
         } else if (terrain == TileType.steppe, forested) {
             actual = TileType.borealForest;

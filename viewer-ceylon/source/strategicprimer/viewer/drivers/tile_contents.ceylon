@@ -47,7 +47,7 @@ class TileContentsGenerator(IMapNG map) {
         Integer reps = (random() * 4).integer + 1;
         for (i in 0:reps) {
             process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
-                {}, map.dimensions));
+                map.mountainous(point), {}, map.dimensions));
         }
     }
 }

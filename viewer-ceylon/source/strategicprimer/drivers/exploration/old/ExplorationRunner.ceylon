@@ -54,16 +54,17 @@ shared class ExplorationRunner() {
      if there are more than two hash marks in any given String, or if either is at the
      beginning or end of the string, since we use String.split"
     shared String recursiveConsultTable(String table, Point location, TileType terrain,
-            {TileFixture*} fixtures, MapDimensions mapDimensions) {
-        String result = consultTable(table, location, terrain, fixtures, mapDimensions);
+            Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
+        String result = consultTable(table, location, terrain, mountainous, fixtures,
+            mapDimensions);
         if (result.contains("#")) {
             {String+} broken = result.split('#'.equals, true, false, 3);
             String before = broken.first;
             assert (exists middle = broken.rest.first);
             StringBuilder builder = StringBuilder();
             builder.append(before);
-            builder.append(recursiveConsultTable(middle, location, terrain, fixtures,
-                mapDimensions));
+            builder.append(recursiveConsultTable(middle, location, terrain, mountainous,
+                fixtures, mapDimensions));
             for (part in broken.skip(2)) {
                 builder.append(part);
             }
@@ -150,11 +151,13 @@ shared class ExplorationRunner() {
             Point location,
             "The terrain there"
             TileType terrain,
+            "Whether the tile is mountainous."
+            Boolean mountainous,
             "Any fixtures there"
             {TileFixture*} fixtures,
             "The dimensions of the map"
-            MapDimensions mapDimensions) {
-        return getTable(table).generateEvent(location, terrain, fixtures,
+            MapDimensions mapDimensions) { // TODO: use => shortcut
+        return getTable(table).generateEvent(location, terrain, mountainous, fixtures,
             mapDimensions);
     }
     "Get the primary rock at the given location."
@@ -163,11 +166,13 @@ shared class ExplorationRunner() {
             Point location,
             "The terrain there."
             TileType terrain,
+            "Whether the tile is mountainous."
+            Boolean mountainous,
             "Any fixtures there."
             {TileFixture*} fixtures,
             "The dimensions of the map."
             MapDimensions mapDimensions) => consultTable("major_rock", location, terrain,
-                fixtures, mapDimensions);
+                mountainous, fixtures, mapDimensions);
     "Get the primary forest at the given location."
     suppressWarnings("deprecation")
     shared String getPrimaryTree(
@@ -175,6 +180,8 @@ shared class ExplorationRunner() {
             Point location,
             "The terrain there."
             TileType terrain,
+            "Whether the tile is mountainous."
+            Boolean mountainous,
             "Any fixtures there."
             {TileFixture*} fixtures,
             "The dimensions of the map."
@@ -182,11 +189,11 @@ shared class ExplorationRunner() {
         switch (terrain)
         case (TileType.borealForest) {
             return consultTable("boreal_major_tree", location, terrain,
-                fixtures, mapDimensions);
+                mountainous, fixtures, mapDimensions);
         } case (TileType.temperateForest) {
             return consultTable("temperate_major_tree", location, terrain,
-                fixtures, mapDimensions);
-        } else {
+                mountainous, fixtures, mapDimensions);
+        } else { // TODO: handle ver-2 equivalents
             throw IllegalArgumentException("Only forests have primary trees");
         }
     }
@@ -198,19 +205,22 @@ shared class ExplorationRunner() {
             Point location,
             "The terrain there."
             TileType terrain,
+            "Whether the tile is mountainous"
+            Boolean mountainous,
             "Any fixtures there."
             {TileFixture*} fixtures,
             "The dimensions of the map."
             MapDimensions mapDimensions) {
+        // TODO: handle ver-2 equivalents like [[TerrainTable]] does
         if (terrain == TileType.borealForest || terrain == TileType.temperateForest) {
             return "The primary rock type here is ``getPrimaryRock(location, terrain,
-                        fixtures, mapDimensions)``.
-                    The main kind of tree is ``getPrimaryTree(location, terrain, fixtures,
-                        mapDimensions)``.
+                        mountainous, fixtures, mapDimensions)``.
+                    The main kind of tree is ``getPrimaryTree(location, terrain,
+                        mountainous, fixtures, mapDimensions)``.
                     ";
         } else {
             return "The primary rock type here is ``getPrimaryRock(location, terrain,
-                        fixtures, mapDimensions)``.
+                        mountainous, fixtures, mapDimensions)``.
                     ";
         }
     }
@@ -225,7 +235,7 @@ shared class ExplorationRunner() {
 class MockTable(String* values) satisfies EncounterTable {
     Queue<String> queue = LinkedList<String> { *values };
     shared actual String generateEvent(Point point, TileType terrain,
-            {TileFixture*} fixtures, MapDimensions mapDimensions) {
+            Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
         assert (exists retval = queue.accept());
         return retval;
     }
@@ -238,7 +248,7 @@ void testGetPrimaryRock() {
     ExplorationRunner runner = ExplorationRunner();
     runner.loadTable("major_rock", MockTable("primary_rock_test"));
     assertEquals(runner.getPrimaryRock(pointFactory(0, 0),
-            TileType.tundra, {}, MapDimensionsImpl(69, 88, 2)),
+            TileType.tundra, false, {}, MapDimensionsImpl(69, 88, 2)),
         "primary_rock_test", "primary rock test");
 }
 test
@@ -249,10 +259,11 @@ void testGetPrimaryTree() {
     runner.loadTable("temperate_major_tree", MockTable("temperate_major_test"));
     Point point = pointFactory(0, 0);
     MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
-    assertEquals(runner.getPrimaryTree(point, TileType.borealForest, {},
+    assertEquals(runner.getPrimaryTree(point, TileType.borealForest, false, {},
         dimensions), "boreal_major_test", "primary tree test for boreal forest");
-    assertEquals(runner.getPrimaryTree(point, TileType.temperateForest, {},
+    assertEquals(runner.getPrimaryTree(point, TileType.temperateForest, false, {},
         dimensions), "temperate_major_test", "primary tree test for temperate forest");
+    // TODO: test ver-2 equivalents
 }
 
 test
@@ -261,7 +272,7 @@ void testIllegalGetPrimaryTree() {
     Point point = pointFactory(0, 0);
     assertThatException(
                 () => ExplorationRunner().getPrimaryTree(point,
-                    TileType.tundra, {}, MapDimensionsImpl(69, 88, 2)))
+                    TileType.tundra, false, {}, MapDimensionsImpl(69, 88, 2)))
         /*.hasType(`IllegalArgumentException`)*/;
 }
 
@@ -274,11 +285,11 @@ void testConsultTable() {
     Point point = pointFactory(0, 0);
     MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
     assertEquals(runner.consultTable("test_table_one", point,
-            TileType.tundra, {}, dimensions), "test_one", "first table");
+            TileType.tundra, false, {}, dimensions), "test_one", "first table");
     assertEquals(runner.consultTable("test_table_two", point,
-            TileType.tundra, {}, dimensions), "test_two", "second table");
+            TileType.tundra, false, {}, dimensions), "test_two", "second table");
     assertEquals(runner.consultTable("test_table_three", point,
-            TileType.tundra, {}, dimensions), "test_three", "third table");
+            TileType.tundra, false, {}, dimensions), "test_three", "third table");
 }
 "Test the recursiveConsultTable method: the one method under test whose correctness
  is non-obvious. We don't use mock tables here because setting them up would be
@@ -293,15 +304,15 @@ void testRecursiveConsultTable() {
     Point point = pointFactory(0, 0);
     MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
     assertEquals(runner.recursiveConsultTable("test_table_one", point,
-            TileType.tundra, {}, dimensions),
+            TileType.tundra, false, {}, dimensions),
         "( ( test_three ) )", "two levels of recursion");
     assertEquals(runner.recursiveConsultTable("test_table_two", point,
-            TileType.tundra, {}, dimensions),
+            TileType.tundra, false, {}, dimensions),
         "( test_three )", "one level of recursion");
     assertEquals(runner.recursiveConsultTable("test_table_three", point,
-        TileType.tundra, {}, dimensions), "test_three", "no recursion");
+        TileType.tundra, false, {}, dimensions), "test_three", "no recursion");
     assertEquals(runner.recursiveConsultTable("test_table_four", point,
-            TileType.plains, {}, dimensions), "_ ( ( test_three ) )",
+            TileType.plains, false, {}, dimensions), "_ ( ( test_three ) )",
         "one-sided split");
 }
 
@@ -315,16 +326,16 @@ void testDefaultResults() {
     Point point = pointFactory(0, 0);
     MapDimensions dimensions = MapDimensionsImpl(69, 88, 0);
     assertEquals(runner.defaultResults(point, TileType.tundra,
-        {}, dimensions), """The primary rock type here is test_rock.
+        false, {}, dimensions), """The primary rock type here is test_rock.
                             """,
         "defaultResults in non-forest");
     assertEquals(runner.defaultResults(point, TileType.borealForest,
-        {}, dimensions),
+        false, {}, dimensions),
         """The primary rock type here is test_rock.
            The main kind of tree is boreal_tree.
            """, "defaultResults in boreal forest");
     assertEquals(runner.defaultResults(point, TileType.temperateForest,
-        {}, dimensions),
+        false, {}, dimensions),
         """The primary rock type here is test_rock.
            The main kind of tree is temperate_tree.
            """, "defaultResults in temperate forest");
