@@ -31,6 +31,9 @@ import strategicprimer.model.map {
     MapDimensionsImpl,
     MapDimensions
 }
+import strategicprimer.model.map.fixtures.terrain {
+    Forest
+}
 
 """A class to create exploration results. The initial implementation is a bit hackish, and
    should be generalized and improved---except that the entire idea of generating results
@@ -191,9 +194,18 @@ shared class ExplorationRunner() {
         } case (TileType.temperateForest) {
             return consultTable("temperate_major_tree", location, terrain,
                 mountainous, fixtures, mapDimensions);
-        } else { // TODO: handle ver-2 equivalents
-            throw IllegalArgumentException("Only forests have primary trees");
-        }
+        } case (TileType.steppe) {
+            if (!fixtures.narrow<Forest>().empty) {
+                return consultTable("boreal_major_tree", location, terrain,
+                    mountainous, fixtures, mapDimensions);
+            }
+        } case (TileType.plains) {
+            if (!fixtures.narrow<Forest>().empty) {
+                return consultTable("temperate_major_tree", location, terrain,
+                    mountainous, fixtures, mapDimensions);
+            }
+        } else { }
+        throw IllegalArgumentException("Only forests have primary trees");
     }
     """Get the "default results" (primary rock and primary forest) for the given
        location."""
@@ -209,8 +221,9 @@ shared class ExplorationRunner() {
             {TileFixture*} fixtures,
             "The dimensions of the map."
             MapDimensions mapDimensions) {
-        // TODO: handle ver-2 equivalents like [[TerrainTable]] does
-        if (terrain == TileType.borealForest || terrain == TileType.temperateForest) {
+        if (terrain == TileType.borealForest || terrain == TileType.temperateForest ||
+                (!fixtures.narrow<Forest>().empty && (terrain == TileType.steppe ||
+                    terrain == TileType.plains))) {
             return "The primary rock type here is ``getPrimaryRock(location, terrain,
                         mountainous, fixtures, mapDimensions)``.
                     The main kind of tree is ``getPrimaryTree(location, terrain,
@@ -253,15 +266,22 @@ test
 suppressWarnings("deprecation")
 void testGetPrimaryTree() {
     ExplorationRunner runner = ExplorationRunner();
-    runner.loadTable("boreal_major_tree", MockTable("boreal_major_test"));
-    runner.loadTable("temperate_major_tree", MockTable("temperate_major_test"));
+    runner.loadTable("boreal_major_tree", MockTable("boreal_major_test",
+        "boreal_second_test"));
+    runner.loadTable("temperate_major_tree", MockTable("temperate_major_test",
+        "temperate_second_test"));
     Point point = pointFactory(0, 0);
     MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
     assertEquals(runner.getPrimaryTree(point, TileType.borealForest, false, {},
         dimensions), "boreal_major_test", "primary tree test for boreal forest");
     assertEquals(runner.getPrimaryTree(point, TileType.temperateForest, false, {},
         dimensions), "temperate_major_test", "primary tree test for temperate forest");
-    // TODO: test ver-2 equivalents
+    assertEquals(runner.getPrimaryTree(point, TileType.steppe, false,
+        {Forest("kind", false, 3)}, dimensions), "boreal_second_test",
+        "primary tree test for forest in steppe");
+    assertEquals(runner.getPrimaryTree(point, TileType.plains, false,
+        {Forest("second", false, 4)}, dimensions), "temperate_second_test",
+        "primary tree test for forest in plains");
 }
 
 test
