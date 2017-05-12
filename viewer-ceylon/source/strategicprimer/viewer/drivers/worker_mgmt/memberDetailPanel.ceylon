@@ -16,14 +16,17 @@ import javax.swing {
     JLabel,
     SwingConstants,
     JComponent,
-    BorderFactory
+    BorderFactory,
+    JScrollPane,
+    ScrollPaneConstants
 }
 
 import lovelace.util.jvm {
     FunctionalGroupLayout,
     verticalSplit,
     horizontalSplit,
-    BorderedPanel
+    BorderedPanel,
+    platform
 }
 
 import strategicprimer.model.map {
@@ -122,8 +125,13 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             }
         }
     }
-    JComponent split = verticalSplit(0.5, 0.5, horizontalSplit(0.6, 0.6, statPanel,
-        portraitComponent), resultsPanel);
+    JScrollPane statPanelWrapped = JScrollPane(horizontalSplit(0.6, 0.6, statPanel,
+        portraitComponent),
+        (platform.systemIsMac) then ScrollPaneConstants.verticalScrollbarAlways
+        else ScrollPaneConstants.verticalScrollbarAsNeeded,
+        (platform.systemIsMac) then ScrollPaneConstants.horizontalScrollbarAlways
+        else ScrollPaneConstants.horizontalScrollbarAsNeeded);
+    JComponent split = verticalSplit(0.5, 0.5, statPanelWrapped, resultsPanel);
     split.border = BorderFactory.createEmptyBorder();
     variable UnitMember? current = null;
     void recache() {
