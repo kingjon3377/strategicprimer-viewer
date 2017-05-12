@@ -58,10 +58,7 @@ shared class FixtureListModel(IMutableMapNG map,
                 addElement(RiverFixture(*rivers));
             }
         }
-        Ground? ground = map.ground(newPoint);
-        Forest? forest = map.forest(newPoint);
-        for (fixture in {ground, forest,
-            *map.otherFixtures(newPoint)}.coalesced) {
+        for (fixture in map.allFixtures(newPoint)) {
             addElement(fixture);
         }
     }

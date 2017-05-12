@@ -144,8 +144,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         MutableList<TileFixture> constants = ArrayList<TileFixture>();
         IMutableMapNG map = model.map;
         MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
-        for (fixture in {map.ground(destPoint), map.forest(destPoint),
-            *map.otherFixtures(destPoint)}.coalesced) {
+        for (fixture in map.allFixtures(destPoint)) {
             if (shouldAlwaysNotice(mover, fixture)) {
                 constants.add(fixture);
             } else if (shouldSometimesNotice(mover, speed, fixture)) {

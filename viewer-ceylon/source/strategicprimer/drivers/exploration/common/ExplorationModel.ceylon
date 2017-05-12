@@ -111,9 +111,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     }
     "Whether the given fixture is at the given location in the given map."
     static Boolean doesLocationHaveFixture(IMapNG map, Point point, TileFixture fixture) {
-        Ground? ground = map.ground(point);
-        Forest? forest = map.forest(point);
-        return {ground, forest, *map.otherFixtures(point)}.coalesced.flatMap((element) {
+        return map.allFixtures(point).flatMap((element) {
             if (is {IFixture*} element) {
                 return {element, *element};
             } else {
@@ -242,10 +240,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             if (dest == point) {
                 base = 1;
             } else {
-                Ground? ground = map.ground(dest);
-                Forest? forest = map.forest(dest);
-                {TileFixture*} fixtures =
-                        {ground, forest, *map.otherFixtures(dest)}.coalesced;
+                {TileFixture*} fixtures = map.allFixtures(dest);
                 base = movementCost(map.baseTerrain(dest),
                     map.forest(dest) exists, map.mountainous(dest),
                     riversSpeedTravel(direction, map.rivers(point),

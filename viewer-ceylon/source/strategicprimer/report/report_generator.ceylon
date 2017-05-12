@@ -98,8 +98,7 @@ DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
         }
     }
     for (location in map.locations) {
-        for (IFixture fixture in {map.ground(location), map.forest(location),
-                *map.otherFixtures(location)}.coalesced) {
+        for (IFixture fixture in map.allFixtures(location)) {
             addToMap(location, fixture);
         }
     }

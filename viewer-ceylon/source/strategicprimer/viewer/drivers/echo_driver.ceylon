@@ -115,6 +115,8 @@ object forestFixerDriver satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage(false, "-f", "--fix-forest",
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map");
+    // TODO: Use allFixtures() instead of follow()
+    // TODO: Use narrow() instead of comprehensions
     {Forest*} extractForests(IMapNG map, Point location) {
         {Forest*} retval = { for (fixture in map.otherFixtures(location))
         if (is Forest fixture) fixture };

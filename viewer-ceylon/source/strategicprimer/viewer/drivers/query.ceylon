@@ -313,9 +313,9 @@ object queryCLI satisfies SimpleDriver {
      has a fortress on it."
     void fortressInfo(IMapNG map, Point location, ICLIHelper cli) {
         cli.println("Terrain is ``map.baseTerrain(location)``");
-        {TileFixture*} fixtures = {
-            map.ground(location), map.forest(location), *map.otherFixtures(location)
-        }.coalesced;
+        {TileFixture*} fixtures = map.allFixtures(location);
+        // TODO: Use narrow().sequence() for these.
+        // TODO: Do these really need to be Sequentials?
         Ground[] ground = [ for (fixture in fixtures) if (is Ground fixture) fixture ];
         Forest[] forests = [ for (fixture in fixtures) if (is Forest fixture) fixture ];
         if (nonempty ground) {

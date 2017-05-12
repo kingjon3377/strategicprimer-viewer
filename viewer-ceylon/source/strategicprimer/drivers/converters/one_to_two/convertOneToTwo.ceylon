@@ -140,8 +140,7 @@ shared IMapNG convertOneToTwo(
 				oldCopy.addFixture(point, Village(TownStatus.active, "", idNum,
 					independent, randomRace(DefaultRandom(idNum))));
 			}
-			{TileFixture*} fixtures = {oldCopy.ground(point),
-				oldCopy.forest(point), *oldCopy.otherFixtures(point)}.coalesced;
+			{TileFixture*} fixtures = oldCopy.allFixtures(point);
 			void riversAt(Point? point, River* rivers) {
 				assert (exists point);
 				retval.addRivers(point, *rivers);
@@ -246,25 +245,15 @@ shared IMapNG convertOneToTwo(
 				if (adjacentToTown(), rng.nextFloat() < 0.6) {
 					Integer id = idFactory.createID();
 					if (rng.nextBoolean()) {
-						// TODO: use retval.allFixtures() instead
-						Ground? tempGround = retval.ground(point);
-						Forest? tempForest = retval.forest(point);
 						addFixture(point, Meadow(runner.recursiveConsultTable("grain",
 							point, retval.baseTerrain(point), retval.mountainous(point),
-							{tempGround, tempForest,
-								*retval.otherFixtures(point)}.coalesced,
-							retval.dimensions), true,
+							retval.allFixtures(point), retval.dimensions), true,
 							true, id, FieldStatus.random(id)));
 					} else {
-						// TODO: use retval.allFixtures() instead, and check throughout
-						Ground? tempGround = retval.ground(point);
-						Forest? tempForest = retval.forest(point);
 						addFixture(point, Grove(true, true,
 							runner.recursiveConsultTable("fruit_trees", point,
 								retval.baseTerrain(point), retval.mountainous(point),
-								{tempGround, tempForest,
-									*retval.otherFixtures(point)}.coalesced,
-								retval.dimensions), id));
+								retval.allFixtures(point), retval.dimensions), id));
 					}
 				} else if (TileType.desert == retval.baseTerrain(point)) {
 					Boolean watered = adjacentWater();

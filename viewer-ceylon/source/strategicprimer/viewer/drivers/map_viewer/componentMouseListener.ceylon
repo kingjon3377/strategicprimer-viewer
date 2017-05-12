@@ -25,11 +25,7 @@ import strategicprimer.model.map {
     pointFactory
 }
 import strategicprimer.model.map.fixtures {
-    TerrainFixture,
-    Ground
-}
-import strategicprimer.model.map.fixtures.terrain {
-    Forest
+    TerrainFixture
 }
 "An interface for the method to get the tool-tip message for the location the mouse
  cursor is over."
@@ -53,10 +49,8 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             }
             builder.append(fixture.string);
         }
-        Ground? ground = map.ground(point);
-        Forest? forest = map.forest(point);
-        {TileFixture*} stream = {ground, forest, *map.otherFixtures(point)}
-            .coalesced.filter(zof).sort(comparator);
+        {TileFixture*} stream = map.allFixtures(point).filter(zof)
+            .sort(comparator);
         if (exists top = stream.first) {
             accept(top);
         }

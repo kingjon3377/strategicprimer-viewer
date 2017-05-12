@@ -6,12 +6,6 @@ import strategicprimer.model.map {
     IMapNG,
     IFixture
 }
-import strategicprimer.model.map.fixtures {
-    Ground
-}
-import strategicprimer.model.map.fixtures.terrain {
-    Forest
-}
 "Fill a new ID factory from the given map."
 shared IDRegistrar createIDFactory(IMapNG|{IMapNG*}|{IFixture*} arg) {
     IDRegistrar retval = IDFactory();
@@ -22,10 +16,7 @@ shared IDRegistrar createIDFactory(IMapNG|{IMapNG*}|{IFixture*} arg) {
 void recursiveRegister(IDRegistrar factory, IMapNG|{IMapNG*}|{IFixture*} arg) {
     if (is IMapNG map = arg) {
         for (location in map.locations) {
-            Ground? tempGround = map.ground(location);
-            Forest? tempForest = map.forest(location);
-            recursiveRegister(factory, {tempGround, tempForest,
-                   *map.otherFixtures(location)}.coalesced);
+            recursiveRegister(factory, map.allFixtures(location));
         }
     } else if (is {IMapNG*} model = arg) {
         for (map in model) {

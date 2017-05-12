@@ -20,10 +20,6 @@ import java.nio.file {
     NoSuchFileException
 }
 
-import lovelace.util.common {
-    todo
-}
-
 import strategicprimer.model.map {
     Point,
     River,
@@ -33,11 +29,7 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures {
     RiverFixture,
-    TerrainFixture,
-    Ground
-}
-import strategicprimer.model.map.fixtures.terrain {
-    Forest
+    TerrainFixture
 }
 
 "A [[TileDrawHelper]] for version-2 maps."
@@ -212,11 +204,7 @@ class Ver2TileDrawHelper(
                 coordinateFactory(width, height));
     "The drawable fixtures at the given location."
     {TileFixture*} getDrawableFixtures(IMapNG map, Point location) {
-        Ground? ground = map.ground(location);
-        Forest? forest = map.forest(location);
-        {TileFixture?*} allFixtures = {ground, forest,
-            *map.otherFixtures(location)};
-        return allFixtures.coalesced
+        return map.allFixtures(location)
             .filter((fixture) => !fixture is TileTypeFixture).filter(filter)
             .sort(compareFixtures);
     }
