@@ -243,6 +243,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 if (is HasImage internal, is JLabel component) {
                     component.icon = getIcon(internal);
                 }
+                variable Boolean shouldWarn = false;
+                variable Boolean shouldError = false;
                 if (is IWorker internal, is JLabel component) {
                     if ("human" == internal.race) {
                         component.text = "<html><p>``internal
@@ -255,46 +257,47 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     component.text = internal.name;
                     String orders = internal.getLatestOrders(turnSource()).lowercased;
                     if (orderCheck, orders.contains("fixme"), !internal.empty) {
-                        component.backgroundSelectionColor = Color.pink;
-                        component.backgroundNonSelectionColor = Color.pink;
+                        shouldError = true;
                     } else if (orderCheck, orders.contains("todo"), !internal.empty) {
-                        component.backgroundSelectionColor = Color.yellow;
-                        component.backgroundNonSelectionColor = Color.yellow;
-                    } else {
-                        component.backgroundSelectionColor = defaultStorer
-                            .backgroundSelectionColor;
-                        component.backgroundNonSelectionColor = defaultStorer
-                            .backgroundNonSelectionColor;
+                        shouldWarn = true;
                     }
                 } else if (orderCheck,
                     is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
-                    variable Boolean shouldWarn = false;
                     for (child in item) {
                         if (is WorkerTreeModelAlt.WorkerTreeNode<IUnit> child) {
                             IUnit unit = child.userObjectNarrowed;
                             if (!unit.empty) {
                                 String orders = unit.getLatestOrders(turnSource())
                                     .lowercased;
-                                if (orders.contains("fixme"),
-                                    is DefaultTreeCellRenderer component) {
-                                    component.backgroundSelectionColor = Color.pink;
-                                    component.backgroundNonSelectionColor = Color.pink;
+                                if (orders.contains("fixme")) {
+                                    shouldError = true;
                                     shouldWarn = false;
                                     break;
                                 } else if (orders.contains("todo")) {
                                     shouldWarn = true;
-                                } else if (is DefaultTreeCellRenderer component){
-                                    component.backgroundSelectionColor = defaultStorer
-                                        .backgroundSelectionColor;
-                                    component.backgroundNonSelectionColor = defaultStorer
-                                        .backgroundNonSelectionColor;
                                 }
                             }
                         }
                     }
-                    if (shouldWarn, is DefaultTreeCellRenderer component) {
+                }
+                if (is DefaultTreeCellRenderer component) {
+                    if (shouldError) {
+                        component.backgroundSelectionColor = Color.pink;
+                        component.backgroundNonSelectionColor = Color.pink;
+                        component.textSelectionColor = Color.black;
+                        component.textNonSelectionColor = Color.black;
+                    } else if (shouldWarn) {
                         component.backgroundSelectionColor = Color.yellow;
                         component.backgroundNonSelectionColor = Color.yellow;
+                        component.textSelectionColor = Color.black;
+                        component.textNonSelectionColor = Color.black;
+                    } else {
+                        component.backgroundSelectionColor = defaultStorer
+                            .backgroundSelectionColor;
+                        component.backgroundNonSelectionColor = defaultStorer
+                            .backgroundNonSelectionColor;
+                        component.textSelectionColor = Color.white;
+                        component.textNonSelectionColor = Color.black;
                     }
                 }
                 return component;
@@ -383,6 +386,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         shared actual void treeStructureChanged(TreeModelEvent event) {
             if (exists parent = event.treePath?.parentPath) {
                 retval.expandPath(parent);
+            } else if (exists path = event.treePath) {
+                retval.expandPath(path);
             }
             variable Integer i = 0;
             while (i < retval.rowCount) {
@@ -409,6 +414,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         }
     }
     wtModel.addTreeModelListener(tml);
+    assert (is TreeModelListener temp = retval.accessibleContext);
+    wtModel.addTreeModelListener(temp);
     ToolTipManager.sharedInstance().registerComponent(retval);
     object treeMouseListener extends MouseAdapter() {
         void handleMouseEvent(MouseEvent event) {
