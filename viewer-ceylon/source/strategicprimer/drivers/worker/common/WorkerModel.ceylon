@@ -19,7 +19,6 @@ import strategicprimer.model.map {
     Player,
     TileFixture,
     IMutableMapNG,
-    IMapNG,
     PlayerImpl,
     SPMapNG,
     MapDimensionsImpl,
