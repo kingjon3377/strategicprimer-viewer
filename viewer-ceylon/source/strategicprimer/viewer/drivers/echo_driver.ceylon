@@ -115,26 +115,10 @@ object forestFixerDriver satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage(false, "-f", "--fix-forest",
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map");
-    // TODO: Use allFixtures() instead of follow()
-    // TODO: Use narrow() instead of comprehensions
-    {Forest*} extractForests(IMapNG map, Point location) {
-        {Forest*} retval = { for (fixture in map.otherFixtures(location))
-        if (is Forest fixture) fixture };
-        if (exists forest = map.forest(location)) {
-            return retval.follow(forest);
-        } else {
-            return retval;
-        }
-    }
-    {Ground*} extractGround(IMapNG map, Point location) {
-        {Ground*} retval = { for (fixture in map.otherFixtures(location))
-        if (is Ground fixture) fixture };
-        if (exists ground = map.ground(location)) {
-            return retval.follow(ground);
-        } else {
-            return retval;
-        }
-    }
+    {Forest*} extractForests(IMapNG map, Point location) =>
+            map.allFixtures(location).narrow<Forest>();
+    {Ground*} extractGround(IMapNG map, Point location) =>
+            map.allFixtures(location).narrow<Ground>();
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         assert (is IMultiMapModel model);
