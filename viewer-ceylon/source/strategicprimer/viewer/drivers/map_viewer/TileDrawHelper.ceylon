@@ -5,9 +5,6 @@ import strategicprimer.model.map {
     Point,
     IMapNG
 }
-import lovelace.util.common {
-    todo
-}
 import strategicprimer.model.map.fixtures {
     IEvent
 }
@@ -44,16 +41,13 @@ shared interface TileDrawHelper {
             Coordinate coordinates,
             "The width ('x') and height ('y') to draw the tile within."
             Coordinate dimensions);
-    "Whether the given map has any fortresses at the given location."
-    todo("Move out of the interface")
-    shared default Boolean hasAnyForts(IMapNG map, Point location) =>
-            !map.otherFixtures(location).narrow<Fortress>().empty;
-    "Whether the given map has any units at the given location."
-    todo("Move out of the interface")
-    shared default Boolean hasAnyUnits(IMapNG map, Point location) =>
-            !map.otherFixtures(location).narrow<IUnit>().empty;
-    """Whether the given map has any "events" at the given location."""
-    todo("Move out of the interface")
-    shared default Boolean hasEvent(IMapNG map, Point location) =>
-            !map.allFixtures(location).narrow<IEvent>().empty;
 }
+"Whether the given map has any fortresses at the given location."
+Boolean hasAnyForts(IMapNG map, Point location) =>
+        !map.otherFixtures(location).narrow<Fortress>().empty;
+"Whether the given map has any units at the given location."
+Boolean hasAnyUnits(IMapNG map, Point location) =>
+        !map.otherFixtures(location).narrow<IUnit>().empty;
+"""Whether the given map has any "events" at the given location."""
+Boolean hasEvent(IMapNG map, Point location) =>
+        !map.allFixtures(location).narrow<IEvent>().empty;
