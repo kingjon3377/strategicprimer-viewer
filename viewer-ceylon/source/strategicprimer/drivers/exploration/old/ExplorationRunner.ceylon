@@ -156,10 +156,8 @@ shared class ExplorationRunner() {
             "Any fixtures there"
             {TileFixture*} fixtures,
             "The dimensions of the map"
-            MapDimensions mapDimensions) { // TODO: use => shortcut
-        return getTable(table).generateEvent(location, terrain, mountainous, fixtures,
-            mapDimensions);
-    }
+            MapDimensions mapDimensions) => getTable(table).generateEvent(location,
+                terrain, mountainous, fixtures, mapDimensions);
     "Get the primary rock at the given location."
     shared String getPrimaryRock(
             "The tile's location."
