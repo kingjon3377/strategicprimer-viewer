@@ -100,6 +100,16 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
     IFixture? findByID(IMapNG map, Integer id) => map.locations
         .flatMap((loc) => map.allFixtures(loc))
         .find((fix) => fix.id == id);
+    Point? findLocById(IMapNG map, Integer id) {
+        for (location in map.locations) {
+            for (fixture in map.allFixtures(location)) {
+                if (fixture.id == id) {
+                    return location;
+                }
+            }
+        }
+        return null;
+    }
     Boolean isClaimedField(IMapNG map, Integer id) => map.locations
         .flatMap((loc) => map.otherFixtures(loc)).narrow<ITownFixture>()
         .map(ITownFixture.population).coalesced
@@ -169,10 +179,26 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
             }
             if (isClaimedField(map, field)) {
                 cli.println("That field is already worked by another town");
-            } else if (isUnclaimedField(map, field)) {
-                retval.addWorkedField(field);
+            } else if (exists fieldLoc = findLocById(map, field)) {
+                if (!bothOrNeitherOcean(map.baseTerrain(location), map.baseTerrain(fieldLoc))) {
+                    if (map.baseTerrain(location) == TileType.ocean) {
+                        cli.println(
+                            "That would be a land resource worked by an aquatic town.");
+                    } else {
+                        cli.println(
+                            "That would be an aquatic resource worked by a town on land.");
+                    }
+                    if (!cli.inputBooleanInSeries("Are you sure? ", "aquatic")) {
+                        continue;
+                    }
+                }
+                if (isUnclaimedField(map, field)) {
+                    retval.addWorkedField(field);
+                } else {
+                    cli.println("That is not the ID of a resource a town can work.");
+                }
             } else {
-                cli.println("That is not the ID of a resource a town can work.");
+                cli.println("That is not the ID of a resource in the map.");
             }
         }
         cli.println("Now add resources produced each year. (Empty to end.)");
