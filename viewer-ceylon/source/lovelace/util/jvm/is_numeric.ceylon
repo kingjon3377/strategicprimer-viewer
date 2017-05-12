@@ -13,8 +13,9 @@ import java.text {
     NumberFormat,JParseException=ParseException
 }
 
-import lovelace.util.common {
-    todo
+import ceylon.logging {
+    Logger,
+    logger
 }
 NumberFormat intParser = NumberFormat.integerInstance;
 "Whether the given string contains numeric data"
@@ -26,12 +27,14 @@ shared Boolean isNumeric(String string) {
         return false;
     }
 }
+Logger log = logger(`module lovelace.util.jvm`);
 "Parse an integer, which may contain commas; return null if non-numeric."
-todo("Log non-numeric input, on `fine` or `debug` level.")
 shared Integer? parseInt(String string) {
     try {
         return intParser.parse(string).intValue();
-    } catch (NumberFormatException|ParseException ignored) {
+    } catch (NumberFormatException|JParseException|ParseException ignored) {
+        log.debug("Failed to parse a number from the following input: ``string``",
+            ignored);
         return null;
     }
 }
