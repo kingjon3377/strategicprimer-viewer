@@ -187,14 +187,9 @@ shared interface ISPDriver satisfies HasName {
     "Run the driver. If the driver is a GUI driver, this should use
      SwingUtilities.invokeLater(); if it's a CLI driver, that's not necessary.
      This form should only be used if the caller doesn't have an ICLIHelper to pass in."
-    todo("Return exception instead of throwing?")
-    shared default void startDriverOnArgumentsNoCLI(SPOptions options, String* args) {
-        try (ICLIHelper cli = CLIHelper()) {
-            startDriverOnArguments(cli, options, *args);
-        } catch (IOException except) { // TODO: what will a Ceylon ICLIHelper throw?
-            throw DriverFailedException(except, "I/O error interacting with user");
-        }
-    }
+    todo("Combine with startDriverOnModelNoCLI()?")
+    shared default void startDriverOnArgumentsNoCLI(SPOptions options, String* args) =>
+            startDriverOnArguments(CLIHelper(), options, *args);
     "Run the driver. If the driver is a GUI driver, this should use
      SwingUtilities.invokeLater(); if it's a CLI driver, that's not necessary."
     shared formal void startDriverOnArguments(
@@ -208,13 +203,8 @@ shared interface ISPDriver satisfies HasName {
     );
     "Run the driver on a driver model.
      This form should only be used if the caller doesn't have an ICLIHelper to pass in."
-    shared default void startDriverOnModelNoCLI(SPOptions options, IDriverModel model) {
-        try (ICLIHelper cli = CLIHelper()) {
-            startDriverOnModel(cli, options, model);
-        } catch (IOException except) { // TODO: what will a Ceylon ICLIHelper throw?
-            throw DriverFailedException(except, "I/O error interacting with user");
-        }
-    }
+    shared default void startDriverOnModelNoCLI(SPOptions options, IDriverModel model) =>
+            startDriverOnModel(CLIHelper(), options, model);
     "Run the driver on a driver model."
     todo("Rename back to startDriver() and take String*|IDriverModel")
     shared formal void startDriverOnModel(
