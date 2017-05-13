@@ -37,7 +37,7 @@ import strategicprimer.model.map {
    [[Obtainable]] to allow instances to be created in resource expressions in
    try-with-resources statements, but the default implementations of that
    interface's methods are no-ops."""
-shared interface ICLIHelper satisfies Obtainable {
+shared interface ICLIHelper {
     shared alias ListAmendment<Element> => Element?(MutableList<Element>, ICLIHelper);
     "Ask the user to choose an item from the list, and if he does carry out an
      operation on it and then ask if he wants to do another."
@@ -126,14 +126,6 @@ shared interface ICLIHelper satisfies Obtainable {
         print(prompt);
         return pointFactory(inputNumber("Row: "), inputNumber("Column: "));
     }
-    "Close I/O streams."
-    shared actual default void release(Throwable? error) {
-        if (exists error) {
-            throw error;
-        }
-    }
-    "A no-op."
-    shared actual default void obtain() {}
 }
 "A helper class to let help CLIs interact with the user, encapsulating input and output
  streams."
@@ -375,9 +367,8 @@ void assertCLI<out T>(
         expectedOutputReal = "";
     }
     StringBuilder ostream = StringBuilder();
-    try (cli = CLIHelper(ArrayList { *input }.accept, ostream.append)) {
-        assertEquals(method(cli), expectedResult, resultMessage);
-    }
+    ICLIHelper cli = CLIHelper(ArrayList { *input }.accept, ostream.append);
+    assertEquals(method(cli), expectedResult, resultMessage);
     assertEquals(ostream.string, expectedOutputReal, outputMessage);
 }
 
@@ -517,65 +508,60 @@ void testInputBooleanInSeries() {
         "inputBoolean rejects other input",
         "inputBoolean gives message on invalid input");
     StringBuilder ostream = StringBuilder();
-    try (cli = CLIHelper(ArrayList { "all" }.accept, ostream.append)) {
-        assertEquals(cli.inputBooleanInSeries("prompt four "), true,
-            "inputBooleanInSeries allows yes-to-all");
-        assertEquals(cli.inputBooleanInSeries("prompt four "), true,
-            "inputBooleanInSeries honors yes-to-all when prompt is the same");
-        assertEquals(ostream.string, """prompt four prompt four yes
-                                        """,
-            "inputBooleanInSeries shows automatic yes");
-        // https://github.com/ceylon/ceylon/issues/5448
+    variable ICLIHelper cli = CLIHelper(ArrayList { "all" }.accept, ostream.append);
+    assertEquals(cli.inputBooleanInSeries("prompt four "), true,
+        "inputBooleanInSeries allows yes-to-all");
+    assertEquals(cli.inputBooleanInSeries("prompt four "), true,
+        "inputBooleanInSeries honors yes-to-all when prompt is the same");
+    assertEquals(ostream.string, """prompt four prompt four yes
+                                    """,
+        "inputBooleanInSeries shows automatic yes");
+    //  https://github.com/ceylon/ceylon/issues/5448
 //        assertThatException(() => cli.inputBooleanInSeries("other prompt"))
 //            .hasType(`IOException`);
-    }
     ostream.clear();
-    try (cli = CLIHelper(ArrayList { """none""" }.accept, ostream.append)) {
-        assertEquals(cli.inputBooleanInSeries("prompt five "), false,
-            "inputBooleanInSeries allows no-to-all");
-        assertEquals(cli.inputBooleanInSeries("prompt five "), false,
-            "inputBooleanInSeries honors no-to-all when prompt is the same");
-        assertEquals(ostream.string, """prompt five prompt five no
-                                        """,
-            "inputBooleanInSeries shows automatic no");
+    cli = CLIHelper(ArrayList { """none""" }.accept, ostream.append);
+    assertEquals(cli.inputBooleanInSeries("prompt five "), false,
+        "inputBooleanInSeries allows no-to-all");
+    assertEquals(cli.inputBooleanInSeries("prompt five "), false,
+        "inputBooleanInSeries honors no-to-all when prompt is the same");
+    assertEquals(ostream.string, """prompt five prompt five no
+                                    """,
+        "inputBooleanInSeries shows automatic no");
         // https://github.com/ceylon/ceylon/issues/5448
-//        assertThatException(() => cli.inputBooleanInSeries("other prompt"))
+//      assertThatException(() => cli.inputBooleanInSeries("other prompt"))
 //            .hasType(`IOException`);
-    }
     ostream.clear();
-    try (cli = CLIHelper(ArrayList  { "always" }.accept, ostream.append)) {
-        assertEquals(cli.inputBooleanInSeries("prompt six ", "key"), true,
-            "inputBooleanInSeries allows yes-to-all");
-        assertEquals(cli.inputBooleanInSeries("prompt seven ", "key"), true,
-            "inputBooleanInSeries honors yes-to-all if prompt differs, same key");
-        assertEquals(ostream.string, """prompt six prompt seven yes
-                                        """,
-            "inputBooleanInSeries shows automatic yes");
-    }
+    cli = CLIHelper(ArrayList  { "always" }.accept, ostream.append);
+    assertEquals(cli.inputBooleanInSeries("prompt six ", "key"), true,
+        "inputBooleanInSeries allows yes-to-all");
+    assertEquals(cli.inputBooleanInSeries("prompt seven ", "key"), true,
+        "inputBooleanInSeries honors yes-to-all if prompt differs, same key");
+    assertEquals(ostream.string, """prompt six prompt seven yes
+                                    """,
+        "inputBooleanInSeries shows automatic yes");
     ostream.clear();
-    try (cli = CLIHelper(ArrayList { """never""" }.accept, ostream.append)) {
-        assertEquals(cli.inputBooleanInSeries("prompt eight ", "secondKey"), false,
-            "inputBooleanInSeries allows no-to-all");
-        assertEquals(cli.inputBooleanInSeries("prompt nine ", "secondKey"), false,
-            "inputBooleanInSeries honors no-to-all if prompt differs, same key");
-        assertEquals(ostream.string, """prompt eight prompt nine no
-                                        """,
-            "inputBooleanInSeries shows automatic no");
-    }
+    cli = CLIHelper(ArrayList { """never""" }.accept, ostream.append);
+    assertEquals(cli.inputBooleanInSeries("prompt eight ", "secondKey"), false,
+        "inputBooleanInSeries allows no-to-all");
+    assertEquals(cli.inputBooleanInSeries("prompt nine ", "secondKey"), false,
+        "inputBooleanInSeries honors no-to-all if prompt differs, same key");
+    assertEquals(ostream.string, """prompt eight prompt nine no
+                                    """,
+        "inputBooleanInSeries shows automatic no");
     ostream.clear();
-    try (cli = CLIHelper(ArrayList { "all", "none" }.accept, ostream.append)) {
-        assertEquals(cli.inputBooleanInSeries("prompt ten ", "thirdKey"), true,
-            "inputBooleanInSeries allows yes-to-all with one key");
-        assertEquals(cli.inputBooleanInSeries("prompt eleven ", "fourthKey"), false,
-            "inputBooleanInSeries allows no-to-all with second key");
-        assertEquals(cli.inputBooleanInSeries("prompt twelve ", "thirdKey"), true,
-            "inputBooleanInSeries then honors yes-to-all");
-        assertEquals(cli.inputBooleanInSeries("prompt thirteen ", "fourthKey"), false,
-            "inputBooleanInSeries then honors no-to-all");
-        assertEquals(ostream.string, """prompt ten prompt eleven prompt twelve yes
-                                        prompt thirteen no
-                                        """, "inputBooleanInSeries shows prompts");
-    }
+    cli = CLIHelper(ArrayList { "all", "none" }.accept, ostream.append);
+    assertEquals(cli.inputBooleanInSeries("prompt ten ", "thirdKey"), true,
+        "inputBooleanInSeries allows yes-to-all with one key");
+    assertEquals(cli.inputBooleanInSeries("prompt eleven ", "fourthKey"), false,
+        "inputBooleanInSeries allows no-to-all with second key");
+    assertEquals(cli.inputBooleanInSeries("prompt twelve ", "thirdKey"), true,
+        "inputBooleanInSeries then honors yes-to-all");
+    assertEquals(cli.inputBooleanInSeries("prompt thirteen ", "fourthKey"), false,
+        "inputBooleanInSeries then honors no-to-all");
+    assertEquals(ostream.string, """prompt ten prompt eleven prompt twelve yes
+                                    prompt thirteen no
+                                    """, "inputBooleanInSeries shows prompts");
 }
 "Test of chooseStringFromList()"
 test
@@ -628,10 +614,8 @@ test
 void testPrinting() {
     void assertHelper(Anything(ICLIHelper) method, String expected, String message) {
         StringBuilder ostream = StringBuilder();
-        try (cli = CLIHelper(ArrayList<String>().accept, ostream.append)) {
-            method(cli);
-            assertEquals(ostream.string, expected, message);
-        }
+        method(CLIHelper(ArrayList<String>().accept, ostream.append));
+        assertEquals(ostream.string, expected, message);
     }
     assertHelper((cli) => cli.print("test string"), "test string",
         "print() prints string");
