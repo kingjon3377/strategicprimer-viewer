@@ -36,7 +36,8 @@ import javax.xml.stream {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    assertAny
 }
 
 import strategicprimer.model.idreg {
@@ -131,9 +132,6 @@ import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException,
     MissingChildException,
     DeprecatedPropertyException
-}
-import ceylon.test.engine {
-    MultipleFailureException
 }
 
 JPath fakeFilename = JPaths.get("");
@@ -757,21 +755,10 @@ void testTileSerializationTwo() {
               </view>
               ";
     String serializedForm = createSerializedForm(five, false);
-    try {
-        assertEquals(serializedForm, xmlTwoLogical, "Multiple units");
-    } catch (AssertionError one) {
-        // TODO: Write assertAny() helper
-        try {
-            assertEquals(serializedForm, xmlTwoAlphabetical, "Multiple units");
-        } catch (AssertionError two) {
-            try {
-                assertEquals(serializedForm, xmlTwoLogical.replace("\" />", "\"/>"),
-                    "Multiple units");
-            } catch (AssertionError three) {
-                throw MultipleFailureException([one, two, three]);
-            }
-        }
-    }
+    assertAny([() => assertEquals(serializedForm, xmlTwoLogical),
+                () => assertEquals(serializedForm, xmlTwoAlphabetical),
+                () => assertEquals(serializedForm,
+                    xmlTwoLogical.replace("\" />", "\"/>"))], "Multiple units");
     assertEquals(createSerializedForm(createSimpleMap(pointFactory(1, 1),
             pointFactory(0, 0)->TileType.notVisible), true),
         "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
@@ -792,17 +779,9 @@ void testTileSerializationTwo() {
              \t<map columns=\"1\" rows=\"1\" version=\"2\"/>
              </view>
              ";
-    try {
-        assertEquals(emptySerializedForm, firstPossibility,
-            "Shouldn't print empty not-visible tiles");
-    } catch (AssertionError one) {
-        try {
-            assertEquals(emptySerializedForm, secondPossibility,
-                "Shouldn't print empty not-visible tiles");
-        } catch (AssertionError two) {
-            throw MultipleFailureException([one, two]);
-        }
-    }
+    assertAny([() => assertEquals(emptySerializedForm, firstPossibility),
+                () => assertEquals(emptySerializedForm, secondPossibility)],
+        "Shouldn't print empty not-visible tiles");
     // TODO: this last assertion doesn't belong in this test
     assertImageSerialization("Unit image property is preserved",
         Unit(PlayerImpl(5, ""), "herder",
