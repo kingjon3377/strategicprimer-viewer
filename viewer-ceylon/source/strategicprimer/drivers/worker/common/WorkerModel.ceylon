@@ -78,8 +78,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     "Get all the given player's units, or only those of a specified kind."
     shared actual {IUnit*} getUnits(Player player, String? kind) {
         if (exists kind) {
-            // TODO: Do we need to use a comprehension, since we filter?
-            return { *getUnits(player).filter((unit) => kind == unit.kind) };
+            return getUnits(player).filter((unit) => kind == unit.kind);
         } else if (subordinateMaps.empty) {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.
@@ -109,10 +108,9 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         }
     }
     """All the "kinds" of units the given player has."""
-    // TODO: Do we need to wrap in a comprehension since we use distinct and sort?
     shared actual {String*} getUnitKinds(Player player) =>
-            { *getUnits(player).map(IUnit.kind).distinct
-                .sort((x, y) => x.compareIgnoringCase(y)) };
+            getUnits(player).map(IUnit.kind).distinct
+                .sort((x, y) => x.compareIgnoringCase(y));
     "Add the given unit at the given location in all maps."
     void addUnitAtLocation(IUnit unit, Point location) {
         void impl(IMutableMapNG map) {
