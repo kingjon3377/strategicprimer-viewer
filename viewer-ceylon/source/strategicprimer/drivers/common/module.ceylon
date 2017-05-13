@@ -1,7 +1,7 @@
 "Common functionality needed by pretty much all of the [Strategic
  Primer](https://shinecycle.wordpress.com/archives/strategic-primer) assistive programs,
  one level up from `strategicprimer.model`."
-// FIXME: add license() annotations throughout
+license("GPL-3")
 // TODO: add tagged() annotations throughout
 native("jvm")
 module strategicprimer.drivers.common "0.4.9014" {

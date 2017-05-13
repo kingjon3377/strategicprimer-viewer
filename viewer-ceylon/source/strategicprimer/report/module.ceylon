@@ -1,5 +1,6 @@
 "Functions to generate HTML and tabular (CSV) reports of the contents of [Strategic
  Primer](https://shinecycle.wordpress.com/archives/strategic-primer) maps."
+license("GPL-3")
 native("jvm")
 module strategicprimer.report "0.4.9014" {
 	import lovelace.util.jvm "0.1.0";

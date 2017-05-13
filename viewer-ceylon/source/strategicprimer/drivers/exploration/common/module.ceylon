@@ -1,4 +1,5 @@
 "Common functionality shared between the exploration CLI and the exploration GUI."
+license("GPL-3")
 native("jvm")
 module strategicprimer.drivers.exploration.common "0.4.9014" {
     shared import strategicprimer.drivers.common "0.4.9014";

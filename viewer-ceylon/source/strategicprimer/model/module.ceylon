@@ -2,6 +2,7 @@
  Primer](https://shinecycle.wordpress.com/archives/strategic-primer) assitive programs
  suite. Some of the converter apps, being tightly bound to XML I/O and to implementation
  details of the model, also have code in this module."
+license("GPL-3")
 native("jvm")
 module strategicprimer.model "0.4.9014" {
 	shared import java.base "8";

@@ -1,6 +1,7 @@
 "Various converters for the [Strategic
  Primer](https://shinecycle.wordpress.com/archives/strategic-primer) assistive programs
  suite."
+license("GPL-3")
 native("jvm")
 module strategicprimer.drivers.converters "0.4.9014" {
     import ceylon.collection "1.3.2";
