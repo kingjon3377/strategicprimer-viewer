@@ -2,10 +2,6 @@ import ceylon.collection {
     LinkedList,
     Stack
 }
-import ceylon.interop.java {
-    CeylonIterator
-}
-
 import java.io {
     FileNotFoundException
 }
@@ -13,7 +9,6 @@ import java.nio.file {
     JPath=Path
 }
 import java.util {
-    JIterator=Iterator,
     NoSuchElementException
 }
 
@@ -64,13 +59,8 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     "The stack of iterators we're working with."
     Stack<[String, Iterator<XMLEvent>]> stack =
             LinkedList<[String, Iterator<XMLEvent>]>();
-    shared new (JPath file, JIterator<XMLEvent>|Iterator<XMLEvent> iter) {
-        // TODO: Do we have to accept JIterator?
-        if (is Iterator<XMLEvent> iter) {
-            stack.push([file.string, iter]);
-        } else {
-            stack.push([file.string, CeylonIterator(iter)]);
-        }
+    shared new (JPath file, Iterator<XMLEvent> iter) {
+        stack.push([file.string, iter]);
     }
     """Handle an "include" tag by adding an iterator for the contents of the file it
        references to the top of the stack."""
