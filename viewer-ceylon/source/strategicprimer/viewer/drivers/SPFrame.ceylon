@@ -36,7 +36,8 @@ class FileDropHandler() extends TransferHandler() {
 			assert (is JList<JFile> temp);
 			payload = temp;
 		} catch (Exception except) {
-			// TODO: log
+			log.warn("Caught an exception trying to unmarshall dropped files",
+				except);
 			return false;
 		}
 		for (file in payload) {
