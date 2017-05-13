@@ -126,12 +126,11 @@ object zeroToOneConverter {
 	Boolean isSpecifiedTag(QName tag, String desired) {
 		return tag == QName(spNamespace, desired) || tag == QName(desired);
 	}
-	void printAttribute(Anything(String) ostream, Attribute attribute) {
+	void printAttribute(Anything(String) ostream, Attribute attribute, QName parentTag) {
 		QName name = attribute.name;
 		// TODO: handle prefix-absent-but-namespace-URI-present case
-		// TODO: Omit prefix if the same as the tag's prefix
 		String namespace = name.prefix;
-		if (!namespace.empty) {
+		if (!namespace.empty && namespace != parentTag.prefix) {
 			ostream(" ``namespace``:");
 		} else {
 			ostream(" ");
@@ -153,7 +152,7 @@ object zeroToOneConverter {
 			if ("version" == attribute.name.localPart.lowercased) {
 				ostream(" version=\"1\"");
 			} else {
-				printAttribute(ostream, attribute);
+				printAttribute(ostream, attribute, element.name);
 			}
 		}
 		ostream(">");
@@ -177,7 +176,7 @@ object zeroToOneConverter {
 		}
 		ostream(element.name.localPart);
 		for (attribute in ConvertingIterable<Attribute>(element.attributes)) {
-			printAttribute(ostream, attribute);
+			printAttribute(ostream, attribute, element.name);
 		}
 		ostream(">");
 	}
@@ -200,7 +199,7 @@ object zeroToOneConverter {
 						number);
 				}
 			} else {
-				printAttribute(ostream, attribute);
+				printAttribute(ostream, attribute, element.name);
 			}
 		}
 		ostream(">");
