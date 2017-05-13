@@ -265,7 +265,8 @@ shared class FileChooser {
                     fileChooser.showDialog(component, approveText);
         }
         case (is JFileDialog) {
-            // TODO: Is it possible to use a custom action in AWT?
+            // Unfortunately, it's not possible to use a 'custom' action with the AWT
+            // interface.
             fileChooser.mode = JFileDialog.save;
             chooserFunction = (Component? component) {
                 fileChooser.setVisible(true);
