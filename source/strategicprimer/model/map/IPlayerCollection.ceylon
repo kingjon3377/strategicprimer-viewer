@@ -6,10 +6,6 @@ import java.lang {
     ObjectArray
 }
 
-import lovelace.util.common {
-    todo
-}
-
 "An interface for collections of players."
 shared interface IPlayerCollection satisfies {Player*}&Subsettable<IPlayerCollection> {
 	"Get the player with the given player-ID, or a new player with that number if we

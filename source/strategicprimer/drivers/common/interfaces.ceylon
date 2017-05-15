@@ -6,9 +6,6 @@ import ceylon.interop.java {
     javaString
 }
 
-import java.io {
-    IOException
-}
 import java.lang {
     IllegalStateException,
     IllegalArgumentException
