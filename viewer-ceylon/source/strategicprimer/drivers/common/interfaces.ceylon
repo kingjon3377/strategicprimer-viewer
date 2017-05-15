@@ -187,7 +187,8 @@ shared interface ISPDriver satisfies HasName {
     "Run the driver. If the driver is a GUI driver, this should use
      SwingUtilities.invokeLater(); if it's a CLI driver, that's not necessary.
      This form should only be used if the caller doesn't have an ICLIHelper to pass in."
-    todo("Combine with startDriverOnModelNoCLI()?")
+    // We'd like to combine with [[startDriverOnModelNoCLI]], but we can't take a union of
+    // a variadic and a non-variadic parameter.
     shared default void startDriverOnArgumentsNoCLI(SPOptions options, String* args) =>
             startDriverOnArguments(CLIHelper(), options, *args);
     "Run the driver. If the driver is a GUI driver, this should use
@@ -206,7 +207,8 @@ shared interface ISPDriver satisfies HasName {
     shared default void startDriverOnModelNoCLI(SPOptions options, IDriverModel model) =>
             startDriverOnModel(CLIHelper(), options, model);
     "Run the driver on a driver model."
-    todo("Rename back to startDriver() and take String*|IDriverModel")
+    // We'd like to combine with [[startDriverOnArguments]] (and rename back to just
+    // `startDriver`), but `String*|IDriverModel` isn't a possible type.
     shared formal void startDriverOnModel(
         "The interface to interact with the user, either on the console or in a window
          emulating a console"
