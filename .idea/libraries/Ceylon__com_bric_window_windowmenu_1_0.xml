@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="Ceylon: com.bric.window.windowmenu/1.0">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/viewer-ceylon/modules/com/bric/window/windowmenu/1.0/com.bric.window.windowmenu-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/modules/com/bric/window/windowmenu/1.0/com.bric.window.windowmenu-1.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
