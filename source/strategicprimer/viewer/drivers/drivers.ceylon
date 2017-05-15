@@ -86,7 +86,7 @@ import com.apple.eawt {
     AppEvent,
     Application
 }
-import com.bric.window {
+import com.pump.window {
     WindowList
 }
 "A logger."

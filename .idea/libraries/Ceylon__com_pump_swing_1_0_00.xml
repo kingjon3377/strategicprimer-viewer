@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Ceylon: com.pump.swing/1.0.00">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/modules/com/pump/swing/1.0.00/com.pump.swing-1.0.00.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

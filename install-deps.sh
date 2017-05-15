@@ -6,7 +6,7 @@ wget http://download.sourceforge.net/launch4j/launch4j-3/3.9/launch4j-3.9-linux.
 tar xzf launch4j-3.9-linux.tgz
 wget https://github.com/UltraMixer/JarBundler/releases/download/3.3.0/jarbundler-core-3.3.0.jar \
         -O "${HOME}/.ant/lib/jarbundler-core-3.3.0.jar"
-wget http://javagraphics.java.net/jars/WindowMenu.jar
+wget https://github.com/mickleness/pumpernickel/raw/master/pump-release/com/pump/pump-swing/1.0.00/pump-swing-1.0.00.jar
 wget http://central.maven.org/maven2/com/yuvimasory/orange-extensions/1.3.0/orange-extensions-1.3.0.jar
 sudo apt-get update -qq
 sudo apt-get install genisoimage

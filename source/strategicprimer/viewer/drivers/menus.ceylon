@@ -12,7 +12,7 @@ import com.apple.eawt {
     Application,
     AppEvent
 }
-import com.bric.window {
+import com.pump.window {
     WindowList
 }
 

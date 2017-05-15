@@ -1,7 +1,7 @@
 import strategicprimer.viewer.drivers {
     SPMenu
 }
-import com.bric.window {
+import com.pump.window {
     WindowMenu
 }
 import javax.swing {

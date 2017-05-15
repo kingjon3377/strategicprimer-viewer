@@ -89,7 +89,7 @@
   </target>
   <target name="init-ceylon">
       <ceylon-import-jar cwd="${ceylon.root}" jar="${windowmenu.jar.path}"
-          module="com.bric.window.windowmenu/1.0" failOnError="true" />
+          module="com.pump.swing/1.0.00" failOnError="true" />
   </target>
   <target name="build-ceylon" depends="init-ceylon">
     <ceylon-compile cwd="${ceylon.root}" src="${ceylon.source.dir}" resource="${ceylon.resource.dir}" encoding="UTF-8">

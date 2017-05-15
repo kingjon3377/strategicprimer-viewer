@@ -1,4 +1,4 @@
-import com.bric.window {
+import com.pump.window {
     WindowMenu
 }
 
