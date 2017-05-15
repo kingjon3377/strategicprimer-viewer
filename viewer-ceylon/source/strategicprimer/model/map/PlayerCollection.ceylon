@@ -32,7 +32,9 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 		if (exists retval = players.get(player)) {
 			return retval;
 		} else {
-			return PlayerImpl(player, "");
+			Player retval = PlayerImpl(player, "");
+			players.put(player, retval);
+			return retval;
 		}
 	}
 	"An iterator over the players in the collection."
