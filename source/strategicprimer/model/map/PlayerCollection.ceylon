@@ -31,6 +31,8 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 	shared actual Player getPlayer(Integer player) {
 		if (exists retval = players.get(player)) {
 			return retval;
+		} else if (player < 0) {
+			return PlayerImpl(player, "");
 		} else {
 			Player retval = PlayerImpl(player, "");
 			players.put(player, retval);
