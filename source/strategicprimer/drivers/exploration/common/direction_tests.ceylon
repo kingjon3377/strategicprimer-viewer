@@ -33,6 +33,7 @@ void testEast() {
 }
 
 "Test that wrapping to the north works properly."
+test
 void testNorth() {
     IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
@@ -46,6 +47,7 @@ void testNorth() {
 }
 
 "Test that wrapping to the south works properly."
+test
 void testSouth() {
     IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
@@ -60,6 +62,7 @@ void testSouth() {
 }
 
 "Test that wrapping to the west works properly."
+test
 void testWest() {
     IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
