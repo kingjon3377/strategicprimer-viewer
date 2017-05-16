@@ -88,11 +88,11 @@
     </copy>
   </target>
   <target name="init-ceylon">
-      <ceylon-import-jar cwd="${ceylon.root}" jar="${windowmenu.jar.path}"
+      <ceylon-import-jar jar="${windowmenu.jar.path}"
           module="com.pump.swing/1.0.00" failOnError="true" />
   </target>
   <target name="build-ceylon" depends="init-ceylon">
-    <ceylon-compile cwd="${ceylon.root}" src="${ceylon.source.dir}" resource="${ceylon.resource.dir}" encoding="UTF-8">
+    <ceylon-compile src="${ceylon.source.dir}" resource="${ceylon.resource.dir}" encoding="UTF-8">
         <moduleset>
             <sourcemodules dir="${ceylon.source.dir}" />
         </moduleset>
@@ -100,7 +100,7 @@
   </target>
   <target name="doc-ceylon" depends="build-ceylon">
       <!-- FIXME: Uncomment this once Ceylon bug #6749 is fixed
-    <ceylon-doc cwd="${ceylon.root}" src="${ceylon.source.dir}" encoding="UTF-8">
+    <ceylon-doc src="${ceylon.source.dir}" encoding="UTF-8">
         <moduleset>
             <sourcemodules dir="${ceylon.source.dir}" />
         </moduleset>
@@ -110,7 +110,7 @@
 
   <!-- Test targets -->
   <target name="test-ceylon" depends="build-ceylon">
-    <ceylon-test cwd="${ceylon.root}" failOnError="true">
+    <ceylon-test failOnError="true">
         <moduleset>
             <!-- FIXME: Go back to <sourcemodules> once Ceylon bug #6986 is fixed -->
             <!--            <sourcemodules dir="${ceylon.source.dir}" /> -->
@@ -140,7 +140,6 @@
     <!-- there isn't a ceylon-fat-jar Ant task (yet) -->
     <exec executable="${ceylon.executable}" failOnError="true">
         <arg value="fat-jar" />
-        <arg value="--cwd=${ceylon.root}" />
         <arg value="--out=${release}/${basename}.ceylon.jar" />
         <arg value="--run=${ceylon-main-run}" />
         <arg value="${main-module}" />
