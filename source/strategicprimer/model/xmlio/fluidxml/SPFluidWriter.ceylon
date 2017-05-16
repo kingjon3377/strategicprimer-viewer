@@ -157,8 +157,10 @@ shared class SPFluidWriter() satisfies SPWriter {
     }
     void writePlayer(XMLStreamWriter ostream, Object obj, Integer indentation) {
         if (is Player obj) {
-            writeTag(ostream, "player", indentation, true);
-            writeAttributes(ostream, "number"->obj.playerId, "code_name"->obj.name);
+            if (!obj.name.empty) {
+                writeTag(ostream, "player", indentation, true);
+                writeAttributes(ostream, "number"->obj.playerId, "code_name"->obj.name);
+            }
         } else {
             throw IllegalArgumentException("Can only write Player");
         }

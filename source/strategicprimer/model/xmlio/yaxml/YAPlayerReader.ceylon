@@ -29,10 +29,12 @@ class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
     }
     shared actual Boolean isSupportedTag(String tag) => "player" == tag.lowercased;
     shared actual void write(Anything(String) ostream, Player obj, Integer indent) {
-        writeTag(ostream, "player", indent);
-        writeProperty(ostream, "number", obj.playerId);
-        writeProperty(ostream, "code_name", obj.name);
-        closeLeafTag(ostream);
+        if (!obj.name.empty) {
+            writeTag(ostream, "player", indent);
+            writeProperty(ostream, "number", obj.playerId);
+            writeProperty(ostream, "code_name", obj.name);
+            closeLeafTag(ostream);
+        }
     }
     shared actual Boolean canWrite(Object obj) => obj is Player;
 }
