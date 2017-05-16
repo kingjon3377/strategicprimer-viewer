@@ -14,24 +14,26 @@ import strategicprimer.model.map.fixtures.mobile {
 "An enumeration of directions of possible travel."
 shared class Direction
         of north|northeast|east|southeast|south|southwest|west|northwest|nowhere {
+    "A representation of the direction for debugging purposes."
+    shared actual String string;
     "North."
-    shared new north {}
+    shared new north { string = "north"; }
     "Northeast."
-    shared new northeast {}
+    shared new northeast { string = "northeast"; }
     "East."
-    shared new east {}
+    shared new east { string = "east"; }
     "Southeast."
-    shared new southeast {}
+    shared new southeast { string = "southeast"; }
     "South."
-    shared new south {}
+    shared new south { string = "south"; }
     "Southwest."
-    shared new southwest {}
+    shared new southwest { string = "southwest"; }
     "West."
-    shared new west {}
+    shared new west { string = "west"; }
     "Northwest."
-    shared new northwest {}
+    shared new northwest { string = "northwest"; }
     "Stand still."
-    shared new nowhere {}
+    shared new nowhere { string = "nowhere"; }
 }
 "An enumeration of possible movement speeds, joining their effects on MP costs and
  Perception. Traveling to [[Direction.nowhere]] should give an additional bonus (+2?) to
