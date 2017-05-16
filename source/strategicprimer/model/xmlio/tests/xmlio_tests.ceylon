@@ -680,7 +680,7 @@ void testSimpleTileSerializtion() {
     IMutableMapNG secondMap = createSimpleMap(pointFactory(3, 3),
         pointFactory(2, 2)->TileType.steppe);
     secondMap.addFixture(pointFactory(2, 2),
-        Unit(PlayerImpl(1, ""), "unitOne", "firstUnit", 1));
+        Unit(PlayerImpl(-1, ""), "unitOne", "firstUnit", 1));
     secondMap.setForest(pointFactory(2, 2), Forest("forestKind", true, 8));
     assertSerialization("Tile with two fixtures", secondMap);
     assertMissingProperty<IMapNG>(
@@ -700,13 +700,15 @@ test
 void testTileSerialization() {
     IMutableMapNG thirdMap = createSimpleMap(pointFactory(4, 4),
         pointFactory(3, 3)->TileType.jungle);
-    Fortress fort = Fortress(PlayerImpl(2, ""), "fortOne", 1,
+    Player playerOne = PlayerImpl(2, "");
+    Fortress fort = Fortress(playerOne, "fortOne", 1,
         TownSize.small);
-    fort.addMember(Unit(PlayerImpl(2, ""), "unitTwo", "secondUnit", 2));
+    fort.addMember(Unit(playerOne, "unitTwo", "secondUnit", 2));
     thirdMap.addFixture(pointFactory(3, 3), fort);
     thirdMap.addFixture(pointFactory(3, 3),
         TextFixture("Random text here", 5));
     thirdMap.addRivers(pointFactory(3, 3), River.lake);
+    thirdMap.addPlayer(playerOne);
     assertSerialization("More complex tile", thirdMap);
     IMutableMapNG fourthMap = createSimpleMap(pointFactory(5, 5),
         pointFactory(4, 4)->TileType.plains);
@@ -722,16 +724,19 @@ test
 void testTileSerializationTwo() {
     IMutableMapNG five = createSimpleMap(pointFactory(3, 4),
         pointFactory(2, 3)->TileType.jungle);
+    Player player = PlayerImpl(2, "playerName");
     five.addFixture(pointFactory(2, 3),
-        Unit(PlayerImpl(2, ""), "explorer", "name one", 1));
+        Unit(player, "explorer", "name one", 1));
     five.addFixture(pointFactory(2, 3),
-        Unit(PlayerImpl(2, ""), "explorer", "name two", 2));
+        Unit(player, "explorer", "name two", 2));
+    five.addPlayer(player);
     assertEquals(five.otherFixtures(pointFactory(2, 3)).size, 2,
         "Just checking ...");
     assertSerialization("Multiple units should come through", five);
     String xmlTwoLogical =
             "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
              \t<map version=\"2\" rows=\"3\" columns=\"4\">
+             \t\t<player number=\"2\" code_name=\"playerName\" />
              \t\t<row index=\"2\">
              \t\t\t<tile row=\"2\" column=\"3\" kind=\"jungle\">
              \t\t\t\t<unit owner=\"2\" kind=\"explorer\" name=\"name one\" id=\"1\" />
@@ -745,6 +750,7 @@ void testTileSerializationTwo() {
     String xmlTwoAlphabetical =
             "<view current_player=\"-1\" current_turn=\"-1\" xmlns=\"``spNamespace``\">
               \t<map columns=\"4\" rows=\"3\" version=\"2\">
+              \t\t<player number=\"2\" code_name=\"playerName\" />
               \t\t<row index=\"2\">
               \t\t\t<tile column=\"3\" kind=\"jungle\" row=\"2\">
               \t\t\t\t<unit id=\"1\" kind=\"explorer\" name=\"name one\" owner=\"2\" />
