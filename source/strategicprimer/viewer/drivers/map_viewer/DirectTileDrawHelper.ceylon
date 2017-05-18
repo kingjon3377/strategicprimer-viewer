@@ -20,51 +20,44 @@ import strategicprimer.model.map {
 "A [[TileDrawHelper]] for version-1 maps that draws directly instead of creating Shapes,
  which proves more efficent in practice."
 object directTileDrawHelper satisfies TileDrawHelper {
+    Integer multiply(Integer one, Float two) =>
+            (halfEven(one * two) + runtime.epsilon).integer;
     void drawRiver(Graphics pen, River river, Integer xCoordinate,
             Integer yCoordinate, Integer width, Integer height) {
-        // TODO: Add some small number (`runtime.epsilon`?) to floats before .integer?
         switch (river)
         case (River.east) {
             pen.fillRect(
-                halfEven(width * drawingNumericConstants.riverLongDimension)
-                    .integer + xCoordinate,
-                halfEven(height * drawingNumericConstants.riverShortStart)
-                    .integer + yCoordinate,
-                halfEven(width * drawingNumericConstants.riverLongDimension)
-                    .integer,
-                halfEven(height * drawingNumericConstants.riverShortDimension)
-                    .integer);
+                multiply(width, drawingNumericConstants.riverLongDimension) + xCoordinate,
+                multiply(height, drawingNumericConstants.riverShortStart) + yCoordinate,
+                multiply(width, drawingNumericConstants.riverLongDimension),
+                multiply(height, drawingNumericConstants.riverShortDimension));
         }
         case (River.lake) {
             pen.fillOval(
-                halfEven(width * drawingNumericConstants.lakeStart).integer + xCoordinate,
-                halfEven(height * drawingNumericConstants.lakeStart).integer
-                + yCoordinate,
-                halfEven(width * drawingNumericConstants.riverLongDimension).integer,
-                halfEven(height * drawingNumericConstants.riverLongDimension).integer);
+                multiply(width, drawingNumericConstants.lakeStart) + xCoordinate,
+                multiply(height, drawingNumericConstants.lakeStart) + yCoordinate,
+                multiply(width, drawingNumericConstants.riverLongDimension),
+                multiply(height, drawingNumericConstants.riverLongDimension));
         }
         case (River.north) {
             pen.fillRect(
-                halfEven(width * drawingNumericConstants.riverShortStart).integer
-                + xCoordinate, yCoordinate,
-                halfEven(width * drawingNumericConstants.riverShortDimension).integer,
-                halfEven(height * drawingNumericConstants.riverLongDimension).integer);
+                multiply(width, drawingNumericConstants.riverShortStart) + xCoordinate,
+                yCoordinate,
+                multiply(width, drawingNumericConstants.riverShortDimension),
+                multiply(height, drawingNumericConstants.riverLongDimension));
         }
         case (River.south) {
             pen.fillRect(
-                halfEven(width * drawingNumericConstants.riverShortStart).integer
-                + xCoordinate,
-                halfEven(height * drawingNumericConstants.riverLongDimension).integer +
-                yCoordinate,
-                halfEven(width * drawingNumericConstants.riverShortDimension).integer,
-                halfEven(height * drawingNumericConstants.riverLongDimension).integer);
+                multiply(width, drawingNumericConstants.riverShortStart) + xCoordinate,
+                multiply(height, drawingNumericConstants.riverLongDimension) + yCoordinate,
+                multiply(width, drawingNumericConstants.riverShortDimension),
+                multiply(height, drawingNumericConstants.riverLongDimension));
         }
         case (River.west) {
             pen.fillRect(xCoordinate,
-                halfEven(height * drawingNumericConstants.riverShortStart).integer +
-                yCoordinate,
-                halfEven(width * drawingNumericConstants.riverLongDimension).integer,
-                halfEven(height * drawingNumericConstants.riverShortDimension).integer);
+                multiply(height, drawingNumericConstants.riverShortStart) + yCoordinate,
+                multiply(width, drawingNumericConstants.riverLongDimension),
+                multiply(height, drawingNumericConstants.riverShortDimension));
         }
     }
     shared actual void drawTile(Graphics pen, IMapNG map, Point location,
@@ -87,37 +80,33 @@ object directTileDrawHelper satisfies TileDrawHelper {
             if (hasAnyForts(map, location)) {
                 context.color = fortColor;
                 context.fillRect(
-                    halfEven(dimensions.x * drawingNumericConstants.fortStart - 1.0)
-                        .integer + coordinates.x,
-                    halfEven(dimensions.y * drawingNumericConstants.fortStart - 1.0)
-                        .integer + coordinates.y,
-                    halfEven(dimensions.x * drawingNumericConstants.fortSize).integer,
-                    halfEven(dimensions.y * drawingNumericConstants.fortSize).integer);
+                    multiply(dimensions.x, drawingNumericConstants.fortStart) - 1 + coordinates.x,
+                    multiply(dimensions.y, drawingNumericConstants.fortStart) - 1 + coordinates.y,
+                    multiply(dimensions.x, drawingNumericConstants.fortSize),
+                    multiply(dimensions.y, drawingNumericConstants.fortSize));
             }
             if (hasAnyUnits(map, location)) {
                 context.color = unitColor;
                 context.fillOval(
-                    halfEven(dimensions.x * drawingNumericConstants.unitSize).integer +
-                    coordinates.x,
-                    halfEven(dimensions.y * drawingNumericConstants.unitSize).integer +
-                    coordinates.y,
-                    halfEven(dimensions.x * drawingNumericConstants.unitSize).integer,
-                    halfEven(dimensions.y * drawingNumericConstants.unitSize).integer);
+                    multiply(dimensions.x, drawingNumericConstants.unitSize) + coordinates.x,
+                    multiply(dimensions.y, drawingNumericConstants.unitSize) + coordinates.y,
+                    multiply(dimensions.x, drawingNumericConstants.unitSize),
+                    multiply(dimensions.y, drawingNumericConstants.unitSize));
             } // Java version had else-if here, not just if
             if (hasEvent(map, location)) {
                 context.color = eventColor;
                 context.fillPolygon(
                     createJavaIntArray({
-                        halfEven(dimensions.x *
-                        drawingNumericConstants.eventStart).integer + coordinates.x,
-                        halfEven(dimensions.x *
-                        drawingNumericConstants.eventOther).integer + coordinates.x,
+                        multiply(dimensions.x,
+                            drawingNumericConstants.eventStart) + coordinates.x,
+                        multiply(dimensions.x,
+                            drawingNumericConstants.eventOther) + coordinates.x,
                         dimensions.x + coordinates.x}),
                     createJavaIntArray({coordinates.y,
-                        halfEven(dimensions.y *
-                        drawingNumericConstants.eventOther).integer + coordinates.y,
-                        halfEven(dimensions.y *
-                        drawingNumericConstants.eventOther).integer + coordinates.y}),
+                        multiply(dimensions.y,
+                            drawingNumericConstants.eventOther) + coordinates.y,
+                        multiply(dimensions.y,
+                            drawingNumericConstants.eventOther) + coordinates.y}),
                     3);
             }
         } finally {
