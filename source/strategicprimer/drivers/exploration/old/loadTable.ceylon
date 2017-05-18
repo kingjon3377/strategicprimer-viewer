@@ -32,6 +32,9 @@ import ceylon.logging {
     logger,
     Logger
 }
+import strategicprimer.model.map.fixtures.terrain {
+    Forest
+}
 
 Logger log = logger(`module strategicprimer.drivers.exploration.old`);
 // Made shared so the oneToTwoConverter tests can get tables as classpath resources and
@@ -179,7 +182,7 @@ void testLoadRandomTable() {
 test
 void testLoadTerrainTable() {
     EncounterTable result = loadTable(LinkedList{"terrain", "tundra one",
-        "plains two", "ocean three"}.accept);
+        "plains two", "ocean three", "mountain four", "temperate_forest five"}.accept);
     assertEquals(result.generateEvent(mockPoint, TileType.tundra, false,
         {}, mockDimensions), "one",
         "loading terrain table: tundra");
@@ -188,7 +191,12 @@ void testLoadTerrainTable() {
     assertEquals(result.generateEvent(mockPoint, TileType.ocean, false,
         {}, mockDimensions), "three",
         "loading terrain table: ocean");
-    // TODO: test ver-1-equivalent testing
+    assertEquals(result.generateEvent(mockPoint, TileType.plains, false,
+        {Forest("forestKind", false, 1)}, mockDimensions), "five",
+        "loading terrain table: version 2 equivalent of temperate forest");
+    assertEquals(result.generateEvent(mockPoint, TileType.plains, true, {},
+        mockDimensions), "four",
+        "loading terrain table: version 2 equivalent of mountain");
 }
 test
 void testLoadConstantTable() {
