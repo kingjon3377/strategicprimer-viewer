@@ -305,7 +305,7 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
             skillTable = "plains_skills";
         }
         for (i in 0:skillCount) {
-            String skill = runner.consultTable(skillTable, location,
+            String skill = runner.recursiveConsultTable(skillTable, location,
                 map.baseTerrain(location), map.mountainous(location),
                 map.allFixtures(location), map.dimensions);
             Integer level = skillLevelSource();
