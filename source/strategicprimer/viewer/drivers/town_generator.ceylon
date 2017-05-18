@@ -56,6 +56,10 @@ import ceylon.random {
     DefaultRandom,
     randomize
 }
+import strategicprimer.drivers.exploration.old {
+    ExplorationRunner,
+    loadTable
+}
 "A driver to let the user enter or generate 'stats' for towns."
 object townGeneratingCLI satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -67,15 +71,17 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
         longDescription = "Enter or generate stats and contents for towns and villages";
     };
     alias ModifiableTown=>AbstractTown|Village;
-    {String+} loadTable(String table) {
-        assert (exists tableAsResource = `module strategicprimer.viewer`
-            .resourceByPath("town_tables/``table``"));
-        return tableAsResource.textContent().split('\n'.equals);
+    ExplorationRunner initializeRunner() {
+        ExplorationRunner retval = ExplorationRunner();
+        for (table in {"mountain_skills", "forest_skills", "plains_skills",
+                "ocean_skills"}) {
+            assert (exists tableAsResource = `module strategicprimer.viewer`
+                .resourceByPath("town_tables/``table``"));
+            retval.loadTable(table, loadTable(tableAsResource));
+        }
+        return retval;
     }
-    {String+} mountainSkills = loadTable("mountain_skills");
-    {String+} forestSkills = loadTable("forest_skills");
-    {String+} plainsSkills = loadTable("plains_skills");
-    {String+} oceanSkills = loadTable("ocean_skills");
+    ExplorationRunner runner = initializeRunner();
     "The (for now active) towns in the given map that don't have 'stats' yet."
     {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) => {
         for (loc in map.locations)
@@ -288,18 +294,20 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
             }
         }
         CommunityStats retval = CommunityStats(population);
-        {String+} skillSource;
+        String skillTable;
         if (map.baseTerrain(location) == TileType.ocean) {
-            skillSource = oceanSkills;
+            skillTable = "ocean_skills";
         } else if (map.mountainous(location)) {
-            skillSource = mountainSkills;
+            skillTable = "mountain_skills";
         } else if (map.forest(location) exists) {
-            skillSource = forestSkills;
+            skillTable = "forest_skills";
         } else {
-            skillSource = plainsSkills;
+            skillTable = "plains_skills";
         }
         for (i in 0:skillCount) {
-            String skill = rng.nextElement(skillSource);
+            String skill = runner.consultTable(skillTable, location,
+                map.baseTerrain(location), map.mountainous(location),
+                map.allFixtures(location), map.dimensions);
             Integer level = skillLevelSource();
             if ((retval.highestSkillLevels.get(skill) else 0) < level) {
                 retval.setSkillLevel(skill, level);
