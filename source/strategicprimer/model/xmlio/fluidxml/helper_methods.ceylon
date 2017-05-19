@@ -41,7 +41,8 @@ import strategicprimer.model.map {
 import strategicprimer.model.xmlio {
     SPFormatException,
     spNamespace,
-    Warning
+    Warning,
+    warningLevels
 }
 import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException,
@@ -252,13 +253,15 @@ Integer getIntegerAttribute(
         "The name of the desired parameter"
         String parameter,
         "The number to return if the parameter doesn't exist"
-        Integer? defaultValue = null) {
+        Integer? defaultValue = null,
+        "The [[Warning]] instance to use if input is malformed"
+        Warning warner = warningLevels.warn) {
     if (exists attr = getAttributeByName(tag, parameter), exists val = attr.\ivalue) {
         try {
             return parseInt(val, tag.location);
         } catch (ParseException|JParseException except) {
             if (exists defaultValue) {
-                // TODO: warn about the malformed input?
+                warner.handle(except);
                 return defaultValue;
             } else {
                 throw MissingPropertyException(tag, parameter, except);

@@ -90,7 +90,7 @@ TextFixture readTextFixture(StartElement element, QName parent,
         IDRegistrar idFactory) {
     requireTag(element, parent, "text");
     return setImage(TextFixture(getTextUntil(element.name, stream),
-        getIntegerAttribute(element, "turn", -1)),
+        getIntegerAttribute(element, "turn", -1, warner)),
         element, warner);
 }
 

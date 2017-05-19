@@ -204,7 +204,8 @@ Animal readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
         return setImage(
             Animal(getAttribute(element, "kind"), traces,
                 talking, getAttribute(element, "status", "wild"),
-                id, getIntegerAttribute(element, "born", -1)), element, warner);
+                id, getIntegerAttribute(element, "born", -1, warner)),
+                element, warner);
     } else {
         throw MissingPropertyException(element, "talking", talking);
     }

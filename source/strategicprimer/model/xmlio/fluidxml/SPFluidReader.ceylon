@@ -315,12 +315,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         return PlayerImpl(getIntegerAttribute(element, "number"),
             getAttribute(element, "code_name"));
     }
-    void parseOrders(StartElement element, IUnit unit, {XMLEvent*} stream) {
-        Integer turn = getIntegerAttribute(element, "turn", -1);
+    void parseOrders(StartElement element, IUnit unit, {XMLEvent*} stream,
+            Warning warner) {
+        Integer turn = getIntegerAttribute(element, "turn", -1, warner);
         unit.setOrders(turn, getTextUntil(element.name, stream));
     }
-    void parseResults(StartElement element, IUnit unit, {XMLEvent*} stream) {
-        Integer turn = getIntegerAttribute(element, "turn", -1);
+    void parseResults(StartElement element, IUnit unit, {XMLEvent*} stream,
+            Warning warner) {
+        Integer turn = getIntegerAttribute(element, "turn", -1, warner);
         unit.setResults(turn, getTextUntil(element.name, stream));
     }
     IUnit readUnit(StartElement element, QName parent, {XMLEvent*} stream,
@@ -347,10 +349,10 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
                 if ("orders" == event.name.localPart.lowercased) {
-                    parseOrders(event, retval, stream);
+                    parseOrders(event, retval, stream, warner);
                     continue;
                 } else if ("results" == event.name.localPart.lowercased) {
-                    parseResults(event, retval, stream);
+                    parseResults(event, retval, stream, warner);
                     continue;
                 }
                 if (is UnitMember child = readSPObject(event, element.name, stream,

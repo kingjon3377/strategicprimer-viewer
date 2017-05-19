@@ -35,7 +35,7 @@ import strategicprimer.model.xmlio.exceptions {
 Ground readGround(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "ground");
-    Integer id = getIntegerAttribute(element, "id", -1);
+    Integer id = getIntegerAttribute(element, "id", -1, warner);
     if (id >= 0) {
         idFactory.register(id, warner);
     }
@@ -52,7 +52,7 @@ Ground readGround(StartElement element, QName parent, {XMLEvent*} stream,
 Forest readForest(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "forest");
-    Integer id = getIntegerAttribute(element, "id", -1);
+    Integer id = getIntegerAttribute(element, "id", -1, warner);
     if (id >= 0) {
         idFactory.register(id, warner);
     }
