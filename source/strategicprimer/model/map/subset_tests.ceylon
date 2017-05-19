@@ -148,7 +148,12 @@ void testFortressSubset() {
         """Fortress named "unknown" can be subset""");
     assertNotSubset<Fortress, IFixture>(sixthFort, firstFort,
         """"unknown" is not commutative""");
-    // FIXME: Extend test to cover size-matching
+    Fortress seventhFort = Fortress(PlayerImpl(1, "one"), "unknown", fortId,
+        TownSize.medium);
+    assertNotSubset<Fortress, IFixture>(sixthFort, seventhFort,
+        "Different size breaks Fortress subset");
+    assertNotSubset<Fortress, IFixture>(seventhFort, sixthFort,
+        "Different size breaks Fortress subset");
 }
 
 "Test the [[IMapNG]] subset feature"

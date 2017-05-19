@@ -121,6 +121,10 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
             report("ID mismatch between Fortresses");
             return false;
         }
+        if (townSize != obj.townSize) {
+            report("Size mismatch between Fortresses");
+            return false;
+        }
         if ({name, "unknown"}.contains(obj.name), obj.owner.playerId == owner.playerId) {
             Map<Integer, FortressMember> ours = createMap {
                 *members.map((member) => member.id->member)
