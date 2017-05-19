@@ -111,7 +111,6 @@ shared EncounterTable loadTable(String?()|File|Resource argument) {
                         log.error("Line with no blanks, coninuing ...");
                     } else {
                         String left = splitted.first;
-                        // TODO: Catch TileType-parsing failure and handle more gracefully
                         assert (exists right = splitted.rest.reduce(
                                     (String partial, element) =>
                                     "``partial`` ``element``"));
