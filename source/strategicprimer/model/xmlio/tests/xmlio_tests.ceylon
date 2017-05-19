@@ -1350,6 +1350,10 @@ void testForestSerialization() {
                <forest kind="trees" id="4" />
                <forest kind="second" rows="true" id="5" />"""),
         warningLevels.ignore);
+    assertEquivalentForms("Deserialization now supports 'rows=false'",
+        encapsulateTileString("""<forest kind="trees" id="4" />"""),
+        encapsulateTileString("""<forest kind="trees" rows="false" id="4" />"""),
+        warningLevels.ignore);
 }
 
 test

@@ -89,6 +89,36 @@ String getAttribute(
     }
 }
 
+"""Get an attribute that should only contain "true" or "false" from the XML."""
+throws(`class SPFormatException`,
+    "if the tag doesn't have that parameter and no default was provided")
+Boolean getBooleanAttribute(
+        "The current tag."
+        StartElement element,
+        "The parameter we want to get"
+        String param,
+        "The value to return if the tag doesn't have that parameter; if null, we throw an
+         exception."
+        Boolean? defaultValue = null,
+        "The [[Warning]] instance to use if the attribute was present but non-Boolean but
+         a default was provided"
+        Warning warner = warningLevels.warn) {
+    if (exists attr = getAttributeByName(element, param), exists val = attr.\ivalue) {
+        value retval = Boolean.parse(val);
+        if (is Boolean retval) {
+            return retval;
+        } else if (exists defaultValue) {
+            warner.handle(retval);
+            return defaultValue;
+        } else {
+            throw MissingPropertyException(element, param, retval);
+        }
+    } else if (exists defaultValue) {
+        return defaultValue;
+    } else {
+        throw MissingPropertyException(element, param);
+    }
+}
 "Require (or recommend) that a parameter (to be subsequently retrieved via
  [[getAttribute]]) be non-empty."
 throws(`class SPFormatException`, "if mandatory and missing")

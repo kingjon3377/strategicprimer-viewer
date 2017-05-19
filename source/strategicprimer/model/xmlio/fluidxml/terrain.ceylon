@@ -56,9 +56,8 @@ Forest readForest(StartElement element, QName parent, {XMLEvent*} stream,
     if (id >= 0) {
         idFactory.register(id, warner);
     }
-    // TODO: support """rows="false""""
     Forest retval = Forest(getAttribute(element, "kind"),
-        hasAttribute(element, "rows"), id);
+        getBooleanAttribute(element, "rows", false), id);
     spinUntilEnd(element.name, stream);
     return setImage(retval, element, warner);
 }

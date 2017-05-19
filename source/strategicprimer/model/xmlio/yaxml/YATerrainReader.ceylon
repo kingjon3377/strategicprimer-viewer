@@ -46,9 +46,8 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
             if (id >= 0) {
                 registerID(id);
             }
-            // TODO: support 'rows="false"'
-            retval = Forest(getParameter(element, "kind"), hasParameter(element, "rows"),
-                id);
+            retval = Forest(getParameter(element, "kind"),
+                getBooleanParameter(element, "rows", false), id);
         }
         case ("hill") { retval = Hill(getOrGenerateID(element)); }
         case ("oasis") { retval = Oasis(getOrGenerateID(element)); }

@@ -226,6 +226,26 @@ abstract class YAAbstractReader<Element>
         warner = warning;
         idf = idRegistrar;
     }
+    "Read a parameter from XML whose value must be a boolean."
+    shared Boolean getBooleanParameter(StartElement element, String parameter,
+            Boolean? defaultValue = null) {
+        if (exists attr = getAttributeByName(element, parameter),
+                exists val = attr.\ivalue) {
+            value retval = Boolean.parse(val);
+            if (is Boolean retval) {
+                return retval;
+            } else if (exists defaultValue) {
+                warner.handle(retval); // TODO: Wrap to report XML location?
+                return defaultValue;
+            } else {
+                throw retval;
+            }
+        } else if (exists defaultValue) {
+            return defaultValue;
+        } else {
+            throw MissingPropertyException(element, parameter);
+        }
+    }
     "Require that a parameter be present and non-empty."
     shared void requireNonEmptyParameter(StartElement element, String parameter,
             Boolean mandatory) {
