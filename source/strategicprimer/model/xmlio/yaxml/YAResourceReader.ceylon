@@ -47,36 +47,21 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         "mine", "mineral", "shrub", "stone"};
     HarvestableFixture createMeadow(StartElement element, Boolean field, Integer idNum) {
         requireNonEmptyParameter(element, "status", false);
-        value cultivated = Boolean.parse(getParameter(element, "cultivated"));
-        if (is Boolean cultivated) {
-            value status = FieldStatus.parse(getParameter(element, "status",
-                FieldStatus.random(idNum).string));
-            if (is FieldStatus status) {
-                return Meadow(getParameter(element, "kind"), field, cultivated, idNum,
-                    status);
-            } else {
-                throw MissingPropertyException(element, "status", status);
-            }
+        value status = FieldStatus.parse(getParameter(element, "status",
+            FieldStatus.random(idNum).string));
+        if (is FieldStatus status) {
+            return Meadow(getParameter(element, "kind"), field,
+                getBooleanParameter(element, "cultivated"), idNum, status);
         } else {
-            throw MissingPropertyException(element, "cultivated", cultivated);
+            throw MissingPropertyException(element, "status", status);
         }
     }
     Boolean isCultivated(StartElement element) {
         if (hasParameter(element, "cultivated")) {
-            value cultivated = Boolean.parse(getParameter(element, "cultivated"));
-            if (is Boolean cultivated) {
-                return cultivated;
-            } else {
-                throw MissingPropertyException(element, "cultivated", cultivated);
-            }
+            return getBooleanParameter(element, "cultivated");
         } else if (hasParameter(element, "wild")) {
-            value wild = Boolean.parse(getParameter(element, "wild"));
-            if (is Boolean wild) {
-                warner.handle(DeprecatedPropertyException(element, "wild", "cultivated"));
-                return !wild;
-            } else {
-                throw MissingPropertyException(element, "cultivated", wild);
-            }
+            warner.handle(DeprecatedPropertyException(element, "wild", "cultivated"));
+            return !getBooleanParameter(element, "wild");
         } else {
             throw MissingPropertyException(element, "cultivated");
         }
@@ -110,14 +95,9 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             }
         }
         case ("mineral") {
-            value exposed = Boolean.parse(getParameter(element, "exposed"));
-            if (is Boolean exposed) {
-                retval = MineralVein(
-                    getParamWithDeprecatedForm(element, "kind", "mineral"), exposed,
-                    getIntegerParameter(element, "dc"), idNum);
-            } else {
-                throw MissingPropertyException(element, "exposed", exposed);
-            }
+            retval = MineralVein(getParamWithDeprecatedForm(element, "kind", "mineral"),
+                getBooleanParameter(element, "exposed"),
+                getIntegerParameter(element, "dc"), idNum);
         }
         case ("orchard") { retval = createGrove(element, true, idNum); }
         case ("shrub") {

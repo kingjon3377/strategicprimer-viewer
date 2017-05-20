@@ -204,16 +204,12 @@ Animal readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
     } else {
         id = getOrGenerateID(element, warner, idFactory);
     }
-    value talking = Boolean.parse(getAttribute(element, "talking", "false"));
-    if (is Boolean talking) {
-        return setImage(
-            Animal(getAttribute(element, "kind"), traces,
-                talking, getAttribute(element, "status", "wild"),
-                id, getIntegerAttribute(element, "born", -1, warner)),
-                element, warner);
-    } else {
-        throw MissingPropertyException(element, "talking", talking);
-    }
+    return setImage(
+        Animal(getAttribute(element, "kind"), traces,
+            getBooleanAttribute(element, "talking", false, warner),
+            getAttribute(element, "status", "wild"),
+            id, getIntegerAttribute(element, "born", -1, warner)),
+            element, warner);
 }
 
 void writeAnimal(XMLStreamWriter ostream, Object obj, Integer indentation) {

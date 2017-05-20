@@ -65,15 +65,10 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         } else {
             idNum = getOrGenerateID(element);
         }
-        value talking = Boolean.parse(getParameter(element, "talking", "false"));
-        if (is Boolean talking) {
-            return Animal(getParameter(element, "kind"), tracks, talking,
-                getParameter(element, "status", "wild"), idNum,
-                getIntegerParameter(element, "born", -1));
-        } else {
-            // TODO: Is there a better exception for this case?
-            throw MissingPropertyException(element, "talking", talking);
-        }
+        return Animal(getParameter(element, "kind"), tracks,
+            getBooleanParameter(element, "talking", false),
+            getParameter(element, "status", "wild"), idNum,
+            getIntegerParameter(element, "born", -1));
     }
     MobileFixture readSimple(String tag, Integer idNum) {
         value kind = SimpleImmortalKind.parse(tag);

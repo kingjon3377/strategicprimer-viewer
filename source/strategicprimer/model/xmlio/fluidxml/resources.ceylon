@@ -100,13 +100,11 @@ Grove readGrove(StartElement element, QName parent, {XMLEvent*} stream,
     requireTag(element, parent, "grove");
     spinUntilEnd(element.name, stream);
     Boolean cultivated;
-    if (hasAttribute(element, "cultivated"),
-            is Boolean temp = Boolean.parse(getAttribute(element, "cultivated"))) {
-        cultivated = temp;
-    } else if (hasAttribute(element, "wild"),
-            is Boolean temp = Boolean.parse(getAttribute(element, "wild"))) {
+    if (hasAttribute(element, "cultivated")) {
+        cultivated = getBooleanAttribute(element, "cultivated");
+    } else if (hasAttribute(element, "wild")) {
         warner.handle(DeprecatedPropertyException(element, "wild", "cultivated"));
-        cultivated = !temp;
+        cultivated = !getBooleanAttribute(element, "wild");
     } else {
         throw MissingPropertyException(element, "cultivated");
     }
@@ -122,13 +120,11 @@ Grove readOrchard(StartElement element, QName parent, {XMLEvent*} stream,
     requireTag(element, parent, "orchard");
     spinUntilEnd(element.name, stream);
     Boolean cultivated;
-    if (hasAttribute(element, "cultivated"),
-        is Boolean temp = Boolean.parse(getAttribute(element, "cultivated"))) {
-        cultivated = temp;
-    } else if (hasAttribute(element, "wild"),
-        is Boolean temp = Boolean.parse(getAttribute(element, "wild"))) {
+    if (hasAttribute(element, "cultivated")) {
+        cultivated = getBooleanAttribute(element, "cultivated");
+    } else if (hasAttribute(element, "wild")) {
         warner.handle(DeprecatedPropertyException(element, "wild", "cultivated"));
-        cultivated = !temp;
+        cultivated = !getBooleanAttribute(element, "wild");
     } else {
         throw MissingPropertyException(element, "cultivated");
     }
@@ -147,19 +143,13 @@ Meadow readMeadow(StartElement element, QName parent, {XMLEvent*} stream,
     if (!hasAttribute(element, "status")) {
         warner.handle(MissingPropertyException(element, "status"));
     }
-    value cultivated = Boolean.parse(getAttribute(element, "cultivated"));
-    if (is Boolean cultivated) {
-        value status = FieldStatus.parse(getAttribute(element, "status",
-            FieldStatus.random(id).string));
-        if (is FieldStatus status) {
-            return setImage(
-                Meadow(getAttribute(element, "kind"), false, cultivated,
-                    id, status), element, warner);
-        } else {
-            throw MissingPropertyException(element, "status", status);
-        }
+    value status = FieldStatus.parse(getAttribute(element, "status",
+        FieldStatus.random(id).string));
+    if (is FieldStatus status) {
+        return setImage(Meadow(getAttribute(element, "kind"), false,
+            getBooleanAttribute(element, "cultivated"), id, status), element, warner);
     } else {
-        throw MissingPropertyException(element, "cultivated", cultivated);
+        throw MissingPropertyException(element, "status", status);
     }
 }
 
@@ -171,19 +161,13 @@ Meadow readField(StartElement element, QName parent, {XMLEvent*} stream,
     if (!hasAttribute(element, "status")) {
         warner.handle(MissingPropertyException(element, "status"));
     }
-    value cultivated = Boolean.parse(getAttribute(element, "cultivated"));
-    if (is Boolean cultivated) {
-        value status = FieldStatus.parse(getAttribute(element, "status",
-            FieldStatus.random(id).string));
-        if (is FieldStatus status) {
-            return setImage(
-                Meadow(getAttribute(element, "kind"), true, cultivated,
-                    id, status), element, warner);
-        } else {
-            throw MissingPropertyException(element, "status", status);
-        }
+    value status = FieldStatus.parse(getAttribute(element, "status",
+        FieldStatus.random(id).string));
+    if (is FieldStatus status) {
+        return setImage(Meadow(getAttribute(element, "kind"), true,
+            getBooleanAttribute(element, "cultivated"), id, status), element, warner);
     } else {
-        throw MissingPropertyException(element, "cultivated", cultivated);
+        throw MissingPropertyException(element, "status", status);
     }
 }
 
@@ -205,16 +189,11 @@ MineralVein readMineral(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "mineral");
     spinUntilEnd(element.name, stream);
-    value exposed = Boolean.parse(getAttribute(element, "exposed"));
-    if (is Boolean exposed) {
-        return setImage(
-            MineralVein(
-                getAttrWithDeprecatedForm(element, "kind", "mineral", warner),
-                exposed, getIntegerAttribute(element, "dc"),
-                getOrGenerateID(element, warner, idFactory)), element, warner);
-    } else {
-        throw MissingPropertyException(element, "exposed", exposed);
-    }
+    return setImage(
+        MineralVein(
+            getAttrWithDeprecatedForm(element, "kind", "mineral", warner),
+            getBooleanAttribute(element, "exposed"), getIntegerAttribute(element, "dc"),
+            getOrGenerateID(element, warner, idFactory)), element, warner);
 }
 
 Shrub readShrub(StartElement element, QName parent, {XMLEvent*} stream,

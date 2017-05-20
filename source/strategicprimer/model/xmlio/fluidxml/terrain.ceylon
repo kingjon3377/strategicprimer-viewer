@@ -41,12 +41,8 @@ Ground readGround(StartElement element, QName parent, {XMLEvent*} stream,
     }
     String kind = getAttrWithDeprecatedForm(element, "kind", "ground", warner);
     spinUntilEnd(element.name, stream);
-    value exposed = Boolean.parse(getAttribute(element, "exposed"));
-    if (is Boolean exposed) {
-        return setImage(Ground(id, kind, exposed), element, warner);
-    } else {
-        throw MissingPropertyException(element, "exposed", exposed);
-    }
+    return setImage(Ground(id, kind, getBooleanAttribute(element, "exposed")), element,
+        warner);
 }
 
 Forest readForest(StartElement element, QName parent, {XMLEvent*} stream,

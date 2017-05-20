@@ -31,14 +31,9 @@ class YAGroundReader(Warning warning, IDRegistrar idRegistrar)
         if (id >= 0) {
             registerID(id);
         }
-        value exposed  = Boolean.parse(getParameter(element, "exposed"));
-        if (is Boolean exposed) {
-            Ground retval = Ground(id, kind, exposed);
-            retval.image = getParameter(element, "image", "");
-            return retval;
-        } else {
-            throw MissingPropertyException(element, "exposed", exposed);
-        }
+        Ground retval = Ground(id, kind, getBooleanParameter(element, "exposed"));
+        retval.image = getParameter(element, "image", "");
+        return retval;
     }
     shared actual Boolean isSupportedTag(String tag) => "ground" == tag.lowercased;
     shared actual void write(Anything(String) ostream, Ground obj, Integer indent) {
