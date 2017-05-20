@@ -18,9 +18,6 @@ import java.io {
     IOException
 }
 
-import lovelace.util.common {
-    todo
-}
 import lovelace.util.jvm {
     isNumeric,
     parseInt
@@ -129,21 +126,15 @@ shared interface ICLIHelper {
 }
 "A helper class to let help CLIs interact with the user, encapsulating input and output
  streams."
-todo("Should we make a factory method rather than exposing the class as shared?")
-shared class CLIHelper satisfies ICLIHelper {
+shared sealed class CLIHelper(istream = process.readLine, ostream = process.write)
+        satisfies ICLIHelper {
+    "A way to read a line at a time, presumably from the user."
     String?() istream;
+    "A consumer of output, presumably sending it to the user."
     Anything(String) ostream;
     "The current state of the yes-to-all/no-to-all possibility. Absent if not set,
      present if set, and the boolean value is what to return."
     MutableMap<String, Boolean> seriesState = HashMap<String, Boolean>();
-    shared new (
-            "A way to read a line at a time, presumably from the user."
-            String?() inStream = process.readLine,
-            "A consumer of output, presumably sending it to the user."
-            Anything(String) outStream = process.write) {
-        istream = inStream;
-        ostream = outStream;
-    }
     "Ask the user a yes-or-no question."
     shared actual Boolean inputBoolean(String prompt) {
         while (true) {
