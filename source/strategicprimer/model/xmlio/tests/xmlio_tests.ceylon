@@ -1270,6 +1270,14 @@ void testAnimalSerialization() {
         "<animal xmlns:sp=\"``spNamespace``\" sp:kind=\"animalNine\"
          sp:talking=\"true\" sp:traces=\"true\" sp:status=\"tame\" sp:id=\"5\" />",
         Animal("animalNine", true, true, "tame", 5).equals);
+    assertEquivalentForms("""Supports 'traces="false"'""",
+        """<animal kind="kind" status="wild" id="9" />""",
+        """<animal kind="kind" traces="false" status="wild" id="9" />""",
+        warningLevels.die);
+    assertEquivalentForms("""Former idiom still works""",
+        """<animal kind="kind" status="wild" id="10" traces="" />""",
+        """<animal kind="kind" status="wild" id="10" traces="true" />""",
+        warningLevels.die);
     // TODO: Test that 'born' property is preserved
 }
 

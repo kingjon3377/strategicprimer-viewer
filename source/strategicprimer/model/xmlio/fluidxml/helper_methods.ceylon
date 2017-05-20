@@ -103,7 +103,8 @@ Boolean getBooleanAttribute(
         "The [[Warning]] instance to use if the attribute was present but non-Boolean but
          a default was provided"
         Warning warner = warningLevels.warn) {
-    if (exists attr = getAttributeByName(element, param), exists val = attr.\ivalue) {
+    if (exists attr = getAttributeByName(element, param), exists val = attr.\ivalue,
+            !val.empty) {
         value retval = Boolean.parse(val);
         if (is Boolean retval) {
             return retval;

@@ -230,7 +230,7 @@ abstract class YAAbstractReader<Element>
     shared Boolean getBooleanParameter(StartElement element, String parameter,
             Boolean? defaultValue = null) {
         if (exists attr = getAttributeByName(element, parameter),
-                exists val = attr.\ivalue) {
+                exists val = attr.\ivalue, !val.empty) {
             value retval = Boolean.parse(val);
             if (is Boolean retval) {
                 return retval;

@@ -53,8 +53,12 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         *{*`SimpleImmortalKind`.caseValues}
             .map((SimpleImmortalKind kind) => kind.tag)});
     MobileFixture createAnimal(StartElement element) {
-        // TODO: support 'traces="false"'
-        Boolean tracks = hasParameter(element, "traces");
+        // To get the intended meaning of existing maps, we have to parse
+        // traces="" as traces="true". If compatibility with existing maps
+        // ever becomes unnecessary, I will change the default-value here to
+        // simply `false`.
+        Boolean tracks = getBooleanParameter(element, "traces",
+            hasParameter(element, "traces") && getParameter(element, "traces", "").empty);
         Integer idNum;
         if (tracks && !hasParameter(element, "id")) {
             idNum = -1;
@@ -108,7 +112,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             writeTag(ostream, "animal", indent);
             writeProperty(ostream, "kind", obj.kind);
             if (obj.traces) {
-                writeProperty(ostream, "traces", "");
+                writeProperty(ostream, "traces", "true");
             }
             if (obj.talking) {
                 writeProperty(ostream, "talking", "true");

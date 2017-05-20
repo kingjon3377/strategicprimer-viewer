@@ -191,8 +191,13 @@ Animal readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "animal");
     spinUntilEnd(element.name, stream);
-    // TODO: support """traces="false""""
-    Boolean traces = hasAttribute(element, "traces");
+    // To get the intended meaning of existing maps, we have to parse
+    // traces="" as traces="true". If compatibility with existing maps
+    // ever becomes unnecessary, I will change the default-value here to
+    // simply `false`.
+    Boolean traces = getBooleanAttribute(element, "traces",
+        hasAttribute(element, "traces") && getAttribute(element, "traces", "").empty,
+        warner);
     Integer id;
     if (traces, !hasAttribute(element, "id")) {
         id = -1;
@@ -216,7 +221,7 @@ void writeAnimal(XMLStreamWriter ostream, Object obj, Integer indentation) {
         writeTag(ostream, "animal", indentation, true);
         writeAttributes(ostream, "kind"->obj.kind);
         if (obj.traces) {
-            writeAttributes(ostream, "traces"->"");
+            writeAttributes(ostream, "traces"->true);
         }
         if (obj.talking) {
             writeAttributes(ostream, "talking"->true);
