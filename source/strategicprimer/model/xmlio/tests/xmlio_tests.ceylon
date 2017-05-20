@@ -1278,7 +1278,8 @@ void testAnimalSerialization() {
         """<animal kind="kind" status="wild" id="10" traces="" />""",
         """<animal kind="kind" status="wild" id="10" traces="true" />""",
         warningLevels.die);
-    // TODO: Test that 'born' property is preserved
+    assertSerialization("Animal age is preserved",
+        Animal("youngKind", false, false, "domesticated", 12, 8));
 }
 
 test
