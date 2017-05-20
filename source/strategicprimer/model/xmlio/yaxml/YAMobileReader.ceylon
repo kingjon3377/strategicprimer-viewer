@@ -39,9 +39,6 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.xmlio {
     Warning
 }
-import strategicprimer.model.xmlio.exceptions {
-    MissingPropertyException
-}
 "A reader for 'mobile fixtures'"
 class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<MobileFixture>(warning, idRegistrar) {

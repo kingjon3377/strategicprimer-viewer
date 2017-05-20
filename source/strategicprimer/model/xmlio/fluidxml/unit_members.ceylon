@@ -40,8 +40,7 @@ import strategicprimer.model.xmlio {
 }
 import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException,
-    UnsupportedPropertyException,
-    MissingPropertyException
+    UnsupportedPropertyException
 }
 Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {

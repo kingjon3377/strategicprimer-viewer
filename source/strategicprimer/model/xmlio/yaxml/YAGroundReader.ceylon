@@ -15,9 +15,6 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.model.xmlio {
     Warning
 }
-import strategicprimer.model.xmlio.exceptions {
-    MissingPropertyException
-}
 "A reader for [[Ground]]."
 class YAGroundReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Ground>(warning, idRegistrar) {
