@@ -109,7 +109,7 @@ Boolean getBooleanAttribute(
         if (is Boolean retval) {
             return retval;
         } else if (exists defaultValue) {
-            warner.handle(retval);
+            warner.handle(MissingPropertyException(element, param, retval));
             return defaultValue;
         } else {
             throw MissingPropertyException(element, param, retval);

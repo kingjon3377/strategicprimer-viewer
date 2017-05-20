@@ -235,10 +235,10 @@ abstract class YAAbstractReader<Element>
             if (is Boolean retval) {
                 return retval;
             } else if (exists defaultValue) {
-                warner.handle(retval); // TODO: Wrap to report XML location?
+                warner.handle(MissingPropertyException(element, parameter, retval));
                 return defaultValue;
             } else {
-                throw retval;
+                throw MissingPropertyException(element, parameter, retval);
             }
         } else if (exists defaultValue) {
             return defaultValue;
