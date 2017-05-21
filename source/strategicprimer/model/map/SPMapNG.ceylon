@@ -427,14 +427,6 @@ shared class SPMapNG satisfies IMutableMapNG {
             return false;
         }
     }
-    todo("Should we really satisfy Comparable?")
-    shared actual Comparison compare(IMapNG other) {
-        if (equals(other)) {
-            return equal;
-        } else {
-            return hash <=> other.hash;
-        }
-    }
     "Clone a map, possibly for a specific player, who shouldn't see other players'
      details."
     shared actual IMapNG copy(Boolean zero, Player? player) {
