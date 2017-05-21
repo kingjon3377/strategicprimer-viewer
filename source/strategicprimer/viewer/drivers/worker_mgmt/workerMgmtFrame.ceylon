@@ -102,6 +102,9 @@ import strategicprimer.model.xmlio {
 import java.nio.file {
     JPath=Path
 }
+import lovelace.util.common {
+    anythingEqual
+}
 "A window to let the player manage units."
 SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         IWorkerModel model, MenuBroker menuHandler) {
@@ -119,17 +122,6 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             }
         }
         return retval;
-    }
-    Boolean anythingEqual(Anything one, Anything two) {
-        if (exists one) {
-            if (exists two) {
-                return one == two;
-            } else {
-                return false;
-            }
-        } else {
-            return !two exists;
-        }
     }
     IViewerModel getViewerModel() {
         for (frame in WindowList.getFrames(false, true, true)) {
