@@ -237,11 +237,17 @@ shared class HarvestableReportGenerator(
             MutableMap<String, IReportNode> stone = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> shrubs = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> minerals = HashMap<String, IReportNode>();
-            IReportNode mines = SortedSectionListReportNode(5, "Mines");
-            IReportNode meadows = SortedSectionListReportNode(5, "Meadows and Fields");
-            IReportNode groves = SortedSectionListReportNode(5, "Groves and Orchards");
-            IReportNode caches = SortedSectionListReportNode(5,
+            SortedSectionListReportNode mines = SortedSectionListReportNode(5, "Mines");
+            SortedSectionListReportNode meadows =
+                    SortedSectionListReportNode(5, "Meadows and Fields");
+            SortedSectionListReportNode groves =
+                    SortedSectionListReportNode(5, "Groves and Orchards");
+            SortedSectionListReportNode caches = SortedSectionListReportNode(5,
                 "Caches collected by your explorers and workers:");
+            mines.suspend();
+            meadows.suspend();
+            groves.suspend();
+            caches.suspend();
             for ([loc, item] in values) {
                 if (is HarvestableFixture item) {
                     if (is CacheFixture item) {
@@ -282,19 +288,27 @@ shared class HarvestableReportGenerator(
                     }
                 }
             }
-            IReportNode shrubsNode = SortedSectionListReportNode(5,
+            SortedSectionListReportNode shrubsNode = SortedSectionListReportNode(5,
                 "Shrubs, Small Trees, etc.");
+            shrubsNode.suspend();
             for (node in shrubs.items) {
                 shrubsNode.appendNode(node);
             }
-            IReportNode mineralsNode = SortedSectionListReportNode(5, "Mineral Deposits");
+            SortedSectionListReportNode mineralsNode = SortedSectionListReportNode(5,
+                "Mineral Deposits");
+            mineralsNode.suspend();
             for (node in minerals.items) {
                 mineralsNode.appendNode(node);
             }
-            IReportNode stoneNode = SortedSectionListReportNode(5,
+            SortedSectionListReportNode stoneNode = SortedSectionListReportNode(5,
                 "Exposed Stone Deposits");
+            stoneNode.suspend();
             for (node in stone.items) {
                 stoneNode.appendNode(node);
+            }
+            for (node in {shrubsNode, mineralsNode, stoneNode, mines, meadows, groves,
+                    caches}) {
+                node.resume();
             }
             SectionReportNode retval = SectionReportNode(4, "Resource Sources");
             retval.addIfNonEmpty(caches, groves, meadows, mines, mineralsNode, stoneNode,
