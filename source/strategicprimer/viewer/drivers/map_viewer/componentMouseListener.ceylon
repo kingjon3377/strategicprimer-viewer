@@ -21,7 +21,7 @@ import strategicprimer.model.map {
     Point,
     MapDimensions,
     TileFixture,
-    IMapNG,
+    IMap,
     pointFactory
 }
 import strategicprimer.model.map.fixtures {
@@ -41,7 +41,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
     model.addSelectionChangeListener(menu);
     model.addVersionChangeListener(menu);
     String terrainFixturesAndTop(Point point) {
-        IMapNG map = model.map;
+        IMap map = model.map;
         StringBuilder builder = StringBuilder();
         void accept(TileFixture fixture) {
             if (!builder.empty) {

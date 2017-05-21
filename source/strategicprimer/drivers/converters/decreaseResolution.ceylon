@@ -19,11 +19,11 @@ import strategicprimer.model.map {
     Point,
     River,
     TileType,
-    IMutableMapNG,
+    IMutableMap,
     pointFactory,
-    IMapNG,
+    IMap,
     PlayerCollection,
-    SPMapNG,
+    SPMap,
     MapDimensionsImpl,
     PlayerImpl,
     TileFixture
@@ -50,7 +50,7 @@ import ceylon.random {
     randomize
 }
 "A utility to convert a map to an equivalent half-resolution one."
-shared IMapNG decreaseResolution(IMapNG old) {
+shared IMap decreaseResolution(IMap old) {
 	if (old.dimensions.rows % 2 != 0 || old.dimensions.columns %2 != 0) {
 		throw IllegalArgumentException(
 			"Can only convert maps with even numbers of rows and columns");
@@ -61,7 +61,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
 	}
 	Integer newColumns = old.dimensions.columns / 2;
 	Integer newRows = old.dimensions.rows / 2;
-	IMutableMapNG retval = SPMapNG(MapDimensionsImpl(newRows, newColumns, 2), players,
+	IMutableMap retval = SPMap(MapDimensionsImpl(newRows, newColumns, 2), players,
 		old.currentTurn);
 	TileType consensus([TileType+] types) {
 		value counted = types.frequencies().map((type->count) => [count, type])
@@ -131,7 +131,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
 	}
 	return retval;
 }
-void initialize(IMutableMapNG map, Point point, TileType? terrain,
+void initialize(IMutableMap map, Point point, TileType? terrain,
 		TileFixture* fixtures) {
 	if (exists terrain, terrain != TileType.notVisible) {
 		map.setBaseTerrain(point, terrain);
@@ -148,7 +148,7 @@ void initialize(IMutableMapNG map, Point point, TileType? terrain,
 }
 test
 void testResolutionReduction() {
-	IMutableMapNG start = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
+	IMutableMap start = SPMap(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
 	Animal fixture = Animal("animal", false, true, "domesticated", 1);
 	initialize(start, pointFactory(0, 0), TileType.desert, fixture);
 	CacheFixture fixtureTwo = CacheFixture("gemstones", "small", 2);
@@ -158,7 +158,7 @@ void testResolutionReduction() {
 	Fortress fixtureFour = Fortress(PlayerImpl(1, "B. Player"), "HQ", 4, TownSize.small);
 	initialize(start, pointFactory(1, 1), TileType.plains, fixtureFour);
 
-	IMapNG converted = decreaseResolution(start);
+	IMap converted = decreaseResolution(start);
 	Point zeroPoint = pointFactory(0, 0);
 	assertTrue(converted.otherFixtures(zeroPoint)
 		.containsEvery({fixture, fixtureTwo, fixtureThree, fixtureFour}),
@@ -168,7 +168,7 @@ void testResolutionReduction() {
 }
 test
 void testMoreReduction() {
-	IMutableMapNG start = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
+	IMutableMap start = SPMap(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
 	Point pointOne = pointFactory(0, 0);
 	start.setMountainous(pointOne, true);
 	start.addRivers(pointOne, River.east, River.south);
@@ -185,7 +185,7 @@ void testMoreReduction() {
 	Forest forestTwo = Forest("forestTwo", false, 2);
 	initialize(start, pointFour, TileType.desert, forestTwo);
 
-	IMapNG converted = decreaseResolution(start);
+	IMap converted = decreaseResolution(start);
 	Point zeroPoint = pointFactory(0, 0);
 	assertTrue(converted.mountainous(zeroPoint),
 		"One mountainous point makes the reduced point mountainous");
@@ -206,7 +206,7 @@ test
 void testResolutionDecreaseRequirement() {
 	// TODO: Uncomment hasType() once Ceylon tooling bug fixed
 	assertThatException(
-				() => decreaseResolution(SPMapNG(MapDimensionsImpl(3, 3, 2),
+				() => decreaseResolution(SPMap(MapDimensionsImpl(3, 3, 2),
 			PlayerCollection(), -1)))
 		/*.hasType(`IllegalArgumentException`)*/;
 }

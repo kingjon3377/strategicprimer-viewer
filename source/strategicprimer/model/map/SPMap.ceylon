@@ -21,8 +21,8 @@ import strategicprimer.model.map {
     River,
     IMutablePlayerCollection,
     TileFixture,
-    IMutableMapNG,
-    IMapNG,
+    IMutableMap,
+    IMap,
     MutablePlayer,
     Player,
     TileType,
@@ -43,7 +43,7 @@ import strategicprimer.model.map.fixtures.terrain {
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
 "A class to represent a game-world map and its contents."
-shared class SPMapNG satisfies IMutableMapNG {
+shared class SPMap satisfies IMutableMap {
     "Whether the given fixture should be zeroed out if the map is for the given player."
     static Boolean shouldZero(TileFixture fixture, Player? player) {
         if (exists player, is HasOwner fixture) {
@@ -215,7 +215,7 @@ shared class SPMapNG satisfies IMutableMapNG {
             dimensions.hash + (currentTurn.leftLogicalShift(3)) +
                 currentPlayer.hash.leftLogicalShift(5);
     shared actual Boolean equals(Object obj) {
-        if (is IMapNG obj) {
+        if (is IMap obj) {
             if (dimensions == obj.dimensions, players.containsEvery(obj.players),
                     obj.players.containsEvery(players), currentTurn == obj.currentTurn,
                     currentPlayer == obj.currentPlayer) {
@@ -293,7 +293,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     }
     """Returns true if the other map is a "strict subset" of this one, except for those
        cases we deliberately ignore."""
-    shared actual Boolean isSubset(IMapNG obj, Anything(String) report) {
+    shared actual Boolean isSubset(IMap obj, Anything(String) report) {
         if (dimensions == obj.dimensions) {
             // TODO: delegate player-subset testing to PlayerCollection
             // TODO: Or else use standard Ceylon Iterable methods
@@ -429,8 +429,8 @@ shared class SPMapNG satisfies IMutableMapNG {
     }
     "Clone a map, possibly for a specific player, who shouldn't see other players'
      details."
-    shared actual IMapNG copy(Boolean zero, Player? player) {
-        IMutableMapNG retval = SPMapNG(dimensions, playerCollection.copy(),
+    shared actual IMap copy(Boolean zero, Player? player) {
+        IMutableMap retval = SPMap(dimensions, playerCollection.copy(),
             currentTurn);
         for (point in locations) {
             retval.setBaseTerrain(point, baseTerrain(point));

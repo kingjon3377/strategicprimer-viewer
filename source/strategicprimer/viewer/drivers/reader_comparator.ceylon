@@ -14,7 +14,7 @@ import java.nio.file {
 }
 
 import strategicprimer.model.map {
-    IMapNG
+    IMap
 }
 import strategicprimer.model.xmlio {
     IMapReader,
@@ -49,12 +49,12 @@ object readerComparator satisfies UtilityDriver {
             if (is File file) {
                 String contents = readAll(file);
                 Integer startOne = system.nanoseconds;
-                IMapNG mapOne = one.readMapFromStream(path, StringReader(contents),
+                IMap mapOne = one.readMapFromStream(path, StringReader(contents),
                     warner);
                 Integer endOne = system.nanoseconds;
                 print("Old method took ``endOne - startOne``");
                 Integer startTwo = system.nanoseconds;
-                IMapNG mapTwo = two.readMapFromStream(path, StringReader(contents),
+                IMap mapTwo = two.readMapFromStream(path, StringReader(contents),
                     warner);
                 Integer endTwo = system.nanoseconds;
                 print("New method took ``endTwo - startTwo``");

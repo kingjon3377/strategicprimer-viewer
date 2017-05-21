@@ -26,8 +26,8 @@ import strategicprimer.model.map {
     Point,
     Player,
     IFixture,
-    IMapNG,
-    IMutableMapNG
+    IMap,
+    IMutableMap
 }
 import strategicprimer.model.map.fixtures.mobile {
     Worker,
@@ -85,7 +85,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         return null;
     }
     "Find a fixture in a map by ID number."
-    IFixture? find(IMapNG map, Integer id) {
+    IFixture? find(IMap map, Integer id) {
         for (location in map.locations) {
             if (exists result = findInIterable(id, *map.allFixtures(location))) {
                 return result;
@@ -103,7 +103,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for one worker in particular."
     void enterStatsForWorker(IMultiMapModel model, Integer id, ICLIHelper cli) {
         WorkerStats stats = enterStatsCollection(cli);
-        for (map in model.allMaps.map(([IMutableMapNG, JPath?] pair) => pair.first)) {
+        for (map in model.allMaps.map(([IMutableMap, JPath?] pair) => pair.first)) {
             if (is Worker fixture = find(map, id), !fixture.stats exists) {
                 fixture.stats = stats;
             }

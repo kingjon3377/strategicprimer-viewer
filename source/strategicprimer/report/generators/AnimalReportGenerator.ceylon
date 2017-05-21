@@ -15,7 +15,7 @@ import strategicprimer.model {
 import strategicprimer.model.map {
     Point,
     IFixture,
-    IMapNG,
+    IMap,
     invalidPoint,
     MapDimensions
 }
@@ -38,7 +38,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
             DistanceComparator(hq, dimensions)) {
     "Produce the sub-report about animals or an individual Animal."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, [Animal, Point]? entry) {
+            IMap map, Anything(String) ostream, [Animal, Point]? entry) {
         if (exists entry) {
             Animal item = entry.first;
             Point loc = entry.rest.first;
@@ -99,7 +99,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     }
     "Produce the sub-report about animals or an individual Animal."
     shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures,
-            IMapNG map, [Animal, Point]? entry) {
+            IMap map, [Animal, Point]? entry) {
         if (exists entry) {
             Animal item = entry.first;
             Point loc = entry.rest.first;

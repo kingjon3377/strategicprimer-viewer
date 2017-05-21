@@ -16,7 +16,7 @@ import strategicprimer.model.map {
     River,
     TileFixture,
     TileType,
-    IMutableMapNG,
+    IMutableMap,
     invalidPoint
 }
 import strategicprimer.model.map.fixtures {
@@ -34,7 +34,7 @@ import strategicprimer.drivers.common {
 }
 "A model for the list-based representation of the contents of a tile."
 todo("Tests")
-shared class FixtureListModel(IMutableMapNG map,
+shared class FixtureListModel(IMutableMap map,
         "Whether to keep animal tracks out of the map."
         Boolean filterTracks) extends DefaultListModel<TileFixture>()
         satisfies SelectionChangeListener {

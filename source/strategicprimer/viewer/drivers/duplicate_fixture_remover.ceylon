@@ -30,7 +30,7 @@ import java.math {
 
 import strategicprimer.model.map {
     IFixture,
-    IMutableMapNG,
+    IMutableMap,
     TileFixture
 }
 import strategicprimer.model.map.fixtures {
@@ -53,7 +53,7 @@ import strategicprimer.drivers.common {
 """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests, of the same
     kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile in a
     map."""
-void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
+void removeDuplicateFixtures(IMutableMap map, ICLIHelper cli) {
     Boolean approveRemoval(TileFixture fixture, TileFixture matching) {
         return cli.inputBooleanInSeries(
             "Remove '``fixture.shortDescription``', of class '``classDeclaration(fixture)

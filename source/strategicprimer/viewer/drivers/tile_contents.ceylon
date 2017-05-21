@@ -15,7 +15,7 @@ import java.nio.file {
 import strategicprimer.model.map {
     pointFactory,
     TileType,
-    IMapNG,
+    IMap,
     Point
 }
 import ceylon.math.float {
@@ -34,7 +34,7 @@ import strategicprimer.drivers.exploration.old {
 }
 "A class to non-interactively generate a tile's contents."
 todo("Figure out how to run the Ceylon version repeatedly on a single JVM")
-class TileContentsGenerator(IMapNG map) {
+class TileContentsGenerator(IMap map) {
     ExplorationRunner runner = ExplorationRunner();
     if (is Directory directory = parsePath("tables").resource) {
         loadAllTables(directory, runner);

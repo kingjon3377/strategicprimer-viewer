@@ -3,22 +3,22 @@ import strategicprimer.model.idreg {
     IDFactory
 }
 import strategicprimer.model.map {
-    IMapNG,
+    IMap,
     IFixture
 }
 "Fill a new ID factory from the given map."
-shared IDRegistrar createIDFactory(IMapNG|{IMapNG*}|{IFixture*} arg) {
+shared IDRegistrar createIDFactory(IMap|{IMap*}|{IFixture*} arg) {
     IDRegistrar retval = IDFactory();
     recursiveRegister(retval, arg);
     return retval;
 }
 
-void recursiveRegister(IDRegistrar factory, IMapNG|{IMapNG*}|{IFixture*} arg) {
-    if (is IMapNG map = arg) {
+void recursiveRegister(IDRegistrar factory, IMap|{IMap*}|{IFixture*} arg) {
+    if (is IMap map = arg) {
         for (location in map.locations) {
             recursiveRegister(factory, map.allFixtures(location));
         }
-    } else if (is {IMapNG*} model = arg) {
+    } else if (is {IMap*} model = arg) {
         for (map in model) {
             recursiveRegister(factory, map);
         }

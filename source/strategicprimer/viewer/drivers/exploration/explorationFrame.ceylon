@@ -76,7 +76,7 @@ import strategicprimer.model.map {
     Player,
     TileType,
     TileFixture,
-    IMutableMapNG,
+    IMutableMap,
     PlayerImpl,
     HasOwner
 }
@@ -312,7 +312,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 return retval;
             };
             headerPanel.add(ImprovedComboBox<Speed>.withModel(speedModel));
-            IMutableMapNG secondMap;
+            IMutableMap secondMap;
             if (exists pair = model.subordinateMaps.first) {
                 secondMap = pair.first;
             } else {

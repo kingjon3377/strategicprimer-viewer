@@ -29,7 +29,7 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.map {
     TileType,
-    IMapNG,
+    IMap,
     Point
 }
 abstract class SimpleTerrain() of unforested | forested | ocean { }
@@ -62,7 +62,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
      location."
     todo("Just use TileType now we have union types available")
     suppressWarnings("deprecation")
-    SimpleTerrain getTerrain(IMapNG map, Point location) {
+    SimpleTerrain getTerrain(IMap map, Point location) {
         switch (map.baseTerrain(location))
         case (TileType.jungle|TileType.borealForest|TileType.temperateForest) {
             return forested;
@@ -81,7 +81,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
         }
     }
     "Search for and fix aquatic villages with non-aquatic races."
-    void fixAllVillages(IMapNG map, ICLIHelper cli) {
+    void fixAllVillages(IMap map, ICLIHelper cli) {
         Village[] villages = [ for (point in map.locations)
         if (map.baseTerrain(point) == TileType.ocean)
         for (fixture in map.otherFixtures(point))
@@ -142,7 +142,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
         jobList.add(kind);
     }
     "Search for and fix units with kinds missing."
-    void fixAllUnits(IMapNG map, ICLIHelper cli) {
+    void fixAllUnits(IMap map, ICLIHelper cli) {
         for (point in map.locations) {
             SimpleTerrain terrain = getTerrain(map, point);
             for (fixture in map.otherFixtures(point)) {

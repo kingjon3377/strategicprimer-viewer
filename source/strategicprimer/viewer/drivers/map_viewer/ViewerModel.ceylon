@@ -21,8 +21,8 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.map {
     Point,
-    IMutableMapNG,
-    IMapNG,
+    IMutableMap,
+    IMap,
     invalidPoint
 }
 "A class to encapsulate the various model-type things views need to do with maps."
@@ -80,7 +80,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     shared void clearSelection() => selection = invalidPoint;
     "The visible dimensions of the map."
     variable VisibleDimensions visDimensions;
-    shared new ("The initial map" IMutableMapNG theMap,
+    shared new ("The initial map" IMutableMap theMap,
             "The file it was loaded from or should be saved to" JPath? file)
             extends SimpleDriverModel(theMap, file) {
         visDimensions = VisibleDimensions(0, theMap.dimensions.rows - 1, 0,
@@ -88,12 +88,12 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     }
     shared new fromPair(
             "A pair of the initial map and its filename"
-            [IMutableMapNG, JPath?] pair)
+            [IMutableMap, JPath?] pair)
             extends SimpleDriverModel(pair.first, pair.rest.first) {
         visDimensions = VisibleDimensions(0, pair.first.dimensions.rows - 1, 0,
             pair.first.dimensions.columns - 1);
     }
-    void postSetMap(IMapNG newMap) {
+    void postSetMap(IMap newMap) {
         clearSelection();
         visDimensions = VisibleDimensions(0, newMap.dimensions.rows - 1, 0,
             newMap.dimensions.columns - 1);
@@ -141,7 +141,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     }
     "Set the map and its filename, and also clear the selection and reset the visible
      dimensions and the zoom level."
-    shared actual void setMap(IMutableMapNG newMap, JPath? origin) {
+    shared actual void setMap(IMutableMap newMap, JPath? origin) {
         super.setMap(newMap, origin);
         postSetMap(newMap);
     }

@@ -25,8 +25,8 @@ import strategicprimer.drivers.common {
     ICLIHelper
 }
 import strategicprimer.model.map {
-    IMutableMapNG,
-    IMapNG
+    IMutableMap,
+    IMap
 }
 import strategicprimer.model.xmlio {
     readMap,
@@ -62,7 +62,7 @@ class ConverterDriver(
             for (filename in arguments) {
                 cli.print("Reading ``filename ``... ");
                 try {
-                    IMutableMapNG old = readMap(Paths.get(filename),
+                    IMutableMap old = readMap(Paths.get(filename),
                         warningLevels.default);
                     if (options.hasOption("--current-turn")) {
                         value currentTurn =
@@ -76,7 +76,7 @@ class ConverterDriver(
                         }
                     }
                     cli.println(" ... Converting ... ");
-                    IMapNG map = decreaseResolution(old);
+                    IMap map = decreaseResolution(old);
                     cli.println("About to write ``filename``.new.xml");
                     writeMap(parsePath(filename + ".new.xml"), map);
                 } catch (FileNotFoundException|NoSuchFileException except) {

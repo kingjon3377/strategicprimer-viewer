@@ -70,8 +70,8 @@ import strategicprimer.model.idreg {
 }
 import strategicprimer.model.map {
     Player,
-    IMutableMapNG,
-    IMapNG,
+    IMutableMap,
+    IMap,
     PlayerImpl
 }
 import strategicprimer.model.map.fixtures {
@@ -91,17 +91,17 @@ import strategicprimer.model.xmlio {
 }
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
-    shared new fromMap(IMutableMapNG map, JPath? file) extends
+    shared new fromMap(IMutableMap map, JPath? file) extends
         SimpleMultiMapModel(map, file) { }
     shared new fromDriverModel(IDriverModel driverModel) extends
         SimpleMultiMapModel.copyConstructor(driverModel) { }
     "All the players in all the maps."
     shared {Player*} players => allMaps.map((pair) => pair.first)
-        .flatMap((IMutableMapNG temp) => temp.players.distinct);
+        .flatMap((IMutableMap temp) => temp.players.distinct);
     "Add a resource to a player's HQ."
     shared void addResource(FortressMember resource, Player player) {
         for (pair in allMaps) {
-            IMutableMapNG map = pair.first;
+            IMutableMap map = pair.first;
             Player mapPlayer = map.currentPlayer;
             if (mapPlayer.independent || mapPlayer.playerId < 0 ||
                     mapPlayer.playerId == player.playerId) {
@@ -110,7 +110,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
         }
     }
     "Add a resource to a player's HQ in a particular map."
-    shared void addResourceToMap(FortressMember resource, IMapNG map, Player player) {
+    shared void addResourceToMap(FortressMember resource, IMap map, Player player) {
         for (location in map.locations) {
             for (fixture in map.otherFixtures(location)) {
                 if (is Fortress fixture, "HQ" == fixture.name,

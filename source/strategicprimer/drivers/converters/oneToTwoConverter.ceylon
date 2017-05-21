@@ -17,7 +17,7 @@ import strategicprimer.drivers.converters.one_to_two {
     convertOneToTwo
 }
 import strategicprimer.model.map {
-    IMapNG
+    IMap
 }
 import strategicprimer.model.xmlio {
     writeMap
@@ -57,7 +57,7 @@ object oneToTwoConverter satisfies SimpleDriver {
     } else {
         throw IllegalStateException("1-to-2 converter requires a tables directory");
     }
-    void writeConvertedMap(JPath old, IMapNG map) {
+    void writeConvertedMap(JPath old, IMap map) {
         try {
             writeMap(parsePath(old.string).siblingPath("``old.fileName``.converted.xml"),
                 map);
@@ -68,7 +68,7 @@ object oneToTwoConverter satisfies SimpleDriver {
     }
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        IMapNG oldMain = model.map;
+        IMap oldMain = model.map;
         JPath oldMainPath;
         if (exists temp = model.mapFile) {
             oldMainPath = temp;
@@ -76,7 +76,7 @@ object oneToTwoConverter satisfies SimpleDriver {
             throw DriverFailedException(IllegalStateException("No path for main map"),
                 "No path for main map");
         }
-        IMapNG newMain = convertOneToTwo(oldMain, runner, true);
+        IMap newMain = convertOneToTwo(oldMain, runner, true);
         writeConvertedMap(oldMainPath, newMain);
         if (is IMultiMapModel model) {
             for ([map, path] in model.subordinateMaps) {
@@ -85,7 +85,7 @@ object oneToTwoConverter satisfies SimpleDriver {
                     continue;
                 }
                 assert (exists path);
-                IMapNG newMap = convertOneToTwo(map, runner, false);
+                IMap newMap = convertOneToTwo(map, runner, false);
                 writeConvertedMap(path, newMap);
             }
         }

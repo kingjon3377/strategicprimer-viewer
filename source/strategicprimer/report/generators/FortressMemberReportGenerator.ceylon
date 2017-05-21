@@ -18,7 +18,7 @@ import strategicprimer.model {
 }
 import strategicprimer.model.map {
     Point,
-    IMapNG,
+    IMap,
     invalidPoint,
     IFixture,
     Player,
@@ -53,7 +53,7 @@ shared class FortressMemberReportGenerator(
      [[entry]], since nearly all resources will be in fortresses and should be reported
      as such, but we'll handle this properly anyway."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, [FortressMember, Point]? entry) {
+            IMap map, Anything(String) ostream, [FortressMember, Point]? entry) {
         if (exists entry) {
             FortressMember item = entry.first;
             Point loc = entry.rest.first;
@@ -148,7 +148,7 @@ shared class FortressMemberReportGenerator(
      as such, but we'll handle this properly anyway."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, [FortressMember, Point]? entry) {
+            IMap map, [FortressMember, Point]? entry) {
         if (exists entry) {
             FortressMember item = entry.first;
             Point loc = entry.rest.first;

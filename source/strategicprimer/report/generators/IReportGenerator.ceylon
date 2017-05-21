@@ -5,7 +5,7 @@ import lovelace.util.common {
 import strategicprimer.model.map {
     Point,
     IFixture,
-    IMapNG
+    IMap
 }
 import strategicprimer.report {
     IReportNode
@@ -29,7 +29,7 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
             "The set of fixtures in the map."
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             "The map. (Needed to get terrain type for some reports.)"
-            IMapNG map,
+            IMap map,
             "The stream to write to"
             Anything(String) ostream,
             "The specific item to write about and its location; if null, write about all
@@ -42,7 +42,7 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
             "The set of fixtures in the map."
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             "The map. (Needed to get terrain type for some reports.)"
-            IMapNG map,
+            IMap map,
             "The specific item to write about and its location; if null, write about all
              matching items."
             [T, Point]? entry = null);

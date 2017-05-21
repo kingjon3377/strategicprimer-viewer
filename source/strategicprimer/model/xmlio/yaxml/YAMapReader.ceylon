@@ -29,14 +29,14 @@ import strategicprimer.model.map {
     River,
     IMutablePlayerCollection,
     TileFixture,
-    IMutableMapNG,
-    IMapNG,
+    IMutableMap,
+    IMap,
     TileType,
     invalidPoint,
     pointFactory,
     MapDimensions,
     MapDimensionsImpl,
-    SPMapNG
+    SPMap
 }
 import strategicprimer.model.map.fixtures {
     TextFixture,
@@ -60,7 +60,7 @@ import strategicprimer.model.xmlio.exceptions {
 class YAMapReader("The Warning instance to use" Warning warner,
         "The factory for ID numbers" IDRegistrar idRegistrar,
         "The map's collection of players" IMutablePlayerCollection players)
-        extends YAAbstractReader<IMapNG>(warner, idRegistrar) {
+        extends YAAbstractReader<IMap>(warner, idRegistrar) {
     "The reader for players"
     YAReader<Player> playerReader = YAPlayerReader(warner, idRegistrar);
     "The readers we'll try sub-tags on"
@@ -72,7 +72,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         YAPortalReader(warner, idRegistrar), YAExplorableReader(warner, idRegistrar),
         YAUnitReader(warner, idRegistrar, players) };
     "Add a fixture to a point in a map, accounting for the special cases."
-    void addFixture(IMutableMapNG map, Point point, TileFixture fixture) {
+    void addFixture(IMutableMap map, Point point, TileFixture fixture) {
         if (is Ground fixture) {
             if (exists oldGround = map.ground(point)) {
                 if (fixture.exposed, !oldGround.exposed) {
@@ -155,7 +155,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         }
     }
     "Read a map from XML."
-    shared actual IMutableMapNG read(StartElement element, QName parent,
+    shared actual IMutableMap read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "map", "view");
         Integer currentTurn;
@@ -177,7 +177,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         Stack<QName> tagStack = LinkedList<QName>();
         tagStack.push(element.name);
         tagStack.push(mapTag.name);
-        IMutableMapNG retval = SPMapNG(dimensions, players, currentTurn);
+        IMutableMap retval = SPMap(dimensions, players, currentTurn);
         variable Point point = invalidPoint; // TODO: Use Point? instead?
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
@@ -268,7 +268,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         }
     }
     "Write a map."
-    shared actual void write(Anything(String) ostream, IMapNG obj, Integer tabs) {
+    shared actual void write(Anything(String) ostream, IMap obj, Integer tabs) {
         writeTag(ostream, "view", tabs);
         writeProperty(ostream, "current_player", obj.currentPlayer.playerId);
         writeProperty(ostream, "current_turn", obj.currentTurn);
@@ -343,5 +343,5 @@ class YAMapReader("The Warning instance to use" Warning warner,
     }
     shared actual Boolean isSupportedTag(String tag) =>
             {"map", "view"}.contains(tag.lowercased);
-    shared actual Boolean canWrite(Object obj) => obj is IMapNG;
+    shared actual Boolean canWrite(Object obj) => obj is IMap;
 }

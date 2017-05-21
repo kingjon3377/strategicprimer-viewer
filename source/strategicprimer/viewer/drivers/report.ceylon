@@ -26,7 +26,7 @@ import strategicprimer.drivers.common {
     ICLIHelper
 }
 import strategicprimer.model.map {
-    IMapNG,
+    IMap,
     Player
 }
 import strategicprimer.report {
@@ -51,7 +51,7 @@ object reportCLI satisfies SimpleDriver {
     };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        void writeReport(JPath? filename, IMapNG map) {
+        void writeReport(JPath? filename, IMap map) {
             if (exists filename) {
                 Player player;
                 if (options.hasOption("--player")) {
@@ -129,7 +129,7 @@ object tabularReportCLI satisfies SimpleDriver {
             }
             return retval;
         }
-        void createReports(IMapNG map, JPath? mapFile) {
+        void createReports(IMap map, JPath? mapFile) {
             if (exists mapFile) {
                 try {
                     createTabularReports(map,

@@ -11,7 +11,7 @@ import strategicprimer.model.map {
     Point,
     River,
     TileType,
-    IMapNG
+    IMap
 }
 import java.awt {
     Graphics,
@@ -102,7 +102,7 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
         }
     }
     updateCache(2, 2);
-    shared actual void drawTileTranslated(Graphics pen, IMapNG map, Point location,
+    shared actual void drawTileTranslated(Graphics pen, IMap map, Point location,
             Integer width, Integer height) {
         assert (is Graphics2D pen);
         TileType terrain = map.baseTerrain(location);
@@ -131,7 +131,7 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
             }
         }
     }
-    shared actual void drawTile(Graphics pen, IMapNG map, Point location,
+    shared actual void drawTile(Graphics pen, IMap map, Point location,
             Coordinate coordinates, Coordinate dimensions) {
         Graphics context = pen.create(coordinates.x, coordinates.y, dimensions.x,
             dimensions.y);

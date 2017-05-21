@@ -18,7 +18,7 @@ import strategicprimer.model.map.fixtures.towns {
 }
 import strategicprimer.model.map {
     Point,
-    IMapNG,
+    IMap,
     IFixture,
     TileType,
     HasKind
@@ -83,7 +83,7 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
     }
     ExplorationRunner runner = initializeRunner();
     "The (for now active) towns in the given map that don't have 'stats' yet."
-    {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) => {
+    {<Point->ModifiableTown>*} unstattedTowns(IMap map) => {
         for (loc in map.locations)
             for (fixture in map.otherFixtures(loc))
                 if (is ModifiableTown fixture, fixture.status == TownStatus.active)
@@ -95,7 +95,7 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
             town.population = stats;
         }
     }
-    void assignStatsInMap(IMapNG map, Point location, Integer townId,
+    void assignStatsInMap(IMap map, Point location, Integer townId,
             CommunityStats stats) {
         for (item in map.otherFixtures(location)
                 .narrow<ModifiableTown>()
@@ -103,10 +103,10 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
             assignStatsToTown(item, stats);
         }
     }
-    IFixture? findByID(IMapNG map, Integer id) => map.locations
+    IFixture? findByID(IMap map, Integer id) => map.locations
         .flatMap((loc) => map.allFixtures(loc))
         .find((fix) => fix.id == id);
-    Point? findLocById(IMapNG map, Integer id) {
+    Point? findLocById(IMap map, Integer id) {
         for (location in map.locations) {
             for (fixture in map.allFixtures(location)) {
                 if (fixture.id == id) {
@@ -116,11 +116,11 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
         }
         return null;
     }
-    Boolean isClaimedField(IMapNG map, Integer id) => map.locations
+    Boolean isClaimedField(IMap map, Integer id) => map.locations
         .flatMap((loc) => map.otherFixtures(loc)).narrow<ITownFixture>()
         .map(ITownFixture.population).coalesced
         .flatMap(CommunityStats.workedFields).contains(id);
-    Boolean isUnclaimedField(IMapNG map, Integer id) =>
+    Boolean isUnclaimedField(IMap map, Integer id) =>
             !isClaimedField(map, id) && findByID(map, id) is HarvestableFixture;
     Boolean bothOrNeitherOcean(TileType one, TileType two) =>
             (one == TileType.ocean) then two == TileType.ocean else two != TileType.ocean;
@@ -145,14 +145,14 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
             return true;
         }
     }
-    {HarvestableFixture*} findNearestFields(IMapNG map, Point location) {
+    {HarvestableFixture*} findNearestFields(IMap map, Point location) {
         TileType base = map.baseTerrain(location);
         return surroundingPointIterable(location, map.dimensions, 10).distinct
             .filter((point) => bothOrNeitherOcean(base, map.baseTerrain(point)))
             .flatMap((point) => map.allFixtures(point)).narrow<HarvestableFixture>()
             .filter(isReallyClaimable);
     }
-    CommunityStats enterStats(ICLIHelper cli, IDRegistrar idf, IMapNG map, Point location, ModifiableTown town) {
+    CommunityStats enterStats(ICLIHelper cli, IDRegistrar idf, IMap map, Point location, ModifiableTown town) {
         CommunityStats retval = CommunityStats(cli.inputNumber("Population: "));
         cli.println("Now enter Skill levels, the highest in the community for each Job.");
         cli.println("(Empty to end.)");
@@ -252,7 +252,7 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
         assert (is HasKind fixture);
         return fixture.kind;
     }
-    CommunityStats generateStats(IDRegistrar idf, Point location, ModifiableTown town, IMapNG map) {
+    CommunityStats generateStats(IDRegistrar idf, Point location, ModifiableTown town, IMap map) {
         Random rng = DefaultRandom(town.id);
         Integer roll(Integer die) => rng.nextInteger(die) + 1;
         Integer repeatedlyRoll(Integer count, Integer die, Integer addend = 0) {

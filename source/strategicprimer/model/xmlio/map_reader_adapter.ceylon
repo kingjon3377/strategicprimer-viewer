@@ -20,8 +20,8 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.map {
-    IMutableMapNG,
-    IMapNG
+    IMutableMap,
+    IMap
 }
 import strategicprimer.model.xmlio.yaxml {
     yaXMLReader,
@@ -41,7 +41,7 @@ shared {JPath*} namesToFiles(String* names) =>
         { for (name in names) JPaths.get(name) };
 "Read a map from a file or a stream.."
 todo("Port to use ceylon.file or ceylon.io")
-shared IMutableMapNG readMap(JPath|JReader file, Warning warner = warningLevels.warn) {
+shared IMutableMap readMap(JPath|JReader file, Warning warner = warningLevels.warn) {
     if (is JPath file) {
         return reader.readMap(file, warner);
     } else {
@@ -49,7 +49,7 @@ shared IMutableMapNG readMap(JPath|JReader file, Warning warner = warningLevels.
     }
 }
 "Write a map to file."
-shared void writeMap(Path file, IMapNG map) => writer.write(file, map);
+shared void writeMap(Path file, IMap map) => writer.write(file, map);
 test
 void testNamesToFiles() {
     JPath[] expected = [ JPaths.get("two"), JPaths.get("three"), JPaths.get("four") ];

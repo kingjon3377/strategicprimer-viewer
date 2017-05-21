@@ -13,16 +13,16 @@ import strategicprimer.model.idreg {
     createIDFactory
 }
 import strategicprimer.model.map {
-    IMapNG,
+    IMap,
     MapDimensions,
-    IMutableMapNG,
+    IMutableMap,
     Player,
     TileType,
     TileFixture,
     pointFactory,
     River,
     Point,
-    SPMapNG,
+    SPMap,
     MapDimensionsImpl,
     PlayerCollection,
     PlayerImpl
@@ -62,9 +62,9 @@ import ceylon.random {
 Logger log = logger(`module strategicprimer.model`);
 "Convert a version-1 map to a higher-resolution version-2 map."
 suppressWarnings("deprecation")
-shared IMapNG convertOneToTwo(
+shared IMap convertOneToTwo(
 		"The version-1 map to convert"
-		IMapNG old,
+        IMap old,
 		"The source for kinds of ground, fields, etc."
 		ExplorationRunner runner,
 		"Whether the map is the main map (new encounter-type fixtures don't go on
@@ -74,7 +74,7 @@ shared IMapNG convertOneToTwo(
 	if (oldDimensions.version >= 2) {
 		return old;
 	}
-	IMutableMapNG retval = SPMapNG(MapDimensionsImpl(
+	IMutableMap retval = SPMap(MapDimensionsImpl(
 		oldDimensions.rows * expansionFactor,
 		oldDimensions.columns * expansionFactor, 2), PlayerCollection(), nextTurn);
 	Player independent = old.players.find(Player.independent)
@@ -85,7 +85,7 @@ shared IMapNG convertOneToTwo(
 	}
 	MutableList<Point> converted = LinkedList<Point>();
 	IDRegistrar idFactory = createIDFactory(old);
-	IMapNG oldCopy = old.copy(false, null);
+	IMap oldCopy = old.copy(false, null);
 	TileType equivalentTerrain(TileType original) {
 		switch (original)
 		case (TileType.mountain|TileType.temperateForest) { return TileType.plains; }
@@ -136,7 +136,7 @@ shared IMapNG convertOneToTwo(
 		}
 		if (!oldCopy.locationEmpty(point)) {
 			Integer idNum = idFactory.createID();
-			if (is IMutableMapNG oldCopy) {
+			if (is IMutableMap oldCopy) {
 				oldCopy.addFixture(point, Village(TownStatus.active, "", idNum,
 					independent, randomRace(DefaultRandom(idNum))));
 			}

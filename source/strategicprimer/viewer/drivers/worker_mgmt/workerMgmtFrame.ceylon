@@ -69,7 +69,7 @@ import strategicprimer.model.idreg {
 import strategicprimer.model.map {
     Point,
     Player,
-    IMapNG,
+    IMap,
     invalidPoint
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -193,7 +193,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
     object retval extends SPFrame("Worker Management", model.mapFile,
         Dimension(640, 480))
             satisfies PlayerChangeListener {
-        IMapNG mainMap = model.map;
+        IMap mainMap = model.map;
         SPDialog&NewUnitSource&PlayerChangeListener newUnitFrame =
                 newUnitDialog(mainMap.currentPlayer,
                     createIDFactory(mainMap));

@@ -18,7 +18,7 @@ import strategicprimer.model {
 }
 import strategicprimer.model.map {
     Point,
-    IMapNG,
+    IMap,
     invalidPoint,
     IFixture,
     MapDimensions
@@ -59,7 +59,7 @@ shared class HarvestableReportGenerator(
        battlefields, though HarvestableFixtures, are presumed to have been handled
        already.""""
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, [HarvestableFixture, Point]? entry) {
+            IMap map, Anything(String) ostream, [HarvestableFixture, Point]? entry) {
         if (exists entry) {
             Point loc = entry.rest.first;
             switch (item = entry.first)
@@ -195,7 +195,7 @@ shared class HarvestableReportGenerator(
        referred to in this report are to be removed from the collection."""
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, [HarvestableFixture, Point]? entry) {
+            IMap map, [HarvestableFixture, Point]? entry) {
         if (exists entry) {
             HarvestableFixture item = entry.first;
             Point loc = entry.rest.first;

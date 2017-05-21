@@ -53,7 +53,7 @@ import strategicprimer.model.map {
     Player,
     HasOwner,
     TileType,
-    IMapNG,
+    IMap,
     TileFixture,
     HasName,
     MapDimensions
@@ -166,7 +166,7 @@ object queryCLI satisfies SimpleDriver {
         return retval;
     }
     "Count the workers belonging to a player."
-    void countWorkers(IMapNG map, ICLIHelper cli, Player* players) {
+    void countWorkers(IMap map, ICLIHelper cli, Player* players) {
         Player[] playerList = [*players];
         value choice = cli.chooseFromList(playerList,
             "Players in the map:", "Map contains no players",
@@ -311,7 +311,7 @@ object queryCLI satisfies SimpleDriver {
     }
     "Give the data about a tile that the player is supposed to automatically know if he
      has a fortress on it."
-    void fortressInfo(IMapNG map, Point location, ICLIHelper cli) {
+    void fortressInfo(IMap map, Point location, ICLIHelper cli) {
         cli.println("Terrain is ``map.baseTerrain(location)``");
         Ground[] ground = map.allFixtures(location).narrow<Ground>().sequence();
         Forest[] forests = map.allFixtures(location).narrow<Forest>().sequence();
@@ -329,7 +329,7 @@ object queryCLI satisfies SimpleDriver {
         }
     }
     "Find the nearest obviously-reachable unexplored location."
-    Point? findUnexplored(IMapNG map, Point base) {
+    Point? findUnexplored(IMap map, Point base) {
         Queue<Point> queue = LinkedList<Point>();
         queue.offer(base);
         MapDimensions dimensions = map.dimensions;

@@ -35,7 +35,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.map {
     Point,
     IFixture,
-    IMapNG,
+    IMap,
     TileType
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -172,7 +172,7 @@ object mapCheckerCLI satisfies UtilityDriver {
     shared void check(JPath file, Anything(String) outStream, Anything(String) err,
             Warning warner = warningLevels.custom()) {
         outStream("Starting ``file``");
-        IMapNG map;
+        IMap map;
         try {
             map = readMap(file, warner);
         } catch (FileNotFoundException|NoSuchFileException except) {

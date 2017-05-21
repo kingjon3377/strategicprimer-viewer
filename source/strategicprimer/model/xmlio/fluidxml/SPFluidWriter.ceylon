@@ -30,7 +30,7 @@ import strategicprimer.model.map {
     HasPortrait,
     IFixture,
     River,
-    IMapNG,
+    IMap,
     TileType,
     pointFactory
 }
@@ -137,7 +137,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             }
         }
     }
-    shared actual void write(Path|Anything(String) arg, IMapNG map) {
+    shared actual void write(Path|Anything(String) arg, IMap map) {
         if (is Path path = arg) {
             File file;
             value res = path.resource;
@@ -253,7 +253,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         }
     }
     void writeMap(XMLStreamWriter ostream, Object obj, Integer indentation) {
-        if (is IMapNG obj) {
+        if (is IMap obj) {
             writeTag(ostream, "view", indentation, false);
             writeAttributes(ostream, "current_player"->obj.currentPlayer.playerId,
                 "current_turn"->obj.currentTurn);
@@ -356,7 +356,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         `Fortress`->writeFortress,
         `Village`->writeVillage,
         `AbstractTown`->writeTown,
-        `IMapNG`->writeMap,
+        `IMap`->writeMap,
         `Player`->writePlayer,
         `CommunityStats`->writeCommunityStats
     };

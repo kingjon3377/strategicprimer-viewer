@@ -34,10 +34,10 @@ import strategicprimer.model.map {
     River,
     TileFixture,
     TileType,
-    IMutableMapNG,
-    IMapNG,
+    IMutableMap,
+    IMap,
     pointFactory,
-    SPMapNG,
+    SPMap,
     MapDimensionsImpl,
     PlayerCollection,
     PlayerImpl
@@ -85,7 +85,7 @@ import strategicprimer.model.xmlio {
     testReaderFactory
 }
 
-void assertModuloID(IMapNG map, String serialized, Anything(String) err) {
+void assertModuloID(IMap map, String serialized, Anything(String) err) {
     Regex matcher = regex("id=\"[0-9]*\"", true);
     try (inStream = StringReader(matcher.replace(serialized, "id=\"-1\""))) {
         assertTrue(
@@ -93,7 +93,7 @@ void assertModuloID(IMapNG map, String serialized, Anything(String) err) {
             "Actual is at least subset of expected converted, modulo IDs");
     }
 }
-void initialize(IMutableMapNG map, Point point, TileType? terrain,
+void initialize(IMutableMap map, Point point, TileType? terrain,
         TileFixture* fixtures) {
     if (exists terrain, terrain != TileType.notVisible) {
         map.setBaseTerrain(point, terrain);
@@ -137,7 +137,7 @@ void writeToFile(String filename, String text) {
 test
 suppressWarnings("deprecation")
 shared void testOneToTwoConversion() {
-    IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
+    IMutableMap original = SPMap(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
     original.setBaseTerrain(pointFactory(0, 0), TileType.borealForest);
     original.setBaseTerrain(pointFactory(0, 1), TileType.temperateForest);
     original.setBaseTerrain(pointFactory(1, 0), TileType.desert);
@@ -147,7 +147,7 @@ shared void testOneToTwoConversion() {
     Player independent = PlayerImpl(2, "independent");
     original.addPlayer(independent);
 
-    IMutableMapNG converted = SPMapNG(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
+    IMutableMap converted = SPMap(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
     converted.addPlayer(player);
     converted.addPlayer(independent);
     Ground groundOne() => Ground(-1, "rock1", false);
@@ -258,7 +258,7 @@ shared void testOneToTwoConversion() {
 test
 suppressWarnings("deprecation")
 shared void testMoreOneToTwoConversion() {
-    IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
+    IMutableMap original = SPMap(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
     initialize(original, pointFactory(0, 0), TileType.jungle);
     initialize(original, pointFactory(0, 1), TileType.temperateForest,
         Forest("ttree1", false, 1));
@@ -270,7 +270,7 @@ shared void testMoreOneToTwoConversion() {
     Player independent = PlayerImpl(2, "independent");
     original.addPlayer(independent);
 
-    IMutableMapNG converted = SPMapNG(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
+    IMutableMap converted = SPMap(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
     converted.addPlayer(player);
     converted.addPlayer(independent);
     Ground groundOne() => Ground(-1, "rock1", false);
@@ -403,7 +403,7 @@ shared void testThirdOneToTwoConversion() {
             Meadow(kind, true, true, -1, status);
     Grove orchard(String kind = "fruit1") => Grove(true, true, kind, -1);
 
-    IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
+    IMutableMap original = SPMap(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
     initialize(original, pointFactory(0, 0), TileType.notVisible, groundOne());
     original.addPlayer(independent);
     initialize(original, pointFactory(0, 1), TileType.borealForest,
@@ -430,7 +430,7 @@ shared void testThirdOneToTwoConversion() {
     Player player = PlayerImpl(1, "playerName");
     original.addPlayer(player);
 
-    IMutableMapNG converted = SPMapNG(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
+    IMutableMap converted = SPMap(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
     converted.addPlayer(player);
     converted.addPlayer(independent);
     initialize(converted, pointFactory(0, 0), TileType.notVisible, groundOne(),
@@ -588,7 +588,7 @@ void writeLine(StringBuilder ostream, String line) {
 }
 test
 shared void testFourthOneToTwoConversion() {
-    IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
+    IMutableMap original = SPMap(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
     initialize(original, pointFactory(0, 0), TileType.ocean);
     for (point in { pointFactory(0, 1), pointFactory(1, 0),
         pointFactory(1, 1) }) {
@@ -600,9 +600,9 @@ shared void testFourthOneToTwoConversion() {
     original.addPlayer(independent);
 
     ExplorationRunner runner = initializeRunner();
-    IMapNG actualConverted = convertOneToTwo(original, runner, true);
+    IMap actualConverted = convertOneToTwo(original, runner, true);
 
-    IMutableMapNG converted = SPMapNG(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
+    IMutableMap converted = SPMap(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
     converted.addPlayer(player);
     converted.addPlayer(independent);
     IDRegistrar testFactory = IDFactory();

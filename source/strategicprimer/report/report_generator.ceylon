@@ -20,7 +20,7 @@ import strategicprimer.model.map {
     Point,
     Player,
     IFixture,
-    IMapNG,
+    IMap,
     TileFixture,
     invalidPoint,
     MapDimensions
@@ -54,7 +54,7 @@ import strategicprimer.report.nodes {
 Logger log = logger(`module strategicprimer.report`);
 "Find the location of the given player's HQ in the given map."
 todo("""Return null instead of an "invalid" Point when not found?""")
-Point findHQ(IMapNG map, Player player) {
+Point findHQ(IMap map, Player player) {
     variable Point? retval = null;
     for (location in map.locations) {
         for (fixture in map.otherFixtures(location)) {
@@ -72,7 +72,7 @@ Point findHQ(IMapNG map, Player player) {
 }
 "Create a mapping from ID numbers to Pairs of fixtures and their location for all fixtures
  in the map."
-DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
+DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMap map) {
     DelayedRemovalMap<Integer, [Point, IFixture]> retval = IntMap<[Point, IFixture]>();
     IDRegistrar idf = createIDFactory(map);
     Integer checkID(IFixture fixture) {
@@ -107,7 +107,7 @@ DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
 "Produces sub-reports, appending them to the buffer and calling coalesce() on the fixtures
  collection after each."
 void createSubReports(StringBuilder builder,
-        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Player player,
+        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMap map, Player player,
         IReportGenerator<out Object>* generators) {
     for (generator in generators) {
         generator.produce(fixtures, map, builder.append);
@@ -117,7 +117,7 @@ void createSubReports(StringBuilder builder,
 "Create the report for the given player based on the given map."
 todo("Consider generating Markdown instead of HTML. OTOH, we'd have to keep a list nesting
       level parameter or something.")
-shared String createReport(IMapNG map, Player player = map.currentPlayer) {
+shared String createReport(IMap map, Player player = map.currentPlayer) {
     MapDimensions dimensions = map.dimensions;
     StringBuilder builder = StringBuilder();
     builder.append("""<html>
@@ -154,7 +154,7 @@ shared String createReport(IMapNG map, Player player = map.currentPlayer) {
     return builder.string;
 }
 "Create a slightly abbreviated report, omitting the player's fortresses and units."
-shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPlayer) {
+shared String createAbbreviatedReport(IMap map, Player player = map.currentPlayer) {
     MapDimensions dimensions = map.dimensions;
     StringBuilder builder = StringBuilder();
     builder.append(
@@ -201,7 +201,7 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
 "Produce sub-reports in report-intermediate-representation, adding them to the root node
  and calling coalesce() on the fixtures collection after each."
 void createSubReportsIR(IReportNode root,
-        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Player player,
+        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMap map, Player player,
         IReportGenerator<out Object>* generators) {
     for (generator in generators) {
         root.appendNode(generator.produceRIR(fixtures, map));
@@ -209,7 +209,7 @@ void createSubReportsIR(IReportNode root,
     }
 }
 "Create the report, in report-intermediate-representation, based on the given map."
-shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer) {
+shared IReportNode createReportIR(IMap map, Player player = map.currentPlayer) {
     IReportNode retval = RootReportNode("Strategic Primer map summary report");
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     MapDimensions dimensions = map.dimensions;
@@ -232,7 +232,7 @@ shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer)
 }
 "Create a slightly abbreviated report, omitting the player's fortresses and units, in
  intermediate representation."
-shared IReportNode createAbbreviatedReportIR(IMapNG map,
+shared IReportNode createAbbreviatedReportIR(IMap map,
         Player player = map.currentPlayer) {
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     MapDimensions dimensions = map.dimensions;

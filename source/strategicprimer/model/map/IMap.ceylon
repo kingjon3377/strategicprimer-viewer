@@ -32,9 +32,9 @@ import strategicprimer.model.map.fixtures.terrain {
 
  We also include several of the features that, in the first implementation, were in a
  MapView class that wrapped the SPMap class."
-todo("Possibly renaming this and subtypes to drop NG suffix first, redesign interface to
-      take advantage of [[Correspondence]] interface's syntax sugar.")
-shared interface IMapNG satisfies Subsettable<IMapNG> {
+todo("Redesign interface to take advantage of [[Correspondence]] interface's syntax
+      sugar.")
+shared interface IMap satisfies Subsettable<IMap> {
     "The dimensions (and version) of the map."
     shared formal MapDimensions dimensions;
     "(A view of) the players in the map."
@@ -64,7 +64,7 @@ shared interface IMapNG satisfies Subsettable<IMapNG> {
     "The current player."
     shared formal Player currentPlayer;
     "Clone the map."
-    shared formal IMapNG copy(
+    shared formal IMap copy(
             """Whether to "zero" sensitive data"""
             Boolean zero,
             "The player for whom the copied map is being prepared, if any."

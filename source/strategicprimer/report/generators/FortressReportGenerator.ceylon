@@ -17,7 +17,7 @@ import strategicprimer.model.map {
     Player,
     IFixture,
     River,
-    IMapNG,
+    IMap,
     invalidPoint,
     MapDimensions
 }
@@ -58,7 +58,7 @@ shared class FortressReportGenerator(
             UnitReportGenerator(comp, currentPlayer, dimensions, hq);
     IReportGenerator<FortressMember> memberReportGenerator =
             FortressMemberReportGenerator(comp, currentPlayer, dimensions, hq);
-    String terrain(IMapNG map, Point point,
+    String terrain(IMap map, Point point,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
         StringBuilder builder = StringBuilder();
         builder.append("Surrounding terrain: ``map.baseTerrain(point)``");
@@ -124,7 +124,7 @@ shared class FortressReportGenerator(
     "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
      this report are removed from the collection."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, [Fortress, Point]? entry) {
+            IMap map, Anything(String) ostream, [Fortress, Point]? entry) {
         if (exists entry) {
             Fortress item = entry.first;
             Point loc = entry.rest.first;
@@ -253,7 +253,7 @@ shared class FortressReportGenerator(
      this report are removed from the collection."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, [Fortress, Point]? entry) {
+            IMap map, [Fortress, Point]? entry) {
         if (exists entry) {
             Fortress item = entry.first;
             Point loc = entry.rest.first;

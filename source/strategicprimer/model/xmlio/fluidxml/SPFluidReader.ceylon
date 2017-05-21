@@ -48,12 +48,12 @@ import strategicprimer.model.map {
     Player,
     IMutablePlayerCollection,
     TileType,
-    IMutableMapNG,
+    IMutableMap,
     TileFixture,
     pointFactory,
     River,
     MapDimensionsImpl,
-    SPMapNG,
+    SPMap,
     PlayerImpl,
     PlayerCollection
 }
@@ -160,7 +160,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             return false;
         }
     }
-    void parseTileChild(IMutableMapNG map, StartElement parent,
+    void parseTileChild(IMutableMap map, StartElement parent,
             {XMLEvent*} stream, IMutablePlayerCollection players, Warning warner,
             IDRegistrar idFactory, Point currentTile, StartElement element) {
         String type = element.name.localPart;
@@ -205,7 +205,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             throw UnwantedChildException(parent.name, element);
         }
     }
-    void parseTile(IMutableMapNG map, StartElement element, {XMLEvent*} stream,
+    void parseTile(IMutableMap map, StartElement element, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         Point loc = pointFactory(getIntegerAttribute(element, "row"),
             getIntegerAttribute(element, "column"));
@@ -237,7 +237,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             }
         }
     }
-    IMutableMapNG readMapOrViewTag(StartElement element, QName parent, {XMLEvent*} stream,
+    IMutableMap readMapOrViewTag(StartElement element, QName parent, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "map", "view");
         Integer currentTurn;
@@ -260,7 +260,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         Stack<QName> tagStack = LinkedList<QName>();
         tagStack.push(element.name);
         tagStack.push(mapTag.name);
-        IMutableMapNG retval = SPMapNG(dimensions, players, currentTurn);
+        IMutableMap retval = SPMap(dimensions, players, currentTurn);
         for (event in stream) {
             QName? stackTop = tagStack.top;
             if (is StartElement event, isSPStartElement(event)) {
@@ -468,11 +468,11 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         throw XMLStreamException("XML stream didn't contain a start element");
     }
-    shared actual IMutableMapNG readMap(JPath file, Warning warner) {
+    shared actual IMutableMap readMap(JPath file, Warning warner) {
         try (istream = JFiles.newBufferedReader(file)) {
             return readMapFromStream(file, istream, warner);
         }
     }
-    shared actual IMutableMapNG readMapFromStream(JPath file, JReader istream,
-            Warning warner) => readXML<IMutableMapNG>(file, istream, warner);
+    shared actual IMutableMap readMapFromStream(JPath file, JReader istream,
+            Warning warner) => readXML<IMutableMap>(file, istream, warner);
 }

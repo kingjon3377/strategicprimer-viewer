@@ -18,8 +18,8 @@ import strategicprimer.model.idreg {
 }
 import strategicprimer.model.map {
     Point,
-    IMutableMapNG,
-    IMapNG
+    IMutableMap,
+    IMap
 }
 import strategicprimer.model.map.fixtures {
     Ground
@@ -61,7 +61,7 @@ object echoDriver satisfies UtilityDriver {
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         if (exists inArg = args.first, exists outArg = args.rest.first, args.size == 2) {
-            IMutableMapNG map;
+            IMutableMap map;
             try {
                 map = readMap(JPaths.get(inArg), warningLevels.ignore);
             } catch (IOException except) {
@@ -115,14 +115,14 @@ object forestFixerDriver satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage(false, "-f", "--fix-forest",
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map");
-    {Forest*} extractForests(IMapNG map, Point location) =>
+    {Forest*} extractForests(IMap map, Point location) =>
             map.allFixtures(location).narrow<Forest>();
-    {Ground*} extractGround(IMapNG map, Point location) =>
+    {Ground*} extractGround(IMap map, Point location) =>
             map.allFixtures(location).narrow<Ground>();
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         assert (is IMultiMapModel model);
-        IMutableMapNG mainMap = model.map;
+        IMutableMap mainMap = model.map;
         for ([map, file] in model.subordinateMaps) {
             cli.println("Starting ``file?.string
                 else "a map with no associated path"``");

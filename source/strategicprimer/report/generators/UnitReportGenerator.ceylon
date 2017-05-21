@@ -15,7 +15,7 @@ import strategicprimer.model.map {
     Point,
     Player,
     IFixture,
-    IMapNG,
+    IMap,
     invalidPoint,
     MapDimensions
 }
@@ -83,7 +83,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      paragraph or bullet point), or the part of the report on all units not covered
      as part of fortresses."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, [IUnit, Point]? entry) {
+            IMap map, Anything(String) ostream, [IUnit, Point]? entry) {
         if (exists entry) {
             IUnit item = entry.first;
             Point loc = entry.rest.first;
@@ -194,7 +194,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      already covered."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, [IUnit, Point]? entry) {
+            IMap map, [IUnit, Point]? entry) {
         if (exists entry) {
             IUnit item = entry.first;
             Point loc = entry.rest.first;

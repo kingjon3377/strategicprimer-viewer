@@ -15,7 +15,7 @@ import strategicprimer.model {
 import strategicprimer.model.map {
     Point,
     IFixture,
-    IMapNG,
+    IMap,
     invalidPoint,
     Player,
     MapDimensions
@@ -42,7 +42,7 @@ shared class VillageReportGenerator(
      middle of a bulleted list, but we don't assume that), or the report on all known
      villages."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, [Village, Point]? entry) {
+            IMap map, Anything(String) ostream, [Village, Point]? entry) {
         if (exists entry) {
             Village item = entry.first;
             Point loc = entry.rest.first;
@@ -113,7 +113,7 @@ shared class VillageReportGenerator(
      known villages."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, [Village, Point]? entry) {
+            IMap map, [Village, Point]? entry) {
         if (exists entry) {
             Village item = entry.first;
             Point loc = entry.rest.first;

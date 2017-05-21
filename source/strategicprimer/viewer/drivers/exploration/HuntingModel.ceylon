@@ -11,7 +11,7 @@ import strategicprimer.drivers.exploration.common {
 import strategicprimer.model.map {
     MapDimensions,
     TileType,
-    IMapNG,
+    IMap,
     Point
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -29,8 +29,8 @@ import ceylon.random {
 shared class HuntingModel {
     """The "nothing" value we insert."""
     shared static String noResults = "Nothing ...";
-    "The map to hunt in" IMapNG map;
-    shared new (IMapNG map) {
+    "The map to hunt in" IMap map;
+    shared new (IMap map) {
         this.map = map;
     }
     MapDimensions dimensions = map.dimensions;

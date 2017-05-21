@@ -9,7 +9,7 @@ import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 "A mutable map."
-shared interface IMutableMapNG satisfies IMapNG {
+shared interface IMutableMap satisfies IMap {
     "Add a player to the map."
     shared formal void addPlayer(Player player);
     "Set the base terrain at a location."

@@ -16,10 +16,10 @@ import strategicprimer.model.idreg {
 }
 import strategicprimer.model.map {
     Player,
-    IMutableMapNG,
+    IMutableMap,
     TileType,
     TileFixture,
-    IMapNG,
+    IMap,
     HasOwner,
     Point
 }
@@ -68,9 +68,9 @@ object expansionDriver satisfies SimpleCLIDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
-            IMapNG master = model.map;
+            IMap master = model.map;
             for (pair in model.subordinateMaps) {
-                IMutableMapNG map = pair.first;
+                IMutableMap map = pair.first;
                 Player currentPlayer = map.currentPlayer;
                 Boolean containsSwornVillage(Point point) {
                     for (fixture in map.otherFixtures(point)) {
@@ -153,7 +153,7 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
     variable Integer changedCount = 0;
     "The first method to customize for each use: whether a point is suitable for the
      kind of fixture we're creating."
-    Boolean isSuitable(IMapNG map, Point location) {
+    Boolean isSuitable(IMap map, Point location) {
         TileType terrain = map.baseTerrain(location);
         // Hares won't appear in mountains, forests, or ocean.
         if (map.mountainous(location) || TileType.ocean == terrain ||
@@ -169,12 +169,12 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
     Float chance = 0.05;
     """Add a fixture of the kind we're creating at the given location. The third method to
        customize."""
-    void create(Point location, IMutableMapNG map, IDRegistrar idf) {
+    void create(Point location, IMutableMap map, IDRegistrar idf) {
         changedCount++;
         map.addFixture(location, Animal("hare", false, false, "wild", idf.createID()));
     }
     "Populate the map. You shouldn't need to customize this."
-    void populate(IMutableMapNG map) {
+    void populate(IMutableMap map) {
         IDRegistrar idf = createIDFactory(map);
         for (location in map.locations) {
             if (isSuitable(map, location) && random() < chance) {

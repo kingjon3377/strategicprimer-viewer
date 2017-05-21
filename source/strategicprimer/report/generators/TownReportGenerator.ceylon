@@ -24,7 +24,7 @@ import strategicprimer.model.map {
     Point,
     Player,
     IFixture,
-    IMapNG,
+    IMap,
     invalidPoint,
     MapDimensions
 }
@@ -72,7 +72,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      all-towns report omits fortresses and villages, and is sorted in a way that I hope
      is helpful. We remove the town(s) from the set of fixtures."
     shared actual void produce(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, [ITownFixture, Point]? entry) {
+            IMap map, Anything(String) ostream, [ITownFixture, Point]? entry) {
         if (exists entry) {
             ITownFixture item = entry.first;
             Point loc = entry.rest.first;
@@ -135,7 +135,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      town from the set of fixtures."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
-            IMapNG map, [ITownFixture, Point]? entry) {
+            IMap map, [ITownFixture, Point]? entry) {
         if (exists entry) {
             ITownFixture item = entry.first;
             Point loc = entry.rest.first;

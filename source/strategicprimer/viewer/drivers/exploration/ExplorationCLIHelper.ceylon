@@ -16,7 +16,7 @@ import strategicprimer.model.map {
     TileType,
 	TileFixture,
     HasOwner,
-    IMutableMapNG,
+    IMutableMap,
     Point
 }
 import strategicprimer.model.map.fixtures {
@@ -142,7 +142,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             return;
         }
         MutableList<TileFixture> constants = ArrayList<TileFixture>();
-        IMutableMapNG map = model.map;
+        IMutableMap map = model.map;
         MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
         for (fixture in map.allFixtures(destPoint)) {
             if (shouldAlwaysNotice(mover, fixture)) {

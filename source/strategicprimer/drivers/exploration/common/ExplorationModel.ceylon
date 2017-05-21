@@ -20,8 +20,8 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.map {
     Point,
     Player,
-    IMutableMapNG,
-    IMapNG,
+    IMutableMap,
+    IMap,
     TileType,
     TileFixture,
     invalidPoint,
@@ -68,7 +68,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     "If a unit's motion could be observed by someone allied to another (non-independent)
      player (which at present means the unit is moving *to* a tile two or fewer tiles away
      from the watcher), print a message saying so to stdout."
-    static void checkAllNearbyWatchers(IMapNG map, IUnit unit, Point dest) {
+    static void checkAllNearbyWatchers(IMap map, IUnit unit, Point dest) {
         MapDimensions dimensions = map.dimensions;
         for (point in surroundingPointIterable(dest, dimensions).distinct) {
             for (fixture in map.otherFixtures(point)) {
@@ -81,7 +81,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
     }
     "Remove a unit from a location, even if it's in a fortress."
-    static void removeImpl(IMutableMapNG map, Point point, IUnit unit) {
+    static void removeImpl(IMutableMap map, Point point, IUnit unit) {
         variable Boolean outside = false;
         for (fixture in map.otherFixtures(point)) {
             if (unit == fixture) {
@@ -101,7 +101,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
     }
     "Ensure that a given map has at least terrain information for the specified location."
-    static void ensureTerrain(IMapNG mainMap, IMutableMapNG map, Point point) {
+    static void ensureTerrain(IMap mainMap, IMutableMap map, Point point) {
         if (map.baseTerrain(point) == TileType.notVisible) {
             map.setBaseTerrain(point, mainMap.baseTerrain(point));
         }
@@ -110,7 +110,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
     }
     "Whether the given fixture is at the given location in the given map."
-    static Boolean doesLocationHaveFixture(IMapNG map, Point point, TileFixture fixture) {
+    static Boolean doesLocationHaveFixture(IMap map, Point point, TileFixture fixture) {
         return map.allFixtures(point).flatMap((element) {
             if (is {IFixture*} element) {
                 return {element, *element};
@@ -148,7 +148,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             ArrayList<SelectionChangeListener>();
     "The currently selected unit and its location."
     variable [Point, IUnit?] selection = [invalidPoint, null];
-    shared new (IMutableMapNG map, JPath? file)
+    shared new (IMutableMap map, JPath? file)
             extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
@@ -328,7 +328,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                         pair.first.addFixture(currentPoint, village);
                     }
                 }
-                IMapNG mainMap = map;
+                IMap mainMap = map;
                 {Point*} surroundingPoints =
                         surroundingPointIterable(currentPoint, mapDimensions, 1);
                 for (point in surroundingPoints) {
@@ -366,7 +366,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     shared actual void dig() {
         Point currentPoint = selection.first;
         if (currentPoint.valid) {
-            IMutableMapNG mainMap = map;
+            IMutableMap mainMap = map;
             Ground? ground = mainMap.ground(currentPoint);
             variable {TileFixture*} diggables =
                     {ground, *mainMap.otherFixtures(currentPoint)}.coalesced
@@ -388,7 +388,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             } else if (is MineralVein newFixture) {
                 newFixture.exposed = true;
             }
-            void addToMap(IMutableMapNG map, Boolean condition) {
+            void addToMap(IMutableMap map, Boolean condition) {
                 Ground? locGround = map.ground(currentPoint);
                 if (is Ground newFixture, exists locGround, exists ground,
                         locGround == ground) {

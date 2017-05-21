@@ -22,7 +22,7 @@ import strategicprimer.model.idreg {
 }
 import strategicprimer.model.map {
     Player,
-    IMapNG
+    IMap
 }
 import strategicprimer.viewer.drivers {
     SPFrame,
@@ -53,7 +53,7 @@ import strategicprimer.model.xmlio {
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
         MenuBroker menuHandler) {
-    IMapNG map = model.map;
+    IMap map = model.map;
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(map.currentPlayer, model);
     JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
         map.players, () => model.map.currentTurn, false);

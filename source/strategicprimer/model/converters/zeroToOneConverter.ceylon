@@ -60,11 +60,11 @@ import lovelace.util.jvm {
 import strategicprimer.model.map {
     Player,
     TileType,
-    IMutableMapNG,
+    IMutableMap,
     pointFactory,
     TileFixture,
     Point,
-    SPMapNG,
+    SPMap,
     MapDimensionsImpl,
     PlayerCollection,
     PlayerImpl
@@ -237,7 +237,7 @@ object zeroToOneConverter {
 		ostream(operatingSystem.newline);
 	}
 }
-void initialize(IMutableMapNG map, Point point, TileType? terrain,
+void initialize(IMutableMap map, Point point, TileType? terrain,
 		TileFixture* fixtures) {
 	if (exists terrain, terrain != TileType.notVisible) {
 		map.setBaseTerrain(point, terrain);
@@ -282,7 +282,7 @@ void testZeroToOneConversion() {
 	SPWriter writer = testReaderFactory.oldWriter;
 	writer.writeSPObject(actualXML.append,
 		readMap(StringReader(ostream.string), warningLevels.ignore));
-	IMutableMapNG expected = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
+	IMutableMap expected = SPMap(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
 	Player player = PlayerImpl(0, "Test Player");
 	expected.addPlayer(player);
 	initialize(expected, pointFactory(0, 0), TileType.tundra,
