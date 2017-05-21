@@ -35,7 +35,4 @@ shared class Skill(name, skillLevel, time) satisfies ISkill {
 		}
 	}
 	shared actual String string => "``name`` (``level``)";
-	"""A skill is "empty" if the worker has no levels in it and no hours of experience in
-	   it."""
-	shared actual Boolean empty => level == 0 && hours == 0;
 }

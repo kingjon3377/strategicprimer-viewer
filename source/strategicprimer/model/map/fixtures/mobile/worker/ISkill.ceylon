@@ -24,8 +24,7 @@ shared interface ISkill satisfies HasName&Subsettable<ISkill> {
 	shared formal ISkill copy();
 	"""A skill is "empty" if the worker has no levels in it and no hours of experience in
 	   it."""
-	todo("Move to a default method here?")
-	shared formal Boolean empty;
+	shared default Boolean empty => level == 0 && hours == 0;
 	"A skill is a subset if it has the same name, equal or lower level, and if equal level
 	 equal or lower hours."
 	shared actual default Boolean isSubset(ISkill obj, Anything(String) report) {
