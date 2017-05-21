@@ -15,9 +15,6 @@ import javax.swing.tree {
 import strategicprimer.report {
     IReportNode
 }
-import lovelace.util.common {
-    todo
-}
 "A [[SectionListReportNode]] that sorts itself after every addition. (Callers can turn
  that feature off temporarily with [[suspend]], and turn it back on again with
  [[resume]].)"
