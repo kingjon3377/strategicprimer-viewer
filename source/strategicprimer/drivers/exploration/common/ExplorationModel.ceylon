@@ -20,8 +20,8 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.map {
     Point,
     Player,
-    IMutableMap,
-    IMap,
+    IMutableMapNG,
+    IMapNG,
     TileType,
     TileFixture,
     invalidPoint,
@@ -68,10 +68,11 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     "If a unit's motion could be observed by someone allied to another (non-independent)
      player (which at present means the unit is moving *to* a tile two or fewer tiles away
      from the watcher), print a message saying so to stdout."
-    static void checkAllNearbyWatchers(IMap map, IUnit unit, Point dest) {
+    static void checkAllNearbyWatchers(IMapNG map, IUnit unit, Point dest) {
         MapDimensions dimensions = map.dimensions;
         for (point in surroundingPointIterable(dest, dimensions).distinct) {
-            for (fixture in map.otherFixtures(point)) {
+//            for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(point)) {
                 if (is HasOwner fixture, !fixture.owner.independent,
                         fixture.owner != unit.owner) {
                     process.writeLine("Motion to ``dest`` could be observed by ``fixture
@@ -81,9 +82,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
     }
     "Remove a unit from a location, even if it's in a fortress."
-    static void removeImpl(IMutableMap map, Point point, IUnit unit) {
+    static void removeImpl(IMutableMapNG map, Point point, IUnit unit) {
         variable Boolean outside = false;
-        for (fixture in map.otherFixtures(point)) {
+//        for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
+        for (fixture in map.fixtures.get(point)) {
             if (unit == fixture) {
                 outside = true;
                 break;
@@ -101,23 +103,26 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
     }
     "Ensure that a given map has at least terrain information for the specified location."
-    static void ensureTerrain(IMap mainMap, IMutableMap map, Point point) {
-        if (map.baseTerrain(point) == TileType.notVisible) {
-            map.setBaseTerrain(point, mainMap.baseTerrain(point));
+    static void ensureTerrain(IMapNG mainMap, IMutableMapNG map, Point point) {
+//        if (map.baseTerrain[point] == TileType.notVisible) { // TODO: syntax sugar once compiler bug fixed
+        if (map.baseTerrain.get(point) == TileType.notVisible) {
+//            map.baseTerrain[point] = mainMap.baseTerrain[point];
+            map.baseTerrain[point] = mainMap.baseTerrain.get(point);
         }
-        if (mainMap.mountainous(point)) {
-            map.setMountainous(point, true);
+//        if (mainMap.mountainous[point]) {
+        if (mainMap.mountainous.get(point)) {
+            map.mountainous[point] = true;
         }
     }
     "Whether the given fixture is at the given location in the given map."
-    static Boolean doesLocationHaveFixture(IMap map, Point point, TileFixture fixture) {
-        return map.allFixtures(point).flatMap((element) {
+    static Boolean doesLocationHaveFixture(IMapNG map, Point point, TileFixture fixture) {
+        return map.fixtures[point]?.flatMap((element) {
             if (is {IFixture*} element) {
                 return {element, *element};
             } else {
                 return {element};
             }
-        }).any(fixture.equals);
+        })?.any(fixture.equals) else false;
     }
     """A "plus one" method with a configurable, low "overflow"."""
     static Integer increment(
@@ -148,7 +153,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             ArrayList<SelectionChangeListener>();
     "The currently selected unit and its location."
     variable [Point, IUnit?] selection = [invalidPoint, null];
-    shared new (IMutableMap map, JPath? file)
+    shared new (IMutableMapNG map, JPath? file)
             extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
@@ -163,7 +168,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     }
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) {
-        {Object*} temp = map.locations.flatMap((point) => map.otherFixtures(point))
+//        {Object*} temp = map.locations.flatMap((point) => map.fixtures[point]) // TODO: syntax sugar once compiler bug fixed
+        {Object*} temp = map.locations.flatMap((point) => map.fixtures.get(point))
             .flatMap((element) {
                 if (is Fortress element) {
                     return element;
@@ -235,16 +241,21 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
         assert (exists unit);
         Point dest = getDestination(point, direction);
-        if (landMovementPossible(map.baseTerrain(dest))) {
+//        if (landMovementPossible(map.baseTerrain[dest])) { // TODO: syntax sugar once compiler bug fixed
+        if (landMovementPossible(map.baseTerrain.get(dest))) {
             Integer base;
             if (dest == point) {
                 base = 1;
             } else {
-                {TileFixture*} fixtures = map.allFixtures(dest);
-                base = movementCost(map.baseTerrain(dest),
-                    map.forest(dest) exists, map.mountainous(dest),
-                    riversSpeedTravel(direction, map.rivers(point),
-                        map.rivers(dest)), fixtures);
+//                {TileFixture*} fixtures = map.fixtures[dest];
+                {TileFixture*} fixtures = map.fixtures.get(dest);
+//                base = movementCost(map.baseTerrain[dest],
+                base = movementCost(map.baseTerrain.get(dest),
+                    map.fixtures[dest]?.narrow<Forest>()?.first exists,
+//                    map.mountainous[dest], riversSpeedTravel(direction, map.rivers[point],
+                    map.mountainous.get(dest), riversSpeedTravel(direction, map.rivers.get(point),
+//                        map.rivers[dest]), fixtures);
+                        map.rivers.get(dest)), fixtures);
             }
             Integer retval = (ceiling(base * speed.mpMultiplier) + 0.1).integer;
             removeImpl(map, point, unit);
@@ -315,9 +326,11 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Point currentPoint = localSelection.first;
         if (exists unit = localSelection.rest.first) {
             Player owner = unit.owner;
+            // TODO: Use Iterable methods instead of a comprehension
             {Village*} villages = {
                 for (pair in allMaps)
-                    for (fixture in pair.first.otherFixtures(currentPoint))
+//                    for (fixture in pair.first.fixtures[currentPoint]) // TODO: syntax sugar once compiler bug fixed
+                    for (fixture in pair.first.fixtures.get(currentPoint))
                             if (is Village fixture, fixture.owner.independent)
                                 fixture
             };
@@ -328,20 +341,23 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                         pair.first.addFixture(currentPoint, village);
                     }
                 }
-                IMap mainMap = map;
+                IMapNG mainMap = map;
                 {Point*} surroundingPoints =
                         surroundingPointIterable(currentPoint, mapDimensions, 1);
                 for (point in surroundingPoints) {
                     for (pair in subordinateMaps) {
                         ensureTerrain(mainMap, pair.first, point);
-                        Forest? subForest = pair.first.forest(point);
-                        if (exists forest = map.forest(point), !subForest exists) {
-                            pair.first.setForest(point, forest);
+                        Forest? subForest =
+                                pair.first.fixtures[point]?.narrow<Forest>()?.first;
+                        if (exists forest = map.fixtures[point]?.narrow<Forest>()?.first,
+                                !subForest exists) {
+                            pair.first.addFixture(point, forest);
                         }
                     }
                 }
                 {[Point, TileFixture]*} surroundingFixtures = surroundingPoints
-                            .flatMap((point) => mainMap.otherFixtures(point)
+//                            .flatMap((point) => mainMap.fixtures[point] // TODO: syntax sugar once compiler bug fixed
+                            .flatMap((point) => mainMap.fixtures.get(point)
                                 .map((fixture) => [point, fixture]));
                 [Point, TileFixture]? vegetation = surroundingFixtures
                     .filter(([loc, fixture]) => fixture is Meadow|Grove).first;
@@ -366,11 +382,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     shared actual void dig() {
         Point currentPoint = selection.first;
         if (currentPoint.valid) {
-            IMutableMap mainMap = map;
-            Ground? ground = mainMap.ground(currentPoint);
+            IMutableMapNG mainMap = map;
             variable {TileFixture*} diggables =
-                    {ground, *mainMap.otherFixtures(currentPoint)}.coalesced
-                        .filter(isDiggable);
+//                    mainMap.fixtures[currentPoint].filter(isDiggable); // TODO: syntax sugar once compiler bug fixed
+                    mainMap.fixtures.get(currentPoint).filter(isDiggable);
             if (diggables.empty) {
                 return;
             }
@@ -388,44 +403,18 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             } else if (is MineralVein newFixture) {
                 newFixture.exposed = true;
             }
-            void addToMap(IMutableMap map, Boolean condition) {
-                Ground? locGround = map.ground(currentPoint);
-                if (is Ground newFixture, exists locGround, exists ground,
-                        locGround == ground) {
-                    map.setGround(currentPoint, newFixture.copy(condition));
-                    return;
-                } else if (is Ground newFixture, !locGround exists) {
-                    map.setGround(currentPoint, newFixture.copy(condition));
-                    return;
-                } else if (map.allFixtures(currentPoint)
+            void addToMap(IMutableMapNG map, Boolean condition) {
+//                if (map.fixtures[currentPoint] // TODO: syntax sugar once compiler bug fixed
+                if (map.fixtures.get(currentPoint)
                         .any((fixture) => areDiggablesEqual(fixture, oldFixture))) {
                     map.removeFixture(currentPoint, oldFixture);
                 }
                 map.addFixture(currentPoint, newFixture.copy(condition));
             }
-            Boolean eq(TileFixture? one, TileFixture? two) {
-                if (exists one) {
-                    if (exists two) {
-                        return one == two;
-                    } else {
-                        return false;
-                    }
-                } else if (exists two) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-            if (eq(ground, oldFixture)) {
-                for (pair in allMaps) {
-                    addToMap(pair.first, false);
-                }
-            } else {
-                variable Boolean subsequent = false;
-                for (pair in allMaps) {
-                    addToMap(pair.first, subsequent);
-                    subsequent = true;
-                }
+            variable Boolean subsequent = false;
+            for (pair in allMaps) {
+                addToMap(pair.first, subsequent);
+                subsequent = true;
             }
             fireMovementCost(4);
         }

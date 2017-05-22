@@ -48,12 +48,12 @@ import strategicprimer.model.map {
     Player,
     IMutablePlayerCollection,
     TileType,
-    IMutableMap,
+    IMutableMapNG,
     TileFixture,
     pointFactory,
     River,
     MapDimensionsImpl,
-    SPMap,
+    SPMapNG,
     PlayerImpl,
     PlayerCollection
 }
@@ -61,8 +61,7 @@ import strategicprimer.model.map.fixtures {
     FortressMember,
     UnitMember,
     TextFixture,
-    Implement,
-    Ground
+    Implement
 }
 import strategicprimer.model.map.fixtures.mobile {
     SimpleImmortalKind,
@@ -77,8 +76,7 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.terrain {
     Hill,
     Oasis,
-    Sandbar,
-    Forest
+    Sandbar
 }
 import strategicprimer.model.map.fixtures.towns {
     Fortress,
@@ -160,7 +158,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             return false;
         }
     }
-    void parseTileChild(IMutableMap map, StartElement parent,
+    void parseTileChild(IMutableMapNG map, StartElement parent,
             {XMLEvent*} stream, IMutablePlayerCollection players, Warning warner,
             IDRegistrar idFactory, Point currentTile, StartElement element) {
         String type = element.name.localPart;
@@ -169,34 +167,13 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         } else if ("tile" == type) {
             throw UnwantedChildException(parent.name, element);
         } else if ("mountain" == type) {
-            map.setMountainous(currentTile, true);
+            map.mountainous[currentTile] = true;
             return;
         }
         Object child = readSPObject(element, parent.name, stream, players, warner,
             idFactory);
         if (is River child) {
             map.addRivers(currentTile, child);
-        } else if (is Ground child) {
-            if (exists oldGround = map.ground(currentTile)) {
-                if (child.exposed, !oldGround.exposed) {
-                    map.setGround(currentTile, child);
-                    map.addFixture(currentTile, oldGround);
-                } else if (oldGround != child) {
-                    // TODO: Should we do additional ordering of Ground?
-                    map.addFixture(currentTile, child);
-                }
-            } else {
-                map.setGround(currentTile, child);
-            }
-        } else if (is Forest child) {
-            if (exists oldForest = map.forest(currentTile)) {
-                if (oldForest != child) {
-                    // TODO: Should we do additional ordering of Forests?
-                    map.addFixture(currentTile, child);
-                }
-            } else {
-                map.setForest(currentTile, child);
-            }
         } else if (is {River*} child) {
             map.addRivers(currentTile, *child);
         } else if (is TileFixture child) {
@@ -205,7 +182,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             throw UnwantedChildException(parent.name, element);
         }
     }
-    void parseTile(IMutableMap map, StartElement element, {XMLEvent*} stream,
+    void parseTile(IMutableMapNG map, StartElement element, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         Point loc = pointFactory(getIntegerAttribute(element, "row"),
             getIntegerAttribute(element, "column"));
@@ -215,7 +192,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             value kind = TileType.parse(getAttrWithDeprecatedForm(element, "kind",
                 "type", warner));
             if (is TileType kind) {
-                map.setBaseTerrain(loc, kind);
+                map.baseTerrain[loc] = kind;
             } else {
                 warner.handle(MissingPropertyException(element, "kind", kind));
             }
@@ -237,7 +214,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             }
         }
     }
-    IMutableMap readMapOrViewTag(StartElement element, QName parent, {XMLEvent*} stream,
+    IMutableMapNG readMapOrViewTag(StartElement element, QName parent, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "map", "view");
         Integer currentTurn;
@@ -260,7 +237,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         Stack<QName> tagStack = LinkedList<QName>();
         tagStack.push(element.name);
         tagStack.push(mapTag.name);
-        IMutableMap retval = SPMap(dimensions, players, currentTurn);
+        IMutableMapNG retval = SPMapNG(dimensions, players, currentTurn);
         for (event in stream) {
             QName? stackTop = tagStack.top;
             if (is StartElement event, isSPStartElement(event)) {
@@ -468,11 +445,11 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         throw XMLStreamException("XML stream didn't contain a start element");
     }
-    shared actual IMutableMap readMap(JPath file, Warning warner) {
+    shared actual IMutableMapNG readMap(JPath file, Warning warner) {
         try (istream = JFiles.newBufferedReader(file)) {
             return readMapFromStream(file, istream, warner);
         }
     }
-    shared actual IMutableMap readMapFromStream(JPath file, JReader istream,
-            Warning warner) => readXML<IMutableMap>(file, istream, warner);
+    shared actual IMutableMapNG readMapFromStream(JPath file, JReader istream,
+            Warning warner) => readXML<IMutableMapNG>(file, istream, warner);
 }

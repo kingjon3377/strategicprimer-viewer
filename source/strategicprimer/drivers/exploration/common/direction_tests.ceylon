@@ -7,7 +7,7 @@ import strategicprimer.model.map {
     Point,
     MapDimensionsImpl,
     PlayerCollection,
-    SPMap,
+    SPMapNG,
     pointFactory
 }
 // This file is tests that the movement code gets its most basic functionality, finding
@@ -21,7 +21,7 @@ void directionAssert(IExplorationModel model, Direction direction,
 "Test that wrapping to the east works properly."
 test
 void testEast() {
-    IExplorationModel model = ExplorationModel(SPMap(MapDimensionsImpl(5, 5, 2),
+    IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.east, source, destination, extra);
@@ -35,7 +35,7 @@ void testEast() {
 "Test that wrapping to the north works properly."
 test
 void testNorth() {
-    IExplorationModel model = ExplorationModel(SPMap(MapDimensionsImpl(5, 5, 2),
+    IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.north, source, destination,
@@ -49,7 +49,7 @@ void testNorth() {
 "Test that wrapping to the south works properly."
 test
 void testSouth() {
-    IExplorationModel model = ExplorationModel(SPMap(MapDimensionsImpl(5, 5, 2),
+    IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.south, source, destination,
@@ -64,7 +64,7 @@ void testSouth() {
 "Test that wrapping to the west works properly."
 test
 void testWest() {
-    IExplorationModel model = ExplorationModel(SPMap(MapDimensionsImpl(5, 5, 2),
+    IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.west, source, destination,
@@ -79,7 +79,7 @@ void testWest() {
 "Test that wrapping to the northeast works properly."
 test
 void testNortheast() {
-    IExplorationModel model = ExplorationModel(SPMap(MapDimensionsImpl(5, 5, 2),
+    IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.northeast, source, destination,
@@ -94,7 +94,7 @@ void testNortheast() {
 "Test that wrapping to the northwest works properly."
 test
 void testNorthwest() {
-    IExplorationModel model = ExplorationModel(SPMap(MapDimensionsImpl(5, 5, 2),
+    IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.northwest, source, destination,
@@ -109,7 +109,7 @@ void testNorthwest() {
 "Test that wrapping to the southeast works properly."
 test
 void testSoutheast() {
-    IExplorationModel model = ExplorationModel(SPMap(MapDimensionsImpl(5, 5, 2),
+    IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.southeast, source, destination,
@@ -124,7 +124,7 @@ void testSoutheast() {
 "Test that wrapping to the south works properly."
 test
 void testSouthwest() {
-    IExplorationModel model = ExplorationModel(SPMap(MapDimensionsImpl(5, 5, 2),
+    IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.southwest, source, destination,
@@ -139,7 +139,7 @@ void testSouthwest() {
 "Test that wrapping to the south works properly."
 test
 void testNowhere() {
-    IExplorationModel model = ExplorationModel(SPMap(MapDimensionsImpl(5, 5, 2),
+    IExplorationModel model = ExplorationModel(SPMapNG(MapDimensionsImpl(5, 5, 2),
         PlayerCollection(), 0), null);
     void localAssert(Point source, Point destination, String extra = "") =>
             directionAssert(model, Direction.nowhere, source, destination,

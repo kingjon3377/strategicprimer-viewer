@@ -25,7 +25,7 @@ import strategicprimer.model.map {
     River,
     TileFixture,
     HasImage,
-    IMap
+    IMapNG
 }
 import strategicprimer.model.map.fixtures {
     RiverFixture,
@@ -118,7 +118,7 @@ class Ver2TileDrawHelper(
     "A fallback image for when an image file is missing or fails to load."
     Image fallbackImage = createFallbackImage();
     """Get the color representing a "not-on-top" terrain fixture at the given location."""
-    Color getFixtureColor(IMap map, Point location) {
+    Color getFixtureColor(IMapNG map, Point location) {
         if (exists top = getTopFixture(map, location)) {
             if (exists topTerrain = getDrawableFixtures(map, location)
                 .filter((fixture) => fixture != top)
@@ -126,12 +126,14 @@ class Ver2TileDrawHelper(
                 .first) {
                 assert (is TerrainFixture topTerrain);
                 return colorHelper.getFeatureColor(topTerrain);
-            } else if (map.mountainous(location)) {
+//            } else if (map.mountainous[location]) { // TODO: syntax sugar once compiler bug fixed
+            } else if (map.mountainous.get(location)) {
                 return colorHelper.mountainColor;
             }
         }
         return colorHelper.get(map.dimensions.version,
-            map.baseTerrain(location));
+//            map.baseTerrain[location]); // TODO: syntax sugar once compiler bug fixed
+            map.baseTerrain.get(location));
     }
     "Return either a loaded image or, if the specified image fails to load, the generic
      one."
@@ -174,23 +176,27 @@ class Ver2TileDrawHelper(
     "Draw a tile at the specified coordinates. Because this is at present only called in
      a loop that's the last thing before the graphics context is disposed, we alter the
      state freely and don't restore it."
-    shared actual void drawTile(Graphics pen, IMap map, Point location,
+    shared actual void drawTile(Graphics pen, IMapNG map, Point location,
             Coordinate coordinates, Coordinate dimensions) {
         if (needsFixtureColor(map, location)) {
             pen.color = getFixtureColor(map, location);
         } else {
             pen.color = colorHelper.get(map.dimensions.version,
-                map.baseTerrain(location));
+//                map.baseTerrain[location]); // TODO: syntax sugar once compiler bug fixed
+                map.baseTerrain.get(location)); // TODO: syntax sugar once compiler bug fixed
         }
         pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
-        if (!map.rivers(location).empty) {
-            pen.drawImage(getRiverImage(map.rivers(location)), coordinates.x,
+//        if (!map.rivers[location].empty) {
+        if (!map.rivers.get(location).empty) {
+//            pen.drawImage(getRiverImage(map.rivers[location]), coordinates.x,
+            pen.drawImage(getRiverImage(map.rivers.get(location)), coordinates.x,
                 coordinates.y, dimensions.x, dimensions.y, observerWrapper);
         }
         if (exists top = getTopFixture(map, location)) {
             pen.drawImage(getImageForFixture(top), coordinates.x, coordinates.y,
                 dimensions.x, dimensions.y, observerWrapper);
-        } else if (map.mountainous(location)) {
+//        } else if (map.mountainous[location]) { // TODO: syntax sugar once compiler bug fixed
+        } else if (map.mountainous.get(location)) {
             pen.drawImage(getImage("mountain.png"), coordinates.x, coordinates.y,
                 dimensions.x, dimensions.y, observerWrapper);
         }
@@ -198,13 +204,14 @@ class Ver2TileDrawHelper(
         pen.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
     }
     "Draw a tile at the upper left corner of the drawing surface."
-    shared actual void drawTileTranslated(Graphics pen, IMap map, Point location,
+    shared actual void drawTileTranslated(Graphics pen, IMapNG map, Point location,
             Integer width, Integer height) =>
             drawTile(pen, map, location, coordinateFactory(0, 0),
                 coordinateFactory(width, height));
     "The drawable fixtures at the given location."
-    {TileFixture*} getDrawableFixtures(IMap map, Point location) {
-        return map.allFixtures(location)
+    {TileFixture*} getDrawableFixtures(IMapNG map, Point location) {
+//        return map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
+        return map.fixtures.get(location)
             .filter((fixture) => !fixture is TileTypeFixture).filter(filter)
             .sort(compareFixtures);
     }
@@ -217,15 +224,16 @@ class Ver2TileDrawHelper(
         }
     }
     """Get the "top" fixture at the given location"""
-    TileFixture? getTopFixture(IMap map, Point location) =>
+    TileFixture? getTopFixture(IMapNG map, Point location) =>
             getDrawableFixtures(map, location).first;
     """Whether there is a "terrain fixture" at the gtiven location."""
-    Boolean hasTerrainFixture(IMap map, Point location) {
+    Boolean hasTerrainFixture(IMapNG map, Point location) {
         if (getDrawableFixtures(map, location)
                 .any((fixture) => fixture is TerrainFixture)) {
             return true;
         } else if (getDrawableFixtures(map, location).first exists,
-                map.mountainous(location)) {
+//                map.mountainous[location]) {
+                map.mountainous.get(location)) {
             return true;
         } else {
             return false;
@@ -233,12 +241,13 @@ class Ver2TileDrawHelper(
     }
     "Whether we need a different background color to show a non-top fixture (e.g. forest)
      at the given location"
-    Boolean needsFixtureColor(IMap map, Point location) {
+    Boolean needsFixtureColor(IMapNG map, Point location) {
         if (hasTerrainFixture(map, location), exists top = getTopFixture(map, location)) {
             if (exists bottom = getDrawableFixtures(map, location)
                     .reduce((TileFixture? partial, element) => element)) {
                 return top != bottom;
-            } else if (map.mountainous(location)) {
+//            } else if (map.mountainous[location]) {
+            } else if (map.mountainous.get(location)) {
                 return true;
             } else {
                 return false;

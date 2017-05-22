@@ -76,12 +76,9 @@ import strategicprimer.model.map {
     Player,
     TileType,
     TileFixture,
-    IMutableMap,
+    IMutableMapNG,
     PlayerImpl,
     HasOwner
-}
-import strategicprimer.model.map.fixtures {
-    Ground
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -89,9 +86,6 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
-}
-import strategicprimer.model.map.fixtures.terrain {
-    Forest
 }
 
 import strategicprimer.viewer.drivers {
@@ -312,7 +306,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 return retval;
             };
             headerPanel.add(ImprovedComboBox<Speed>.withModel(speedModel));
-            IMutableMap secondMap;
+            IMutableMapNG secondMap;
             if (exists pair = model.subordinateMaps.first) {
                 secondMap = pair.first;
             } else {
@@ -376,9 +370,10 @@ SPFrame explorationFrame(IExplorationModel model,
                     {[String, Anything()]*} explorerActions = {[
                             "Should the explorer swear any villages on this tile?", () {
                         model.swearVillages();
-                        for (fixture in model.map.otherFixtures(model
-                                    .selectedUnitLocation).narrow<Village>()) {
-                                selectedValuesList.add(fixture);
+//                        for (fixture in model.map.fixtures[model.selectedUnitLocation] // TODO: syntax sugar once compiler bug fixed
+                        for (fixture in model.map.fixtures.get(model.selectedUnitLocation)
+                                .narrow<Village>()) {
+                            selectedValuesList.add(fixture);
                         }
                     }], ["Should the explorer dig to find what kind of ground is here?",
                         model.dig]};
@@ -405,21 +400,15 @@ SPFrame explorationFrame(IExplorationModel model,
                                     MutableSet<CacheFixture> caches =
                                             HashSet<CacheFixture>();
                                     for ([map, file] in model.subordinateMaps) {
-                                        map.setBaseTerrain(destPoint, model.map
-                                            .baseTerrain(destPoint));
+                                        map.baseTerrain[destPoint] = model.map
+//                                            .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
+                                            .baseTerrain.get(destPoint);
                                         for (fixture in fixtures) {
                                             if (is TileTypeFixture fixture) {
                                                 // Skip it! It'll corrupt the output XML!
                                                 continue ;
-                                            } else if (is Ground fixture,
-                                                !map.ground(destPoint) exists) {
-                                                map.setGround(destPoint,
-                                                    fixture.copy(false));
-                                            } else if (is Forest fixture,
-                                                !map.forest(destPoint) exists) {
-                                                map.setForest(destPoint,
-                                                    fixture.copy(false));
-                                            } else if (!map.allFixtures(destPoint)
+//                                            } else if (!map.fixtures[destPoint] // TODO: syntax sugar once compiler bug fixed
+                                            } else if (!map.fixtures.get(destPoint)
                                                     .any((that) => fixture == that)) {
                                                 Boolean zero;
                                                 if (is HasOwner fixture,
@@ -499,7 +488,8 @@ SPFrame explorationFrame(IExplorationModel model,
                                 if (currentLocation.valid) {
                                     {String*}(Point, Integer) tracksSource;
                                     if (TileType.ocean == model.map
-                                            .baseTerrain(currentLocation)) {
+//                                            .baseTerrain[currentLocation]) { // TODO: syntax sugar once compiler bug fixed
+                                            .baseTerrain.get(currentLocation)) {
                                         tracksSource = huntingModel.fish;
                                     } else {
                                         tracksSource = huntingModel.hunt;

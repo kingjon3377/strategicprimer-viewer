@@ -12,17 +12,17 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.map {
-    IMutableMap,
-    IMap
+    IMutableMapNG,
+    IMapNG
 }
 "A superclass for implementations of interfaces inheriting from [[IMultiMapModel]]."
 shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapModel {
     "The collection of subordinate maps."
-    MutableList<[IMutableMap, JPath?]> subordinateMapsList =
-            ArrayList<[IMutableMap, JPath?]>();
-    shared actual {[IMutableMap, JPath?]*} subordinateMaps =>
+    MutableList<[IMutableMapNG, JPath?]> subordinateMapsList =
+            ArrayList<[IMutableMapNG, JPath?]>();
+    shared actual {[IMutableMapNG, JPath?]*} subordinateMaps =>
             {*subordinateMapsList};
-    shared new (IMutableMap map, JPath? file)
+    shared new (IMutableMapNG map, JPath? file)
             extends SimpleDriverModel(map, file) { }
     shared new copyConstructor(IDriverModel model)
             extends SimpleDriverModel(model.map, model.mapFile) {
@@ -32,11 +32,11 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
             }
         }
     }
-    shared actual void addSubordinateMap(IMutableMap map, JPath? file) =>
+    shared actual void addSubordinateMap(IMutableMapNG map, JPath? file) =>
             subordinateMapsList.add([map, file]);
     todo(/*FIXME*/"Test this; I fixed the clearly-wrong implementation, but this might
                    cause [[java.util::ConcurrentModificationException]]")
-    shared actual void removeSubordinateMap(IMap map) {
+    shared actual void removeSubordinateMap(IMapNG map) {
         subordinateMapsList.removeWhere(([localMap, file]) => localMap == map);
     }
 }

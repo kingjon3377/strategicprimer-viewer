@@ -49,13 +49,13 @@ import strategicprimer.model.map {
     HasPortrait,
     River,
     TileType,
-    IMutableMap,
-    IMap,
+    IMutableMapNG,
+    IMapNG,
     HasMutableImage,
     pointFactory,
     MutablePlayer,
     PlayerImpl,
-    SPMap,
+    SPMapNG,
     MapDimensionsImpl,
     PlayerCollection
 }
@@ -388,7 +388,7 @@ void assertEquivalentForms(
 }
 
 "Assert that a map is properly deserialized (by the main map-deserialization methods)."
-void assertMapDeserialization(String message, IMap expected, String xml) {
+void assertMapDeserialization(String message, IMapNG expected, String xml) {
     for (reader in {oldReader, newReader}) {
         assert (is IMapReader reader);
         try (stringReader = StringReader(xml)) {
@@ -601,20 +601,20 @@ void testStoneSerializationErrors(StoneKind kind) {
 }
 
 "A factory to encapsulate rivers in a simple map."
-IMap encapsulateRivers(Point point, River* rivers) {
-    IMutableMap retval = SPMap(MapDimensionsImpl(point.row + 1, point.column + 1, 2),
+IMapNG encapsulateRivers(Point point, River* rivers) {
+    IMutableMapNG retval = SPMapNG(MapDimensionsImpl(point.row + 1, point.column + 1, 2),
         PlayerCollection(), -1);
-    retval.setBaseTerrain(point, TileType.plains);
+    retval.baseTerrain[point] = TileType.plains;
     retval.addRivers(point, *rivers);
     return retval;
 }
 
 "Create a simple map."
-IMutableMap createSimpleMap(Point dims, <Point->TileType>* terrain) {
-    IMutableMap retval = SPMap(MapDimensionsImpl(dims.row, dims.column, 2),
+IMutableMapNG createSimpleMap(Point dims, <Point->TileType>* terrain) {
+    IMutableMapNG retval = SPMapNG(MapDimensionsImpl(dims.row, dims.column, 2),
         PlayerCollection(), -1);
     for (loc->type in terrain) {
-        retval.setBaseTerrain(loc, type);
+        retval.baseTerrain[loc] = type;
     }
     return retval;
 }
@@ -641,8 +641,8 @@ void testSimpleRiverSerialization(River river) {
 
 test
 void testRiverSerializationOne() {
-    assertUnwantedChild<IMap>(encapsulateTileString("<lake><troll /></lake>"), false);
-    assertMissingProperty<IMap>(encapsulateTileString("<river />"), "direction", false);
+    assertUnwantedChild<IMapNG>(encapsulateTileString("<lake><troll /></lake>"), false);
+    assertMissingProperty<IMapNG>(encapsulateTileString("<river />"), "direction", false);
     Set<River> setOne = set { River.north, River.south };
     Set<River> setTwo = set { River.south, River.north };
     assertEquals(setOne, setTwo, "Rivers added in different order to set");
@@ -664,7 +664,7 @@ void testRiverSerializationOne() {
         "Tile equality with different order of rivers");
     assertSerialization("Two rivers", encapsulateRivers(pointFactory(1, 2),
         River.north, River.south));
-    assertMissingProperty<IMap>(
+    assertMissingProperty<IMapNG>(
         encapsulateTileString("""<river direction="invalid" />"""), "direction", false);
 }
 
@@ -672,33 +672,33 @@ test
 void testSimpleTileSerializtion() {
     assertSerialization("Simple Tile", createSimpleMap(pointFactory(1, 1),
         pointFactory(0, 0)->TileType.desert));
-    IMutableMap firstMap = createSimpleMap(pointFactory(2, 2),
+    IMutableMapNG firstMap = createSimpleMap(pointFactory(2, 2),
         pointFactory(1, 1)->TileType.plains);
     firstMap.addFixture(pointFactory(1, 1),
         SimpleImmortal(SimpleImmortalKind.griffin, 1));
     assertSerialization("Tile with one fixture", firstMap);
-    IMutableMap secondMap = createSimpleMap(pointFactory(3, 3),
+    IMutableMapNG secondMap = createSimpleMap(pointFactory(3, 3),
         pointFactory(2, 2)->TileType.steppe);
     secondMap.addFixture(pointFactory(2, 2),
         Unit(PlayerImpl(-1, ""), "unitOne", "firstUnit", 1));
-    secondMap.setForest(pointFactory(2, 2), Forest("forestKind", true, 8));
+    secondMap.addFixture(pointFactory(2, 2), Forest("forestKind", true, 8));
     assertSerialization("Tile with two fixtures", secondMap);
-    assertMissingProperty<IMap>(
+    assertMissingProperty<IMapNG>(
         """<map version="2" rows="1" columns="1">
            <tile column="0" kind="plains" /></map>""", "row", false);
-    assertMissingProperty<IMap>(
+    assertMissingProperty<IMapNG>(
         """<map version="2" rows="1" columns="1"><tile row="0" kind="plains" /></map>""",
         "column", false);
-    assertMissingProperty<IMap>(
+    assertMissingProperty<IMapNG>(
         """<map version="2" rows="1" columns="1"><tile row="0" column="0" /></map>""",
         "kind", true);
-    assertUnwantedChild<IMap>(encapsulateTileString(
+    assertUnwantedChild<IMapNG>(encapsulateTileString(
         """<tile row="2" column="0" kind="plains" />"""), false);
 }
 
 test
 void testTileSerialization() {
-    IMutableMap thirdMap = createSimpleMap(pointFactory(4, 4),
+    IMutableMapNG thirdMap = createSimpleMap(pointFactory(4, 4),
         pointFactory(3, 3)->TileType.jungle);
     Player playerOne = PlayerImpl(2, "");
     Fortress fort = Fortress(playerOne, "fortOne", 1,
@@ -710,10 +710,10 @@ void testTileSerialization() {
     thirdMap.addRivers(pointFactory(3, 3), River.lake);
     thirdMap.addPlayer(playerOne);
     assertSerialization("More complex tile", thirdMap);
-    IMutableMap fourthMap = createSimpleMap(pointFactory(5, 5),
+    IMutableMapNG fourthMap = createSimpleMap(pointFactory(5, 5),
         pointFactory(4, 4)->TileType.plains);
     for (deprecated in {true, false}) {
-        assertDeprecatedDeserialization<IMap>(
+        assertDeprecatedDeserialization<IMapNG>(
             "Deserialization of deprecated tile-type idiom", fourthMap,
             createSerializedForm(fourthMap, deprecated)
                 .replace("kind", "type"), "type", "kind", "tile");
@@ -722,7 +722,7 @@ void testTileSerialization() {
 
 test
 void testTileSerializationTwo() {
-    IMutableMap five = createSimpleMap(pointFactory(3, 4),
+    IMutableMapNG five = createSimpleMap(pointFactory(3, 4),
         pointFactory(2, 3)->TileType.jungle);
     Player player = PlayerImpl(2, "playerName");
     five.addFixture(pointFactory(2, 3),
@@ -730,7 +730,7 @@ void testTileSerializationTwo() {
     five.addFixture(pointFactory(2, 3),
         Unit(player, "explorer", "name two", 2));
     five.addPlayer(player);
-    assertEquals(five.otherFixtures(pointFactory(2, 3)).size, 2,
+    assertEquals(five.fixtures[pointFactory(2, 3)]?.size, 2,
         "Just checking ...");
     assertSerialization("Multiple units should come through", five);
     String xmlTwoLogical =
@@ -796,10 +796,10 @@ void testTileSerializationTwo() {
 
 test
 void testTileSerializationThree() {
-    IMutableMap six = SPMap(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 5);
-    six.setMountainous(pointFactory(0, 0), true);
-    six.setGround(pointFactory(0, 1), Ground(22, "basalt", false));
-    six.setForest(pointFactory(1, 0), Forest("pine", false, 19));
+    IMutableMapNG six = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 5);
+    six.mountainous[pointFactory(0, 0)] = true;
+    six.addFixture(pointFactory(0, 1), Ground(22, "basalt", false));
+    six.addFixture(pointFactory(1, 0), Forest("pine", false, 19));
     six.addFixture(pointFactory(1, 1), Animal("beaver", false, false, "wild", 18));
     for (deprecated in {true, false}) {
         assertMissingPropertyDeserialization(
@@ -818,10 +818,10 @@ void testSkippableSerialization() {
         """<map rows="1" columns="1" version="2" current_player="-1" />""",
         """<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
         warningLevels.ignore);
-    assertUnsupportedTag<IMap>(
+    assertUnsupportedTag<IMapNG>(
         """<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
         "future", true);
-    assertUnsupportedTag<IMap>(
+    assertUnsupportedTag<IMapNG>(
         """<map rows="1" columns="1" version="2" current_player="-1">
            <tile row="0" column="0" kind="steppe"><futureTag /></tile></map>""",
         "futureTag", true);
@@ -829,40 +829,40 @@ void testSkippableSerialization() {
 
 test
 void testMapSerialization() {
-    assertUnwantedChild<IMap>(
+    assertUnwantedChild<IMapNG>(
         """<map rows="1" columns="1" version="2"><hill /></map>""", false);
     MutablePlayer player = PlayerImpl(1, "playerOne");
     player.current = true;
-    IMutableMap firstMap = SPMap(MapDimensionsImpl(1, 1, 2),
+    IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(1, 1, 2),
         PlayerCollection(), 0);
     firstMap.addPlayer(player);
     Point loc = pointFactory(0, 0);
-    firstMap.setBaseTerrain(loc, TileType.plains);
+    firstMap.baseTerrain[loc] = TileType.plains;
     assertSerialization("Simple Map serialization", firstMap);
-    assertMissingProperty<IMap>("""<map version="2" columns="1" />""", "rows", false);
-    assertMissingProperty<IMap>("""<map version="2" rows="1" />""", "columns", false);
+    assertMissingProperty<IMapNG>("""<map version="2" columns="1" />""", "rows", false);
+    assertMissingProperty<IMapNG>("""<map version="2" rows="1" />""", "columns", false);
     String originalFormOne = createSerializedForm(firstMap, false);
     String originalFormTwo = createSerializedForm(firstMap, true);
-    firstMap.setBaseTerrain(pointFactory(1, 1), TileType.notVisible);
+    firstMap.baseTerrain[pointFactory(1, 1)] = TileType.notVisible;
     assertEquals(createSerializedForm(firstMap, false), originalFormOne,
         "Explicitly not visible tile is not serialized");
     assertEquals(createSerializedForm(firstMap, true), originalFormTwo,
         "Explicitly not visible tile is not serialized");
-    firstMap.setMountainous(loc, true);
+    firstMap.mountainous[loc] = true;
     assertSerialization("Map with a mountainous point", firstMap);
-    assertMissingProperty<IMap>(
+    assertMissingProperty<IMapNG>(
         """<view current_turn="0"><map version="2" rows="1" columns="1" /></view>""",
         "current_player", true);
-    assertMissingProperty<IMap>(
+    assertMissingProperty<IMapNG>(
         """<view current_player="0"><map version="2" rows="1" columns="1" /></view>""",
         "current_turn", false);
-    assertMissingChild<IMap>("""<view current_player="1" current_turn="0" />""");
-    assertMissingChild<IMap>("""<view current_player="1" current_turn="13" />""");
-    assertUnwantedChild<IMap>(
+    assertMissingChild<IMapNG>("""<view current_player="1" current_turn="0" />""");
+    assertMissingChild<IMapNG>("""<view current_player="1" current_turn="13" />""");
+    assertUnwantedChild<IMapNG>(
         """<view current_player="0" current_turn="0">
            <map version="2" rows="1" columns="1" />
            <map version="2" rows="1" columns="1" /></view>""", false);
-    assertUnwantedChild<IMap>(
+    assertUnwantedChild<IMapNG>(
         """<view current_player="0" current_turn="0"><hill /></view>""", false);
     assertMapDeserialization("Proper deserialization of map without view tag", firstMap,
         """<map version="2" rows="1" columns="1" current_player="1">
@@ -875,10 +875,10 @@ test
 void testNamespacedSerialization() {
     MutablePlayer player = PlayerImpl(1, "playerOne");
     player.current = true;
-    IMutableMap firstMap = SPMap(MapDimensionsImpl(1, 1, 2), PlayerCollection(), 0);
+    IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(1, 1, 2), PlayerCollection(), 0);
     firstMap.addPlayer(player);
     Point loc = pointFactory(0, 0);
-    firstMap.setBaseTerrain(loc, TileType.steppe);
+    firstMap.baseTerrain[loc] = TileType.steppe;
     assertMapDeserialization("Proper deserialization of namespaced map", firstMap,
         "<map xmlns=\"``spNamespace``\" version=\"2\" rows=\"1\" columns=\"1\"
          current_player=\"1\"><player number=\"1\" code_name=\"playerOne\" /><row
@@ -1054,7 +1054,7 @@ void testTextSerialization() {
     assertSerialization("Third test of [[TextFixture]] serialization", third);
     assertUnwantedChild<TextFixture>("""<text turn="1"><troll /></text>""", false);
     assertImageSerialization("Text image property is preserved", third);
-    IMutableMap wrapper = createSimpleMap(pointFactory(1, 1),
+    IMutableMapNG wrapper = createSimpleMap(pointFactory(1, 1),
         pointFactory(0, 0)->TileType.plains);
     wrapper.addFixture(pointFactory(0, 0), TextFixture("one", -1));
     wrapper.currentTurn = 0;
@@ -1127,7 +1127,7 @@ void testUnitMemberSerialization() {
     assertImageSerialization("Worker image property is preserved", secondWorker);
     secondWorker.addJob(Job("seventh", 1));
     assertSerialization("Worker can have Job with no skills yet", secondWorker);
-    assertUnwantedChild<IMap>("""<map version="2" rows="1" columns="1">
+    assertUnwantedChild<IMapNG>("""<map version="2" rows="1" columns="1">
                                    <tile row="0" column="0" kind="plains">
                                    <worker name="name" id="1" /></tile></map>""", false);
     assertPortraitSerialization("Worker portrait property is preserved", secondWorker);
@@ -1206,7 +1206,7 @@ void testAdventureSerialization() {
     AdventureFixture second = AdventureFixture(PlayerImpl(2, "player"),
         "second hook brief", "second hook full", 2);
     assertNotEquals(first, second, "Two different hooks are not equal");
-    IMutableMap wrapper = createSimpleMap(pointFactory(1, 1),
+    IMutableMapNG wrapper = createSimpleMap(pointFactory(1, 1),
         pointFactory(0, 0)->TileType.plains);
     wrapper.addPlayer(independent);
     wrapper.addFixture(pointFactory(0, 0), first);
@@ -1345,9 +1345,9 @@ void testForestSerialization() {
     assertImageSerialization("Forest image property is preserved",
         Forest("thirdForest", true, 3));
     Point loc = pointFactory(0, 0);
-    IMutableMap map = createSimpleMap(pointFactory(1, 1),
+    IMutableMapNG map = createSimpleMap(pointFactory(1, 1),
         loc->TileType.plains);
-    map.setForest(loc, Forest("trees", false, 4));
+    map.addFixture(loc, Forest("trees", false, 4));
     map.addFixture(loc, Forest("secondForest", true, 5));
     assertSerialization("Map with multiple Forests on a tile", map);
     assertEquivalentForms("Duplicate Forests ignored",
@@ -1406,9 +1406,9 @@ void testGroundSerialization() {
     assertSerialization("Second test of Ground serialization", Ground(2, "two", true));
     assertSerialization("Third test of Ground serialization", Ground(3, "three", false));
     Point loc = pointFactory(0, 0);
-    IMutableMap map = createSimpleMap(pointFactory(1, 1),
+    IMutableMapNG map = createSimpleMap(pointFactory(1, 1),
         loc->TileType.plains);
-    map.setGround(loc, Ground(-1, "four", true));
+    map.addFixture(loc, Ground(-1, "four", true));
     assertSerialization("Test that reader handles ground as a fixture", map);
     assertForwardDeserialization("Duplicate Ground ignored",
         """<view current_turn="-1" current_player="-1">

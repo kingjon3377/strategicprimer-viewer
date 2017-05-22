@@ -3,22 +3,23 @@ import strategicprimer.model.idreg {
     IDFactory
 }
 import strategicprimer.model.map {
-    IMap,
+    IMapNG,
     IFixture
 }
 "Fill a new ID factory from the given map."
-shared IDRegistrar createIDFactory(IMap|{IMap*}|{IFixture*} arg) {
+shared IDRegistrar createIDFactory(IMapNG|{IMapNG*}|{IFixture*} arg) {
     IDRegistrar retval = IDFactory();
     recursiveRegister(retval, arg);
     return retval;
 }
 
-void recursiveRegister(IDRegistrar factory, IMap|{IMap*}|{IFixture*} arg) {
-    if (is IMap map = arg) {
+void recursiveRegister(IDRegistrar factory, IMapNG|{IMapNG*}|{IFixture*} arg) {
+    if (is IMapNG map = arg) {
         for (location in map.locations) {
-            recursiveRegister(factory, map.allFixtures(location));
+//            recursiveRegister(factory, map.fixtures[location]); // TODO: syntax sugar once compiler bug fixed
+            recursiveRegister(factory, map.fixtures.get(location));
         }
-    } else if (is {IMap*} model = arg) {
+    } else if (is {IMapNG*} model = arg) {
         for (map in model) {
             recursiveRegister(factory, map);
         }

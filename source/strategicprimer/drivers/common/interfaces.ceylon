@@ -19,7 +19,7 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.model.map {
-    IMutableMap,
+    IMutableMapNG,
     HasName
 }
 import strategicprimer.model.xmlio {
@@ -108,17 +108,17 @@ shared interface SimpleDriver satisfies ISPDriver {
     shared actual default void startDriverOnArguments(ICLIHelper cli,
             SPOptions options, String* args) {
         ParamCount desiderata = usage.paramsWanted;
-        Anything(IMutableMap) turnFixer;
+        Anything(IMutableMapNG) turnFixer;
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {
-                turnFixer = (IMutableMap map) => map.currentTurn = currentTurn;
+                turnFixer = (IMutableMapNG map) => map.currentTurn = currentTurn;
             } else {
                 log.warn("--current-turn must be an integer");
-                turnFixer = (IMutableMap map) {};
+                turnFixer = (IMutableMapNG map) {};
             }
         } else {
-            turnFixer = (IMutableMap map) {};
+            turnFixer = (IMutableMapNG map) {};
         }
         if (args.size == 0) {
             switch (desiderata)

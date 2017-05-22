@@ -25,7 +25,7 @@ import strategicprimer.model {
 import strategicprimer.model.map {
     Point,
     IFixture,
-    IMap,
+    IMapNG,
     invalidPoint,
     MapDimensions
 }
@@ -55,7 +55,7 @@ shared class ImmortalsReportGenerator(
             DistanceComparator(hq, dimensions)) {
     "Produce a report on an individual immortal, or on all immortals."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMap map, Anything(String) ostream, [Immortal, Point]? entry) {
+            IMapNG map, Anything(String) ostream, [Immortal, Point]? entry) {
         if (exists entry) {
             Immortal item = entry.first;
             Point loc = entry.rest.first;
@@ -132,7 +132,7 @@ shared class ImmortalsReportGenerator(
      report on all immortals."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMap map, [Immortal, Point]? entry) {
+            IMapNG map, [Immortal, Point]? entry) {
         if (exists entry) {
             Immortal item = entry.first;
             Point loc = entry.rest.first;

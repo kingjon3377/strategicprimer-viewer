@@ -13,16 +13,16 @@ import strategicprimer.model.idreg {
     createIDFactory
 }
 import strategicprimer.model.map {
-    IMap,
+    IMapNG,
     MapDimensions,
-    IMutableMap,
+    IMutableMapNG,
     Player,
     TileType,
     TileFixture,
     pointFactory,
     River,
     Point,
-    SPMap,
+    SPMapNG,
     MapDimensionsImpl,
     PlayerCollection,
     PlayerImpl
@@ -62,9 +62,9 @@ import ceylon.random {
 Logger log = logger(`module strategicprimer.model`);
 "Convert a version-1 map to a higher-resolution version-2 map."
 suppressWarnings("deprecation")
-shared IMap convertOneToTwo(
+shared IMapNG convertOneToTwo(
 		"The version-1 map to convert"
-        IMap old,
+        IMapNG old,
 		"The source for kinds of ground, fields, etc."
 		ExplorationRunner runner,
 		"Whether the map is the main map (new encounter-type fixtures don't go on
@@ -74,7 +74,7 @@ shared IMap convertOneToTwo(
 	if (oldDimensions.version >= 2) {
 		return old;
 	}
-	IMutableMap retval = SPMap(MapDimensionsImpl(
+	IMutableMapNG retval = SPMapNG(MapDimensionsImpl(
 		oldDimensions.rows * expansionFactor,
 		oldDimensions.columns * expansionFactor, 2), PlayerCollection(), nextTurn);
 	Player independent = old.players.find(Player.independent)
@@ -85,7 +85,7 @@ shared IMap convertOneToTwo(
 	}
 	MutableList<Point> converted = LinkedList<Point>();
 	IDRegistrar idFactory = createIDFactory(old);
-	IMap oldCopy = old.copy(false, null);
+	IMapNG oldCopy = old.copy(false, null);
 	TileType equivalentTerrain(TileType original) {
 		switch (original)
 		case (TileType.mountain|TileType.temperateForest) { return TileType.plains; }
@@ -95,33 +95,31 @@ shared IMap convertOneToTwo(
 	"Add a fixture to a tile if this is the main map."
 	void addFixture(Point point, TileFixture fixture) {
 		if (main) {
-			if (is Ground fixture, !retval.ground(point) exists) {
-				retval.setGround(point, fixture);
-			} else if (is Forest fixture, !retval.forest(point) exists) {
-				retval.setForest(point, fixture);
-			} else {
-				retval.addFixture(point, fixture);
-			}
+			retval.addFixture(point, fixture);
 		}
 	}
 	"Convert a tile. That is, change it from a forest or mountain type to the proper
 	 replacement type plus the proper fixture, and also add the proper Ground."
 	void convertSubTile(Point point) {
-		TileType originalTerrain = retval.baseTerrain(point);
+//		TileType originalTerrain = retval.baseTerrain[point]; // TODO: syntax sugar once compiler bug fixed
+		TileType originalTerrain = retval.baseTerrain.get(point);
 		if (TileType.mountain == originalTerrain) {
-			retval.setMountainous(point, true);
-		} else if (!retval.forest(point) exists,
-			retval.otherFixtures(point).narrow<Forest>().empty,
+			retval.mountainous[point] = true;
+//		} else if (retval.fixtures[point].narrow<Forest>().empty,
+		} else if (retval.fixtures.get(point).narrow<Forest>().empty,
 			(TileType.temperateForest == originalTerrain ||
 			TileType.borealForest == originalTerrain)) {
-			retval.setForest(point, Forest(runner.getPrimaryTree(point,
-				originalTerrain, retval.mountainous(point), retval.allFixtures(point),
+			retval.addFixture(point, Forest(runner.getPrimaryTree(point,
+//				originalTerrain, retval.mountainous[point], retval.fixtures[point],
+				originalTerrain, retval.mountainous.get(point), retval.fixtures.get(point),
 				retval.dimensions), false, idFactory.createID()));
 		}
-		retval.setBaseTerrain(point, equivalentTerrain(originalTerrain));
+		retval.baseTerrain[point] = equivalentTerrain(originalTerrain);
 		addFixture(point, Ground(idFactory.createID(),
-			runner.getPrimaryRock(point, retval.baseTerrain(point),
-				retval.mountainous(point), retval.allFixtures(point), retval.dimensions),
+//			runner.getPrimaryRock(point, retval.baseTerrain[point], // TODO: syntax sugar once compiler bug fixed
+			runner.getPrimaryRock(point, retval.baseTerrain.get(point),
+//				retval.mountainous[point], retval.fixtures[point], retval.dimensions),
+				retval.mountainous.get(point), retval.fixtures.get(point), retval.dimensions),
 			false));
 	}
 	"Convert a single version-1 tile to the equivalent version-2 tiles."
@@ -131,21 +129,24 @@ shared IMap convertOneToTwo(
 		pointFactory(point.row * expansionFactor + i,
 			point.column * expansionFactor + j) ];
 		for (subtile in initial) {
-			retval.setBaseTerrain(subtile, oldCopy.baseTerrain(point));
+//			retval.baseTerrain[subtile] = oldCopy.baseTerrain[point]; // TODO: syntax sugar once compiler bug fixed
+			retval.baseTerrain[subtile] = oldCopy.baseTerrain.get(point);
 			convertSubTile(subtile);
 		}
 		if (!oldCopy.locationEmpty(point)) {
 			Integer idNum = idFactory.createID();
-			if (is IMutableMap oldCopy) {
+			if (is IMutableMapNG oldCopy) {
 				oldCopy.addFixture(point, Village(TownStatus.active, "", idNum,
 					independent, randomRace(DefaultRandom(idNum))));
 			}
-			{TileFixture*} fixtures = oldCopy.allFixtures(point);
+//			{TileFixture*} fixtures = oldCopy.fixtures[point]; // TODO: syntax sugar once compiler bug fixed
+			{TileFixture*} fixtures = oldCopy.fixtures.get(point);
 			void riversAt(Point? point, River* rivers) {
 				assert (exists point);
 				retval.addRivers(point, *rivers);
 			}
-			for (river in oldCopy.rivers(point)) {
+//			for (river in oldCopy.rivers[point]) {
+			for (river in oldCopy.rivers.get(point)) {
 				assert (expansionFactor == 4); // the river-dispersion algorithm is tuned
 				switch (river)
 				case (River.east) {
@@ -175,18 +176,20 @@ shared IMap convertOneToTwo(
 				if (!shuffledFixtures.front exists) {
 					break;
 				} else if (exists currentSubtile = shuffledInitial.accept()) {
-					if (retval.otherFixtures(point).every(
+//					if (retval.fixtures[point].every( // TODO: syntax sugar once compiler bug fixed
+					if (retval.fixtures.get(point).every(
 								(fixture) =>
 						fixture is Forest|Ground|Sandbar|Shrub|Meadow|Hill),
 						exists fixture = shuffledFixtures.accept()) {
 						if (is ITownFixture fixture) {
+							// FIXME: Use narrow() instead of a comprehension
 							{TileFixture*} toRemove = {
-								for (suspect in retval.otherFixtures(point))
+//								for (suspect in retval.fixtures[point])
+								for (suspect in retval.fixtures.get(point))
 								if (is Forest suspect) suspect };
 							for (suspect in toRemove) {
 								retval.removeFixture(point, suspect);
 							}
-							retval.setForest(point, null);
 						}
 						addFixture(currentSubtile, fixture);
 					}
@@ -221,7 +224,9 @@ shared IMap convertOneToTwo(
 		}.filter((element) => point != element);
 		Boolean adjacentToTown() {
 			for (neighbor in neighbors) {
-				for (fixture in retval.otherFixtures(neighbor)) {
+				// FIXME: Use .narrow() instead of a loop
+//				for (fixture in retval.fixtures[neighbor]) { // TODO: syntax sugar once compiler bug fixed
+				for (fixture in retval.fixtures.get(neighbor)) {
 					if (is ITownFixture fixture) {
 						return true;
 					}
@@ -232,8 +237,10 @@ shared IMap convertOneToTwo(
 		}
 		Boolean adjacentWater() {
 			for (neighbor in neighbors) {
-				if (retval.baseTerrain(neighbor) == TileType.ocean ||
-				!retval.rivers(neighbor).empty) {
+//				if (retval.baseTerrain[neighbor] == TileType.ocean ||
+				if (retval.baseTerrain.get(neighbor) == TileType.ocean ||
+//						!retval.rivers[neighbor].empty) {
+						!retval.rivers.get(neighbor).empty) {
 					return true;
 				}
 			} else {
@@ -241,36 +248,45 @@ shared IMap convertOneToTwo(
 			}
 		}
 		try {
-			if (TileType.ocean != retval.baseTerrain(point)) {
+//			if (TileType.ocean != retval.baseTerrain[point]) {
+			if (TileType.ocean != retval.baseTerrain.get(point)) {
 				if (adjacentToTown(), rng.nextFloat() < 0.6) {
 					Integer id = idFactory.createID();
 					if (rng.nextBoolean()) {
 						addFixture(point, Meadow(runner.recursiveConsultTable("grain",
-							point, retval.baseTerrain(point), retval.mountainous(point),
-							retval.allFixtures(point), retval.dimensions), true,
+//							point, retval.baseTerrain[point], retval.mountainous[point],
+							point, retval.baseTerrain.get(point), retval.mountainous.get(point),
+//							retval.fixtures[point], retval.dimensions), true,
+							retval.fixtures.get(point), retval.dimensions), true,
 							true, id, FieldStatus.random(id)));
 					} else {
 						addFixture(point, Grove(true, true,
 							runner.recursiveConsultTable("fruit_trees", point,
-								retval.baseTerrain(point), retval.mountainous(point),
-								retval.allFixtures(point), retval.dimensions), id));
+//								retval.baseTerrain[point], retval.mountainous[point],
+								retval.baseTerrain.get(point), retval.mountainous.get(point),
+//								retval.fixtures[point], retval.dimensions), id));
+								retval.fixtures.get(point), retval.dimensions), id));
 					}
-				} else if (TileType.desert == retval.baseTerrain(point)) {
+//				} else if (TileType.desert == retval.baseTerrain[point]) {
+				} else if (TileType.desert == retval.baseTerrain.get(point)) {
 					Boolean watered = adjacentWater();
 					if ((watered && rng.nextFloat() < desertToPlains) ||
-					!retval.rivers(point).empty &&
+//					!retval.rivers[point].empty &&
+					!retval.rivers.get(point).empty &&
 					rng.nextFloat() < 0.6) {
-						retval.setBaseTerrain(point, TileType.plains);
+						retval.baseTerrain[point] = TileType.plains;
 					}
 				} else if (rng.nextFloat() < addForestProbability) {
 					String forestType = runner.recursiveConsultTable(
-						"temperate_major_tree", point, retval.baseTerrain(point),
-						retval.mountainous(point), retval.allFixtures(point),
+//						"temperate_major_tree", point, retval.baseTerrain[point], // TODO: syntax sugar once compiler bug fixed
+						"temperate_major_tree", point, retval.baseTerrain.get(point),
+//						retval.mountainous[point], retval.fixtures[point],
+						retval.mountainous.get(point), retval.fixtures.get(point),
 						retval.dimensions);
-					if (exists existingForest = retval.forest(point),
-						forestType == existingForest.kind) {
+//					if (retval.fixtures[point].narrow<Forest>().map(Forest.kind).any(forestType.equals)) {
+					if (retval.fixtures.get(point).narrow<Forest>().map(Forest.kind).any(forestType.equals)) {
 						// do nothing
-                        } else {
+					} else {
 						addFixture(point, Forest(forestType, false,
 							idFactory.createID()));
 					}

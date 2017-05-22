@@ -14,13 +14,13 @@ import strategicprimer.model.map {
     IPlayerCollection,
     IMutablePlayerCollection,
     TileType,
-    IMutableMap,
-    IMap,
+    IMutableMapNG,
+    IMapNG,
     TileFixture,
     pointFactory,
     PlayerCollection,
     PlayerImpl,
-    SPMap,
+    SPMapNG,
     MapDimensionsImpl
 }
 import strategicprimer.model.map.fixtures {
@@ -156,21 +156,21 @@ void testFortressSubset() {
         "Different size breaks Fortress subset");
 }
 
-"Test the [[IMap]] subset feature"
+"Test the [[IMapNG]] subset feature"
 test
 void testMapSubset() {
-    IMutableMap createMap(<Point->TileType>* terrain) {
-        IMutableMap retval = SPMap(MapDimensionsImpl(2, 2, 2),
+    IMutableMapNG createMap(<Point->TileType>* terrain) {
+        IMutableMapNG retval = SPMapNG(MapDimensionsImpl(2, 2, 2),
             PlayerCollection(), -1);
         for (point->type in terrain) {
-            retval.setBaseTerrain(point, type);
+            retval.baseTerrain[point] = type;
         }
         return retval;
     }
-    IMutableMap firstMap = createMap(pointFactory(0, 0)->TileType.jungle);
-    IMutableMap secondMap = createMap(pointFactory(0, 0)->TileType.jungle,
+    IMutableMapNG firstMap = createMap(pointFactory(0, 0)->TileType.jungle);
+    IMutableMapNG secondMap = createMap(pointFactory(0, 0)->TileType.jungle,
         pointFactory(1, 1)->TileType.ocean);
-    IMap zero = createMap();
+    IMapNG zero = createMap();
     assertIsSubset(zero, zero, "None is a subset of itself");
     assertIsSubset(firstMap, zero, "None is a subset of one");
     assertIsSubset(secondMap, zero, "None is a subset of one");
@@ -180,12 +180,12 @@ void testMapSubset() {
     assertNotSubset(zero, secondMap, "Two is not a subset of none");
     assertNotSubset(firstMap, secondMap, "Two is not a subset of one");
     assertIsSubset(secondMap, secondMap, "Two is a subset of itself");
-    firstMap.setBaseTerrain(pointFactory(1, 1), TileType.plains);
+    firstMap.baseTerrain[pointFactory(1, 1)] = TileType.plains;
     assertNotSubset(secondMap, firstMap,
         "Corresponding but non-matching tile breaks subset");
     assertNotSubset(firstMap, secondMap,
         "Corresponding but non-matching tile breaks subset");
-    secondMap.setBaseTerrain(pointFactory(1, 1), TileType.plains);
+    secondMap.baseTerrain[pointFactory(1, 1)] = TileType.plains;
     assertIsSubset(secondMap, firstMap, "Subset again after resetting terrain");
     firstMap.addFixture(pointFactory(1, 1), CacheFixture("category", "contents", 3));
     assertIsSubset(secondMap, firstMap, "Subset calculation ignores caches");
@@ -201,37 +201,37 @@ void testMapSubset() {
 "Test map subset calculations to ensure that off-by-one errors are caught."
 test
 void testMapOffByOne() {
-    IMutableMap baseMap = SPMap(MapDimensionsImpl(2, 2, 2),
+    IMutableMapNG baseMap = SPMapNG(MapDimensionsImpl(2, 2, 2),
         PlayerCollection(), -1);
     for (point in baseMap.locations) {
-        baseMap.setBaseTerrain(point, TileType.plains);
+        baseMap.baseTerrain[point] = TileType.plains;
     }
-    baseMap.setForest(pointFactory(1, 1), Forest("elm", false, 1));
+    baseMap.addFixture(pointFactory(1, 1), Forest("elm", false, 1));
     baseMap.addFixture(pointFactory(1, 1), Animal("skunk", false, false, "wild", 2));
     baseMap.addRivers(pointFactory(1, 1), River.east);
 
-    IMutableMap testMap = SPMap(MapDimensionsImpl(2, 2, 2),
+    IMutableMapNG testMap = SPMapNG(MapDimensionsImpl(2, 2, 2),
         PlayerCollection(), -1);
     for (point in testMap.locations) {
-        testMap.setBaseTerrain(point, TileType.plains);
+        testMap.baseTerrain[point] = TileType.plains;
     }
     Forest forest = Forest("elm", false, 1);
     TileFixture animal = Animal("skunk", false, false, "wild", 2);
     for (point in testMap.locations) {
         assertIsSubset(baseMap, testMap,
             "Subset invariant before attempt using ``point``");
-        Anything(IMap, IMap, String) testMethod;
+        Anything(IMapNG, IMapNG, String) testMethod;
         String result;
         if (pointFactory(1, 1) == point) {
-            testMethod = assertIsSubset<IMap>;
+            testMethod = assertIsSubset<IMapNG>;
             result = "Subset holds when fixture(s) placed correctly";
         } else {
-            testMethod = assertNotSubset<IMap>;
+            testMethod = assertNotSubset<IMapNG>;
             result = "Subset fails when fixture(s) off by one";
         }
-        testMap.setForest(point, forest);
+        testMap.addFixture(point, forest);
         testMethod(baseMap, testMap, result);
-        testMap.setForest(point, null);
+        testMap.removeFixture(point, forest);
         testMap.addFixture(point, animal);
         testMethod(baseMap, testMap, result);
         testMap.removeFixture(point, animal);
@@ -246,14 +246,14 @@ void testMapOffByOne() {
 "Test interaction between isSubset() and copy()."
 test
 void testSubsetsAndCopy() {
-    IMutableMap firstMap = SPMap(MapDimensionsImpl(2, 2, 2), PlayerCollection(), -1);
-    firstMap.setBaseTerrain(pointFactory(0, 0), TileType.jungle);
-    IMap zero = SPMap(MapDimensionsImpl(2, 2, 2), PlayerCollection(), -1);
+    IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), -1);
+    firstMap.baseTerrain[pointFactory(0, 0)] = TileType.jungle;
+    IMapNG zero = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), -1);
     assertIsSubset(firstMap, zero, "zero is a subset of one before copy");
-    IMutableMap secondMap = SPMap(MapDimensionsImpl(2, 2, 2), PlayerCollection(), -1);
-    secondMap.setBaseTerrain(pointFactory(0, 0), TileType.jungle);
-    firstMap.setBaseTerrain(pointFactory(1, 1), TileType.plains);
-    secondMap.setBaseTerrain(pointFactory(1, 1), TileType.plains);
+    IMutableMapNG secondMap = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), -1);
+    secondMap.baseTerrain[pointFactory(0, 0)] = TileType.jungle;
+    firstMap.baseTerrain[pointFactory(1, 1)] = TileType.plains;
+    secondMap.baseTerrain[pointFactory(1, 1)] = TileType.plains;
     firstMap.addFixture(pointFactory(1, 1), CacheFixture("category", "contents", 3));
     firstMap.addFixture(pointFactory(1, 1), TextFixture("text", -1));
     firstMap.addFixture(pointFactory(1, 1), Animal("animal", true, false, "status", 5));
@@ -261,11 +261,12 @@ void testSubsetsAndCopy() {
         Fortification(TownStatus.burned, TownSize.large, 15, "fortification", 6,
             PlayerImpl(0, "")));
     assertEquals(firstMap.copy(false, null), firstMap, "Cloned map equals original");
-    IMap clone = firstMap.copy(true, null);
+    IMapNG clone = firstMap.copy(true, null);
     assertIsSubset(clone, zero, "unfilled map is still a subset of zeroed clone");
     // DCs, the only thing zeroed out in *map* copy() at the moment, are ignored by
     // equals().
-    for (fixture in clone.otherFixtures(pointFactory(0, 0))) {
+//    for (fixture in clone.fixtures[pointFactory(0, 0)]) { // TODO: syntax sugar once compiler bug fixed
+    for (fixture in clone.fixtures.get(pointFactory(0, 0))) {
         if (is AbstractTown fixture) {
             assertEquals(fixture.dc, 0, "Copied map didn't copy DCs");
         }

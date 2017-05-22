@@ -35,7 +35,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.map {
     Point,
     IFixture,
-    IMap,
+    IMapNG,
     TileType
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -172,7 +172,7 @@ object mapCheckerCLI satisfies UtilityDriver {
     shared void check(JPath file, Anything(String) outStream, Anything(String) err,
             Warning warner = warningLevels.custom()) {
         outStream("Starting ``file``");
-        IMap map;
+        IMapNG map;
         try {
             map = readMap(file, warner);
         } catch (FileNotFoundException|NoSuchFileException except) {
@@ -194,15 +194,11 @@ object mapCheckerCLI satisfies UtilityDriver {
         }
         for (checker in extraChecks) {
             for (location in map.locations) {
-                TileType terrain = map.baseTerrain(location);
-                if (exists forest = map.forest(location)) {
-                    contentCheck(checker, terrain, location, warner, forest);
-                }
-                if (exists ground = map.ground(location)) {
-                    contentCheck(checker, terrain, location, warner, ground);
-                }
+//                TileType terrain = map.baseTerrain[location]; // TODO: syntax sugar once compiler bug fixed
+                TileType terrain = map.baseTerrain.get(location);
                 contentCheck(checker, terrain, location, warner,
-                    *map.otherFixtures(location));
+//                    *map.fixtures[location]);
+                    *map.fixtures.get(location));
             }
         }
     }

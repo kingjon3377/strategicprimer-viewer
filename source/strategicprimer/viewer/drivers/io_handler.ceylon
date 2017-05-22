@@ -49,7 +49,7 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.model.map {
-    SPMap,
+    SPMapNG,
     PlayerCollection
 }
 import strategicprimer.model.xmlio {
@@ -160,7 +160,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             });
         }
         case ("new") {
-            viewerGUI.startDriverOnModel(cli, options, ViewerModel(SPMap(
+            viewerGUI.startDriverOnModel(cli, options, ViewerModel(SPMapNG(
                     mapModel.mapDimensions, PlayerCollection(), mapModel.map.currentTurn),
                 null));
         }

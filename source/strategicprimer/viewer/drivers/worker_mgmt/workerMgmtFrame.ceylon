@@ -69,7 +69,7 @@ import strategicprimer.model.idreg {
 import strategicprimer.model.map {
     Point,
     Player,
-    IMap,
+    IMapNG,
     invalidPoint
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -111,7 +111,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
     Point findHQ() {
         variable Point retval = invalidPoint;
         for (location in model.map.locations) {
-            for (fixture in model.map.otherFixtures(location)) {
+//            for (fixture in model.map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
+            for (fixture in model.map.fixtures.get(location)) { // TODO: syntax sugar once compiler bug fixed
                 if (is Fortress fixture, fixture.owner == model.map.currentPlayer) {
                     if ("HQ" == fixture.name) {
                         return location;
@@ -185,7 +186,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
     object retval extends SPFrame("Worker Management", model.mapFile,
         Dimension(640, 480))
             satisfies PlayerChangeListener {
-        IMap mainMap = model.map;
+        IMapNG mainMap = model.map;
         SPDialog&NewUnitSource&PlayerChangeListener newUnitFrame =
                 newUnitDialog(mainMap.currentPlayer,
                     createIDFactory(mainMap));

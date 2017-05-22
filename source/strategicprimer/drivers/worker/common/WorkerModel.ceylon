@@ -18,9 +18,9 @@ import strategicprimer.model.map {
     Point,
     Player,
     TileFixture,
-    IMutableMap,
+    IMutableMapNG,
     PlayerImpl,
-    SPMap,
+    SPMapNG,
     MapDimensionsImpl,
     PlayerCollection
 }
@@ -54,7 +54,7 @@ import ceylon.random {
 Logger log = logger(`module strategicprimer.drivers.worker.common`);
 "A model to underlie the advancement GUI, etc."
 shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
-    shared new (IMutableMap map, JPath? file)
+    shared new (IMutableMapNG map, JPath? file)
             extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
@@ -72,8 +72,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     }
     "All the players in all the maps."
     shared actual {Player*} players {
-        return allMaps.map(([IMutableMap, JPath?] pair) => pair.first)
-                .flatMap(IMutableMap.players).distinct;
+        return allMaps.map(([IMutableMapNG, JPath?] pair) => pair.first)
+                .flatMap(IMutableMapNG.players).distinct;
     }
     "Get all the given player's units, or only those of a specified kind."
     shared actual {IUnit*} getUnits(Player player, String? kind) {
@@ -83,13 +83,15 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.
             return getUnitsImpl(map.locations
-                .flatMap((point) => map.otherFixtures(point)), player)
+//                .flatMap((point) => map.fixtures[point]), player) // TODO: syntax sugar once compiler bug fixed
+                .flatMap((point) => map.fixtures.get(point)), player)
                 .sort((x, y) => x.name.compareIgnoringCase(y.name));
         } else {
             value temp = allMaps
-                    .map(([IMutableMap, JPath?] pair) => pair.first)
+                    .map(([IMutableMapNG, JPath?] pair) => pair.first)
                     .flatMap((indivMap) => indivMap.locations.flatMap(
-                        (point) => getUnitsImpl(indivMap.otherFixtures(point), player)));
+//                        (point) => getUnitsImpl(indivMap.fixtures[point], player)));
+                        (point) => getUnitsImpl(indivMap.fixtures.get(point), player)));
             MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
                     TreeMap<Integer, IUnit&ProxyFor<IUnit>>((x, y) => x<=>y);
             for (unit in temp) {
@@ -113,8 +115,9 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 .sort((x, y) => x.compareIgnoringCase(y));
     "Add the given unit at the given location in all maps."
     void addUnitAtLocation(IUnit unit, Point location) {
-        void impl(IMutableMap map) {
-            for (fixture in map.otherFixtures(location)) {
+        void impl(IMutableMapNG map) {
+//            for (fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(location)) {
                 if (is Fortress fixture, fixture.owner == unit.owner) {
                     fixture.addMember(unit.copy(false));
                     return;
@@ -134,7 +137,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     "Add a unit to all the maps, at the location of its owner's HQ in the main map."
     shared actual void addUnit(IUnit unit) {
         for (point in map.locations) {
-            for (fixture in map.otherFixtures(point)) {
+//            for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(point)) {
                 if (is Fortress fixture, "HQ" == fixture.name,
                         fixture.owner == unit.owner) {
                     addUnitAtLocation(unit, point);
@@ -193,7 +197,7 @@ void testGetUnits() {
     addItem(Unit(playerOne, "four", "unitFour", 6), fixtures, listOne);
     fixtures.add(Oasis(8));
     value shuffled = randomize(fixtures);
-    IMutableMap map = SPMap(MapDimensionsImpl(3, 3, 2), PlayerCollection(), -1);
+    IMutableMapNG map = SPMapNG(MapDimensionsImpl(3, 3, 2), PlayerCollection(), -1);
     for ([point, fixture] in zipPairs(map.locations, shuffled)) {
         map.addFixture(point, fixture);
     }

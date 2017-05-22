@@ -21,7 +21,7 @@ import strategicprimer.model.map {
     Point,
     MapDimensions,
     TileFixture,
-    IMap,
+    IMapNG,
     pointFactory
 }
 import strategicprimer.model.map.fixtures {
@@ -41,7 +41,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
     model.addSelectionChangeListener(menu);
     model.addVersionChangeListener(menu);
     String terrainFixturesAndTop(Point point) {
-        IMap map = model.map;
+        IMapNG map = model.map;
         StringBuilder builder = StringBuilder();
         void accept(TileFixture fixture) {
             if (!builder.empty) {
@@ -49,7 +49,8 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             }
             builder.append(fixture.string);
         }
-        {TileFixture*} stream = map.allFixtures(point).filter(zof)
+//        {TileFixture*} stream = map.fixtures[point].filter(zof) // TODO: syntax sugar once compiler bug fixed
+        {TileFixture*} stream = map.fixtures.get(point).filter(zof)
             .sort(comparator);
         if (exists top = stream.first) {
             accept(top);
@@ -74,10 +75,12 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
                     .plus(0.1).integer);
             if (point.valid, point.row < mapDimensions.rows,
                 point.column < mapDimensions.columns) {
-                String mountainString = (model.map.mountainous(point))
+//                String mountainString = (model.map.mountainous[point]) // TODO: syntax sugar once compiler bug fixed
+                String mountainString = (model.map.mountainous.get(point))
                 then ", mountainous" else "";
                 return "<html><body>``point``: ``model.map
-                    .baseTerrain(point)````mountainString``<br />``
+//                    .baseTerrain[point]````mountainString``<br />``
+                    .baseTerrain.get(point)````mountainString``<br />``
                 terrainFixturesAndTop(point)``</body></html>";
             } else {
                 return null;

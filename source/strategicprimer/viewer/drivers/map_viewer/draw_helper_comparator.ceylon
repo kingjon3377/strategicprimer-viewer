@@ -30,7 +30,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.map {
     MapDimensions,
     TileFixture,
-    IMap,
+    IMapNG,
     pointFactory,
     clearPointCache
 }
@@ -40,7 +40,7 @@ import ceylon.random {
 
 variable Boolean usePointCache = false;
 "The first test: all in one place."
-Integer first(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize) {
+Integer first(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
     BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
     for (rep in 0:reps) {
@@ -54,7 +54,7 @@ Integer first(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize) {
     return end - start;
 }
 "The second test: Translating."
-Integer second(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize) {
+Integer second(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
     MapDimensions mapDimensions = map.dimensions;
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
@@ -72,7 +72,7 @@ Integer second(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize) 
     return end - start;
 }
 "Third test: in-place, reusing Graphics."
-Integer third(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize) {
+Integer third(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
     BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
     for (rep in 0:reps) {
@@ -87,7 +87,7 @@ Integer third(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize) {
     return end - start;
 }
 "Fourth test: translating, reusing Graphics."
-Integer fourth(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize) {
+Integer fourth(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
     MapDimensions mapDimensions = map.dimensions;
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
@@ -108,7 +108,7 @@ Integer fourth(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize) 
 Range<Integer> testRowSpan = 20..40;
 Range<Integer> testColSpan = 55..82;
 "Fifth test, part one: iterating."
-Integer fifthOne(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize) {
+Integer fifthOne(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
     MapDimensions mapDimensions = map.dimensions;
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
@@ -129,7 +129,7 @@ Integer fifthOne(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize
     Integer end = system.nanoseconds;
     return end - start;
 }
-Integer fifthTwo(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize) {
+Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
     MapDimensions mapDimensions = map.dimensions;
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
@@ -150,7 +150,7 @@ Integer fifthTwo(TileDrawHelper helper, IMap map, Integer reps, Integer tileSize
     Integer end = system.nanoseconds;
     return end - start;
 }
-{[String, Integer(TileDrawHelper, IMap, Integer, Integer)]*} tests = {
+{[String, Integer(TileDrawHelper, IMapNG, Integer, Integer)]*} tests = {
     ["1. All in one place", first],
     ["2. Translating", second],
     ["3. In-place, reusing Graphics", third],
@@ -179,7 +179,7 @@ object dummyPredicate satisfies Predicate<TileFixture> {
         "Ver. 2:", Accumulator()]
 };
 "Run all the tests on the specified map."
-void runAllTests(ICLIHelper cli, IMap map, Integer repetitions) {
+void runAllTests(ICLIHelper cli, IMapNG map, Integer repetitions) {
     Integer printStats(String prefix, Integer total, Integer reps) {
         cli.println("``prefix``\t``total``, average of ``total / reps`` ns.");
         return total;
@@ -209,7 +209,7 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         Boolean() random = DefaultRandom().nextBoolean;
-        void runTestProcedure(ICLIHelper cli, IMap map, Path? filename,
+        void runTestProcedure(ICLIHelper cli, IMapNG map, Path? filename,
                 Boolean() rng) {
             cli.println("Testing using ``filename?.string else "an unsaved map"``");
             clearPointCache();

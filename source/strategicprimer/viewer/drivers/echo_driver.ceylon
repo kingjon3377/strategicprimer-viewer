@@ -18,8 +18,8 @@ import strategicprimer.model.idreg {
 }
 import strategicprimer.model.map {
     Point,
-    IMutableMap,
-    IMap
+    IMutableMapNG,
+    IMapNG
 }
 import strategicprimer.model.map.fixtures {
     Ground
@@ -61,7 +61,7 @@ object echoDriver satisfies UtilityDriver {
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         if (exists inArg = args.first, exists outArg = args.rest.first, args.size == 2) {
-            IMutableMap map;
+            IMutableMapNG map;
             try {
                 map = readMap(JPaths.get(inArg), warningLevels.ignore);
             } catch (IOException except) {
@@ -73,17 +73,20 @@ object echoDriver satisfies UtilityDriver {
             }
             IDRegistrar idFactory = createIDFactory(map);
             for (location in map.locations) {
-                if (exists mainForest = map.forest(location), mainForest.id < 0) {
+                if (exists mainForest = map.fixtures[location]?.narrow<Forest>()?.first,
+                        mainForest.id < 0) {
                     Integer id = 1147200 + location.row * 176 + location.column;
                     idFactory.register(id);
                     mainForest.id = id;
                 }
-                if (exists mainGround = map.ground(location), mainGround.id < 0) {
+                if (exists mainGround = map.fixtures[location]?.narrow<Ground>()?.first,
+                        mainGround.id < 0) {
                     Integer id = 1171484 + location.row * 176 + location.column;
                     idFactory.register(id);
                     mainGround.id = id;
                 }
-                for (fixture in map.otherFixtures(location)) {
+//                for (fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
+                for (fixture in map.fixtures.get(location)) {
                     if (is Forest fixture, fixture.id < 0) {
                         fixture.id = idFactory.createID();
                     } else if (is Ground fixture, fixture.id < 0) {
@@ -115,14 +118,16 @@ object forestFixerDriver satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage(false, "-f", "--fix-forest",
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map");
-    {Forest*} extractForests(IMap map, Point location) =>
-            map.allFixtures(location).narrow<Forest>();
-    {Ground*} extractGround(IMap map, Point location) =>
-            map.allFixtures(location).narrow<Ground>();
+    {Forest*} extractForests(IMapNG map, Point location) =>
+//            map.fixtures[location].narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed
+            map.fixtures.get(location).narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed
+    {Ground*} extractGround(IMapNG map, Point location) =>
+//            map.fixtures[location].narrow<Ground>();
+            map.fixtures.get(location).narrow<Ground>();
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         assert (is IMultiMapModel model);
-        IMutableMap mainMap = model.map;
+        IMutableMapNG mainMap = model.map;
         for ([map, file] in model.subordinateMaps) {
             cli.println("Starting ``file?.string
                 else "a map with no associated path"``");

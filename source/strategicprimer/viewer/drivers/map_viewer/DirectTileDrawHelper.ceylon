@@ -14,7 +14,7 @@ import strategicprimer.model.map {
     Point,
     River,
     TileType,
-    IMap
+    IMapNG
 }
 
 "A [[TileDrawHelper]] for version-1 maps that draws directly instead of creating Shapes,
@@ -60,20 +60,23 @@ object directTileDrawHelper satisfies TileDrawHelper {
                 multiply(height, drawingNumericConstants.riverShortDimension));
         }
     }
-    shared actual void drawTile(Graphics pen, IMap map, Point location,
+    shared actual void drawTile(Graphics pen, IMapNG map, Point location,
             Coordinate coordinates, Coordinate dimensions) {
         Graphics context = pen.create();
         try {
             context.color = colorHelper.get(map.dimensions.version,
-                map.baseTerrain(location));
+//                map.baseTerrain[location]); // TODO: syntax sugar once compiler bug fixed
+                map.baseTerrain.get(location));
             context.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
             context.color = Color.black;
             context.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
-            if (TileType.notVisible == map.baseTerrain(location)) {
+//            if (TileType.notVisible == map.baseTerrain[location]) {
+            if (TileType.notVisible == map.baseTerrain.get(location)) {
                 return;
             }
             context.color = Color.\iBLUE;
-            for (river in map.rivers(location)) {
+//            for (river in map.rivers[location]) {
+            for (river in map.rivers.get(location)) {
                 drawRiver(context, river, coordinates.x, coordinates.y, dimensions.x,
                     dimensions.y);
             }
@@ -113,7 +116,7 @@ object directTileDrawHelper satisfies TileDrawHelper {
             context.dispose();
         }
     }
-    shared actual void drawTileTranslated(Graphics pen, IMap map,
+    shared actual void drawTileTranslated(Graphics pen, IMapNG map,
             Point location, Integer width, Integer height) =>
             drawTile(pen, map, location, coordinateFactory(0, 0),
                 coordinateFactory(width, height));

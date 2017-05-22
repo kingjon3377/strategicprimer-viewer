@@ -29,8 +29,11 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.map {
     TileType,
-    IMap,
+    IMapNG,
     Point
+}
+import strategicprimer.model.map.fixtures.terrain {
+    Forest
 }
 abstract class SimpleTerrain() of unforested | forested | ocean { }
 "Plains, desert, and mountains"
@@ -62,8 +65,8 @@ object todoFixerCLI satisfies SimpleCLIDriver {
      location."
     todo("Just use TileType now we have union types available")
     suppressWarnings("deprecation")
-    SimpleTerrain getTerrain(IMap map, Point location) {
-        switch (map.baseTerrain(location))
+    SimpleTerrain getTerrain(IMapNG map, Point location) {
+        switch (map.baseTerrain[location])
         case (TileType.jungle|TileType.borealForest|TileType.temperateForest) {
             return forested;
         }
@@ -71,23 +74,29 @@ object todoFixerCLI satisfies SimpleCLIDriver {
             return unforested; }
         case (TileType.ocean) { return ocean; }
         case (TileType.plains|TileType.steppe) {
-            if (map.mountainous(location)) {
+//            if (map.mountainous[location]) { // TODO: syntax sugar once compiler bug fixed
+            if (map.mountainous.get(location)) {
                 return unforested;
-            } else if (map.forest(location) exists) {
+            } else if (map.fixtures[location]?.narrow<Forest>()?.first exists) {
                 return forested;
             } else {
                 return unforested;
             }
+        } case (null) {
+            assert (false);
         }
     }
     "Search for and fix aquatic villages with non-aquatic races."
-    void fixAllVillages(IMap map, ICLIHelper cli) {
+    void fixAllVillages(IMapNG map, ICLIHelper cli) {
+        // TODO: Use Iterable methods instead of a comprehension
         Village[] villages = [ for (point in map.locations)
-        if (map.baseTerrain(point) == TileType.ocean)
-        for (fixture in map.otherFixtures(point))
+//        if (map.baseTerrain[point] == TileType.ocean) // TODO: syntax sugar once compiler bug fixed
+            if (map.baseTerrain.get(point) == TileType.ocean)
+//        for (fixture in map.fixtures[point])
+        for (fixture in map.fixtures.get(point))
         if (is Village fixture, landRaces.contains(fixture.race))
         fixture ];
-        if (nonempty villages) {
+        if (nonempty villages) { // TODO: Just use !villages.empty
             if (raceList.empty) {
                 while (true) {
                     String race = cli.inputString("Next aquatic race: ").trimmed;
@@ -142,10 +151,11 @@ object todoFixerCLI satisfies SimpleCLIDriver {
         jobList.add(kind);
     }
     "Search for and fix units with kinds missing."
-    void fixAllUnits(IMap map, ICLIHelper cli) {
+    void fixAllUnits(IMapNG map, ICLIHelper cli) {
         for (point in map.locations) {
             SimpleTerrain terrain = getTerrain(map, point);
-            for (fixture in map.otherFixtures(point)) {
+//            for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(point)) {
                 if (is Unit fixture, "TODO" == fixture.kind) {
                     fixUnit(fixture, terrain, cli);
                 }

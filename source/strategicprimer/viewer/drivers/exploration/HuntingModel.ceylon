@@ -11,7 +11,7 @@ import strategicprimer.drivers.exploration.common {
 import strategicprimer.model.map {
     MapDimensions,
     TileType,
-    IMap,
+    IMapNG,
     Point
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -29,15 +29,17 @@ import ceylon.random {
 shared class HuntingModel {
     """The "nothing" value we insert."""
     shared static String noResults = "Nothing ...";
-    "The map to hunt in" IMap map;
-    shared new (IMap map) {
+    "The map to hunt in" IMapNG map;
+    shared new (IMapNG map) {
         this.map = map;
     }
     MapDimensions dimensions = map.dimensions;
     {String*} fishKinds = set {
         for (point in map.locations)
-            if (map.baseTerrain(point) == TileType.ocean)
-                for (fixture in map.otherFixtures(point))
+//            if (map.baseTerrain[point] == TileType.ocean) // TODO: syntax sugar once compiler bug fixed
+            if (map.baseTerrain.get(point) == TileType.ocean)
+//                for (fixture in map.fixtures[point])
+                for (fixture in map.fixtures.get(point))
                     if (is Animal fixture)
                         fixture.kind
     };
@@ -50,7 +52,8 @@ shared class HuntingModel {
     "Plants in the map."
     MutableMap<Point, MutableList<String>> plants = HashMap<Point, MutableList<String>>();
     for (point in map.locations) {
-        for (fixture in map.otherFixtures(point)) {
+//        for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
+        for (fixture in map.fixtures.get(point)) {
             if (is Animal fixture, !fixture.talking, !fixture.traces) {
                 String kind = fixture.kind;
                 MutableList<String> list;
@@ -80,7 +83,8 @@ shared class HuntingModel {
         }
         if (exists plantList = plants.get(point)) {
             Integer length = plantList.size - 1;
-            TileType tileType = map.baseTerrain(point);
+//            TileType tileType = map.baseTerrain[point]; // TODO: syntax sugar once compiler bug fixed
+            TileType tileType = map.baseTerrain.get(point);
             Integer nothings;
             switch (tileType)
             case (TileType.desert|TileType.tundra) { nothings = length * 3; }

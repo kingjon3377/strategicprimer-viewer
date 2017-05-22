@@ -36,8 +36,8 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.model.map {
-    IMap,
-    SPMap,
+    IMapNG,
+    SPMapNG,
     MapDimensionsImpl,
     PlayerCollection
 }
@@ -85,8 +85,8 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
             LabelTextColor color = LabelTextColor.white) {
         label.append("<p style=\"color:``color``\">``paragraph``</p>");
     }
-    variable IMap mainMap = SPMap(MapDimensionsImpl(0, 0, 2), PlayerCollection(), -1);
-    shared void loadMain(IMap|JPath arg) {
+    variable IMapNG mainMap = SPMapNG(MapDimensionsImpl(0, 0, 2), PlayerCollection(), -1);
+    shared void loadMain(IMapNG|JPath arg) {
         if (is JPath path = arg) {
             try {
                 mainMap = readMap(path, warningLevels.ignore);
@@ -111,7 +111,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
                 throw except;
             }
         } else {
-            assert (is IMap arg);
+            assert (is IMapNG arg);
             mainMap = arg;
         }
         printParagraph("""<span style="color:green">OK</span> if strict subset,
@@ -120,7 +120,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
                           reading""");
     }
     "Test a map against the main map, to see if it's a strict subset of it."
-    shared void testMap(IMap map, JPath? file) {
+    shared void testMap(IMapNG map, JPath? file) {
         String filename;
         if (exists file) {
             filename = file.string;
@@ -146,7 +146,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
        file."""
     shared void testFile(JPath path) {
         printParagraph("Testing ``path`` ...");
-        IMap map;
+        IMapNG map;
         try {
             map = readMap(path, warningLevels.ignore);
         } catch (FileNotFoundException|NoSuchFileException except) {

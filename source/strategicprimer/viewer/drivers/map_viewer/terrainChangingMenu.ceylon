@@ -57,7 +57,7 @@ terrainChangingMenu(Integer mapVersion, IViewerModel model) {
                 JMenuItem item = JMenuItem(type.string);
                 add(item);
                 item.addActionListener((ActionEvent event) {
-                    model.map.setBaseTerrain(point, type);
+                    model.map.baseTerrain[point] = type;
                     scs.fireChanges(null, point);
                 });
             }
@@ -73,7 +73,8 @@ terrainChangingMenu(Integer mapVersion, IViewerModel model) {
         shared actual void selectedPointChanged(Point? old, Point newPoint) {
             point = newPoint;
             if (newPoint.valid,
-                TileType.notVisible != model.map.baseTerrain(newPoint)) {
+//                TileType.notVisible != model.map.baseTerrain[newPoint]) { // TODO: syntax sugar once compiler bug fixed
+                TileType.notVisible != model.map.baseTerrain.get(newPoint)) {
                 newUnitItem.enabled = true;
             } else {
                 newUnitItem.enabled = false;

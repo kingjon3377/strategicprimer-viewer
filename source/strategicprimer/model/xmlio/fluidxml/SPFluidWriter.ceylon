@@ -30,7 +30,7 @@ import strategicprimer.model.map {
     HasPortrait,
     IFixture,
     River,
-    IMap,
+    IMapNG,
     TileType,
     pointFactory
 }
@@ -137,7 +137,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             }
         }
     }
-    shared actual void write(Path|Anything(String) arg, IMap map) {
+    shared actual void write(Path|Anything(String) arg, IMapNG map) {
         if (is Path path = arg) {
             File file;
             value res = path.resource;
@@ -253,7 +253,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         }
     }
     void writeMap(XMLStreamWriter ostream, Object obj, Integer indentation) {
-        if (is IMap obj) {
+        if (is IMapNG obj) {
             writeTag(ostream, "view", indentation, false);
             writeAttributes(ostream, "current_player"->obj.currentPlayer.playerId,
                 "current_turn"->obj.currentTurn);
@@ -268,7 +268,8 @@ shared class SPFluidWriter() satisfies SPWriter {
                 variable Boolean rowEmpty = true;
                 for (j in 0:(dimensions.columns)) {
                     Point loc = pointFactory(i, j);
-                    TileType terrain = obj.baseTerrain(loc);
+//                    TileType terrain = obj.baseTerrain[loc]; // TODO: syntax sugar once compiler bug fixed
+                    TileType terrain = obj.baseTerrain.get(loc);
                     if (!obj.locationEmpty(loc)) {
                         if (rowEmpty) {
                             writeTag(ostream, "row", indentation + 2, false);
@@ -281,23 +282,36 @@ shared class SPFluidWriter() satisfies SPWriter {
                             writeAttributes(ostream, "kind"->terrain.xml);
                         }
                         variable Boolean anyContents = false;
-                        if (obj.mountainous(loc)) {
+//                        if (obj.mountainous[loc]) { // TODO: syntax sugar once compiler bug fixed
+                        if (obj.mountainous.get(loc)) {
                             anyContents = true;
                             writeTag(ostream, "mountain", indentation + 4, true);
                         }
-                        for (river in sort(obj.rivers(loc))) {
+//                        for (river in sort(obj.rivers[loc])) {
+                        for (river in sort(obj.rivers.get(loc))) {
                             anyContents = true;
                             writeSPObjectImpl(ostream, river, indentation + 4);
                         }
-                        if (exists ground = obj.ground(loc)) {
+                        // To avoid breaking map-format-conversion tests, and to
+                        // avoid churn in existing maps, put the first Ground and Forest
+                        // before other fixtures.
+//                    Ground? ground = obj.fixtures[loc].narrow<Ground>().first;
+                        Ground? ground = obj.fixtures.get(loc).narrow<Ground>().first;
+                        if (exists ground) {
                             anyContents = true;
                             writeSPObjectImpl(ostream, ground, indentation + 4);
                         }
-                        if (exists forest = obj.forest(loc)) {
+//                    Forest? forest = obj.fixtures[loc].narrow<Forest>().first;
+                        Forest? forest = obj.fixtures.get(loc).narrow<Forest>().first;
+                        if (exists forest) {
                             anyContents = true;
                             writeSPObjectImpl(ostream, forest, indentation + 4);
                         }
-                        for (fixture in obj.otherFixtures(loc)) {
+//                        for (fixture in obj.fixtures[loc]) {
+                        for (fixture in obj.fixtures.get(loc)) {
+                            if ({ground, forest}.coalesced.contains(fixture)) {
+                                continue;
+                            }
                             anyContents = true;
                             writeSPObjectImpl(ostream, fixture, indentation + 4);
                         }
@@ -356,7 +370,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         `Fortress`->writeFortress,
         `Village`->writeVillage,
         `AbstractTown`->writeTown,
-        `IMap`->writeMap,
+        `IMapNG`->writeMap,
         `Player`->writePlayer,
         `CommunityStats`->writeCommunityStats
     };

@@ -60,24 +60,20 @@ import lovelace.util.jvm {
 import strategicprimer.model.map {
     Player,
     TileType,
-    IMutableMap,
+    IMutableMapNG,
     pointFactory,
     TileFixture,
     Point,
-    SPMap,
+    SPMapNG,
     MapDimensionsImpl,
     PlayerCollection,
     PlayerImpl
 }
 import strategicprimer.model.map.fixtures {
-    TextFixture,
-    Ground
+    TextFixture
 }
 import strategicprimer.model.map.fixtures.resources {
     MineralVein
-}
-import strategicprimer.model.map.fixtures.terrain {
-    Forest
 }
 import strategicprimer.model.map.fixtures.towns {
     Town,
@@ -237,19 +233,13 @@ object zeroToOneConverter {
 		ostream(operatingSystem.newline);
 	}
 }
-void initialize(IMutableMap map, Point point, TileType? terrain,
+void initialize(IMutableMapNG map, Point point, TileType? terrain,
 		TileFixture* fixtures) {
 	if (exists terrain, terrain != TileType.notVisible) {
-		map.setBaseTerrain(point, terrain);
+		map.baseTerrain[point] = terrain;
 	}
 	for (fixture in fixtures) {
-		if (is Ground fixture, !map.ground(point) exists) {
-			map.setGround(point, fixture);
-		} else if (is Forest fixture, !map.forest(point) exists) {
-			map.setForest(point, fixture);
-		} else {
-			map.addFixture(point, fixture);
-		}
+		map.addFixture(point, fixture);
 	}
 }
 test
@@ -282,7 +272,7 @@ void testZeroToOneConversion() {
 	SPWriter writer = testReaderFactory.oldWriter;
 	writer.writeSPObject(actualXML.append,
 		readMap(StringReader(ostream.string), warningLevels.ignore));
-	IMutableMap expected = SPMap(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
+	IMutableMapNG expected = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
 	Player player = PlayerImpl(0, "Test Player");
 	expected.addPlayer(player);
 	initialize(expected, pointFactory(0, 0), TileType.tundra,

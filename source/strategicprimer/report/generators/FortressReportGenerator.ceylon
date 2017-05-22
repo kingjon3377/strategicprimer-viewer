@@ -17,7 +17,7 @@ import strategicprimer.model.map {
     Player,
     IFixture,
     River,
-    IMap,
+    IMapNG,
     invalidPoint,
     MapDimensions
 }
@@ -58,20 +58,18 @@ shared class FortressReportGenerator(
             UnitReportGenerator(comp, currentPlayer, dimensions, hq);
     IReportGenerator<FortressMember> memberReportGenerator =
             FortressMemberReportGenerator(comp, currentPlayer, dimensions, hq);
-    String terrain(IMap map, Point point,
+    String terrain(IMapNG map, Point point,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
         StringBuilder builder = StringBuilder();
-        builder.append("Surrounding terrain: ``map.baseTerrain(point)``");
+//        builder.append("Surrounding terrain: ``map.baseTerrain[point]``"); // TODO: syntax sugar once compiler bug fixed
+        builder.append("Surrounding terrain: ``map.baseTerrain.get(point)``");
         variable Boolean unforested = true;
-        if (exists forest = map.forest(point)) {
-            builder.append(", forested with ``forest.kind``");
-            fixtures.remove(forest.id);
-            unforested = false;
-        }
-        if (map.mountainous(point)) {
+//        if (map.mountainous[point]) {
+        if (map.mountainous.get(point)) {
             builder.append(", mountainous");
         }
-        for (fixture in map.otherFixtures(point)) {
+//        for (fixture in map.fixtures[point]) {
+        for (fixture in map.fixtures.get(point)) {
             if (unforested, is Forest fixture) {
                 unforested = false;
                 builder.append(", forested with ``fixture.kind``");
@@ -124,7 +122,7 @@ shared class FortressReportGenerator(
     "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
      this report are removed from the collection."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMap map, Anything(String) ostream, [Fortress, Point]? entry) {
+            IMapNG map, Anything(String) ostream, [Fortress, Point]? entry) {
         if (exists entry) {
             Fortress item = entry.first;
             Point loc = entry.rest.first;
@@ -134,7 +132,8 @@ shared class FortressReportGenerator(
                      <li>Located at ``loc`` ``distCalculator.distanceString(loc)``</li>
                      <li>``terrain(map, loc, fixtures)``</li>
                      ");
-            riversToString(ostream, *map.rivers(loc));
+//            riversToString(ostream, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
+            riversToString(ostream, *map.rivers.get(loc));
             MutableList<IUnit> units = ArrayList<IUnit>();
             MutableList<Implement> equipment = ArrayList<Implement>();
             MutableMap<String, MutableList<ResourcePile>> resources =
@@ -253,7 +252,7 @@ shared class FortressReportGenerator(
      this report are removed from the collection."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMap map, [Fortress, Point]? entry) {
+            IMapNG map, [Fortress, Point]? entry) {
         if (exists entry) {
             Fortress item = entry.first;
             Point loc = entry.rest.first;
@@ -263,7 +262,8 @@ shared class FortressReportGenerator(
             retval.appendNode(SimpleReportNode("Located at ``loc`` ``distCalculator
                 .distanceString(loc)``", loc));
             // This is a no-op if no rivers, so avoid an if
-            riversToNode(loc, retval, *map.rivers(loc));
+//            riversToNode(loc, retval, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
+            riversToNode(loc, retval, *map.rivers.get(loc));
             IReportNode units = ListReportNode("Units on the tile:");
             IReportNode resources = ListReportNode("Resources:", loc);
             MutableMap<String,IReportNode> resourceKinds = HashMap<String,IReportNode>();

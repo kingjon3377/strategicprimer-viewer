@@ -19,11 +19,11 @@ import strategicprimer.viewer.drivers.map_viewer {
 import strategicprimer.model.map {
     Point,
     TileFixture,
-    IMap,
+    IMapNG,
     invalidPoint
 }
 "A button (visually) representing a tile in two maps."
-class DualTileButton(IMap master, IMap subordinate, {FixtureMatcher*} matchers)
+class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matchers)
         extends JButton() {
     Integer margin = 2;
     variable Point localPoint = invalidPoint;

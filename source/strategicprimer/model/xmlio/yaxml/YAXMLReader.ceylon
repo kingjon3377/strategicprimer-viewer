@@ -33,7 +33,7 @@ import strategicprimer.model.idreg {
     IDFactory
 }
 import strategicprimer.model.map {
-    IMutableMap
+    IMutableMapNG
 }
 import strategicprimer.model.xmlio {
     IMapReader,
@@ -75,16 +75,16 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
     "Read a map from a stream."
     throws(`class XMLStreamException`, "on malformed XML")
     throws(`class SPFormatException`, "on SP format problems")
-    shared actual IMutableMap readMapFromStream(
+    shared actual IMutableMapNG readMapFromStream(
             "The file we're reading from" JPath file,
             "The stream to read from" JReader istream,
             "The Warning instance to use for warnings" Warning warner) =>
-                readXML<IMutableMap>(file, istream, warner);
+                readXML<IMutableMapNG>(file, istream, warner);
     "Read a map from XML."
     throws(`class IOException`, "on I/O error")
     throws(`class XMLStreamException`, "on malformed XML")
     throws(`class SPFormatException`, "on SP format problems")
-    shared actual IMutableMap readMap("The file to read from" JPath file,
+    shared actual IMutableMapNG readMap("The file to read from" JPath file,
             "The Warning instance to use for warnings" Warning warner) {
         try (istream = JFiles.newBufferedReader(file)) {
             return readMapFromStream(file, istream, warner);

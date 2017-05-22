@@ -16,11 +16,8 @@ import strategicprimer.model.map {
     TileType,
 	TileFixture,
     HasOwner,
-    IMutableMap,
+    IMutableMapNG,
     Point
-}
-import strategicprimer.model.map.fixtures {
-    Ground
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -28,9 +25,6 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
-}
-import strategicprimer.model.map.fixtures.terrain {
-    Forest
 }
 
 import strategicprimer.drivers.common {
@@ -101,13 +95,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 zero = false;
             }
             for ([map, file] in model.subordinateMaps) {
-                if (is Ground fixture, !map.ground(destPoint) exists) {
-                    map.setGround(destPoint, fixture.copy(false));
-                } else if (is Forest fixture, !map.forest(destPoint) exists) {
-                    map.setForest(destPoint, fixture.copy(false));
-                } else {
-                    map.addFixture(destPoint, fixture.copy(zero));
-                }
+                map.addFixture(destPoint, fixture.copy(zero));
             }
             if (is CacheFixture fixture) {
                 model.map.removeFixture(destPoint, fixture);
@@ -142,9 +130,10 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             return;
         }
         MutableList<TileFixture> constants = ArrayList<TileFixture>();
-        IMutableMap map = model.map;
+        IMutableMapNG map = model.map;
         MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
-        for (fixture in map.allFixtures(destPoint)) {
+//        for (fixture in map.fixtures[destPoint]) { // TODO: syntax sugar once compiler bug fixed
+        for (fixture in map.fixtures.get(destPoint)) {
             if (shouldAlwaysNotice(mover, fixture)) {
                 constants.add(fixture);
             } else if (shouldSometimesNotice(mover, speed, fixture)) {
@@ -152,7 +141,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
         }
         String tracks;
-        if (TileType.ocean == model.map.baseTerrain(destPoint)) {
+//        if (TileType.ocean == model.map.baseTerrain[destPoint]) {
+        if (TileType.ocean == model.map.baseTerrain.get(destPoint)) {
             tracks = huntingModel.fish(destPoint, 1).first else HuntingModel.noResults;
         } else {
             tracks = huntingModel.hunt(destPoint, 1).first else HuntingModel.noResults;
@@ -170,16 +160,18 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
         }
         String mtn;
-        if (map.mountainous(destPoint)) {
+//        if (map.mountainous[destPoint]) { // TODO: syntax sugar once compiler bug fixed
+        if (map.mountainous.get(destPoint)) {
             mtn = "mountainous ";
             for (pair in model.subordinateMaps) {
-                pair.first.setMountainous(destPoint, true);
+                pair.first.mountainous[destPoint] = true;
             }
         } else {
             mtn = "";
         }
         cli.println("The explorer comes to ``destPoint``, a ``mtn``tile with terrain ``
-        map.baseTerrain(destPoint)``");
+//                  map.baseTerrain[destPoint]``");
+                    map.baseTerrain.get(destPoint)``");
         {TileFixture*} noticed = selectNoticed(allFixtures, identity<TileFixture>,
                 mover, speed);
         if (noticed.empty) {

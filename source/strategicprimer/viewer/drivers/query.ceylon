@@ -53,7 +53,7 @@ import strategicprimer.model.map {
     Player,
     HasOwner,
     TileType,
-    IMap,
+    IMapNG,
     TileFixture,
     HasName,
     MapDimensions
@@ -166,14 +166,15 @@ object queryCLI satisfies SimpleDriver {
         return retval;
     }
     "Count the workers belonging to a player."
-    void countWorkers(IMap map, ICLIHelper cli, Player* players) {
+    void countWorkers(IMapNG map, ICLIHelper cli, Player* players) {
         Player[] playerList = [*players];
         value choice = cli.chooseFromList(playerList,
             "Players in the map:", "Map contains no players",
             "Owner of workers to count: ", true);
         if (exists player = choice.item) {
             Integer count = sum { 0, for (location in map.locations)
-                countWorkersInIterable(player, map.otherFixtures(location)) };
+//                countWorkersInIterable(player, map.fixtures[location]) }; // TODO: syntax sugar once compiler bug fixed
+            countWorkersInIterable(player, map.fixtures.get(location)) };
             cli.println("``player.name`` has ``count`` workers");
         }
     }
@@ -311,10 +312,13 @@ object queryCLI satisfies SimpleDriver {
     }
     "Give the data about a tile that the player is supposed to automatically know if he
      has a fortress on it."
-    void fortressInfo(IMap map, Point location, ICLIHelper cli) {
-        cli.println("Terrain is ``map.baseTerrain(location)``");
-        Ground[] ground = map.allFixtures(location).narrow<Ground>().sequence();
-        Forest[] forests = map.allFixtures(location).narrow<Forest>().sequence();
+    void fortressInfo(IMapNG map, Point location, ICLIHelper cli) {
+//        cli.println("Terrain is ``map.baseTerrain[location]``"); // TODO: syntax sugar once compiler bug fixed
+        cli.println("Terrain is ``map.baseTerrain.get(location)``");
+//        Ground[] ground = map.fixtures[location].narrow<Ground>().sequence();
+        Ground[] ground = map.fixtures.get(location).narrow<Ground>().sequence();
+//        Forest[] forests = map.fixtures[location].narrow<Forest>().sequence();
+        Forest[] forests = map.fixtures.get(location).narrow<Forest>().sequence();
         if (nonempty ground) {
             cli.println("Kind(s) of ground (rock) on the tile:");
             for (item in ground) {
@@ -329,14 +333,15 @@ object queryCLI satisfies SimpleDriver {
         }
     }
     "Find the nearest obviously-reachable unexplored location."
-    Point? findUnexplored(IMap map, Point base) {
+    Point? findUnexplored(IMapNG map, Point base) {
         Queue<Point> queue = LinkedList<Point>();
         queue.offer(base);
         MapDimensions dimensions = map.dimensions;
         MutableSet<Point> considered = HashSet<Point>();
         MutableList<Point> retval = ArrayList<Point>();
         while (exists current = queue.accept()) {
-            TileType currentTerrain = map.baseTerrain(current);
+//            TileType currentTerrain = map.baseTerrain[current]; // TODO: syntax sugar once compiler bug fixed
+            TileType currentTerrain = map.baseTerrain.get(current);
             if (considered.contains(current)) {
                 continue;
             } else if (currentTerrain == TileType.notVisible) {

@@ -11,8 +11,8 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.map {
     MapDimensions,
-    SPMap,
-    IMutableMap,
+    SPMapNG,
+    IMutableMapNG,
     PlayerCollection,
     MapDimensionsImpl
 }
@@ -25,17 +25,17 @@ shared class SimpleDriverModel satisfies IDriverModel {
     "The dimensions of the map."
     variable MapDimensions mapDim;
     "The main map."
-    variable IMutableMap mainMap;
+    variable IMutableMapNG mainMap;
     "The filename from which the map was loaded, if known."
     variable JPath? mainMapFile;
-    shared new (IMutableMap map = SPMap(MapDimensionsImpl(-1, -1, -1),
+    shared new (IMutableMapNG map = SPMapNG(MapDimensionsImpl(-1, -1, -1),
             PlayerCollection(), -1), JPath? file = null) {
         mainMap = map;
         mapDim = mainMap.dimensions;
         mainMapFile = file;
     }
     "Set a new main map."
-    shared actual default void setMap(IMutableMap newMap, JPath? origin) {
+    shared actual default void setMap(IMutableMapNG newMap, JPath? origin) {
         for (listener in vcListeners) {
             listener.changeVersion(mapDim.version, newMap.dimensions.version);
         }
@@ -47,7 +47,7 @@ shared class SimpleDriverModel satisfies IDriverModel {
         }
     }
     "The (main) map."
-    shared actual IMutableMap map => mainMap;
+    shared actual IMutableMapNG map => mainMap;
     "The dimensions of the map."
     shared actual MapDimensions mapDimensions => mapDim;
     "The filename from which the map was loaded, if known."

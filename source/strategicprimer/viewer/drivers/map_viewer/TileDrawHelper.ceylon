@@ -3,7 +3,7 @@ import strategicprimer.model.map.fixtures.towns {
 }
 import strategicprimer.model.map {
     Point,
-    IMap
+    IMapNG
 }
 import strategicprimer.model.map.fixtures {
     IEvent
@@ -22,7 +22,7 @@ shared interface TileDrawHelper {
             "The graphics context"
             Graphics pen,
             "The map to draw a tile from"
-            IMap map,
+            IMapNG map,
             "The (location of the) tile to draw"
             Point location,
             "The width of the drawing area (i.e. how wide to draw the tile)"
@@ -34,7 +34,7 @@ shared interface TileDrawHelper {
             "The graphics context"
             Graphics pen,
             "The map to draw a tile from"
-            IMap map,
+            IMapNG map,
             "The (location of the) tile to draw"
             Point location,
             "The coordinates of the tile's upper-left corner."
@@ -43,11 +43,14 @@ shared interface TileDrawHelper {
             Coordinate dimensions);
 }
 "Whether the given map has any fortresses at the given location."
-Boolean hasAnyForts(IMap map, Point location) =>
-        !map.otherFixtures(location).narrow<Fortress>().empty;
+Boolean hasAnyForts(IMapNG map, Point location) =>
+//        !map.fixtures[location].narrow<Fortress>().empty; // TODO: syntax sugar once compiler bug fixed
+        !map.fixtures.get(location).narrow<Fortress>().empty;
 "Whether the given map has any units at the given location."
-Boolean hasAnyUnits(IMap map, Point location) =>
-        !map.otherFixtures(location).narrow<IUnit>().empty;
+Boolean hasAnyUnits(IMapNG map, Point location) =>
+//        !map.fixtures[location].narrow<IUnit>().empty;
+        !map.fixtures.get(location).narrow<IUnit>().empty;
 """Whether the given map has any "events" at the given location."""
-Boolean hasEvent(IMap map, Point location) =>
-        !map.allFixtures(location).narrow<IEvent>().empty;
+Boolean hasEvent(IMapNG map, Point location) =>
+//        !map.fixtures[location].narrow<IEvent>().empty;
+        !map.fixtures.get(location).narrow<IEvent>().empty;

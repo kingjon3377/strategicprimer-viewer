@@ -19,11 +19,11 @@ import strategicprimer.model.map {
     Point,
     River,
     TileType,
-    IMutableMap,
+    IMutableMapNG,
     pointFactory,
-    IMap,
+    IMapNG,
     PlayerCollection,
-    SPMap,
+    SPMapNG,
     MapDimensionsImpl,
     PlayerImpl,
     TileFixture
@@ -50,7 +50,7 @@ import ceylon.random {
     randomize
 }
 "A utility to convert a map to an equivalent half-resolution one."
-shared IMap decreaseResolution(IMap old) {
+shared IMapNG decreaseResolution(IMapNG old) {
 	if (old.dimensions.rows % 2 != 0 || old.dimensions.columns %2 != 0) {
 		throw IllegalArgumentException(
 			"Can only convert maps with even numbers of rows and columns");
@@ -61,7 +61,7 @@ shared IMap decreaseResolution(IMap old) {
 	}
 	Integer newColumns = old.dimensions.columns / 2;
 	Integer newRows = old.dimensions.rows / 2;
-	IMutableMap retval = SPMap(MapDimensionsImpl(newRows, newColumns, 2), players,
+	IMutableMapNG retval = SPMapNG(MapDimensionsImpl(newRows, newColumns, 2), players,
 		old.currentTurn);
 	TileType consensus([TileType+] types) {
 		value counted = types.frequencies().map((type->count) => [count, type])
@@ -88,38 +88,30 @@ shared IMap decreaseResolution(IMap old) {
 				pointFactory(row * 2, (column * 2) + 1),
 				pointFactory((row * 2) + 1, column * 2),
 				pointFactory((row * 2) + 1, (column * 2) + 1) ];
-			retval.setBaseTerrain(point,
-				consensus([ *subPoints.map(old.baseTerrain) ]));
+			retval.baseTerrain[point] =
+//				consensus([ *subPoints.map((location) => old.baseTerrain[location]) ]); // TODO: syntax sugar once compiler bug fixed
+				consensus([ *subPoints.map((location) => old.baseTerrain.get(location)) ]);
 			for (oldPoint in subPoints) {
-				if (old.mountainous(oldPoint)) {
-					retval.setMountainous(point, true);
+				if (exists mtn = old.mountainous[oldPoint], mtn) {
+					retval.mountainous[point] = true;
 				}
-				if (exists ground = old.ground(oldPoint)) {
-					if (retval.ground(point) exists) {
-						retval.addFixture(point, ground);
-					} else {
-						retval.setGround(point, ground);
-					}
-				}
-				if (exists forest = old.forest(oldPoint)) {
-					if (retval.forest(point) exists) {
-						retval.addFixture(point, forest);
-					} else {
-						retval.setForest(point, forest);
-					}
-				}
-				for (fixture in old.otherFixtures(oldPoint)) {
+//				for (fixture in old.fixtures[oldPoint]) {
+				for (fixture in old.fixtures.get(oldPoint)) {
 					retval.addFixture(point, fixture);
 				}
 			}
 			MutableSet<River> upperLeftRivers = HashSet<River> {
-				*old.rivers(subPoints[0]) };
+//				*old.rivers[subPoints[0]] }; // TODO: syntax sugar once compiler bug fixed
+				*old.rivers.get(subPoints[0]) };
 			MutableSet<River> upperRightRivers = HashSet<River> {
-				*old.rivers(subPoints[1]) };
+//				*old.rivers[subPoints[1]] };
+				*old.rivers.get(subPoints[1]) };
 			MutableSet<River> lowerLeftRivers =HashSet<River> {
-				*old.rivers(subPoints[2]) };
+//				*old.rivers[subPoints[2]] };
+				*old.rivers.get(subPoints[2]) };
 			MutableSet<River> lowerRightRivers = HashSet<River> {
-				*old.rivers(subPoints[3]) };
+//				*old.rivers[subPoints[3]] };
+				*old.rivers.get(subPoints[3]) };
 			upperLeftRivers.removeAll({River.east, River.south});
 			upperRightRivers.removeAll({River.west, River.south});
 			lowerLeftRivers.removeAll({River.east, River.north});
@@ -131,24 +123,18 @@ shared IMap decreaseResolution(IMap old) {
 	}
 	return retval;
 }
-void initialize(IMutableMap map, Point point, TileType? terrain,
+void initialize(IMutableMapNG map, Point point, TileType? terrain,
 		TileFixture* fixtures) {
 	if (exists terrain, terrain != TileType.notVisible) {
-		map.setBaseTerrain(point, terrain);
+		map.baseTerrain[point] = terrain;
 	}
 	for (fixture in fixtures) {
-		if (is Ground fixture, !map.ground(point) exists) {
-			map.setGround(point, fixture);
-		} else if (is Forest fixture, !map.forest(point) exists) {
-			map.setForest(point, fixture);
-		} else {
-			map.addFixture(point, fixture);
-		}
+		map.addFixture(point, fixture);
 	}
 }
 test
 void testResolutionReduction() {
-	IMutableMap start = SPMap(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
+	IMutableMapNG start = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
 	Animal fixture = Animal("animal", false, true, "domesticated", 1);
 	initialize(start, pointFactory(0, 0), TileType.desert, fixture);
 	CacheFixture fixtureTwo = CacheFixture("gemstones", "small", 2);
@@ -158,19 +144,20 @@ void testResolutionReduction() {
 	Fortress fixtureFour = Fortress(PlayerImpl(1, "B. Player"), "HQ", 4, TownSize.small);
 	initialize(start, pointFactory(1, 1), TileType.plains, fixtureFour);
 
-	IMap converted = decreaseResolution(start);
+	IMapNG converted = decreaseResolution(start);
 	Point zeroPoint = pointFactory(0, 0);
-	assertTrue(converted.otherFixtures(zeroPoint)
+//	assertTrue(converted.fixtures[zeroPoint] // TODO: syntax sugar once compiler bug fixed
+	assertTrue(converted.fixtures.get(zeroPoint)
 		.containsEvery({fixture, fixtureTwo, fixtureThree, fixtureFour}),
 		"Combined tile should contain fixtures from all four original tiles");
-	assertEquals(converted.baseTerrain(zeroPoint), TileType.desert,
+	assertEquals(converted.baseTerrain[zeroPoint], TileType.desert,
 		"Combined tile has type of most of input tiles");
 }
 test
 void testMoreReduction() {
-	IMutableMap start = SPMap(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
+	IMutableMapNG start = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
 	Point pointOne = pointFactory(0, 0);
-	start.setMountainous(pointOne, true);
+	start.mountainous[pointOne] = true;
 	start.addRivers(pointOne, River.east, River.south);
 	Ground groundOne = Ground(-1, "groundOne", false);
 	initialize(start, pointOne, TileType.steppe, groundOne);
@@ -185,28 +172,34 @@ void testMoreReduction() {
 	Forest forestTwo = Forest("forestTwo", false, 2);
 	initialize(start, pointFour, TileType.desert, forestTwo);
 
-	IMap converted = decreaseResolution(start);
+	IMapNG converted = decreaseResolution(start);
 	Point zeroPoint = pointFactory(0, 0);
-	assertTrue(converted.mountainous(zeroPoint),
+//	assertTrue(converted.mountainous[zeroPoint], // TODO: syntax sugar once compiler bug fixed
+	assertTrue(converted.mountainous.get(zeroPoint),
 		"One mountainous point makes the reduced point mountainous");
-	assertEquals(converted.ground(zeroPoint), groundOne, "Ground carries over");
-	assertEquals(converted.forest(zeroPoint), forestOne, "Forest carries over");
-	assertTrue(converted.otherFixtures(zeroPoint)
+	assertEquals(converted.fixtures[zeroPoint]?.narrow<Ground>()?.first, groundOne,
+		"Ground carries over");
+	assertEquals(converted.fixtures[zeroPoint]?.narrow<Forest>()?.first, forestOne,
+		"Forest carries over");
+//	assertTrue(converted.fixtures[zeroPoint]
+	assertTrue(converted.fixtures.get(zeroPoint)
 		.containsEvery({groundTwo, forestTwo}),
 		"Ground and forest carry over even when already set");
-	assertTrue(converted.rivers(zeroPoint)
+//	assertTrue(converted.rivers[zeroPoint]
+	assertTrue(converted.rivers.get(zeroPoint)
 		.containsEvery({River.lake, River.north}),
 		"Non-interior rivers carry over");
-	assertFalse(converted.rivers(zeroPoint).containsAny({River.east, River.south}),
+//	assertFalse(converted.rivers[zeroPoint].containsAny({River.east, River.south}),
+	assertFalse(converted.rivers.get(zeroPoint).containsAny({River.east, River.south}),
 		"Interior rivers do not carry over");
-	assertEquals(converted.baseTerrain(zeroPoint), TileType.steppe,
+	assertEquals(converted.baseTerrain[zeroPoint], TileType.steppe,
 		"Combined tile has most common terrain type among inputs");
 }
 test
 void testResolutionDecreaseRequirement() {
 	// TODO: Uncomment hasType() once Ceylon tooling bug fixed
 	assertThatException(
-				() => decreaseResolution(SPMap(MapDimensionsImpl(3, 3, 2),
+				() => decreaseResolution(SPMapNG(MapDimensionsImpl(3, 3, 2),
 			PlayerCollection(), -1)))
 		/*.hasType(`IllegalArgumentException`)*/;
 }

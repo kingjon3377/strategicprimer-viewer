@@ -141,7 +141,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         }
         if (exists result = PointIterator(model.mapDimensions, !backwards.selected,
                 !vertically.selected, model.selection).find(
-                    (point) => model.map.allFixtures(point).any(
+//                    (point) => model.map.fixtures[point].any( // TODO: syntax sugar once compiler bug fixed
+                    (point) => model.map.fixtures.get(point).any(
                         (fixture) => matches(pattern, idNum, fixture,
                             caseSensitivity)))) {
             log.info("Found in point ``result``");
@@ -194,10 +195,11 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             }
         }
         for (point in model.map.locations) {
-            if (!model.map.rivers(point).empty) {
+//            if (!model.map.rivers[point].empty) { // TODO: syntax sugar once compiler bug fixed
+            if (!model.map.rivers.get(point).empty) {
                 populate(RiverFixture());
             }
-            populate(model.map.allFixtures(point));
+            populate(model.map.fixtures[point]);
         }
     });
     JScrollPane scrollPane;

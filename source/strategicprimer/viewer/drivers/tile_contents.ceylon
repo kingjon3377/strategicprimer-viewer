@@ -15,7 +15,7 @@ import java.nio.file {
 import strategicprimer.model.map {
     pointFactory,
     TileType,
-    IMap,
+    IMapNG,
     Point
 }
 import ceylon.math.float {
@@ -34,7 +34,7 @@ import strategicprimer.drivers.exploration.old {
 }
 "A class to non-interactively generate a tile's contents."
 todo("Figure out how to run the Ceylon version repeatedly on a single JVM")
-class TileContentsGenerator(IMap map) {
+class TileContentsGenerator(IMapNG map) {
     ExplorationRunner runner = ExplorationRunner();
     if (is Directory directory = parsePath("tables").resource) {
         loadAllTables(directory, runner);
@@ -43,11 +43,13 @@ class TileContentsGenerator(IMap map) {
             "Tile-contents generator requires a tables directory");
     }
     shared void generateTileContents(Point point,
-            TileType terrain = map.baseTerrain(point)) {
+//            TileType terrain = map.baseTerrain[point]) { // TODO: syntax sugar once compiler bug fixed
+            TileType terrain = map.baseTerrain.get(point)) {
         Integer reps = (random() * 4).integer + 1;
         for (i in 0:reps) {
             process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
-                map.mountainous(point), {}, map.dimensions));
+//                map.mountainous[point], {}, map.dimensions));
+                map.mountainous.get(point), {}, map.dimensions));
         }
     }
 }

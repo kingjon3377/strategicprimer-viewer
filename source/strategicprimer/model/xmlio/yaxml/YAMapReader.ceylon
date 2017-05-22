@@ -29,22 +29,19 @@ import strategicprimer.model.map {
     River,
     IMutablePlayerCollection,
     TileFixture,
-    IMutableMap,
-    IMap,
+    IMutableMapNG,
+    IMapNG,
     TileType,
     invalidPoint,
     pointFactory,
     MapDimensions,
     MapDimensionsImpl,
-    SPMap
+    SPMapNG
 }
 import strategicprimer.model.map.fixtures {
     TextFixture,
     RiverFixture,
     Ground
-}
-import strategicprimer.model.map.fixtures.terrain {
-    Forest
 }
 import strategicprimer.model.xmlio {
     Warning,
@@ -56,11 +53,14 @@ import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException,
     UnsupportedTagException
 }
+import strategicprimer.model.map.fixtures.terrain {
+    Forest
+}
 "A reader for Strategic Primer maps."
 class YAMapReader("The Warning instance to use" Warning warner,
         "The factory for ID numbers" IDRegistrar idRegistrar,
         "The map's collection of players" IMutablePlayerCollection players)
-        extends YAAbstractReader<IMap>(warner, idRegistrar) {
+        extends YAAbstractReader<IMapNG>(warner, idRegistrar) {
     "The reader for players"
     YAReader<Player> playerReader = YAPlayerReader(warner, idRegistrar);
     "The readers we'll try sub-tags on"
@@ -72,27 +72,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
         YAPortalReader(warner, idRegistrar), YAExplorableReader(warner, idRegistrar),
         YAUnitReader(warner, idRegistrar, players) };
     "Add a fixture to a point in a map, accounting for the special cases."
-    void addFixture(IMutableMap map, Point point, TileFixture fixture) {
-        if (is Ground fixture) {
-            if (exists oldGround = map.ground(point)) {
-                if (fixture.exposed, !oldGround.exposed) {
-                    map.setGround(point, fixture);
-                    map.addFixture(point, oldGround);
-                } else if (fixture != oldGround) {
-                    map.addFixture(point, fixture);
-                }
-            } else {
-                map.setGround(point, fixture);
-            }
-        } else if (is Forest fixture) {
-            if (exists oldForest = map.forest(point)) {
-                if (oldForest != fixture) {
-                    map.addFixture(point, fixture);
-                }
-            } else {
-                map.setForest(point, fixture);
-            }
-        } else if (is RiverFixture fixture) {
+    void addFixture(IMutableMapNG map, Point point, TileFixture fixture) {
+        if (is RiverFixture fixture) {
             // We shouldn't get here, since our parser doesn't use them, but I don't want
             // to lose data if I change that and forget to update its callers
             map.addRivers(point, *fixture);
@@ -155,7 +136,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         }
     }
     "Read a map from XML."
-    shared actual IMutableMap read(StartElement element, QName parent,
+    shared actual IMutableMapNG read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "map", "view");
         Integer currentTurn;
@@ -177,7 +158,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         Stack<QName> tagStack = LinkedList<QName>();
         tagStack.push(element.name);
         tagStack.push(mapTag.name);
-        IMutableMap retval = SPMap(dimensions, players, currentTurn);
+        IMutableMapNG retval = SPMapNG(dimensions, players, currentTurn);
         variable Point point = invalidPoint; // TODO: Use Point? instead?
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
@@ -202,7 +183,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                         value kind = TileType.parse(getParamWithDeprecatedForm(event,
                             "kind", "type"));
                         if (is TileType kind) {
-                            retval.setBaseTerrain(point, kind);
+                            retval.baseTerrain[point] = kind;
                         } else {
                             warner.handle(MissingPropertyException(event, "kind", kind));
                         }
@@ -222,7 +203,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     spinUntilEnd(event.name, stream);
                 } else if ("mountain" == type) {
                     tagStack.push(event.name);
-                    retval.setMountainous(point, true);
+                    retval.mountainous[point] = true;
                 } else {
                     assert (exists top = tagStack.top);
                     addFixture(retval, point, parseFixture(event, top, stream));
@@ -268,7 +249,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         }
     }
     "Write a map."
-    shared actual void write(Anything(String) ostream, IMap obj, Integer tabs) {
+    shared actual void write(Anything(String) ostream, IMapNG obj, Integer tabs) {
         writeTag(ostream, "view", tabs);
         writeProperty(ostream, "current_player", obj.currentPlayer.playerId);
         writeProperty(ostream, "current_turn", obj.currentTurn);
@@ -286,7 +267,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
             variable Boolean rowEmpty = true;
             for (j in 0:(dimensions.columns)) {
                 Point loc = pointFactory(i, j);
-                TileType terrain = obj.baseTerrain(loc);
+//                TileType terrain = obj.baseTerrain[loc]; // TODO: syntax sugar once compiler bug fixed
+                TileType terrain = obj.baseTerrain.get(loc);
                 if (!obj.locationEmpty(loc)) {
                     if (rowEmpty) {
                         rowEmpty = false;
@@ -302,28 +284,41 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     }
                     ostream(">");
                     variable Boolean needEol = true;
-                    if (obj.mountainous(loc)) {
+//                    if (obj.mountainous[loc]) { // TODO: syntax sugar once compiler bug fixed
+                    if (obj.mountainous.get(loc)) {
                         eolIfNeeded(true, ostream);
                         needEol = false;
                         writeTag(ostream, "mountain", tabs + 4);
                         closeLeafTag(ostream);
                     }
-                    for (river in sort(obj.rivers(loc))) {
+//                    for (river in sort(obj.rivers[loc])) {
+                    for (river in sort(obj.rivers.get(loc))) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeRiver(ostream, river, tabs + 4);
                     }
-                    if (exists ground = obj.ground(loc)) {
+                    // To avoid breaking map-format-conversion tests, and to
+                    // avoid churn in existing maps, put the first Ground and Forest
+                    // before other fixtures.
+//                    Ground? ground = obj.fixtures[loc].narrow<Ground>().first;
+                    Ground? ground = obj.fixtures.get(loc).narrow<Ground>().first;
+                    if (exists ground) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeChild(ostream, ground, tabs + 4);
                     }
-                    if (exists forest = obj.forest(loc)) {
+//                    Forest? forest = obj.fixtures[loc].narrow<Forest>().first;
+                    Forest? forest = obj.fixtures.get(loc).narrow<Forest>().first;
+                    if (exists forest) {
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeChild(ostream, forest, tabs + 4);
                     }
-                    for (fixture in obj.otherFixtures(loc)) {
+//                    for (fixture in obj.fixtures[loc]) {
+                    for (fixture in obj.fixtures.get(loc)) {
+                        if ({ground, forest}.coalesced.contains(fixture)) {
+                            continue;
+                        }
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeChild(ostream, fixture, tabs + 4);
@@ -343,5 +338,5 @@ class YAMapReader("The Warning instance to use" Warning warner,
     }
     shared actual Boolean isSupportedTag(String tag) =>
             {"map", "view"}.contains(tag.lowercased);
-    shared actual Boolean canWrite(Object obj) => obj is IMap;
+    shared actual Boolean canWrite(Object obj) => obj is IMapNG;
 }

@@ -13,7 +13,7 @@ import strategicprimer.model {
 import strategicprimer.model.map {
     Point,
     IFixture,
-    IMap,
+    IMapNG,
     invalidPoint,
     MapDimensions
 }
@@ -37,7 +37,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      note is specified, this does *not* remove it from the collection, because this
      method doesn't know the synthetic ID # that was assigned to it."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMap map, Anything(String) ostream, [TextFixture, Point]? entry) {
+            IMapNG map, Anything(String) ostream, [TextFixture, Point]? entry) {
         if (exists entry) {
             TextFixture item = entry.first;
             Point loc = entry.rest.first;
@@ -80,7 +80,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      ID # that was assigned to it."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMap map, [TextFixture, Point]? entry) {
+            IMapNG map, [TextFixture, Point]? entry) {
         if (exists entry) {
             TextFixture item = entry.first;
             Point loc = entry.rest.first;

@@ -25,7 +25,7 @@ import strategicprimer.model {
 }
 import strategicprimer.model.map {
     Point,
-    IMap,
+    IMapNG,
     invalidPoint,
     IFixture,
     Player,
@@ -58,7 +58,7 @@ shared class ExplorableReportGenerator(
     "Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
      hook, or the report on all such."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
-            IMap map, Anything(String) ostream, [ExplorableFixture, Point]? entry) {
+            IMapNG map, Anything(String) ostream, [ExplorableFixture, Point]? entry) {
         if (exists entry) {
             ExplorableFixture item = entry.first;
             Point loc = entry.rest.first;
@@ -134,7 +134,7 @@ shared class ExplorableReportGenerator(
     "Produces a more verbose sub-report on a cave or battlefield, or the report section on
      all such."
     shared actual IReportNode produceRIR(DRMap<Integer, [Point, IFixture]> fixtures,
-            IMap map, [ExplorableFixture, Point]? entry) {
+            IMapNG map, [ExplorableFixture, Point]? entry) {
         if (exists entry) {
             ExplorableFixture item = entry.first;
             Point loc = entry.rest.first;

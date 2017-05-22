@@ -13,7 +13,7 @@ import strategicprimer.model {
 import strategicprimer.model.map {
     Point,
     IFixture,
-    IMap,
+    IMapNG,
     invalidPoint,
     MapDimensions
 }
@@ -72,7 +72,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
      paragraph or bullet point), or on all workers (should never be called, but we'll
      implement properly anyway)."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMap map, Anything(String) ostream, [IWorker, Point]? entry) {
+            IMapNG map, Anything(String) ostream, [IWorker, Point]? entry) {
         if (exists entry) {
             IWorker worker = entry.first;
             ostream("``worker.name``, a ``worker.race``.");
@@ -125,7 +125,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
      that, but we'll implement it properly anyway)."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMap map, [IWorker, Point]? entry) {
+            IMapNG map, [IWorker, Point]? entry) {
         if (exists entry) {
             IWorker worker = entry.first;
             Point loc = entry.rest.first;

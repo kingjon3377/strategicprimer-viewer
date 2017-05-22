@@ -18,7 +18,7 @@ import strategicprimer.model.map.fixtures.towns {
 }
 import strategicprimer.model.map {
     Point,
-    IMap,
+    IMapNG,
     IFixture,
     TileType,
     HasKind
@@ -60,6 +60,9 @@ import strategicprimer.drivers.exploration.old {
     ExplorationRunner,
     loadTable
 }
+import strategicprimer.model.map.fixtures.terrain {
+    Forest
+}
 "A driver to let the user enter or generate 'stats' for towns."
 object townGeneratingCLI satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -83,9 +86,10 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
     }
     ExplorationRunner runner = initializeRunner();
     "The (for now active) towns in the given map that don't have 'stats' yet."
-    {<Point->ModifiableTown>*} unstattedTowns(IMap map) => {
+    {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) => {
         for (loc in map.locations)
-            for (fixture in map.otherFixtures(loc))
+//            for (fixture in map.fixtures[loc]) // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(loc))
                 if (is ModifiableTown fixture, fixture.status == TownStatus.active)
                     loc->fixture };
     void assignStatsToTown(ModifiableTown town, CommunityStats stats) {
@@ -95,20 +99,23 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
             town.population = stats;
         }
     }
-    void assignStatsInMap(IMap map, Point location, Integer townId,
+    void assignStatsInMap(IMapNG map, Point location, Integer townId,
             CommunityStats stats) {
-        for (item in map.otherFixtures(location)
+//        for (item in map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
+        for (item in map.fixtures.get(location)
                 .narrow<ModifiableTown>()
                 .filter((item) => item.id == townId)) {
             assignStatsToTown(item, stats);
         }
     }
-    IFixture? findByID(IMap map, Integer id) => map.locations
-        .flatMap((loc) => map.allFixtures(loc))
+    IFixture? findByID(IMapNG map, Integer id) => map.locations
+//        .flatMap((loc) => map.fixtures[loc])
+        .flatMap((loc) => map.fixtures.get(loc))
         .find((fix) => fix.id == id);
-    Point? findLocById(IMap map, Integer id) {
+    Point? findLocById(IMapNG map, Integer id) {
         for (location in map.locations) {
-            for (fixture in map.allFixtures(location)) {
+//            for (fixture in map.fixtures[location]) {
+            for (fixture in map.fixtures.get(location)) {
                 if (fixture.id == id) {
                     return location;
                 }
@@ -116,11 +123,12 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
         }
         return null;
     }
-    Boolean isClaimedField(IMap map, Integer id) => map.locations
-        .flatMap((loc) => map.otherFixtures(loc)).narrow<ITownFixture>()
+    Boolean isClaimedField(IMapNG map, Integer id) => map.locations
+//        .flatMap((loc) => map.fixtures[loc]).narrow<ITownFixture>() // TODO: syntax sugar once compiler bug fixed
+        .flatMap((loc) => map.fixtures.get(loc)).narrow<ITownFixture>()
         .map(ITownFixture.population).coalesced
         .flatMap(CommunityStats.workedFields).contains(id);
-    Boolean isUnclaimedField(IMap map, Integer id) =>
+    Boolean isUnclaimedField(IMapNG map, Integer id) =>
             !isClaimedField(map, id) && findByID(map, id) is HarvestableFixture;
     Boolean bothOrNeitherOcean(TileType one, TileType two) =>
             (one == TileType.ocean) then two == TileType.ocean else two != TileType.ocean;
@@ -145,14 +153,17 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
             return true;
         }
     }
-    {HarvestableFixture*} findNearestFields(IMap map, Point location) {
-        TileType base = map.baseTerrain(location);
+    {HarvestableFixture*} findNearestFields(IMapNG map, Point location) {
+//        TileType base = map.baseTerrain[location]; // TODO: syntax sugar once compiler bug fixed
+        TileType base = map.baseTerrain.get(location);
         return surroundingPointIterable(location, map.dimensions, 10).distinct
-            .filter((point) => bothOrNeitherOcean(base, map.baseTerrain(point)))
-            .flatMap((point) => map.allFixtures(point)).narrow<HarvestableFixture>()
+//            .filter((point) => bothOrNeitherOcean(base, map.baseTerrain[point]))
+            .filter((point) => bothOrNeitherOcean(base, map.baseTerrain.get(point)))
+//            .flatMap((point) => map.fixtures[point]).narrow<HarvestableFixture>()
+            .flatMap((point) => map.fixtures.get(point)).narrow<HarvestableFixture>()
             .filter(isReallyClaimable);
     }
-    CommunityStats enterStats(ICLIHelper cli, IDRegistrar idf, IMap map, Point location, ModifiableTown town) {
+    CommunityStats enterStats(ICLIHelper cli, IDRegistrar idf, IMapNG map, Point location, ModifiableTown town) {
         CommunityStats retval = CommunityStats(cli.inputNumber("Population: "));
         cli.println("Now enter Skill levels, the highest in the community for each Job.");
         cli.println("(Empty to end.)");
@@ -186,8 +197,10 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
             if (isClaimedField(map, field)) {
                 cli.println("That field is already worked by another town");
             } else if (exists fieldLoc = findLocById(map, field)) {
-                if (!bothOrNeitherOcean(map.baseTerrain(location), map.baseTerrain(fieldLoc))) {
-                    if (map.baseTerrain(location) == TileType.ocean) {
+//                if (!bothOrNeitherOcean(map.baseTerrain[location], map.baseTerrain[fieldLoc])) { // TODO: syntax sugar once compiler bug fixed
+                if (!bothOrNeitherOcean(map.baseTerrain.get(location), map.baseTerrain.get(fieldLoc))) {
+//                    if (map.baseTerrain[location] == TileType.ocean) {
+                    if (map.baseTerrain.get(location) == TileType.ocean) {
                         cli.println(
                             "That would be a land resource worked by an aquatic town.");
                     } else {
@@ -252,7 +265,7 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
         assert (is HasKind fixture);
         return fixture.kind;
     }
-    CommunityStats generateStats(IDRegistrar idf, Point location, ModifiableTown town, IMap map) {
+    CommunityStats generateStats(IDRegistrar idf, Point location, ModifiableTown town, IMapNG map) {
         Random rng = DefaultRandom(town.id);
         Integer roll(Integer die) => rng.nextInteger(die) + 1;
         Integer repeatedlyRoll(Integer count, Integer die, Integer addend = 0) {
@@ -295,19 +308,24 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
         }
         CommunityStats retval = CommunityStats(population);
         String skillTable;
-        if (map.baseTerrain(location) == TileType.ocean) {
+//        if (map.baseTerrain[location] == TileType.ocean) { // TODO: syntax sugar once compiler bug fixed
+        if (map.baseTerrain.get(location) == TileType.ocean) {
             skillTable = "ocean_skills";
-        } else if (map.mountainous(location)) {
+//        } else if (map.mountainous[location]) {
+        } else if (map.mountainous.get(location)) {
             skillTable = "mountain_skills";
-        } else if (map.forest(location) exists) {
+//        } else if (map.fixtures[location]?.narrow<Forest>().first exists) {
+        } else if (map.fixtures.get(location).narrow<Forest>().first exists) {
             skillTable = "forest_skills";
         } else {
             skillTable = "plains_skills";
         }
         for (i in 0:skillCount) {
             String skill = runner.recursiveConsultTable(skillTable, location,
-                map.baseTerrain(location), map.mountainous(location),
-                map.allFixtures(location), map.dimensions);
+//                map.baseTerrain[location], map.mountainous[location],
+                map.baseTerrain.get(location), map.mountainous.get(location),
+//                map.fixtures[location], map.dimensions);
+                map.fixtures.get(location), map.dimensions);
             Integer level = skillLevelSource();
             if ((retval.highestSkillLevels.get(skill) else 0) < level) {
                 retval.setSkillLevel(skill, level);

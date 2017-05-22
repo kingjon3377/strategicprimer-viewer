@@ -3,7 +3,7 @@ import java.io {
 }
 
 import strategicprimer.model.map {
-    IMap
+    IMapNG
 }
 import strategicprimer.model.xmlio {
     SPWriter
@@ -39,5 +39,5 @@ shared object yaXMLWriter satisfies SPWriter {
     "Write a map to a file or stream."
     throws(`class IOException`, "on I/O error")
     shared actual void write("The file to write to." Path|Anything(String) arg,
-            "The map to write." IMap map) => writeSPObject(arg, map);
+            "The map to write." IMapNG map) => writeSPObject(arg, map);
 }

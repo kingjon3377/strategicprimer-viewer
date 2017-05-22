@@ -16,10 +16,10 @@ import strategicprimer.model.idreg {
 }
 import strategicprimer.model.map {
     Player,
-    IMutableMap,
+    IMutableMapNG,
     TileType,
     TileFixture,
-    IMap,
+    IMapNG,
     HasOwner,
     Point
 }
@@ -52,6 +52,9 @@ import strategicprimer.drivers.exploration.common {
 import ceylon.random {
     randomize
 }
+import strategicprimer.model.map.fixtures.terrain {
+    Forest
+}
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""
 object expansionDriver satisfies SimpleCLIDriver {
@@ -68,12 +71,13 @@ object expansionDriver satisfies SimpleCLIDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
-            IMap master = model.map;
+            IMapNG master = model.map;
             for (pair in model.subordinateMaps) {
-                IMutableMap map = pair.first;
+                IMutableMapNG map = pair.first;
                 Player currentPlayer = map.currentPlayer;
                 Boolean containsSwornVillage(Point point) {
-                    for (fixture in map.otherFixtures(point)) {
+//                    for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
+                    for (fixture in map.fixtures.get(point)) {
                         if (is ITownFixture fixture, currentPlayer == fixture.owner) {
                             return true;
                         }
@@ -95,24 +99,23 @@ object expansionDriver satisfies SimpleCLIDriver {
                     if (containsSwornVillage(point)) {
                         for (neighbor in surroundingPointIterable(point,
                                 map.dimensions)) {
-                            if (map.baseTerrain(neighbor) == TileType.notVisible) {
-                                map.setBaseTerrain(neighbor,
-                                    master.baseTerrain(neighbor));
-                                if (master.mountainous(neighbor)) {
-                                    map.setMountainous(neighbor, true);
+//                            if (map.baseTerrain[neighbor] == TileType.notVisible) { // TODO: syntax sugar once compiler bug fixed
+                            if (map.baseTerrain.get(neighbor) == TileType.notVisible) {
+                                map.baseTerrain[neighbor] =
+//                                    master.baseTerrain[neighbor];
+                                    master.baseTerrain.get(neighbor);
+//                                if (master.mountainous[neighbor]) {
+                                if (master.mountainous.get(neighbor)) {
+                                    map.mountainous[neighbor] = true;
                                 }
                             }
                             MutableList<TileFixture> possibilities =
                                     ArrayList<TileFixture>();
-                            if (exists ground = master.ground(neighbor)) {
-                                possibilities.add(ground);
-                            }
-                            if (exists forest = master.forest(neighbor)) {
-                                possibilities.add(forest);
-                            }
-                            for (fixture in master.otherFixtures(neighbor)) {
+//                            for (fixture in master.fixtures[neighbor]) {
+                            for (fixture in master.fixtures.get(neighbor)) {
                                 if (fixture is CacheFixture ||
-                                        map.otherFixtures(neighbor)
+//                                        map.fixtures[neighbor]
+                                        map.fixtures.get(neighbor)
                                             .contains(fixture)) {
                                     continue;
                                 } else if (shouldAlwaysNotice(mock, fixture)) {
@@ -153,11 +156,14 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
     variable Integer changedCount = 0;
     "The first method to customize for each use: whether a point is suitable for the
      kind of fixture we're creating."
-    Boolean isSuitable(IMap map, Point location) {
-        TileType terrain = map.baseTerrain(location);
+    Boolean isSuitable(IMapNG map, Point location) {
+//        TileType terrain = map.baseTerrain[location]; // TODO: syntax sugar once compiler bug fixed
+        TileType terrain = map.baseTerrain.get(location);
         // Hares won't appear in mountains, forests, or ocean.
-        if (map.mountainous(location) || TileType.ocean == terrain ||
-                TileType.notVisible == terrain || map.forest(location) exists) {
+//        if (map.mountainous[location] || TileType.ocean == terrain ||
+        if (map.mountainous.get(location) || TileType.ocean == terrain ||
+                TileType.notVisible == terrain ||
+                map.fixtures[location]?.narrow<Forest>()?.first exists) {
             return false;
         } else {
             suitableCount++;
@@ -169,12 +175,12 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
     Float chance = 0.05;
     """Add a fixture of the kind we're creating at the given location. The third method to
        customize."""
-    void create(Point location, IMutableMap map, IDRegistrar idf) {
+    void create(Point location, IMutableMapNG map, IDRegistrar idf) {
         changedCount++;
         map.addFixture(location, Animal("hare", false, false, "wild", idf.createID()));
     }
     "Populate the map. You shouldn't need to customize this."
-    void populate(IMutableMap map) {
+    void populate(IMutableMapNG map) {
         IDRegistrar idf = createIDFactory(map);
         for (location in map.locations) {
             if (isSuitable(map, location) && random() < chance) {

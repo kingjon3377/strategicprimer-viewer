@@ -4,7 +4,7 @@ import lovelace.util.common {
 
 import strategicprimer.model.map {
     IFixture,
-    IMap,
+    IMapNG,
     Player,
     Point,
     MapDimensions
@@ -26,7 +26,7 @@ import strategicprimer.report.generators.tabular {
     ExplorableTabularReportGenerator
 }
 "A method to produce tabular reports based on a map for a player."
-shared void createTabularReports(IMap map, Anything(String)(String) source) {
+shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
     DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
     Player player = map.currentPlayer;
     MapDimensions dimensions = map.dimensions;

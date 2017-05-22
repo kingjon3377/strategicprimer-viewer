@@ -3,7 +3,7 @@ import ceylon.file {
 }
 
 import strategicprimer.model.map {
-    IMap
+    IMapNG
 }
 "An interface for map (and other SP XML) writers."
 shared interface SPWriter {
@@ -12,7 +12,7 @@ shared interface SPWriter {
             "The file or stream to write to."
             Path|Anything(String) arg,
             "The map to write"
-            IMap map);
+            IMapNG map);
     "Write an object to a file or stream."
     shared formal void writeSPObject(Path|Anything(String) arg, Object obj);
 }

@@ -30,7 +30,7 @@ import java.math {
 
 import strategicprimer.model.map {
     IFixture,
-    IMutableMap,
+    IMutableMapNG,
     TileFixture
 }
 import strategicprimer.model.map.fixtures {
@@ -53,7 +53,7 @@ import strategicprimer.drivers.common {
 """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests, of the same
     kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile in a
     map."""
-void removeDuplicateFixtures(IMutableMap map, ICLIHelper cli) {
+void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
     Boolean approveRemoval(TileFixture fixture, TileFixture matching) {
         return cli.inputBooleanInSeries(
             "Remove '``fixture.shortDescription``', of class '``classDeclaration(fixture)
@@ -64,13 +64,8 @@ void removeDuplicateFixtures(IMutableMap map, ICLIHelper cli) {
     for (location in map.locations) {
         MutableList<TileFixture> fixtures = ArrayList<TileFixture>();
         MutableList<TileFixture> toRemove = ArrayList<TileFixture>();
-        if (exists ground = map.ground(location)) {
-            fixtures.add(ground);
-        }
-        if (exists forest = map.forest(location)) {
-            fixtures.add(forest);
-        }
-        for (fixture in map.otherFixtures(location)) {
+//        for (fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
+        for (fixture in map.fixtures.get(location)) {
             if (is IUnit fixture, fixture.kind.contains("TODO")) {
                 continue;
             } else if (is CacheFixture fixture) {
