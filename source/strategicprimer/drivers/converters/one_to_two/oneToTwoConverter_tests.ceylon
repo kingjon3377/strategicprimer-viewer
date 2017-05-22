@@ -704,8 +704,6 @@ shared void testFourthOneToTwoConversion() {
     outTwo.clear();
     oldWriter.write(outOne.append, converted);
     oldWriter.write(outTwo.append, actualConverted);
-    writeToFile("actual.txt", outTwo.string);
-    writeToFile("expected.txt", outOne.string);
     assertEquals(outTwo.string, outOne.string, "Deprecated I/O produces expected result");
     outOne.clear();
     outTwo.clear();
