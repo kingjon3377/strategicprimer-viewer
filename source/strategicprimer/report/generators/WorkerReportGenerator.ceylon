@@ -7,9 +7,6 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model {
-    DistanceComparator
-}
 import strategicprimer.model.map {
     Point,
     IFixture,
@@ -40,8 +37,7 @@ import strategicprimer.report.nodes {
 "A report generator for Workers."
 class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
             Boolean details, MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<IWorker>(comp,
-            DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<IWorker>(comp, dimensions, hq) {
     "Produce the sub-sub-report on a worker's stats."
     String statsString(WorkerStats stats) {
         return "He or she has the following stats: ``stats.hitPoints`` / ``stats

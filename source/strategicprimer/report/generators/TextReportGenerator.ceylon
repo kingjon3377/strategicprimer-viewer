@@ -7,9 +7,6 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model {
-    DistanceComparator
-}
 import strategicprimer.model.map {
     Point,
     IFixture,
@@ -31,8 +28,7 @@ import strategicprimer.report.nodes {
 "A report generator for arbitrary-text notes."
 shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<TextFixture>(comp,
-            DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<TextFixture>(comp, dimensions, hq) {
     "Produce the part of the report dealing with arbitrary-text notes. If an individual
      note is specified, this does *not* remove it from the collection, because this
      method doesn't know the synthetic ID # that was assigned to it."

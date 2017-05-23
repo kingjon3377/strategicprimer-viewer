@@ -17,9 +17,6 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model {
-    DistanceComparator
-}
 import strategicprimer.model.map {
     Point,
     Player,
@@ -47,8 +44,7 @@ import strategicprimer.report.nodes {
 todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         Player currentPlayer, MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
-        extends AbstractReportGenerator<ITownFixture>(comp, DistanceComparator(hq,
-            dimensions)) {
+        extends AbstractReportGenerator<ITownFixture>(comp, dimensions, hq) {
     {TownStatus+} statuses = {TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
         TownStatus.burned};
     "Separate towns by status."

@@ -13,9 +13,6 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model {
-    DistanceComparator
-}
 import strategicprimer.model.map {
     Point,
     IMapNG,
@@ -48,8 +45,7 @@ import strategicprimer.report.nodes {
 shared class HarvestableReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<HarvestableFixture>(comp,
-            DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) {
     "Convert a Map from kinds to Points to a HtmlList."
     HeadedList<String>&MutableList<String> mapToList(Map<String, MutableList<Point>> map,
             String heading) =>

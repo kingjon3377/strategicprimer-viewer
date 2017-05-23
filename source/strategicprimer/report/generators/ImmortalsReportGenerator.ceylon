@@ -19,9 +19,6 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model {
-    DistanceComparator
-}
 import strategicprimer.model.map {
     Point,
     IFixture,
@@ -51,8 +48,7 @@ import strategicprimer.report.nodes {
 shared class ImmortalsReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, MapDimensions dimensions,
         Point hq = invalidPoint)
-        extends AbstractReportGenerator<Immortal>(comp,
-            DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<Immortal>(comp, dimensions, hq) {
     "Produce a report on an individual immortal, or on all immortals."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, [Immortal, Point]? entry) {

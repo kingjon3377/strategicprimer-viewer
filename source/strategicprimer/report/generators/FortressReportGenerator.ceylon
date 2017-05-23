@@ -9,9 +9,6 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model {
-    DistanceComparator
-}
 import strategicprimer.model.map {
     Point,
     Player,
@@ -52,8 +49,7 @@ import strategicprimer.report.nodes {
 shared class FortressReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
-        extends AbstractReportGenerator<Fortress>(comp,
-            DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<Fortress>(comp, dimensions, hq) {
     IReportGenerator<IUnit> urg =
             UnitReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq);
     IReportGenerator<FortressMember> memberReportGenerator =

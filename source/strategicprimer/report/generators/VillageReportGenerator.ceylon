@@ -9,9 +9,6 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model {
-    DistanceComparator
-}
 import strategicprimer.model.map {
     Point,
     IFixture,
@@ -36,8 +33,7 @@ import strategicprimer.report.nodes {
 shared class VillageReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<Village>(comp, DistanceComparator(hq,
-            dimensions)) {
+        extends AbstractReportGenerator<Village>(comp, dimensions, hq) {
     "Produce the (very brief) report for a particular village (we're probably in the
      middle of a bulleted list, but we don't assume that), or the report on all known
      villages."

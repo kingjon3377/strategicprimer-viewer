@@ -9,9 +9,6 @@ import lovelace.util.common {
     DRMap=DelayedRemovalMap
 }
 
-import strategicprimer.model {
-    DistanceComparator
-}
 import strategicprimer.model.map {
     Point,
     IFixture,
@@ -35,8 +32,7 @@ import strategicprimer.report.nodes {
 "A report generator for sightings of animals."
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
-        extends AbstractReportGenerator<Animal>(comp,
-            DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<Animal>(comp, dimensions, hq) {
     "Produce the sub-report about animals or an individual Animal."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, [Animal, Point]? entry) {

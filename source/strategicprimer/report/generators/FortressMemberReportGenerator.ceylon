@@ -13,9 +13,6 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model {
-    DistanceComparator
-}
 import strategicprimer.model.map {
     Point,
     IMapNG,
@@ -45,8 +42,7 @@ import strategicprimer.report.nodes {
 shared class FortressMemberReportGenerator(
             Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
             MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
-        extends AbstractReportGenerator<FortressMember>(comp,
-            DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<FortressMember>(comp, dimensions, hq) {
     "Produces a sub-report on a resource or piece of equipment, or on all fortress
      members. All fixtures referred to in this report are removed from the collection.
      This method should probably never actually be called and do anything without an

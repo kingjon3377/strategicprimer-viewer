@@ -20,9 +20,6 @@ import lovelace.util.common {
     DRMap=DelayedRemovalMap
 }
 
-import strategicprimer.model {
-    DistanceComparator
-}
 import strategicprimer.model.map {
     Point,
     IMapNG,
@@ -53,8 +50,7 @@ todo("Use union type instead of interface, here and elsewhere")
 shared class ExplorableReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<ExplorableFixture>(comp,
-            DistanceComparator(hq, dimensions)) {
+        extends AbstractReportGenerator<ExplorableFixture>(comp, dimensions, hq) {
     "Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
      hook, or the report on all such."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
