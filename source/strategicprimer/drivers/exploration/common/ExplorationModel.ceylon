@@ -326,14 +326,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Point currentPoint = localSelection.first;
         if (exists unit = localSelection.rest.first) {
             Player owner = unit.owner;
-            // TODO: Use Iterable methods instead of a comprehension
-            {Village*} villages = {
-                for (pair in allMaps)
-//                    for (fixture in pair.first.fixtures[currentPoint]) // TODO: syntax sugar once compiler bug fixed
-                    for (fixture in pair.first.fixtures.get(currentPoint))
-                            if (is Village fixture, fixture.owner.independent)
-                                fixture
-            };
+            {Village*} villages = allMaps.map((pair) => pair.first)
+                .flatMap((world) => world.fixtures.get(currentPoint))
+                .narrow<Village>().filter((village) => village.owner.independent);
             if (!villages.empty) {
                 for (village in villages) {
                     village.owner = owner;

@@ -88,15 +88,13 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     }
     "Search for and fix aquatic villages with non-aquatic races."
     void fixAllVillages(IMapNG map, ICLIHelper cli) {
-        // TODO: Use Iterable methods instead of a comprehension
-        Village[] villages = [ for (point in map.locations)
-//        if (map.baseTerrain[point] == TileType.ocean) // TODO: syntax sugar once compiler bug fixed
-            if (map.baseTerrain.get(point) == TileType.ocean)
-//        for (fixture in map.fixtures[point])
-        for (fixture in map.fixtures.get(point))
-        if (is Village fixture, landRaces.contains(fixture.race))
-        fixture ];
-        if (nonempty villages) { // TODO: Just use !villages.empty
+        {Village*} villages = map.locations
+//            .filter((loc) => map.baseTerrain[loc] == TileType.ocean) // TODO: syntax sugar once compiler bug fixed
+            .filter((loc) => map.baseTerrain.get(loc) == TileType.ocean)
+//            .flatMap((loc) => map.fixtures[loc]).narrow<Village>()
+            .flatMap((loc) => map.fixtures.get(loc)).narrow<Village>()
+            .filter((village) => landRaces.contains(village.race));
+        if (!villages.empty) {
             if (raceList.empty) {
                 while (true) {
                     String race = cli.inputString("Next aquatic race: ").trimmed;

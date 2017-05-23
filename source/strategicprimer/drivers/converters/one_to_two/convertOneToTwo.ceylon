@@ -182,11 +182,9 @@ shared IMapNG convertOneToTwo(
 						fixture is Forest|Ground|Sandbar|Shrub|Meadow|Hill),
 						exists fixture = shuffledFixtures.accept()) {
 						if (is ITownFixture fixture) {
-							// FIXME: Use narrow() instead of a comprehension
-							{TileFixture*} toRemove = {
-//								for (suspect in retval.fixtures[point])
-								for (suspect in retval.fixtures.get(point))
-								if (is Forest suspect) suspect };
+//							{TileFixture*} toRemove = retval.fixtures[point]
+							{TileFixture*} toRemove = retval.fixtures.get(point)
+								.narrow<Forest>();
 							for (suspect in toRemove) {
 								retval.removeFixture(point, suspect);
 							}
@@ -224,12 +222,9 @@ shared IMapNG convertOneToTwo(
 		}.filter((element) => point != element);
 		Boolean adjacentToTown() {
 			for (neighbor in neighbors) {
-				// FIXME: Use .narrow() instead of a loop
-//				for (fixture in retval.fixtures[neighbor]) { // TODO: syntax sugar once compiler bug fixed
-				for (fixture in retval.fixtures.get(neighbor)) {
-					if (is ITownFixture fixture) {
-						return true;
-					}
+				// if (!retval.fixtures[neighbor].narrow<ITownFixture>().empty) { // TODO: syntax sugar once compiler bug fixed
+				if (!retval.fixtures.get(neighbor).narrow<ITownFixture>().empty) {
+					return true;
 				}
 			} else {
 				return false;
