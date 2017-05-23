@@ -138,9 +138,35 @@ object expansionDriver satisfies SimpleCLIDriver {
         }
     }
 }
+"An interface for map-populating passes to implement. Create an object satisfying this
+ interface, and assign a reference to it to the designated field in
+ [[mapPopulatorDriver]], and run the driver."
+interface MapPopulator {
+    "Whether a point is suitable for the kind of fixture we're creating."
+    shared formal Boolean isSuitable(IMapNG map, Point location);
+    "The probability of adding something to any given tile."
+    shared formal Float chance;
+    "Add a fixture of the kind we're creating at the given location."
+    shared formal void create(Point location, IMutableMapNG map, IDRegistrar idf);
+}
+"A sample map-populator."
+object sampleMapPopulator satisfies MapPopulator {
+    "Hares won't appear in mountains, forests, or ocean."
+    shared actual Boolean isSuitable(IMapNG map, Point location) {
+//        TileType terrain = map.baseTerrain[location]; // TODO: syntax sugar once compiler bug fixed
+        TileType terrain = map.baseTerrain.get(location);
+//        if (map.mountainous[location] || TileType.ocean == terrain ||
+        return !map.mountainous.get(location) && TileType.ocean != terrain &&
+            TileType.notVisible!=terrain &&
+            !map.fixtures[location]?.narrow<Forest>()?.first exists;
+    }
+    shared actual Float chance = 0.05;
+    shared actual void create(Point location, IMutableMapNG map, IDRegistrar idf) =>
+            map.addFixture(location,
+                Animal("hare", false, false, "wild", idf.createID()));
+}
 """A driver to add some kind of fixture to suitable tiles throughout the map. Customize
    isSuitable(), chance(), and create() before each use."""
-todo("Make this an interface for objects to satisfy instead?")
 object mapPopulatorDriver satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
@@ -152,39 +178,21 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
                            a map";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
+    "The object that does the heavy lifting of populating the map. This is the one field
+     that should be changed before each populating pass."
+    MapPopulator populator = sampleMapPopulator;
     variable Integer suitableCount = 0;
     variable Integer changedCount = 0;
-    "The first method to customize for each use: whether a point is suitable for the
-     kind of fixture we're creating."
-    Boolean isSuitable(IMapNG map, Point location) {
-//        TileType terrain = map.baseTerrain[location]; // TODO: syntax sugar once compiler bug fixed
-        TileType terrain = map.baseTerrain.get(location);
-        // Hares won't appear in mountains, forests, or ocean.
-//        if (map.mountainous[location] || TileType.ocean == terrain ||
-        if (map.mountainous.get(location) || TileType.ocean == terrain ||
-                TileType.notVisible == terrain ||
-                map.fixtures[location]?.narrow<Forest>()?.first exists) {
-            return false;
-        } else {
-            suitableCount++;
-            return true;
-        }
-    }
-    """The probability of adding something to any given tile. The second method to
-       customize."""
-    Float chance = 0.05;
-    """Add a fixture of the kind we're creating at the given location. The third method to
-       customize."""
-    void create(Point location, IMutableMapNG map, IDRegistrar idf) {
-        changedCount++;
-        map.addFixture(location, Animal("hare", false, false, "wild", idf.createID()));
-    }
     "Populate the map. You shouldn't need to customize this."
     void populate(IMutableMapNG map) {
         IDRegistrar idf = createIDFactory(map);
         for (location in map.locations) {
-            if (isSuitable(map, location) && random() < chance) {
-                create(location, map, idf);
+            if (populator.isSuitable(map, location)) {
+                suitableCount++;
+                if (random() < populator.chance) {
+                    changedCount++;
+                    populator.create(location, map, idf);
+                }
             }
         }
     }
