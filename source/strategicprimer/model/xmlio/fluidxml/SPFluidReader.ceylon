@@ -71,7 +71,8 @@ import strategicprimer.model.map.fixtures.mobile {
     Giant,
     Centaur,
     Fairy,
-    Dragon
+    Dragon,
+    maturityModel
 }
 import strategicprimer.model.map.fixtures.terrain {
     Hill,
@@ -222,6 +223,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         String outerTag = element.name.localPart;
         if ("view" == outerTag.lowercased) {
             currentTurn = getIntegerAttribute(element, "current_turn");
+            maturityModel.currentTurn = currentTurn;
             mapTag = firstStartElement(stream, element);
             requireTag(mapTag, element.name, "map");
         } else if ("map" == outerTag.lowercased) {

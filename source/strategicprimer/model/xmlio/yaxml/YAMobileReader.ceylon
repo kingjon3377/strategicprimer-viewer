@@ -34,7 +34,8 @@ import strategicprimer.model.map.fixtures.mobile {
     Fairy,
     Dragon,
     Animal,
-    MobileFixture
+    MobileFixture,
+    maturityModel
 }
 import strategicprimer.model.xmlio {
     Warning
@@ -115,9 +116,14 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             if (!obj.traces) {
                 writeProperty(ostream, "id", obj.id);
                 if (obj.born >= 0) {
-                    // TODO: Write if, but only if, the 'born' turn is less than the
-                    // animal kind's age of maturity before the current turn.
-                    writeProperty(ostream, "born", obj.born);
+                    // Write turn-of-birth if and only if it is fewer turns before the current
+                    // turn than this kind of animal's age of maturity.
+                    if (exists maturityAge = maturityModel.maturityAges[obj.kind],
+                            maturityAge <= (currentTurn - obj.born)) {
+                        // do nothing
+                    } else {
+                        writeProperty(ostream, "born", obj.born);
+                    }
                 }
             }
             writeImageXML(ostream, obj);

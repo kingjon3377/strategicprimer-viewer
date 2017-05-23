@@ -56,6 +56,10 @@ import strategicprimer.model.xmlio.exceptions {
 import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
+import strategicprimer.model.map.fixtures.mobile {
+    maturityModel
+}
+variable Integer currentTurn = -1;
 "A reader for Strategic Primer maps."
 class YAMapReader("The Warning instance to use" Warning warner,
         "The factory for ID numbers" IDRegistrar idRegistrar,
@@ -144,6 +148,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         String outerTag = element.name.localPart;
         if ("view" == outerTag.lowercased) {
             currentTurn = getIntegerParameter(element, "current_turn");
+            maturityModel.currentTurn = currentTurn;
             mapTag = getFirstStartElement(stream, element);
             requireTag(mapTag, element.name, "map");
         } else if ("map" == outerTag.lowercased) {
@@ -253,6 +258,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         writeTag(ostream, "view", tabs);
         writeProperty(ostream, "current_player", obj.currentPlayer.playerId);
         writeProperty(ostream, "current_turn", obj.currentTurn);
+        currentTurn = obj.currentTurn;
         finishParentTag(ostream);
         writeTag(ostream, "map", tabs + 1);
         MapDimensions dimensions = obj.dimensions;

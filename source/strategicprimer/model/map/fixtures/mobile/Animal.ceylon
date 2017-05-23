@@ -99,3 +99,25 @@ shared class Animal(kind, traces, talking, status, id, born = -1)
 		}
 	}
 }
+shared object maturityModel {
+	assert (exists file = `module strategicprimer.model`
+		.resourceByPath("maturity.txt"));
+	value textContent = file.textContent();
+	shared Map<String, Integer> maturityAges = map {
+		*textContent.split('\n'.equals)
+			.map((String line) => line.split('\t'.equals, true, true, 1))
+			.map(({String+} line) => line.first->Integer.parse(line.rest.first else ""))
+			.narrow<String->Integer>()
+	};
+	variable Integer currentTurnLocal = -1;
+	shared Integer currentTurn => currentTurnLocal;
+	assign currentTurn {
+		if (currentTurnLocal < 0) {
+			currentTurnLocal = currentTurn;
+		}
+	}
+	"Clear the stored current turn"
+	todo("If Ceylon ever gets a sufficiently nuanced visibility system, restrict access to
+	      this method to the package containing the XML I/O tests")
+	shared void resetCurrentTurn() => currentTurnLocal = -1;
+}

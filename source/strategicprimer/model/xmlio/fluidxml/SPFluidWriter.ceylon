@@ -94,6 +94,7 @@ import ceylon.file {
     Nil
 }
 Regex snugEndTag = regex("([^ ])/>", true);
+variable Integer currentTurn = -1;
 """The main writer-to-XML class in the "fluid XML" implementation."""
 shared class SPFluidWriter() satisfies SPWriter {
     alias LocalXMLWriter=>Anything(XMLStreamWriter, Object, Integer);
@@ -257,6 +258,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             writeTag(ostream, "view", indentation, false);
             writeAttributes(ostream, "current_player"->obj.currentPlayer.playerId,
                 "current_turn"->obj.currentTurn);
+            currentTurn = obj.currentTurn;
             writeTag(ostream, "map", indentation + 1, false);
             MapDimensions dimensions = obj.dimensions;
             writeAttributes(ostream, "version"->dimensions.version,
