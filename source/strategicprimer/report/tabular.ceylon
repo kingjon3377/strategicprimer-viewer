@@ -34,7 +34,7 @@ shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
     /*{ITableGenerator<out Object>*}*/ value generators = {
         FortressTabularReportGenerator(player, hq, dimensions),
         UnitTabularReportGenerator(player, hq, dimensions),
-        AnimalTabularReportGenerator(hq, dimensions),
+        AnimalTabularReportGenerator(hq, dimensions, map.currentTurn),
         WorkerTabularReportGenerator(hq, dimensions),
         VillageTabularReportGenerator(player, hq, dimensions),
         TownTabularReportGenerator(player, hq, dimensions),
