@@ -27,13 +27,11 @@ import ceylon.interop.java {
 import ceylon.math.float {
     halfEven
 }
-import lovelace.util.common {
-    todo
-}
 "A class to do the drawing of a tile, whether on a component representing a single tile or
  a single-component map, using cached [[Shape]]s. Note that this is limited to version-1
  maps."
-todo("Convert to an object?")
+// This is a class, not an object, to save performance if two windows have maps at
+// different zoom levels open at the same time.
 class CachingTileDrawHelper satisfies TileDrawHelper {
     static Float approximatelyZero = 0.000001;
     static Boolean areFloatsDifferent(Float first, Float second) =>
