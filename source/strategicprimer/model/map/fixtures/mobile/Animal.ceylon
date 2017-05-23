@@ -62,7 +62,8 @@ shared class Animal(kind, traces, talking, status, id, born = -1)
 	"Clone the animal."
 	todo("Should we zero out any information?")
 	shared actual Animal copy(Boolean zero) {
-		Animal retval = Animal(kind, traces, talking, status, id);
+		Animal retval = Animal(kind, traces, talking, status, id,
+			(zero) then -1 else born);
 		retval.image = image;
 		return retval;
 	}
