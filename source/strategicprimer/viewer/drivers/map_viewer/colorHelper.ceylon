@@ -1,9 +1,3 @@
-import java.lang {
-    IllegalArgumentException
-}
-import lovelace.util.common {
-    todo
-}
 import ceylon.language.meta {
     type
 }
@@ -83,35 +77,35 @@ object colorHelper {
     }
     "Get the color to use for the given tile type in the given map version. Throws
      if the given version does not support that tile type."
-    todo("Return null instead?")
-    shared Color get(Integer version, TileType type) {
+    shared Color? get(Integer version, TileType type) {
         if (exists map = colors.get(version)) {
             if (exists color = map.get(type)) {
                 return color;
             } else {
-                throw IllegalArgumentException(
-                    "``type`` is not a terrain type version ``version`` can handle");
+                log.error("Asked for unsupported type ``type`` in version ``version``");
+                return null;
             }
         } else {
-            throw IllegalArgumentException("Not a supported version");
+            log.error("Asked for ``type`` in unsupported version ``version``");
+            return null;
         }
     }
     "Get a String (HTML) representation of the given terrain type."
-    todo("Return null instead of throwing on unhandled types?")
-    shared String getDescription(TileType type) {
+    shared String? getDescription(TileType type) {
         if (exists retval = descriptions.get(type)) {
             return retval;
         } else {
-            throw IllegalArgumentException("No description for that type found");
+            log.error("No description found for tile type ``type``");
+            return null;
         }
     }
     "Get the color that a fixture should turn the tile if it's not on top."
-    todo("Return null instead of throwing on unhandled fixtures?")
-    shared Color getFeatureColor(TileFixture fixture) {
+    shared Color? getFeatureColor(TileFixture fixture) {
         if (exists color = featureColors.get(type(fixture))) {
             return color;
         } else {
-            throw IllegalArgumentException("Not a kind of fixture we can handle");
+            log.warn("Asked for color for unsupported fixture: ``fixture``");
+            return null;
         }
     }
     "The color to use for background mountains."

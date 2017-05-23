@@ -52,7 +52,8 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
         panel.addRigidArea(4);
         Integer tileSize = scaleZoom(ViewerModel.defaultZoomLevel, version);
-        panel.add(KeyElementComponent(colorHelper.get(version, type), Dimension(4, 4),
+        assert (exists color = colorHelper.get(version, type));
+        panel.add(KeyElementComponent(color, Dimension(4, 4),
             Dimension(8, 8), Dimension(tileSize, tileSize)));
         panel.addRigidArea(4);
         JLabel label = JLabel(colorHelper.getDescription(type));

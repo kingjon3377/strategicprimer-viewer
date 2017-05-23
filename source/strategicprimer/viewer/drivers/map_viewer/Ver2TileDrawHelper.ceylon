@@ -118,14 +118,13 @@ class Ver2TileDrawHelper(
     "A fallback image for when an image file is missing or fails to load."
     Image fallbackImage = createFallbackImage();
     """Get the color representing a "not-on-top" terrain fixture at the given location."""
-    Color getFixtureColor(IMapNG map, Point location) {
+    Color? getFixtureColor(IMapNG map, Point location) {
         if (exists top = getTopFixture(map, location)) {
             if (exists topTerrain = getDrawableFixtures(map, location)
-                .filter((fixture) => fixture != top)
-                .filter((fixture) => fixture is TerrainFixture)
-                .first) {
-                assert (is TerrainFixture topTerrain);
-                return colorHelper.getFeatureColor(topTerrain);
+                    .filter((fixture) => fixture != top)
+                    .narrow<TerrainFixture>()
+                    .first, exists color = colorHelper.getFeatureColor(topTerrain)) {
+                return color;
 //            } else if (map.mountainous[location]) { // TODO: syntax sugar once compiler bug fixed
             } else if (map.mountainous.get(location)) {
                 return colorHelper.mountainColor;
