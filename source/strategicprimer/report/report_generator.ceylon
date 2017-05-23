@@ -52,6 +52,7 @@ import strategicprimer.report.nodes {
 }
 "A logger."
 Logger log = logger(`module strategicprimer.report`);
+// TODO: Allow user to specify an alternate current turn via command-line argument
 "Find the location of the given player's HQ in the given map."
 todo("""Return null instead of an "invalid" Point when not found?""")
 Point findHQ(IMapNG map, Player player) {
@@ -131,14 +132,14 @@ shared String createReport(IMapNG map, Player player = map.currentPlayer) {
     Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
         DistanceComparator(hq, dimensions).compare, byIncreasing(IFixture.hash));
     createSubReports(builder, fixtures, map, player,
-        FortressReportGenerator(comparator, player, dimensions, hq),
-        UnitReportGenerator(comparator, player, dimensions, hq),
+        FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+        UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
         TextReportGenerator(comparator, dimensions, hq),
-        TownReportGenerator(comparator, player, dimensions, hq),
-        FortressMemberReportGenerator(comparator, player, dimensions, hq),
+        TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
         ExplorableReportGenerator(comparator, player, dimensions, hq),
         HarvestableReportGenerator(comparator, dimensions, hq),
-        AnimalReportGenerator(comparator, dimensions, hq),
+        AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
         VillageReportGenerator(comparator, player, dimensions, hq),
         ImmortalsReportGenerator(comparator, dimensions, hq));
     builder.append("""</body>
@@ -176,14 +177,14 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
     }
     fixtures.coalesce();
     createSubReports(builder, fixtures, map, player,
-        FortressMemberReportGenerator(comparator, player, dimensions, hq),
-        FortressReportGenerator(comparator, player, dimensions, hq),
-        UnitReportGenerator(comparator, player, dimensions, hq),
+        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+        FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+        UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
         TextReportGenerator(comparator, dimensions, hq),
-        TownReportGenerator(comparator, player, dimensions, hq),
+        TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
         ExplorableReportGenerator(comparator, player, dimensions, hq),
         HarvestableReportGenerator(comparator, dimensions, hq),
-        AnimalReportGenerator(comparator, dimensions, hq),
+        AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
         VillageReportGenerator(comparator, player, dimensions, hq),
         ImmortalsReportGenerator(comparator, dimensions, hq));
     builder.append("""</body>
@@ -220,14 +221,14 @@ shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer)
         DistanceComparator(findHQ(map, player), dimensions).compare,
         byIncreasing(IFixture.hash));
     createSubReportsIR(retval, fixtures, map, player,
-        FortressReportGenerator(comparator, player, dimensions, hq),
-        UnitReportGenerator(comparator, player, dimensions, hq),
+        FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+        UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
         TextReportGenerator(comparator, dimensions, hq),
-        TownReportGenerator(comparator, player, dimensions, hq),
+        TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
         ExplorableReportGenerator(comparator, player, dimensions, hq),
         HarvestableReportGenerator(comparator, dimensions, hq),
-        FortressMemberReportGenerator(comparator, player, dimensions, hq),
-        AnimalReportGenerator(comparator, dimensions, hq),
+        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+        AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
         VillageReportGenerator(comparator, player, dimensions, hq),
         ImmortalsReportGenerator(comparator, dimensions, hq));
     return retval;
@@ -251,14 +252,14 @@ shared IReportNode createAbbreviatedReportIR(IMapNG map,
     IReportNode retval = RootReportNode(
         "Strategic Primer map summary abbreviated report");
     createSubReportsIR(retval, fixtures, map, player,
-        FortressMemberReportGenerator(comparator, player, dimensions, hq),
-        FortressReportGenerator(comparator, player, dimensions, hq),
-        UnitReportGenerator(comparator, player, dimensions, hq),
+        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+        FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+        UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
         TextReportGenerator(comparator, dimensions, hq),
-        TownReportGenerator(comparator, player, dimensions, hq),
+        TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
         ExplorableReportGenerator(comparator, player, dimensions, hq),
         HarvestableReportGenerator(comparator, dimensions, hq),
-        AnimalReportGenerator(comparator, dimensions, hq),
+        AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
         VillageReportGenerator(comparator, player, dimensions, hq),
         ImmortalsReportGenerator(comparator, dimensions, hq));
     return retval;

@@ -51,13 +51,14 @@ import strategicprimer.report.nodes {
 "A report generator for fortresses."
 shared class FortressReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
-        MapDimensions dimensions, Point hq = invalidPoint)
+        MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
         extends AbstractReportGenerator<Fortress>(comp,
             DistanceComparator(hq, dimensions)) {
     IReportGenerator<IUnit> urg =
-            UnitReportGenerator(comp, currentPlayer, dimensions, hq);
+            UnitReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq);
     IReportGenerator<FortressMember> memberReportGenerator =
-            FortressMemberReportGenerator(comp, currentPlayer, dimensions, hq);
+            FortressMemberReportGenerator(comp, currentPlayer, dimensions, currentTurn,
+                hq);
     String terrain(IMapNG map, Point point,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
         StringBuilder builder = StringBuilder();

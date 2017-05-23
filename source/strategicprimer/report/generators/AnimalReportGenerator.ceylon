@@ -20,7 +20,8 @@ import strategicprimer.model.map {
     MapDimensions
 }
 import strategicprimer.model.map.fixtures.mobile {
-    Animal
+    Animal,
+    maturityModel
 }
 import strategicprimer.report {
     IReportNode
@@ -33,7 +34,7 @@ import strategicprimer.report.nodes {
 }
 "A report generator for sightings of animals."
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        MapDimensions dimensions, Point hq = invalidPoint)
+        MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
         extends AbstractReportGenerator<Animal>(comp,
             DistanceComparator(hq, dimensions)) {
     "Produce the sub-report about animals or an individual Animal."
@@ -47,6 +48,18 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                 ostream(" tracks or traces of");
             } else if (item.talking) {
                 ostream(" talking");
+            }
+            if (item.born >= 0, currentTurn >= 0) {
+                if (item.born > currentTurn) {
+                    ostream(" unborn");
+                } else if (item.born == currentTurn) {
+                    ostream(" newborn");
+                } else if (exists maturityAge = maturityModel.maturityAges[item.kind],
+                        maturityAge <= (currentTurn - item.born)) {
+                    // do nothing
+                } else {
+                    ostream(" ``currentTurn - item.born``-turn-old");
+                }
             }
             ostream(" ``item.kind`` ``distCalculator.distanceString(loc)``");
         } else {

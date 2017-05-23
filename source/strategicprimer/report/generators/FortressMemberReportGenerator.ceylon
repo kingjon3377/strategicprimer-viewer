@@ -44,7 +44,7 @@ import strategicprimer.report.nodes {
 "A report generator for equipment and resources."
 shared class FortressMemberReportGenerator(
             Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
-            MapDimensions dimensions, Point hq = invalidPoint)
+            MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
         extends AbstractReportGenerator<FortressMember>(comp,
             DistanceComparator(hq, dimensions)) {
     "Produces a sub-report on a resource or piece of equipment, or on all fortress
@@ -58,8 +58,8 @@ shared class FortressMemberReportGenerator(
             FortressMember item = entry.first;
             Point loc = entry.rest.first;
             if (is IUnit item) {
-                UnitReportGenerator(pairComparator, currentPlayer, dimensions, hq)
-                    .produce(fixtures, map, ostream, [item, loc]);
+                UnitReportGenerator(pairComparator, currentPlayer, dimensions,
+                    currentTurn, hq).produce(fixtures, map, ostream, [item, loc]);
             } else if (is ResourcePile item) {
                 fixtures.remove(item.id);
                 if (item.quantity.units.empty) {
@@ -153,8 +153,8 @@ shared class FortressMemberReportGenerator(
             FortressMember item = entry.first;
             Point loc = entry.rest.first;
             if (is IUnit item) {
-                return UnitReportGenerator(pairComparator, currentPlayer, dimensions, hq)
-                    .produceRIR(fixtures, map, [item, loc]);
+                return UnitReportGenerator(pairComparator, currentPlayer, dimensions,
+                    currentTurn, hq).produceRIR(fixtures, map, [item, loc]);
             } else if (is ResourcePile item) {
                 fixtures.remove(item.id);
                 String age;

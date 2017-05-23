@@ -42,12 +42,14 @@ import strategicprimer.report.nodes {
 }
 "A report generator for units."
 shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, MapDimensions dimensions, Point hq = invalidPoint)
+        Player currentPlayer, MapDimensions dimensions, Integer currentTurn,
+        Point hq = invalidPoint)
         extends AbstractReportGenerator<IUnit>(comp, DistanceComparator(hq, dimensions)) {
     IReportGenerator<FortressMember> memberReportGenerator =
-            FortressMemberReportGenerator(comp, currentPlayer, dimensions, hq);
+            FortressMemberReportGenerator(comp, currentPlayer, dimensions, currentTurn,
+                hq);
     IReportGenerator<Animal> animalReportGenerator =
-            AnimalReportGenerator(comp, dimensions, hq);
+            AnimalReportGenerator(comp, dimensions, currentTurn, hq);
     IReportGenerator<IWorker> ourWorkerReportGenerator = WorkerReportGenerator(comp,
         true, dimensions, hq);
     IReportGenerator<IWorker> otherWorkerReportGenerator = WorkerReportGenerator(comp,

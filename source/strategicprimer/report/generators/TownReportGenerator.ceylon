@@ -46,7 +46,7 @@ import strategicprimer.report.nodes {
 "A report generator for towns."
 todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, MapDimensions dimensions, Point hq = invalidPoint)
+        Player currentPlayer, MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
         extends AbstractReportGenerator<ITownFixture>(comp, DistanceComparator(hq,
             dimensions)) {
     {TownStatus+} statuses = {TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
@@ -80,7 +80,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 VillageReportGenerator(comp, currentPlayer, dimensions, hq)
                     .produce(fixtures, map, ostream, [item, loc]);
             } else if (is Fortress item) {
-                FortressReportGenerator(comp, currentPlayer, dimensions, hq)
+                FortressReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq)
                     .produce(fixtures, map, ostream, [item, loc]);
             } else if (is AbstractTown item) {
                 fixtures.remove(item.id);
@@ -143,8 +143,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 return VillageReportGenerator(comp, currentPlayer, dimensions, hq)
                     .produceRIR(fixtures, map, [item, loc]);
             } else if (is Fortress item) {
-                return FortressReportGenerator(comp, currentPlayer, dimensions, hq)
-                    .produceRIR(fixtures, map, [item, loc]);
+                return FortressReportGenerator(comp, currentPlayer, dimensions,
+                    currentTurn, hq).produceRIR(fixtures, map, [item, loc]);
             } else if (is AbstractTown item) {
                 fixtures.remove(item.id);
                 if (item.owner.independent) {
