@@ -38,7 +38,8 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.model.map.fixtures.mobile {
     ProxyFor,
     Animal,
-    IWorker
+    IWorker,
+    maturityModel
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats
@@ -161,9 +162,16 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
                 }
             }
         } else if (is Animal local) {
-            typeLabel.text = "Animal";
+            if (local.born >= 0, maturityModel.currentTurn >= 0,
+                    exists maturityAge = maturityModel.maturityAges[local.kind],
+                    maturityModel.currentTurn - local.born < maturityAge) {
+                typeLabel.text = "Young Animal";
+                kindLabel.text = "Young ``local.kind``";
+            } else {
+                typeLabel.text = "Animal";
+                kindLabel.text = local.kind;
+            }
             nameLabel.text = "";
-            kindLabel.text = local.kind;
             for (label in statLabels) {
                 label.recache(null);
             }
