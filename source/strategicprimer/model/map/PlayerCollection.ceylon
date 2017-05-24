@@ -55,11 +55,15 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 	}
 	shared actual Integer hash => players.hash;
 	shared actual String string => "Player collection with ``players.size`` players";
+	variable Player current = PlayerImpl(-1, "");
 	"Add a player to the collection. Returns true if the collection changed as a result of
 	 this call"
 	shared actual void add(Player player) {
 		if (player.independent) {
 			independentPlayer = player;
+		}
+		if (player.current) {
+			current = player;
 		}
 		players[player.playerId] = player;
 	}
@@ -78,6 +82,9 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 			if (independentPlayer == removed) {
 				independentPlayer = find(Player.independent) else PlayerImpl(-1, "Independent");
 			}
+			if (current == removed) {
+				current = find(Player.current) else PlayerImpl(-1, "");
+			}
 		}
 	}
 	"""The player for "independent" fixtures."""
@@ -93,10 +100,8 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 		}
 		return retval;
 	}
-	"Get the current player, or a new player with an empty name and number -1. Note that
-	 this currently iterates through all players to find one marked current."
-	todo("Keep a separate 'current' reference.")
-	shared actual Player currentPlayer => find(Player.current) else PlayerImpl(-1, "");
+	"Get the current player, or a new player with an empty name and number -1."
+	shared actual Player currentPlayer => current;
 	"An object is equal iff it is a player collection with exactly the players we have."
 	shared actual Boolean equals(Object obj) {
 		if (is IPlayerCollection obj) {
