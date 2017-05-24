@@ -5,7 +5,8 @@ import ceylon.interop.java {
 import java.util {
     Vector,
     JCollections=Collections,
-    JComparator=Comparator
+    JComparator=Comparator,
+    JList=List
 }
 
 import javax.swing.tree {
@@ -28,7 +29,10 @@ shared class SortedSectionListReportNode
     shared actual void appendNode(MutableTreeNode newChild) {
         super.appendNode(newChild);
         if (sorting) {
-            assert (is Vector<IReportNode> temp = children);
+            // We use List<> rather than Vector<> because the latter fails at runtime
+            // in the metamodel with "Class has more than one overloaded constructor"
+            // TODO: report this bug (if it isn't already known)
+            assert (is JList<IReportNode> temp = children);
             JCollections.sort(temp, sorter);
         }
     }
@@ -37,7 +41,12 @@ shared class SortedSectionListReportNode
     "Sort, and resume sorting on every addition."
     shared void resume() {
         sorting = true;
-        assert (is Vector<IReportNode> temp = children);
-        JCollections.sort(temp, sorter);
+        if (exists temp = children) {
+            // We use List<> rather than Vector<> because the latter fails at runtime
+            // in the metamodel with "Class has more than one overloaded constructor"
+            // TODO: report this bug (if it isn't already known)
+            assert (is JList<IReportNode> temp);
+            JCollections.sort(temp, sorter);
+        }
     }
 }
