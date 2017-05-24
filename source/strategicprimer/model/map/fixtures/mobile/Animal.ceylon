@@ -10,7 +10,6 @@ import strategicprimer.model.map.fixtures {
     UnitMember
 }
 "An animal or group of animals."
-todo("Add more features (population, to start with)")
 shared class Animal(kind, traces, talking, status, id, born = -1, population = 1)
 		satisfies MobileFixture&HasMutableImage&HasKind&UnitMember {
 	"ID number."
