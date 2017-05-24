@@ -136,8 +136,6 @@ shared class MenuBroker() satisfies ActionListener {
     }
 }
 "A class to hold the logic for building our menus."
-todo("Redesign so users just have to say which menus they want enabled instead of
-      instantiatng them one by one")
 shared class SPMenu extends JMenuBar {
     "Create the file menu."
     shared static JMenu createFileMenu(/*ActionListener|*/Anything(ActionEvent) handler,
@@ -301,11 +299,14 @@ shared class SPMenu extends JMenuBar {
         }
         return viewMenu;
     }
-    "Add a menu, but set it to disabled."
-    shared JMenu addDisabled(JMenu menu) {
-        add(menu);
+    "Disable a menu and return it."
+    shared static JMenu disabledMenu(JMenu menu) {
         menu.enabled = false;
         return menu;
     }
-    shared new () extends JMenuBar() {}
+    shared new (JMenu* menus) extends JMenuBar() {
+        for (menu in menus) {
+            add(menu);
+        }
+    }
 }

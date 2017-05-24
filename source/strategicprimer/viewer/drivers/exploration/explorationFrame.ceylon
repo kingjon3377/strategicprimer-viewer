@@ -561,12 +561,9 @@ SPFrame explorationFrame(IExplorationModel model,
         add(explorationPanel);
     }
     (retval of Component).preferredSize = Dimension(1024, 640);
-    SPMenu menu = SPMenu();
-    menu.add(SPMenu.createFileMenu(menuHandler, model));
-    menu.addDisabled(SPMenu.createMapMenu(menuHandler, model));
-    menu.add(SPMenu.createViewMenu(menuHandler, model));
-    menu.add(WindowMenu(retval));
-    retval.jMenuBar = menu;
+    retval.jMenuBar = SPMenu(SPMenu.createFileMenu(menuHandler, model),
+        SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler, model)),
+        SPMenu.createViewMenu(menuHandler, model), WindowMenu(retval));
     retval.pack();
     return retval;
 }

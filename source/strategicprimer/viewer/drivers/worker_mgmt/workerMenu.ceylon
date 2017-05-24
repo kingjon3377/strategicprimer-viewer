@@ -21,11 +21,6 @@ shared JMenuBar workerMenu(
         """The window this is to be attached to, whic should close on "Close"."""
         JFrame parentFrame,
         "The current driver model."
-        IDriverModel model) {
-    SPMenu retval = SPMenu();
-    retval.add(SPMenu.createFileMenu(handler, model));
-    retval.addDisabled(SPMenu.createMapMenu(handler, model));
-    retval.add(SPMenu.createViewMenu(handler, model));
-    retval.add(WindowMenu(parentFrame));
-    return retval;
-}
+        IDriverModel model) => SPMenu(SPMenu.createFileMenu(handler, model),
+            SPMenu.disabledMenu(SPMenu.createMapMenu(handler, model)),
+            SPMenu.createViewMenu(handler, model), WindowMenu(parentFrame));
