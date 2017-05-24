@@ -133,9 +133,6 @@ import strategicprimer.model.xmlio.exceptions {
     MissingChildException,
     DeprecatedPropertyException
 }
-import ceylon.language.meta {
-    type
-}
 
 JPath fakeFilename = JPaths.get("");
 ISPReader oldReader = testReaderFactory.oldReader;

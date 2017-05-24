@@ -3,7 +3,6 @@ import ceylon.interop.java {
 }
 
 import java.util {
-    Vector,
     JCollections=Collections,
     JComparator=Comparator,
     JList=List
