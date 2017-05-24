@@ -38,7 +38,8 @@ import strategicprimer.model.map.fixtures {
     Quantity
 }
 import strategicprimer.model.map.fixtures.mobile {
-    IUnit
+    IUnit,
+    Animal
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -90,6 +91,8 @@ void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
 void coalesceResources({IFixture*} stream, ICLIHelper cli) {
     MutableMap<[String, String, String, Integer], MutableList<ResourcePile>> resources =
             HashMap<[String, String, String, Integer], MutableList<ResourcePile>>();
+    MutableMap<[String, String, Integer], MutableList<Animal>> animals =
+            HashMap<[String, String, Integer], MutableList<Animal>>();
     for (fixture in stream) {
         if (is {IFixture*} fixture) {
             coalesceResources(fixture, cli);
@@ -102,6 +105,19 @@ void coalesceResources({IFixture*} stream, ICLIHelper cli) {
             } else {
                 list = ArrayList<ResourcePile>();
                 resources.put(key, list);
+            }
+            list.add(fixture);
+        } else if (is Animal fixture) {
+            if (fixture.traces || fixture.talking) {
+                continue;
+            }
+            [String, String, Integer] key = [fixture.kind, fixture.status, fixture.born];
+            MutableList<Animal> list;
+            if (exists temp = animals[key]) {
+                list = temp;
+            } else {
+                list = ArrayList<Animal>();
+                animals[key] = list;
             }
             list.add(fixture);
         }
@@ -133,9 +149,34 @@ void coalesceResources({IFixture*} stream, ICLIHelper cli) {
             }
         }
     }
+    for (list in animals.items) {
+        if (list.size <= 1) {
+            continue;
+        }
+        cli.println("The following animals could be grouped into one population:");
+        for (item in list) {
+            cli.println(item.string);
+        }
+        if (cli.inputBooleanInSeries("Group these animals together? ")) {
+            Animal combined = combineAnimals(list);
+            if (is IUnit stream) {
+                for (item in list) {
+                    stream.removeMember(item);
+                }
+                stream.addMember(combined);
+            }
+            // Can't add animals to any other kind of stream.
+        }
+    }
 }
-
-"Combine like resources into a single resource pile. We assume that all resoruces have
+"Combine like Animals into a single Animal population. We assume that all animals have the
+ same kind, domestication status, and turn of birth."
+Animal combineAnimals({Animal*} list) {
+    assert (exists top = list.first);
+    return Animal(top.kind, false, false, top.status, top.id, top.born,
+        list.map(Animal.population).fold(0)(plus));
+}
+"Combine like resources into a single resource pile. We assume that all resources have
  the same kind, contents, units, and created date."
 ResourcePile combineResources({ResourcePile*} list) {
     assert (exists top = list.first);
