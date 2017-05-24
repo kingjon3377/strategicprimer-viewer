@@ -75,10 +75,18 @@ shared EncounterTable loadTable(String?()|File|Resource argument) {
             case ('r'|'R') {
                 MutableList<[Integer, String]> list =
                         ArrayList<[Integer, String]>();
+                variable Boolean first = true;
                 while (exists tableLine = argument()) {
                     value splitted = tableLine.split(' '.equals, true, false);
                     if (splitted.size < 2) {
-                        log.error("Line with no blanks, coninuing ...");
+                        if (first, tableLine == line) {
+                            log.debug("Ceylon tried to read the same line twice again");
+                        } else if (tableLine.empty) {
+                            log.debug("Unexpected blank line");
+                        } else {
+                            log.error("Line with no blanks, coninuing ...");
+                            log.info("It was '``tableLine``'");
+                        }
                     } else {
                         String left = splitted.first;
                         assert (exists right = splitted.rest.reduce(
@@ -91,6 +99,7 @@ shared EncounterTable loadTable(String?()|File|Resource argument) {
                             throw IOException("Non-numeric data", leftNum);
                         }
                     }
+                    first = false;
                 }
                 return RandomTable(*list);
             }
@@ -105,10 +114,18 @@ shared EncounterTable loadTable(String?()|File|Resource argument) {
             case ('t'|'T') {
                 MutableList<TileType->String> list =
                         ArrayList<TileType->String>();
+                variable Boolean first = true;
                 while (exists tableLine = argument()) {
                     value splitted = tableLine.split(' '.equals, true, false);
                     if (splitted.size < 2) {
-                        log.error("Line with no blanks, coninuing ...");
+                        if (first, tableLine == line) {
+                            log.debug("Ceylon tried to read the same line twice again");
+                        } else if (tableLine.empty) {
+                            log.debug("Unexpected blank line");
+                        } else {
+                            log.error("Line with no blanks, coninuing ...");
+                            log.info("It was '``tableLine``'");
+                        }
                     } else {
                         String left = splitted.first;
                         assert (exists right = splitted.rest.reduce(
@@ -122,6 +139,7 @@ shared EncounterTable loadTable(String?()|File|Resource argument) {
                                 "'Tile type' wasn't a recognized tile type", leftVal);
                         }
                     }
+                    first = false;
                 }
                 return TerrainTable(*list);
             }
