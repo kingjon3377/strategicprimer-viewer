@@ -101,13 +101,8 @@ shared class HuntingModel {
             Integer items,
             "Which map to look in"
             Map<Point, MutableList<String>> chosenMap) {
-	    // TODO: Use Iterable methods instead of a comprehension
-        variable {String*} choices = {
-            for (loc in surroundingPointIterable(point, dimensions))
-                if (exists list = chosenMap[loc])
-                    for (item in list)
-                        item
-        };
+        variable {String*} choices = surroundingPointIterable(point, dimensions)
+            .map((loc) => chosenMap[loc]).coalesced.flatMap(identity);
         choices = choices.chain({noResults}.repeat(choices.size));
         return DefaultRandom().elements(choices).take(items);
     }
