@@ -359,13 +359,13 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     .filter(([loc, fixture]) => fixture is Meadow|Grove).first;
                 [Point, TileFixture]? animal = surroundingFixtures
                     .filter(([loc, fixture]) => fixture is Animal).first;
-                // TODO: Use .copy() for these
                 for (pair in subordinateMaps) {
                     if (exists vegetation) {
-                        pair.first.addFixture(vegetation.first, vegetation.rest.first);
+                        pair.first.addFixture(vegetation.first,
+                            vegetation.rest.first.copy(true));
                     }
                     if (exists animal) {
-                        pair.first.addFixture(animal.first, animal.rest.first);
+                        pair.first.addFixture(animal.first, animal.rest.first.copy(true));
                     }
                 }
             }
