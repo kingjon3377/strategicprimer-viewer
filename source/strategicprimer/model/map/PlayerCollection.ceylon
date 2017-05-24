@@ -66,16 +66,22 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 	"Remove a player from the collection. Returns true if the collection changed as a
 	 result of this call."
 	shared actual void remove(Player|Integer obj) {
+		Player? removed;
 		switch (obj)
 		case (is Integer) {
-			players.remove(obj);
+			removed = players.remove(obj);
 		}
 		case (is Player) {
-			players.remove(obj.playerId);
+			removed = players.remove(obj.playerId);
+		}
+		if (exists removed) {
+			if (independentPlayer == removed) {
+				independentPlayer = find(Player.independent) else PlayerImpl(-1, "Independent");
+			}
 		}
 	}
 	"""The player for "independent" fixtures."""
-	shared actual Player independent = independentPlayer;
+	shared actual Player independent => independentPlayer;
 	"The players, as an array."
 	shared actual ObjectArray<Player> asArray() =>
 			createJavaObjectArray(players.items);
