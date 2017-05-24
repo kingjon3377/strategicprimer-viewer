@@ -82,7 +82,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         for (event in stream) {
             if (is EndElement event, event.name == element.name) {
                 break;
-            } else if (is StartElement event, isSPStartElement(event)) {
+            } else if (is StartElement event, isSupportedNamespace(event.name)) {
                 switch (event.name.localPart)
                 case ("expertise") {
                     retval.setSkillLevel(getParameter(event, "skill"),
@@ -139,7 +139,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             retval.image = getParameter(element, "image", "");
             retval.portrait =getParameter(element, "portrait", "");
             for (event in stream) {
-                if (is StartElement event, isSPStartElement(event)) {
+                if (is StartElement event, isSupportedNamespace(event.name)) {
                     if (retval.population exists) {
                         throw UnwantedChildException(element.name, event);
                     } else {
@@ -176,7 +176,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     throw IllegalStateException("Unhandled town tag");
                 }
                 for (event in stream) {
-                    if (is StartElement event, isSPStartElement(event)) {
+                    if (is StartElement event, isSupportedNamespace(event.name)) {
                         if (retval.population exists) {
                             throw UnwantedChildException(element.name, event);
                         } else {
@@ -210,7 +210,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             throw MissingPropertyException(element, "size", size);
         }
         for (event in stream) {
-            if (is StartElement event, isSPStartElement(event)) {
+            if (is StartElement event, isSupportedNamespace(event.name)) {
                 String memberTag = event.name.localPart.lowercased;
                 if (exists reader = memberReaders
                         .find((yar) => yar.isSupportedTag(memberTag))) {

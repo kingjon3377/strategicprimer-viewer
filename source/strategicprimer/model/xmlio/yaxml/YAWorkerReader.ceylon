@@ -86,7 +86,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
             warner.handle(UnsupportedPropertyException(element, "hours"));
         }
         for (event in stream) {
-            if (is StartElement event, isSPStartElement(event)) {
+            if (is StartElement event, isSupportedNamespace(event.name)) {
                 if ("skill" == event.name.localPart.lowercased) {
                     retval.addSkill(parseSkill(event, element.name));
                     spinUntilEnd(event.name, stream);
@@ -121,7 +121,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         retval.image = getParameter(element, "image", "");
         retval.portrait = getParameter(element, "portrait", "");
         for (event in stream) {
-            if (is StartElement event, isSPStartElement(event)) {
+            if (is StartElement event, isSupportedNamespace(event.name)) {
                 if ("job" == event.name.localPart.lowercased) {
                     retval.addJob(parseJob(event, element.name, stream));
                 } else if ("stats" == event.name.localPart.lowercased) {

@@ -88,7 +88,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
     "Get the first open-tag event in our namespace in the stream."
     StartElement getFirstStartElement({XMLEvent*} stream, StartElement parent) {
         for (element in stream) {
-            if (is StartElement element, isSPStartElement(element)) {
+            if (is StartElement element, isSupportedNamespace(element.name)) {
                 return element;
             }
         } else {
@@ -166,7 +166,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         IMutableMapNG retval = SPMapNG(dimensions, players, currentTurn);
         variable Point point = invalidPoint; // TODO: Use Point? instead?
         for (event in stream) {
-            if (is StartElement event, isSPStartElement(event)) {
+            if (is StartElement event, isSupportedNamespace(event.name)) {
                 String type = event.name.localPart.lowercased;
                 if ("player" == type) {
                     assert (exists top = tagStack.top);

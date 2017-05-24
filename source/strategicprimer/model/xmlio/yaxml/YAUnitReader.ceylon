@@ -116,7 +116,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         retval.portrait = getParameter(element, "portrait", "");
         StringBuilder orders = StringBuilder();
         for (event in stream) {
-            if (is StartElement event, isSPStartElement(event)) {
+            if (is StartElement event, isSupportedNamespace(event.name)) {
                 if ("orders" == event.name.localPart.lowercased) {
                     parseOrders(event, retval, stream);
                 } else if ("results" == event.name.localPart.lowercased) {

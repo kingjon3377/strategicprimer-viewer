@@ -53,7 +53,7 @@ NumberFormat numParser = NumberFormat.integerInstance;
 abstract class YAAbstractReader<Element>
         satisfies YAReader<Element> given Element satisfies Object {
     "Whether the given tag is in a namespace we support."
-    static Boolean isSupportedNamespace(QName tag) =>
+    shared static Boolean isSupportedNamespace(QName tag) =>
             {spNamespace, XMLConstants.nullNsUri}.contains(tag.namespaceURI);
     "Require that an element be one of the specified tags."
     shared static void requireTag(StartElement element, QName parent, String* tags) {
@@ -103,20 +103,11 @@ abstract class YAAbstractReader<Element>
             return false;
         }
     }
-    "Whether the given XMLElement is a [[StartElement]] in a namespace we support."
-    todo("Inline into callers, since they now have to use `is StartElement` anyway")
-    shared static Boolean isSPStartElement(XMLEvent element) {
-        if (is StartElement element) {
-            return isSupportedNamespace(element.name);
-        } else {
-            return false;
-        }
-    }
     "Advance the stream until we hit an end element matching the given name, but object to
      any start elements."
     shared static void spinUntilEnd(QName tag, {XMLEvent*} reader) {
         for (event in reader) {
-            if (is StartElement event, isSPStartElement(event)) {
+            if (is StartElement event, isSupportedNamespace(event.name)) {
                 throw UnwantedChildException(tag, event);
             } else if (isMatchingEnd(tag, event)) {
                 break;
