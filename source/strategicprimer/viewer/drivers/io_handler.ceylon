@@ -71,12 +71,17 @@ import strategicprimer.drivers.common {
 import ceylon.file {
     parsePath
 }
+import ceylon.language.meta {
+    type
+}
 
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(
     "Strategic Primer world map files", "map", "xml");
 "A factory method for [[JFileChooser]] taking a [[FileFilter]] to apply in the same
  operation."
 JFileChooser|JFileDialog filteredFileChooser(
+        "Whether to allow multi-selection."
+        Boolean allowMultiple,
         "The current directory."
         String current = ".",
         "The filter to apply."
@@ -96,8 +101,7 @@ JFileChooser|JFileDialog filteredFileChooser(
 }
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
-shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
-        JFileChooser|JFileDialog fileChooser = filteredFileChooser())
+shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli)
         satisfies ActionListener {
     shared actual void actionPerformed(ActionEvent event) {
         value temp = event.source;
@@ -149,7 +153,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
             }
         }
         case ("save as") {
-            FileChooser.save(null, fileChooser).call((path) {
+            FileChooser.save(null, filteredFileChooser(false)).call((path) {
                 try {
                     writeMap(parsePath(path.string), mapModel.map);
                 } catch (IOException except) {
@@ -190,7 +194,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli,
                     }
                 }
             } else {
-                FileChooser.save(null, fileChooser).call((path) {
+                FileChooser.save(null, filteredFileChooser(false)).call((path) {
                     try {
                         writeMap(parsePath(path.string), mapModel.map);
                     } catch (IOException except) {
@@ -222,14 +226,14 @@ shared class FileChooser {
                 (cause exists) then "Choice of a file was iterrupted by an exception:"
                 else "No file was selected", cause) { }
     Integer(Component?) chooserFunction;
-    variable JPath? storedFile;
+    variable {JPath+}? storedFile;
     JFileChooser|JFileDialog chooser;
-    todo("Allow the user to choose multiple files")
     shared new open(JPath? loc = null,
-            JFileChooser|JFileDialog fileChooser = filteredFileChooser()) {
+            JFileChooser|JFileDialog fileChooser = filteredFileChooser(true)) {
         switch (fileChooser)
         case (is JFileChooser) {
             chooserFunction = fileChooser.showOpenDialog;
+            fileChooser.multiSelectionEnabled = true;
         }
         case (is JFileDialog) {
             fileChooser.mode = JFileDialog.load;
@@ -237,12 +241,17 @@ shared class FileChooser {
                 fileChooser.setVisible(true);
                 return 0;
             };
+            fileChooser.multipleMode = true;
         }
-        storedFile = loc;
+        if (exists loc) {
+            storedFile = {loc};
+        } else {
+            storedFile = null;
+        }
         chooser = fileChooser;
     }
     shared new save(JPath? loc,
-            JFileChooser|JFileDialog fileChooser = filteredFileChooser()) {
+            JFileChooser|JFileDialog fileChooser = filteredFileChooser(false)) {
         switch (fileChooser)
         case (is JFileChooser) {
             chooserFunction = fileChooser.showSaveDialog;
@@ -254,11 +263,15 @@ shared class FileChooser {
                 return 0;
             };
         }
-        storedFile = loc;
+        if (exists loc) {
+            storedFile = {loc};
+        } else {
+            storedFile = null;
+        }
         chooser = fileChooser;
     }
     shared new custom(JPath? loc, String approveText,
-            JFileChooser|JFileDialog fileChooser = filteredFileChooser()) {
+            JFileChooser|JFileDialog fileChooser = filteredFileChooser(false)) {
         switch (fileChooser)
         case (is JFileChooser) {
             chooserFunction = (Component? component) =>
@@ -273,7 +286,11 @@ shared class FileChooser {
                 return 0;
             };
         }
-        storedFile = loc;
+        if (exists loc) {
+            storedFile = {loc};
+        } else {
+            storedFile = null;
+        }
         chooser = fileChooser;
     }
     void invoke(Anything() runnable) {
@@ -289,26 +306,35 @@ shared class FileChooser {
             throw ChoiceInterruptedException(except);
         }
     }
-    "If a valid filename was passed in to the constructor, return it; otherwise,
-     show a dialog for the user to select one and return the filename the user selected.
-     Throws an exception if the choice is interrupted or the user declines to choose."
-    shared JPath file {
+    "If a valid filename was, or multiple filenames were, passed in to the constructor,
+     return an iterable containing it or them; otherwise, show a dialog for the user to
+     select one or more filenames and return the filename(s) the user selected. Throws an
+     exception if the choice is interrupted or the user declines to choose."
+    shared {JPath+} files {
         if (exists temp = storedFile) {
             return temp;
         } else if (SwingUtilities.eventDispatchThread) {
             Integer status = chooserFunction(null);
             if (is JFileChooser chooser) {
                 if (status == JFileChooser.approveOption) {
-                    assert (exists temp = chooser.selectedFile);
-                    return temp.toPath();
+                    value retval = chooser.selectedFiles.iterable.coalesced
+                        .map((file) => file.toPath());
+                    if (exists first = retval.first) {
+                        return { first, *retval.rest };
+                    } else {
+                        log.info("User pressed approve but selected no files");
+                    }
                 } else {
                     log.info("Chooser function returned ``status``");
                 }
             } else {
-                if (exists temp = chooser.files.iterable.first) {
-                    return temp.toPath();
+                value retval = chooser.files.iterable.coalesced
+                    .map((file) => file.toPath());
+                if (exists first = retval.first) {
+                    return { first, *retval.rest };
                 } else {
-                    log.info("User failed to choose");
+                    log.info("User failed to choose?");
+                    log.info("Returned iterable was ``retval`` (``type(retval)``");
                 }
             }
         } else {
@@ -316,16 +342,24 @@ shared class FileChooser {
                 Integer status = chooserFunction(null);
                 if (is JFileChooser chooser) {
                     if (status == JFileChooser.approveOption) {
-                        assert (exists temp = chooser.selectedFile);
-                        storedFile = temp.toPath();
+                        value retval = chooser.selectedFiles.iterable.coalesced
+                            .map((file) => file.toPath());
+                        if (exists first = retval.first) {
+                            storedFile = { first, *retval.rest };
+                        } else {
+                            log.info("User pressed approve but selected no files");
+                        }
                     } else {
                         log.info("Chooser function returned ``status``");
                     }
                 } else {
-                    if (exists temp = chooser.files.iterable.first) {
-                        storedFile = temp.toPath();
+                    value retval = chooser.files.iterable.coalesced
+                        .map((file) => file.toPath());
+                    if (exists first = retval.first) {
+                        storedFile = { first, *retval.rest };
                     } else {
-                        log.info("User failed to choose");
+                        log.info("User failed to choose?");
+                        log.info("Returned iterable was ``retval`` (``type(retval)``");
                     }
                 }
             });
@@ -336,14 +370,16 @@ shared class FileChooser {
             throw ChoiceInterruptedException();
         }
     }
-    assign file {
-        storedFile = file;
+    assign files {
+        storedFile = files;
     }
-    "Allow the user to choose a file, if necessary, and pass that file to the given
-     consumer. If the operation is canceled, do nothing."
+    "Allow the user to choose a file or files, if necessary, and pass each file to the
+     given consumer. If the operation is canceled, do nothing."
     shared void call(Anything(JPath) consumer) {
         try {
-            consumer(file);
+            for (file in files) {
+                consumer(file);
+            }
         } catch (ChoiceInterruptedException exception) {
             log.info("Choice interrupted or user failed to choose", exception);
         }

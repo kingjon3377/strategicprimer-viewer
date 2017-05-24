@@ -101,7 +101,7 @@ object reportCLI satisfies SimpleDriver {
         }
     }
     "As we're a CLI driver, we can't show a file-chooser dialog."
-    shared actual JPath? askUserForFile() => null;
+    shared actual {JPath*} askUserForFiles() => {};
 }
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
 object tabularReportCLI satisfies SimpleDriver {
@@ -150,5 +150,5 @@ object tabularReportCLI satisfies SimpleDriver {
         }
     }
     "Since this is a CLI driver, we can't show a file-chooser dialog."
-    shared actual JPath? askUserForFile() => null;
+    shared actual {JPath*} askUserForFiles() => {};
 }

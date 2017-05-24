@@ -420,7 +420,7 @@ object queryCLI satisfies SimpleDriver {
         }
     }
     "As we're a CLI driver, we can't show a file-chooser dialog."
-    shared actual JPath? askUserForFile() => null;
+    shared actual {JPath*} askUserForFiles() => {};
 }
 "Possible actions in the trapping CLI; top-level so we can switch on the cases,
  since the other alternative, `static`, isn't possible in an `object` anymore."
@@ -503,5 +503,5 @@ object trappingCLI satisfies SimpleDriver {
         }
     }
     "As this is a CLI, we can't show a file-chooser dialog."
-    shared actual JPath? askUserForFile() => null;
+    shared actual {JPath*} askUserForFiles() => {};
 }

@@ -99,8 +99,9 @@ shared interface SimpleDriver satisfies ISPDriver {
     "Run the driver."
     shared actual formal void startDriverOnModel(ICLIHelper cli, SPOptions options,
         IDriverModel model);
-    "Ask the user to choose a file. (Or do something equivalent to produce a filename.)"
-    shared formal JPath? askUserForFile();
+    "Ask the user to choose a file or files. (Or do something equivalent to produce a
+     filename.)"
+    shared formal {JPath*} askUserForFiles();
     """Run the driver. If the driver is a GUI driver, this should use
        SwingUtilities.invokeLater(); if it's a CLI driver, that's not necessary. This
        default implementation does *not* write to file after running the driver on the
@@ -125,44 +126,112 @@ shared interface SimpleDriver satisfies ISPDriver {
             case (ParamCount.none|ParamCount.anyNumber) {
                 startDriverNoArgs(cli, options);
             }
-            case (ParamCount.two|ParamCount.atLeastTwo) {
-                if (exists masterPath = askUserForFile(),
-                        exists subordinatePath = askUserForFile()) {
+            case (ParamCount.two) {
+                value firstSelectedPaths = askUserForFiles();
+                if (firstSelectedPaths.empty) {
+                    throw IncorrectUsageException(usage);
+                }
+                assert (exists masterPath = firstSelectedPaths.first);
+                {JPath+} secondSelectedPaths;
+                if (is {JPath+} temp = firstSelectedPaths.rest) {
+                    secondSelectedPaths = temp;
+                } else if (is {JPath+} temp = askUserForFiles()) {
+                    secondSelectedPaths = temp;
+                } else {
+                    throw IncorrectUsageException(usage);
+                }
+                if (secondSelectedPaths.rest.first exists) {
+                    throw IncorrectUsageException(usage);
+                }
+                value subordinatePath = secondSelectedPaths.first;
+                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                    masterPath, subordinatePath);
+                for (pair in mapModel.allMaps) {
+                    turnFixer(pair.first);
+                }
+                startDriverOnModel(cli, options, mapModel);
+            }
+            case (ParamCount.atLeastTwo) {
+                value firstSelectedPaths = askUserForFiles();
+                if (firstSelectedPaths.empty) {
+                    throw IncorrectUsageException(usage);
+                }
+                assert (exists masterPath = firstSelectedPaths.first);
+                {JPath+} secondSelectedPaths;
+                if (is {JPath+} temp = firstSelectedPaths.rest) {
+                    secondSelectedPaths = temp;
+                } else if (is {JPath+} temp = askUserForFiles()) {
+                    secondSelectedPaths = temp;
+                } else {
+                    throw IncorrectUsageException(usage);
+                }
+                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                    masterPath, *secondSelectedPaths);
+                for (pair in mapModel.allMaps) {
+                    turnFixer(pair.first);
+                }
+                startDriverOnModel(cli, options, mapModel);
+            }
+            case (ParamCount.one) {
+                value chosenFiles = askUserForFiles();
+                if (exists chosenFile = chosenFiles.first) {
+                    if (chosenFiles.rest.first exists) {
+                        throw IncorrectUsageException(usage);
+                    } else {
+                        IDriverModel mapModel = readMapModel(chosenFile,
+                            warningLevels.default);
+                        turnFixer(mapModel.map);
+                        startDriverOnModel(cli, options, mapModel);
+                    }
+                } else {
+                    throw IncorrectUsageException(usage);
+                }
+            }
+            case (ParamCount.atLeastOne) {
+                value chosenFiles = askUserForFiles();
+                if (exists chosenFile = chosenFiles.first) {
                     IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
-                        masterPath, subordinatePath);
+                        chosenFile, *chosenFiles.rest);
                     for (pair in mapModel.allMaps) {
                         turnFixer(pair.first);
                     }
                     startDriverOnModel(cli, options, mapModel);
                 } else {
+                    log.error("No file chosen");
                     throw IncorrectUsageException(usage);
                 }
             }
-            case (ParamCount.one) {
-                if (exists chosenFile = askUserForFile()) {
-                    IDriverModel mapModel = readMapModel(chosenFile,
-                        warningLevels.default);
-                    turnFixer(mapModel.map);
-                    startDriverOnModel(cli, options, mapModel);
-                }
-            }
             else {
+                log.error("Not any expected ParamCount");
                 throw IncorrectUsageException(usage);
             }
         } else if (ParamCount.none == desiderata) {
             throw IncorrectUsageException(usage);
-        } else if (args.size == 1,
-                {ParamCount.two, ParamCount.atLeastTwo}.contains(desiderata)) {
+        } else if (args.size == 1, ParamCount.two == desiderata) {
             assert (exists firstArg = args.first);
-            if (exists chosenFile = askUserForFile()) {
+            value chosenFiles = askUserForFiles();
+            if (chosenFiles.empty || chosenFiles.rest.first exists) {
+                throw IncorrectUsageException(usage);
+            } else {
                 IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
-                    JPaths.get(firstArg), chosenFile);
+                    JPaths.get(firstArg), *chosenFiles);
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
                 }
                 startDriverOnModel(cli, options, mapModel);
-            } else {
+            }
+        } else if (args.size == 1, ParamCount.atLeastTwo == desiderata) {
+            assert (exists firstArg = args.first);
+            value chosenFiles = askUserForFiles();
+            if (chosenFiles.empty) {
                 throw IncorrectUsageException(usage);
+            } else {
+                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                    JPaths.get(firstArg), *chosenFiles);
+                for (pair in mapModel.allMaps) {
+                    turnFixer(pair.first);
+                }
+                startDriverOnModel(cli, options, mapModel);
             }
         } else {
             assert (exists firstArg = args.first);
@@ -229,8 +298,8 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
     shared actual formal void startDriverOnModel(ICLIHelper cli, SPOptions options,
         IDriverModel model);
     "As CLI drivers can't ask the user to choose a file using a file-chooser dialog, we
-     simply return null here as a default."
-    shared actual default JPath? askUserForFile() => null;
+     simply return the empty stream here as a default."
+    shared actual default {JPath*} askUserForFiles() => {};
     "Run the driver. If the driver is a GUIDriver, this should use
      SwingUtilities.invokeLater(); if it's a CLI driver, that's not necessary. This
      default implementation assumes a CLI driver, and writes the model back to file(s)

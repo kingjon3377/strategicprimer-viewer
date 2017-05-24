@@ -293,9 +293,17 @@ shared void run() {
                 SPOptions currentOptionsTyped = currentOptions;
                 if (gui) {
                     // TODO: catch and log a DriverFailedException inside the lambda
-                    SwingUtilities.invokeLater(() =>
-                        drivers.rest.first.startDriverOnArguments(cli,
-                            currentOptionsTyped, *others));
+                    SwingUtilities.invokeLater(() {
+                        try {
+                            drivers.rest.first.startDriverOnArguments(cli,
+                                currentOptionsTyped, *others);
+                        } catch (IncorrectUsageException except) {
+                            cli.println(usageMessage(except.correctUsage,
+                                options.getArgument("--verbose") == "true"));
+                        } catch (DriverFailedException except) {
+                            log.error("Driver failed:", except);
+                        }
+                    });
                 } else {
                     drivers.first.startDriverOnArguments(cli, currentOptionsTyped,
                         *others);

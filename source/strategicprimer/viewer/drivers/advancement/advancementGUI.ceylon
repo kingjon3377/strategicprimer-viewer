@@ -73,10 +73,10 @@ shared object advancementGUI satisfies SimpleDriver {
             frame.setVisible(true);
         });
     }
-    "Ask the user to choose a file."
-    shared actual JPath askUserForFile() {
+    "Ask the user to choose a file or files."
+    shared actual {JPath*} askUserForFiles() {
         try {
-            return FileChooser.open(null).file;
+            return FileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {
             throw DriverFailedException(except,
                 "Choice interrupted or user didn't choose");
