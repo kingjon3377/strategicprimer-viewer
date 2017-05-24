@@ -32,11 +32,14 @@ import strategicprimer.drivers.worker.common {
 "A pop-up menu to let the user edit a fixture."
 shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
         IWorkerTreeModel* changeListeners) {
-    variable Boolean immutable = true;
     JPopupMenu retval = JPopupMenu();
     void addMenuItem(JMenuItem item, Anything(ActionEvent) listener) {
         retval.add(item);
         item.addActionListener(listener);
+    }
+    void addDisabledMenuItem(JMenuItem item) {
+        retval.add(item);
+        item.setEnabled(false);
     }
     if (is HasMutableName fixture) {
         addMenuItem(JMenuItem("Rename", KeyEvent.vkN), (ActionEvent event) {
@@ -54,7 +57,8 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
                 }
             }
         });
-        immutable = false;
+    } else {
+        addDisabledMenuItem(JMenuItem("Rename", KeyEvent.vkN));
     }
     if (is HasMutableKind fixture) {
         addMenuItem(JMenuItem("Change kind", KeyEvent.vkK), (ActionEvent event) {
@@ -72,7 +76,8 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
                 }
             }
         });
-        immutable = false;
+    } else {
+        addDisabledMenuItem(JMenuItem("Change kind", KeyEvent.vkK));
     }
     if (is HasMutableOwner fixture) {
         addMenuItem(JMenuItem("Change owner", KeyEvent.vkO), (ActionEvent event) {
@@ -84,7 +89,8 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
                 temp.owner = player;
             }
         });
-        immutable = false;
+    } else {
+        addDisabledMenuItem(JMenuItem("Change owner", KeyEvent.vkO));
     }
     if (is UnitMember fixture) {
         String name;
@@ -103,9 +109,8 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
                 }
             }
         });
-    }
-    if (immutable) {
-        retval.add(JLabel("Fixture is not mutable"));
+    } else {
+        addDisabledMenuItem(JMenuItem("Dismiss", KeyEvent.vkD));
     }
     return retval;
 }
