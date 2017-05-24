@@ -151,9 +151,9 @@ shared SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel,
     retval.addWindowListener(windowSizeListener);
     retval.addWindowStateListener(windowSizeListener);
     SPMenu menu = SPMenu();
-    menu.add(menu.createFileMenu(menuHandler, driverModel));
-    menu.add(menu.createMapMenu(menuHandler, driverModel));
-    menu.add(menu.createViewMenu(menuHandler, driverModel));
+    menu.add(SPMenu.createFileMenu(menuHandler, driverModel));
+    menu.add(SPMenu.createMapMenu(menuHandler, driverModel));
+    menu.add(SPMenu.createViewMenu(menuHandler, driverModel));
     menu.add(WindowMenu(retval));
     retval.jMenuBar = menu;
     return retval;

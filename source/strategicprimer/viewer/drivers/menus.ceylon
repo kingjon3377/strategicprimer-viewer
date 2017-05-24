@@ -136,12 +136,11 @@ shared class MenuBroker() satisfies ActionListener {
     }
 }
 "A class to hold the logic for building our menus."
-todo("Make the methods static once MenuItemCreator has been ported.",
-    "Redesign so users just have to say which menus they want enabled instead of
-     instantiatng them one by one")
-shared class SPMenu() extends JMenuBar() {
+todo("Redesign so users just have to say which menus they want enabled instead of
+      instantiatng them one by one")
+shared class SPMenu extends JMenuBar {
     "Create the file menu."
-    shared JMenu createFileMenu(/*ActionListener|*/Anything(ActionEvent) handler,
+    shared static JMenu createFileMenu(/*ActionListener|*/Anything(ActionEvent) handler,
             IDriverModel model) {
         JMenu fileMenu = JMenu("File");
         fileMenu.mnemonic = KeyEvent.vkF;
@@ -217,7 +216,7 @@ shared class SPMenu() extends JMenuBar() {
         return fileMenu;
     }
     """Create the "map" menu, including go-to-tile, find, and zooming functions."""
-    shared JMenu createMapMenu(Anything(ActionEvent) handler, IDriverModel model) {
+    shared static JMenu createMapMenu(Anything(ActionEvent) handler, IDriverModel model) {
         JMenu retval = JMenu("Map");
         retval.mnemonic = KeyEvent.vkM;
         Integer findKey = KeyEvent.vkF;
@@ -268,7 +267,7 @@ shared class SPMenu() extends JMenuBar() {
         return retval;
     }
     """Create the "view" menu."""
-    shared JMenu createViewMenu(Anything(ActionEvent) handler, IDriverModel model) {
+    shared static JMenu createViewMenu(Anything(ActionEvent) handler, IDriverModel model) {
         JMenu viewMenu = JMenu("View");
         viewMenu.mnemonic = KeyEvent.vkE;
 
@@ -308,4 +307,5 @@ shared class SPMenu() extends JMenuBar() {
         menu.enabled = false;
         return menu;
     }
+    shared new () extends JMenuBar() {}
 }

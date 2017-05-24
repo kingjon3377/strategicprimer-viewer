@@ -23,9 +23,9 @@ shared JMenuBar workerMenu(
         "The current driver model."
         IDriverModel model) {
     SPMenu retval = SPMenu();
-    retval.add(retval.createFileMenu(handler, model));
-    retval.addDisabled(retval.createMapMenu(handler, model));
-    retval.add(retval.createViewMenu(handler, model));
+    retval.add(SPMenu.createFileMenu(handler, model));
+    retval.addDisabled(SPMenu.createMapMenu(handler, model));
+    retval.add(SPMenu.createViewMenu(handler, model));
     retval.add(WindowMenu(parentFrame));
     return retval;
 }
