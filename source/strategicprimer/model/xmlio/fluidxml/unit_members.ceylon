@@ -41,7 +41,8 @@ import strategicprimer.model.xmlio {
 }
 import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException,
-    UnsupportedPropertyException
+    UnsupportedPropertyException,
+    MissingPropertyException
 }
 Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
@@ -204,11 +205,16 @@ Animal readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
     } else {
         id = getOrGenerateID(element, warner, idFactory);
     }
+    Integer count = getIntegerAttribute(element, "count", 1, warner);
+    if (count < 1) {
+        throw MissingPropertyException(element, "count",
+            IllegalArgumentException("Animal population must be positive"));
+    }
     return setImage(
         Animal(getAttribute(element, "kind"), traces,
             getBooleanAttribute(element, "talking", false, warner),
             getAttribute(element, "status", "wild"),
-            id, getIntegerAttribute(element, "born", -1, warner)),
+            id, getIntegerAttribute(element, "born", -1, warner), count),
             element, warner);
 }
 
@@ -236,6 +242,9 @@ void writeAnimal(XMLStreamWriter ostream, Object obj, Integer indentation) {
                 } else {
                     writeAttributes(ostream, "born"->obj.born);
                 }
+            }
+            if (obj.population > 1) {
+                writeAttributes(ostream, "count"->obj.population);
             }
         }
         writeImage(ostream, obj);

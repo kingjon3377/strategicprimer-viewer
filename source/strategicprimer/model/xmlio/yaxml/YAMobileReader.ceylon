@@ -40,6 +40,9 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.xmlio {
     Warning
 }
+import strategicprimer.model.xmlio.exceptions {
+    MissingPropertyException
+}
 "A reader for 'mobile fixtures'"
 class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<MobileFixture>(warning, idRegistrar) {
@@ -63,10 +66,15 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         } else {
             idNum = getOrGenerateID(element);
         }
+        Integer count = getIntegerParameter(element, "count", 1);
+        if (count < 1) {
+            throw MissingPropertyException(element, "count",
+                IllegalArgumentException("Animal population must be positive"));
+        }
         return Animal(getParameter(element, "kind"), tracks,
             getBooleanParameter(element, "talking", false),
             getParameter(element, "status", "wild"), idNum,
-            getIntegerParameter(element, "born", -1));
+            getIntegerParameter(element, "born", -1), count);
     }
     MobileFixture readSimple(String tag, Integer idNum) {
         value kind = SimpleImmortalKind.parse(tag);
@@ -125,6 +133,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
                         writeProperty(ostream, "born", obj.born);
                     }
                 }
+                writeProperty(ostream, "count", obj.population);
             }
             writeImageXML(ostream, obj);
         } else if (is SimpleImmortal obj) {

@@ -39,7 +39,8 @@ import strategicprimer.model.map.fixtures.mobile {
     ProxyFor,
     Animal,
     IWorker,
-    maturityModel
+    maturityModel,
+    animalPlurals
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats
@@ -162,14 +163,27 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
                 }
             }
         } else if (is Animal local) {
+//            String plural = animalPlurals[local.kind]; // TODO: syntax sugar once compiler bug fixed
+            String plural = animalPlurals.get(local.kind);
             if (local.born >= 0, maturityModel.currentTurn >= 0,
                     exists maturityAge = maturityModel.maturityAges[local.kind],
                     maturityModel.currentTurn - local.born < maturityAge) {
-                typeLabel.text = "Young Animal";
-                kindLabel.text = "Young ``local.kind``";
+                if (local.population > 1) {
+                    typeLabel.text = "Young Animals";
+                    kindLabel.text =
+                        "``local.population`` young ``plural``";
+                } else {
+                    typeLabel.text = "Young Animal";
+                    kindLabel.text = "Young ``local.kind``";
+                }
             } else {
-                typeLabel.text = "Animal";
-                kindLabel.text = local.kind;
+                if (local.population > 1) {
+                    typeLabel.text = "Animals";
+                    kindLabel.text = "``local.population`` ``plural``";
+                } else {
+                    typeLabel.text = "Animal";
+                    kindLabel.text = local.kind;
+                }
             }
             nameLabel.text = "";
             for (label in statLabels) {

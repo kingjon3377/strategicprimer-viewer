@@ -133,6 +133,9 @@ import strategicprimer.model.xmlio.exceptions {
     MissingChildException,
     DeprecatedPropertyException
 }
+import ceylon.language.meta {
+    type
+}
 
 JPath fakeFilename = JPaths.get("");
 ISPReader oldReader = testReaderFactory.oldReader;
@@ -1280,6 +1283,8 @@ void testAnimalSerialization() {
         warningLevels.die);
     assertSerialization("Animal age is preserved",
         Animal("youngKind", false, false, "domesticated", 12, 8));
+    assertSerialization("Animal population count is preserved",
+        Animal("population", false, false, "wild", 13, -1, 55));
 }
 
 test

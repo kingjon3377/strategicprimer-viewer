@@ -18,7 +18,8 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures.mobile {
     Animal,
-    maturityModel
+    maturityModel,
+    animalPlurals
 }
 import strategicprimer.report {
     IReportNode
@@ -33,7 +34,9 @@ import strategicprimer.report.nodes {
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
         extends AbstractReportGenerator<Animal>(comp, dimensions, hq) {
-    "Produce the sub-report about animals or an individual Animal."
+    "Produce the sub-report about animals or an individual Animal. We assume that
+     individual Animals are members of the player's units, or that for some other reason
+     the player is allowed to see the precise count of the population."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, [Animal, Point]? entry) {
         if (exists entry) {
@@ -57,7 +60,12 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                     ostream(" ``currentTurn - item.born``-turn-old");
                 }
             }
-            ostream(" ``item.kind`` ``distCalculator.distanceString(loc)``");
+            if (item.population == 1) {
+                ostream(" ``item.kind``");
+            } else {
+                ostream(" ``item.population`` ``animalPlurals.get(item.kind)``");
+            }
+            ostream(" ``distCalculator.distanceString(loc)``");
         } else {
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items

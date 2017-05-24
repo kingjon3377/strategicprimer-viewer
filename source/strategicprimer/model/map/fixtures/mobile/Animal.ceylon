@@ -11,7 +11,7 @@ import strategicprimer.model.map.fixtures {
 }
 "An animal or group of animals."
 todo("Add more features (population, to start with)")
-shared class Animal(kind, traces, talking, status, id, born = -1)
+shared class Animal(kind, traces, talking, status, id, born = -1, population = 1)
 		satisfies MobileFixture&HasMutableImage&HasKind&UnitMember {
 	"ID number."
 	shared actual Integer id;
@@ -28,15 +28,21 @@ shared class Animal(kind, traces, talking, status, id, born = -1)
 	shared actual String kind;
 	"The turn the animal was born, or -1 if it is an adult (or if this is traces ...)"
 	shared variable Integer born;
+	"How many individual animals are in the population this represents."
+	shared Integer population;
+	"A population cannot have fewer than one individual."
+	assert (population >= 1);
 	shared actual String shortDescription =>
-			"``(traces) then "traces of " else ""````(talking) then "talking " else ""````kind``";
+			"``(traces) then "traces of " else ""````(talking) then "talking " else ""````kind`` born ``born``";
 	"Default image filename"
 	todo("Should depend on the kind of animal")
 	shared actual String defaultImage = (traces) then "tracks.png" else "animal.png";
+	todo("Check date of birth?")
 	shared actual Boolean equalsIgnoringID(IFixture fixture) {
 		if (is Animal fixture) {
 			return kind == fixture.kind && traces == fixture.traces &&
-				talking == fixture.talking && status == fixture.status;
+				talking == fixture.talking && status == fixture.status &&
+				population == fixture.population;
 		} else {
 			return false;
 		}
@@ -50,7 +56,8 @@ shared class Animal(kind, traces, talking, status, id, born = -1)
 				return equalsIgnoringID(obj);
 			} else {
 				return kind == obj.kind && traces == obj.traces && talking == obj.talking
-					&& status == obj.status && id == obj.id && born == obj.born;
+					&& status == obj.status && id == obj.id && born == obj.born
+					&& population == obj.population;
 			}
 		} else {
 			return false;
@@ -63,7 +70,7 @@ shared class Animal(kind, traces, talking, status, id, born = -1)
 	todo("Should we zero out any information?")
 	shared actual Animal copy(Boolean zero) {
 		Animal retval = Animal(kind, traces, talking, status, id,
-			(zero) then -1 else born);
+			(zero) then -1 else born, (zero) then 1 else population);
 		retval.image = image;
 		return retval;
 	}
@@ -71,7 +78,7 @@ shared class Animal(kind, traces, talking, status, id, born = -1)
 	todo("Should be variable, either read from XML or computed from kind using some other
 	      read-from-file data.") // FIXME
 	shared actual Integer dc => (traces) then 12 else 22;
-	todo("Check turn of birth?")
+	todo("Check turn of birth?", "Check population count")
 	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
 		if (obj.id == id) {
 			if (is Animal obj) {
@@ -121,4 +128,16 @@ shared object maturityModel {
 	todo("If Ceylon ever gets a sufficiently nuanced visibility system, restrict access to
 	      this method to the package containing the XML I/O tests")
 	shared void resetCurrentTurn() => currentTurnLocal = -1;
+}
+shared object animalPlurals satisfies Correspondence<String, String> {
+	assert (exists file = `module strategicprimer.model`
+		.resourceByPath("animal_plurals.txt"));
+	value textContent = file.textContent();
+	Map<String, String> plurals = map { *textContent.split('\n'.equals)
+		.map((String line) => line.split('\t'.equals, true, true, 1))
+		.map(({String+} line) => line.first->(line.rest.first else line.first))
+	};
+	shared actual String get(String key) => plurals[key] else key;
+	shared actual Boolean defines(String key) => plurals.defines(key);
+
 }

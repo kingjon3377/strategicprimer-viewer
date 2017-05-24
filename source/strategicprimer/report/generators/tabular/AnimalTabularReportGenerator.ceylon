@@ -18,7 +18,7 @@ import strategicprimer.model.map.fixtures.mobile {
 shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
         Integer currentTurn) satisfies ITableGenerator<Animal> {
     "The header row for the table."
-    shared actual [String+] headerRow = ["Distance", "Location", "Kind", "Age"];
+    shared actual [String+] headerRow = ["Distance", "Location", "Number", "Kind", "Age"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "animals";
     "Produce a single line of the tabular report on animals."
@@ -27,14 +27,18 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
             Animal item, Point loc) {
         String kind;
         String age;
+        String population;
         if (item.traces) {
             kind = "tracks or traces of ``item.kind``";
             age = "---";
+            population = "---";
         } else if (item.talking) {
             kind = "talking ``item.kind``";
             age = "---";
+            population = "---";
         } else if ("wild" != item.status) {
             kind = "``item.status`` ``item.kind``";
+            population = item.population.string;
             if (item.born >= 0) {
                 if (item.born > currentTurn) {
                     age = "unborn";
@@ -52,8 +56,10 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
         } else {
             kind = item.kind;
             age = "---";
+            population = "---";
         }
-        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, kind, age);
+        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, population,
+            kind, age);
         return true;
     }
     "Compare two pairs of Animals and locations."
@@ -74,6 +80,7 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
             }
             return comparing(compareBools(Animal.talking),
                 compareBools((animal) => !animal.traces), byIncreasing(Animal.kind),
+                byDecreasing(Animal.population),
                 byIncreasing(Animal.born))(one.rest.first, two.rest.first);
         } else {
             return cmp;

@@ -41,7 +41,8 @@ import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     IWorker,
     Animal,
-    maturityModel
+    maturityModel,
+    animalPlurals
 }
 import strategicprimer.viewer.drivers.map_viewer {
     loadIcon,
@@ -261,7 +262,18 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         maturityModel.currentTurn - internal.born < maturityAge,
                         is JLabel component) {
                     Integer age = maturityModel.currentTurn - internal.born;
-                    component.text = "``age``-turn-old ``internal.kind``";
+                    if (internal.population>1) {
+                        component.text = "``internal.population`` ``age``-turn-old ``
+//                                animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed
+                                animalPlurals.get(internal.kind)``";
+                    } else {
+                        component.text = "``age``-turn-old ``internal.kind``";
+                    }
+                } else if (is Animal internal, internal.population > 1,
+                        is JLabel component) {
+//                    component.text = "``internal.population`` ``animalPlurals[internal.kind]``";
+                    component.text = "``internal.population`` ``animalPlurals.get(internal
+                        .kind)``";
                 } else if (is IUnit internal, is DefaultTreeCellRenderer component) {
                     component.text = internal.name;
                     String orders = internal.getLatestOrders(turnSource()).lowercased;
