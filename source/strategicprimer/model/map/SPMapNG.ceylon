@@ -69,14 +69,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     shared actual object baseTerrain satisfies NonNullCorrespondence<Point, TileType>&
             KeyedCorrespondenceMutator<Point, TileType> {
         shared actual Boolean defines(Point key) => contained(key);
-        shared actual TileType get(Point key) {
-            // TODO: condense
-            if (exists retval = terrain[key]) {
-                return retval;
-            } else {
-                return TileType.notVisible;
-            }
-        }
+        shared actual TileType get(Point key) => terrain[key] else TileType.notVisible;
         shared actual void put(Point key, TileType item) => terrain[key] = item;
     }
     "Whether the given location is mountainous."
