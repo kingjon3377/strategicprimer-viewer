@@ -104,7 +104,8 @@ void coalesceResources({IFixture*} stream, ICLIHelper cli) {
                 list = temp;
             } else {
                 list = ArrayList<ResourcePile>();
-                resources[key] = list;
+//                resources[key] = list; // TODO: report backend-error bug
+                resources.put(key, list);
             }
             list.add(fixture);
         } else if (is Animal fixture) {
@@ -117,7 +118,8 @@ void coalesceResources({IFixture*} stream, ICLIHelper cli) {
                 list = temp;
             } else {
                 list = ArrayList<Animal>();
-                animals[key] = list;
+//                animals[key] = list; TODO: report backend-error bug
+                animals.put(key, list);
             }
             list.add(fixture);
         }
