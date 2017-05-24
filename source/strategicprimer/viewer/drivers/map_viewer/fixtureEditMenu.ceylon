@@ -11,7 +11,6 @@ import java.awt.event {
 import javax.swing {
     JOptionPane,
     JMenuItem,
-    JLabel,
     JPopupMenu
 }
 import strategicprimer.model.map {
