@@ -30,10 +30,10 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
      otherwise."
     todo("What should we do with matching but non-equal skill?")
     shared actual void addSkill(ISkill skill) {
-        if (exists existing = skillSet.get(skill.name), existing == skill) {
+        if (exists existing = skillSet[skill.name], existing == skill) {
                 return;
         } else {
-            skillSet.put(skill.name, skill);
+            skillSet[skill.name] = skill;
         }
     }
     for (skill in skills) {
@@ -70,7 +70,7 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
         } else {
             variable Boolean retval = true;
             for (skill in obj) {
-                if (exists ours = skillSet.get(skill.name)) {
+                if (exists ours = skillSet[skill.name]) {
                     retval = retval && ours.isSubset(skill,
                                 (String str) => report("In Job ``name``:\t``str``"));
                 } else {
@@ -89,11 +89,11 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
     shared actual Boolean emptyJob => level == 0 && skillSet.items.every(ISkill.empty);
     "Get a Skill by name, or a newly-constructed empty one if we didn't have one."
     shared actual ISkill getSkill(String skillName) {
-        if (exists skill = skillSet.get(skillName)) {
+        if (exists skill = skillSet[skillName]) {
             return skill;
         } else {
             ISkill skill = Skill(skillName, 0, 0);
-            skillSet.put(skillName, skill);
+            skillSet[skillName] = skill;
             return skill;
         }
     }

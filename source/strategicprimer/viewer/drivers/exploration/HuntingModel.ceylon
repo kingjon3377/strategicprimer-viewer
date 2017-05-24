@@ -58,30 +58,30 @@ shared class HuntingModel {
                 String kind = fixture.kind;
                 MutableList<String> list;
                 if (fishKinds.contains(kind)) {
-                    if (exists temp = waterAnimals.get(point)) {
+                    if (exists temp = waterAnimals[point]) {
                         list = temp;
                     } else {
                         list = ArrayList<String>();
-                        waterAnimals.put(point, list);
+                        waterAnimals[point] = list;
                     }
-                } else if (exists temp = animals.get(point)) {
+                } else if (exists temp = animals[point]) {
                     list = temp;
                 } else {
                     list = ArrayList<String>();
-                    animals.put(point, list);
+                    animals[point] = list;
                 }
                 list.add(kind);
             } else if (is Grove|Meadow|Shrub fixture) {
-                if (exists list = plants.get(point)) {
+                if (exists list = plants[point]) {
                     list.add(fixture.string);
                 } else {
                     MutableList<String> list = ArrayList<String>();
-                    plants.put(point, list);
+                    plants[point] = list;
                     list.add(fixture.string);
                 }
             }
         }
-        if (exists plantList = plants.get(point)) {
+        if (exists plantList = plants[point]) {
             Integer length = plantList.size - 1;
 //            TileType tileType = map.baseTerrain[point]; // TODO: syntax sugar once compiler bug fixed
             TileType tileType = map.baseTerrain.get(point);
@@ -101,9 +101,10 @@ shared class HuntingModel {
             Integer items,
             "Which map to look in"
             Map<Point, MutableList<String>> chosenMap) {
+	    // TODO: Use Iterable methods instead of a comprehension
         variable {String*} choices = {
             for (loc in surroundingPointIterable(point, dimensions))
-                if (exists list = chosenMap.get(loc))
+                if (exists list = chosenMap[loc])
                     for (item in list)
                         item
         };
@@ -134,7 +135,7 @@ shared class HuntingModel {
             Integer items) {
         variable {String*} choices = {
             for (loc in surroundingPointIterable(point, dimensions))
-                if (exists list = plants.get(loc))
+                if (exists list = plants[loc])
                     for (plant in list)
                         plant
         };

@@ -54,12 +54,12 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
                 TreeMap<Integer, String>((x, y) => x <=> y, {});
         for (map in proxiedList.map(method)) {
             for (key-> item in map) {
-                if (exists existing = retval.get(key)) {
+                if (exists existing = retval[key]) {
                     if (item != existing) {
-                        retval.put(key, "");
+                        retval[key] = "";
                     }
                 } else {
-                    retval.put(key, item);
+                    retval[key] = item;
                 }
             }
         }
@@ -193,7 +193,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             for (member in unit) {
                 UnitMember&ProxyFor<UnitMember>|IWorker&ProxyFor<IWorker> proxy;
                 Integer memberID = member.id;
-                if (exists temp = map.get(memberID)) {
+                if (exists temp = map[memberID]) {
                     proxy = temp;
                     if (is IWorker&ProxyFor<IWorker> proxy) {
                         if (is IWorker member) {
@@ -210,7 +210,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
                     } else {
                         proxy = ProxyMember(member);
                     }
-                    map.put(memberID, proxy);
+                    map[memberID] = proxy;
                 }
             }
         }

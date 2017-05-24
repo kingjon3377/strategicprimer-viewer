@@ -133,7 +133,7 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
             void localFormat(String string) =>
                     report("In fortress ``name`` (ID #``id``):\t``string``");
             for (member in obj) {
-                if (exists corresponding = ours.get(member.id)) {
+                if (exists corresponding = ours[member.id]) {
                     if (!corresponding.isSubset(member, localFormat)) {
                         retval = false;
                     }

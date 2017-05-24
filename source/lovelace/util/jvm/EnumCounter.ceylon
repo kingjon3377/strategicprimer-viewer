@@ -11,11 +11,11 @@ import lovelace.util.common {
 shared class EnumCounter<Type>() given Type satisfies Object {
     MutableMap<Type, Accumulator> counts = HashMap<Type, Accumulator>();
     void count(Type item) {
-        if (exists counter = counts.get(item)) {
+        if (exists counter = counts[item]) {
             counter.add(1);
         } else {
             Accumulator counter = IntHolder(1);
-            counts.put(item, counter);
+            counts[item] = counter;
         }
     }
     "Count the items in a sequence."
@@ -26,7 +26,7 @@ shared class EnumCounter<Type>() given Type satisfies Object {
     }
     "Get the count for a given value."
     shared Integer getCount(Type item) {
-        if (exists counter = counts.get(item)) {
+        if (exists counter = counts[item]) {
             return counter.sum;
         } else {
             return 0;

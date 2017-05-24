@@ -104,7 +104,7 @@ shared class Worker(name, race, id, IJob* jobs) satisfies IWorker&HasPortrait {
                 Map<String, IJob> ours = createMap { *map((job) => job.name->job) };
                 variable Boolean retval = true;
                 for (job in obj) {
-                    if (exists corresponding = ours.get(job.name)) {
+                    if (exists corresponding = ours[job.name]) {
                         if (!corresponding.isSubset(job, localReport)) {
                             retval = false;
                         }

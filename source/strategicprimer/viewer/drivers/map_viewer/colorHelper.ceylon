@@ -69,7 +69,7 @@ object colorHelper {
     };
     "Whether the given map version supports the given tile type."
     shared Boolean supportsType(Integer version, TileType type) {
-        if (exists map = colors.get(version), exists color = map.get(type)) {
+        if (exists map = colors[version], exists color = map[type]) {
             return true;
         } else {
             return false;
@@ -78,8 +78,8 @@ object colorHelper {
     "Get the color to use for the given tile type in the given map version. Throws
      if the given version does not support that tile type."
     shared Color? get(Integer version, TileType type) {
-        if (exists map = colors.get(version)) {
-            if (exists color = map.get(type)) {
+        if (exists map = colors[version]) {
+            if (exists color = map[type]) {
                 return color;
             } else {
                 log.error("Asked for unsupported type ``type`` in version ``version``");
@@ -92,7 +92,7 @@ object colorHelper {
     }
     "Get a String (HTML) representation of the given terrain type."
     shared String? getDescription(TileType type) {
-        if (exists retval = descriptions.get(type)) {
+        if (exists retval = descriptions[type]) {
             return retval;
         } else {
             log.error("No description found for tile type ``type``");
@@ -101,7 +101,7 @@ object colorHelper {
     }
     "Get the color that a fixture should turn the tile if it's not on top."
     shared Color? getFeatureColor(TileFixture fixture) {
-        if (exists color = featureColors.get(type(fixture))) {
+        if (exists color = featureColors[type(fixture)]) {
             return color;
         } else {
             log.warn("Asked for color for unsupported fixture: ``fixture``");

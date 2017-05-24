@@ -31,7 +31,7 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
         if (toRemove.contains(key)) {
             return null;
         } else {
-            return backing.get(key);
+            return backing[key];
         }
     }
 
@@ -40,7 +40,7 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
 
     shared actual Item? put(Integer key, Item item) {
         toRemove.remove(key);
-        return backing.put(key, item);
+        return backing[key] = item;
     }
 
     shared actual Item? remove(Integer key) {

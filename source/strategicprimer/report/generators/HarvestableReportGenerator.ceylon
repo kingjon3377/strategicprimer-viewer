@@ -131,37 +131,37 @@ shared class HarvestableReportGenerator(
                 // generics we can even handle differently based on whether a List or Map
                 // is in the Map!
                 if (is CacheFixture item) {
-                    caches.put(item, point);
+                    caches[item] = point;
                 } else if (is Grove item) {
-                    groves.put(item, point);
+                    groves[item] = point;
                 } else if (is Meadow item) {
-                    meadows.put(item, point);
+                    meadows[item] = point;
                 } else if (is Mine item) {
-                    mines.put(item, point);
+                    mines[item] = point;
                 } else if (is MineralVein item) {
-                    if (exists coll = minerals.get(item.shortDescription)) {
+                    if (exists coll = minerals[item.shortDescription]) {
                         coll.add(point);
                     } else {
                         value coll = PointList("``item.shortDescription``: at ");
-                        minerals.put(item.shortDescription, coll);
+                        minerals[item.shortDescription] = coll;
                         coll.add(point);
                     }
                     fixtures.remove(item.id);
                 } else if (is Shrub item) {
-                    if (exists coll = shrubs.get(item.kind)) {
+                    if (exists coll = shrubs[item.kind]) {
                         coll.add(point);
                     } else {
                         value coll = PointList("``item.kind``: at ");
-                        shrubs.put(item.kind, coll);
+                        shrubs[item.kind] = coll;
                         coll.add(point);
                     }
                     fixtures.remove(item.id);
                 } else if (is StoneDeposit item) {
-                    if (exists coll = stone.get(item.kind)) {
+                    if (exists coll = stone[item.kind]) {
                         coll.add(point);
                     } else {
                         value coll = PointList("``item.kind``: at ");
-                        stone.put(item.kind, coll);
+                        stone[item.kind] = coll;
                         coll.add(point);
                     }
                     fixtures.remove(item.id);
@@ -256,29 +256,29 @@ shared class HarvestableReportGenerator(
                         mines.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is MineralVein item) {
                         IReportNode node;
-                        if (exists temp = minerals.get(item.shortDescription)) {
+                        if (exists temp = minerals[item.shortDescription]) {
                             node = temp;
                         } else {
                             node = ListReportNode(item.shortDescription);
-                            minerals.put(item.shortDescription, node);
+                            minerals[item.shortDescription] = node;
                         }
                         node.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is Shrub item) {
                         IReportNode node;
-                        if (exists temp = shrubs.get(item.shortDescription)) {
+                        if (exists temp = shrubs[item.shortDescription]) {
                             node = temp;
                         } else {
                             node = ListReportNode(item.shortDescription);
-                            shrubs.put(item.shortDescription, node);
+                            shrubs[item.shortDescription] = node;
                         }
                         node.appendNode(produceRIR(fixtures, map, [item, loc]));
                     } else if (is StoneDeposit item) {
                         IReportNode node;
-                        if (exists temp = stone.get(item.kind)) {
+                        if (exists temp = stone[item.kind]) {
                             node = temp;
                         } else {
                             node = ListReportNode(item.kind);
-                            stone.put(item.kind, node);
+                            stone[item.kind] = node;
                         }
                         node.appendNode(produceRIR(fixtures, map, [item, loc]));
                     }

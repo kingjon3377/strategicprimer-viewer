@@ -73,21 +73,21 @@ shared class VillageReportGenerator(
             for ([loc, item] in values) {
                 if (is Village village = item) {
                     if (village.owner == currentPlayer) {
-                        own.put(village, loc);
+                        own[village] = loc;
                     } else if (village.owner.independent) {
-                        independents.put(village, loc);
+                        independents[village] = loc;
                     } else {
                         HeadedMap<Village, Point>&MutableMap<Village, Point> mapping;
-                        if (exists temp = others.get(village.owner)) {
+                        if (exists temp = others[village.owner]) {
                             mapping = temp;
                         } else {
                             mapping = HeadedMapImpl<Village, Point>(
                                 "<h5>Villages sworn to ``village.owner.name``</h5>
                                  <ul>
                                  ", villageComparator);
-                            others.put(village.owner, mapping);
+                            others[village.owner] = mapping;
                         }
-                        mapping.put(village, loc);
+                        mapping[village] = loc;
                     }
                 }
             }
@@ -144,11 +144,11 @@ shared class VillageReportGenerator(
                         parent = own;
                     } else if (owner.independent) {
                         parent = independents;
-                    } else if (exists temp = othersMap.get(owner)) {
+                    } else if (exists temp = othersMap[owner]) {
                         parent = temp;
                     } else {
                         parent = SectionListReportNode(6, "Villages sworn to ``owner``");
-                        othersMap.put(owner, parent);
+                        othersMap[owner] = parent;
                     }
                     parent.appendNode(produceRIR(fixtures, map, [village, loc]));
                 }

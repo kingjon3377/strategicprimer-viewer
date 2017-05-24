@@ -104,12 +104,12 @@ shared class ResourceTabularReportGenerator()
             switch (fixture)
             case (is Implement) {
                 Integer num;
-                if (exists temp = implementCounts.get(fixture.kind)) {
+                if (exists temp = implementCounts[fixture.kind]) {
                     num = temp;
                 } else {
                     num = 0;
                 }
-                implementCounts.put(fixture.kind, num + 1);
+                implementCounts[fixture.kind] = num + 1;
                 fixtures.remove(key);
             } case (is CacheFixture) {
                 // FIXME: combine with ResourcePile case once compiler accepts it

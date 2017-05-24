@@ -107,11 +107,11 @@ shared class ExplorableReportGenerator(
                             caves.add(pair.first)),
                             `AdventureFixture`->(([Point, IFixture] pair) {
                                 assert (is AdventureFixture fixture = pair.rest.first);
-                                adventures.put(fixture, pair.first);
+                                adventures[fixture] = pair.first;
                             })};
                     };
             for ([loc, item] in values) {
-                if (exists collector = collectors.get(type(item))) {
+                if (exists collector = collectors[type(item)]) {
                     collector([loc, item]);
                     fixtures.remove(item.id);
                 }
@@ -183,7 +183,7 @@ shared class ExplorableReportGenerator(
                     };
             for ([loc, item] in values) {
                 if (is ExplorableFixture fixture = item,
-                    exists node = nodes.get(type(fixture))) {
+                        exists node = nodes[type(fixture)]) {
                     node.appendNode(produceRIR(fixtures, map, [fixture, loc]));
                 }
             }

@@ -161,7 +161,7 @@ class Ver2TileDrawHelper(
                 return getImage(image);
             }
         } else if (is RiverFixture fixture) {
-            return getImage(riverFiles.get(fixture.rivers) else "");
+            return getImage(riverFiles[fixture.rivers] else "");
         } else {
             log.warn("Using fallback image for unexpected kind of fixture");
             return fallbackImage;
@@ -217,9 +217,9 @@ class Ver2TileDrawHelper(
     "Get the image representing the given configuration of rivers."
     Image getRiverImage({River*} rivers) {
         if (is Set<River> rivers) {
-            return getImage(riverFiles.get(rivers) else "");
+            return getImage(riverFiles[rivers] else "");
         } else {
-            return getImage(riverFiles.get(set {*rivers}) else "");
+            return getImage(riverFiles[set {*rivers}] else "");
         }
     }
     """Get the "top" fixture at the given location"""

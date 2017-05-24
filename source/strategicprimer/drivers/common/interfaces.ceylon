@@ -55,11 +55,11 @@ shared class SPOptionsImpl({<String->String>*} existing = {}) satisfies SPOption
         if ("false" == argument) {
             options.remove(option);
         } else {
-            options.put(option, argument);
+            options[option] = argument;
         }
     }
     shared actual Boolean hasOption(String option) => options.defines(option);
-    shared actual String getArgument(String option) => options.get(option) else "false";
+    shared actual String getArgument(String option) => options[option] else "false";
     shared actual SPOptionsImpl copy() => SPOptionsImpl(options);
     shared actual String string {
         StringBuilder builder = StringBuilder();

@@ -111,7 +111,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         String tag = element.name.localPart.lowercased;
         if (namespace.empty || namespace == spNamespace ||
                 namespace == XMLConstants.nullNsUri) {
-            if (exists reader = readers.get(tag)) {
+            if (exists reader = readers[tag]) {
                 return reader(element, parent, stream, players, warner, idFactory);
             }
         }

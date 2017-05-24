@@ -40,7 +40,7 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
         if (level == 0) {
             skillLevels.remove(skill);
         } else {
-            skillLevels.put(skill, level);
+            skillLevels[skill] = level;
         }
     }
     "ID numbers of fields, orchards, and the like that this community cultivates. We don't

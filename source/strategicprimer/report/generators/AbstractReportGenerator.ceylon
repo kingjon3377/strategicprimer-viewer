@@ -109,7 +109,7 @@ shared sealed abstract class AbstractReportGenerator<T>(
         shared actual Boolean defines(Object key) => wrapped.defines(key);
         shared actual Value? get(Object key) => wrapped.get(key);
         shared actual Iterator<Key->Value> iterator() => wrapped.iterator();
-        shared actual Value? put(Key key, Value item) => wrapped.put(key, item);
+        shared actual Value? put(Key key, Value item) => wrapped[key] = item;
         shared actual Value? remove(Key key) => wrapped.remove(key);
     }
 }

@@ -69,13 +69,15 @@ shared class ImmortalsReportGenerator(
                     HashMap<SimpleImmortalKind,
                     HeadedList<Point>&MutableList<Point>>();
             for (kind in `SimpleImmortalKind`.caseValues) {
-                simples.put(kind, PointList("``kind.plural`` at: "));
+                simples[kind] = PointList("``kind.plural`` at: ");
             }
+            // If we use Correspondence syntax sugar, we have to specify types
+            // for the lambda.
             meta.put(`SimpleImmortal`,(kind, point) {
                 // FIXME: why are we parsing in a report generator at all?
                 value immortal = SimpleImmortalKind.parse(kind);
                 if (is SimpleImmortalKind immortal) {
-                    if (exists list = simples.get(immortal)) {
+                    if (exists list = simples[immortal]) {
                         list.add(point);
                     } else {
                         throw IllegalStateException(
@@ -90,12 +92,14 @@ shared class ImmortalsReportGenerator(
                     String plural = "(s)") {
                 MutableMap<String, MutableList<Point>> retval =
                         HashMap<String, MutableList<Point>>();
+                // If we use Correspondence syntax sugar, we have to specify types
+                // for the lambda.
                 meta.put(type, (kind, point) {
-                    if (exists list = retval.get(kind)) {
+                    if (exists list = retval[kind]) {
                         list.add(point);
                     } else {
                         value list = PointList("``kind````plural`` at ");
-                        retval.put(kind, list);
+                        retval[kind] = list;
                         list.add(point);
                     }
                 });
@@ -106,7 +110,7 @@ shared class ImmortalsReportGenerator(
             MutableMap<String, MutableList<Point>> fairies = handleComplex(`Fairy`, "");
             MutableMap<String, MutableList<Point>> dragons = handleComplex(`Dragon`);
             for ([point, immortal] in values) {
-                if (exists func = meta.get(type(immortal))) {
+                if (exists func = meta[type(immortal)]) {
                     func(immortal.string, point);
                     fixtures.remove(immortal.id);
                 }
@@ -150,11 +154,11 @@ shared class ImmortalsReportGenerator(
                 // For the classes we deal with here, we don't want just the kind, we want
                 // the full `string`, so we use that instead of specifying HasKind and
                 // using `kind`.
-                if (exists node = mapping.get(item.string)) {
+                if (exists node = mapping[item.string]) {
                     return node;
                 } else {
                     IReportNode node = ListReportNode(item.string);
-                    mapping.put(item.string, node);
+                    mapping[item.string] = node;
                     return node;
                 }
             }
@@ -168,11 +172,11 @@ shared class ImmortalsReportGenerator(
                         .appendNode(produceRIR(fixtures, map, [immortal, point]));
                 } else if (is SimpleImmortal immortal) {
                     IReportNode node;
-                    if (exists temp = simples.get(immortal.immortalKind)) {
+                    if (exists temp = simples[immortal.immortalKind]) {
                         node = temp;
                     } else {
                         node = ListReportNode(immortal.immortalKind.plural);
-                        simples.put(immortal.immortalKind, node);
+                        simples[immortal.immortalKind] = node;
                     }
                     node.appendNode(produceRIR(fixtures, map, [immortal, point]));
                 } else if (is Giant immortal) {

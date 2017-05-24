@@ -41,7 +41,7 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     shared default String getLatestOrders(Integer turn) {
         SortedMap<Integer, String> orders = allOrders;
         for (i in turn..-1) {
-            if (exists temp = orders.get(i)) {
+            if (exists temp = orders[i]) {
                 String turnOrders = temp.trimmed;
                 if (!turnOrders.empty) {
                     return turnOrders;
@@ -54,7 +54,7 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     shared default String getLatestResults(Integer turn) {
         SortedMap<Integer, String> results = allResults;
         for (i in turn..-1) {
-            if (exists temp = results.get(i)) {
+            if (exists temp = results[i]) {
                 String turnResults = temp.trimmed;
                 if (!turnResults.empty) {
                     return turnResults;
@@ -108,7 +108,7 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
                 void localReport(String string) =>
                         report("In unit of kind ``kind`` named ``name`` (ID #``id``):\t");
                 for (member in obj) {
-                    if (exists ourMember = ours.get(member.id)) {
+                    if (exists ourMember = ours[member.id]) {
                         if (!ourMember.isSubset(member, localReport)) {
                             retval = false;
                         }

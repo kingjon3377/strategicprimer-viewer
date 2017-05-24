@@ -91,7 +91,7 @@ shared class FortressMemberReportGenerator(
                 if (is ResourcePile resource = item) {
                     HeadedMap<ResourcePile, Point>&
                     MutableMap<ResourcePile, Point> pileMap;
-                    if (exists temp = resources.get(resource.kind)) {
+                    if (exists temp = resources[resource.kind]) {
                         pileMap = temp;
                     } else {
                         pileMap = HeadedMapImpl<ResourcePile, Point>(
@@ -101,12 +101,12 @@ shared class FortressMemberReportGenerator(
                                 byDecreasing(ResourcePile.quantity),
                                 byIncreasing(ResourcePile.created),
                                 byIncreasing(ResourcePile.id)));
-                        resources.put(resource.kind, pileMap);
+                        resources[resource.kind] = pileMap;
                     }
-                    pileMap.put(resource, loc);
+                    pileMap[resource] = loc;
                     fixtures.remove(resource.id);
                 } else if (is Implement implement = item) {
-                    equipment.put(implement, loc);
+                    equipment[implement] = loc;
                     fixtures.remove(implement.id);
                 }
             }
@@ -185,11 +185,11 @@ shared class FortressMemberReportGenerator(
                 if (is ResourcePile resource = item) {
                     String kind = resource.kind;
                     IReportNode node;
-                    if (exists temp = resourceKinds.get(kind)) {
+                    if (exists temp = resourceKinds[kind]) {
                         node = temp;
                     } else {
                         node = ListReportNode("``kind``:");
-                        resourceKinds.put(kind, node);
+                        resourceKinds[kind] = node;
                     }
                     node.appendNode(produceRIR(fixtures, map, [resource,
                         loc]));

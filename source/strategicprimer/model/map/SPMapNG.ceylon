@@ -70,13 +70,14 @@ shared class SPMapNG satisfies IMutableMapNG {
             KeyedCorrespondenceMutator<Point, TileType> {
         shared actual Boolean defines(Point key) => contained(key);
         shared actual TileType get(Point key) {
-            if (exists retval = terrain.get(key)) {
+            // TODO: condense
+            if (exists retval = terrain[key]) {
                 return retval;
             } else {
                 return TileType.notVisible;
             }
         }
-        shared actual void put(Point key, TileType item) => terrain.put(key, item);
+        shared actual void put(Point key, TileType item) => terrain[key] = item;
     }
     "Whether the given location is mountainous."
     shared actual object mountainous satisfies NonNullCorrespondence<Point, Boolean>&
@@ -94,13 +95,13 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The rivers, if any, at the given location."
     shared actual object rivers satisfies NonNullCorrespondence<Point, {River*}> {
         shared actual Boolean defines(Point key) => contained(key);
-        shared actual {River*} get(Point key) => {*(riversMap.get(key) else {})};
+        shared actual {River*} get(Point key) => {*(riversMap[key] else {})};
     }
     "The tile fixtures (other than rivers and mountains) at the given location."
     shared actual object fixtures satisfies NonNullCorrespondence<Point, {TileFixture*}> {
         shared actual Boolean defines(Point key) => contained(key);
         shared actual {TileFixture*} get(Point key) =>
-                {*(fixturesMap.get(key) else {})};
+                {*(fixturesMap[key] else {})};
     }
     "The current player."
     shared actual Player currentPlayer => playerCollection.currentPlayer;
@@ -123,25 +124,24 @@ shared class SPMapNG satisfies IMutableMapNG {
     shared actual void addPlayer(Player player) => playerCollection.add(player);
     "Add rivers at a location."
     shared actual void addRivers(Point location, River* addedRivers) {
-        {River*} existing = riversMap.get(location) else {};
-        riversMap.put(location, set {*existing}.union(set {*addedRivers}));
+        {River*} existing = riversMap[location] else {};
+        riversMap[location] = set {*existing}.union(set {*addedRivers});
     }
     "Remove rivers from the given location."
     shared actual void removeRivers(Point location, River* removedRivers) {
-        if (exists existing = riversMap.get(location)) {
-            riversMap.put(location, set {*existing}
-                .complement(set {*removedRivers}));
+        if (exists existing = riversMap[location]) {
+            riversMap[location] = set {*existing}.complement(set {*removedRivers});
         }
     }
     """Add a fixture at a location, and return whether the "all fixtures at this point"
        set has an additional member as a result of this."""
     shared actual Boolean addFixture(Point location, TileFixture fixture) {
         MutableSet<TileFixture> local;
-        if (exists temp = fixturesMap.get(location)) {
+        if (exists temp = fixturesMap[location]) {
             local = temp;
         } else {
             local = ArraySet<TileFixture>();
-            fixturesMap.put(location, local);
+            fixturesMap[location] = local;
         }
         if (fixture.id >= 0,
             exists existing = local.find((item) => item.id == fixture.id)) {
@@ -177,7 +177,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     }
     "Remove a fixture from a location."
     shared actual void removeFixture(Point location, TileFixture fixture) {
-        if (exists list = fixturesMap.get(location)) {
+        if (exists list = fixturesMap[location]) {
             list.remove(fixture);
         }
     }
@@ -299,15 +299,15 @@ shared class SPMapNG satisfies IMutableMapNG {
                 for (fixture in (fixtures[point] else {})) {
                     Integer idNum = fixture.id;
                     if (is IUnit fixture) {
-                        ourUnits.put(idNum, fixture);
+                        ourUnits[idNum] = fixture;
                     } else if (is SubsettableFixture fixture) {
-                        if (exists list = ourSubsettables.get(idNum)) {
+                        if (exists list = ourSubsettables[idNum]) {
                             list.add(fixture);
                         } else {
                             MutableList<SubsettableFixture> list =
                                     ArrayList<SubsettableFixture>();
                             list.add(fixture);
-                            ourSubsettables.put(idNum, list);
+                            ourSubsettables[idNum] = list;
                         }
                     } else {
                         ourFixtures.add(fixture);
@@ -317,10 +317,10 @@ shared class SPMapNG satisfies IMutableMapNG {
                 for (fixture in theirFixtures) {
                     if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
                         continue;
-                    } else if (is IUnit fixture, exists unit = ourUnits.get(fixture.id)) {
+                    } else if (is IUnit fixture, exists unit = ourUnits[fixture.id]) {
                         retval = retval && unit.isSubset(fixture, localReport);
                     } else if (is SubsettableFixture fixture,
-                        exists list = ourSubsettables.get(fixture.id)) {
+                            exists list = ourSubsettables[fixture.id]) {
                         variable Integer count = 0;
                         variable Boolean unmatched = true;
                         variable SubsettableFixture? match = null;

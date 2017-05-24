@@ -63,6 +63,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
             if (item.population == 1) {
                 ostream(" ``item.kind``");
             } else {
+//                ostream(" ``item.population`` ``animalPlurals[item.kind]``"); // TODO: syntax sugar once compiler bug fixed
                 ostream(" ``item.population`` ``animalPlurals.get(item.kind)``");
             }
             ostream(" ``distCalculator.distanceString(loc)``");
@@ -83,11 +84,11 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                         desc = animal.kind;
                     }
                     MutableList<Point> list;
-                    if (exists temp = items.get(desc)) {
+                    if (exists temp = items[desc]) {
                         list = temp;
                     } else {
                         list = PointList("``desc``: at ");
-                        items.put(desc, list);
+                        items[desc] = list;
                     }
                     list.add(loc);
                     if (animal.id > 0) {
@@ -138,11 +139,11 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
             for ([loc, item] in values) {
                 if (is Animal animal = item) {
                     IReportNode node;
-                    if (exists temp = items.get(animal.kind)) {
+                    if (exists temp = items[animal.kind]) {
                         node = temp;
                     } else {
                         node = ListReportNode(animal.kind);
-                        items.put(animal.kind, node);
+                        items[animal.kind] = node;
                     }
                     node.appendNode(produceRIR(fixtures, map, [animal, loc]));
                     if (animal.id > 0) {

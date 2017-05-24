@@ -105,13 +105,13 @@ object todoFixerCLI satisfies SimpleCLIDriver {
                 }
             }
             for (village in villages) {
-                if (exists race = raceMap.get(village.id)) {
+                if (exists race = raceMap[village.id]) {
                     village.race = race;
                 } else {
                     Random rng = DefaultRandom(village.id);
                     assert (exists race = rng.nextElement(raceList));
                     village.race = race;
-                    raceMap.put(village.id, race);
+                    raceMap[village.id] = race;
                 }
             }
         }

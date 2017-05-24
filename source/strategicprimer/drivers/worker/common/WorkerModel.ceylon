@@ -97,11 +97,11 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             for (unit in temp) {
                 Integer key = unit.id;
                 ProxyFor<IUnit> proxy;
-                if (exists item = tempMap.get(key)) {
+                if (exists item = tempMap[key]) {
                     proxy = item;
                 } else {
                     value newProxy = ProxyUnit.fromParallelMaps(key);
-                    tempMap.put(key, newProxy);
+                    tempMap[key] = newProxy;
                     proxy = newProxy;
                 }
                 proxy.addProxied(unit);

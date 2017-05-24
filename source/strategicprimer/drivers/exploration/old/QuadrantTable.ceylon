@@ -21,7 +21,7 @@ class QuadrantTable satisfies EncounterTable {
             Integer quadrantRowCount) {
         // Instance variables passed in because we want to call this from the
         // second constructor.
-        if (exists retval = quadrants.get(dimensions)) {
+        if (exists retval = quadrants[dimensions]) {
             return retval;
         } else {
             MutableMap<Point, String> retval = HashMap<Point, String>();
@@ -36,12 +36,12 @@ class QuadrantTable satisfies EncounterTable {
             for (row in (0:(mapRows - rowRemainder)).by(rowStep)) {
                 for (column in (0:(mapColumns - columnRemainder)).by(columnStep)) {
                     assert (exists temp = possResults[i]);
-                    retval.put(pointFactory(row, column), temp);
+                    retval[pointFactory(row, column)] = temp;
                     i++;
                 }
             }
             Map<Point,String> temp = map { *retval };
-            quadrants.put(dimensions, temp);
+            quadrants[dimensions] = temp;
             return temp;
         }
     }
@@ -57,7 +57,7 @@ class QuadrantTable satisfies EncounterTable {
             String* items) extends QuadrantTable(rows, *items) {
         MapDimensions dimensions = MapDimensionsImpl(mapRows, mapColumns, 2);
         Map<Point, String> firstQuadrants = valuesFor(dimensions, possibleResults, rows);
-        quadrants.put(dimensions, firstQuadrants);
+        quadrants[dimensions] = firstQuadrants;
     }
     "Get the item in the table at the quadrant containing the given row and column in a
      map of the specified dimensions."
@@ -72,7 +72,7 @@ class QuadrantTable satisfies EncounterTable {
                 bestKey = key;
             }
         }
-        if (exists retval = resultsMap.get(bestKey)) {
+        if (exists retval = resultsMap[bestKey]) {
             return retval;
         } else {
             process.writeLine("Key mapped to null");

@@ -27,18 +27,18 @@ shared void clearPointCache() => pointCache.clear();
 suppressWarnings("doclink")
 shared Point pointFactory(Integer row, Integer column, Boolean useCache = true) {
 	if (useCache) {
-		if (exists inner = pointCache.get(row)) {
-			if (exists retval = inner.get(column)) {
+		if (exists inner = pointCache[row]) {
+			if (exists retval = inner[column]) {
 				return retval;
 			} else {
 				Point retval = PointImpl(row, column);
-				inner.put(column, retval);
+				inner[column] = retval;
 				return retval;
 			}
 		} else {
 			Point retval = PointImpl(row, column);
 			MutableMap<Integer, Point> inner = HashMap { column->retval };
-			pointCache.put(row, inner);
+			pointCache[row] = inner;
 			return retval;
 		}
 	} else {

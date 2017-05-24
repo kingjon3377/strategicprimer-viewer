@@ -72,12 +72,12 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                 if (unit.empty, "false" == options.getArgument("--print-empty")) {
                     continue;
                 }
-                if (exists list = unitsByKind.get(unit.kind)) {
+                if (exists list = unitsByKind[unit.kind]) {
                     list.add(unit);
                 } else {
                     MutableList<IUnit> list = ArrayList<IUnit>();
                     list.add(unit);
-                    unitsByKind.put(unit.kind, list);
+                    unitsByKind[unit.kind] = list;
                 }
             }
             MutableMap<IUnit, String> orders = HashMap<IUnit, String>();
@@ -85,10 +85,10 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                 for (unit in list) {
                     String unitOrders = unit.getLatestOrders(turn);
                     if (unitOrders == unit.getOrders(turn)) {
-                        orders.put(unit, unitOrders);
+                        orders[unit] = unitOrders;
                     } else {
-                        orders.put(unit, "(From turn #``unit
-                            .getOrdersTurn(unitOrders)``) ``unitOrders``");
+                        orders[unit] = "(From turn #``unit
+                            .getOrdersTurn(unitOrders)``) ``unitOrders``";
                     }
                 }
             }
@@ -128,7 +128,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                     }
                     writer.writeLine(":");
                     writer.writeLine();
-                    if (exists unitOrders = orders.get(unit), !unitOrders.empty) {
+                    if (exists unitOrders = orders[unit], !unitOrders.empty) {
                         writer.writeLine(unitOrders);
                     } else {
                         writer.writeLine("TODO");

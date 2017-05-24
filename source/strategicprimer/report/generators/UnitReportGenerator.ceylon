@@ -167,9 +167,9 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             for ([loc, item] in values) {
                 if (is IUnit unit = item) {
                     if (currentPlayer == unit.owner) {
-                        ours.put(unit, loc);
+                        ours[unit] = loc;
                     } else {
-                        foreign.put(unit, loc);
+                        foreign[unit] = loc;
                     }
                 }
             }

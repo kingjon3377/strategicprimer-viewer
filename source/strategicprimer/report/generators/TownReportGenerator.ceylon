@@ -58,7 +58,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             }
         }
         for ([loc, item] in list.sort(pairComparator)) {
-            if (is ITownFixture item, exists result = mapping.get(item.status)) {
+            if (is ITownFixture item, exists result = mapping[item.status]) {
                 func(result, [loc, item]);
             }
         }
@@ -113,7 +113,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             separateByStatus(separated, fixtures.items,
                         (MutableMap<ITownFixture, Point> mapping, pair) {
                     assert (is ITownFixture town = pair.rest.first);
-                    mapping.put(town, pair.first);
+                    mapping[town] = pair.first;
                 });
             if (separated.items.any((mapping) => !mapping.empty)) {
                 ostream("""<h4>Cities, towns, and/or fortifications you know about:</h4>
@@ -177,7 +177,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             IReportNode retval = SectionListReportNode(4,
                 "Cities, towns, and/or fortifications you know about:");
             for (status in statuses) {
-                if (exists node = separated.get(status)) {
+                if (exists node = separated[status]) {
                     retval.addIfNonEmpty(node);
                 }
             }

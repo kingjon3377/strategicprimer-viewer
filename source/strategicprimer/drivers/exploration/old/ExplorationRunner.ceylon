@@ -46,7 +46,7 @@ shared class ExplorationRunner() {
     throws(`class MissingTableException`, "if there is no table by that name")
     todo("Should this really be `shared`?")
     shared EncounterTable getTable(String name) {
-        if (exists retval = tables.get(name)) {
+        if (exists retval = tables[name]) {
             return retval;
         } else {
             throw MissingTableException(name);
@@ -239,7 +239,7 @@ shared class ExplorationRunner() {
      that."
     todo("If Ceylon ever gets a more nuanced visibility model, revise this",
         "Move tests *into* this class instead")
-    shared void loadTable(String name, EncounterTable table) => tables.put(name, table);
+    shared void loadTable(String name, EncounterTable table) => tables[name] = table;
 }
 
 "A mock [[EncounterTable]] for the apparatus to test the ExplorationRunner."

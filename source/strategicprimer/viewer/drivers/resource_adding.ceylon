@@ -155,17 +155,17 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     "Ask the user to choose or enter a resource-content-type for a given resource kind."
     String getResourceContents(String kind, ICLIHelper cli) {
         MutableSet<String> set;
-        if (exists temp = resourceContents.get(kind)) {
+        if (exists temp = resourceContents[kind]) {
             set = temp;
         } else {
             set = HashSet<String>();
-            resourceContents.put(kind, set);
+            resourceContents[kind] = set;
         }
         String[] list = [*set];
         Integer num = cli.chooseStringFromList(list,
             "Possible resources in the ``kind`` category`", "No resources entered yet",
             "Choose resource: ", false).key;
-        if (exists retval = list.get(num)) {
+        if (exists retval = list[num]) {
             return retval;
         } else {
             String retval = cli.inputString("Resource to use: ");
@@ -175,13 +175,13 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     }
     "Ask the user to choose units for a type of resource."
     String getResourceUnits(String resource, ICLIHelper cli) {
-        if (exists unit = resourceUnits.get(resource),
+        if (exists unit = resourceUnits[resource],
             cli.inputBooleanInSeries("Is ``unit`` the correct unit for ``resource``? ",
                 "correct;``unit``;``resource``")) {
             return unit;
         } else {
             String retval = cli.inputString("Unit to use for ``resource``: ");
-            resourceUnits.put(resource, retval);
+            resourceUnits[resource] = retval;
             return retval;
         }
     }

@@ -28,9 +28,9 @@ class TerrainTable(<TileType->String>* items) satisfies EncounterTable {
         } else {
             actual = terrain;
         }
-        if (exists retval = mapping.get(actual)) {
+        if (exists retval = mapping[actual]) {
             return retval;
-        } else if (exists retval = mapping.get(terrain)) {
+        } else if (exists retval = mapping[terrain]) {
             return retval;
         } else {
             throw IllegalArgumentException(

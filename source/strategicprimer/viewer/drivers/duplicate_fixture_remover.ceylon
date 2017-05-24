@@ -100,11 +100,11 @@ void coalesceResources({IFixture*} stream, ICLIHelper cli) {
             [String, String, String, Integer] key = [fixture.kind, fixture.contents,
                 fixture.quantity.units, fixture.created];
             MutableList<ResourcePile> list;
-            if (exists temp = resources.get(key)) {
+            if (exists temp = resources[key]) {
                 list = temp;
             } else {
                 list = ArrayList<ResourcePile>();
-                resources.put(key, list);
+                resources[key] = list;
             }
             list.add(fixture);
         } else if (is Animal fixture) {

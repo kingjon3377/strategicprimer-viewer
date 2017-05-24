@@ -101,7 +101,7 @@ shared class SPFluidWriter() satisfies SPWriter {
     late Map<ClassOrInterface<Anything>, LocalXMLWriter> writers;
     void writeSPObjectImpl(XMLStreamWriter ostream, Object obj, Integer indentation) {
         for (type in typeStream(obj)) {
-            if (exists writer = writers.get(type)) {
+            if (exists writer = writers[type]) {
                 writer(ostream, obj, indentation);
                 return;
             }

@@ -143,11 +143,11 @@ shared class FortressReportGenerator(
                     equipment.add(member);
                 } else if (is ResourcePile member) {
                     String kind = member.kind;
-                    if (exists list = resources.get(kind)) {
+                    if (exists list = resources[kind]) {
                         list.add(member);
                     } else {
                         MutableList<ResourcePile> list = ArrayList<ResourcePile>();
-                        resources.put(kind, list);
+                        resources[kind] = list;
                         list.add(member);
                     }
                 } else {
@@ -223,9 +223,9 @@ shared class FortressReportGenerator(
             for ([loc, item] in values) {
                 if (is Fortress fort = item) {
                     if (currentPlayer == fort.owner) {
-                        ours.put(fort, loc);
+                        ours[fort] = loc;
                     } else {
-                        others.put(fort, loc);
+                        others[fort] = loc;
                     }
                 }
             }
@@ -274,11 +274,11 @@ shared class FortressReportGenerator(
                         [member, loc]));
                 } else if (is ResourcePile member) {
                     IReportNode node;
-                    if (exists temp = resourceKinds.get(member.kind)) {
+                    if (exists temp = resourceKinds[member.kind]) {
                         node = temp;
                     } else {
                         node = ListReportNode("``member.kind``:");
-                        resourceKinds.put(member.kind, node);
+                        resourceKinds[member.kind] = node;
                     }
                     node.appendNode(memberReportGenerator.produceRIR(fixtures, map,
                         [member, loc]));

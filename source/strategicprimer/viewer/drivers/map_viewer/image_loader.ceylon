@@ -54,14 +54,14 @@ MutableMap<String, Icon> iconCache = HashMap<String, Icon> {
 MutableMap<String, Image> imageCache = HashMap<String, Image>();
 "Load an image from the cache, or if not in it, from file (and add it to the cache)"
 shared Image loadImage(String file) {
-    if (exists cached = imageCache.get(file)) {
+    if (exists cached = imageCache[file]) {
         return cached;
     } else {
         try (res = ResourceInputStream("images/``file``",
                 `module strategicprimer.viewer`,
                     javaClassFromDeclaration(`class SPFrame`))) {
             if (exists image = ImageIO.read(res)) {
-                imageCache.put(file, image);
+                imageCache[file] = image;
                 return image;
             } else {
                 throw IOException("No reader could read the file images/``file``");
@@ -71,7 +71,7 @@ shared Image loadImage(String file) {
 }
 "Load an icon from cache, or if not in the cache from file (adding it to the cache)"
 shared Icon loadIcon(String file) {
-    if (exists cached = iconCache.get(file)) {
+    if (exists cached = iconCache[file]) {
         return cached;
     } else {
         Image orig = loadImage(file);
@@ -81,7 +81,7 @@ shared Icon loadIcon(String file) {
         pen.drawImage(orig, 0, 0, temp.width, temp.height, null);
         pen.dispose();
         Icon icon = ImageIcon(temp);
-        iconCache.put(file, icon);
+        iconCache[file] = icon;
         return icon;
     }
 }

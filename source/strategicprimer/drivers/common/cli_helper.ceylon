@@ -282,7 +282,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
     "Ask the user a yes-or-no question, allowing yes-to-all or no-to-all to skip further
      questions."
     shared actual Boolean inputBooleanInSeries(String prompt, String key) {
-        if (exists retval = seriesState.get(key)) {
+        if (exists retval = seriesState[key]) {
             ostream(prompt);
             ostream((retval) then "yes" else "no");
             ostream(operatingSystem.newline);
@@ -292,11 +292,11 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
                 String input = inputString(prompt).lowercased;
                 switch(input)
                 case ("all"|"ya"|"ta"|"always") {
-                    seriesState.put(key, true);
+                    seriesState[key] = true;
                     return true;
                 }
                 case ("none"|"na"|"fa"|"never") {
-                    seriesState.put(key, false);
+                    seriesState[key] = false;
                     return false;
                 }
                 case ("yes"|"true"|"y"|"t") { return true; }

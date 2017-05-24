@@ -54,29 +54,29 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
         areFloatsDifferent(backgroundShape.height, height.float)) {
             backgroundShape = Rectangle(0, 0, width, height);
             rivers.clear();
-            rivers.put(River.east, Rectangle2D.Double(
+            rivers[River.east] = Rectangle2D.Double(
                 width * drawingNumericConstants.riverLongDimension,
                 height * drawingNumericConstants.riverShortStart,
                 width * drawingNumericConstants.riverLongDimension,
-                height * drawingNumericConstants.riverShortDimension));
-            rivers.put(River.lake, Ellipse2D.Double(
+                height * drawingNumericConstants.riverShortDimension);
+            rivers[River.lake] = Ellipse2D.Double(
                 width * drawingNumericConstants.lakeStart,
                 height * drawingNumericConstants.lakeStart,
                 width * drawingNumericConstants.riverLongDimension,
-                height * drawingNumericConstants.riverLongDimension));
-            rivers.put(River.north, Rectangle2D.Double(
+                height * drawingNumericConstants.riverLongDimension);
+            rivers[River.north] = Rectangle2D.Double(
                 width * drawingNumericConstants.riverShortStart, 0.0,
                 width * drawingNumericConstants.riverShortDimension,
-                height * drawingNumericConstants.riverLongDimension));
-            rivers.put(River.south, Rectangle2D.Double(
+                height * drawingNumericConstants.riverLongDimension);
+            rivers[River.south] = Rectangle2D.Double(
                 width * drawingNumericConstants.riverShortStart,
                 height * drawingNumericConstants.riverLongDimension,
                 width * drawingNumericConstants.riverShortDimension,
-                height * drawingNumericConstants.riverLongDimension));
-            rivers.put(River.west, Rectangle2D.Double(0.0,
+                height * drawingNumericConstants.riverLongDimension);
+            rivers[River.west] = Rectangle2D.Double(0.0,
                 height * drawingNumericConstants.riverShortStart,
                 width * drawingNumericConstants.riverLongDimension,
-                height * drawingNumericConstants.riverShortDimension));
+                height * drawingNumericConstants.riverShortDimension);
             fortress = Rectangle2D.Double(
                 (width * drawingNumericConstants.fortStart) - 1.0,
                 (height * drawingNumericConstants.fortStart) - 1.0,
@@ -113,7 +113,7 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
             pen.color = Color.\iBLUE;
 //            for (river in map.rivers[location]) {
             for (river in map.rivers.get(location)) {
-                if (exists shape = rivers.get(river)) {
+                if (exists shape = rivers[river]) {
                     pen.fill(shape);
                 }
                 if (hasAnyForts(map, location)) {

@@ -273,9 +273,9 @@ SPFrame explorationFrame(IExplorationModel model,
                 Point selPoint = model.selectedUnitLocation;
                 for (direction in `Direction`.caseValues) {
                     Point point = model.getDestination(selPoint, direction);
-                    mains.get(direction)?.fireChanges(selPoint, point);
-                    seconds.get(direction)?.fireChanges(selPoint, point);
-                    if (exists button = buttons.get(direction)) {
+                    mains[direction]?.fireChanges(selPoint, point);
+                    seconds[direction]?.fireChanges(selPoint, point);
+                    if (exists button = buttons[direction]) {
                         button.point = point;
                         button.repaint();
                     }
@@ -443,7 +443,7 @@ SPFrame explorationFrame(IExplorationModel model,
                             });
                 }
                 createHotKey(dtb, direction.string, ecl, JComponent.whenInFocusedWindow,
-                *{arrowKeys.get(direction), numKeys.get(direction)}.coalesced);
+                    *{arrowKeys[direction], numKeys[direction]}.coalesced);
                 dtb.addActionListener(ecl);
                 ecl.addSelectionChangeListener(object satisfies SelectionChangeListener {
                     shared actual void selectedPointChanged(Point? old, Point newSel) =>
@@ -528,9 +528,9 @@ SPFrame explorationFrame(IExplorationModel model,
                 SelectionChangeSupport secPCS = SelectionChangeSupport();
                 secPCS.addSelectionChangeListener(secList);
                 tilesPanel.add(JScrollPane(secList));
-                mains.put(direction, mainPCS);
-                buttons.put(direction, dtb);
-                seconds.put(direction, secPCS);
+                mains[direction] = mainPCS;
+                buttons[direction] = dtb;
+                seconds[direction] = secPCS;
                 ell.selectedPointChanged(null, model.selectedUnitLocation);
             }
         }

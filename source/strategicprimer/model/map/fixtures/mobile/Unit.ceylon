@@ -128,12 +128,12 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
     }
     "Set orders for a turn."
     shared actual void setOrders(Integer turn, String newOrders) =>
-            orders.put(turn, newOrders);
+            orders[turn] = newOrders;
     "Get orders for a turn."
     shared actual String getOrders(Integer turn) {
-        if (exists retval = orders.get(turn)) {
+        if (exists retval = orders[turn]) {
             return retval;
-        } else if (turn < 0, exists retval = orders.get(-1)) {
+        } else if (turn < 0, exists retval = orders[-1]) {
             return retval;
         } else {
             return "";
@@ -141,12 +141,12 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
     }
     "Set results for a turn."
     shared actual void setResults(Integer turn, String newResults) =>
-            results.put(turn, newResults);
+            results[turn] = newResults;
     "Get results for a turn."
     shared actual String getResults(Integer turn) {
-        if (exists retval = results.get(turn)) {
+        if (exists retval = results[turn]) {
             return retval;
-        } else if (turn < 0, exists retval = results.get(-1)) {
+        } else if (turn < 0, exists retval = results[-1]) {
             return retval;
         } else {
             return "";

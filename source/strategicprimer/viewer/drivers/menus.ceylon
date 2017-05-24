@@ -121,14 +121,14 @@ shared class MenuBroker() satisfies ActionListener {
             actual = listener;
         }
         for (action in actions) {
-            mapping.put(action.lowercased, actual);
+            mapping[action.lowercased] = actual;
         }
     }
     "Handle an event by passing it to the listener that's registered to handle its action
      command. If none is registered, log a warning."
     shared actual void actionPerformed(ActionEvent event) {
         String action = event.actionCommand;
-        if (exists listener = mapping.get(action.lowercased)) {
+        if (exists listener = mapping[action.lowercased]) {
             SwingUtilities.invokeLater(() => listener(event));
         } else {
             log.warn("Unhandled action: ``action``");

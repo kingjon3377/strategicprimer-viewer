@@ -121,13 +121,13 @@ Map<String, ISPDriver[2]> createCache() {
             log.warn("Long options don't match between ``
                         cliUsage.shortDescription`` and ``guiUsage.shortDescription``");
         }
-        cache.put(cliUsage.shortOption, [cliDriver, guiDriver]);
-        cache.put(cliUsage.longOption, [cliDriver, guiDriver]);
+        cache[cliUsage.shortOption] = [cliDriver, guiDriver];
+        cache[cliUsage.longOption] = [cliDriver, guiDriver];
     }
     void choice(ISPDriver driver) {
         IDriverUsage usage = driver.usage;
-        cache.put(usage.shortOption, [driver, driver]);
-        cache.put(usage.longOption, [driver, driver]);
+        cache[usage.shortOption] = [driver, driver];
+        cache[usage.longOption] = [driver, driver];
     }
     choices(reportCLI, viewerGUI);
     choices(advancementCLI, advancementGUI);
@@ -270,7 +270,7 @@ shared void run() {
                                 *others);
                         }
                     }
-                    currentDrivers = driverCache.get(arg.lowercased);
+                    currentDrivers = driverCache[arg.lowercased];
                 } else if (arg.startsWith("-")) {
                     currentOptions.addOption(arg);
                 } else {

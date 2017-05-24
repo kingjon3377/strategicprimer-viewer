@@ -140,7 +140,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             writeTag(ostream, obj.kind, indent);
             writeProperty(ostream, "id", obj.id);
             writeImageXML(ostream, obj);
-        } else if (exists tag = tagMap.get(type(obj))) {
+        } else if (exists tag = tagMap[type(obj)]) {
             writeTag(ostream, tag, indent);
             if (is HasKind obj) {
                 writeProperty(ostream, "kind", obj.kind);

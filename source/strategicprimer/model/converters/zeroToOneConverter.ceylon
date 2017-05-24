@@ -93,7 +93,7 @@ object zeroToOneConverter {
 	MutableMap<Integer, String> equivalents = HashMap<Integer, String>();
 	void addXML(String xml, Integer* numbers) {
 		for (number in numbers) {
-			equivalents.put(number, xml);
+			equivalents[number] = xml;
 		}
 	}
 	addXML("""<mineral kind="iron" exposed="true" dc="0" />""", 200, 206);
@@ -154,7 +154,7 @@ object zeroToOneConverter {
 		ostream(">");
 	}
 	void printEvent(Anything(String) ostream, Integer number) {
-		if (exists val = equivalents.get(number)) {
+		if (exists val = equivalents[number]) {
 			ostream(val);
 		}
 	}

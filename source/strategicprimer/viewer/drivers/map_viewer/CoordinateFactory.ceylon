@@ -14,18 +14,18 @@ MutableMap<Integer, MutableMap<Integer, Coordinate>> coordinateCache =
 "Factory method for [[Coordinate]]s."
 shared Coordinate coordinateFactory(Integer x, Integer y, Boolean useCache = true) {
 	if (useCache) {
-		if (exists inner = coordinateCache.get(x)) {
-			if (exists retval = inner.get(y)) {
+		if (exists inner = coordinateCache[x]) {
+			if (exists retval = inner[y]) {
 				return retval;
 			} else {
 				Coordinate retval = Coordinate(x, y);
-				inner.put(y, retval);
+				inner[y] = retval;
 				return retval;
 			}
 		} else {
 			Coordinate retval = Coordinate(x, y);
 			MutableMap<Integer, Coordinate> inner = HashMap { y->retval };
-			coordinateCache.put(x, inner);
+			coordinateCache[x] = inner;
 			return retval;
 		}
 	} else {

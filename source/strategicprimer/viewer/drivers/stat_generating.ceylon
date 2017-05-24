@@ -161,7 +161,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     MutableMap<String, WorkerStats> racialBonuses = HashMap<String, WorkerStats>();
     WorkerStats loadRacialBonus(String race) {
-        if (exists retval = racialBonuses.get(race)) {
+        if (exists retval = racialBonuses[race]) {
             return retval;
         } else if (exists resource = `module strategicprimer.model`
                 .resourceByPath("racial_stat_adjustments/``race``.txt")) {
@@ -170,7 +170,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
             assert (is Integer[6] temp = [parsed[0], parsed[1], parsed[2], parsed[3],
                 parsed[4], parsed[5]]);
             WorkerStats retval = WorkerStats.factory(*temp);
-            racialBonuses.put(race, retval);
+            racialBonuses[race] = retval;
             return retval;
         } else {
             log.warn("No stat adjustments found for ``race``");

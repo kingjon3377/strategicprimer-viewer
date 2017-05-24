@@ -57,13 +57,13 @@ todo("What's the Ceylon equivalent of Collections.synchronizedMap()?")
 MutableMap<String, TileContentsGenerator> tileContentsInstances =
         HashMap<String, TileContentsGenerator>();
 TileContentsGenerator tileContentsInstance(String filename) {
-    if (exists retval = tileContentsInstances.get(filename)) {
+    if (exists retval = tileContentsInstances[filename]) {
         return retval;
     } else {
         TileContentsGenerator retval =
                 TileContentsGenerator(readMap(JPaths.get(filename),
                     warningLevels.default));
-        tileContentsInstances.put(filename, retval);
+        tileContentsInstances[filename] = retval;
         return retval;
     }
 }

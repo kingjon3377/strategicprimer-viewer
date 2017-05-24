@@ -29,13 +29,13 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 	variable Player independentPlayer = PlayerImpl(-1, "Independent");
 	"Get a player by ID number."
 	shared actual Player getPlayer(Integer player) {
-		if (exists retval = players.get(player)) {
+		if (exists retval = players[player]) {
 			return retval;
 		} else if (player < 0) {
 			return PlayerImpl(player, "");
 		} else {
 			Player retval = PlayerImpl(player, "");
-			players.put(player, retval);
+			players[player] = retval;
 			return retval;
 		}
 	}
@@ -61,7 +61,7 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 		if (player.independent) {
 			independentPlayer = player;
 		}
-		players.put(player.playerId, player);
+		players[player.playerId] = player;
 	}
 	"Remove a player from the collection. Returns true if the collection changed as a
 	 result of this call."

@@ -88,6 +88,7 @@ DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
         if (fixture is TileFixture || fixture.id >= 0) {
             Integer key = checkID(fixture);
             value val = [location, fixture];
+            // We could use `retval[key] = val`, but that would be more confusing here.
             if (exists existing = retval.put(key, val)) {
                 log.warn("Duplicate key, ``key``, for Pairs ``
                 existing`` and ``val``");
