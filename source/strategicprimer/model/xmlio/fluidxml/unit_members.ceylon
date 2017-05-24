@@ -227,10 +227,10 @@ void writeAnimal(XMLStreamWriter ostream, Object obj, Integer indentation) {
         }
         if (!obj.traces) {
             writeAttributes(ostream, "id"->obj.id);
-            if (obj.born >= 0, currentTurn >= 0) {
+            if (obj.born >= 0) {
                 // Write turn-of-birth if and only if it is fewer turns before the current
                 // turn than this kind of animal's age of maturity.
-                if (exists maturityAge = maturityModel.maturityAges[obj.kind],
+                if (currentTurn >= 0, exists maturityAge = maturityModel.maturityAges[obj.kind],
                         maturityAge <= (currentTurn - obj.born)) {
                     // do nothing
                 } else {
