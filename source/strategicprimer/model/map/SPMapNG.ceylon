@@ -98,21 +98,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     }
     "The current player."
     shared actual Player currentPlayer => playerCollection.currentPlayer;
-    assign currentPlayer {
-        Player oldCurrent = playerCollection.currentPlayer;
-        if (is MutablePlayer oldCurrent) {
-            oldCurrent.current = false;
-        } else {
-            log.warn("Previous current player wasn't mutable");
-        }
-        Player newCurrent = playerCollection.getPlayer(currentPlayer.playerId);
-        if (is MutablePlayer newCurrent) {
-            newCurrent.current = true;
-        } else {
-            log.warn(
-                "Player in collection matching specified 'new' player wasn't mutable");
-        }
-    }
+    assign currentPlayer => playerCollection.currentPlayer = currentPlayer;
     "Add a player."
     shared actual void addPlayer(Player player) => playerCollection.add(player);
     "Add rivers at a location."

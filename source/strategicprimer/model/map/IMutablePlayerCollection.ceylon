@@ -6,4 +6,6 @@ shared interface IMutablePlayerCollection satisfies IPlayerCollection {
 	shared formal void remove(Player|Integer obj);
 	"Clone the collection."
 	shared actual formal IMutablePlayerCollection copy();
+	"The current player."
+	shared actual formal variable Player currentPlayer;
 }

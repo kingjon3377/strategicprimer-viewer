@@ -62,7 +62,7 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 		if (player.independent) {
 			independentPlayer = player;
 		}
-		if (player.current) {
+		if (player.current, (current.playerId < 0 || !current.current)) {
 			current = player;
 		}
 		players[player.playerId] = player;
@@ -83,7 +83,7 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 				independentPlayer = find(Player.independent) else PlayerImpl(-1, "Independent");
 			}
 			if (current == removed) {
-				current = find(Player.current) else PlayerImpl(-1, "");
+				current = PlayerImpl(-1, "");
 			}
 		}
 	}
@@ -102,6 +102,27 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 	}
 	"Get the current player, or a new player with an empty name and number -1."
 	shared actual Player currentPlayer => current;
+	assign currentPlayer {
+		Player oldCurrent = current;
+		if (is MutablePlayer oldCurrent) {
+			oldCurrent.current = false;
+		} else {
+			log.warn("Previous current player wasn't mutable");
+		}
+		if (contains(currentPlayer)) {
+			current = currentPlayer;
+		} else if (exists temp = find((player) => player.playerId == currentPlayer.playerId)) {
+			current = temp;
+		} else {
+			current = currentPlayer;
+		}
+		if (is MutablePlayer temp = current) {
+			temp.current = true;
+		} else {
+			log.warn(
+				"Player in collection matching specified 'new' player wasn't mutable");
+		}
+	}
 	"An object is equal iff it is a player collection with exactly the players we have."
 	shared actual Boolean equals(Object obj) {
 		if (is IPlayerCollection obj) {
