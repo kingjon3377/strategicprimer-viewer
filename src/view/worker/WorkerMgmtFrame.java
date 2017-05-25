@@ -1,6 +1,6 @@
 package view.worker;
 
-import com.bric.window.WindowList;
+import com.pump.window.WindowList;
 import controller.map.drivers.SPOptions;
 import controller.map.misc.FileChooser;
 import controller.map.misc.FileChooser.FileChooserOperation;

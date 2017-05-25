@@ -1,7 +1,7 @@
 package view.util;
 
 import com.apple.eawt.Application;
-import com.bric.window.WindowList;
+import com.pump.window.WindowList;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

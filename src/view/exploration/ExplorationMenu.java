@@ -1,6 +1,6 @@
 package view.exploration;
 
-import com.bric.window.WindowMenu;
+import com.pump.window.WindowMenu;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.io.NotSerializableException;
