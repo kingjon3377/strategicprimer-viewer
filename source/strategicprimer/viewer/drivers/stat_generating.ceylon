@@ -54,6 +54,9 @@ import strategicprimer.drivers.exploration.common {
     IExplorationModel,
     ExplorationModel
 }
+import lovelace.util.jvm {
+    readFileContents
+}
 
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
@@ -163,9 +166,9 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     WorkerStats loadRacialBonus(String race) {
         if (exists retval = racialBonuses[race]) {
             return retval;
-        } else if (exists resource = `module strategicprimer.model`
-                .resourceByPath("racial_stat_adjustments/``race``.txt")) {
-            value parsed = resource.textContent().lines.map(Integer.parse)
+        } else if (exists textContent = readFileContents(`module strategicprimer.model`,
+                    "racial_stat_adjustments/``race``.txt")) {
+            value parsed = textContent.lines.map(Integer.parse)
                 .narrow<Integer>().sequence();
             assert (is Integer[6] temp = [parsed[0], parsed[1], parsed[2], parsed[3],
                 parsed[4], parsed[5]]);

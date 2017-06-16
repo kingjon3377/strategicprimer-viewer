@@ -25,7 +25,8 @@ import strategicprimer.model.map {
 }
 import lovelace.util.jvm {
     isNumeric,
-    parseInt
+    parseInt,
+    readFileContents
 }
 import strategicprimer.model.map.fixtures {
     ResourcePile,
@@ -78,9 +79,9 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
         ExplorationRunner retval = ExplorationRunner();
         for (table in {"mountain_skills", "forest_skills", "plains_skills",
                 "ocean_skills"}) {
-            assert (exists tableAsResource = `module strategicprimer.viewer`
-                .resourceByPath("town_tables/``table``"));
-            retval.loadTable(table, loadTable(tableAsResource));
+            assert (exists tableContents = readFileContents(`module strategicprimer.viewer`,
+                "town_tables/``table``"));
+            retval.loadTable(table, loadTable(tableContents.lines));
         }
         return retval;
     }

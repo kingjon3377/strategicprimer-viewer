@@ -39,7 +39,7 @@ import strategicprimer.model.map.fixtures.terrain {
 Logger log = logger(`module strategicprimer.drivers.exploration.old`);
 // Made shared so the oneToTwoConverter tests can get tables as classpath resources and
 // load them from there. Also used by the 'town contents' generator.
-shared EncounterTable loadTable(String?()|File|Resource argument) {
+shared EncounterTable loadTable(String?()|{String*}|File|Resource argument) {
     if (is File argument) {
         try (reader = argument.Reader()) {
             return loadTable(reader.readLine);
@@ -48,6 +48,15 @@ shared EncounterTable loadTable(String?()|File|Resource argument) {
         String text = argument.textContent();
         {String+} split = text.split('\n'.equals);
         return loadTable(ArrayList { *split }.accept);
+    } else if (is {String*} argument) {
+        // TODO: This is probably highly inefficient ...
+        variable {String*} temp = argument;
+        String? lambda() {
+            String? retval = temp.first;
+            temp = temp.rest;
+            return retval;
+        }
+        return loadTable(lambda);
     } else {
         if (exists line = argument()) {
             switch (line[0])

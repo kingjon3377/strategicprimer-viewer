@@ -9,6 +9,9 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
     UnitMember
 }
+import lovelace.util.jvm {
+    readFileContents
+}
 "An animal or group of animals."
 shared class Animal(kind, traces, talking, status, id, born = -1, population = 1)
 		satisfies MobileFixture&HasMutableImage&HasKind&UnitMember {
@@ -107,9 +110,8 @@ shared class Animal(kind, traces, talking, status, id, born = -1, population = 1
 	}
 }
 shared object maturityModel {
-	assert (exists file = `module strategicprimer.model`
-		.resourceByPath("maturity.txt"));
-	value textContent = file.textContent();
+	assert (exists textContent = readFileContents(`module strategicprimer.model`,
+		"maturity.txt"));
 	shared Map<String, Integer> maturityAges = map {
 		*textContent.split('\n'.equals)
 			.map((String line) => line.split('\t'.equals, true, true, 1))
@@ -129,9 +131,8 @@ shared object maturityModel {
 	shared void resetCurrentTurn() => currentTurnLocal = -1;
 }
 shared object animalPlurals satisfies Correspondence<String, String> {
-	assert (exists file = `module strategicprimer.model`
-		.resourceByPath("animal_plurals.txt"));
-	value textContent = file.textContent();
+	assert (exists textContent = readFileContents(`module strategicprimer.model`,
+		"animal_plurals.txt"));
 	Map<String, String> plurals = map { *textContent.split('\n'.equals)
 		.map((String line) => line.split('\t'.equals, true, true, 1))
 		.map(({String+} line) => line.first->(line.rest.first else line.first))
