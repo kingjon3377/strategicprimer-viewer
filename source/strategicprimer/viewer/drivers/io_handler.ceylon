@@ -111,6 +111,16 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli)
         } else {
             source = null;
         }
+        variable String errorTitle = "Strategic Primer Assistive Programs";
+        variable Component? iter = source;
+        while (exists local = iter) {
+            if (is ISPWindow local) {
+                errorTitle = local.windowName;
+                break;
+            } else {
+                iter = local.parent;
+            }
+        }
         void handleError(Exception except, String filename) {
             String message;
             if (is XMLStreamException except) {
@@ -125,8 +135,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli)
                 message = except.message;
             }
             log.error(message, except);
-            // TODO: somehow make this more specific to the particular app
-            showErrorDialog(source, "Strategic Primer Assistive Programs", message);
+            showErrorDialog(source, errorTitle, message);
         }
         switch (event.actionCommand.lowercased)
         case ("load") {
