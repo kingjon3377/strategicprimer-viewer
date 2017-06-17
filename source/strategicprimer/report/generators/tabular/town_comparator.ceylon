@@ -131,21 +131,24 @@ void testComparison() {
         }
         input.add(Village(status, "inputVillage", id++, owner, "inputRace"));
     }
-    // TODO: cover other sizes of fortress
     input.add(Fortress(owner, "inputFortress", id++, TownSize.small));
     input.add(City(TownStatus.active, TownSize.large, -1, "inputCityTwo", id++, owner));
     input.add(Fortress(owner, "inputFortressTwo", id++, TownSize.small));
     input.add(Town(TownStatus.ruined, TownSize.medium, -1, "inputTownTwo", id++, owner));
     input.add(Fortification(TownStatus.burned, TownSize.small, -1,
         "inputFortificationTwo", id++, owner));
-    input.add(Village(TownStatus.abandoned, "inputVillageTwo", id, owner, "inputRace"));
+    input.add(Village(TownStatus.abandoned, "inputVillageTwo", id++, owner, "inputRace"));
+    input.add(Fortress(owner, "inputFortressThree", id++, TownSize.medium));
+    input.add(Fortress(owner, "inputFortressFour", id, TownSize.large));
     {ITownFixture*} shuffled = randomize(input);
-    {ITownFixture*} expected = [City(TownStatus.active, TownSize.large, -1, "inputCity",
+    [ITownFixture*] expected = [Fortress(owner, "inputFortressFour", 47, TownSize.large),
+        City(TownStatus.active, TownSize.large, -1, "inputCity",
             7, owner),
         City(TownStatus.active, TownSize.large, -1, "inputCityTwo", 41, owner),
         Town(TownStatus.active, TownSize.large, -1, "inputTown", 6, owner),
         Fortification(TownStatus.active, TownSize.large, -1, "inputFortification", 8,
             owner),
+        Fortress(owner, "inputFortressThree", 46, TownSize.medium),
         City(TownStatus.active, TownSize.medium, -1, "inputCity", 4, owner),
         Town(TownStatus.active, TownSize.medium, -1, "inputTown", 3, owner),
         Fortification(TownStatus.active, TownSize.medium, -1, "inputFortification", 5,
@@ -200,6 +203,11 @@ void testComparison() {
         Fortification(TownStatus.burned, TownSize.small, -1, "inputFortificationTwo", 44,
             owner),
         Village(TownStatus.burned, "inputVillage", 29, owner, "inputRace")];
+    value sorted = shuffled.sort(compareTowns);
+//    for (i in 0:shuffled.size) {
+//        assertEquals(sorted[i], expected[i],
+//            "``i``th element in sorted list of towns is as expected");
+//    }
     assertEquals([*shuffled.sort(compareTowns)], [*expected],
         "Sorted list of towns is in the order we expect");
 }
