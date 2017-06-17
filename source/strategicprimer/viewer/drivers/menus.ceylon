@@ -36,9 +36,6 @@ import javax.swing {
     KeyStroke
 }
 
-import lovelace.util.common {
-    todo
-}
 import lovelace.util.jvm {
     createMenuItem,
     createAccelerator,
