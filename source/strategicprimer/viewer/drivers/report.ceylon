@@ -27,7 +27,8 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.map {
     IMapNG,
-    Player
+    Player,
+    PlayerImpl
 }
 import strategicprimer.report {
     createReport,
@@ -62,8 +63,7 @@ object reportCLI satisfies SimpleDriver {
                                 player = temp;
                             } else {
                                 log.warn("No player with that number");
-                                // TODO: create new instead?
-                                player = map.currentPlayer;
+                                player = PlayerImpl(playerNum, "");
                             }
                     } else {
                         log.warn("Non-numeric player", playerNum);
