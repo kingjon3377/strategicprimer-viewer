@@ -160,7 +160,8 @@ shared EncounterTable loadTable(String?()|{String*}|File|Resource argument) {
 }
 "Load all tables in the specified path."
 shared void loadAllTables(Directory path, ExplorationRunner runner) {
-    // TODO: is it possible to exclude dotfiles using the "filter" parameter to files()?
+    // While it would probably be possible to exclude dotfiles using the `filter`
+    // parameter to `Directory.files()`, this would be inefficient.
     for (child in path.files()) {
         if (child.hidden || child.name.startsWith(".")) {
             log.info("``child.name`` looks like a hidden file, skipping ...");
