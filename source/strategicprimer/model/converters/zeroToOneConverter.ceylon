@@ -124,7 +124,10 @@ object zeroToOneConverter {
 	}
 	void printAttribute(Anything(String) ostream, Attribute attribute, QName parentTag) {
 		QName name = attribute.name;
-		// TODO: handle prefix-absent-but-namespace-URI-present case
+		// Based on my reading of the W3C documentation, it should only be
+		// possible to have a namespace URI but no prefix when that's been
+		// defined to be the default namespace in a parent tag. So we apparently
+		// don't need to handle that case specially here.
 		String namespace = name.prefix;
 		if (!namespace.empty && namespace != parentTag.prefix) {
 			ostream(" ``namespace``:");
