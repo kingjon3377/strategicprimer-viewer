@@ -764,9 +764,9 @@ void testTileSerializationTwo() {
     assertAny([() => assertEquals(serializedForm, xmlTwoLogical),
                 () => assertEquals(serializedForm, xmlTwoAlphabetical),
                 () => assertEquals(serializedForm,
-                    xmlTwoLogical.replace("\" />", "\"/>"))], "Multiple units");
+            xmlTwoLogical.replace("\" />", "\"/>"))], "Multiple units");
     assertEquals(createSerializedForm(createSimpleMap(pointFactory(1, 1),
-            pointFactory(0, 0)->TileType.notVisible), true),
+        pointFactory(0, 0)->TileType.notVisible), true),
         "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
          \t<map version=\"2\" rows=\"1\" columns=\"1\">
          \t</map>
@@ -788,7 +788,10 @@ void testTileSerializationTwo() {
     assertAny([() => assertEquals(emptySerializedForm, firstPossibility),
                 () => assertEquals(emptySerializedForm, secondPossibility)],
         "Shouldn't print empty not-visible tiles");
-    // TODO: this last assertion doesn't belong in this test
+}
+
+test
+void testUnitImageSerialization() {
     assertImageSerialization("Unit image property is preserved",
         Unit(PlayerImpl(5, ""), "herder",
             "herderName", 9));
