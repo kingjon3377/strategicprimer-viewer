@@ -1,7 +1,8 @@
 import ceylon.collection {
     MutableList,
     MutableMap,
-    ArrayList
+    ArrayList,
+    HashMap
 }
 
 import lovelace.util.common {
@@ -97,8 +98,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             if (!item.empty) {
                 MutableList<IWorker> workers = ArrayList<IWorker>();
                 MutableList<Implement> equipment = ArrayList<Implement>();
-                // TODO: separate out by kind?
-                MutableList<ResourcePile> resources = ArrayList<ResourcePile>();
+                MutableMap<String, MutableList<ResourcePile>> resources =
+                        HashMap<String, MutableList<ResourcePile>>();
                 // TODO: condense like animals somehow ("2 tame donkeys, 3 wild sheep")
                 MutableList<Animal> animals = ArrayList<Animal>();
                 MutableList<UnitMember> others = ArrayList<UnitMember>();
@@ -108,7 +109,14 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     } else if (is Implement member) {
                         equipment.add(member);
                     } else if (is ResourcePile member) {
-                        resources.add(member);
+                        MutableList<ResourcePile> list;
+                        if (exists temp = resources.get(member.kind)) {
+                            list = temp;
+                        } else {
+                            list = ArrayList<ResourcePile>();
+                            resources.put(member.kind, list);
+                        }
+                        list.add(member);
                     } else if (is Animal member) {
                         animals.add(member);
                     } else {
@@ -148,8 +156,19 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     .produce(fixtures, map, ostream, [animal, loc]));
                 produceInner<Implement>("Equipment", equipment, (member) =>
                 memberReportGenerator.produce(fixtures, map, ostream, [member, loc]));
-                produceInner<ResourcePile>("Resources", resources, (member) =>
-                memberReportGenerator.produce(fixtures, map, ostream, [member, loc]));
+                if (!resources.empty) {
+                    ostream("<li>Resources:
+                             <ul>
+                             ");
+                    for (kind->list in resources) {
+                        produceInner(kind, list, (ResourcePile member) =>
+                            memberReportGenerator.produce(fixtures, map, ostream,
+                                [member, loc]));
+                    }
+                    ostream("""</ul>
+                               </li>
+                               """);
+                }
                 produceInner<UnitMember>("Others", others, (obj) => ostream(obj.string));
                 ostream("""</ul>
                            """);
@@ -213,6 +232,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             ListReportNode equipment = ListReportNode("Equipment:");
             ListReportNode resources = ListReportNode("Resources:");
             ListReportNode others = ListReportNode("Others:");
+            MutableMap<String, IReportNode> resourcesMap = HashMap<String, IReportNode>();
             IReportNode retval = ListReportNode("``base`` Members of the unit:", loc);
             IReportGenerator<IWorker> workerReportGenerator;
             if (item.owner == currentPlayer) {
@@ -231,8 +251,16 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     equipment.add(memberReportGenerator.produceRIR(fixtures, map, [member,
                         loc]));
                 } else if (is ResourcePile member) {
-                    resources.add(memberReportGenerator.produceRIR(fixtures, map, [member,
-                        loc]));
+                    IReportNode resourceNode;
+                    if (exists temp = resourcesMap.get(member.kind)) {
+                        resourceNode = temp;
+                    } else {
+                        resourceNode = ListReportNode("``member.kind``:");
+                        resourcesMap.put(member.kind, resourceNode);
+                        resources.add(resourceNode);
+                    }
+                    resourceNode.appendNode(memberReportGenerator.produceRIR(fixtures, map,
+                        [member, loc]));
                 } else {
                     others.add(SimpleReportNode(member.string, loc));
                 }
