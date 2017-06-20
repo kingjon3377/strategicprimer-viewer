@@ -5,14 +5,12 @@ import lovelace.util.common {
 import strategicprimer.model.map {
 	Point,
     invalidPoint,
-	IFixture
-}
-import strategicprimer.model.map.fixtures {
-    SubsettableFixture
+	IFixture,
+    Subsettable
 }
 "A fixture representing a portal to another world."
 shared class Portal(destinationWorld, destinationCoordinates, id)
-		satisfies ExplorableFixture&SubsettableFixture {
+		satisfies ExplorableFixture&IFixture&Subsettable<IFixture> {
 	"A string identifying the world the portal connects to."
 	todo("Should this be mutable?")
 	shared String destinationWorld;

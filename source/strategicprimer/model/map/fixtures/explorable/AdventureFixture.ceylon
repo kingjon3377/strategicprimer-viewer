@@ -5,15 +5,13 @@ import lovelace.util.common {
 import strategicprimer.model.map {
     HasMutableOwner,
     IFixture,
-    Player
-}
-import strategicprimer.model.map.fixtures {
-    SubsettableFixture
+    Player,
+    Subsettable
 }
 "A Fixture representing an adventure hook. Satisfies Subsettable because players shouldn't
  know when another player completes an adventure on the far side of the world."
 shared class AdventureFixture(owner, briefDescription, fullDescription, id)
-		satisfies ExplorableFixture&HasMutableOwner&SubsettableFixture {
+		satisfies ExplorableFixture&HasMutableOwner&IFixture&Subsettable<IFixture> {
 	"A brief description of the adventure."
 	shared String briefDescription;
 	"A longer description of the adventure."

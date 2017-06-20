@@ -15,10 +15,10 @@ import strategicprimer.model.map {
     HasMutableName,
     HasMutableImage,
     TileFixture,
-    IFixture
+    IFixture,
+    Subsettable
 }
 import strategicprimer.model.map.fixtures {
-    SubsettableFixture,
     FortressMember
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -30,7 +30,7 @@ todo("Enforce that only-one-per-player-per-tile restriction",
     "FIXME: We need something about buildings yet")
 shared class Fortress(owner, name, id, townSize = TownSize.small)
         satisfies HasMutableImage&ITownFixture&HasMutableName&
-        {FortressMember*}&SubsettableFixture {
+        {FortressMember*}&IFixture&Subsettable<IFixture> {
     "The player who owns the fortress."
     shared actual variable Player owner;
     "The name of the fortress."

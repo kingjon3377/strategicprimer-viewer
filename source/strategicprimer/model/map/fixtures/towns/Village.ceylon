@@ -1,14 +1,12 @@
-import strategicprimer.model.map.fixtures {
-    SubsettableFixture
-}
 import strategicprimer.model.map {
     HasMutableImage,
     IFixture,
-    Player
+    Player,
+    Subsettable
 }
 "A village in the map."
 shared class Village(status, name, id, owner, race)
-        satisfies ITownFixture&HasMutableImage&SubsettableFixture {
+        satisfies ITownFixture&HasMutableImage&IFixture&Subsettable<IFixture> {
     "The status of the village."
     shared actual TownStatus status;
     "The name of the village."

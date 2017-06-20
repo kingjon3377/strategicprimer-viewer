@@ -1,8 +1,9 @@
 import lovelace.util.common {
     todo
 }
-import strategicprimer.model.map.fixtures {
-    SubsettableFixture
+import strategicprimer.model.map {
+    Subsettable,
+    IFixture
 }
 "A (marker) interface for things that can be part of a unit.
 
@@ -11,7 +12,7 @@ import strategicprimer.model.map.fixtures {
  [[strategicprimer.model.map.fixtures.mobile::Worker]] in the Unit implementation. Most
  implementations of this will essentially delegate [[isSubset]] to [[equals]]."
 todo("Change that now we have reified generics?", "Members?")
-shared interface UnitMember satisfies SubsettableFixture {
+shared interface UnitMember satisfies IFixture&Subsettable<IFixture> {
 	"Specialization."
 	shared actual formal UnitMember copy(Boolean zero);
 }

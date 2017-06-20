@@ -1,9 +1,6 @@
 import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.model.map.fixtures {
-    SubsettableFixture
-}
 import lovelace.util.common {
     ArraySet,
     todo,
@@ -125,9 +122,9 @@ shared class SPMapNG satisfies IMutableMapNG {
         if (fixture.id >= 0,
             exists existing = local.find((item) => item.id == fixture.id)) {
             Boolean subsetCheck(TileFixture one, TileFixture two) {
-                if (is SubsettableFixture one, one.isSubset(two, noop)) {
+                if (is Subsettable<IFixture> one, one.isSubset(two, noop)) {
                     return true;
-                } else if (is SubsettableFixture two, two.isSubset(one, noop)) {
+                } else if (is Subsettable<IFixture> two, two.isSubset(one, noop)) {
                     return true;
                 } else {
                     return false;
@@ -250,8 +247,8 @@ shared class SPMapNG satisfies IMutableMapNG {
             }
             // Declared here to avoid object allocations in the loop.
             MutableList<TileFixture> ourFixtures = ArrayList<TileFixture>();
-            MutableMap<Integer, MutableList<SubsettableFixture>> ourSubsettables =
-                    HashMap<Integer, MutableList<SubsettableFixture>>();
+            MutableMap<Integer, MutableList<Subsettable<IFixture>>> ourSubsettables =
+                    HashMap<Integer, MutableList<Subsettable<IFixture>>>();
             // IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
             MutableMap<Integer, IUnit> ourUnits = HashMap<Integer, IUnit>();
             for (point in locations) {
@@ -279,12 +276,12 @@ shared class SPMapNG satisfies IMutableMapNG {
                     Integer idNum = fixture.id;
                     if (is IUnit fixture) {
                         ourUnits[idNum] = fixture;
-                    } else if (is SubsettableFixture fixture) {
+                    } else if (is Subsettable<IFixture> fixture) {
                         if (exists list = ourSubsettables[idNum]) {
                             list.add(fixture);
                         } else {
-                            MutableList<SubsettableFixture> list =
-                                    ArrayList<SubsettableFixture>();
+                            MutableList<Subsettable<IFixture>> list =
+                                    ArrayList<Subsettable<IFixture>>();
                             list.add(fixture);
                             ourSubsettables[idNum] = list;
                         }
@@ -298,11 +295,11 @@ shared class SPMapNG satisfies IMutableMapNG {
                         continue;
                     } else if (is IUnit fixture, exists unit = ourUnits[fixture.id]) {
                         retval = retval && unit.isSubset(fixture, localReport);
-                    } else if (is SubsettableFixture fixture,
+                    } else if (is Subsettable<IFixture> fixture,
                             exists list = ourSubsettables[fixture.id]) {
                         variable Integer count = 0;
                         variable Boolean unmatched = true;
-                        variable SubsettableFixture? match = null;
+                        variable Subsettable<IFixture>? match = null;
                         for (subsettable in list) {
                             count++;
                             match = subsettable;
