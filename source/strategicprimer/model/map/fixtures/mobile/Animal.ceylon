@@ -69,7 +69,6 @@ shared class Animal(kind, traces, talking, status, id, born = -1, population = 1
 	shared actual String string => shortDescription;
 	shared actual String plural = "Animals";
 	"Clone the animal."
-	todo("Should we zero out any information?")
 	shared actual Animal copy(Boolean zero) {
 		Animal retval = Animal(kind, traces, talking, status, id,
 			(zero) then -1 else born, (zero) then 1 else population);
