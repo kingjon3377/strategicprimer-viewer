@@ -40,7 +40,6 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures {
     TextFixture,
-    RiverFixture,
     Ground
 }
 import strategicprimer.model.xmlio {
@@ -77,13 +76,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         YAUnitReader(warner, idRegistrar, players) };
     "Add a fixture to a point in a map, accounting for the special cases."
     void addFixture(IMutableMapNG map, Point point, TileFixture fixture) {
-        if (is RiverFixture fixture) {
-            // We shouldn't get here, since our parser doesn't use them, but I don't want
-            // to lose data if I change that and forget to update its callers
-            map.addRivers(point, *fixture);
-        } else {
-            map.addFixture(point, fixture);
-        }
+        map.addFixture(point, fixture);
     }
     "Get the first open-tag event in our namespace in the stream."
     StartElement getFirstStartElement({XMLEvent*} stream, StartElement parent) {

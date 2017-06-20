@@ -28,7 +28,6 @@ import strategicprimer.model.map {
     IMapNG
 }
 import strategicprimer.model.map.fixtures {
-    RiverFixture,
     TerrainFixture
 }
 
@@ -160,8 +159,6 @@ class Ver2TileDrawHelper(
             } else {
                 return getImage(image);
             }
-        } else if (is RiverFixture fixture) {
-            return getImage(riverFiles[fixture.rivers] else "");
         } else {
             log.warn("Using fallback image for unexpected kind of fixture");
             return fallbackImage;

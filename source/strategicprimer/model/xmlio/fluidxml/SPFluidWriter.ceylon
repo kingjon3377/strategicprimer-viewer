@@ -37,7 +37,6 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
     Implement,
     ResourcePile,
-    RiverFixture,
     TextFixture,
     Ground
 }
@@ -338,7 +337,6 @@ shared class SPFluidWriter() satisfies SPWriter {
     }
     writers = map<ClassOrInterface<Anything>, LocalXMLWriter> {
         `River`->writeRivers,
-        `RiverFixture`->writeRivers,
         `AdventureFixture`->writeAdventure,
         `Portal`->writePortal,
         `Battlefield`->writeBattlefield,

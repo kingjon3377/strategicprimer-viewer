@@ -36,9 +36,6 @@ import strategicprimer.model.map {
     HasKind,
     PointIterator
 }
-import strategicprimer.model.map.fixtures {
-    RiverFixture
-}
 import strategicprimer.viewer.drivers {
     SPDialog
 }
@@ -195,10 +192,6 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             }
         }
         for (point in model.map.locations) {
-//            if (!model.map.rivers[point].empty) { // TODO: syntax sugar once compiler bug fixed
-            if (!model.map.rivers.get(point).empty) {
-                populate(RiverFixture());
-            }
             populate(model.map.fixtures[point]);
         }
     });

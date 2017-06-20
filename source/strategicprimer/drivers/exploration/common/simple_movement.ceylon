@@ -19,9 +19,6 @@ import strategicprimer.model.map {
     TileType,
     HasOwner
 }
-import strategicprimer.model.map.fixtures {
-    RiverFixture
-}
 import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
@@ -160,7 +157,7 @@ shared Boolean shouldAlwaysNotice(HasOwner unit, TileFixture? fixture) {
         if (is ITownFixture fixture) {
             return fixture.owner == unit.owner;
         } else {
-            return fixture is RiverFixture|Hill|Forest;
+            return fixture is Hill|Forest;
         }
     } else {
         return false;

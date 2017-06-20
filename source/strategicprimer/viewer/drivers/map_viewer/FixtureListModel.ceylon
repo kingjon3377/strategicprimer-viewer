@@ -13,14 +13,10 @@ import lovelace.util.common {
 
 import strategicprimer.model.map {
     Point,
-    River,
     TileFixture,
     TileType,
     IMutableMapNG,
     invalidPoint
-}
-import strategicprimer.model.map.fixtures {
-    RiverFixture
 }
 import strategicprimer.model.map.fixtures.mobile {
     Animal
@@ -46,15 +42,6 @@ shared class FixtureListModel(IMutableMapNG map,
         TileType base = map.baseTerrain.get(newPoint);
         if (TileType.notVisible != base) {
             addElement(TileTypeFixture(base));
-        }
-//        {River*} rivers = map.rivers[newPoint];
-        {River*} rivers = map.rivers.get(newPoint);
-        if (!rivers.empty) {
-            if (is TileFixture rivers) {
-                addElement(rivers);
-            } else {
-                addElement(RiverFixture(*rivers));
-            }
         }
 //        for (fixture in map.fixtures[newPoint]) {
         for (fixture in map.fixtures.get(newPoint)) {
@@ -83,10 +70,6 @@ shared class FixtureListModel(IMutableMapNG map,
             if (is TileTypeFixture fixture) {
                 if (removeElement(fixture)) { // no-op if it wasn't *our* terrain
                     map.baseTerrain[point] = TileType.notVisible;
-                }
-            } else if (is RiverFixture fixture) {
-                if (removeElement(fixture)) {
-                    map.removeRivers(point, *fixture);
                 }
             } else if (filterTracks, is Animal fixture, currentTracks.contains(fixture)) {
                 if (removeElement(fixture)) {

@@ -62,7 +62,6 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
     TextFixture,
     Implement,
-    RiverFixture,
     ResourcePile,
     Ground,
     Quantity
@@ -646,14 +645,6 @@ void testRiverSerializationOne() {
     Set<River> setOne = set { River.north, River.south };
     Set<River> setTwo = set { River.south, River.north };
     assertEquals(setOne, setTwo, "Rivers added in different order to set");
-    assertEquals(RiverFixture(River.south, River.north),
-        RiverFixture(River.north, River.south),
-        "Rivers added in different order to fixture");
-    RiverFixture fixOne = RiverFixture(River.north);
-    fixOne.addRiver(River.south);
-    RiverFixture fixTwo = RiverFixture(River.south);
-    fixTwo.addRiver(River.north);
-    assertEquals(fixOne, fixTwo, "Rivers added separately");
     assertEquals(
         encapsulateRivers(pointFactory(1, 1), River.north, River.south),
         encapsulateRivers(pointFactory(1, 1), River.north, River.south),

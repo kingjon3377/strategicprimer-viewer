@@ -32,7 +32,6 @@ import strategicprimer.model.map {
     TileFixture
 }
 import strategicprimer.model.map.fixtures {
-    RiverFixture,
     TextFixture,
     Ground
 }
@@ -124,8 +123,6 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
         complements<Animal>((Animal animal) => !animal.traces, "Animals",
             "Animal tracks"),
         complements<Grove>(Grove.orchard, "Orchards", "Groves"),
-        // TODO: Rivers are usually handled specially, so should this really be included?
-        trivialMatcher(`RiverFixture`, "Rivers"),
         // TODO: TextFixture thru AdventureFixture were all 25, and should be considered
         trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"),
         trivialMatcher(`Portal`), trivialMatcher(`Oasis`, "Oases"),

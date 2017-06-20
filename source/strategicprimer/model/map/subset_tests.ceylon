@@ -24,7 +24,6 @@ import strategicprimer.model.map {
     MapDimensionsImpl
 }
 import strategicprimer.model.map.fixtures {
-    RiverFixture,
     TextFixture
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -77,45 +76,6 @@ void testPlayerCollectionSubset() {
         "Two is not subset of one");
     assertIsSubset<IPlayerCollection>(secondCollection, secondCollection,
         "Two is subset of self");
-}
-
-"A test of [[RiverFixture]]'s subset feature."
-test
-void testRiverSubset() {
-    RiverFixture zero = RiverFixture();
-    RiverFixture thirdCollection = RiverFixture(*`River`.caseValues);
-    assertIsSubset<RiverFixture, IFixture>(thirdCollection, zero,
-        "None is a subset of all");
-    RiverFixture firstRivers = RiverFixture(River.lake, River.south, River.east);
-    assertIsSubset<RiverFixture, IFixture>(thirdCollection, firstRivers,
-        "Three are a subset of all");
-    RiverFixture secondRivers = RiverFixture(River.west, River.north);
-    assertIsSubset<RiverFixture, IFixture>(thirdCollection, secondRivers,
-        "Two are a subset of all");
-    assertIsSubset<RiverFixture, IFixture>(thirdCollection, thirdCollection,
-        "All is a subset of all");
-    assertIsSubset<RiverFixture, IFixture>(secondRivers, zero, "None is a subset of two");
-    assertNotSubset<RiverFixture, IFixture>(secondRivers, thirdCollection,
-        "All is not a subset of two");
-    assertNotSubset<RiverFixture, IFixture>(secondRivers, firstRivers,
-        "Three are not a subset of two");
-    assertIsSubset<RiverFixture, IFixture>(secondRivers, secondRivers,
-        "Two are a subset of themselves");
-    assertIsSubset<RiverFixture, IFixture>(firstRivers, zero,
-        "None is a subset of three");
-    assertNotSubset<RiverFixture, IFixture>(firstRivers, thirdCollection,
-        "All is not a subset of three");
-    assertNotSubset<RiverFixture, IFixture>(firstRivers, secondRivers,
-        "A different two is not a subset of three");
-    assertIsSubset<RiverFixture, IFixture>(firstRivers, firstRivers,
-        "Three are a subset of themselves");
-    assertIsSubset<RiverFixture, IFixture>(zero, zero, "None is a subset of itself");
-    assertNotSubset<RiverFixture, IFixture>(zero, thirdCollection,
-        "All are not a subset of none");
-    assertNotSubset<RiverFixture, IFixture>(zero, firstRivers,
-        "Three are not a subset of none");
-    assertNotSubset<RiverFixture, IFixture>(zero, secondRivers,
-        "Two are not a subset of none");
 }
 
 "A test of [[Fortress]]'s subset feature."
