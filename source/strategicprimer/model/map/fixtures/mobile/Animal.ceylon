@@ -79,7 +79,6 @@ shared class Animal(kind, traces, talking, status, id, born = -1, population = 1
 	todo("Should be variable, either read from XML or computed from kind using some other
 	      read-from-file data.") // FIXME
 	shared actual Integer dc => (traces) then 12 else 22;
-	todo("Check turn of birth?", "Check population count")
 	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
 		if (obj.id == id) {
 			if (is Animal obj) {
@@ -94,6 +93,13 @@ shared class Animal(kind, traces, talking, status, id, born = -1, population = 1
 					return false;
 				} else if (status != obj.status) {
 					report("Animal domestication status differs at ID #``id``");
+					return false;
+				} else if (obj.population > population) {
+					report(
+						"In animal #``id``: Submap has greater population than master");
+					return false;
+				} else if (obj.born < born) {
+					report("In animal #``id``: Submap has greater age than master");
 					return false;
 				} else {
 					return true;
