@@ -26,8 +26,7 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 "A fortress on the map. A player can only have one fortress per tile, but multiple players
   may have fortresses on the same tile."
-todo("Enforce that only-one-per-player-per-tile restriction",
-    "FIXME: We need something about buildings yet")
+todo("FIXME: We need something about buildings yet")
 shared class Fortress(owner, name, id, townSize = TownSize.small)
         satisfies HasMutableImage&ITownFixture&HasMutableName&
         {FortressMember*}&IFixture&Subsettable<IFixture> {

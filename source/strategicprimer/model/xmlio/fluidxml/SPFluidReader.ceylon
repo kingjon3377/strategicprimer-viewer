@@ -178,6 +178,12 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         } else if (is {River*} child) {
             map.addRivers(currentTile, *child);
         } else if (is TileFixture child) {
+            if (is Fortress child, !map.fixtures.get(currentTile).narrow<Fortress>()
+                    .filter((fix) => fix.owner == child.owner).empty) {
+                warner.handle(UnwantedChildException(parent.name, element,
+                    IllegalStateException(
+                        "Multiple fortresses owned by same player on same tile")));
+            }
             map.addFixture(currentTile, child);
         } else {
             throw UnwantedChildException(parent.name, element);

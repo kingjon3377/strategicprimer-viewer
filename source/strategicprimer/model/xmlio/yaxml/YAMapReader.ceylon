@@ -7,7 +7,8 @@ import ceylon.language.meta {
 }
 
 import java.lang {
-    IllegalArgumentException
+    IllegalArgumentException,
+    IllegalStateException
 }
 
 import javax.xml.namespace {
@@ -57,6 +58,9 @@ import strategicprimer.model.map.fixtures.terrain {
 }
 import strategicprimer.model.map.fixtures.mobile {
     maturityModel
+}
+import strategicprimer.model.map.fixtures.towns {
+    Fortress
 }
 variable Integer currentTurn = -1;
 "A reader for Strategic Primer maps."
@@ -200,7 +204,14 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     retval.mountainous[point] = true;
                 } else {
                     assert (exists top = tagStack.top);
-                    retval.addFixture(point, parseFixture(event, top, stream));
+                    value child = parseFixture(event, top, stream);
+                    if (is Fortress child, !retval.fixtures.get(point).narrow<Fortress>()
+                            .filter((fix) => fix.owner == child.owner).empty) {
+                        warner.handle(UnwantedChildException(top, event,
+                            IllegalStateException(
+                                "Multiple fortresses owned by same player on same tile")));
+                    }
+                    retval.addFixture(point, child);
                 }
             } else if (is EndElement event) {
                 if (exists top = tagStack.top, top == event.name) {
