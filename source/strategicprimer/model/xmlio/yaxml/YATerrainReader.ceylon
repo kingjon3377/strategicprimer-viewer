@@ -44,7 +44,7 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         case ("forest") {
             Integer id = getIntegerParameter(element, "id", -1);
             if (id >= 0) {
-                registerID(id);
+                registerID(id, element.location);
             }
             retval = Forest(getParameter(element, "kind"),
                 getBooleanParameter(element, "rows", false), id);

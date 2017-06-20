@@ -26,7 +26,7 @@ class YAGroundReader(Warning warning, IDRegistrar idRegistrar)
         spinUntilEnd(element.name, stream);
         Integer id = getIntegerParameter(element, "id", -1);
         if (id >= 0) {
-            registerID(id);
+            registerID(id, element.location);
         }
         Ground retval = Ground(id, kind, getBooleanParameter(element, "exposed"));
         retval.image = getParameter(element, "image", "");

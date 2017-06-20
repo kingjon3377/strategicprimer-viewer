@@ -17,6 +17,9 @@ import lovelace.util.common {
 import strategicprimer.model.xmlio {
     Warning
 }
+import javax.xml.stream {
+    Location
+}
 "A class to register IDs with and produce not-yet-used IDs. Performance is likely to be
  poor, but we don't want to go to random IDs because we want them to be as low as
  possible."
@@ -28,10 +31,17 @@ shared class IDFactory() satisfies IDRegistrar {
     shared actual Boolean isIDUnused(Integer id) => id >= 0 && !usedIDs.get(id);
     "Register, and return, the given ID, using the given Warning instance to report if it
      has already been registered."
-    shared actual Integer register(Integer id, Warning warning) {
+    shared actual Integer register(Integer id, Warning warning,
+            "The location in some XML that this is coming from. Null if caller isn't an
+             XML reader."
+            Location? location) {
         if (id >= 0) {
             if (usedIDs.get(id)) {
-                warning.handle(DuplicateIDException(id));
+                if (exists location) {
+                    warning.handle(DuplicateIDException.atLocation(id, location));
+                } else {
+                    warning.handle(DuplicateIDException(id));
+                }
             }
             usedIDs.set(id);
         }

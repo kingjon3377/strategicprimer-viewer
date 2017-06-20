@@ -175,7 +175,7 @@ Integer getOrGenerateID(
         try {
             return idFactory.register(
                 numParser.parse(getAttribute(element, "id")).intValue(),
-                warner);
+                warner, element.location);
         } catch (NumberFormatException|ParseException|JParseException except) {
             throw MissingPropertyException(element, "id", except);
         }

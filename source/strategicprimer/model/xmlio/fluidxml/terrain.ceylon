@@ -37,7 +37,7 @@ Ground readGround(StartElement element, QName parent, {XMLEvent*} stream,
     requireTag(element, parent, "ground");
     Integer id = getIntegerAttribute(element, "id", -1, warner);
     if (id >= 0) {
-        idFactory.register(id, warner);
+        idFactory.register(id, warner, element.location);
     }
     String kind = getAttrWithDeprecatedForm(element, "kind", "ground", warner);
     spinUntilEnd(element.name, stream);
@@ -50,7 +50,7 @@ Forest readForest(StartElement element, QName parent, {XMLEvent*} stream,
     requireTag(element, parent, "forest");
     Integer id = getIntegerAttribute(element, "id", -1, warner);
     if (id >= 0) {
-        idFactory.register(id, warner);
+        idFactory.register(id, warner, element.location);
     }
     Forest retval = Forest(getAttribute(element, "kind"),
         getBooleanAttribute(element, "rows", false), id);
