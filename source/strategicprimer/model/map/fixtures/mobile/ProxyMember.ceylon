@@ -29,12 +29,17 @@ class ProxyMember satisfies UnitMember&ProxyFor<UnitMember> {
         }
         return retval;
     }
-    "Since the only user of this class proxied members that should all have the same ID
-     number, we just get the ID of the first proxied member."
-    todo("Remove that assumption")
+    "Returns the ID number shared by all the proxied members, or -1 if either there are no
+     proxied members or some have a different ID."
     shared actual Integer id {
         if (exists first = proxiedMembers.first) {
-            return first.id;
+            Integer retval = first.id;
+            for (member in proxiedMembers.rest) {
+                if (member.id != retval) {
+                    return -1;
+                }
+            }
+            return retval;
         } else {
             return -1;
         }
