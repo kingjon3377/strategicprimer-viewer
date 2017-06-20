@@ -74,10 +74,6 @@ class YAMapReader("The Warning instance to use" Warning warner,
         YAAdventureReader(warner, idRegistrar, players),
         YAPortalReader(warner, idRegistrar), YAExplorableReader(warner, idRegistrar),
         YAUnitReader(warner, idRegistrar, players) };
-    "Add a fixture to a point in a map, accounting for the special cases."
-    void addFixture(IMutableMapNG map, Point point, TileFixture fixture) {
-        map.addFixture(point, fixture);
-    }
     "Get the first open-tag event in our namespace in the stream."
     StartElement getFirstStartElement({XMLEvent*} stream, StartElement parent) {
         for (element in stream) {
@@ -204,7 +200,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     retval.mountainous[point] = true;
                 } else {
                     assert (exists top = tagStack.top);
-                    addFixture(retval, point, parseFixture(event, top, stream));
+                    retval.addFixture(point, parseFixture(event, top, stream));
                 }
             } else if (is EndElement event) {
                 if (exists top = tagStack.top, top == event.name) {
