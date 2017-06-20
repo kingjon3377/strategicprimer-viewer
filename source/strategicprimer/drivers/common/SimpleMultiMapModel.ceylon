@@ -4,7 +4,8 @@ import ceylon.collection {
 }
 
 import java.nio.file {
-    JPath=Path
+    JPath=Path,
+    JPaths=Paths
 }
 
 import lovelace.util.common {
@@ -15,6 +16,7 @@ import strategicprimer.model.map {
     IMutableMapNG,
     IMapNG
 }
+JPath emptyPath = JPaths.get("");
 "A superclass for implementations of interfaces inheriting from [[IMultiMapModel]]."
 shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapModel {
     "The collection of subordinate maps."
@@ -36,7 +38,17 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
             subordinateMapsList.add([map, file]);
     todo(/*FIXME*/"Test this; I fixed the clearly-wrong implementation, but this might
                    cause [[java.util::ConcurrentModificationException]]")
-    shared actual void removeSubordinateMap(IMapNG map) {
-        subordinateMapsList.removeWhere(([localMap, file]) => localMap == map);
+    shared actual void removeSubordinateMap(IMapNG|JPath map) {
+        if (is IMapNG map) {
+            subordinateMapsList.removeWhere(([localMap, file]) => localMap == map);
+        } else if (emptyPath != map){
+            subordinateMapsList.removeWhere(([localMap, file]) {
+                if (exists file) {
+                    return file == map;
+                } else {
+                    return false;
+                }
+            });
+        }
     }
 }
