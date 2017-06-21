@@ -59,7 +59,7 @@ shared class ResourcePile(id, kind, contents, quantity)
 					localReport("Kinds differ");
 					retval = false;
 				}
-				if (!contents != obj.contents) {
+				if (contents != obj.contents) {
 					localReport("Contents differ");
 					retval = false;
 				}
