@@ -40,7 +40,7 @@ SPWriter writer = yaXMLWriter;
 shared {JPath*} namesToFiles(String* names) =>
         { for (name in names) JPaths.get(name) };
 "Read a map from a file or a stream.."
-todo("Port to use ceylon.file or ceylon.io")
+todo("Port to use ceylon.file, ceylon.io, or ceylon.buffer")
 shared IMutableMapNG readMap(JPath|JReader file, Warning warner = warningLevels.warn) {
     if (is JPath file) {
         return reader.readMap(file, warner);

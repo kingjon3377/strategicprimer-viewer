@@ -17,7 +17,7 @@ shared interface ISPReader {
 			todo("Port to `ceylon.file`")
 			JPath file,
 			"The reader from which to read the XML"
-			todo("Port to `ceylon.io`")
+			todo("Port to `ceylon.io` or `ceylon.buffer`")
 			JReader istream,
 			"The Warning instance to use for warnings"
 			Warning warner) given Element satisfies Object;
