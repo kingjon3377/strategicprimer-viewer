@@ -227,7 +227,7 @@ shared void run() {
             "Let the user choose an app to start, or handle options.");
         shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
                 String* args) {
-            log.info("Inside appStarter.startDriver()");
+//            log.info("Inside appStarter.startDriver()");
             variable Boolean gui = !GraphicsEnvironment.headless;
             variable SPOptionsImpl currentOptions = SPOptionsImpl(options);
             if (!currentOptions.hasOption("--gui")) {
