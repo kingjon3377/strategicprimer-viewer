@@ -12,7 +12,7 @@ module strategicprimer.viewer "0.4.9014" {
     shared import javax.xml "8";
     shared import ceylon.math "1.3.2";
     shared import ceylon.file "1.3.2";
-    import ceylon.io "1.3.2";
+//    import ceylon.io "1.3.2";
 //    import maven:"com.pump:pump-swing" "1.0.00";
     import com.pump.swing "1.0.00";
     shared import java.desktop "8";
