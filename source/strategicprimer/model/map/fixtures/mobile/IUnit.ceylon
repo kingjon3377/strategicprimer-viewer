@@ -106,7 +106,8 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
                         createMap { *map((member) => member.id->member) };
                 variable Boolean retval = true;
                 void localReport(String string) =>
-                        report("In unit of kind ``kind`` named ``name`` (ID #``id``):\t");
+                        report(
+                            "In unit of kind ``kind`` named ``name`` (ID #``id``):\t``string``");
                 for (member in obj) {
                     if (exists ourMember = ours[member.id]) {
                         if (!ourMember.isSubset(member, localReport)) {
