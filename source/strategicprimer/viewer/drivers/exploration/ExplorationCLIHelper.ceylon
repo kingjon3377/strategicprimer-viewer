@@ -118,7 +118,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         } else if (directionNum < 0) {
             return;
         }
-        assert (exists direction = `Direction`.caseValues[directionNum]);
+        assert (exists direction = `Direction`.caseValues.find(
+                    (dir) => dir.ordinal == directionNum));
         Point point = model.selectedUnitLocation;
         Point destPoint = model.getDestination(point, direction);
         try {

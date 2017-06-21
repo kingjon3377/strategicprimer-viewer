@@ -16,24 +16,26 @@ shared class Direction
         of north|northeast|east|southeast|south|southwest|west|northwest|nowhere {
     "A representation of the direction for debugging purposes."
     shared actual String string;
+    "The number used to select this direction in the CLI."
+    shared Integer ordinal;
     "North."
-    shared new north { string = "north"; }
+    shared new north { string = "north"; ordinal = 0; }
     "Northeast."
-    shared new northeast { string = "northeast"; }
+    shared new northeast { string = "northeast"; ordinal = 1; }
     "East."
-    shared new east { string = "east"; }
+    shared new east { string = "east"; ordinal = 2; }
     "Southeast."
-    shared new southeast { string = "southeast"; }
+    shared new southeast { string = "southeast"; ordinal = 3; }
     "South."
-    shared new south { string = "south"; }
+    shared new south { string = "south"; ordinal = 4; }
     "Southwest."
-    shared new southwest { string = "southwest"; }
+    shared new southwest { string = "southwest"; ordinal = 5; }
     "West."
-    shared new west { string = "west"; }
+    shared new west { string = "west"; ordinal = 6; }
     "Northwest."
-    shared new northwest { string = "northwest"; }
+    shared new northwest { string = "northwest"; ordinal = 7; }
     "Stand still."
-    shared new nowhere { string = "nowhere"; }
+    shared new nowhere { string = "nowhere"; ordinal = 8; }
 }
 "An enumeration of possible movement speeds, joining their effects on MP costs and
  Perception. Traveling to [[Direction.nowhere]] should give an additional bonus (+2?) to
