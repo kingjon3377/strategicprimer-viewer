@@ -133,7 +133,9 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
                         writeProperty(ostream, "born", obj.born);
                     }
                 }
-                writeProperty(ostream, "count", obj.population);
+                if (obj.population > 1) {
+                    writeProperty(ostream, "count", obj.population);
+                }
             }
             writeImageXML(ostream, obj);
         } else if (is SimpleImmortal obj) {
