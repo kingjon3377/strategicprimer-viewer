@@ -35,7 +35,7 @@ shared class Animal(kind, traces, talking, status, id, born = -1, population = 1
 	"A population cannot have fewer than one individual."
 	assert (population >= 1);
 	shared actual String shortDescription =>
-			"``(traces) then "traces of " else ""````(talking) then "talking " else ""````kind`` born ``born``";
+			"``(traces) then "traces of " else ""````(talking) then "talking " else ""````kind`````(!traces && !talking && born >= 0) then "born ``born``" else ""``";
 	"Default image filename"
 	todo("Should depend on the kind of animal")
 	shared actual String defaultImage = (traces) then "tracks.png" else "animal.png";
