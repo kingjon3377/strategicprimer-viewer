@@ -157,7 +157,7 @@ object queryCLI satisfies SimpleDriver {
     Integer countWorkersInIterable(Player player, {TileFixture*} fixtures) {
         variable Integer retval = 0;
         for (fixture in fixtures) {
-            if (is IWorker fixture, is HasOwner fixtures, player == fixtures) {
+            if (is IWorker fixture, is HasOwner fixtures, player == fixtures.owner) {
                 retval++;
             } else if (is {TileFixture*} fixture) {
                 retval += countWorkersInIterable(player, fixture);
