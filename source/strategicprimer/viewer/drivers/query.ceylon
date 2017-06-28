@@ -55,6 +55,7 @@ import strategicprimer.model.map {
     TileType,
     IMapNG,
     TileFixture,
+    IFixture,
     HasName,
     MapDimensions
 }
@@ -154,12 +155,12 @@ object queryCLI satisfies SimpleDriver {
     "How many encounters per hour for a hunter or such."
     Integer hourlyEncounters = 4;
     "Count the workers in an Iterable belonging to a player."
-    Integer countWorkersInIterable(Player player, {TileFixture*} fixtures) {
+    Integer countWorkersInIterable(Player player, {IFixture*} fixtures) {
         variable Integer retval = 0;
         for (fixture in fixtures) {
             if (is IWorker fixture, is HasOwner fixtures, player == fixtures.owner) {
                 retval++;
-            } else if (is {TileFixture*} fixture) {
+            } else if (is {IFixture*} fixture) {
                 retval += countWorkersInIterable(player, fixture);
             }
         }
