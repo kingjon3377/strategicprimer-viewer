@@ -8,13 +8,8 @@ import java.nio.file {
     JPaths=Paths
 }
 
-import lovelace.util.common {
-    todo
-}
-
 import strategicprimer.model.map {
-    IMutableMapNG,
-    IMapNG
+    IMutableMapNG
 }
 JPath emptyPath = JPaths.get("");
 "A superclass for implementations of interfaces inheriting from [[IMultiMapModel]]."
@@ -36,19 +31,4 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
     }
     shared actual void addSubordinateMap(IMutableMapNG map, JPath? file) =>
             subordinateMapsList.add([map, file]);
-    todo(/*FIXME*/"Test this; I fixed the clearly-wrong implementation, but this might
-                   cause [[java.util::ConcurrentModificationException]]")
-    shared actual void removeSubordinateMap(IMapNG|JPath map) {
-        if (is IMapNG map) {
-            subordinateMapsList.removeWhere(([localMap, file]) => localMap == map);
-        } else if (emptyPath != map){
-            subordinateMapsList.removeWhere(([localMap, file]) {
-                if (exists file) {
-                    return file == map;
-                } else {
-                    return false;
-                }
-            });
-        }
-    }
 }

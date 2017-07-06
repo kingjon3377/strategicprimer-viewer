@@ -2,13 +2,8 @@ import java.nio.file {
     JPath=Path
 }
 
-import lovelace.util.common {
-    todo
-}
-
 import strategicprimer.model.map {
-    IMutableMapNG,
-    IMapNG
+    IMutableMapNG
 }
 """A driver-model for drivers that have a main map (like every driver) and any number of
    "subordinate" maps."""
@@ -19,12 +14,6 @@ shared interface IMultiMapModel satisfies IDriverModel {
             IMutableMapNG map,
             "The file it was loaded from"
             JPath? file);
-    "Remove a subordinate map. If a filename is passed, and is nonempty, *all* subordinate
-      maps loaded from that filename are removed."
-    todo("Should this method be provided at all?")
-    shared formal void removeSubordinateMap(
-            "The map to remove, or its filename."
-            IMapNG|JPath map);
     "Subordinate maps with their filenames."
     shared formal {[IMutableMapNG, JPath?]*} subordinateMaps;
     "All maps with their filenames, including the main map and the subordinate maps."
