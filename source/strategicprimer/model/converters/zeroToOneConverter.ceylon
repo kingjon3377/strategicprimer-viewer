@@ -88,6 +88,12 @@ import strategicprimer.model.xmlio {
     warningLevels,
     testReaderFactory
 }
+import ceylon.file {
+	parsePath,
+    Resource,
+    File,
+    Nil
+}
 Logger log = logger(`module strategicprimer.model`);
 object zeroToOneConverter {
 	MutableMap<Integer, String> equivalents = HashMap<Integer, String>();
@@ -293,14 +299,25 @@ void testZeroToOneConversion() {
 	assertEquals(readMap(StringReader(ostream.string),
 		warningLevels.ignore), expected, "Converted map was as expected");
 }
-"Convert files provided on command line; prints results to standard output."
-todo("Write results to file")
+"""Convert files provided on command line; prints results to files with ".converted.xml"
+   appended."""
 shared void convertZeroToOne() {
 	for (argument in process.arguments) {
-		try (reader = JFileReader(argument)) {
+		Resource outFileRaw = parsePath("``argument``.converted.xml").resource;
+		File outFile;
+		if (is File outFileRaw) {
+			outFile = outFileRaw;
+		} else if (is Nil outFileRaw) {
+			outFile = outFileRaw.createFile();
+		} else {
+			process.write(
+				"``argument``.converted.xml already exists but is not a file; skipping ...");
+			continue;
+		}
+		try (reader = JFileReader(argument), writer = outFile.Overwriter()) {
 			zeroToOneConverter.convert(ConvertingIterable<XMLEvent>(
 				XMLInputFactory.newInstance().createXMLEventReader(reader)),
-				process.write);
+				writer.write);
 		} catch (FileNotFoundException|NoSuchFileException except) {
 			log.error("File ``argument`` not found", except);
 		} catch (XMLStreamException except) {
