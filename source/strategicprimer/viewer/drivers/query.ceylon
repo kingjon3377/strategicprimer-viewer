@@ -54,7 +54,6 @@ import strategicprimer.model.map {
     HasOwner,
     TileType,
     IMapNG,
-    TileFixture,
     IFixture,
     HasName,
     MapDimensions
