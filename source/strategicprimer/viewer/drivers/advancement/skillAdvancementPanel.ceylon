@@ -45,7 +45,15 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
         if (exists local = skill) {
             Integer level = local.level;
             if (is Integer number = Integer.parse(hours.text)) {
-                local.addHours(number, singletonRandom.nextInteger(100));
+                // TODO: Make frequency of leveling checks (i.e. size of hour-chunks to
+                // add at a time) configurable. This is correct (per documentation before
+                // I added support for workers to the map format) for ordinary experience,
+                // but workers learning or working under a more experienced mentor can get
+                // multiple "hours" per hour, and they should only check for a level with
+                // each *actual* hour.
+                for (hour in 0:number) {
+                    local.addHours(1, singletonRandom.nextInteger(100));
+                }
             } else {
                 showErrorDialog(hours, "Strategic Primer Worker Advancement",
                     "Hours to add must be a number");
