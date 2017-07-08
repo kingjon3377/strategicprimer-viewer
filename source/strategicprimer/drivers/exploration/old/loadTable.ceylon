@@ -39,7 +39,7 @@ import strategicprimer.model.map.fixtures.terrain {
 Logger log = logger(`module strategicprimer.drivers.exploration.old`);
 // Made shared so the oneToTwoConverter tests can get tables as classpath resources and
 // load them from there. Also used by the 'town contents' generator.
-shared EncounterTable loadTable(String?()|{String*}|File|Resource argument) {
+shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource argument) {
     if (is File argument) {
         try (reader = argument.Reader()) {
             return loadTable(reader.readLine);
@@ -49,26 +49,19 @@ shared EncounterTable loadTable(String?()|{String*}|File|Resource argument) {
         {String+} split = text.split('\n'.equals);
         return loadTable(ArrayList { *split }.accept);
     } else if (is {String*} argument) {
-        // TODO: This is probably highly inefficient ...
-        variable {String*} temp = argument;
-        String? lambda() {
-            String? retval = temp.first;
-            temp = temp.rest;
-            return retval;
-        }
-        return loadTable(lambda);
+        return loadTable(argument.iterator().next);
     } else {
-        if (exists line = argument()) {
+        if (is String line = argument()) {
             switch (line[0])
             case (null) {
                 throw IOException("File doesn't start by specifying which kind of table");
             }
             case ('q'|'Q') {
-                if (exists firstLine = argument()) {
+                if (is String firstLine = argument()) {
                     value rows = Integer.parse(firstLine);
                     if (is Integer rows) {
                         MutableList<String> items = LinkedList<String>();
-                        while (exists tableLine = argument()) {
+                        while (is String tableLine = argument()) {
                             items.add(tableLine);
                         }
                         return QuadrantTable(rows, *items);
@@ -85,7 +78,7 @@ shared EncounterTable loadTable(String?()|{String*}|File|Resource argument) {
                 MutableList<[Integer, String]> list =
                         ArrayList<[Integer, String]>();
                 variable Boolean first = true;
-                while (exists tableLine = argument()) {
+                while (is String tableLine = argument()) {
                     value splitted = tableLine.split(' '.equals, true, false);
                     if (splitted.size < 2) {
                         if (first, tableLine == line) {
@@ -113,7 +106,7 @@ shared EncounterTable loadTable(String?()|{String*}|File|Resource argument) {
                 return RandomTable(*list);
             }
             case ('c'|'C') {
-                if (exists tableLine = argument()) {
+                if (is String tableLine = argument()) {
                     return ConstantTable(tableLine);
                 } else {
                     throw IOException("constant value not present");
@@ -124,7 +117,7 @@ shared EncounterTable loadTable(String?()|{String*}|File|Resource argument) {
                 MutableList<TileType->String> list =
                         ArrayList<TileType->String>();
                 variable Boolean first = true;
-                while (exists tableLine = argument()) {
+                while (is String tableLine = argument()) {
                     value splitted = tableLine.split(' '.equals, true, false);
                     if (splitted.size < 2) {
                         if (first, tableLine == line) {
