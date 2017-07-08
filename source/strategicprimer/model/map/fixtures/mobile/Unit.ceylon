@@ -117,7 +117,8 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
     shared actual String defaultImage = "unit.png";
     "If we ignore ID (and members, which we probably shouldn't), a fixture is equal iff it
      is an IUnit owned by the same player with the same kind and name."
-    todo("Should we look at unit members?") // FIXME
+    todo("Test that every member of each unit equals, using equalsIgnoringID(), a member
+          of the other.") // FIXME
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is IUnit fixture) {
             return fixture.owner.playerId == owner.playerId && fixture.kind == kind &&
