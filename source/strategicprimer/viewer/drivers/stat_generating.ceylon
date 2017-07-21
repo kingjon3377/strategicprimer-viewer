@@ -271,7 +271,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         for (i in 0:count) {
             String name;
             if (exists temp = names.accept()) {
-                name = temp;
+                name = temp.trimmed;
             } else {
                 name = cli.inputString("Next worker name: ");
             }
