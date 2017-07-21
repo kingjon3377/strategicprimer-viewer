@@ -42,7 +42,8 @@ import javax.swing {
 
 import lovelace.util.jvm {
     showErrorDialog,
-    BorderedPanel
+    BorderedPanel,
+    platform
 }
 
 import strategicprimer.viewer.drivers.advancement {
@@ -220,12 +221,8 @@ shared void run() {
     System.setProperty("apple.laf.useScreenMenuBar", "true");
     SPOptionsImpl options = SPOptionsImpl();
     Map<String, ISPDriver[2]> driverCache = createCache();
-    try {
-        if (exists apple = Application.application) {
-            apple.setOpenFileHandler(handleDroppedFiles);
-        }
-    } catch (Exception except) {
-        log.warn("Exception trying to set up dropped-file handling for Macs", except);
+    if (platform.systemIsMac) {
+        Application.application.setOpenFileHandler(handleDroppedFiles);
     }
     object appStarter satisfies ISPDriver {
         shared actual IDriverUsage usage = DriverUsage(true, "-p", "--app-starter",
