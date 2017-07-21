@@ -303,7 +303,7 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
     void createWorkersForPlayer(IExplorationModel model, IDRegistrar idf, Player player,
             ICLIHelper cli) {
         MutableList<IUnit> units = ArrayList{
-            *removeStattedUnits(*model.getUnits(player))
+            *model.getUnits(player)
         };
         cli.loopOnMutableList(units, (clh, List<IUnit> list) => clh.chooseFromList(list,
                 "Which unit contains the worker in question? (Select -1 to create new.)",
