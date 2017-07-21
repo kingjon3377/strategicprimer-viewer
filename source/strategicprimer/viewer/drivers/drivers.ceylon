@@ -220,7 +220,13 @@ shared void run() {
     System.setProperty("apple.laf.useScreenMenuBar", "true");
     SPOptionsImpl options = SPOptionsImpl();
     Map<String, ISPDriver[2]> driverCache = createCache();
-    Application.application.setOpenFileHandler(handleDroppedFiles);
+    try {
+        if (exists apple = Application.application) {
+            apple.setOpenFileHandler(handleDroppedFiles);
+        }
+    } catch (Exception except) {
+        log.warn("Exception trying to set up dropped-file handling for Macs", except);
+    }
     object appStarter satisfies ISPDriver {
         shared actual IDriverUsage usage = DriverUsage(true, "-p", "--app-starter",
             ParamCount.anyNumber, "App Chooser",
