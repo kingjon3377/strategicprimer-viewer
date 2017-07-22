@@ -83,7 +83,7 @@ object expansionDriver satisfies SimpleCLIDriver {
                 void safeAdd(Point point, TileFixture fixture) {
                     if (is HasOwner fixture) {
                         map.addFixture(point, fixture.copy(
-                            fixture.owner == currentPlayer));
+                            fixture.owner != currentPlayer));
                     } else {
                         map.addFixture(point, fixture.copy(true));
                     }
