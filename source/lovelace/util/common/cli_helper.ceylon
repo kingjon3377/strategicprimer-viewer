@@ -32,10 +32,17 @@ shared void printList(String* list) {
     }
 }
 
+void writePrompt(String prompt) {
+    process.write(prompt);
+    if (exists last = prompt.last, !last.whitespace) {
+        process.write(" ");
+    }
+}
+
 shared Integer inputNumber(String prompt) {
     variable Integer retval = -1;
     while (retval < 0) {
-        process.write(prompt);
+        writePrompt(prompt);
         if (exists input = process.readLine()) {
             value temp = Integer.parse(input.replace(",", ""));
             if (is Integer temp) {
@@ -53,7 +60,7 @@ shared Integer inputNumber(String prompt) {
 "Ask the user a yes-or-no question."
 shared Boolean inputBoolean(String prompt) {
     while (true) {
-        process.write(prompt);
+        writePrompt(prompt);
         String? input = process.readLine();
         switch (input?.lowercased)
         case ("yes" | "true" | "y" | "t") { return true; }

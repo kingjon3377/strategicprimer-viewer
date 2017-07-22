@@ -135,6 +135,13 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
     "The current state of the yes-to-all/no-to-all possibility. Absent if not set,
      present if set, and the boolean value is what to return."
     MutableMap<String, Boolean> seriesState = HashMap<String, Boolean>();
+    "Print a prompt, adding whitespace if the prompt didn't end with it."
+    void writePrompt(String prompt) {
+    	ostream(prompt);
+	if (exists last = prompt.last, !last.whitespace) {
+		ostream(" ");
+	}
+    }
     "Ask the user a yes-or-no question."
     shared actual Boolean inputBoolean(String prompt) {
         while (true) {
@@ -237,7 +244,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
     shared actual Integer inputNumber(String prompt) {
         variable Integer retval = -1;
         while (retval < 0) {
-            ostream(prompt);
+            writePrompt(prompt);
             if (exists input = istream()) {
                 if (isNumeric(input)) {
                     assert (exists temp = parseInt(input));
@@ -255,7 +262,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
         variable Decimal retval = decimalNumber(-1);
         Decimal zero = decimalNumber(0);
         while (retval.compare(zero) == smaller) {
-            ostream(prompt);
+            writePrompt(prompt);
             if (exists input = istream()) {
                 if (exists temp = parseDecimal(input.trimmed)) {
                     retval = temp;
@@ -272,7 +279,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
     "Read a line of input from the input stream. It is trimmed of leading and trailing
      whitespace."
     shared actual String inputString(String prompt) {
-        ostream(prompt);
+        writePrompt(prompt);
         if (exists line = istream()) {
             return line.trimmed;
         } else {
@@ -283,7 +290,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
      questions."
     shared actual Boolean inputBooleanInSeries(String prompt, String key) {
         if (exists retval = seriesState[key]) {
-            ostream(prompt);
+            writePrompt(prompt);
             ostream((retval) then "yes" else "no");
             ostream(operatingSystem.newline);
             return retval;
@@ -368,12 +375,12 @@ test
 void testChooseFromList() {
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
             PlayerImpl(2, "two")], "test desc", "none present", "prompt", false), {"0"},
-        {"test desc", "0: one", "1: two", "prompt"}, 0->PlayerImpl(1, "one"),
+        {"test desc", "0: one", "1: two", "prompt "}, 0->PlayerImpl(1, "one"),
         "chooseFromList chooses the one specified by the user",
         "chooseFromList prompted the user");
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
             PlayerImpl(2, "two")], "test desc", "none present", "prompt", true), {"1"},
-        {"test desc", "0: one", "1: two", "prompt"}, 1->PlayerImpl(2, "two"),
+        {"test desc", "0: one", "1: two", "prompt "}, 1->PlayerImpl(2, "two"),
         "chooseFromList chooses the one specified by the user",
         "chooseFromList prompted the user");
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one")],
@@ -384,7 +391,7 @@ void testChooseFromList() {
         "chooseFromList automatically chose only choice");
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one")],
             "test desc", "none present", "prompt", false), {"0"},
-        {"test desc", "0: one", "prompt"}, 0->PlayerImpl(1, "one"),
+        {"test desc", "0: one", "prompt "}, 0->PlayerImpl(1, "one"),
         "chooseFromList doesn't always auto-choose only choice",
         "chooseFromList didn't automatically choose only choice");
 }
@@ -398,12 +405,12 @@ void testChooseFromListMore() {
         "chooseFromList prompts again when negative index given");
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
             PlayerImpl(2, "two")], "test desc", "none present", "prompt", false), {"3"},
-        {"test desc", "0: one", "1: two", "prompt"}, 3->null,
+        {"test desc", "0: one", "1: two", "prompt "}, 3->null,
         "chooseFromList allows too-large choice",
         "chooseFromList allows too-large choice");
     assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
             PlayerImpl(2, "two")], "test desc", "none present", "prompt", true), {"0"},
-        {"test desc", "0: one", "1: two", "prompt"}, 0->PlayerImpl(1, "one"),
+        {"test desc", "0: one", "1: two", "prompt "}, 0->PlayerImpl(1, "one"),
         "chooseFromList asks even if 'auto' when multiple items",
         "chooseFromList prompted the user");
     assertCLI((cli) => cli.chooseFromList([], "test desc", "none present",
@@ -413,9 +420,9 @@ void testChooseFromListMore() {
 "Test inputNumber"
 test
 void testInputNumber() {
-    assertCLI((cli) => cli.inputNumber("test prompt"), {"2"}, "test prompt", 2,
+    assertCLI((cli) => cli.inputNumber("test prompt"), {"2"}, "test prompt ", 2,
         "inputNumber works", "inputNumber uses given prompt");
-    assertCLI((cli) => cli.inputNumber("test prompt two"), {"8"}, "test prompt two", 8,
+    assertCLI((cli) => cli.inputNumber("test prompt two"), {"8"}, "test prompt two ", 8,
         "inputNumber works", "inputNumber uses given prompt");
     assertCLI((cli) => cli.inputNumber("test prompt three "), {"-1", "0"},
         "test prompt three test prompt three ", 0,
@@ -433,10 +440,10 @@ void testInputNumber() {
 "Test inputDecimal"
 test
 void testInputDecimal() {
-    assertCLI((cli) => cli.inputDecimal("test prompt"), {"10"}, "test prompt",
+    assertCLI((cli) => cli.inputDecimal("test prompt"), {"10"}, "test prompt ",
         decimalNumber(10), "inputDecimal works with integers",
         "inputDecimal uses given prompt");
-    assertCLI((cli) => cli.inputDecimal("test prompt two"), {"2.5"}, "test prompt two",
+    assertCLI((cli) => cli.inputDecimal("test prompt two"), {"2.5"}, "test prompt two ",
         decimalNumber(5) / decimalNumber(2), "inputDecimal works with decimals",
         "inputDecimal uses given prompt");
     assertCLI((cli) => cli.inputDecimal("test prompt three "), {"-2.5", "0.5"},
@@ -452,23 +459,23 @@ void testInputDecimal() {
 "Test for inputString()"
 test
 void testInputString() {
-    assertCLI((cli) => cli.inputString("string prompt"), {"first"}, "string prompt",
+    assertCLI((cli) => cli.inputString("string prompt"), {"first"}, "string prompt ",
         "first", "inputString returns the entered string", "inputString displays prompt");
-    assertCLI((cli) => cli.inputString("second prompt"), {"second"}, "second prompt",
+    assertCLI((cli) => cli.inputString("second prompt"), {"second"}, "second prompt ",
         "second", "inputString returns the entered string",
         "inputString displays prompt");
-    assertCLI((cli) => cli.inputString("third prompt"), {}, "third prompt", "",
+    assertCLI((cli) => cli.inputString("third prompt"), {}, "third prompt ", "",
         "inputString returns empty on EOF", "inputString displays prompt");
 }
 "Test for inputBoolean()"
 test
 void testInputBoolean() {
     for (arg in {"yes", "true", "y", "t"}) {
-        assertCLI((cli) => cli.inputBoolean("bool prompt"), {arg}, "bool prompt", true,
+        assertCLI((cli) => cli.inputBoolean("bool prompt"), {arg}, "bool prompt ", true,
             "inputBoolean returns true on '``arg``", "inputBoolean displays prompt");
     }
     for (arg in {"no", "false", "n", "f"}) {
-        assertCLI((cli) => cli.inputBoolean("prompt two"), {arg}, "prompt two", false,
+        assertCLI((cli) => cli.inputBoolean("prompt two"), {arg}, "prompt two ", false,
             "inputBoolean returns false on ``arg``", "inputBoolean displays prompt");
     }
     assertCLI((cli) => cli.inputBoolean("prompt three "), {"yoo-hoo", "no"},
@@ -482,12 +489,12 @@ void testInputBoolean() {
 test
 void testInputBooleanInSeries() {
     for (arg in {"yes", "true", "y", "t"}) {
-        assertCLI((cli) => cli.inputBooleanInSeries("bool prompt"), {arg}, "bool prompt",
+        assertCLI((cli) => cli.inputBooleanInSeries("bool prompt"), {arg}, "bool prompt ",
             true, "inputBooleanInSeries returns true on '``arg``",
             "inputBooleanInSeries displays prompt");
     }
     for (arg in {"no", "false", "n", "f"}) {
-        assertCLI((cli) => cli.inputBooleanInSeries("prompt two"), {arg}, "prompt two",
+        assertCLI((cli) => cli.inputBooleanInSeries("prompt two"), {arg}, "prompt two ",
             false, "inputBooleanInSeries returns false on ``arg``",
             "inputBooleanInSeries displays prompt");
     }
@@ -559,13 +566,13 @@ test
 void testChooseStringFromList() {
     assertCLI((cli) => cli.chooseStringFromList(["one", "two"],
         "test desc", "none present", "prompt", false), {"0"},
-        {"test desc", "0: one", "1: two", "prompt"}, 0->"one",
+        {"test desc", "0: one", "1: two", "prompt "}, 0->"one",
         "chooseStringFromList chooses the one specified by the user",
         "chooseStringFromList prompts the user");
     assertCLI((cli) => cli.chooseStringFromList(["one",
             "two", "three"], "test desc", "none present",
             "prompt two", true), {"1"},
-        {"test desc", "0: one", "1: two", "2: three", "prompt two"}, 1->"two",
+        {"test desc", "0: one", "1: two", "2: three", "prompt two "}, 1->"two",
         "chooseStringFromList chooses the one specified by the user",
         "chooseStringFromList prompts the user");
     assertCLI((cli) => cli.chooseStringFromList(["one"], "test desc", "none present",
@@ -573,7 +580,7 @@ void testChooseStringFromList() {
         0->"one", "chooseStringFromList automatically chooses only choice when told to",
         "chooseStringFromList automatically chose only choice");
     assertCLI((cli) => cli.chooseStringFromList(["one"], "test desc", "none present",
-            "prompt", false), {"0"}, {"test desc", "0: one", "prompt"}, 0->"one",
+            "prompt", false), {"0"}, {"test desc", "0: one", "prompt "}, 0->"one",
         "chooseStringFromList doesn't always auto-choose",
         "chooseStringFromList didn't automatically choose only choice");
 }
@@ -582,17 +589,17 @@ test
 void testChooseStringFromListMore() {
     assertCLI((cli) => cli.chooseStringFromList(["zero", "one", "two"],
             "test desc", "none present", "prompt", true), {"1"},
-        {"test desc", "0: zero", "1: one", "2: two", "prompt"}, 1->"one",
+        {"test desc", "0: zero", "1: one", "2: two", "prompt "}, 1->"one",
         "chooseStringFromList doesn't auto-choose when more than one item",
         "chooseStringFromList doesn't auto-choose when more than one item");
     assertCLI((cli) => cli.chooseStringFromList(["one", "two"],
             "test desc", "none present", "prompt", false),
-        {"-1", "0"}, {"test desc", "0: one", "1: two", "promptprompt"}, 0->"one",
+        {"-1", "0"}, {"test desc", "0: one", "1: two", "prompt prompt "}, 0->"one",
         "chooseStringFromList prompts again when negative index given",
         "chooseStringFromList prompts again when negative index given");
     assertCLI((cli) => cli.chooseStringFromList(["one",
             "two"], "test desc", "none present", "prompt", false), {"3"},
-        {"test desc", "0: one", "1: two", "prompt"}, 3->null,
+        {"test desc", "0: one", "1: two", "prompt "}, 3->null,
         "chooseStringFromList allows too-large choice",
         "chooseStringFromList allows too-large choice");
     assertCLI((cli) => cli.chooseStringFromList([], "test desc", "none present",
