@@ -25,11 +25,5 @@ shared class EnumCounter<Type>() given Type satisfies Object {
         }
     }
     "Get the count for a given value."
-    shared Integer getCount(Type item) {
-        if (exists counter = counts[item]) {
-            return counter.sum;
-        } else {
-            return 0;
-        }
-    }
+    shared Integer getCount(Type item) => counts[item]?.sum else 0;
 }
