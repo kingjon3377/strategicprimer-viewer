@@ -67,14 +67,14 @@ void testPlayerCollectionSubset() {
     assertIsSubset(firstCollection, zero, "Empty is subset of one");
     assertIsSubset(secondCollection, zero, "Empty is subset of two");
     assertNotSubset(zero, firstCollection, "One is not subset of empty");
-    assertIsSubset<IPlayerCollection>(firstCollection, firstCollection,
+    assertIsSubset<IPlayerCollection, {Player*}>(firstCollection, firstCollection,
         "One is subset of self");
-    assertIsSubset<IPlayerCollection>(secondCollection, firstCollection,
+    assertIsSubset<IPlayerCollection, {Player*}>(secondCollection, firstCollection,
         "One is subset of two");
     assertNotSubset(zero, secondCollection, "Two is not subset of empty");
-    assertNotSubset<IPlayerCollection>(firstCollection, secondCollection,
+    assertNotSubset<IPlayerCollection, {Player*}>(firstCollection, secondCollection,
         "Two is not subset of one");
-    assertIsSubset<IPlayerCollection>(secondCollection, secondCollection,
+    assertIsSubset<IPlayerCollection, {Player*}>(secondCollection, secondCollection,
         "Two is subset of self");
 }
 

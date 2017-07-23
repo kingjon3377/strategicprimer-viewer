@@ -43,7 +43,7 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
 	shared actual Iterator<Player> iterator() => players.items.iterator();
 	"A player collection is a subset if it has no players we don't."
 	todo("Compare corresponding players!")
-	shared actual Boolean isSubset(IPlayerCollection obj, Anything(String) report) {
+	shared actual Boolean isSubset({Player*} obj, Anything(String) report) {
 		variable Boolean retval = true;
 		for (player in obj) {
 			if (!players.items.contains(player)) {

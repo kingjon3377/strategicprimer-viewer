@@ -7,7 +7,7 @@ import java.lang {
 }
 
 "An interface for collections of players."
-shared interface IPlayerCollection satisfies {Player*}&Subsettable<IPlayerCollection> {
+shared interface IPlayerCollection satisfies {Player*}&Subsettable<{Player*}> {
 	"Get the player with the given player-ID, or a new player with that number if we
 	 didn't have one. In the latter case, if this is mutable, add it to the collection."
 	shared formal Player getPlayer(Integer player);
