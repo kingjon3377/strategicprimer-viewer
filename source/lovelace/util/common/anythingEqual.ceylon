@@ -1,11 +1,7 @@
 shared Boolean anythingEqual(Anything one, Anything two) {
-    if (exists one) {
-        if (exists two) {
-            return one == two;
-        } else {
-            return false;
-        }
+    if (exists one, exists two) {
+        return one == two;
     } else {
-        return !two exists;
+        return !one exists && !two exists;
     }
 }
