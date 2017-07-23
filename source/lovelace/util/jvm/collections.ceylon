@@ -41,19 +41,10 @@ shared class ListModelWrapper<Element>(ListModel<Element> wrapped)
             return null;
         }
     }
-    shared actual Integer? lastIndex {
-        if (wrapped.size == 0) {
-            return null;
-        } else {
-            return wrapped.size - 1;
-        }
-    }
+    shared actual Integer? lastIndex =>
+            if (wrapped.size == 0) then null else wrapped.size - 1;
     shared actual Integer hash => wrapped.hash;
-    shared actual Boolean equals(Object that) {
-        if (is ListModelWrapper<out Anything> that) {
-            return wrapped==that.wrapped;
-        } else {
-            return false;
-        }
-    }
+    shared actual Boolean equals(Object that) =>
+            if (is ListModelWrapper<out Anything> that) then wrapped==that.wrapped
+            else false;
 }
