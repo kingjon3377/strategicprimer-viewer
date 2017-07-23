@@ -120,10 +120,10 @@ shared interface SimpleDriver satisfies ISPDriver {
                 turnFixer = (IMutableMapNG map) => map.currentTurn = currentTurn;
             } else {
                 log.warn("--current-turn must be an integer");
-                turnFixer = (IMutableMapNG map) {};
+                turnFixer = noop;
             }
         } else {
-            turnFixer = (IMutableMapNG map) {};
+            turnFixer = noop;
         }
         if (args.size == 0) {
             switch (desiderata)
