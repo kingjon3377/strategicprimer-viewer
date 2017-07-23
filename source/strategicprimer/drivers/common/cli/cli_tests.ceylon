@@ -31,13 +31,7 @@ void assertCLI<out T>(
 	if (is String expectedOutput) {
 		expectedOutputReal = expectedOutput;
 	} else if (exists first = expectedOutput.first) {
-		StringBuilder outputBuilder = StringBuilder();
-		outputBuilder.append(first);
-		for (string in expectedOutput.rest) {
-			outputBuilder.appendNewline();
-			outputBuilder.append(string);
-		}
-		expectedOutputReal = outputBuilder.string;
+		expectedOutputReal = "\n".join(expectedOutput);
 	} else {
 		expectedOutputReal = "";
 	}
