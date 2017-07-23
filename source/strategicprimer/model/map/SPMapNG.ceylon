@@ -236,15 +236,7 @@ shared class SPMapNG satisfies IMutableMapNG {
        cases we deliberately ignore."""
     shared actual Boolean isSubset(IMapNG obj, Anything(String) report) {
         if (dimensions == obj.dimensions) {
-            // TODO: delegate player-subset testing to PlayerCollection
-            // TODO: Or else use standard Ceylon Iterable methods
-            variable Boolean retval = true;
-            for (player in obj.players) {
-                if (!playerCollection.contains(player)) {
-                    report("\tExtra player ``player``");
-                    retval = false; // return false;
-                }
-            }
+            variable Boolean retval = playerCollection.isSubset(obj.players, report);
             // Declared here to avoid object allocations in the loop.
             MutableList<TileFixture> ourFixtures = ArrayList<TileFixture>();
             MutableMap<Integer, MutableList<Subsettable<IFixture>>> ourSubsettables =
