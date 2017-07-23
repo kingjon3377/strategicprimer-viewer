@@ -94,64 +94,43 @@ TextFixture readTextFixture(StartElement element, QName parent,
         element, warner);
 }
 
-void writeAdventure(XMLStreamWriter ostream, Object obj, Integer indent) {
-    // TODO: Create helper method for this idiom, to allow us to condense these methods
-    if (is AdventureFixture obj) {
-        writeTag(ostream, "adventure", indent, true);
-        writeAttributes(ostream, "id"->obj.id);
-        if (!obj.owner.independent) {
-            writeAttributes(ostream, "owner"->obj.owner.playerId);
-        }
-        writeNonEmptyAttributes(ostream, "brief"->obj.briefDescription,
-            "full"->obj.fullDescription);
-        writeImage(ostream, obj);
-    } else {
-        throw IllegalArgumentException("Can only write AdventureFixtures");
+void writeAdventure(XMLStreamWriter ostream, AdventureFixture obj, Integer indent) {
+    writeTag(ostream, "adventure", indent, true);
+    writeAttributes(ostream, "id"->obj.id);
+    if (!obj.owner.independent) {
+        writeAttributes(ostream, "owner"->obj.owner.playerId);
     }
+    writeNonEmptyAttributes(ostream, "brief"->obj.briefDescription,
+        "full"->obj.fullDescription);
+    writeImage(ostream, obj);
 }
 
-void writePortal(XMLStreamWriter ostream, Object obj, Integer indent) {
-    if (is Portal obj) {
-        writeTag(ostream, "portal", indent, true);
-        writeAttributes(ostream, "world"->obj.destinationWorld,
-            "row"->obj.destinationCoordinates.row,
-            "column"->obj.destinationCoordinates.column, "id"->obj.id);
-        writeImage(ostream, obj);
-    } else {
-        throw IllegalArgumentException("Can only write Portals");
-    }
+void writePortal(XMLStreamWriter ostream, Portal obj, Integer indent) {
+    writeTag(ostream, "portal", indent, true);
+    writeAttributes(ostream, "world"->obj.destinationWorld,
+        "row"->obj.destinationCoordinates.row,
+        "column"->obj.destinationCoordinates.column, "id"->obj.id);
+    writeImage(ostream, obj);
 }
 
-void writeCave(XMLStreamWriter ostream, Object obj, Integer indent) {
-    if (is Cave obj) {
-        writeTag(ostream, "cave", indent, true);
-        writeAttributes(ostream, "dc"->obj.dc, "id"->obj.id);
-        writeImage(ostream, obj);
-    } else {
-        throw IllegalArgumentException("Can only write Caves");
-    }
+void writeCave(XMLStreamWriter ostream, Cave obj, Integer indent) {
+    writeTag(ostream, "cave", indent, true);
+    writeAttributes(ostream, "dc"->obj.dc, "id"->obj.id);
+    writeImage(ostream, obj);
 }
 
-void writeBattlefield(XMLStreamWriter ostream, Object obj, Integer indent) {
-    if (is Battlefield obj) {
-        writeTag(ostream, "battlefield", indent, true);
-        writeAttributes(ostream, "dc"->obj.dc, "id"->obj.id);
-        writeImage(ostream, obj);
-    } else {
-        throw IllegalArgumentException("Can only write Battlefields");
-    }
+void writeBattlefield(XMLStreamWriter ostream, Battlefield obj, Integer indent) {
+    writeTag(ostream, "battlefield", indent, true);
+    writeAttributes(ostream, "dc"->obj.dc, "id"->obj.id);
+    writeImage(ostream, obj);
 }
 
-void writeTextFixture(XMLStreamWriter ostream, Object obj, Integer indent) {
-    if (is TextFixture obj) {
-        writeTag(ostream, "text", indent, false);
-        if (obj.turn != -1) {
-            writeAttributes(ostream, "turn"->obj.turn);
-        }
-        writeImage(ostream, obj);
-        ostream.writeCharacters(obj.text.trimmed);
-        ostream.writeEndElement();
-    } else {
-        throw IllegalArgumentException("Can only write TextFixtures");
+void writeTextFixture(XMLStreamWriter ostream, TextFixture obj, Integer indent) {
+    writeTag(ostream, "text", indent, false);
+    if (obj.turn != -1) {
+        writeAttributes(ostream, "turn"->obj.turn);
     }
+    writeImage(ostream, obj);
+    ostream.writeCharacters(obj.text.trimmed);
+    ostream.writeEndElement();
 }

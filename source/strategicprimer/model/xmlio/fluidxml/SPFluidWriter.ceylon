@@ -92,6 +92,9 @@ import ceylon.file {
     File,
     Nil
 }
+import lovelace.util.common {
+    todo
+}
 Regex snugEndTag = regex("([^ ])/>", true);
 variable Integer currentTurn = -1;
 """The main writer-to-XML class in the "fluid XML" implementation."""
@@ -155,14 +158,11 @@ shared class SPFluidWriter() satisfies SPWriter {
             writeSPObject(ostream, map);
         }
     }
-    void writePlayer(XMLStreamWriter ostream, Object obj, Integer indentation) {
-        if (is Player obj) {
-            if (!obj.name.empty) {
-                writeTag(ostream, "player", indentation, true);
-                writeAttributes(ostream, "number"->obj.playerId, "code_name"->obj.name);
-            }
-        } else {
-            throw IllegalArgumentException("Can only write Player");
+    todo("Does this really need to be a class method?")
+    void writePlayer(XMLStreamWriter ostream, Player obj, Integer indentation) {
+        if (!obj.name.empty) {
+            writeTag(ostream, "player", indentation, true);
+            writeAttributes(ostream, "number"->obj.playerId, "code_name"->obj.name);
         }
     }
     Entry<ClassOrInterface<Anything>, LocalXMLWriter> simpleFixtureWriter(
@@ -199,179 +199,167 @@ shared class SPFluidWriter() satisfies SPWriter {
         ostream.writeCharacters(text);
         ostream.writeEndElement();
     }
-    void writeUnit(XMLStreamWriter ostream, Object obj, Integer indentation) {
-        if (is IUnit obj) {
-            Boolean nonemptyOrders(Integer->String entry) => !entry.item.empty;
-            Boolean empty = obj.empty && obj.allOrders.filter(nonemptyOrders).empty &&
-                        obj.allResults.filter(nonemptyOrders).empty;
-            writeTag(ostream, "unit", indentation, empty);
-            writeAttributes(ostream, "owner"->obj.owner.playerId);
-            writeNonEmptyAttributes(ostream, "kind"->obj.kind, "name"->obj.name);
-            writeAttributes(ostream, "id"->obj.id);
-            writeImage(ostream, obj);
-            if (is HasPortrait obj) {
-                writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
-            }
-            for (turn->orders in obj.allOrders) {
-                writeUnitOrders(ostream, indentation + 1, turn, "orders", orders.trimmed);
-            }
-            for (turn->results in obj.allResults) {
-                writeUnitOrders(ostream, indentation + 1, turn, "results",
-                    results.trimmed);
-            }
+    void writeUnit(XMLStreamWriter ostream, IUnit obj, Integer indentation) {
+        Boolean nonemptyOrders(Integer->String entry) => !entry.item.empty;
+        Boolean empty = obj.empty && obj.allOrders.filter(nonemptyOrders).empty &&
+                    obj.allResults.filter(nonemptyOrders).empty;
+        writeTag(ostream, "unit", indentation, empty);
+        writeAttributes(ostream, "owner"->obj.owner.playerId);
+        writeNonEmptyAttributes(ostream, "kind"->obj.kind, "name"->obj.name);
+        writeAttributes(ostream, "id"->obj.id);
+        writeImage(ostream, obj);
+        if (is HasPortrait obj) {
+            writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
+        }
+        for (turn->orders in obj.allOrders) {
+            writeUnitOrders(ostream, indentation + 1, turn, "orders", orders.trimmed);
+        }
+        for (turn->results in obj.allResults) {
+            writeUnitOrders(ostream, indentation + 1, turn, "results",
+                results.trimmed);
+        }
+        for (member in obj) {
+            writeSPObjectImpl(ostream, member, indentation + 1);
+        }
+        if (!empty) {
+            indent(ostream, indentation);
+            ostream.writeEndElement();
+        }
+    }
+    void writeFortress(XMLStreamWriter ostream, Fortress obj, Integer indentation) {
+        writeTag(ostream, "fortress", indentation, false);
+        writeAttributes(ostream, "owner"->obj.owner.playerId);
+        writeNonEmptyAttributes(ostream, "name"->obj.name);
+        if (TownSize.small != obj.townSize) {
+            writeAttributes(ostream, "size"->obj.townSize.string);
+        }
+        writeAttributes(ostream, "id"->obj.id);
+        writeImage(ostream, obj);
+        writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
+        if (!obj.empty) {
             for (member in obj) {
                 writeSPObjectImpl(ostream, member, indentation + 1);
             }
-            if (!empty) {
-                indent(ostream, indentation);
-                ostream.writeEndElement();
-            }
-        } else {
-            throw IllegalArgumentException("Can only write IUnit");
+            indent(ostream, indentation);
         }
+        ostream.writeEndElement();
     }
-    void writeFortress(XMLStreamWriter ostream, Object obj, Integer indentation) {
-        if (is Fortress obj) {
-            writeTag(ostream, "fortress", indentation, false);
-            writeAttributes(ostream, "owner"->obj.owner.playerId);
-            writeNonEmptyAttributes(ostream, "name"->obj.name);
-            if (TownSize.small != obj.townSize) {
-                writeAttributes(ostream, "size"->obj.townSize.string);
-            }
-            writeAttributes(ostream, "id"->obj.id);
-            writeImage(ostream, obj);
-            writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
-            if (!obj.empty) {
-                for (member in obj) {
-                    writeSPObjectImpl(ostream, member, indentation + 1);
-                }
-                indent(ostream, indentation);
-            }
-            ostream.writeEndElement();
-        } else {
-            throw IllegalArgumentException("Can only write Fortress");
+    void writeMap(XMLStreamWriter ostream, IMapNG obj, Integer indentation) {
+        writeTag(ostream, "view", indentation, false);
+        writeAttributes(ostream, "current_player"->obj.currentPlayer.playerId,
+            "current_turn"->obj.currentTurn);
+        currentTurn = obj.currentTurn;
+        writeTag(ostream, "map", indentation + 1, false);
+        MapDimensions dimensions = obj.dimensions;
+        writeAttributes(ostream, "version"->dimensions.version,
+            "rows"->dimensions.rows, "columns"->dimensions.columns);
+        for (player in obj.players) {
+            writePlayer(ostream, player, indentation + 2);
         }
-    }
-    void writeMap(XMLStreamWriter ostream, Object obj, Integer indentation) {
-        if (is IMapNG obj) {
-            writeTag(ostream, "view", indentation, false);
-            writeAttributes(ostream, "current_player"->obj.currentPlayer.playerId,
-                "current_turn"->obj.currentTurn);
-            currentTurn = obj.currentTurn;
-            writeTag(ostream, "map", indentation + 1, false);
-            MapDimensions dimensions = obj.dimensions;
-            writeAttributes(ostream, "version"->dimensions.version,
-                "rows"->dimensions.rows, "columns"->dimensions.columns);
-            for (player in obj.players) {
-                writePlayer(ostream, player, indentation + 2);
-            }
-            for (i in 0:(dimensions.rows)) {
-                variable Boolean rowEmpty = true;
-                for (j in 0:(dimensions.columns)) {
-                    Point loc = pointFactory(i, j);
+        for (i in 0:(dimensions.rows)) {
+            variable Boolean rowEmpty = true;
+            for (j in 0:(dimensions.columns)) {
+                Point loc = pointFactory(i, j);
 //                    TileType terrain = obj.baseTerrain[loc]; // TODO: syntax sugar once compiler bug fixed
-                    TileType terrain = obj.baseTerrain.get(loc);
-                    if (!obj.locationEmpty(loc)) {
-                        if (rowEmpty) {
-                            writeTag(ostream, "row", indentation + 2, false);
-                            rowEmpty = false;
-                            writeAttributes(ostream, "index"->i);
-                        }
-                        writeTag(ostream, "tile", indentation + 3, false);
-                        writeAttributes(ostream, "row"->i, "column"->j);
-                        if (TileType.notVisible != terrain) {
-                            writeAttributes(ostream, "kind"->terrain.xml);
-                        }
-                        variable Boolean anyContents = false;
-//                        if (obj.mountainous[loc]) { // TODO: syntax sugar once compiler bug fixed
-                        if (obj.mountainous.get(loc)) {
-                            anyContents = true;
-                            writeTag(ostream, "mountain", indentation + 4, true);
-                        }
-//                        for (river in sort(obj.rivers[loc])) {
-                        for (river in sort(obj.rivers.get(loc))) {
-                            anyContents = true;
-                            writeSPObjectImpl(ostream, river, indentation + 4);
-                        }
-                        // To avoid breaking map-format-conversion tests, and to
-                        // avoid churn in existing maps, put the first Ground and Forest
-                        // before other fixtures.
-//                    Ground? ground = obj.fixtures[loc].narrow<Ground>().first;
-                        Ground? ground = obj.fixtures.get(loc).narrow<Ground>().first;
-                        if (exists ground) {
-                            anyContents = true;
-                            writeSPObjectImpl(ostream, ground, indentation + 4);
-                        }
-//                    Forest? forest = obj.fixtures[loc].narrow<Forest>().first;
-                        Forest? forest = obj.fixtures.get(loc).narrow<Forest>().first;
-                        if (exists forest) {
-                            anyContents = true;
-                            writeSPObjectImpl(ostream, forest, indentation + 4);
-                        }
-//                        for (fixture in obj.fixtures[loc]) {
-                        for (fixture in obj.fixtures.get(loc)) {
-                            if ({ground, forest}.coalesced.contains(fixture)) {
-                                continue;
-                            }
-                            anyContents = true;
-                            writeSPObjectImpl(ostream, fixture, indentation + 4);
-                        }
-                        if (anyContents) {
-                            indent(ostream, indentation + 3);
-                        }
-                        ostream.writeEndElement();
+                TileType terrain = obj.baseTerrain.get(loc);
+                if (!obj.locationEmpty(loc)) {
+                    if (rowEmpty) {
+                        writeTag(ostream, "row", indentation + 2, false);
+                        rowEmpty = false;
+                        writeAttributes(ostream, "index"->i);
                     }
-                }
-                if (!rowEmpty) {
-                    indent(ostream, indentation + 2);
+                    writeTag(ostream, "tile", indentation + 3, false);
+                    writeAttributes(ostream, "row"->i, "column"->j);
+                    if (TileType.notVisible != terrain) {
+                        writeAttributes(ostream, "kind"->terrain.xml);
+                    }
+                    variable Boolean anyContents = false;
+//                        if (obj.mountainous[loc]) { // TODO: syntax sugar once compiler bug fixed
+                    if (obj.mountainous.get(loc)) {
+                        anyContents = true;
+                        writeTag(ostream, "mountain", indentation + 4, true);
+                    }
+//                        for (river in sort(obj.rivers[loc])) {
+                    for (river in sort(obj.rivers.get(loc))) {
+                        anyContents = true;
+                        writeSPObjectImpl(ostream, river, indentation + 4);
+                    }
+                    // To avoid breaking map-format-conversion tests, and to
+                    // avoid churn in existing maps, put the first Ground and Forest
+                    // before other fixtures.
+//                    Ground? ground = obj.fixtures[loc].narrow<Ground>().first;
+                    Ground? ground = obj.fixtures.get(loc).narrow<Ground>().first;
+                    if (exists ground) {
+                        anyContents = true;
+                        writeSPObjectImpl(ostream, ground, indentation + 4);
+                    }
+//                    Forest? forest = obj.fixtures[loc].narrow<Forest>().first;
+                    Forest? forest = obj.fixtures.get(loc).narrow<Forest>().first;
+                    if (exists forest) {
+                        anyContents = true;
+                        writeSPObjectImpl(ostream, forest, indentation + 4);
+                    }
+//                        for (fixture in obj.fixtures[loc]) {
+                    for (fixture in obj.fixtures.get(loc)) {
+                        if ({ground, forest}.coalesced.contains(fixture)) {
+                            continue;
+                        }
+                        anyContents = true;
+                        writeSPObjectImpl(ostream, fixture, indentation + 4);
+                    }
+                    if (anyContents) {
+                        indent(ostream, indentation + 3);
+                    }
                     ostream.writeEndElement();
                 }
             }
-            indent(ostream, indentation + 1);
-            ostream.writeEndElement();
-            indent(ostream, indentation);
-            ostream.writeEndElement();
-        } else {
-            throw IllegalArgumentException("Can only write IMapNG");
+            if (!rowEmpty) {
+                indent(ostream, indentation + 2);
+                ostream.writeEndElement();
+            }
         }
+        indent(ostream, indentation + 1);
+        ostream.writeEndElement();
+        indent(ostream, indentation);
+        ostream.writeEndElement();
     }
     writers = map<ClassOrInterface<Anything>, LocalXMLWriter> {
-        `River`->writeRivers,
-        `AdventureFixture`->writeAdventure,
-        `Portal`->writePortal,
-        `Battlefield`->writeBattlefield,
-        `Cave`->writeCave,
-        `Ground`->writeGround,
-        `Forest`->writeForest,
+        `River`->castingWriter<River>(writeRivers),
+        `AdventureFixture`->castingWriter<AdventureFixture>(writeAdventure),
+        `Portal`->castingWriter<Portal>(writePortal),
+        `Battlefield`->castingWriter<Battlefield>(writeBattlefield),
+        `Cave`->castingWriter<Cave>(writeCave),
+        `Ground`->castingWriter<Ground>(writeGround),
+        `Forest`->castingWriter<Forest>(writeForest),
         simpleFixtureWriter(`Hill`, "hill"),
         simpleFixtureWriter(`Oasis`, "oasis"),
         simpleFixtureWriter(`Sandbar`, "sandbar"),
-        `Animal`->writeAnimal,
+        `Animal`->castingWriter<Animal>(writeAnimal),
         simpleFixtureWriter(`Centaur`, "centaur"),
         simpleFixtureWriter(`Dragon`, "dragon"),
         simpleFixtureWriter(`Fairy`, "fairy"),
         simpleFixtureWriter(`Giant`, "giant"),
-        `SimpleImmortal`->writeSimpleImmortal,
-        `TextFixture`->writeTextFixture,
+        `SimpleImmortal`->castingWriter<SimpleImmortal>(writeSimpleImmortal),
+        `TextFixture`->castingWriter<TextFixture>(writeTextFixture),
         simpleFixtureWriter(`Implement`, "implement"),
-        `ResourcePile`->writeResource,
-        `CacheFixture`->writeCache,
-        `Meadow`->writeMeadow,
-        `Grove`->writeGrove,
-        `Mine`->writeMine,
-        `MineralVein`->writeMineral,
+        `ResourcePile`->castingWriter<ResourcePile>(writeResource),
+        `CacheFixture`->castingWriter<CacheFixture>(writeCache),
+        `Meadow`->castingWriter<Meadow>(writeMeadow),
+        `Grove`->castingWriter<Grove>(writeGrove),
+        `Mine`->castingWriter<Mine>(writeMine),
+        `MineralVein`->castingWriter<MineralVein>(writeMineral),
         simpleFixtureWriter(`Shrub`, "shrub"),
-        `StoneDeposit`->writeStone,
-        `IWorker`->writeWorker,
-        `IJob`->writeJob,
-        `ISkill`->writeSkill,
-        `WorkerStats`->writeStats,
-        `IUnit`->writeUnit,
-        `Fortress`->writeFortress,
-        `Village`->writeVillage,
-        `AbstractTown`->writeTown,
-        `IMapNG`->writeMap,
-        `Player`->writePlayer,
-        `CommunityStats`->writeCommunityStats
+        `StoneDeposit`->castingWriter<StoneDeposit>(writeStone),
+        `IWorker`->castingWriter<IWorker>(writeWorker),
+        `IJob`->castingWriter<IJob>(writeJob),
+        `ISkill`->castingWriter<ISkill>(writeSkill),
+        `WorkerStats`->castingWriter<WorkerStats>(writeStats),
+        `IUnit`->castingWriter<IUnit>(writeUnit),
+        `Fortress`->castingWriter<Fortress>(writeFortress),
+        `Village`->castingWriter<Village>(writeVillage),
+        `AbstractTown`->castingWriter<AbstractTown>(writeTown),
+        `IMapNG`->castingWriter<IMapNG>(writeMap),
+        `Player`->castingWriter<Player>(writePlayer),
+        `CommunityStats`->castingWriter<CommunityStats>(writeCommunityStats)
     };
 }

@@ -1,5 +1,6 @@
 import java.lang {
-    NumberFormatException
+    NumberFormatException,
+    IllegalArgumentException
 }
 import java.text {
     NumberFormat,
@@ -428,3 +429,14 @@ String getTextUntil(
     }
     return builder.string.trimmed;
 }
+
+"A helper method to allow the writer methods to require a specific type."
+Anything(XMLStreamWriter, Object, Integer) castingWriter<T>(
+            Anything(XMLStreamWriter, T, Integer) wrapped) =>
+        void (XMLStreamWriter ostream, Object obj, Integer indent) {
+        if (is T obj) {
+            wrapped(ostream, obj, indent);
+        } else {
+            throw IllegalArgumentException("Can only write `` `T` ``");
+        }
+    };

@@ -238,70 +238,58 @@ CommunityStats readCommunityStats(StartElement element, QName parent, {XMLEvent*
     return retval;
 }
 
-void writeVillage(XMLStreamWriter ostream, Object obj, Integer indent) {
-    if (is Village obj) {
-        writeTag(ostream, "village", indent, !obj.population exists);
-        writeAttributes(ostream, "status"->obj.status.string);
-        writeNonEmptyAttributes(ostream, "name"->obj.name);
-        writeAttributes(ostream, "id"->obj.id, "owner"->obj.owner.playerId,
-            "race"->obj.race);
-        writeImage(ostream, obj);
-        writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
-        if (exists population = obj.population) {
-            writeCommunityStats(ostream, population, indent);
-            ostream.writeEndElement();
-        }
-    } else {
-        throw IllegalArgumentException("Can only write Villages");
+void writeVillage(XMLStreamWriter ostream, Village obj, Integer indent) {
+    writeTag(ostream, "village", indent, !obj.population exists);
+    writeAttributes(ostream, "status"->obj.status.string);
+    writeNonEmptyAttributes(ostream, "name"->obj.name);
+    writeAttributes(ostream, "id"->obj.id, "owner"->obj.owner.playerId,
+        "race"->obj.race);
+    writeImage(ostream, obj);
+    writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
+    if (exists population = obj.population) {
+        writeCommunityStats(ostream, population, indent);
+        ostream.writeEndElement();
     }
 }
 
-void writeTown(XMLStreamWriter ostream, Object obj, Integer indent) {
-    if (is AbstractTown obj) {
-        writeTag(ostream, obj.kind, indent, !obj.population exists);
-        writeAttributes(ostream, "status"->obj.status.string,
-            "size"->obj.townSize.string, "dc"->obj.dc);
-        writeNonEmptyAttributes(ostream, "name"->obj.name);
-        writeAttributes(ostream, "id"->obj.id, "owner"->obj.owner.playerId);
-        writeImage(ostream, obj);
-        writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
-        if (exists population = obj.population) {
-            writeCommunityStats(ostream, population, indent);
-            ostream.writeEndElement();
-        }
-    } else {
-        throw IllegalArgumentException("Can only write AbstractTowns");
+void writeTown(XMLStreamWriter ostream, AbstractTown obj, Integer indent) {
+    writeTag(ostream, obj.kind, indent, !obj.population exists);
+    writeAttributes(ostream, "status"->obj.status.string,
+        "size"->obj.townSize.string, "dc"->obj.dc);
+    writeNonEmptyAttributes(ostream, "name"->obj.name);
+    writeAttributes(ostream, "id"->obj.id, "owner"->obj.owner.playerId);
+    writeImage(ostream, obj);
+    writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
+    if (exists population = obj.population) {
+        writeCommunityStats(ostream, population, indent);
+        ostream.writeEndElement();
     }
 }
 
-void writeCommunityStats(XMLStreamWriter ostream, Object obj, Integer indent) {
-    if (is CommunityStats obj) {
-        writeTag(ostream, "population", indent, false);
-        writeAttributes(ostream, "size"->obj.population);
-        for (skill->level in obj.highestSkillLevels) {
-            writeTag(ostream, "expertise", indent + 1, true);
-            writeAttributes(ostream, "skill"->skill, "level"->level);
-        }
-        for (claim in obj.workedFields) {
-            writeTag(ostream, "claim", indent + 1, true);
-            writeAttributes(ostream, "resource"->claim);
-        }
-        if (!obj.yearlyProduction.empty) {
-            writeTag(ostream, "production", indent + 1, false);
-            for (resource in obj.yearlyProduction) {
-                writeResource(ostream, resource, indent + 2);
-            }
-            ostream.writeEndElement();
-        }
-        if (!obj.yearlyConsumption.empty) {
-            writeTag(ostream, "consumption", indent + 1, false);
-            for (resource in obj.yearlyConsumption) {
-                writeResource(ostream, resource, indent + 2);
-            }
-            ostream.writeEndElement();
+void writeCommunityStats(XMLStreamWriter ostream, CommunityStats obj, Integer indent) {
+    writeTag(ostream, "population", indent, false);
+    writeAttributes(ostream, "size"->obj.population);
+    for (skill->level in obj.highestSkillLevels) {
+        writeTag(ostream, "expertise", indent + 1, true);
+        writeAttributes(ostream, "skill"->skill, "level"->level);
+    }
+    for (claim in obj.workedFields) {
+        writeTag(ostream, "claim", indent + 1, true);
+        writeAttributes(ostream, "resource"->claim);
+    }
+    if (!obj.yearlyProduction.empty) {
+        writeTag(ostream, "production", indent + 1, false);
+        for (resource in obj.yearlyProduction) {
+            writeResource(ostream, resource, indent + 2);
         }
         ostream.writeEndElement();
-    } else {
-        throw IllegalArgumentException("Can only write CommunityStats");
     }
+    if (!obj.yearlyConsumption.empty) {
+        writeTag(ostream, "consumption", indent + 1, false);
+        for (resource in obj.yearlyConsumption) {
+            writeResource(ostream, resource, indent + 2);
+        }
+        ostream.writeEndElement();
+    }
+    ostream.writeEndElement();
 }

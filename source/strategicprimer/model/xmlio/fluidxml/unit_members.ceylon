@@ -115,76 +115,60 @@ WorkerStats readStats(StartElement element, QName parent, {XMLEvent*} stream,
         getIntegerAttribute(element, "cha"));
 }
 
-void writeWorker(XMLStreamWriter ostream, Object obj, Integer indentation) {
-    if (is IWorker obj) {
-        WorkerStats? stats = obj.stats;
-        {IJob*} jobs = obj.filter((job) => !job.emptyJob);
-        Boolean hasJobs = !jobs.empty;
-        writeTag(ostream, "worker", indentation, !hasJobs && !stats exists);
-        writeAttributes(ostream, "name"->obj.name);
-        if ("human" != obj.race) {
-            writeAttributes(ostream, "race"->obj.race);
-        }
-        writeAttributes(ostream, "id"->obj.id);
-        writeImage(ostream, obj);
-        if (is HasPortrait obj) {
-            writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
-        }
-        if (exists stats) {
-            writeStats(ostream, stats, indentation + 1);
-        }
-        for (job in jobs) {
-            writeJob(ostream, job, indentation + 1);
-        }
-        if (hasJobs || stats exists) {
-            indent(ostream, indentation);
-            ostream.writeEndElement();
-        }
-    } else {
-        throw IllegalArgumentException("Can only write IWorkers");
+void writeWorker(XMLStreamWriter ostream, IWorker obj, Integer indentation) {
+    WorkerStats? stats = obj.stats;
+    {IJob*} jobs = obj.filter((job) => !job.emptyJob);
+    Boolean hasJobs = !jobs.empty;
+    writeTag(ostream, "worker", indentation, !hasJobs && !stats exists);
+    writeAttributes(ostream, "name"->obj.name);
+    if ("human" != obj.race) {
+        writeAttributes(ostream, "race"->obj.race);
+    }
+    writeAttributes(ostream, "id"->obj.id);
+    writeImage(ostream, obj);
+    if (is HasPortrait obj) {
+        writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
+    }
+    if (exists stats) {
+        writeStats(ostream, stats, indentation + 1);
+    }
+    for (job in jobs) {
+        writeJob(ostream, job, indentation + 1);
+    }
+    if (hasJobs || stats exists) {
+        indent(ostream, indentation);
+        ostream.writeEndElement();
     }
 }
 
-void writeStats(XMLStreamWriter ostream, Object obj, Integer indentation) {
-    if (is WorkerStats obj) {
-        writeTag(ostream, "stats", indentation, true);
-        writeAttributes(ostream, "hp"->obj.hitPoints, "max"->obj.maxHitPoints,
-            "str"->obj.strength, "dex"->obj.dexterity, "con"->obj.constitution,
-            "int"->obj.intelligence, "wis"->obj.wisdom, "cha"->obj.charisma);
-    } else {
-        throw IllegalArgumentException("Can only write WorkerStats");
+void writeStats(XMLStreamWriter ostream, WorkerStats obj, Integer indentation) {
+    writeTag(ostream, "stats", indentation, true);
+    writeAttributes(ostream, "hp"->obj.hitPoints, "max"->obj.maxHitPoints,
+        "str"->obj.strength, "dex"->obj.dexterity, "con"->obj.constitution,
+        "int"->obj.intelligence, "wis"->obj.wisdom, "cha"->obj.charisma);
+}
+
+void writeJob(XMLStreamWriter ostream, IJob obj, Integer indentation) {
+    Boolean hasSkills = !obj.empty;
+    if (obj.level <= 0, !hasSkills) {
+        return;
+    }
+    writeTag(ostream, "job", indentation, !hasSkills);
+    writeAttributes(ostream, "name"->obj.name, "level"->obj.level);
+    for (skill in obj) {
+        writeSkill(ostream, skill, indentation + 1);
+    }
+    if (hasSkills) {
+        indent(ostream, indentation);
+        ostream.writeEndElement();
     }
 }
 
-void writeJob(XMLStreamWriter ostream, Object obj, Integer indentation) {
-    if (is IJob obj) {
-        Boolean hasSkills = !obj.empty;
-        if (obj.level <= 0, !hasSkills) {
-            return;
-        }
-        writeTag(ostream, "job", indentation, !hasSkills);
-        writeAttributes(ostream, "name"->obj.name, "level"->obj.level);
-        for (skill in obj) {
-            writeSkill(ostream, skill, indentation + 1);
-        }
-        if (hasSkills) {
-            indent(ostream, indentation);
-            ostream.writeEndElement();
-        }
-    } else {
-        throw IllegalArgumentException("Can only write IJobs");
-    }
-}
-
-void writeSkill(XMLStreamWriter ostream, Object obj, Integer indentation) {
-    if (is ISkill obj) {
-        if (!obj.empty) {
-            writeTag(ostream, "skill", indentation, true);
-            writeAttributes(ostream, "name"->obj.name, "level"->obj.level,
-                "hours"->obj.hours);
-        }
-    } else {
-        throw IllegalArgumentException("Can only write ISkills");
+void writeSkill(XMLStreamWriter ostream, ISkill obj, Integer indentation) {
+    if (!obj.empty) {
+        writeTag(ostream, "skill", indentation, true);
+        writeAttributes(ostream, "name"->obj.name, "level"->obj.level,
+            "hours"->obj.hours);
     }
 }
 
@@ -218,47 +202,39 @@ Animal readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
             element, warner);
 }
 
-void writeAnimal(XMLStreamWriter ostream, Object obj, Integer indentation) {
-    if (is Animal obj) {
-        writeTag(ostream, "animal", indentation, true);
-        writeAttributes(ostream, "kind"->obj.kind);
-        if (obj.traces) {
-            writeAttributes(ostream, "traces"->true);
-        }
-        if (obj.talking) {
-            writeAttributes(ostream, "talking"->true);
-        }
-        if ("wild" != obj.status) {
-            writeAttributes(ostream, "status"->obj.status);
-        }
-        if (!obj.traces) {
-            writeAttributes(ostream, "id"->obj.id);
-            if (obj.born >= 0) {
-                // Write turn-of-birth if and only if it is fewer turns before the current
-                // turn than this kind of animal's age of maturity.
-                if (currentTurn >= 0, exists maturityAge = maturityModel.maturityAges[obj.kind],
-                        maturityAge <= (currentTurn - obj.born)) {
-                    // do nothing
-                } else {
-                    writeAttributes(ostream, "born"->obj.born);
-                }
-            }
-            if (obj.population > 1) {
-                writeAttributes(ostream, "count"->obj.population);
-            }
-        }
-        writeImage(ostream, obj);
-    } else {
-        throw IllegalArgumentException("Can only write Animal");
+void writeAnimal(XMLStreamWriter ostream, Animal obj, Integer indentation) {
+    writeTag(ostream, "animal", indentation, true);
+    writeAttributes(ostream, "kind"->obj.kind);
+    if (obj.traces) {
+        writeAttributes(ostream, "traces"->true);
     }
+    if (obj.talking) {
+        writeAttributes(ostream, "talking"->true);
+    }
+    if ("wild" != obj.status) {
+        writeAttributes(ostream, "status"->obj.status);
+    }
+    if (!obj.traces) {
+        writeAttributes(ostream, "id"->obj.id);
+        if (obj.born >= 0) {
+            // Write turn-of-birth if and only if it is fewer turns before the current
+            // turn than this kind of animal's age of maturity.
+            if (currentTurn >= 0, exists maturityAge = maturityModel.maturityAges[obj.kind],
+                    maturityAge <= (currentTurn - obj.born)) {
+                // do nothing
+            } else {
+                writeAttributes(ostream, "born"->obj.born);
+            }
+        }
+        if (obj.population > 1) {
+            writeAttributes(ostream, "count"->obj.population);
+        }
+    }
+    writeImage(ostream, obj);
 }
 
-void writeSimpleImmortal(XMLStreamWriter ostream, Object obj, Integer indentation) {
-    if (is SimpleImmortal obj) {
-        writeTag(ostream, obj.kind, indentation, true);
-        writeAttributes(ostream, "id"->obj.id);
-        writeImage(ostream, obj);
-    } else {
-        throw IllegalArgumentException("Can only write SimpleImmortals");
-    }
+void writeSimpleImmortal(XMLStreamWriter ostream, SimpleImmortal obj, Integer indentation) {
+    writeTag(ostream, obj.kind, indentation, true);
+    writeAttributes(ostream, "id"->obj.id);
+    writeImage(ostream, obj);
 }

@@ -58,28 +58,20 @@ Forest readForest(StartElement element, QName parent, {XMLEvent*} stream,
     return setImage(retval, element, warner);
 }
 
-void writeGround(XMLStreamWriter ostream, Object obj, Integer indent) {
-    if (is Ground obj) {
-        writeTag(ostream, "ground", indent, true);
-        writeAttributes(ostream, "kind"->obj.kind, "exposed"->obj.exposed, "id"->obj.id);
-        writeImage(ostream, obj);
-    } else {
-        throw IllegalArgumentException("Can only write Ground");
-    }
+void writeGround(XMLStreamWriter ostream, Ground obj, Integer indent) {
+    writeTag(ostream, "ground", indent, true);
+    writeAttributes(ostream, "kind"->obj.kind, "exposed"->obj.exposed, "id"->obj.id);
+    writeImage(ostream, obj);
 }
 
-void writeForest(XMLStreamWriter ostream, Object obj, Integer indent) {
-    if (is Forest obj) {
-        writeTag(ostream, "forest", indent, true);
-        writeAttributes(ostream, "kind"->obj.kind);
-        if (obj.rows) {
-            writeAttributes(ostream, "rows"->true);
-        }
-        writeAttributes(ostream, "id"->obj.id);
-        writeImage(ostream, obj);
-    } else {
-        throw IllegalArgumentException("Can only write Forests");
+void writeForest(XMLStreamWriter ostream, Forest obj, Integer indent) {
+    writeTag(ostream, "forest", indent, true);
+    writeAttributes(ostream, "kind"->obj.kind);
+    if (obj.rows) {
+        writeAttributes(ostream, "rows"->true);
     }
+    writeAttributes(ostream, "id"->obj.id);
+    writeImage(ostream, obj);
 }
 
 River readLake(StartElement element, QName parent, {XMLEvent*} stream,
@@ -101,17 +93,19 @@ River readRiver(StartElement element, QName parent, {XMLEvent*} stream,
     }
 }
 
-void writeRivers(XMLStreamWriter ostream, Object obj, Integer indent) {
+void writeRivers(XMLStreamWriter ostream, River|{River*} obj, Integer indent) {
     if (River.lake == obj) {
         writeTag(ostream, "lake", indent, true);
-    } else if (is River obj) {
-        writeTag(ostream, "river", indent, true);
-        writeAttributes(ostream, "direction"->obj.description);
-    } else if (is {River*} obj) {
-        for (river in sort(obj)) {
-            writeRivers(ostream, river, indent);
-        }
     } else {
-        throw IllegalArgumentException("Can only write River or RiverFixture");
+        switch (obj)
+        case (is River) {
+            writeTag(ostream, "river", indent, true);
+            writeAttributes(ostream, "direction"->obj.description);
+        }
+        case (is {River*}) {
+            for (river in sort(obj)) {
+                writeRivers(ostream, river, indent);
+            }
+        }
     }
 }
