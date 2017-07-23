@@ -37,22 +37,16 @@ shared object platform {
         if (systemIsMac, exists first = buttons.first, buttons.rest.first exists) {
             setStringProperty(first, "JButton.buttonType", "segmented");
             setStringProperty(first, "JButton.segmentPosition", "first");
-            variable {JButton*} temp = buttons.rest;
-            while (exists button = temp.first) {
+            variable JButton last = first;
+            for (button in buttons.rest) {
                 setStringProperty(button, "JButton.buttonType", "segmented");
-                if (!temp.rest.first exists) {
-                    setStringProperty(button, "JButton.segmentPosition", "last");
-                }
-                temp = temp.rest;
+                setStringProperty(button, "JButton.segmentPosition", "last");
+                last = button;
             }
+            setStringProperty(last, "JButton.segmentPosition", "last");
         }
     }
     "Whether the current platform's hotkey is pressed in the given event."
-    shared Boolean hotKeyPressed(InputEvent event) {
-        if (systemIsMac) {
-            return event.metaDown;
-        } else {
-            return event.controlDown;
-        }
-    }
+    shared Boolean hotKeyPressed(InputEvent event) =>
+            (systemIsMac) then event.metaDown else event.controlDown;
 }
