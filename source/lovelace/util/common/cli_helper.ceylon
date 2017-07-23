@@ -13,8 +13,7 @@ shared T? chooseFromList<T>(String? header, String prompt, Boolean auto,
             Integer number = inputNumber(prompt);
             [String, T]? choice = choices[number];
             if (exists choice) {
-                [T] rest = choice.rest;
-                return rest.first;
+                return choice.rest.first;
             } else {
                 return null;
             }
