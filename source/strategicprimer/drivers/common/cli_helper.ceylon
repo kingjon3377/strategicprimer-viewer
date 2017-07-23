@@ -138,9 +138,9 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
     "Print a prompt, adding whitespace if the prompt didn't end with it."
     void writePrompt(String prompt) {
     	ostream(prompt);
-	if (exists last = prompt.last, !last.whitespace) {
-		ostream(" ");
-	}
+		if (exists last = prompt.last, !last.whitespace) {
+			ostream(" ");
+		}
     }
     "Ask the user a yes-or-no question."
     shared actual Boolean inputBoolean(String prompt) {
