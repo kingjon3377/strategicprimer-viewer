@@ -178,15 +178,11 @@ shared interface SimpleDriver satisfies ISPDriver {
             }
             case (ParamCount.one) {
                 value chosenFiles = askUserForFiles();
-                if (exists chosenFile = chosenFiles.first) {
-                    if (chosenFiles.rest.first exists) {
-                        throw IncorrectUsageException(usage);
-                    } else {
-                        IDriverModel mapModel = readMapModel(chosenFile,
-                            warningLevels.default);
-                        turnFixer(mapModel.map);
-                        startDriverOnModel(cli, options, mapModel);
-                    }
+                if (exists chosenFile = chosenFiles.first, !chosenFiles.rest.first exists) {
+                    IDriverModel mapModel = readMapModel(chosenFile,
+                        warningLevels.default);
+                    turnFixer(mapModel.map);
+                    startDriverOnModel(cli, options, mapModel);
                 } else {
                     throw IncorrectUsageException(usage);
                 }
