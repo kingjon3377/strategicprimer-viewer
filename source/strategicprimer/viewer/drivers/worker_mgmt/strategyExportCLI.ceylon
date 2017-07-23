@@ -42,9 +42,7 @@ shared object strategyExportCLI satisfies SimpleDriver {
                 StrategyExporter(model, options).writeStrategy(parsePath(
                     options.getArgument("--export")).resource, {});
             } else {
-                throw DriverFailedException(
-                    IllegalStateException("--export option is required"),
-                    "--export option is required");
+                throw DriverFailedException.illegalState("--export option is required");
             }
         } else {
             startDriverOnModel(cli, options, WorkerModel.copyConstructor(model));

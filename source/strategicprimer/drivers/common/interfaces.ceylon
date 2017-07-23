@@ -85,8 +85,8 @@ shared class SPOptionsImpl({<String->String>*} existing = {}) satisfies SPOption
 shared interface UtilityDriver satisfies ISPDriver {
     shared actual default void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        throw DriverFailedException(IllegalStateException(
-            "A utility driver can't operate on a driver model"));
+        throw DriverFailedException.illegalState(
+            "A utility driver can't operate on a driver model");
     }
 }
 "An interface for drivers which operate on a map model of some kind."
@@ -96,8 +96,7 @@ shared interface SimpleDriver satisfies ISPDriver {
      because nearly all drivers do need arguments."
     shared default void startDriverNoArgs(ICLIHelper cli = CLIHelper(),
             SPOptions options = SPOptionsImpl()) {
-        throw DriverFailedException(
-            IllegalStateException("Driver does not support no-arg operation"),
+        throw DriverFailedException.illegalState(
             "Driver does not support no-arg operation");
     }
     "Run the driver."
@@ -364,9 +363,14 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
 "An exception to throw whenever a driver fails, so drivers only have to directly handle
  one exception class."
 todo("Is this really necessary any more?")
-shared class DriverFailedException(Throwable cause,
-        String message = "The driver could not start because of an exception:")
-        extends Exception(message, cause) { }
+shared class DriverFailedException
+        extends Exception {
+    shared new (Throwable cause,
+            String message = "The driver could not start because of an exception:")
+            extends Exception(message, cause) {}
+    shared new illegalState(String message) extends
+            DriverFailedException(IllegalStateException(message), message) {}
+ }
 "An exception to throw when a driver fails because the user tried to use it improperly."
 shared class IncorrectUsageException(correctUsage)
         extends DriverFailedException(IllegalArgumentException("Incorrect usage"),

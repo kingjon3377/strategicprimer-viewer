@@ -75,8 +75,7 @@ object oneToTwoConverter satisfies SimpleDriver {
         if (exists temp = model.mapFile) {
             oldMainPath = temp;
         } else {
-            throw DriverFailedException(IllegalStateException("No path for main map"),
-                "No path for main map");
+            throw DriverFailedException.illegalState("No path for main map");
         }
         IMapNG newMain = convertOneToTwo(oldMain, runner, true);
         writeConvertedMap(oldMainPath, newMain);
