@@ -164,12 +164,6 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
                 proxyJobs.add(ProxyJob(name, parallel, *workers));
             }
         }
-        for (proxyJob in proxyJobs) {
-            // FIXME: This can't be right!
-            String name = proxyJob.name;
-            IJob job = Job(name, 0);
-            proxyJob.addProxied(job);
-        }
     }
     shared actual Iterable<IWorker> proxied => {*workers};
     shared actual String defaultImage {
