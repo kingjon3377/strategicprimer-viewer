@@ -12,7 +12,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
     Skill,
     ISkill
 }
-import strategicprimer.drivers.common {
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 "Let the user add hours to a Skill or Skills in a Job."

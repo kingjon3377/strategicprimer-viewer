@@ -43,7 +43,9 @@ import strategicprimer.drivers.common {
     SimpleCLIDriver,
     SPOptions,
     DriverUsage,
-    IDriverUsage,
+    IDriverUsage
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import ceylon.file {

@@ -32,6 +32,10 @@ import strategicprimer.drivers.common {
     readMultiMapModel,
     writeModel
 }
+import strategicprimer.drivers.common.cli {
+    ICLIHelper,
+    CLIHelper
+}
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option
    overrides the previous, and any option passed without argument has an implied argument

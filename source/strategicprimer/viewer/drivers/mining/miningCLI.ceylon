@@ -21,7 +21,9 @@ import strategicprimer.drivers.common {
     DriverUsage,
     ParamCount,
     SPOptions,
-    IncorrectUsageException,
+    IncorrectUsageException
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 """A driver to create a spreadsheet model of a mine. Its parameters are the name of the

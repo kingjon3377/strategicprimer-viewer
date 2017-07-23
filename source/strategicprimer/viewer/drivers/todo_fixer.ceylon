@@ -17,8 +17,10 @@ import ceylon.collection {
     MutableList,
     HashMap
 }
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
+}
 import strategicprimer.drivers.common {
-    ICLIHelper,
     SPOptions,
     DriverUsage,
     IMultiMapModel,

@@ -4,7 +4,7 @@ import strategicprimer.drivers.worker.common {
 import strategicprimer.model.map {
     Player
 }
-import strategicprimer.drivers.common {
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.model.map.fixtures.mobile {

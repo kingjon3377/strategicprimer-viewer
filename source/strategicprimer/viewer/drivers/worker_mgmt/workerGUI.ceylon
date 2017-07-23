@@ -14,8 +14,10 @@ import ceylon.logging {
     logger,
     Logger
 }
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
+}
 import strategicprimer.drivers.common {
-    ICLIHelper,
     IDriverUsage,
     ParamCount,
     DriverUsage,

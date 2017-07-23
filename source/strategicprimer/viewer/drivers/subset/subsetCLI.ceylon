@@ -10,7 +10,9 @@ import strategicprimer.drivers.common {
     SimpleMultiMapModel,
     IMultiMapModel,
     IDriverModel,
-    SimpleDriver,
+    SimpleDriver
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import java.nio.file {

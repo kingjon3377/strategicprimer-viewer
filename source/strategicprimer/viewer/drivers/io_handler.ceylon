@@ -65,7 +65,9 @@ import strategicprimer.viewer.drivers.map_viewer {
 import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
-    SPOptions,
+    SPOptions
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import ceylon.file {

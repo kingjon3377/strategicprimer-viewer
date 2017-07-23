@@ -5,7 +5,9 @@ import strategicprimer.drivers.common {
     ParamCount,
     SimpleCLIDriver,
     IDriverUsage,
-    SPOptions,
+    SPOptions
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.model.map {

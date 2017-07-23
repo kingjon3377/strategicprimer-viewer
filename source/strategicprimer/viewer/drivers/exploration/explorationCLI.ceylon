@@ -12,7 +12,9 @@ import strategicprimer.drivers.common {
     SimpleCLIDriver,
     IDriverUsage,
     SPOptions,
-    IDriverModel,
+    IDriverModel
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.drivers.exploration.common {

@@ -42,8 +42,10 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     ParamCount,
     DriverUsage,
-    SimpleDriver,
-	ICLIHelper
+    SimpleDriver
+}
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
 }
 import strategicprimer.model {
     DistanceComparator

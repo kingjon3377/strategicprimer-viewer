@@ -21,7 +21,9 @@ import strategicprimer.drivers.common {
     DriverUsage,
     SPOptions,
     SimpleCLIDriver,
-    ParamCount,
+    ParamCount
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 

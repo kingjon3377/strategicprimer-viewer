@@ -27,7 +27,7 @@ import strategicprimer.model.map.fixtures.resources {
     CacheFixture
 }
 
-import strategicprimer.drivers.common {
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.drivers.exploration.common {

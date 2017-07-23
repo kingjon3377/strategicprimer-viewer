@@ -8,7 +8,7 @@ import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
 
-import strategicprimer.drivers.common {
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.model.map.fixtures.mobile.worker {

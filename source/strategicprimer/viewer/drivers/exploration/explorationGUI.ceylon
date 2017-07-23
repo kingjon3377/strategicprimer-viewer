@@ -13,8 +13,10 @@ import strategicprimer.drivers.common {
     SPOptions,
     SimpleDriver,
     IDriverModel,
-    ICLIHelper,
     DriverFailedException
+}
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
 }
 import strategicprimer.viewer.about {
     aboutDialog

@@ -11,7 +11,9 @@ import strategicprimer.drivers.common {
     ParamCount,
     IDriverUsage,
     SPOptions,
-    SimpleDriver,
+    SimpleDriver
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import java.nio.file {

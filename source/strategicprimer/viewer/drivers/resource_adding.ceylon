@@ -61,8 +61,10 @@ import strategicprimer.drivers.common {
     ParamCount,
     DriverUsage,
     SimpleCLIDriver,
-    ICLIHelper,
     PlayerChangeListener
+}
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
 }
 import strategicprimer.model.idreg {
     IDRegistrar,

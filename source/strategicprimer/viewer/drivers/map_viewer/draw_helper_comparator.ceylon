@@ -24,7 +24,9 @@ import strategicprimer.drivers.common {
     ParamCount,
     SimpleCLIDriver,
     IMultiMapModel,
-    IDriverModel,
+    IDriverModel
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.model.map {

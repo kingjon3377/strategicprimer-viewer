@@ -29,7 +29,9 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    SPOptions,
+    SPOptions
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.model.map {

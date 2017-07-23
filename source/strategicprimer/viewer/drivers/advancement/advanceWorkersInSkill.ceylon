@@ -9,7 +9,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
     ISkill
 }
-import strategicprimer.drivers.common {
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 "Let the user add experience in a single Skill to all of a list of workers."

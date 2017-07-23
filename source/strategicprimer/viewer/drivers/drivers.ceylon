@@ -70,18 +70,20 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     strategyExportCLI
 }
 import strategicprimer.drivers.common {
-    IMultiMapModel,
-    IDriverModel,
-    ISPDriver,
-    IDriverUsage,
+	IMultiMapModel,
+	IDriverModel,
+	ISPDriver,
+	IDriverUsage,
 	SPOptions,
 	ParamCount,
 	DriverFailedException,
 	IncorrectUsageException,
-    DriverUsage,
-    ICLIHelper,
-    SimpleCLIDriver,
-    SPOptionsImpl
+	DriverUsage,
+	SimpleCLIDriver,
+	SPOptionsImpl
+}
+import strategicprimer.drivers.common.cli {
+	ICLIHelper
 }
 import com.apple.eawt {
     AppEvent,

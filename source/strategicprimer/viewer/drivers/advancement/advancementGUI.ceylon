@@ -13,9 +13,11 @@ import strategicprimer.drivers.common {
     DriverUsage,
     IDriverModel,
     SimpleDriver,
-    ICLIHelper,
     DriverFailedException,
     PlayerChangeListener
+}
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
 }
 import strategicprimer.drivers.worker.common {
     WorkerModel,

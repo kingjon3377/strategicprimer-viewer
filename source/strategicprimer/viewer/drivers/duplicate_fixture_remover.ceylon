@@ -47,7 +47,7 @@ import strategicprimer.model.map.fixtures.resources {
 import strategicprimer.model.map.fixtures.towns {
     Fortress
 }
-import strategicprimer.drivers.common {
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 

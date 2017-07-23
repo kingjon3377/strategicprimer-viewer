@@ -19,8 +19,10 @@ import strategicprimer.drivers.common {
     SimpleDriver,
     SPOptions,
     ParamCount,
-    ICLIHelper,
     DriverFailedException
+}
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
 }
 import strategicprimer.model.map {
     MapDimensions,

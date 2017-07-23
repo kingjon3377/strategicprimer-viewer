@@ -22,7 +22,9 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     SPOptions,
     DriverUsage,
-    DriverFailedException,
+    DriverFailedException
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.model.map {

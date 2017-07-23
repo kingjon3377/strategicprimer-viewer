@@ -34,7 +34,9 @@ import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
     IDriverUsage,
-    SimpleDriver,
+    SimpleDriver
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 "A class to convert a version-1 map to a version-2 map with greater resolution."

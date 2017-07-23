@@ -31,7 +31,9 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     ISPDriver,
     SPOptions,
-    IncorrectUsageException,
+    IncorrectUsageException
+}
+import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 "A driver to check whether player maps are subsets of the main map and display the

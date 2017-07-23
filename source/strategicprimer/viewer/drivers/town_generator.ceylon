@@ -3,10 +3,12 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    ICLIHelper,
     SPOptions,
     IDriverModel,
     IMultiMapModel
+}
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
 }
 import strategicprimer.model.map.fixtures.towns {
     ITownFixture,
