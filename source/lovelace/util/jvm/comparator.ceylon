@@ -11,13 +11,7 @@ shared Comparison(Type, Type) ceylonComparator<Type>(
         } else {
             temp = comparator.compare(x, y);
         }
-        if (temp < 0) {
-            return smaller;
-        } else if (temp == 0) {
-            return equal;
-        } else {
-            return larger;
-        }
+        return temp <=> 0;
     };
 }
 "Convert a Ceylon comparator to a Java Comparator."
