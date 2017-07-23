@@ -20,7 +20,7 @@ shared JComparator<Type> javaComparator<Type>(Comparison(Type, Type) comparator)
         shared actual Integer compare(Type? x, Type? y) {
             assert (exists x, exists y);
             switch (comparator(x, y))
-            case (smaller) { return - 1; }
+            case (smaller) { return -1; }
             case (equal) { return 0; }
             case (larger) { return 1; }
         }
