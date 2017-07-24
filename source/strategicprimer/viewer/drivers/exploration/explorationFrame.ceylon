@@ -269,8 +269,7 @@ SPFrame explorationFrame(IExplorationModel model,
                     HashMap<Direction, DualTileButton>();
             {FixtureMatcher*} matchers = fixtureFilterTableModel();
             shared actual void selectedPointChanged(Point? old, Point newPoint) {
-                // TODO: use the provided old point instead?
-                Point selPoint = model.selectedUnitLocation;
+                Point selPoint = old else model.selectedUnitLocation;
                 for (direction in `Direction`.caseValues) {
                     Point point = model.getDestination(selPoint, direction);
                     mains[direction]?.fireChanges(selPoint, point);
