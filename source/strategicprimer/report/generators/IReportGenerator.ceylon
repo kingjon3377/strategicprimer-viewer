@@ -54,12 +54,21 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
             "The map to write. Has to be a [[HeadedMap]] so we can get its heading."
             HeadedMap<Key, Point> map,
             "The method to write each item."
-            Anything(Key->Point, Anything(String)) lambda) given Key satisfies Object {
+            Anything(Key->Point, Anything(String)) lambda,
+            "An optional sorting method to run the map through before printing."
+            Comparison(Key->Point, Key->Point)? sorter = null
+            ) given Key satisfies Object {
         if (!map.empty) {
             ostream("``map.header``
                      <ul>
                      ");
-            for (entry in map) {
+            {<Key->Point>*} sorted;
+            if (exists sorter) {
+                sorted = map.sort(sorter);
+            } else {
+                sorted = map;
+            }
+            for (entry in sorted) {
                 ostream("<li>");
                 lambda(entry, ostream);
                 ostream("""</li>
