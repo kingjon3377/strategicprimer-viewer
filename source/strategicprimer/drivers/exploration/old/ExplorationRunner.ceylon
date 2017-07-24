@@ -44,7 +44,7 @@ shared class ExplorationRunner() {
     MutableMap<String, EncounterTable> tables = HashMap<String, EncounterTable>();
     "Get a table by name."
     throws(`class MissingTableException`, "if there is no table by that name")
-    todo("Should this really be `shared`?")
+    todo("Should this really be `shared`?") // Used by table debugger
     shared EncounterTable getTable(String name) {
         if (exists retval = tables[name]) {
             return retval;
