@@ -41,6 +41,6 @@ shared class SimpleReportNode(variable String nodeText,
     shared actual default void appendNode(MutableTreeNode node) {}
     shared actual default void add(MutableTreeNode node) {}
     shared actual default void addAsFirst(MutableTreeNode node) {}
-    shared actual String string => text;
+    shared actual default String string => text;
     shared actual void setUserObject(Object obj) => super.userObject = obj;
 }

@@ -39,5 +39,14 @@ shared class ComplexReportNode(String textArg = "", Point? pointArg = null)
             insert(node, 0);
         }
     }
-    // TODO: refine `string` to reflect children?
+    shared actual String string {
+        StringBuilder builder = StringBuilder();
+        builder.append(text);
+        for (child in this) {
+            builder.appendNewline();
+            builder.append("- ");
+            builder.append(child.string);
+        }
+        return builder.string;
+    }
 }
