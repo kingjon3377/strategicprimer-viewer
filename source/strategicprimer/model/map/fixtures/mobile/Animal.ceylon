@@ -39,11 +39,14 @@ shared class Animal(kind, traces, talking, status, id, born = -1, population = 1
 	"Default image filename"
 	todo("Should depend on the kind of animal")
 	shared actual String defaultImage = (traces) then "tracks.png" else "animal.png";
+	"Whether another animal is equal except its ID and population count."
+	shared Boolean equalExceptPopulation(Animal other) {
+		return kind == other.kind && traces == other.traces && talking == other.talking &&
+		status == other.status && born == other.born;
+	}
 	shared actual Boolean equalsIgnoringID(IFixture fixture) {
 		if (is Animal fixture) {
-			return kind == fixture.kind && traces == fixture.traces &&
-				talking == fixture.talking && status == fixture.status &&
-				population == fixture.population && born == fixture.born;
+			return equalExceptPopulation(fixture) && population == fixture.population;
 		} else {
 			return false;
 		}
