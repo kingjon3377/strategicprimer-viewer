@@ -100,7 +100,6 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 MutableList<Implement> equipment = ArrayList<Implement>();
                 MutableMap<String, MutableList<ResourcePile>> resources =
                         HashMap<String, MutableList<ResourcePile>>();
-                // TODO: condense like animals somehow ("2 tame donkeys, 3 wild sheep")
                 MutableList<Animal> animals = ArrayList<Animal>();
                 MutableList<UnitMember> others = ArrayList<UnitMember>();
                 for (member in item) {
@@ -118,7 +117,13 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                         }
                         list.add(member);
                     } else if (is Animal member) {
-                        animals.add(member);
+                        if (exists existing = animals.findAndRemoveFirst(
+                            member.equalExceptPopulation)) {
+                            animals.add(Animal(member.kind, member.traces, member.talking,
+                                member.status, -1, member.born, member.population + existing.population));
+                        } else {
+                            animals.add(member);
+                        }
                     } else {
                         others.add(member);
                     }
