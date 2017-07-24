@@ -4,10 +4,10 @@ import lovelace.util.common {
 
 import strategicprimer.model.map {
     HasMutableImage,
-    TileFixture
+    TileFixture,
+    HasKind
 }
 "A (for now marker) interface for fixtures that can have resources harvested, mined, etc.,
  from them."
-todo("What methods should this have?",
-    "Satisfy [[strategicprimer.model.map::HasKind]]")
-shared interface HarvestableFixture satisfies TileFixture&HasMutableImage {}
+todo("What methods should this have?")
+shared interface HarvestableFixture satisfies TileFixture&HasMutableImage&HasKind {}

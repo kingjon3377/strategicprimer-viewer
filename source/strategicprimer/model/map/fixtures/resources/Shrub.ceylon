@@ -2,12 +2,11 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.model.map {
-    IFixture,
-    HasKind
+    IFixture
 }
 "A [[strategicprimer.model.map::TileFixture]] to represent shrubs, or their aquatic
  equivalents, on a tile."
-shared class Shrub(kind, id) satisfies HarvestableFixture&HasKind {
+shared class Shrub(kind, id) satisfies HarvestableFixture {
     "What kind of shrub this is"
     shared actual String kind;
     "The ID number."

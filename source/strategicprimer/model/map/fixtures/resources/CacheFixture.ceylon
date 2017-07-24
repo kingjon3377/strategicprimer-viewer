@@ -2,11 +2,10 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.model.map {
-    IFixture,
-    HasKind
+    IFixture
 }
 "A cache (of vegetables, or a hidden treasure, or ...) on a tile."
-shared class CacheFixture(kind, contents, id) satisfies HarvestableFixture&HasKind {
+shared class CacheFixture(kind, contents, id) satisfies HarvestableFixture {
     "What kind of things this is a cache of."
     todo("Should perhaps be enumerated, so we can make images more granular.")
     shared actual String kind;

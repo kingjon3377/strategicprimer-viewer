@@ -1,10 +1,9 @@
 import strategicprimer.model.map {
-    IFixture,
-    HasKind
+    IFixture
 }
 "An orchard (fruit trees) or grove (other trees) on the map."
 shared class Grove(orchard, cultivated, kind, id)
-        satisfies HarvestableFixture&HasKind {
+        satisfies HarvestableFixture {
     "If true, this is a fruit orchard; if false, a non-fruit grove."
     shared Boolean orchard;
     "If true, this is a cultivated grove or orchard; if false, wild or abandoned."

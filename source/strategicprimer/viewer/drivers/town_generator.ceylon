@@ -22,8 +22,7 @@ import strategicprimer.model.map {
     Point,
     IMapNG,
     IFixture,
-    TileType,
-    HasKind
+    TileType
 }
 import lovelace.util.jvm {
     isNumeric,
@@ -264,10 +263,7 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
             return "unknown";
         }
     }
-    String getHarvestedProduct(HarvestableFixture fixture) {
-        assert (is HasKind fixture);
-        return fixture.kind;
-    }
+    String getHarvestedProduct(HarvestableFixture fixture) => fixture.kind;
     CommunityStats generateStats(IDRegistrar idf, Point location, ModifiableTown town, IMapNG map) {
         Random rng = DefaultRandom(town.id);
         Integer roll(Integer die) => rng.nextInteger(die) + 1;

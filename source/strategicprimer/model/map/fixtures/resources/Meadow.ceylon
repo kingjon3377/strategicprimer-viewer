@@ -2,14 +2,13 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.model.map {
-    IFixture,
-    HasKind
+    IFixture
 }
 "A field or meadow. If in forest, should increase a unit's vision slightly when the unit
  is on it."
 todo("Implement that effect")
 shared class Meadow(kind, field, cultivated, id, status)
-        satisfies HarvestableFixture&HasKind {
+        satisfies HarvestableFixture {
     "The kind of grain or grass growing in this field or meadow."
     shared actual String kind;
     "If true, this is a field; if false, a meadow."
