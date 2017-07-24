@@ -58,7 +58,6 @@ shared class VillageReportGenerator(
                         .sort(pairComparator) };
             value villageComparator = comparing(byIncreasing(Village.name),
                 byIncreasing(Village.race), byIncreasing(Village.id));
-            // TODO: sort by distance somehow?
             HeadedMap<Village, Point>&MutableMap<Village, Point> own =
                     HeadedMapImpl<Village, Point>(
                         "<h4>Villages pledged to your service:</h4>", villageComparator);
@@ -91,16 +90,18 @@ shared class VillageReportGenerator(
                     }
                 }
             }
+            Comparison byDistance(Village->Point first, Village->Point second) =>
+                    distCalculator.compare(first.item, second.item);
             Anything(Village->Point, Anything(String)) writer =
                             (Village key->Point val, Anything(String) formatter) =>
                     produce(fixtures, map, formatter, [key, val]);
-            writeMap(ostream, own, writer);
-            writeMap(ostream, independents, writer);
+            writeMap(ostream, own, writer, byDistance);
+            writeMap(ostream, independents, writer, byDistance);
             if (!others.empty) {
                 ostream("""<h4>Other villages you know about:</h4>
                        """);
                 for (mapping in others.items) {
-                    writeMap(ostream, mapping, writer);
+                    writeMap(ostream, mapping, writer, byDistance);
                 }
             }
         }
