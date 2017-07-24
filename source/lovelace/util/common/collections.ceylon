@@ -51,16 +51,8 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
             return get(key);
         }
     }
-    todo("Loosen somewhat, to meet Map interface?")
-    shared actual Boolean equals(Object that) {
-        if (is IntMap<Item> that) {
-            return backing==that.backing &&
-            toRemove==that.toRemove;
-        }
-        else {
-            return false;
-        }
-    }
+    shared actual Boolean equals(Object that) =>
+		    (super of Map<Integer, Item>).equals(that);
     shared actual Integer hash {
         variable value hash = 1;
         hash = 31*hash + backing.hash;
