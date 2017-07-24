@@ -52,7 +52,6 @@ import strategicprimer.report.nodes {
 }
 "A logger."
 Logger log = logger(`module strategicprimer.report`);
-// TODO: Allow user to specify an alternate current turn via command-line argument
 "Find the location of the given player's HQ in the given map."
 todo("""Return null instead of an "invalid" Point when not found?""")
 Point findHQ(IMapNG map, Player player) {

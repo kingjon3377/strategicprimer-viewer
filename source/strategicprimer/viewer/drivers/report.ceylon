@@ -49,7 +49,7 @@ object reportCLI satisfies SimpleDriver {
             ("\\" == operatingSystem.fileSeparator) then
                 "--out=C:\\path\\to\\output.html"
                 else "--out=/path/to/output.html",
-            "--player=NN"
+            "--player=NN", "--current-turn=NN"
         ];
     };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
