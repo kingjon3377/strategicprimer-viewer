@@ -39,12 +39,11 @@ shared class Animal(kind, traces, talking, status, id, born = -1, population = 1
 	"Default image filename"
 	todo("Should depend on the kind of animal")
 	shared actual String defaultImage = (traces) then "tracks.png" else "animal.png";
-	todo("Check date of birth?")
 	shared actual Boolean equalsIgnoringID(IFixture fixture) {
 		if (is Animal fixture) {
 			return kind == fixture.kind && traces == fixture.traces &&
 				talking == fixture.talking && status == fixture.status &&
-				population == fixture.population;
+				population == fixture.population && born == fixture.born;
 		} else {
 			return false;
 		}
