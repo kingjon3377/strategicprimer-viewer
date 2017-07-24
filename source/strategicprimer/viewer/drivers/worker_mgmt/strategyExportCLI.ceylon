@@ -1,6 +1,3 @@
-import java.lang {
-    IllegalStateException
-}
 import ceylon.file {
     parsePath
 }

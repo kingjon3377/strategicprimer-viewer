@@ -1,7 +1,3 @@
-import java.lang {
-    IllegalArgumentException
-}
-
 import javax.xml.namespace {
     QName
 }

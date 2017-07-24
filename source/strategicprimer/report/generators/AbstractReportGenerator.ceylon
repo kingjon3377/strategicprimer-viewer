@@ -5,10 +5,6 @@ import ceylon.collection {
     HashMap
 }
 
-import lovelace.util.common {
-    todo
-}
-
 import strategicprimer.model {
     DistanceComparator
 }
