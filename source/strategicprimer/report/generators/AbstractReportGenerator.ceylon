@@ -17,10 +17,15 @@ import strategicprimer.model.map {
 "An abstract superclass for classes that generate reports for particular kinds of SP
  objects. It's mostly interface and helper methods, but contains a couple of bits of
  shared state."
-shared abstract class AbstractReportGenerator<T>
+todo("Make as many methods static as possible")
+shared sealed abstract class AbstractReportGenerator<T>(
+        shared Comparison([Point, IFixture], [Point, IFixture]) pairComparator,
+        MapDimensions? mapDimensions, Point referencePoint = invalidPoint)
         satisfies IReportGenerator<T> given T satisfies IFixture {
+    shared DistanceComparator distCalculator = DistanceComparator(referencePoint,
+        mapDimensions);
     "A list that produces HTML in its [[string]] attribute."
-    shared static class HtmlList(shared actual String header, {String*} initial = {})
+    shared class HtmlList(shared actual String header, {String*} initial = {})
             extends ArrayList<String>(0, 1.5, initial)
             satisfies IReportGenerator<T>.HeadedList<String> {
         "If there's nothing in the list, return the empty string, but otherwise produce an
@@ -45,7 +50,7 @@ shared abstract class AbstractReportGenerator<T>
     }
     """A list of Points that produces a comma-separated list in its `string` and has a
        "header"."""
-    shared static class PointList(shared actual String header) extends ArrayList<Point>()
+    shared class PointList(shared actual String header) extends ArrayList<Point>()
             satisfies IReportGenerator<T>.HeadedList<Point> {
         shared actual String string {
             if (empty) {
@@ -74,7 +79,7 @@ shared abstract class AbstractReportGenerator<T>
         }
     }
     "An implementation of HeadedMap."
-    shared static class HeadedMapImpl<Key, Value>(shared actual String header,
+    shared class HeadedMapImpl<Key, Value>(shared actual String header,
             Comparison(Key, Key)? comparator = null, {<Key->Value>*} initial = {})
             satisfies IReportGenerator<T>.HeadedMap<Key, Value>&MutableMap<Key, Value>
             given Key satisfies Object {
@@ -102,13 +107,5 @@ shared abstract class AbstractReportGenerator<T>
         shared actual Iterator<Key->Value> iterator() => wrapped.iterator();
         shared actual Value? put(Key key, Value item) => wrapped[key] = item;
         shared actual Value? remove(Key key) => wrapped.remove(key);
-    }
-    shared DistanceComparator distCalculator;
-    shared Comparison([Point, IFixture], [Point, IFixture]) pairComparator;
-    shared sealed new (Comparison([Point, IFixture], [Point, IFixture]) pairComparator,
-            MapDimensions? mapDimensions, Point referencePoint = invalidPoint) {
-        this.pairComparator = pairComparator;
-        distCalculator = DistanceComparator(referencePoint,
-            mapDimensions);
     }
 }
