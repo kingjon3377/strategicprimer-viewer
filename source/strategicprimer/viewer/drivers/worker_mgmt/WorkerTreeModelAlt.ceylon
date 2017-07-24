@@ -276,7 +276,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             if (is TreeNode node = getNode(temp, item)) {
                 value path = getPathToRoot(node);
                 Integer index = getIndexOfChild(path.array.last, node);
-                // FIXME: We don't actually move unit members (nodes) here!
+                // fireNodesChanged() is *correct*: a change in a unit member's kind
+                // does *not* mean any node should move.
                 fireTreeNodesChanged(this, path, createJavaIntArray({ index }),
                     createJavaObjectArray({ node }));
             }
