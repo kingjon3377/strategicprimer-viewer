@@ -1535,3 +1535,9 @@ void testBattlefieldSerialization() {
     assertImageSerialization("Battlefield image property is preserved",
         Battlefield(20, 2));
 }
+
+test
+void testCommaSeparators() {
+    assertEquivalentForms("ID numbers can contain commas", """<hill id="1,002" />""",
+        """<hill id="1002" />""", warningLevels.die);
+}

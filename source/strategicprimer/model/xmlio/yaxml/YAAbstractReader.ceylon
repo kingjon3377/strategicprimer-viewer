@@ -155,9 +155,8 @@ abstract class YAAbstractReader<Element>
     }
     "Parse an integer. We use [[NumberFormat]] rather than [[Integer.parse]] because we
      want to allow commas in the input."
-    todo("Test that commas in the input are allowed",
-        "Inline this into the caller or pass in information that lets us throw a more
-         meaningful exception, so we can get rid of SPMalformedInputException")
+    todo("Inline this into the caller or pass in information that lets us throw a more
+          meaningful exception, so we can get rid of SPMalformedInputException")
     throws(`class JParseException`, "on non-numeric input")
     throws(`class ParseException`,
         "on non-numeric input, if we were using [[Integer.parse]]")
