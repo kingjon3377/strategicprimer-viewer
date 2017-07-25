@@ -251,14 +251,15 @@ abstract class YAAbstractReader<Element>
     }
     "Register the specified ID number, noting that it came from the specified location,
      and return it."
-    todo("Is the 'return it' feature ever used?")
-    shared Integer registerID(Integer id, Location location) =>
+    shared void registerID(Integer id, Location location) =>
             idf.register(id, warner, location);
     "If the specified tag has an ID as a property, return it; otherwise, warn about its
      absence and generate one."
     shared Integer getOrGenerateID(StartElement element) {
         if (hasParameter(element, "id")) {
-            return registerID(getIntegerParameter(element, "id"), element.location);
+            value idNum = getIntegerParameter(element, "id");
+            registerID(idNum, element.location);
+            return idNum;
         } else {
             warner.handle(MissingPropertyException(element, "id"));
             return idf.createID();
