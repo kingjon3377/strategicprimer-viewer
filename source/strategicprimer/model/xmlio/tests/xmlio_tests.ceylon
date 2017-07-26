@@ -1,9 +1,6 @@
 import ceylon.math.decimal {
     decimalNumber
 }
-import ceylon.math.float {
-    random
-}
 import ceylon.test {
     assertEquals,
     fail,
@@ -131,6 +128,9 @@ import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException,
     MissingChildException,
     DeprecatedPropertyException
+}
+import ceylon.random {
+    DefaultRandom
 }
 
 JPath fakeFilename = JPaths.get("");
@@ -1135,6 +1135,7 @@ void testOrdersSerialization() {
     secondUnit.setOrders(-1, "some orders");
     assertEquals(firstUnit, secondUnit, "Orders have no effect on equals");
     assertSerialization("Orders don't mess up deserialization", secondUnit);
+    // TODO: Create assertSerializedFormContains() for use here and elsewhere
     for (deprecated in {true, false}) {
         assertTrue(createSerializedForm(secondUnit, deprecated).contains("some orders"),
             "Serialized form contains orders");
@@ -1166,9 +1167,10 @@ void testOrdersSerialization() {
 }
 
 test
-void testQuoting() {
+parameters(`function threeRandomNumbers`)
+void testQuoting(Integer id) {
     Player player = PlayerImpl(0, "");
-    Unit unit = Unit(player, "kind of unit", "name of unit", 2);
+    Unit unit = Unit(player, "kind of unit", "name of unit", id);
     unit.setOrders(4, """I <3 & :( "meta'""");
     unit.setResults(5, "2 --> 1");
     assertSerialization(
@@ -1181,8 +1183,9 @@ void testQuoting() {
 }
 
 test
-void testUnitPortraitSerialization() {
-    Unit unit = Unit(PlayerImpl(1, ""), "kind", "name", 2);
+parameters(`function threeRandomNumbers`)
+void testUnitPortraitSerialization(Integer id) {
+    Unit unit = Unit(PlayerImpl(1, ""), "kind", "name", id);
     unit.portrait = "portraitFile";
     assertSerialization("Portrait doesn't mess up serialization", unit);
     for (deprecation in {true, false}) {
@@ -1193,12 +1196,13 @@ void testUnitPortraitSerialization() {
 }
 
 test
-void testAdventureSerialization() {
+parameters(`function threeRandomPairs`)
+void testAdventureSerialization(Integer idOne, Integer idTwo) {
     Player independent = PlayerImpl(1, "independent");
     AdventureFixture first = AdventureFixture(independent, "first hook brief",
-        "first hook full", 1);
+        "first hook full", idOne);
     AdventureFixture second = AdventureFixture(PlayerImpl(2, "player"),
-        "second hook brief", "second hook full", 2);
+        "second hook brief", "second hook full", idTwo);
     assertNotEquals(first, second, "Two different hooks are not equal");
     IMutableMapNG wrapper = createSimpleMap(pointFactory(1, 1),
         pointFactory(0, 0)->TileType.plains);
@@ -1207,11 +1211,11 @@ void testAdventureSerialization() {
     assertSerialization("First [[AdventureFixture]] serialization test", wrapper);
     assertSerialization("Second [[AdventureFixture]] serialization test", second);
     assertSerialization("[[AdventureFixture]] with empty descriptions",
-        AdventureFixture(PlayerImpl(3, "third"), "", "", 4));
-    Portal third = Portal("portal dest", pointFactory(1, 2), 3);
-    Portal fourth = Portal("portal dest two", pointFactory(2, 1), 4);
+        AdventureFixture(PlayerImpl(3, "third"), "", "", idOne));
+    Portal third = Portal("portal dest", pointFactory(1, 2), idOne);
+    Portal fourth = Portal("portal dest two", pointFactory(2, 1), idTwo);
     assertNotEquals(third, fourth, "Two different portals are not equal");
-    wrapper.addFixture(pointFactory(0, 0), third);
+    wrapper.addFixture(pointFactory(0, 0), fourth);
     assertSerialization("First [[Portal]] serialization test", wrapper);
     assertSerialization("Second [[Portal]] serialization test", fourth);
 }
@@ -1235,55 +1239,62 @@ void testFortressMemberSerialization() {
 }
 
 test
-void testAnimalSerialization() {
-    variable Integer i = 0;
+parameters(`function threeRandomNumbers`)
+void testAnimalSerialization(Integer id) {
     String[] statuses = ["wild", "semi-domesticated", "domesticated", "tame"];
     for (tracks in {false, true}) {
         for (talking in {false, true}) {
-            assert (exists status = statuses[i]);
-            assertSerialization("Test of [[Animal]] serialization",
-                Animal("animalKind", tracks, talking, status, i));
-            i++;
+            for (status in statuses) {
+                assertSerialization("Test of [[Animal]] serialization",
+                    Animal("animalKind", tracks, talking, status, id));
+            }
         }
     }
     assertUnwantedChild<Animal>("""<animal kind="animal"><troll /></animal>"""", false);
     assertMissingProperty<Animal>("<animal />", "kind", false);
     assertForwardDeserialization<Animal>("Forward-looking in re talking",
-        """<animal kind="animalFive" talking="false" id="3" />""",
-        Animal("animalFive", false, false, "wild", 3).equals);
+        "<animal kind=\"animalFive\" talking=\"false\" id=\"``id``\" />",
+        Animal("animalFive", false, false, "wild", id).equals);
     assertMissingProperty<Animal>("""<animal kind="animalSix" talking="true" />""", "id",
         true);
     assertMissingProperty<Animal>("""<animal kind="animalEight" id="nonNumeric" />""",
         "id", false);
     assertForwardDeserialization<Animal>("Explicit default status of animal",
-        """<animal kind="animalSeven" status="wild" id="4" />""",
-        Animal("animalSeven", false, false, "wild", 4).equals);
+        "<animal kind=\"animalSeven\" status=\"wild\" id=\"``id``\" />",
+        Animal("animalSeven", false, false, "wild", id).equals);
     assertImageSerialization("Animal image property is preserved",
-        Animal("animalFour", true, true, "status", 8));
+        Animal("animalFour", true, true, "status", id));
     assertForwardDeserialization<Animal>("Namespaced attribute",
         "<animal xmlns:sp=\"``spNamespace``\" sp:kind=\"animalNine\"
-         sp:talking=\"true\" sp:traces=\"true\" sp:status=\"tame\" sp:id=\"5\" />",
-        Animal("animalNine", true, true, "tame", 5).equals);
+         sp:talking=\"true\" sp:traces=\"true\" sp:status=\"tame\" sp:id=\"``id``\" />",
+        Animal("animalNine", true, true, "tame", id).equals);
     assertEquivalentForms("""Supports 'traces="false"'""",
-        """<animal kind="kind" status="wild" id="9" />""",
-        """<animal kind="kind" traces="false" status="wild" id="9" />""",
+        "<animal kind=\"kind\" status=\"wild\" id=\"``id``\" />",
+        "<animal kind=\"kind\" traces=\"false\" status=\"wild\" id=\"``id``\" />",
         warningLevels.die);
     assertEquivalentForms("""Former idiom still works""",
-        """<animal kind="kind" status="wild" id="10" traces="" />""",
-        """<animal kind="kind" status="wild" id="10" traces="true" />""",
+        "<animal kind=\"kind\" status=\"wild\" id=\"``id``\" traces=\"\" />",
+        "<animal kind=\"kind\" status=\"wild\" id=\"``id``\" traces=\"true\" />",
         warningLevels.die);
     assertSerialization("Animal age is preserved",
-        Animal("youngKind", false, false, "domesticated", 12, 8));
+        Animal("youngKind", false, false, "domesticated", id, 8));
     assertSerialization("Animal population count is preserved",
-        Animal("population", false, false, "wild", 13, -1, 55));
+        Animal("population", false, false, "wild", id, -1, 55));
+    assertNotEquals(Animal("animal", false, false, "wild", id, -1),
+        Animal("animal", false, false, "wild", id, 8),
+        "But animal age is checked in equals()");
+    assertNotEquals(Animal("animal", false, false, "wild", id, -1, 1),
+        Animal("animal", false, false, "wild", id, -1, 2),
+        "Animal population count is checked in equals()");
 }
 
 test
-void testCacheSerialization() {
+parameters(`function threeRandomNumbers`)
+void testCacheSerialization(Integer id) {
     assertSerialization("First test of Cache serialization", CacheFixture("kindOne",
-        "contentsOne", 1));
+        "contentsOne", id));
     assertSerialization("Second test of Cache serialization", CacheFixture("kindTwo",
-        "contentsTwo", 2));
+        "contentsTwo", id));
     assertUnwantedChild<CacheFixture>(
         """<cache kind="kind" contents="contents"><troll /></cache>""", false);
     assertMissingProperty<CacheFixture>("""<cache contents="contents" />""", "kind",
@@ -1292,54 +1303,59 @@ void testCacheSerialization() {
     assertMissingProperty<CacheFixture>("""<cache kind="kind" contents="contents" />""",
         "id", true);
     assertImageSerialization("Cache image property is preserved",
-        CacheFixture("kindThree", "contentsThree", 3));
+        CacheFixture("kindThree", "contentsThree", id));
 }
 
 test
-void testCentaurSerialization() {
+parameters(`function threeRandomNumbers`)
+void testCentaurSerialization(Integer id) {
     assertSerialization("First test of Centaur serialization",
-        Centaur("firstCentaur", 0));
+        Centaur("firstCentaur", id));
     assertSerialization("Second test of Centaur serialization",
-        Centaur("secondCentaur", 1));
+        Centaur("secondCentaur", id));
     assertUnwantedChild<Centaur>("""<centaur kind="forest"><troll /></centaur>""",
         false);
     assertMissingProperty<Centaur>("<centaur />", "kind", false);
     assertMissingProperty<Centaur>("""<centaur kind="kind" />""", "id", true);
     assertImageSerialization("Centaur image property is preserved",
-        Centaur("thirdCentaur", 2));
+        Centaur("thirdCentaur", id));
 }
 
 test
-void testDragonSerialization() {
-    assertSerialization("First test of Dragon serialization", Dragon("", 1));
-    assertSerialization("Second test of Dragon serialization", Dragon("secondDragon", 2));
+parameters(`function threeRandomNumbers`)
+void testDragonSerialization(Integer id) {
+    assertSerialization("First test of Dragon serialization", Dragon("", id));
+    assertSerialization("Second test of Dragon serialization", Dragon("secondDragon", id));
     assertUnwantedChild<Dragon>("""<dragon kind="ice"><hill /></dragon>""", false);
     assertMissingProperty<Dragon>("<dragon />", "kind", false);
     assertMissingProperty<Dragon>("""<dragon kind="kind" />""", "id", true);
     assertImageSerialization("Dragon image property is preserved",
-        Dragon("thirdDragon", 3));
+        Dragon("thirdDragon", id));
 }
 
 test
-void testFairySerialization() {
-    assertSerialization("First test of Fairy serialization", Fairy("oneFairy", 1));
-    assertSerialization("Second test of Fairy serialization", Fairy("twoFairy", 2));
+parameters(`function threeRandomNumbers`)
+void testFairySerialization(Integer id) {
+    assertSerialization("First test of Fairy serialization", Fairy("oneFairy", id));
+    assertSerialization("Second test of Fairy serialization", Fairy("twoFairy", id));
     assertUnwantedChild<Fairy>("""<fairy kind="great"><hill /></fairy>""", false);
     assertMissingProperty<Fairy>("<fairy />", "kind", false);
     assertMissingProperty<Fairy>("""<fairy kind="kind" />""", "id", true);
-    assertImageSerialization("Fairy image property is preserved", Fairy("threeFairy", 3));
+    assertImageSerialization("Fairy image property is preserved",
+        Fairy("threeFairy", id));
 }
 
 test
-void testForestSerialization() {
+parameters(`function threeRandomNumbers`)
+void testForestSerialization(Integer id) {
     assertSerialization("First test of Forest serialization",
-        Forest("firstForest", false, 1));
+        Forest("firstForest", false, id));
     assertSerialization("Second test of Forest serialization",
-        Forest("secondForest", true, 2));
+        Forest("secondForest", true, id));
     assertUnwantedChild<Forest>("""<forest kind="trees"><hill /></forest>""", false);
     assertMissingProperty<Forest>("<forest />", "kind", false);
     assertImageSerialization("Forest image property is preserved",
-        Forest("thirdForest", true, 3));
+        Forest("thirdForest", true, id));
     Point loc = pointFactory(0, 0);
     IMutableMapNG map = createSimpleMap(pointFactory(1, 1),
         loc->TileType.plains);
@@ -1356,26 +1372,25 @@ void testForestSerialization() {
                <forest kind="second" rows="true" id="5" />"""),
         warningLevels.ignore);
     assertEquivalentForms("Deserialization now supports 'rows=false'",
-        encapsulateTileString("""<forest kind="trees" id="4" />"""),
-        encapsulateTileString("""<forest kind="trees" rows="false" id="4" />"""),
+        encapsulateTileString("<forest kind=\"trees\" id=\"``id``\" />"),
+        encapsulateTileString("<forest kind=\"trees\" rows=\"false\" id=\"``id``\" />"),
         warningLevels.ignore);
 }
 
 test
-void testFortressSerialization() {
+parameters(`function threeRandomNumbers`)
+void testFortressSerialization(Integer id) {
     // Can't give player names because our test environment doesn't let us
     // pass a set of players in
     Player firstPlayer = PlayerImpl(1, "");
-    assertSerialization("First test of Fortress serialization",
-        Fortress(firstPlayer, "one", 1, TownSize.small));
-    assertSerialization("Second test of Fortress serialization",
-        Fortress(firstPlayer, "two", 2, TownSize.medium));
+    for (size in `TownSize`.caseValues) {
+        assertSerialization("First test of ``size`` Fortress serialization",
+            Fortress(firstPlayer, "one", id, size));
+        assertSerialization("Second test of ``size`` Fortress serialization",
+            Fortress(firstPlayer, "two", id, size));
+    }
     Player secondPlayer = PlayerImpl(2, "");
-    assertSerialization("Third test of Fortress serialization",
-        Fortress(secondPlayer, "three", 3, TownSize.large));
-    assertSerialization("Fourth test of Fortress serialization",
-        Fortress(secondPlayer, "four", 4, TownSize.small));
-    Fortress five = Fortress(secondPlayer, "five", 5, TownSize.small);
+    Fortress five = Fortress(secondPlayer, "five", id, TownSize.small);
     five.addMember(Unit(secondPlayer, "unitOne", "unitTwo", 1));
     assertSerialization("Fifth test of Fortress serialization", five);
     assertUnwantedChild<Fortress>("<fortress><hill /></fortress>", false);
@@ -1387,20 +1402,20 @@ void testFortressSerialization() {
 }
 
 test
-void testGiantSerialization() {
-    assertSerialization("First test of Giant serialization", Giant("one", 1));
-    assertSerialization("Second test of Giant serialization", Giant("two", 2));
+parameters(`function threeRandomNumbers`)
+void testGiantSerialization(Integer id) {
+    assertSerialization("Test of Giant serialization", Giant("one", id));
+    assertSerialization("Second test of Giant serialization", Giant("two", id));
     assertUnwantedChild<Giant>("""<giant kind="hill"><hill /></giant>""", false);
     assertMissingProperty<Giant>("<giant />", "kind", false);
     assertMissingProperty<Giant>("""<giant kind="kind" />""", "id", true);
-    assertImageSerialization("Giant image property is preserved", Giant("three", 3));
+    assertImageSerialization("Giant image property is preserved", Giant("three", id));
 }
 
 test
-void testGroundSerialization() {
-    assertSerialization("First test of Ground serialization", Ground(1, "one", true));
-    assertSerialization("Second test of Ground serialization", Ground(2, "two", true));
-    assertSerialization("Third test of Ground serialization", Ground(3, "three", false));
+parameters(`function threeRandomNumbers`)
+void testGroundSerialization(Integer id) {
+    assertSerialization("First test of Ground serialization", Ground(id, "one", true));
     Point loc = pointFactory(0, 0);
     IMutableMapNG map = createSimpleMap(pointFactory(1, 1),
         loc->TileType.plains);
@@ -1433,7 +1448,7 @@ void testGroundSerialization() {
         """<ground ground="ground" exposed="true" />""", "ground", "kind", "ground",
         true);
     assertImageSerialization("Ground image property is preserved",
-        Ground(5, "five", true));
+        Ground(id, "five", true));
 }
 
 test
@@ -1452,57 +1467,59 @@ void testSimpleSerializationNoChildren() {
 }
 
 test
-void testSimpleImageSerialization() {
+parameters(`function threeRandomNumbers`)
+void testSimpleImageSerialization(Integer id) {
     for (kind in `SimpleImmortalKind`.caseValues) {
         assertImageSerialization("``kind``  image property is preserved",
-            SimpleImmortal(kind, (random() * 1048576).integer));
+            SimpleImmortal(kind, id));
     }
-    assertImageSerialization("Hill image property is preserved", Hill(3));
-    assertImageSerialization("Oasis image property is preserved", Oasis(3));
-    assertImageSerialization("Sandbar image property is preserved", Sandbar(3));
+    assertImageSerialization("Hill image property is preserved", Hill(id));
+    assertImageSerialization("Oasis image property is preserved", Oasis(id));
+    assertImageSerialization("Sandbar image property is preserved", Sandbar(id));
 }
 
 test
-void testSimpleSerialization() {
+parameters(`function threeRandomNumbers`)
+void testSimpleSerialization(Integer id) {
     for (kind in `SimpleImmortalKind`.caseValues) {
         assertSerialization("``kind``  serialization",
-            SimpleImmortal(kind, (random() * 1048576).integer));
+            SimpleImmortal(kind, id));
     }
     assertMissingProperty<SimpleImmortal>("<djinn />", "id", true);
     assertMissingProperty<SimpleImmortal>("<griffin />", "id", true);
-    assertSerialization("Hill serialization", Hill(1));
-    assertSerialization("Hill serialization", Hill(2));
+    assertSerialization("Hill serialization", Hill(id));
     assertMissingProperty<Hill>("<hill />", "id", true);
     assertMissingProperty<SimpleImmortal>("<minotaur />", "id", true);
-    assertSerialization("Oasis serialization", Oasis(1));
-    assertSerialization("Oasis serialization", Oasis(2));
+    assertSerialization("Oasis serialization", Oasis(id));
     assertMissingProperty<Oasis>("<oasis />", "id", true);
     assertMissingProperty<SimpleImmortal>("<ogre />", "id", true);
     assertMissingProperty<SimpleImmortal>("<phoenix />", "id", true);
-    assertSerialization("Sandbar serialization", Sandbar(1));
-    assertSerialization("Sandbar serialization", Sandbar(2));
+    assertSerialization("Sandbar serialization", Sandbar(id));
     assertMissingProperty<Sandbar>("<sandbar />", "id", true);
     assertMissingProperty<SimpleImmortal>("<simurgh />", "id", true);
     assertMissingProperty<SimpleImmortal>("<sphinx />", "id", true);
     assertMissingProperty<SimpleImmortal>("<troll />", "id", true);
 }
 
+{Integer*} threeRandomNumbers() => DefaultRandom().integers(1200000).take(3);
+{[Integer, Integer]*} threeRandomPairs() => DefaultRandom().integers(1200000).paired.take(3);
+
 test
-todo("Randomly generate ID and DC numbers")
-void testCaveSerialization() {
-    assertSerialization("First CaveEvent serialization test, reflection", Cave(10, 0));
-    assertSerialization("Second CaveEvent serialization test, reflection", Cave(30, 1));
-    assertUnwantedChild<Cave>("""<cave dc="10"><troll /></cave>""", false);
+parameters(`function threeRandomPairs`)
+void testCaveSerialization(Integer dc, Integer id) {
+    assertSerialization("Cave serialization test", Cave(dc, id));
+    assertUnwantedChild<Cave>("<cave dc=\"``dc``\"><troll /></cave>", false);
     assertMissingProperty<Cave>("<cave />", "dc", false);
-    assertMissingProperty<Cave>("""<cave dc="10" />""", "id", true);
-    assertImageSerialization("Cave image property is preserved", Cave(20, 2));
+    assertMissingProperty<Cave>("<cave dc=\"``dc``\" />", "id", true);
+    assertImageSerialization("Cave image property is preserved", Cave(dc, id));
 }
 
 test
-void testMineralSerialization() {
+parameters(`function threeRandomPairs`)
+void testMineralSerialization(Integer dc, Integer id) {
     assertSerialization("First MineralEvent serialization test",
-        MineralVein("one", true, 10, 1));
-    MineralVein secondVein = MineralVein("two", false, 35, 2);
+        MineralVein("one", true, dc, id));
+    MineralVein secondVein = MineralVein("two", false, dc, id);
     assertSerialization("Second MineralEvent serialization test", secondVein);
     for (deprecation in {true, false}) {
         assertDeprecatedDeserialization("Deserialization of deprecated Mineral idiom",
@@ -1511,29 +1528,28 @@ void testMineralSerialization() {
             "mineral", "kind", "mineral");
     }
     assertUnwantedChild<MineralVein>(
-        """<mineral kind="gold" exposed="false" dc="0"><troll /></mineral>""", false);
-    assertMissingProperty<MineralVein>("""<mineral dc="0" exposed="false" />""", "kind",
-        false);
+        "<mineral kind=\"tin\" exposed=\"false\" dc=\"``dc``\"><hill/></mineral>", false);
+    assertMissingProperty<MineralVein>("<mineral dc=\"``dc``\" exposed=\"false\" />",
+        "kind", false);
     assertMissingProperty<MineralVein>("""<mineral kind="gold" exposed="false" />""",
         "dc", false);
-    assertMissingProperty<MineralVein>("""<mineral dc="0" kind="gold" />""",
+    assertMissingProperty<MineralVein>("<mineral dc=\"``dc``\" kind=\"gold\" />",
         "exposed", false);
     assertMissingProperty<MineralVein>(
-        """<mineral kind="kind" exposed="true" dc="0" />""", "id", true);
+        "<mineral kind=\"kind\" exposed=\"true\" dc=\"``dc``\" />", "id", true);
     assertImageSerialization("Mineral image property is preserved", secondVein);
 }
 
 test
-void testBattlefieldSerialization() {
-    assertSerialization("First BattlefieldEvent serialization test", Battlefield(10, 0));
-    assertSerialization("Second BattlefieldEvent serialization test",
-        Battlefield(30, 1));
-    assertUnwantedChild<Battlefield>("""<battlefield dc="10"><troll /></battlefield>""",
+parameters(`function threeRandomPairs`)
+void testBattlefieldSerialization(Integer dc, Integer id) {
+    assertSerialization("Battlefield serialization test", Battlefield(dc, id));
+    assertUnwantedChild<Battlefield>("<battlefield dc=\"``dc``\"><hill /></battlefield>",
         false);
     assertMissingProperty<Battlefield>("<battlefield />", "dc", false);
-    assertMissingProperty<Battlefield>("""<battlefield dc="10" />""", "id", true);
+    assertMissingProperty<Battlefield>("<battlefield dc=\"``dc``\" />", "id", true);
     assertImageSerialization("Battlefield image property is preserved",
-        Battlefield(20, 2));
+        Battlefield(dc, id));
 }
 
 test
