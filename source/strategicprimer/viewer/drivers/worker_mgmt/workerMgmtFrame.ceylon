@@ -31,8 +31,7 @@ import javax.swing {
     JComponent,
     KeyStroke,
     JLabel,
-    SwingUtilities,
-    JFileChooser
+    SwingUtilities
 }
 import javax.swing.tree {
     TreePath,
@@ -87,7 +86,8 @@ import strategicprimer.viewer.drivers {
     SPFrame,
     MenuBroker,
     SPDialog,
-    FileChooser
+    FileChooser,
+    filteredFileChooser
 }
 import strategicprimer.viewer.drivers.map_viewer {
     newUnitDialog,
@@ -228,7 +228,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             listenedButton("Add New Unit", (event) => newUnitFrame.setVisible(true)),
             ordersPanelObj, listenedButton("Export a proto-strategy",
                         (ActionEvent event) => FileChooser.save(null,
-                            JFileChooser(".", null))
+                            filteredFileChooser(false, ".", null))
                     .call((file) => strategyExporter.writeStrategy(
                     parsePath(file.string).resource, treeModel.dismissed))));
         contentPane = horizontalSplit(0.5, 0.5, verticalSplit(2.0 / 3.0, 2.0 / 3.0,

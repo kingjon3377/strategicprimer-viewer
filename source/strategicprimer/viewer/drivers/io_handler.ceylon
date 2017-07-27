@@ -81,7 +81,7 @@ FileFilter mapExtensionsFilter = FileNameExtensionFilter(
     "Strategic Primer world map files", "map", "xml");
 "A factory method for [[JFileChooser]] (or AWT [[FileDialog|JFileDialog]] taking a
  [[FileFilter]] to apply in the same operation."
-JFileChooser|JFileDialog filteredFileChooser(
+shared JFileChooser|JFileDialog filteredFileChooser(
         "Whether to allow multi-selection."
         Boolean allowMultiple,
         "The current directory."
