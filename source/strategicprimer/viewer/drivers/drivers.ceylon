@@ -205,9 +205,8 @@ String usageMessage(IDriverUsage usage, Boolean verbose) {
     return builder.string;
 }
 void handleDroppedFiles(AppEvent.OpenFilesEvent openFilesEvent) {
-    SPFrame? topWindow = WindowList.getWindows(true, false).iterable
-        .narrow<SPFrame>().last;
-    if (exists topWindow) {
+    if (exists topWindow = WindowList.getWindows(true, false)
+            .iterable.narrow<SPFrame>().last) {
         for (file in openFilesEvent.files) {
             topWindow.acceptDroppedFile(file.toPath());
         }
