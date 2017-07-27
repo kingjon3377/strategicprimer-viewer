@@ -34,8 +34,25 @@ shared class Animal(kind, traces, talking, status, id, born = -1, population = 1
 	shared Integer population;
 	"A population cannot have fewer than one individual."
 	assert (population >= 1);
-	shared actual String shortDescription =>
-			"``(traces) then "traces of " else ""````(talking) then "talking " else ""````kind````(!traces && !talking && born >= 0) then "born ``born``" else ""``";
+	shared actual String shortDescription {
+		if (traces) {
+			return "traces of ``kind``";
+		} else if (talking) {
+			return "talking ``kind``";
+		} else {
+			String popString;
+			if (population == 1) {
+				popString = "";
+			} else {
+				popString = "``population`` ";
+			}
+			if (born >= 0) {
+				return "``popString````kind`` (born ``born``)";
+			} else {
+				return "``popString````status`` ``kind``";
+			}
+		}
+	}
 	"Default image filename"
 	todo("Should depend on the kind of animal")
 	shared actual String defaultImage = (traces) then "tracks.png" else "animal.png";
