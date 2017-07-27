@@ -206,11 +206,8 @@ object mapCheckerCLI satisfies UtilityDriver {
     }
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
-        String[] filenames = args.coalesced.sequence();
-        if (nonempty filenames) {
-            for (filename in filenames) {
-                check(JPaths.get(filename), cli.println, cli.println);
-            }
+        for (filename in args.coalesced) {
+            check(JPaths.get(filename), cli.println, cli.println);
         }
     }
 }
