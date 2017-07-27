@@ -73,14 +73,10 @@ object expansionDriver satisfies SimpleCLIDriver {
             for (pair in model.subordinateMaps) {
                 IMutableMapNG map = pair.first;
                 Player currentPlayer = map.currentPlayer;
-                Boolean containsSwornVillage(Point point) {
-//                    for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
-                    for (fixture in map.fixtures.get(point)) {
-                        if (is ITownFixture fixture, currentPlayer == fixture.owner) {
-                            return true;
-                        }
-                    }
-                    return false;
+                Boolean containsSwornVillage(Point point) { // TODO: fat arrow once syntax sugar in place
+//                    return map.fixtures[point].narrow<ITownFixture>() // TODO: syntax sugar once compiler bug fixed
+                    return map.fixtures.get(point).narrow<ITownFixture>()
+                        .map(HasOwner.owner).any(currentPlayer.equals);
                 }
                 void safeAdd(Point point, TileFixture fixture) {
                     if (is HasOwner fixture) {
