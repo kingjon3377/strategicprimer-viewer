@@ -260,11 +260,8 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
     JPanel resourcePanel = boxPanel(BoxAxis.lineAxis);
     StreamingLabel logLabel = StreamingLabel();
     String css = """color:white; margin-bottom: 0.5em; margin-top: 0.5em;""";
-    void logAddition(String addend) {
-        logLabel.append(
-                "<p style=\"``css``\">Added ``
-                addend`` for ``currentPlayer.name``");
-    }
+    void logAddition(String addend) => logLabel.append(
+                "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``");
     "Extends [[ImprovedComboBox]] to keep a running collection of values."
     class UpdatedComboBox() extends ImprovedComboBox<String>() {
         "The values we've had in the past."
