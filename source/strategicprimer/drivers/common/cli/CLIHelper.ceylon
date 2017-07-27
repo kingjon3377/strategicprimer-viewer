@@ -19,6 +19,9 @@ import java.io {
 import strategicprimer.model.map {
     HasName
 }
+import lovelace.util.common {
+    todo
+}
 "A helper class to let help CLIs interact with the user, encapsulating input and output
  streams."
 shared sealed class CLIHelper(istream = process.readLine, ostream = process.write)
@@ -183,6 +186,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 	}
 	"Ask the user a yes-or-no question, allowing yes-to-all or no-to-all to skip further
 	 questions."
+	todo("Allow caller to specify loop-breaking response like 'quit'")
 	shared actual Boolean inputBooleanInSeries(String prompt, String key) {
 		if (exists retval = seriesState[key]) {
 			writePrompt(prompt);
