@@ -84,11 +84,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
 
     shared actual Integer getIndexOfChild(Object parent, Object child) {
         if (is Player parent, is IUnit child) {
-            if (exists key->item = model.getUnits(parent).locate(child.equals)) {
-                return key;
-            } else {
-                return -1;
-            }
+            return model.getUnits(parent).locate(child.equals)?.key else -1;
         } else if (is IUnit parent,
             exists index->ignored = parent.locate(child.equals)) {
             return index;
