@@ -42,7 +42,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             satisfies Iterable<TreeNode> given T satisfies Object {
         shared actual Iterator<TreeNode> iterator() {
             value wrapped = children();
-            object retval satisfies Iterator<TreeNode> {
+            return object satisfies Iterator<TreeNode> {
                 shared actual TreeNode|Finished next() {
                     if (wrapped.hasMoreElements()) {
                         assert (is TreeNode item = wrapped.nextElement());
@@ -51,8 +51,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                         return finished;
                     }
                 }
-            }
-            return retval;
+            };
         }
         // Can't refine userObject to narrow its type because that would narrow the type
         // of the setter as well, which Ceylon's type system doesn't allow.
