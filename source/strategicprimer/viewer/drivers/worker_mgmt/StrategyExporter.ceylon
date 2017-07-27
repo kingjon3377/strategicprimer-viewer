@@ -138,7 +138,6 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                         writer.writeLine("TODO");
                     }
                     writer.writeLine();
-                    writer.writeLine();
                 }
             }
         }
