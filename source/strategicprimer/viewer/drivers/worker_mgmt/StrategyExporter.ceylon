@@ -112,7 +112,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                 writer.writeLine();
                 writer.writeLine();
             }
-            writer.write("Workers:");
+            writer.writeLine("Workers:");
+            writer.writeLine();
             for (kind->list in unitsByKind) {
                 writer.writeLine("* ``kind``:");
                 for (unit in list) {
