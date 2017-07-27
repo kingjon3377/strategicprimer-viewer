@@ -41,7 +41,8 @@ import javax.xml.stream {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    as
 }
 import lovelace.util.jvm {
     showErrorDialog,
@@ -110,13 +111,7 @@ todo("Further splitting up", "Fix circular dependency between this and viewerGUI
 shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli)
         satisfies ActionListener {
     shared actual void actionPerformed(ActionEvent event) {
-        value temp = event.source;
-        Component? source;
-        if (is Component temp) {
-            source = temp;
-        } else {
-            source = null;
-        }
+        Component? source = as<Component>(event.source);
         variable String errorTitle = "Strategic Primer Assistive Programs";
         variable Component? iter = source;
         while (exists local = iter) {
