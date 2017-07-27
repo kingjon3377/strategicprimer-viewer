@@ -79,25 +79,29 @@ import ceylon.language.meta {
 
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(
     "Strategic Primer world map files", "map", "xml");
-"A factory method for [[JFileChooser]] taking a [[FileFilter]] to apply in the same
- operation."
+"A factory method for [[JFileChooser]] (or AWT [[FileDialog|JFileDialog]] taking a
+ [[FileFilter]] to apply in the same operation."
 JFileChooser|JFileDialog filteredFileChooser(
         "Whether to allow multi-selection."
         Boolean allowMultiple,
         "The current directory."
         String current = ".",
         "The filter to apply."
-        FileFilter filter = mapExtensionsFilter) {
+        FileFilter? filter = mapExtensionsFilter) {
     if (platform.systemIsMac) {
         JFileDialog retval = JFileDialog(null of Frame?);
-        retval.filenameFilter = object satisfies FilenameFilter {
-            shared actual Boolean accept(JFile dir, String name) =>
-                    filter.accept(JFile(dir, name));
-        };
+        if (exists filter) {
+            retval.filenameFilter = object satisfies FilenameFilter {
+                shared actual Boolean accept(JFile dir, String name) =>
+                        filter.accept(JFile(dir, name));
+            };
+        }
         return retval;
     } else {
         JFileChooser retval = JFileChooser(current);
-        retval.fileFilter = filter;
+        if (exists filter) {
+            retval.fileFilter = filter;
+        }
         return retval;
     }
 }
