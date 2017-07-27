@@ -102,8 +102,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
         .flatMap((IMutableMapNG temp) => temp.players.distinct);
     "Add a resource to a player's HQ."
     shared void addResource(FortressMember resource, Player player) {
-        for (pair in allMaps) {
-            IMutableMapNG map = pair.first;
+        for ([map, _] in allMaps) {
             Player mapPlayer = map.currentPlayer;
             if (mapPlayer.independent || mapPlayer.playerId < 0 ||
                     mapPlayer.playerId == player.playerId) {
