@@ -33,6 +33,9 @@ import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     IWorker
 }
+import strategicprimer.model.map.fixtures.mobile.worker {
+    IJob
+}
 "A class to write a proto-strategy to file."
 class StrategyExporter(IWorkerModel model, SPOptions options)
         satisfies PlayerChangeListener {
@@ -42,9 +45,10 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
     void writeMember(Writer writer, UnitMember? member) {
         if (is IWorker member) {
             writer.write(member.name);
-            if (exists first = member.first) {
+            {IJob*} jobs = member.filter((job) => !job.emptyJob);
+            if (exists first = jobs.first) {
                 writer.write(" (``first.name`` ``first.level``");
-                for (job in member.rest) {
+                for (job in jobs.rest) {
                     writer.write(", ``job.name`` ``job.level``");
                 }
                 writer.write(")");
