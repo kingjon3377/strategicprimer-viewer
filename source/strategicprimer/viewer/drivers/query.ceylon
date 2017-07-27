@@ -207,19 +207,19 @@ object queryCLI satisfies SimpleDriver {
             .format(distance(start, end, dimensions), 0, 0)``");
     }
     "Run hunting or fishing---that is, produce a list of possible encounters."
-    void hunt(HuntingModel huntModel, Point point,
-            "True if this is hunting, false if fishing."
-            Boolean land, ICLIHelper cli,
+    void hunt(HuntingModel huntModel, Point point, ICLIHelper cli,
             "How many encounters to show."
             Integer encounters) {
-        if (land) {
-            for (encounter in huntModel.hunt(point, encounters)) {
-                cli.println(encounter);
-            }
-        } else {
-            for (encounter in huntModel.fish(point, encounters)) {
-                cli.println(encounter);
-            }
+        for (encounter in huntModel.hunt(point, encounters)) {
+            cli.println(encounter);
+        }
+    }
+    "Run fishing---that is, produce a list of possible encounters."
+    void fish(HuntingModel huntModel, Point point, ICLIHelper cli,
+            "How many encounters to show"
+            Integer encounters) {
+        for (encounter in huntModel.fish(point, encounters)) {
+            cli.println(encounter);
         }
     }
     "Run food-gathering---that is, produce a list of possible encounters."
@@ -386,9 +386,9 @@ object queryCLI satisfies SimpleDriver {
         case ('?') { replUsage(cli); }
         case('f') { fortressInfo(model.map, cli.inputPoint("Location of fortress? "),
             cli); }
-        case ('h') { hunt(huntModel, cli.inputPoint("Location to hunt? "), true, cli,
+        case ('h') { hunt(huntModel, cli.inputPoint("Location to hunt? "), cli,
             hunterHours * hourlyEncounters); }
-        case ('i') { hunt(huntModel, cli.inputPoint("Location to fish? "), false, cli,
+        case ('i') { fish(huntModel, cli.inputPoint("Location to fish? "), cli,
             hunterHours * hourlyEncounters); }
         case ('g') { gather(huntModel, cli.inputPoint("Location to gather? "), cli,
             hunterHours * hourlyEncounters); }
