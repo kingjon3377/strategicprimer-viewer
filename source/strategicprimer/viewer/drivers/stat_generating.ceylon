@@ -155,15 +155,8 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         }
     }
     "Get the index of the lowest value in an array."
-    Integer getMinIndex(Integer[] array) {
-        variable Integer retval = 0;
-        for (index->item in array.indexed) {
-            if (exists retItem = array[retval], item < retItem) {
-                retval = index;
-            }
-        }
-        return retval;
-    }
+    Integer getMinIndex(Integer[] array) =>
+            array.indexed.max((kOne->iOne, kTwo->iTwo) => iTwo <=> iOne)?.key else 0;
     MutableMap<String, WorkerStats> racialBonuses = HashMap<String, WorkerStats>();
     WorkerStats loadRacialBonus(String race) {
         if (exists retval = racialBonuses[race]) {
