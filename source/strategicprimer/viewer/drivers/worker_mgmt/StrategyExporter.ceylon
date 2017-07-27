@@ -99,7 +99,6 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             writer.writeLine("[``playerName``");
             writer.writeLine("Turn ``turn``]");
             writer.writeLine();
-            writer.writeLine();
             writer.writeLine("Inventions: TODO: any?");
             writer.writeLine();
             if (!dismissed.empty) {
