@@ -180,17 +180,26 @@ object statGeneratingCLI satisfies SimpleCLIDriver {
         Integer die(Integer max) => (random() * max).integer + 1;
         WorkerStats base = WorkerStats.random(() => die(6) + die(6) + die(6));
         Integer lowestScore = getMinIndex(base.array);
+        variable Boolean alwaysLowest = false;
         WorkerStats racialBonus;
         if (race == "human") {
-            Integer chosenBonus = cli.chooseStringFromList(["Strength", "Dexterity",
-                    "Constitution", "Intelligence", "Wisdom", "Charisma", "Lowest"],
-                "Character is a ``race``; which stat should get a +2 bonus?", "",
-                "Stat for bonus:", false).key;
             Integer bonusStat;
-            if (chosenBonus < 6) {
-                bonusStat = chosenBonus;
-            } else {
+            if (alwaysLowest) {
                 bonusStat = lowestScore;
+            } else {
+                Integer chosenBonus = cli.chooseStringFromList(["Strength", "Dexterity",
+                    "Constitution", "Intelligence", "Wisdom", "Charisma", "Lowest",
+                    "Always Choose Lowest"],
+                    "Character is a ``race``; which stat should get a +2 bonus?", "",
+                    "Stat for bonus:", false).key;
+                if (chosenBonus<6) {
+                    bonusStat = chosenBonus;
+                } else if (chosenBonus == 7) {
+                    bonusStat = lowestScore;
+                    alwaysLowest = true;
+                } else {
+                    bonusStat = lowestScore;
+                }
             }
             switch (bonusStat)
             case (0) { racialBonus = WorkerStats.factory(2, 0, 0, 0, 0, 0); }
