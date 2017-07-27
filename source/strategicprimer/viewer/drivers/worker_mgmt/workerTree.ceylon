@@ -11,7 +11,8 @@ import java.awt {
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     ProxyWorker,
-    WorkerStats
+    WorkerStats,
+    IJob
 }
 import strategicprimer.model.map {
     HasImage,
@@ -210,9 +211,10 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
             String jobCSL(IWorker worker) {
                 StringBuilder builder = StringBuilder();
-                if (exists first = worker.first) {
+                {IJob*} jobs = worker.filter((IJob job) => !job.emptyJob);
+                if (exists first = jobs.first) {
                     builder.append(" (``first.name`` ``first.level``");
-                    for (job in worker.rest) {
+                    for (job in jobs.rest) {
                         builder.append(", ``job.name`` ``job.level``");
                     }
                     builder.append(")");
