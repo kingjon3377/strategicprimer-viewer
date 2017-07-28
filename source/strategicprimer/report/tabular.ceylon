@@ -57,13 +57,12 @@ shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
     };
     for (generator in generators) {
         generator.produceTable(source(generator.tableName), fixtures);
-        // FIXME: Move the rest of this out of the loop!
-        for ([loc, fixture] in fixtures.items) {
-            if (is TerrainFixture fixture) {
-                fixtures.remove(fixture.id);
-            } else {
-                process.writeLine("Unhandled fixture:   ``fixture``");
-            }
+    }
+    for ([loc, fixture] in fixtures.items) {
+        if (is TerrainFixture fixture) {
+            fixtures.remove(fixture.id);
+        } else {
+            process.writeLine("Unhandled fixture:   ``fixture``");
         }
     }
 }
@@ -104,6 +103,7 @@ shared void createGUITabularReports(
         consumer(generator.tableName, JScrollPane(table, vertControl,
             horizControl));
     }
+    // TODO: report this in a tab in the window
     for ([loc, fixture] in fixtures.items) {
         if (is TerrainFixture fixture) {
             fixtures.remove(fixture.id);
