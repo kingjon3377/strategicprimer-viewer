@@ -21,8 +21,8 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
     shared actual [String+] headerRow = ["Distance", "Location", "Number", "Kind", "Age"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "animals";
-    "Produce a single line of the tabular report on animals."
-    shared actual Boolean produce(Anything(String) ostream,
+    "Create a GUI table row representing the given animal."
+    shared actual {String+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Animal item, Point loc) {
         String kind;
@@ -45,7 +45,7 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
                 } else if (item.born == currentTurn) {
                     age = "newborn";
                 } else if (exists maturityAge = maturityModel.maturityAges[item.kind],
-                        maturityAge <= (currentTurn - item.born)) {
+                    maturityAge <= (currentTurn - item.born)) {
                     age = "adult";
                 } else {
                     age = "``currentTurn - item.born`` turns";
@@ -58,9 +58,7 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
             age = "---";
             population = "---";
         }
-        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, population,
-            kind, age);
-        return true;
+        return {distanceString(loc, hq, dimensions), loc.string, population, kind, age};
     }
     "Compare two pairs of Animals and locations."
     shared actual Comparison comparePairs([Point, Animal] one, [Point, Animal] two) {

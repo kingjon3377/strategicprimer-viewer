@@ -35,15 +35,13 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
     "The header row for this table."
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Kind", "Size",
         "Status", "Name"];
-    "Produce a table line representing a town."
-    shared actual Boolean produce(Anything(String) ostream,
+    "Create a GUI table row representing a town."
+    shared actual {String+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            AbstractTown item, Point loc) {
-        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string,
-            ownerString(player, item.owner), item.kind, item.townSize.string,
-            item.status.string, item.name);
-        return true;
-    }
+            AbstractTown item, Point loc) =>
+            {distanceString(loc, hq, dimensions), loc.string,
+                ownerString(player, item.owner), item.kind, item.townSize.string,
+                item.status.string, item.name};
     "Compare two location-town pairs."
     shared actual Comparison comparePairs([Point, AbstractTown] one,
             [Point, AbstractTown] two) {

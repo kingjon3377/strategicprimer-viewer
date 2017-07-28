@@ -27,8 +27,8 @@ shared class ResourceTabularReportGenerator()
     shared actual String tableName = "resources";
     "The header row for this table."
     shared actual [String+] headerRow = ["Kind", "Quantity", "Specifics"];
-    "Write a table row based on the given fixture."
-    shared actual Boolean produce(Anything(String) ostream,
+    "Create a GUI table row representing the given fixture."
+    shared actual {String+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Implement|CacheFixture|ResourcePile item, Point loc) {
         String kind;
@@ -50,8 +50,7 @@ shared class ResourceTabularReportGenerator()
             quantity = "---";
             specifics = item.contents;
         }
-        writeRow(ostream, kind, quantity, specifics);
-        return true;
+        return {kind, quantity, specifics};
     }
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs(
@@ -113,13 +112,13 @@ shared class ResourceTabularReportGenerator()
                 fixtures.remove(key);
             } case (is CacheFixture) {
                 // FIXME: combine with ResourcePile case once compiler accepts it
-                if (produce(ostream, fixtures, fixture, loc)) {
-                    fixtures.remove(key);
-                }
+                value row = produce(fixtures, fixture, loc);
+                writeRow(ostream, row.first, *row.rest);
+                fixtures.remove(key);
             } case (is ResourcePile) {
-                if (produce(ostream, fixtures, fixture, loc)) {
-                    fixtures.remove(key);
-                }
+                value row = produce(fixtures, fixture, loc);
+                writeRow(ostream, row.first, *row.rest);
+                fixtures.remove(key);
             }
         }
         for (key->count in implementCounts) {

@@ -25,21 +25,20 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
         "Dex", "Con", "Int", "Wis", "Cha"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "workers";
-    "Produce a table line representing a worker."
-    shared actual Boolean produce(Anything(String) ostream,
+    "Create a GUI table row representing a worker."
+    shared actual {String+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IWorker item,
             Point loc) {
         if (exists stats = item.stats) {
-            writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, item.name,
+            return {distanceString(loc, hq, dimensions), loc.string, item.name,
                 stats.hitPoints.string, stats.maxHitPoints.string,
-            for (stat in { stats.strength, stats.dexterity, stats.constitution,
-                stats.intelligence, stats.wisdom, stats.charisma })
-            WorkerStats.getModifierString(stat) );
+                for (stat in { stats.strength, stats.dexterity, stats.constitution,
+                    stats.intelligence, stats.wisdom, stats.charisma })
+                        WorkerStats.getModifierString(stat) };
         } else {
-            writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, item.name,
-                *(0..9).map((num) => "---"));
+            return {distanceString(loc, hq, dimensions), loc.string, item.name,
+                *(0..9).map((num) => "---")};
         }
-        return true;
     }
     "Compare two worker-location pairs."
     shared actual Comparison comparePairs([Point, IWorker] one,

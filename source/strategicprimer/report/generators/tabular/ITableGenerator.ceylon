@@ -21,6 +21,14 @@ import strategicprimer.model.map {
     Point,
     MapDimensions
 }
+import javax.swing.table {
+    TableModel,
+    DefaultTableModel
+}
+import ceylon.interop.java {
+    createJavaObjectArray,
+    javaString
+}
 "A regular expression to mtch quote characters."
 Regex quotePattern = regex("\"", true);
 "An interface for tabular-report generators. It's expected that implementers will take the
@@ -42,18 +50,42 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             comparePairs));
         writeRow(ostream, headerRow.first, *headerRow.rest);
         for ([num, [loc, item]] in values) {
-            if (produce(ostream, fixtures, item,
-                loc)) {
+            if (exists row = produce(fixtures, item, loc)) {
+                writeRow(ostream, row.first, *row.rest);
                 fixtures.remove(num);
             }
         }
         fixtures.coalesce();
     }
-    "Produce a single line of the tabular report. Return whether to remove this item from
-     the collection."
-    shared formal Boolean produce(
-            "The stream to write the row to."
-            Anything(String) ostream,
+    "Produce a tabular report on a particular category of fixtures in the map, in the
+     format of a model for a Swing JTable, and remove all fixtures covered in the table
+     from the collection."
+    shared default TableModel produceTableModel(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
+        MutableList<[Integer, [Point, T]]> temp =
+                ArrayList<[Integer, [Point, T]]>();
+        for (key->val in fixtures) {
+            if (is T fixture = val.rest.first) {
+                temp.add([key, [val.first, fixture]]);
+            }
+        }
+        {[Integer, [Point, T]]*} values = temp
+            .sort(comparingOn(([Integer, [Point, T]] pair) => pair.rest.first,
+            comparePairs));
+        DefaultTableModel retval = DefaultTableModel(
+            createJavaObjectArray(headerRow.map(javaString)), headerRow.size);
+        for ([num, [loc, item]] in values) {
+            if (exists row = produce(fixtures, item, loc)) {
+                fixtures.remove(num);
+                retval.addRow(createJavaObjectArray(row.map(javaString)));
+            }
+        }
+        fixtures.coalesce();
+        return retval;
+    }
+    "Produce a single line of the tabular report in a form suitable for adding to a Swing
+     JTable. Returns null if not handled by this generator."
+    shared formal {String+}? produce(
             "The set of fixtures."
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             "The item to base this line on."

@@ -21,13 +21,11 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
     shared actual [String+] headerRow = ["Distance", "Location", "Immortal"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "immortals";
-    "Produce a table row for the given fixture."
-    shared actual Boolean produce(Anything(String) ostream,
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Immortal item,
-            Point loc) {
-        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string, item.string);
-        return true;
-    }
+    "Create a GUI table row representing the given fixture."
+    shared actual {String+} produce(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            Immortal item, Point loc) =>
+            {distanceString(loc, hq, dimensions), loc.string, item.string};
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, Immortal] one,
             [Point, Immortal] two) {

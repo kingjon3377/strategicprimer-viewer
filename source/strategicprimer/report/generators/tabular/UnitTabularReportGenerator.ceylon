@@ -24,13 +24,13 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
             ["Distance", "Location", "Owner", "Kind/Category", "Name", "Orders"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "units";
-    "Write a table row representing a unit."
-    shared actual Boolean produce(Anything(String) ostream,
+    "Create a GUI table row representing the unit."
+    shared actual {String+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IUnit item,
             Point loc) {
-        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string,
-            ownerString(player, item.owner), item.kind, item.name,
-            item.allOrders.last?.item else "");
+        {String+} retval = {distanceString(loc, hq, dimensions), loc.string,
+                ownerString(player, item.owner), item.kind, item.name,
+                item.allOrders.last?.item else ""};
         for (member in item) {
             if (is Animal item) {
                 // We don't want animals inside a unit showing up in the wild-animal
@@ -42,7 +42,7 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
                 fixtures.remove(item.id);
             }
         }
-        return true;
+        return retval;
     }
     "Compare two location-unit pairs."
     shared actual Comparison comparePairs([Point, IUnit] one, [Point, IUnit] two) {

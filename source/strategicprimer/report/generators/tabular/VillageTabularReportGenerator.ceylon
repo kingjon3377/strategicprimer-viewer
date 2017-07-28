@@ -22,13 +22,11 @@ shared class VillageTabularReportGenerator(Player player, Point hq,
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Name"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "villages";
-    shared actual Boolean produce(Anything(String) ostream,
+    "Create a GUI table row representing the village."
+    shared actual {String+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Village item,
-            Point loc) {
-        writeRow(ostream, distanceString(loc, hq, dimensions), loc.string,
-            ownerString(player, item.owner), item.name);
-        return true;
-    }
+            Point loc) => {distanceString(loc, hq, dimensions), loc.string,
+        ownerString(player, item.owner), item.name};
     "Compare two location-and-village pairs."
     shared actual Comparison comparePairs([Point, Village] one,
             [Point, Village] two) {
