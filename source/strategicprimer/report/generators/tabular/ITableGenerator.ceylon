@@ -73,7 +73,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             .sort(comparingOn(([Integer, [Point, T]] pair) => pair.rest.first,
             comparePairs));
         DefaultTableModel retval = DefaultTableModel(
-            createJavaObjectArray(headerRow.map(javaString)), headerRow.size);
+            createJavaObjectArray(headerRow.map(javaString)), 0);
         for ([num, [loc, item]] in values) {
             if (exists row = produce(fixtures, item, loc)) {
                 fixtures.remove(num);

@@ -154,8 +154,7 @@ Map<String, ISPDriver[2]> createCache() {
     // TODO: Write GUI equivalent of Map Populator Driver
     choice(mapPopulatorDriver);
     choices(resourceAddingCLI, resourceAddingGUI);
-    // TODO: Write GUI equivalent of tabular report driver
-    choice(tabularReportCLI);
+    choices(tabularReportCLI, tabularReportGUI);
     // TODO: Write GUI to allow user to visually explore a mine
     choice(miningCLI);
     // TODO: Write GUI to allow user to generate or enter town contents

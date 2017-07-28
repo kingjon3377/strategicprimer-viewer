@@ -34,7 +34,15 @@ import strategicprimer.model.map {
 }
 import strategicprimer.report {
     createReport,
-    createTabularReports
+    createTabularReports,
+    createGUITabularReports
+}
+import javax.swing {
+    JTabbedPane
+}
+import java.awt {
+    Dimension,
+    Component
 }
 "A driver to produce a report of the contents of a map."
 object reportCLI satisfies SimpleDriver {
@@ -104,6 +112,34 @@ object reportCLI satisfies SimpleDriver {
     }
     "As we're a CLI driver, we can't show a file-chooser dialog."
     shared actual {JPath*} askUserForFiles() => {};
+}
+"A driver to show tabular reports of the contents of a player's map in a GUI."
+object tabularReportGUI satisfies SimpleDriver {
+    shared actual IDriverUsage usage = DriverUsage(true, "-b", "--tabular",
+        ParamCount.one, "Tabular Report Viewer",
+        "Show the contents of a map in tabular form");
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        object window extends SPFrame("Tabular Report", model.mapFile, Dimension(640, 480)) {
+            shared actual Boolean supportsDroppedFiles => false;
+            shared actual String windowName => "Tabular Report";
+        }
+        JTabbedPane frame = JTabbedPane(JTabbedPane.top, JTabbedPane.scrollTabLayout);
+        createGUITabularReports((String str, Component comp) => frame.addTab(str, comp),
+            model.map);
+        window.add(frame);
+        // FIXME: Add menus!
+        window.setVisible(true);
+    }
+    "Ask the user to choose a file."
+    shared actual {JPath*} askUserForFiles() {
+        try {
+            return FileChooser.open(null).files;
+        } catch (FileChooser.ChoiceInterruptedException except) {
+            throw DriverFailedException(except,
+                "Choice interrupted or user didn't choose");
+        }
+    }
 }
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
 object tabularReportCLI satisfies SimpleDriver {
