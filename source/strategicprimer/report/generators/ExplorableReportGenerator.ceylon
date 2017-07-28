@@ -97,6 +97,7 @@ shared class ExplorableReportGenerator(
             MutableMap<AdventureFixture, Point> adventures =
                     HeadedMapImpl<AdventureFixture, Point>(
                         "<h4>Possible Adventures</h4>");
+            // TODO: Use ceylon.language::map instead of HashMap
             Map<Type<IFixture>, Anything([Point, IFixture])> collectors =
                     HashMap<Type<IFixture>, Anything([Point, IFixture])> {
                         entries = { `Portal`->(([Point, IFixture] pair) =>
@@ -176,6 +177,7 @@ shared class ExplorableReportGenerator(
             IReportNode battles = ListReportNode("Battlefields");
             IReportNode caves = ListReportNode("Caves");
             IReportNode adventures = SectionListReportNode(4, "Possible Adventures");
+            // TODO: Use ceylon.language::map instead of HashMap
             Map<Type<IFixture>, IReportNode> nodes =
                     HashMap<Type<IFixture>, IReportNode> {
                         entries = { `Portal`->portals, `Battlefield`->battles,
@@ -199,7 +201,7 @@ shared class ExplorableReportGenerator(
             } else if (adventures.childCount == 0) {
                 return retval;
             } else {
-                IReportNode real = ComplexReportNode();
+                IReportNode real = ComplexReportNode("Things to be Explored");
                 real.appendNode(retval);
                 real.appendNode(adventures);
                 return real;
