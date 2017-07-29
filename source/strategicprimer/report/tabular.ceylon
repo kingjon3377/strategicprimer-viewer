@@ -1,5 +1,32 @@
+import ceylon.collection {
+    MutableList,
+    ArrayList
+}
+import ceylon.interop.java {
+    createJavaStringArray
+}
+
+import java.awt {
+    Component
+}
+import java.lang {
+    JString=String
+}
+
+import javax.swing {
+    JTable,
+    ScrollPaneConstants,
+    JScrollPane,
+    JList,
+    JLabel
+}
+
 import lovelace.util.common {
     DelayedRemovalMap
+}
+import lovelace.util.jvm {
+    platform,
+    BorderedPanel
 }
 
 import strategicprimer.model.map {
@@ -24,17 +51,6 @@ import strategicprimer.report.generators.tabular {
     ResourceTabularReportGenerator,
     ImmortalsTabularReportGenerator,
     ExplorableTabularReportGenerator
-}
-import java.awt {
-    Component
-}
-import javax.swing {
-    JTable,
-    ScrollPaneConstants,
-    JScrollPane
-}
-import lovelace.util.jvm {
-    platform
 }
 "A method to produce tabular reports based on a map for a player."
 shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
@@ -103,12 +119,17 @@ shared void createGUITabularReports(
         consumer(generator.tableName, JScrollPane(table, vertControl,
             horizControl));
     }
-    // TODO: report this in a tab in the window
+    MutableList<String> unhandled = ArrayList<String>();
     for ([loc, fixture] in fixtures.items) {
         if (is TerrainFixture fixture) {
             fixtures.remove(fixture.id);
         } else {
-            process.writeLine("Unhandled fixture:   ``fixture``");
+            unhandled.add(fixture.string);
         }
+    }
+    if (!unhandled.empty) {
+        consumer("other", BorderedPanel.verticalPanel(
+            JLabel("Fixtures not covered in any of the reports:"),
+            JList<JString>(createJavaStringArray(unhandled)), null));
     }
 }
