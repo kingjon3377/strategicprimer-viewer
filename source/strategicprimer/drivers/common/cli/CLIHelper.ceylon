@@ -221,7 +221,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 	shared actual Integer->String? chooseStringFromList(String[] items,
 			String description, String none, String prompt, Boolean auto) {
 		return chooseFromListImpl<String>(items, description, none, prompt, auto,
-					(String x) => x);
+					identity);
 	}
 	"Print the specified string, then a newline."
 	shared actual void println(String line) {
