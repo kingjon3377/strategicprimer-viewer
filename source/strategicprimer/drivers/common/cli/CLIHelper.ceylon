@@ -229,7 +229,5 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 		ostream(operatingSystem.newline);
 	}
 	"Print the specified string."
-	shared actual void print(String text) {
-		ostream(text);
-	}
+	shared actual void print(String text) => ostream(text);
 }
