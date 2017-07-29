@@ -178,11 +178,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 	 whitespace."
 	shared actual String inputString(String prompt) {
 		writePrompt(prompt);
-		if (exists line = istream()) {
-			return line.trimmed;
-		} else {
-			return "";
-		}
+		return istream()?.trimmed else "";
 	}
 	"Ask the user a yes-or-no question, allowing yes-to-all or no-to-all to skip further
 	 questions."
