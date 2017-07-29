@@ -50,7 +50,8 @@ import strategicprimer.model.map.fixtures.mobile {
     Giant,
     SimpleImmortal,
     Unit,
-    SimpleImmortalKind
+    SimpleImmortalKind,
+    IUnit
 }
 import strategicprimer.model.map.fixtures.resources {
     Grove,
@@ -99,7 +100,8 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
     // Can't use our preferred initialization form because an Iterable can only be spread
     // as the *last* argument.
     for (arg in {
-    // TODO: Maybe units should be broken up by owner?
+        complements<IUnit>((unit) => !unit.owner.independent, "Units",
+            "Independent Units"),
         trivialMatcher(`Unit`), trivialMatcher(`Fortress`, "Fortresses"),
         // TODO: Towns should be broken up by kind or size, and maybe by status or owner
         trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
