@@ -32,9 +32,7 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&
     shared formal variable String text;
     """Whether this is "the empty node," which should always be ignored."""
     shared default Boolean emptyNode => false;
-    """Compare to another node. Note that this is an expensive implementation, producing
-       and delegating to the HTML representation."""
-    todo("Implement more efficiently")
+    """Compare to another node."""
     shared actual default Comparison compare(IReportNode node) =>
             text.compare(node.text);
     "Add children iff they have children of their own."
