@@ -1,8 +1,7 @@
 import ceylon.collection {
     ArrayList,
     MutableMap,
-    MutableList,
-    HashMap
+    MutableList
 }
 import ceylon.language.meta {
     type
@@ -44,6 +43,9 @@ import strategicprimer.report.nodes {
     SectionListReportNode,
     emptyReportNode,
     ComplexReportNode
+}
+import ceylon.language {
+    createMap=map
 }
 "A report generator for caves, battlefields, adventure hooks, and portals."
 todo("Use union type instead of interface, here and elsewhere")
@@ -97,10 +99,9 @@ shared class ExplorableReportGenerator(
             MutableMap<AdventureFixture, Point> adventures =
                     HeadedMapImpl<AdventureFixture, Point>(
                         "<h4>Possible Adventures</h4>");
-            // TODO: Use ceylon.language::map instead of HashMap
             Map<Type<IFixture>, Anything([Point, IFixture])> collectors =
-                    HashMap<Type<IFixture>, Anything([Point, IFixture])> {
-                        entries = { `Portal`->(([Point, IFixture] pair) =>
+                    createMap  {
+                        { `Portal`->(([Point, IFixture] pair) =>
                         portals.add(pair.first)),
                             `Battlefield`->(([Point, IFixture] pair) =>
                             battles.add(pair.first)),
@@ -177,10 +178,8 @@ shared class ExplorableReportGenerator(
             IReportNode battles = ListReportNode("Battlefields");
             IReportNode caves = ListReportNode("Caves");
             IReportNode adventures = SectionListReportNode(4, "Possible Adventures");
-            // TODO: Use ceylon.language::map instead of HashMap
             Map<Type<IFixture>, IReportNode> nodes =
-                    HashMap<Type<IFixture>, IReportNode> {
-                        entries = { `Portal`->portals, `Battlefield`->battles,
+                createMap { { `Portal`->portals, `Battlefield`->battles,
                             `Cave`->caves, `AdventureFixture`->adventures };
                     };
             for ([loc, item] in values) {
