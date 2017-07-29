@@ -47,7 +47,8 @@ import strategicprimer.model.xmlio {
     SPFormatException
 }
 import strategicprimer.viewer.drivers {
-    SPFrame
+    SPFrame,
+    UtilityMenu
 }
 "A window to show the result of running subset tests."
 class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) {
@@ -177,4 +178,10 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
     }
     shared actual void acceptDroppedFile(JPath file) => testFile(file);
     shared actual Boolean supportsDroppedFiles = true;
+}
+"Factory method to add the menu bar to a [[SubsetFrame]]."
+SubsetFrame subsetFrame() {
+    SubsetFrame retval = SubsetFrame();
+    retval.jMenuBar = UtilityMenu(retval);
+    return retval;
 }

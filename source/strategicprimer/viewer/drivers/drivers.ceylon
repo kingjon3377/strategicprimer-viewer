@@ -92,6 +92,9 @@ import com.apple.eawt {
 import com.pump.window {
     WindowList
 }
+import strategicprimer.viewer.about {
+    aboutDialog
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."
@@ -366,6 +369,7 @@ shared void run() {
         process.exit(2);
     }
 }
+suppressWarnings("expressionTypeNothing")
 SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
     object frame extends SPFrame("SP App Chooser", null) {
@@ -399,6 +403,11 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         JLabel("Please choose one of the applications below"),
         JScrollPane(buttonPanel), null);
     frame.pack();
+    MenuBroker menuHandler = MenuBroker();
+    menuHandler.register((event) => frame.dispose(), "close");
+    menuHandler.register((event) => aboutDialog(frame, frame.windowName).setVisible(true), "about");
+    menuHandler.register((event) => process.exit(0), "quit");
+    frame.jMenuBar = UtilityMenu(frame);
     return frame;
 }
 """A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it

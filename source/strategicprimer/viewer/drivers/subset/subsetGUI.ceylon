@@ -47,7 +47,7 @@ shared object subsetGUI satisfies ISPDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
-            SubsetFrame frame = SubsetFrame();
+            SubsetFrame frame = subsetFrame();
             SwingUtilities.invokeLater(() => frame.setVisible(true));
             frame.loadMain(model.map);
             for ([map, file] in model.subordinateMaps) {
@@ -63,7 +63,7 @@ shared object subsetGUI satisfies ISPDriver {
         if (args.size < 2) {
             throw IncorrectUsageException(usage);
         }
-        SubsetFrame frame = SubsetFrame();
+        SubsetFrame frame = subsetFrame();
         SwingUtilities.invokeLater(() => frame.setVisible(true));
         assert (exists first = args.first);
         try {

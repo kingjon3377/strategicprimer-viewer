@@ -247,6 +247,7 @@ object mapCheckerGUI satisfies UtilityDriver {
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         MapCheckerFrame window = MapCheckerFrame();
+        window.jMenuBar = UtilityMenu(window);
         window.setVisible(true);
         for (arg in args.coalesced) {
             window.check(JPaths.get(arg));
