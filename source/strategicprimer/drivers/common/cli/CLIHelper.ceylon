@@ -40,6 +40,11 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 			ostream(" ");
 		}
 	}
+	"Print the specified string, then a newline."
+	shared actual void println(String line) {
+		ostream(line);
+		ostream(operatingSystem.newline);
+	}
 	"Ask the user a yes-or-no question."
 	shared actual Boolean inputBoolean(String prompt) {
 		while (true) {
@@ -104,8 +109,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 	"Print a list of things by name and number."
 	void printList<out Element>({Element*} list, String(Element) func) {
 		for (index->item in list.indexed) {
-			ostream("``index``: ``func(item)``");
-			ostream(operatingSystem.newline);
+			println("``index``: ``func(item)``");
 		}
 	}
 	"Implementation of chooseFromList() and chooseStringFromList()."
@@ -113,16 +117,13 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 			String none, String prompt, Boolean auto, String(Element) func)
 			given Element satisfies Object {
 		if (items.empty) {
-			ostream(none);
-			ostream(operatingSystem.newline);
+			println(none);
 			return -1->null;
 		}
-		ostream(description);
-		ostream(operatingSystem.newline);
+		println(description);
 		if (auto, !items.rest.first exists) {
 			assert (exists first = items.first);
-			ostream("Automatically choosing only item, ``func(first)``.");
-			ostream(operatingSystem.newline);
+			println("Automatically choosing only item, ``func(first)``.");
 			return 0->first;
 		} else {
 			printList(items, func);
@@ -164,8 +165,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 				if (exists temp = parseDecimal(input.trimmed)) {
 					retval = temp;
 				} else {
-					ostream("Invalid number.");
-					ostream(operatingSystem.newline);
+					println("Invalid number.");
 				}
 			} else {
 				throw IOException("Null line of input");
@@ -185,8 +185,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 	shared actual Boolean inputBooleanInSeries(String prompt, String key) {
 		if (exists retval = seriesState[key]) {
 			writePrompt(prompt);
-			ostream((retval) then "yes" else "no");
-			ostream(operatingSystem.newline);
+			println((retval) then "yes" else "no");
 			return retval;
 		} else {
 			while (true) {
@@ -217,11 +216,6 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 			String description, String none, String prompt, Boolean auto) =>
 			chooseFromListImpl<String>(items, description, none, prompt, auto,
 					identity);
-	"Print the specified string, then a newline."
-	shared actual void println(String line) {
-		ostream(line);
-		ostream(operatingSystem.newline);
-	}
 	"Print the specified string."
 	shared actual void print(String text) => ostream(text);
 }
