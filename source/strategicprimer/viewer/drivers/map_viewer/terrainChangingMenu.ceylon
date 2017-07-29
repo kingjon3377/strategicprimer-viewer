@@ -72,9 +72,7 @@ terrainChangingMenu(Integer mapVersion, IViewerModel model) {
                 => scs.removeSelectionChangeListener(listener);
         shared actual void selectedPointChanged(Point? old, Point newPoint) {
             point = newPoint;
-            if (newPoint.valid,
-//                TileType.notVisible != model.map.baseTerrain[newPoint]) { // TODO: syntax sugar once compiler bug fixed
-                TileType.notVisible != model.map.baseTerrain.get(newPoint)) {
+            if (newPoint.valid, model.map.baseTerrain[newPoint] exists) {
                 newUnitItem.enabled = true;
             } else {
                 newUnitItem.enabled = false;

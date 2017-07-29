@@ -6,8 +6,8 @@ shared interface IMutableMapNG satisfies IMapNG {
     "Add a player to the map."
     shared formal void addPlayer(Player player);
     "The base terrain at any given point."
-    shared actual formal NonNullCorrespondence<Point, TileType>&
-        KeyedCorrespondenceMutator<Point, TileType> baseTerrain;
+    shared actual formal Correspondence<Point, TileType>&
+        KeyedCorrespondenceMutator<Point, TileType?> baseTerrain;
     "Whether any given point is mountainous."
     shared actual formal NonNullCorrespondence<Point, Boolean>&
         KeyedCorrespondenceMutator<Point, Boolean> mountainous;

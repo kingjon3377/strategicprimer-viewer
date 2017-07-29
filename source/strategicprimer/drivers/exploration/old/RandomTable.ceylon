@@ -22,7 +22,7 @@ class RandomTable([Integer, String]* items) satisfies EncounterTable {
         assert (exists retval = table.last);
         return retval.rest.first;
     }
-    shared actual String generateEvent(Point point, TileType terrain,
+    shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions dimensions) =>
                 lowestMatch(singletonRandom.nextInteger(100));
     shared actual Set<String> allEvents =>

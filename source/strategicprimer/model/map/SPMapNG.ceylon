@@ -63,11 +63,17 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The locations in the map."
     shared actual {Point*} locations => PointIterator(dimensions, true, true);
     "The base terrain at the given location."
-    shared actual object baseTerrain satisfies NonNullCorrespondence<Point, TileType>&
-            KeyedCorrespondenceMutator<Point, TileType> {
+    shared actual object baseTerrain satisfies Correspondence<Point, TileType>&
+            KeyedCorrespondenceMutator<Point, TileType?> {
         shared actual Boolean defines(Point key) => contained(key);
-        shared actual TileType get(Point key) => terrain[key] else TileType.notVisible;
-        shared actual void put(Point key, TileType item) => terrain[key] = item;
+        shared actual TileType? get(Point key) => terrain[key];
+        shared actual void put(Point key, TileType? item) {
+            if (exists item) {
+                terrain[key] = item;
+            } else {
+                terrain.remove(key);
+            }
+        }
     }
     "Whether the given location is mountainous."
     shared actual object mountainous satisfies NonNullCorrespondence<Point, Boolean>&
@@ -207,7 +213,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                 continue;
             }
             builder.append("At ``location``");
-            if (exists terrain = baseTerrain[location], terrain != TileType.notVisible) {
+            if (exists terrain = baseTerrain[location]) {
                 builder.append("terrain: ``terrain``, ");
             }
             if (exists mtn = mountainous[location], mtn) {
@@ -245,16 +251,18 @@ shared class SPMapNG satisfies IMutableMapNG {
             MutableMap<Integer, IUnit> ourUnits = HashMap<Integer, IUnit>();
             for (point in locations) {
                 void localReport(String string) => report("At ``point``:\t``string``");
-                if (exists theirTerrain = obj.baseTerrain[point],
-                        !{ baseTerrain[point], TileType.notVisible}
-                            .contains(theirTerrain)) {
-                    if (anythingEqual(TileType.notVisible, baseTerrain[point])) {
-                        localReport("Has terrain information we don't");
+                if (exists theirTerrain = obj.baseTerrain[point]) {
+                    if (exists ourTerrain = baseTerrain[point]) {
+                        if (ourTerrain != theirTerrain) {
+                            localReport("Base terrain differs");
+                            retval = false;
+                            continue;
+                        }
                     } else {
-                        localReport("Base terrain differs");
+                        localReport("Has terrain information we don't");
+                        retval = false;
+                        continue;
                     }
-                    retval = false; // return false;
-                    continue;
                 }
                 if (exists theirMountains = obj.mountainous[point], theirMountains,
                         anythingEqual(false, mountainous[point])) {

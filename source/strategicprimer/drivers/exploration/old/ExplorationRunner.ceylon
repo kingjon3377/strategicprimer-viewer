@@ -56,7 +56,7 @@ shared class ExplorationRunner() {
      indicated by hash-marks around the name of the table to call; results are undefined
      if there are more than two hash marks in any given String, or if either is at the
      beginning or end of the string, since we use String.split"
-    shared String recursiveConsultTable(String table, Point location, TileType terrain,
+    shared String recursiveConsultTable(String table, Point location, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
         String result = consultTable(table, location, terrain, mountainous, fixtures,
             mapDimensions);
@@ -152,8 +152,8 @@ shared class ExplorationRunner() {
             String table,
             "The location of the tile"
             Point location,
-            "The terrain there"
-            TileType terrain,
+            "The terrain there. Null if unknown."
+            TileType? terrain,
             "Whether the tile is mountainous."
             Boolean mountainous,
             "Any fixtures there"
@@ -245,7 +245,7 @@ shared class ExplorationRunner() {
 "A mock [[EncounterTable]] for the apparatus to test the ExplorationRunner."
 class MockTable(String* values) satisfies EncounterTable {
     Queue<String> queue = LinkedList<String> { *values };
-    shared actual String generateEvent(Point point, TileType terrain,
+    shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
         assert (exists retval = queue.accept());
         return retval;

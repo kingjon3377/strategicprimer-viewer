@@ -69,7 +69,7 @@ class LegacyTable() satisfies EncounterTable {
         return retval;
     }
     {String*} data = createEvents().map(IEvent.text);
-    shared actual String generateEvent(Point point, TileType terrain,
+    shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
         for (fixture in fixtures) {
             if (is IEvent fixture) {

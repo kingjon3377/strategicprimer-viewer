@@ -72,7 +72,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
         case (TileType.jungle|TileType.borealForest|TileType.temperateForest) {
             return forested;
         }
-        case (TileType.desert|TileType.mountain|TileType.tundra|TileType.notVisible) {
+        case (TileType.desert|TileType.mountain|TileType.tundra|null) {
             return unforested; }
         case (TileType.ocean) { return ocean; }
         case (TileType.plains|TileType.steppe) {
@@ -84,15 +84,12 @@ object todoFixerCLI satisfies SimpleCLIDriver {
             } else {
                 return unforested;
             }
-        } case (null) {
-            assert (false);
         }
     }
     "Search for and fix aquatic villages with non-aquatic races."
     void fixAllVillages(IMapNG map, ICLIHelper cli) {
         {Village*} villages = map.locations
-//            .filter((loc) => map.baseTerrain[loc] == TileType.ocean) // TODO: syntax sugar once compiler bug fixed
-            .filter((loc) => map.baseTerrain.get(loc) == TileType.ocean)
+            .filter((loc) => (map.baseTerrain[loc] else TileType.plains) == TileType.ocean)
 //            .flatMap((loc) => map.fixtures[loc]).narrow<Village>()
             .flatMap((loc) => map.fixtures.get(loc)).narrow<Village>()
             .filter((village) => landRaces.contains(village.race));

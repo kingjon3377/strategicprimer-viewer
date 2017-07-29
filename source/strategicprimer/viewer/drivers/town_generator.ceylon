@@ -132,8 +132,19 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
         .flatMap(CommunityStats.workedFields).contains(id);
     Boolean isUnclaimedField(IMapNG map, Integer id) =>
             !isClaimedField(map, id) && findByID(map, id) is HarvestableFixture;
-    Boolean bothOrNeitherOcean(TileType one, TileType two) =>
-            (one == TileType.ocean) then two == TileType.ocean else two != TileType.ocean;
+    Boolean bothOrNeitherOcean(TileType? one, TileType? two) {
+        if (exists one, one == TileType.ocean) {
+            if (exists two, two == TileType.ocean) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (exists two, two == TileType.ocean) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     Boolean isReallyClaimable(HarvestableFixture fix) {
         switch (fix)
         case (is MineralVein) {
@@ -156,14 +167,16 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
         }
     }
     {HarvestableFixture*} findNearestFields(IMapNG map, Point location) {
-//        TileType base = map.baseTerrain[location]; // TODO: syntax sugar once compiler bug fixed
-        TileType base = map.baseTerrain.get(location);
-        return surroundingPointIterable(location, map.dimensions, 10).distinct
-//            .filter((point) => bothOrNeitherOcean(base, map.baseTerrain[point]))
-            .filter((point) => bothOrNeitherOcean(base, map.baseTerrain.get(point)))
+        if (exists base = map.baseTerrain[location]) {
+            return surroundingPointIterable(location, map.dimensions, 10).distinct
+//            .filter((point) => bothOrNeitherOcean(base, map.baseTerrain[point])) // TODO: syntax sugar once compiler bug fixed
+                .filter((point) => bothOrNeitherOcean(base, map.baseTerrain.get(point)))
 //            .flatMap((point) => map.fixtures[point]).narrow<HarvestableFixture>()
-            .flatMap((point) => map.fixtures.get(point)).narrow<HarvestableFixture>()
-            .filter(isReallyClaimable);
+                .flatMap((point) => map.fixtures.get(point)).narrow<HarvestableFixture>()
+                .filter(isReallyClaimable);
+        } else {
+            return {};
+        }
     }
     CommunityStats enterStats(ICLIHelper cli, IDRegistrar idf, IMapNG map, Point location, ModifiableTown town) {
         CommunityStats retval = CommunityStats(cli.inputNumber("Population: "));
@@ -199,10 +212,10 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
             if (isClaimedField(map, field)) {
                 cli.println("That field is already worked by another town");
             } else if (exists fieldLoc = findLocById(map, field)) {
-//                if (!bothOrNeitherOcean(map.baseTerrain[location], map.baseTerrain[fieldLoc])) { // TODO: syntax sugar once compiler bug fixed
-                if (!bothOrNeitherOcean(map.baseTerrain.get(location), map.baseTerrain.get(fieldLoc))) {
-//                    if (map.baseTerrain[location] == TileType.ocean) {
-                    if (map.baseTerrain.get(location) == TileType.ocean) {
+                if (!bothOrNeitherOcean(map.baseTerrain[location],
+                        map.baseTerrain[fieldLoc])) {
+                    if (exists terrain = map.baseTerrain[location],
+                            terrain == TileType.ocean) {
                         cli.println(
                             "That would be a land resource worked by an aquatic town.");
                     } else {
@@ -267,13 +280,15 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
     CommunityStats generateStats(IDRegistrar idf, Point location, ModifiableTown town, IMapNG map) {
         Random rng = DefaultRandom(town.id);
         Integer roll(Integer die) => rng.nextInteger(die) + 1;
+
         Integer repeatedlyRoll(Integer count, Integer die, Integer addend = 0) {
             variable Integer sum = addend;
             for (i in 0:count) {
-                sum += roll(die);
+                sum +=roll(die);
             }
             return sum;
         }
+
         Integer population;
         Integer skillCount;
         Integer() skillLevelSource;
@@ -307,15 +322,18 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
         }
         CommunityStats retval = CommunityStats(population);
         String skillTable;
-//        if (map.baseTerrain[location] == TileType.ocean) { // TODO: syntax sugar once compiler bug fixed
-        if (map.baseTerrain.get(location) == TileType.ocean) {
-            skillTable = "ocean_skills";
-//        } else if (map.mountainous[location]) {
-        } else if (map.mountainous.get(location)) {
-            skillTable = "mountain_skills";
-//        } else if (map.fixtures[location]?.narrow<Forest>().first exists) {
-        } else if (map.fixtures.get(location).narrow<Forest>().first exists) {
-            skillTable = "forest_skills";
+        if (exists terrain = map.baseTerrain[location]) {
+            if (terrain == TileType.ocean) {
+                skillTable = "ocean_skills";
+//          } else if (map.mountainous[location]) {
+            } else if (map.mountainous.get(location)) {
+                skillTable = "mountain_skills";
+//          } else if (map.fixtures[location]?.narrow<Forest>().first exists) {
+            } else if (map.fixtures.get(location).narrow<Forest>().first exists) {
+                skillTable = "forest_skills";
+            } else {
+                skillTable = "plains_skills";
+            }
         } else {
             skillTable = "plains_skills";
         }

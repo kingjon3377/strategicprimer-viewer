@@ -14,8 +14,8 @@ shared interface EncounterTable {
     shared formal String generateEvent(
             "The location of the tile in question."
             Point point,
-            "The terrain there."
-            TileType terrain,
+            "The terrain there. Null if unknown."
+            TileType? terrain,
             "Whether the tile is mountainous."
             Boolean mountainous,
             "The fixtures on the tile, if any."

@@ -37,7 +37,7 @@ shared interface IMapNG satisfies Subsettable<IMapNG> {
        points within the dimensions of the map even if they are "empty"."""
     shared formal {Point*} locations;
     "The base terrain at any given point."
-    shared formal NonNullCorrespondence<Point, TileType> baseTerrain;
+    shared formal Correspondence<Point, TileType> baseTerrain;
     "Whether any given point is mountainous."
     shared formal NonNullCorrespondence<Point, Boolean> mountainous;
     "The rivers in the map."
@@ -57,7 +57,7 @@ shared interface IMapNG satisfies Subsettable<IMapNG> {
     "A location is empty if it has no terrain, no Ground, no Forest, no rivers, and no
      other fixtures"
     shared default Boolean locationEmpty(Point location) {
-        if (exists terrain = baseTerrain[location], terrain != TileType.notVisible) {
+        if (exists terrain = baseTerrain[location]) {
             return false;
         } else if (exists mountain = mountainous[location], mountain) {
             return false;

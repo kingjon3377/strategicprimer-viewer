@@ -244,7 +244,7 @@ object zeroToOneConverter {
 }
 void initialize(IMutableMapNG map, Point point, TileType? terrain,
 		TileFixture* fixtures) {
-	if (exists terrain, terrain != TileType.notVisible) {
+	if (exists terrain) {
 		map.baseTerrain[point] = terrain;
 	}
 	for (fixture in fixtures) {

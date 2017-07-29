@@ -763,15 +763,14 @@ void testTileSerializationTwo() {
                 () => assertEquals(serializedForm, xmlTwoAlphabetical),
                 () => assertEquals(serializedForm,
             xmlTwoLogical.replace("\" />", "\"/>"))], "Multiple units");
-    assertEquals(createSerializedForm(createSimpleMap(pointFactory(1, 1),
-        pointFactory(0, 0)->TileType.notVisible), true),
+    assertEquals(createSerializedForm(createSimpleMap(pointFactory(1, 1)), true),
         "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
          \t<map version=\"2\" rows=\"1\" columns=\"1\">
          \t</map>
          </view>
          ", "Shouldn't print empty not-visible tiles");
-    String emptySerializedForm = createSerializedForm(createSimpleMap(pointFactory(1, 1),
-        pointFactory(0, 0)->TileType.notVisible), false);
+    String emptySerializedForm = createSerializedForm(createSimpleMap(pointFactory(1, 1)),
+        false);
     String firstPossibility =
             "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
              \t<map version=\"2\" rows=\"1\" columns=\"1\">
@@ -844,7 +843,7 @@ void testMapSerialization() {
     assertMissingProperty<IMapNG>("""<map version="2" rows="1" />""", "columns", false);
     String originalFormOne = createSerializedForm(firstMap, false);
     String originalFormTwo = createSerializedForm(firstMap, true);
-    firstMap.baseTerrain[pointFactory(1, 1)] = TileType.notVisible;
+    firstMap.baseTerrain[pointFactory(1, 1)] = null;
     assertEquals(createSerializedForm(firstMap, false), originalFormOne,
         "Explicitly not visible tile is not serialized");
     assertEquals(createSerializedForm(firstMap, true), originalFormTwo,

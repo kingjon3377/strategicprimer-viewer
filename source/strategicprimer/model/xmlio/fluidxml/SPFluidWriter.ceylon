@@ -260,8 +260,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             variable Boolean rowEmpty = true;
             for (j in 0:(dimensions.columns)) {
                 Point loc = pointFactory(i, j);
-//                    TileType terrain = obj.baseTerrain[loc]; // TODO: syntax sugar once compiler bug fixed
-                TileType terrain = obj.baseTerrain.get(loc);
+                TileType? terrain = obj.baseTerrain[loc];
                 if (!obj.locationEmpty(loc)) {
                     if (rowEmpty) {
                         writeTag(ostream, "row", indentation + 2, false);
@@ -270,7 +269,7 @@ shared class SPFluidWriter() satisfies SPWriter {
                     }
                     writeTag(ostream, "tile", indentation + 3, false);
                     writeAttributes(ostream, "row"->i, "column"->j);
-                    if (TileType.notVisible != terrain) {
+                    if (exists terrain) {
                         writeAttributes(ostream, "kind"->terrain.xml);
                     }
                     variable Boolean anyContents = false;

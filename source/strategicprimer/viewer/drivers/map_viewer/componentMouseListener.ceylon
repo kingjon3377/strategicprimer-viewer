@@ -79,8 +79,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
                 String mountainString = (model.map.mountainous.get(point))
                 then ", mountainous" else "";
                 return "<html><body>``point``: ``model.map
-//                    .baseTerrain[point]````mountainString``<br />``
-                    .baseTerrain.get(point)````mountainString``<br />``
+                    .baseTerrain[point] else "not visible"````mountainString``<br />``
                 terrainFixturesAndTop(point)``</body></html>";
             } else {
                 return null;

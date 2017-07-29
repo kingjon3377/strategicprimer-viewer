@@ -196,11 +196,11 @@ object mapCheckerCLI satisfies UtilityDriver {
         }
         for (checker in extraChecks) {
             for (location in map.locations) {
-//                TileType terrain = map.baseTerrain[location]; // TODO: syntax sugar once compiler bug fixed
-                TileType terrain = map.baseTerrain.get(location);
-                contentCheck(checker, terrain, location, warner,
-//                    *map.fixtures[location]);
-                    *map.fixtures.get(location));
+                if (exists  terrain = map.baseTerrain[location]) {
+                    contentCheck(checker, terrain, location, warner,
+//                      *map.fixtures[location]);
+                        *map.fixtures.get(location));
+                }
             }
         }
     }

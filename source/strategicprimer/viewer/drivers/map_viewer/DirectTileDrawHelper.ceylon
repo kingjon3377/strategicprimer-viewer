@@ -13,7 +13,6 @@ import java.awt {
 import strategicprimer.model.map {
     Point,
     River,
-    TileType,
     IMapNG
 }
 
@@ -70,8 +69,7 @@ object directTileDrawHelper satisfies TileDrawHelper {
             context.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
             context.color = Color.black;
             context.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
-//            if (TileType.notVisible == map.baseTerrain[location]) {
-            if (TileType.notVisible == map.baseTerrain.get(location)) {
+            if (!map.baseTerrain[location] exists) {
                 return;
             }
             context.color = Color.\iBLUE;

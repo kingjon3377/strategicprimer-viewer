@@ -45,7 +45,7 @@ import strategicprimer.drivers.common {
  for its fixtures."
 JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         variable Integer version, IDriverModel model) {
-    JComponent keyElement(Integer version, TileType type) {
+    JComponent keyElement(Integer version, TileType? type) {
         JPanel&BoxPanel retval = boxPanel(BoxAxis.lineAxis);
         retval.addGlue();
         retval.addRigidArea(7);
@@ -68,7 +68,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
     }
     object keyPanel extends JPanel(GridLayout(0, 4)) satisfies VersionChangeListener {
         minimumSize = Dimension(
-            (keyElement(version, TileType.notVisible).minimumSize.width * 4).integer,
+            (keyElement(version, null).minimumSize.width * 4).integer,
             minimumSize.height.integer);
         preferredSize = minimumSize;
         shared actual void changeVersion(Integer old, Integer newVersion) {

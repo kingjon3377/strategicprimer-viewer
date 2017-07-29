@@ -95,7 +95,7 @@ void assertModuloID(IMapNG map, String serialized, Anything(String) err) {
 }
 void initialize(IMutableMapNG map, Point point, TileType? terrain,
         TileFixture* fixtures) {
-    if (exists terrain, terrain != TileType.notVisible) {
+    if (exists terrain) {
         map.baseTerrain[point] = terrain;
     }
     for (fixture in fixtures) {
@@ -398,7 +398,7 @@ shared void testThirdOneToTwoConversion() {
     Grove orchard(String kind = "fruit1") => Grove(true, true, kind, -1);
 
     IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
-    initialize(original, pointFactory(0, 0), TileType.notVisible, groundOne());
+    initialize(original, pointFactory(0, 0), null, groundOne());
     original.addPlayer(independent);
     initialize(original, pointFactory(0, 1), TileType.borealForest,
         Forest("ttree1", false, 1), Hill(1),
@@ -427,8 +427,7 @@ shared void testThirdOneToTwoConversion() {
     IMutableMapNG converted = SPMapNG(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
     converted.addPlayer(player);
     converted.addPlayer(independent);
-    initialize(converted, pointFactory(0, 0), TileType.notVisible, groundOne(),
-        orchard("fruit1"));
+    initialize(converted, pointFactory(0, 0), null, groundOne(), orchard("fruit1"));
     initialize(converted, pointFactory(0, 4), TileType.steppe, groundTwo(),
         forest("btree2"), Giant("frost", -1), orchard("fruit2"));
     initialize(converted, pointFactory(0, 5), TileType.steppe, groundTwo(),
@@ -440,11 +439,10 @@ shared void testThirdOneToTwoConversion() {
     initialize(converted, pointFactory(0, 7), TileType.steppe, groundTwo(),
         forest("btree2"), StoneDeposit(StoneKind.conglomerate, 0, -1),
         field(FieldStatus.growing, "grain2"));
-    initialize(converted, pointFactory(1, 0), TileType.notVisible, groundOne(),
-        village("elf"));
-    initialize(converted, pointFactory(1, 1), TileType.notVisible, groundOne(),
+    initialize(converted, pointFactory(1, 0), null, groundOne(), village("elf"));
+    initialize(converted, pointFactory(1, 1), null, groundOne(),
         field(FieldStatus.fallow));
-    initialize(converted, pointFactory(1, 3), TileType.notVisible, groundOne());
+    initialize(converted, pointFactory(1, 3), null, groundOne());
     initialize(converted, pointFactory(1, 4), TileType.steppe, groundTwo(),
         forest("btree2"), Centaur("hill", -1), forest("ttree2"));
     initialize(converted, pointFactory(1, 5), TileType.steppe, groundTwo(),
@@ -456,8 +454,7 @@ shared void testThirdOneToTwoConversion() {
     initialize(converted, pointFactory(1, 7), TileType.steppe, groundTwo(),
         forest("btree2"), SimpleImmortal(SimpleImmortalKind.minotaur, -1),
         field(FieldStatus.fallow, "grain2"));
-    initialize(converted, pointFactory(2, 1), TileType.notVisible, groundOne(),
-        forest("ttree1"));
+    initialize(converted, pointFactory(2, 1), null, groundOne(), forest("ttree1"));
     initialize(converted, pointFactory(2, 4), TileType.steppe, groundTwo(),
         forest("btree2"),
         AdventureFixture(independent, "briefDescription", "fullDescription", -1),
@@ -513,7 +510,7 @@ shared void testThirdOneToTwoConversion() {
             pointFactory(1, 2), pointFactory(1, 3), pointFactory(2, 0),
             pointFactory(2, 2), pointFactory(2, 3), pointFactory(3, 0),
             pointFactory(3, 1), pointFactory(3, 2), pointFactory(3, 3) }) {
-        initialize(converted, loc, TileType.notVisible, groundOne());
+        initialize(converted, loc, null, groundOne());
     }
     for (loc in { pointFactory(4, 1), pointFactory(4, 2), pointFactory(5, 0),
             pointFactory(5, 2), pointFactory(6, 1),
@@ -645,26 +642,26 @@ shared void testFourthOneToTwoConversion() {
         register(Grove(true, true, "fruit4", 74)));
     for (i in 0:4) {
         for (j in 0:4) {
-            initialize(converted, pointFactory(i, j), TileType.notVisible,
-                Ground(testFactory.createID(), "rock1", false));
+            initialize(converted, pointFactory(i, j), null, Ground(testFactory.createID(),
+                "rock1", false));
         }
     }
     for (i in 0:4) {
         for (j in 4:4) {
-            initialize(converted, pointFactory(i, j), TileType.notVisible,
-                Ground(testFactory.createID(), "rock2", false));
+            initialize(converted, pointFactory(i, j), null, Ground(testFactory.createID(),
+                "rock2", false));
         }
     }
     for (i in 4:4) {
         for (j in 0:4) {
-            initialize(converted, pointFactory(i, j), TileType.notVisible,
-                Ground(testFactory.createID(), "rock3", false));
+            initialize(converted, pointFactory(i, j), null, Ground(testFactory.createID(),
+                "rock3", false));
         }
     }
     for (i in 4:4) {
         for (j in 4:4) {
-            initialize(converted, pointFactory(i, j), TileType.notVisible,
-                Ground(testFactory.createID(), "rock4", false));
+            initialize(converted, pointFactory(i, j), null, Ground(testFactory.createID(),
+                "rock4", false));
         }
     }
     for (point in { pointFactory(0, 1), pointFactory(0, 2),

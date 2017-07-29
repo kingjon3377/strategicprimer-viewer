@@ -43,12 +43,11 @@ class TileContentsGenerator(IMapNG map) {
             "Tile-contents generator requires a tables directory");
     }
     shared void generateTileContents(Point point,
-//            TileType terrain = map.baseTerrain[point]) { // TODO: syntax sugar once compiler bug fixed
-            TileType terrain = map.baseTerrain.get(point)) {
+            TileType? terrain = map.baseTerrain[point]) {
         Integer reps = (random() * 4).integer + 1;
         for (i in 0:reps) {
             process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
-//                map.mountainous[point], {}, map.dimensions));
+//                map.mountainous[point], {}, map.dimensions)); // TODO: syntax sugar once compiler bug fixed
                 map.mountainous.get(point), {}, map.dimensions));
         }
     }

@@ -22,7 +22,6 @@ import strategicprimer.model.map {
     Player,
     IMutableMapNG,
     IMapNG,
-    TileType,
     TileFixture,
     invalidPoint,
     pointFactory,
@@ -104,12 +103,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     }
     "Ensure that a given map has at least terrain information for the specified location."
     static void ensureTerrain(IMapNG mainMap, IMutableMapNG map, Point point) {
-//        if (map.baseTerrain[point] == TileType.notVisible) { // TODO: syntax sugar once compiler bug fixed
-        if (map.baseTerrain.get(point) == TileType.notVisible) {
-//            map.baseTerrain[point] = mainMap.baseTerrain[point];
-            map.baseTerrain[point] = mainMap.baseTerrain.get(point);
+        if (!map.baseTerrain[point] exists) {
+            map.baseTerrain[point] = mainMap.baseTerrain[point];
         }
-//        if (mainMap.mountainous[point]) {
+//        if (mainMap.mountainous[point]) { // TODO: syntax sugar once compiler bug fixed
         if (mainMap.mountainous.get(point)) {
             map.mountainous[point] = true;
         }
@@ -241,13 +238,12 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
         assert (exists unit);
         Point dest = getDestination(point, direction);
-//        if (landMovementPossible(map.baseTerrain[dest])) { // TODO: syntax sugar once compiler bug fixed
-        if (landMovementPossible(map.baseTerrain.get(dest))) {
+        if (exists terrain = map.baseTerrain[dest], landMovementPossible(terrain)) {
             Integer base;
             if (dest == point) {
                 base = 1;
             } else {
-//                {TileFixture*} fixtures = map.fixtures[dest];
+//                {TileFixture*} fixtures = map.fixtures[dest]; // TODO: syntax sugar once compiler bug fixed
                 {TileFixture*} fixtures = map.fixtures.get(dest);
 //                base = movementCost(map.baseTerrain[dest],
                 base = movementCost(map.baseTerrain.get(dest),

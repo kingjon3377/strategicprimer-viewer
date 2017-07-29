@@ -77,8 +77,8 @@ Boolean riversSpeedTravel(Direction direction,
 }
 "Get the cost of movement in the given conditions."
 Integer movementCost(
-        "The terrain being traversed"
-        TileType terrain,
+        """The terrain being traversed. Null if "not visible.""""
+        TileType? terrain,
         "Whether the location is forested"
         Boolean forest,
         "Whether the location is mountainous"
@@ -87,17 +87,21 @@ Integer movementCost(
         Boolean river,
         "The fixtures at the location"
         {TileFixture*} fixtures) {
-    if (TileType.ocean == terrain || TileType.notVisible == terrain) {
-        return JInteger.maxValue;
-    } else if (forest || mountain || !fixtures.narrow<Forest|Hill>().empty ||
-            TileType.desert == terrain) {
-        return (river) then 2 else 3;
-    } else if (TileType.jungle == terrain) {
-        return (river) then 4 else 6;
+    if (exists terrain) {
+        if (TileType.ocean == terrain) {
+            return JInteger.maxValue;
+        } else if (forest || mountain || !fixtures.narrow<Forest|Hill>().empty ||
+                TileType.desert == terrain) {
+            return (river) then 2 else 3;
+        } else if (TileType.jungle == terrain) {
+            return (river) then 4 else 6;
+        } else {
+            assert (TileType.steppe == terrain || TileType.plains == terrain ||
+                TileType.tundra == terrain);
+            return (river) then 1 else 2;
+        }
     } else {
-        assert (TileType.steppe == terrain || TileType.plains == terrain ||
-            TileType.tundra == terrain);
-        return (river) then 1 else 2;
+        return JInteger.maxValue;
     }
 }
 

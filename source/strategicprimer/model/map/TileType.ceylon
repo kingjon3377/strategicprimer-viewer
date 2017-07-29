@@ -6,8 +6,8 @@ todo("Ought to include swamp, if not other additional types, for use in other wo
       maps")
 suppressWarnings("deprecation")
 shared class TileType
-		of tundra|desert|mountain|borealForest|temperateForest|ocean|plains|jungle|steppe
-			|notVisible {
+		of tundra|desert|mountain|borealForest|temperateForest|ocean|plains|jungle
+			|steppe {
 	"All tile types the given version supports."
 	todo("Write tests for this")
 	shared static {TileType*} valuesForVersion(Integer version) =>
@@ -57,9 +57,6 @@ shared class TileType
 	 forest, while [[mountain]] is either a desert, a plain, or a steppe that is
 	 mountainous."
 	shared new steppe extends delegate("steppe", "steppe", 2) {}
-	"Not visible."
-	todo("Replace with nullability?")
-	shared new notVisible extends delegate("not visible", "not_visible", 1, 2) {}
 	"Whether this the given map version supports this tile type."
 	shared Boolean isSupportedByVersion(Integer version) => versions.contains(version);
 }

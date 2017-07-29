@@ -486,9 +486,8 @@ SPFrame explorationFrame(IExplorationModel model,
                                 Point currentLocation = model.selectedUnitLocation;
                                 if (currentLocation.valid) {
                                     {String*}(Point, Integer) tracksSource;
-                                    if (TileType.ocean == model.map
-//                                            .baseTerrain[currentLocation]) { // TODO: syntax sugar once compiler bug fixed
-                                            .baseTerrain.get(currentLocation)) {
+                                    if (exists terrain = model.map.baseTerrain[currentLocation],
+                                            terrain == TileType.ocean) {
                                         tracksSource = huntingModel.fish;
                                     } else {
                                         tracksSource = huntingModel.hunt;

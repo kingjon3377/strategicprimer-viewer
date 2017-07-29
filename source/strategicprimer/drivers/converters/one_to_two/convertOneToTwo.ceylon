@@ -101,26 +101,26 @@ shared IMapNG convertOneToTwo(
 	"Convert a tile. That is, change it from a forest or mountain type to the proper
 	 replacement type plus the proper fixture, and also add the proper Ground."
 	void convertSubTile(Point point) {
-//		TileType originalTerrain = retval.baseTerrain[point]; // TODO: syntax sugar once compiler bug fixed
-		TileType originalTerrain = retval.baseTerrain.get(point);
-		if (TileType.mountain == originalTerrain) {
-			retval.mountainous[point] = true;
-//		} else if (retval.fixtures[point].narrow<Forest>().empty,
-		} else if (retval.fixtures.get(point).narrow<Forest>().empty,
-			(TileType.temperateForest == originalTerrain ||
-			TileType.borealForest == originalTerrain)) {
-			retval.addFixture(point, Forest(runner.getPrimaryTree(point,
+		if (exists originalTerrain = retval.baseTerrain[point]) {
+			if (TileType.mountain == originalTerrain) {
+				retval.mountainous[point] = true;
+//		} else if (retval.fixtures[point].narrow<Forest>().empty, // TODO: syntax sugar once compiler bug fixed
+			} else if (retval.fixtures.get(point).narrow<Forest>().empty,
+				(TileType.temperateForest == originalTerrain ||
+				TileType.borealForest == originalTerrain)) {
+				retval.addFixture(point, Forest(runner.getPrimaryTree(point,
 //				originalTerrain, retval.mountainous[point], retval.fixtures[point],
-				originalTerrain, retval.mountainous.get(point), retval.fixtures.get(point),
-				retval.dimensions), false, idFactory.createID()));
+					originalTerrain, retval.mountainous.get(point), retval.fixtures.get(point),
+					retval.dimensions), false, idFactory.createID()));
+			}
+			value newTerrain = equivalentTerrain(originalTerrain);
+			retval.baseTerrain[point] = newTerrain;
+			addFixture(point, Ground(idFactory.createID(),
+				runner.getPrimaryRock(point, newTerrain,
+//				retval.mountainous[point], retval.fixtures[point], retval.dimensions), // TODO: syntax sugar once compiler bug fixed
+					retval.mountainous.get(point), retval.fixtures.get(point), retval.dimensions),
+				false));
 		}
-		retval.baseTerrain[point] = equivalentTerrain(originalTerrain);
-		addFixture(point, Ground(idFactory.createID(),
-//			runner.getPrimaryRock(point, retval.baseTerrain[point], // TODO: syntax sugar once compiler bug fixed
-			runner.getPrimaryRock(point, retval.baseTerrain.get(point),
-//				retval.mountainous[point], retval.fixtures[point], retval.dimensions),
-				retval.mountainous.get(point), retval.fixtures.get(point), retval.dimensions),
-			false));
 	}
 	"Convert a single version-1 tile to the equivalent version-2 tiles."
 	{Point*} convertTile(Point point) {
@@ -232,9 +232,9 @@ shared IMapNG convertOneToTwo(
 		}
 		Boolean adjacentWater() {
 			for (neighbor in neighbors) {
-//				if (retval.baseTerrain[neighbor] == TileType.ocean ||
-				if (retval.baseTerrain.get(neighbor) == TileType.ocean ||
-//						!retval.rivers[neighbor].empty) {
+				if (exists terrain = retval.baseTerrain[neighbor],
+						terrain == TileType.ocean ||
+//						!retval.rivers[neighbor].empty) { // TODO: syntax sugar once compiler bug fixed
 						!retval.rivers.get(neighbor).empty) {
 					return true;
 				}
@@ -243,14 +243,13 @@ shared IMapNG convertOneToTwo(
 			}
 		}
 		try {
-//			if (TileType.ocean != retval.baseTerrain[point]) {
-			if (TileType.ocean != retval.baseTerrain.get(point)) {
+			if (exists terrain = retval.baseTerrain[point], terrain != TileType.ocean) {
 				if (adjacentToTown(), rng.nextFloat() < 0.6) {
 					Integer id = idFactory.createID();
 					if (rng.nextBoolean()) {
 						addFixture(point, Meadow(runner.recursiveConsultTable("grain",
 //							point, retval.baseTerrain[point], retval.mountainous[point],
-							point, retval.baseTerrain.get(point), retval.mountainous.get(point),
+							point, retval.baseTerrain[point], retval.mountainous.get(point),
 //							retval.fixtures[point], retval.dimensions), true,
 							retval.fixtures.get(point), retval.dimensions), true,
 							true, id, FieldStatus.random(id)));
@@ -262,8 +261,7 @@ shared IMapNG convertOneToTwo(
 //								retval.fixtures[point], retval.dimensions), id));
 								retval.fixtures.get(point), retval.dimensions), id));
 					}
-//				} else if (TileType.desert == retval.baseTerrain[point]) {
-				} else if (TileType.desert == retval.baseTerrain.get(point)) {
+				} else if (terrain == TileType.desert) {
 					Boolean watered = adjacentWater();
 					if ((watered && rng.nextFloat() < desertToPlains) ||
 //					!retval.rivers[point].empty &&

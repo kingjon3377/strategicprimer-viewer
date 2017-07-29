@@ -79,7 +79,7 @@ class QuadrantTable satisfies EncounterTable {
             return "";
         }
     }
-    shared actual String generateEvent(Point point, TileType terrain,
+    shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) =>
                 getQuadrantValue(point.row, point.column, mapDimensions);
     shared actual Set<String> allEvents => set { *possibleResults };

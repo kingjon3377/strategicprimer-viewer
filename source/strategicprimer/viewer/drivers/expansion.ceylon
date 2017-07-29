@@ -93,12 +93,10 @@ object expansionDriver satisfies SimpleCLIDriver {
                     if (containsSwornVillage(point)) {
                         for (neighbor in surroundingPointIterable(point,
                                 map.dimensions)) {
-//                            if (map.baseTerrain[neighbor] == TileType.notVisible) { // TODO: syntax sugar once compiler bug fixed
-                            if (map.baseTerrain.get(neighbor) == TileType.notVisible) {
+                            if (!map.baseTerrain[neighbor] exists) {
                                 map.baseTerrain[neighbor] =
-//                                    master.baseTerrain[neighbor];
-                                    master.baseTerrain.get(neighbor);
-//                                if (master.mountainous[neighbor]) {
+                                    master.baseTerrain[neighbor];
+//                                if (master.mountainous[neighbor]) { // TODO: syntax sugar once compiler bug fixed
                                 if (master.mountainous.get(neighbor)) {
                                     map.mountainous[neighbor] = true;
                                 }
@@ -147,12 +145,12 @@ interface MapPopulator {
 object sampleMapPopulator satisfies MapPopulator {
     "Hares won't appear in mountains, forests, or ocean."
     shared actual Boolean isSuitable(IMapNG map, Point location) {
-//        TileType terrain = map.baseTerrain[location]; // TODO: syntax sugar once compiler bug fixed
-        TileType terrain = map.baseTerrain.get(location);
-//        if (map.mountainous[location] || TileType.ocean == terrain ||
-        return !map.mountainous.get(location) && TileType.ocean != terrain &&
-            TileType.notVisible!=terrain &&
-            !map.fixtures[location]?.narrow<Forest>()?.first exists;
+        if (exists terrain = map.baseTerrain[location]) {
+            return !map.mountainous.get(location)&& TileType.ocean != terrain &&
+                !map.fixtures[location]?.narrow<Forest>()?.first exists;
+        } else {
+            return false;
+        }
     }
     shared actual Float chance = 0.05;
     shared actual void create(Point location, IMutableMapNG map, IDRegistrar idf) =>

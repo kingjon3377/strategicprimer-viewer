@@ -63,7 +63,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
 	Integer newRows = old.dimensions.rows / 2;
 	IMutableMapNG retval = SPMapNG(MapDimensionsImpl(newRows, newColumns, 2), players,
 		old.currentTurn);
-	TileType consensus([TileType+] types) {
+	TileType? consensus([TileType?+] types) {
 		value counted = types.frequencies().map((type->count) => [count, type])
 			.sort(comparing(
 					([Integer, TileType] first, [Integer, TileType] second) =>
@@ -89,8 +89,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
 				pointFactory((row * 2) + 1, column * 2),
 				pointFactory((row * 2) + 1, (column * 2) + 1) ];
 			retval.baseTerrain[point] =
-//				consensus([ *subPoints.map((location) => old.baseTerrain[location]) ]); // TODO: syntax sugar once compiler bug fixed
-				consensus([ *subPoints.map((location) => old.baseTerrain.get(location)) ]);
+				consensus([ *subPoints.map((location) => old.baseTerrain[location]) ]);
 			for (oldPoint in subPoints) {
 				if (exists mtn = old.mountainous[oldPoint], mtn) {
 					retval.mountainous[point] = true;
@@ -125,7 +124,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
 }
 void initialize(IMutableMapNG map, Point point, TileType? terrain,
 		TileFixture* fixtures) {
-	if (exists terrain, terrain != TileType.notVisible) {
+	if (exists terrain) {
 		map.baseTerrain[point] = terrain;
 	}
 	for (fixture in fixtures) {

@@ -273,8 +273,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
             variable Boolean rowEmpty = true;
             for (j in 0:(dimensions.columns)) {
                 Point loc = pointFactory(i, j);
-//                TileType terrain = obj.baseTerrain[loc]; // TODO: syntax sugar once compiler bug fixed
-                TileType terrain = obj.baseTerrain.get(loc);
+                TileType? terrain = obj.baseTerrain[loc];
                 if (!obj.locationEmpty(loc)) {
                     if (rowEmpty) {
                         rowEmpty = false;
@@ -285,7 +284,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     writeTag(ostream, "tile", tabs + 3);
                     writeProperty(ostream, "row", i);
                     writeProperty(ostream, "column", j);
-                    if (TileType.notVisible != terrain) {
+                    if (exists terrain) {
                         writeProperty(ostream, "kind", terrain.xml);
                     }
                     ostream(">");

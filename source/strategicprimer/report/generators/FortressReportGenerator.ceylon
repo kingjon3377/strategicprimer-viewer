@@ -58,10 +58,9 @@ shared class FortressReportGenerator(
     String terrain(IMapNG map, Point point,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
         StringBuilder builder = StringBuilder();
-//        builder.append("Surrounding terrain: ``map.baseTerrain[point]``"); // TODO: syntax sugar once compiler bug fixed
-        builder.append("Surrounding terrain: ``map.baseTerrain.get(point)``");
+        builder.append("Surrounding terrain: ``map.baseTerrain[point] else "Unknown"``");
         variable Boolean unforested = true;
-//        if (map.mountainous[point]) {
+//        if (map.mountainous[point]) { // TODO: syntax sugar once compiler bug fixed
         if (map.mountainous.get(point)) {
             builder.append(", mountainous");
         }

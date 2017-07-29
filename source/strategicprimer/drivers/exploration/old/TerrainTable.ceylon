@@ -15,26 +15,31 @@ import strategicprimer.model.map.fixtures.terrain {
 class TerrainTable(<TileType->String>* items) satisfies EncounterTable {
     Map<TileType, String> mapping = map { *items };
     suppressWarnings("deprecation")
-    shared actual String generateEvent(Point point, TileType terrain,
+    shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
-        TileType actual;
-        Boolean forested = !fixtures.narrow<Forest>().empty;
-        if (mountainous) {
-            actual = TileType.mountain;
-        } else if (terrain == TileType.plains, forested) {
-            actual = TileType.temperateForest;
-        } else if (terrain == TileType.steppe, forested) {
-            actual = TileType.borealForest;
-        } else {
-            actual = terrain;
-        }
-        if (exists retval = mapping[actual]) {
-            return retval;
-        } else if (exists retval = mapping[terrain]) {
-            return retval;
+        if (exists terrain) {
+            TileType actual;
+            Boolean forested = !fixtures.narrow<Forest>().empty;
+            if (mountainous) {
+                actual = TileType.mountain;
+            } else if (terrain == TileType.plains, forested) {
+                actual = TileType.temperateForest;
+            } else if (terrain == TileType.steppe, forested) {
+                actual = TileType.borealForest;
+            } else {
+                actual = terrain;
+            }
+            if (exists retval = mapping[actual]) {
+                return retval;
+            } else if (exists retval = mapping[terrain]) {
+                return retval;
+            } else {
+                throw IllegalArgumentException(
+                    "Table does not account for terrain type ``terrain``");
+            }
         } else {
             throw IllegalArgumentException(
-                "Table does not account for terrain type ``terrain``");
+                "Terrain table cannot account for not-visible terrain");
         }
     }
     shared actual Set<String> allEvents =>

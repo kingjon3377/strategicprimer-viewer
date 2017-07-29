@@ -36,9 +36,8 @@ shared class HuntingModel {
     MapDimensions dimensions = map.dimensions;
     {String*} fishKinds = set {
         for (point in map.locations)
-//            if (map.baseTerrain[point] == TileType.ocean) // TODO: syntax sugar once compiler bug fixed
-            if (map.baseTerrain.get(point) == TileType.ocean)
-//                for (fixture in map.fixtures[point])
+            if (exists terrain = map.baseTerrain[point], terrain == TileType.ocean)
+//                for (fixture in map.fixtures[point]) // TODO: syntax sugar once compiler bug fixed
                 for (fixture in map.fixtures.get(point))
                     if (is Animal fixture)
                         fixture.kind
@@ -83,8 +82,7 @@ shared class HuntingModel {
         }
         if (exists plantList = plants[point]) {
             Integer length = plantList.size - 1;
-//            TileType tileType = map.baseTerrain[point]; // TODO: syntax sugar once compiler bug fixed
-            TileType tileType = map.baseTerrain.get(point);
+            TileType? tileType = map.baseTerrain[point];
             Integer nothings;
             switch (tileType)
             case (TileType.desert|TileType.tundra) { nothings = length * 3; }

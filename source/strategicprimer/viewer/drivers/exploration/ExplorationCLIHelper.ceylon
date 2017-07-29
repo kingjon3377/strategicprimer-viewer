@@ -142,8 +142,10 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
         }
         String tracks;
-//        if (TileType.ocean == model.map.baseTerrain[destPoint]) {
-        if (TileType.ocean == model.map.baseTerrain.get(destPoint)) {
+        // Since not-visible terrain is impassable, by this point we know the tile is
+        // visible.
+        assert (exists terrain = model.map.baseTerrain[destPoint]);
+        if (TileType.ocean == terrain) {
             tracks = huntingModel.fish(destPoint, 1).first else HuntingModel.noResults;
         } else {
             tracks = huntingModel.hunt(destPoint, 1).first else HuntingModel.noResults;
@@ -171,8 +173,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             mtn = "";
         }
         cli.println("The explorer comes to ``destPoint``, a ``mtn``tile with terrain ``
-//                  map.baseTerrain[destPoint]``");
-                    map.baseTerrain.get(destPoint)``");
+                  map.baseTerrain[destPoint] else "Unknown"``");
         {TileFixture*} noticed = selectNoticed(allFixtures, identity<TileFixture>,
                 mover, speed);
         if (noticed.empty) {

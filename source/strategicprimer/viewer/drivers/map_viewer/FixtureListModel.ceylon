@@ -8,13 +8,13 @@ import javax.swing {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    anythingEqual
 }
 
 import strategicprimer.model.map {
     Point,
     TileFixture,
-    TileType,
     IMutableMapNG,
     invalidPoint
 }
@@ -38,9 +38,7 @@ shared class FixtureListModel(IMutableMapNG map,
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         clear();
         currentTracks.clear();
-//        TileType base = map.baseTerrain[newPoint]; // TODO: syntax sugar once compiler bug fixed
-        TileType base = map.baseTerrain.get(newPoint);
-        if (TileType.notVisible != base) {
+        if (exists base = map.baseTerrain[newPoint]) {
             addElement(TileTypeFixture(base));
         }
 //        for (fixture in map.fixtures[newPoint]) {
@@ -52,8 +50,7 @@ shared class FixtureListModel(IMutableMapNG map,
      just the list."
     shared void addFixture(TileFixture fixture) {
         if (is TileTypeFixture fixture) {
-//            if (map.baseTerrain[point] != fixture.tileType) {
-            if (map.baseTerrain.get(point) != fixture.tileType) {
+            if (!anythingEqual(map.baseTerrain[point], fixture.tileType)) {
                 map.baseTerrain[point] = fixture.tileType;
                 selectedPointChanged(null, point);
             }
@@ -69,7 +66,7 @@ shared class FixtureListModel(IMutableMapNG map,
         for (fixture in fixtures) {
             if (is TileTypeFixture fixture) {
                 if (removeElement(fixture)) { // no-op if it wasn't *our* terrain
-                    map.baseTerrain[point] = TileType.notVisible;
+                    map.baseTerrain[point] = null;
                 }
             } else if (filterTracks, is Animal fixture, currentTracks.contains(fixture)) {
                 if (removeElement(fixture)) {

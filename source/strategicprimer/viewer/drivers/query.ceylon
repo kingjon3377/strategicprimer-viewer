@@ -315,8 +315,7 @@ object queryCLI satisfies SimpleDriver {
     "Give the data about a tile that the player is supposed to automatically know if he
      has a fortress on it."
     void fortressInfo(IMapNG map, Point location, ICLIHelper cli) {
-//        cli.println("Terrain is ``map.baseTerrain[location]``"); // TODO: syntax sugar once compiler bug fixed
-        cli.println("Terrain is ``map.baseTerrain.get(location)``");
+        cli.println("Terrain is ``map.baseTerrain[location] else "unknown"``");
 //        Ground[] ground = map.fixtures[location].narrow<Ground>().sequence();
         Ground[] ground = map.fixtures.get(location).narrow<Ground>().sequence();
 //        Forest[] forests = map.fixtures[location].narrow<Forest>().sequence();
@@ -342,19 +341,20 @@ object queryCLI satisfies SimpleDriver {
         MutableSet<Point> considered = HashSet<Point>();
         MutableList<Point> retval = ArrayList<Point>();
         while (exists current = queue.accept()) {
-//            TileType currentTerrain = map.baseTerrain[current]; // TODO: syntax sugar once compiler bug fixed
-            TileType currentTerrain = map.baseTerrain.get(current);
+            TileType? currentTerrain = map.baseTerrain[current];
             if (considered.contains(current)) {
                 continue;
-            } else if (currentTerrain == TileType.notVisible) {
-                retval.add(current);
-            } else if (currentTerrain != TileType.ocean) {
-                Float baseDistance = distance(base, current, dimensions);
-                for (neighbor in surroundingPointIterable(current, dimensions, 1)) {
-                    if (distance(base, neighbor, dimensions) >= baseDistance) {
-                        queue.offer(neighbor);
+            } else if (exists currentTerrain) {
+                if (currentTerrain != TileType.ocean) {
+                    Float baseDistance = distance(base, current, dimensions);
+                    for (neighbor in surroundingPointIterable(current, dimensions, 1)) {
+                        if (distance(base, neighbor, dimensions) >= baseDistance) {
+                            queue.offer(neighbor);
+                        }
                     }
                 }
+            } else {
+                retval.add(current);
             }
             considered.add(current);
         }
