@@ -261,6 +261,13 @@ void assertSerialization(String message, Object obj,
         }
     }
 }
+"Assert that the serialized form of the given object, using both writers, will contain the
+ given string."
+void assertSerializedFormContains(Object obj, String expected, String message) {
+    for (deprecated in `Boolean`.caseValues) {
+        assertTrue(createSerializedForm(obj, deprecated).contains(expected), message);
+    }
+}
 
 "Assert that the given object, if serialized and deserialized, will have its image
  property preserved. We modify that property, but set it back to the original value before
@@ -1135,32 +1142,21 @@ void testOrdersSerialization() {
     secondUnit.setOrders(-1, "some orders");
     assertEquals(firstUnit, secondUnit, "Orders have no effect on equals");
     assertSerialization("Orders don't mess up deserialization", secondUnit);
-    // TODO: Create assertSerializedFormContains() for use here and elsewhere
-    for (deprecated in {true, false}) {
-        assertTrue(createSerializedForm(secondUnit, deprecated).contains("some orders"),
-            "Serialized form contains orders");
-    }
+    assertSerializedFormContains(secondUnit, "some orders",
+        "Serialized form contains orders");
     secondUnit.setOrders(2, "some other orders");
-    for (deprecated in {true, false}) {
-        String serialized = createSerializedForm(secondUnit, deprecated);
-        assertTrue(serialized.contains("some orders"),
-            "Serialized form contains original orders");
-        assertTrue(serialized.contains("some other orders"),
-            "Serialized form contains new orders too.");
-    }
+    assertSerializedFormContains(secondUnit, "some orders",
+        "Serialized form contains original orders after adding new orders");
+    assertSerializedFormContains(secondUnit, "some other orders",
+        "Serialized form contains new orders too");
     secondUnit.setResults(3, "some results");
-    for (deprecated in {true, false}) {
-        assertTrue(createSerializedForm(secondUnit, deprecated).contains("some results"),
-            "Serialized form contains results");
-    }
+    assertSerializedFormContains(secondUnit, "some results",
+        "Serialized form contains results");
     secondUnit.setResults(-1, "some other results");
-    for (deprecated in {true, false}) {
-        String serialized = createSerializedForm(secondUnit, deprecated);
-        assertTrue(serialized.contains("some results"),
-            "Serialized form contains original results");
-        assertTrue(serialized.contains("some other results"),
-            "Serialized form contains new results too");
-    }
+    assertSerializedFormContains(secondUnit, "some results",
+        "Serialized form contains original results after adding new results");
+    assertSerializedFormContains(secondUnit, "some other results",
+        "Serialized form contains new results too");
     assertForwardDeserialization<IUnit>("Orders can be read without tags",
         """<unit name="name" kind="kind" id="1" owner="-1">Orders orders</unit>""",
                 (unit) => unit.getOrders(-1) == "Orders orders");
@@ -1188,10 +1184,8 @@ void testUnitPortraitSerialization(Integer id) {
     Unit unit = Unit(PlayerImpl(1, ""), "kind", "name", id);
     unit.portrait = "portraitFile";
     assertSerialization("Portrait doesn't mess up serialization", unit);
-    for (deprecation in {true, false}) {
-        assertTrue(createSerializedForm(unit, deprecation).contains("portraitFile"),
-            "Serialized form contains portrait");
-    }
+    assertSerializedFormContains(unit, "portraitFile",
+        "Serialized form contains portrait");
     assertPortraitSerialization("Unit portrait property is preserved", unit);
 }
 
