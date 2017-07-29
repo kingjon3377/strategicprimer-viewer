@@ -219,10 +219,9 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 	}
 	"Have the user choose an item from a list."
 	shared actual Integer->String? chooseStringFromList(String[] items,
-			String description, String none, String prompt, Boolean auto) {
-		return chooseFromListImpl<String>(items, description, none, prompt, auto,
+			String description, String none, String prompt, Boolean auto) =>
+			chooseFromListImpl<String>(items, description, none, prompt, auto,
 					identity);
-	}
 	"Print the specified string, then a newline."
 	shared actual void println(String line) {
 		ostream(line);
