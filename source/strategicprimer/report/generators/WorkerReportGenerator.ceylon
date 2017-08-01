@@ -51,7 +51,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     String skills(ISkill* job) {
         StringBuilder builder = StringBuilder();
         if (exists first = job.first) {
-            builder.append(" ``first.name`` ``first.level``");
+            builder.append(" (``first.name`` ``first.level``");
             for (skill in job.rest) {
                 builder.append(", ``skill.name`` ``skill.level``");
             }
