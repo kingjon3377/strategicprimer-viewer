@@ -21,7 +21,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
         satisfies ITableGenerator<IWorker> {
     "The header row of the table."
-    shared actual [String+] headerRow = ["Distance", "Location", "HP", "Max HP", "Str",
+    shared actual [String+] headerRow = ["Distance", "Location", "Name", "HP", "Max HP", "Str",
         "Dex", "Con", "Int", "Wis", "Cha"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "workers";
