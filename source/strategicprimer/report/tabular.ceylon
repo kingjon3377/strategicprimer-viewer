@@ -50,7 +50,8 @@ import strategicprimer.report.generators.tabular {
     DiggableTabularReportGenerator,
     ResourceTabularReportGenerator,
     ImmortalsTabularReportGenerator,
-    ExplorableTabularReportGenerator
+    ExplorableTabularReportGenerator,
+    SkillTabularReportGenerator
 }
 "A method to produce tabular reports based on a map for a player."
 shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
@@ -62,6 +63,7 @@ shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
         FortressTabularReportGenerator(player, hq, dimensions),
         UnitTabularReportGenerator(player, hq, dimensions),
         AnimalTabularReportGenerator(hq, dimensions, map.currentTurn),
+        SkillTabularReportGenerator(),
         WorkerTabularReportGenerator(hq, dimensions),
         VillageTabularReportGenerator(player, hq, dimensions),
         TownTabularReportGenerator(player, hq, dimensions),
@@ -96,6 +98,7 @@ shared void createGUITabularReports(
         FortressTabularReportGenerator(player, hq, dimensions),
         UnitTabularReportGenerator(player, hq, dimensions),
         AnimalTabularReportGenerator(hq, dimensions, map.currentTurn),
+        SkillTabularReportGenerator(),
         WorkerTabularReportGenerator(hq, dimensions),
         VillageTabularReportGenerator(player, hq, dimensions),
         TownTabularReportGenerator(player, hq, dimensions),
