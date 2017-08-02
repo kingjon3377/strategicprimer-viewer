@@ -29,7 +29,7 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
     "The file-name to (by default) write this table to."
     shared actual String tableName = "minerals";
     "Create a GUI table row representing a fixture."
-    shared actual {String+}? produce(
+    shared actual {{String+}*} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, MineralFixture item,
             Point loc) {
         String classField;
@@ -52,10 +52,10 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
             statusField = (item.exposed) then "exposed" else "not exposed";
         }
         else {
-            return null;
+            return {};
         }
-        return {distanceString(loc, hq, dimensions), loc.string, classField, item.kind,
-            statusField};
+        return {{distanceString(loc, hq, dimensions), loc.string, classField, item.kind,
+            statusField}};
     }
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, MineralFixture] one,

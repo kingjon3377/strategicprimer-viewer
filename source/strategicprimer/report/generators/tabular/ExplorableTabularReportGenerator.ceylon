@@ -32,7 +32,7 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq,
     "The file-name to (by default) write this table to."
     shared actual String tableName = "explorables";
     "Create a GUI table row representing the given fixture."
-    shared actual {String+}? produce(
+    shared actual {{String+}*} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             ExplorableFixture|TextFixture item, Point loc) {
         String brief;
@@ -79,9 +79,9 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq,
             longDesc = item.fullDescription;
         }
         else {
-            return null;
+            return {};
         }
-        return {distanceString(loc, hq, dimensions), loc.string, brief, owner, longDesc};
+        return {{distanceString(loc, hq, dimensions), loc.string, brief, owner, longDesc}};
     }
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, ExplorableFixture|TextFixture] one,

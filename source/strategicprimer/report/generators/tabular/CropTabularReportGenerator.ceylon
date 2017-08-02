@@ -33,7 +33,7 @@ shared class CropTabularReportGenerator(Point hq, MapDimensions dimensions)
     "The file-name to (by default) write this table to."
     shared actual String tableName = "crops";
     "Create a GUI table row representing the crop."
-    shared actual {String+} produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual [{String+}+] produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Forest|Shrub|Meadow|Grove item, Point loc) {
         String kind;
         String cultivation;
@@ -60,8 +60,8 @@ shared class CropTabularReportGenerator(Point hq, MapDimensions dimensions)
             cultivation = (item.cultivated) then "cultivated" else "wild";
             status = "---";
         }
-        return [distanceString(loc, hq, dimensions), loc.string, kind, cultivation,
-            status, crop];
+        return [[distanceString(loc, hq, dimensions), loc.string, kind, cultivation,
+            status, crop]];
     }
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, Forest|Shrub|Meadow|Grove] one,

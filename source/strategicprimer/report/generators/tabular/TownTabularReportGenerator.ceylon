@@ -36,12 +36,12 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Kind", "Size",
         "Status", "Name"];
     "Create a GUI table row representing a town."
-    shared actual {String+} produce(
+    shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             AbstractTown item, Point loc) =>
-            {distanceString(loc, hq, dimensions), loc.string,
+            {{distanceString(loc, hq, dimensions), loc.string,
                 ownerString(player, item.owner), item.kind, item.townSize.string,
-                item.status.string, item.name};
+                item.status.string, item.name}};
     "Compare two location-town pairs."
     shared actual Comparison comparePairs([Point, AbstractTown] one,
             [Point, AbstractTown] two) {

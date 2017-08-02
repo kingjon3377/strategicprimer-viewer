@@ -26,18 +26,18 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
     "The file-name to (by default) write this table to."
     shared actual String tableName = "workers";
     "Create a GUI table row representing a worker."
-    shared actual {String+} produce(
+    shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IWorker item,
             Point loc) {
         if (exists stats = item.stats) {
-            return {distanceString(loc, hq, dimensions), loc.string, item.name,
+            return {{distanceString(loc, hq, dimensions), loc.string, item.name,
                 stats.hitPoints.string, stats.maxHitPoints.string,
                 for (stat in { stats.strength, stats.dexterity, stats.constitution,
                     stats.intelligence, stats.wisdom, stats.charisma })
-                        WorkerStats.getModifierString(stat) };
+                        WorkerStats.getModifierString(stat) }};
         } else {
-            return {distanceString(loc, hq, dimensions), loc.string, item.name,
-                *(0..9).map((num) => "---")};
+            return {{distanceString(loc, hq, dimensions), loc.string, item.name,
+                *(0..9).map((num) => "---")}};
         }
     }
     "Compare two worker-location pairs."

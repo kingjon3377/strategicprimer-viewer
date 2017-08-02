@@ -50,7 +50,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             comparePairs));
         writeRow(ostream, headerRow.first, *headerRow.rest);
         for ([num, [loc, item]] in values) {
-            if (exists row = produce(fixtures, item, loc)) {
+            for (row in produce(fixtures, item, loc)) {
                 writeRow(ostream, row.first, *row.rest);
                 fixtures.remove(num);
             }
@@ -75,7 +75,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         DefaultTableModel retval = DefaultTableModel(
             createJavaObjectArray(headerRow.map(javaString)), 0);
         for ([num, [loc, item]] in values) {
-            if (exists row = produce(fixtures, item, loc)) {
+            for (row in produce(fixtures, item, loc)) {
                 fixtures.remove(num);
                 retval.addRow(createJavaObjectArray(row.map(javaString)));
             }
@@ -83,9 +83,9 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         fixtures.coalesce();
         return retval;
     }
-    "Produce a single line of the tabular report in a form suitable for adding to a Swing
-     JTable. Returns null if not handled by this generator."
-    shared formal {String+}? produce(
+    "Produce lines (usually only one line) of the tabular report. Returns the empty
+     iterable if not handled by this generator."
+    shared formal {{String+}*} produce(
             "The set of fixtures."
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             "The item to base this line on."
@@ -119,7 +119,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
                 MapDimensions dimensions) =>
             Float.format(sqrt(distance(first, second, dimensions).float),
                 1, 1);
-    "The CSV header row to print at the top of the report, not including the newline."
+    "The header row to print at the top of the report, listing what the fields represent."
     shared formal [String+] headerRow;
     "Compare two Point-fixture pairs."
     shared formal Comparison comparePairs([Point, T] one, [Point, T] two);

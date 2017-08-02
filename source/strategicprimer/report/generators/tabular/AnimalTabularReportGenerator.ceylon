@@ -22,7 +22,7 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
     "The file-name to (by default) write this table to."
     shared actual String tableName = "animals";
     "Create a GUI table row representing the given animal."
-    shared actual {String+} produce(
+    shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Animal item, Point loc) {
         String kind;
@@ -58,7 +58,7 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
             age = "---";
             population = "---";
         }
-        return {distanceString(loc, hq, dimensions), loc.string, population, kind, age};
+        return {{distanceString(loc, hq, dimensions), loc.string, population, kind, age}};
     }
     "Compare two pairs of Animals and locations."
     shared actual Comparison comparePairs([Point, Animal] one, [Point, Animal] two) {
