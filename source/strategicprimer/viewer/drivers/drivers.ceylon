@@ -95,6 +95,9 @@ import com.pump.window {
 import strategicprimer.viewer.about {
     aboutDialog
 }
+import strategicprimer.drivers.generators {
+    townGeneratingCLI
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."

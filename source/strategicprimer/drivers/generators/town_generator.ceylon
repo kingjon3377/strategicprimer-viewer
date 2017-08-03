@@ -66,7 +66,7 @@ import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 "A driver to let the user enter or generate 'stats' for towns."
-object townGeneratingCLI satisfies SimpleCLIDriver {
+shared object townGeneratingCLI satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         shortOption = "-o";
@@ -80,8 +80,8 @@ object townGeneratingCLI satisfies SimpleCLIDriver {
         ExplorationRunner retval = ExplorationRunner();
         for (table in {"mountain_skills", "forest_skills", "plains_skills",
                 "ocean_skills"}) {
-            assert (exists tableContents = readFileContents(`module strategicprimer.viewer`,
-                "town_tables/``table``"));
+            assert (exists tableContents = readFileContents(
+                `module strategicprimer.drivers.generators`, "town_tables/``table``"));
             retval.loadTable(table, loadTable(tableContents.lines));
         }
         return retval;
