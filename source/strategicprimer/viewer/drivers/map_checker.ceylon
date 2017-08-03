@@ -64,6 +64,9 @@ import strategicprimer.model.xmlio {
 import strategicprimer.model.map.fixtures {
     ResourcePile
 }
+import strategicprimer.drivers.gui.common {
+	SPFrame
+}
 
 """An interface for checks of a map's *contents* that we don't want the XML-*reading*
    code to do."""

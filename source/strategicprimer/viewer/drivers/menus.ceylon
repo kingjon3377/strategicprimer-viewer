@@ -67,6 +67,9 @@ import lovelace.util.common {
 import strategicprimer.viewer.about {
     aboutDialog
 }
+import strategicprimer.drivers.gui.common {
+	SPFrame
+}
 """A class to respond to "change current player" menu items."""
 shared class PlayerChangeMenuListener(IDriverModel model)
         satisfies ActionListener&PlayerChangeSource {

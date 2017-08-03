@@ -25,7 +25,7 @@ import lovelace.util.jvm {
     BoxPanel
 }
 
-import strategicprimer.viewer.drivers {
+import strategicprimer.drivers.gui.common {
     SPDialog
 }
 import strategicprimer.model.map {

@@ -77,6 +77,9 @@ import ceylon.file {
 import ceylon.language.meta {
     type
 }
+import strategicprimer.drivers.gui.common {
+	ISPWindow
+}
 
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(
     "Strategic Primer world map files", "map", "xml");

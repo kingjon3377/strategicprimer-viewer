@@ -47,6 +47,9 @@ import java.awt {
 import strategicprimer.viewer.about {
     aboutDialog
 }
+import strategicprimer.drivers.gui.common {
+	SPFrame
+}
 "A driver to produce a report of the contents of a map."
 object reportCLI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {

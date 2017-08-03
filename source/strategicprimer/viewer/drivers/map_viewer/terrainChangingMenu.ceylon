@@ -27,8 +27,8 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.viewer.drivers {
-    SPDialog
+import strategicprimer.drivers.gui.common {
+	SPDialog
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
     NewUnitSource

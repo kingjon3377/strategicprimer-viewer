@@ -32,10 +32,12 @@ import strategicprimer.viewer.about {
     aboutDialog
 }
 import strategicprimer.viewer.drivers {
-    SPFrame,
     IOHandler,
     MenuBroker,
     FileChooser
+}
+import strategicprimer.drivers.gui.common {
+	SPFrame
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

@@ -89,8 +89,10 @@ import strategicprimer.model.map.fixtures.resources {
 }
 
 import strategicprimer.viewer.drivers {
-    SPFrame,
     SPMenu
+}
+import strategicprimer.drivers.gui.common {
+	SPFrame
 }
 import strategicprimer.viewer.drivers.map_viewer {
     SelectionChangeSupport,

@@ -25,7 +25,6 @@ import strategicprimer.model.map {
     IMapNG
 }
 import strategicprimer.viewer.drivers {
-    SPFrame,
     MenuBroker
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
@@ -49,6 +48,9 @@ import java.nio.file {
 }
 import strategicprimer.model.xmlio {
     readMap
+}
+import strategicprimer.drivers.gui.common {
+	SPFrame
 }
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,

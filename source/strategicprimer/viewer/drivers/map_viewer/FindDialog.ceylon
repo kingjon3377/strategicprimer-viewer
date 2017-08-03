@@ -36,7 +36,7 @@ import strategicprimer.model.map {
     HasKind,
     PointIterator
 }
-import strategicprimer.viewer.drivers {
+import strategicprimer.drivers.gui.common {
     SPDialog
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""

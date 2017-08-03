@@ -91,6 +91,9 @@ import strategicprimer.viewer.drivers.worker_mgmt {
 import strategicprimer.model.xmlio {
     readMap
 }
+import strategicprimer.drivers.gui.common {
+	SPFrame
+}
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
     shared new fromMap(IMutableMapNG map, JPath? file) extends

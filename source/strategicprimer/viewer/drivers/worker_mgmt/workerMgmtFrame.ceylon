@@ -83,9 +83,7 @@ import strategicprimer.report {
     simpleReportNode
 }
 import strategicprimer.viewer.drivers {
-    SPFrame,
     MenuBroker,
-    SPDialog,
     FileChooser,
     filteredFileChooser
 }
@@ -104,6 +102,10 @@ import java.nio.file {
 }
 import lovelace.util.common {
     anythingEqual
+}
+import strategicprimer.drivers.gui.common {
+	SPFrame,
+	SPDialog
 }
 "A window to let the player manage units."
 SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,

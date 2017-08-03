@@ -47,8 +47,10 @@ import strategicprimer.model.xmlio {
     SPFormatException
 }
 import strategicprimer.viewer.drivers {
-    SPFrame,
     UtilityMenu
+}
+import strategicprimer.drivers.gui.common {
+	SPFrame
 }
 "A window to show the result of running subset tests."
 class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) {

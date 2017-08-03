@@ -27,11 +27,13 @@ import strategicprimer.viewer.about {
     aboutDialog
 }
 import strategicprimer.viewer.drivers {
-    SPFrame,
     PlayerChangeMenuListener,
     IOHandler,
     MenuBroker,
     FileChooser
+}
+import strategicprimer.drivers.gui.common {
+	SPFrame
 }
 "The worker-advancement GUI driver."
 shared object advancementGUI satisfies SimpleDriver {

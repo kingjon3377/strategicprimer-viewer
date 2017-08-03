@@ -22,8 +22,8 @@ import lovelace.util.jvm {
     centeredHorizontalBox,
     platform
 }
-import strategicprimer.viewer.drivers {
-    SPDialog
+import strategicprimer.drivers.gui.common {
+	SPDialog
 }
 import ceylon.interop.java {
     javaString

@@ -57,11 +57,13 @@ import strategicprimer.model.map {
     TileFixture
 }
 import strategicprimer.viewer.drivers {
-    SPFrame,
     SPMenu
 }
 import strategicprimer.model.xmlio {
     warningLevels
+}
+import strategicprimer.drivers.gui.common {
+	SPFrame
 }
 "An interface for the map viewer main window, to hold the method needed by the worker
  management app."

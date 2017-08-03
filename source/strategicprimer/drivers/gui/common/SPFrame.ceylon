@@ -19,6 +19,11 @@ import java.io {
 import java.util {
 	JList=List
 }
+import ceylon.logging {
+	Logger,
+	logger
+}
+Logger log = logger(`module strategicprimer.drivers.gui.common`);
 "A [[TransferHandler]] to allow SP apps to accept dropped files."
 class FileDropHandler() extends TransferHandler() {
 	shared late SPFrame app;

@@ -99,6 +99,9 @@ import strategicprimer.drivers.generators {
     townGeneratingCLI,
     statGeneratingCLI
 }
+import strategicprimer.drivers.gui.common {
+	SPFrame
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."

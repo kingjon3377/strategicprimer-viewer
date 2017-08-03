@@ -22,7 +22,6 @@ import strategicprimer.viewer.about {
     aboutDialog
 }
 import strategicprimer.viewer.drivers {
-    SPFrame,
     IOHandler,
     MenuBroker,
     FileChooser
@@ -30,6 +29,9 @@ import strategicprimer.viewer.drivers {
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
     ExplorationModel
+}
+import strategicprimer.drivers.gui.common {
+	SPFrame
 }
 "An object to start the exploration GUI."
 shared object explorationGUI satisfies SimpleDriver {
