@@ -59,10 +59,16 @@ import strategicprimer.drivers.exploration.common {
 import lovelace.util.jvm {
     readFileContents
 }
+import ceylon.logging {
+    logger,
+    Logger
+}
 
+"A logger."
+Logger log = logger(`module strategicprimer.drivers.generators`);
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
-object statGeneratingCLI satisfies SimpleCLIDriver {
+shared object statGeneratingCLI satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         shortOption = "-t";

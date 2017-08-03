@@ -96,7 +96,8 @@ import strategicprimer.viewer.about {
     aboutDialog
 }
 import strategicprimer.drivers.generators {
-    townGeneratingCLI
+    townGeneratingCLI,
+    statGeneratingCLI
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

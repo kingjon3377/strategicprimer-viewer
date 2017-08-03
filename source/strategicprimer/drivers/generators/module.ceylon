@@ -8,4 +8,5 @@ module strategicprimer.drivers.generators "0.4.9014" {
     import lovelace.util.jvm "0.1.0";
     import strategicprimer.drivers.exploration.common "0.4.9014";
     import strategicprimer.drivers.exploration.old "0.4.9014";
+	import ceylon.logging "1.3.2";
 }
