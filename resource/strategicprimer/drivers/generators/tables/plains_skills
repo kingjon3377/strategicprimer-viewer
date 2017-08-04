@@ -1,12 +1,5 @@
 random
-9 farmer
-18 hunter
-27 herder
-36 food-gatherer
-45 carpenter
-55 fisherman
-64 mason
-73 weaver
-82 tailor
-91 blacksmith
+25 hunter
+50 fisherman
+75 mason
 100 #regional_specialty#
