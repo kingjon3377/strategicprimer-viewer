@@ -81,7 +81,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         for (table in {"mountain_skills", "forest_skills", "plains_skills",
                 "ocean_skills"}) {
             assert (exists tableContents = readFileContents(
-                `module strategicprimer.drivers.generators`, "town_tables/``table``"));
+                `module strategicprimer.drivers.generators`, "tables/``table``"));
             retval.loadTable(table, loadTable(tableContents.lines));
         }
         return retval;
