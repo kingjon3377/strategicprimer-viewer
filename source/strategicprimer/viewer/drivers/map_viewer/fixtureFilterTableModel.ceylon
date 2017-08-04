@@ -102,7 +102,7 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
     for (arg in {
         complements<IUnit>((unit) => !unit.owner.independent, "Units",
             "Independent Units"),
-        trivialMatcher(`Unit`), trivialMatcher(`Fortress`, "Fortresses"),
+        trivialMatcher(`Fortress`, "Fortresses"),
         // TODO: Towns should be broken up by kind or size, and maybe by status or owner
         trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
         // TODO: Village through Centaur were all 45, so their ordering happened by chance
