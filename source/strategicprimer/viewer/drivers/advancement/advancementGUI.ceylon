@@ -23,7 +23,7 @@ import strategicprimer.drivers.worker.common {
     WorkerModel,
     IWorkerModel
 }
-import strategicprimer.viewer.about {
+import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
 import strategicprimer.viewer.drivers {

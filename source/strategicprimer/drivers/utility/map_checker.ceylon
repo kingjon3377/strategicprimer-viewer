@@ -65,9 +65,15 @@ import strategicprimer.model.map.fixtures {
     ResourcePile
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame
+	SPFrame,
+    UtilityMenu
+}
+import ceylon.logging {
+    Logger,
+    logger
 }
 
+Logger log = logger(`module strategicprimer.drivers.utility`);
 """An interface for checks of a map's *contents* that we don't want the XML-*reading*
    code to do."""
 interface Checker {
@@ -161,7 +167,7 @@ object resourcePlaceholderChecker satisfies Checker {
 {Checker+} extraChecks = { lateriteChecker, aquaticVillageChecker, suspiciousSkillCheck,
     resourcePlaceholderChecker };
 "A driver to check every map file in a list for errors."
-object mapCheckerCLI satisfies UtilityDriver {
+shared object mapCheckerCLI satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, "-k", "--check",
         ParamCount.atLeastOne, "Check map for errors",
         "Check a map file for errors, deprecated syntax, etc.");
@@ -243,7 +249,7 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
 }
 "A driver to check every map file in a list for errors and report the results in a
  window."
-object mapCheckerGUI satisfies UtilityDriver {
+shared object mapCheckerGUI satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(true, "-k", "--check",
         ParamCount.atLeastOne, "Check map for errors",
         "Check a map file for errors, deprecated syntax, etc.");

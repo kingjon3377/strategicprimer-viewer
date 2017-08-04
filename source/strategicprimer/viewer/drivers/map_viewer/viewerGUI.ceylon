@@ -28,7 +28,7 @@ import strategicprimer.model.map {
     MapDimensions,
     Point
 }
-import strategicprimer.viewer.about {
+import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
 import strategicprimer.viewer.drivers {

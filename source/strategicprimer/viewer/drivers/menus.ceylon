@@ -13,8 +13,7 @@ import com.apple.eawt {
     AppEvent
 }
 import com.pump.window {
-    WindowList,
-    WindowMenu
+    WindowList
 }
 
 import java.awt {
@@ -60,15 +59,6 @@ import strategicprimer.viewer.drivers.map_viewer {
 }
 import strategicprimer.drivers.worker.common {
     IWorkerModel
-}
-import lovelace.util.common {
-    todo
-}
-import strategicprimer.viewer.about {
-    aboutDialog
-}
-import strategicprimer.drivers.gui.common {
-	SPFrame
 }
 """A class to respond to "change current player" menu items."""
 shared class PlayerChangeMenuListener(IDriverModel model)
@@ -316,31 +306,4 @@ shared class SPMenu extends JMenuBar {
             add(menu);
         }
     }
-}
-"A simple menu for utility drivers that don't need the full complement of menus that other
- apps have."
-todo("OTOH, they should probably use an almost-fully-disabled [[SPMenu]], for consistency.")
-suppressWarnings("expressionTypeNothing")
-shared class UtilityMenu(SPFrame parent) extends JMenuBar() {
-    void aboutHandler(ActionEvent event) =>
-            aboutDialog(parent, parent.windowName).setVisible(true);
-	JMenu menu = JMenu("File");
-	menu.add(createMenuItem("Close", KeyEvent.vkW, "Close this window",
-                (event) => parent.dispose(), createAccelerator(KeyEvent.vkW)));
-	if (platform.systemIsMac) {
-		Application.application.setAboutHandler((AppEvent.AboutEvent event) {
-			Object source = WindowList.getWindows(true, false).iterable.coalesced
-				.sequence().reversed.first else event;
-			aboutHandler(ActionEvent(source, ActionEvent.actionFirst,
-				"About"));
-		});
-	} else {
-		menu.add(createMenuItem("About", KeyEvent.vkB, "Show development credits",
-			aboutHandler, createAccelerator(KeyEvent.vkB)));
-		menu.addSeparator();
-		menu.add(createMenuItem("Quit", KeyEvent.vkQ, "Quit the application",
-                    (event) => process.exit(0), createAccelerator(KeyEvent.vkQ)));
-	}
-    add(menu);
-    add(WindowMenu(parent));
 }

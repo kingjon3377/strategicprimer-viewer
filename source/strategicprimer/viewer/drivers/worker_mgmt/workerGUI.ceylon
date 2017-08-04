@@ -1,7 +1,7 @@
 import javax.swing {
     SwingUtilities
 }
-import strategicprimer.viewer.about {
+import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
 import strategicprimer.viewer.drivers {

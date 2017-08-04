@@ -19,7 +19,7 @@ import java.nio.file {
     JPath=Path
 }
 "A logger."
-Logger log = logger(`module strategicprimer.viewer`);
+Logger log = logger(`module strategicprimer.drivers.utility`);
 "A driver to check whether player maps are subsets of the main map."
 shared object subsetCLI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage(false, "-s", "--subset",

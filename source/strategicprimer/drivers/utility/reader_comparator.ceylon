@@ -34,7 +34,7 @@ import strategicprimer.drivers.common.cli {
 }
 
 "A driver for comparing map readers."
-object readerComparator satisfies UtilityDriver {
+shared object readerComparator satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, "-t", "--test",
         ParamCount.atLeastOne, "Test map readers",
         "Test map-reading implementations by comparing their results on the same file.");

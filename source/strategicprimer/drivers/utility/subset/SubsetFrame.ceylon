@@ -46,10 +46,8 @@ import strategicprimer.model.xmlio {
     warningLevels,
     SPFormatException
 }
-import strategicprimer.viewer.drivers {
-    UtilityMenu
-}
 import strategicprimer.drivers.gui.common {
+    UtilityMenu,
 	SPFrame
 }
 "A window to show the result of running subset tests."

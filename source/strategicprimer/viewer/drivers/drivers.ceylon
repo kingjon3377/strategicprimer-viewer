@@ -61,7 +61,7 @@ import strategicprimer.viewer.drivers.map_viewer {
 import strategicprimer.viewer.drivers.mining {
     miningCLI
 }
-import strategicprimer.viewer.drivers.subset {
+import strategicprimer.drivers.utility.subset {
     subsetCLI,
     subsetGUI
 }
@@ -70,7 +70,6 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     strategyExportCLI
 }
 import strategicprimer.drivers.common {
-	IMultiMapModel,
 	IDriverModel,
 	ISPDriver,
 	IDriverUsage,
@@ -79,7 +78,6 @@ import strategicprimer.drivers.common {
 	DriverFailedException,
 	IncorrectUsageException,
 	DriverUsage,
-	SimpleCLIDriver,
 	SPOptionsImpl
 }
 import strategicprimer.drivers.common.cli {
@@ -92,7 +90,7 @@ import com.apple.eawt {
 import com.pump.window {
     WindowList
 }
-import strategicprimer.viewer.about {
+import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
 import strategicprimer.drivers.generators {
@@ -100,7 +98,14 @@ import strategicprimer.drivers.generators {
     statGeneratingCLI
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame
+	SPFrame,
+    UtilityMenu
+}
+import strategicprimer.drivers.utility {
+    mapCheckerCLI,
+    readerComparator,
+    mapCheckerGUI,
+    duplicateFixtureRemoverCLI
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -416,33 +421,4 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
     menuHandler.register((event) => process.exit(0), "quit");
     frame.jMenuBar = UtilityMenu(frame);
     return frame;
-}
-"""A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
-   takes up on disk and the memory and CPU it takes to deal with it)."""
-object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = false;
-        shortOption = "-u";
-        longOption = "--duplicates";
-        paramsWanted = ParamCount.one;
-        shortDescription = "Remove duplicate fixtures";
-        longDescription = "Remove duplicate fixtures (identical except ID# and on the
-                           same tile) from a map.";
-        supportedOptionsTemp = [ "--current-turn=NN" ];
-    };
-    "Run the driver"
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        try {
-            if (is IMultiMapModel model) {
-                for (pair in model.allMaps) {
-                    removeDuplicateFixtures(pair.first, cli);
-                }
-            } else {
-                removeDuplicateFixtures(model.map, cli);
-            }
-        } catch (IOException except) {
-            throw DriverFailedException(except, "I/O error interacting with user");
-        }
-    }
 }

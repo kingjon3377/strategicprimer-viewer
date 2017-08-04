@@ -44,11 +44,12 @@ import java.awt {
     Dimension,
     Component
 }
-import strategicprimer.viewer.about {
+import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame
+	SPFrame,
+    UtilityMenu
 }
 "A driver to produce a report of the contents of a map."
 object reportCLI satisfies SimpleDriver {

@@ -50,6 +50,19 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
+import strategicprimer.drivers.common {
+    SPOptions,
+    DriverUsage,
+    IMultiMapModel,
+    SimpleCLIDriver,
+    ParamCount,
+    IDriverUsage,
+    IDriverModel,
+    DriverFailedException
+}
+import java.io {
+    IOException
+}
 
 """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests, of the same
     kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile in a
@@ -207,4 +220,33 @@ BigDecimal toBigDecimal(JNumber number) {
     case (is JInteger|JLong) { return BigDecimal.valueOf(number.longValue()); }
     case (is JFloat|JDouble) { return BigDecimal.valueOf(number.doubleValue()); }
     else { return BigDecimal(number.string); }
+}
+"""A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
+   takes up on disk and the memory and CPU it takes to deal with it)."""
+shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        shortOption = "-u";
+        longOption = "--duplicates";
+        paramsWanted = ParamCount.one;
+        shortDescription = "Remove duplicate fixtures";
+        longDescription = "Remove duplicate fixtures (identical except ID# and on the
+                           same tile) from a map.";
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
+    "Run the driver"
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        try {
+            if (is IMultiMapModel model) {
+                for (pair in model.allMaps) {
+                    removeDuplicateFixtures(pair.first, cli);
+                }
+            } else {
+                removeDuplicateFixtures(model.map, cli);
+            }
+        } catch (IOException except) {
+            throw DriverFailedException(except, "I/O error interacting with user");
+        }
+    }
 }
