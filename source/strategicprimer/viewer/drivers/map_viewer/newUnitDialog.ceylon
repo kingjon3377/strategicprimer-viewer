@@ -116,9 +116,9 @@ shared SPDialog&NewUnitSource&PlayerChangeListener newUnitDialog(variable Player
     });
     platform.makeButtonsSegmented(okButton, cancelButton);
     retval.add(cancelButton);
-    retval.setMinimumSize(Dimension(150, 80));
-    (retval of Component).preferredSize = Dimension(200, 90);
-    (retval of Component).maximumSize = Dimension(300, 90);
+    retval.setMinimumSize(Dimension(200, 100));
+    (retval of Component).preferredSize = Dimension(250, 120);
+    (retval of Component).maximumSize = Dimension(350, 130);
     retval.pack();
     return retval;
 }
