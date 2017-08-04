@@ -5,7 +5,8 @@ import ceylon.collection {
 
 import java.awt {
     Component,
-    Dimension
+    Dimension,
+    GridLayout
 }
 import java.awt.event {
     ActionEvent
@@ -92,6 +93,7 @@ shared SPDialog&NewUnitSource&PlayerChangeListener newUnitDialog(variable Player
             retval.dispose();
         }
     }
+    retval.setLayout(GridLayout(0, 2));
     retval.add(JLabel("<html><b>Unit Name:&nbsp;</b></html>"));
     void setupField(JTextField field) {
         field.setActionCommand("OK");
