@@ -67,7 +67,11 @@ import strategicprimer.model.map.fixtures.terrain {
 }
 import ceylon.collection {
 	LinkedList,
-	Stack
+	Stack,
+	HashMap,
+	MutableMap,
+	MutableList,
+	ArrayList
 }
 "A driver to let the user enter or generate 'stats' for towns."
 shared object townGeneratingCLI satisfies SimpleCLIDriver {
@@ -80,6 +84,33 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         longDescription = "Enter or generate stats and contents for towns and villages";
     };
     alias ModifiableTown=>AbstractTown|Village;
+    Map<String,{[Quantity, String, String]*}> initializeConsumption() {
+        MutableMap<String, {[Quantity, String, String]*}> retval =
+                HashMap<String, {[Quantity, String, String]*}>();
+        for (terrain in {"mountain", "forest", "plains", "ocean"}) {
+            String file = "``terrain``_consumption";
+             assert (exists tableContents = readFileContents(`module strategicprimer.drivers.generators`,
+                 "tables/``file``"));
+             MutableList<[Quantity, String, String]> inner = ArrayList<[Quantity, String, String]>();
+             for (line in tableContents.lines) {
+                 if (line.empty) {
+                     continue;
+                 }
+                 value split = line.split('\t'.equals, true, false);
+                 value quantity = Integer.parse(split.first);
+                 if (is Integer quantity) {
+	                 assert (exists units = split.rest.first, exists kind = split.rest.rest.first,
+						exists resource = split.rest.rest.rest.first);
+	                 inner.add([Quantity(quantity, units), kind, resource]);
+	             } else {
+	                 throw quantity;
+	             }
+             }
+             retval.put(terrain, {*inner});
+        }
+        return map(retval);
+    }
+    Map<String,{[Quantity,String, String]*}> consumption = initializeConsumption();
     ExplorationRunner initializeRunner() {
         ExplorationRunner retval = ExplorationRunner();
         Stack<String> firstTables = LinkedList {
@@ -356,20 +387,26 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         }
         CommunityStats retval = CommunityStats(population);
         String skillTable;
+        String consumptionTableName;
         if (exists terrain = map.baseTerrain[location]) {
             if (terrain == TileType.ocean) {
                 skillTable = "ocean_skills";
+                consumptionTableName = "ocean";
 //          } else if (map.mountainous[location]) {
             } else if (map.mountainous.get(location)) {
                 skillTable = "mountain_skills";
+                consumptionTableName = "mountain";
 //          } else if (map.fixtures[location]?.narrow<Forest>().first exists) {
             } else if (map.fixtures.get(location).narrow<Forest>().first exists) {
                 skillTable = "forest_skills";
+                consumptionTableName = "forest";
             } else {
                 skillTable = "plains_skills";
+                consumptionTableName = "plains";
             }
         } else {
             skillTable = "plains_skills";
+            consumptionTableName = "plains";
         }
         for (i in 0:skillCount) {
             String skill = runner.recursiveConsultTable(skillTable, location,
@@ -402,7 +439,10 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
 	                "product of ``skill``", Quantity(1, "unit")));
 	        }
         }
-        // FIXME: Need to generate other consumed resources and goods
+        assert (exists consumptionTable = consumption[consumptionTableName]);
+        for ([quantity, kind, resource] in consumptionTable) {
+            retval.yearlyConsumption.add(ResourcePile(idf.createID(), kind, resource, quantity));
+        }
         retval.yearlyConsumption.add(ResourcePile(idf.createID(), "food", "various",
             Quantity(4 * 14 * population, "pounds")));
         return retval;
