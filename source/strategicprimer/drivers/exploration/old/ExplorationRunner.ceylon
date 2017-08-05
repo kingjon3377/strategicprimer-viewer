@@ -52,6 +52,8 @@ shared class ExplorationRunner() {
             throw MissingTableException(name);
         }
     }
+    "Whether we have a table of the given name."
+    shared Boolean hasTable(String name) => tables[name] exists;
     "Consult a table, and if a result indicates recursion, perform it. Recursion is
      indicated by hash-marks around the name of the table to call; results are undefined
      if there are more than two hash marks in any given String, or if either is at the

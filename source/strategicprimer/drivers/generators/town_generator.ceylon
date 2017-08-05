@@ -65,6 +65,10 @@ import strategicprimer.drivers.exploration.old {
 import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
+import ceylon.collection {
+	LinkedList,
+	Stack
+}
 "A driver to let the user enter or generate 'stats' for towns."
 shared object townGeneratingCLI satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -78,11 +82,41 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
     alias ModifiableTown=>AbstractTown|Village;
     ExplorationRunner initializeRunner() {
         ExplorationRunner retval = ExplorationRunner();
-        for (table in {"mountain_skills", "forest_skills", "plains_skills",
-                "ocean_skills"}) {
+        Stack<String> firstTables = LinkedList {
+            "mountain_skills", "forest_skills", "plains_skills", "ocean_skills"
+        };
+        Stack<String> secondTables = LinkedList<String>();
+        while (exists table = firstTables.pop()) {
             assert (exists tableContents = readFileContents(
                 `module strategicprimer.drivers.generators`, "tables/``table``"));
-            retval.loadTable(table, loadTable(tableContents.lines));
+            value loadedTable = loadTable(tableContents.lines);
+            retval.loadTable(table, loadedTable);
+            for (reference in loadedTable.allEvents) {
+                if (reference.contains('#')) {
+                    value temp = reference.split('#'.equals, true, false, 2).rest.first;
+                    assert (exists temp);
+                    if (!retval.hasTable(temp)) {
+                        firstTables.push(temp.trimmed);
+                    }
+                } else if (!reference.trimmed.empty) {
+                    secondTables.push("``reference``_production");
+                }
+            }
+        }
+        while (exists table = secondTables.pop()) {
+            assert (exists tableContents = readFileContents(
+                `module strategicprimer.drivers.generators`, "tables/``table``"));
+            value loadedTable = loadTable(tableContents.lines);
+            retval.loadTable(table, loadedTable);
+            for (reference in loadedTable.allEvents) {
+                if (reference.contains('#')) {
+                    value temp = reference.split('#'.equals, true, false, 2).rest.first;
+                    assert (exists temp);
+                    if (!retval.hasTable(temp)) {
+                        secondTables.push(temp.trimmed);
+                    }
+                }
+            }
         }
         return retval;
     }
@@ -350,7 +384,6 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         }
         {HarvestableFixture*} workedFields = findNearestFields(map, location)
             .take(resourceCount);
-        // FIXME: Need to generate other produced and consumed resources and goods
         for (field in workedFields) {
             retval.addWorkedField(field.id);
             retval.yearlyProduction.add(ResourcePile(idf.createID(),
@@ -358,9 +391,18 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
                 Quantity(1, "unit")));
         }
         for (skill->level in retval.highestSkillLevels) {
-            retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
-                "product of ``skill``", Quantity(1, "unit")));
+            String tableName = "``skill``_production";
+            if (runner.hasTable(tableName)) {
+                retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown", 
+                    runner.consultTable(tableName, location, map.baseTerrain.get(location), // TODO: syntax sugar
+                        map.mountainous.get(location), map.fixtures.get(location), map.dimensions),
+                Quantity(2.power(level - 1), (level == 1) then "unit" else "units")));
+            } else {
+	            retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
+	                "product of ``skill``", Quantity(1, "unit")));
+	        }
         }
+        // FIXME: Need to generate other consumed resources and goods
         retval.yearlyConsumption.add(ResourcePile(idf.createID(), "food", "various",
             Quantity(4 * 14 * population, "pounds")));
         return retval;
