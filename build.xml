@@ -91,14 +91,14 @@
       <ceylon-import-jar jar="${windowmenu.jar.path}"
           module="com.pump.swing/1.0.00" failOnError="true" />
   </target>
-  <target name="build-ceylon" depends="init-ceylon">
+  <target name="build" depends="init-ceylon">
     <ceylon-compile src="${ceylon.source.dir}" resource="${ceylon.resource.dir}" encoding="UTF-8">
         <moduleset>
             <sourcemodules dir="${ceylon.source.dir}" />
         </moduleset>
     </ceylon-compile>
   </target>
-  <target name="doc-ceylon" depends="build-ceylon">
+  <target name="doc" depends="build">
       <!-- FIXME: Uncomment this once Ceylon bug #6749 is fixed
     <ceylon-doc src="${ceylon.source.dir}" encoding="UTF-8">
         <moduleset>
@@ -109,7 +109,7 @@
   </target>
 
   <!-- Test targets -->
-  <target name="test-ceylon" depends="build-ceylon">
+  <target name="test" depends="build">
     <ceylon-test failOnError="true">
         <moduleset>
             <!-- FIXME: Go back to <sourcemodules> once Ceylon bug #6986 is fixed -->
@@ -136,7 +136,7 @@
     classname="com.ultramixer.jarbundler.JarBundler" />
 
   <!-- Release targets -->
-  <target name="jar-ceylon" depends="test-ceylon,get-builder,build-ceylon">
+  <target name="jar" depends="test,get-builder,build">
     <!-- there isn't a ceylon-fat-jar Ant task (yet) -->
     <exec executable="${ceylon.executable}" failOnError="true">
         <arg value="fat-jar" />
@@ -157,7 +157,7 @@
       </sequential>
     </for>
   </target>
-  <target name="exe" depends="jar-ceylon,icon">
+  <target name="exe" depends="jar,icon">
       <exec executable="${icotool.path}" dir="${basedir}">
       <arg value="-o" />
       <arg value="icon.ico" />
@@ -169,7 +169,7 @@
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
       outfile="${release}/${basename}.exe" jar="${release}/${basename}.ceylon.jar" />
   </target>
-  <target name="app" depends="jar-ceylon,icon">
+  <target name="app" depends="jar,icon">
       <exec executable="${png2icns.path}" dir="${basedir}">
       <arg value="icon.icns" />
       <arg value="icon_512px.png" />
@@ -211,7 +211,7 @@
     <delete dir="${release}/${basename}.app" />
     <delete><fileset dir="${release}/dmgtmp" /></delete>
   </target>
-  <target name="dist" depends="build-ceylon,doc-ceylon">
+  <target name="dist" depends="build,doc">
     <tar destfile="${release}/${basename}.tbz2" compression="bzip2">
       <tarfileset dir="${project_home}" prefix="${basename}">
         <include name="*.properties" />
@@ -230,7 +230,7 @@
         <include name="*.sh" />
         <include name="viewer.eml" />
         <include name="viewer.iml" />
-        <include name="viewer-ceylon.iml" />
+        <include name="viewer.iml" />
       </tarfileset>
       <tarfileset dir="source" prefix="${basename}/source">
         <include name="**" />
@@ -254,8 +254,8 @@
     </tar>
   </target>
   <target name="release"
-    depends="app,exe,jar-ceylon,dmg,dist" />
-  <target name="coverage" depends="build-ceylon">
+    depends="app,exe,jar,dmg,dist" />
+  <target name="coverage" depends="build">
       <!-- TODO: Find a Ceylon code-coverage tool -->
       <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
           <classpath path="${jacoco.classpath}" />
