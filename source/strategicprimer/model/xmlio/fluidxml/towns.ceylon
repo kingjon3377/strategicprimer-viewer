@@ -228,6 +228,8 @@ CommunityStats readCommunityStats(StartElement element, QName parent, {XMLEvent*
             stack.pop();
             if (top == element) {
                 break;
+            } else if (exists temp = current, temp == top.name.localPart) {
+                current = null;
             }
         }
     }

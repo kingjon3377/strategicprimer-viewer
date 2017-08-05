@@ -456,6 +456,15 @@ void testVillageSerialization(TownStatus status, String race) {
     Village fourthVillage = Village(status, "villageName", 4, owner, race);
     fourthVillage.population = CommunityStats(1);
     assertSerialization("Village can have community stats", fourthVillage);
+    CommunityStats pop = CommunityStats(10);
+    pop.addWorkedField(55);
+    pop.yearlyProduction.add(ResourcePile(19, "prodKind", "production",
+        Quantity(42, "single units")));
+    pop.yearlyConsumption.add(ResourcePile(22, "consKind", "consumption", Quantity(21,
+        "double units")));
+    fourthVillage.population = pop;
+    assertSerialization("Village stats can have both production and consumption",
+        fourthVillage);
 }
 
 {[TownSize, TownStatus]*} townParameters =

@@ -123,6 +123,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 stack.pop();
                 if (top == element) {
                     break;
+                } else if (exists temp = current, top.name.localPart == temp) {
+                    current = null;
                 }
             }
         }
