@@ -73,6 +73,21 @@ import ceylon.collection {
 	MutableList,
 	ArrayList
 }
+import java.lang {
+    synchronized
+}
+class LazyInit<Wrapped>(Wrapped() generator) {
+    variable Wrapped? inner = null;
+    shared synchronized Wrapped wrapped {
+        if (exists temp = inner) {
+            return temp;
+        } else {
+            Wrapped temp = generator();
+            inner = temp;
+            return temp;
+        }
+    }
+}
 "A driver to let the user enter or generate 'stats' for towns."
 shared object townGeneratingCLI satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -84,7 +99,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         longDescription = "Enter or generate stats and contents for towns and villages";
     };
     alias ModifiableTown=>AbstractTown|Village;
-    Map<String,{[Quantity, String, String]*}> initializeConsumption() {
+    LazyInit<Map<String,{[Quantity, String, String]*}>> consumption = LazyInit(() {
         MutableMap<String, {[Quantity, String, String]*}> retval =
                 HashMap<String, {[Quantity, String, String]*}>();
         for (terrain in {"mountain", "forest", "plains", "ocean"}) {
@@ -109,9 +124,8 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
              retval.put(terrain, {*inner});
         }
         return map(retval);
-    }
-    Map<String,{[Quantity,String, String]*}> consumption = initializeConsumption();
-    ExplorationRunner initializeRunner() {
+    });
+    LazyInit<ExplorationRunner> runner = LazyInit(() {
         ExplorationRunner retval = ExplorationRunner();
         Stack<String> firstTables = LinkedList {
             "mountain_skills", "forest_skills", "plains_skills", "ocean_skills"
@@ -150,8 +164,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
             }
         }
         return retval;
-    }
-    ExplorationRunner runner = initializeRunner();
+    });
     "The (for now active) towns in the given map that don't have 'stats' yet."
     {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) => {
         for (loc in map.locations)
@@ -409,7 +422,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
             consumptionTableName = "plains";
         }
         for (i in 0:skillCount) {
-            String skill = runner.recursiveConsultTable(skillTable, location,
+            String skill = runner.wrapped.recursiveConsultTable(skillTable, location,
 //                map.baseTerrain[location], map.mountainous[location],
                 map.baseTerrain.get(location), map.mountainous.get(location),
 //                map.fixtures[location], map.dimensions);
@@ -429,9 +442,9 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         }
         for (skill->level in retval.highestSkillLevels) {
             String tableName = "``skill``_production";
-            if (runner.hasTable(tableName)) {
+            if (runner.wrapped.hasTable(tableName)) {
                 retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown", 
-                    runner.consultTable(tableName, location, map.baseTerrain.get(location), // TODO: syntax sugar
+                    runner.wrapped.consultTable(tableName, location, map.baseTerrain.get(location), // TODO: syntax sugar
                         map.mountainous.get(location), map.fixtures.get(location), map.dimensions),
                 Quantity(2.power(level - 1), (level == 1) then "unit" else "units")));
             } else {
@@ -439,7 +452,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
 	                "product of ``skill``", Quantity(1, "unit")));
 	        }
         }
-        assert (exists consumptionTable = consumption[consumptionTableName]);
+        assert (exists consumptionTable = consumption.wrapped[consumptionTableName]);
         for ([quantity, kind, resource] in consumptionTable) {
             retval.yearlyConsumption.add(ResourcePile(idf.createID(), kind, resource, quantity));
         }
