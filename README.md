@@ -43,3 +43,69 @@ badge](https://codebeat.co/badges/ab6b17f0-cc69-44ab-9d94-a8d5fb40e613)
 [![Codacy
 Badge](https://api.codacy.com/project/badge/Grade/f8855a279a494e4eb532ee94e37f1ac8)
 ](https://www.codacy.com/app/kingjon3377/strategicprimer-viewer)
+
+### Dependencies and Building from Source
+
+To build the apps from source, a few dependencies need to be installed:
+
+- A working [Ceylon](https://ceylon-lang.org) compiler, version 1.3.2 or later.
+- A Java development kit compatible with Java 8
+- The "Window menu" implementation by "mickleness." Until [his Pumpernickel
+  project](https://github.com/mickleness/pumpernickel) makes a release onto
+  Maven, download [the JAR he committed into his
+  repository](https://github.com/mickleness/pumpernickel/raw/master/pump-release/com/pump/pump-swing/1.0.00/pump-swing-1.0.00.jar)
+  and import it into Ceylon as `com.pump.swing/1.0.00` using `ceylon
+  import-jar`.
+
+With those, you should be able to build the project with `ceylon compile` and
+run it with `ceylon run strategicprimer.viewer`.
+
+To reproduce my process of building a release, however, and to run the tests
+more easily (since simply running `ceylon test` runs into [a bug in the Ceylon
+runtime](https://github.com/ceylon/ceylon/issues/6986)), you should install the
+following additional dependencies:
+
+- [Apache Ant](http://ant.apache.org/)
+- [The JarBundler Ant task](https://github.com/UltraMixer/JarBundler)
+- To build any platform-native app, to render the icon into the various sizes
+  that the various tools want, you need
+  [ImageMagick](http://www.imagemagick.org/) (or, conceivably,
+  [GraphicsMagick](http://www.graphicsmagick.org/); we use the `convert`
+  command).
+- To build the Windows `.exe`, you need
+  [Launch4J](https://sourceforge.net/projects/launch4j/) and the `icotool`
+  command provided by [icoutils](http://www.nongnu.org/icoutils/).
+- To build the Mac `.app`, you need [the "universal Java application
+  stub"](https://github.com/tofi86/universalJavaApplicationStub) and the
+  `png2icns` command provided by
+  [libicns](https://sourceforge.net/projects/icns/)
+- To build the Mac DMG, in addition to what's needed for the `.app`, you need a
+  `mkisofs` command; this is typically provided by the
+  [`cdrtools`](https://sourceforge.net/projects/cdrtools/) package.
+
+(`tar`, `bzip`, and the like should already be installed on any system I can
+imagine trying to build a release from.)
+
+Once you have these dependencies installed, use Ant to build the software.
+There are several build targets in the build script (which is `build.xml`, the
+file Ant looks to by default):
+
+- `clean` removes any compiled code from prior builds.
+- `cleanall` calls `clean`, and additionally removes any generated
+  documentation HTML files.
+- `build` compiles the software, delegating to `ceylon compile`.
+- `doc` generates HTML documentation from the source---or will once that Ceylon
+  runtime bug I mentioned is fixed
+- `test` runs all the tests that are in modules that are known not to cause
+  `ceylon test` to crash.
+- `jar` packages the entire compiled code, and all runtime dependencies, into a
+  JAR.
+- `exe` turns that JAR into a Windows-native executable.
+- `app` packages the JAR into a Mac OS application (which it additionally
+  packages into a tarball, since a `.app` is a directory with its contents
+  arranged a particular way, so it can be distributed over the Internet).
+- `dmg` packages that `.app` Mac application into a Mac DMG.
+- `dist` packages up the source, compiled modules, dependencies, and just about
+  everything else (but not the JAR or either of the "native" apps) into a
+  tarball.
+- `release` is a convenience target: it calls `dmg`, `exe`, and `dist`.
