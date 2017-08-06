@@ -110,6 +110,7 @@ shared void createGUITabularReports(
     };
     for (generator in generators) {
         value table = JTable(generator.produceTableModel(fixtures));
+        table.autoCreateRowSorter = true;
         Integer vertControl;
         Integer horizControl;
         if (platform.systemIsMac) {
