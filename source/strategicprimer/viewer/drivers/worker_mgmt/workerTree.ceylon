@@ -75,6 +75,9 @@ import ceylon.math.float {
 import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
+import ceylon.language.meta {
+    type
+}
 "A tree of a player's units."
 shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         "The tree model"
@@ -110,7 +113,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                             is UnitMember selection = wtModel.getModelObject(last)) {
                             toTransfer.add([selection, parent]);
                         } else {
-                            log.info("Selection included non-UnitMember");
+                            log.info("Selection included non-UnitMember: ``type(wtModel.getModelObject(last))``");
                         }
                     }
                 }
