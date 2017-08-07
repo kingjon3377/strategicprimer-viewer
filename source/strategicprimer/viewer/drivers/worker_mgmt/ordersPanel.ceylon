@@ -106,8 +106,8 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
                     (ActionEvent event) => retval.revert());
         platform.makeButtonsSegmented(applyButton, revertButton);
         JPanel buttonPanel = (platform.systemIsMac) then
-        centeredHorizontalBox(applyButton, revertButton)
-        else BorderedPanel.horizontalPanel(applyButton, null, revertButton);
+        centeredHorizontalBox(revertButton, applyButton)
+        else BorderedPanel.horizontalPanel(revertButton, null, applyButton);
         String prefix = platform.shortcutDescription;
         retval.pageStart = BorderedPanel.horizontalPanel(
             JLabel("Orders for current selection, if a unit: (``prefix``D)"), null,
