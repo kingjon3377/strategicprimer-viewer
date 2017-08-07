@@ -189,7 +189,7 @@ String usageMessage(IDriverUsage usage, Boolean verbose) {
     }
     builder.append(" ``usage.shortOption``|``usage.longOption``");
     for (option in usage.supportedOptions) {
-        builder.append(" [``option``");
+        builder.append(" [``option``]");
     }
     switch (usage.paramsWanted)
     case (ParamCount.none) {}
