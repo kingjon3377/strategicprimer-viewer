@@ -143,7 +143,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 members.offer(item);
                 newList.offer(innerNew);
             }
-            newNode.add(node);
+            newNode.insert(node, newNode.childCount);
             fireTreeNodesInserted(this,
                 createJavaObjectArray<Object>({playerNode,
                     getNode(playerNode, newOwner.kind), newNode}),
