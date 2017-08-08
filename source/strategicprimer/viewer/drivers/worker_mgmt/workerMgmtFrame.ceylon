@@ -115,7 +115,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         for (location in model.map.locations) {
 //            for (fixture in model.map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
             for (fixture in model.map.fixtures.get(location)) { // TODO: syntax sugar once compiler bug fixed
-                if (is Fortress fixture, fixture.owner == model.map.currentPlayer) { // TODO: only compare player ID
+                if (is Fortress fixture,
+                        fixture.owner.playerId == model.map.currentPlayer.playerId) {
                     if ("HQ" == fixture.name) {
                         return location;
                     } else if (location.valid, !retval.valid) {
