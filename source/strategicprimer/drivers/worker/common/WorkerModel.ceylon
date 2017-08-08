@@ -136,6 +136,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     }
     "Add a unit to all the maps, at the location of its owner's HQ in the main map."
     shared actual void addUnit(IUnit unit) {
+        variable [Fortress, Point]? temp = null;
         for (point in map.locations) {
 //            for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(point)) {
@@ -143,10 +144,18 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                         fixture.owner == unit.owner) {
                     addUnitAtLocation(unit, point);
                     return;
-                }
+                } else if (is Fortress fixture, fixture.owner == unit.owner, !temp exists) {
+			temp = [fixture, point];
+		}
             } else {
-                log.warn("No suitable location found for unit");
-            }
+	        if (exists tuple = temp) {
+			log.info("Added unit at fortress ``tuple.first.name``, not HQ");
+			addUnitAtLocation(unit, tuple.rest.first);
+			return;
+		} else if (!unit.owner.independent) {
+                       log.warn("No suitable location found for unit");
+               }
+	    }
         }
     }
     "Get a unit by its owner and ID."
