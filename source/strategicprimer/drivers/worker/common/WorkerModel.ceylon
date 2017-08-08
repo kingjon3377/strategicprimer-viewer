@@ -138,24 +138,24 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     shared actual void addUnit(IUnit unit) {
         variable [Fortress, Point]? temp = null;
         for (point in map.locations) {
-//            for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
+            //            for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(point)) {
                 if (is Fortress fixture, "HQ" == fixture.name,
-                        fixture.owner.playerId == unit.owner.playerId) {
+                    fixture.owner.playerId == unit.owner.playerId) {
                     addUnitAtLocation(unit, point);
                     return;
                 } else if (is Fortress fixture, fixture.owner.playerId == unit.owner.playerId, !temp exists) {
-			temp = [fixture, point];
-		}
-            } else {
-	        if (exists tuple = temp) {
-			log.info("Added unit at fortress ``tuple.first.name``, not HQ");
-			addUnitAtLocation(unit, tuple.rest.first);
-			return;
-		} else if (!unit.owner.independent) {
-                       log.warn("No suitable location found for unit");
-               }
-	    }
+                    temp = [fixture, point];
+                }
+            }
+        } else {
+            if (exists tuple = temp) {
+                log.info("Added unit at fortress ``tuple.first.name``, not HQ");
+                addUnitAtLocation(unit, tuple.rest.first);
+                return;
+            } else if (!unit.owner.independent) {
+                log.warn("No suitable location found for unit ``unit.name``, owned by ``unit.owner``");
+            }
         }
     }
     "Get a unit by its owner and ID."
