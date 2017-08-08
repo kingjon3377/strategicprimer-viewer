@@ -28,9 +28,6 @@ import java.awt {
 import ceylon.interop.java {
     javaClassFromDeclaration
 }
-import strategicprimer.drivers.gui.common {
-    SPFrame
-}
 import strategicprimer.viewer.drivers {
     SPMenu
 }

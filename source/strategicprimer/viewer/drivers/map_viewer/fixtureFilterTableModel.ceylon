@@ -49,7 +49,6 @@ import strategicprimer.model.map.fixtures.mobile {
     Fairy,
     Giant,
     SimpleImmortal,
-    Unit,
     SimpleImmortalKind,
     IUnit
 }
