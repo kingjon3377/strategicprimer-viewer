@@ -141,10 +141,10 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
 //            for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(point)) {
                 if (is Fortress fixture, "HQ" == fixture.name,
-                        fixture.owner == unit.owner) {
+                        fixture.owner.playerId == unit.owner.playerId) {
                     addUnitAtLocation(unit, point);
                     return;
-                } else if (is Fortress fixture, fixture.owner == unit.owner, !temp exists) {
+                } else if (is Fortress fixture, fixture.owner.playerId == unit.owner.playerId, !temp exists) {
 			temp = [fixture, point];
 		}
             } else {
