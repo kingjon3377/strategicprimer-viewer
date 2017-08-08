@@ -115,7 +115,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         for (location in model.map.locations) {
 //            for (fixture in model.map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
             for (fixture in model.map.fixtures.get(location)) { // TODO: syntax sugar once compiler bug fixed
-                if (is Fortress fixture, fixture.owner == model.map.currentPlayer) {
+                if (is Fortress fixture, fixture.owner == model.map.currentPlayer) { // TODO: only compare player ID
                     if ("HQ" == fixture.name) {
                         return location;
                     } else if (location.valid, !retval.valid) {
@@ -189,10 +189,19 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         Dimension(640, 480))
             satisfies PlayerChangeListener {
         IMapNG mainMap = model.map;
+        Player initialPlayer;
+        for ([map, _] in model.allMaps) {
+            if (!model.getUnits(map.currentPlayer).empty) {
+                initialPlayer = map.currentPlayer;
+                break;
+            }
+        } else {
+            initialPlayer = mainMap.currentPlayer;
+        }
         SPDialog&NewUnitSource&PlayerChangeListener newUnitFrame =
-                newUnitDialog(mainMap.currentPlayer,
+                newUnitDialog(initialPlayer,
                     createIDFactory(mainMap));
-        IWorkerTreeModel treeModel = WorkerTreeModelAlt(mainMap.currentPlayer, model);
+        IWorkerTreeModel treeModel = WorkerTreeModelAlt(initialPlayer, model);
         value tree = workerTree(treeModel, mainMap.players, () => mainMap.currentTurn,
             true);
         newUnitFrame.addNewUnitListener(treeModel);
@@ -202,8 +211,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             JComponent.whenInFocusedWindow,
             KeyStroke.getKeyStroke(KeyEvent.vkU, keyMask));
         FormattedLabel playerLabel = FormattedLabel("Units belonging to %s: (%sU)",
-            mainMap.currentPlayer.name, platform.shortcutDescription);
-        value ordersPanelObj = ordersPanel(mainMap.currentTurn, mainMap.currentPlayer,
+            initialPlayer.name, platform.shortcutDescription);
+        value ordersPanelObj = ordersPanel(mainMap.currentTurn, initialPlayer,
                     (Player player, String kind) => model.getUnits(player, kind),
                     (IUnit unit, Integer turn) => unit.getLatestOrders(turn),
                     (IUnit unit, Integer turn, String orders) => unit
@@ -214,12 +223,12 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         void reportGeneratorThread() {
             log.info("About to generate report");
             IReportNode report = createAbbreviatedReportIR(mainMap,
-                mainMap.currentPlayer);
+                initialPlayer);
             log.info("Finished generating report");
             SwingUtilities.invokeLater(() => reportModel.setRoot(report));
         }
         Thread(reportGeneratorThread).start();
-        value resultsPanel = ordersPanel(mainMap.currentTurn, mainMap.currentPlayer,
+        value resultsPanel = ordersPanel(mainMap.currentTurn, initialPlayer,
                     (Player player, String kind) => model.getUnits(player, kind),
                     (IUnit unit, Integer turn) => unit.getResults(turn), null);
         tree.addTreeSelectionListener(resultsPanel);
