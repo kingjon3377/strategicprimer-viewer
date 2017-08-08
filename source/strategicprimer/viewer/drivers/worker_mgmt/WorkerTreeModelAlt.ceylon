@@ -299,7 +299,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     assert (exists lastParentParent =
                             pathOne.array.exceptLast.exceptLast.last);
                     Integer parentIndex = lastParentParent.getIndex(lastParent);
-                    pathSubset = createJavaObjectArray<Object>(pathOne.array.exceptLast);
+                    pathSubset = createJavaObjectArray<Object>(pathOne.array.exceptLast.exceptLast);
                     lastParent.removeFromParent();
                     fireTreeNodesRemoved(this, pathSubset,
                         createJavaIntArray({parentIndex}),
