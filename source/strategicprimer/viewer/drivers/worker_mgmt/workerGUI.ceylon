@@ -33,6 +33,9 @@ import strategicprimer.drivers.worker.common {
     WorkerModel,
     IWorkerModel
 }
+import java.awt.event {
+	ActionEvent
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to start the worker management GUI."
@@ -66,6 +69,9 @@ shared object workerGUI satisfies SimpleDriver {
                 menuHandler.register((event) => frame.dispose(), "close");
                 menuHandler.register((event) =>
                 aboutDialog(frame, frame.windowName).setVisible(true), "about");
+                if (model.allMaps.every(([map, _]) => model.getUnits(map.currentPlayer).empty)) {
+                    pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst, "change current player"));
+                }
                 frame.setVisible(true);
             });
         } else {
