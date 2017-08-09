@@ -24,4 +24,6 @@ shared interface IWorkerModel satisfies IMultiMapModel {
     shared formal void addUnit("The unit to add" IUnit unit);
     "Get a unit by ID number."
     shared formal IUnit? getUnitByID(Player owner, Integer id);
+    "The player that the UI seems to be concerned with."
+    shared formal variable Player currentPlayer;
 }

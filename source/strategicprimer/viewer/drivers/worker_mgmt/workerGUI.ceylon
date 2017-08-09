@@ -64,7 +64,7 @@ shared object workerGUI satisfies SimpleDriver {
                 value frame = workerMgmtFrame(options, model, menuHandler);
                 pcml.addPlayerChangeListener(frame);
                 menuHandler.register((event) => frame.playerChanged(
-                    model.map.currentPlayer, model.map.currentPlayer),
+                    model.currentPlayer, model.currentPlayer),
                     "reload tree");
                 menuHandler.register((event) => frame.dispose(), "close");
                 menuHandler.register((event) =>

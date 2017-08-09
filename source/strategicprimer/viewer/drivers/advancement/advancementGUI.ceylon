@@ -69,7 +69,7 @@ shared object advancementGUI satisfies SimpleDriver {
                 menuHandler);
             pcml.addPlayerChangeListener(frame);
             menuHandler.register((event) =>
-            frame.playerChanged(model.map.currentPlayer, model.map.currentPlayer),
+            frame.playerChanged(workerModel.currentPlayer, workerModel.currentPlayer),
                 "reload tree");
             menuHandler.register((event) => frame.dispose(), "close");
             menuHandler.register((event) =>

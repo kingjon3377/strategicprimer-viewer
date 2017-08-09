@@ -103,6 +103,9 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         for (index->kind in model.getUnitKinds(player).indexed) {
             insert(KindNode(kind, *model.getUnits(player, kind)), index);
         }
+        if (childCount == 0) {
+            log.warn("No unit kinds in player node for player ``player``");
+        }
     }
     static Boolean areTreeObjectsEqual(TreeNode node, Object obj) {
         if (is DefaultMutableTreeNode node, obj == node.userObject) {
@@ -126,8 +129,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     }
     IWorkerModel model;
     MutableList<UnitMember> dismissedMembers = ArrayList<UnitMember>();
-    shared new (Player player, IWorkerModel driverModel)
-            extends DefaultTreeModel(PlayerNode(player, driverModel), true) {
+    shared new (IWorkerModel driverModel)
+            extends DefaultTreeModel(PlayerNode(driverModel.currentPlayer, driverModel), true) {
         model = driverModel;
     }
     void moveProxied(UnitMember&ProxyFor<out UnitMember> member, ProxyUnit old,
@@ -229,7 +232,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     }
     shared actual void addNewUnit(IUnit unit) => addUnit(unit);
     shared actual void mapChanged() =>
-            setRoot(PlayerNode(model.map.currentPlayer, model));
+            setRoot(PlayerNode(model.currentPlayer, model));
     shared actual void playerChanged(Player? old, Player newPlayer) =>
             setRoot(PlayerNode(newPlayer, model));
     shared actual Object getModelObject(Object obj) {

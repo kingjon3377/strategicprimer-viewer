@@ -56,7 +56,7 @@ import strategicprimer.drivers.gui.common {
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
         MenuBroker menuHandler) {
     IMapNG map = model.map;
-    IWorkerTreeModel treeModel = WorkerTreeModelAlt(map.currentPlayer, model);
+    IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
     JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
         map.players, () => model.map.currentTurn, false);
     WorkerCreationListener newWorkerListener = WorkerCreationListener(treeModel,
@@ -105,7 +105,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
                         jobAdditionPanel), null,
                     BorderedPanel.verticalPanel(html("Add a Skill to the selected Job:"),
                         null, skillAdditionPanel)), hoursAdditionPanel)));
-    retval.playerChanged(null, map.currentPlayer);
+    retval.playerChanged(null, model.currentPlayer);
     retval.jMenuBar = workerMenu(menuHandler.actionPerformed, retval, model);
     retval.pack();
     return retval;

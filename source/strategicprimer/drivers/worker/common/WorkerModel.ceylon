@@ -54,10 +54,30 @@ import ceylon.random {
 Logger log = logger(`module strategicprimer.drivers.worker.common`);
 "A model to underlie the advancement GUI, etc."
 shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
+	variable Player? currentPlayerImpl = null;
     shared new (IMutableMapNG map, JPath? file)
             extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
+    shared actual Player currentPlayer {
+        if (exists temp = currentPlayerImpl) {
+            return temp;
+        } else {
+            for ([localMap, _] in allMaps) {
+                Player temp = localMap.currentPlayer;
+                if (!getUnits(temp).empty) {
+                    currentPlayerImpl = temp;
+                    return temp;
+                }
+            } else {
+                currentPlayerImpl = map.currentPlayer;
+                return map.currentPlayer;
+            }
+        }
+    }
+    assign currentPlayer {
+        currentPlayerImpl = currentPlayer;
+    }
     "Flatten and filter the stream to include only units, and only those owned by the
      given player."
     {IUnit*} getUnitsImpl({Anything*} iter, Player player) {
@@ -68,7 +88,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 return {item};
             }
         });
-        return { for (item in temp) if (is IUnit item) if (item.owner == player) item };
+        return { for (item in temp) if (is IUnit item) if (item.owner.playerId == player.playerId) item };
     }
     "All the players in all the maps."
     shared actual {Player*} players {

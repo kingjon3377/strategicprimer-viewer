@@ -89,13 +89,21 @@ shared class PlayerChangeMenuListener(IDriverModel model)
         return null;
     }
     shared actual void actionPerformed(ActionEvent event) {
-        Player currentPlayer = model.map.currentPlayer;
+        Player currentPlayer;
+        if (is IWorkerModel model) {
+            currentPlayer = model.currentPlayer;
+        } else {
+            currentPlayer = model.map.currentPlayer;
+        }
         {Player*} players = model.map.players;
         if (is Player retval = JOptionPane.showInputDialog(
                 getContainingFrame(eventSource(event.source)),
                 "Player to view:", "Choose New Player:",
                 JOptionPane.plainMessage, null, javaObjectArray(Array<Player?>(players)),
                 currentPlayer)) {
+            if (is IWorkerModel model) {
+                model.currentPlayer = retval;
+            }
             for (listener in listeners) {
                 listener.playerChanged(currentPlayer, retval);
             }

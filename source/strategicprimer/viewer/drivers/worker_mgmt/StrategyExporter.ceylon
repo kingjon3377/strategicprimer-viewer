@@ -39,7 +39,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 "A class to write a proto-strategy to file."
 class StrategyExporter(IWorkerModel model, SPOptions options)
         satisfies PlayerChangeListener {
-    variable Player currentPlayer = model.map.currentPlayer;
+    variable Player currentPlayer = model.currentPlayer;
     shared actual void playerChanged(Player? old, Player newPlayer) =>
             currentPlayer = newPlayer;
     void writeMember(Writer writer, UnitMember? member) {

@@ -134,7 +134,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
     }
     shared actual void addNewUnit(IUnit unit) => addUnit(unit);
     shared actual void mapChanged() {
-        player = model.map.currentPlayer;
+        player = model.currentPlayer;
         TreePath path = TreePath(root);
         TreeModelEvent event = TreeModelEvent(this, path);
         for (listener in listeners) {
