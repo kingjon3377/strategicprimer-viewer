@@ -109,3 +109,17 @@ file Ant looks to by default):
   everything else (but not the JAR or either of the "native" apps) into a
   tarball.
 - `release` is a convenience target: it calls `dmg`, `exe`, and `dist`.
+
+### Running the Program
+
+If you have an EXE or `.app`, it should behave like a standard platform-native
+application. If you have a JAR, if file associations are properly set up you
+can double-click it, but if you want to run any of the apps other than the map
+viewer, the worker-management app, or the exploration GUI, you'll need to call
+it from the command line: `java -jar /path/to/viewer-0.4.${version}.jar
+-options /path/to/map.xml` .
+
+If you've compiled the apps from source, there's a simpler way: `ceylon run
+strategicprimer.viewer -options /path/to/map.xml`. (If one of the options
+happens to be one that the Ceylon runtime itself uses, pass `--` somewhere
+before that.)
