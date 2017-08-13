@@ -36,7 +36,6 @@ shared interface IWorkerTreeModel
     "If the parameter is a node in the tree (and this implementation is one using nodes
      rather than model objects directly), return the model object it represents;
      otherwise, returns the parameter."
-    todo("Drop now-unnecessary implementations in the two subclasses")
     shared formal Object getModelObject(Object obj);
     "Add a new member to a unit."
     shared formal void addUnitMember(
