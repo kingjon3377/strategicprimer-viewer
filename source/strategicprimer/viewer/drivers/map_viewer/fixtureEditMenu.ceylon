@@ -28,9 +28,15 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
+import strategicprimer.model.map.fixtures.mobile {
+    Animal
+}
+import strategicprimer.model.idreg {
+    IDRegistrar
+}
 "A pop-up menu to let the user edit a fixture."
 shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
-        IWorkerTreeModel* changeListeners) {
+        IDRegistrar idf, IWorkerTreeModel* changeListeners) {
     JPopupMenu retval = JPopupMenu();
     void addMenuItem(JMenuItem item, Anything(ActionEvent) listener) {
         retval.add(item);
@@ -110,6 +116,29 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
         });
     } else {
         addDisabledMenuItem(JMenuItem("Dismiss", KeyEvent.vkD));
+    }
+    if (is Animal fixture, !fixture.traces, fixture.population > 1) {
+        addMenuItem(JMenuItem("Split animal population", KeyEvent.vkS), (ActionEvent event) {
+            if (exists result = JOptionPane.showInputDialog(retval, 
+                        "Number of animals to split to new population:", "Split Animal Population", 
+                        JOptionPane.plainMessage, null, null, javaString("0")), 
+                        is Integer num = Integer.parse(result.string.trimmed), num > 0, 
+                        num < fixture.population) {
+                Integer orig = fixture.population;
+                Integer remaining = orig - num;
+                Animal split = Animal(fixture.kind, false, fixture.talking, fixture.status, 
+                    idf.createID(), fixture.born, num);
+                Animal remainder = Animal(fixture.kind, false, fixture.talking, fixture.status,
+                        fixture.id, fixture.born, remaining);
+                for (listener in changeListeners) {
+                    listener.addSibling(fixture, split);
+                    listener.dismissUnitMember(fixture);
+                    listener.addSibling(split, remainder);
+                }
+            }
+        });
+    } else {
+        addDisabledMenuItem(JMenuItem("Split animal population", KeyEvent.vkS));
     }
     return retval;
 }

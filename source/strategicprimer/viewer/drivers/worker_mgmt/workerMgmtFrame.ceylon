@@ -63,7 +63,8 @@ import strategicprimer.model {
     DistanceComparator
 }
 import strategicprimer.model.idreg {
-    createIDFactory
+    createIDFactory,
+	IDRegistrar
 }
 import strategicprimer.model.map {
     Point,
@@ -190,12 +191,13 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         Dimension(640, 480))
             satisfies PlayerChangeListener {
         IMapNG mainMap = model.map;
+        IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
         SPDialog&NewUnitSource&PlayerChangeListener newUnitFrame =
                 newUnitDialog(model.currentPlayer,
-                    createIDFactory(mainMap));
+                    idf);
         IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
         value tree = workerTree(treeModel, mainMap.players, () => mainMap.currentTurn,
-            true);
+            true, idf);
         newUnitFrame.addNewUnitListener(treeModel);
         Integer keyMask = platform.shortcutMask;
         createHotKey(tree, "openUnits",

@@ -188,6 +188,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         IntArray indices;
         ObjectArray<Object> children;
         if (is IUnit item) {
+            // FIXME: Units' parents are no longer `root`, but their kinds. (Here and elsewhere)
             path = TreePath(createJavaObjectArray({root}));
             indices = createJavaIntArray({getIndexOfChild(root, item)});
             children = createJavaObjectArray<Object>({item});
@@ -221,4 +222,32 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         }
     }
     shared actual {UnitMember*} dismissed => dismissedMembers;
+    shared actual void addSibling(UnitMember base, UnitMember sibling) {
+        for (unit in model.getUnits(root)) {
+            if (exists index->item = unit.locate(base.equals)) {
+                Integer existingMembersCount = unit.size;
+                unit.addMember(sibling);
+                Integer countAfterAdding = unit.size;
+                if (countAfterAdding > existingMembersCount) {
+                    TreeModelEvent event = TreeModelEvent(this,
+                        // TODO: Should `unit.kind` be wrapped in javaString()?
+                            TreePath(createJavaObjectArray({root, unit.kind, unit})), 
+                            createJavaIntArray({existingMembersCount}), 
+                            createJavaObjectArray({sibling}));
+                    for (listener in listeners) {
+                        listener.treeNodesInserted(event);
+                    }
+                } else {
+                    TreeModelEvent event = TreeModelEvent(this,
+                        // TODO: Should `unit.kind` be wrapped in javaString()?
+                            TreePath(createJavaObjectArray({root, unit.kind})),
+                            createJavaIntArray({getIndexOfChild(unit.kind, unit)}),
+                            createJavaObjectArray({unit}));
+                    for (listener in listeners) {
+                        listener.treeStructureChanged(event);
+                    }
+                }
+            }
+        }
+    }
 }

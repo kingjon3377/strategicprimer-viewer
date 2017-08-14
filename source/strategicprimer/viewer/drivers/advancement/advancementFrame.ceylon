@@ -18,7 +18,8 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.model.idreg {
-    createIDFactory
+    createIDFactory,
+	IDRegistrar
 }
 import strategicprimer.model.map {
     Player,
@@ -57,10 +58,11 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
         MenuBroker menuHandler) {
     IMapNG map = model.map;
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
+    IDRegistrar idf = createIDFactory(map);
     JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
-        map.players, () => model.map.currentTurn, false);
+        map.players, () => model.map.currentTurn, false, idf);
     WorkerCreationListener newWorkerListener = WorkerCreationListener(treeModel,
-        createIDFactory(map));
+        idf);
     tree.addUnitSelectionListener(newWorkerListener);
     JobTreeModel jobsTreeModel = JobTreeModel();
     tree.addUnitMemberListener(jobsTreeModel);

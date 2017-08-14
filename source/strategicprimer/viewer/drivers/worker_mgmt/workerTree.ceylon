@@ -78,6 +78,9 @@ import strategicprimer.drivers.worker.common {
 import ceylon.language.meta {
     type
 }
+import strategicprimer.model.idreg {
+    IDRegistrar
+}
 "A tree of a player's units."
 shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         "The tree model"
@@ -88,7 +91,9 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         Integer() turnSource,
         """Whether we should visually warn if orders contain substrings indicating
            remaining work or if a unit named "unassigned" is nonempty"""
-        Boolean orderCheck) {
+        Boolean orderCheck,
+            "The factory to use to generate ID numbers."
+            IDRegistrar idf) {
     DefaultTreeCellRenderer defaultStorer = DefaultTreeCellRenderer();
     object retval extends JTree()
             satisfies UnitMemberSelectionSource&UnitSelectionSource {
@@ -449,7 +454,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 exists pathEnd = retval
                     .getClosestPathForLocation(event.x, event.y)?.lastPathComponent,
                 is IFixture obj = wtModel.getModelObject(pathEnd)) {
-                fixtureEditMenu(obj, players, wtModel).show(event.component, event.x,
+                fixtureEditMenu(obj, players, idf, wtModel).show(event.component, event.x,
                     event.y);
             }
         }

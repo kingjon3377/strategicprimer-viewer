@@ -130,6 +130,10 @@ import strategicprimer.model.xmlio {
 import java.nio.file {
     JPath=Path
 }
+import strategicprimer.model.idreg {
+	IDRegistrar,
+	createIDFactory
+}
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,
         Anything(ActionEvent) menuHandler) {
@@ -313,6 +317,7 @@ SPFrame explorationFrame(IExplorationModel model,
             } else {
                 secondMap = model.map;
             }
+            IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
             for (direction in {Direction.northwest,
                     Direction.north,
                     Direction.northeast,
@@ -324,7 +329,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 SelectionChangeSupport mainPCS = SelectionChangeSupport();
                 SwingList<TileFixture>&SelectionChangeListener mainList =
                         fixtureList(tilesPanel, FixtureListModel(model.map, true),
-                            model.map.players);
+                            idf, model.map.players);
                 mainPCS.addSelectionChangeListener(mainList);
                 tilesPanel.add(JScrollPane(mainList));
                 DualTileButton dtb = DualTileButton(model.map, secondMap,
@@ -524,7 +529,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 ecl.addSelectionChangeListener(ell);
                 SwingList<TileFixture>&SelectionChangeListener secList =
                         fixtureList(tilesPanel, FixtureListModel(secondMap, false),
-                            secondMap.players);
+                            idf, secondMap.players);
                 SelectionChangeSupport secPCS = SelectionChangeSupport();
                 secPCS.addSelectionChangeListener(secList);
                 tilesPanel.add(JScrollPane(secList));

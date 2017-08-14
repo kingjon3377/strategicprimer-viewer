@@ -41,6 +41,9 @@ import strategicprimer.drivers.common {
     IDriverModel,
     SelectionChangeListener
 }
+import strategicprimer.model.idreg {
+    createIDFactory
+}
 "A panel to show the details of a tile, using a list rather than sub-panels with chits
  for its fixtures."
 JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
@@ -92,7 +95,8 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         }
     }
     SwingList<TileFixture>&SelectionChangeListener fixtureListObject =
-            fixtureList(retval, FixtureListModel(model.map, false), model.map.players);
+            fixtureList(retval, FixtureListModel(model.map, false), createIDFactory(model.map), 
+                    model.map.players);
     retval.delegate = fixtureListObject;
     object portrait extends JComponent() satisfies ListSelectionListener {
         variable Image? portrait = null;

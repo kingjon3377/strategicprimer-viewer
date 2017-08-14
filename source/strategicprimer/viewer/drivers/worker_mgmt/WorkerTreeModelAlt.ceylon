@@ -332,6 +332,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     shared actual void dismissUnitMember(UnitMember member) {
         if (is TreeNode temp = root, exists node = getNode(temp, member)) {
             assert (is UnitNode parentNode = node.parent);
+            // FIXME: Having the path passed to the event include the dismissed node can't be right!
             value path = getPathToRoot(node);
             Integer index = getIndexOfChild(path.array.last, node);
             parentNode.remove(node);
@@ -341,4 +342,14 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         }
     }
     shared actual {UnitMember*} dismissed => dismissedMembers;
+    shared actual void addSibling(UnitMember base, UnitMember sibling) {
+        if (is TreeNode temp = root, exists node = getNode(temp, base)) {
+            assert (is UnitNode parentNode = node.parent);
+            UnitMemberNode childNode = UnitMemberNode(sibling);
+            parentNode.add(childNode);
+            Integer index = getIndexOfChild(parentNode, childNode);
+            fireTreeNodesInserted(this, getPathToRoot(parentNode), createJavaIntArray({index}), 
+                createJavaObjectArray<Object>({childNode}));
+        }
+    }
 }

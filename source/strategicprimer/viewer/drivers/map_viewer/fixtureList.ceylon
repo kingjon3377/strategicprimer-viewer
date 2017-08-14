@@ -52,9 +52,12 @@ import javax.swing {
 import strategicprimer.drivers.common {
     SelectionChangeListener
 }
+import strategicprimer.model.idreg {
+	IDRegistrar
+}
 "A visual list-based representation of the contents of a tile."
 shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
-        JComponent parentComponent, FixtureListModel listModel,
+        JComponent parentComponent, FixtureListModel listModel, IDRegistrar idf,
         {Player*} players) {
     object retval extends SwingList<TileFixture>(listModel)
             satisfies DragGestureListener&SelectionChangeListener {
@@ -88,7 +91,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
                 if (event.popupTrigger, event.clickCount == 1) {
                     Integer index = locationToIndex(event.point);
                     if ((0:listModel.size).contains(index)) {
-                        fixtureEditMenu(listModel.elementAt(index), players)
+                        fixtureEditMenu(listModel.elementAt(index), players, idf)
                             .show(event.component, event.x, event.y);
                     }
                 }
