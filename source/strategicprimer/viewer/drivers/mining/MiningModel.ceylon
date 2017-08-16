@@ -84,6 +84,34 @@ class MiningModel(initial, seed, kind) {
     }
     process.writeLine();
     process.writeLine("Pruned ``pruneCounter`` branches beyond our boundaries");
+    variable Integer count = 0;
+    for (row->points in unnormalized.keys.group(Point.row).
+                sort((numOne->_, numTwo->__) => numTwo<=>numOne)) {
+        if (!points.map(unnormalized.get).coalesced.every(LodeStatus.none.equals)) {
+            break;
+        }
+        for (point in points) {
+            unnormalized.remove(point);
+        }
+    }
+    for (column->points in unnormalized.keys.group(Point.column).
+                sort((numOne->_, numTwo->__) => numOne<=>numTwo)) {
+        if (!points.map(unnormalized.get).coalesced.every(LodeStatus.none.equals)) {
+            break;
+        }
+        for (point in points) {
+            unnormalized.remove(point);
+        }
+    }
+    for (column->points in unnormalized.keys.group(Point.column).
+                sort((numOne->_, numTwo->__) => numTwo<=>numOne)) {
+        if (!points.map(unnormalized.get).coalesced.every(LodeStatus.none.equals)) {
+            break;
+        }
+        for (point in points) {
+            unnormalized.remove(point);
+        }
+    }
     Integer minimumColumn = min(unnormalized.keys.map(Point.column)) else 0;
     "A mapping from positions (normalized so they could be spit out into a spreadsheet)
      to [[LodeStatus]]es."
