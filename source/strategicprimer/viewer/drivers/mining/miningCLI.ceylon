@@ -39,7 +39,7 @@ shared object miningCLI satisfies UtilityDriver {
         longDescription = "Create a CSV spreadsheet representing a mine's area";
         firstParamDescription = "output.csv";
         subsequentParamDescription = "status";
-        supportedOptionsTemp = [ "--seed=NN" ];
+        supportedOptionsTemp = [ "--seed=NN", "--banded" ];
     };
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
@@ -56,14 +56,14 @@ shared object miningCLI satisfies UtilityDriver {
             } else {
                 seed = system.milliseconds;
             }
-            Integer actualIndex;
+            // TODO: Allow specifying initial status by name
+            Integer actualIndex = statusIndex;
             MineKind mineKind;
-            if (statusIndex >= 0) {
-                actualIndex = statusIndex;
-                mineKind = MineKind.normal;
-            } else {
-                actualIndex = -statusIndex;
+            // TODO: Support distance-from-center deposits
+            if (options.hasOption("--banded")) {
                 mineKind = MineKind.banded;
+            } else {
+                mineKind = MineKind.normal;
             }
             LodeStatus? initial = `LodeStatus`.caseValues[actualIndex];
             if (!initial exists) {
