@@ -109,17 +109,19 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     shared void move() {
         assert (exists mover = model.selectedUnit);
         Integer directionNum = cli.inputNumber("Direction to move: ");
-        if (directionNum == 9) {
-            changeSpeed();
-            return;
-        } else if (directionNum > 9) {
-            fireMovementCost(JInteger.maxValue);
-            return;
-        } else if (directionNum < 0) {
-            return;
-        }
-        assert (exists direction = `Direction`.caseValues.find(
-                    (dir) => dir.ordinal == directionNum));
+	Direction direction;
+	switch (directionNum)
+	case (0) { changeSpeed(); return; }
+	case (1) { direction = Direction.southwest; }
+	case (2) { direction = Direction.south; }
+	case (3) { direction = Direction.southeast; }
+	case (4) { direction = Direction.west; }
+	case (5) { direction = Direction.nowhere; }
+	case (6) { direction = Direction.east; }
+	case (7) { direction = Direction.northwest; }
+	case (8) { direction = Direction.north; }
+	case (9) { direction = Direction.northeast; }
+	else { fireMovementCost(JInteger.maxValue); return; }
         Point point = model.selectedUnitLocation;
         Point destPoint = model.getDestination(point, direction);
         try {
@@ -208,8 +210,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             while (movement > 0) {
                 cli.println("``movement`` MP of ``totalMP`` remaining.");
                 cli.println("Current speed: ``speed.name``");
-                cli.println("""0 = N, 1 = NE, 2 = E, 3 = SE, 4 = S, 5 = SW, 6 = W, 7 = NW,
-                               8 = Stay Here, 9 = Change Speed, 10 = Quit.""");
+                cli.println("""0 = Change Speed, 1 = SW, 2 = S, 3 = SE, 4 = W, 5 = Stay Here,
+                               6 = E, 7 = NW, 8 = N, 9 = NE, 10 = Quit.""");
                 move();
             }
         } else {
