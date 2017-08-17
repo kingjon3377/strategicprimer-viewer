@@ -7,6 +7,7 @@ import ceylon.random {
 "The status of a vein of ore or deposit of stone at any given point."
 class LodeStatus of
         none | minimal | veryPoor | poor | fair | good | veryGood | motherLode {
+	shared static LodeStatus? parse(String str) => parseLodeStatus(str);
     "The number of parts of other rock per part of ore."
     shared Integer ratio;
     "The probability that an adjacent area will be the next state lower."
@@ -87,4 +88,16 @@ class LodeStatus of
             return sum / 12;
         });
     }
+}
+LodeStatus? parseLodeStatus(String status) {
+	switch (status.lowercased)
+	case ("none") { return LodeStatus.none; }
+	case ("minimal") { return LodeStatus.minimal; }
+	case ("verypoor") { return LodeStatus.veryPoor; }
+	case ("poor") { return LodeStatus.poor; }
+	case ("fair") { return LodeStatus.fair; }
+	case ("good") { return LodeStatus.good; }
+	case ("verygood") { return LodeStatus.veryGood; }
+	case ("motherlode") { return LodeStatus.motherLode; }
+	else { return null; }
 }

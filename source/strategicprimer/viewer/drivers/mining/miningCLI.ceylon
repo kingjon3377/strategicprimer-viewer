@@ -43,8 +43,7 @@ shared object miningCLI satisfies UtilityDriver {
     };
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
-        if (exists filename = args.first, exists second = args.rest.first,
-                is Integer statusIndex = Integer.parse(second), args.size == 2) {
+        if (exists filename = args.first, exists second = args.rest.first, args.size == 2) {
             Integer seed;
             if (options.hasOption("--seed")) {
                 value temp = Integer.parse(options.getArgument("--seed"));
@@ -56,8 +55,16 @@ shared object miningCLI satisfies UtilityDriver {
             } else {
                 seed = system.milliseconds;
             }
-            // TODO: Allow specifying initial status by name
-            Integer actualIndex = statusIndex;
+            LodeStatus initial;
+            if (is LodeStatus specified = LodeStatus.parse(second)) {
+                initial = specified;
+            } else if (is Integer index = parseInteger(second),
+                     exists specified = `LodeStatus`.caseValues[index]) {
+                initial = specified;
+            } else {
+                throw DriverFailedException(IllegalArgumentException(
+                    "Status must be a valid status or the index of a valid status"));
+            }
             MineKind mineKind;
             // TODO: Support distance-from-center deposits
             if (options.hasOption("--banded")) {
@@ -65,12 +72,6 @@ shared object miningCLI satisfies UtilityDriver {
             } else {
                 mineKind = MineKind.normal;
             }
-            LodeStatus? initial = `LodeStatus`.caseValues[actualIndex];
-            if (!initial exists) {
-                throw DriverFailedException(IllegalArgumentException(
-                    "Status must be the valid index of a LodeStatus"));
-            }
-            assert (exists initial);
             MiningModel model = MiningModel(initial, seed, mineKind);
             Point lowerRight = model.maximumPoint;
             value path = parsePath(filename);
