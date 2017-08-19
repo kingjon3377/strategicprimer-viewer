@@ -31,14 +31,14 @@ class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener
     "Move the cursor down a row."
     shared void down() {
         Point old = model.selection;
-        if (old.row < model.mapDimensions.rows) {
+        if (old.row < model.mapDimensions.rows - 1) {
             model.selection = pointFactory(old.row + 1, old.column);
         }
     }
     "Move the cursor right a column."
     shared void right() {
         Point old = model.selection;
-        if (old.column<model.mapDimensions.columns) {
+        if (old.column<model.mapDimensions.columns - 1) {
             model.selection = pointFactory(old.row, old.column + 1);
         }
     }
