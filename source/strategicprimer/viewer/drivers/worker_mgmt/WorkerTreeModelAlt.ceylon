@@ -332,7 +332,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     shared actual void dismissUnitMember(UnitMember member) {
         if (is TreeNode temp = root, exists node = getNode(temp, member)) {
             assert (is UnitNode parentNode = node.parent);
-            // FIXME: Having the path passed to the event include the dismissed node can't be right!
+            // Note that getPathToRoot() returns a path that does *not* include the node itself
             value path = getPathToRoot(node);
             Integer index = getIndexOfChild(path.array.last, node);
             parentNode.remove(node);
