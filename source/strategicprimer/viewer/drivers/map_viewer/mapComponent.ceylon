@@ -106,10 +106,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                 cml.getToolTipText(event);
         shared actual void dimensionsChanged(VisibleDimensions oldDim,
                 VisibleDimensions newDim) => repaint();
-        void paintTile(Graphics pen, Point point, Integer row, Integer column,
-                Boolean selected) {
-            Integer tileSize = scaleZoom(model.zoomLevel,
-                model.mapDimensions.version);
+        void paintTile(Graphics pen, Integer tileSize, Point point, Integer row,
+                Integer column, Boolean selected) {
             helper.drawTile(pen, model.map, point,
                 coordinateFactory(column * tileSize, row * tileSize),
                 coordinateFactory(tileSize, tileSize));
@@ -181,7 +179,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                                 break;
                             }
                             Point location = pointFactory(i + minRow, j + minCol);
-                            paintTile(context, location, i, j,
+                            paintTile(context, tileSize, location, i, j,
                                 model.selection == location);
                         }
                     }
