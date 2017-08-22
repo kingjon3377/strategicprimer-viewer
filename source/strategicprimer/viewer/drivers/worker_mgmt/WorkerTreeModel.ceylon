@@ -106,22 +106,22 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
     shared actual void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
         Integer oldIndex = getIndexOfChild(old, member);
         TreeModelEvent removedEvent = TreeModelEvent(this,
-            TreePath(createJavaObjectArray({ root, old })),
+            TreePath(createJavaObjectArray({ root, old.kind, old })),
             createJavaIntArray({ oldIndex }),
             createJavaObjectArray({ member }));
         TreeModelEvent removedChangeEvent = TreeModelEvent(this,
-            TreePath(createJavaObjectArray({ root, old })));
+            TreePath(createJavaObjectArray({ root, old.kind, old })));
         for (listener in listeners) {
             listener.treeNodesRemoved(removedEvent);
             listener.treeStructureChanged(removedChangeEvent);
         }
         newOwner.addMember(member);
         TreeModelEvent insertedEvent = TreeModelEvent(this,
-            TreePath(createJavaObjectArray<Object>({ root, newOwner })),
+            TreePath(createJavaObjectArray<Object>({ root, newOwner.kind, newOwner })),
             createJavaIntArray({ getIndexOfChild(newOwner, member) }),
             createJavaObjectArray<Object>({ member }));
         TreeModelEvent insertedChangeEvent = TreeModelEvent(this,
-            TreePath(createJavaObjectArray<Object>({ root, newOwner })));
+            TreePath(createJavaObjectArray<Object>({ root, newOwner.kind, newOwner })));
         for (listener in listeners) {
             listener.treeNodesInserted(insertedEvent);
             listener.treeStructureChanged(insertedChangeEvent);
@@ -129,8 +129,8 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
     }
     shared actual void addUnit(IUnit unit) {
         model.addUnit(unit);
-        TreePath path = TreePath(root);
-        value indices = createJavaIntArray({model.getUnits(player).size});
+        TreePath path = TreePath(createJavaObjectArray({root, unit.kind}));
+        value indices = createJavaIntArray({model.getUnits(player, unit.kind).size});
         value children = createJavaObjectArray({unit});
         TreeModelEvent event = TreeModelEvent(this, path, indices, children);
         for (listener in listeners) {
@@ -156,7 +156,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
     shared actual Object getModelObject(Object obj) => obj;
     shared actual void addUnitMember(IUnit unit, UnitMember member) {
         unit.addMember(member);
-        TreePath path = TreePath(createJavaObjectArray({root, unit}));
+        TreePath path = TreePath(createJavaObjectArray({root, unit.kind, unit}));
         IntArray indices = createJavaIntArray({getIndexOfChild(unit, member)});
         ObjectArray<Object> children = createJavaObjectArray<Object>({member});
         TreeModelEvent event = TreeModelEvent(this, path, indices,
@@ -170,13 +170,13 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         IntArray indices;
         ObjectArray<Object> children;
         if (is IUnit item) {
-            path = TreePath(createJavaObjectArray({root}));
-            indices = createJavaIntArray({getIndexOfChild(root, item)});
+            path = TreePath(createJavaObjectArray({root, item.kind}));
+            indices = createJavaIntArray({getIndexOfChild(item.kind, item)});
             children = createJavaObjectArray<Object>({item});
         } else if (is UnitMember item,
             exists parent = model.getUnits(player)
                 .find((unit) => unit.contains(item))) {
-            path = TreePath(createJavaObjectArray({root, parent}));
+            path = TreePath(createJavaObjectArray({root, parent.kind, parent}));
             indices = createJavaIntArray({getIndexOfChild(parent, item)});
             children = createJavaObjectArray<Object>({item});
         } else {
@@ -193,6 +193,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         IntArray indices;
         ObjectArray<Object> children;
         if (is IUnit item) {
+            // TODO: Pass former kind in here, since there's no way we could know it
             path = TreePath(createJavaObjectArray({root}));
             indices = createJavaIntArray({getIndexOfChild(root, item)});
             children = createJavaObjectArray<Object>({item});
