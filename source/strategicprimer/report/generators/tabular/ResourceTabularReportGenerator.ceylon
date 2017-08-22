@@ -112,6 +112,7 @@ shared class ResourceTabularReportGenerator()
                 fixtures.remove(key);
             } case (is CacheFixture) {
                 // FIXME: combine with ResourcePile case once compiler accepts it
+                // TODO: Distill MWE and report/find bug
                 value [row, *_] = produce(fixtures, fixture, loc);
                 writeRow(ostream, row.first, *row.rest);
                 fixtures.remove(key);
