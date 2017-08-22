@@ -58,7 +58,7 @@ shared object miningCLI satisfies UtilityDriver {
             LodeStatus initial;
             if (is LodeStatus specified = LodeStatus.parse(second)) {
                 initial = specified;
-            } else if (is Integer index = parseInteger(second),
+            } else if (is Integer index = Integer.parse(second),
                      exists specified = `LodeStatus`.caseValues[index]) {
                 initial = specified;
             } else {
