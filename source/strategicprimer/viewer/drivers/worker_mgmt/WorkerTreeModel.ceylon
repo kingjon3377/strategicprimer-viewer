@@ -69,7 +69,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
 
     shared actual Integer getChildCount(Object parent) {
         if (is Player parent) {
-            return model.getUnits(parent).size;
+            return model.getUnitKinds(parent).size;
         } else if (is String parent, model.getUnitKinds(player).contains(parent)) {
             return model.getUnits(player, parent).size;
         } else if (is IUnit parent) {
