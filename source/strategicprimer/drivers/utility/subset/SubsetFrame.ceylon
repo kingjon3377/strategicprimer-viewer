@@ -13,7 +13,8 @@ import java.io {
 }
 import java.lang {
     CharArray,
-    CharSequence
+    CharSequence,
+	overloaded
 }
 import java.nio.file {
     NoSuchFileException,
@@ -57,7 +58,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
     object htmlWriter extends JWriter() {
         variable Boolean lineStart = true;
         Regex matcher = regex(operatingSystem.newline, true);
-        shared actual JWriter append(CharSequence csq) {
+        shared actual overloaded JWriter append(CharSequence csq) {
             String local = csq.string;
             if (lineStart) {
                 super.append("<p style=\"color:white\">");
@@ -66,9 +67,9 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
             lineStart = false;
             return this;
         }
-        shared actual JWriter append(CharSequence csq, Integer start, Integer end) =>
+        shared actual overloaded JWriter append(CharSequence csq, Integer start, Integer end) =>
                 append(csq.subSequence(start, end));
-        shared actual JWriter append(Character c) => append(c.string);
+        shared actual overloaded JWriter append(Character c) => append(c.string);
         shared actual void close() {}
         shared actual void flush() {}
         shared actual void write(CharArray cbuf, Integer off, Integer len) {

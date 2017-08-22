@@ -5,13 +5,14 @@ import ceylon.buffer.readers {
     Reader
 }
 import java.lang {
-    CharArray
+    CharArray,
+	overloaded
 }
 "An adapter from Ceylon-SDK classes to the Java Reader API (which Java STaX requires).
  This will almost certainly be much slower than the Java SDK's implementations,
  unfortunately."
 shared class CeylonReader(Reader wrapped) extends JReader() {
-	shared actual Integer read() {
+	shared actual overloaded Integer read() {
 		if (exists retval = wrapped.readByte()) {
 			return retval.unsigned;
 		} else {
@@ -19,7 +20,7 @@ shared class CeylonReader(Reader wrapped) extends JReader() {
 		}
 	}
 	shared actual void close() {}
-	shared actual Integer read(CharArray cbuf, Integer offset, Integer length) {
+	shared actual overloaded Integer read(CharArray cbuf, Integer offset, Integer length) {
 		for (i in 0:offset) {
 			if (!wrapped.readByte() exists) {
 				return -1;

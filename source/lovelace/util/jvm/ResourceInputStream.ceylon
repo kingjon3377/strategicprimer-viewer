@@ -11,7 +11,8 @@ import java.io {
 import java.lang {
     ByteArray,
     JClass=Class,
-	Types
+	Types,
+	overloaded
 }
 
 import lovelace.util.common {
@@ -74,11 +75,11 @@ shared class ResourceInputStream(String filename,
     }
     InputStream wrapped = factory();
     "Read a single byte from the wrapped stream."
-    shared actual Integer read() => wrapped.read();
+    shared actual overloaded Integer read() => wrapped.read();
     "Read from the wrapped stream into a provided buffer."
-    shared actual Integer read(ByteArray buf) => wrapped.read(buf);
+    shared actual overloaded Integer read(ByteArray buf) => wrapped.read(buf);
     "Read from the wrapped stream into a provided buffer at some offset."
-    shared actual Integer read(ByteArray buf, Integer off, Integer len) =>
+    shared actual overloaded Integer read(ByteArray buf, Integer off, Integer len) =>
             wrapped.read(buf, off, len);
     "Skip some bytes in the wrapped stream."
     shared actual Integer skip(Integer num) => wrapped.skip(num);

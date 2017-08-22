@@ -8,7 +8,8 @@ import lovelace.util.common {
     todo
 }
 import java.lang {
-    CharArray
+    CharArray,
+	overloaded
 }
 """A Reader that delegates to FileReader unless the filename begins "string:<", in which
    case the "string:" prefix is stripped and we delegate to a StringReader."""
@@ -25,10 +26,10 @@ class MagicReader extends JReader {
             filename = possibleFilename;
         }
     }
-    shared actual Integer read(CharArray buffer, Integer offset, Integer length) =>
+    shared actual overloaded Integer read(CharArray buffer, Integer offset, Integer length) =>
             delegate.read(buffer, offset, length);
     shared actual void close() => delegate.close();
-    shared actual Integer read() => delegate.read();
+    shared actual overloaded Integer read() => delegate.read();
     shared actual Boolean markSupported() => delegate.markSupported();
     shared actual void mark(Integer readAheadLimit) => delegate.mark(readAheadLimit);
     shared actual void reset() => delegate.reset();
