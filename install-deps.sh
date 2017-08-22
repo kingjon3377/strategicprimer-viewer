@@ -27,5 +27,5 @@ get_maven_url org/jacoco org.jacoco.ant ${jacoco_ver} jacocoant
 get_maven_url org/jacoco org.jacoco.agent ${jacoco_ver} jacocoagent
 get_maven_url org/jacoco org.jacoco.report ${jacoco_ver} jacocoreport
 get_maven_url org/ow2/asm asm-debug-all 5.0.3 asm-debug-all
-wget https://ceylon-lang.org/download/dist/1_3_2 --output-document=ceylon.zip
+wget https://ceylon-lang.org/download/dist/1_3_3 --output-document=ceylon.zip
 unzip ceylon.zip

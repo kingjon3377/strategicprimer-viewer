@@ -48,7 +48,7 @@ Badge](https://api.codacy.com/project/badge/Grade/f8855a279a494e4eb532ee94e37f1a
 
 To build the apps from source, a few dependencies need to be installed:
 
-- A working [Ceylon](https://ceylon-lang.org) compiler, version 1.3.2 or later.
+- A working [Ceylon](https://ceylon-lang.org) compiler, version 1.3.3 or later.
 - A Java development kit compatible with Java 8
 - The "Window menu" implementation by "mickleness." Until [his Pumpernickel
   project](https://github.com/mickleness/pumpernickel) makes a release onto
