@@ -1,7 +1,3 @@
-import ceylon.interop.java {
-    javaString
-}
-
 import java.awt.event {
     InputEvent
 }
@@ -10,11 +6,14 @@ import javax.swing {
     JButton,
     JComponent
 }
+import java.lang {
+	Types
+}
 
 "Set a String/String property pair in a way that won't blow up at runtime due to
  the difference between Ceylon and Java strings."
 void setStringProperty(JComponent component, String key, String val) =>
-        component.putClientProperty(javaString(key), javaString(val));
+        component.putClientProperty(Types.nativeString(key), Types.nativeString(val));
 "An object encapsulating utility constants and functions that differ between Mac and
  non-Mac platforms."
 shared object platform {

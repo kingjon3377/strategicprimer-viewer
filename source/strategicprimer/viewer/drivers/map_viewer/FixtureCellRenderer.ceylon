@@ -20,9 +20,6 @@ import javax.swing {
 import javax.swing.text {
     View
 }
-import ceylon.interop.java {
-    javaString
-}
 import java.awt {
     Graphics2D,
     Component,
@@ -43,6 +40,9 @@ import java.nio.file {
 import ceylon.math.float {
     halfEven,
     ceiling
+}
+import java.lang {
+	Types
 }
 "A cell renderer for tile-details GUIs."
 class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
@@ -76,7 +76,7 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
     by("http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/")
     static void setComponentPreferredSize(JComponent component, Integer width) {
         assert (is View view = component.getClientProperty(
-            javaString(BasicHTML.propertyKey)));
+            Types.nativeString(BasicHTML.propertyKey)));
         view.setSize(width.float, 0.0);
         Integer wid = ceiling(view.getPreferredSpan(View.xAxis)).integer;
         Integer height = ceiling(view.getPreferredSpan(View.yAxis)).integer;

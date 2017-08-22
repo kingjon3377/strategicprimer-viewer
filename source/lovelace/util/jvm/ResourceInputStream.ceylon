@@ -1,7 +1,3 @@
-import ceylon.interop.java {
-    javaClass,
-    javaClassFromInstance
-}
 import ceylon.language.meta {
     modules
 }
@@ -14,7 +10,8 @@ import java.io {
 }
 import java.lang {
     ByteArray,
-    JClass=Class
+    JClass=Class,
+	Types
 }
 
 import lovelace.util.common {
@@ -29,7 +26,7 @@ todo("Test how this works with Ceylon 'resources'",
     "Use Ceylon's metamodel when it supports binary access")
 shared class ResourceInputStream(String filename,
         Module sourceModule=`module lovelace.util.jvm`,
-        JClass<out Object> sourceClass=javaClass<ResourceInputStream>())
+        JClass<out Object> sourceClass=Types.classForType<ResourceInputStream>())
         extends InputStream() {
     InputStream factory() {
         try {
@@ -62,11 +59,11 @@ shared class ResourceInputStream(String filename,
                     }
                 }
                 for (mod in modules.list) {
-                    if (exists temp = javaClassFromInstance(mod).getResourceAsStream(
+                    if (exists temp = Types.classForInstance(mod).getResourceAsStream(
                             "/``mod.name.replace(".", "/")``/``filename``")) {
                         return temp;
                     } else if (exists temp =
-                                javaClassFromInstance(mod).getResourceAsStream(
+                        		Types.classForInstance(mod).getResourceAsStream(
                             "``mod.name.replace(".", "/")``/``filename``")) {
                         return temp;
                     }

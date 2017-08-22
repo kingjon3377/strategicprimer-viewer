@@ -1,5 +1,4 @@
 import ceylon.interop.java {
-    javaString,
     createJavaObjectArray
 }
 
@@ -34,6 +33,9 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.idreg {
     IDRegistrar
 }
+import java.lang {
+	Types
+}
 "A pop-up menu to let the user edit a fixture."
 shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
         IDRegistrar idf, IWorkerTreeModel* changeListeners) {
@@ -51,7 +53,7 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
             String originalName = fixture.name;
             if (exists result = JOptionPane.showInputDialog(retval,
                 "Fixture's new name:", "Rename Fixture",
-                JOptionPane.plainMessage, null, null, javaString(originalName))) {
+                JOptionPane.plainMessage, null, null, Types.nativeString(originalName))) {
                 String resultString = result.string.trimmed;
                 if (resultString != originalName.trimmed) {
                     HasMutableName temp = fixture;
@@ -70,7 +72,7 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
             String originalKind = fixture.kind;
             if (exists result = JOptionPane.showInputDialog(retval,
                 "Fixture's new kind:", "Change Fixture Kind",
-                JOptionPane.plainMessage, null, null, javaString(originalKind))) {
+                JOptionPane.plainMessage, null, null, Types.nativeString(originalKind))) {
                 String resultString = result.string.trimmed;
                 if (resultString != originalKind.trimmed) {
                     HasMutableKind temp = fixture;
@@ -121,7 +123,7 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
         addMenuItem(JMenuItem("Split animal population", KeyEvent.vkS), (ActionEvent event) {
             if (exists result = JOptionPane.showInputDialog(retval, 
                         "Number of animals to split to new population:", "Split Animal Population", 
-                        JOptionPane.plainMessage, null, null, javaString("0")), 
+                        JOptionPane.plainMessage, null, null, Types.nativeString("0")), 
                         is Integer num = Integer.parse(result.string.trimmed), num > 0, 
                         num < fixture.population) {
                 Integer orig = fixture.population;

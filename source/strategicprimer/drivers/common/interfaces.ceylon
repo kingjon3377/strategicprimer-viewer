@@ -2,13 +2,11 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import ceylon.interop.java {
-    javaString
-}
 
 import java.lang {
     IllegalStateException,
-    IllegalArgumentException
+    IllegalArgumentException,
+	Types
 }
 import java.nio.file {
     JPaths=Paths,
@@ -234,7 +232,7 @@ shared interface SimpleDriver satisfies ISPDriver {
             }
         } else {
             assert (exists firstArg = args.first);
-            assert (nonempty temp = args.map(javaString).sequence());
+            assert (nonempty temp = args.map(Types.nativeString).sequence());
             IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
                 JPaths.get(firstArg), *namesToFiles(*args.rest));
             for (pair in mapModel.allMaps) {
@@ -341,7 +339,7 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
             }
         }
         assert (exists firstArg = args.first);
-        assert (nonempty temp = args.map(javaString).sequence());
+        assert (nonempty temp = args.map(Types.nativeString).sequence());
         // We declare this as IMultiMapModel so we can correct the current turn in all
         // maps if needed.
         IMultiMapModel model = readMultiMapModel(warningLevels.ignore,

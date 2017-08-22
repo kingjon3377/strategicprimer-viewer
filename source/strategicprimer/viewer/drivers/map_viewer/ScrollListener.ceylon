@@ -25,8 +25,8 @@ import javax.swing {
     JComponent,
     InputVerifier
 }
-import ceylon.interop.java {
-    javaString
+import java.lang {
+	Types
 }
 "A class to change the visible area of the map based on the user's use of the scrollbars."
 todo("Maybe keep track of visible dimensions and selected point directly instaed of
@@ -133,8 +133,8 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     shared new createScrollBars(IViewerModel mapModel, BorderedPanel component)
             extends ScrollListener(mapModel, JScrollBar(Adjustable.horizontal),
         JScrollBar(Adjustable.vertical)) {
-        component.add(horizontalBar, javaString(BorderLayout.pageEnd));
-        component.add(verticalBar, javaString(BorderLayout.lineEnd));
+        component.add(horizontalBar, Types.nativeString(BorderLayout.pageEnd));
+        component.add(verticalBar, Types.nativeString(BorderLayout.lineEnd));
     }
     variable Boolean mutex = true;
     "Handle a change in visible dimensions."

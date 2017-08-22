@@ -39,9 +39,9 @@ import java.lang {
     IllegalStateException,
     JDouble=Double,
     JInteger=Integer,
-    JString=String
+    JString=String,
+	Types
 }
-import ceylon.interop.java { javaString }
 "A factory method to construct a button and add listeners to it in one step."
 shared JButton listenedButton("The text to put on the button" String text,
         Anything(ActionEvent)|ActionListener* listeners) {
@@ -190,7 +190,7 @@ shared class BorderedPanel extends JPanel {
     shared Component? center => centerLocal;
     assign center {
         if (exists temp = center) {
-            add(temp, javaString(BorderLayout.center));
+            add(temp, Types.nativeString(BorderLayout.center));
         }
         centerLocal = center;
     }
@@ -198,7 +198,7 @@ shared class BorderedPanel extends JPanel {
     shared Component? lineStart => lineStartLocal;
     assign lineStart {
         if (exists temp = lineStart) {
-            add(temp, javaString(BorderLayout.lineStart));
+            add(temp, Types.nativeString(BorderLayout.lineStart));
         }
         lineStartLocal = lineStart;
     }
@@ -206,7 +206,7 @@ shared class BorderedPanel extends JPanel {
     shared Component? lineEnd => lineEndLocal;
     assign lineEnd {
         if (exists temp = lineEnd) {
-            add(temp, javaString(BorderLayout.lineEnd));
+            add(temp, Types.nativeString(BorderLayout.lineEnd));
         }
         lineEndLocal = lineEnd;
     }
@@ -214,7 +214,7 @@ shared class BorderedPanel extends JPanel {
     shared Component? pageStart => pageStartLocal;
     assign pageStart {
         if (exists temp = pageStart) {
-            add(temp, javaString(BorderLayout.pageStart));
+            add(temp, Types.nativeString(BorderLayout.pageStart));
         }
         pageStartLocal = pageStart;
     }
@@ -222,7 +222,7 @@ shared class BorderedPanel extends JPanel {
     shared Component? pageEnd => pageEndLocal;
     assign pageEnd {
         if (exists temp = pageEnd) {
-            add(temp, javaString(BorderLayout.pageEnd));
+            add(temp, Types.nativeString(BorderLayout.pageEnd));
         }
         pageEndLocal = pageEnd;
     }
@@ -328,7 +328,7 @@ String formatter(String format, Object* args) {
     Object mapper(Object arg) {
         switch (arg)
         case (is Integer) { return JInteger(arg); }
-        case (is String) { return javaString(arg); }
+        case (is String) { return Types.nativeString(arg); }
         case (is Float) { return JDouble(arg); }
         else { return arg; }
     }

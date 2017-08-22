@@ -2,9 +2,6 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import ceylon.interop.java {
-    javaClass
-}
 import ceylon.language.meta {
     type
 }
@@ -16,7 +13,8 @@ import java.lang {
     JString=String,
     JBoolean=Boolean,
     JClass=Class,
-    IllegalArgumentException
+    IllegalArgumentException,
+	Types
 }
 
 import javax.swing.table {
@@ -163,9 +161,9 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
         }
         shared actual JClass<out Object> getColumnClass(Integer columnIndex) {
             switch (columnIndex)
-            case (0) { return javaClass<JBoolean>(); }
-            case (1) { return javaClass<JString>(); }
-            else { return javaClass<Object>(); }
+            case (0) { return Types.classForType<JBoolean>(); }
+            case (1) { return Types.classForType<JString>(); }
+            else { return Types.classForType<Object>(); }
         }
         shared actual Boolean isCellEditable(Integer rowIndex, Integer columnIndex) =>
                 columnIndex == 0;

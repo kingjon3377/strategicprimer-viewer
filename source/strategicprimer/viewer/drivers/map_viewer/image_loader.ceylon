@@ -25,11 +25,11 @@ import java.awt {
     Image,
     Graphics
 }
-import ceylon.interop.java {
-    javaClassFromDeclaration
-}
 import strategicprimer.viewer.drivers {
     SPMenu
+}
+import java.lang {
+	Types
 }
 "The size of fixture icons."
 Integer fixtureIconSize = 28;
@@ -59,7 +59,7 @@ shared Image loadImage(String file) {
     } else {
         try (res = ResourceInputStream("images/``file``",
                 `module strategicprimer.viewer`,
-                    javaClassFromDeclaration(`class SPMenu`))) {
+                    Types.classForDeclaration(`class SPMenu`))) {
             if (exists image = ImageIO.read(res)) {
                 imageCache[file] = image;
                 return image;

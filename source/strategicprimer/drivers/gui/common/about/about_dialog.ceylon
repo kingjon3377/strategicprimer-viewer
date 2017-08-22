@@ -25,8 +25,8 @@ import lovelace.util.jvm {
 import strategicprimer.drivers.gui.common {
 	SPDialog
 }
-import ceylon.interop.java {
-    javaString
+import java.lang {
+	Types
 }
 Frame? asFrame(Component? parent) {
     if (is Frame parent) {
@@ -60,9 +60,9 @@ shared JDialog aboutDialog(Component? parentComponent, String? app) {
     }
     scrollPane.minimumSize =Dimension(300, 400);
     scrollPane.preferredSize =Dimension(400, 500);
-    retval.add(scrollPane, javaString(BorderLayout.center));
+    retval.add(scrollPane, Types.nativeString(BorderLayout.center));
     retval.add(centeredHorizontalBox(listenedButton("Close",
-                (event) => retval.dispose())), javaString(BorderLayout.pageEnd));
+                (event) => retval.dispose())), Types.nativeString(BorderLayout.pageEnd));
     retval.pack();
     return retval;
 }
