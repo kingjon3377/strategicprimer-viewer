@@ -507,42 +507,40 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
             for (location->town in randomize(unstattedTowns(model.map))) {
                 cli.println("Next town is ``town.shortDescription``, at ``location``. ");
                 CommunityStats stats;
-	            if (cli.inputBooleanInSeries("Enter stats rather than generating them? ")) {
-		            // TODO: uncomment and remove above line once ceylon/ceylon#7165 fixed
 //                // We effectively duplicate inputBooleanInSeries() here to allow "quit."
-//                Boolean resp;
-//                if (exists temp = always) {
-//                    cli.print("Enter stats rather than generating them? ");
-//                    resp = temp;
-//                    cli.println((resp) then "yes" else "no");
-//                } else {
-//                    while (true) {
-//                        String input = cli.inputString(
-//                            "Enter stats rather than generating them? ").lowercased;
-//                        switch(input)
-//                        case ("all"|"ya"|"ta"|"always") {
-//                            always = true;
-//                            resp = true;
-//                            break;
-//                        }
-//                        case ("none"|"na"|"fa"|"never") {
-//                            always = false;
-//                            resp = false;
-//                            break;
-//                        }
-//                        case ("yes"|"true"|"y"|"t") {resp = true; break; }
-//                        case ("no"|"false"|"n"|"f") { resp = false; break; }
-//                        case ("quit"|"q"|"exit") { return; }
-//                        else {
-//                            cli.print(
-//                                """Please enter "yes", "no", "true", or "false", the first
-//                                   character of any of those, or "all", "none", "always",
-//                                   or "never" to use the same answer for all further
-//                                   questions, or "quit" to stop generating towns.""");
-//                        }
-//                    }
-//                }
-//                if (resp) {
+                Boolean resp;
+                if (exists temp = always) {
+                    cli.print("Enter stats rather than generating them? ");
+                    resp = temp;
+                    cli.println((resp) then "yes" else "no");
+                } else {
+                    while (true) {
+                        String input = cli.inputString(
+                            "Enter stats rather than generating them? ").lowercased;
+                        switch(input)
+                        case ("all"|"ya"|"ta"|"always") {
+                            always = true;
+                            resp = true;
+                            break;
+                        }
+                        case ("none"|"na"|"fa"|"never") {
+                            always = false;
+                            resp = false;
+                            break;
+                        }
+                        case ("yes"|"true"|"y"|"t") {resp = true; break; }
+                        case ("no"|"false"|"n"|"f") { resp = false; break; }
+                        case ("quit"|"q"|"exit") { return; }
+                        else {
+                            cli.print(
+                                """Please enter "yes", "no", "true", or "false", the first
+                                   character of any of those, or "all", "none", "always",
+                                   or "never" to use the same answer for all further
+                                   questions, or "quit" to stop generating towns.""");
+                        }
+                    }
+                }
+                if (resp) {
                     stats = enterStats(cli, idf, model.map, location, town);
                 } else {
                     stats = generateStats(idf, location, town, model.map);
