@@ -84,7 +84,6 @@ class MiningModel(initial, seed, kind) {
     }
     process.writeLine();
     process.writeLine("Pruned ``pruneCounter`` branches beyond our boundaries");
-    variable Integer count = 0;
     for (row->points in unnormalized.keys.group(Point.row).
                 sort((numOne->_, numTwo->__) => numTwo<=>numOne)) {
         if (!points.map(unnormalized.get).coalesced.every(LodeStatus.none.equals)) {
