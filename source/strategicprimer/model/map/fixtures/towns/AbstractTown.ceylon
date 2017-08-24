@@ -5,15 +5,15 @@ import lovelace.util.common {
 import strategicprimer.model.map {
     Player,
     HasMutableImage,
-    IFixture
+    IFixture,
+	Subsettable
 }
 import strategicprimer.model.map.fixtures {
     IEvent
 }
 "An abstract superclass for towns etc."
-todo("Satisfy Subsettable")
 shared abstract class AbstractTown(status, townSize, name, owner, dc)
-        satisfies IEvent&HasMutableImage&ITownFixture {
+        satisfies IEvent&HasMutableImage&ITownFixture&Subsettable<AbstractTown> {
     "The status of the town, fortification, or city"
     shared actual TownStatus status;
     "The size of the town, fortification, or city"
@@ -33,6 +33,38 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc)
     shared actual variable String portrait = "";
     "The contents of the town."
     shared actual variable CommunityStats? population = null;
+    todo("Test this", "Don't fail-fast")
+    shared actual Boolean isSubset(AbstractTown other, Anything(String) report) {
+        if (id != other.id) {
+            report("Fixtures' ID #s differ");
+            return false;
+        } else if (name != other.name, other.name != "unknown") {
+            report("Town name differs");
+            return false;
+        } else if (kind != other.kind) {
+            report("In ``name``, ID #``id``:		Town kind differs");
+            return false;
+        }
+        void localReport(String str) => report("In ``kind`` ``name``, ID #``id``:	``str``");
+        if (status != other.status) {
+            localReport("Town status differs");
+            return false;
+        } else if (townSize != other.townSize) {
+            localReport("Town size differs");
+            return false;
+        } else if (other.population exists, !population exists) {
+            localReport("Has contents details we don't");
+            return false;
+        } else if (exists ours = population, !ours.isSubset(other.population, localReport)) {
+            localReport("Has different population details");
+            return false;
+        } else if (owner != other.owner, !other.owner.independent) {
+            localReport("Has different owner");
+            return false;
+        } else {
+            return true;
+        }
+    }
     "Exploration-result text for the town."
     shared actual String text => "There is a ``(townSize == TownSize.medium) then
             "medium-size" else townSize.string`` ``(status == TownStatus.burned) then
