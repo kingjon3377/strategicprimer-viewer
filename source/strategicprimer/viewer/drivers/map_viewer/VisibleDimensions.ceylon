@@ -2,8 +2,7 @@ import lovelace.util.common {
     todo
 }
 "The minimum and maximum rows and columns drawn."
-todo("Tests",
-    "Provide Ranges so callers don't have to test 'is this visible' themselves.")
+todo("Tests")
 shared class VisibleDimensions(minimumRow, maximumRow, minimumColumn, maximumColumn) {
     "The lowest(-numbered) (top-most) row that we draw."
     shared Integer minimumRow;
@@ -13,6 +12,10 @@ shared class VisibleDimensions(minimumRow, maximumRow, minimumColumn, maximumCol
     shared Integer minimumColumn;
     "The highest (right-most) column we draw."
     shared Integer maximumColumn;
+    "The rows that we draw."
+    shared Range<Integer> rows = minimumRow..maximumRow;
+    "The columns that we draw."
+    shared Range<Integer> columns = minimumColumn..maximumColumn;
     shared actual String string =>
             "VisibleDimensions: (``minimumRow``, ``minimumColumn``) to (``maximumRow``, ``
                 maximumColumn``)";

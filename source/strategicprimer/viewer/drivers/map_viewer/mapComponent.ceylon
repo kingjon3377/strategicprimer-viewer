@@ -134,12 +134,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             Integer selectedRow = largest(selectedPoint.row, 0);
             Integer selectedColumn = largest(selectedPoint.column, 0);
             VisibleDimensions visibleDimensions = model.visibleDimensions;
-            Integer minimumRow = visibleDimensions.minimumRow;
-            Integer maximumRow = visibleDimensions.maximumRow;
-            Integer minimumColumn = visibleDimensions.minimumColumn;
-            Integer maximumColumn = visibleDimensions.maximumColumn;
-            if ((minimumRow..maximumRow).contains(selectedRow),
-                (minimumColumn..maximumColumn).contains(selectedColumn)) {
+            if (visibleDimensions.rows.contains(selectedRow),
+                visibleDimensions.columns.contains(selectedColumn)) {
                 return true;
             } else {
                 return false;
