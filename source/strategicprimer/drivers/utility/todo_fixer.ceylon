@@ -64,8 +64,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
         ParamCount.atLeastOne, "Fix TODOs in maps",
         "Fix TODOs in unit kinds and aquatic villages with non-aquatic races");
     "Get the simplified-terrain-model instance covering the map's terrain at the given
-     location."
-    todo("Just use TileType now we have union types available")
+     location." // We don't just use TileType because we need mountains and forests in ver-2 maps.
     suppressWarnings("deprecation")
     SimpleTerrain getTerrain(IMapNG map, Point location) {
         switch (map.baseTerrain[location])
