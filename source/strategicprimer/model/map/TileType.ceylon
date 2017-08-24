@@ -2,12 +2,11 @@ import lovelace.util.common {
     todo
 }
 "Possible tile types."
-todo("Ought to include swamp, if not other additional types, for use in other worlds'
-      maps")
+todo("Other additional types for use in other worlds' maps?")
 suppressWarnings("deprecation")
 shared class TileType
 		of tundra|desert|mountain|borealForest|temperateForest|ocean|plains|jungle
-			|steppe {
+			|steppe|swamp {
 	"All tile types the given version supports."
 	todo("Write tests for this")
 	shared static {TileType*} valuesForVersion(Integer version) =>
@@ -57,6 +56,10 @@ shared class TileType
 	 forest, while [[mountain]] is either a desert, a plain, or a steppe that is
 	 mountainous."
 	shared new steppe extends delegate("steppe", "steppe", 2) {}
+	"Swamp. Not currently used in any known map, and not marked for either existing map
+	 version to ensure that it won't get put into a map that will then be opened by an older
+	 viewer."
+	shared new swamp extends delegate("swamp", "swamp") {}
 	"Whether this the given map version supports this tile type."
 	shared Boolean isSupportedByVersion(Integer version) => versions.contains(version);
 }

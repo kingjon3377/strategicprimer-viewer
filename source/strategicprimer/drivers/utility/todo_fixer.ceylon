@@ -68,7 +68,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     suppressWarnings("deprecation")
     SimpleTerrain getTerrain(IMapNG map, Point location) {
         switch (map.baseTerrain[location])
-        case (TileType.jungle|TileType.borealForest|TileType.temperateForest) {
+        case (TileType.jungle|TileType.borealForest|TileType.temperateForest|TileType.swamp) {
             return forested;
         }
         case (TileType.desert|TileType.mountain|TileType.tundra|null) {

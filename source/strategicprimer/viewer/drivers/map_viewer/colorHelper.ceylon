@@ -31,7 +31,8 @@ object colorHelper {
         TileType.plains->wrap("Plains"),
         TileType.temperateForest->wrap("Temperate Forest"),
         TileType.tundra->wrap("Tundra"),
-        TileType.steppe->wrap("Steppe")
+        TileType.steppe->wrap("Steppe"),
+        TileType.swamp->wrap("Swamp")
     };
     "A map from types of features to the colors they can make the tile be. Used to
       show that a tile is forested, e.g., even when that is normally represented by

@@ -93,7 +93,7 @@ Integer movementCost(
         } else if (forest || mountain || !fixtures.narrow<Forest|Hill>().empty ||
                 TileType.desert == terrain) {
             return (river) then 2 else 3;
-        } else if (TileType.jungle == terrain) {
+        } else if (TileType.jungle == terrain || TileType.swamp == terrain) {
             return (river) then 4 else 6;
         } else {
             assert (TileType.steppe == terrain || TileType.plains == terrain ||
