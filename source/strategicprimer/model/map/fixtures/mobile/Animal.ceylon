@@ -150,9 +150,7 @@ shared object maturityModel {
 		}
 	}
 	"Clear the stored current turn"
-	todo("If Ceylon ever gets a sufficiently nuanced visibility system, restrict access to
-	      this method to the package containing the XML I/O tests")
-	shared void resetCurrentTurn() => currentTurnLocal = -1;
+	restricted shared void resetCurrentTurn() => currentTurnLocal = -1;
 }
 shared object animalPlurals satisfies Correspondence<String, String> {
 	assert (exists textContent = readFileContents(`module strategicprimer.model`,
