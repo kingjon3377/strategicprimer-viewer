@@ -69,10 +69,10 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
             VisibleDimensions visibleDimensions = model.visibleDimensions;
             Point point = pointFactory(
-                halfEven((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
-                    .plus(0.1).integer,
-                halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumColumn)
-                    .plus(0.1).integer);
+                ((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
+                        .integer,
+                ((eventPoint.x / tileSize) + visibleDimensions.minimumColumn)
+                        .integer);
             if (point.valid, point.row < mapDimensions.rows,
                 point.column < mapDimensions.columns) {
 //                String mountainString = (model.map.mountainous[point]) // TODO: syntax sugar once compiler bug fixed
@@ -92,10 +92,11 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
             MapDimensions mapDimensions = model.mapDimensions;
             Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
             Point point = pointFactory(
-                halfEven((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
-                    .plus(0.1).integer,
-                halfEven((eventPoint.x / tileSize) + visibleDimensions.minimumColumn)
-                    .plus(0.1).integer);
+                ((eventPoint.y / tileSize) + visibleDimensions.minimumRow)
+                    .integer,
+                ((eventPoint.x / tileSize) + visibleDimensions.minimumColumn)
+                    .integer);
+            process.writeLine("Generated point was ``point``");
             if (point.valid, point.row < mapDimensions.rows,
                 point.column < mapDimensions.columns) {
                 model.selection = point;
