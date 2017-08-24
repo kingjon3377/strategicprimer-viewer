@@ -83,11 +83,13 @@ shared interface ICLIHelper {
 			String prompt);
 	"""Ask the user a yes-or-no question, allowing "yes to all" or "no to all" to
 	   forestall further similar questions."""
-	shared formal Boolean inputBooleanInSeries(
+	shared formal Boolean|Absent inputBooleanInSeries<Absent=Nothing>(
 			"The prompt to prompt the user with." String prompt,
 			"""The prompt (or other key) to compare to others to define "similar"
 			   questions."""
-			String key = prompt);
+			String key = prompt,
+			"A function to produce an [[Absent]] value to return if an input should short-circuit the loop."
+			<Absent|Boolean?>(String) quitResultFactory = (String str) => null);
 	"Print the specified string, then a newline."
 	shared formal void println(
 			"The line to print"

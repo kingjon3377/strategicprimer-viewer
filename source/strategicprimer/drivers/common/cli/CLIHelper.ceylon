@@ -181,8 +181,8 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 	}
 	"Ask the user a yes-or-no question, allowing yes-to-all or no-to-all to skip further
 	 questions."
-	todo("Allow caller to specify loop-breaking response like 'quit'")
-	shared actual Boolean inputBooleanInSeries(String prompt, String key) {
+	shared actual Boolean|Absent inputBooleanInSeries<Absent=Nothing>(String prompt, String key,
+			<Absent|Boolean?>(String) quitResultFactory) {
 		if (exists retval = seriesState[key]) {
 			writePrompt(prompt);
 			println((retval) then "yes" else "no");
@@ -190,6 +190,9 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 		} else {
 			while (true) {
 				String input = inputString(prompt).lowercased;
+				if (is Absent result = quitResultFactory(input)) {
+					return result;
+				}
 				switch(input)
 				case ("all"|"ya"|"ta"|"always") {
 					seriesState[key] = true;
