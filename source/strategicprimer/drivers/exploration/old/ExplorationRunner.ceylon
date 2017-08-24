@@ -42,10 +42,9 @@ import strategicprimer.model.map.fixtures.terrain {
    campaign."""
 shared class ExplorationRunner() {
     MutableMap<String, EncounterTable> tables = HashMap<String, EncounterTable>();
-    "Get a table by name."
+    "Get a table by name." // Used by the table debugger.
     throws(`class MissingTableException`, "if there is no table by that name")
-    todo("Should this really be `shared`?") // Used by table debugger
-    shared EncounterTable getTable(String name) {
+    restricted shared EncounterTable getTable(String name) {
         if (exists retval = tables[name]) {
             return retval;
         } else {
@@ -240,6 +239,7 @@ shared class ExplorationRunner() {
     "Add a table. This is shared so that tests can use it, but shouldn't be used beyond
      that."
     todo("If Ceylon ever gets a more nuanced visibility model, revise this",
+        "Use [[restricted]]?",
         "Move tests *into* this class instead")
     shared void loadTable(String name, EncounterTable table) => tables[name] = table;
 }
