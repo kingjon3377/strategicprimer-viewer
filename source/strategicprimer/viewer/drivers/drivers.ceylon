@@ -17,7 +17,8 @@ import ceylon.logging {
 
 import java.awt {
     GraphicsEnvironment,
-    GridLayout
+    GridLayout,
+	Dimension
 }
 import java.awt.event {
     ActionListener,
@@ -384,7 +385,7 @@ shared void run() {
 suppressWarnings("expressionTypeNothing")
 SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
-    object frame extends SPFrame("SP App Chooser", null) {
+    object frame extends SPFrame("SP App Chooser", null, Dimension(220, 110)) {
         shared actual String windowName = "SP App Chooser";
         shared actual Boolean supportsDroppedFiles = false;
     }
