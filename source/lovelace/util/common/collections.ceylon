@@ -17,7 +17,11 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
     MutableMap<Integer, Item> backing = HashMap<Integer, Item>();
     MutableList<Integer> toRemove = ArrayList<Integer>();
     shared actual void clear() => toRemove.addAll(backing.keys);
-    shared actual MutableMap<Integer,Item> clone() => backing.clone();
+    shared actual MutableMap<Integer,Item> clone() {
+        MutableMap<Integer, Item> retval = backing.clone();
+        retval.removeAll(toRemove);
+        return retval;
+    }
     shared actual void coalesce() {
         for (number in toRemove) {
             backing.remove(number);
