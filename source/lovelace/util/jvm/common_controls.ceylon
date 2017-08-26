@@ -36,7 +36,6 @@ import lovelace.util.common {
     Reorderable
 }
 import java.lang {
-    IllegalStateException,
     JDouble=Double,
     JInteger=Integer,
     JString=String,
@@ -134,7 +133,7 @@ shared class StreamingLabel extends JEditorPane {
     }
 }
 "The possible axes that a [[BoxLayout]] can be laid out on."
-shared class BoxAxis {
+shared class BoxAxis of lineAxis | pageAxis {
     "The constant to pass to the [[BoxLayout]]."
     shared Integer axis;
     shared new lineAxis { axis = BoxLayout.lineAxis; }
@@ -150,7 +149,6 @@ shared sealed interface BoxPanel {
         switch (axis)
         case (BoxAxis.lineAxis) { container.add(Box.createHorizontalGlue()); }
         case (BoxAxis.pageAxis) { container.add(Box.createVerticalGlue()); }
-        else { throw IllegalStateException("Impossible axis case"); }
     }
     "Add a rigid (fixed-size) area between components."
     shared default void addRigidArea(Integer dimension) {
@@ -158,7 +156,6 @@ shared sealed interface BoxPanel {
         switch (axis)
         case (BoxAxis.lineAxis) { dimensionObject = Dimension(dimension, 0); }
         case (BoxAxis.pageAxis) { dimensionObject = Dimension(0, dimension); }
-        else { throw IllegalStateException("Impossible axis case"); }
         assert (is Container container = this);
         container.add(Box.createRigidArea(dimensionObject));
     }
