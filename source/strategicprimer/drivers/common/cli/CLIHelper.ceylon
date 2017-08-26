@@ -19,6 +19,9 @@ import java.io {
 import strategicprimer.model.map {
     HasName
 }
+import lovelace.util.common {
+	todo
+}
 "A helper class to let help CLIs interact with the user, encapsulating input and output
  streams."
 shared sealed class CLIHelper(istream = process.readLine, ostream = process.write)
@@ -45,8 +48,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 	"Ask the user a yes-or-no question."
 	shared actual Boolean inputBoolean(String prompt) {
 		while (true) {
-			String input = inputString(prompt).lowercased;
-			switch(input)
+			switch(input = inputString(prompt).lowercased)
 			case ("yes"|"true"|"y"|"t") { return true; }
 			case ("no"|"false"|"n"|"f") { return false; }
 			else {
@@ -136,6 +138,7 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
 				HasName.name);
 	"Read input from the input stream repeatedly until a non-negative integer is entered,
 	 then return it."
+	todo("Return null instead of throwing on null input?")
 	shared actual Integer inputNumber(String prompt) {
 		variable Integer retval = -1;
 		while (retval < 0) {
