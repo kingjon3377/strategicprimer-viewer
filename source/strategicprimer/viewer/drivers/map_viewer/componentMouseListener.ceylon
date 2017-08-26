@@ -1,7 +1,3 @@
-import ceylon.math.float {
-    halfEven
-}
-
 import java.awt.event {
     MouseAdapter,
     MouseListener,

@@ -19,9 +19,6 @@ import java.io {
 import strategicprimer.model.map {
     HasName
 }
-import lovelace.util.common {
-    todo
-}
 "A helper class to let help CLIs interact with the user, encapsulating input and output
  streams."
 shared sealed class CLIHelper(istream = process.readLine, ostream = process.write)
