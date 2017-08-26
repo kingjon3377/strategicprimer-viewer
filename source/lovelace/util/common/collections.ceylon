@@ -64,18 +64,6 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
         return hash;
     }
 }
-"Remove duplicate items from an iterable."
-shared {T*} filterDuplicates<T>({T*} iter) {
-    if (exists first = iter.first) {
-        if (iter.rest.contains(first)) {
-            return iter.rest;
-        } else {
-            return iter;
-        }
-    } else {
-        return iter;
-    }
-}
 "An interface for objects providing a comparison function"
 shared interface Comparator<T> {
     shared formal Comparison compare(T one, T two);
