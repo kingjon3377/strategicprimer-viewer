@@ -5,7 +5,7 @@
 license("GPL-3")
 // TODO: Make only the I/O parts "native"
 native("jvm")
-module strategicprimer.model "0.4.9014" {
+module strategicprimer.model "0.4.9015" {
 	shared import java.base "8";
 	shared import javax.xml "8";
 	import ceylon.test "1.3.3";

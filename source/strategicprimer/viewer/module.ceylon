@@ -3,7 +3,7 @@
 // TODO: add tagged() annotations throughout
 license("GPL-3")
 native("jvm")
-module strategicprimer.viewer "0.4.9014" {
+module strategicprimer.viewer "0.4.9015" {
     shared import java.base "8";
     import ceylon.collection "1.3.3";
     import ceylon.interop.java "1.3.3";
@@ -19,14 +19,14 @@ module strategicprimer.viewer "0.4.9014" {
     import lovelace.util.jvm "0.1.0";
     import ceylon.regex "1.3.3";
     import maven:"com.massisframework:orange-extensions" "1.3.1";
-    shared import strategicprimer.model "0.4.9014";
-    import strategicprimer.report "0.4.9014";
-    shared import strategicprimer.drivers.common "0.4.9014";
-    import strategicprimer.drivers.exploration.old "0.4.9014";
-    import strategicprimer.drivers.exploration.common "0.4.9014";
-    shared import strategicprimer.drivers.worker.common "0.4.9014";
+    shared import strategicprimer.model "0.4.9015";
+    import strategicprimer.report "0.4.9015";
+    shared import strategicprimer.drivers.common "0.4.9015";
+    import strategicprimer.drivers.exploration.old "0.4.9015";
+    import strategicprimer.drivers.exploration.common "0.4.9015";
+    shared import strategicprimer.drivers.worker.common "0.4.9015";
     import ceylon.random "1.3.3";
-    import strategicprimer.drivers.generators "0.4.9014";
-    shared import strategicprimer.drivers.gui.common "0.4.9014";
-    import strategicprimer.drivers.utility "0.4.9014";
+    import strategicprimer.drivers.generators "0.4.9015";
+    shared import strategicprimer.drivers.gui.common "0.4.9015";
+    import strategicprimer.drivers.utility "0.4.9015";
 }

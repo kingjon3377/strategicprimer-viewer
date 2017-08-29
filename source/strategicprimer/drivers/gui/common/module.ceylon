@@ -3,7 +3,7 @@
 // TODO: add tagged() annotations throughout
 license("GPL-3")
 native("jvm")
-module strategicprimer.drivers.gui.common "0.4.9014" {
+module strategicprimer.drivers.gui.common "0.4.9015" {
     shared import java.desktop "8";
     shared import java.base "8";
     import lovelace.util.jvm "0.1.0";
