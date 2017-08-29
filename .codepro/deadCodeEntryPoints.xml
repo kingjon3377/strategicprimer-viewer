@@ -124,21 +124,21 @@
 		<explicit-entry-point
 				handle="=viewer/src&lt;model.workermgmt{TestWorkerModel.java[TestWorkerModel~testGetUnits"/>
 		<explicit-entry-point
-				handle="=viewer/src&lt;com.bric.window{package-info.java"/>
+				handle="=viewer/src&lt;com.pump.window{package-info.java"/>
 		<explicit-entry-point
-				handle="=viewer/src&lt;com.bric.window{package-info.java%com.bric.window"/>
+				handle="=viewer/src&lt;com.pump.window{package-info.java%com.pump.window"/>
 		<explicit-entry-point
-				handle="=viewer/src&lt;com.bric.window{package-info.java#"/>
+				handle="=viewer/src&lt;com.pump.window{package-info.java#"/>
 		<explicit-entry-point
-				handle="=viewer/src&lt;com.bric.window{package-info.java#org.eclipse.jdt.annotation.NonNullByDefault"/>
+				handle="=viewer/src&lt;com.pump.window{package-info.java#org.eclipse.jdt.annotation.NonNullByDefault"/>
 		<explicit-entry-point
-				handle="=viewer/src&lt;com.bric.window{package-info.java"/>
+				handle="=viewer/src&lt;com.pump.window{package-info.java"/>
 		<explicit-entry-point
-				handle="viewer/src&lt;com.bric.window{package-info.java%com.bric.window"/>
+				handle="viewer/src&lt;com.pump.window{package-info.java%com.pump.window"/>
 		<explicit-entry-point
-				handle="=viewer/src&lt;com.bric.window{package-info.java#"/>
+				handle="=viewer/src&lt;com.pump.window{package-info.java#"/>
 		<explicit-entry-point
-				handle="viewer/src&lt;com.bric.window{package-info.java#org.eclipse.jd.annotation.NonNullByDefault"/>
+				handle="viewer/src&lt;com.pump.window{package-info.java#org.eclipse.jd.annotation.NonNullByDefault"/>
 		<explicit-entry-point
 				handle="=viewer/src&lt;controller.map.report{package-info.java"/>
 		<explicit-entry-point
