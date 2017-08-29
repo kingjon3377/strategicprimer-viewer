@@ -1,0 +1,14 @@
+
+[compiler]
+source=source
+resource=resource
+
+[defaults]
+offline=false
+flatclasspath=false
+autoexportmavendependencies=false
+fullyexportmavendependencies=false
+encoding=UTF-8
+
+[formattool]
+profile=default

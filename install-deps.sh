@@ -6,19 +6,15 @@ wget http://download.sourceforge.net/launch4j/launch4j-3/3.9/launch4j-3.9-linux.
 tar xzf launch4j-3.9-linux.tgz
 wget https://github.com/UltraMixer/JarBundler/releases/download/3.3.0/jarbundler-core-3.3.0.jar \
         -O "${HOME}/.ant/lib/jarbundler-core-3.3.0.jar"
-wget http://central.maven.org/maven2/org/eclipse/jdt/org.eclipse.jdt.annotation/2.0.0/org.eclipse.jdt.annotation-2.0.0.jar
 wget https://github.com/mickleness/pumpernickel/raw/master/pump-release/com/pump/pump-swing/1.0.00/pump-swing-1.0.00.jar
 wget http://central.maven.org/maven2/com/yuvimasory/orange-extensions/1.3.0/orange-extensions-1.3.0.jar
 sudo apt-get update -qq
-# TODO: Open request for libhamcrest1.2-java
 sudo apt-get install genisoimage
-wget http://mirrors.kernel.org/ubuntu/pool/main/libh/libhamcrest-java/libhamcrest-java_1.3-4_all.deb
-sudo dpkg -i libhamcrest-java_1.3-4_all.deb
-wget https://github.com/tofi86/universalJavaApplicationStub/archive/v2.0.1.tar.gz -O \
-        universalJavaApplicationStub-2.0.1.tar.gz
-tar xzf universalJavaApplicationStub-2.0.1.tar.gz
+wget https://github.com/tofi86/universalJavaApplicationStub/archive/v2.0.2.tar.gz -O \
+        universalJavaApplicationStub-2.0.2.tar.gz
+tar xzf universalJavaApplicationStub-2.0.2.tar.gz
 if test -n "${TRAVIS_TAG}"; then
-    echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\)$@s:SNAPSHOT:\1:@' | \
+    echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\|[0-9]*[-_]rc[0-9]*\)$@s:SNAPSHOT:\1:@' | \
         sed -f - -i version.properties
 fi
 get_maven_url() {
@@ -31,3 +27,5 @@ get_maven_url org/jacoco org.jacoco.ant ${jacoco_ver} jacocoant
 get_maven_url org/jacoco org.jacoco.agent ${jacoco_ver} jacocoagent
 get_maven_url org/jacoco org.jacoco.report ${jacoco_ver} jacocoreport
 get_maven_url org/ow2/asm asm-debug-all 5.0.3 asm-debug-all
+wget https://ceylon-lang.org/download/dist/1_3_3 --output-document=ceylon.zip
+unzip ceylon.zip

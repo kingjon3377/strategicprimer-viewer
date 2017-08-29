@@ -1,0 +1,139 @@
+import ceylon.collection {
+    MutableList,
+    ArrayList
+}
+import ceylon.interop.java {
+    createJavaStringArray
+}
+
+import java.awt {
+    Component
+}
+import java.lang {
+    JString=String
+}
+
+import javax.swing {
+    JTable,
+    ScrollPaneConstants,
+    JScrollPane,
+    JList,
+    JLabel
+}
+
+import lovelace.util.common {
+    DelayedRemovalMap
+}
+import lovelace.util.jvm {
+    platform,
+    BorderedPanel
+}
+
+import strategicprimer.model.map {
+    IFixture,
+    IMapNG,
+    Player,
+    Point,
+    MapDimensions
+}
+import strategicprimer.model.map.fixtures {
+    TerrainFixture
+}
+import strategicprimer.report.generators.tabular {
+    UnitTabularReportGenerator,
+    FortressTabularReportGenerator,
+    AnimalTabularReportGenerator,
+    WorkerTabularReportGenerator,
+    VillageTabularReportGenerator,
+    TownTabularReportGenerator,
+    CropTabularReportGenerator,
+    DiggableTabularReportGenerator,
+    ResourceTabularReportGenerator,
+    ImmortalsTabularReportGenerator,
+    ExplorableTabularReportGenerator,
+    SkillTabularReportGenerator
+}
+"A method to produce tabular reports based on a map for a player."
+shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
+    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
+    Player player = map.currentPlayer;
+    MapDimensions dimensions = map.dimensions;
+    Point hq = findHQ(map, player);
+    /*{ITableGenerator<out Object>*}*/ value generators = {
+        FortressTabularReportGenerator(player, hq, dimensions),
+        UnitTabularReportGenerator(player, hq, dimensions),
+        AnimalTabularReportGenerator(hq, dimensions, map.currentTurn),
+        SkillTabularReportGenerator(),
+        WorkerTabularReportGenerator(hq, dimensions),
+        VillageTabularReportGenerator(player, hq, dimensions),
+        TownTabularReportGenerator(player, hq, dimensions),
+        CropTabularReportGenerator(hq, dimensions),
+        DiggableTabularReportGenerator(hq, dimensions),
+        ResourceTabularReportGenerator(),
+        ImmortalsTabularReportGenerator(hq, dimensions),
+        ExplorableTabularReportGenerator(player, hq, dimensions)
+    };
+    for (generator in generators) {
+        generator.produceTable(source(generator.tableName), fixtures);
+    }
+    for ([loc, fixture] in fixtures.items) {
+        if (is TerrainFixture fixture) {
+            fixtures.remove(fixture.id);
+        } else {
+            process.writeLine("Unhandled fixture:   ``fixture``");
+        }
+    }
+}
+"A method to produce tabular reports and add them to a GUI."
+shared void createGUITabularReports(
+        "The way to add the tables to the GUI."
+        Anything(String, Component) consumer,
+        "The map to base the reports on"
+        IMapNG map) {
+    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
+    Player player = map.currentPlayer;
+    MapDimensions dimensions = map.dimensions;
+    Point hq = findHQ(map, player);
+    /*{ITableGenerator<out Object>*}*/ value generators = {
+        FortressTabularReportGenerator(player, hq, dimensions),
+        UnitTabularReportGenerator(player, hq, dimensions),
+        AnimalTabularReportGenerator(hq, dimensions, map.currentTurn),
+        SkillTabularReportGenerator(),
+        WorkerTabularReportGenerator(hq, dimensions),
+        VillageTabularReportGenerator(player, hq, dimensions),
+        TownTabularReportGenerator(player, hq, dimensions),
+        CropTabularReportGenerator(hq, dimensions),
+        DiggableTabularReportGenerator(hq, dimensions),
+        ResourceTabularReportGenerator(),
+        ImmortalsTabularReportGenerator(hq, dimensions),
+        ExplorableTabularReportGenerator(player, hq, dimensions)
+    };
+    for (generator in generators) {
+        value table = JTable(generator.produceTableModel(fixtures));
+        table.autoCreateRowSorter = true;
+        Integer vertControl;
+        Integer horizControl;
+        if (platform.systemIsMac) {
+            vertControl = ScrollPaneConstants.verticalScrollbarAlways;
+            horizControl = ScrollPaneConstants.horizontalScrollbarAlways;
+        } else {
+            vertControl = ScrollPaneConstants.verticalScrollbarAsNeeded;
+            horizControl = ScrollPaneConstants.horizontalScrollbarAsNeeded;
+        }
+        consumer(generator.tableName, JScrollPane(table, vertControl,
+            horizControl));
+    }
+    MutableList<String> unhandled = ArrayList<String>();
+    for ([loc, fixture] in fixtures.items) {
+        if (is TerrainFixture fixture) {
+            fixtures.remove(fixture.id);
+        } else {
+            unhandled.add(fixture.string);
+        }
+    }
+    if (!unhandled.empty) {
+        consumer("other", BorderedPanel.verticalPanel(
+            JLabel("Fixtures not covered in any of the reports:"),
+            JList<JString>(createJavaStringArray(unhandled)), null));
+    }
+}

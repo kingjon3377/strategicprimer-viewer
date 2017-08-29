@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="tables/" kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
-		<attributes>
-			<attribute name="annotationpath" value="/viewer/annotations"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="src" path="source"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/WindowMenu"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AntContrib"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hamcrest"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JDT Java8 Annotations"/>
+	<classpathentry exported="true" kind="con" path="com.redhat.ceylon.eclipse.ui.cpcontainer.RUNTIME_CONTAINER/default"/>
+	<classpathentry exported="true" kind="con" path="com.redhat.ceylon.eclipse.ui.cpcontainer.CEYLON_CONTAINER/default"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,0 +1,199 @@
+aardvark	aardvarks
+adeopapposaur dinosaur	adeopapposaur dinosaurs
+agilisaur dinosaur	agilisaur dinosaurs
+ahool	ahools
+albatross	albatrosses
+alligator	alligators
+alpaca	alpacas
+ankylosaur dinosaur	ankylosaur dinosaurs
+anteater	anteaters
+antelope	antelopes
+ape	apes
+archaeopteryx	archaeopteryxes
+armadillo	armadillos
+badger	badgers
+bass	bass
+bat	bats
+bear	bears
+beaver	beavers
+bison	bison
+blackbird	blackbirds
+boar	boars
+bobcat	bobcats
+butterfly	butterflies
+buzzard	buzzards
+camel	camels
+capybara	capybaras
+caribou	caribou
+carp	carp
+cat	cats
+catfish	catfish
+cattle	cattle
+cheetah	cheetahs
+chicken	chickens
+chipmunk	chipmunks
+cod	cod
+cormorant	cormorants
+cow	cattle
+coypu	coypu
+crab	crabs
+crocodile	crocodiles
+crow	crows
+deer	deer
+dingo	dingos
+dodo	dodos
+dog	dogs
+dolphin	dolphins
+donkey	donkeys
+duck	ducks
+dugong	dugong
+eagle	eagles
+eel	eels
+elephant	elephants
+elk	elk
+eoraptor dinosaur	eoraptor dinosaurs
+europasaur dinosaur	europasaur dinosaurs
+europasaurus dinosaur	europasaurus dinosaurs
+ferret	ferrets
+finch	finches
+flounder	flounders
+fox	foxes
+frog	frogs
+fruit bat	fruit bats
+game hen	game hens
+goat	goats
+goose	geese
+gopher	gophers
+grayling	grayling
+great auk	great auks
+grouper	grouper
+guaibasaur dinosaur	guaibasaur dinosaurs
+guinea pig	guinea pigs
+gull	gulls
+haddock	haddock
+halibut	halibut
+hare	hares
+hedgehog	hedgehogs
+herring	herring
+hippo	hippos
+horse	horses
+howler monkey	howler monkeys
+hydra	hydras
+impala	impala
+kangaroo	kangaroos
+kraken	krakens
+krill	krill
+lark	larks
+leopard	leopards
+lesothosaur dinosaur	lesothosaur dinosaurs
+leyesaur dinosaur	leyesaur dinosaurs
+lion	lions
+lizard	lizards
+llama	llamas
+lobster	lobsters
+lungfish	lungfish
+mackerel	mackerel
+magpie	magpies
+magyarosaur dinosaur	magyarosaur dinosaurs
+manatee	manatees
+manticore	manticores
+mastadon	mastadon
+mesosaur	mesosaurs
+mink	minks
+mongoose	mongooses
+moose	moose
+mountain goat	mountain goats
+mountain lion	mountain lions
+mouse	mice
+musk ox	musk oxen
+muskrat	muskrats
+mussel	mussels
+octopus	octopi
+okapi	okapis
+opossum	opossums
+otter	otters
+owl	owls
+oyster	oysters
+parrot	parrots
+pegasus	pegasi
+pelican	pelicans
+penguin	penguins
+petrel	petrels
+pheasant	pheasant
+pigeon	pigeons
+platypus	platypuses
+plesiousaur	plesiosaurs
+poison dart frog	poison dart frogs
+polar bear	polar bears
+porpoise	porpoises
+prairie dog	prarie dogs
+psittacosaur dinosaur	psittacosaur dinosaurs
+quail	quail
+rabbit	rabbits
+raccoon	raccoons
+rat	rats
+reindeer	reindeer
+rhinoceros	rhinoceroses
+robin	robins
+saber-tooth tiger	saber-tooth tigers
+salamander	salamanders
+salmon	salmon
+saltopus dinosaur	saltopus dinosaurs
+sardine	sardines
+sea cucumber	sea cucumbers
+sea hippo	sea hippos
+sea lion	sea lions
+sea snake	sea snakes
+sea turtle	sea turtles
+sea urchin	sea urchins
+seal	seals
+shad	shad
+shark	sharks
+sheep	sheep
+shrimp	shrimp
+silkworm	silkworms
+silver fox	silver foxes
+skunk	skunks
+sloth	sloths
+snail	snails
+snake	snakes
+snowbird	snowbirds
+spider monkey	spider monkeys
+squid	squid
+squirrel	squirrels
+stegocerad dinosaur	stegocerad dinosaurs
+stegosaur dinosaur	stegosaur dinosaurs
+sturgeon	sturgeon
+swallow	swallows
+swan	swans
+tapir	tapirs
+tern	terns
+thescelosaur dinosaur	thescelosaur dinosaurs
+thrush	thrushes
+thunderbird	thunderbirds
+tiger	tigers
+toad	toads
+trout	trout
+tuna	tuna
+turkey	turkeys
+turtle	turtles
+unaysaur dinosaur	unaysaur dinosaurs
+unicorn	unicorns
+valdosaur dinosaur	valdosaur dinosaurs
+walrus	walruses
+warthog	warthogs
+water buffalo	water buffalos
+weasel	weasels
+whale	whales
+whiting	whiting
+wild dog	wild dogs
+wildebeest	wildebeest
+wolf	wolves
+wolverine	wolverines
+wolves	wolves
+wren	wrens
+wyvern	wyverns
+yak	yaks
+yandusaur dinosaur	yandusaur dinosaurs
+zebra	zebras
+zebu	zebu

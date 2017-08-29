@@ -35,3 +35,7 @@ dist/*
 infer-out/*
 jacoco.exec
 jacoco.xml
+modules/*
+/.exploded/
+.swp
+.swo
