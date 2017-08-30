@@ -140,7 +140,7 @@
     <!-- there isn't a ceylon-fat-jar Ant task (yet) -->
     <exec executable="${ceylon.executable}" failOnError="true">
         <arg value="fat-jar" />
-        <arg value="--out=${release}/${basename}.ceylon.jar" />
+        <arg value="--out=${release}/${basename}.jar" />
         <arg value="--run=${ceylon-main-run}" />
         <arg value="${main-module}" />
     </exec>
@@ -167,7 +167,7 @@
       <arg value="icon_16px.png" />
     </exec>
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
-      outfile="${release}/${basename}.exe" jar="${release}/${basename}.ceylon.jar" />
+      outfile="${release}/${basename}.exe" jar="${release}/${basename}.jar" />
   </target>
   <target name="app" depends="jar,icon">
       <exec executable="${png2icns.path}" dir="${basedir}">
@@ -179,7 +179,7 @@
       <arg value="icon_32px.png" />
       <arg value="icon_16px.png" />
     </exec>
-    <copy file="${release}/${basename}.ceylon.jar" tofile="${release}/${shortname}.jar" />
+    <copy file="${release}/${basename}.jar" tofile="${release}/${shortname}.jar" />
     <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
       jar="${release}/${shortname}.jar" version="${version-number}"
       shortname="SPHelpers" stubfile="${stub-script-path}"
