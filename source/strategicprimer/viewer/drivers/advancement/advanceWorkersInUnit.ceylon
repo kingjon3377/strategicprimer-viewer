@@ -19,7 +19,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 "Let the user add experience to a worker or workers in a unit."
 void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
     IWorker[] workers = [for (member in unit) if (is IWorker member) member];
-    if (cli.inputBoolean("Add experience to workers individually? ")) {
+    if (cli.inputBooleanInSeries("Add experience to workers individually? ")) {
         cli.loopOnList(workers, (clh, List<IWorker> list) => clh.chooseFromList(list,
             "Workers in unit:", "No unadvanced workers remain.", "Chosen worker: ",
             false),
