@@ -109,7 +109,7 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
                 Integer childCount = getChildCount(job);
                 job.addSkill(skill);
                 fireTreeNodesInserted(TreeModelEvent(this,
-                    TreePath(createJavaObjectArray({localRoot, job})),
+                    TreePath(createJavaObjectArray<Object>({localRoot, job})),
                     createJavaIntArray({childCount}),
                     createJavaObjectArray({skill})));
             }
