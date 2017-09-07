@@ -42,10 +42,10 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     }
     setPanelSizes(retval);
     JPanel first = boxPanel(BoxAxis.lineAxis);
-    first.add(listenedButton("+"), (ActionEvent event) {
+    first.add(listenedButton("+", (ActionEvent event) {
         layoutObj.next(retval);
         field.requestFocusInWindow();
-    });
+    }));
     setPanelSizes(first);
     retval.add(first);
     JPanel second = boxPanel(BoxAxis.pageAxis);
