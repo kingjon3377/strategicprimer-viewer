@@ -108,4 +108,11 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
         report("isSubset called on ProxySkill");
         return false;
     }
+    shared actual Boolean equals(Object that) {
+        if (is ISkill that) {
+            return that.name == name && that.level == level && that.hours == hours;
+        } else {
+            return false;
+        }
+    }
 }

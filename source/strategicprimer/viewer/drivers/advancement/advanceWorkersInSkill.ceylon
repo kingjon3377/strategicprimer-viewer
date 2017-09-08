@@ -7,7 +7,8 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
-    ISkill
+    ISkill,
+    Skill
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -22,6 +23,18 @@ void advanceWorkersInSkill(String jobName, String skillName, ICLIHelper cli,
         Integer oldLevel = skill.level;
         skill.addHours(hours, singletonRandom.nextInteger(100));
         if (skill.level != oldLevel) {
+            if (oldLevel == 0, skill.name == "miscellaneous",
+                    cli.inputBooleanInSeries("``worker.name`` gained ``skill.
+                            level`` level(s) in miscellaneous, choose another skill?",
+                        "misc-replacement")) {
+                for (i in 0:skill.level) {
+		    // TODO: Choose from existing instead of always getting a new string
+                    String replacementName = cli.inputString("Skill to gain level in: ");
+                    ISkill replacement = Skill(replacementName, 1, 0);
+                    job.removeSkill(skill);
+                    job.addSkill(replacement);
+                }
+            }
             cli.println("``worker.name`` gained a level in ``skill.name``");
         }
     }
