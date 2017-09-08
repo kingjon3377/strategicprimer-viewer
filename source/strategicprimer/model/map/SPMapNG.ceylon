@@ -253,9 +253,17 @@ shared class SPMapNG satisfies IMutableMapNG {
             Map<TileFixture, Point> ourLocations = map {
                 for (location in locations) for (fixture in fixtures.get(location)) fixture->location
             };
+            // IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
+            MutableMap<Integer, [IUnit, Point]> ourUnits = HashMap<Integer, [IUnit, Point]>();
+            // AbstractTown is Subsettable<AbstractTown>
+            MutableMap<Integer, [AbstractTown, Point]> ourTowns = HashMap<Integer, [AbstractTown, Point]>();
             for (point in locations) {
                 for (fixture in fixtures.get(point)) {
-                    if (is Subsettable<IFixture> fixture) {
+                    if (is IUnit fixture) {
+                        ourUnits[fixture.id] = [fixture, point];
+                    } else if (is AbstractTown fixture) {
+                        ourTowns[fixture.id] = [fixture, point];
+                    } else if (is Subsettable<IFixture> fixture) {
                         MutableList<[Subsettable<IFixture>, Point]> list;
                         if (exists temp = ourSubsettables[fixture.id]) {
                             list = temp;
@@ -275,10 +283,6 @@ shared class SPMapNG satisfies IMutableMapNG {
                     return false;
                 }
             }
-            // IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
-            MutableMap<Integer, IUnit> ourUnits = HashMap<Integer, IUnit>();
-            // AbstractTown is Subsettable<AbstractTown>
-            MutableMap<Integer, AbstractTown> ourTowns = HashMap<Integer, AbstractTown>();
             for (point in locations) {
                 void localReport(String string) => report("At ``point``:\t``string``");
                 if (exists theirTerrain = obj.baseTerrain[point]) {
@@ -300,14 +304,12 @@ shared class SPMapNG satisfies IMutableMapNG {
                     retval = false; // return false;
                 }
                 ourFixtures.clear();
-                ourUnits.clear();
-                ourTowns.clear();
                 for (fixture in (fixtures[point] else {})) {
                     Integer idNum = fixture.id;
-                    if (is IUnit fixture) {
-                        ourUnits[idNum] = fixture;
-                    } else if (is AbstractTown fixture) {
-                        ourTowns[idNum] = fixture;
+                    if (is IUnit fixture, exists pair = ourUnits[idNum], pair.first == fixture) {
+                        continue;
+                    } else if (is AbstractTown fixture, exists pair = ourTowns[idNum], pair.first == fixture) {
+                        continue;
                     } else if (!is Subsettable<IFixture> fixture) {
                         ourFixtures.add(fixture);
                     }
@@ -316,9 +318,19 @@ shared class SPMapNG satisfies IMutableMapNG {
                 for (fixture in theirFixtures) {
                     if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
                         continue;
-                    } else if (is IUnit fixture, exists unit = ourUnits[fixture.id]) {
+                    } else if (is IUnit fixture, exists unitPair = ourUnits[fixture.id]) {
+                        value [unit, unitLoc] = unitPair;
+                        if (unitLoc != point) {
+                            report("``unit`` moved from our ``unitLoc`` to ``point``");
+                            retval = false;
+                        }
                         retval = retval &&unit.isSubset(fixture, localReport);
-                    } else if (is AbstractTown fixture, exists town = ourTowns[fixture.id]) {
+                    } else if (is AbstractTown fixture, exists townPair = ourTowns[fixture.id]) {
+                        value [town, townLoc] = townPair;
+                        if (townLoc != point) {
+                            report("``town`` moved from our ``townLoc`` to ``point``");
+                            retval = false;
+                        }
                         retval = retval && town.isSubset(fixture, localReport);
                     } else if (is Subsettable<IFixture> fixture,
                             exists list = ourSubsettables[fixture.id]) {
