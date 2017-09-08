@@ -19,6 +19,9 @@ import ceylon.logging {
     Logger,
     logger
 }
+import strategicprimer.model.map.fixtures.towns {
+    AbstractTown
+}
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
 "A class to represent a game-world map and its contents."
@@ -274,6 +277,8 @@ shared class SPMapNG satisfies IMutableMapNG {
             }
             // IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
             MutableMap<Integer, IUnit> ourUnits = HashMap<Integer, IUnit>();
+            // AbstractTown is Subsettable<AbstractTown>
+            MutableMap<Integer, AbstractTown> ourTowns = HashMap<Integer, AbstractTown>();
             for (point in locations) {
                 void localReport(String string) => report("At ``point``:\t``string``");
                 if (exists theirTerrain = obj.baseTerrain[point]) {
@@ -296,10 +301,13 @@ shared class SPMapNG satisfies IMutableMapNG {
                 }
                 ourFixtures.clear();
                 ourUnits.clear();
+                ourTowns.clear();
                 for (fixture in (fixtures[point] else {})) {
                     Integer idNum = fixture.id;
                     if (is IUnit fixture) {
                         ourUnits[idNum] = fixture;
+                    } else if (is AbstractTown fixture) {
+                        ourTowns[idNum] = fixture;
                     } else if (!is Subsettable<IFixture> fixture) {
                         ourFixtures.add(fixture);
                     }
@@ -309,7 +317,9 @@ shared class SPMapNG satisfies IMutableMapNG {
                     if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
                         continue;
                     } else if (is IUnit fixture, exists unit = ourUnits[fixture.id]) {
-                        retval = retval && unit.isSubset(fixture, localReport);
+                        retval = retval &&unit.isSubset(fixture, localReport);
+                    } else if (is AbstractTown fixture, exists town = ourTowns[fixture.id]) {
+                        retval = retval && town.isSubset(fixture, localReport);
                     } else if (is Subsettable<IFixture> fixture,
                             exists list = ourSubsettables[fixture.id]) {
                         variable Integer count = 0;
