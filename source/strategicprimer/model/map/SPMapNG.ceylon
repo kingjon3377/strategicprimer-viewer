@@ -245,11 +245,25 @@ shared class SPMapNG satisfies IMutableMapNG {
             variable Boolean retval = playerCollection.isSubset(obj.players, report);
             // Declared here to avoid object allocations in the loop.
             MutableList<TileFixture> ourFixtures = ArrayList<TileFixture>();
-            MutableMap<Integer, MutableList<Subsettable<IFixture>>> ourSubsettables =
-                    HashMap<Integer, MutableList<Subsettable<IFixture>>>();
+            MutableMap<Integer, MutableList<[Subsettable<IFixture>, Point]>> ourSubsettables =
+                    HashMap<Integer, MutableList<[Subsettable<IFixture>, Point]>>();
             Map<TileFixture, Point> ourLocations = map {
                 for (location in locations) for (fixture in fixtures.get(location)) fixture->location
             };
+            for (point in locations) {
+                for (fixture in fixtures.get(point)) {
+                    if (is Subsettable<IFixture> fixture) {
+                        MutableList<[Subsettable<IFixture>, Point]> list;
+                        if (exists temp = ourSubsettables[fixture.id]) {
+                            list = temp;
+                        } else {
+                            list = ArrayList<[Subsettable<IFixture>, Point]>();
+                            ourSubsettables.put(fixture.id, list);
+                        }
+                        list.add([fixture, point]);
+                    }
+                }
+            }
             Boolean movedFrom(Point location, TileFixture fixture) {
                 if (exists ourLocation = ourLocations[fixture], ourLocation != location) {
                     report("``fixture`` moved from our ``ourLocation`` to ``location``");
@@ -281,22 +295,12 @@ shared class SPMapNG satisfies IMutableMapNG {
                     retval = false; // return false;
                 }
                 ourFixtures.clear();
-                ourSubsettables.clear();
                 ourUnits.clear();
                 for (fixture in (fixtures[point] else {})) {
                     Integer idNum = fixture.id;
                     if (is IUnit fixture) {
                         ourUnits[idNum] = fixture;
-                    } else if (is Subsettable<IFixture> fixture) {
-                        if (exists list = ourSubsettables[idNum]) {
-                            list.add(fixture);
-                        } else {
-                            MutableList<Subsettable<IFixture>> list =
-                                    ArrayList<Subsettable<IFixture>>();
-                            list.add(fixture);
-                            ourSubsettables[idNum] = list;
-                        }
-                    } else {
+                    } else if (!is Subsettable<IFixture> fixture) {
                         ourFixtures.add(fixture);
                     }
                 }
@@ -311,9 +315,11 @@ shared class SPMapNG satisfies IMutableMapNG {
                         variable Integer count = 0;
                         variable Boolean unmatched = true;
                         variable Subsettable<IFixture>? match = null;
-                        for (subsettable in list) {
+                        variable Point? matchPoint = null;
+                        for ([subsettable, ourLoc] in list) {
                             count++;
                             match = subsettable;
+                            matchPoint = ourLoc;
                             if (subsettable.isSubset(fixture, noop)) {
                                 unmatched = false;
                                 break;
@@ -322,7 +328,11 @@ shared class SPMapNG satisfies IMutableMapNG {
                             }
                         }
                         if (count == 1) {
-                            assert (exists temp = match);
+                            assert (exists temp = match, exists tempLoc = matchPoint);
+                            if (tempLoc != point) {
+                                report("``temp`` apparently moved from our ``tempLoc`` to ``point``");
+                                retval = false;
+                            }
                             retval = retval &&temp.isSubset(fixture, localReport);
                         } else if (movedFrom(point, fixture)) {
                             retval = false; // return false;
