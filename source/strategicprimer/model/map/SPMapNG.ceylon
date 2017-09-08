@@ -247,6 +247,17 @@ shared class SPMapNG satisfies IMutableMapNG {
             MutableList<TileFixture> ourFixtures = ArrayList<TileFixture>();
             MutableMap<Integer, MutableList<Subsettable<IFixture>>> ourSubsettables =
                     HashMap<Integer, MutableList<Subsettable<IFixture>>>();
+            Map<TileFixture, Point> ourLocations = map {
+                for (location in locations) for (fixture in fixtures.get(location)) fixture->location
+            };
+            Boolean movedFrom(Point location, TileFixture fixture) {
+                if (exists ourLocation = ourLocations[fixture], ourLocation != location) {
+                    report("``fixture`` moved from our ``ourLocation`` to ``location``");
+                    return true;
+                } else {
+                    return false;
+                }
+            }
             // IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
             MutableMap<Integer, IUnit> ourUnits = HashMap<Integer, IUnit>();
             for (point in locations) {
@@ -310,23 +321,30 @@ shared class SPMapNG satisfies IMutableMapNG {
                                 unmatched = true;
                             }
                         }
-                        if (count == 0) {
-                            localReport("Extra fixture:\t``fixture``");
-                            retval = false; // return false;
-                            break;
-                        } else if (count == 1) {
+                        if (count == 1) {
                             assert (exists temp = match);
-                            retval = retval && temp.isSubset(fixture, localReport);
+                            retval = retval &&temp.isSubset(fixture, localReport);
+                        } else if (movedFrom(point, fixture)) {
+                            retval = false;
+                        } else if (count == 0) {
+                            retval = false;
+                            localReport("Extra fixture:\t``fixture``");
+                            // TODO: why limit to one extra fixture?
+                            break;
                         } else if (unmatched) {
                             localReport(
                                 "Fixture with ID #``fixture.id`` didn't match any of the
                                  subsettable fixtures sharing that ID");
                             retval = false; // return false;
+                            // TODO: why limit to one extra fixture?
                             break;
                         }
+                    } else if (movedFrom(point, fixture)) {
+                        retval = false;
                     } else {
                         localReport("Extra fixture:\t``fixture``");
                         retval = false; // return false;
+                        // TODO: why limit to one extra fixture?
                         break;
                     }
                 }
