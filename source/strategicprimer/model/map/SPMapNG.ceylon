@@ -325,27 +325,21 @@ shared class SPMapNG satisfies IMutableMapNG {
                             assert (exists temp = match);
                             retval = retval &&temp.isSubset(fixture, localReport);
                         } else if (movedFrom(point, fixture)) {
-                            retval = false;
+                            retval = false; // return false;
                         } else if (count == 0) {
-                            retval = false;
+                            retval = false; // return false;
                             localReport("Extra fixture:\t``fixture``");
-                            // TODO: why limit to one extra fixture?
-                            break;
                         } else if (unmatched) {
                             localReport(
                                 "Fixture with ID #``fixture.id`` didn't match any of the
                                  subsettable fixtures sharing that ID");
                             retval = false; // return false;
-                            // TODO: why limit to one extra fixture?
-                            break;
                         }
                     } else if (movedFrom(point, fixture)) {
-                        retval = false;
+                        retval = false; // return false;
                     } else {
                         localReport("Extra fixture:\t``fixture``");
                         retval = false; // return false;
-                        // TODO: why limit to one extra fixture?
-                        break;
                     }
                 }
                 if (!set { *(obj.rivers[point] else {}) }
