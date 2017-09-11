@@ -53,6 +53,7 @@
       <fileset dir="${basedir}" includes="icon.ic*" />
     </delete>
     <delete dir="${basedir}/modules" />
+    <delete dir="${basedir}/.exploded" />
   </target>
   <target depends="clean" name="cleanall">
     <delete dir="${release}" />
