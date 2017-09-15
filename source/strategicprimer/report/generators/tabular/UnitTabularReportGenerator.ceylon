@@ -32,14 +32,14 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
                 ownerString(player, item.owner), item.kind, item.name,
                 item.allOrders.last?.item else ""};
         for (member in item) {
-            if (is Animal item) {
+            if (is Animal member) {
                 // We don't want animals inside a unit showing up in the wild-animal
                 // report
-                fixtures.remove(item.id);
+                fixtures.remove(member.id);
             } else if (player != item.owner) {
                 // A player shouldn't be able to see the details of another player's
                 // units.
-                fixtures.remove(item.id);
+                fixtures.remove(member.id);
             }
         }
         fixtures.remove(key);
