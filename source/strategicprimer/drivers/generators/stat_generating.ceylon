@@ -294,15 +294,11 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
             } else if (levels > 1) {
                 cli.println("Worker has ``levels`` Job levels.");
             }
-            if (cli.inputBooleanInSeries("Enter pregenerated stats?" )) {
-                worker.stats = enterStatsCollection(cli);
-            } else {
-                WorkerStats stats = createWorkerStats(race, levels, cli);
-                worker.stats = stats;
-                if (levels > 0) {
-                    cli.println("Generated stats:");
-                    cli.print(stats.string);
-                }
+            WorkerStats stats = createWorkerStats(race, levels, cli);
+            worker.stats = stats;
+            if (levels > 0) {
+                cli.println("Generated stats:");
+                cli.print(stats.string);
             }
             enterWorkerJobs(cli, worker, levels);
             addWorkerToUnit(model, unit, worker);
