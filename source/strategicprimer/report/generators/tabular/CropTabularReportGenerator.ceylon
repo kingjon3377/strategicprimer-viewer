@@ -34,7 +34,7 @@ shared class CropTabularReportGenerator(Point hq, MapDimensions dimensions)
     shared actual String tableName = "crops";
     "Create a GUI table row representing the crop."
     shared actual [{String+}+] produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Forest|Shrub|Meadow|Grove item, Point loc) {
+            Forest|Shrub|Meadow|Grove item, Integer key, Point loc) {
         String kind;
         String cultivation;
         String status;
@@ -60,6 +60,7 @@ shared class CropTabularReportGenerator(Point hq, MapDimensions dimensions)
             cultivation = (item.cultivated) then "cultivated" else "wild";
             status = "---";
         }
+        fixtures.remove(key);
         return [[distanceString(loc, hq, dimensions), loc.string, kind, cultivation,
             status, crop]];
     }

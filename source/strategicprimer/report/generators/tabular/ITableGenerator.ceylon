@@ -52,9 +52,8 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             comparePairs));
         writeRow(ostream, headerRow.first, *headerRow.rest);
         for ([num, [loc, item]] in values) {
-            for (row in produce(fixtures, item, loc)) {
+            for (row in produce(fixtures, item, num, loc)) {
                 writeRow(ostream, row.first, *row.rest);
-                fixtures.remove(num);
             }
         }
         fixtures.coalesce();
@@ -77,8 +76,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         DefaultTableModel retval = DefaultTableModel(
             createJavaObjectArray(headerRow.map(Types.nativeString)), 0);
         for ([num, [loc, item]] in values) {
-            for (row in produce(fixtures, item, loc)) {
-                fixtures.remove(num);
+            for (row in produce(fixtures, item, num, loc)) {
                 retval.addRow(createJavaObjectArray(row.map(Types.nativeString)));
             }
         }
@@ -86,12 +84,15 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         return retval;
     }
     "Produce lines (usually only one line) of the tabular report. Returns the empty
-     iterable if not handled by this generator."
+     iterable if not handled by this generator. Because not all lines should remove
+     items from the collection, implementations must do that removal themselves."
     shared formal {{String+}*} produce(
             "The set of fixtures."
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             "The item to base this line on."
             T item,
+            "Its key in the colleciton (usually its ID, but not always)"
+            Integer key,
             "The location of this item in the map."
             Point loc);
     "Given two points, return a number sufficiently proportional to the distance between

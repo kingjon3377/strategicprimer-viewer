@@ -30,7 +30,7 @@ shared class ResourceTabularReportGenerator()
     "Create a GUI table row representing the given fixture."
     shared actual [{String+}+] produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Implement|CacheFixture|ResourcePile item, Point loc) {
+            Implement|CacheFixture|ResourcePile item, Integer key, Point loc) {
         String kind;
         String quantity;
         String specifics;
@@ -50,6 +50,7 @@ shared class ResourceTabularReportGenerator()
             quantity = "---";
             specifics = item.contents;
         }
+        fixtures.remove(key);
         return [[kind, quantity, specifics]];
     }
     "Compare two Point-fixture pairs."
@@ -113,11 +114,11 @@ shared class ResourceTabularReportGenerator()
             } case (is CacheFixture) {
                 // FIXME: combine with ResourcePile case once compiler accepts it
                 // TODO: Distill MWE and report/find bug
-                value [row, *_] = produce(fixtures, fixture, loc);
+                value [row, *_] = produce(fixtures, fixture, key, loc);
                 writeRow(ostream, row.first, *row.rest);
                 fixtures.remove(key);
             } case (is ResourcePile) {
-                value [row, *_] = produce(fixtures, fixture, loc);
+                value [row, *_] = produce(fixtures, fixture, key, loc);
                 writeRow(ostream, row.first, *row.rest);
                 fixtures.remove(key);
             }

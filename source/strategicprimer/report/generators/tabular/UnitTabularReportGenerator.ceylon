@@ -27,7 +27,7 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
     "Create a GUI table row representing the unit."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IUnit item,
-            Point loc) {
+            Integer key, Point loc) {
         {String+} retval = {distanceString(loc, hq, dimensions), loc.string,
                 ownerString(player, item.owner), item.kind, item.name,
                 item.allOrders.last?.item else ""};
@@ -42,6 +42,7 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
                 fixtures.remove(item.id);
             }
         }
+        fixtures.remove(key);
         return {retval};
     }
     "Compare two location-unit pairs."

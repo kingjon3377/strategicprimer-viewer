@@ -25,8 +25,10 @@ shared class VillageTabularReportGenerator(Player player, Point hq,
     "Create a GUI table row representing the village."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Village item,
-            Point loc) => {{distanceString(loc, hq, dimensions), loc.string,
-        ownerString(player, item.owner), item.name}};
+            Integer key, Point loc) {
+        fixtures.remove(key);
+        return {{distanceString(loc, hq, dimensions), loc.string, ownerString(player, item.owner), item.name}};
+    }
     "Compare two location-and-village pairs."
     shared actual Comparison comparePairs([Point, Village] one,
             [Point, Village] two) {

@@ -28,7 +28,8 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
     "Create a GUI table row representing a worker."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IWorker item,
-            Point loc) {
+            Integer key, Point loc) {
+        fixtures.remove(key);
         if (exists stats = item.stats) {
             return {{distanceString(loc, hq, dimensions), loc.string, item.name,
                 stats.hitPoints.string, stats.maxHitPoints.string,

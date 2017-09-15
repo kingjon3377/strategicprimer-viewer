@@ -23,7 +23,7 @@ shared class FortressTabularReportGenerator(Player player, Point hq,
     shared actual String tableName = "fortresses";
     "Create a GUI table row representing the fortress."
     shared actual [{String+}+] produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Fortress item, Point loc) {
+            Fortress item, Integer key, Point loc) {
         {String+} retval = [distanceString(loc, hq, dimensions), loc.string,
             ownerString(player, item.owner), item.name];
         // Players shouldn't be able to see the contents of others' fortresses
@@ -33,6 +33,7 @@ shared class FortressTabularReportGenerator(Player player, Point hq,
                 fixtures.remove(member.id);
             }
         }
+        fixtures.remove(key);
         return [retval];
     }
     "Compare two Point-Fortress pairs."
