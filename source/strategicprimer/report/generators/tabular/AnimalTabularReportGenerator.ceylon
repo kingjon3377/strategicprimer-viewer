@@ -24,7 +24,7 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
     "Create a GUI table row representing the given animal."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Animal item, Point loc) {
+            Animal item, Integer key, Point loc) {
         String kind;
         String age;
         String population;
@@ -58,6 +58,7 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
             age = "---";
             population = "---";
         }
+        fixtures.remove(key);
         return {{distanceString(loc, hq, dimensions), loc.string, population, kind, age}};
     }
     "Compare two pairs of Animals and locations."

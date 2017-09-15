@@ -38,10 +38,12 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
     "Create a GUI table row representing a town."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            AbstractTown item, Point loc) =>
-            {{distanceString(loc, hq, dimensions), loc.string,
+            AbstractTown item, Integer key, Point loc) {
+        fixtures.remove(key);
+        return {{distanceString(loc, hq, dimensions), loc.string,
                 ownerString(player, item.owner), item.kind, item.townSize.string,
                 item.status.string, item.name}};
+    }
     "Compare two location-town pairs."
     shared actual Comparison comparePairs([Point, AbstractTown] one,
             [Point, AbstractTown] two) {
