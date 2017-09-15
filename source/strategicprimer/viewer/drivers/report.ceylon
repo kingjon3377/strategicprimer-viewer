@@ -164,7 +164,7 @@ object tabularReportCLI satisfies SimpleDriver {
             assert (exists baseName = base.elements.terminal(1).first);
             Anything(String) retval(String tableName) {
                 File file;
-                switch (temp = base.siblingPath("``baseName``.``tableName``.csv"))
+                switch (temp = base.siblingPath("``baseName``.``tableName``.csv").resource)
                 case (is File) {
                     file = temp;
                 }
