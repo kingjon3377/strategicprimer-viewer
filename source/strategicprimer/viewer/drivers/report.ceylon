@@ -172,7 +172,7 @@ object tabularReportCLI satisfies SimpleDriver {
                     file = temp.createFile();
                 }
                 else {
-                    throw IOException("``base`` exists but is not a file");
+                    throw IOException("``base``.``tableName``.csv exists but is not a file");
                 }
                 value writer = file.Overwriter();
                 return writer.write;
