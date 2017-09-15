@@ -2,7 +2,8 @@ import ceylon.file {
     parsePath,
     Nil,
     File,
-    Path
+    Path,
+    Writer
 }
 
 import java.io {
@@ -50,6 +51,10 @@ import strategicprimer.drivers.gui.common.about {
 import strategicprimer.drivers.gui.common {
 	SPFrame,
     UtilityMenu
+}
+import ceylon.collection {
+    HashMap,
+    MutableMap
 }
 "A driver to produce a report of the contents of a map."
 object reportCLI satisfies SimpleDriver {
@@ -158,24 +163,30 @@ object tabularReportCLI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage(false, "-b", "--tabular",
         ParamCount.atLeastOne, "Tabular Report Generator",
         "Produce CSV reports of the contents of a map.");
+    MutableMap<String,Writer> writers = HashMap<String,Writer>();
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         Anything(String)(String) filenameFunction(Path base) {
             assert (exists baseName = base.elements.terminal(1).first);
             Anything(String) retval(String tableName) {
-                File file;
-                switch (temp = base.siblingPath("``baseName``.``tableName``.csv").resource)
-                case (is File) {
-                    file = temp;
+                if (exists writer = writers.get("``baseName``.``tableName``.csv")) {
+                    return writer.write;
+                } else {
+                    File file;
+                    switch (temp = base.siblingPath("``baseName``.``tableName``.csv").resource)
+                    case (is File) {
+                        file = temp;
+                    }
+                    case (is Nil) {
+                        file = temp.createFile();
+                    }
+                    else {
+                        throw IOException("``base``.``tableName``.csv exists but is not a file");
+                    }
+                    value writer = file.Overwriter();
+                    writers["``baseName``.``tableName``.csv"] = writer;
+                    return writer.write;
                 }
-                case (is Nil) {
-                    file = temp.createFile();
-                }
-                else {
-                    throw IOException("``base``.``tableName``.csv exists but is not a file");
-                }
-                value writer = file.Overwriter();
-                return writer.write;
             }
             return retval;
         }
@@ -197,6 +208,9 @@ object tabularReportCLI satisfies SimpleDriver {
             }
         } else {
             createReports(model.map, model.mapFile);
+        }
+        for (writer in writers.items) {
+            writer.close();
         }
     }
     "Since this is a CLI driver, we can't show a file-chooser dialog."
