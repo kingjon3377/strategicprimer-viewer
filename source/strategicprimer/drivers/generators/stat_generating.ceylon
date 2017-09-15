@@ -181,12 +181,12 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
             return WorkerStats.factory(0, 0, 0, 0, 0, 0);
         }
     }
+    variable Boolean alwaysLowest = false;
     "Create randomly-generated stats for a worker, with racial adjustments applied."
     WorkerStats createWorkerStats(String race, Integer levels, ICLIHelper cli) {
         Integer die(Integer max) => (random() * max).integer + 1;
         WorkerStats base = WorkerStats.random(() => die(6) + die(6) + die(6));
         Integer lowestScore = getMinIndex(base.array);
-        variable Boolean alwaysLowest = false;
         WorkerStats racialBonus;
         if (race == "human") {
             Integer bonusStat;
