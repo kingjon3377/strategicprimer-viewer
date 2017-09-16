@@ -148,11 +148,11 @@ object resourcePlaceholderChecker satisfies Checker {
                         .kind``"));
             } else if (placeholderKinds.contains(fixture.contents)) {
                 warner.handle(SPContentWarning(context,
-                    "ResourcePile, ID #``fixture.id``, has placeholder contents: ``fixture
+                    "Resource pile, ID #``fixture.id``, has placeholder contents: ``fixture
                         .contents``"));
             } else if (placeholderUnits.contains(fixture.quantity.units)) {
                 warner.handle(SPContentWarning(context,
-                    "ResourcePile, ID #``fixture.id``, has placeholder units"));
+                    "Resource pile, ID #``fixture.id``, has placeholder units"));
             }
         } else if (is ITownFixture fixture, exists stats = fixture.population) {
             for (resource in stats.yearlyConsumption) {
