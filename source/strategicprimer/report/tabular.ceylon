@@ -26,7 +26,8 @@ import lovelace.util.common {
 }
 import lovelace.util.jvm {
     platform,
-    BorderedPanel
+    BorderedPanel,
+    javaComparator
 }
 
 import strategicprimer.model.map {
@@ -52,6 +53,13 @@ import strategicprimer.report.generators.tabular {
     ImmortalsTabularReportGenerator,
     ExplorableTabularReportGenerator,
     SkillTabularReportGenerator
+}
+import java.util {
+    JComparator=Comparator
+}
+import javax.swing.table {
+    TableRowSorter,
+    TableModel
 }
 "A method to produce tabular reports based on a map for a player."
 shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
@@ -108,9 +116,35 @@ shared void createGUITabularReports(
         ImmortalsTabularReportGenerator(hq, dimensions),
         ExplorableTabularReportGenerator(player, hq, dimensions)
     };
+    Comparison sorter(Object one, Object two) {
+        String actualOne;
+        String actualTwo;
+        if (is String one) {
+            actualOne = one;
+        } else {
+            actualOne = one.string;
+        }
+        if (is String two) {
+            actualTwo = two;
+        } else {
+            actualTwo = two.string;
+        }
+        if (is Float floatOne = Float.parse(actualOne), is Float floatTwo = Float.parse(actualTwo)) {
+            return floatOne <=> floatTwo;
+        } else {
+            return actualOne <=> actualTwo;
+        }
+    }
+    JComparator<out Object> wrapped = javaComparator(sorter);
     for (generator in generators) {
-        value table = JTable(generator.produceTableModel(fixtures));
-        table.autoCreateRowSorter = true;
+        value tableModel = generator.produceTableModel(fixtures);
+        value table = JTable(tableModel);
+        value modelSorter = TableRowSorter<TableModel>(tableModel);
+        value distanceFields = generator.headerRow.locations("distance".equalsIgnoringCase);
+        for (index->field in distanceFields) {
+            modelSorter.setComparator(index, wrapped);
+        }
+        table.rowSorter = modelSorter;
         Integer vertControl;
         Integer horizControl;
         if (platform.systemIsMac) {
