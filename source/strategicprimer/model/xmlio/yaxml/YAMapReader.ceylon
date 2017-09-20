@@ -99,8 +99,10 @@ class YAMapReader("The Warning instance to use" Warning warner,
     shared River parseRiver(StartElement element, QName parent) {
         requireTag(element, parent, "river", "lake");
         if ("lake" == element.name.localPart.lowercased) {
+            expectAttributes(element);
             return River.lake;
         } else {
+            expectAttributes(element, "direction");
             value river = River.parse(getParameter(element, "direction"));
             if (is River river) {
                 return river;
@@ -140,6 +142,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         StartElement mapTag;
         String outerTag = element.name.localPart;
         if ("view" == outerTag.lowercased) {
+            expectAttributes(element, "current_turn", "current_player");
             currentTurn = getIntegerParameter(element, "current_turn");
             maturityModel.currentTurn = currentTurn;
             mapTag = getFirstStartElement(stream, element);
@@ -150,6 +153,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         } else {
             throw UnwantedChildException(QName("xml"), element);
         }
+        expectAttributes(mapTag, "version", "rows", "columns");
         MapDimensions dimensions = MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
             getIntegerParameter(mapTag, "columns"),
             getIntegerParameter(mapTag, "version"));

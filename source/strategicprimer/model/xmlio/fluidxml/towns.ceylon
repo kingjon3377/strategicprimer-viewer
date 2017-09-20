@@ -52,6 +52,7 @@ import lovelace.util.common {
 Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "town");
+    expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait", "image", "owner");
     requireNonEmptyAttribute(element, "name", false, warner);
     value size = TownSize.parse(getAttribute(element, "size"));
     if (is TownSize size) {
@@ -86,6 +87,7 @@ Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
 Fortification readFortification(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "fortification");
+    expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait", "image", "owner");
     requireNonEmptyAttribute(element, "name", false, warner);
     value size = TownSize.parse(getAttribute(element, "size"));
     if (is TownSize size) {
@@ -121,6 +123,7 @@ Fortification readFortification(StartElement element, QName parent, {XMLEvent*} 
 City readCity(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "city");
+    expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait", "image", "owner");
     requireNonEmptyAttribute(element, "name", false, warner);
     value size = TownSize.parse(getAttribute(element, "size"));
     if (is TownSize size) {
@@ -155,6 +158,7 @@ City readCity(StartElement element, QName parent, {XMLEvent*} stream,
 Village readVillage(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "village");
+    expectAttributes(element, warner, "status", "race", "owner", "id", "image", "portrait");
     requireNonEmptyAttribute(element, "name", false, warner);
     Integer idNum = getOrGenerateID(element, warner, idFactory);
     value status = TownStatus.parse(getAttribute(element, "status"));
@@ -184,6 +188,7 @@ Village readVillage(StartElement element, QName parent, {XMLEvent*} stream,
 CommunityStats readCommunityStats(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "population");
+    expectAttributes(element, warner, "size");
     CommunityStats retval = CommunityStats(getIntegerAttribute(element, "size"));
     variable String? current = null;
     Stack<StartElement> stack = LinkedList<StartElement>();
@@ -194,16 +199,19 @@ CommunityStats readCommunityStats(StartElement element, QName parent, {XMLEvent*
         } else if (is StartElement event, isSPStartElement(event)) {
             switch (event.name.localPart)
             case ("expertise") {
+                expectAttributes(event, warner, "skill", "level");
                 retval.setSkillLevel(getAttribute(event, "skill"),
                     getIntegerAttribute(event, "level"));
                 stack.push(event);
             }
             case ("claim") {
+                expectAttributes(event, warner, "resource");
                 retval.addWorkedField(getIntegerAttribute(event, "resource"));
                 stack.push(event);
             }
             case ("production"|"consumption") {
                 if (current is Null) {
+                    expectAttributes(event, warner);
                     current = event.name.localPart;
                     stack.push(event);
                 } else {

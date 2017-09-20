@@ -46,6 +46,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
     {String*} supportedTags = set { "cache", "grove", "orchard", "field", "meadow",
         "mine", "mineral", "shrub", "stone"};
     HarvestableFixture createMeadow(StartElement element, Boolean field, Integer idNum) {
+        expectAttributes(element, "status", "kind", "id", "cultivated", "image");
         requireNonEmptyParameter(element, "status", false);
         value status = FieldStatus.parse(getParameter(element, "status",
             FieldStatus.random(idNum).string));
@@ -67,9 +68,11 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         }
     }
     todo("Inline?")
-    HarvestableFixture createGrove(StartElement element, Boolean orchard, Integer idNum)
-            => Grove(orchard, isCultivated(element),
+    HarvestableFixture createGrove(StartElement element, Boolean orchard, Integer idNum) {
+            expectAttributes(element, "kind", "tree", "cultivated", "wild", "id", "image");
+            return Grove(orchard, isCultivated(element),
                 getParamWithDeprecatedForm(element, "kind", "tree"), idNum);
+    }
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
     shared actual HarvestableFixture read(StartElement element, QName parent,
@@ -79,6 +82,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         HarvestableFixture retval;
         switch (element.name.localPart.lowercased)
         case ("cache") {
+            expectAttributes(element, "kind", "contents", "id", "image");
             retval = CacheFixture(getParameter(element, "kind"),
                 getParameter(element, "contents"), idNum);
         }
@@ -86,6 +90,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         case ("grove") { retval = createGrove(element, false, idNum); }
         case ("meadow") { retval = createMeadow(element, false, idNum); }
         case ("mine") {
+            expectAttributes(element, "status", "kind", "product", "id", "image");
             value status = TownStatus.parse(getParameter(element, "status"));
             if (is TownStatus status) {
                 retval = Mine(getParamWithDeprecatedForm(element, "kind", "product"),
@@ -95,15 +100,18 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             }
         }
         case ("mineral") {
+            expectAttributes(element, "kind", "mineral", "exposed", "id", "dc", "image");
             retval = MineralVein(getParamWithDeprecatedForm(element, "kind", "mineral"),
                 getBooleanParameter(element, "exposed"),
                 getIntegerParameter(element, "dc"), idNum);
         }
         case ("orchard") { retval = createGrove(element, true, idNum); }
         case ("shrub") {
+            expectAttributes(element, "kind", "shrub", "id", "image");
             retval = Shrub(getParamWithDeprecatedForm(element, "kind", "shrub"), idNum);
         }
         case ("stone") {
+            expectAttributes(element, "kind", "stone", "id", "dc", "image");
             value stone = StoneKind.parse(getParamWithDeprecatedForm(element, "kind",
                 "stone"));
             if (is StoneKind stone) {

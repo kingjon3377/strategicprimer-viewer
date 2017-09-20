@@ -21,6 +21,7 @@ class YAImplementReader(Warning warning, IDRegistrar idRegistrar)
     shared actual Implement read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "implement");
+        expectAttributes(element, "kind", "id", "image");
         Implement retval = Implement(getParameter(element, "kind"),
             getOrGenerateID(element));
         spinUntilEnd(element.name, stream);

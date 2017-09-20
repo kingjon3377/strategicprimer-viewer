@@ -54,6 +54,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         *{*`SimpleImmortalKind`.caseValues}
             .map((SimpleImmortalKind kind) => kind.tag)});
     MobileFixture createAnimal(StartElement element) {
+        expectAttributes(element, "traces", "id", "count", "talking", "kind", "status", "wild", "born", "image");
         // To get the intended meaning of existing maps, we have to parse
         // traces="" as traces="true". If compatibility with existing maps
         // ever becomes unnecessary, I will change the default-value here to
@@ -89,8 +90,10 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
     shared actual MobileFixture read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, *supportedTags);
-        MobileFixture twoParam(MobileFixture(String, Integer) constr) =>
-            constr(getParameter(element, "kind"), getOrGenerateID(element));
+        MobileFixture twoParam(MobileFixture(String, Integer) constr) {
+            expectAttributes(element, "id", "kind", "image");
+                return constr(getParameter(element, "kind"), getOrGenerateID(element));
+        }
         MobileFixture retval;
         switch (type = element.name.localPart.lowercased)
         case ("animal") { retval = createAnimal(element); }
@@ -98,7 +101,10 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         case ("dragon") { retval = twoParam(Dragon); }
         case ("fairy") { retval = twoParam(Fairy); }
         case ("giant") { retval = twoParam(Giant); }
-        else { retval = readSimple(type, getOrGenerateID(element)); }
+        else {
+            expectAttributes(element, "image", "id");
+            retval = readSimple(type, getOrGenerateID(element));
+        }
         spinUntilEnd(element.name, stream);
         if (is HasMutableImage retval) {
             retval.image = getParameter(element, "image", "");

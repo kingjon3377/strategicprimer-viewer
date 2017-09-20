@@ -61,6 +61,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     }
     "Parse orders for a unit for a specified turn."
     void parseOrders(StartElement element, IUnit unit, {XMLEvent*} stream) {
+        expectAttributes(element, "turn");
         Integer turn = getIntegerParameter(element, "turn", -1);
         StringBuilder builder = StringBuilder();
         for (event in stream) {
@@ -76,6 +77,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     }
     "Parse results for a unit for a specified turn."
     void parseResults(StartElement element, IUnit unit, {XMLEvent*} stream) {
+        expectAttributes(element, "turn");
         Integer turn = getIntegerParameter(element, "turn", -1);
         StringBuilder builder = StringBuilder();
         for (event in stream) {
@@ -106,6 +108,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     shared actual IUnit read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "unit");
+        expectAttributes(element, "name", "owner", "image", "portrait", "kind", "id");
         requireNonEmptyParameter(element, "name", false);
         requireNonEmptyParameter(element, "owner", false);
         Unit retval = Unit(

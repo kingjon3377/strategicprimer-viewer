@@ -30,6 +30,7 @@ class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
     shared actual ResourcePile read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "resource");
+        expectAttributes(element, "quantity", "kind", "contents", "unit", "created", "id", "image");
         String quantityString = getParameter(element, "quantity");
         SPNumber quantity;
         if (quantityString.contains(".")) {

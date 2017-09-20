@@ -21,6 +21,7 @@ class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Player>(warning, idRegistrar) {
     shared actual Player read(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, "player");
+        expectAttributes(element, "number", "code_name");
         requireNonEmptyParameter(element, "number", true);
         requireNonEmptyParameter(element, "code_name", true);
         spinUntilEnd(element.name, stream);

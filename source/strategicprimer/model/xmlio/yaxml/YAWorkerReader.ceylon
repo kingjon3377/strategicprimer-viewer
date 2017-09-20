@@ -67,6 +67,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
     WorkerStats parseStats(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "stats");
+        expectAttributes(element, "hp", "max", "str", "dex", "con", "int", "wis", "cha");
         Integer inner(String attr) => getIntegerParameter(element, attr);
         WorkerStats retval = WorkerStats(inner("hp"), inner("max"), inner("str"),
             inner("dex"), inner("con"), inner("int"), inner("wis"), inner("cha"));
@@ -75,16 +76,15 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
     }
     ISkill parseSkill(StartElement element, QName parent) {
         requireTag(element, parent, "skill");
+        expectAttributes(element, "name", "level", "hours");
         return Skill(getParameter(element, "name"), getIntegerParameter(element, "level"),
             getIntegerParameter(element, "hours"));
     }
     IJob parseJob(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, "job");
+        expectAttributes(element, "name", "level");
         IJob retval = Job(getParameter(element, "name"),
             getIntegerParameter(element, "level"));
-        if (hasParameter(element, "hours")) {
-            warner.handle(UnsupportedPropertyException(element, "hours"));
-        }
         for (event in stream) {
             if (is StartElement event, isSupportedNamespace(event.name)) {
                 if ("skill" == event.name.localPart.lowercased) {
@@ -116,6 +116,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
     shared actual IWorker read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "worker");
+        expectAttributes(element, "name", "race", "image", "portrait", "id");
         Worker retval = Worker(getParameter(element, "name"),
             getParameter(element, "race", "human"), getOrGenerateID(element));
         retval.image = getParameter(element, "image", "");

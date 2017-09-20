@@ -42,6 +42,7 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         TerrainFixture retval;
         switch (element.name.localPart.lowercased)
         case ("forest") {
+            expectAttributes(element, "id", "image", "kind", "rows");
             Integer id = getIntegerParameter(element, "id", -1);
             if (id >= 0) {
                 registerID(id, element.location);
@@ -49,9 +50,18 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
             retval = Forest(getParameter(element, "kind"),
                 getBooleanParameter(element, "rows", false), id);
         }
-        case ("hill") { retval = Hill(getOrGenerateID(element)); }
-        case ("oasis") { retval = Oasis(getOrGenerateID(element)); }
-        case ("sandbar") { retval = Sandbar(getOrGenerateID(element)); }
+        case ("hill") {
+            expectAttributes(element, "id", "image");
+            retval = Hill(getOrGenerateID(element));
+        }
+        case ("oasis") {
+            expectAttributes(element, "id", "image");
+            retval = Oasis(getOrGenerateID(element));
+        }
+        case ("sandbar") {
+            expectAttributes(element, "id", "image");
+            retval = Sandbar(getOrGenerateID(element));
+        }
         else {
             throw IllegalArgumentException("Unhandled terrain fixture tag ``element.name
                 .localPart``");

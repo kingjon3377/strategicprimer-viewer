@@ -31,6 +31,7 @@ import strategicprimer.model.xmlio.exceptions {
 Ground readGround(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "ground");
+    expectAttributes(element, warner, "id", "kind", "ground", "image", "exposed");
     Integer id = getIntegerAttribute(element, "id", -1, warner);
     if (id >= 0) {
         idFactory.register(id, warner, element.location);
@@ -44,6 +45,7 @@ Ground readGround(StartElement element, QName parent, {XMLEvent*} stream,
 Forest readForest(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "forest");
+    expectAttributes(element, warner, "id", "kind", "rows", "image");
     Integer id = getIntegerAttribute(element, "id", -1, warner);
     if (id >= 0) {
         idFactory.register(id, warner, element.location);
@@ -73,6 +75,7 @@ void writeForest(XMLStreamWriter ostream, Forest obj, Integer indent) {
 River readLake(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "lake");
+    expectAttributes(element, warner);
     spinUntilEnd(element.name, stream);
     return River.lake;
 }
@@ -80,6 +83,7 @@ River readLake(StartElement element, QName parent, {XMLEvent*} stream,
 River readRiver(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "river");
+    expectAttributes(element, warner, "direction");
     spinUntilEnd(element.name, stream);
     value river = River.parse(getAttribute(element, "direction"));
     if (is River river) {

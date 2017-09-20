@@ -27,6 +27,7 @@ class YAExplorableReader(Warning warning, IDRegistrar idRegistrar)
     shared actual Cave|Battlefield read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "battlefield", "cave");
+        expectAttributes(element, "id", "dc", "image");
         Integer idNum = getOrGenerateID(element);
         Cave|Battlefield retval;
         switch (tag = element.name.localPart.lowercased)

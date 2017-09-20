@@ -23,7 +23,8 @@ import javax.xml.stream.events {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+	IteratorWrapper
 }
 
 import strategicprimer.model.idreg {
@@ -42,7 +43,11 @@ import strategicprimer.model.xmlio {
 import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException,
     MissingPropertyException,
-    DeprecatedPropertyException
+    DeprecatedPropertyException,
+	UnsupportedPropertyException
+}
+import lovelace.util.jvm {
+	ConvertingIterable
 }
 "A parser for numeric data, so integers can contain commas."
 NumberFormat numParser = NumberFormat.integerInstance;
@@ -277,6 +282,15 @@ abstract class YAAbstractReader<Element>
             return retval;
         } else {
             throw MissingPropertyException(element, preferred);
+        }
+    }
+    "Warn if any unsupported attribute is on this tag."
+    shared void expectAttributes(StartElement element, String* attributes) {
+        for (attribute in ConvertingIterable<Attribute>(element.attributes).map(Attribute.name)
+                .filter(isSupportedNamespace)) {
+            if (!attributes.contains(attribute.localPart)) {
+                warner.handle(UnsupportedPropertyException(element, attribute.localPart));
+            }
         }
     }
 }

@@ -21,6 +21,7 @@ class YAGroundReader(Warning warning, IDRegistrar idRegistrar)
     shared actual Ground read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "ground");
+        expectAttributes(element, "kind", "ground", "exposed", "id", "image");
         String kind = getParamWithDeprecatedForm(element, "kind", "ground");
         requireNonEmptyParameter(element, "exposed", true);
         spinUntilEnd(element.name, stream);

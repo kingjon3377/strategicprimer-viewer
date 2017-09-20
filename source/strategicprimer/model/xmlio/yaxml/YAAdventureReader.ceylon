@@ -26,6 +26,7 @@ class YAAdventureReader(Warning warner, IDRegistrar idFactory, IPlayerCollection
     shared actual AdventureFixture read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "adventure");
+        expectAttributes(element, "owner", "brief", "full", "image", "id");
         Player player;
         if (hasParameter(element, "owner")) {
             player = players.getPlayer(getIntegerParameter(element, "owner"));

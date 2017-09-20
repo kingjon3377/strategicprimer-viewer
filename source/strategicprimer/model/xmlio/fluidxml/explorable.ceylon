@@ -34,6 +34,7 @@ AdventureFixture readAdventure(StartElement element, QName parent,
         {XMLEvent*} stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
     requireTag(element, parent, "adventure");
+    expectAttributes(element, warner, "owner", "brief", "full", "id", "image");
     Player player;
     if (hasAttribute(element, "owner")) {
         player = players.getPlayer(getIntegerAttribute(element, "owner"));
@@ -52,6 +53,7 @@ Portal readPortal(StartElement element, QName parent,
         {XMLEvent*} stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
     requireTag(element, parent, "portal");
+    expectAttributes(element, warner, "row", "column", "world", "id", "image");
     Point location = pointFactory(getIntegerAttribute(element, "row"),
         getIntegerAttribute(element, "column"));
     Portal retval = setImage(Portal(
@@ -65,6 +67,7 @@ Portal readPortal(StartElement element, QName parent,
 Cave readCave(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "cave");
+    expectAttributes(element, warner, "id", "dc", "image");
     Integer idNum = getOrGenerateID(element, warner, idFactory);
     Cave retval = Cave(getIntegerAttribute(element, "dc"), idNum);
     spinUntilEnd(element.name, stream);
@@ -75,6 +78,7 @@ Battlefield readBattlefield(StartElement element, QName parent,
         {XMLEvent*} stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
     requireTag(element, parent, "battlefield");
+    expectAttributes(element, warner, "id", "dc", "image");
     Integer idNum = getOrGenerateID(element, warner, idFactory);
     Battlefield retval = Battlefield(getIntegerAttribute(element, "dc"), idNum);
     spinUntilEnd(element.name, stream);
@@ -85,6 +89,7 @@ TextFixture readTextFixture(StartElement element, QName parent,
         {XMLEvent*} stream, IPlayerCollection players, Warning warner,
         IDRegistrar idFactory) {
     requireTag(element, parent, "text");
+    expectAttributes(element, warner, "turn", "image");
     return setImage(TextFixture(getTextUntil(element.name, stream),
         getIntegerAttribute(element, "turn", -1, warner)),
         element, warner);

@@ -47,6 +47,7 @@ import strategicprimer.model.xmlio.exceptions {
 Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "worker");
+    expectAttributes(element, warner, "name", "race", "portrait", "id", "image");
     Worker retval = setImage(
         Worker(getAttribute(element, "name"),
             getAttribute(element, "race", "human"),
@@ -71,9 +72,7 @@ Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,
 IJob readJob(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "job");
-    if (hasAttribute(element, "hours")) {
-        warner.handle(UnsupportedPropertyException(element, "hours"));
-    }
+    expectAttributes(element, warner, "name", "level");
     IJob retval = Job(getAttribute(element, "name"),
         getIntegerAttribute(element, "level"));
     for (event in stream) {
@@ -94,6 +93,7 @@ IJob readJob(StartElement element, QName parent, {XMLEvent*} stream,
 ISkill readSkill(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "skill");
+    expectAttributes(element, warner, "name", "level", "hours");
     requireNonEmptyAttribute(element, "name", true, warner);
     spinUntilEnd(element.name, stream);
     return Skill(getAttribute(element, "name"),
@@ -104,6 +104,7 @@ ISkill readSkill(StartElement element, QName parent, {XMLEvent*} stream,
 WorkerStats readStats(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "stats");
+    expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int", "wis", "cha");
     spinUntilEnd(element.name, stream);
     return WorkerStats(getIntegerAttribute(element, "hp"),
         getIntegerAttribute(element, "max"),
@@ -175,6 +176,7 @@ void writeSkill(XMLStreamWriter ostream, ISkill obj, Integer indentation) {
 Animal readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "animal");
+    expectAttributes(element, warner, "traces", "id", "count", "kind", "talking", "status", "wild", "born", "image");
     spinUntilEnd(element.name, stream);
     // To get the intended meaning of existing maps, we have to parse
     // traces="" as traces="true". If compatibility with existing maps

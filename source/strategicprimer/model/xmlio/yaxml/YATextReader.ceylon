@@ -26,6 +26,7 @@ class YATextReader(Warning warning, IDRegistrar idRegistrar)
     shared actual TextFixture read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "text");
+        expectAttributes(element, "turn", "image");
         StringBuilder builder = StringBuilder();
         for (event in stream) {
             if (is StartElement event) {

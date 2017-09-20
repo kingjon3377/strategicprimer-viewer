@@ -51,6 +51,9 @@ import strategicprimer.model.xmlio.exceptions {
     DeprecatedPropertyException,
     UnsupportedPropertyException
 }
+import lovelace.util.jvm {
+	ConvertingIterable
+}
 NumberFormat numParser = NumberFormat.integerInstance;
 
 "Require that an XML tag be one of the specified tags."
@@ -440,3 +443,13 @@ Anything(XMLStreamWriter, Object, Integer) castingWriter<T>(
             throw IllegalArgumentException("Can only write `` `T` ``");
         }
     };
+Boolean isSupportedNamespace(QName name) => {spNamespace, XMLConstants.nullNsUri}.contains(name.namespaceURI);
+"Warn if any unsupported attribute is on this tag."
+shared void expectAttributes(StartElement element, Warning warner, String* attributes) {
+	for (attribute in ConvertingIterable<Attribute>(element.attributes).map(Attribute.name)
+			.filter(isSupportedNamespace)) {
+		if (!attributes.contains(attribute.localPart)) {
+			warner.handle(UnsupportedPropertyException(element, attribute.localPart));
+		}
+	}
+}

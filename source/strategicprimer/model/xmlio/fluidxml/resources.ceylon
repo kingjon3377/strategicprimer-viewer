@@ -56,6 +56,7 @@ import ceylon.math.whole {
 ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "resource");
+    expectAttributes(element, warner, "quantity", "kind", "contents", "unit", "created", "id", "image");
     spinUntilEnd(element.name, stream);
     String quantityStr = getAttribute(element, "quantity");
     SPNumber quantity;
@@ -87,6 +88,7 @@ ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream
 CacheFixture readCache(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "cache");
+    expectAttributes(element, warner, "kind", "contents", "id", "image");
     spinUntilEnd(element.name, stream);
     return setImage(
         CacheFixture(getAttribute(element, "kind"),
@@ -98,6 +100,7 @@ CacheFixture readCache(StartElement element, QName parent, {XMLEvent*} stream,
 Grove readGrove(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "grove");
+    expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id", "image");
     spinUntilEnd(element.name, stream);
     Boolean cultivated;
     if (hasAttribute(element, "cultivated")) {
@@ -118,6 +121,7 @@ Grove readGrove(StartElement element, QName parent, {XMLEvent*} stream,
 Grove readOrchard(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "orchard");
+    expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id", "image");
     spinUntilEnd(element.name, stream);
     Boolean cultivated;
     if (hasAttribute(element, "cultivated")) {
@@ -138,6 +142,7 @@ Grove readOrchard(StartElement element, QName parent, {XMLEvent*} stream,
 Meadow readMeadow(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "meadow");
+    expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image");
     spinUntilEnd(element.name, stream);
     Integer id = getOrGenerateID(element, warner, idFactory);
     if (!hasAttribute(element, "status")) {
@@ -156,6 +161,7 @@ Meadow readMeadow(StartElement element, QName parent, {XMLEvent*} stream,
 Meadow readField(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "field");
+    expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image");
     spinUntilEnd(element.name, stream);
     Integer id = getOrGenerateID(element, warner, idFactory);
     if (!hasAttribute(element, "status")) {
@@ -174,6 +180,7 @@ Meadow readField(StartElement element, QName parent, {XMLEvent*} stream,
 Mine readMine(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "mine");
+    expectAttributes(element, warner, "status", "kind", "product", "id", "image");
     spinUntilEnd(element.name, stream);
     value status = TownStatus.parse(getAttribute(element, "status"));
     if (is TownStatus status) {
@@ -188,6 +195,7 @@ Mine readMine(StartElement element, QName parent, {XMLEvent*} stream,
 MineralVein readMineral(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "mineral");
+    expectAttributes(element, warner, "kind", "mineral", "exposed", "dc", "id", "image");
     spinUntilEnd(element.name, stream);
     return setImage(
         MineralVein(
@@ -199,6 +207,7 @@ MineralVein readMineral(StartElement element, QName parent, {XMLEvent*} stream,
 Shrub readShrub(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "shrub");
+    expectAttributes(element, warner, "kind", "shrub", "id", "image");
     spinUntilEnd(element.name, stream);
     return setImage(Shrub(
         getAttrWithDeprecatedForm(element, "kind", "shrub", warner),
@@ -209,6 +218,7 @@ Shrub readShrub(StartElement element, QName parent, {XMLEvent*} stream,
 StoneDeposit readStone(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "stone");
+    expectAttributes(element, warner, "kind", "stone", "dc", "id", "image");
     spinUntilEnd(element.name, stream);
     value stone = StoneKind.parse(getAttrWithDeprecatedForm(element, "kind",
         "stone", warner));
@@ -219,6 +229,7 @@ StoneDeposit readStone(StartElement element, QName parent, {XMLEvent*} stream,
                 getOrGenerateID(element, warner, idFactory)),
             element, warner);
     } else {
+        // TODO: should be "kind" param
         throw MissingPropertyException(element, "stone", stone);
     }
 }

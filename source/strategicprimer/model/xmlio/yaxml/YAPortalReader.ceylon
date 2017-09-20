@@ -20,6 +20,7 @@ class YAPortalReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Portal>(warning, idRegistrar) {
     shared actual Portal read(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, "portal");
+        expectAttributes(element, "world", "row", "column", "id", "image");
         Portal retval = Portal(getParameter(element, "world"), parsePoint(element),
             getOrGenerateID(element));
         retval.image = getParameter(element, "image", "");

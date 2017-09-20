@@ -78,6 +78,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     shared CommunityStats parseCommunityStats(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "population");
+        expectAttributes(element, "size");
         CommunityStats retval = CommunityStats(getIntegerParameter(element, "size"));
         variable String? current = null;
         Stack<StartElement> stack = LinkedList<StartElement>();
@@ -88,16 +89,19 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             } else if (is StartElement event, isSupportedNamespace(event.name)) {
                 switch (event.name.localPart)
                 case ("expertise") {
+                    expectAttributes(event, "skill", "level");
                     retval.setSkillLevel(getParameter(event, "skill"),
                         getIntegerParameter(event, "level"));
                     stack.push(event);
                 }
                 case ("claim") {
+                    expectAttributes(event, "resource");
                     retval.addWorkedField(getIntegerParameter(event, "resource"));
                     stack.push(event);
                 }
                 case ("production"|"consumption") {
                     if (current is Null) {
+                        expectAttributes(event);
                         current = event.name.localPart;
                         stack.push(event);
                     } else {
@@ -134,6 +138,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         return retval;
     }
     ITownFixture parseVillage(StartElement element, {XMLEvent*} stream) {
+        expectAttributes(element, "status", "name", "race", "image", "portrait", "id", "owner");
         requireNonEmptyParameter(element, "name", false);
         Integer idNum = getOrGenerateID(element);
         value status = TownStatus.parse(getParameter(element, "status"));
@@ -161,6 +166,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
     }
     ITownFixture parseTown(StartElement element, {XMLEvent*} stream) {
+        expectAttributes(element, "name", "status", "size", "dc", "id", "image", "owner", "portrait");
         requireNonEmptyParameter(element, "name", false);
         String name = getParameter(element, "name", "");
         value status = TownStatus.parse(getParameter(element, "status"));
@@ -203,6 +209,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
     }
     ITownFixture parseFortress(StartElement element, {XMLEvent*} stream) {
+        expectAttributes(element, "owner", "name", "size", "status", "id", "portrait", "image");
         requireNonEmptyParameter(element, "owner", false);
         requireNonEmptyParameter(element, "name", false);
         Fortress retval;

@@ -121,6 +121,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         Object retval(StartElement element, QName parent, {XMLEvent*} stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
             requireTag(element, parent, tag);
+            expectAttributes(element, warner, "id", "image");
             spinUntilEnd(element.name, stream);
             return setImage(factory(getOrGenerateID(element, warner,
                 idFactory)), element, warner);
@@ -132,6 +133,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         Object retval(StartElement element, QName parent, {XMLEvent*} stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
             requireTag(element, parent, tag);
+            expectAttributes(element, warner, "id", "kind", "image");
             spinUntilEnd(element.name, stream);
             return setImage(factory(getAttribute(element, "kind"),
                 getOrGenerateID(element, warner, idFactory)), element, warner);
@@ -228,6 +230,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         StartElement mapTag;
         String outerTag = element.name.localPart;
         if ("view" == outerTag.lowercased) {
+            expectAttributes(element, warner, "current_player", "current_turn");
             currentTurn = getIntegerAttribute(element, "current_turn");
             maturityModel.currentTurn = currentTurn;
             mapTag = firstStartElement(stream, element);
@@ -238,6 +241,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         } else {
             throw UnwantedChildException(parent, element);
         }
+        expectAttributes(mapTag, warner, "version", "rows", "columns");
         MapDimensions dimensions = MapDimensionsImpl(
             getIntegerAttribute(mapTag, "rows"),
             getIntegerAttribute(mapTag, "columns"),
@@ -296,17 +300,20 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "player");
         requireNonEmptyAttribute(element, "number", true, warner);
         requireNonEmptyAttribute(element, "code_name", true, warner);
+        expectAttributes(element, warner, "number", "code_name");
         spinUntilEnd(element.name, stream);
         return PlayerImpl(getIntegerAttribute(element, "number"),
             getAttribute(element, "code_name"));
     }
     void parseOrders(StartElement element, IUnit unit, {XMLEvent*} stream,
             Warning warner) {
+        expectAttributes(element, warner, "turn");
         Integer turn = getIntegerAttribute(element, "turn", -1, warner);
         unit.setOrders(turn, getTextUntil(element.name, stream));
     }
     void parseResults(StartElement element, IUnit unit, {XMLEvent*} stream,
             Warning warner) {
+        expectAttributes(element, warner, "turn");
         Integer turn = getIntegerAttribute(element, "turn", -1, warner);
         unit.setResults(turn, getTextUntil(element.name, stream));
     }
@@ -315,6 +322,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "unit");
         requireNonEmptyAttribute(element, "name", false, warner);
         requireNonEmptyAttribute(element, "owner", false, warner);
+        expectAttributes(element, warner, "name", "owner", "id", "kind", "image", "portrait");
         variable String? temp = null;
         try {
             temp = getAttrWithDeprecatedForm(element, "kind", "type", warner);
@@ -363,6 +371,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "fortress");
         requireNonEmptyAttribute(element, "owner", false, warner);
         requireNonEmptyAttribute(element, "name", false, warner);
+        expectAttributes(element, warner, "owner", "name", "id", "size", "status", "image", "portrait");
         Fortress retval;
         value size = TownSize.parse(getAttribute(element, "size", "small"));
         if (is TownSize size) {
