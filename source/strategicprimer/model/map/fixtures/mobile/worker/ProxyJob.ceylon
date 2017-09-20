@@ -59,6 +59,11 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
      otherwise."
     shared actual void addSkill(ISkill skill) {
         if (!proxiedSkills.map(ISkill.name).any(skill.name.equals)) {
+            for (proxiedJob in proxiedJobs) {
+                if (!proxiedJob.map(ISkill.name).any(skill.name.equals)) {
+                    proxiedJob.addSkill(skill.copy());
+                }
+            }
             proxiedSkills.add(ProxySkill(skill.name, parallel, *proxiedJobs));
         }
     }
