@@ -17,9 +17,8 @@ shared class Skill(name, skillLevel, time) satisfies ISkill {
 	"Clone the object."
 	shared actual Skill copy() => Skill(name, level, hours);
 	"An object is equal iff it is a Skill with the same name, level, and number of hours."
-	todo("Specify interface instead of concrete class?")
 	shared actual Boolean equals(Object obj) {
-		if (is Skill obj) {
+		if (is ISkill obj) {
 			return name == obj.name && level == obj.level && hours == obj.hours;
 		} else {
 			return false;
