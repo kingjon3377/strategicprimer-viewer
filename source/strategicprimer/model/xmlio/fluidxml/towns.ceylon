@@ -158,7 +158,7 @@ City readCity(StartElement element, QName parent, {XMLEvent*} stream,
 Village readVillage(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "village");
-    expectAttributes(element, warner, "status", "race", "owner", "id", "image", "portrait");
+    expectAttributes(element, warner, "status", "race", "owner", "id", "image", "portrait", "name");
     requireNonEmptyAttribute(element, "name", false, warner);
     Integer idNum = getOrGenerateID(element, warner, idFactory);
     value status = TownStatus.parse(getAttribute(element, "status"));

@@ -193,6 +193,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     }
     void parseTile(IMutableMapNG map, StartElement element, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
+        expectAttributes(element, warner, "row", "column", "kind", "type");
         Point loc = pointFactory(getIntegerAttribute(element, "row"),
             getIntegerAttribute(element, "column"));
         // Tiles have been known to be *written* without "kind" and then fail to load, so
@@ -235,13 +236,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             maturityModel.currentTurn = currentTurn;
             mapTag = firstStartElement(stream, element);
             requireTag(mapTag, element.name, "map");
+            expectAttributes(mapTag, warner, "version", "rows", "columns");
         } else if ("map" == outerTag.lowercased) {
             currentTurn = 0;
             mapTag = element;
+            expectAttributes(mapTag, warner, "version", "rows", "columns", "current_player");
         } else {
             throw UnwantedChildException(parent, element);
         }
-        expectAttributes(mapTag, warner, "version", "rows", "columns");
         MapDimensions dimensions = MapDimensionsImpl(
             getIntegerAttribute(mapTag, "rows"),
             getIntegerAttribute(mapTag, "columns"),
@@ -255,6 +257,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             if (is StartElement event, isSPStartElement(event)) {
                 String type = event.name.localPart;
                 if ("row" == type || isFutureTag(event, warner)) {
+                    expectAttributes(event, warner, "index");
                     tagStack.push(event.name);
                     // Deliberately ignore
                     continue;
@@ -322,7 +325,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "unit");
         requireNonEmptyAttribute(element, "name", false, warner);
         requireNonEmptyAttribute(element, "owner", false, warner);
-        expectAttributes(element, warner, "name", "owner", "id", "kind", "image", "portrait");
+        expectAttributes(element, warner, "name", "owner", "id", "kind", "image", "portrait", "type");
         variable String? temp = null;
         try {
             temp = getAttrWithDeprecatedForm(element, "kind", "type", warner);

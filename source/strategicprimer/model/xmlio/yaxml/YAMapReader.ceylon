@@ -147,13 +147,14 @@ class YAMapReader("The Warning instance to use" Warning warner,
             maturityModel.currentTurn = currentTurn;
             mapTag = getFirstStartElement(stream, element);
             requireTag(mapTag, element.name, "map");
+            expectAttributes(mapTag, "version", "rows", "columns");
         } else if ("map" == outerTag.lowercased) {
             currentTurn = 0;
             mapTag = element;
+            expectAttributes(mapTag, "version", "rows", "columns", "current_player");
         } else {
             throw UnwantedChildException(QName("xml"), element);
         }
-        expectAttributes(mapTag, "version", "rows", "columns");
         MapDimensions dimensions = MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
             getIntegerParameter(mapTag, "columns"),
             getIntegerParameter(mapTag, "version"));
@@ -169,6 +170,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     assert (exists top = tagStack.top);
                     retval.addPlayer(playerReader.read(event, top, stream));
                 } else if ("row" == type) {
+                    expectAttributes(event, "index");
                     tagStack.push(event.name);
                     // Deliberately ignore "row"
                     continue;
@@ -177,6 +179,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                         assert (exists top = tagStack.top);
                         throw UnwantedChildException(top, event);
                     }
+                    expectAttributes(event, "row", "column", "kind", "type");
                     tagStack.push(event.name);
                     point = parsePoint(event);
                     // Since tiles have sometimes been *written* without "kind", then

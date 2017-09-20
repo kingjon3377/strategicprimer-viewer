@@ -108,7 +108,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
     shared actual IUnit read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "unit");
-        expectAttributes(element, "name", "owner", "image", "portrait", "kind", "id");
+        expectAttributes(element, "name", "owner", "image", "portrait", "kind", "id", "type");
         requireNonEmptyParameter(element, "name", false);
         requireNonEmptyParameter(element, "owner", false);
         Unit retval = Unit(
