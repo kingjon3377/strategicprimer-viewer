@@ -117,9 +117,9 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
     shared actual void removeSkill(ISkill skill) {
         if (exists local = proxiedSkills.find(skill.equals)) {
             proxiedSkills.remove(local);
-            for (job in proxiedJobs) {
-                job.removeSkill(skill);
-            }
+        }
+        for (job in proxiedJobs) {
+            job.removeSkill(skill);
         }
     }
 }
