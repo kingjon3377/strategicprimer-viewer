@@ -46,6 +46,9 @@ import ceylon.collection {
 import strategicprimer.model.map.fixtures {
     ResourcePile
 }
+import lovelace.util.common {
+    comparingOn
+}
 Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
         IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
     requireTag(element, parent, "town");
@@ -267,7 +270,7 @@ void writeTown(XMLStreamWriter ostream, AbstractTown obj, Integer indent) {
 void writeCommunityStats(XMLStreamWriter ostream, CommunityStats obj, Integer indent) {
     writeTag(ostream, "population", indent, false);
     writeAttributes(ostream, "size"->obj.population);
-    for (skill->level in obj.highestSkillLevels) {
+    for (skill->level in obj.highestSkillLevels.sort(comparingOn(Entry<String, Integer>.key, increasing<String>))) {
         writeTag(ostream, "expertise", indent + 1, true);
         writeAttributes(ostream, "skill"->skill, "level"->level);
     }
