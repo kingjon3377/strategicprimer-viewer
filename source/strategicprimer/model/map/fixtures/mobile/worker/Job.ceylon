@@ -1,6 +1,7 @@
 import ceylon.collection {
     MutableMap,
-    HashMap
+    HashMap,
+    TreeMap
 }
 
 import java.lang {
@@ -13,7 +14,9 @@ import lovelace.util.common {
 "A Job a worker can work at or have training or experience in."
 shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
     "The worker's level in various skills associated with the Job."
-    MutableMap<String, ISkill> skillSet = HashMap<String, ISkill>();
+    // TODO: switch back to HashMap once ceylon-sdk#690 fixed
+//    MutableMap<String, ISkill> skillSet = HashMap<String, ISkill>();
+    MutableMap<String, ISkill> skillSet = TreeMap<String, ISkill>(increasing);
     "The name of the Job."
     shared actual String name;
     "How many levels the worker has in the Job."
