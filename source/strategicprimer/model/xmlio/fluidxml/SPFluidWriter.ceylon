@@ -340,7 +340,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         simpleFixtureWriter(`Giant`, "giant"),
         `SimpleImmortal`->castingWriter<SimpleImmortal>(writeSimpleImmortal),
         `TextFixture`->castingWriter<TextFixture>(writeTextFixture),
-        simpleFixtureWriter(`Implement`, "implement"),
+        `Implement`->castingWriter<Implement>(writeImplement),
         `ResourcePile`->castingWriter<ResourcePile>(writeResource),
         `CacheFixture`->castingWriter<CacheFixture>(writeCache),
         `Meadow`->castingWriter<Meadow>(writeMeadow),

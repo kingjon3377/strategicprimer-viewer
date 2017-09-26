@@ -72,6 +72,9 @@ shared class FortressMemberReportGenerator(
             } else if (is Implement item) {
                 fixtures.remove(item.id);
                 ostream("Equipment: ``item.kind``");
+                if (item.count > 1) {
+                    ostream(" (``item.count``)");
+                }
             } else {
                 throw IllegalArgumentException("Unexpected FortressMember type");
             }
@@ -82,6 +85,7 @@ shared class FortressMemberReportGenerator(
             HeadedMap<Implement, Point>&MutableMap<Implement, Point> equipment =
                     HeadedMapImpl<Implement, Point>("<li>Equipment:",
                         comparing(byIncreasing(Implement.kind),
+                            byDecreasing(Implement.count),
                             byIncreasing(Implement.id)));
             MutableMap<String, HeadedMap<ResourcePile, Point>&
             MutableMap<ResourcePile, Point>> resources =
@@ -170,7 +174,11 @@ shared class FortressMemberReportGenerator(
                 }
             } else if (is Implement item) {
                 fixtures.remove(item.id);
-                return SimpleReportNode("Equipment: ``item.kind``");
+                if (item.count > 1) {
+                    return SimpleReportNode("Equipment: ``item.kind`` (``item.count``)");
+                } else {
+                    return SimpleReportNode("Equipment: ``item.kind``");
+                }
             } else {
                 throw IllegalArgumentException("Unexpected FortressMember type");
             }

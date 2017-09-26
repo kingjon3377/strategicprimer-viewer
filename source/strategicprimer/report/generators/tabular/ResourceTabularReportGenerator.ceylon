@@ -42,7 +42,7 @@ shared class ResourceTabularReportGenerator()
         }
         case (is Implement) {
             kind = "equipment";
-            quantity = "1";
+            quantity = item.count.string;
             specifics = item.kind;
         }
         case (is CacheFixture) {
@@ -71,7 +71,8 @@ shared class ResourceTabularReportGenerator()
         }
         case (is Implement) {
             if (is Implement second) {
-                return first.kind<=>second.kind;
+                return comparing(byIncreasing(Implement.kind),
+                    byDecreasing(Implement.count))(first, second);
             } else if (is ResourcePile second) {
                 return larger;
             } else {
@@ -109,7 +110,7 @@ shared class ResourceTabularReportGenerator()
                 } else {
                     num = 0;
                 }
-                implementCounts[fixture.kind] = num + 1;
+                implementCounts[fixture.kind] = num + fixture.count;
                 fixtures.remove(key);
             } case (is CacheFixture) {
                 // FIXME: combine with ResourcePile case once compiler accepts it

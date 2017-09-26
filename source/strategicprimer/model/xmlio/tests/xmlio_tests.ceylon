@@ -1227,6 +1227,8 @@ void testFortressMemberSerialization() {
     Fortress firstFort = Fortress(PlayerImpl(1, ""), "fortName", 1, TownSize.small);
     firstFort.addMember(Implement("implKind", 2));
     assertSerialization("[[Fortress]] can have an [[Implement]] as a member", firstFort);
+	firstFort.addMember(Implement("implKindTwo", 8));
+	assertSerialization("[[Implement]] can be more than one in one object", firstFort);
     firstFort.addMember(ResourcePile(3, "generalKind", "specificKind",
         Quantity(10, "each")));
     assertSerialization("[[Fortress]] can have a [[ResourcePile]] as a member",

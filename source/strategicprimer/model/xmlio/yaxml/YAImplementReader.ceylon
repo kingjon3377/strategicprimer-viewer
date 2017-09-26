@@ -23,7 +23,7 @@ class YAImplementReader(Warning warning, IDRegistrar idRegistrar)
         requireTag(element, parent, "implement");
         expectAttributes(element, "kind", "id", "image");
         Implement retval = Implement(getParameter(element, "kind"),
-            getOrGenerateID(element));
+            getOrGenerateID(element), getIntegerParameter(element, "count", 1));
         spinUntilEnd(element.name, stream);
         retval.image = getParameter(element, "image", "");
         return retval;
@@ -33,6 +33,9 @@ class YAImplementReader(Warning warning, IDRegistrar idRegistrar)
         writeTag(ostream, "implement", indent);
         writeProperty(ostream, "kind", obj.kind);
         writeProperty(ostream, "id", obj.id);
+        if (obj.count > 1) {
+            writeProperty(ostream, "count", obj.count);
+        }
         writeImageXML(ostream, obj);
         closeLeafTag(ostream);
     }

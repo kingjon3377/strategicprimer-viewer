@@ -27,7 +27,8 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
     ResourcePile,
     Quantity,
-    SPNumber
+    SPNumber,
+    Implement
 }
 import strategicprimer.model.map.fixtures.resources {
     FieldStatus,
@@ -83,6 +84,16 @@ ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream
         retval.created = getIntegerAttribute(element, "created");
     }
     return setImage(retval, element, warner);
+}
+
+Implement readImplement(StartElement element, QName parent, {XMLEvent*} stream,
+        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
+    requireTag(element, parent, "implement");
+    expectAttributes(element, warner, "kind", "id", "count", "image");
+    spinUntilEnd(element.name, stream);
+    return setImage(Implement(getAttribute(element, "kind"),
+        getOrGenerateID(element, warner, idFactory),
+        getIntegerAttribute(element, "count", 1, warner)), element, warner);
 }
 
 CacheFixture readCache(StartElement element, QName parent, {XMLEvent*} stream,
@@ -267,6 +278,14 @@ void writeResource(XMLStreamWriter ostream, ResourcePile obj, Integer indent) {
     writeImage(ostream, obj);
 }
 
+void writeImplement(XMLStreamWriter ostream, Implement obj, Integer indent) {
+    writeTag(ostream, "implement", indent, true);
+    writeAttributes(ostream, "kind"->obj.kind, "id"->obj.id);
+    if (obj.count > 1) {
+        writeAttributes(ostream, "count"->obj.count);
+    }
+    writeImage(ostream, obj);
+}
 void writeCache(XMLStreamWriter ostream, CacheFixture obj, Integer indent) {
     writeTag(ostream, "cache", indent, true);
     writeAttributes(ostream, "kind"->obj.kind, "contents"->obj.contents,

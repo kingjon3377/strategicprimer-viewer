@@ -416,7 +416,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         simpleHasKindReader("fairy", Fairy),
         simpleHasKindReader("giant", Giant),
         "text"->readTextFixture,
-        simpleHasKindReader("implement", Implement),
+        "implement"->readImplement,
         "resource"->readResource,
         "cache"->readCache,
         "grove"->readGrove,
