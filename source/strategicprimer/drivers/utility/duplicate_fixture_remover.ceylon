@@ -35,7 +35,8 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures {
     ResourcePile,
-    Quantity
+    Quantity,
+    Implement
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -106,6 +107,8 @@ void coalesceResources({IFixture*} stream, ICLIHelper cli) {
             HashMap<[String, String, String, Integer], MutableList<ResourcePile>>();
     MutableMap<[String, String, Integer], MutableList<Animal>> animals =
             HashMap<[String, String, Integer], MutableList<Animal>>();
+    MutableMap<String, MutableList<Implement>> implements =
+            HashMap<String, MutableList<Implement>>();
     for (fixture in stream) {
         if (is {IFixture*} fixture) {
             coalesceResources(fixture, cli);
@@ -133,6 +136,15 @@ void coalesceResources({IFixture*} stream, ICLIHelper cli) {
                 list = ArrayList<Animal>();
 //                animals[key] = list; TODO: report backend-error bug
                 animals.put(key, list);
+            }
+            list.add(fixture);
+        } else if (is Implement fixture) {
+            MutableList<Implement> list;
+            if (exists temp = implements[fixture.kind]) {
+                list = temp;
+            } else {
+                list = ArrayList<Implement>();
+                implements[fixture.kind] = list;
             }
             list.add(fixture);
         }
@@ -183,6 +195,35 @@ void coalesceResources({IFixture*} stream, ICLIHelper cli) {
             // Can't add animals to any other kind of stream.
         }
     }
+    for (list in implements.items) {
+        if (list.size <= 1) {
+            continue;
+        }
+        cli.println("The following equipment can be combined into a single group:");
+        for (item in list) {
+            cli.println(item.string);
+        }
+        if (cli.inputBooleanInSeries("Group these equipment items together? ")) {
+            Implement combined = combineEquipment(list);
+            if (is IUnit stream) {
+                for (item in list) {
+                    stream.removeMember(item);
+                }
+                stream.addMember(combined);
+            } else if (is Fortress stream) {
+                for (item in list) {
+                    stream.removeMember(item);
+                }
+                stream.addMember(combined);
+            }
+        }
+    }
+}
+"Combine like [[Implement]]s into a single object. We assume that all Implements are of
+ the same kind."
+Implement combineEquipment({Implement*} list) {
+    assert (exists top = list.first);
+    return Implement(top.kind, top.id, list.map(Implement.count).fold(0)(plus));
 }
 "Combine like Animals into a single Animal population. We assume that all animals have the
  same kind, domestication status, and turn of birth."
