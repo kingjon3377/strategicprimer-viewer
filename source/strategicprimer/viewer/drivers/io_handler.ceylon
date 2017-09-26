@@ -78,7 +78,7 @@ import ceylon.language.meta {
     type
 }
 import strategicprimer.drivers.gui.common {
-	ISPWindow
+    ISPWindow
 }
 
 FileFilter mapExtensionsFilter = FileNameExtensionFilter(

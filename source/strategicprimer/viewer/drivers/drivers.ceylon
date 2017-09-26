@@ -18,7 +18,7 @@ import ceylon.logging {
 import java.awt {
     GraphicsEnvironment,
     GridLayout,
-	Dimension
+    Dimension
 }
 import java.awt.event {
     ActionListener,
@@ -71,18 +71,18 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     strategyExportCLI
 }
 import strategicprimer.drivers.common {
-	IDriverModel,
-	ISPDriver,
-	IDriverUsage,
-	SPOptions,
-	ParamCount,
-	DriverFailedException,
-	IncorrectUsageException,
-	DriverUsage,
-	SPOptionsImpl
+    IDriverModel,
+    ISPDriver,
+    IDriverUsage,
+    SPOptions,
+    ParamCount,
+    DriverFailedException,
+    IncorrectUsageException,
+    DriverUsage,
+    SPOptionsImpl
 }
 import strategicprimer.drivers.common.cli {
-	ICLIHelper
+    ICLIHelper
 }
 import com.apple.eawt {
     AppEvent,
@@ -99,7 +99,7 @@ import strategicprimer.drivers.generators {
     statGeneratingCLI
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame,
+    SPFrame,
     UtilityMenu
 }
 import strategicprimer.drivers.utility {

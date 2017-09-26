@@ -46,7 +46,7 @@ import strategicprimer.model.map.fixtures.mobile {
     Unit
 }
 import strategicprimer.drivers.gui.common {
-	SPDialog
+    SPDialog
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
     NewUnitSource

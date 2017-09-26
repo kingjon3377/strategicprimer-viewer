@@ -23,10 +23,10 @@ import lovelace.util.jvm {
     platform
 }
 import strategicprimer.drivers.gui.common {
-	SPDialog
+    SPDialog
 }
 import java.lang {
-	Types
+    Types
 }
 Frame? asFrame(Component? parent) {
     if (is Frame parent) {

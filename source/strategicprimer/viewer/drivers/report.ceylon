@@ -49,7 +49,7 @@ import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame,
+    SPFrame,
     UtilityMenu
 }
 import ceylon.collection {

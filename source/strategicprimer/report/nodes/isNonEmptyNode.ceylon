@@ -6,9 +6,9 @@ import javax.swing.tree {
 }
 """A node is empty if it is an IReportNode and "the empty node"."""
 shared Boolean isNonEmptyNode(MutableTreeNode node) {
-	if (is IReportNode node) {
-		return !node.emptyNode;
-	} else {
-		return true;
-	}
+    if (is IReportNode node) {
+        return !node.emptyNode;
+    } else {
+        return true;
+    }
 }

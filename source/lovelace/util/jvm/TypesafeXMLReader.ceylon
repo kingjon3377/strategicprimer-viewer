@@ -14,20 +14,20 @@ import javax.xml.stream.events {
  argument. Also contains factory methods so callers don't need to deal *at all* with the
  object this wraps."
 shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent> {
-	XMLEventReader wrapped;
-	shared new (XMLEventReader|JReader reader) {
-		if (is XMLEventReader reader) {
-			wrapped = reader;
-		} else {
-			wrapped = XMLInputFactory.newInstance().createXMLEventReader(reader);
-		}
-	}
-	throws(`class XMLStreamException`, "on malformed XML")
-	shared actual XMLEvent|Finished next() {
-		if (wrapped.hasNext(), exists retval = wrapped.nextEvent()) {
-			return retval;
-		} else {
-			return finished;
-		}
-	}
+    XMLEventReader wrapped;
+    shared new (XMLEventReader|JReader reader) {
+        if (is XMLEventReader reader) {
+            wrapped = reader;
+        } else {
+            wrapped = XMLInputFactory.newInstance().createXMLEventReader(reader);
+        }
+    }
+    throws(`class XMLStreamException`, "on malformed XML")
+    shared actual XMLEvent|Finished next() {
+        if (wrapped.hasNext(), exists retval = wrapped.nextEvent()) {
+            return retval;
+        } else {
+            return finished;
+        }
+    }
 }

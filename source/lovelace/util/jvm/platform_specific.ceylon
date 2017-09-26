@@ -7,7 +7,7 @@ import javax.swing {
     JComponent
 }
 import java.lang {
-	Types
+    Types
 }
 
 "Set a String/String property pair in a way that won't blow up at runtime due to

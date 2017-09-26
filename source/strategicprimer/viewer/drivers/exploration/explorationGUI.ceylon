@@ -31,7 +31,7 @@ import strategicprimer.drivers.exploration.common {
     ExplorationModel
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame
+    SPFrame
 }
 "An object to start the exploration GUI."
 shared object explorationGUI satisfies SimpleDriver {

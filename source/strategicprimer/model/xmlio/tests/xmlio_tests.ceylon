@@ -1,136 +1,136 @@
 import ceylon.math.decimal {
-	decimalNumber
+    decimalNumber
 }
 import ceylon.random {
-	DefaultRandom
+    DefaultRandom
 }
 import ceylon.test {
-	assertEquals,
-	fail,
-	assertTrue,
-	assertFalse,
-	parameters,
-	test,
-	assertNotEquals
+    assertEquals,
+    fail,
+    assertTrue,
+    assertFalse,
+    parameters,
+    test,
+    assertNotEquals
 }
 
 import java.io {
-	StringReader
+    StringReader
 }
 import java.lang {
-	IllegalArgumentException
+    IllegalArgumentException
 }
 import java.nio.file {
-	JPath=Path,
-	JPaths=Paths
+    JPath=Path,
+    JPaths=Paths
 }
 import java.util {
-	NoSuchElementException
+    NoSuchElementException
 }
 
 import javax.xml.namespace {
-	QName
+    QName
 }
 import javax.xml.stream {
-	XMLStreamException
+    XMLStreamException
 }
 
 import lovelace.util.common {
-	todo,
-	assertAny
+    todo,
+    assertAny
 }
 
 import strategicprimer.model.idreg {
-	DuplicateIDException
+    DuplicateIDException
 }
 import strategicprimer.model.map {
-	Point,
-	Player,
-	HasPortrait,
-	River,
-	TileType,
-	IMutableMapNG,
-	IMapNG,
-	HasMutableImage,
-	pointFactory,
-	MutablePlayer,
-	PlayerImpl,
-	SPMapNG,
-	MapDimensionsImpl,
-	PlayerCollection
+    Point,
+    Player,
+    HasPortrait,
+    River,
+    TileType,
+    IMutableMapNG,
+    IMapNG,
+    HasMutableImage,
+    pointFactory,
+    MutablePlayer,
+    PlayerImpl,
+    SPMapNG,
+    MapDimensionsImpl,
+    PlayerCollection
 }
 import strategicprimer.model.map.fixtures {
-	TextFixture,
-	Implement,
-	ResourcePile,
-	Ground,
-	Quantity
+    TextFixture,
+    Implement,
+    ResourcePile,
+    Ground,
+    Quantity
 }
 import strategicprimer.model.map.fixtures.explorable {
-	Portal,
-	AdventureFixture,
-	Battlefield,
-	Cave
+    Portal,
+    AdventureFixture,
+    Battlefield,
+    Cave
 }
 import strategicprimer.model.map.fixtures.mobile {
-	Centaur,
-	SimpleImmortalKind,
-	Unit,
-	Worker,
-	SimpleImmortal,
-	IUnit,
-	Giant,
-	Fairy,
-	Dragon,
-	Animal
+    Centaur,
+    SimpleImmortalKind,
+    Unit,
+    Worker,
+    SimpleImmortal,
+    IUnit,
+    Giant,
+    Fairy,
+    Dragon,
+    Animal
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
-	Job,
-	WorkerStats,
-	Skill,
-	races
+    Job,
+    WorkerStats,
+    Skill,
+    races
 }
 import strategicprimer.model.map.fixtures.resources {
-	FieldStatus,
-	Grove,
-	CacheFixture,
-	StoneKind,
-	Mine,
-	StoneDeposit,
-	Shrub,
-	MineralVein,
-	Meadow
+    FieldStatus,
+    Grove,
+    CacheFixture,
+    StoneKind,
+    Mine,
+    StoneDeposit,
+    Shrub,
+    MineralVein,
+    Meadow
 }
 import strategicprimer.model.map.fixtures.terrain {
-	Sandbar,
-	Oasis,
-	Hill,
-	Forest
+    Sandbar,
+    Oasis,
+    Hill,
+    Forest
 }
 import strategicprimer.model.map.fixtures.towns {
-	TownStatus,
-	TownSize,
-	Village,
-	Town,
-	Fortification,
-	City,
-	Fortress,
-	CommunityStats
+    TownStatus,
+    TownSize,
+    Village,
+    Town,
+    Fortification,
+    City,
+    Fortress,
+    CommunityStats
 }
 import strategicprimer.model.xmlio {
-	ISPReader,
-	warningLevels,
-	Warning,
-	IMapReader,
-	spNamespace,
-	testReaderFactory
+    ISPReader,
+    warningLevels,
+    Warning,
+    IMapReader,
+    spNamespace,
+    testReaderFactory
 }
 import strategicprimer.model.xmlio.exceptions {
-	UnsupportedTagException,
-	UnwantedChildException,
-	MissingPropertyException,
-	MissingChildException,
-	DeprecatedPropertyException
+    UnsupportedTagException,
+    UnwantedChildException,
+    MissingPropertyException,
+    MissingChildException,
+    DeprecatedPropertyException
 }
 
 JPath fakeFilename = JPaths.get("");
@@ -1227,8 +1227,8 @@ void testFortressMemberSerialization() {
     Fortress firstFort = Fortress(PlayerImpl(1, ""), "fortName", 1, TownSize.small);
     firstFort.addMember(Implement("implKind", 2));
     assertSerialization("[[Fortress]] can have an [[Implement]] as a member", firstFort);
-	firstFort.addMember(Implement("implKindTwo", 8));
-	assertSerialization("[[Implement]] can be more than one in one object", firstFort);
+    firstFort.addMember(Implement("implKindTwo", 8));
+    assertSerialization("[[Implement]] can be more than one in one object", firstFort);
     firstFort.addMember(ResourcePile(3, "generalKind", "specificKind",
         Quantity(10, "each")));
     assertSerialization("[[Fortress]] can have a [[ResourcePile]] as a member",

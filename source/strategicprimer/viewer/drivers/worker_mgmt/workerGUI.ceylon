@@ -34,7 +34,7 @@ import strategicprimer.drivers.worker.common {
     IWorkerModel
 }
 import java.awt.event {
-	ActionEvent
+    ActionEvent
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

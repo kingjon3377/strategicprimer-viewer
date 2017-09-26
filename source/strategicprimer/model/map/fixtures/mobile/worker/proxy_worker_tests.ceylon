@@ -171,10 +171,10 @@ void testProxyUnitProxy() {
 "Test that the copy() method of Worker works properly."
 test
 void testWorkerCopy() {
-		IFixture worker = Worker("one", "human", 1,
+        IFixture worker = Worker("one", "human", 1,
             Job("jobOne", 1, Skill("skillOne", 0, 5),
                 Skill("skillTwo", 2, 6)));
-		assertEquals(worker.copy(false), worker, "Worker copy should still be equal");
+        assertEquals(worker.copy(false), worker, "Worker copy should still be equal");
 }
 
 test

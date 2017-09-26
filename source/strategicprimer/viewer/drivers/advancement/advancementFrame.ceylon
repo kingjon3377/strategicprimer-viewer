@@ -19,7 +19,7 @@ import lovelace.util.jvm {
 
 import strategicprimer.model.idreg {
     createIDFactory,
-	IDRegistrar
+    IDRegistrar
 }
 import strategicprimer.model.map {
     Player,
@@ -51,7 +51,7 @@ import strategicprimer.model.xmlio {
     readMap
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame
+    SPFrame
 }
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,

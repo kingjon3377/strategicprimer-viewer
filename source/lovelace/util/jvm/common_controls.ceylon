@@ -39,7 +39,7 @@ import java.lang {
     JDouble=Double,
     JInteger=Integer,
     JString=String,
-	Types
+    Types
 }
 "A factory method to construct a button and add listeners to it in one step."
 shared JButton listenedButton("The text to put on the button" String text,

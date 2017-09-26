@@ -33,7 +33,7 @@ void advanceWorkersInSkill(String jobName, String skillName, ICLIHelper cli,
                         "misc-replacement")) {
                 MutableList<String> gains = ArrayList<String>();
                 for (i in 0:skill.level) {
-		    // TODO: Choose from existing instead of always getting a new string
+            // TODO: Choose from existing instead of always getting a new string
                     String replacementName = cli.inputString("Skill to gain level in: ");
                     ISkill replacement = Skill(replacementName, 1, 0);
                     job.removeSkill(skill);

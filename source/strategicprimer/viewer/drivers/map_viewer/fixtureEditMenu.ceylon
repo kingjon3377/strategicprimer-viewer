@@ -34,7 +34,7 @@ import strategicprimer.model.idreg {
     IDRegistrar
 }
 import java.lang {
-	Types
+    Types
 }
 "A pop-up menu to let the user edit a fixture."
 shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,

@@ -42,7 +42,7 @@ import ceylon.math.float {
     ceiling
 }
 import java.lang {
-	Types
+    Types
 }
 "A cell renderer for tile-details GUIs."
 class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {

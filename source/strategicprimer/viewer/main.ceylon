@@ -1,4 +1,4 @@
 import strategicprimer.viewer.drivers {
-	main=run
+    main=run
 }
 shared void run() => main();

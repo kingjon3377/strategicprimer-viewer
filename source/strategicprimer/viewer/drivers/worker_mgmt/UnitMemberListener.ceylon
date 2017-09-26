@@ -11,7 +11,7 @@ import strategicprimer.model.map.fixtures {
  selected."
 todo("combine with similar interfaces?")
 shared interface UnitMemberListener satisfies EventListener {
-	"Handle a change in the selected member."
-	shared formal void memberSelected(UnitMember? previousSelection,
-			UnitMember? selected);
+    "Handle a change in the selected member."
+    shared formal void memberSelected(UnitMember? previousSelection,
+            UnitMember? selected);
 }

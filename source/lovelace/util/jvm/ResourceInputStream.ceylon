@@ -11,8 +11,8 @@ import java.io {
 import java.lang {
     ByteArray,
     JClass=Class,
-	Types,
-	overloaded
+    Types,
+    overloaded
 }
 
 import lovelace.util.common {
@@ -64,7 +64,7 @@ shared class ResourceInputStream(String filename,
                             "/``mod.name.replace(".", "/")``/``filename``")) {
                         return temp;
                     } else if (exists temp =
-                        		Types.classForInstance(mod).getResourceAsStream(
+                                Types.classForInstance(mod).getResourceAsStream(
                             "``mod.name.replace(".", "/")``/``filename``")) {
                         return temp;
                     }

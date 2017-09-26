@@ -14,7 +14,7 @@ import java.lang {
     JBoolean=Boolean,
     JClass=Class,
     IllegalArgumentException,
-	Types
+    Types
 }
 
 import javax.swing.table {

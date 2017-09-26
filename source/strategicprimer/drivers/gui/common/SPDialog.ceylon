@@ -19,9 +19,9 @@ import lovelace.util.jvm {
 }
 "A superclass to perform setup common to dialogs."
 shared class SPDialog(Frame? parentFrame, String title)
-		extends JDialog(parentFrame, title) {
-	defaultCloseOperation = WindowConstants.disposeOnClose;
-	createHotKey(rootPane, "close", (ActionEvent event) => dispose(),
-		JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkW,
-			platform.shortcutMask), KeyStroke.getKeyStroke(KeyEvent.vkEscape, 0));
+        extends JDialog(parentFrame, title) {
+    defaultCloseOperation = WindowConstants.disposeOnClose;
+    createHotKey(rootPane, "close", (ActionEvent event) => dispose(),
+        JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkW,
+            platform.shortcutMask), KeyStroke.getKeyStroke(KeyEvent.vkEscape, 0));
 }

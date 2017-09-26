@@ -79,19 +79,19 @@ object expansionDriver satisfies SimpleCLIDriver {
                         .map(HasOwner.owner).any(currentPlayer.equals);
                 }
                 void safeAdd(Point point, TileFixture fixture) {
-		    if (map.fixtures.get(point).any(fixture.equals)) {
-		        return;
+            if (map.fixtures.get(point).any(fixture.equals)) {
+                return;
                     } else if (is HasOwner fixture, !fixture is ITownFixture) {
-			value zeroed = fixture.copy(fixture.owner != currentPlayer);
-			if (!map.fixtures.get(point).any(zeroed.equals)) {
+            value zeroed = fixture.copy(fixture.owner != currentPlayer);
+            if (!map.fixtures.get(point).any(zeroed.equals)) {
                             map.addFixture(point, fixture.copy(
                                 fixture.owner != currentPlayer));
-			}
+            }
                     } else {
-			value zeroed = fixture.copy(true);
-			if (!map.fixtures.get(point).any(zeroed.equals)) {
+            value zeroed = fixture.copy(true);
+            if (!map.fixtures.get(point).any(zeroed.equals)) {
                             map.addFixture(point, fixture.copy(true));
-			}
+            }
                     }
                 }
                 object mock satisfies HasOwner {

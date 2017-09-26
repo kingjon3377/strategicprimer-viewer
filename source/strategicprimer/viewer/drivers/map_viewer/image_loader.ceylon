@@ -29,7 +29,7 @@ import strategicprimer.viewer.drivers {
     SPMenu
 }
 import java.lang {
-	Types
+    Types
 }
 "The size of fixture icons."
 Integer fixtureIconSize = 28;

@@ -66,12 +66,12 @@ import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 import ceylon.collection {
-	LinkedList,
-	Stack,
-	HashMap,
-	MutableMap,
-	MutableList,
-	ArrayList
+    LinkedList,
+    Stack,
+    HashMap,
+    MutableMap,
+    MutableList,
+    ArrayList
 }
 import java.lang {
     synchronized
@@ -114,12 +114,12 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
                  value split = line.split('\t'.equals, true, false);
                  value quantity = Integer.parse(split.first);
                  if (is Integer quantity) {
-	                 assert (exists units = split.rest.first, exists kind = split.rest.rest.first,
-						exists resource = split.rest.rest.rest.first);
-	                 inner.add([Quantity(quantity, units), kind, resource]);
-	             } else {
-	                 throw quantity;
-	             }
+                     assert (exists units = split.rest.first, exists kind = split.rest.rest.first,
+                        exists resource = split.rest.rest.rest.first);
+                     inner.add([Quantity(quantity, units), kind, resource]);
+                 } else {
+                     throw quantity;
+                 }
              }
              retval.put(terrain, {*inner});
         }
@@ -448,9 +448,9 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
                         map.mountainous.get(location), map.fixtures.get(location), map.dimensions),
                 Quantity(2.power(level - 1), (level == 1) then "unit" else "units")));
             } else {
-	            retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
-	                "product of ``skill``", Quantity(1, "unit")));
-	        }
+                retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
+                    "product of ``skill``", Quantity(1, "unit")));
+            }
         }
         assert (exists consumptionTable = consumption.wrapped[consumptionTableName]);
         for ([quantity, kind, resource] in consumptionTable) {
@@ -507,23 +507,23 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
                 cli.println("Next town is ``town.shortDescription``, at ``location``. ");
                 CommunityStats stats;
 //                // We effectively duplicate inputBooleanInSeries() here to allow "quit."
-				Boolean? resp = cli.inputBooleanInSeries<Null>("Enter stats rather than generating them?",
-					"enter stats", (str) {
-						if ("quit" == str) {
-							return null;
-						} else {
-							return false;
-						}
-					});
-				if (exists resp) {
-	                if (resp) {
-	                    stats = enterStats(cli, idf, model.map, location, town);
-	                } else {
-	                    stats = generateStats(idf, location, town, model.map);
-	                }
-	            } else {
-	                break;
-	            }
+                Boolean? resp = cli.inputBooleanInSeries<Null>("Enter stats rather than generating them?",
+                    "enter stats", (str) {
+                        if ("quit" == str) {
+                            return null;
+                        } else {
+                            return false;
+                        }
+                    });
+                if (exists resp) {
+                    if (resp) {
+                        stats = enterStats(cli, idf, model.map, location, town);
+                    } else {
+                        stats = generateStats(idf, location, town, model.map);
+                    }
+                } else {
+                    break;
+                }
                 assignStatsToTown(town, stats);
                 if (is IMultiMapModel model) {
                     for ([subMap, file] in model.subordinateMaps) {

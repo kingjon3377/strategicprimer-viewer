@@ -65,7 +65,7 @@ import strategicprimer.model.map.fixtures {
     ResourcePile
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame,
+    SPFrame,
     UtilityMenu
 }
 import ceylon.logging {

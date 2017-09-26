@@ -14,7 +14,7 @@ import java.io {
 import java.lang {
     CharArray,
     CharSequence,
-	overloaded
+    overloaded
 }
 import java.nio.file {
     NoSuchFileException,
@@ -49,7 +49,7 @@ import strategicprimer.model.xmlio {
 }
 import strategicprimer.drivers.gui.common {
     UtilityMenu,
-	SPFrame
+    SPFrame
 }
 "A window to show the result of running subset tests."
 class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) {

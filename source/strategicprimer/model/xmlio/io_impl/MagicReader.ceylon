@@ -9,7 +9,7 @@ import lovelace.util.common {
 }
 import java.lang {
     CharArray,
-	overloaded
+    overloaded
 }
 """A Reader that delegates to FileReader unless the filename begins "string:<", in which
    case the "string:" prefix is stripped and we delegate to a StringReader."""

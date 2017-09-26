@@ -24,7 +24,7 @@ import javax.xml.stream.events {
 
 import lovelace.util.common {
     todo,
-	IteratorWrapper
+    IteratorWrapper
 }
 
 import strategicprimer.model.idreg {
@@ -44,10 +44,10 @@ import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException,
     MissingPropertyException,
     DeprecatedPropertyException,
-	UnsupportedPropertyException
+    UnsupportedPropertyException
 }
 import lovelace.util.jvm {
-	ConvertingIterable
+    ConvertingIterable
 }
 "A parser for numeric data, so integers can contain commas."
 NumberFormat numParser = NumberFormat.integerInstance;

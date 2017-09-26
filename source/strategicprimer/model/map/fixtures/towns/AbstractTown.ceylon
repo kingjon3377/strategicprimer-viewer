@@ -6,7 +6,7 @@ import strategicprimer.model.map {
     Player,
     HasMutableImage,
     IFixture,
-	Subsettable
+    Subsettable
 }
 import strategicprimer.model.map.fixtures {
     IEvent
@@ -42,10 +42,10 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc)
             report("Town name differs");
             return false;
         } else if (kind != other.kind) {
-            report("In ``name``, ID #``id``:		Town kind differs");
+            report("In ``name``, ID #``id``:        Town kind differs");
             return false;
         }
-        void localReport(String str) => report("In ``kind`` ``name``, ID #``id``:	``str``");
+        void localReport(String str) => report("In ``kind`` ``name``, ID #``id``:    ``str``");
         if (status != other.status) {
             localReport("Town status differs");
             return false;

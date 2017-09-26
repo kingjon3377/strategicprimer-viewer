@@ -56,7 +56,7 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
         }
     }
     shared actual Boolean equals(Object that) =>
-		    (super of Map<Integer, Item>).equals(that);
+            (super of Map<Integer, Item>).equals(that);
     shared actual Integer hash {
         variable value hash = 1;
         hash = 31*hash + backing.hash;

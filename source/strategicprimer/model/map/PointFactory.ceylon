@@ -10,9 +10,9 @@ import lovelace.util.common {
 "The cache of Points. I use two levels of Maps rather than using Tuples as keys because I
  have a hunch this is faster."
 todo("Measure that",
-		"The Java version used ConcurrentHashMap, while this isn't thread-safe")
+        "The Java version used ConcurrentHashMap, while this isn't thread-safe")
 MutableMap<Integer, MutableMap<Integer, Point>> pointCache =
-		HashMap<Integer, MutableMap<Integer, Point>>();
+        HashMap<Integer, MutableMap<Integer, Point>>();
 "Clear the Point cache. Should only be called by performance-testing code."
 shared void clearPointCache() => pointCache.clear();
 "A wrapper around the [[Point]] constructor that caches Points.
@@ -26,38 +26,38 @@ shared void clearPointCache() => pointCache.clear();
  decided to leave it."
 suppressWarnings("doclink")
 shared Point pointFactory(Integer row, Integer column, Boolean useCache = true) {
-	if (useCache) {
-		if (exists inner = pointCache[row]) {
-			if (exists retval = inner[column]) {
-				return retval;
-			} else {
-				Point retval = PointImpl(row, column);
-				inner[column] = retval;
-				return retval;
-			}
-		} else {
-			Point retval = PointImpl(row, column);
-			MutableMap<Integer, Point> inner = HashMap { column->retval };
-			pointCache[row] = inner;
-			return retval;
-		}
-	} else {
-		return PointImpl(row, column);
-	}
+    if (useCache) {
+        if (exists inner = pointCache[row]) {
+            if (exists retval = inner[column]) {
+                return retval;
+            } else {
+                Point retval = PointImpl(row, column);
+                inner[column] = retval;
+                return retval;
+            }
+        } else {
+            Point retval = PointImpl(row, column);
+            MutableMap<Integer, Point> inner = HashMap { column->retval };
+            pointCache[row] = inner;
+            return retval;
+        }
+    } else {
+        return PointImpl(row, column);
+    }
 }
 "A structure encapsulating two coordinates."
 class PointImpl(row, column) satisfies Point {
-	shared actual Integer row;
-	shared actual Integer column;
-	shared actual Boolean equals(Object obj) {
-		if (is Point obj) {
-			return obj.row == row && obj.column == column;
-		} else {
-			return false;
-		}
-	}
-	shared actual Integer hash => row.leftLogicalShift(9) + column;
-	shared actual String string => "(``row``, ``column``)";
+    shared actual Integer row;
+    shared actual Integer column;
+    shared actual Boolean equals(Object obj) {
+        if (is Point obj) {
+            return obj.row == row && obj.column == column;
+        } else {
+            return false;
+        }
+    }
+    shared actual Integer hash => row.leftLogicalShift(9) + column;
+    shared actual String string => "(``row``, ``column``)";
 }
 """The standard "invalid point.""""
 todo("Replace with [[null]]?")

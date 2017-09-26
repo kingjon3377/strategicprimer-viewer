@@ -54,7 +54,7 @@ import ceylon.random {
 Logger log = logger(`module strategicprimer.drivers.worker.common`);
 "A model to underlie the advancement GUI, etc."
 shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
-	variable Player? currentPlayerImpl = null;
+    variable Player? currentPlayerImpl = null;
     shared new (IMutableMapNG map, JPath? file)
             extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)

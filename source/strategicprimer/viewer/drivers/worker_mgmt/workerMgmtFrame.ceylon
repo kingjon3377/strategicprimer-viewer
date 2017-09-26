@@ -64,7 +64,7 @@ import strategicprimer.model {
 }
 import strategicprimer.model.idreg {
     createIDFactory,
-	IDRegistrar
+    IDRegistrar
 }
 import strategicprimer.model.map {
     Point,
@@ -105,8 +105,8 @@ import lovelace.util.common {
     anythingEqual
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame,
-	SPDialog
+    SPFrame,
+    SPDialog
 }
 "A window to let the player manage units."
 SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,

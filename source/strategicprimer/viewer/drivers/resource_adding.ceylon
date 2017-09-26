@@ -92,7 +92,7 @@ import strategicprimer.model.xmlio {
     readMap
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame
+    SPFrame
 }
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {

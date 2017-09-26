@@ -52,7 +52,7 @@ import strategicprimer.model.xmlio.exceptions {
     UnsupportedPropertyException
 }
 import lovelace.util.jvm {
-	ConvertingIterable
+    ConvertingIterable
 }
 NumberFormat numParser = NumberFormat.integerInstance;
 
@@ -446,10 +446,10 @@ Anything(XMLStreamWriter, Object, Integer) castingWriter<T>(
 Boolean isSupportedNamespace(QName name) => {spNamespace, XMLConstants.nullNsUri}.contains(name.namespaceURI);
 "Warn if any unsupported attribute is on this tag."
 shared void expectAttributes(StartElement element, Warning warner, String* attributes) {
-	for (attribute in ConvertingIterable<Attribute>(element.attributes).map(Attribute.name)
-			.filter(isSupportedNamespace)) {
-		if (!attributes.contains(attribute.localPart)) {
-			warner.handle(UnsupportedPropertyException(element, attribute.localPart));
-		}
-	}
+    for (attribute in ConvertingIterable<Attribute>(element.attributes).map(Attribute.name)
+            .filter(isSupportedNamespace)) {
+        if (!attributes.contains(attribute.localPart)) {
+            warner.handle(UnsupportedPropertyException(element, attribute.localPart));
+        }
+    }
 }

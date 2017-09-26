@@ -13,6 +13,6 @@ import strategicprimer.model.map {
  implementations of this will essentially delegate [[isSubset]] to [[equals]]."
 todo("Change that now we have reified generics?", "Members?")
 shared interface UnitMember satisfies IFixture&Subsettable<IFixture> {
-	"Specialization."
-	shared actual formal UnitMember copy(Boolean zero);
+    "Specialization."
+    shared actual formal UnitMember copy(Boolean zero);
 }

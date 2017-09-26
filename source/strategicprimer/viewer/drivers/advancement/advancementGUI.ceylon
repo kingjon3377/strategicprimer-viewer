@@ -33,7 +33,7 @@ import strategicprimer.viewer.drivers {
     FileChooser
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame
+    SPFrame
 }
 "The worker-advancement GUI driver."
 shared object advancementGUI satisfies SimpleDriver {

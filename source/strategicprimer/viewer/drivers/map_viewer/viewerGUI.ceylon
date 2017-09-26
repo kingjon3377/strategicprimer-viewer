@@ -37,7 +37,7 @@ import strategicprimer.viewer.drivers {
     FileChooser
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame
+    SPFrame
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

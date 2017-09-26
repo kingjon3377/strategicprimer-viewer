@@ -92,7 +92,7 @@ import strategicprimer.viewer.drivers {
     SPMenu
 }
 import strategicprimer.drivers.gui.common {
-	SPFrame
+    SPFrame
 }
 import strategicprimer.viewer.drivers.map_viewer {
     SelectionChangeSupport,
@@ -131,8 +131,8 @@ import java.nio.file {
     JPath=Path
 }
 import strategicprimer.model.idreg {
-	IDRegistrar,
-	createIDFactory
+    IDRegistrar,
+    createIDFactory
 }
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,

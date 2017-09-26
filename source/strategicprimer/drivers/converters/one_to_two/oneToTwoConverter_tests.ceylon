@@ -488,7 +488,7 @@ shared void testThirdOneToTwoConversion() {
     initialize(converted, pointFactory(5, 3), TileType.plains, groundThree(),
         orchard("fruit3"));
     initialize(converted, pointFactory(5, 4), TileType.tundra, groundFour(),
-    		forest("ttree4"));
+            forest("ttree4"));
     initialize(converted, pointFactory(5, 5), TileType.tundra, groundFour(),
         orchard("fruit4"));
     initialize(converted, pointFactory(5, 7), TileType.tundra, groundFour(), 

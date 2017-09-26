@@ -53,7 +53,7 @@ import strategicprimer.drivers.common {
     SelectionChangeListener
 }
 import strategicprimer.model.idreg {
-	IDRegistrar
+    IDRegistrar
 }
 "A visual list-based representation of the contents of a tile."
 shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
