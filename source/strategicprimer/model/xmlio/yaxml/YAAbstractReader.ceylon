@@ -23,8 +23,7 @@ import javax.xml.stream.events {
 }
 
 import lovelace.util.common {
-    todo,
-    IteratorWrapper
+    todo
 }
 
 import strategicprimer.model.idreg {

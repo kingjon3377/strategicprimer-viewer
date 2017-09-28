@@ -41,7 +41,6 @@ import strategicprimer.model.xmlio {
 }
 import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException,
-    UnsupportedPropertyException,
     MissingPropertyException
 }
 Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,

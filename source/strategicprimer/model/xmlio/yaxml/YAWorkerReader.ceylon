@@ -28,7 +28,6 @@ import strategicprimer.model.xmlio {
     Warning
 }
 import strategicprimer.model.xmlio.exceptions {
-    UnsupportedPropertyException,
     UnwantedChildException
 }
 "A reader for workers."

@@ -60,8 +60,7 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
     FortressMember,
     UnitMember,
-    TextFixture,
-    Implement
+    TextFixture
 }
 import strategicprimer.model.map.fixtures.mobile {
     SimpleImmortalKind,

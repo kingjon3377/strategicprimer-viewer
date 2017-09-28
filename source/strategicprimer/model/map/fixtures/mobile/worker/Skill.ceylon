@@ -1,7 +1,3 @@
-import lovelace.util.common {
-    todo
-}
-
 "A skill a worker has experience or training in."
 shared class Skill(name, skillLevel, time) satisfies ISkill {
     "The name of the skill."

@@ -1,6 +1,5 @@
 import ceylon.collection {
     MutableMap,
-    HashMap,
     TreeMap
 }
 
