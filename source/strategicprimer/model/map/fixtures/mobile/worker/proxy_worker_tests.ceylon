@@ -183,10 +183,9 @@ shared void testRemoval() {
     ISkill skillOne = Skill("skillOne", 0, 10);
     ISkill skillTwo = Skill("skillOne", 0, 10);
     IJob jobOne = Job("jobOne", 0, skillOne, Skill("skillTwo", 2, 5));
-    IJob jobTwo = Job("jobOne", 0, skillOne, Skill("skillThree", 1, 8), Skill("skillFour", 5, 0));
+    IJob jobTwo = Job("jobOne", 0, skillTwo, Skill("skillThree", 1, 8), Skill("skillFour", 5, 0));
     assertTrue(jobTwo.map(ISkill.name).any("skillFour".equals), "Extra skill is present at first");
     jobTwo.removeSkill(Skill("skillFour", 5, 0));
-    process.writeLine({*jobTwo}.string);
     assertFalse(jobTwo.filter(nonemptySkill).map(ISkill.name).any("skillFour".equals), "Extra skill isn't present after being removed");
     IWorker workerOne = Worker("workerName", "workerRace", 1, jobOne);
     IWorker workerTwo = Worker("workerName", "workerRace", 1, jobTwo);
