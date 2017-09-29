@@ -163,7 +163,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     void parseTileChild(IMutableMapNG map, StartElement parent,
             {XMLEvent*} stream, IMutablePlayerCollection players, Warning warner,
             IDRegistrar idFactory, Point currentTile, StartElement element) {
-        String type = element.name.localPart;
+        String type = element.name.localPart.lowercased;
         if (isFutureTag(element, warner)) {
             return;
         } else if ("tile" == type) {

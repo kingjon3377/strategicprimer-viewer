@@ -70,8 +70,8 @@ void requireTag(
             .contains(element.name.namespaceURI)) {
         throw UnwantedChildException(parent, element);
     }
-    String localName = element.name.localPart;
-    if (!tags.contains(localName)) {
+    String localName = element.name.localPart.lowercased;
+    if (!tags.map(String.lowercased).contains(localName)) {
         throw UnwantedChildException(parent, element);
     }
 }
