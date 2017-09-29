@@ -63,7 +63,7 @@ abstract class YAAbstractReader<Element>
         }
         String localName = element.name.localPart;
         Integer line = element.location.lineNumber;
-        if (!tags.contains(localName)) {
+        if (!tags.map(String.lowercased).contains(localName.lowercased)) {
             // While we'd like tests to exercise this, we're always careful to only call
             // readers when we know they support the tag ...
             throw UnwantedChildException(parent, element, IllegalArgumentException(
