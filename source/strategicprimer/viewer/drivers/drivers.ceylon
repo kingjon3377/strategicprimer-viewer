@@ -108,6 +108,9 @@ import strategicprimer.drivers.utility {
     mapCheckerGUI,
     duplicateFixtureRemoverCLI
 }
+import strategicprimer.model.xmlio {
+    SPFormatException
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."
@@ -320,7 +323,13 @@ shared void run() {
                             cli.println(usageMessage(except.correctUsage,
                                 options.getArgument("--verbose") == "true"));
                         } catch (DriverFailedException except) {
-                            log.error("Driver failed:", except);
+                            if (is SPFormatException cause = except.cause) {
+                                log.error(cause.message);
+                            } else if (exists cause = except.cause) {
+                                log.error("Driver failed:", cause);
+                            } else {
+                                log.error("Driver failed:", except);
+                            }
                         }
                     });
                 } else {
