@@ -134,7 +134,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         while (exists table = firstTables.pop()) {
             assert (exists tableContents = readFileContents(
                 `module strategicprimer.drivers.generators`, "tables/``table``"));
-            value loadedTable = loadTable(tableContents.lines);
+            value loadedTable = loadTable(tableContents.lines, "tables/``table``");
             retval.loadTable(table, loadedTable);
             for (reference in loadedTable.allEvents) {
                 if (reference.contains('#')) {
@@ -151,7 +151,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         while (exists table = secondTables.pop()) {
             assert (exists tableContents = readFileContents(
                 `module strategicprimer.drivers.generators`, "tables/``table``"));
-            value loadedTable = loadTable(tableContents.lines);
+            value loadedTable = loadTable(tableContents.lines, "tables/``table``");
             retval.loadTable(table, loadedTable);
             for (reference in loadedTable.allEvents) {
                 if (reference.contains('#')) {

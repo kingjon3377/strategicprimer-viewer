@@ -39,17 +39,17 @@ import strategicprimer.model.map.fixtures.terrain {
 Logger log = logger(`module strategicprimer.drivers.exploration.old`);
 // Made shared so the oneToTwoConverter tests can get tables as classpath resources and
 // load them from there. Also used by the 'town contents' generator.
-shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource argument) {
+shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource argument, String name) {
     if (is File argument) {
         try (reader = argument.Reader()) {
-            return loadTable(reader.readLine);
+            return loadTable(reader.readLine, argument.name);
         }
     } else if (is Resource argument) {
         String text = argument.textContent();
         {String+} split = text.split('\n'.equals);
-        return loadTable(ArrayList { *split }.accept);
+        return loadTable(ArrayList { *split }.accept, argument.name);
     } else if (is {String*} argument) {
-        return loadTable(argument.iterator().next);
+        return loadTable(argument.iterator().next, name);
     } else {
         if (is String line = argument()) {
             switch (line[0])
@@ -145,9 +145,9 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                 }
                 return TerrainTable(*list);
             }
-            else { throw IllegalArgumentException("unknown table type"); }
+            else { throw IllegalArgumentException("unknown table type '``line`` in file ``name``"); }
         } else {
-            throw IOException("File doesn't specify a table type");
+            throw IOException("File ``name`` doesn't specify a table type");
         }
     }
 }
@@ -159,7 +159,12 @@ shared void loadAllTables(Directory path, ExplorationRunner runner) {
         if (child.hidden || child.name.startsWith(".")) {
             log.info("``child.name`` looks like a hidden file, skipping ...");
         } else {
-            runner.loadTable(child.name, loadTable(child));
+            try {
+                runner.loadTable(child.name, loadTable(child, child.name));
+            } catch (IllegalArgumentException except) {
+                log.error("Error loading ``child.name``, continuing ...");
+                log.debug("Details of that error:", except);
+            }
         }
     }
 }
@@ -167,7 +172,7 @@ test
 void testLoadQuadrantTable() {
     Queue<String> data = LinkedList<String>({"quadrant", "2", "one", "two", "three",
         "four", "five", "six"});
-    EncounterTable result = loadTable(data.accept);
+    EncounterTable result = loadTable(data.accept, "testLoadQuadrantTable().result");
     Point point = pointFactory(0, 0);
     MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
     assertEquals("one",result.generateEvent(point, TileType.tundra, false,
@@ -180,7 +185,7 @@ void testLoadQuadrantTable() {
     assertEquals(result.generateEvent(pointTwo, TileType.tundra, false,
         {}, MapDimensionsImpl(35, 32, 2)), "six",
         "quadrant table can use alternate dimensions");
-    assertThatException(() => loadTable(LinkedList{"quadrant"}.accept));
+    assertThatException(() => loadTable(LinkedList{"quadrant"}.accept, "testLoadQuadrantTable().illegal"));
 }
 suppressWarnings("expressionTypeNothing")
 object mockDimensions satisfies MapDimensions {
@@ -195,14 +200,14 @@ object mockPoint satisfies Point {
 }
 test
 void testLoadRandomTable() {
-    EncounterTable result = loadTable(LinkedList{"random", "0 one", "99 two"}.accept);
+    EncounterTable result = loadTable(LinkedList{"random", "0 one", "99 two"}.accept, "testLoadRandomTable()");
     assertEquals(result.generateEvent(mockPoint, TileType.tundra, false, {},
         mockDimensions), "one", "loading random table");
 }
 test
 void testLoadTerrainTable() {
     EncounterTable result = loadTable(LinkedList{"terrain", "tundra one",
-        "plains two", "ocean three", "mountain four", "temperate_forest five"}.accept);
+        "plains two", "ocean three", "mountain four", "temperate_forest five"}.accept, "testLoadTerrainTable()");
     assertEquals(result.generateEvent(mockPoint, TileType.tundra, false,
         {}, mockDimensions), "one",
         "loading terrain table: tundra");
@@ -220,15 +225,15 @@ void testLoadTerrainTable() {
 }
 test
 void testLoadConstantTable() {
-    EncounterTable result = loadTable(LinkedList{"constant", "one"}.accept);
+    EncounterTable result = loadTable(LinkedList{"constant", "one"}.accept, "testLoadConstantTable()");
     assertEquals(result.generateEvent(mockPoint, TileType.plains, false,
         {}, mockDimensions), "one");
 }
 test
 void testTableLoadingInvalidInput() {
     // no data
-    assertThatException(() => loadTable(LinkedList{""}.accept));
+    assertThatException(() => loadTable(LinkedList{""}.accept, "testTableLoadingInvalidInput().noData"));
     // invalid header
     assertThatException(() => loadTable(LinkedList{"2", "invalidData",
-        "invalidData"}.accept));
+        "invalidData"}.accept, "testTableLoadingInvalidInput().invalidHeader"));
 }
