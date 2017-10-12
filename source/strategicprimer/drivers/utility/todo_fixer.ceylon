@@ -2,7 +2,9 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.model.map.fixtures.towns {
-    Village
+    Village,
+	ITownFixture,
+	CommunityStats
 }
 import ceylon.random {
     Random,
@@ -36,6 +38,20 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures.terrain {
     Forest
+}
+import strategicprimer.model.map.fixtures {
+	ResourcePile
+}
+import strategicprimer.drivers.exploration.old {
+	ExplorationRunner,
+	loadAllTables
+}
+import ceylon.file {
+	parsePath,
+	Directory
+}
+import java.lang {
+	IllegalStateException
 }
 abstract class SimpleTerrain() of unforested | forested | ocean { }
 "Plains, desert, and mountains"
@@ -113,6 +129,34 @@ object todoFixerCLI satisfies SimpleCLIDriver {
                 }
             }
         }
+        {[Point, CommunityStats]*} brokenTownContents = map.locations
+        //            .flatMap((loc) => [loc, map.fixtures[loc]]).narrow<ITownFixture>()
+                .flatMap((loc) => map.fixtures.get(loc).narrow<ITownFixture>().map((item) => [loc, item]))
+                .map(([loc, town]) => [loc, town.population]).narrow<[Point, CommunityStats]>()
+                .filter(([loc, pop]) => pop.yearlyProduction.map(ResourcePile.contents)
+                    .any((str) => str.contains('#')));
+        if (!brokenTownContents.empty) {
+            value runner = ExplorationRunner();
+            if (is Directory directory = parsePath("tables").resource) {
+                loadAllTables(directory, runner);
+            } else {
+                throw IllegalStateException("TODO fixer requires a tables directory");
+            }
+	        for ([loc, population] in brokenTownContents) {
+	            value production = population.yearlyProduction;
+	            for (resource in production.sequence()) {
+	                if (resource.contents.contains('#')) {
+	                    assert (exists table = resource.contents.split('#'.equals, true, true).sequence()[1]);
+	                    value replacement = ResourcePile(resource.id, resource.kind,
+	                        runner.recursiveConsultTable(table, loc, map.baseTerrain[loc],
+	                            //map.mountainous[loc],  map.fixtures[loc], map.dimensions), resource.quantity);
+	                            map.mountainous.get(loc),  map.fixtures.get(loc), map.dimensions), resource.quantity);
+	                    production.remove(resource);
+	                    production.add(replacement);
+	                }
+	            }
+	        }
+	    }
     }
     "Fix a stubbed-out kind for a unit."
     void fixUnit(Unit unit, SimpleTerrain terrain, ICLIHelper cli) {

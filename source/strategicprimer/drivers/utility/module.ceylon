@@ -18,4 +18,5 @@ module strategicprimer.drivers.utility "0.4.9015" {
     import maven:"com.massisframework:orange-extensions" "1.3.1";
     import ceylon.logging "1.3.3";
     shared import strategicprimer.drivers.common "0.4.9015";
+    import strategicprimer.drivers.exploration.old "0.4.9015";
 }
