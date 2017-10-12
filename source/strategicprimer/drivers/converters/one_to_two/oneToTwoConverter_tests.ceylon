@@ -114,7 +114,7 @@ ExplorationRunner initializeRunner() {
         assert (exists tableAsResource = `module strategicprimer.drivers.converters`
             .resourceByPath("tables/``table``"));
         retval.loadTable(table,
-            loadTable(tableAsResource));
+            loadTable(tableAsResource, "tables/``table``"));
     }
     return retval;
 }
