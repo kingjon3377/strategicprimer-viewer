@@ -153,6 +153,9 @@ object resourcePlaceholderChecker satisfies Checker {
             } else if (placeholderUnits.contains(fixture.quantity.units)) {
                 warner.handle(SPContentWarning(context,
                     "Resource pile, ID #``fixture.id``, has placeholder units"));
+            } else if (fixture.contents.contains('#')) {
+                warner.handle(SPContentWarning(context, "Resource pile, ID #``fixture
+                    .id``, has suspicous contents: ``fixture.contents``"));
             }
         } else if (is ITownFixture fixture, exists stats = fixture.population) {
             for (resource in stats.yearlyConsumption) {
