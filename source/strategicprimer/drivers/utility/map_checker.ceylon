@@ -191,19 +191,23 @@ shared object mapCheckerCLI satisfies UtilityDriver {
             map = readMap(file, warner);
         } catch (FileNotFoundException|NoSuchFileException except) {
             err("``file`` not found");
-            log.error("``file`` not found", except);
+            log.error("``file`` not found");
+	    log.debug("Full stack trace of file-not-found:", except);
             return;
         } catch (IOException except) {
             err("I/O error reading ``file``");
-            log.error("I/O error reading ``file``", except);
+            log.error("I/O error reading ``file``: ``except.message``");
+	    log.debug("Full stack trace of I/O error", except);
             return;
         } catch (XMLStreamException except) {
             err("Malformed XML in ``file``");
-            log.error("Malformed XML in ``file``", except);
+            log.error("Malformed XML in ``file``: ``except.message``");
+	    log.debug("Full stack trace of malformed-XML error", except);
             return;
         } catch (SPFormatException except) {
             err("SP map format error in ``file``");
-            log.error("SP map format error in ``file``", except);
+            log.error("SP map format error in ``file``: ``except.message``");
+	    log.debug("Full stack trace of SP map format error:", except);
             return;
         }
         for (checker in extraChecks) {
