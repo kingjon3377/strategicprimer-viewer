@@ -62,6 +62,11 @@ import ceylon.logging {
 	logger,
 	Logger
 }
+import strategicprimer.model.map.fixtures.towns {
+	ITownFixture,
+	TownStatus,
+	Village
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "How many hours we assume a working day is for a hunter or such."
@@ -273,6 +278,44 @@ Point? findUnexplored(IMapNG map, Point base) {
 	}
 	return retval.sort(DistanceComparator(base, dimensions).compare).first;
 }
+"Print a list of active towns within the given distance of the given base that produce any resources,
+ and what resources they produce."
+void suggestTrade(IMapNG map, Point base, Integer distance, ICLIHelper cli) {
+	value comparator = DistanceComparator(base, map.dimensions);
+	for (location in surroundingPointIterable(base, map.dimensions, distance).distinct.sort(comparator.compare)) {
+		for (town in map.fixtures.get(location).narrow<ITownFixture>()) {
+		//for (town in map.fixtures[location].narrow<ITownFixture>()) { // TODO: syntax sugar once compiler bug fixed
+			if (town.status == TownStatus.active, exists population = town.population,
+					!population.yearlyProduction.empty) {
+				cli.print("At ``location````comparator.distanceString(location, "base")``: ");
+				cli.print("``town.name``, a ``town.townSize`` ");
+				if (is Village town, town.race != "human") {
+					cli.print("``town.race`` village");
+				} else {
+					cli.print(town.kind);
+				}
+				cli.println(". Its yearly production:");
+				for (resource in population.yearlyProduction) {
+					String unitsString;
+					if (resource.quantity.units.empty) {
+						unitsString = "";
+					} else if ("dozen" == resource.quantity.units) {
+						unitsString = "dozen ";
+					} else {
+						unitsString = "``resource.quantity.units`` of ";
+					}
+					cli.println("- ``resource.kind``: ``resource.quantity.number`` ``
+						unitsString````resource.contents``");
+					if (resource.contents == "milk") {
+						cli.println("- Corresponding livestock");
+					} else if (resource.contents == "eggs") {
+						cli.println("Corresponding poultry");
+					}
+				}
+			}
+		}
+	}
+}
 "Print a usage message for the REPL"
 void replUsage(ICLIHelper cli) {
 	cli.println("The following commands are supported:");
@@ -290,6 +333,7 @@ void replUsage(ICLIHelper cli) {
 	cli.println("Distance: Report the distance between two points.");
 	cli.println("Count: Count how many workers belong to a player.");
 	cli.println("Unexplored: Find the nearest unexplored tile not behind water.");
+	cli.println("tRade: Suggest possible trading partners.");
 	cli.println("Quit: Exit the program.");
 }
 "Handle a user command."
@@ -318,6 +362,10 @@ void handleCommand(SPOptions options, IDriverModel model, HuntingModel huntModel
 		} else {
 			cli.println("No unexplored tiles found.");
 		}
+	}
+	case ('r') {
+		suggestTrade(model.map, cli.inputPoint("Base location? "),
+			cli.inputNumber("Within how many tiles? "), cli);
 	}
 	else { cli.println("Unknown command."); }
 }
