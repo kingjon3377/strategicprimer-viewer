@@ -111,7 +111,7 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
             TileFixture val, Integer index, Boolean isSelected, Boolean cellHasFocus) {
         assert (is JLabel component = defaultRenderer.getListCellRendererComponent(list,
             val, index, isSelected, cellHasFocus));
-        component.text = "<html><p>``val``</p></html>";
+        component.text = "<html><p>``val.shortDescription``</p></html>";
         if (is HasImage val) {
             component.icon = getIcon(val);
         } else {
