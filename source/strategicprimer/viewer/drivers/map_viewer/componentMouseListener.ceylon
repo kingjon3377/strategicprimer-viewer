@@ -92,7 +92,7 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
                     .integer,
                 ((eventPoint.x / tileSize) + visibleDimensions.minimumColumn)
                     .integer);
-            process.writeLine("Generated point was ``point``");
+            log.trace("Generated point was ``point``");
             if (point.valid, point.row < mapDimensions.rows,
                 point.column < mapDimensions.columns) {
                 model.selection = point;
