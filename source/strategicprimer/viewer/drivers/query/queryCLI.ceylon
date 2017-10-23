@@ -309,7 +309,7 @@ void suggestTrade(IMapNG map, Point base, Integer distance, ICLIHelper cli) {
 					if (resource.contents == "milk") {
 						cli.println("- Corresponding livestock");
 					} else if (resource.contents == "eggs") {
-						cli.println("Corresponding poultry");
+						cli.println("- Corresponding poultry");
 					}
 				}
 			}
