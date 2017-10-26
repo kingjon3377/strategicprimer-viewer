@@ -27,7 +27,8 @@ import strategicprimer.model.map {
     pointFactory,
     IFixture,
     HasOwner,
-    MapDimensions
+    MapDimensions,
+    TileType
 }
 import strategicprimer.model.map.fixtures {
     Ground,
@@ -238,7 +239,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
         assert (exists unit);
         Point dest = getDestination(point, direction);
-        if (exists terrain = map.baseTerrain[dest], landMovementPossible(terrain)) {
+        if (exists terrain = map.baseTerrain[dest], exists startingTerrain = map.baseTerrain[point],
+                    ((landMovementPossible(terrain) && startingTerrain != TileType.ocean) ||
+                        (startingTerrain == TileType.ocean && terrain == TileType.ocean))) {
             Integer base;
             if (dest == point) {
                 base = 1;
