@@ -203,7 +203,7 @@ void runAllTests(ICLIHelper cli, IMapNG map, Integer repetitions) {
 }
 "A driver to compare the performance of TileDrawHelpers."
 shared object drawHelperComparator satisfies SimpleCLIDriver {
-    shared actual IDriverUsage usage = DriverUsage(true, "-t", "--test",
+    shared actual IDriverUsage usage = DriverUsage(true, ["-t", "--test"],
         ParamCount.atLeastOne, "Test drawing performance.",
         """Test the performance of the TileDrawHelper classes---which do the heavy lifting
            of rendering the map in the viewer---using a variety of automated tests.""");

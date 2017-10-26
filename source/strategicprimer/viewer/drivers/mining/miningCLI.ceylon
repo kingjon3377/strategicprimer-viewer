@@ -32,8 +32,7 @@ import strategicprimer.drivers.common.cli {
 shared object miningCLI satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        shortOption = "-i";
-        longOption = "--mining";
+        invocations = ["-i", "--mining"];
         paramsWanted = ParamCount.two;
         shortDescription = "Create a model of a mine";
         longDescription = "Create a CSV spreadsheet representing a mine's area";

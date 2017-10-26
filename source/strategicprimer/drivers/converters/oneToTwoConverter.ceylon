@@ -43,8 +43,7 @@ import strategicprimer.drivers.common.cli {
 object oneToTwoConverter satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        shortOption = "-12";
-        longOption = "--one-to-two";
+        invocations = ["-12", "--one-to-two"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Convert a map's format from version 1 to 2";
         longDescription = "Convert a map from format version 1 to format version 2";

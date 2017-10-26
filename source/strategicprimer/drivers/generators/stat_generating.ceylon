@@ -71,8 +71,7 @@ Logger log = logger(`module strategicprimer.drivers.generators`);
 shared object statGeneratingCLI satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        shortOption = "-t";
-        longOption = "--stats";
+        invocations = ["-t", "--stats"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Enter worker stats or generate new workers.";
         longDescription = "Enter stats for existing workers or generate new workers

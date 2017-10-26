@@ -40,7 +40,7 @@ import strategicprimer.drivers.common.cli {
  results graphically."
 todo("Unify with [[subsetCLI]]")
 shared object subsetGUI satisfies ISPDriver {
-    shared actual IDriverUsage usage = DriverUsage(true, "-s", "--subset",
+    shared actual IDriverUsage usage = DriverUsage(true, ["-s", "--subset"],
         ParamCount.atLeastTwo, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.");

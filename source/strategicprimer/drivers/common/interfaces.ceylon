@@ -396,10 +396,8 @@ shared class ParamCount of none | one | two | atLeastOne | atLeastTwo | anyNumbe
 shared interface IDriverUsage {
     "Whether the driver is a GUI."
     shared formal Boolean graphical;
-    "The short option to select this driver."
-    shared formal String shortOption;
-    "The long option to select this driver."
-    shared formal String longOption;
+    "Options with which the user can select this driver."
+    shared formal {String+} invocations;
     "How many non-option parameters this driver wants."
     shared formal ParamCount paramsWanted;
     "A short (one-line at most) description of the driver."
@@ -417,11 +415,9 @@ shared interface IDriverUsage {
 shared class DriverUsage(
     "Whether this driver is graphical or not."
     shared actual Boolean graphical,
-    "The short (generally one character) option to give to the app-starter to get this
-     driver."
-    shared actual String shortOption,
-    "The long option to give to the app-starter to get this driver."
-    shared actual String longOption,
+    "Options with which one can invoke this driver. Usually there's a short (if possible one-character)
+     option and a longer (and probably more memorable and descriptive) option."
+    shared actual {String+} invocations,
     "How many parameters this driver wants."
     shared actual ParamCount paramsWanted,
     "A short description of the driver"

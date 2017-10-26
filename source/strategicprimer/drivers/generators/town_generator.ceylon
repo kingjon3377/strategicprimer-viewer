@@ -92,8 +92,7 @@ class LazyInit<Wrapped>(Wrapped() generator) {
 shared object townGeneratingCLI satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        shortOption = "-o";
-        longOption = "--town";
+        invocations = ["-o", "--town"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Enter or generate stats and contents for towns and villages";
         longDescription = "Enter or generate stats and contents for towns and villages";
@@ -443,7 +442,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         for (skill->level in retval.highestSkillLevels) {
             String tableName = "``skill``_production";
             if (runner.wrapped.hasTable(tableName)) {
-                retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown", 
+                retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
                     runner.wrapped.consultTable(tableName, location, map.baseTerrain.get(location), // TODO: syntax sugar
                         map.mountainous.get(location), map.fixtures.get(location), map.dimensions),
                 Quantity(2.power(level - 1), (level == 1) then "unit" else "units")));

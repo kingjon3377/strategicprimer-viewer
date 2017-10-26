@@ -49,8 +49,7 @@ class ConverterDriver(
     "The usage object."
     shared actual IDriverUsage usage = DriverUsage {
         graphical = gui;
-        shortOption = "-v";
-        longOption = "--convert";
+        invocations = ["-v", "--convert"];
         paramsWanted = ParamCount.one;
         shortDescription = "Convert a map's format";
         longDescription = "Convert a map. At present, this means reducing its

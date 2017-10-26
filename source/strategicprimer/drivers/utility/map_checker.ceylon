@@ -102,7 +102,7 @@ object lateriteChecker satisfies Checker {
 object aquaticVillageChecker satisfies Checker {
     shared actual void check(TileType terrain, Point context, IFixture fixture,
             Warning warner) {
-        if (is Village fixture, landRaces.contains(fixture.race), 
+        if (is Village fixture, landRaces.contains(fixture.race),
                 TileType.ocean == terrain) {
             warner.handle(SPContentWarning(context,
                 "Aquatic village has non-aquatic race"));
@@ -171,7 +171,7 @@ object resourcePlaceholderChecker satisfies Checker {
     resourcePlaceholderChecker };
 "A driver to check every map file in a list for errors."
 shared object mapCheckerCLI satisfies UtilityDriver {
-    shared actual IDriverUsage usage = DriverUsage(false, "-k", "--check",
+    shared actual IDriverUsage usage = DriverUsage(false, ["-k", "--check"],
         ParamCount.atLeastOne, "Check map for errors",
         "Check a map file for errors, deprecated syntax, etc.");
     void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
@@ -257,7 +257,7 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
 "A driver to check every map file in a list for errors and report the results in a
  window."
 shared object mapCheckerGUI satisfies UtilityDriver {
-    shared actual IDriverUsage usage = DriverUsage(true, "-k", "--check",
+    shared actual IDriverUsage usage = DriverUsage(true, ["-k", "--check"],
         ParamCount.atLeastOne, "Check map for errors",
         "Check a map file for errors, deprecated syntax, etc.");
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,

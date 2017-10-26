@@ -25,7 +25,7 @@ import ceylon.random {
 }
 "An app to move independent units around at random."
 shared object randomMovementCLI satisfies SimpleCLIDriver {
-	shared actual IDriverUsage usage = DriverUsage(false, "-v", "--move", ParamCount.one,
+	shared actual IDriverUsage usage = DriverUsage(false, ["-v", "--move"], ParamCount.one,
 		"Move independent units at random", "Move independent units randomly around the map.");
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
 		IExplorationModel emodel;

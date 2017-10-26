@@ -42,8 +42,7 @@ Logger log = logger(`module strategicprimer.viewer`);
 shared object workerGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
-        shortOption = "-w";
-        longOption = "--worker";
+        invocations = ["-w", "--worker"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Manage a player's workers in units";
         longDescription = "Organize the members of a player's units.";

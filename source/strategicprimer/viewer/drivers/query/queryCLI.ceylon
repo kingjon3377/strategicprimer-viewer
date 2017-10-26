@@ -371,7 +371,7 @@ void handleCommand(SPOptions options, IDriverModel model, HuntingModel huntModel
 }
 "A driver for 'querying' the driver model about various things."
 shared object queryCLI satisfies SimpleDriver {
-	shared actual IDriverUsage usage = DriverUsage(false, "-q", "--query", ParamCount.one,
+	shared actual IDriverUsage usage = DriverUsage(false, ["-q", "--query"], ParamCount.one,
 		"Answer questions about a map.",
 		"Look a tiles on a map. Or run hunting, gathering, or fishing.");
 	"Accept and respond to commands."

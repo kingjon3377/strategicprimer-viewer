@@ -24,8 +24,7 @@ import strategicprimer.drivers.worker.common {
 shared object strategyExportCLI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        shortOption = "-w";
-        longOption = "--worker";
+        invocations = ["-w", "--worker"];
         paramsWanted = ParamCount.one;
         shortDescription = "Export a proto-strategy";
         longDescription = "Create a proto-strategy using orders stored in the map";

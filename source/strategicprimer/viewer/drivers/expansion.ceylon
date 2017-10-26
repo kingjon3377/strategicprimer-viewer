@@ -58,8 +58,7 @@ import strategicprimer.model.map.fixtures.terrain {
 object expansionDriver satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        shortOption = "-n";
-        longOption = "--expand";
+        invocations = ["-n", "--expand"];
         paramsWanted = ParamCount.atLeastTwo;
         shortDescription = "Expand a player's map.";
         longDescription = "Ensure a player's map covers all terrain allied villages can
@@ -170,8 +169,7 @@ object sampleMapPopulator satisfies MapPopulator {
 object mapPopulatorDriver satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        shortOption = "-l";
-        longOption = "--populate";
+        invocations = ["-l", "--populate"];
         paramsWanted = ParamCount.one;
         shortDescription = "Add missing fixtures to a map";
         longDescription = "Add specified kinds of fixtures to suitable points throughout

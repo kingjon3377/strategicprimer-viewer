@@ -147,8 +147,7 @@ todo("FIXME: Get rid of the CLI/GUI (exact) pair idea and the short-option/long-
 			} else {
 				cache = cliCache;
 			}
-			// TODO: Iterate over all invocation options
-			for (option in {driver.usage.shortOption, driver.usage.longOption}) {
+			for (option in driver.usage.invocations) {
 				if (reserved.contains(option)) {
 					log.error("A driver wants to register for a reserved option '``option``': claims to be ``
 						driver.usage.shortDescription``");
@@ -216,7 +215,10 @@ String usageMessage(IDriverUsage usage, Boolean verbose) {
     } else {
         builder.append("-c|--cli");
     }
-    builder.append(" ``usage.shortOption``|``usage.longOption``");
+    builder.append("``usage.invocations.first``");
+    for (invocation in usage.invocations.rest) {
+        builder.append("|``invocation``");
+    }
     for (option in usage.supportedOptions) {
         builder.append(" [``option``]");
     }
@@ -269,7 +271,7 @@ shared void run() {
         Application.application.setOpenFileHandler(handleDroppedFiles);
     }
     object appStarter satisfies ISPDriver {
-        shared actual IDriverUsage usage = DriverUsage(true, "-p", "--app-starter",
+        shared actual IDriverUsage usage = DriverUsage(true, ["-p", "--app-starter"],
             ParamCount.anyNumber, "App Chooser",
             "Let the user choose an app to start, or handle options.");
         shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,

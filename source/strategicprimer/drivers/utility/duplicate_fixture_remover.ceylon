@@ -267,8 +267,7 @@ BigDecimal toBigDecimal(JNumber number) {
 shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        shortOption = "-u";
-        longOption = "--duplicates";
+        invocations = ["-u", "--duplicates"];
         paramsWanted = ParamCount.one;
         shortDescription = "Remove duplicate fixtures";
         longDescription = "Remove duplicate fixtures (identical except ID# and on the

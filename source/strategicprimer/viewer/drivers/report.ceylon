@@ -60,8 +60,7 @@ import ceylon.collection {
 object reportCLI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        shortOption = "-m";
-        longOption = "--map";
+        invocations = ["-m", "--map"]; // TODO: Not accurate
         paramsWanted = ParamCount.one;
         shortDescription = "Report Generator";
         longDescription = "Produce HTML report of the contents of a map";
@@ -127,7 +126,7 @@ object reportCLI satisfies SimpleDriver {
 }
 "A driver to show tabular reports of the contents of a player's map in a GUI."
 object tabularReportGUI satisfies SimpleDriver {
-    shared actual IDriverUsage usage = DriverUsage(true, "-b", "--tabular",
+    shared actual IDriverUsage usage = DriverUsage(true, ["-b", "--tabular"],
         ParamCount.one, "Tabular Report Viewer",
         "Show the contents of a map in tabular form");
     suppressWarnings("expressionTypeNothing")
@@ -160,7 +159,7 @@ object tabularReportGUI satisfies SimpleDriver {
 }
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
 object tabularReportCLI satisfies SimpleDriver {
-    shared actual IDriverUsage usage = DriverUsage(false, "-b", "--tabular",
+    shared actual IDriverUsage usage = DriverUsage(false, ["-b", "--tabular"],
         ParamCount.atLeastOne, "Tabular Report Generator",
         "Produce CSV reports of the contents of a map.");
     MutableMap<String,Writer> writers = HashMap<String,Writer>();

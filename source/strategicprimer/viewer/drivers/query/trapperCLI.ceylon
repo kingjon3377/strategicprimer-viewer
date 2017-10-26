@@ -46,7 +46,7 @@ todo("Tests")
 shared object trappingCLI satisfies SimpleDriver {
 	Integer minutesPerHour = 60;
 	TrapperCommand[] commands = [setTrap, check, move, easyReset, quit];
-	shared actual IDriverUsage usage = DriverUsage(false, "-r", "--trap", ParamCount.one,
+	shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"], ParamCount.one,
 		"Run a player's trapping", "Determine the results a player's trapper finds.");
 	String inHours(Integer minutes) {
 		if (minutes < minutesPerHour) {

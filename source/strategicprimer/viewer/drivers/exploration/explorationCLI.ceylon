@@ -27,8 +27,7 @@ Logger log = logger(`module strategicprimer.viewer`);
 shared object explorationCLI satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        shortOption = "-x";
-        longOption = "--explore";
+        invocations = ["-x", "--explore"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Run exploration.";
         longDescription = "Move a unit around the map, updating the player's map with

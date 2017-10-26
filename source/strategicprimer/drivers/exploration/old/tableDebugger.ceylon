@@ -36,7 +36,7 @@ object tableDebugger satisfies SimpleCLIDriver {
     } else {
         throw IllegalStateException("Table debugger requires a tables directory");
     }
-    shared actual IDriverUsage usage = DriverUsage(false, "-T", "--table-debug",
+    shared actual IDriverUsage usage = DriverUsage(false, ["-T", "--table-debug"],
         ParamCount.none, "Debug old-model encounter tables",
         "See whether old-model encounter tables refer to a nonexistent table");
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,

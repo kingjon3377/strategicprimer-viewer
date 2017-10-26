@@ -39,8 +39,7 @@ import strategicprimer.drivers.gui.common {
 shared object advancementGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
-        shortOption = "-a";
-        longOption = "--adv";
+        invocations = ["-a", "--adv"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "View a player's workers and manage their advancement";
         longDescription = """View a player's units, the workers in those units, each

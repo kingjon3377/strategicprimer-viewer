@@ -132,8 +132,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
 object resourceAddingCLI satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        shortOption = "-d";
-        longOption = "--add-resource";
+        invocations = ["-d", "--add-resource"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Add resources to maps";
         longDescription = "Add resources for players to maps.";
@@ -417,13 +416,12 @@ SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel m
     resourceQuantityModel.maximum = maximum;
     implementQuantityModel.maximum = maximum;
     return retval;
-    
+
 }
 object resourceAddingGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
-        shortOption = "-d";
-        longOption = "--add-resource";
+        invocations = ["-d", "--add-resource"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Add resources to maps";
         longDescription = "Add resources for players to maps";

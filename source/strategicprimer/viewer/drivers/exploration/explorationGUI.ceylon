@@ -37,8 +37,7 @@ import strategicprimer.drivers.gui.common {
 shared object explorationGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
-        shortOption = "-x";
-        longOption = "--explore";
+        invocations = ["-x", "--explore"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Run exploration.";
         longDescription = "Move a unit around the map, updating the player's map with what

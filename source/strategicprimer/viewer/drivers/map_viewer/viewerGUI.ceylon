@@ -45,8 +45,7 @@ Logger log = logger(`module strategicprimer.viewer`);
 shared object viewerGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
-        shortOption = "-m";
-        longOption = "--map";
+        invocations = ["-m", "--map"];
         paramsWanted = ParamCount.one;
         shortDescription = "Map viewer";
         longDescription = "Look at the map visually. This is probably the app you want.";
