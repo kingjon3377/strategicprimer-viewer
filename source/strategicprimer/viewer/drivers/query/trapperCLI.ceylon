@@ -31,21 +31,22 @@ import lovelace.util.common {
 }
 "Possible actions in the trapping CLI; top-level so we can switch on the cases,
  since the other alternative, `static`, isn't possible in an `object` anymore."
-// TODO: Convert to object-constructors
-abstract class TrapperCommand(name) of setTrap | check | move | easyReset | quit
+class TrapperCommand of setTrap | check | move | easyReset | quit
 		satisfies HasName {
 	shared actual String name;
+	shared new setTrap { name = "Set or reset a trap"; }
+	shared new check { name = "Check a trap"; }
+	shared new move { name = "Move to another trap"; }
+	shared new easyReset { name = "Reset a foothold trap, e.g."; }
+	shared new quit { name = "Quit"; }
 }
-object setTrap extends TrapperCommand("Set or reset a trap") {}
-object check extends TrapperCommand("Check a trap") {}
-object move extends TrapperCommand("Move to another trap") {}
-object easyReset extends TrapperCommand("Reset a foothold trap, e.g.") {}
-object quit extends TrapperCommand("Quit") {}
 "A driver to run a player's trapping activity."
 todo("Tests")
 shared object trappingCLI satisfies SimpleDriver {
 	Integer minutesPerHour = 60;
-	TrapperCommand[] commands = [setTrap, check, move, easyReset, quit];
+	// TODO: Use `TrapperCommand`.caseValues?
+	TrapperCommand[] commands = [TrapperCommand.setTrap, TrapperCommand.check, TrapperCommand.move,
+		TrapperCommand.easyReset, TrapperCommand.quit];
 	shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"], ParamCount.one,
 		"Run a player's trapping", "Determine the results a player's trapper finds.");
 	String inHours(Integer minutes) {
@@ -65,7 +66,7 @@ shared object trappingCLI satisfies SimpleDriver {
 		"If true, we're dealing with *fish* traps, which have different costs"
 		Boolean fishing) {
 		switch (command)
-		case (check){
+		case (TrapperCommand.check){
 			String? top = fixtures.accept();
 			if (!top exists) {
 				cli.println("Ran out of results");
@@ -80,10 +81,10 @@ shared object trappingCLI satisfies SimpleDriver {
 				return cli.inputNumber("How long to check and deal with the animal? ");
 			}
 		}
-		case (easyReset) { return (fishing) then 20 else 5; }
-		case (move) { return 2; }
-		case (quit) { return 0; }
-		case (setTrap) { return (fishing) then 30 else 45; }
+		case (TrapperCommand.easyReset) { return (fishing) then 20 else 5; }
+		case (TrapperCommand.move) { return 2; }
+		case (TrapperCommand.quit) { return 0; }
+		case (TrapperCommand.setTrap) { return (fishing) then 30 else 45; }
 	}
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
 		IDriverModel model) {
@@ -105,7 +106,7 @@ shared object trappingCLI satisfies SimpleDriver {
 			"Next action: ", false).item) {
 			minutes -= handleCommand(fixtures, cli, command, fishing);
 			cli.println("``inHours(minutes)`` remaining");
-			if (command == quit) {
+			if (command == TrapperCommand.quit) {
 				break;
 			}
 		}
