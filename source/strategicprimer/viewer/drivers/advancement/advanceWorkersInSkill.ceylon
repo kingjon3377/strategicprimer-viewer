@@ -33,12 +33,22 @@ void advanceWorkersInSkill(String jobName, String skillName, ICLIHelper cli,
                         "misc-replacement")) {
                 MutableList<String> gains = ArrayList<String>();
                 for (i in 0:skill.level) {
-            // TODO: Choose from existing instead of always getting a new string
-                    String replacementName = cli.inputString("Skill to gain level in: ");
-                    ISkill replacement = Skill(replacementName, 1, 0);
-                    job.removeSkill(skill);
-                    job.addSkill(replacement);
-                    gains.add(replacementName);
+                    ISkill replacement;
+                    String replacementName;
+                    Integer->ISkill? choice = cli.chooseFromList(
+                        job.filter((skl) => "miscellaneous" != skl.name).sequence(),
+                        "Skill to gain level in:", "No other skill", "Chosen skill:", false);
+					if (exists chosenSkill = choice.item) {
+						replacement = chosenSkill;
+						replacement.addHours(100, 0);
+						replacementName = replacement.name;
+					} else {
+						replacementName = cli.inputString("Skill to gain level in: ");
+						replacement = Skill(replacementName, 1, 0);
+						job.addSkill(replacement);
+						gains.add(replacementName);
+					}
+					job.removeSkill(skill);
                 }
                 for (name->count in gains.frequencies()) {
                     if (count == 1) {
