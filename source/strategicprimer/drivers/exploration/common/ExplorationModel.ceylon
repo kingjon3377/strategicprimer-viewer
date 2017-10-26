@@ -70,12 +70,18 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
      from the watcher), print a message saying so to stdout."
     static void checkAllNearbyWatchers(IMapNG map, IUnit unit, Point dest) {
         MapDimensions dimensions = map.dimensions;
+        String description;
+        if (unit.owner.independent) {
+            description = "``unit.shortDescription`` (ID #``unit.id``)";
+        } else {
+            description = unit.shortDescription;
+        }
         for (point in surroundingPointIterable(dest, dimensions).distinct) {
 //            for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(point)) {
                 if (is HasOwner fixture, !fixture.owner.independent,
                         fixture.owner != unit.owner) {
-                    process.writeLine("Motion of ``unit.shortDescription`` to ``dest`` could be observed by ``
+                    process.writeLine("Motion of ``description`` to ``dest`` could be observed by ``
                             fixture.shortDescription`` at ``point``");
                 }
             }
