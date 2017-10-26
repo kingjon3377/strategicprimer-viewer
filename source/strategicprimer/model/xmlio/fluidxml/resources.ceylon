@@ -219,7 +219,7 @@ StoneDeposit readStone(StartElement element, QName parent, {XMLEvent*} stream,
                 getOrGenerateID(element, warner, idFactory)),
             element, warner);
     } else {
-        throw MissingPropertyException(element, "stone", stone);
+        throw MissingPropertyException(element, "kind", stone);
     }
 }
 
