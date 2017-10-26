@@ -106,7 +106,8 @@ import strategicprimer.drivers.utility {
     mapCheckerCLI,
     readerComparator,
     mapCheckerGUI,
-    duplicateFixtureRemoverCLI
+    duplicateFixtureRemoverCLI,
+	randomMovementCLI
 }
 import strategicprimer.model.xmlio {
     SPFormatException
@@ -188,6 +189,7 @@ Map<String, ISPDriver[2]> createCache() {
     choice(miningCLI);
     // TODO: Write GUI to allow user to generate or enter town contents
     choice(townGeneratingCLI);
+    choice(randomMovementCLI);
     return cache;
 }
 "Create the usage message for a particular driver."
