@@ -303,8 +303,20 @@ shared void run() {
                         }
                     });
                 } else {
-                    // TODO: Do we need to wrap this in a similar try-catch block?
-                    driver.startDriverOnArguments(cli, currentOptionsTyped, *others);
+                    try {
+                            driver.startDriverOnArguments(cli, currentOptionsTyped, *others);
+                        } catch (IncorrectUsageException except) {
+                            cli.println(usageMessage(except.correctUsage,
+                                currentOptionsTyped.getArgument("--verbose") == "true"));
+                        } catch (DriverFailedException except) {
+                            if (is SPFormatException cause = except.cause) {
+                                log.error(cause.message);
+                            } else if (exists cause = except.cause) {
+                                log.error("Driver failed:", cause);
+                            } else {
+                                log.error("Driver failed:", except);
+                            }
+                        }
                 }
                 // TODO: clear `others` here?
             }
