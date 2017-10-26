@@ -240,8 +240,7 @@ StoneDeposit readStone(StartElement element, QName parent, {XMLEvent*} stream,
                 getOrGenerateID(element, warner, idFactory)),
             element, warner);
     } else {
-        // TODO: should be "kind" param
-        throw MissingPropertyException(element, "stone", stone);
+        throw MissingPropertyException(element, "kind", stone);
     }
 }
 
