@@ -75,8 +75,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             for (fixture in map.fixtures.get(point)) {
                 if (is HasOwner fixture, !fixture.owner.independent,
                         fixture.owner != unit.owner) {
-                    process.writeLine("Motion to ``dest`` could be observed by ``fixture
-                        .shortDescription`` at ``point``");
+                    process.writeLine("Motion of ``unit.shortDescription`` to ``dest`` could be observed by ``
+                            fixture.shortDescription`` at ``point``");
                 }
             }
         }
