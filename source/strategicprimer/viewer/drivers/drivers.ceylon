@@ -115,6 +115,9 @@ import strategicprimer.viewer.drivers.query {
 	queryCLI,
 	trappingCLI
 }
+import lovelace.util.common {
+	todo
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."
@@ -127,6 +130,9 @@ void logWriter(Priority priority, Module|Package mod,
     }
 }
 "Create the cache of driver objects."
+todo("FIXME: Get rid of the CLI/GUI (exact) pair idea and the short-option/long-option pair idea.
+      Instead, each app should have a list of options it responds to, each of which should be unique
+      among CLI or GUI apps.")
 Map<String, ISPDriver[2]> createCache() {
     MutableMap<String, [ISPDriver, ISPDriver]> cache =
             HashMap<String, [ISPDriver, ISPDriver]>();
