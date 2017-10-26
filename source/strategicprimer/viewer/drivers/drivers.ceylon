@@ -134,63 +134,76 @@ void logWriter(Priority priority, Module|Package mod,
 todo("FIXME: Get rid of the CLI/GUI (exact) pair idea and the short-option/long-option pair idea.
       Instead, each app should have a list of options it responds to, each of which should be unique
       among CLI or GUI apps.")
-Map<String, ISPDriver[2]> createCache() {
-    MutableMap<String, [ISPDriver, ISPDriver]> cache =
-            HashMap<String, [ISPDriver, ISPDriver]>();
-    void choices(ISPDriver cliDriver, ISPDriver guiDriver) {
-        IDriverUsage cliUsage = cliDriver.usage;
-        IDriverUsage guiUsage = guiDriver.usage;
-        if (cliUsage.graphical) {
-            log.warn("``cliUsage.shortDescription`` is GUI but passed as CLI");
-        }
-        if (!guiUsage.graphical) {
-            log.warn("``guiUsage.shortDescription`` is CLI but passed as GUI");
-        }
-        if (cliUsage.shortOption != guiUsage.shortOption) {
-            log.warn("Short options don't match between ``
-                        cliUsage.shortDescription`` and ``guiUsage.shortDescription``");
-        }
-        if (cliUsage.longOption != guiUsage.longOption) {
-            log.warn("Long options don't match between ``
-                        cliUsage.shortDescription`` and ``guiUsage.shortDescription``");
-        }
-        cache[cliUsage.shortOption] = [cliDriver, guiDriver];
-        cache[cliUsage.longOption] = [cliDriver, guiDriver];
-    }
-    void choice(ISPDriver driver) {
-        IDriverUsage usage = driver.usage;
-        cache[usage.shortOption] = [driver, driver];
-        cache[usage.longOption] = [driver, driver];
-    }
-    choices(reportCLI, viewerGUI);
-    choices(advancementCLI, advancementGUI);
-    choices(strategyExportCLI, workerGUI);
-    choices(explorationCLI, explorationGUI);
-    choices(readerComparator, drawHelperComparator);
-    choices(mapCheckerCLI, mapCheckerGUI);
-    choices(subsetCLI, subsetGUI);
-    // FIXME: Write GUI equivalent of query CLI
-    choice(queryCLI);
-    choice(echoDriver);
-    // FIXME: Write GUI for the duplicate fixture remover
-    choice(duplicateFixtureRemoverCLI);
-    // FIXME: Write trapping (and hunting, etc.) GUI
-    choice(trappingCLI);
-    // TODO: AppStarter went here
-    // FIXME: Write stat-generating/stat-entering GUI
-    choice(statGeneratingCLI);
-    // FIXME: Write GUI for map-expanding driver
-    choice(expansionDriver);
-    // TODO: Write GUI equivalent of Map Populator Driver
-    choice(mapPopulatorDriver);
-    choices(resourceAddingCLI, resourceAddingGUI);
-    choices(tabularReportCLI, tabularReportGUI);
-    // TODO: Write GUI to allow user to visually explore a mine
-    choice(miningCLI);
-    // TODO: Write GUI to allow user to generate or enter town contents
-    choice(townGeneratingCLI);
-    choice(randomMovementCLI);
-    return cache;
+[Map<String, ISPDriver>, Map<String, ISPDriver>] createCache() {
+	MutableMap<String, ISPDriver> cliCache = HashMap<String, ISPDriver>();
+	MutableMap<String, ISPDriver> guiCache = HashMap<String, ISPDriver>();
+	{String*} reserved = {"-g", "-c", "--gui", "--cli"};
+	MutableMap<String, MutableList<ISPDriver>> conflicts = HashMap<String, MutableList<ISPDriver>>();
+	void addToCache(ISPDriver* drivers) {
+		for (driver in drivers) {
+			MutableMap<String, ISPDriver> cache;
+			if (driver.usage.graphical) {
+				cache = guiCache;
+			} else {
+				cache = cliCache;
+			}
+			// TODO: Iterate over all invocation options
+			for (option in {driver.usage.shortOption, driver.usage.longOption}) {
+				if (reserved.contains(option)) {
+					log.error("A driver wants to register for a reserved option '``option``': claims to be ``
+						driver.usage.shortDescription``");
+				} else if (exists list = conflicts[option]) {
+					log.warn("Additional conflict for '``option``': '``driver.usage.shortDescription``'");
+					list.add(driver);
+				} else if (exists existing = cache[option]) {
+					log.warn("Invocation option conflict for '``option``' between '``
+						driver.usage.shortDescription``' and '``existing.usage.shortDescription``'");
+					MutableList<ISPDriver> list = ArrayList { elements = { driver, existing }; };
+					cache.remove(option);
+					conflicts[option] = list;
+				} else {
+					cache[option] = driver;
+				}
+			}
+		}
+	}
+	addToCache(
+		reportCLI,
+		viewerGUI,
+		advancementCLI,
+		advancementGUI,
+		strategyExportCLI,
+		workerGUI,
+		explorationCLI,
+		explorationGUI,
+		readerComparator,
+		drawHelperComparator,
+		mapCheckerCLI,
+		mapCheckerGUI,
+		subsetCLI,
+		subsetGUI,
+		// FIXME: Write GUI equivalent of query CLI
+		queryCLI,
+		echoDriver,
+		// FIXME: Write GUI for the duplicate fixture remover
+		duplicateFixtureRemoverCLI,
+		// FIXME: Write trapping (and hunting, etc.) GUI
+		trappingCLI,
+		// FIXME: Write stat-generating/stat-entering GUI
+		statGeneratingCLI,
+		// FIXME: Write GUI for map-expanding driver
+		expansionDriver,
+		// TODO: Write GUI equivalent of Map Populator Driver
+		mapPopulatorDriver,
+		resourceAddingCLI, resourceAddingGUI,
+		tabularReportCLI, tabularReportGUI,
+		// TODO: Write GUI to allow user to visually explore a mine
+		miningCLI,
+		// TODO: Write GUI to allow user to generate or enter town contents
+		townGeneratingCLI,
+		randomMovementCLI
+	);
+    return [cliCache, guiCache];
 }
 "Create the usage message for a particular driver."
 String usageMessage(IDriverUsage usage, Boolean verbose) {
@@ -251,7 +264,7 @@ shared void run() {
     UIManager.setLookAndFeel(UIManager.systemLookAndFeelClassName);
     System.setProperty("apple.laf.useScreenMenuBar", "true");
     SPOptionsImpl options = SPOptionsImpl();
-    Map<String, ISPDriver[2]> driverCache = createCache();
+    [Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache = createCache();
     if (platform.systemIsMac) {
         Application.application.setOpenFileHandler(handleDroppedFiles);
     }
@@ -268,7 +281,32 @@ shared void run() {
                 currentOptions.addOption("--gui", gui.string);
             }
             MutableList<String> others = ArrayList<String>();
-            variable [ISPDriver, ISPDriver]? currentDrivers = null;
+            void startChosenDriver(ISPDriver driver, SPOptions currentOptionsTyped) {
+                if (driver.usage.graphical) {
+                    SwingUtilities.invokeLater(() {
+                        try {
+                            driver.startDriverOnArguments(cli,
+                                currentOptionsTyped, *others);
+                        } catch (IncorrectUsageException except) {
+                            cli.println(usageMessage(except.correctUsage,
+                                currentOptionsTyped.getArgument("--verbose") == "true"));
+                        } catch (DriverFailedException except) {
+                            if (is SPFormatException cause = except.cause) {
+                                log.error(cause.message);
+                            } else if (exists cause = except.cause) {
+                                log.error("Driver failed:", cause);
+                            } else {
+                                log.error("Driver failed:", except);
+                            }
+                        }
+                    });
+                } else {
+                    // TODO: Do we need to wrap this in a similar try-catch block?
+                    driver.startDriverOnArguments(cli, currentOptionsTyped, *others);
+                }
+                // TODO: clear `others` here?
+            }
+            variable ISPDriver? currentDriver = null;
             for (arg in args.coalesced) {
                 if (arg == "-g" || arg == "--gui") {
                     currentOptions.addOption("--gui");
@@ -291,20 +329,28 @@ shared void run() {
                         (String partial, String element) =>
                         if (partial.empty) then element else "``partial``=``element``")
                         else "");
-                } else if (driverCache.defines(arg.lowercased)) {
-                    if (exists temp = currentDrivers) {
-                        SPOptions currentOptionsTyped = currentOptions;
-                        if (gui) {
-                            // TODO: catch and log a DriverFailedException inside lambda
-                            SwingUtilities.invokeLater(() =>
-                                temp.rest.first.startDriverOnArguments(cli,
-                                    currentOptionsTyped, *others));
-                        } else {
-                            temp.first.startDriverOnArguments(cli, currentOptionsTyped,
-                                *others);
-                        }
+                } else if (!gui, driverCache[0].defines(arg.lowercased)) {
+                    if (exists temp = currentDriver) {
+                        startChosenDriver(temp, currentOptions.copy());
                     }
-                    currentDrivers = driverCache[arg.lowercased];
+                    currentDriver = driverCache[0][arg.lowercased];
+                } else if (gui, driverCache[1].defines(arg.lowercased)) {
+                    if (exists temp = currentDriver) {
+                        startChosenDriver(temp, currentOptions.copy());
+                    }
+                    currentDriver = driverCache[1][arg.lowercased];
+                } else if (driverCache[0].defines(arg.lowercased)) {
+                    log.warn("We're in GUI mode, but CLI-only app specified");
+                    if (exists temp = currentDriver) {
+                        startChosenDriver(temp, currentOptions.copy());
+                    }
+                    currentDriver = driverCache[0][arg.lowercased];
+                } else if (driverCache[1].defines(arg.lowercased)) {
+                    log.warn("We're in CLI mode, but GUI-only app specified");
+                    if (exists temp = currentDriver) {
+                        startChosenDriver(temp, currentOptions.copy());
+                    }
+                    currentDriver = driverCache[1][arg.lowercased];
                 } else if (arg.startsWith("-")) {
                     currentOptions.addOption(arg);
                 } else {
@@ -312,44 +358,12 @@ shared void run() {
                 }
             }
             if (options.hasOption("--help")) {
-                IDriverUsage tempUsage;
-                if (exists drivers = currentDrivers) {
-                    if (gui) {
-                        tempUsage = drivers.rest.first.usage;
-                    } else {
-                        tempUsage = drivers.first.usage;
-                    }
-                } else {
-                    tempUsage = usage;
-                }
+                IDriverUsage tempUsage = currentDriver?.usage else usage;
                 usageMessage(tempUsage, options.getArgument("--verbose") == "true");
-            } else if (exists drivers = currentDrivers) {
-                SPOptions currentOptionsTyped = currentOptions;
-                if (gui) {
-                    // TODO: catch and log a DriverFailedException inside the lambda
-                    SwingUtilities.invokeLater(() {
-                        try {
-                            drivers.rest.first.startDriverOnArguments(cli,
-                                currentOptionsTyped, *others);
-                        } catch (IncorrectUsageException except) {
-                            cli.println(usageMessage(except.correctUsage,
-                                options.getArgument("--verbose") == "true"));
-                        } catch (DriverFailedException except) {
-                            if (is SPFormatException cause = except.cause) {
-                                log.error(cause.message);
-                            } else if (exists cause = except.cause) {
-                                log.error("Driver failed:", cause);
-                            } else {
-                                log.error("Driver failed:", except);
-                            }
-                        }
-                    });
-                } else {
-                    drivers.first.startDriverOnArguments(cli, currentOptionsTyped,
-                        *others);
-                }
+            } else if (exists driver = currentDriver) {
+                startChosenDriver(driver, currentOptions.copy());
             } else {
-                SPOptions currentOptionsTyped = currentOptions;
+                SPOptions currentOptionsTyped = currentOptions.copy();
                 if (gui) {
                     try {
                         SwingUtilities.invokeLater(() => appChooserFrame(cli,
@@ -360,7 +374,7 @@ shared void run() {
                             "Strategic Primer Assistive Programs", except.message));
                     }
                 } else {
-                    ISPDriver[] driversList = [*driverCache.items.map(Tuple.first).distinct];
+                    ISPDriver[] driversList = [*driverCache[0].items];
                     value choice = cli.chooseFromList(driversList,
                         "CLI apps available:", "No applications available",
                         "App to start: ", true);
@@ -375,8 +389,7 @@ shared void run() {
                 IDriverModel driverModel) {
             // TODO: what about -c?
             if (GraphicsEnvironment.headless) {
-                ISPDriver[] cliDrivers = [*driverCache.items.map(
-                            (element) => element.first)];
+                ISPDriver[] cliDrivers = [*driverCache[0].items];
                 try {
                     if (exists driver = cli.chooseFromList(
                             cliDrivers, "CLI apps available:",
