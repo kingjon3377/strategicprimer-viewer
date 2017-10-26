@@ -35,7 +35,7 @@ shared object randomMovementCLI satisfies SimpleCLIDriver {
 			emodel = ExplorationModel.copyConstructor(model);
 		}
 		for (player in emodel.playerChoices.filter(Player.independent)) {
-			for (unit in emodel.getUnits(player)) {
+			for (unit in emodel.getUnits(player).sequence()) {
 				Random rng = DefaultRandom(unit.id.leftLogicalShift(8) + model.map.currentTurn);
 				Integer steps = rng.nextInteger(3) + rng.nextInteger(3);
 				emodel.selectedUnit = unit;
