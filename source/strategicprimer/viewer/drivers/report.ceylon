@@ -60,7 +60,7 @@ import ceylon.collection {
 object reportCLI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["-m", "--map"]; // TODO: Not accurate
+        invocations = ["-m", "--report"];
         paramsWanted = ParamCount.one;
         shortDescription = "Report Generator";
         longDescription = "Produce HTML report of the contents of a map";
