@@ -329,7 +329,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                         report("``temp`` apparently moved from our ``tempLoc`` to ``location``");
                         retval = false;
                     }
-                    retval = retval && temp.isSubset(desideratum, ostream);
+                    retval = temp.isSubset(desideratum, ostream) && retval;
                 } else if (is TileFixture desideratum, movedFrom(location, desideratum)) {
                     retval = false;
                 } else if (count == 0) {
@@ -379,12 +379,12 @@ shared class SPMapNG satisfies IMutableMapNG {
                     if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
                         continue;
                     } else if (is IUnit fixture, exists list = ourUnits[fixture.id]) {
-                        retval = retval && testAgainstList<IFixture, IUnit>(fixture, point, list, localReport);
+                        retval = testAgainstList<IFixture, IUnit>(fixture, point, list, localReport) && retval;
                     } else if (is AbstractTown fixture, exists list = ourTowns[fixture.id]) {
-                        retval = retval && testAgainstList<AbstractTown, AbstractTown>(fixture, point, list, localReport);
+                        retval = testAgainstList<AbstractTown, AbstractTown>(fixture, point, list, localReport) && retval;
                     } else if (is Subsettable<IFixture> fixture,
                             exists list = ourSubsettables[fixture.id]) {
-                        retval = retval && testAgainstList(fixture, point, list, localReport);
+                        retval = testAgainstList(fixture, point, list, localReport) && retval;
                     } else if (movedFrom(point, fixture)) {
                         retval = false; // return false;
                     } else {
