@@ -131,9 +131,6 @@ void logWriter(Priority priority, Module|Package mod,
     }
 }
 "Create the cache of driver objects."
-todo("FIXME: Get rid of the CLI/GUI (exact) pair idea and the short-option/long-option pair idea.
-      Instead, each app should have a list of options it responds to, each of which should be unique
-      among CLI or GUI apps.")
 [Map<String, ISPDriver>, Map<String, ISPDriver>] createCache() {
 	MutableMap<String, ISPDriver> cliCache = HashMap<String, ISPDriver>();
 	MutableMap<String, ISPDriver> guiCache = HashMap<String, ISPDriver>();
