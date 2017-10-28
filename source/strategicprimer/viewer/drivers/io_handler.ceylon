@@ -233,6 +233,7 @@ shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli)
         }
     }
 }
+// TODO: Refactor and move to lovelace.util
 shared class FileChooser {
     shared static class ChoiceInterruptedException(Throwable? cause = null)
             extends Exception(
