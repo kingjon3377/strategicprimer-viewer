@@ -54,12 +54,7 @@ shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&Has
         log.warn("TileTypeFixture.plural called");
         return "You shouldn't see this text; report this.";
     }
-    deprecated("This class should only ever be used in a FixtureListModel, so this method
-                should never be called.")
-    shared actual String shortDescription {
-        log.warn("TileTypeFixture.shortDesc called");
-        return "You shouldn't see this text; report this.";
-    }
+    shared actual String shortDescription => string;
     "The required Perception check for an explorer to find the fixture."
     shared actual Integer dc = 0;
     "Compare to another fixture."
