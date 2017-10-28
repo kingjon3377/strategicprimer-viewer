@@ -28,8 +28,7 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
         }
         levelNum = level;
     }
-    "Add a skill. Does nothing if an equal skill was already in the collection, and true
-     otherwise."
+    "Add a skill. Does nothing if an equal skill was already in the collection."
     todo("What should we do with matching but non-equal skill?")
     shared actual void addSkill(ISkill skill) {
         if (exists existing = skillSet[skill.name], existing == skill) {
