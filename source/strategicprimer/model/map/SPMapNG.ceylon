@@ -326,7 +326,13 @@ shared class SPMapNG satisfies IMutableMapNG {
                 if (exactly || count == 1) {
                     assert (exists temp = match, exists tempLoc = matchPoint);
                     if (tempLoc != location) {
-                        report("``temp`` apparently moved from our ``tempLoc`` to ``location``");
+                        String idStr;
+                        if (is IUnit temp, temp.owner.independent) {
+                            idStr = " (ID #``temp.id``)";
+                        } else {
+                            idStr = "";
+                        }
+                        report("``temp````idStr`` apparently moved from our ``tempLoc`` to ``location``");
                         retval = false;
                     }
                     retval = temp.isSubset(desideratum, ostream) && retval;
