@@ -319,55 +319,76 @@ void suggestTrade(IMapNG map, Point base, Integer distance, ICLIHelper cli) {
 "Print a usage message for the REPL"
 void replUsage(ICLIHelper cli) {
 	cli.println("The following commands are supported:");
+	cli.println("help, ?: Print this list of commands.");
 	cli.println(
-		"Fortress: Show what a player automatically knows about a fortress's tile.");
+		"fortress: Show what a player automatically knows about a fortress's tile.");
 	Integer encounters = hunterHours * hourlyEncounters;
-	cli.println("Hunt/fIsh: Generate up to ``encounters`` encounters with animals.`");
-	cli.println("Gather: Generate up to ``
+	cli.println("hunt, fish: Generate up to ``encounters`` encounters with animals.`");
+	cli.println("gather: Generate up to ``
 		encounters`` encounters with fields, meadows, groves,");
 	cli.println("orchards, or shrubs.");
 	cli.println(
-		"hErd: Determine the output from and time required for maintaining a herd.");
+		"herd: Determine the output from and time required for maintaining a herd.");
 	cli.println(
-		"Trap: Switch to a trap-modeling program to run trapping or fish-trapping.");
-	cli.println("Distance: Report the distance between two points.");
-	cli.println("Count: Count how many workers belong to a player.");
-	cli.println("Unexplored: Find the nearest unexplored tile not behind water.");
-	cli.println("tRade: Suggest possible trading partners.");
-	cli.println("Quit: Exit the program.");
+		"trap: Switch to a trap-modeling program to run trapping or fish-trapping.");
+	cli.println("distance: Report the distance between two points.");
+	cli.println("count: Count how many workers belong to a player.");
+	cli.println("unexplored: Find the nearest unexplored tile not behind water.");
+	cli.println("trade: Suggest possible trading partners.");
+	cli.println("quit: Exit the program.");
+	cli.println("Any string that is the beginning of only one command is also accepted for that command.");
 }
-"Handle a user command."
-void handleCommand(SPOptions options, IDriverModel model, HuntingModel huntModel,
-	ICLIHelper cli, Character input) {
-	switch (input)
-	case ('?') { replUsage(cli); }
-	case('f') { fortressInfo(model.map, cli.inputPoint("Location of fortress? "),
-		cli); }
-	case ('h') { hunt(huntModel, cli.inputPoint("Location to hunt? "), cli,
-		hunterHours * hourlyEncounters); }
-	case ('i') { fish(huntModel, cli.inputPoint("Location to fish? "), cli,
-		hunterHours * hourlyEncounters); }
-	case ('g') { gather(huntModel, cli.inputPoint("Location to gather? "), cli,
-		hunterHours * hourlyEncounters); }
-	case ('e') { herd(cli, huntModel); }
-	case ('t') { trappingCLI.startDriverOnModel(cli, options, model); }
-	case ('d') { printDistance(model.mapDimensions, cli); }
-	case ('c') { countWorkers(model.map, cli, *model.map.players); }
-	case ('u') {
-		Point base = cli.inputPoint("Starting point? ");
-		if (exists unexplored = findUnexplored(model.map, base)) {
-			Float distanceTo = distance(base, unexplored, model.map.dimensions);
-			cli.println("Nearest unexplored tile is ``unexplored``, ``Float
-				.format(distanceTo, 0, 1, '.', ',')`` tiles away");
+"Handle a series of user commands."
+void handleCommands(SPOptions options, IDriverModel model, HuntingModel huntModel,
+		ICLIHelper cli) {
+	void usageLambda() => replUsage(cli);
+	Map<String, Anything()> commands = map {
+		"?"->usageLambda,
+		"help"->usageLambda,
+		"fortress"->(() => fortressInfo(model.map, cli.inputPoint("Location of fortress? "), cli)),
+		"hunt"->(()=>hunt(huntModel, cli.inputPoint("Location to hunt? "), cli, hunterHours * hourlyEncounters)),
+		"fish"->(()=>fish(huntModel, cli.inputPoint("Location to fish? "), cli, hunterHours * hourlyEncounters)),
+		"gather"->(()=>gather(huntModel, cli.inputPoint("Location to gather? "), cli, hunterHours * hourlyEncounters)),
+		"herd"->(()=>herd(cli, huntModel)),
+		"trap"->(()=>trappingCLI.startDriverOnModel(cli, options, model)),
+		"distance"->(()=>printDistance(model.mapDimensions, cli)),
+		"count"->(()=>countWorkers(model.map, cli, *model.map.players)),
+		"unexplored"->(() {
+			Point base = cli.inputPoint("Starting point? ");
+			if (exists unexplored = findUnexplored(model.map, base)) {
+				Float distanceTo = distance(base, unexplored, model.map.dimensions);
+				cli.println("Nearest unexplored tile is ``unexplored``, ``Float
+					.format(distanceTo, 0, 1, '.', ',')`` tiles away");
+			} else {
+				cli.println("No unexplored tiles found.");
+			}
+		}),
+		"trade"->(()=>suggestTrade(model.map, cli.inputPoint("Base location? "),
+			cli.inputNumber("Within how many tiles? "), cli))
+	};
+	while (true) {
+		String command = cli.inputString("Command:").lowercased;
+		if ("quit".startsWith(command)) {
+			break;
+		}
+		{<String->Anything()>*} matches = commands.filterKeys((str) => str.startsWith(command));
+		if (matches.size == 1) {
+			assert (exists first = matches.first);
+			first.item();
+		} else if (matches.empty) {
+			cli.println("Unknown command.");
+			usageLambda();
 		} else {
-			cli.println("No unexplored tiles found.");
+			cli.println("That command was ambiguous between the following: ");
+			assert (exists first = matches.first);
+			cli.print(first.key);
+			for (key->val in matches.rest) {
+				cli.print(", ``key``");
+			}
+			cli.println("");
+			usageLambda();
 		}
 	}
-	case ('r') {
-		suggestTrade(model.map, cli.inputPoint("Base location? "),
-			cli.inputNumber("Within how many tiles? "), cli);
-	}
-	else { cli.println("Unknown command."); }
 }
 "A driver for 'querying' the driver model about various things."
 shared object queryCLI satisfies SimpleDriver {
@@ -379,10 +400,7 @@ shared object queryCLI satisfies SimpleDriver {
 		IDriverModel model) {
 		HuntingModel huntModel = HuntingModel(model.map);
 		try {
-			while (exists firstChar = cli.inputString("Command: ").first,
-				firstChar != 'q') {
-				handleCommand(options, model, huntModel, cli, firstChar);
-			}
+			handleCommands(options, model, huntModel, cli);
 		} catch (IOException except) {
 			log.error("I/O error", except);
 		}
