@@ -116,9 +116,6 @@ import strategicprimer.viewer.drivers.query {
 	queryCLI,
 	trappingCLI
 }
-import lovelace.util.common {
-	todo
-}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The method to actually write log messages to stderr."
