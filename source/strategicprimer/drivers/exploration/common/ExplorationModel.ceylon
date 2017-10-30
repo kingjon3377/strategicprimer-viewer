@@ -36,7 +36,8 @@ import strategicprimer.model.map.fixtures {
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
-    Animal
+    Animal,
+	MobileFixture
 }
 import strategicprimer.model.map.fixtures.resources {
     Grove,
@@ -223,6 +224,30 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         case (Direction.west) { return pointFactory(row, decrement(column, maxColumn)); }
         case (Direction.nowhere) { return point; }
     }
+    void fixMovedUnits(Point base) {
+		{<Point->TileFixture>*} localFind(IMapNG mapParam, TileFixture target) => {
+				for (point in mapParam.locations)
+					for (fixture in mapParam.fixtures.get(point)) // TODO: syntax sugar once bug fixed
+						if (fixture == target)
+							point->target
+			};
+        // TODO: Unit vision range
+        {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
+        for ([submap, file] in subordinateMaps) {
+            for (point in points) {
+                for (fixture in submap.fixtures.get(point).narrow<MobileFixture>()) { // TODO: syntax sugar once bug fixed
+                    if (is Animal fixture, fixture.traces) {
+                        continue;
+                    }
+                    for (innerPoint->match in localFind(submap, fixture)) {
+                        if (innerPoint != point, !map.fixtures.get(innerPoint).contains(match)) {// TODO: syntax sugar
+                            submap.removeFixture(innerPoint, match);
+                        }
+                    }
+                }
+            }
+        }
+    }
     "Move the currently selected unit from its current location one tile in the specified
      direction. Moves the unit in all maps where the unit *was* in that tile, copying
      terrain information if the tile didn't exist in a subordinate map. If movement in the
@@ -276,6 +301,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             fireSelectionChange(point, dest);
             fireMovementCost(retval);
             checkAllNearbyWatchers(map, unit, dest);
+            fixMovedUnits(dest);
             return retval;
         } else {
             for (pair in subordinateMaps) {
