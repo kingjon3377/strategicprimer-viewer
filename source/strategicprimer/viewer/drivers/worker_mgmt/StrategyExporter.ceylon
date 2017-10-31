@@ -89,11 +89,11 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             for (kind->list in unitsByKind) {
                 for (unit in list) {
                     String unitOrders = unit.getLatestOrders(turn);
-                    if (unitOrders == unit.getOrders(turn)) {
+                    Integer ordersTurn = unit.getOrdersTurn(unitOrders);
+                    if (unitOrders == unit.getOrders(turn) || ordersTurn < 0) {
                         orders[unit] = unitOrders;
                     } else {
-                        orders[unit] = "(From turn #``unit
-                            .getOrdersTurn(unitOrders)``) ``unitOrders``";
+                        orders[unit] = "(From turn #``ordersTurn``) ``unitOrders``";
                     }
                 }
             }
