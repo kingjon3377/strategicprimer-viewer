@@ -102,15 +102,12 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             writer.writeLine("Inventions: TODO: any?");
             writer.writeLine();
             if (!dismissed.empty) {
-                writer.write("Dismissed workers etc.: ``dismissed
-                    .first else ""``");
+                String workerString(UnitMember? member) =>
+                        if (is HasName member) then member.name
+                            else (member?.string else "");
+                writer.write("Dismissed workers etc.: ``workerString(dismissed.first)``");
                 for (member in dismissed.rest) {
-                    writer.write(", ");
-                    if (is HasName member) {
-                        writer.write(member.name);
-                    } else {
-                        writer.write(member.string);
-                    }
+                    writer.write(", ``workerString(member)``");
                 }
                 writer.writeLine();
                 writer.writeLine();
