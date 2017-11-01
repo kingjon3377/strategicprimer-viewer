@@ -88,6 +88,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         shared actual void remove(MutableTreeNode child) {
             if (is UnitMemberNode child) {
                 unit.removeMember(child.userObjectNarrowed);
+            } else {
+                log.warn("Asked to remove non-UnitMember child from UnitNode");
             }
             super.remove(child);
         }

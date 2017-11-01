@@ -277,13 +277,25 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             log.error("addMember() called on proxy for all units of one kind");
         }
     }
-    todo("FIXME: is this really right?")
     shared actual void removeMember(UnitMember member) {
         if (parallel) {
+            variable Boolean anyFound = false;
             for (unit in proxiedList) {
                 if (exists found = unit.find(member.equals)) {
                     unit.removeMember(found);
+                    anyFound = true;
+                } else if (is ProxyFor<out UnitMember> member, member.parallel) {
+                    for (submember in member.proxied) {
+                        if (exists found = unit.find(submember.equals)) {
+                            unit.removeMember(found);
+                            anyFound = true;
+                            break;
+                        }
+                    }
                 }
+            }
+            if (!anyFound) {
+                log.warn("In ProxyUnit.removeMember(), no units contained a matching member");
             }
         } else {
             log.error("RemoveMember() called on proxy for all units of one kind");
