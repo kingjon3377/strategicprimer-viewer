@@ -203,8 +203,8 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         } else if (is UnitMember item,
             exists parent = model.getUnits(player)
                 .find((unit) => unit.contains(item))) {
-            // FIXME: Assumes units direct children of Player
-            path = TreePath(createJavaObjectArray({root, parent}));
+            // TODO: Do we need to wrap the kind in Types.nativeString()?
+            path = TreePath(createJavaObjectArray({root, parent.kind, parent}));
             indices = createJavaIntArray({getIndexOfChild(parent, item)});
             children = createJavaObjectArray<Object>({item});
         } else {
