@@ -78,7 +78,7 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
                     HasMutableKind temp = fixture;
                     temp.kind = resultString;
                     for (listener in changeListeners) {
-                        listener.moveItem(fixture);
+                        listener.moveItem(fixture, originalKind);
                     }
                 }
             }
