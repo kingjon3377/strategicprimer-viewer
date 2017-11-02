@@ -62,13 +62,13 @@ Integer second(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize
     BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
         tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
     Integer start = system.nanoseconds;
-    Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
+    Coordinate dimensions = coordinateFactory(tileSize, tileSize);
     for (rep in 0:reps) {
         image.flush();
         for (point in map.locations) {
             helper.drawTile(image.createGraphics(), map, point,
-                coordinateFactory(point.row * tileSize, point.column * tileSize,
-                    usePointCache), dimensions);
+                coordinateFactory(point.row * tileSize, point.column * tileSize),
+                dimensions);
         }
     }
     Integer end = system.nanoseconds;
@@ -98,10 +98,10 @@ Integer fourth(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize
     for (rep in 0:reps) {
         image.flush();
         Graphics pen = image.createGraphics();
-        Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
+        Coordinate dimensions = coordinateFactory(tileSize, tileSize);
         for (point in map.locations) {
             helper.drawTile(pen, map, point, coordinateFactory(point.row * tileSize,
-                point.column * tileSize, usePointCache), dimensions);
+                point.column * tileSize), dimensions);
         }
         pen.dispose();
     }
@@ -119,11 +119,11 @@ Integer fifthOne(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSi
     for (rep in 0:reps) {
         image.flush();
         Graphics pen = image.createGraphics();
-        Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
+        Coordinate dimensions = coordinateFactory(tileSize, tileSize);
         for (row in testRowSpan) {
             for (col in testColSpan) {
                 helper.drawTile(pen, map, pointFactory(row, col),
-                    coordinateFactory(row * tileSize, col * tileSize, usePointCache),
+                    coordinateFactory(row * tileSize, col * tileSize),
                     dimensions);
             }
         }
@@ -140,12 +140,12 @@ Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSi
     for (rep in 0:reps) {
         image.flush();
         Graphics pen = image.createGraphics();
-        Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
+        Coordinate dimensions = coordinateFactory(tileSize, tileSize);
         for (point in map.locations) {
             if (testRowSpan.contains(point.row) && testColSpan.contains(point.column)) {
                 helper.drawTile(pen, map, point,
-                    coordinateFactory(point.row * tileSize, point.column * tileSize,
-                        usePointCache), dimensions);
+                    coordinateFactory(point.row * tileSize, point.column * tileSize),
+                    dimensions);
             }
         }
         pen.dispose();
@@ -218,6 +218,7 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
             clearPointCache();
             usePointCache = rng();
             enablePointCache(usePointCache);
+            enableCoordinateCache(usePointCache);
             String cachingMessage(Boolean caching) {
                 return (caching) then "Using cache:" else "Not using cache:";
             }
@@ -226,6 +227,7 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
             runAllTests(cli, map, reps);
             usePointCache = !usePointCache;
             enablePointCache(usePointCache);
+            enableCoordinateCache(usePointCache);
             cli.println(cachingMessage(usePointCache));
             runAllTests(cli, map, reps);
         }
