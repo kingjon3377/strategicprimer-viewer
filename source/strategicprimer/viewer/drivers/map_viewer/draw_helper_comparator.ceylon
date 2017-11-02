@@ -23,9 +23,6 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    SimpleCLIDriver,
-    IMultiMapModel,
-    IDriverModel,
 	UtilityDriver,
 	IncorrectUsageException
 }
