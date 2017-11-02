@@ -181,12 +181,15 @@ object dummyPredicate satisfies Predicate<TileFixture> {
 }
 "Run all the tests on the specified map."
 void runAllTests(ICLIHelper cli, IMapNG map, Integer repetitions) {
+	Accumulator cachingAccumulator = Accumulator();
+	Accumulator directAccumulator = Accumulator();
+	Accumulator ver2Accumulator = Accumulator();
 	{[TileDrawHelper, String, Accumulator]*} helpers = {
-		[CachingTileDrawHelper(), "Caching:", Accumulator()],
-		[directTileDrawHelper, "Direct:", Accumulator()],
+		[CachingTileDrawHelper(), "Caching:", cachingAccumulator],
+		[directTileDrawHelper, "Direct:", directAccumulator],
 		[Ver2TileDrawHelper(dummyObserver, dummyFilter,
 			{FixtureMatcher(dummyFilter, "test")}),
-		"Ver. 2:", Accumulator()]
+		"Ver. 2:", ver2Accumulator]
 	};
     Integer printStats(String prefix, Integer total, Integer reps) {
         cli.println("``prefix``\t``total``, average of ``total / reps`` ns.");
