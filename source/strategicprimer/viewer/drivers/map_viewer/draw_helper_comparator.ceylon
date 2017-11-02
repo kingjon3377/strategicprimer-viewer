@@ -182,15 +182,15 @@ Boolean dummyFilter(TileFixture? fix) => true;
 object dummyPredicate satisfies Predicate<TileFixture> {
     shared actual Boolean test(TileFixture? t) => true;
 }
-{[TileDrawHelper, String, Accumulator]*} helpers = {
-    [CachingTileDrawHelper(), "Caching:", Accumulator()],
-    [directTileDrawHelper, "Direct:", Accumulator()],
-    [Ver2TileDrawHelper(dummyObserver, dummyFilter,
-        {FixtureMatcher(dummyFilter, "test")}),
-        "Ver. 2:", Accumulator()]
-};
 "Run all the tests on the specified map."
 void runAllTests(ICLIHelper cli, IMapNG map, Integer repetitions) {
+	{[TileDrawHelper, String, Accumulator]*} helpers = {
+		[CachingTileDrawHelper(), "Caching:", Accumulator()],
+		[directTileDrawHelper, "Direct:", Accumulator()],
+		[Ver2TileDrawHelper(dummyObserver, dummyFilter,
+			{FixtureMatcher(dummyFilter, "test")}),
+		"Ver. 2:", Accumulator()]
+	};
     Integer printStats(String prefix, Integer total, Integer reps) {
         cli.println("``prefix``\t``total``, average of ``total / reps`` ns.");
         return total;
