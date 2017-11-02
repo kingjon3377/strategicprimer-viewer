@@ -34,7 +34,8 @@ import strategicprimer.model.map {
     TileFixture,
     IMapNG,
     pointFactory,
-    clearPointCache
+    clearPointCache,
+	enablePointCache
 }
 import ceylon.random {
     DefaultRandom
@@ -121,7 +122,7 @@ Integer fifthOne(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSi
         Coordinate dimensions = coordinateFactory(tileSize, tileSize, usePointCache);
         for (row in testRowSpan) {
             for (col in testColSpan) {
-                helper.drawTile(pen, map, pointFactory(row, col, usePointCache),
+                helper.drawTile(pen, map, pointFactory(row, col),
                     coordinateFactory(row * tileSize, col * tileSize, usePointCache),
                     dimensions);
             }
@@ -216,6 +217,7 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
             cli.println("Testing using ``filename?.string else "an unsaved map"``");
             clearPointCache();
             usePointCache = rng();
+            enablePointCache(usePointCache);
             String cachingMessage(Boolean caching) {
                 return (caching) then "Using cache:" else "Not using cache:";
             }
@@ -223,6 +225,7 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
             Integer reps = 50;
             runAllTests(cli, map, reps);
             usePointCache = !usePointCache;
+            enablePointCache(usePointCache);
             cli.println(cachingMessage(usePointCache));
             runAllTests(cli, map, reps);
         }

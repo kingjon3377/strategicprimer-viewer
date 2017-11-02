@@ -15,6 +15,10 @@ MutableMap<Integer, MutableMap<Integer, Point>> pointCache =
         HashMap<Integer, MutableMap<Integer, Point>>();
 "Clear the Point cache. Should only be called by performance-testing code."
 shared void clearPointCache() => pointCache.clear();
+"Whether to use the Point cache."
+variable Boolean useCache = true;
+"Enable or disable the Point cache."
+shared Boolean enablePointCache(Boolean enabled) => useCache = enabled;
 "A wrapper around the [[Point]] constructor that caches Points.
 
  Fairly early in the development of the Java version, I implemented this to try to speed
@@ -25,7 +29,7 @@ shared void clearPointCache() => pointCache.clear();
  it appeared that the cache is faster as the map's size and complexity increased, so I
  decided to leave it."
 suppressWarnings("doclink")
-shared Point pointFactory(Integer row, Integer column, Boolean useCache = true) {
+shared Point pointFactory(Integer row, Integer column) {
     if (useCache) {
         if (exists inner = pointCache[row]) {
             if (exists retval = inner[column]) {
