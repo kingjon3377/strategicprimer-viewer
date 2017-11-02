@@ -6,7 +6,8 @@ import java.awt.image {
     BufferedImage
 }
 import java.nio.file {
-    Path
+    Path,
+	Paths
 }
 import java.util.\ifunction {
     Predicate
@@ -24,7 +25,9 @@ import strategicprimer.drivers.common {
     ParamCount,
     SimpleCLIDriver,
     IMultiMapModel,
-    IDriverModel
+    IDriverModel,
+	UtilityDriver,
+	IncorrectUsageException
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -39,6 +42,11 @@ import strategicprimer.model.map {
 }
 import ceylon.random {
     DefaultRandom
+}
+import strategicprimer.model.xmlio {
+	readMap,
+	Warning,
+	warningLevels
 }
 
 variable Boolean usePointCache = false;
@@ -203,14 +211,17 @@ void runAllTests(ICLIHelper cli, IMapNG map, Integer repetitions) {
     cli.println("");
 }
 "A driver to compare the performance of TileDrawHelpers."
-shared object drawHelperComparator satisfies SimpleCLIDriver {
+shared object drawHelperComparator satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(true, ["-t", "--test"],
         ParamCount.atLeastOne, "Test drawing performance.",
         """Test the performance of the TileDrawHelper classes---which do the heavy lifting
            of rendering the map in the viewer---using a variety of automated tests.""");
     "Run the tests."
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
+    shared actual void startDriverOnArguments(ICLIHelper cli,
+            SPOptions options, String* args) {
+        if (args.size == 0) {
+            throw IncorrectUsageException(usage);
+        }
         Boolean() random = DefaultRandom().nextBoolean;
         void runTestProcedure(ICLIHelper cli, IMapNG map, Path? filename,
                 Boolean() rng) {
@@ -232,12 +243,10 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
             cli.println(cachingMessage(usePointCache));
             runAllTests(cli, map, reps);
         }
-        if (is IMultiMapModel model) {
-            for ([map, file] in model.allMaps) {
-                runTestProcedure(cli, map, file, random);
-            }
-        } else {
-            runTestProcedure(cli, model.map, model.mapFile, random);
+        for (arg in args) {
+            Path path = Paths.get(arg);
+            IMapNG map = readMap(path, warningLevels.ignore);
+            runTestProcedure(cli, map, path, random);
         }
     }
 }
