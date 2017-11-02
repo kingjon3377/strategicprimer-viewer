@@ -241,8 +241,8 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
                 if (countAfterAdding > existingMembersCount) {
                     TreeModelEvent event = TreeModelEvent(this,
                         // TODO: Should `unit.kind` be wrapped in javaString()?
-                            TreePath(createJavaObjectArray({root, unit.kind, unit})), 
-                            createJavaIntArray({existingMembersCount}), 
+                            TreePath(createJavaObjectArray({root, unit.kind, unit})),
+                            createJavaIntArray({existingMembersCount}),
                             createJavaObjectArray({sibling}));
                     for (listener in listeners) {
                         listener.treeNodesInserted(event);

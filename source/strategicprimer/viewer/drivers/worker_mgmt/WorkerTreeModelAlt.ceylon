@@ -350,7 +350,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             UnitMemberNode childNode = UnitMemberNode(sibling);
             parentNode.add(childNode);
             Integer index = getIndexOfChild(parentNode, childNode);
-            fireTreeNodesInserted(this, getPathToRoot(parentNode), createJavaIntArray({index}), 
+            fireTreeNodesInserted(this, getPathToRoot(parentNode), createJavaIntArray({index}),
                 createJavaObjectArray<Object>({childNode}));
         }
     }

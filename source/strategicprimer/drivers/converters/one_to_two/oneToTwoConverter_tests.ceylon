@@ -433,7 +433,7 @@ shared void testThirdOneToTwoConversion() {
         forest("btree2"),
         City(TownStatus.ruined, TownSize.large, 0, "cityName", -1, independent));
     initialize(converted, pointFactory(0, 6), TileType.steppe, groundTwo(),
-        forest("btree2"), SimpleImmortal(SimpleImmortalKind.troll, -1), 
+        forest("btree2"), SimpleImmortal(SimpleImmortalKind.troll, -1),
         field(FieldStatus.growing, "grain2"));
     initialize(converted, pointFactory(0, 7), TileType.steppe, groundTwo(),
         forest("btree2"), StoneDeposit(StoneKind.conglomerate, 0, -1),
@@ -472,7 +472,7 @@ shared void testThirdOneToTwoConversion() {
     initialize(converted, pointFactory(3, 7), TileType.steppe, groundTwo(),
         forest("btree2"), SimpleImmortal(SimpleImmortalKind.griffin, -1));
     initialize(converted, pointFactory(4, 0), TileType.plains, groundThree());
-    initialize(converted, pointFactory(4, 1), TileType.plains, groundThree(), 
+    initialize(converted, pointFactory(4, 1), TileType.plains, groundThree(),
         field(FieldStatus.fallow, "grain3"));
     initialize(converted, pointFactory(4, 3), TileType.plains, groundThree(),
         field(FieldStatus.growing, "grain3"));
@@ -491,23 +491,23 @@ shared void testThirdOneToTwoConversion() {
             forest("ttree4"));
     initialize(converted, pointFactory(5, 5), TileType.tundra, groundFour(),
         orchard("fruit4"));
-    initialize(converted, pointFactory(5, 7), TileType.tundra, groundFour(), 
+    initialize(converted, pointFactory(5, 7), TileType.tundra, groundFour(),
         field(FieldStatus.bearing, "grain4"));
     initialize(converted, pointFactory(6, 0), TileType.plains, groundThree(),
         field(FieldStatus.seeding, "grain3"));
-    initialize(converted, pointFactory(6, 1), TileType.plains, groundThree(), 
+    initialize(converted, pointFactory(6, 1), TileType.plains, groundThree(),
         forest("ttree3"));
     initialize(converted, pointFactory(6, 2), TileType.plains, groundThree(),
         forest("ttree3"));
     initialize(converted, pointFactory(6, 6), TileType.tundra, groundFour());
     initialize(converted, pointFactory(6, 7), TileType.tundra, groundFour());
-    initialize(converted, pointFactory(7, 2), TileType.plains, groundThree(), 
+    initialize(converted, pointFactory(7, 2), TileType.plains, groundThree(),
         forest("ttree3"));
     initialize(converted, pointFactory(7, 4), TileType.tundra, groundFour(),
         field(FieldStatus.bearing, "grain4"));
     initialize(converted, pointFactory(7, 5), TileType.tundra, groundFour(),
         field(FieldStatus.fallow, "grain4"));
-    initialize(converted, pointFactory(7, 6), TileType.tundra, groundFour(), 
+    initialize(converted, pointFactory(7, 6), TileType.tundra, groundFour(),
         orchard("fruit4"));
     for (loc in { pointFactory(4, 1), pointFactory(4, 2), pointFactory(5, 0),
             pointFactory(5, 2), pointFactory(6, 1),
@@ -516,7 +516,7 @@ shared void testThirdOneToTwoConversion() {
         initialize(converted, loc, TileType.plains, groundThree());
         converted.mountainous[loc] = true;
     }
-    for (loc in { pointFactory(4, 4), pointFactory(4, 6), pointFactory(5, 6), 
+    for (loc in { pointFactory(4, 4), pointFactory(4, 6), pointFactory(5, 6),
             pointFactory(6, 4), pointFactory(6, 5),  pointFactory(7, 7) }) {
         initialize(converted, loc, TileType.tundra, groundFour());
     }

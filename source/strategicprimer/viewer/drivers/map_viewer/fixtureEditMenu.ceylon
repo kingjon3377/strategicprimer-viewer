@@ -121,14 +121,14 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
     }
     if (is Animal fixture, !fixture.traces, fixture.population > 1) {
         addMenuItem(JMenuItem("Split animal population", KeyEvent.vkS), (ActionEvent event) {
-            if (exists result = JOptionPane.showInputDialog(retval, 
-                        "Number of animals to split to new population:", "Split Animal Population", 
-                        JOptionPane.plainMessage, null, null, Types.nativeString("0")), 
-                        is Integer num = Integer.parse(result.string.trimmed), num > 0, 
+            if (exists result = JOptionPane.showInputDialog(retval,
+                        "Number of animals to split to new population:", "Split Animal Population",
+                        JOptionPane.plainMessage, null, null, Types.nativeString("0")),
+                        is Integer num = Integer.parse(result.string.trimmed), num > 0,
                         num < fixture.population) {
                 Integer orig = fixture.population;
                 Integer remaining = orig - num;
-                Animal split = Animal(fixture.kind, false, fixture.talking, fixture.status, 
+                Animal split = Animal(fixture.kind, false, fixture.talking, fixture.status,
                     idf.createID(), fixture.born, num);
                 Animal remainder = Animal(fixture.kind, false, fixture.talking, fixture.status,
                         fixture.id, fixture.born, remaining);
