@@ -254,7 +254,6 @@ void initialize(IMutableMapNG map, Point point, TileType? terrain,
 test
 suppressWarnings("deprecation")
 void testZeroToOneConversion() {
-    // FIXME: Include tile fixtures beyond those implicit in events
     String orig =
             """<map xmlns:sp="spNamespaceXYZZY" version="0" rows="2" columns="2">
                        <player number="0" code_name="Test Player" />
