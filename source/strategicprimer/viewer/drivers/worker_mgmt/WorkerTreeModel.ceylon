@@ -179,8 +179,12 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
             path = TreePath(createJavaObjectArray({root, parent.kind, parent}));
             indices = createJavaIntArray({getIndexOfChild(parent, item)});
             children = createJavaObjectArray<Object>({item});
+        } else if (is Player item) {
+            // ignore
+            return;
         } else {
-            // Probably the player; in any case, ignore.
+            log.warn("In WorkerTreeModel.renameItem(), item was neither unit nor unit member");
+            // Ignore, as it's something we don't know how to handle. If we see log messages, revisit.
             return;
         }
         TreeModelEvent event = TreeModelEvent(this, path, indices, children);
