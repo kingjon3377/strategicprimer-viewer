@@ -35,7 +35,6 @@ import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
 "A TreeModel implementation for a player's units and workers."
-// FIXME: Some methods assume Player->IUnit, while others assume Player->String->IUnit
 class WorkerTreeModel(variable Player player, IWorkerModel model)
         satisfies IWorkerTreeModel {
     MutableList<UnitMember> dismissedMembers = ArrayList<UnitMember>();
@@ -197,10 +196,12 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         IntArray indices;
         ObjectArray<Object> children;
         if (is IUnit item) {
-            // TODO: Pass former kind in here, since there's no way we could know it
-            path = TreePath(createJavaObjectArray({root}));
-            indices = createJavaIntArray({getIndexOfChild(root, item)});
-            children = createJavaObjectArray<Object>({item});
+            // TODO: Pass former kind in here, then implement properly.
+            // Because this means the unit has moved from one subtree to another, and at
+            // present there is literally no way to know where it came from, we punt, telling
+            // listeners to reload the whole tree.
+            playerChanged(root, root);
+            return;
         } else if (is UnitMember item,
             exists parent = model.getUnits(player)
                 .find((unit) => unit.contains(item))) {
