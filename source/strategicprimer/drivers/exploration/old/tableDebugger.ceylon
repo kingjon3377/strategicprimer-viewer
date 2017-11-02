@@ -1,7 +1,3 @@
-import ceylon.collection {
-    MutableSet,
-    HashSet
-}
 import ceylon.file {
     Directory,
     parsePath
@@ -9,10 +5,6 @@ import ceylon.file {
 
 import java.lang {
     IllegalStateException
-}
-
-import lovelace.util.common {
-    todo
 }
 
 import strategicprimer.drivers.common {
@@ -57,14 +49,13 @@ object tableDebugger satisfies SimpleCLIDriver {
             "The stream to write to"
             Anything(String) ostream,
             "The set of tables already on the stack, to prevent infinite recursion"
-            todo("Use plain {EncounterTable*} instead of a Set?")
-            MutableSet<EncounterTable> set) {
+            {EncounterTable*} set) {
         if (set.contains(table)) {
             ostream("table ``tableName`` is already on the stack, skipping ...");
             ostream("The cause was: ``before``#``tableName``#``after``");
             return;
         }
-        set.add(table);
+        {EncounterTable*} innerState = set.follow(table);
         for (item in table.allEvents) {
             if (item.contains("#")) {
                 {String+} parsed = item.split('#'.equals, true, false, 3);
@@ -72,17 +63,16 @@ object tableDebugger satisfies SimpleCLIDriver {
                 debugSingleTable("``before````parsed.first``",
                     "``parsed.rest.rest.first else ""````after``",
                     runner.getTable(callee), callee,
-                    ostream, set);
+                    ostream, innerState);
             } else {
                 ostream("``before````item````after``");
             }
         }
-        set.remove(table);
     }
     shared actual void startDriverNoArgs(ICLIHelper cli, SPOptions options) {
         runner.verboseGlobalRecursiveCheck((String line) => cli.println(line));
         EncounterTable mainTable = runner.getTable("main");
         debugSingleTable("", "", mainTable, "main",
-                    (string) => cli.println(string), HashSet<EncounterTable>());
+                    (string) => cli.println(string), {});
     }
 }
