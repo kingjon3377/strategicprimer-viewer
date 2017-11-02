@@ -216,6 +216,7 @@ shared object drawHelperComparator satisfies SimpleCLIDriver {
                 Boolean() rng) {
             cli.println("Testing using ``filename?.string else "an unsaved map"``");
             clearPointCache();
+            clearCoordinateCache();
             usePointCache = rng();
             enablePointCache(usePointCache);
             enableCoordinateCache(usePointCache);

@@ -8,7 +8,8 @@ import ceylon.collection {
 variable Boolean useCache = true;
 "Enable the cache of [[Coordinate]]s. This should only be called from test code."
 shared void enableCoordinateCache(Boolean enabled) => useCache = enabled;
-// FIXME: Provide, and call from test code where appropriate, a method to clear the cache.
+"Clear the [[Coordinate]] cache. This should only be called from test code."
+shared void clearCoordinateCache() => coordinateCache.clear();
 "Cache of Coordinates. I use two levels of Maps rather than using Tuples as keys because I
  have a hunch this is faster."
 todo("Measure that", "Java version used ConcurrentHashMap, while this isn't thread-safe",
