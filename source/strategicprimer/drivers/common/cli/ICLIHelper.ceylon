@@ -93,7 +93,7 @@ shared interface ICLIHelper {
     "Print the specified string, then a newline."
     shared formal void println(
             "The line to print"
-            String line);
+            String line); // TODO: Default to ""
     "Print the specified string."
     shared formal void print(
             "The string to print."

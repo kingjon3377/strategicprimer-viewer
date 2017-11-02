@@ -45,6 +45,10 @@ import strategicprimer.model.xmlio {
 	Warning,
 	warningLevels
 }
+import ceylon.collection {
+	MutableMap,
+	HashMap
+}
 
 variable Boolean usePointCache = false;
 "The first test: all in one place."
@@ -179,25 +183,32 @@ Boolean dummyFilter(TileFixture? fix) => true;
 object dummyPredicate satisfies Predicate<TileFixture> {
     shared actual Boolean test(TileFixture? t) => true;
 }
+{[TileDrawHelper, String]*} createHelpers() => { [CachingTileDrawHelper(), "Caching:"],
+	[directTileDrawHelper, "Direct:"],
+	[Ver2TileDrawHelper(dummyObserver, dummyFilter, {FixtureMatcher(dummyFilter, "test")}), "Ver 2:"]
+};
+MutableMap<[Boolean, String, String, String], Accumulator> results = HashMap<[Boolean, String, String, String], Accumulator>();
+Accumulator getResultsAccumulator(String file, String testee, String test) {
+	[Boolean, String, String, String] tuple = [usePointCache, file, testee, test];
+	if (exists retval = results[tuple]) {
+		return retval;
+	} else {
+		Accumulator retval = Accumulator();
+		results.put(tuple, retval);
+		return retval;
+	}
+}
+{[TileDrawHelper, String]*} helpers = createHelpers();
 "Run all the tests on the specified map."
-void runAllTests(ICLIHelper cli, IMapNG map, Integer repetitions) {
-	Accumulator cachingAccumulator = Accumulator();
-	Accumulator directAccumulator = Accumulator();
-	Accumulator ver2Accumulator = Accumulator();
-	{[TileDrawHelper, String, Accumulator]*} helpers = {
-		[CachingTileDrawHelper(), "Caching:", cachingAccumulator],
-		[directTileDrawHelper, "Direct:", directAccumulator],
-		[Ver2TileDrawHelper(dummyObserver, dummyFilter,
-			{FixtureMatcher(dummyFilter, "test")}),
-		"Ver. 2:", ver2Accumulator]
-	};
-    Integer printStats(String prefix, Integer total, Integer reps) {
-        cli.println("``prefix``\t``total``, average of ``total / reps`` ns.");
-        return total;
-    }
+void runAllTests(ICLIHelper cli, IMapNG map, String fileName, Integer repetitions) {
+	Integer printStats(String prefix, Integer total, Integer reps) {
+		cli.println("``prefix``\t``total``, average of ``total / reps`` ns.");
+		return total;
+	}
     for ([testDesc, test] in tests) {
         cli.println("``testDesc``:");
-        for ([testCase, caseDesc, accumulator] in helpers) {
+        for ([testCase, caseDesc] in helpers) {
+            Accumulator accumulator = getResultsAccumulator(fileName, caseDesc, testDesc);
             accumulator.add(printStats(caseDesc, test(testCase, map, repetitions,
                 scaleZoom(ViewerModel.defaultZoomLevel, map.dimensions.version)),
                 repetitions));
@@ -205,8 +216,9 @@ void runAllTests(ICLIHelper cli, IMapNG map, Integer repetitions) {
     }
     cli.println("----------------------------------------");
     cli.print("Total:");
-    for ([testCase, caseDesc, accumulator] in helpers) {
-        printStats(caseDesc, accumulator.storedValue, repetitions);
+    for ([testCase, caseDesc] in helpers) {
+        printStats(caseDesc, results.filterKeys((tuple) => tuple.startsWith([usePointCache, fileName, caseDesc]))
+            .items.map(Accumulator.storedValue).fold(0)(plus), repetitions);
     }
     cli.println("");
 }
@@ -223,9 +235,9 @@ shared object drawHelperComparator satisfies UtilityDriver {
             throw IncorrectUsageException(usage);
         }
         Boolean() random = DefaultRandom().nextBoolean;
-        void runTestProcedure(ICLIHelper cli, IMapNG map, Path? filename,
+        void runTestProcedure(ICLIHelper cli, IMapNG map, String filename,
                 Boolean() rng) {
-            cli.println("Testing using ``filename?.string else "an unsaved map"``");
+            cli.println("Testing using ``filename``");
             clearPointCache();
             clearCoordinateCache();
             usePointCache = rng();
@@ -236,17 +248,47 @@ shared object drawHelperComparator satisfies UtilityDriver {
             }
             cli.println(cachingMessage(usePointCache));
             Integer reps = 50;
-            runAllTests(cli, map, reps);
+            runAllTests(cli, map, filename, reps);
             usePointCache = !usePointCache;
             enablePointCache(usePointCache);
             enableCoordinateCache(usePointCache);
             cli.println(cachingMessage(usePointCache));
-            runAllTests(cli, map, reps);
+            runAllTests(cli, map, filename, reps);
         }
         for (arg in args) {
             Path path = Paths.get(arg);
             IMapNG map = readMap(path, warningLevels.ignore);
-            runTestProcedure(cli, map, path, random);
+            runTestProcedure(cli, map, path.string else "an unsaved map", random);
+        }
+        cli.println("");
+        cli.println("----------------------------------------");
+        cli.print("Total with cache:");
+        for ([testDesc, test] in tests) {
+            cli.println(testDesc);
+            for ([testCase, caseDesc] in helpers) {
+                cli.print(caseDesc);
+                variable Integer total = 0;
+                for (file in args) {
+                    if (exists result = results[[true, file, caseDesc, testDesc]]) {
+                        total += result.storedValue;
+                    }
+                }
+                cli.println("\t``total`` ns");
+            }
+        }
+        cli.print("Total without cache:");
+        for ([testDesc, test] in tests) {
+            cli.println(testDesc);
+            for ([testCase, caseDesc] in helpers) {
+                cli.print(caseDesc);
+                variable Integer total = 0;
+                for (file in args) {
+                    if (exists result = results[[false, file, caseDesc, testDesc]]) {
+                        total += result.storedValue;
+                    }
+                }
+                cli.println("\t``total`` ns");
+            }
         }
     }
 }
