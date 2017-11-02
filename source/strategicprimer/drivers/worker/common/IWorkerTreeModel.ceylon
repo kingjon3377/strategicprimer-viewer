@@ -44,6 +44,7 @@ shared interface IWorkerTreeModel
     shared formal void renameItem(HasMutableName item);
     "Update the tree to reflect a change in something's kind. If a unit, this means it
      has moved in the tree, since units' kinds are their parent nodes now."
+    // FIXME: Need to pass in the former kind, so the perceived change to the tree can be limited.
     shared formal void moveItem(HasKind kind);
     "Dismiss a unit member from a unit and from the player's service."
     shared formal void dismissUnitMember(UnitMember member);
