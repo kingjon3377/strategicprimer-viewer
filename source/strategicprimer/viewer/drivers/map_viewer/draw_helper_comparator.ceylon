@@ -42,12 +42,16 @@ import ceylon.random {
 }
 import strategicprimer.model.xmlio {
 	readMap,
-	Warning,
 	warningLevels
 }
 import ceylon.collection {
 	MutableMap,
 	HashMap
+}
+import ceylon.file {
+	File,
+	parsePath,
+	Nil
 }
 
 variable Boolean usePointCache = false;
@@ -224,10 +228,16 @@ void runAllTests(ICLIHelper cli, IMapNG map, String fileName, Integer repetition
 }
 "A driver to compare the performance of TileDrawHelpers."
 shared object drawHelperComparator satisfies UtilityDriver {
-    shared actual IDriverUsage usage = DriverUsage(true, ["-t", "--test"],
-        ParamCount.atLeastOne, "Test drawing performance.",
-        """Test the performance of the TileDrawHelper classes---which do the heavy lifting
-           of rendering the map in the viewer---using a variety of automated tests.""");
+    shared actual IDriverUsage usage = DriverUsage {
+	        graphical = true;
+	        invocations = ["-t", "--test"];
+	        paramsWanted = ParamCount.atLeastOne;
+	        shortDescription = "Test drawing performance.";
+	        longDescription =
+	            """Test the performance of the TileDrawHelper classes---which do the heavy lifting
+	               of rendering the map in the viewer---using a variety of automated tests.""";
+	        supportedOptionsTemp = ["--report=out.csv"];
+    };
     "Run the tests."
     shared actual void startDriverOnArguments(ICLIHelper cli,
             SPOptions options, String* args) {
@@ -235,6 +245,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
             throw IncorrectUsageException(usage);
         }
         Boolean() random = DefaultRandom().nextBoolean;
+        Integer reps = 50;
         void runTestProcedure(ICLIHelper cli, IMapNG map, String filename,
                 Boolean() rng) {
             cli.println("Testing using ``filename``");
@@ -247,7 +258,6 @@ shared object drawHelperComparator satisfies UtilityDriver {
                 return (caching) then "Using cache:" else "Not using cache:";
             }
             cli.println(cachingMessage(usePointCache));
-            Integer reps = 50;
             runAllTests(cli, map, filename, reps);
             usePointCache = !usePointCache;
             enablePointCache(usePointCache);
@@ -255,39 +265,42 @@ shared object drawHelperComparator satisfies UtilityDriver {
             cli.println(cachingMessage(usePointCache));
             runAllTests(cli, map, filename, reps);
         }
+        MutableMap<String, Integer> mapSizes = HashMap<String, Integer>();
         for (arg in args) {
             Path path = Paths.get(arg);
             IMapNG map = readMap(path, warningLevels.ignore);
+            mapSizes[arg] = map.locations.size;
             runTestProcedure(cli, map, path.string else "an unsaved map", random);
         }
         cli.println("");
         cli.println("----------------------------------------");
         cli.print("Total with cache:");
-        for ([testDesc, test] in tests) {
-            cli.println(testDesc);
-            for ([testCase, caseDesc] in helpers) {
-                cli.print(caseDesc);
-                variable Integer total = 0;
-                for (file in args) {
-                    if (exists result = results[[true, file, caseDesc, testDesc]]) {
-                        total += result.storedValue;
-                    }
-                }
-                cli.println("\t``total`` ns");
+        String reportFilename = options.getArgument("--report");
+        if (reportFilename != "false") {
+            File outFile;
+            switch (resource = parsePath(reportFilename).resource)
+            case (is Nil) {
+                outFile = resource.createFile();
             }
-        }
-        cli.print("Total without cache:");
-        for ([testDesc, test] in tests) {
-            cli.println(testDesc);
-            for ([testCase, caseDesc] in helpers) {
-                cli.print(caseDesc);
-                variable Integer total = 0;
-                for (file in args) {
-                    if (exists result = results[[false, file, caseDesc, testDesc]]) {
-                        total += result.storedValue;
+            case (is File) {
+                outFile = resource;
+            }
+            else {
+                cli.println("Specified file to write details to is present but not a regular file");
+                return;
+            }
+            try (writer = outFile.Overwriter()) {
+                writer.writeLine(
+                    "Filename,Tile Count,Caching,DrawHelper Tested,Test Case,Repetitions,Time (ns)");
+                for ([caching, file, helper, test]->total in results) {
+                    writer.write("\"``file``\",``mapSizes[file] else ""``,");
+                    if (caching) {
+                        writer.write("Nested");
+                    } else {
+                        writer.write("None");
                     }
+                    writer.writeLine(",\"``helper``\",\"``test``\",``reps``,``total.storedValue``");
                 }
-                cli.println("\t``total`` ns");
             }
         }
     }
