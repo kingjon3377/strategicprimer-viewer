@@ -274,7 +274,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 createJavaObjectArray({node}));
         }
     }
-    shared actual void moveItem(HasKind item) {
+    shared actual void moveItem(HasKind item, String priorKind) {
         assert (is PlayerNode temp = root);
         if (is UnitMember item) {
             if (is TreeNode node = getNode(temp, item)) {

@@ -191,20 +191,19 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
             listener.treeNodesChanged(event);
         }
     }
-    shared actual void moveItem(HasKind item) {
+    shared actual void moveItem(HasKind item, String priorKind) {
         TreePath path;
         IntArray indices;
         ObjectArray<Object> children;
         if (is IUnit item) {
-            // TODO: Pass former kind in here, then implement properly.
-            // Because this means the unit has moved from one subtree to another, and at
-            // present there is literally no way to know where it came from, we punt, telling
-            // listeners to reload the whole tree.
-            playerChanged(root, root);
-            return;
+            path = TreePath(createJavaObjectArray({root}));
+            indices = createJavaIntArray({getIndexOfChild(root, priorKind), getIndexOfChild(root, item.kind)});
+            // TODO: Do we need to wrap these in Types.nativeString()?
+            children = createJavaObjectArray<Object>({priorKind, item.kind});
         } else if (is UnitMember item,
             exists parent = model.getUnits(player)
                 .find((unit) => unit.contains(item))) {
+            // FIXME: Assumes units direct children of Player
             path = TreePath(createJavaObjectArray({root, parent}));
             indices = createJavaIntArray({getIndexOfChild(parent, item)});
             children = createJavaObjectArray<Object>({item});
