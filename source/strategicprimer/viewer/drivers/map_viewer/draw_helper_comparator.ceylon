@@ -272,9 +272,6 @@ shared object drawHelperComparator satisfies UtilityDriver {
             mapSizes[arg] = map.locations.size;
             runTestProcedure(cli, map, path.string else "an unsaved map", random);
         }
-        cli.println("");
-        cli.println("----------------------------------------");
-        cli.print("Total with cache:");
         String reportFilename = options.getArgument("--report");
         if (reportFilename != "false") {
             File outFile;
