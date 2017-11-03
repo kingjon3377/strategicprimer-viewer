@@ -35,10 +35,13 @@ import strategicprimer.model.map {
     IMapNG,
     pointFactory,
     clearPointCache,
-	enablePointCache
+	CachingStrategy,
+	pointCachingStrategy
 }
 import ceylon.random {
-    DefaultRandom
+    DefaultRandom,
+	Random,
+	randomize
 }
 import strategicprimer.model.xmlio {
 	readMap,
@@ -191,9 +194,9 @@ object dummyPredicate satisfies Predicate<TileFixture> {
 	[directTileDrawHelper, "Direct:"],
 	[Ver2TileDrawHelper(dummyObserver, dummyFilter, {FixtureMatcher(dummyFilter, "test")}), "Ver 2:"]
 };
-MutableMap<[Boolean, String, String, String], Accumulator> results = HashMap<[Boolean, String, String, String], Accumulator>();
+MutableMap<[CachingStrategy, String, String, String], Accumulator> results = HashMap<[CachingStrategy, String, String, String], Accumulator>();
 Accumulator getResultsAccumulator(String file, String testee, String test) {
-	[Boolean, String, String, String] tuple = [usePointCache, file, testee, test];
+	[CachingStrategy, String, String, String] tuple = [pointCachingStrategy, file, testee, test];
 	if (exists retval = results[tuple]) {
 		return retval;
 	} else {
@@ -244,33 +247,26 @@ shared object drawHelperComparator satisfies UtilityDriver {
         if (args.size == 0) {
             throw IncorrectUsageException(usage);
         }
-        Boolean() random = DefaultRandom().nextBoolean;
+        Random random = DefaultRandom();
         Integer reps = 50;
-        void runTestProcedure(ICLIHelper cli, IMapNG map, String filename,
-                Boolean() rng) {
+        {CachingStrategy*} cachingStrategies = `CachingStrategy`.caseValues;
+        void runTestProcedure(ICLIHelper cli, IMapNG map, String filename) {
             cli.println("Testing using ``filename``");
             clearPointCache();
             clearCoordinateCache();
-            usePointCache = rng();
-            enablePointCache(usePointCache);
-            enableCoordinateCache(usePointCache);
-            String cachingMessage(Boolean caching) {
-                return (caching) then "Using cache:" else "Not using cache:";
+            for (strategy in randomize(cachingStrategies)) {
+                pointCachingStrategy = strategy;
+                coordinateCachingStrategy = strategy;
+                cli.println("Using ``strategy`` caching strategy");
+                runAllTests(cli, map, filename, reps);
             }
-            cli.println(cachingMessage(usePointCache));
-            runAllTests(cli, map, filename, reps);
-            usePointCache = !usePointCache;
-            enablePointCache(usePointCache);
-            enableCoordinateCache(usePointCache);
-            cli.println(cachingMessage(usePointCache));
-            runAllTests(cli, map, filename, reps);
         }
         MutableMap<String, Integer> mapSizes = HashMap<String, Integer>();
         for (arg in args) {
             Path path = Paths.get(arg);
             IMapNG map = readMap(path, warningLevels.ignore);
             mapSizes[arg] = map.locations.size;
-            runTestProcedure(cli, map, path.string else "an unsaved map", random);
+            runTestProcedure(cli, map, path.string else "an unsaved map");
         }
         String reportFilename = options.getArgument("--report");
         if (reportFilename != "false") {
@@ -289,13 +285,8 @@ shared object drawHelperComparator satisfies UtilityDriver {
             try (writer = outFile.Overwriter()) {
                 writer.writeLine(
                     "Filename,Tile Count,Caching,DrawHelper Tested,Test Case,Repetitions,Time (ns)");
-                for ([caching, file, helper, test]->total in results) {
-                    writer.write("\"``file``\",``mapSizes[file] else ""``,");
-                    if (caching) {
-                        writer.write("Nested");
-                    } else {
-                        writer.write("None");
-                    }
+                for ([cachingStrategy, file, helper, test]->total in results) {
+                    writer.write("\"``file``\",``mapSizes[file] else ""``,``cachingStrategy``");
                     writer.writeLine(",\"``helper``\",\"``test``\",``reps``,``total.storedValue``");
                 }
             }

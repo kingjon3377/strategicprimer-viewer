@@ -13,12 +13,24 @@ todo("Measure that",
         "The Java version used ConcurrentHashMap, while this isn't thread-safe")
 MutableMap<Integer, MutableMap<Integer, Point>> pointCache =
         HashMap<Integer, MutableMap<Integer, Point>>();
+MutableMap<[Integer, Integer], Point> pointTupleCache = HashMap<[Integer, Integer], Point>();
 "Clear the Point cache. Should only be called by performance-testing code."
-shared void clearPointCache() => pointCache.clear();
-"Whether to use the Point cache."
-variable Boolean useCache = true;
-"Enable or disable the Point cache."
-shared Boolean enablePointCache(Boolean enabled) => useCache = enabled;
+shared void clearPointCache() {
+	pointCache.clear();
+	pointTupleCache.clear();
+}
+"How to acquire Points and similar objects."
+shared class CachingStrategy of constructor|multilevel|tuple {
+	shared actual String string;
+	"Delegate to the constructor instead of caching."
+	shared new constructor { string = "no-cache"; }
+	"Use a Map of Maps, with Integers as keys in both cases, as a cache."
+	shared new multilevel { string = "multi-level"; }
+	"Use a Map with Tuples as keys as a cache."
+	shared new tuple { string = "tuple-based"; }
+}
+"How to acquire [[Point]]s."
+shared variable CachingStrategy pointCachingStrategy = CachingStrategy.multilevel;
 "A wrapper around the [[Point]] constructor that caches Points.
 
  Fairly early in the development of the Java version, I implemented this to try to speed
@@ -30,7 +42,8 @@ shared Boolean enablePointCache(Boolean enabled) => useCache = enabled;
  decided to leave it."
 suppressWarnings("doclink")
 shared Point pointFactory(Integer row, Integer column) {
-    if (useCache) {
+	switch (pointCachingStrategy)
+	case (CachingStrategy.multilevel) {
         if (exists inner = pointCache[row]) {
             if (exists retval = inner[column]) {
                 return retval;
@@ -45,8 +58,19 @@ shared Point pointFactory(Integer row, Integer column) {
             pointCache[row] = inner;
             return retval;
         }
-    } else {
+    }
+    case (CachingStrategy.constructor) {
         return PointImpl(row, column);
+    }
+    case (CachingStrategy.tuple) {
+        [Integer, Integer] tuple = [row, column];
+        if (exists retval = pointTupleCache[tuple]) {
+            return retval;
+        } else {
+            Point retval = PointImpl(row, column);
+            pointTupleCache[tuple] = retval;
+            return retval;
+        }
     }
 }
 "A structure encapsulating two coordinates."
