@@ -9,10 +9,6 @@ import java.nio.file {
     Path,
 	Paths
 }
-import java.util.\ifunction {
-    Predicate
-}
-
 import strategicprimer.viewer.drivers.map_viewer {
     CachingTileDrawHelper,
     directTileDrawHelper,
