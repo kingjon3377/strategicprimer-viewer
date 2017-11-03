@@ -250,7 +250,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
             cli.println("Testing using ``filename``");
             clearPointCache();
             clearCoordinateCache();
-            for (strategy in randomize(cachingStrategies)) {
+            for (strategy in randomize(cachingStrategies, random)) {
                 pointCachingStrategy = strategy;
                 coordinateCachingStrategy = strategy;
                 cli.println("Using ``strategy`` caching strategy");
