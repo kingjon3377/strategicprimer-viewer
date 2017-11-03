@@ -188,9 +188,6 @@ shared object drawHelperComparator satisfies UtilityDriver {
 			false;
 
 	Boolean dummyFilter(TileFixture? fix) => true;
-	object dummyPredicate satisfies Predicate<TileFixture> {
-		shared actual Boolean test(TileFixture? t) => true;
-	}
 	{[TileDrawHelper, String]*} createHelpers() => { [CachingTileDrawHelper(), "Caching:"],
 		[directTileDrawHelper, "Direct:"],
 		[Ver2TileDrawHelper(dummyObserver, dummyFilter, {FixtureMatcher(dummyFilter, "test")}), "Ver 2:"]
