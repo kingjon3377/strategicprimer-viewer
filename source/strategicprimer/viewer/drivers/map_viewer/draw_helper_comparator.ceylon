@@ -57,7 +57,6 @@ import ceylon.file {
 	Nil
 }
 
-variable Boolean usePointCache = false;
 "The first test: all in one place."
 Integer first(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
     BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
@@ -224,7 +223,7 @@ void runAllTests(ICLIHelper cli, IMapNG map, String fileName, Integer repetition
     cli.println("----------------------------------------");
     cli.print("Total:");
     for ([testCase, caseDesc] in helpers) {
-        printStats(caseDesc, results.filterKeys((tuple) => tuple.startsWith([usePointCache, fileName, caseDesc]))
+        printStats(caseDesc, results.filterKeys((tuple) => tuple.startsWith([pointCachingStrategy, fileName, caseDesc]))
             .items.map(Accumulator.storedValue).fold(0)(plus), repetitions);
     }
     cli.println("");
