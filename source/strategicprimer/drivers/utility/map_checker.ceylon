@@ -74,88 +74,89 @@ import ceylon.logging {
 }
 
 Logger log = logger(`module strategicprimer.drivers.utility`);
-"""An interface for checks of a map's *contents* that we don't want the XML-*reading*
-   code to do."""
-alias Checker=>Anything(TileType, Point, IFixture, Warning);
-class SPContentWarning(Point context, String message)
-        extends Exception("At ``context``: ``message``") { }
-void lateriteChecker(TileType terrain, Point context, IFixture fixture,
-        Warning warner) {
-    if (is StoneDeposit fixture, StoneKind.laterite ==fixture.stone,
-            !TileType.jungle == terrain) {
-        warner.handle(SPContentWarning(context, "Laterite stone in non-jungle"));
-    }
-}
+// Left outside mapCheckerCLI because it's also used in the todoFixerCLI.
 {String+} landRaces = { "Danan", "dwarf", "elf", "half-elf", "gnome", "human" };
-void aquaticVillageChecker(TileType terrain, Point context, IFixture fixture,
-        Warning warner) {
-    if (is Village fixture, landRaces.contains(fixture.race),
-            TileType.ocean == terrain) {
-        warner.handle(SPContentWarning(context,
-            "Aquatic village has non-aquatic race"));
-    }
-}
-Boolean suspiciousSkill(IJob job) {
-    if (job.size > 1) {
-        return false;
-    } else {
-        return {*job}.any(suspiciousSkills.contains);
-    }
-}
-void suspiciousSkillCheck(TileType terrain, Point context, IFixture fixture,
-        Warning warner) {
-    if (is IWorker fixture) {
-        if ({*fixture}.any(suspiciousSkill)) {
-            warner.handle(SPContentWarning(context,
-                "``fixture.name`` has a Job with one suspiciously-named Skill"));
-        }
-        for (job in fixture) {
-            for (skill in job) {
-                if (skill.name == "miscellaneous", skill.level > 0) {
-                    warner.handle(SPContentWarning(context,
-                        "``fixture.name`` has a level in 'miscellaneous'"));
-                    return;
-                }
-            }
-        }
-    }
-}
-{String+} placeholderKinds = { "various", "unknown" };
-{String+} placeholderUnits = { "unit", "units" };
-void resourcePlaceholderChecker(TileType terrain, Point context, IFixture fixture,
-        Warning warner) {
-    if (is ResourcePile fixture) {
-        if (placeholderKinds.contains(fixture.kind)) {
-            warner.handle(SPContentWarning(context,
-                "Resource pile, ID #``fixture.id``, has placeholder kind: ``fixture
-                    .kind``"));
-        } else if (placeholderKinds.contains(fixture.contents)) {
-            warner.handle(SPContentWarning(context,
-                "Resource pile, ID #``fixture.id``, has placeholder contents: ``fixture
-                    .contents``"));
-        } else if (placeholderUnits.contains(fixture.quantity.units)) {
-            warner.handle(SPContentWarning(context,
-                "Resource pile, ID #``fixture.id``, has placeholder units"));
-        } else if (fixture.contents.contains('#')) {
-            warner.handle(SPContentWarning(context, "Resource pile, ID #``fixture
-                .id``, has suspicous contents: ``fixture.contents``"));
-        }
-    } else if (is ITownFixture fixture, exists stats = fixture.population) {
-        for (resource in stats.yearlyConsumption) {
-            resourcePlaceholderChecker(terrain, context, resource, warner);
-        }
-        for (resource in stats.yearlyProduction) {
-            resourcePlaceholderChecker(terrain, context, resource, warner);
-        }
-    }
-}
-{Checker+} extraChecks = { lateriteChecker, aquaticVillageChecker, suspiciousSkillCheck,
-    resourcePlaceholderChecker };
 "A driver to check every map file in a list for errors."
 shared object mapCheckerCLI satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-k", "--check"],
         ParamCount.atLeastOne, "Check map for errors",
         "Check a map file for errors, deprecated syntax, etc.");
+    """An interface for checks of a map's *contents* that we don't want the XML-*reading*
+       code to do."""
+    alias Checker=>Anything(TileType, Point, IFixture, Warning);
+    class SPContentWarning(Point context, String message)
+            extends Exception("At ``context``: ``message``") { }
+    void lateriteChecker(TileType terrain, Point context, IFixture fixture,
+        Warning warner) {
+        if (is StoneDeposit fixture, StoneKind.laterite ==fixture.stone,
+            !TileType.jungle == terrain) {
+            warner.handle(SPContentWarning(context, "Laterite stone in non-jungle"));
+        }
+    }
+    void aquaticVillageChecker(TileType terrain, Point context, IFixture fixture,
+        Warning warner) {
+        if (is Village fixture, landRaces.contains(fixture.race),
+            TileType.ocean == terrain) {
+            warner.handle(SPContentWarning(context,
+                "Aquatic village has non-aquatic race"));
+        }
+    }
+    Boolean suspiciousSkill(IJob job) {
+        if (job.size > 1) {
+            return false;
+        } else {
+            return {*job}.any(suspiciousSkills.contains);
+        }
+    }
+    void suspiciousSkillCheck(TileType terrain, Point context, IFixture fixture,
+        Warning warner) {
+        if (is IWorker fixture) {
+            if ({*fixture}.any(suspiciousSkill)) {
+                warner.handle(SPContentWarning(context,
+                    "``fixture.name`` has a Job with one suspiciously-named Skill"));
+            }
+            for (job in fixture) {
+                for (skill in job) {
+                    if (skill.name == "miscellaneous", skill.level > 0) {
+                        warner.handle(SPContentWarning(context,
+                            "``fixture.name`` has a level in 'miscellaneous'"));
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    {String+} placeholderKinds = { "various", "unknown" };
+    {String+} placeholderUnits = { "unit", "units" };
+    void resourcePlaceholderChecker(TileType terrain, Point context, IFixture fixture,
+        Warning warner) {
+        if (is ResourcePile fixture) {
+            if (placeholderKinds.contains(fixture.kind)) {
+                warner.handle(SPContentWarning(context,
+                    "Resource pile, ID #``fixture.id``, has placeholder kind: ``fixture
+                            .kind``"));
+            } else if (placeholderKinds.contains(fixture.contents)) {
+                warner.handle(SPContentWarning(context,
+                    "Resource pile, ID #``fixture.id``, has placeholder contents: ``fixture
+                            .contents``"));
+            } else if (placeholderUnits.contains(fixture.quantity.units)) {
+                warner.handle(SPContentWarning(context,
+                    "Resource pile, ID #``fixture.id``, has placeholder units"));
+            } else if (fixture.contents.contains('#')) {
+                warner.handle(SPContentWarning(context, "Resource pile, ID #``fixture
+                    .id``, has suspicous contents: ``fixture.contents``"));
+            }
+        } else if (is ITownFixture fixture, exists stats = fixture.population) {
+            for (resource in stats.yearlyConsumption) {
+                resourcePlaceholderChecker(terrain, context, resource, warner);
+            }
+            for (resource in stats.yearlyProduction) {
+                resourcePlaceholderChecker(terrain, context, resource, warner);
+            }
+        }
+    }
+    {Checker+} extraChecks = { lateriteChecker, aquaticVillageChecker, suspiciousSkillCheck,
+        resourcePlaceholderChecker };
     void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
             IFixture* list) {
         for (fixture in list) {
