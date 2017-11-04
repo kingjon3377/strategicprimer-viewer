@@ -242,87 +242,89 @@ object zeroToOneConverter {
         ostream(operatingSystem.newline);
     }
 }
-void initialize(IMutableMapNG map, Point point, TileType? terrain,
-        TileFixture* fixtures) {
-    if (exists terrain) {
-        map.baseTerrain[point] = terrain;
-    }
-    for (fixture in fixtures) {
-        map.addFixture(point, fixture);
-    }
-}
-test
-suppressWarnings("deprecation")
-void testZeroToOneConversion() {
-    String orig =
-            """<map xmlns:sp="spNamespaceXYZZY" version="0" rows="2" columns="2">
-                       <player number="0" code_name="Test Player" />
-                       <row index="0">
-                           <tile row="0" column="0" type="tundra" event="0">Random event here
-                           </tile>
-                           <tile row="0" column="1" type="boreal_forest" event="183"></tile>
-                       </row>
-                       <row index="1">
-                           <sp:tile row="1" column="0" type="mountain" event="229">
-                               <sp:fortress name="HQ" owner="0" id="15" />
-                           </sp:tile>
-                           <tile row="1" column="1" type="temperate_forest" event="219">
-                           </tile>
-                       </row>
-                   </map>""".replace("spNamespaceXYZZY", spNamespace);
-    StringBuilder ostream = StringBuilder();
-    XMLInputFactory xif = XMLInputFactory.newInstance();
-    xif.setProperty(XMLInputFactory.supportDtd, JBoolean(false));
-    zeroToOneConverter.convert(IteratorWrapper(TypesafeXMLEventReader(
-        XMLInputFactory.newInstance().createXMLEventReader(StringReader(orig)))),
-        ostream.append);
-    StringBuilder actualXML = StringBuilder();
-    SPWriter writer = testReaderFactory.oldWriter;
-    writer.writeSPObject(actualXML.append,
-        readMap(StringReader(ostream.string), warningLevels.ignore));
-    IMutableMapNG expected = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
-    Player player = PlayerImpl(0, "Test Player");
-    expected.addPlayer(player);
-    initialize(expected, pointFactory(0, 0), TileType.tundra,
-        TextFixture("Random event here", -1));
-    initialize(expected, pointFactory(0, 1), TileType.borealForest);
-    initialize(expected, pointFactory(1, 0), TileType.mountain,
-        Town(TownStatus.burned, TownSize.small, 0, "", 0, PlayerImpl(-1, "Independent")),
-        Fortress(player, "HQ", 15, TownSize.small));
-    initialize(expected, pointFactory(1, 1), TileType.temperateForest,
-        MineralVein("coal", true, 0, 1));
-    StringWriter expectedXML = StringWriter();
-    writer.writeSPObject((String str) => expectedXML.append(str), expected);
-    assertEquals(actualXML.string, expectedXML.string,
-        "Converted map's serialized form was as expected");
-    assertEquals(readMap(StringReader(ostream.string),
-        warningLevels.ignore), expected, "Converted map was as expected");
-}
-"""Convert files provided on command line; prints results to files with ".converted.xml"
-   appended."""
-shared void convertZeroToOne() {
-    for (argument in process.arguments) {
-        Resource outFileRaw = parsePath("``argument``.converted.xml").resource;
-        File outFile;
-        if (is File outFileRaw) {
-            outFile = outFileRaw;
-        } else if (is Nil outFileRaw) {
-            outFile = outFileRaw.createFile();
-        } else {
-            process.write(
-                "``argument``.converted.xml already exists but is not a file; skipping ...");
-            continue;
-        }
-        try (reader = JFileReader(argument), writer = outFile.Overwriter()) {
-            zeroToOneConverter.convert(ConvertingIterable<XMLEvent>(
-                XMLInputFactory.newInstance().createXMLEventReader(reader)),
-                writer.write);
-        } catch (FileNotFoundException|NoSuchFileException except) {
-            log.error("File ``argument`` not found", except);
-        } catch (XMLStreamException except) {
-            log.error("Malformed XML in ``argument``", except);
-        } catch (IOException except) {
-            log.error("I/O error dealing with file ``argument``", except);
-        }
-    }
+object zeroToOneConversionTests {
+	void initialize(IMutableMapNG map, Point point, TileType? terrain,
+	        TileFixture* fixtures) {
+	    if (exists terrain) {
+	        map.baseTerrain[point] = terrain;
+	    }
+	    for (fixture in fixtures) {
+	        map.addFixture(point, fixture);
+	    }
+	}
+	test
+	suppressWarnings("deprecation")
+	shared void testZeroToOneConversion() {
+	    String orig =
+	            """<map xmlns:sp="spNamespaceXYZZY" version="0" rows="2" columns="2">
+	                       <player number="0" code_name="Test Player" />
+	                       <row index="0">
+	                           <tile row="0" column="0" type="tundra" event="0">Random event here
+	                           </tile>
+	                           <tile row="0" column="1" type="boreal_forest" event="183"></tile>
+	                       </row>
+	                       <row index="1">
+	                           <sp:tile row="1" column="0" type="mountain" event="229">
+	                               <sp:fortress name="HQ" owner="0" id="15" />
+	                           </sp:tile>
+	                           <tile row="1" column="1" type="temperate_forest" event="219">
+	                           </tile>
+	                       </row>
+	                   </map>""".replace("spNamespaceXYZZY", spNamespace);
+	    StringBuilder ostream = StringBuilder();
+	    XMLInputFactory xif = XMLInputFactory.newInstance();
+	    xif.setProperty(XMLInputFactory.supportDtd, JBoolean(false));
+	    zeroToOneConverter.convert(IteratorWrapper(TypesafeXMLEventReader(
+	        XMLInputFactory.newInstance().createXMLEventReader(StringReader(orig)))),
+	        ostream.append);
+	    StringBuilder actualXML = StringBuilder();
+	    SPWriter writer = testReaderFactory.oldWriter;
+	    writer.writeSPObject(actualXML.append,
+	        readMap(StringReader(ostream.string), warningLevels.ignore));
+	    IMutableMapNG expected = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
+	    Player player = PlayerImpl(0, "Test Player");
+	    expected.addPlayer(player);
+	    initialize(expected, pointFactory(0, 0), TileType.tundra,
+	        TextFixture("Random event here", -1));
+	    initialize(expected, pointFactory(0, 1), TileType.borealForest);
+	    initialize(expected, pointFactory(1, 0), TileType.mountain,
+	        Town(TownStatus.burned, TownSize.small, 0, "", 0, PlayerImpl(-1, "Independent")),
+	        Fortress(player, "HQ", 15, TownSize.small));
+	    initialize(expected, pointFactory(1, 1), TileType.temperateForest,
+	        MineralVein("coal", true, 0, 1));
+	    StringWriter expectedXML = StringWriter();
+	    writer.writeSPObject((String str) => expectedXML.append(str), expected);
+	    assertEquals(actualXML.string, expectedXML.string,
+	        "Converted map's serialized form was as expected");
+	    assertEquals(readMap(StringReader(ostream.string),
+	        warningLevels.ignore), expected, "Converted map was as expected");
+	}
+	"""Convert files provided on command line; prints results to files with ".converted.xml"
+	   appended."""
+	shared void convertZeroToOne() {
+	    for (argument in process.arguments) {
+	        Resource outFileRaw = parsePath("``argument``.converted.xml").resource;
+	        File outFile;
+	        if (is File outFileRaw) {
+	            outFile = outFileRaw;
+	        } else if (is Nil outFileRaw) {
+	            outFile = outFileRaw.createFile();
+	        } else {
+	            process.write(
+	                "``argument``.converted.xml already exists but is not a file; skipping ...");
+	            continue;
+	        }
+	        try (reader = JFileReader(argument), writer = outFile.Overwriter()) {
+	            zeroToOneConverter.convert(ConvertingIterable<XMLEvent>(
+	                XMLInputFactory.newInstance().createXMLEventReader(reader)),
+	                writer.write);
+	        } catch (FileNotFoundException|NoSuchFileException except) {
+	            log.error("File ``argument`` not found", except);
+	        } catch (XMLStreamException except) {
+	            log.error("Malformed XML in ``argument``", except);
+	        } catch (IOException except) {
+	            log.error("I/O error dealing with file ``argument``", except);
+	        }
+	    }
+	}
 }
