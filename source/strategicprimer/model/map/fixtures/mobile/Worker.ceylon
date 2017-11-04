@@ -19,33 +19,40 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 import ceylon.collection {
     MutableSet
 }
-"Whether neither of two collections of Jobs contains a nonempty Job the other does not."
-Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
-        set { *first.filter((job) => !job.emptyJob) } ==
-            set { *second.filter((job) => !job.emptyJob) };
-"Whether two nullable values are either neither present or both present and equal."
-Boolean nullablesEqual(Anything one, Anything two) {
-    if (exists one) {
-        if (exists two) {
-            return one == two;
-        }
-        return false;
-    }
-    return !two exists;
-}
 "A worker (or soldier) in a unit. This is deliberately not a
  [[TileFixture|strategicprimer.model.map::TileFixture]]: these should only be part of a
  unit, not as a top-level tag."
 todo("Convert some other [[MobileFixture]]s similarly?")
-shared class Worker(name, race, id, IJob* jobs) satisfies IWorker&HasPortrait {
+shared class Worker satisfies IWorker&HasPortrait {
+	"Whether neither of two collections of Jobs contains a nonempty Job the other does not."
+	static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
+			set { *first.filter((job) => !job.emptyJob) } ==
+			set { *second.filter((job) => !job.emptyJob) };
+	"Whether two nullable values are either neither present or both present and equal."
+	static Boolean nullablesEqual(Anything one, Anything two) {
+		if (exists one) {
+			if (exists two) {
+				return one == two;
+			}
+			return false;
+		}
+		return !two exists;
+	}
     "The set of Jobs the worker is trained or experienced in."
-    MutableSet<IJob> jobSet = ArraySet<IJob> { *jobs };
+    MutableSet<IJob> jobSet;
     "The worker's ID number."
     shared actual Integer id;
     "The worker's name."
     shared actual String name;
     "The worker's race (elf, dwarf, human, etc.)"
     shared actual String race;
+	shared new (String name, String race, Integer id, IJob* jobs) {
+		this.name = name;
+		this.race = race;
+		this.id = id;
+		jobSet = ArraySet<IJob> { *jobs };
+	}
+
     "The worker's stats."
     shared actual variable WorkerStats? stats = null;
     "The filename of an image to use as an icon for this instance."
