@@ -18,14 +18,43 @@ import lovelace.util.common {
 }
 shared alias SPNumber=>Integer|Float|Decimal|Whole;
 "A number paired with its units. This class is immutable."
-shared class Quantity(number, units)
+shared class Quantity
         satisfies Subsettable<Quantity>&Comparable<Quantity> {
+	"Convert an arbitrary Number to a Float."
+	static Float floatValue(Number<out Anything> number) {
+		switch (number)
+		case (is Integer) { return number.float; }
+		case (is Float) { return number; }
+		case (is Decimal) { return number.float; }
+		case (is Whole) { return number.float; }
+		else { throw IllegalArgumentException("Unknown Number type"); }
+	}
+	static Comparison compareNumbers(/*Number<out Anything>*/SPNumber one,
+		/*Number<out Anything>*/SPNumber two) {
+		if (is Integer one, is Integer two) {
+			return one <=> two;
+		} else if (is Float one, is Float two) {
+			return one <=> two;
+		} else if (is Decimal one, is Decimal two) {
+			return one <=> two;
+		} else if (is Whole one, is Whole two) {
+			return one <=> two;
+		} else {
+			Float oneValue = floatValue(one);
+			Float twoValue = floatValue(two);
+			return oneValue <=> twoValue;
+		}
+	}
     "The numeric quantity."
     shared /*Number<out Object>*/SPNumber number;
-    "That quantity as a Float"
-    shared Float floatNumber => floatValue(number);
     "The units in which that number is measured."
     shared String units;
+	shared new (SPNumber number, String units) {
+		this.number = number;
+		this.units = units;
+	}
+	"That quantity as a Float"
+	shared Float floatNumber => floatValue(number);
     shared actual String string => "``number`` ``units``";
     "A Quantity is a subset iff it has the same units and either the same or a lesser
      quantity."
@@ -53,29 +82,4 @@ shared class Quantity(number, units)
     shared actual Comparison compare(Quantity quantity) =>
             comparing(comparingOn(Quantity.units, (String x, String y) => x <=> y),
                 comparingOn(Quantity.number, compareNumbers))(this, quantity);
-}
-Comparison compareNumbers(/*Number<out Anything>*/SPNumber one,
-        /*Number<out Anything>*/SPNumber two) {
-    if (is Integer one, is Integer two) {
-        return one <=> two;
-    } else if (is Float one, is Float two) {
-        return one <=> two;
-    } else if (is Decimal one, is Decimal two) {
-        return one <=> two;
-    } else if (is Whole one, is Whole two) {
-        return one <=> two;
-    } else {
-        Float oneValue = floatValue(one);
-        Float twoValue = floatValue(two);
-        return oneValue <=> twoValue;
-    }
-}
-"Convert an arbitrary Number to a Float."
-Float floatValue(Number<out Anything> number) {
-    switch (number)
-    case (is Integer) { return number.float; }
-    case (is Float) { return number; }
-    case (is Decimal) { return number.float; }
-    case (is Whole) { return number.float; }
-    else { throw IllegalArgumentException("Unknown Number type"); }
 }
