@@ -33,6 +33,8 @@ import ceylon.file {
 
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
+// TODO: Encapsulate all this (except the test method) in a single object
+// Can't call it "mapReaderAdapter", though, because we'll want that name for another such object ...
 IMapReader reader = yaXMLReader;
 SPWriter writer = yaXMLWriter;
 "Turn a series of Strings into a series of equvalent Paths, optionally omitting the

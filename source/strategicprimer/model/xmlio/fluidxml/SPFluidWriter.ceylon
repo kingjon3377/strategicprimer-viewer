@@ -95,6 +95,9 @@ import ceylon.file {
 import lovelace.util.common {
     todo
 }
+import strategicprimer.model.xmlio.fluidxml {
+	FluidBase { ... }
+}
 Regex snugEndTag = regex("([^ ])/>", true);
 variable Integer currentTurn = -1;
 """The main writer-to-XML class in the "fluid XML" implementation."""
@@ -323,42 +326,42 @@ shared class SPFluidWriter() satisfies SPWriter {
         ostream.writeEndElement();
     }
     writers = map<ClassOrInterface<Anything>, LocalXMLWriter> {
-        `River`->castingWriter<River>(writeRivers),
-        `AdventureFixture`->castingWriter<AdventureFixture>(writeAdventure),
-        `Portal`->castingWriter<Portal>(writePortal),
-        `Battlefield`->castingWriter<Battlefield>(writeBattlefield),
-        `Cave`->castingWriter<Cave>(writeCave),
-        `Ground`->castingWriter<Ground>(writeGround),
-        `Forest`->castingWriter<Forest>(writeForest),
+        `River`->castingWriter<River>(fluidTerrainHandler.writeRivers),
+        `AdventureFixture`->castingWriter<AdventureFixture>(fluidExplorableHandler.writeAdventure),
+        `Portal`->castingWriter<Portal>(fluidExplorableHandler.writePortal),
+        `Battlefield`->castingWriter<Battlefield>(fluidExplorableHandler.writeBattlefield),
+        `Cave`->castingWriter<Cave>(fluidExplorableHandler.writeCave),
+        `Ground`->castingWriter<Ground>(fluidTerrainHandler.writeGround),
+        `Forest`->castingWriter<Forest>(fluidTerrainHandler.writeForest),
         simpleFixtureWriter(`Hill`, "hill"),
         simpleFixtureWriter(`Oasis`, "oasis"),
         simpleFixtureWriter(`Sandbar`, "sandbar"),
-        `Animal`->castingWriter<Animal>(writeAnimal),
+        `Animal`->castingWriter<Animal>(unitMemberHandler.writeAnimal),
         simpleFixtureWriter(`Centaur`, "centaur"),
         simpleFixtureWriter(`Dragon`, "dragon"),
         simpleFixtureWriter(`Fairy`, "fairy"),
         simpleFixtureWriter(`Giant`, "giant"),
-        `SimpleImmortal`->castingWriter<SimpleImmortal>(writeSimpleImmortal),
-        `TextFixture`->castingWriter<TextFixture>(writeTextFixture),
-        `Implement`->castingWriter<Implement>(writeImplement),
-        `ResourcePile`->castingWriter<ResourcePile>(writeResource),
-        `CacheFixture`->castingWriter<CacheFixture>(writeCache),
-        `Meadow`->castingWriter<Meadow>(writeMeadow),
-        `Grove`->castingWriter<Grove>(writeGrove),
-        `Mine`->castingWriter<Mine>(writeMine),
-        `MineralVein`->castingWriter<MineralVein>(writeMineral),
+        `SimpleImmortal`->castingWriter<SimpleImmortal>(unitMemberHandler.writeSimpleImmortal),
+        `TextFixture`->castingWriter<TextFixture>(fluidExplorableHandler.writeTextFixture),
+        `Implement`->castingWriter<Implement>(fluidResourceHandler.writeImplement),
+        `ResourcePile`->castingWriter<ResourcePile>(fluidResourceHandler.writeResource),
+        `CacheFixture`->castingWriter<CacheFixture>(fluidResourceHandler.writeCache),
+        `Meadow`->castingWriter<Meadow>(fluidResourceHandler.writeMeadow),
+        `Grove`->castingWriter<Grove>(fluidResourceHandler.writeGrove),
+        `Mine`->castingWriter<Mine>(fluidResourceHandler.writeMine),
+        `MineralVein`->castingWriter<MineralVein>(fluidResourceHandler.writeMineral),
         simpleFixtureWriter(`Shrub`, "shrub"),
-        `StoneDeposit`->castingWriter<StoneDeposit>(writeStone),
-        `IWorker`->castingWriter<IWorker>(writeWorker),
-        `IJob`->castingWriter<IJob>(writeJob),
-        `ISkill`->castingWriter<ISkill>(writeSkill),
-        `WorkerStats`->castingWriter<WorkerStats>(writeStats),
+        `StoneDeposit`->castingWriter<StoneDeposit>(fluidResourceHandler.writeStone),
+        `IWorker`->castingWriter<IWorker>(unitMemberHandler.writeWorker),
+        `IJob`->castingWriter<IJob>(unitMemberHandler.writeJob),
+        `ISkill`->castingWriter<ISkill>(unitMemberHandler.writeSkill),
+        `WorkerStats`->castingWriter<WorkerStats>(unitMemberHandler.writeStats),
         `IUnit`->castingWriter<IUnit>(writeUnit),
         `Fortress`->castingWriter<Fortress>(writeFortress),
-        `Village`->castingWriter<Village>(writeVillage),
-        `AbstractTown`->castingWriter<AbstractTown>(writeTown),
+        `Village`->castingWriter<Village>(fluidTownHandler.writeVillage),
+        `AbstractTown`->castingWriter<AbstractTown>(fluidTownHandler.writeTown),
         `IMapNG`->castingWriter<IMapNG>(writeMap),
         `Player`->castingWriter<Player>(writePlayer),
-        `CommunityStats`->castingWriter<CommunityStats>(writeCommunityStats)
+        `CommunityStats`->castingWriter<CommunityStats>(fluidTownHandler.writeCommunityStats)
     };
 }

@@ -98,6 +98,9 @@ import strategicprimer.model.xmlio.exceptions {
 import strategicprimer.model.xmlio.io_impl {
     IncludingIterator
 }
+import strategicprimer.model.xmlio.fluidxml {
+	FluidBase { ... }
+}
 "The main reader-from-XML class in the 'fluid XML' implementation."
 shared class SPFluidReader() satisfies IMapReader&ISPReader {
     alias LocalXMLReader=>Object(StartElement, QName, {XMLEvent*},
@@ -400,52 +403,52 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         return setImage(retval, element, warner);
     }
     readers = map {
-        "adventure"->readAdventure,
-        "portal"->readPortal,
-        "cave"->readCave,
-        "battlefield"->readBattlefield,
-        "ground"->readGround,
-        "forest"->readForest,
+        "adventure"->fluidExplorableHandler.readAdventure,
+        "portal"->fluidExplorableHandler.readPortal,
+        "cave"->fluidExplorableHandler.readCave,
+        "battlefield"->fluidExplorableHandler.readBattlefield,
+        "ground"->fluidTerrainHandler.readGround,
+        "forest"->fluidTerrainHandler.readForest,
         simpleFixtureReader("hill", Hill),
         simpleFixtureReader("oasis", Oasis),
         simpleFixtureReader("sandbar", Sandbar),
-        "animal"->readAnimal,
+        "animal"->unitMemberHandler.readAnimal,
         simpleHasKindReader("centaur", Centaur),
         simpleHasKindReader("dragon", Dragon),
         simpleHasKindReader("fairy", Fairy),
         simpleHasKindReader("giant", Giant),
-        "text"->readTextFixture,
-        "implement"->readImplement,
-        "resource"->readResource,
-        "cache"->readCache,
-        "grove"->readGrove,
-        "orchard"->readOrchard,
-        "meadow"->readMeadow,
-        "field"->readField,
-        "mine"->readMine,
-        "mineral"->readMineral,
-        "shrub"->readShrub,
-        "stone"->readStone,
-        "worker"->readWorker,
-        "job"->readJob,
-        "skill"->readSkill,
-        "stats"->readStats,
+        "text"->fluidExplorableHandler.readTextFixture,
+        "implement"->fluidResourceHandler.readImplement,
+        "resource"->fluidResourceHandler.readResource,
+        "cache"->fluidResourceHandler.readCache,
+        "grove"->fluidResourceHandler.readGrove,
+        "orchard"->fluidResourceHandler.readOrchard,
+        "meadow"->fluidResourceHandler.readMeadow,
+        "field"->fluidResourceHandler.readField,
+        "mine"->fluidResourceHandler.readMine,
+        "mineral"->fluidResourceHandler.readMineral,
+        "shrub"->fluidResourceHandler.readShrub,
+        "stone"->fluidResourceHandler.readStone,
+        "worker"->unitMemberHandler.readWorker,
+        "job"->unitMemberHandler.readJob,
+        "skill"->unitMemberHandler.readSkill,
+        "stats"->unitMemberHandler.readStats,
         "unit"->readUnit,
         "fortress"->readFortress,
-        "town"->readTown,
-        "city"->readCity,
-        "fortification"->readFortification,
-        "village"->readVillage,
+        "town"->fluidTownHandler.readTown,
+        "city"->fluidTownHandler.readCity,
+        "fortification"->fluidTownHandler.readFortification,
+        "village"->fluidTownHandler.readVillage,
         "map"->((StartElement element, QName parent, {XMLEvent*} stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
             => readMapOrViewTag(element, parent, stream, players, warner, idFactory)),
         "view"->((StartElement element, QName parent, {XMLEvent*} stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
             => readMapOrViewTag(element, parent, stream, players, warner, idFactory)),
-        "river"->readRiver,
-        "lake"->readLake,
+        "river"->fluidTerrainHandler.readRiver,
+        "lake"->fluidTerrainHandler.readLake,
         "player"->readPlayer,
-        "population"->readCommunityStats,
+        "population"->fluidTownHandler.readCommunityStats,
         *simpleImmortalReaders
     };
     shared actual Type readXML<Type>(JPath file, JReader istream, Warning warner)
