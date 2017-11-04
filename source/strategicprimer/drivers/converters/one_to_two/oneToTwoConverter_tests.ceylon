@@ -1,8 +1,3 @@
-import ceylon.file {
-    parsePath,
-    Nil,
-    File
-}
 import ceylon.regex {
     Regex,
     regex
@@ -16,10 +11,6 @@ import ceylon.test {
 import java.io {
     StringReader
 }
-import java.lang {
-    IllegalStateException
-}
-
 import strategicprimer.drivers.exploration.old {
     ExplorationRunner,
     loadTable
@@ -80,7 +71,6 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.model.xmlio {
     readMap,
     warningLevels,
-    ISPReader,
     SPWriter,
     testReaderFactory
 }
@@ -102,8 +92,6 @@ object oneToTwoConverterTests {
 	        map.addFixture(point, fixture);
 	    }
 	}
-	ISPReader oldReader = testReaderFactory.oldReader;
-	ISPReader newReader = testReaderFactory.newReader;
 	SPWriter oldWriter = testReaderFactory.oldWriter;
 	SPWriter newWriter = testReaderFactory.newWriter;
 	"Create an ExplorationRunner initialized with test data."
@@ -118,16 +106,16 @@ object oneToTwoConverterTests {
 	    }
 	    return retval;
 	}
-	void writeToFile(String filename, String text) {
-	    File file;
-	    switch (res = parsePath("/Users/kingjon/strategicprimer-viewer/" + filename).resource)
-	    case (is File) { file = res; }
-	    case (is Nil) { file = res.createFile(); }
-	    else { throw IllegalStateException("Exists but is not a file"); }
-	    try (writer = file.Overwriter()) {
-	        writer.write(text);
-	    }
-	}
+	//void writeToFile(String filename, String text) {
+	//    File file;
+	//    switch (res = parsePath("/Users/kingjon/strategicprimer-viewer/" + filename).resource)
+	//    case (is File) { file = res; }
+	//    case (is Nil) { file = res.createFile(); }
+	//    else { throw IllegalStateException("Exists but is not a file"); }
+	//    try (writer = file.Overwriter()) {
+	//        writer.write(text);
+	//    }
+	//}
 	test
 	suppressWarnings("deprecation")
 	shared void testOneToTwoConversion() {
