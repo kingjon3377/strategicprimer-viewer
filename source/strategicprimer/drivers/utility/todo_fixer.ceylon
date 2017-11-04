@@ -53,13 +53,14 @@ import ceylon.file {
 import java.lang {
 	IllegalStateException
 }
-abstract class SimpleTerrain() of unforested | forested | ocean { }
-"Plains, desert, and mountains"
-object unforested extends SimpleTerrain() { }
-"Temperate forest, boreal forest, and steppe"
-object forested extends SimpleTerrain() { }
-"Ocean."
-object ocean extends SimpleTerrain() { }
+class SimpleTerrain of unforested | forested | ocean {
+	"Plains, desert, and mountains"
+	shared new unforested { }
+	"Temperate forest, boreal forest, and steppe"
+	shared new forested { }
+	"Ocean."
+	shared new ocean { }
+}
 """A hackish driver to fix TODOs (missing content) in the map, namely units with "TODO"
    for their "kind" and aquatic villages with non-aquatic races."""
 todo("Write tests of this functionality")
@@ -85,19 +86,19 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     SimpleTerrain getTerrain(IMapNG map, Point location) {
         switch (map.baseTerrain[location])
         case (TileType.jungle|TileType.borealForest|TileType.temperateForest|TileType.swamp) {
-            return forested;
+            return SimpleTerrain.forested;
         }
         case (TileType.desert|TileType.mountain|TileType.tundra|null) {
-            return unforested; }
-        case (TileType.ocean) { return ocean; }
+            return SimpleTerrain.unforested; }
+        case (TileType.ocean) { return SimpleTerrain.ocean; }
         case (TileType.plains|TileType.steppe) {
 //            if (map.mountainous[location]) { // TODO: syntax sugar once compiler bug fixed
             if (map.mountainous.get(location)) {
-                return unforested;
+                return SimpleTerrain.unforested;
             } else if (map.fixtures[location]?.narrow<Forest>()?.first exists) {
-                return forested;
+                return SimpleTerrain.forested;
             } else {
-                return unforested;
+                return SimpleTerrain.unforested;
             }
         }
     }
@@ -165,15 +166,15 @@ object todoFixerCLI satisfies SimpleCLIDriver {
         MutableList<String> jobList;
         String description;
         switch (terrain)
-        case (unforested) {
+        case (SimpleTerrain.unforested) {
             jobList = plainsList;
             description = "plains, desert, or mountains";
         }
-        case (forested) {
+        case (SimpleTerrain.forested) {
             jobList = forestList;
             description = "forest or jungle";
         }
-        case (ocean) {
+        case (SimpleTerrain.ocean) {
             jobList = oceanList;
             description = "ocean";
         }
