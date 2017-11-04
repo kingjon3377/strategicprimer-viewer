@@ -16,18 +16,8 @@ import ceylon.math.whole {
 }
 
 import java.lang {
-    JNumber=Number,
-    JInteger=Integer,
-    JLong=Long,
-    JFloat=Float,
-    JDouble=Double,
     IllegalStateException
 }
-import java.math {
-    BigDecimal,
-    BigInteger
-}
-
 import strategicprimer.model.map {
     IFixture,
     IMutableMapNG,
@@ -263,15 +253,6 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
             top.quantity.units));
             combined.created = top.created;
             return combined;
-        }
-        "Convert a Number of any known subclass to a BigDecimal."
-        BigDecimal toBigDecimal(JNumber number) {
-            switch (number)
-            case (is BigDecimal) { return number; }
-            case (is BigInteger) { return BigDecimal(number); }
-            case (is JInteger|JLong) { return BigDecimal.valueOf(number.longValue()); }
-            case (is JFloat|JDouble) { return BigDecimal.valueOf(number.doubleValue()); }
-            else { return BigDecimal(number.string); }
         }
     "Run the driver"
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
