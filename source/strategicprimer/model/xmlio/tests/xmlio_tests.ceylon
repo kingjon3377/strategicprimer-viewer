@@ -88,7 +88,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
     Job,
     WorkerStats,
     Skill,
-    races
+    raceFactory
 }
 import strategicprimer.model.map.fixtures.resources {
     FieldStatus,
@@ -428,7 +428,7 @@ String encapsulateTileString(String str) {
 }
 
 {[TownStatus, String]*} villageParameters =
-        `TownStatus`.caseValues.product(races.distinct);
+        `TownStatus`.caseValues.product(raceFactory.races.distinct);
 
 test
 parameters(`value villageParameters`)

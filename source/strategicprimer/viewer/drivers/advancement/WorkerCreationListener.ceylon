@@ -35,7 +35,7 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats,
-    randomRace
+    raceFactory
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
     UnitSelectionListener
@@ -63,7 +63,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
             object frame extends JFrame("Create Worker") {
                 defaultCloseOperation = WindowConstants.disposeOnClose;
                 JTextField name = JTextField();
-                JTextField race = JTextField(randomRace());
+                JTextField race = JTextField(raceFactory.randomRace());
                 JTextField hpBox = JTextField();
                 JTextField maxHP = JTextField();
                 JTextField strength = JTextField();

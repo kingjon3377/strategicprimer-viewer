@@ -17,7 +17,7 @@ import strategicprimer.model.map {
     IPlayerCollection
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
-    randomRace
+    raceFactory
 }
 import strategicprimer.model.map.fixtures.towns {
     TownStatus,
@@ -165,7 +165,7 @@ Village readVillage(StartElement element, QName parent, {XMLEvent*} stream,
     if (is TownStatus status) {
         Village retval = Village(status, getAttribute(element, "name", ""), idNum,
             getPlayerOrIndependent(element, warner, players),
-            getAttribute(element, "race", randomRace(DefaultRandom(idNum))));
+            getAttribute(element, "race", raceFactory.randomRace(DefaultRandom(idNum))));
         retval.portrait =getAttribute(element, "portrait", "");
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {

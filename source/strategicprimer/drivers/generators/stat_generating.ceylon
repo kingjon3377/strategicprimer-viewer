@@ -38,7 +38,7 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats,
     IJob,
-    randomRace
+    raceFactory
 }
 import strategicprimer.drivers.common {
     IMultiMapModel,
@@ -241,7 +241,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
             ICLIHelper cli) {
         Integer count = cli.inputNumber("How many workers to generate? ");
         for (i in 0:count) {
-            String race = randomRace();
+            String race = raceFactory.randomRace();
             String name = cli.inputString("Worker is a ``race``. Worker name: ");
             Worker worker = Worker(name, race, idf.createID());
             Integer levels = {0, 1, 2}.count((int) => (random() * 20).integer == 0 );
@@ -284,7 +284,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
             } else {
                 name = cli.inputString("Next worker name: ");
             }
-            String race = randomRace();
+            String race = raceFactory.randomRace();
             cli.println("Worker ``name`` is a ``race``");
             Worker worker = Worker(name, race, idf.createID());
             Integer levels = {0, 1, 2}.count((int) => (random() * 20).integer == 0 );

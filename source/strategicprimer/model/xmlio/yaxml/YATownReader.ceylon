@@ -23,7 +23,7 @@ import strategicprimer.model.map {
     Player
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
-    randomRace
+    raceFactory
 }
 import strategicprimer.model.map.fixtures.towns {
     TownStatus,
@@ -145,7 +145,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         if (is TownStatus status) {
             Village retval = Village(status, getParameter(element, "name", ""), idNum,
                 getOwnerOrIndependent(element), getParameter(element, "race",
-                    randomRace(DefaultRandom(idNum))));
+                    raceFactory.randomRace(DefaultRandom(idNum))));
             retval.image = getParameter(element, "image", "");
             retval.portrait =getParameter(element, "portrait", "");
             for (event in stream) {

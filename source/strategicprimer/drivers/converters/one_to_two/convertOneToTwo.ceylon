@@ -32,7 +32,7 @@ import strategicprimer.model.map.fixtures {
     TextFixture
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
-    randomRace
+    raceFactory
 }
 import strategicprimer.model.map.fixtures.resources {
     Shrub,
@@ -137,7 +137,7 @@ shared IMapNG convertOneToTwo(
             Integer idNum = idFactory.createID();
             if (is IMutableMapNG oldCopy) {
                 oldCopy.addFixture(point, Village(TownStatus.active, "", idNum,
-                    independent, randomRace(DefaultRandom(idNum))));
+                    independent, raceFactory.randomRace(DefaultRandom(idNum))));
             }
 //            {TileFixture*} fixtures = oldCopy.fixtures[point]; // TODO: syntax sugar once compiler bug fixed
             {TileFixture*} fixtures = oldCopy.fixtures.get(point);
