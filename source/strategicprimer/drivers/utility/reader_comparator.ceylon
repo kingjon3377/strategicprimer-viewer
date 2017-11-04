@@ -38,6 +38,15 @@ shared object readerComparator satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-t", "--test"],
         ParamCount.atLeastOne, "Test map readers",
         "Test map-reading implementations by comparing their results on the same file.");
+    String readAll(File file) {
+        Reader reader = file.Reader();
+        StringBuilder builder = StringBuilder();
+        while (exists String line = reader.readLine()) {
+            builder.append(line);
+            builder.appendNewline();
+        }
+        return builder.string;
+    }
     "Compare the two readers' performance on the given files."
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
@@ -68,13 +77,4 @@ shared object readerComparator satisfies UtilityDriver {
             }
         }
     }
-}
-String readAll(File file) {
-    Reader reader = file.Reader();
-    StringBuilder builder = StringBuilder();
-    while (exists String line = reader.readLine()) {
-        builder.append(line);
-        builder.appendNewline();
-    }
-    return builder.string;
 }
