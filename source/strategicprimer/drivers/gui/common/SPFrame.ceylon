@@ -23,6 +23,9 @@ import ceylon.logging {
     Logger,
     logger
 }
+import lovelace.util.common {
+	todo
+}
 Logger log = logger(`module strategicprimer.drivers.gui.common`);
 "A [[TransferHandler]] to allow SP apps to accept dropped files."
 class FileDropHandler() extends TransferHandler() {
@@ -53,6 +56,9 @@ class FileDropHandler() extends TransferHandler() {
 }
 "An intermediate subclass of JFrame to take care of some common setup things that can't be
  done in an interface."
+todo("Allow callers to pass in [[supportsDroppedFiles]], [[acceptDroppedFile]], and [[windowName]]
+      (defaulting to false, [[noop]], and [[windowTitle]] respectively), and make concrete instead of
+      abstract.")
 shared abstract class SPFrame(String windowTitle, JPath? file, Dimension? minSize = null)
         extends JFrame(windowTitle) satisfies ISPWindow {
     if (exists file) {

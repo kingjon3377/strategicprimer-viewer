@@ -116,153 +116,159 @@ import strategicprimer.viewer.drivers.query {
 	queryCLI,
 	trappingCLI
 }
+import lovelace.util.common {
+	todo
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
-"The method to actually write log messages to stderr."
-void logWriter(Priority priority, Module|Package mod,
-        String message, Throwable? except) {
-    process.writeErrorLine("``priority`` (``mod``): ``message``");
-    if (exists except) {
-        process.writeErrorLine(except.message);
-        except.printStackTrace();
-    }
-}
-"Create the cache of driver objects."
-[Map<String, ISPDriver>, Map<String, ISPDriver>] createCache() {
-	MutableMap<String, ISPDriver> cliCache = HashMap<String, ISPDriver>();
-	MutableMap<String, ISPDriver> guiCache = HashMap<String, ISPDriver>();
-	{String*} reserved = {"-g", "-c", "--gui", "--cli"};
-	MutableMap<String, MutableList<ISPDriver>> conflicts = HashMap<String, MutableList<ISPDriver>>();
-	void addToCache(ISPDriver* drivers) {
-		for (driver in drivers) {
-			MutableMap<String, ISPDriver> cache;
-			if (driver.usage.graphical) {
-				cache = guiCache;
-			} else {
-				cache = cliCache;
-			}
-			for (option in driver.usage.invocations) {
-				if (reserved.contains(option)) {
-					log.error("A driver wants to register for a reserved option '``option``': claims to be ``
-						driver.usage.shortDescription``");
-				} else if (exists list = conflicts[option]) {
-					log.warn("Additional conflict for '``option``': '``driver.usage.shortDescription``'");
-					list.add(driver);
-				} else if (exists existing = cache[option]) {
-					log.warn("Invocation option conflict for '``option``' between '``
-						driver.usage.shortDescription``' and '``existing.usage.shortDescription``'");
-					MutableList<ISPDriver> list = ArrayList { elements = { driver, existing }; };
-					cache.remove(option);
-					conflicts[option] = list;
+object appChooserState {
+	"The method to actually write log messages to stderr."
+	shared void logWriter(Priority priority, Module|Package mod,
+	        String message, Throwable? except) {
+	    process.writeErrorLine("``priority`` (``mod``): ``message``");
+	    if (exists except) {
+	        process.writeErrorLine(except.message);
+	        except.printStackTrace();
+	    }
+	}
+	"Create the cache of driver objects."
+	shared [Map<String, ISPDriver>, Map<String, ISPDriver>] createCache() {
+		MutableMap<String, ISPDriver> cliCache = HashMap<String, ISPDriver>();
+		MutableMap<String, ISPDriver> guiCache = HashMap<String, ISPDriver>();
+		{String*} reserved = {"-g", "-c", "--gui", "--cli"};
+		MutableMap<String, MutableList<ISPDriver>> conflicts = HashMap<String, MutableList<ISPDriver>>();
+		void addToCache(ISPDriver* drivers) {
+			for (driver in drivers) {
+				MutableMap<String, ISPDriver> cache;
+				if (driver.usage.graphical) {
+					cache = guiCache;
 				} else {
-					cache[option] = driver;
+					cache = cliCache;
+				}
+				for (option in driver.usage.invocations) {
+					if (reserved.contains(option)) {
+						log.error("A driver wants to register for a reserved option '``option``': claims to be ``
+							driver.usage.shortDescription``");
+					} else if (exists list = conflicts[option]) {
+						log.warn("Additional conflict for '``option``': '``driver.usage.shortDescription``'");
+						list.add(driver);
+					} else if (exists existing = cache[option]) {
+						log.warn("Invocation option conflict for '``option``' between '``
+							driver.usage.shortDescription``' and '``existing.usage.shortDescription``'");
+						MutableList<ISPDriver> list = ArrayList { elements = { driver, existing }; };
+						cache.remove(option);
+						conflicts[option] = list;
+					} else {
+						cache[option] = driver;
+					}
 				}
 			}
 		}
+		addToCache(
+			reportCLI,
+			viewerGUI,
+			advancementCLI,
+			advancementGUI,
+			strategyExportCLI,
+			workerGUI,
+			explorationCLI,
+			explorationGUI,
+			readerComparator,
+			drawHelperComparator,
+			mapCheckerCLI,
+			mapCheckerGUI,
+			subsetCLI,
+			subsetGUI,
+			// FIXME: Write GUI equivalent of query CLI
+			queryCLI,
+			echoDriver,
+			// FIXME: Write GUI for the duplicate fixture remover
+			duplicateFixtureRemoverCLI,
+			// FIXME: Write trapping (and hunting, etc.) GUI
+			trappingCLI,
+			// FIXME: Write stat-generating/stat-entering GUI
+			statGeneratingCLI,
+			// FIXME: Write GUI for map-expanding driver
+			expansionDriver,
+			// TODO: Write GUI equivalent of Map Populator Driver
+			mapPopulatorDriver,
+			resourceAddingCLI, resourceAddingGUI,
+			tabularReportCLI, tabularReportGUI,
+			// TODO: Write GUI to allow user to visually explore a mine
+			miningCLI,
+			// TODO: Write GUI to allow user to generate or enter town contents
+			townGeneratingCLI,
+			randomMovementCLI
+		);
+	    return [cliCache, guiCache];
 	}
-	addToCache(
-		reportCLI,
-		viewerGUI,
-		advancementCLI,
-		advancementGUI,
-		strategyExportCLI,
-		workerGUI,
-		explorationCLI,
-		explorationGUI,
-		readerComparator,
-		drawHelperComparator,
-		mapCheckerCLI,
-		mapCheckerGUI,
-		subsetCLI,
-		subsetGUI,
-		// FIXME: Write GUI equivalent of query CLI
-		queryCLI,
-		echoDriver,
-		// FIXME: Write GUI for the duplicate fixture remover
-		duplicateFixtureRemoverCLI,
-		// FIXME: Write trapping (and hunting, etc.) GUI
-		trappingCLI,
-		// FIXME: Write stat-generating/stat-entering GUI
-		statGeneratingCLI,
-		// FIXME: Write GUI for map-expanding driver
-		expansionDriver,
-		// TODO: Write GUI equivalent of Map Populator Driver
-		mapPopulatorDriver,
-		resourceAddingCLI, resourceAddingGUI,
-		tabularReportCLI, tabularReportGUI,
-		// TODO: Write GUI to allow user to visually explore a mine
-		miningCLI,
-		// TODO: Write GUI to allow user to generate or enter town contents
-		townGeneratingCLI,
-		randomMovementCLI
-	);
-    return [cliCache, guiCache];
+	"Create the usage message for a particular driver."
+	shared String usageMessage(IDriverUsage usage, Boolean verbose) {
+	    StringBuilder builder = StringBuilder();
+	    // FIXME: should open with either "ceylon run" or "java -jar /path/to/fat.jar"
+	    // and this module's name.
+	    builder.append("Usage: java controller.map.drivers.AppStarter ");
+	    if (usage.graphical) {
+	        builder.append("[-g|--gui]");
+	    } else {
+	        builder.append("-c|--cli");
+	    }
+	    builder.append("``usage.invocations.first``");
+	    for (invocation in usage.invocations.rest) {
+	        builder.append("|``invocation``");
+	    }
+	    for (option in usage.supportedOptions) {
+	        builder.append(" [``option``]");
+	    }
+	    switch (usage.paramsWanted)
+	    case (ParamCount.none) {}
+	    case (ParamCount.one) { builder.append(" ``usage.firstParamDescription``"); }
+	    case (ParamCount.atLeastOne) {
+	        builder.append(" ``usage.firstParamDescription`` [``
+	            usage.subsequentParamDescription`` ...]");
+	    }
+	    case (ParamCount.two) {
+	        builder.append(" ``usage.firstParamDescription`` ``
+	            usage.subsequentParamDescription``");
+	    }
+	    case (ParamCount.atLeastTwo) {
+	        builder.append(" ``usage.firstParamDescription`` ``
+	            usage.subsequentParamDescription`` [``
+	            usage.subsequentParamDescription`` ...]");
+	    }
+	    case (ParamCount.anyNumber) {
+	        builder.append(" [``usage.subsequentParamDescription`` ...]");
+	    }
+	    builder.appendNewline();
+	    if (verbose) {
+	        builder.append(usage.longDescription);
+	    } else {
+	        builder.append(usage.shortDescription);
+	    }
+	    return builder.string;
+	}
+	shared void handleDroppedFiles(AppEvent.OpenFilesEvent openFilesEvent) {
+	    if (exists topWindow = WindowList.getWindows(true, false)
+	            .iterable.narrow<SPFrame>().last) {
+	        for (file in openFilesEvent.files) {
+	            topWindow.acceptDroppedFile(file.toPath());
+	        }
+	    }
+	}
 }
-"Create the usage message for a particular driver."
-String usageMessage(IDriverUsage usage, Boolean verbose) {
-    StringBuilder builder = StringBuilder();
-    // FIXME: should open with either "ceylon run" or "java -jar /path/to/fat.jar"
-    // and this module's name.
-    builder.append("Usage: java controller.map.drivers.AppStarter ");
-    if (usage.graphical) {
-        builder.append("[-g|--gui]");
-    } else {
-        builder.append("-c|--cli");
-    }
-    builder.append("``usage.invocations.first``");
-    for (invocation in usage.invocations.rest) {
-        builder.append("|``invocation``");
-    }
-    for (option in usage.supportedOptions) {
-        builder.append(" [``option``]");
-    }
-    switch (usage.paramsWanted)
-    case (ParamCount.none) {}
-    case (ParamCount.one) { builder.append(" ``usage.firstParamDescription``"); }
-    case (ParamCount.atLeastOne) {
-        builder.append(" ``usage.firstParamDescription`` [``
-            usage.subsequentParamDescription`` ...]");
-    }
-    case (ParamCount.two) {
-        builder.append(" ``usage.firstParamDescription`` ``
-            usage.subsequentParamDescription``");
-    }
-    case (ParamCount.atLeastTwo) {
-        builder.append(" ``usage.firstParamDescription`` ``
-            usage.subsequentParamDescription`` [``
-            usage.subsequentParamDescription`` ...]");
-    }
-    case (ParamCount.anyNumber) {
-        builder.append(" [``usage.subsequentParamDescription`` ...]");
-    }
-    builder.appendNewline();
-    if (verbose) {
-        builder.append(usage.longDescription);
-    } else {
-        builder.append(usage.shortDescription);
-    }
-    return builder.string;
-}
-void handleDroppedFiles(AppEvent.OpenFilesEvent openFilesEvent) {
-    if (exists topWindow = WindowList.getWindows(true, false)
-            .iterable.narrow<SPFrame>().last) {
-        for (file in openFilesEvent.files) {
-            topWindow.acceptDroppedFile(file.toPath());
-        }
-    }
-}
+todo("Try to combine/rearrange things so we have as few top-level and inner classes and `object`s as possible")
 suppressWarnings("expressionTypeNothing")
 shared void run() {
-    addLogWriter(logWriter);
+    addLogWriter(appChooserState.logWriter);
     System.setProperty("com.apple.mrj.application.apple.menu.about.name",
         "SP Helpers");
     System.setProperty("apple.awt.application.name", "SP Helpers");
     UIManager.setLookAndFeel(UIManager.systemLookAndFeelClassName);
     System.setProperty("apple.laf.useScreenMenuBar", "true");
     SPOptionsImpl options = SPOptionsImpl();
-    [Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache = createCache();
+    [Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache = appChooserState.createCache();
     if (platform.systemIsMac) {
-        Application.application.setOpenFileHandler(handleDroppedFiles);
+        Application.application.setOpenFileHandler(appChooserState.handleDroppedFiles);
     }
     object appStarter satisfies ISPDriver {
         shared actual IDriverUsage usage = DriverUsage(true, ["-p", "--app-starter"],
@@ -283,8 +289,8 @@ shared void run() {
                         try {
                             driver.startDriverOnArguments(cli,
                                 currentOptionsTyped, *others);
-                        } catch (IncorrectUsageException except) {
-                            cli.println(usageMessage(except.correctUsage,
+                        } catch (IncorrectUsageException except) { // FIXME: Extract this handling to a helper method rather than duplicating it here and below
+                            cli.println(appChooserState.usageMessage(except.correctUsage,
                                 currentOptionsTyped.getArgument("--verbose") == "true"));
                         } catch (DriverFailedException except) {
                             if (is SPFormatException cause = except.cause) {
@@ -300,7 +306,7 @@ shared void run() {
                     try {
                             driver.startDriverOnArguments(cli, currentOptionsTyped, *others);
                         } catch (IncorrectUsageException except) {
-                            cli.println(usageMessage(except.correctUsage,
+                            cli.println(appChooserState.usageMessage(except.correctUsage,
                                 currentOptionsTyped.getArgument("--verbose") == "true"));
                         } catch (DriverFailedException except) {
                             if (is SPFormatException cause = except.cause) {
@@ -367,7 +373,7 @@ shared void run() {
             }
             if (options.hasOption("--help")) {
                 IDriverUsage tempUsage = currentDriver?.usage else usage;
-                usageMessage(tempUsage, options.getArgument("--verbose") == "true");
+                appChooserState.usageMessage(tempUsage, options.getArgument("--verbose") == "true"); // FIXME: Actually print this message!
             } else if (exists driver = currentDriver) {
                 startChosenDriver(driver, currentOptions.copy());
             } else {
@@ -417,7 +423,7 @@ shared void run() {
         appStarter.startDriverOnArgumentsNoCLI(options, *process.arguments);
     } catch (IncorrectUsageException except) {
         IDriverUsage usage = except.correctUsage;
-        process.writeErrorLine(usageMessage(usage, options.hasOption("--verbose")));
+        process.writeErrorLine(appChooserState.usageMessage(usage, options.hasOption("--verbose")));
         process.exit(1);
     } catch (IOException|DriverFailedException except) {
         log.error(except.message, except.cause);
