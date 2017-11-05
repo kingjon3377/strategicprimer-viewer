@@ -23,13 +23,13 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
     Comparison([Point, AbstractTown], [Point, AbstractTown]) comparator =
             comparing(
                 comparingOn(([Point, AbstractTown] pair) => pair.rest.first,
-                    compareTownKind),
+                    townComparators.compareTownKind),
                 comparingOn(([Point, AbstractTown] pair) => pair.first,
                     DistanceComparator(hq, dimensions).compare),
                 comparingOn(([Point, AbstractTown] pair) => pair.rest.first.townSize,
-                    compareTownSize),
+                    townComparators.compareTownSize),
                 comparingOn(([Point, AbstractTown] pair) => pair.rest.first.status,
-                    compareTownStatus),
+                    townComparators.compareTownStatus),
                 comparingOn(([Point, AbstractTown] pair) => pair.rest.first.name,
                     increasing<String>));
     "The header row for this table."

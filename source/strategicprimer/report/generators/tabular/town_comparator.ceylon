@@ -29,93 +29,94 @@ import strategicprimer.model.map.fixtures.towns {
 import ceylon.random {
     randomize
 }
+object townComparators {
 "A comparator for town-sizes, to put larger towns before smaller ones."
 todo("Reverse the semantics here and use Comparator-reversing methods, so we don't
       have to say that 'large' is the smallest to get it first in lists")
-Comparison compareTownSize(TownSize one, TownSize two) {
-    if (one == two) {
-        return equal;
-    } else if (TownSize.large == one) {
-        return smaller;
-    } else if (TownSize.large == two) {
-        return larger;
-    } else if (TownSize.medium == one) {
-        return smaller;
-    } else {
-        return larger;
-    }
-}
+	shared Comparison compareTownSize(TownSize one, TownSize two) {
+	    if (one == two) {
+	        return equal;
+	    } else if (TownSize.large == one) {
+	        return smaller;
+	    } else if (TownSize.large == two) {
+	        return larger;
+	    } else if (TownSize.medium == one) {
+	        return smaller;
+	    } else {
+	        return larger;
+	    }
+	}
 
-"A comparator for town-statuses, to put active towns before abandoned ones before ruined
- ones before burned-out ones."
-Comparison compareTownStatus(TownStatus one, TownStatus two) {
-    if (one == two) {
-        return equal;
-    } else if (TownStatus.active == one) {
-        return smaller;
-    } else if (TownStatus.active == two) {
-        return larger;
-    } else if (TownStatus.abandoned == one) {
-        return smaller;
-    } else if (TownStatus.abandoned == two) {
-        return larger;
-    } else if (TownStatus.ruined == one) {
-        return smaller;
-    } else {
-        return larger;
-    }
-}
+	"A comparator for town-statuses, to put active towns before abandoned ones before ruined
+	 ones before burned-out ones."
+	shared Comparison compareTownStatus(TownStatus one, TownStatus two) {
+	    if (one == two) {
+	        return equal;
+	    } else if (TownStatus.active == one) {
+	        return smaller;
+	    } else if (TownStatus.active == two) {
+	        return larger;
+	    } else if (TownStatus.abandoned == one) {
+	        return smaller;
+	    } else if (TownStatus.abandoned == two) {
+	        return larger;
+	    } else if (TownStatus.ruined == one) {
+	        return smaller;
+	    } else {
+	        return larger;
+	    }
+	}
 
-"A comparator for towns, sorting them *only* on the basis of what kind of town they are,
-  putting fortresses before cities before towns before fortifications before villages."
-Comparison compareTownKind(ITownFixture one, ITownFixture two) {
-    if (one is Fortress) {
-        if (two is Fortress) {
-            return equal;
-        } else {
-            return smaller;
-        }
-    } else if (two is Fortress) {
-        return larger;
-    } else if (one is City) {
-        if (two is City) {
-            return equal;
-        } else {
-            return smaller;
-        }
-    } else if (two is City) {
-        return larger;
-    } else if (one is Town) {
-        if (two is Town) {
-            return equal;
-        } else {
-            return smaller;
-        }
-    } else if (two is Town) {
-        return larger;
-    } else if (one is Fortification) {
-        if (two is Fortification) {
-            return equal;
-        } else {
-            return smaller;
-        }
-    } else if (two is Fortification) {
-        return larger;
-    } else {
-        assert (one is Village, two is Village);
-        return equal;
-    }
-}
+	"A comparator for towns, sorting them *only* on the basis of what kind of town they are,
+	  putting fortresses before cities before towns before fortifications before villages."
+	shared Comparison compareTownKind(ITownFixture one, ITownFixture two) {
+	    if (one is Fortress) {
+	        if (two is Fortress) {
+	            return equal;
+	        } else {
+	            return smaller;
+	        }
+	    } else if (two is Fortress) {
+	        return larger;
+	    } else if (one is City) {
+	        if (two is City) {
+	            return equal;
+	        } else {
+	            return smaller;
+	        }
+	    } else if (two is City) {
+	        return larger;
+	    } else if (one is Town) {
+	        if (two is Town) {
+	            return equal;
+	        } else {
+	            return smaller;
+	        }
+	    } else if (two is Town) {
+	        return larger;
+	    } else if (one is Fortification) {
+	        if (two is Fortification) {
+	            return equal;
+	        } else {
+	            return smaller;
+	        }
+	    } else if (two is Fortification) {
+	        return larger;
+	    } else {
+	        assert (one is Village, two is Village);
+	        return equal;
+	    }
+	}
 
-"A total ordering for towns."
-Comparison compareTowns(ITownFixture one, ITownFixture two) {
-    return comparing(comparingOn<ITownFixture, TownStatus>(
-                (fix) => fix.status, compareTownStatus),
-        comparingOn<ITownFixture, TownSize>(
-                    (fix) => fix.townSize, compareTownSize), compareTownKind,
-        byIncreasing(ITownFixture.name))(one, two);
+	"A total ordering for towns."
+	shared Comparison compareTowns(ITownFixture one, ITownFixture two) {
+	    return comparing(comparingOn<ITownFixture, TownStatus>(
+	                (fix) => fix.status, compareTownStatus),
+	        comparingOn<ITownFixture, TownSize>(
+	                    (fix) => fix.townSize, compareTownSize), compareTownKind,
+	        byIncreasing(ITownFixture.name))(one, two);
+	}
 }
-
 "Test that the town-comparison algorithms work as expected."
 test
 void testComparison() {
@@ -203,7 +204,7 @@ void testComparison() {
         Fortification(TownStatus.burned, TownSize.small, -1, "inputFortificationTwo", 44,
             owner),
         Village(TownStatus.burned, "inputVillage", 29, owner, "inputRace")];
-    value sorted = shuffled.sort(compareTowns);
+    value sorted = shuffled.sort(townComparators.compareTowns);
 //    for (i in 0:shuffled.size) {
 //        assertEquals(sorted[i], expected[i],
 //            "``i``th element in sorted list of towns is as expected");
