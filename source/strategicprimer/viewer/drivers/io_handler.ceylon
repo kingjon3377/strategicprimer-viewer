@@ -81,38 +81,48 @@ import strategicprimer.drivers.gui.common {
     ISPWindow
 }
 
-FileFilter mapExtensionsFilter = FileNameExtensionFilter(
-    "Strategic Primer world map files", "map", "xml");
-"A factory method for [[JFileChooser]] (or AWT [[FileDialog|JFileDialog]] taking a
- [[FileFilter]] to apply in the same operation."
-shared JFileChooser|JFileDialog filteredFileChooser(
-        "Whether to allow multi-selection."
-        Boolean allowMultiple,
-        "The current directory."
-        String current = ".",
-        "The filter to apply."
-        FileFilter? filter = mapExtensionsFilter) {
-    if (platform.systemIsMac) {
-        JFileDialog retval = JFileDialog(null of Frame?);
-        if (exists filter) {
-            retval.filenameFilter = object satisfies FilenameFilter {
-                shared actual Boolean accept(JFile dir, String name) =>
-                        filter.accept(JFile(dir, name));
-            };
-        }
-        return retval;
-    } else {
-        JFileChooser retval = JFileChooser(current);
-        if (exists filter) {
-            retval.fileFilter = filter;
-        }
-        return retval;
-    }
-}
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
-shared class IOHandler(IDriverModel mapModel, SPOptions options, ICLIHelper cli)
+shared class IOHandler
         satisfies ActionListener {
+	static FileFilter mapExtensionsFilter = FileNameExtensionFilter(
+		"Strategic Primer world map files", "map", "xml");
+	"A factory method for [[JFileChooser]] (or AWT [[FileDialog|JFileDialog]] taking a
+	 [[FileFilter]] to apply in the same operation."
+	todo("Move functionality into FileChooser somehow?")
+	shared static JFileChooser|JFileDialog filteredFileChooser(
+			"Whether to allow multi-selection."
+			Boolean allowMultiple,
+			"The current directory."
+			String current = ".",
+			"The filter to apply."
+			FileFilter? filter = mapExtensionsFilter) {
+		if (platform.systemIsMac) {
+			JFileDialog retval = JFileDialog(null of Frame?);
+			if (exists filter) {
+				retval.filenameFilter = object satisfies FilenameFilter {
+					shared actual Boolean accept(JFile dir, String name) =>
+							filter.accept(JFile(dir, name));
+				};
+			}
+			return retval;
+		} else {
+			JFileChooser retval = JFileChooser(current);
+			if (exists filter) {
+				retval.fileFilter = filter;
+			}
+			return retval;
+		}
+	}
+	IDriverModel mapModel;
+	SPOptions options;
+	ICLIHelper cli;
+	shared new (IDriverModel mapModel, SPOptions options, ICLIHelper cli) {
+		this.mapModel = mapModel;
+		this.options = options;
+		this.cli = cli;
+	}
+
     shared actual void actionPerformed(ActionEvent event) {
         Component? source = as<Component>(event.source);
         variable String errorTitle = "Strategic Primer Assistive Programs";
@@ -243,7 +253,7 @@ shared class FileChooser {
     variable {JPath+}? storedFile;
     JFileChooser|JFileDialog chooser;
     shared new open(JPath? loc = null,
-            JFileChooser|JFileDialog fileChooser = filteredFileChooser(true)) {
+            JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(true)) {
         switch (fileChooser)
         case (is JFileChooser) {
             chooserFunction = fileChooser.showOpenDialog;
@@ -265,7 +275,7 @@ shared class FileChooser {
         chooser = fileChooser;
     }
     shared new save(JPath? loc,
-            JFileChooser|JFileDialog fileChooser = filteredFileChooser(false)) {
+            JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false)) {
         switch (fileChooser)
         case (is JFileChooser) {
             chooserFunction = fileChooser.showSaveDialog;
@@ -285,7 +295,7 @@ shared class FileChooser {
         chooser = fileChooser;
     }
     shared new custom(JPath? loc, String approveText,
-            JFileChooser|JFileDialog fileChooser = filteredFileChooser(false)) {
+            JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false)) {
         switch (fileChooser)
         case (is JFileChooser) {
             chooserFunction = (Component? component) =>

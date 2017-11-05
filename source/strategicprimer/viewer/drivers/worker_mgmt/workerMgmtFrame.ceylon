@@ -86,7 +86,7 @@ import strategicprimer.report {
 import strategicprimer.viewer.drivers {
     MenuBroker,
     FileChooser,
-    filteredFileChooser
+    IOHandler { filteredFileChooser }
 }
 import strategicprimer.viewer.drivers.map_viewer {
     newUnitDialog,
