@@ -433,10 +433,7 @@ shared void run() {
 suppressWarnings("expressionTypeNothing")
 SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
-    object frame extends SPFrame("SP App Chooser", null, Dimension(220, 110)) {
-        shared actual String windowName = "SP App Chooser";
-        shared actual Boolean supportsDroppedFiles = false;
-    }
+	SPFrame frame = SPFrame("SP App Chooser", null, Dimension(220, 110));
     JButton button(String desc, ISPDriver() target) {
         object retval extends JButton(desc) satisfies ActionListener&Runnable {
             shared actual void actionPerformed(ActionEvent event) {

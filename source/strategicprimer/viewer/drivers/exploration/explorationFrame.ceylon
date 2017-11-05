@@ -127,9 +127,6 @@ import ceylon.random {
 import strategicprimer.model.xmlio {
     readMap
 }
-import java.nio.file {
-    JPath=Path
-}
 import strategicprimer.model.idreg {
     IDRegistrar,
     createIDFactory
@@ -155,8 +152,7 @@ SPFrame explorationFrame(IExplorationModel model,
         Direction.nowhere->KeyStroke.getKeyStroke(KeyEvent.vkNumpad5, 0)
     };
     object retval extends SPFrame("Exploration", model.mapFile,
-        Dimension(768, 480)) {
-        shared actual String windowName = "Exploration";
+                Dimension(768, 480), true, (file) => model.addSubordinateMap(readMap(file), file)) {
         CardLayout layoutObj = CardLayout();
         setLayout(layoutObj);
         JTextField mpField = JTextField(5);
@@ -557,9 +553,6 @@ SPFrame explorationFrame(IExplorationModel model,
                 }
             }
         }
-        shared actual void acceptDroppedFile(JPath file) =>
-                model.addSubordinateMap(readMap(file), file);
-        shared actual Boolean supportsDroppedFiles = true;
         explorerSelectingPanel.addCompletionListener(swapper);
         explorationPanel.addCompletionListener(swapper);
         add(explorerSelectingPanel);

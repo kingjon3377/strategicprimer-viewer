@@ -52,8 +52,7 @@ import strategicprimer.drivers.gui.common {
     SPFrame
 }
 "A window to show the result of running subset tests."
-class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) {
-    shared actual String windowName = "Subset Tester";
+class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), true) {
     StreamingLabel label = StreamingLabel();
     object htmlWriter extends JWriter() {
         variable Boolean lineStart = true;
@@ -178,7 +177,6 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320)) 
         testMap(map, path);
     }
     shared actual void acceptDroppedFile(JPath file) => testFile(file);
-    shared actual Boolean supportsDroppedFiles = true;
 }
 "Factory method to add the menu bar to a [[SubsetFrame]]."
 SubsetFrame subsetFrame() {

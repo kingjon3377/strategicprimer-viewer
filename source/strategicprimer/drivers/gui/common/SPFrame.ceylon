@@ -23,9 +23,6 @@ import ceylon.logging {
     Logger,
     logger
 }
-import lovelace.util.common {
-	todo
-}
 Logger log = logger(`module strategicprimer.drivers.gui.common`);
 "A [[TransferHandler]] to allow SP apps to accept dropped files."
 class FileDropHandler() extends TransferHandler() {
@@ -56,23 +53,23 @@ class FileDropHandler() extends TransferHandler() {
 }
 "An intermediate subclass of JFrame to take care of some common setup things that can't be
  done in an interface."
-todo("Allow callers to pass in [[supportsDroppedFiles]], [[acceptDroppedFile]], and [[windowName]]
-      (defaulting to false, [[noop]], and [[windowTitle]] respectively), and make concrete instead of
-      abstract.")
-shared abstract class SPFrame(String windowTitle, JPath? file, Dimension? minSize = null)
+shared class SPFrame(String windowTitle, JPath? file, Dimension? minSize = null,
+		"Whether this app supports having files dropped on it."
+		shared default Boolean supportsDroppedFiles = false,
+		Anything(JPath) droppedFileHandler = noop,
+		"The name of the window, for use in customizing the About dialog"
+		shared actual default String windowName = windowTitle)
         extends JFrame(windowTitle) satisfies ISPWindow {
     if (exists file) {
         title = "``file`` | ``windowTitle``";
         rootPane.putClientProperty("Window.documentFile", file.toFile());
     }
+    "Handle a dropped file."
+    shared default void acceptDroppedFile(JPath file) => droppedFileHandler(file);
     defaultCloseOperation = WindowConstants.disposeOnClose;
     if (exists minSize) {
         setMinimumSize(minSize);
     }
-    "Whether this app supports having files dropped on it."
-    shared formal Boolean supportsDroppedFiles;
-    "Handle a dropped file."
-    shared default void acceptDroppedFile(JPath file) {}
     FileDropHandler temp = FileDropHandler();
     transferHandler = temp;
     temp.app = this;

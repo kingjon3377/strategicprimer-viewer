@@ -212,8 +212,7 @@ shared object mapCheckerCLI satisfies UtilityDriver {
 }
 "The map-checker GUI window."
 class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
-        Dimension(640, 320)) {
-    shared actual String windowName = "Map Checker";
+        Dimension(640, 320), true, noop, "Map Checker") {
     StreamingLabel label = StreamingLabel();
     void printParagraph(String paragraph,
             LabelTextColor color = LabelTextColor.white) {
@@ -235,7 +234,6 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
             warningLevels.custom(customPrinter));
     }
     shared actual void acceptDroppedFile(JPath file) => check(file);
-    shared actual Boolean supportsDroppedFiles = true;
 }
 "A driver to check every map file in a list for errors and report the results in a
  window."

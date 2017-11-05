@@ -44,9 +44,6 @@ import strategicprimer.drivers.worker.common {
 import strategicprimer.drivers.common {
     PlayerChangeListener
 }
-import java.nio.file {
-    JPath=Path
-}
 import strategicprimer.model.xmlio {
     readMap
 }
@@ -83,16 +80,14 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     expander.expandAll();
     FormattedLabel playerLabel = FormattedLabel("%s's Units:", "");
     object retval
-            extends SPFrame("Worker Advancement", model.mapFile, Dimension(640, 480))
+            extends SPFrame("Worker Advancement", model.mapFile, Dimension(640, 480), true,
+                (file) => model.addSubordinateMap(readMap(file), file))
             satisfies PlayerChangeListener{
         shared actual void playerChanged(Player? old, Player newPlayer) {
             playerLabel.setArgs(newPlayer.name);
             treeModel.playerChanged(old, newPlayer);
         }
         shared actual String windowName = "Worker Advancement";
-        shared actual void acceptDroppedFile(JPath file) =>
-                model.addSubordinateMap(readMap(file), file);
-        shared actual Boolean supportsDroppedFiles = true;
     }
     JLabel html(String string) => JLabel("<html><p align=\"left\">``string``</p></html>");
     retval.contentPane = horizontalSplit(0.5, 0.5,

@@ -131,10 +131,7 @@ object tabularReportGUI satisfies SimpleDriver {
     suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        object window extends SPFrame("Tabular Report", model.mapFile, Dimension(640, 480)) {
-            shared actual Boolean supportsDroppedFiles => false;
-            shared actual String windowName => "Tabular Report";
-        }
+        SPFrame window = SPFrame("Tabular Report", model.mapFile, Dimension(640, 480));
         JTabbedPane frame = JTabbedPane(JTabbedPane.top, JTabbedPane.scrollTabLayout);
         tabularReportGenerator.createGUITabularReports(
             (String str, Component comp) => frame.addTab(str, comp), model.map);

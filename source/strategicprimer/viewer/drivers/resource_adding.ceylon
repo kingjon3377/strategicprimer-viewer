@@ -402,17 +402,14 @@ object resourceAddingGUI satisfies SimpleDriver {
         JScrollPane scrolledLog = JScrollPane(logLabel);
         scrolledLog.minimumSize = logLabel.minimumSize;
 
-        object retval extends SPFrame("Resource Entry", model.mapFile)
+        object retval extends SPFrame("Resource Entry", model.mapFile, null, true,
+                    (file) => model.addSubordinateMap(readMap(file), file))
                 satisfies PlayerChangeListener {
-            shared actual String windowName = "Resource Entry";
             shared actual void playerChanged(Player? old, Player newPlayer) {
                 currentPlayer = newPlayer;
                 resourceLabel.setArgs(currentPlayer.name);
                 implementLabel.setArgs(currentPlayer.name);
             }
-            shared actual void acceptDroppedFile(JPath file) =>
-                    model.addSubordinateMap(readMap(file), file);
-            shared actual Boolean supportsDroppedFiles = true;
         }
         retval.add(verticalSplit(0.2, 0.1, mainPanel, scrolledLog));
         retval.jMenuBar = workerMenu(menuHandler, retval, model);

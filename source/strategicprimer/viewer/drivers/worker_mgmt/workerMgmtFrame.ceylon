@@ -98,9 +98,6 @@ import strategicprimer.viewer.drivers.map_viewer {
 import strategicprimer.model.xmlio {
     readMap
 }
-import java.nio.file {
-    JPath=Path
-}
 import lovelace.util.common {
     anythingEqual
 }
@@ -188,7 +185,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         return report;
     }
     object retval extends SPFrame("Worker Management", model.mapFile,
-        Dimension(640, 480))
+                Dimension(640, 480), true, (file) => model.addSubordinateMap(readMap(file), file))
             satisfies PlayerChangeListener {
         IMapNG mainMap = model.map;
         IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
@@ -266,10 +263,6 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             }
             playerLabel.setArgs(newPlayer.name, platform.shortcutDescription);
         }
-        shared actual String windowName = "Worker Management";
-        shared actual void acceptDroppedFile(JPath file) =>
-                model.addSubordinateMap(readMap(file), file);
-        shared actual Boolean supportsDroppedFiles = true;
     }
     retval.jMenuBar = workerMenu(menuHandler.actionPerformed, retval, model);
     retval.pack();
