@@ -35,8 +35,7 @@ import strategicprimer.model.map {
 }
 import strategicprimer.report {
     reportGenerator,
-    createTabularReports,
-    createGUITabularReports
+    tabularReportGenerator
 }
 import javax.swing {
     JTabbedPane
@@ -137,8 +136,8 @@ object tabularReportGUI satisfies SimpleDriver {
             shared actual String windowName => "Tabular Report";
         }
         JTabbedPane frame = JTabbedPane(JTabbedPane.top, JTabbedPane.scrollTabLayout);
-        createGUITabularReports((String str, Component comp) => frame.addTab(str, comp),
-            model.map);
+        tabularReportGenerator.createGUITabularReports(
+            (String str, Component comp) => frame.addTab(str, comp), model.map);
         window.add(frame);
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register((event) => window.dispose(), "close");
@@ -192,7 +191,7 @@ object tabularReportCLI satisfies SimpleDriver {
         void createReports(IMapNG map, JPath? mapFile) {
             if (exists mapFile) {
                 try {
-                    createTabularReports(map,
+                    tabularReportGenerator.createTabularReports(map,
                         filenameFunction(parsePath(mapFile.string)));
                 } catch (IOException|IOError except) {
                     throw DriverFailedException(except);
