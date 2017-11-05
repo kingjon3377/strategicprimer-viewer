@@ -20,22 +20,16 @@ import java.awt {
     GridLayout,
     Dimension
 }
-import java.awt.event {
-    ActionListener,
-    ActionEvent
-}
 import java.io {
     IOException
 }
 import java.lang {
-    System,
-    Runnable
+    System
 }
 
 import javax.swing {
     UIManager,
     SwingUtilities,
-    JButton,
     JPanel,
     JScrollPane,
     JLabel
@@ -44,7 +38,8 @@ import javax.swing {
 import lovelace.util.jvm {
     showErrorDialog,
     BorderedPanel,
-    platform
+    platform,
+	listenedButton
 }
 
 import strategicprimer.viewer.drivers.advancement {
@@ -434,29 +429,22 @@ suppressWarnings("expressionTypeNothing")
 SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
 	SPFrame frame = SPFrame("SP App Chooser", null, Dimension(220, 110));
-    JButton button(String desc, ISPDriver() target) {
-        object retval extends JButton(desc) satisfies ActionListener&Runnable {
-            shared actual void actionPerformed(ActionEvent event) {
-                if (is IDriverModel finalArg) {
-                    target().startDriverOnModel(cli, options, finalArg);
-                } else {
-                    target().startDriverOnArguments(cli, options, *finalArg);
-                }
-                SwingUtilities.invokeLater(this);
-            }
-            shared actual void run() {
-                frame.setVisible(false);
-                frame.dispose();
-            }
-        }
-        retval.addActionListener(retval);
-        return retval;
-    }
+	void buttonHandler(ISPDriver() target) {
+		if (is IDriverModel finalArg) {
+			target().startDriverOnModel(cli, options, finalArg);
+		} else {
+			target().startDriverOnArguments(cli, options, *finalArg);
+		}
+		SwingUtilities.invokeLater(() {
+			frame.setVisible(false);
+			frame.dispose();
+		});
+	}
     JPanel buttonPanel = JPanel(GridLayout(0, 1));
-    buttonPanel.add(button("Map Viewer", () => viewerGUI));
-    buttonPanel.add(button("Worker Skill Advancement", () => advancementGUI));
-    buttonPanel.add(button("Unit Orders and Worker Management", () => workerGUI));
-    buttonPanel.add(button("Exploration", () => explorationGUI));
+    buttonPanel.add(listenedButton("Map Viewer", (evt) => buttonHandler(() => viewerGUI)));
+    buttonPanel.add(listenedButton("Worker Skill Advancement", (evt) => buttonHandler(() => advancementGUI)));
+    buttonPanel.add(listenedButton("Unit Orders and Worker Management", (evt) => buttonHandler(() => workerGUI)));
+    buttonPanel.add(listenedButton("Exploration", (evt) => buttonHandler(() => explorationGUI)));
     frame.contentPane = BorderedPanel.verticalPanel(
         JLabel("Please choose one of the applications below"),
         JScrollPane(buttonPanel), null);
