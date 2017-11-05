@@ -165,7 +165,7 @@ object sampleMapPopulator satisfies MapPopulator {
                 Animal("hare", false, false, "wild", idf.createID()));
 }
 """A driver to add some kind of fixture to suitable tiles throughout the map. Customize
-   isSuitable(), chance(), and create() before each use."""
+   the [[populator]] field before each use."""
 object mapPopulatorDriver satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
