@@ -63,10 +63,10 @@ import javax.swing.table {
 }
 "A method to produce tabular reports based on a map for a player."
 shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
-    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
+    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper.getFixtures(map);
     Player player = map.currentPlayer;
     MapDimensions dimensions = map.dimensions;
-    Point hq = findHQ(map, player);
+    Point hq = reportGeneratorHelper.findHQ(map, player);
     /*{ITableGenerator<out Object>*}*/ value generators = {
         FortressTabularReportGenerator(player, hq, dimensions),
         UnitTabularReportGenerator(player, hq, dimensions),
@@ -98,10 +98,10 @@ shared void createGUITabularReports(
         Anything(String, Component) consumer,
         "The map to base the reports on"
         IMapNG map) {
-    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = getFixtures(map);
+    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper.getFixtures(map);
     Player player = map.currentPlayer;
     MapDimensions dimensions = map.dimensions;
-    Point hq = findHQ(map, player);
+    Point hq = reportGeneratorHelper.findHQ(map, player);
     /*{ITableGenerator<out Object>*}*/ value generators = {
         FortressTabularReportGenerator(player, hq, dimensions),
         UnitTabularReportGenerator(player, hq, dimensions),

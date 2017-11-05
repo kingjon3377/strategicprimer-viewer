@@ -34,7 +34,7 @@ import strategicprimer.model.map {
     PlayerImpl
 }
 import strategicprimer.report {
-    createReport,
+    reportGenerator,
     createTabularReports,
     createGUITabularReports
 }
@@ -106,7 +106,7 @@ object reportCLI satisfies SimpleDriver {
                 if (is Nil loc = outPathCeylon.resource) {
                     value file = loc.createFile();
                     try (writer = file.Overwriter()) {
-                        writer.write(createReport(map, player));
+                        writer.write(reportGenerator.createReport(map, player));
                     }
                 }
             } else {
