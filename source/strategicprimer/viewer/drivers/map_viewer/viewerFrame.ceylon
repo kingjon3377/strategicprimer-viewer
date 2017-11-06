@@ -99,7 +99,7 @@ shared SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel,
             detailPanel(driverModel.mapDimensions.version, driverModel);
     driverModel.addVersionChangeListener(detailPane);
     driverModel.addSelectionChangeListener(detailPane);
-    JComponent createFilterPanel() {
+    JComponent createFilterPanel() { // TODO: This probably creates a separate class ...
         JTable table = JTable(tableModel);
         table.dragEnabled = true;
         table.dropMode = DropMode.insertRows;

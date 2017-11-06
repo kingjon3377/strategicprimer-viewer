@@ -96,7 +96,7 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
             return defaultFixtureIcon;
         }
         try {
-            return loadIcon(actualImage);
+            return imageLoader.loadIcon(actualImage);
         } catch (FileNotFoundException|NoSuchFileException except) {
             log.error("image file images/``actualImage`` not found");
             log.debug("With stack trace", except);

@@ -46,7 +46,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    loadImage
+    imageLoader
 }
 "A panel to show the details of the currently selected unit-member."
 JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
@@ -212,7 +212,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             String portraitName = local.portrait;
             if (!portraitName.empty) {
                 try {
-                    portraitComponent.portrait = loadImage(portraitName);
+                    portraitComponent.portrait = imageLoader.loadImage(portraitName);
                 } catch (IOException except) {
                     log.warn("Failed to load portrait", except);
                 }

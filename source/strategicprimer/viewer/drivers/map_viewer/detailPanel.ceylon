@@ -115,7 +115,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                     String portraitName = selectedValue.portrait;
                     if (!portraitName.empty) {
                         try {
-                            portrait = loadImage(portraitName);
+                            portrait = imageLoader.loadImage(portraitName);
                         } catch (IOException except) {
                             log.warn("I/O error loading portrait", except);
                         }

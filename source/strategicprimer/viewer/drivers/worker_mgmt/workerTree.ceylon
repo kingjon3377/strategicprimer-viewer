@@ -46,7 +46,7 @@ import strategicprimer.model.map.fixtures.mobile {
     animalPlurals
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    loadIcon,
+    imageLoader,
     fixtureEditMenu
 }
 import javax.swing.tree {
@@ -207,7 +207,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             Icon defaultFixtureIcon = createDefaultFixtureIcon();
             Icon? getIconForFile(String filename) {
                 try {
-                    return loadIcon(filename);
+                    return imageLoader.loadIcon(filename);
                 }  catch (FileNotFoundException|NoSuchFileException except) {
                     log.error("Image file images/``filename`` not found`");
                     log.debug("with stack trace", except);

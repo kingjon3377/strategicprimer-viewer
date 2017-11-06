@@ -93,7 +93,7 @@ class Ver2TileDrawHelper(
     };
     for (file in {"trees.png", "mountain.png"}) {
         try {
-            loadImage(file);
+            imageLoader.loadImage(file);
         } catch (FileNotFoundException|NoSuchFileException except) {
             log.info("Image ``file`` not found", except);
         } catch (IOException except) {
@@ -105,7 +105,7 @@ class Ver2TileDrawHelper(
         Image fallbackFallback = BufferedImage(1, 1, BufferedImage.typeIntArgb);
         String filename = "event_fallback.png";
         try {
-            return loadImage(filename);
+            return imageLoader.loadImage(filename);
         } catch (FileNotFoundException|NoSuchFileException except) {
             log.error("Image ``filename`` not found", except);
             return fallbackFallback;
@@ -137,7 +137,7 @@ class Ver2TileDrawHelper(
      one."
     Image getImage(String filename) {
         try {
-            return loadImage(filename);
+            return imageLoader.loadImage(filename);
         } catch (FileNotFoundException|NoSuchFileException except) {
             if (!missingFiles.contains(filename)) {
                 log.error("images/``filename`` not found");
