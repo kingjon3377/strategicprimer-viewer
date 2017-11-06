@@ -197,7 +197,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
     retval.addMouseWheelListener(dsl);
     assert (exists actionMap = retval.actionMap,
         exists inputMap = retval.getInputMap(JComponent.whenAncestorOfFocusedComponent));
-    setUpArrowListeners(dsl, inputMap, actionMap);
+    arrowListenerInitializer.setUpArrowListeners(dsl, inputMap, actionMap);
     object mapSizeListener extends ComponentAdapter() {
         shared actual void componentResized(ComponentEvent event) {
             Integer tileSize = scaleZoom(model.zoomLevel, model.mapDimensions.version);
