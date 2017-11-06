@@ -36,10 +36,8 @@ import strategicprimer.drivers.exploration.common {
     Direction,
     MovementCostListener,
     TraversalImpossibleException,
-    shouldAlwaysNotice,
-    shouldSometimesNotice,
-    MovementCostSource,
-    selectNoticed
+    simpleMovementModel,
+    MovementCostSource
 }
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
@@ -137,9 +135,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
 //        for (fixture in map.fixtures[destPoint]) { // TODO: syntax sugar once compiler bug fixed
         for (fixture in map.fixtures.get(destPoint)) {
-            if (shouldAlwaysNotice(mover, fixture)) {
+            if (simpleMovementModel.shouldAlwaysNotice(mover, fixture)) {
                 constants.add(fixture);
-            } else if (shouldSometimesNotice(mover, speed, fixture)) {
+            } else if (simpleMovementModel.shouldSometimesNotice(mover, speed, fixture)) {
                 allFixtures.add(fixture);
             }
         }
@@ -176,7 +174,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         }
         cli.println("The explorer comes to ``destPoint``, a ``mtn``tile with terrain ``
                   map.baseTerrain[destPoint] else "Unknown"``");
-        {TileFixture*} noticed = selectNoticed(allFixtures, identity<TileFixture>,
+        {TileFixture*} noticed = simpleMovementModel.selectNoticed(allFixtures, identity<TileFixture>,
                 mover, speed);
         if (noticed.empty) {
             cli.println("The following were automatically noticed:");

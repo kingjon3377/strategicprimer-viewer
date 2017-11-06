@@ -44,8 +44,7 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.drivers.exploration.common {
     Speed,
     surroundingPointIterable,
-    shouldAlwaysNotice,
-    shouldSometimesNotice
+    simpleMovementModel
 }
 import ceylon.random {
     randomize
@@ -117,9 +116,9 @@ object expansionDriver satisfies SimpleCLIDriver {
                                         map.fixtures.get(neighbor)
                                             .contains(fixture)) {
                                     continue;
-                                } else if (shouldAlwaysNotice(mock, fixture)) {
+                                } else if (simpleMovementModel.shouldAlwaysNotice(mock, fixture)) {
                                     safeAdd(neighbor, fixture);
-                                } else if (shouldSometimesNotice(mock, Speed.careful,
+                                } else if (simpleMovementModel.shouldSometimesNotice(mock, Speed.careful,
                                         fixture)) {
                                     possibilities.add(fixture);
                                 }

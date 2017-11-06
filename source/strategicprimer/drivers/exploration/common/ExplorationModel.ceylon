@@ -271,7 +271,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         assert (exists unit);
         Point dest = getDestination(point, direction);
         if (exists terrain = map.baseTerrain[dest], exists startingTerrain = map.baseTerrain[point],
-                    ((landMovementPossible(terrain) && startingTerrain != TileType.ocean) ||
+                    ((simpleMovementModel.landMovementPossible(terrain) && startingTerrain != TileType.ocean) ||
                         (startingTerrain == TileType.ocean && terrain == TileType.ocean))) {
             Integer base;
             if (dest == point) {
@@ -280,10 +280,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 //                {TileFixture*} fixtures = map.fixtures[dest]; // TODO: syntax sugar once compiler bug fixed
                 {TileFixture*} fixtures = map.fixtures.get(dest);
 //                base = movementCost(map.baseTerrain[dest],
-                base = movementCost(map.baseTerrain.get(dest),
+                base = simpleMovementModel.movementCost(map.baseTerrain.get(dest),
                     map.fixtures[dest]?.narrow<Forest>()?.first exists,
 //                    map.mountainous[dest], riversSpeedTravel(direction, map.rivers[point],
-                    map.mountainous.get(dest), riversSpeedTravel(direction, map.rivers.get(point),
+                    map.mountainous.get(dest), simpleMovementModel.riversSpeedTravel(direction, map.rivers.get(point),
 //                        map.rivers[dest]), fixtures);
                         map.rivers.get(dest)), fixtures);
             }

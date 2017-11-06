@@ -112,9 +112,7 @@ import strategicprimer.drivers.exploration.common {
     MovementCostListener,
     MovementCostSource,
     TraversalImpossibleException,
-    selectNoticed,
-    shouldSometimesNotice,
-    shouldAlwaysNotice
+    simpleMovementModel
 }
 import strategicprimer.drivers.common {
     SelectionChangeListener,
@@ -479,9 +477,9 @@ SPFrame explorationFrame(IExplorationModel model,
                                     ArrayList<[Integer, TileFixture]>();
                             for (index->fixture in ListModelWrapper(mainList.model)
                                 .indexed) {
-                                if (shouldAlwaysNotice(selectedUnit, fixture)) {
+                                if (simpleMovementModel.shouldAlwaysNotice(selectedUnit, fixture)) {
                                     constants.add([index, fixture]);
-                                } else if (shouldSometimesNotice(selectedUnit,
+                                } else if (simpleMovementModel.shouldSometimesNotice(selectedUnit,
                                     speedSource(), fixture)) {
                                     possibles.add([index, fixture]);
                                 }
@@ -508,7 +506,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                     tracks.add([currentLocation, animal]);
                                 }
                             }
-                            constants.addAll(selectNoticed(randomize(possibles),
+                            constants.addAll(simpleMovementModel.selectNoticed(randomize(possibles),
                                 ([Integer, TileFixture] tuple) => tuple.rest
                                         .first,
                                 selectedUnit, speedSource()));
