@@ -1,7 +1,7 @@
 import strategicprimer.model.map.fixtures {
 	Quantity
 }
-"Models of (game statistics for) herding poultry."
+"Models of (game statistics for) herding poultry." // TODO: convet to constructors?
 abstract class PoultryModel(production, poundsCoefficient, dailyTimePerHead,
 	extraChoresInterval) of chickens | turkeys | pigeons satisfies HerdModel {
 	"The number of eggs produced per head per turn."

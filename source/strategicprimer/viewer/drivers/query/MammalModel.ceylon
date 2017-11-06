@@ -1,7 +1,7 @@
 import strategicprimer.model.map.fixtures {
 	Quantity
 }
-"Models of (game statistics for) herding mammals."
+"Models of (game statistics for) herding mammals." // TODO: Convert to constructors?
 abstract class MammalModel(production, dailyTimePerHead) of dairyCattle | largeMammals |
 		smallMammals satisfies HerdModel {
 	"The amount produced per head per turn, in gallons"
