@@ -57,11 +57,6 @@ object arrowListenerInitializer {
 	    KeyEvent.vkEnd->"end", KeyEvent.vkNumberSign->"end", KeyEvent.vkDollar->"dollar",
 	    KeyEvent.vkCircumflex->"caret", '#'.integer->"end",'^'.integer->"caret"
 	};
-	void repeat<T>(Anything(T) func, T args, Integer times) {
-	    for (i in 0:times) {
-	        func(args);
-	    }
-	}
 	void repeatVoid(Anything() func, Integer times) {
 	    for (i in 0:times) {
 	        func();
