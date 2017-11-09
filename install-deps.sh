@@ -14,8 +14,8 @@ wget https://github.com/tofi86/universalJavaApplicationStub/archive/v2.0.2.tar.g
         universalJavaApplicationStub-2.0.2.tar.gz
 tar xzf universalJavaApplicationStub-2.0.2.tar.gz
 if test -n "${TRAVIS_TAG}"; then
-    echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\|[0-9]*[-_]rc[0-9]*\)$@s:SNAPSHOT:\1:@' | \
-        sed -f - -i version.properties
+	echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\|[0-9]*\.[0-9]*\|[0-9]*[-_]rc[0-9]*\)$@s:SNAPSHOT:\1:@' | \
+		sed -f - -i version.properties
 fi
 get_maven_url() {
     curl -L "https://search.maven.org/remotecontent?filepath=${1}/${2}/${3}/${2}-${3}.jar" \
