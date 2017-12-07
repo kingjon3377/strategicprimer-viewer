@@ -51,7 +51,8 @@ import strategicprimer.drivers.common {
     VersionChangeListener,
     MapChangeListener,
     SelectionChangeListener,
-    readMapModel
+    readMapModel,
+	FixtureMatcher
 }
 import strategicprimer.model.map {
     TileFixture

@@ -30,6 +30,9 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
     TerrainFixture
 }
+import strategicprimer.drivers.common {
+	FixtureMatcher
+}
 
 "A [[TileDrawHelper]] for version-2 maps."
 class Ver2TileDrawHelper(

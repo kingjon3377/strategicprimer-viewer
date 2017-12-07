@@ -12,6 +12,9 @@ import lovelace.util.common {
 import strategicprimer.model.map {
     TileFixture
 }
+import strategicprimer.drivers.common {
+	FixtureMatcher
+}
 "A version-1 tile-draw-helper."
 TileDrawHelper verOneHelper = directTileDrawHelper; // CachingTileDrawHelper();
 "A factory method for [[TileDrawHelper]]s."

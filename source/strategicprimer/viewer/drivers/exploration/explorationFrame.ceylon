@@ -95,12 +95,11 @@ import strategicprimer.drivers.gui.common {
     SPFrame
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    SelectionChangeSupport,
-    fixtureFilterTableModel,
-    FixtureMatcher,
-    FixtureListModel,
-    fixtureList,
-    TileTypeFixture
+	SelectionChangeSupport,
+	fixtureFilterTableModel,
+	FixtureListModel,
+	fixtureList,
+	TileTypeFixture
 }
 import strategicprimer.model.map.fixtures.towns {
     Village
@@ -117,7 +116,8 @@ import strategicprimer.drivers.exploration.common {
 import strategicprimer.drivers.common {
     SelectionChangeListener,
     SelectionChangeSource,
-    PlayerChangeListener
+    PlayerChangeListener,
+	FixtureMatcher
 }
 import ceylon.random {
     randomize

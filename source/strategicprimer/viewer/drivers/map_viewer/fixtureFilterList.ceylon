@@ -33,6 +33,10 @@ import strategicprimer.model.map.fixtures.resources {
     Grove,
     Meadow
 }
+import strategicprimer.drivers.common {
+	FixtureMatcher,
+	simpleMatcher
+}
 "A list to let the user select which fixtures ought to be searched."
 SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
     DefaultListModel<FixtureMatcher> matcherListModel =

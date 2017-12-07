@@ -12,15 +12,17 @@ import javax.swing {
 }
 
 import strategicprimer.viewer.drivers.map_viewer {
-    tileDrawHelperFactory,
-    FixtureMatcher,
-    TileDrawHelper
+	tileDrawHelperFactory,
+	TileDrawHelper
 }
 import strategicprimer.model.map {
     Point,
     TileFixture,
     IMapNG,
     invalidPoint
+}
+import strategicprimer.drivers.common {
+	FixtureMatcher
 }
 "A button (visually) representing a tile in two maps."
 class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matchers)

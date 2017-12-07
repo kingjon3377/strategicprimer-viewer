@@ -70,6 +70,10 @@ import strategicprimer.model.map.fixtures.towns {
     AbstractTown,
     Fortress
 }
+import strategicprimer.drivers.common {
+	FixtureMatcher,
+	simpleMatcher
+}
 "A class to allow the Z-order of fixtures to be represented as a table."
 shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
         Comparator<TileFixture> fixtureFilterTableModel() {

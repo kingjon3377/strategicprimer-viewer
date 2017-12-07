@@ -10,9 +10,9 @@ import java.nio.file {
 	Paths
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    CachingTileDrawHelper,
-    directTileDrawHelper,
-    Ver2TileDrawHelper
+	CachingTileDrawHelper,
+	directTileDrawHelper,
+	Ver2TileDrawHelper
 }
 import strategicprimer.drivers.common {
     SPOptions,
@@ -20,7 +20,8 @@ import strategicprimer.drivers.common {
     DriverUsage,
     ParamCount,
 	UtilityDriver,
-	IncorrectUsageException
+	IncorrectUsageException,
+	FixtureMatcher
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper

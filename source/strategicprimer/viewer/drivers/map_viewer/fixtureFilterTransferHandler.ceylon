@@ -26,6 +26,9 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     IntTransferable
 }
+import strategicprimer.drivers.common {
+	FixtureMatcher
+}
 "A transfer-handler to let the user drag items in the list to control Z-order."
 object fixtureFilterTransferHandler extends TransferHandler() {
     DataFlavor flavor = DataFlavor(`FixtureMatcher`, "FixtureMatcher");
