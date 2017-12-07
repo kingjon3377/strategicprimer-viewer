@@ -12,7 +12,8 @@ shared class FixtureMatcher {
     }
     shared actual String string = "Matcher for ``description``";
 }
-FixtureMatcher simpleMatcher<T>(Boolean(T) method, String description) {
+// TODO: Convert to a named constructor of FixtureMatcher if possible
+shared FixtureMatcher simpleMatcher<T>(Boolean(T) method, String description) {
     Boolean predicate(TileFixture fixture) {
         if (is T fixture, method(fixture)) {
             return true;
