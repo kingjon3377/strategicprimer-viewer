@@ -26,7 +26,8 @@
   <typedef resource="com/redhat/ceylon/ant/antlib.xml" classpathref="ceylon-ant-tasks"/>
 
   <!-- Paths within the repository. This should just work, so long
-       as the directories exist. -->
+       as the directories exist. 
+       TODO: Do we really still need this? Try removing it once the build is passing again. -->
   <target name="set-classpath-on-mac" if="onmac">
     <path id="viewer.classpath">
       <pathelement location="${bin_dir}" />
@@ -89,7 +90,14 @@
     </copy>
   </target>
   <target name="init-ceylon">
-      <ceylon-import-jar jar="${windowmenu.jar.path}"
+      <ceylon-import-jar jar="${pump.common.path}" module="com.pump.common/1.0.00" failOnError="true" />
+      <ceylon-import-jar jar="${pump.awt.path}" module="com.pump.awt/1.0.00" 
+          descriptor="lib/com.pump.awt.module.properties" failOnError="true" />
+      <ceylon-import-jar jar="${pump.image.path}" module="com.pump.image/1.0.00" 
+          descriptor="lib/com.pump.image.module.properties" failOnError="true" />
+      <ceylon-import-jar jar="${pump.button.path}" module="com.pump.button/1.0.00" 
+          descriptor="lib/com.pump.button.module.properties" failOnError="true" />
+      <ceylon-import-jar jar="${windowmenu.jar.path}" descriptor="lib/com.pump.swing.module.properties"
           module="com.pump.swing/1.0.00" failOnError="true" />
   </target>
   <target name="build" depends="init-ceylon">
