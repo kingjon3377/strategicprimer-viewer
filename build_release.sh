@@ -12,5 +12,5 @@ ant \
     -Dpump.button.path="$(pwd)/pump-button-1.0.00.jar" \
     -Dstub-script-path="$(pwd)/universalJavaApplicationStub-2.0.2/src/universalJavaApplicationStub" \
     -Dapple.extensions.path="$(pwd)/orange-extensions-1.3.0.jar" \
-    -Dceylon.home=$(pwd)/ceylon-1.3.3 \ # FIXME: Quote PWD
+    -Dceylon.home="$(pwd)/ceylon-1.3.3" \
     release
