@@ -6,7 +6,7 @@ wget http://download.sourceforge.net/launch4j/launch4j-3/3.11/launch4j-3.11-linu
 tar xzf launch4j-3.11-linux.tgz
 wget https://github.com/UltraMixer/JarBundler/releases/download/3.3.0/jarbundler-core-3.3.0.jar \
 		-O "${HOME}/.ant/lib/jarbundler-core-3.3.0.jar"
-for jar in pump-{swing,common,awt,image,button};do
+for jar in pump-swing pump-common pump-awt pump-image pump-button;do
     wget https://github.com/mickleness/pumpernickel/raw/master/pump-release/com/pump/${jar}/1.0.00/${jar}-1.0.00.jar
 done
 wget http://central.maven.org/maven2/com/yuvimasory/orange-extensions/1.3.0/orange-extensions-1.3.0.jar
