@@ -103,7 +103,8 @@ import strategicprimer.drivers.utility {
     mapCheckerGUI,
     duplicateFixtureRemoverCLI,
 	randomMovementCLI,
-	mapTradeCLI
+	mapTradeCLI,
+	workerPrintCLI
 }
 import strategicprimer.model.xmlio {
     SPFormatException
@@ -195,7 +196,8 @@ object appChooserState {
 			// TODO: Write GUI to allow user to generate or enter town contents
 			townGeneratingCLI,
 			randomMovementCLI,
-			mapTradeCLI
+			mapTradeCLI,
+			workerPrintCLI
 		);
 	    return [cliCache, guiCache];
 	}
