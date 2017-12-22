@@ -161,6 +161,9 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			return newMatcher.displayed;
 		}
 		for (location in first.locations) {
+			if (!second.baseTerrain[location] exists, exists terrain = first.baseTerrain[location]) {
+				second.baseTerrain[location] = terrain;
+			}
 			//for (fixture in first.fixtures[location].filter(testFixture)) { // TODO: syntax sugar
 			for (fixture in first.fixtures.get(location).filter(testFixture)) {
 				//if (!second.fixtures[location].any((fix) => fix.id == fixture.id)) {
