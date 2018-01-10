@@ -172,7 +172,7 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
         } else if (owner.independent) {
             return "``name``, an independent unit";
         } else {
-            return "(a(n) ``kind`` unit belonging to ``owner.name``";
+            return "a(n) ``kind`` unit belonging to ``owner.name``";
         }
     }
     "The required Perception check result for an explorer to notice the unit."
