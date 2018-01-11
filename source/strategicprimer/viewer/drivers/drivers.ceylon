@@ -387,7 +387,7 @@ shared void run() {
                             "Strategic Primer Assistive Programs", except.message));
                     }
                 } else {
-                    ISPDriver[] driversList = [*driverCache[0].items];
+                    ISPDriver[] driversList = [*driverCache[0].items.distinct];
                     value choice = cli.chooseFromList(driversList,
                         "CLI apps available:", "No applications available",
                         "App to start: ", true);
