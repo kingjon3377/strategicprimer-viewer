@@ -15,8 +15,8 @@ import strategicprimer.model.xmlio.yaxml {
  we don't have to ignore *all* deprecation warnings in the test class, and we only have to
   change one place when we create a new implementation.)"
 shared object testReaderFactory {
-    shared ISPReader&IMapReader oldReader => SPFluidReader();
-    shared ISPReader&IMapReader newReader => yaXMLReader;
+    shared ISPReader&IMapReader newReader => SPFluidReader();
+    shared ISPReader&IMapReader oldReader => yaXMLReader;
     shared SPWriter oldWriter => SPFluidWriter();
     shared SPWriter newWriter => yaXMLWriter;
 }

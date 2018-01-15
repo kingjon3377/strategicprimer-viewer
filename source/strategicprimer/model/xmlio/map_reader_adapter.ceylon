@@ -24,18 +24,20 @@ import strategicprimer.model.map {
     IMapNG
 }
 import strategicprimer.model.xmlio.yaxml {
-    yaXMLReader,
     yaXMLWriter
 }
 import ceylon.file {
     Path
+}
+import strategicprimer.model.xmlio.fluidxml {
+	SPFluidReader
 }
 
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
 // TODO: Encapsulate all this (except the test method) in a single object
 // Can't call it "mapReaderAdapter", though, because we'll want that name for another such object ...
-IMapReader reader = yaXMLReader;
+IMapReader reader = SPFluidReader();
 SPWriter writer = yaXMLWriter;
 "Turn a series of Strings into a series of equvalent Paths, optionally omitting the
  first."
