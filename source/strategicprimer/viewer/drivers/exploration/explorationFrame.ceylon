@@ -486,7 +486,7 @@ SPFrame explorationFrame(IExplorationModel model,
                             }
                             Point currentLocation = model.selectedUnitLocation;
                             if (currentLocation.valid) {
-                                {String*}(Point, Integer) tracksSource;
+                                {String*}(Point) tracksSource;
                                 if (exists terrain = model.map.baseTerrain[currentLocation],
                                     terrain == TileType.ocean) {
                                     tracksSource = huntingModel.fish;
@@ -494,7 +494,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                     tracksSource = huntingModel.hunt;
                                 }
                                 if (exists possibleTracks =
-                                    tracksSource(currentLocation, 1).first,
+                                    tracksSource(currentLocation).first,
                                 HuntingModel.noResults != possibleTracks) {
                                     Animal animal = Animal(possibleTracks, true,
                                         false, "wild", -1);

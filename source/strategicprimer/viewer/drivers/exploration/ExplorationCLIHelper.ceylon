@@ -146,9 +146,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         // visible.
         assert (exists terrain = model.map.baseTerrain[destPoint]);
         if (TileType.ocean == terrain) {
-            tracks = huntingModel.fish(destPoint, 1).first else HuntingModel.noResults;
+            tracks = huntingModel.fish(destPoint).first else HuntingModel.noResults;
         } else {
-            tracks = huntingModel.hunt(destPoint, 1).first else HuntingModel.noResults;
+            tracks = huntingModel.hunt(destPoint).first else HuntingModel.noResults;
         }
         if (HuntingModel.noResults != tracks) {
             allFixtures.add(Animal(tracks, true, false, "wild", -1));

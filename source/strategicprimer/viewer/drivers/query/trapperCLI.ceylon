@@ -1,5 +1,4 @@
 import ceylon.collection {
-	LinkedList,
 	Queue
 }
 import strategicprimer.drivers.common {
@@ -39,6 +38,16 @@ class TrapperCommand of setTrap | check | move | easyReset | quit
 	shared new move { name = "Move to another trap"; }
 	shared new easyReset { name = "Reset a foothold trap, e.g."; }
 	shared new quit { name = "Quit"; }
+}
+class QueueWrapper(variable {String*} wrapped) satisfies Queue<String> {
+	shared actual String? accept() {
+		String? retval = wrapped.first;
+		wrapped = wrapped.rest;
+		return retval;
+	}
+	shared actual String? back => wrapped.last;
+	shared actual String? front => wrapped.first;
+	shared actual void offer(String element) => wrapped = wrapped.chain({element});
 }
 "A driver to run a player's trapping activity."
 todo("Tests")
@@ -97,9 +106,9 @@ shared object trappingCLI satisfies SimpleDriver {
 		HuntingModel huntModel = HuntingModel(model.map);
 		Queue<String> fixtures;
 		if (fishing) {
-			fixtures = LinkedList { *huntModel.fish(point, minutes)};
+			fixtures = QueueWrapper(huntModel.fish(point));
 		} else {
-			fixtures = LinkedList { *huntModel.hunt(point, minutes)};
+			fixtures = QueueWrapper(huntModel.hunt(point));
 		}
 		while (minutes > 0, exists command = cli.chooseFromList(commands,
 			"What should the ``name`` do next?", "Oops! No commands",

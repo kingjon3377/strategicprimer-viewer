@@ -126,28 +126,45 @@ shared object queryCLI satisfies SimpleDriver {
 		cli.println("Distance (as the crow flies, in tiles):\t``Float
 			.format(distance(start, end, dimensions), 0, 0)``");
 	}
-	"Run hunting or fishing---that is, produce a list of possible encounters."
+	void huntGeneral(
+			"How much time is left in the day."
+			variable Integer time,
+			"How much time is deducted when nothing is found."
+			Integer noResultCost,
+			"""What verb to use to ask how long an encounter took: "gather", "fight", "process", e.g."""
+			String verb,
+			"The CLI helper."
+			ICLIHelper cli,
+			"The source of encounters."
+			variable {String*} encounters) {
+		while (time > 0, exists encounter = encounters.first) {
+			encounters = encounters.rest;
+			if (encounter == HuntingModel.noResults) {
+				cli.println("Found nothing for the next ``noResultCost`` minutes.");
+				time -= noResultCost;
+			} else if (cli.inputBooleanInSeries("Found ``encounter``. Should they ``verb``?", encounter)) {
+				Integer cost = cli.inputNumber("Time to ``verb``: ");
+				time -= cost;
+				cli.println("``time`` minutes remaining.");
+			} else {
+				time -= noResultCost;
+			}
+		}
+	}
+	"""Run hunting---that is, produce a list of "encounters"."""
+	todo("Distinguish hunting from fishing in no-result time cost?")
 	void hunt(HuntingModel huntModel, Point point, ICLIHelper cli,
-		"How many encounters to show."
-		Integer encounters) {
-		for (encounter in huntModel.hunt(point, encounters)) {
-			cli.println(encounter);
-		}
-	}
-	"Run fishing---that is, produce a list of possible encounters."
+		"How long to spend hunting."
+		Integer time) =>
+			huntGeneral(time, 60 / hourlyEncounters, "fight and process", cli, huntModel.hunt(point));
+	"""Run fishing---that is, produce a list of "encounters"."""
 	void fish(HuntingModel huntModel, Point point, ICLIHelper cli,
-		"How many encounters to show"
-		Integer encounters) {
-		for (encounter in huntModel.fish(point, encounters)) {
-			cli.println(encounter);
-		}
-	}
-	"Run food-gathering---that is, produce a list of possible encounters."
-	void gather(HuntingModel huntModel, Point point, ICLIHelper cli, Integer encounters) {
-		for (encounter in huntModel.gather(point, encounters)) {
-			cli.println(encounter);
-		}
-	}
+		"How long to spend hunting."
+		Integer time) =>
+			huntGeneral(time, 60 / hourlyEncounters, "try to catch and process", cli, huntModel.fish(point));
+	"""Run food-gathering---that is, produce a list of "encounters"."""
+	void gather(HuntingModel huntModel, Point point, ICLIHelper cli, Integer time) =>
+			huntGeneral(time, 60 / hourlyEncounters, "gather", cli, huntModel.gather(point));
 	"""Handle herding mammals. Returns how many hours each herder spends "herding." """
 	Integer herdMammals(ICLIHelper cli, MammalModel animal, Integer count,
 		Integer flockPerHerder) {
@@ -348,9 +365,9 @@ shared object queryCLI satisfies SimpleDriver {
 			"?"->usageLambda,
 			"help"->usageLambda,
 			"fortress"->(() => fortressInfo(model.map, cli.inputPoint("Location of fortress? "), cli)),
-			"hunt"->(()=>hunt(huntModel, cli.inputPoint("Location to hunt? "), cli, hunterHours * hourlyEncounters)),
-			"fish"->(()=>fish(huntModel, cli.inputPoint("Location to fish? "), cli, hunterHours * hourlyEncounters)),
-			"gather"->(()=>gather(huntModel, cli.inputPoint("Location to gather? "), cli, hunterHours * hourlyEncounters)),
+			"hunt"->(()=>hunt(huntModel, cli.inputPoint("Location to hunt? "), cli, hunterHours * 60)),
+			"fish"->(()=>fish(huntModel, cli.inputPoint("Location to fish? "), cli, hunterHours * 60)),
+			"gather"->(()=>gather(huntModel, cli.inputPoint("Location to gather? "), cli, hunterHours * 60)),
 			"herd"->(()=>herd(cli, huntModel)),
 			"trap"->(()=>trappingCLI.startDriverOnModel(cli, options, model)),
 			"distance"->(()=>printDistance(model.mapDimensions, cli)),

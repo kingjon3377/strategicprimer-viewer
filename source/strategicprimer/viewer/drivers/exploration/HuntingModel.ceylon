@@ -95,43 +95,35 @@ shared class HuntingModel {
     {String*} chooseFromMap(
             "Whereabouts to search"
             Point point,
-            "How many items to limit the list to"
-            Integer items,
             "Which map to look in"
             Map<Point, MutableList<String>> chosenMap) {
         variable {String*} choices = surroundingPointIterable(point, dimensions)
             .map((loc) => chosenMap[loc]).coalesced.flatMap(identity);
         choices = choices.chain({noResults}.repeat(choices.size));
-        return DefaultRandom().elements(choices).take(items);
+        return DefaultRandom().elements(choices);
     }
-    """Get a list of hunting results from the area surrounding the given tile. About half
-        will be "nothing"."""
+    """Get a stream of hunting results from the area surrounding the given tile. About half
+        will be "nothing". May be an infinite stream."""
     shared {String*} hunt(
             "Whereabouts to search"
-            Point point,
-            "How many items to limit the list to"
-            Integer items) => chooseFromMap(point, items, animals);
-    """Get a list of fishing results from the area surrounding the given tile. About half
-        will be "nothing"."""
+            Point point) => chooseFromMap(point, animals);
+    """Get a stream of fishing results from the area surrounding the given tile. About half
+        will be "nothing". May be an infinite stream."""
     shared {String*} fish(
             "Whereabouts to search"
-            Point point,
-            "How many items to limit the list to"
-            Integer items) => chooseFromMap(point, items, waterAnimals);
-    """Get a list of gathering results from the area surrounding the given tile. Many will
+            Point point) => chooseFromMap(point, waterAnimals);
+    """Get a stream of gathering results from the area surrounding the given tile. Many will
         be "nothing," especially from desert and tundra tiles and less from jungle
-        tiles."""
+        tiles. This may be an infinite stream."""
     shared {String*} gather(
             "Whereabouts to search"
-            Point point,
-            "How many items to limit the list to"
-            Integer items) {
+            Point point) {
         variable {String*} choices = {
             for (loc in surroundingPointIterable(point, dimensions))
                 if (exists list = plants[loc])
                     for (plant in list)
                         plant
         };
-        return DefaultRandom().elements(choices).take(items);
+        return DefaultRandom().elements(choices);
     }
 }
