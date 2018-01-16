@@ -40,7 +40,7 @@ shared class Direction
 "An enumeration of possible movement speeds, joining their effects on MP costs and
  Perception. Traveling to [[Direction.nowhere]] should give an additional bonus (+2?) to
  Perception."
-shared class Speed of hurried|normal|observant|careful|meticulous satisfies HasName {
+shared class Speed of hurried|normal|observant|careful|meticulous satisfies HasName&Comparable<Speed> {
     "The multiplicative modifier to apply to movement costs."
     shared Float mpMultiplier;
     "The modifier to add to Perception checks."
@@ -66,6 +66,8 @@ shared class Speed of hurried|normal|observant|careful|meticulous satisfies HasN
     shared new meticulous extends delegate(2.5, 2, "Meticulous") {}
     "A description to use in GUI menus."
     shared actual String string => name;
+    shared actual Comparison compare(Speed other) =>
+            perceptionModifier <=> other.perceptionModifier;
 }
 "A model for exploration drivers."
 shared interface IExplorationModel
