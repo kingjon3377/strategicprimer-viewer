@@ -362,10 +362,12 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 .flatMap((world) => world.fixtures.get(currentPoint))
                 .narrow<Village>().filter((village) => village.owner.independent);
             if (!villages.empty) {
+                variable Boolean subordinate = false;
                 for (village in villages) {
                     village.owner = owner;
                     for (pair in allMaps) {
-                        pair.first.addFixture(currentPoint, village);
+                        pair.first.addFixture(currentPoint, village.copy(subordinate));
+                        subordinate = true;
                     }
                 }
                 IMapNG mainMap = map;
