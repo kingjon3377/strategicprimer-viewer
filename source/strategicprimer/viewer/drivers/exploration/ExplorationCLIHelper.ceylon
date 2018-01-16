@@ -75,7 +75,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     variable Speed speed = Speed.normal;
     "Let the user change the explorer's speed"
     void changeSpeed() {
-        Speed[] speeds = `Speed`.caseValues;
+        Speed[] speeds = sort(`Speed`.caseValues);
         Integer->Speed? newSpeed = cli.chooseFromList(speeds,
             "Possible Speeds:", "No speeds available", "Chosen Speed: ", true);
         if (exists temp = newSpeed.item) {
