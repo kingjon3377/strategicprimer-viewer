@@ -39,6 +39,10 @@ import strategicprimer.drivers.exploration.common {
     simpleMovementModel,
     MovementCostSource
 }
+import strategicprimer.model.map.fixtures.towns {
+    Village
+}
+
 "The logic split out of [[explorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         satisfies MovementCostSource {
@@ -87,7 +91,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         if (exists fixture) {
             cli.println(fixture.string);
             Boolean zero;
-            if (is HasOwner fixture, fixture.owner != mover.owner) {
+            if (is HasOwner fixture, fixture.owner != mover.owner || fixture is Village) {
                 zero = true;
             } else {
                 zero = false;

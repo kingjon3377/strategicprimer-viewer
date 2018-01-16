@@ -412,7 +412,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                     .any((that) => fixture == that)) {
                                     Boolean zero;
                                     if (is HasOwner fixture,
-                                        fixture.owner != player) {
+                                        fixture.owner != player || fixture is Village) {
                                         zero = true;
                                     } else {
                                         zero = false;
