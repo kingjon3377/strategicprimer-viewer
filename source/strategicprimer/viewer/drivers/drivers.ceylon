@@ -372,7 +372,8 @@ shared void run() {
             }
             if (options.hasOption("--help")) {
                 IDriverUsage tempUsage = currentDriver?.usage else usage;
-                appChooserState.usageMessage(tempUsage, options.getArgument("--verbose") == "true"); // FIXME: Actually print this message!
+                process.writeLine(appChooserState.usageMessage(tempUsage,
+                        options.getArgument("--verbose") == "true"));
             } else if (exists driver = currentDriver) {
                 startChosenDriver(driver, currentOptions.copy());
             } else {
