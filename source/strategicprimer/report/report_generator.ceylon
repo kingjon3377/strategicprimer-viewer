@@ -171,8 +171,7 @@ shared object reportGenerator {
 	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper.getFixtures(map);
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
 	    Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-	        DistanceComparator(reportGeneratorHelper.findHQ(map, player), dimensions).compare, // FIXME: Don't recompute HQ
-	        byIncreasing(IFixture.hash));
+	        DistanceComparator(hq, dimensions).compare, byIncreasing(IFixture.hash));
 	    for ([loc, fixture] in fixtures.items) {
 	        if (is IUnit|Fortress fixture, fixture.owner == player) {
 	            fixtures.remove(fixture.id);
@@ -221,8 +220,7 @@ shared object reportGenerator {
 	    MapDimensions dimensions = map.dimensions;
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
 	    Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-	        DistanceComparator(reportGeneratorHelper.findHQ(map, player), dimensions).compare, // FIXME: Don't recompute HQ
-	        byIncreasing(IFixture.hash));
+	        DistanceComparator(hq, dimensions).compare, byIncreasing(IFixture.hash));
 	    createSubReportsIR(retval, fixtures, map, player,
 	        FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
 	        UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
