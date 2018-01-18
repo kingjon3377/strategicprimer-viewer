@@ -312,6 +312,105 @@ SPFrame explorationFrame(IExplorationModel model,
             secondMap = model.map;
         }
         IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
+        class ExplorationClickListener(Direction direction, SwingList<TileFixture>&SelectionChangeListener mainList)
+                satisfies MovementCostSource&SelectionChangeSource&ActionListener {
+            MutableList<MovementCostListener> movementListeners =
+                    ArrayList<MovementCostListener>();
+            MutableList<SelectionChangeListener> selectionListeners =
+                    ArrayList<SelectionChangeListener>();
+            shared actual void addSelectionChangeListener(
+                SelectionChangeListener listener) => selectionListeners.add(listener);
+            shared actual void removeSelectionChangeListener(
+                SelectionChangeListener listener) => selectionListeners.remove(listener);
+            shared actual void addMovementCostListener(MovementCostListener listener) =>
+                    movementListeners.add(listener);
+            shared actual void removeMovementCostListener(MovementCostListener listener) =>
+                    movementListeners.remove(listener);
+            MutableList<TileFixture> selectedValuesList {
+                IntArray selections = mainList.selectedIndices;
+                ListModel<TileFixture> listModel = mainList.model;
+                MutableList<TileFixture> retval = ArrayList<TileFixture>();
+                for (index in selections) {
+                    if (index < listModel.size) {
+                        assert (exists item = listModel.getElementAt(index));
+                        retval.add(item);
+                    } else {
+                        assert (exists item = listModel.getElementAt(listModel.size - 1));
+                        retval.add(item);
+                    }
+                }
+                return retval;
+            }
+            "A list of things the explorer can do: pairs of explanations (in the
+             form of questions to ask the user to see if the explorer does them)
+             and references to methods for doing them."
+            {[String, Anything()]*} explorerActions = {[
+                "Should the explorer swear any villages on this tile?", () {
+                model.swearVillages();
+//                        for (fixture in model.map.fixtures[model.selectedUnitLocation] // TODO: syntax sugar once compiler bug fixed
+                for (fixture in model.map.fixtures.get(model.selectedUnitLocation)
+                    .narrow<Village>()) {
+                    selectedValuesList.add(fixture);
+                }
+            }], ["Should the explorer dig to find what kind of ground is here?", model.dig]};
+            shared actual void actionPerformed(ActionEvent event) =>
+                    SwingUtilities.invokeLater(() {
+                try {
+                    value fixtures = selectedValuesList;
+                    if (Direction.nowhere == direction) {
+                        for ([query, method] in explorerActions) {
+                            Integer resp = JOptionPane.showConfirmDialog(null, query);
+                            if (resp == JOptionPane.cancelOption) {
+                                return;
+                            } else if (resp == JOptionPane.yesOption) {
+                                method();
+                            }
+                        }
+                    }
+                    model.move(direction, speedSource());
+                    Point destPoint = model.selectedUnitLocation;
+                    Player player = model.selectedUnit ?. owner else
+                    PlayerImpl(- 1, "no-one");
+                    MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
+                    for ([map, file] in model.subordinateMaps) {
+                        map.baseTerrain[destPoint] = model.map
+//                                            .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
+                                .baseTerrain.get(destPoint);
+                        for (fixture in fixtures) {
+                            if (is TileTypeFixture fixture) {
+                                // Skip it! It'll corrupt the output XML!
+                                continue;
+//                                            } else if (!map.fixtures[destPoint] // TODO: syntax sugar once compiler bug fixed
+                            } else if (!map.fixtures.get(destPoint)
+                                .any((that) => fixture == that)) {
+                                Boolean zero;
+                                if (is HasOwner fixture, fixture.owner != player || fixture is Village) {
+                                    zero = true;
+                                } else {
+                                    zero = false;
+                                }
+                                map.addFixture(destPoint, fixture.copy(zero));
+                                if (is CacheFixture fixture) {
+                                    caches.add(fixture);
+                                }
+                            }
+                        }
+                    }
+                    for (cache in caches) {
+                        model.map.removeFixture(destPoint, cache);
+                    }
+                } catch (TraversalImpossibleException except) {
+                    log.debug("Attempted movement to impassable destination", except);
+                    Point selection = model.selectedUnitLocation;
+                    for (listener in selectionListeners) {
+                        listener.selectedPointChanged(null, selection);
+                    }
+                    for (listener in movementListeners) {
+                        listener.deduct(1);
+                    }
+                }
+            });
+        }
         for (direction in {Direction.northwest,
             Direction.north,
             Direction.northeast,
@@ -330,118 +429,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 matchers);
             // At some point we tried wrapping the button in a JScrollPane.
             tilesPanel.add(dtb);
-            object ecl satisfies MovementCostSource&SelectionChangeSource&
-                    ActionListener { // FIXME: This probably creates a new class per iteration!
-                MutableList<MovementCostListener> movementListeners =
-                        ArrayList<MovementCostListener>();
-                MutableList<SelectionChangeListener> selectionListeners =
-                        ArrayList<SelectionChangeListener>();
-                shared actual void addSelectionChangeListener(
-                    SelectionChangeListener listener) =>
-                        selectionListeners.add(listener);
-                shared actual void removeSelectionChangeListener(
-                    SelectionChangeListener listener) =>
-                        selectionListeners.remove(listener);
-                shared actual void addMovementCostListener(
-                    MovementCostListener listener) =>
-                        movementListeners.add(listener);
-                shared actual void removeMovementCostListener(
-                    MovementCostListener listener) =>
-                        movementListeners.remove(listener);
-                MutableList<TileFixture> selectedValuesList {
-                    IntArray selections = mainList.selectedIndices;
-                    ListModel<TileFixture> listModel = mainList.model;
-                    MutableList<TileFixture> retval = ArrayList<TileFixture>();
-                    for (index in selections) {
-                        if (index < listModel.size) {
-                            assert (exists item = listModel.getElementAt(index));
-                            retval.add(item);
-                        } else {
-                            assert (exists item = listModel.getElementAt(
-                                listModel.size - 1));
-                            retval.add(item);
-                        }
-                    }
-                    return retval;
-                }
-                "A list of things the explorer can do: pairs of explanations (in the
-                 form of questions to ask the user to see if the explorer does them)
-                 and references to methods for doing them."
-                {[String, Anything()]*} explorerActions = {[
-                    "Should the explorer swear any villages on this tile?", () {
-                    model.swearVillages();
-                    //                        for (fixture in model.map.fixtures[model.selectedUnitLocation] // TODO: syntax sugar once compiler bug fixed
-                    for (fixture in model.map.fixtures.get(model.selectedUnitLocation)
-                        .narrow<Village>()) {
-                        selectedValuesList.add(fixture);
-                    }
-                }], ["Should the explorer dig to find what kind of ground is here?",
-                model.dig]};
-                shared actual void actionPerformed(ActionEvent event) =>
-                        SwingUtilities.invokeLater(() {
-                    try {
-                        value fixtures = selectedValuesList;
-                        if (Direction.nowhere == direction) {
-                            for ([query, method] in explorerActions) {
-                                Integer resp =
-                                        JOptionPane.showConfirmDialog(null,
-                                    query);
-                                if (resp == JOptionPane.cancelOption) {
-                                    return;
-                                } else if (resp == JOptionPane.yesOption) {
-                                    method();
-                                }
-                            }
-                        }
-                        model.move(direction, speedSource());
-                        Point destPoint = model.selectedUnitLocation;
-                        Player player = model.selectedUnit ?. owner else
-                        PlayerImpl(- 1, "no-one");
-                        MutableSet<CacheFixture> caches =
-                                HashSet<CacheFixture>();
-                        for ([map, file] in model.subordinateMaps) {
-                            map.baseTerrain[destPoint] = model.map
-                            //                                            .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
-                                    .baseTerrain.get(destPoint);
-                            for (fixture in fixtures) {
-                                if (is TileTypeFixture fixture) {
-                                    // Skip it! It'll corrupt the output XML!
-                                    continue ;
-                                    //                                            } else if (!map.fixtures[destPoint] // TODO: syntax sugar once compiler bug fixed
-                                } else if (!map.fixtures.get(destPoint)
-                                    .any((that) => fixture == that)) {
-                                    Boolean zero;
-                                    if (is HasOwner fixture,
-                                        fixture.owner != player || fixture is Village) {
-                                        zero = true;
-                                    } else {
-                                        zero = false;
-                                    }
-                                    map.addFixture(destPoint,
-                                        fixture.copy(zero));
-                                    if (is CacheFixture fixture) {
-                                        caches.add(fixture);
-                                    }
-                                }
-                            }
-                        }
-                        for (cache in caches) {
-                            model.map.removeFixture(destPoint, cache);
-                        }
-                    } catch (TraversalImpossibleException except) {
-                        log.debug(
-                            "Attempted movement to impassable destination",
-                            except);
-                        Point selection = model.selectedUnitLocation;
-                        for (listener in selectionListeners) {
-                            listener.selectedPointChanged(null, selection);
-                        }
-                        for (listener in movementListeners) {
-                            listener.deduct(1);
-                        }
-                    }
-                });
-            }
+            ExplorationClickListener ecl = ExplorationClickListener(direction, mainList);
             createHotKey(dtb, direction.string, ecl, JComponent.whenInFocusedWindow,
                 *{arrowKeys[direction], numKeys[direction]}.coalesced);
             dtb.addActionListener(ecl);
