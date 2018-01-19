@@ -165,26 +165,15 @@ object xmlTests {
 	        try (stringReader = StringReader(xml)) {
 	            reader.readXML<Type>(fakeFilename, stringReader, warningLevels.die);
 	            fail("Expected a fatal warning");
-	// TODO: replace the catch (Exception) with catch (Expectation) once compiler bug fixed
-	//        } catch (Expectation except) {
-	        } catch (Exception except) {
-	            if (is Expectation except) {
-	                checks(except);
-	            } else {
-	                throw (except);
-	            }
+	        } catch (Expectation except) {
+                checks(except);
 	        }
 	    } else {
 	        try (stringReader = StringReader(xml)) {
 	            reader.readXML<Type>(fakeFilename, stringReader, warningLevels.ignore);
 	            fail("Expected a(n) `` `Expectation`.string `` to be thrown");
-	//        } catch (Expectation except) {
-	        } catch (Exception except) {
-	            if (is Expectation except) {
-	                checks(except);
-	            } else {
-	                throw (except);
-	            }
+	        } catch (Expectation except) {
+                checks(except);
 	        }
 	    }
 	}
