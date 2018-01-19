@@ -197,7 +197,7 @@ object resolutionDecreaseTests {
 	}
 	test
 	shared void testResolutionDecreaseRequirement() {
-	    // TODO: Uncomment hasType() once Ceylon tooling bug fixed
+	    // TODO: Uncomment hasType() once Ceylon compiler bug #5448 fixed
 	    assertThatException(
 	                () => decreaseResolution(SPMapNG(MapDimensionsImpl(3, 3, 2),
 	            PlayerCollection(), -1)))
