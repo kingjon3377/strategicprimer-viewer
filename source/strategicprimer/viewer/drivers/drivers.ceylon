@@ -401,8 +401,7 @@ shared void run() {
 
         shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
                 IDriverModel driverModel) {
-            // TODO: what about -c?
-            if (GraphicsEnvironment.headless) {
+            if (GraphicsEnvironment.headless || options.getArgument("--gui") == "false") {
                 ISPDriver[] cliDrivers = [*driverCache[0].items];
                 try {
                     if (exists driver = cli.chooseFromList(
