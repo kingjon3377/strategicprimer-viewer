@@ -57,9 +57,7 @@ import strategicprimer.model.map {
     PlayerImpl,
     SPMapNG,
     MapDimensionsImpl,
-    PlayerCollection,
-	IFixture,
-	HasOwner
+    PlayerCollection
 }
 import strategicprimer.model.map.fixtures {
     TextFixture,
@@ -133,9 +131,6 @@ import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException,
     MissingChildException,
     DeprecatedPropertyException
-}
-import ceylon.test.engine {
-	AssertionComparisonError
 }
 
 // Unfortunately, encapsulating anything referred to by parameters()
@@ -318,40 +313,6 @@ object xmlTests {
 	    obj.portrait = oldPortrait;
 	}
 
-	"Assert that a deprecated idiom deserializes properly if warnings are ignored, but is
-	 warned about."
-	// TODO: This is now redundant; inline into callers
-	void assertDeprecatedDeserialization<Type>(
-	        "The message to use for assertions"
-	        String message,
-	        "The object we expect the deserialized form to equal"
-	        Type expected,
-	        "The serialized form"
-	        String xml,
-	        "The deprecated property"
-	        String property,
-	        "The preferred form of that property"
-	        String preferred,
-	        "What tag the property is on"
-	        String tag) given Type satisfies Object {
-	    assertDeprecatedProperty<Type>(xml, property, preferred, tag, expected);
-	}
-
-	"Assert that a serialized form with a recommended but not required property missing
-	 deserializes properly if warnings are ignored, but is warned about."
-	// TODO: Now redundant; inline into callers
-	void assertMissingPropertyDeserialization<Type>(
-	        "The assertion message"
-	        String message,
-	        "The object we expect the deserialized form to equal"
-	        Type expected,
-	        "The serialized form"
-	        String xml,
-	        "The missing property"
-	        String property) given Type satisfies Object {
-	    assertMissingProperty<Type>(xml, property, expected);
-	}
-
 	"""Assert that a "forward idiom"---an idiom that we do not yet (or, conversely, anymore)
 	   produce, but want to accept---will be handled properly by both readers."""
 	void assertForwardDeserialization<Type>(
@@ -432,9 +393,8 @@ object xmlTests {
 	        Village(status, "villageTwo", 2, owner, race));
 	    Village thirdVillage = Village(status, "", 3, owner, race);
 	    for (deprecated in {true, false}) {
-	        assertMissingPropertyDeserialization(
-	            "Village serialization with no or empty name does The Right Thing",
-	            thirdVillage, createSerializedForm(thirdVillage, deprecated), "name");
+	        assertMissingProperty(createSerializedForm(thirdVillage, deprecated),
+	            "name", thirdVillage);
 	    }
 	    assertUnwantedChild<Village>("<village status=\"``status``\"><village /></village>",
 	        null);
@@ -588,10 +548,8 @@ object xmlTests {
 	shared void testOldStoneIdiom(StoneKind kind) {
 	    StoneDeposit thirdDeposit = StoneDeposit(kind, 10, 3);
 	    for (deprecated in {true, false}) {
-	        assertDeprecatedDeserialization<StoneDeposit>(
-	            "Deserialization of deprecated stone idiom", thirdDeposit,
-	            createSerializedForm(thirdDeposit, deprecated).replace("kind", "stone"),
-	            "stone", "kind", "stone");
+	        assertDeprecatedProperty<StoneDeposit>(createSerializedForm(thirdDeposit, deprecated)
+	            .replace("kind", "stone"), "stone", "kind", "stone", thirdDeposit);
 	    }
 	}
 
@@ -709,10 +667,8 @@ object xmlTests {
 	    IMutableMapNG fourthMap = createSimpleMap(pointFactory(5, 5),
 	        pointFactory(4, 4)->TileType.plains);
 	    for (deprecated in {true, false}) {
-	        assertDeprecatedDeserialization<IMapNG>(
-	            "Deserialization of deprecated tile-type idiom", fourthMap,
-	            createSerializedForm(fourthMap, deprecated)
-	                .replace("kind", "type"), "type", "kind", "tile");
+	        assertDeprecatedProperty<IMapNG>(createSerializedForm(fourthMap, deprecated)
+	                .replace("kind", "type"), "type", "kind", "tile", fourthMap);
 	    }
 	}
 
@@ -800,9 +756,7 @@ object xmlTests {
 	    six.addFixture(pointFactory(1, 0), Forest("pine", false, 19));
 	    six.addFixture(pointFactory(1, 1), Animal("beaver", false, false, "wild", 18));
 	    for (deprecated in {true, false}) {
-	        assertMissingPropertyDeserialization(
-	            "Not-visible tiles with contents are serialized",
-	            six, createSerializedForm(six, deprecated), "kind");
+	        assertMissingProperty(createSerializedForm(six, deprecated), "kind", six);
 	    }
 	}
 
@@ -1024,9 +978,8 @@ object xmlTests {
 	    }
 	    Mine mine = Mine("four", TownStatus.ruined, 4);
 	    for (deprecation in {true, false}) {
-	        assertDeprecatedDeserialization("Deprecated [[Mine]] idiom", mine,
-	            createSerializedForm(mine, deprecation).replace("kind=", "product="),
-	            "product", "kind", "mine");
+	        assertDeprecatedProperty(createSerializedForm(mine, deprecation)
+	            .replace("kind=", "product="), "product", "kind", "mine", mine);
 	    }
 	    assertUnwantedChild<Mine>("""<mine kind="gold" status="active"><troll /></mine>""",
 	        null);
@@ -1043,9 +996,8 @@ object xmlTests {
 	    Shrub secondShrub = Shrub("two", 2);
 	    assertSerialization("Second test of Shrub serialization", secondShrub);
 	    for (deprecation in {true, false}) {
-	        assertDeprecatedDeserialization("Deserialization of mangled shrub", secondShrub,
-	            createSerializedForm(secondShrub, deprecation).replace("kind", "shrub"),
-	            "shrub", "kind", "shrub");
+	        assertDeprecatedProperty(createSerializedForm(secondShrub, deprecation)
+	            .replace("kind", "shrub"), "shrub", "kind", "shrub", secondShrub);
 	    }
 	    assertUnwantedChild<Shrub>("""<shrub kind="shrub"><troll /></shrub>""", null);
 	    assertMissingProperty<Shrub>("<shrub />", "kind", null);
@@ -1092,26 +1044,22 @@ object xmlTests {
 	    IUnit firstUnit = Unit(PlayerImpl(1, ""), "unitType",
 	        "unitName", 1);
 	    for (deprecated in {true, false}) {
-	        assertDeprecatedDeserialization(
-	            """Deserialize propertly with deprecated use of "type" for unit kind""",
-	            firstUnit,
-	            createSerializedForm(firstUnit, deprecated).replace("kind", "type"), "type",
-	            "kind", "unit");
+	        assertDeprecatedProperty(createSerializedForm(firstUnit, deprecated)
+	            .replace("kind", "type"), "type", "kind", "unit", firstUnit);
 	    }
 	    assertMissingProperty<IUnit>("""<unit owner="2" kind="unit" />""", "name",
 	        Unit(PlayerImpl(2, ""), "unit", "", 0));
 	    assertSerialization("Deserialize unit with no kind properly", Unit(PlayerImpl(2, ""),
 	        "", "name", 2), warningLevels.ignore);
-	    assertMissingPropertyDeserialization("Deserialize unit with no owner properly",
-	        Unit(PlayerImpl(-1, ""), "kind", "unitThree", 3),
-	        """<unit kind="kind" name="unitThree" id="3" />""", "owner");
+	    assertMissingProperty("""<unit kind="kind" name="unitThree" id="3" />""", "owner",
+	        Unit(PlayerImpl(-1, ""), "kind", "unitThree", 3));
 	    IUnit fourthUnit = Unit(PlayerImpl(4, ""), "unitKind", "", 4);
 	    for (deprecated in {true, false}) {
-	        assertMissingPropertyDeserialization("Deserialize unit with no name properly",
-	            fourthUnit, createSerializedForm(fourthUnit, deprecated), "name");
+	        assertMissingProperty(createSerializedForm(fourthUnit, deprecated), "name",
+	            fourthUnit);
 	    }
-	    assertMissingPropertyDeserialization("Deserialize unit with empty name properly",
-	        fourthUnit, """<unit owner="4" kind="unitKind" name="" id="4" />""", "name");
+	    assertMissingProperty("""<unit owner="4" kind="unitKind" name="" id="4" />""", "name",
+	        fourthUnit);
 	    assertMissingProperty<IUnit>("""<unit owner="1" kind="kind" name="name" />""", "id",
 	        Unit(PlayerImpl(1, ""), "kind", "name", 0));
 	}
@@ -1535,10 +1483,8 @@ object xmlTests {
 	    MineralVein secondVein = MineralVein("two", false, dc, id);
 	    assertSerialization("Second MineralEvent serialization test", secondVein);
 	    for (deprecation in {true, false}) {
-	        assertDeprecatedDeserialization("Deserialization of deprecated Mineral idiom",
-	            secondVein, createSerializedForm(secondVein, deprecation)
-	                .replace("kind", "mineral"),
-	            "mineral", "kind", "mineral");
+	        assertDeprecatedProperty(createSerializedForm(secondVein, deprecation)
+	                .replace("kind", "mineral"), "mineral", "kind", "mineral", secondVein);
 	    }
 	    assertUnwantedChild<MineralVein>(
 	        "<mineral kind=\"tin\" exposed=\"false\" dc=\"``dc``\"><hill/></mineral>", null);
