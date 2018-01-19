@@ -100,7 +100,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
                 }
             }
             MutableSet<River> upperLeftRivers = HashSet<River> {
-//                *old.rivers[subPoints[0]] }; // TODO: syntax sugar once compiler bug fixed
+//                *old.rivers[subPoints[0]] }; // TODO: syntax sugar once Ceylon bug #4517 fixed
                 *old.rivers.get(subPoints[0]) };
             MutableSet<River> upperRightRivers = HashSet<River> {
 //                *old.rivers[subPoints[1]] };
