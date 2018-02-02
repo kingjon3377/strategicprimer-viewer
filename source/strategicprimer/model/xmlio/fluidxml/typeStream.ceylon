@@ -1,6 +1,8 @@
 import ceylon.collection {
     MutableSet,
-    HashSet
+    HashSet,
+	LinkedList,
+	Queue
 }
 import ceylon.language.meta {
     type
@@ -8,18 +10,26 @@ import ceylon.language.meta {
 import ceylon.language.meta.model {
     ClassOrInterface
 }
-{ClassOrInterface<Anything>*} typeStream(Object obj) {
-    MutableSet<ClassOrInterface<Anything>> classes =
-            HashSet<ClassOrInterface<Anything>>();
-    void impl(ClassOrInterface<Anything> current) {
-        classes.add(current);
-        if (exists superclass = current.extendedType) {
-            impl(superclass);
-        }
-        for (superclass in current.satisfiedTypes) {
-            impl(superclass);
-        }
-    }
-    impl(type(obj));
-    return {*classes};
+class TypeIterator(Object obj) satisfies Iterator<ClassOrInterface<Anything>> {
+	MutableSet<ClassOrInterface<Anything>> classes = HashSet<ClassOrInterface<Anything>>();
+	Queue<ClassOrInterface<Anything>> queue = LinkedList<ClassOrInterface<Anything>>();
+	queue.offer(type(obj));
+	shared actual ClassOrInterface<Anything>|Finished next() {
+		while (exists item = queue.accept()) {
+			if (!classes.contains(item)) {
+				classes.add(item);
+				if (exists superclass = item.extendedType) {
+					queue.offer(superclass);
+				}
+				for (superclass in item.satisfiedTypes) {
+					queue.offer(superclass);
+				}
+				return item;
+			}
+		}
+		return finished;
+	}
+}
+class TypeStream(Object obj) satisfies {ClassOrInterface<Anything>*} {
+	shared actual Iterator<ClassOrInterface<Anything>> iterator() => TypeIterator(obj);
 }
