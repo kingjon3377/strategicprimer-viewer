@@ -30,9 +30,12 @@ shared class HuntingModel {
     """The "nothing" value we insert."""
     shared static String noResults = "Nothing ...";
     "How long it should take, in man-hours, to process a carcass of the specified mass, in pounds.
-     Calculated using linear regression on a set of seven data-points that seemed reasonable to me,
-     plus the origin twice."
-    shared static Float processingTime(Integer weight) => 0.038581202525214 * weight + 1.62718849765854;
+     Calculated using quadratic regression on a set of nine data-points drawn from what I could find
+     in online research, plus the origin twice. The quadratic trend curve fit better than the linear
+     trendline for all but three of the points, and better than a cubic trend curve for all but the
+     origin."
+    shared static Float processingTime(Integer weight) =>
+            0.855 + 0.0239 * weight - 0.000000872 * weight * weight;
     "The map to hunt in" IMapNG map;
     shared new (IMapNG map) {
         this.map = map;
