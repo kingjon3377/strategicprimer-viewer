@@ -1,5 +1,6 @@
 import ceylon.language.meta {
-    classDeclaration
+    classDeclaration,
+	type
 }
 import ceylon.logging {
     logger,
@@ -53,6 +54,13 @@ import strategicprimer.model.xmlio.exceptions {
 import strategicprimer.model.map.fixtures.towns {
     CommunityStats
 }
+import ceylon.collection {
+	HashMap,
+	MutableMap
+}
+import ceylon.language.meta.model {
+	ClassOrInterface
+}
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
 "A class to hide the complexity of YAXML from callers."
@@ -74,6 +82,9 @@ class YAReaderAdapter(
         YAResourceReader(warning, idFactory), YATerrainReader(warning, idFactory),
         YATextReader(warning, idFactory), townReader,
         YAUnitReader(warning, idFactory, players), YAWorkerReader(warning, idFactory) };
+    MutableMap<String, YAAbstractReader<out Object>> readerCache = HashMap<String, YAAbstractReader<out Object>>();
+    MutableMap<ClassOrInterface<Object>, YAAbstractReader<out Object>> writerCache =
+            HashMap<ClassOrInterface<Object>, YAAbstractReader<out Object>>();
     "Parse an object from XML."
     throws(`class SPFormatException`, "on SP format problems")
     shared Object parse(StartElement element, QName parent, {XMLEvent*} stream) {
@@ -88,8 +99,12 @@ class YAReaderAdapter(
         if ("population" == tag) {
             return townReader.parseCommunityStats(element, parent, stream);
         }
+        if (exists reader = readerCache[tag]) {
+            return reader.read(element, parent, stream);
+        }
         for (reader in readers) {
             if (reader.isSupportedTag(tag)) {
+                readerCache[tag] = reader;
                 return reader.read(element, parent, stream);
             }
         } else {
@@ -110,6 +125,7 @@ class YAReaderAdapter(
     shared void write("The stream to write to" Anything(String) ostream,
             "The object to write" Object obj,
             "The current indentation level" Integer indent) {
+        value cls = type(obj);
         if (is River obj) {
             mapReader.writeRiver(ostream, obj, indent);
         } else if (is {River*} obj) {
@@ -131,9 +147,12 @@ class YAReaderAdapter(
             YAWorkerReader.writeSkill(ostream, obj, indent);
         } else if (is CommunityStats obj) {
             townReader.writeCommunityStats(ostream, obj, indent);
+        } else if (exists writer = writerCache[cls]) {
+            writer.writeRaw(ostream, obj, indent);
         } else {
             for (reader in readers) {
                 if (reader.canWrite(obj)) {
+                    writerCache[cls] = reader;
                     reader.writeRaw(ostream, obj, indent);
                     return;
                 }
