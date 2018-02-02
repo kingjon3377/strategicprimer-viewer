@@ -150,7 +150,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             writeProperty(ostream, "turn", turn);
         }
         ostream(">");
-        ostream(simpleQuote(orders));
+        ostream(simpleQuote(orders, '<'));
         closeTag(ostream, 0, tag);
     }
     void writeChild(Anything(String) ostream, UnitMember child, Integer indent) {

@@ -52,7 +52,7 @@ import lovelace.util.jvm {
 NumberFormat numParser = NumberFormat.integerInstance;
 "Patterns to match XML metacharacters, and their qutoed forms."
 {[String, String]*} quoting = {["""&""", """&amp;"""], ["""<""", """&lt;"""],
-    [""">""", """&gt;"""], [""""""", """&quot;"""], ["""'""", """&apos;"""]};
+    [""">""", """&gt;"""]};
 "A superclass for YAXML reader classes to provide helper methods."
 abstract class YAAbstractReader<Element>
         satisfies YAReader<Element> given Element satisfies Object {
@@ -126,10 +126,22 @@ abstract class YAAbstractReader<Element>
         ostream("\t".repeat(tabs));
     }
     "Replace XML meta-characters in a string with their equivalents."
-    shared static String simpleQuote(String text) {
+    shared static String simpleQuote(String text,
+        "The character that will mark the end of the string as far as XML is concerned. If a single or
+         double quote, that character will be encoded every time it occurs in the string; if a greater-than
+         sign or an equal sign, both types of quotes will be; if a less-than sign, neither will be."
+        Character? delimiter = null) {
         variable String retval = text;
         for ([pattern, replacement] in quoting) {
             retval = retval.replace(pattern, replacement);
+        }
+        if (exists delimiter) {
+            if (delimiter == '"' || delimiter == '>' || delimiter == '=') {
+                retval = retval.replace(""""""", """&quot;""");
+            }
+            if (delimiter == '\'' || delimiter == '>' || delimiter == '=') {
+                retval = retval.replace("""'""", """&apos;""");
+            }
         }
         return retval;
     }
@@ -138,7 +150,7 @@ abstract class YAAbstractReader<Element>
             String|Integer val) {
         switch (val)
         case (is String) {
-            ostream(" ``simpleQuote(name)``=\"``simpleQuote(val)``\"");
+            ostream(" ``simpleQuote(name, '=')``=\"``simpleQuote(val, '"')``\"");
         }
         case (is Integer) { writeProperty(ostream, name, val.string); }
     }
@@ -189,7 +201,7 @@ abstract class YAAbstractReader<Element>
      well."
     shared static void writeTag(Anything(String) ostream, String tag, Integer tabs) {
         indent(ostream, tabs);
-        ostream("<``simpleQuote(tag)``");
+        ostream("<``simpleQuote(tag, '>')``");
         if (tabs == 0) {
             ostream(" xmlns=\"``spNamespace``\"");
         }
@@ -206,7 +218,7 @@ abstract class YAAbstractReader<Element>
         if (tabs > 0) {
             indent(ostream, tabs);
         }
-        ostream("</``simpleQuote(tag)``>``operatingSystem.newline``");
+        ostream("</``simpleQuote(tag, '>')``>``operatingSystem.newline``");
     }
     "Parse a Point from a tag's properties."
     shared static Point parsePoint(StartElement element) =>
