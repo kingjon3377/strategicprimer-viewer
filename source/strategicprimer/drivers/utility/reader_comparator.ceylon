@@ -20,7 +20,8 @@ import strategicprimer.model.xmlio {
     IMapReader,
     Warning,
     warningLevels,
-    testReaderFactory
+    testReaderFactory,
+	SPWriter
 }
 import strategicprimer.drivers.common {
     UtilityDriver,
@@ -50,8 +51,10 @@ shared object readerComparator satisfies UtilityDriver {
     "Compare the two readers' performance on the given files."
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
-        IMapReader one = testReaderFactory.oldReader;
-        IMapReader two = testReaderFactory.newReader;
+        IMapReader readerOne = testReaderFactory.oldReader;
+        IMapReader readerTwo = testReaderFactory.newReader;
+        SPWriter writerOne = testReaderFactory.oldWriter;
+        SPWriter writerTwo = testReaderFactory.newWriter;
         Warning warner = warningLevels.ignore;
         for (arg in args.coalesced) {
             cli.println("``arg``:");
@@ -59,20 +62,37 @@ shared object readerComparator satisfies UtilityDriver {
             JPath path = JPaths.get(arg);
             if (is File file) {
                 String contents = readAll(file);
-                Integer startOne = system.nanoseconds;
-                IMapNG mapOne = one.readMapFromStream(path, StringReader(contents),
+                Integer readStartOne = system.nanoseconds;
+                IMapNG mapOne = readerOne.readMapFromStream(path, StringReader(contents),
                     warner);
-                Integer endOne = system.nanoseconds;
-                print("Old method took ``endOne - startOne``");
-                Integer startTwo = system.nanoseconds;
-                IMapNG mapTwo = two.readMapFromStream(path, StringReader(contents),
+                Integer readEndOne = system.nanoseconds;
+                print("Old reader took ``readEndOne - readStartOne``");
+                Integer readStartTwo = system.nanoseconds;
+                IMapNG mapTwo = readerTwo.readMapFromStream(path, StringReader(contents),
                     warner);
-                Integer endTwo = system.nanoseconds;
-                print("New method took ``endTwo - startTwo``");
+                Integer readEndTwo = system.nanoseconds;
+                print("New reader took ``readEndTwo - readStartTwo``");
                 if (mapOne == mapTwo) {
                     print("Readers produce identical results");
                 } else {
                     print("Readers differ on ``arg``");
+                }
+                StringBuilder outOne = StringBuilder();
+                Integer writeStartOne = system.nanoseconds;
+                writerOne.write(outOne.append, mapOne);
+                Integer writeEndOne = system.nanoseconds;
+                print("Old writer took ``writeEndOne - writeStartOne``");
+                StringBuilder outTwo = StringBuilder();
+                Integer writeStartTwo = system.nanoseconds;
+                writerTwo.write(outTwo.append, mapTwo);
+                Integer writeEndTwo = system.nanoseconds;
+                print("New writer took ``writeEndTwo - writeStartTwo``");
+                if (outOne.string == outTwo.string) {
+                    print("Writers produce identical results");
+                } else if (outOne.string.trimmed == outTwo.string.trimmed) {
+                    print("Writers produce identical results except for leading or trailing whitespace");
+                } else {
+                    print("Writers differ on ``arg``");
                 }
             }
         }
