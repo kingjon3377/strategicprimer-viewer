@@ -28,6 +28,9 @@ import strategicprimer.drivers.common.cli {
 import lovelace.util.common {
 	todo
 }
+import ceylon.math.float {
+	round=halfEven
+}
 "Possible actions in the trapping CLI; top-level so we can switch on the cases,
  since the other alternative, `static`, isn't possible in an `object` anymore."
 class TrapperCommand of setTrap | check | move | easyReset | quit
@@ -87,7 +90,14 @@ shared object trappingCLI satisfies SimpleDriver {
 				return (fishing) then 5 else 10;
 			} else {
 				cli.println("Found either ``top`` or evidence of it escaping.");
-				return cli.inputNumber("How long to check and deal with the animal? ");
+				Integer num = cli.inputNumber("How long to check and deal with the animal? ");
+				if (cli.inputBooleanInSeries("Handle processing now?")) {
+					Integer mass = cli.inputNumber("Weight of meat in pounds: ");
+					Integer hands = cli.inputNumber("# of workers processing this carcass: ");
+					return num + round(HuntingModel.processingTime(mass) / hands).integer;
+				} else {
+					return num;
+				}
 			}
 		}
 		case (TrapperCommand.easyReset) { return (fishing) then 20 else 5; }

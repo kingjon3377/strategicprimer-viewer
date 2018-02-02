@@ -41,7 +41,8 @@ import strategicprimer.model.map.fixtures.terrain {
 }
 import ceylon.math.float {
 	ceiling,
-	sqrt
+	sqrt,
+	round=halfEven
 }
 import strategicprimer.model.map.fixtures.mobile {
 	IWorker
@@ -135,6 +136,8 @@ shared object queryCLI satisfies SimpleDriver {
 			String verb,
 			"The CLI helper."
 			ICLIHelper cli,
+			"Whether this produces meat, as opposed to grain or vegetables of some kind."
+			Boolean meat,
 			"The source of encounters."
 			variable {String*} encounters) {
 		while (time > 0, exists encounter = encounters.first) {
@@ -145,6 +148,11 @@ shared object queryCLI satisfies SimpleDriver {
 			} else if (cli.inputBooleanInSeries("Found ``encounter``. Should they ``verb``?", encounter)) {
 				Integer cost = cli.inputNumber("Time to ``verb``: ");
 				time -= cost;
+				if (meat, cli.inputBooleanInSeries("Handle processing now?")) {
+					Integer mass = cli.inputNumber("Weight of meat in pounds: ");
+					Integer hands = cli.inputNumber("# of workers processing this carcass: ");
+					time -= round(HuntingModel.processingTime(mass) / hands).integer;
+				}
 				cli.println("``time`` minutes remaining.");
 			} else {
 				time -= noResultCost;
@@ -156,15 +164,15 @@ shared object queryCLI satisfies SimpleDriver {
 	void hunt(HuntingModel huntModel, Point point, ICLIHelper cli,
 		"How long to spend hunting."
 		Integer time) =>
-			huntGeneral(time, 60 / hourlyEncounters, "fight and process", cli, huntModel.hunt(point));
+			huntGeneral(time, 60 / hourlyEncounters, "fight and process", cli, true, huntModel.hunt(point));
 	"""Run fishing---that is, produce a list of "encounters"."""
 	void fish(HuntingModel huntModel, Point point, ICLIHelper cli,
 		"How long to spend hunting."
 		Integer time) =>
-			huntGeneral(time, 60 / hourlyEncounters, "try to catch and process", cli, huntModel.fish(point));
+			huntGeneral(time, 60 / hourlyEncounters, "try to catch and process", cli, true, huntModel.fish(point));
 	"""Run food-gathering---that is, produce a list of "encounters"."""
 	void gather(HuntingModel huntModel, Point point, ICLIHelper cli, Integer time) =>
-			huntGeneral(time, 60 / hourlyEncounters, "gather", cli, huntModel.gather(point));
+			huntGeneral(time, 60 / hourlyEncounters, "gather", cli, false, huntModel.gather(point));
 	"""Handle herding mammals. Returns how many hours each herder spends "herding." """
 	Integer herdMammals(ICLIHelper cli, MammalModel animal, Integer count,
 		Integer flockPerHerder) {

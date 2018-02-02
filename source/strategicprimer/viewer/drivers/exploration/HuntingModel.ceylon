@@ -29,6 +29,10 @@ import ceylon.random {
 shared class HuntingModel {
     """The "nothing" value we insert."""
     shared static String noResults = "Nothing ...";
+    "How long it should take, in man-hours, to process a carcass of the specified mass, in pounds.
+     Calculated using linear regression on a set of seven data-points that seemed reasonable to me,
+     plus the origin twice."
+    shared static Float processingTime(Integer weight) => 0.038581202525214 * weight + 1.62718849765854;
     "The map to hunt in" IMapNG map;
     shared new (IMapNG map) {
         this.map = map;
