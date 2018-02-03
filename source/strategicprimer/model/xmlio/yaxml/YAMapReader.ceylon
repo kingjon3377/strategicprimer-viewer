@@ -1,9 +1,12 @@
 import ceylon.collection {
     Stack,
-    LinkedList
+    LinkedList,
+	MutableMap,
+	HashMap
 }
 import ceylon.language.meta {
-    classDeclaration
+    classDeclaration,
+	type
 }
 
 import java.lang {
@@ -62,6 +65,9 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.towns {
     Fortress
 }
+import ceylon.language.meta.model {
+	ClassOrInterface
+}
 variable Integer currentTurn = -1;
 "A reader for Strategic Primer maps."
 class YAMapReader("The Warning instance to use" Warning warner,
@@ -78,6 +84,10 @@ class YAMapReader("The Warning instance to use" Warning warner,
         YAAdventureReader(warner, idRegistrar, players),
         YAPortalReader(warner, idRegistrar), YAExplorableReader(warner, idRegistrar),
         YAUnitReader(warner, idRegistrar, players) };
+        MutableMap<String, YAAbstractReader<out TileFixture>> readerCache =
+                HashMap<String, YAAbstractReader<out TileFixture>>();
+        MutableMap<ClassOrInterface<TileFixture>, YAAbstractReader<out TileFixture>> writerCache =
+                HashMap<ClassOrInterface<TileFixture>, YAAbstractReader<out TileFixture>>();
     "Get the first open-tag event in our namespace in the stream."
     StartElement getFirstStartElement({XMLEvent*} stream, StartElement parent) {
         for (element in stream) {
@@ -125,8 +135,12 @@ class YAMapReader("The Warning instance to use" Warning warner,
     TileFixture parseFixture(StartElement element, QName parent,
             {XMLEvent*} stream) {
         String name = element.name.localPart;
+        if (exists reader = readerCache[name]) {
+            return reader.read(element, parent, stream);
+        }
         for (reader in readers) {
             if (reader.isSupportedTag(name)) {
+                readerCache[name] = reader;
                 return reader.read(element, parent, stream);
             }
         } else {
@@ -249,8 +263,14 @@ class YAMapReader("The Warning instance to use" Warning warner,
     }
     "Write a child object"
     void writeChild(Anything(String) ostream, TileFixture child, Integer tabs) {
+        value cls = type(child);
+        if (exists writer = writerCache[cls]) {
+            writer.writeRaw(ostream, child, tabs);
+            return;
+        }
         for (reader in readers) {
             if (reader.canWrite(child)) {
+                writerCache[cls] = reader;
                 reader.writeRaw(ostream, child, tabs);
                 return;
             }
