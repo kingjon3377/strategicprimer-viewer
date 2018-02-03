@@ -127,7 +127,11 @@ shared class SPFluidWriter() satisfies SPWriter {
             } catch (XMLStreamException except) {
                 throw IOException("Failure in creating XML", except);
             }
-            ostream(snugEndTag.replace(writer.string, "$1 />"));
+            {String+} lines = writer.string.lines;
+            for (line in lines) {
+                ostream(snugEndTag.replace(line, "$1 />"));
+                ostream("\n");
+            }
         } else if (is Path path = arg) {
             File file;
             value res = path.resource;
