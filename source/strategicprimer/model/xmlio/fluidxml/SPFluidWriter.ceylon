@@ -120,7 +120,6 @@ shared class SPFluidWriter() satisfies SPWriter {
                 XMLStreamWriter xsw = xof.createXMLStreamWriter(writer);
                 xsw.setDefaultNamespace(spNamespace);
                 writeSPObjectImpl(xsw, obj, 0);
-                xsw.writeCharacters("\n");
                 xsw.writeEndDocument();
                 xsw.flush();
                 xsw.close();
