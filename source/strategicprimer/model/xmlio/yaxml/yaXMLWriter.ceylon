@@ -15,12 +15,13 @@ import ceylon.file {
 }
 "Sixth generation SP XML writer."
 shared object yaXMLWriter satisfies SPWriter {
+	value wrapped = YAReaderAdapter();
     "Write an object to a stream."
     throws(`class IOException`, "on I/O error")
     shared actual void writeSPObject("The stream to write to" Path|Anything(String) arg,
             "The object to write" Object obj) {
         if (is Anything(String) ostream = arg) {
-            YAReaderAdapter().write(ostream, obj, 0);
+            wrapped.write(ostream, obj, 0);
         } else if (is Path path = arg) {
             File file;
             value res = path.resource;
