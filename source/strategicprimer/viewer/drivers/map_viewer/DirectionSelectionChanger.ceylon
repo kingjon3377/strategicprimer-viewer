@@ -94,7 +94,7 @@ class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener
             // Zoom if Command-scroll/Control-scroll
             Integer count = event.wheelRotation;
             if (count < 0) {
-                for (i in 0:count) {
+                for (i in 0:(count.magnitude)) {
                     model.zoomIn();
                 }
             } else {
