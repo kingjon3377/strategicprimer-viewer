@@ -149,9 +149,12 @@ shared object queryCLI satisfies SimpleDriver {
 				Integer cost = cli.inputNumber("Time to ``verb``: ");
 				time -= cost;
 				if (meat, cli.inputBooleanInSeries("Handle processing now?")) {
-					Integer mass = cli.inputNumber("Weight of meat in pounds: ");
-					Integer hands = cli.inputNumber("# of workers processing this carcass: ");
-					time -= round(HuntingModel.processingTime(mass) / hands).integer;
+					// TODO: somehow handle processing-in-parallel case
+					for (i in 0:(cli.inputNumber("How many animals?"))) {
+						Integer mass = cli.inputNumber("Weight of this animal's meat in pounds: ");
+						Integer hands = cli.inputNumber("# of workers processing this carcass: ");
+						time -= round(HuntingModel.processingTime(mass) / hands).integer;
+					}
 				}
 				cli.println("``time`` minutes remaining.");
 			} else {
