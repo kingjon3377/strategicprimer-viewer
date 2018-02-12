@@ -178,8 +178,8 @@ shared object queryCLI satisfies SimpleDriver {
 		Integer flockPerHerder) {
 		cli.println("Taking the day's two milkings together, tending the animals takes ``
 			flockPerHerder * animal.dailyTimePerHead`` minutes, or ``flockPerHerder *
-				(animal.dailyTimePerHead - 10)``, plus ``animal.dailyTimeFloor
-		`` to gather them");
+				(animal.dailyTimePerHead - 10)`` with expert herders, plus ``
+				animal.dailyTimeFloor`` minutes to gather them");
 		Quantity base = animal.scaledProduction(count);
 		Float production = base.floatNumber;
 		cli.println("This produces ``Float.format(production, 0,
