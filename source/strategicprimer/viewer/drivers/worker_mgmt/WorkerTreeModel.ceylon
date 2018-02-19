@@ -12,7 +12,8 @@ import java.lang {
     ArrayIndexOutOfBoundsException,
     ObjectArray,
     IntArray,
-    IllegalArgumentException
+    IllegalArgumentException,
+    JString=String
 }
 import ceylon.collection {
     ArrayList,
@@ -83,7 +84,11 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
             log.error("valueForPathChanged needs to be implemented");
 
     shared actual Integer getIndexOfChild(Object parent, Object child) {
-        if (is Player parent, is IUnit child) {
+        if (is JString parent) {
+            return getIndexOfChild(parent.string, child);
+        } else if (is JString child) {
+            return getIndexOfChild(parent, child.string);
+        } else if (is Player parent, is IUnit child) {
             return model.getUnits(parent).locate(child.equals)?.key else -1;
         } else if (is Player parent, is String child) {
             return model.getUnitKinds(parent).locate(child.equals)?.key else -1;
