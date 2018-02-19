@@ -202,12 +202,10 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         if (is IUnit item) {
             path = TreePath(createJavaObjectArray({root}));
             indices = createJavaIntArray({getIndexOfChild(root, priorKind), getIndexOfChild(root, item.kind)});
-            // TODO: Do we need to wrap these in Types.nativeString()?
             children = createJavaObjectArray<Object>({priorKind, item.kind});
         } else if (is UnitMember item,
             exists parent = model.getUnits(player)
                 .find((unit) => unit.contains(item))) {
-            // TODO: Do we need to wrap the kind in Types.nativeString()?
             path = TreePath(createJavaObjectArray<Object>({root, parent.kind, parent}));
             indices = createJavaIntArray({getIndexOfChild(parent, item)});
             children = createJavaObjectArray<Object>({item});
