@@ -50,8 +50,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
                 throw ArrayIndexOutOfBoundsException(index);
             }
         } else if (is String parent, model.getUnitKinds(player).contains(parent)) {
-            if (exists child = model.getUnits(player, parent)
-                .getFromFirst(index)) {
+            if (exists child = model.getUnits(player, parent).getFromFirst(index)) {
                 return child;
             } else {
                 throw ArrayIndexOutOfBoundsException(index);
