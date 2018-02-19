@@ -241,7 +241,6 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
                 Integer countAfterAdding = unit.size;
                 if (countAfterAdding > existingMembersCount) {
                     TreeModelEvent event = TreeModelEvent(this,
-                        // TODO: Should `unit.kind` be wrapped in javaString()?
                             TreePath(createJavaObjectArray<Object>({root, unit.kind, unit})),
                             createJavaIntArray({existingMembersCount}),
                             createJavaObjectArray({sibling}));
@@ -250,7 +249,6 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
                     }
                 } else {
                     TreeModelEvent event = TreeModelEvent(this,
-                        // TODO: Should `unit.kind` be wrapped in javaString()?
                             TreePath(createJavaObjectArray<Object>({root, unit.kind})),
                             createJavaIntArray({getIndexOfChild(unit.kind, unit)}),
                             createJavaObjectArray({unit}));
