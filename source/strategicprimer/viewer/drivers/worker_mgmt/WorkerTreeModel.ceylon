@@ -208,7 +208,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
             exists parent = model.getUnits(player)
                 .find((unit) => unit.contains(item))) {
             // TODO: Do we need to wrap the kind in Types.nativeString()?
-            path = TreePath(createJavaObjectArray({root, parent.kind, parent}));
+            path = TreePath(createJavaObjectArray<Object>({root, parent.kind, parent}));
             indices = createJavaIntArray({getIndexOfChild(parent, item)});
             children = createJavaObjectArray<Object>({item});
         } else {
