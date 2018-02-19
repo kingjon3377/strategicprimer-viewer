@@ -169,8 +169,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         }
     }
     assign kind {
-        // TODO: Should the second condition here be negated too?
-        if (!parallel || identifier is Integer) {
+        if (!parallel || identifier is String) {
             identifier = kind;
         }
         for (unit in proxiedList) {
