@@ -222,7 +222,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
                 dismissedMembers.add(member);
                 unit.removeMember(member);
                 TreeModelEvent event = TreeModelEvent(this,
-                    TreePath(createJavaObjectArray({root, unit})),
+                    TreePath(createJavaObjectArray<Object>({root, unit})),
                     createJavaIntArray({index}), createJavaObjectArray({member}));
                 for (listener in listeners) {
                     listener.treeNodesRemoved(event);
@@ -240,8 +240,8 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
                 if (countAfterAdding > existingMembersCount) {
                     TreeModelEvent event = TreeModelEvent(this,
                         // TODO: Should `unit.kind` be wrapped in javaString()?
-                            TreePath(createJavaObjectArray({root, unit.kind, unit})), 
-                            createJavaIntArray({existingMembersCount}), 
+                            TreePath(createJavaObjectArray<Object>({root, unit.kind, unit})),
+                            createJavaIntArray({existingMembersCount}),
                             createJavaObjectArray({sibling}));
                     for (listener in listeners) {
                         listener.treeNodesInserted(event);
@@ -249,7 +249,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
                 } else {
                     TreeModelEvent event = TreeModelEvent(this,
                         // TODO: Should `unit.kind` be wrapped in javaString()?
-                            TreePath(createJavaObjectArray({root, unit.kind})),
+                            TreePath(createJavaObjectArray<Object>({root, unit.kind})),
                             createJavaIntArray({getIndexOfChild(unit.kind, unit)}),
                             createJavaObjectArray({unit}));
                     for (listener in listeners) {
