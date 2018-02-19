@@ -57,7 +57,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
             }
         } else if (is IUnit parent) {
             if (exists child = parent.getFromFirst(index)) {
-                return index;
+                return child;
             } else {
                 throw ArrayIndexOutOfBoundsException(index);
             }
