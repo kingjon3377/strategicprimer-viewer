@@ -221,17 +221,17 @@ shared object queryCLI satisfies SimpleDriver {
 	void herd(ICLIHelper cli, HuntingModel huntModel) {
 		HerdModel herdModel;
 		if (cli.inputBooleanInSeries("Are these small animals, like sheep?\t")) {
-			herdModel = smallMammals;
+			herdModel = MammalModel.smallMammals;
 		} else if (cli.inputBooleanInSeries("Are these dairy cattle?\t")) {
-			herdModel = dairyCattle;
+			herdModel = MammalModel.dairyCattle;
 		} else if (cli.inputBooleanInSeries("Are these chickens?\t")) {
-			herdModel = chickens;
+			herdModel = PoultryModel.chickens;
 		} else if (cli.inputBooleanInSeries("Are these turkeys?\t")) {
-			herdModel = turkeys;
+			herdModel = PoultryModel.turkeys;
 		} else if (cli.inputBooleanInSeries("Are these pigeons?\t")) {
-			herdModel = pigeons;
+			herdModel = PoultryModel.pigeons;
 		} else {
-			herdModel = largeMammals;
+			herdModel = MammalModel.largeMammals;
 		}
 		Integer count = cli.inputNumber("How many animals?\t");
 		if (count == 0) {
