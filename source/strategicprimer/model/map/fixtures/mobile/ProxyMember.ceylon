@@ -3,10 +3,6 @@ import ceylon.collection {
     ArrayList
 }
 
-import lovelace.util.common {
-    todo
-}
-
 import strategicprimer.model.map {
     IFixture
 }
@@ -42,15 +38,16 @@ class ProxyMember satisfies UnitMember&ProxyFor<UnitMember> {
         return false;
     }
     shared actual Iterable<UnitMember> proxied => {*proxiedMembers};
-    todo("Implement properly")
+    shared actual Boolean parallel = true;
     shared actual String string {
-        if (exists first = proxiedMembers.first) {
-            return first.string;
-        } else {
+        if (proxiedMembers.empty) {
             return "a proxy for no unit members";
+        } else if (exists retval = getConsensus(UnitMember.string)) {
+            return retval;
+        } else {
+            return "a proxy for a variety of unit members";
         }
     }
-    shared actual Boolean parallel = true;
     "Returns the ID number shared by all the proxied members, or -1 if either there are no
      proxied members or some have a different ID."
     shared actual Integer id => getConsensus(UnitMember.id) else -1;
