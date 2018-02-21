@@ -55,7 +55,7 @@ class QueueWrapper(variable {String*} wrapped) satisfies Queue<String> {
 	shared actual void offer(String element) => wrapped = wrapped.chain({element});
 }
 "A driver to run a player's trapping activity."
-todo("Tests")
+todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
 shared object trappingCLI satisfies SimpleDriver {
 	Integer minutesPerHour = 60;
 	TrapperCommand[] commands = sort(`TrapperCommand`.caseValues);
