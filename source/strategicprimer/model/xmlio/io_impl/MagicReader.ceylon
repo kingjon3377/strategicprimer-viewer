@@ -4,33 +4,13 @@ import java.io {
     FileReader
 }
 
-import lovelace.util.common {
-    todo
-}
-import java.lang {
-    CharArray,
-    overloaded
-}
-"""A Reader that delegates to FileReader unless the filename begins "string:<", in which
-   case the "string:" prefix is stripped and we delegate to a StringReader."""
-todo("Replace with a factory function")
-class MagicReader extends JReader {
-    JReader delegate;
-    String filename;
-    shared new (String possibleFilename) extends JReader() {
-        if (possibleFilename.startsWith("string:<")) {
-            delegate = StringReader(possibleFilename.substring(7));
-            filename = "a string";
-        } else {
-            delegate = FileReader(possibleFilename);
-            filename = possibleFilename;
-        }
-    }
-    shared actual overloaded Integer read(CharArray buffer, Integer offset, Integer length) =>
-            delegate.read(buffer, offset, length);
-    shared actual void close() => delegate.close();
-    shared actual overloaded Integer read() => delegate.read();
-    shared actual Boolean markSupported() => delegate.markSupported();
-    shared actual void mark(Integer readAheadLimit) => delegate.mark(readAheadLimit);
-    shared actual void reset() => delegate.reset();
+"""Get the appropriate reader based on the given filename: if it begins "string:<", strip
+   the "string:" prefix, pass the remainder to a [[StringReader]], and return it; otherwise
+   return a [[FileReader]]."""
+JReader magicReader(String possibleFilename) {
+	if (possibleFilename.startsWith("string:<")) {
+		return StringReader(possibleFilename.substring(7));
+	} else {
+		return FileReader(possibleFilename);
+	}
 }

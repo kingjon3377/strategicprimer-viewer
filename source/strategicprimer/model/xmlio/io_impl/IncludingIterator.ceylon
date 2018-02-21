@@ -74,8 +74,8 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     void handleInclude(StartElement tag) {
         try {
             String file = getFileAttribute(tag);
-            // FIXME: The MagicReader here (and thus the file it opens!) get leaked!
-            stack.push([file, TypesafeXMLEventReader(MagicReader(file))]);
+            // FIXME: The Reader here (and thus the file it opens!) get leaked!
+            stack.push([file, TypesafeXMLEventReader(magicReader(file))]);
         } catch (FileNotFoundException except) {
             throw NoSuchElementBecauseException("File referenced by <include> not found",
                 except);
