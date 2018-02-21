@@ -238,10 +238,11 @@ shared class ExplorationRunner() {
     }
     "Add a table. This is shared so that tests can use it, but shouldn't be used beyond
      that."
-    todo("If Ceylon ever gets a more nuanced visibility model, revise this",
-        "Use [[restricted]]?",
+    todo("Consider whether non-test uses are reasonable",
         "Move tests *into* this class instead")
-    shared void loadTable(String name, EncounterTable table) => tables[name] = table;
+    shared restricted(`module strategicprimer.drivers.exploration.old`, `module strategicprimer.drivers.converters`,
+                `module strategicprimer.drivers.generators`)
+        void loadTable(String name, EncounterTable table) => tables[name] = table;
 }
 
 "A mock [[EncounterTable]] for the apparatus to test the ExplorationRunner."
