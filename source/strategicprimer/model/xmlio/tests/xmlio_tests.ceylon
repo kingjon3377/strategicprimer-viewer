@@ -74,7 +74,6 @@ import strategicprimer.model.map.fixtures.explorable {
 }
 import strategicprimer.model.map.fixtures.mobile {
     Centaur,
-    SimpleImmortalKind,
     Unit,
     Worker,
     SimpleImmortal,
@@ -82,7 +81,9 @@ import strategicprimer.model.map.fixtures.mobile {
     Giant,
     Fairy,
     Dragon,
-    Animal
+    Animal,
+    Griffin,
+    Ogre
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     Job,
@@ -131,6 +132,9 @@ import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException,
     MissingChildException,
     DeprecatedPropertyException
+}
+import ceylon.language.meta.declaration {
+    OpenClassType
 }
 
 // Unfortunately, encapsulating anything referred to by parameters()
@@ -628,8 +632,7 @@ object xmlTests {
 	        pointFactory(0, 0)->TileType.desert));
 	    IMutableMapNG firstMap = createSimpleMap(pointFactory(2, 2),
 	        pointFactory(1, 1)->TileType.plains);
-	    firstMap.addFixture(pointFactory(1, 1),
-	        SimpleImmortal(SimpleImmortalKind.griffin, 1));
+	    firstMap.addFixture(pointFactory(1, 1), Griffin(1));
 	    assertSerialization("Tile with one fixture", firstMap);
 	    IMutableMapNG secondMap = createSimpleMap(pointFactory(3, 3),
 	        pointFactory(2, 2)->TileType.steppe);
@@ -877,7 +880,7 @@ object xmlTests {
 	shared void testInclude() {
 	    assertForwardDeserialization<SimpleImmortal>("Reading Ogre via <include>",
 	        """<include file="string:&lt;ogre id=&quot;1&quot; /&gt;" />""",
-	        SimpleImmortal(SimpleImmortalKind.ogre, 1).equals);
+	        Ogre(1).equals);
 	}
 
 	test
@@ -889,7 +892,7 @@ object xmlTests {
 		player.current = true;
 		expected.addPlayer(player);
 		expected.addFixture(point, Hill(1));
-		expected.addFixture(point, SimpleImmortal(SimpleImmortalKind.ogre, 1));
+		expected.addFixture(point, Ogre(1));
 	    assertDuplicateID(
 	        """<map version="2" rows="1" columns="1" current_player="1">
 	           <player number="1" code_name="playerOne" />
@@ -1424,9 +1427,11 @@ object xmlTests {
 	test
 	parameters(`function threeRandomNumbers`)
 	shared void testSimpleImageSerialization(Integer id) {
-	    for (kind in `SimpleImmortalKind`.caseValues) {
-	        assertImageSerialization("``kind``  image property is preserved",
-	            SimpleImmortal(kind, id));
+		for (type in `class SimpleImmortal`.caseTypes.narrow<OpenClassType>()
+				.map(OpenClassType.declaration)) {
+			assert (is SimpleImmortal item = type.instantiate([], id));
+			assertImageSerialization("``item.kind``  image property is preserved",
+				item);
 	    }
 	    assertImageSerialization("Hill image property is preserved", Hill(id));
 	    assertImageSerialization("Oasis image property is preserved", Oasis(id));
@@ -1436,32 +1441,18 @@ object xmlTests {
 	test
 	parameters(`function threeRandomNumbers`)
 	shared void testSimpleSerialization(Integer id) {
-	    for (kind in `SimpleImmortalKind`.caseValues) {
-	        assertSerialization("``kind``  serialization",
-	            SimpleImmortal(kind, id));
+	    for (type in `class SimpleImmortal`.caseTypes.narrow<OpenClassType>()
+					.map(OpenClassType.declaration)) {
+	        assert (is SimpleImmortal item = type.instantiate([], 0));
+	        assertSerialization("``item.kind``  serialization", type.instantiate([], id));
+	        assertMissingProperty<SimpleImmortal>("<``item.kind`` />", "id", item);
 	    }
-	    assertMissingProperty<SimpleImmortal>("<djinn />", "id",
-	        SimpleImmortal(SimpleImmortalKind.djinn, 0));
-	    assertMissingProperty<SimpleImmortal>("<griffin />", "id",
-	        SimpleImmortal(SimpleImmortalKind.griffin, 0));
 	    assertSerialization("Hill serialization", Hill(id));
 	    assertMissingProperty<Hill>("<hill />", "id", Hill(0));
-	    assertMissingProperty<SimpleImmortal>("<minotaur />", "id",
-	        SimpleImmortal(SimpleImmortalKind.minotaur, 0));
 	    assertSerialization("Oasis serialization", Oasis(id));
 	    assertMissingProperty<Oasis>("<oasis />", "id", Oasis(0));
-	    assertMissingProperty<SimpleImmortal>("<ogre />", "id",
-	        SimpleImmortal(SimpleImmortalKind.ogre, 0));
-	    assertMissingProperty<SimpleImmortal>("<phoenix />", "id",
-	        SimpleImmortal(SimpleImmortalKind.phoenix, 0));
 	    assertSerialization("Sandbar serialization", Sandbar(id));
 	    assertMissingProperty<Sandbar>("<sandbar />", "id", Sandbar(0));
-	    assertMissingProperty<SimpleImmortal>("<simurgh />", "id",
-	        SimpleImmortal(SimpleImmortalKind.simurgh, 0));
-	    assertMissingProperty<SimpleImmortal>("<sphinx />", "id",
-	        SimpleImmortal(SimpleImmortalKind.sphinx, 0));
-	    assertMissingProperty<SimpleImmortal>("<troll />", "id",
-	        SimpleImmortal(SimpleImmortalKind.troll, 0));
 	}
 
 

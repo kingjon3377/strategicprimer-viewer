@@ -46,8 +46,12 @@ import strategicprimer.model.map.fixtures.mobile {
     Centaur,
     Fairy,
     Giant,
-    SimpleImmortalKind,
-    SimpleImmortal
+    Griffin,
+    Simurgh,
+    Minotaur,
+    Ogre,
+    Djinn,
+    Troll
 }
 import strategicprimer.model.map.fixtures.resources {
     FieldStatus,
@@ -393,15 +397,10 @@ object oneToTwoConverterTests {
 	        Animal("animalKind", false, false, "wild", 2),
 	        Mine("mineral", TownStatus.active, 3), AdventureFixture(independent,
 	            "briefDescription", "fullDescription", 4),
-	        SimpleImmortal(SimpleImmortalKind.simurgh, 5),
-	        SimpleImmortal(SimpleImmortalKind.griffin, 6),
+	        Simurgh(5), Griffin(6),
 	        City(TownStatus.ruined, TownSize.large, 0, "cityName", 7, independent),
-	        SimpleImmortal(SimpleImmortalKind.ogre, 8),
-	        SimpleImmortal(SimpleImmortalKind.minotaur, 9),
-	        Centaur("hill", 10), Giant("frost", 11),
-	        SimpleImmortal(SimpleImmortalKind.djinn, 12),
-	        Fairy("lesser", 13), Dragon("ice", 14),
-	        SimpleImmortal(SimpleImmortalKind.troll, 15),
+	        Ogre(8), Minotaur(9), Centaur("hill", 10), Giant("frost", 11),
+	        Djinn(12), Fairy("lesser", 13), Dragon("ice", 14), Troll(15),
 	        Fortification(TownStatus.burned, TownSize.medium, 0, "townName", 16, independent),
 	        StoneDeposit(StoneKind.conglomerate, 0, 17));
 	    initialize(original, pointFactory(1, 0), TileType.mountain);
@@ -421,7 +420,7 @@ object oneToTwoConverterTests {
 	        forest("btree2"),
 	        City(TownStatus.ruined, TownSize.large, 0, "cityName", -1, independent));
 	    initialize(converted, pointFactory(0, 6), TileType.steppe, groundTwo(),
-	        forest("btree2"), SimpleImmortal(SimpleImmortalKind.troll, -1),
+	        forest("btree2"), Troll(-1),
 	        field(FieldStatus.growing, "grain2"));
 	    initialize(converted, pointFactory(0, 7), TileType.steppe, groundTwo(),
 	        forest("btree2"), StoneDeposit(StoneKind.conglomerate, 0, -1),
@@ -436,19 +435,19 @@ object oneToTwoConverterTests {
 	    initialize(converted, pointFactory(1, 6), TileType.steppe, groundTwo(),
 	        forest("btree2"), Fairy("lesser", -1));
 	    initialize(converted, pointFactory(1, 7), TileType.steppe, groundTwo(),
-	        forest("btree2"), SimpleImmortal(SimpleImmortalKind.minotaur, -1),
+	        forest("btree2"), Minotaur(-1),
 	        orchard("fruit2"));
 	    initialize(converted, pointFactory(2, 4), TileType.steppe, groundTwo(),
 	        forest("btree2"),
 	        AdventureFixture(independent, "briefDescription", "fullDescription", -1),
-	        SimpleImmortal(SimpleImmortalKind.djinn, -1), orchard("fruit2"));
+	        Djinn(-1), orchard("fruit2"));
 	    initialize(converted, pointFactory(2, 5), TileType.steppe, groundTwo(),
 	        forest("btree2"), Animal("animalKind", false, false, "wild", -1),
 	        field(FieldStatus.fallow, "grain2"));
 	    initialize(converted, pointFactory(2, 6), TileType.steppe, groundTwo(),
 	        forest("btree2"), Dragon("ice", -1), field(FieldStatus.fallow, "grain2"));
 	    initialize(converted, pointFactory(2, 7), TileType.steppe, groundTwo(),
-	        forest("btree2"), SimpleImmortal(SimpleImmortalKind.simurgh, -1),
+	        forest("btree2"), Simurgh(-1),
 	        field(FieldStatus.growing, "grain2"));
 	    initialize(converted, pointFactory(3, 1), null, groundOne());
 	    initialize(converted, pointFactory(3, 4), TileType.steppe, groundTwo(),
@@ -456,9 +455,9 @@ object oneToTwoConverterTests {
 	    initialize(converted, pointFactory(3, 5), TileType.steppe, groundTwo(),
 	        forest("btree2"), Mine("mineral", TownStatus.active, -1));
 	    initialize(converted, pointFactory(3, 6), TileType.steppe, groundTwo(),
-	        forest("btree2"), SimpleImmortal(SimpleImmortalKind.ogre, -1));
+	        forest("btree2"), Ogre(-1));
 	    initialize(converted, pointFactory(3, 7), TileType.steppe, groundTwo(),
-	        forest("btree2"), SimpleImmortal(SimpleImmortalKind.griffin, -1));
+	        forest("btree2"), Griffin(-1));
 	    initialize(converted, pointFactory(4, 0), TileType.plains, groundThree());
 	    initialize(converted, pointFactory(4, 1), TileType.plains, groundThree(),
 	        field(FieldStatus.fallow, "grain3"));

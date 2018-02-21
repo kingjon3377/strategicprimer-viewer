@@ -11,10 +11,6 @@ import ceylon.language.meta.model {
     Type
 }
 
-import java.lang {
-    IllegalStateException
-}
-
 import lovelace.util.common {
     DelayedRemovalMap
 }
@@ -30,10 +26,17 @@ import strategicprimer.model.map.fixtures.mobile {
     Centaur,
     Fairy,
     Giant,
-    SimpleImmortalKind,
     SimpleImmortal,
     Dragon,
-    Immortal
+    Immortal,
+	Ogre,
+	Troll,
+	Sphinx,
+	Phoenix,
+	Griffin,
+	Djinn,
+	Simurgh,
+	Minotaur
 }
 import strategicprimer.report {
     IReportNode
@@ -64,30 +67,29 @@ shared class ImmortalsReportGenerator(
                         .sort(pairComparator) };
             MutableMap<Type<IFixture>, Anything(String, Point)> meta =
                     HashMap<Type<IFixture>, Anything(String, Point)>();
-            MutableMap<SimpleImmortalKind,
-            HeadedList<Point>&MutableList<Point>> simples =
-                    HashMap<SimpleImmortalKind,
+            MutableMap<Type<SimpleImmortal>,
+                    HeadedList<Point>&MutableList<Point>> simples =
+                    HashMap<Type<SimpleImmortal>,
                     HeadedList<Point>&MutableList<Point>>();
-            for (kind in `SimpleImmortalKind`.caseValues) {
-                simples[kind] = PointList("``kind.plural`` at: ");
-            }
-            // If we use Correspondence syntax sugar, we have to specify types
-            // for the lambda.
-            meta.put(`SimpleImmortal`,(kind, point) {
-                // FIXME: why are we parsing in a report generator at all?
-                value immortal = SimpleImmortalKind.parse(kind);
-                if (is SimpleImmortalKind immortal) {
-                    if (exists list = simples[immortal]) {
+            void handleSimple(Type<SimpleImmortal> type, String plural) {
+                meta.put(type, (_, point) {
+                    if (exists list = simples[type]) {
                         list.add(point);
                     } else {
-                        throw IllegalStateException(
-                            "Parsed but failed to find immortal kind");
+                        value list = PointList("``plural`` at ");
+                        simples[type] = list;
+                        list.add(point);
                     }
-                } else {
-                    throw IllegalStateException("Failed to parse immortal kind",
-                        immortal);
-                }
-            });
+                    });
+            }
+            handleSimple(`Sphinx`, "Sphinx(es)");
+            handleSimple(`Djinn`, "Djinn(i)");
+            handleSimple(`Griffin`, "Griffin(s)");
+            handleSimple(`Minotaur`, "Minotaur(s)");
+            handleSimple(`Ogre`, "Ogre(s)");
+            handleSimple(`Phoenix`, "Phoenix(es)");
+            handleSimple(`Simurgh`, "Simurgh(s)");
+            handleSimple(`Troll`, "Troll(s)");
             MutableMap<String, MutableList<Point>> handleComplex(Type<Immortal> type,
                     String plural = "(s)") {
                 MutableMap<String, MutableList<Point>> retval =
@@ -143,8 +145,7 @@ shared class ImmortalsReportGenerator(
             MutableList<[Point, IFixture]> values =
                     ArrayList<[Point, IFixture]> { *fixtures.items
                         .sort(pairComparator) };
-            MutableMap<SimpleImmortalKind, IReportNode> simples =
-                    HashMap<SimpleImmortalKind, IReportNode>();
+            MutableMap<String, IReportNode> simples = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> centaurs = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> giants = HashMap<String, IReportNode>();
             MutableMap<String, IReportNode> fairies = HashMap<String, IReportNode>();
@@ -172,11 +173,11 @@ shared class ImmortalsReportGenerator(
                         .appendNode(produceRIR(fixtures, map, [immortal, point]));
                 } else if (is SimpleImmortal immortal) {
                     IReportNode node;
-                    if (exists temp = simples[immortal.immortalKind]) {
+                    if (exists temp = simples[immortal.plural]) {
                         node = temp;
                     } else {
-                        node = ListReportNode(immortal.immortalKind.plural);
-                        simples[immortal.immortalKind] = node;
+                        node = ListReportNode(immortal.plural);
+                        simples[immortal.plural] = node;
                     }
                     node.appendNode(produceRIR(fixtures, map, [immortal, point]));
                 } else if (is Giant immortal) {

@@ -63,15 +63,21 @@ import strategicprimer.model.map.fixtures {
     TextFixture
 }
 import strategicprimer.model.map.fixtures.mobile {
-    SimpleImmortalKind,
     IUnit,
-    SimpleImmortal,
     Unit,
     Giant,
     Centaur,
     Fairy,
     Dragon,
-    maturityModel
+    maturityModel,
+	Ogre,
+	Troll,
+	Sphinx,
+	Phoenix,
+	Griffin,
+	Djinn,
+	Simurgh,
+	Minotaur
 }
 import strategicprimer.model.map.fixtures.terrain {
     Hill,
@@ -142,10 +148,6 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         return tag->retval;
     }
-    {<String->LocalXMLReader>*} simpleImmortalReaders = {
-        for (kind in `SimpleImmortalKind`.caseValues)
-            simpleFixtureReader(kind.tag, (id) => SimpleImmortal(kind, id))
-    };
     StartElement firstStartElement({XMLEvent*} stream, StartElement parent) {
         for (element in stream) {
             if (is StartElement element, isSPStartElement(element)) {
@@ -449,7 +451,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         "lake"->fluidTerrainHandler.readLake,
         "player"->readPlayer,
         "population"->fluidTownHandler.readCommunityStats,
-        *simpleImmortalReaders
+        simpleFixtureReader("sphinx", `Sphinx`),
+        simpleFixtureReader("djinn", `Djinn`),
+        simpleFixtureReader("griffin", `Griffin`),
+        simpleFixtureReader("minotaur", `Minotaur`),
+        simpleFixtureReader("ogre", `Ogre`),
+        simpleFixtureReader("phoenix", `Phoenix`),
+        simpleFixtureReader("simurgh", `Simurgh`),
+        simpleFixtureReader("troll", `Troll`)
     };
     shared actual Type readXML<Type>(JPath file, JReader istream, Warning warner)
             given Type satisfies Object {

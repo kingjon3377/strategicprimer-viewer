@@ -2,7 +2,8 @@ import ceylon.language.meta {
     type
 }
 import ceylon.language.meta.model {
-    ClassOrInterface
+    ClassOrInterface,
+	Class
 }
 
 import java.lang {
@@ -29,13 +30,20 @@ import strategicprimer.model.map.fixtures.mobile {
     Centaur,
     IUnit,
     SimpleImmortal,
-    SimpleImmortalKind,
     Giant,
     Fairy,
     Dragon,
     Animal,
     MobileFixture,
-    maturityModel
+    maturityModel,
+	Sphinx,
+	Djinn,
+	Griffin,
+	Minotaur,
+	Ogre,
+	Phoenix,
+	Simurgh,
+	Troll
 }
 import strategicprimer.model.xmlio {
     Warning
@@ -48,11 +56,17 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<MobileFixture>(warning, idRegistrar) {
     Map<ClassOrInterface<MobileFixture>, String> tagMap = map {
         `Animal`->"animal", `Centaur`->"centaur", `Dragon`->"dragon",
-        `Fairy`->"fairy", `Giant`->"giant"
+        `Fairy`->"fairy", `Giant`->"giant", `Sphinx`->"sphinx",
+        `Djinn`->"djinn", `Griffin`->"griffin", `Minotaur`->"minotaur",
+        `Ogre`->"ogre", `Phoenix`->"phoenix", `Simurgh`->"simurgh",
+        `Troll`->"troll"
     };
-    Set<String> supportedTags = set { *tagMap.items }.union(set {
-        *{*`SimpleImmortalKind`.caseValues}
-            .map((SimpleImmortalKind kind) => kind.tag)});
+    Set<String> supportedTags = set { *tagMap.items };
+    Map<String, Class<SimpleImmortal, [Integer]>> simples = map {
+        "sphinx"->`Sphinx`,
+        "djinn"->`Djinn`, "griffin"->`Griffin`, "minotaur"->`Minotaur`,
+        "ogre"->`Ogre`, "phoenix"->`Phoenix`, "simurgh"->`Simurgh`,
+        "troll"->`Troll` };
     MobileFixture createAnimal(StartElement element) {
         expectAttributes(element, "traces", "id", "count", "talking", "kind", "status", "wild", "born", "image");
         // To get the intended meaning of existing maps, we have to parse
@@ -78,11 +92,10 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             getIntegerParameter(element, "born", -1), count);
     }
     MobileFixture readSimple(String tag, Integer idNum) {
-        value kind = SimpleImmortalKind.parse(tag);
-        if (is SimpleImmortalKind kind) {
-            return SimpleImmortal(kind, idNum);
+        if (exists cls = simples.get(tag)) {
+            return cls(idNum);
         } else {
-            throw IllegalArgumentException("No simple immortal matches ``tag``", kind);
+            throw IllegalArgumentException("No simple immortal matches ``tag``");
         }
     }
     shared actual Boolean isSupportedTag(String tag) =>

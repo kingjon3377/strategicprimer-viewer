@@ -39,14 +39,20 @@ import strategicprimer.model.map.fixtures.resources {
 	StoneDeposit
 }
 import strategicprimer.model.map.fixtures.mobile {
-	SimpleImmortal,
 	Animal,
-	SimpleImmortalKind,
 	Fairy,
 	Dragon,
 	Centaur,
 	IUnit,
-	Giant
+	Giant,
+	Djinn,
+	Phoenix,
+	Sphinx,
+	Griffin,
+	Ogre,
+	Minotaur,
+	Troll,
+	Simurgh
 }
 import strategicprimer.model.map.fixtures.terrain {
 	Hill,
@@ -75,15 +81,6 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 		return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
 	}
 	Iterable<FixtureMatcher> initializeMatchers() {
-		FixtureMatcher immortalMatcher(SimpleImmortalKind kind) {
-			return FixtureMatcher((TileFixture fixture) {
-				if (is SimpleImmortal fixture) {
-					return fixture.immortalKind == kind;
-				} else {
-					return false;
-				}
-			}, kind.plural);
-		}
 		{FixtureMatcher*} complements<out T>(Boolean(T) method,
 				String firstDescription, String secondDescription)
 					given T satisfies TileFixture {
@@ -106,15 +103,15 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			trivialMatcher(`Village`),
 			complements<Animal>((Animal animal) => !animal.traces, "Animals",
 				"Animal tracks"),
-			immortalMatcher(SimpleImmortalKind.troll),
-			immortalMatcher(SimpleImmortalKind.simurgh),
-			immortalMatcher(SimpleImmortalKind.ogre),
-			immortalMatcher(SimpleImmortalKind.minotaur),
+			trivialMatcher(`Troll`),
+			trivialMatcher(`Simurgh`),
+			trivialMatcher(`Ogre`),
+			trivialMatcher(`Minotaur`),
 			trivialMatcher(`Mine`),
-			immortalMatcher(SimpleImmortalKind.griffin),
-			immortalMatcher(SimpleImmortalKind.sphinx),
-			immortalMatcher(SimpleImmortalKind.phoenix),
-			immortalMatcher(SimpleImmortalKind.djinn),
+			trivialMatcher(`Griffin`),
+			trivialMatcher(`Sphinx`, "Sphinxes"),
+			trivialMatcher(`Phoenix`, "Phoenixes"),
+			trivialMatcher(`Djinn`, "Djinni"),
 			trivialMatcher(`Centaur`),
 			trivialMatcher(`StoneDeposit`, "Stone Deposits"),
 			trivialMatcher(`MineralVein`, "Mineral Veins"),

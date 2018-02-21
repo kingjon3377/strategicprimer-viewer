@@ -46,9 +46,15 @@ import strategicprimer.model.map.fixtures.mobile {
     Centaur,
     Fairy,
     Giant,
-    SimpleImmortal,
-    SimpleImmortalKind,
-    IUnit
+    IUnit,
+    Troll,
+    Simurgh,
+    Ogre,
+    Minotaur,
+    Griffin,
+    Sphinx,
+    Phoenix,
+    Djinn
 }
 import strategicprimer.model.map.fixtures.resources {
     Grove,
@@ -81,15 +87,6 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
             String description = "``type.declaration.name``s") {
         return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
     }
-    FixtureMatcher immortalMatcher(SimpleImmortalKind kind) {
-        return FixtureMatcher((TileFixture fixture) {
-            if (is SimpleImmortal fixture) {
-                return fixture.immortalKind == kind;
-            } else {
-                return false;
-            }
-        }, kind.plural);
-    }
     {FixtureMatcher*} complements<out T>(Boolean(T) method,
             String firstDescription, String secondDescription)
             given T satisfies TileFixture {
@@ -108,15 +105,15 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
         trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
         // TODO: Village through Centaur were all 45, so their ordering happened by chance
         trivialMatcher(`Village`),
-        immortalMatcher(SimpleImmortalKind.troll),
-        immortalMatcher(SimpleImmortalKind.simurgh),
-        immortalMatcher(SimpleImmortalKind.ogre),
-        immortalMatcher(SimpleImmortalKind.minotaur),
+        trivialMatcher(`Troll`),
+        trivialMatcher(`Simurgh`),
+        trivialMatcher(`Ogre`),
+        trivialMatcher(`Minotaur`),
         trivialMatcher(`Mine`),
-        immortalMatcher(SimpleImmortalKind.griffin),
-        immortalMatcher(SimpleImmortalKind.sphinx),
-        immortalMatcher(SimpleImmortalKind.phoenix),
-        immortalMatcher(SimpleImmortalKind.djinn),
+        trivialMatcher(`Griffin`),
+        trivialMatcher(`Sphinx`, "Sphinxes"),
+        trivialMatcher(`Phoenix`, "Phoenixes"),
+        trivialMatcher(`Djinn`, "Djinni"),
         trivialMatcher(`Centaur`),
         // TODO: StoneDeposit through Animal were all 40; they too should be reviewed
         trivialMatcher(`StoneDeposit`, "Stone Deposits"),
