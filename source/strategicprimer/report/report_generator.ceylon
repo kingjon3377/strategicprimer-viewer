@@ -45,7 +45,8 @@ import strategicprimer.report.generators {
     TownReportGenerator,
     ExplorableReportGenerator,
     ImmortalsReportGenerator,
-    TextReportGenerator
+    TextReportGenerator,
+	AdventureReportGenerator
 }
 import strategicprimer.report.nodes {
     RootReportNode
@@ -140,6 +141,7 @@ shared object reportGenerator {
 	        TextReportGenerator(comparator, dimensions, hq),
 	        TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
 	        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+	        AdventureReportGenerator(comparator, player, dimensions, hq),
 	        ExplorableReportGenerator(comparator, player, dimensions, hq),
 	        HarvestableReportGenerator(comparator, dimensions, hq),
 	        AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
@@ -184,6 +186,7 @@ shared object reportGenerator {
 	        UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
 	        TextReportGenerator(comparator, dimensions, hq),
 	        TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+	        AdventureReportGenerator(comparator, player, dimensions, hq),
 	        ExplorableReportGenerator(comparator, player, dimensions, hq),
 	        HarvestableReportGenerator(comparator, dimensions, hq),
 	        AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
@@ -226,6 +229,7 @@ shared object reportGenerator {
 	        UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
 	        TextReportGenerator(comparator, dimensions, hq),
 	        TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+	        AdventureReportGenerator(comparator, player, dimensions, hq),
 	        ExplorableReportGenerator(comparator, player, dimensions, hq),
 	        HarvestableReportGenerator(comparator, dimensions, hq),
 	        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
@@ -258,6 +262,7 @@ shared object reportGenerator {
 	        UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
 	        TextReportGenerator(comparator, dimensions, hq),
 	        TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+	        AdventureReportGenerator(comparator, player, dimensions, hq),
 	        ExplorableReportGenerator(comparator, player, dimensions, hq),
 	        HarvestableReportGenerator(comparator, dimensions, hq),
 	        AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),

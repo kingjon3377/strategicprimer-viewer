@@ -1,6 +1,5 @@
 import ceylon.collection {
     ArrayList,
-    MutableMap,
     MutableList
 }
 import ceylon.language.meta {
@@ -11,7 +10,6 @@ import ceylon.language.meta.model {
 }
 
 import lovelace.util.common {
-    todo,
     DRMap=DelayedRemovalMap
 }
 
@@ -26,7 +24,6 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.explorable {
     Cave,
     Portal,
-    AdventureFixture,
     Battlefield
 }
 import strategicprimer.report {
@@ -36,22 +33,20 @@ import strategicprimer.report.nodes {
     SimpleReportNode,
     ListReportNode,
     SectionListReportNode,
-    emptyReportNode,
-    ComplexReportNode
+    emptyReportNode
 }
 import ceylon.language {
     createMap=map
 }
-"A report generator for caves, battlefields, adventure hooks, and portals."
-todo("Split adventures into a different class?")
+"A report generator for caves, battlefields, and portals."
 shared class ExplorableReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<Battlefield|Cave|AdventureFixture|Portal>(comp, dimensions, hq) {
-    "Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
-     hook, or the report on all such."
+        extends AbstractReportGenerator<Battlefield|Cave|Portal>(comp, dimensions, hq) {
+    "Produces a more verbose sub-report on a cave, battlefield, or portal, or the report
+     on all such."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, [Battlefield|Cave|AdventureFixture|Portal, Point]? entry) {
+            IMapNG map, Anything(String) ostream, [Battlefield|Cave|Portal, Point]? entry) {
         if (exists entry) {
             Point loc = entry.rest.first;
             switch (item = entry.first)
@@ -63,20 +58,6 @@ shared class ExplorableReportGenerator(
                 fixtures.remove(item.id);
                 ostream("Signs of a long-ago battle on ``loc````distCalculator
                     .distanceString(loc)``");
-            }
-            case (is AdventureFixture) {
-                fixtures.remove(item.id);
-                ostream("``item.briefDescription`` at ``loc``: ``item
-                    .fullDescription`` ``distCalculator.distanceString(loc)``");
-                if (!item.owner.independent) {
-                    String player;
-                    if (item.owner == currentPlayer) {
-                        player = "you";
-                    } else {
-                        player = "another player";
-                    }
-                    ostream(" (already investigated by ``player``)");
-                }
             }
             case (is Portal) {
                 fixtures.remove(item.id);
@@ -91,10 +72,6 @@ shared class ExplorableReportGenerator(
             MutableList<Point> battles = PointList(
                 "Signs of long-ago battles on the following tiles:");
             MutableList<Point> caves = PointList("Caves beneath the following tiles: ");
-            HeadedMap<AdventureFixture, Point>&
-            MutableMap<AdventureFixture, Point> adventures =
-                    HeadedMapImpl<AdventureFixture, Point>(
-                        "<h4>Possible Adventures</h4>");
             Map<Type<IFixture>, Anything([Point, IFixture])> collectors =
                     createMap  {
                         { `Portal`->(([Point, IFixture] pair) =>
@@ -102,11 +79,7 @@ shared class ExplorableReportGenerator(
                             `Battlefield`->(([Point, IFixture] pair) =>
                             battles.add(pair.first)),
                             `Cave`->(([Point, IFixture] pair) =>
-                            caves.add(pair.first)),
-                            `AdventureFixture`->(([Point, IFixture] pair) {
-                                assert (is AdventureFixture fixture = pair.rest.first);
-                                adventures[fixture] = pair.first;
-                            })};
+                            caves.add(pair.first))};
                     };
             for ([loc, item] in values) {
                 if (exists collector = collectors[type(item)]) {
@@ -120,15 +93,12 @@ shared class ExplorableReportGenerator(
                          ``caves````battles````portals``</ul>
                          ");
             }
-            writeMap(ostream, adventures,
-                        (AdventureFixture key->Point val, formatter) => produce(fixtures,
-                            map, formatter, [key, val]));
         }
     }
     "Produces a more verbose sub-report on a cave or battlefield, or the report section on
      all such."
     shared actual IReportNode produceRIR(DRMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, [Battlefield|Cave|AdventureFixture|Portal, Point]? entry) {
+            IMapNG map, [Battlefield|Cave|Portal, Point]? entry) {
         if (exists entry) {
             Point loc = entry.rest.first;
             switch (item = entry.first)
@@ -143,25 +113,6 @@ shared class ExplorableReportGenerator(
                     "Signs of a long-ago battle on ``loc`` ``distCalculator
                         .distanceString(loc)``", loc);
             }
-            case (is AdventureFixture) {
-                fixtures.remove(item.id);
-                if (item.owner.independent) {
-                    return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
-                        .fullDescription`` ``distCalculator.distanceString(loc)``",
-                        loc);
-                } else if (currentPlayer == item.owner) {
-                    return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
-                        .fullDescription`` ``distCalculator
-                        .distanceString(loc)`` (already investigated by you)",
-                        loc);
-                } else {
-                    return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
-                        .fullDescription`` ``distCalculator
-                        .distanceString(
-                        loc)`` (already investigated by another player)",
-                        loc);
-                }
-            }
             case (is Portal) {
                 fixtures.remove(item.id);
                 return SimpleReportNode("A portal to another world at ``loc`` ``
@@ -174,13 +125,12 @@ shared class ExplorableReportGenerator(
             IReportNode portals = ListReportNode("Portals");
             IReportNode battles = ListReportNode("Battlefields");
             IReportNode caves = ListReportNode("Caves");
-            IReportNode adventures = SectionListReportNode(4, "Possible Adventures");
             Map<Type<IFixture>, IReportNode> nodes =
                 createMap { { `Portal`->portals, `Battlefield`->battles,
-                            `Cave`->caves, `AdventureFixture`->adventures };
+                            `Cave`->caves };
                     };
             for ([loc, item] in values) {
-                if (is Battlefield|Cave|AdventureFixture|Portal fixture = item,
+                if (is Battlefield|Cave|Portal fixture = item,
                         exists node = nodes[type(fixture)]) {
                     node.appendNode(produceRIR(fixtures, map, [fixture, loc]));
                 }
@@ -189,18 +139,9 @@ shared class ExplorableReportGenerator(
                 "Caves, Battlefields, and Portals");
             retval.addIfNonEmpty(caves, battles, portals);
             if (retval.childCount == 0) {
-                if (adventures.childCount == 0) {
-                    return emptyReportNode;
-                } else {
-                    return adventures;
-                }
-            } else if (adventures.childCount == 0) {
-                return retval;
+                return emptyReportNode;
             } else {
-                IReportNode real = ComplexReportNode("Things to be Explored");
-                real.appendNode(retval);
-                real.appendNode(adventures);
-                return real;
+                return retval;
             }
         }
     }
