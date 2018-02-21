@@ -32,7 +32,7 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc)
     shared actual variable String portrait = "";
     "The contents of the town."
     shared actual variable CommunityStats? population = null;
-    todo("Test this", "Don't fail-fast")
+    todo("Test this")
     shared actual Boolean isSubset(AbstractTown other, Anything(String) report) {
         if (id != other.id) {
             report("Fixtures' ID #s differ");
@@ -45,24 +45,28 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc)
             return false;
         }
         void localReport(String str) => report("In ``kind`` ``name``, ID #``id``:    ``str``");
+        variable Boolean retval = true;
         if (status != other.status) {
             localReport("Town status differs");
-            return false;
-        } else if (townSize != other.townSize) {
-            localReport("Town size differs");
-            return false;
-        } else if (other.population exists, !population exists) {
-            localReport("Has contents details we don't");
-            return false;
-        } else if (exists ours = population, !ours.isSubset(other.population, localReport)) {
-            localReport("Has different population details");
-            return false;
-        } else if (owner != other.owner, !other.owner.independent) {
-            localReport("Has different owner");
-            return false;
-        } else {
-            return true;
+            retval = false;
         }
+        if (townSize != other.townSize) {
+            localReport("Town size differs");
+            retval = false;
+        }
+        if (other.population exists, !population exists) {
+            localReport("Has contents details we don't");
+            retval = false;
+        }
+		if (exists ours = population, !ours.isSubset(other.population, localReport)) {
+            localReport("Has different population details");
+            retval = false;
+        }
+        if (owner != other.owner, !other.owner.independent) {
+            localReport("Has different owner");
+            retval = false;
+        }
+        return retval;
     }
     "Exploration-result text for the town."
     shared actual String text => "There is a ``(townSize == TownSize.medium) then
