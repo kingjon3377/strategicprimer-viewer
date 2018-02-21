@@ -8,10 +8,6 @@ import javax.xml.stream.events {
     StartElement
 }
 
-import lovelace.util.common {
-    todo
-}
-
 import strategicprimer.model.xmlio {
     SPFormatException
 }
@@ -21,10 +17,8 @@ shared class UnwantedChildException extends SPFormatException {
     shared QName tag;
     "The unwanted child."
     shared QName child;
-    "For when the unwanted child isn't an unwanted *tag* but an unwanted tag *with some
-     property* that we want to describe using a QName."
-    todo("Investigate uses: is this perhaps used where [[UnsupportedPropertyException]]
-          would be better?")
+    "For when the unwanted child isn't an unwanted *tag* at all. (The one current use
+     is for arbitrary text outside a tile."
     shared new childInTag(
             "The current tag" QName parent,
             "The unwanted child" QName child,
