@@ -26,8 +26,9 @@ shared interface IWorker satisfies UnitMember&{IJob*}&HasName&HasKind&HasMutable
           by this name", "Make void instead of Boolean?")
     shared formal Boolean addJob(IJob job);
     "The worker's race."
-    todo("Make a default `kind` delegating to this here?")
     shared formal String race;
+    "An alias for (alternate method of querying) the worker's race."
+    shared actual default String kind => race;
     "The worker's stats."
     shared formal WorkerStats? stats;
     "Clone the object."

@@ -198,15 +198,15 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
             worker.image = image;
         }
     }
-    shared actual String kind {
+    shared actual String race {
         variable String? retval = null;
         for (worker in workers) {
             if (exists temp = retval) {
-                if (temp != worker.kind) {
+                if (temp != worker.race) {
                     return "proxied";
                 }
             } else {
-                retval = worker.kind;
+                retval = worker.race;
             }
         }
         return retval else "proxied";
@@ -224,7 +224,6 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
         }
         return retval else "proxied";
     }
-    shared actual String race => kind;
     shared actual IJob getJob(String jobName) {
         for (job in proxyJobs) {
             if (job.name == jobName) {

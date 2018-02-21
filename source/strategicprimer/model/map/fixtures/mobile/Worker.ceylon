@@ -86,7 +86,6 @@ shared class Worker satisfies IWorker&HasPortrait {
     "We only use the worker's name and race for `string`."
     shared actual String string =>
             ("human" == race) then name else "``name``, a ``race``";
-    shared actual String kind => race;
     "The filename of the icon to use by default. This is just for icons in lists and such,
      not the map, since this isn't a
      [[TileFixture|strategicprimer.model.map::TileFixture]]."
