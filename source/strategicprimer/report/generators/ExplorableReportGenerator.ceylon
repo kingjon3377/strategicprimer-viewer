@@ -10,10 +10,6 @@ import ceylon.language.meta.model {
     Type
 }
 
-import java.lang {
-    IllegalArgumentException
-}
-
 import lovelace.util.common {
     todo,
     DRMap=DelayedRemovalMap
@@ -28,7 +24,6 @@ import strategicprimer.model.map {
     MapDimensions
 }
 import strategicprimer.model.map.fixtures.explorable {
-    ExplorableFixture,
     Cave,
     Portal,
     AdventureFixture,
@@ -48,26 +43,28 @@ import ceylon.language {
     createMap=map
 }
 "A report generator for caves, battlefields, adventure hooks, and portals."
-todo("Use union type instead of interface, here and elsewhere")
+todo("Split adventures into a different class?")
 shared class ExplorableReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<ExplorableFixture>(comp, dimensions, hq) {
+        extends AbstractReportGenerator<Battlefield|Cave|AdventureFixture|Portal>(comp, dimensions, hq) {
     "Produces a more verbose sub-report on a cave, battlefield, portal, or adventure
      hook, or the report on all such."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, [ExplorableFixture, Point]? entry) {
+            IMapNG map, Anything(String) ostream, [Battlefield|Cave|AdventureFixture|Portal, Point]? entry) {
         if (exists entry) {
-            ExplorableFixture item = entry.first;
             Point loc = entry.rest.first;
-            if (is Cave item) {
+            switch (item = entry.first)
+            case (is Cave) {
                 fixtures.remove(item.id);
                 ostream("Caves beneath ``loc````distCalculator.distanceString(loc)``");
-            } else if (is Battlefield item) {
+            }
+            case (is Battlefield) {
                 fixtures.remove(item.id);
                 ostream("Signs of a long-ago battle on ``loc````distCalculator
                     .distanceString(loc)``");
-            } else if (is AdventureFixture item) {
+            }
+            case (is AdventureFixture) {
                 fixtures.remove(item.id);
                 ostream("``item.briefDescription`` at ``loc``: ``item
                     .fullDescription`` ``distCalculator.distanceString(loc)``");
@@ -80,12 +77,11 @@ shared class ExplorableReportGenerator(
                     }
                     ostream(" (already investigated by ``player``)");
                 }
-            } else if (is Portal item) {
+            }
+            case (is Portal) {
                 fixtures.remove(item.id);
                 ostream("A portal to another world at ``loc`` ``distCalculator
                     .distanceString(loc)``");
-            } else {
-                throw IllegalArgumentException("Unexpected ExplorableFixture type");
             }
         } else {
             MutableList<[Point, IFixture]> values =
@@ -132,20 +128,22 @@ shared class ExplorableReportGenerator(
     "Produces a more verbose sub-report on a cave or battlefield, or the report section on
      all such."
     shared actual IReportNode produceRIR(DRMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, [ExplorableFixture, Point]? entry) {
+            IMapNG map, [Battlefield|Cave|AdventureFixture|Portal, Point]? entry) {
         if (exists entry) {
-            ExplorableFixture item = entry.first;
             Point loc = entry.rest.first;
-            if (is Cave item) {
+            switch (item = entry.first)
+            case (is Cave) {
                 fixtures.remove(item.id);
                 return SimpleReportNode("Caves beneath ``loc`` ``distCalculator
                     .distanceString(loc)``", loc);
-            } else if (is Battlefield item) {
+            }
+            case (is Battlefield) {
                 fixtures.remove(item.id);
                 return SimpleReportNode(
                     "Signs of a long-ago battle on ``loc`` ``distCalculator
                         .distanceString(loc)``", loc);
-            } else if (is AdventureFixture item) {
+            }
+            case (is AdventureFixture) {
                 fixtures.remove(item.id);
                 if (item.owner.independent) {
                     return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
@@ -163,12 +161,11 @@ shared class ExplorableReportGenerator(
                         loc)`` (already investigated by another player)",
                         loc);
                 }
-            } else if (is Portal item) {
+            }
+            case (is Portal) {
                 fixtures.remove(item.id);
                 return SimpleReportNode("A portal to another world at ``loc`` ``
                     distCalculator.distanceString(loc)``", loc);
-            } else {
-                throw IllegalArgumentException("Unexpected ExplorableFixture type");
             }
         } else {
             MutableList<[Point, IFixture]> values =
@@ -183,7 +180,7 @@ shared class ExplorableReportGenerator(
                             `Cave`->caves, `AdventureFixture`->adventures };
                     };
             for ([loc, item] in values) {
-                if (is ExplorableFixture fixture = item,
+                if (is Battlefield|Cave|AdventureFixture|Portal fixture = item,
                         exists node = nodes[type(fixture)]) {
                     node.appendNode(produceRIR(fixtures, map, [fixture, loc]));
                 }
