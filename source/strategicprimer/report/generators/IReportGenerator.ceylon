@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+	todo
 }
 
 import strategicprimer.model.map {
@@ -31,21 +32,40 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
             "The map. (Needed to get terrain type for some reports.)"
             IMapNG map,
             "The stream to write to"
-            Anything(String) ostream,
-            "The specific item to write about and its location; if null, write about all
-             matching items."
-            [T, Point]? entry = null);
-    "Produce an intermediate-representation form of the report representing an item or a
-     group of items. All fixtures that this report references should be removed from the
-     set before returning."
+            Anything(String) ostream);
+    "Write a (sub-)report on a single item to a stream."
+    todo("Move back into [[produce]] once eclipse/ceylon#2147 fixed")
+    shared formal void produceSingle(
+        "The set of fixtures in the map."
+        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+        "The map. (Needed to get terrain type for some reports.)"
+        IMapNG map,
+        "The stream to write to"
+        Anything(String) ostream,
+        "The specific item to write about."
+        T item,
+        "Its location"
+        Point loc);
+    "Produce an intermediate-representation form of the report representing a group of
+     items. All fixtures that this report references should be removed from the set
+     before returning."
     shared formal IReportNode produceRIR(
             "The set of fixtures in the map."
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             "The map. (Needed to get terrain type for some reports.)"
-            IMapNG map,
-            "The specific item to write about and its location; if null, write about all
-             matching items."
-            [T, Point]? entry = null);
+            IMapNG map);
+    "Produce an intermediate-representation form of the report representing an item. All
+     fixtures that this report references should be removed from the set before returning."
+    todo("Move back into [[produceRIR]] once eclipse/ceylon#2147 fixed")
+    shared formal IReportNode produceRIRSingle(
+        "The set of fixtures in the map."
+        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+        "The map. (Needed to get terrain type for some reports.)"
+        IMapNG map,
+        "The specific item to write about"
+        T item,
+        "Its location"
+        Point loc);
     "Write the contents of a Map to a stream as a list, but don't write anything
      if it is empty."
     shared default void writeMap<out Key>(

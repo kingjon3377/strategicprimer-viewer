@@ -65,100 +65,98 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
             loc);
     }
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
-     paragraph or bullet point), or on all workers (should never be called, but we'll
-     implement properly anyway)."
+     paragraph or bullet point)."
+    shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, IWorker worker, Point loc) {
+        ostream("``worker.name``, a ``worker.race``.");
+        if (details, exists stats = worker.stats) {
+            ostream(
+                "
+                 <p>``statsString(stats)``</p>
+             ");
+        }
+        if (details, !worker.empty) {
+            ostream(
+                """(S)he has training or experience in the following Jobs (Skills):
+                    <ul>
+                    """);
+            for (job in worker) {
+                ostream("<li>``job.level`` levels in ``job
+                    .name`` ``skills(*job)``</li>
+                ");
+            }
+            ostream("""</ul>
+                   """);
+        }
+    }
+    "Produce a sub-sub-report on all workers. This should never be called, but we'll
+     implement it properly anyway."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, [IWorker, Point]? entry) {
-        if (exists entry) {
-            IWorker worker = entry.first;
-            ostream("``worker.name``, a ``worker.race``.");
-            if (details, exists stats = worker.stats) {
-                ostream(
-                    "
-                     <p>``statsString(stats)``</p>
-                 ");
+        		IMapNG map, Anything(String) ostream) {
+        MutableList<[Point, IFixture]> values =
+                ArrayList<[Point, IFixture]> { *fixtures.items
+            .sort(pairComparator) };
+        MutableList<[IWorker, Point]> workers = ArrayList<[IWorker, Point]>();
+        for (tuple in values) {
+            if (is IWorker worker = tuple.rest.first) {
+                workers.add([worker, tuple.first]);
             }
-            if (details, !worker.empty) {
-                ostream(
-                    """(S)he has training or experience in the following Jobs (Skills):
-                        <ul>
-                        """);
-                for (job in worker) {
-                    ostream("<li>``job.level`` levels in ``job
-                        .name`` ``skills(*job)``</li>
-                    ");
-                }
-                ostream("""</ul>
+        }
+        if (!workers.empty) {
+            ostream("""<h5>Workers</h5>
+                       <ul>
                        """);
-            }
-        } else {
-            MutableList<[Point, IFixture]> values =
-                    ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator) };
-            MutableList<[IWorker, Point]> workers = ArrayList<[IWorker, Point]>();
-            for (tuple in values) {
-                if (is IWorker worker = tuple.rest.first) {
-                    workers.add([worker, tuple.first]);
-                }
-            }
-            if (!workers.empty) {
-                ostream("""<h5>Workers</h5>
-                           <ul>
-                           """);
-                for (tuple in workers) {
-                    ostream("<li>");
-                    produce(fixtures, map, ostream, tuple);
-                    ostream("""</li>
-                               """);
-                }
-                ostream("""</ul>
+            for (tuple in workers) {
+                ostream("<li>");
+                produceSingle(fixtures, map, ostream, *tuple);
+                ostream("""</li>
                            """);
             }
+            ostream("""</ul>
+                       """);
         }
     }
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
-     paragraph or bullet point), or on all workers (not that this'll ever be called like
-     that, but we'll implement it properly anyway)."
-    shared actual IReportNode produceRIR(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, [IWorker, Point]? entry) {
-        if (exists entry) {
-            IWorker worker = entry.first;
-            Point loc = entry.rest.first;
-            if (details) {
-                IReportNode retval =
-                        ComplexReportNode("``worker.name``, a ``worker.race``", loc);
-                if (exists stats = worker.stats) {
-                    retval.appendNode(SimpleReportNode(statsString(stats)));
-                }
-                if (!worker.empty) {
-                    IReportNode jobs = ListReportNode(
-                        "Has training or experience in the following Jobs (Skills):",
-                        loc);
-                    for (job in worker) {
-                        jobs.appendNode(produceJobRIR(job, loc));
-                    }
-                    retval.appendNode(jobs);
-                }
-                return retval;
-            } else {
-                return SimpleReportNode("``worker.name``, a ``worker.race``", loc);
+     paragraph or bullet point)."
+    shared actual IReportNode produceRIRSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, IWorker worker, Point loc) {
+        if (details) {
+            IReportNode retval =
+                    ComplexReportNode("``worker.name``, a ``worker.race``", loc);
+            if (exists stats = worker.stats) {
+                retval.appendNode(SimpleReportNode(statsString(stats)));
             }
+            if (!worker.empty) {
+                IReportNode jobs = ListReportNode(
+                    "Has training or experience in the following Jobs (Skills):",
+                    loc);
+                for (job in worker) {
+                    jobs.appendNode(produceJobRIR(job, loc));
+                }
+                retval.appendNode(jobs);
+            }
+            return retval;
         } else {
-            MutableList<[Point, IFixture]> values =
-                    ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator) };
-            IReportNode retval = SectionListReportNode(5, "Workers");
-            for (tuple in values) {
-                if (is IWorker worker = tuple.rest.first) {
-                    retval.appendNode(produceRIR(fixtures, map, [worker, tuple.first]));
-                }
+            return SimpleReportNode("``worker.name``, a ``worker.race``", loc);
+        }
+    }
+    "Produce a sub-sub-report on all workers. This should never be called, but we'll
+     implement it properly anyway)."
+    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+	        IMapNG map) {
+        MutableList<[Point, IFixture]> values =
+                ArrayList<[Point, IFixture]> { *fixtures.items
+            .sort(pairComparator) };
+        IReportNode retval = SectionListReportNode(5, "Workers");
+        for (tuple in values) {
+            if (is IWorker worker = tuple.rest.first) {
+                retval.appendNode(produceRIRSingle(fixtures, map, worker, tuple.first));
             }
-            if (retval.childCount == 0) {
-                return emptyReportNode;
-            } else {
-                return retval;
-            }
+        }
+        if (retval.childCount == 0) {
+            return emptyReportNode;
+        } else {
+            return retval;
         }
     }
 }

@@ -115,214 +115,213 @@ shared class FortressReportGenerator(
             parent.appendNode(SimpleReportNode(builder.string, loc));
         }
     }
-    "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
-     this report are removed from the collection."
-    shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, [Fortress, Point]? entry) {
-        if (exists entry) {
-            Fortress item = entry.first;
-            Point loc = entry.rest.first;
-            ostream("<h5>Fortress ``item.name`` belonging to ``
-                    (item.owner == currentPlayer) then "you" else item.owner.string``</h5>
-                     <ul>
-                     <li>Located at ``loc`` ``distCalculator.distanceString(loc)``</li>
+    "Produces a sub-report on a fortress. All fixtures referred to in this report are
+     removed from the collection."
+    shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, Fortress item, Point loc) {
+        ostream("<h5>Fortress ``item.name`` belonging to ``
+            (item.owner == currentPlayer) then "you" else item.owner.string``</h5>
+                 <ul>
+                 <li>Located at ``loc`` ``distCalculator.distanceString(loc)``</li>
                      <li>``terrain(map, loc, fixtures)``</li>
                      ");
-//            riversToString(ostream, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
-            riversToString(ostream, *map.rivers.get(loc));
-            MutableList<IUnit> units = ArrayList<IUnit>();
-            MutableList<Implement> equipment = ArrayList<Implement>();
-            MutableMap<String, MutableList<ResourcePile>> resources =
-                    HashMap<String, MutableList<ResourcePile>>();
-            MutableList<FortressMember> contents = ArrayList<FortressMember>();
-            for (member in item) {
-                if (is IUnit member) {
-                    units.add(member);
-                } else if (is Implement member) {
-                    equipment.add(member);
-                } else if (is ResourcePile member) {
-                    String kind = member.kind;
-                    if (exists list = resources[kind]) {
-                        list.add(member);
-                    } else {
-                        MutableList<ResourcePile> list = ArrayList<ResourcePile>();
-                        resources[kind] = list;
-                        list.add(member);
-                    }
+        //            riversToString(ostream, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
+        riversToString(ostream, *map.rivers.get(loc));
+        MutableList<IUnit> units = ArrayList<IUnit>();
+        MutableList<Implement> equipment = ArrayList<Implement>();
+        MutableMap<String, MutableList<ResourcePile>> resources =
+                HashMap<String, MutableList<ResourcePile>>();
+        MutableList<FortressMember> contents = ArrayList<FortressMember>();
+        for (member in item) {
+            if (is IUnit member) {
+                units.add(member);
+            } else if (is Implement member) {
+                equipment.add(member);
+            } else if (is ResourcePile member) {
+                String kind = member.kind;
+                if (exists list = resources[kind]) {
+                    list.add(member);
                 } else {
-                    contents.add(member);
+                    MutableList<ResourcePile> list = ArrayList<ResourcePile>();
+                    resources[kind] = list;
+                    list.add(member);
                 }
-                fixtures.remove(item.id);
-            }
-            if (!units.empty) {
-                ostream("""Units on the tile:<ul>
-                           """);
-                for (unit in units) {
-                    ostream("<li>");
-                    urg.produce(fixtures, map, ostream, [unit, loc]);
-                    ostream("""</li>
-                               """);
-                }
-                ostream("""</ul>
-                           """);
-            }
-            if (!equipment.empty) {
-                ostream("""Equipment:<ul>
-                           """);
-                for (implement in equipment) {
-                    ostream("<li>");
-                    memberReportGenerator.produce(fixtures, map, ostream, [implement,
-                        loc]);
-                    ostream("""</li>
-                               """);
-                }
-                ostream("""</ul>
-                           """);
-            }
-            if (!resources.empty) {
-                ostream("""Resources:<ul>
-                           """);
-                for (kind->list in resources) {
-                    ostream("<li>``kind``
-                             <ul>
-                             ");
-                    for (pile in list) {
-                        ostream("<li>");
-                        memberReportGenerator.produce(fixtures, map, ostream, [pile,
-                            loc]);
-                        ostream("""</li>
-                                   """);
-                    }
-                    ostream("""</ul>
-                               </li>
-                               """);
-                }
-                ostream("""</ul>
-                           """);
-            }
-            if (!contents.empty) {
-                ostream("""Other fortress contents:<ul>
-                           """);
-                for (member in contents) {
-                    ostream("<li>");
-                    memberReportGenerator.produce(fixtures, map, ostream, [member, loc]);
-                    ostream("""</li>
-                               """);
-                }
-                ostream("""</ul>
-                           """);
+            } else {
+                contents.add(member);
             }
             fixtures.remove(item.id);
-        } else {
-            MutableMap<Fortress, Point> ours = HashMap<Fortress, Point>();
-            MutableMap<Fortress, Point> others = HashMap<Fortress, Point>();
-            MutableList<[Point, IFixture]> values =
-                    ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator) };
-            for ([loc, item] in values) {
-                if (is Fortress fort = item) {
-                    if (currentPlayer == fort.owner) {
-                        ours[fort] = loc;
-                    } else {
-                        others[fort] = loc;
-                    }
-                }
-            }
-            if (!ours.empty) {
-                ostream("""<h4>Your fortresses in the map:</h4>
+        }
+        if (!units.empty) {
+            ostream("""Units on the tile:<ul>
                        """);
-                for (fort->loc in ours) {
-                    produce(fixtures, map, ostream, [fort, loc]);
-                }
+            for (unit in units) {
+                ostream("<li>");
+                urg.produceSingle(fixtures, map, ostream, unit, loc);
+                ostream("""</li>
+                           """);
             }
-            if (!others.empty) {
-                ostream("""<h4>Other fortresses in the map:</h4>
+            ostream("""</ul>
                        """);
-                for (fort->loc in others) {
-                    produce(fixtures, map, ostream, [fort, loc]);
+        }
+        if (!equipment.empty) {
+            ostream("""Equipment:<ul>
+                       """);
+            for (implement in equipment) {
+                ostream("<li>");
+                memberReportGenerator.produceSingle(fixtures, map, ostream, implement,
+                    loc);
+                ostream("""</li>
+                           """);
+            }
+            ostream("""</ul>
+                       """);
+        }
+        if (!resources.empty) {
+            ostream("""Resources:<ul>
+                       """);
+            for (kind->list in resources) {
+                ostream("<li>``kind``
+                         <ul>
+                         ");
+                for (pile in list) {
+                    ostream("<li>");
+                    memberReportGenerator.produceSingle(fixtures, map, ostream, pile,
+                        loc);
+                    ostream("""</li>
+                               """);
+                }
+                ostream("""</ul>
+                           </li>
+                           """);
+            }
+            ostream("""</ul>
+                       """);
+        }
+        if (!contents.empty) {
+            ostream("""Other fortress contents:<ul>
+                       """);
+            for (member in contents) {
+                ostream("<li>");
+                memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc);
+                ostream("""</li>
+                           """);
+            }
+            ostream("""</ul>
+                       """);
+        }
+        fixtures.remove(item.id);
+    }
+    "Produces a sub-report on all fortresses. All fixtures referred to in this report are
+     removed from the collection."
+    shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream) {
+        MutableMap<Fortress, Point> ours = HashMap<Fortress, Point>();
+        MutableMap<Fortress, Point> others = HashMap<Fortress, Point>();
+        MutableList<[Point, IFixture]> values =
+                ArrayList<[Point, IFixture]> { *fixtures.items
+                    .sort(pairComparator) };
+        for ([loc, item] in values) {
+            if (is Fortress fort = item) {
+                if (currentPlayer == fort.owner) {
+                    ours[fort] = loc;
+                } else {
+                    others[fort] = loc;
                 }
             }
         }
+        if (!ours.empty) {
+            ostream("""<h4>Your fortresses in the map:</h4>
+                   """);
+            for (fort->loc in ours) {
+                produceSingle(fixtures, map, ostream, fort, loc);
+            }
+        }
+        if (!others.empty) {
+            ostream("""<h4>Other fortresses in the map:</h4>
+                   """);
+            for (fort->loc in others) {
+                produceSingle(fixtures, map, ostream, fort, loc);
+            }
+        }
+    }
+    "Produces a sub-report on a fortresss. All fixtures referred to in this report are removed
+     from the collection."
+    shared actual IReportNode produceRIRSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Fortress item, Point loc) {
+        IReportNode retval = SectionListReportNode(5,
+            "Fortress ``item.name`` belonging to ``
+            (item.owner == currentPlayer) then "you" else item.owner.string``", loc);
+        retval.appendNode(SimpleReportNode("Located at ``loc`` ``distCalculator
+            .distanceString(loc)``", loc));
+        // This is a no-op if no rivers, so avoid an if
+//            riversToNode(loc, retval, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
+        riversToNode(loc, retval, *map.rivers.get(loc));
+        IReportNode units = ListReportNode("Units on the tile:");
+        IReportNode resources = ListReportNode("Resources:", loc);
+        MutableMap<String,IReportNode> resourceKinds = HashMap<String,IReportNode>();
+        IReportNode equipment = ListReportNode("Equipment:", loc);
+        IReportNode contents = ListReportNode("Other Contents of Fortress:", loc);
+        for (member in item) {
+            if (is IUnit member) {
+                units.appendNode(urg.produceRIRSingle(fixtures, map, member, loc));
+            } else if (is Implement member) {
+                equipment.appendNode(memberReportGenerator.produceRIRSingle(fixtures, map,
+                    member, loc));
+            } else if (is ResourcePile member) {
+                IReportNode node;
+                if (exists temp = resourceKinds[member.kind]) {
+                    node = temp;
+                } else {
+                    node = ListReportNode("``member.kind``:");
+                    resourceKinds[member.kind] = node;
+                }
+                node.appendNode(memberReportGenerator.produceRIRSingle(fixtures, map,
+                    member, loc));
+            } else {
+                contents.appendNode(memberReportGenerator.produceRIRSingle(fixtures, map,
+                    member, loc));
+            }
+        }
+        for (node in resourceKinds.items) {
+            resources.addIfNonEmpty(node);
+        }
+        retval.addIfNonEmpty(units, resources, equipment, contents);
+        fixtures.remove(item.id);
+        return retval;
     }
     "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
      this report are removed from the collection."
-    shared actual IReportNode produceRIR(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, [Fortress, Point]? entry) {
-        if (exists entry) {
-            Fortress item = entry.first;
-            Point loc = entry.rest.first;
-            IReportNode retval = SectionListReportNode(5,
-                "Fortress ``item.name`` belonging to ``
-                (item.owner == currentPlayer) then "you" else item.owner.string``", loc);
-            retval.appendNode(SimpleReportNode("Located at ``loc`` ``distCalculator
-                .distanceString(loc)``", loc));
-            // This is a no-op if no rivers, so avoid an if
-//            riversToNode(loc, retval, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
-            riversToNode(loc, retval, *map.rivers.get(loc));
-            IReportNode units = ListReportNode("Units on the tile:");
-            IReportNode resources = ListReportNode("Resources:", loc);
-            MutableMap<String,IReportNode> resourceKinds = HashMap<String,IReportNode>();
-            IReportNode equipment = ListReportNode("Equipment:", loc);
-            IReportNode contents = ListReportNode("Other Contents of Fortress:", loc);
-            for (member in item) {
-                if (is IUnit member) {
-                    units.appendNode(urg.produceRIR(fixtures, map, [member, loc]));
-                } else if (is Implement member) {
-                    equipment.appendNode(memberReportGenerator.produceRIR(fixtures, map,
-                        [member, loc]));
-                } else if (is ResourcePile member) {
-                    IReportNode node;
-                    if (exists temp = resourceKinds[member.kind]) {
-                        node = temp;
-                    } else {
-                        node = ListReportNode("``member.kind``:");
-                        resourceKinds[member.kind] = node;
-                    }
-                    node.appendNode(memberReportGenerator.produceRIR(fixtures, map,
-                        [member, loc]));
+    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+	        IMapNG map) {
+        MutableList<[Point, IFixture]> values =
+                ArrayList<[Point, IFixture]> { *fixtures.items
+                    .sort(pairComparator) };
+        IReportNode foreign = SectionReportNode(4, "Foreign fortresses in the map:");
+        IReportNode ours = SectionReportNode(4, "Your fortresses in the map:");
+        for ([loc, item] in values) {
+            if (is Fortress fort = item) {
+                if (currentPlayer == fort.owner) {
+                    ours.appendNode(produceRIRSingle(fixtures, map, fort,
+                        loc));
                 } else {
-                    contents.appendNode(memberReportGenerator.produceRIR(fixtures, map,
-                        [member, loc]));
+                    foreign.appendNode(produceRIRSingle(fixtures, map, fort,
+                        loc));
                 }
             }
-            for (node in resourceKinds.items) {
-                resources.addIfNonEmpty(node);
-            }
-            retval.addIfNonEmpty(units, resources, equipment, contents);
-            fixtures.remove(item.id);
-            return retval;
-        } else {
-            MutableList<[Point, IFixture]> values =
-                    ArrayList<[Point, IFixture]> { *fixtures.items
-                        .sort(pairComparator) };
-            IReportNode foreign = SectionReportNode(4, "Foreign fortresses in the map:");
-            IReportNode ours = SectionReportNode(4, "Your fortresses in the map:");
-            for ([loc, item] in values) {
-                if (is Fortress fort = item) {
-                    if (currentPlayer == fort.owner) {
-                        ours.appendNode(produceRIR(fixtures, map, [fort,
-                            loc]));
-                    } else {
-                        foreign.appendNode(produceRIR(fixtures, map, [fort,
-                            loc]));
-                    }
-                }
-            }
-            if (ours.childCount == 0) {
-                if (foreign.childCount == 0) {
-                    return emptyReportNode;
-                } else {
-                    return foreign;
-                }
-            } else if (foreign.childCount == 0) {
-                return ours;
+        }
+        if (ours.childCount == 0) {
+            if (foreign.childCount == 0) {
+                return emptyReportNode;
             } else {
-                IReportNode retval = ComplexReportNode();
-                retval.appendNode(ours);
-                retval.appendNode(foreign);
-                return retval;
+                return foreign;
             }
+        } else if (foreign.childCount == 0) {
+            return ours;
+        } else {
+            IReportNode retval = ComplexReportNode();
+            retval.appendNode(ours);
+            retval.appendNode(foreign);
+            return retval;
         }
     }
 }
