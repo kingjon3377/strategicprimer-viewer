@@ -1,7 +1,3 @@
-import lovelace.util.common {
-    todo
-}
-
 import strategicprimer.model.map {
     HasMutableImage,
     IFixture,
@@ -9,7 +5,6 @@ import strategicprimer.model.map {
 }
 "A class for immortals that don't have any state other than their ID, so we only need one
  class for all of them."
-todo("Split back out, since Ceylon means less boilerplate?")
 shared abstract sealed class SimpleImmortal(kind, plural, dc, id) of Sphinx|Djinn|Griffin|
 		Minotaur|Ogre|Phoenix|Simurgh|Troll satisfies Immortal&HasMutableImage&HasKind {
     "An ID number for the fixture."
