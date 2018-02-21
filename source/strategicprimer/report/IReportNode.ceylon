@@ -66,7 +66,7 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&
             for (child in this) {
                 if (exists temp = retval) {
                     if (temp != child.point) {
-                        retval = invalidPoint;
+                        return invalidPoint;
                     }
                 } else {
                     retval = child.point;
