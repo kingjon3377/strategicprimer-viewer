@@ -19,8 +19,7 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc)
     "The size of the town, fortification, or city"
     shared actual TownSize townSize;
     "The name of the town, fortification, or city"
-    todo("Should this really be variable?")
-    shared actual variable String name;
+    shared actual String name;
     "The player that owns the town, fortification, or city"
     shared actual variable Player owner;
     "The DC to discover the town, fortification, or city"
