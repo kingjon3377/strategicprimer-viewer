@@ -63,7 +63,7 @@ class SimpleTerrain of unforested | forested | ocean {
 }
 """A hackish driver to fix TODOs (missing content) in the map, namely units with "TODO"
    for their "kind" and aquatic villages with non-aquatic races."""
-todo("Write tests of this functionality")
+todo("Write tests of this functionality") // This'll have to wait until eclipse/ceylon#6986 is fixed
 object todoFixerCLI satisfies SimpleCLIDriver {
     "A list of unit kinds (jobs) for plains etc."
     MutableList<String> plainsList = ArrayList<String>();
