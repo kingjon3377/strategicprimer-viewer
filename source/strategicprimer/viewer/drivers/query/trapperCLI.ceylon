@@ -34,13 +34,15 @@ import ceylon.math.float {
 "Possible actions in the trapping CLI; top-level so we can switch on the cases,
  since the other alternative, `static`, isn't possible in an `object` anymore."
 class TrapperCommand of setTrap | check | move | easyReset | quit
-		satisfies HasName {
+		satisfies HasName&Comparable<TrapperCommand> {
 	shared actual String name;
-	shared new setTrap { name = "Set or reset a trap"; }
-	shared new check { name = "Check a trap"; }
-	shared new move { name = "Move to another trap"; }
-	shared new easyReset { name = "Reset a foothold trap, e.g."; }
-	shared new quit { name = "Quit"; }
+	Integer ordinal;
+	shared new setTrap { name = "Set or reset a trap"; ordinal = 0; }
+	shared new check { name = "Check a trap"; ordinal = 1; }
+	shared new move { name = "Move to another trap"; ordinal = 2; }
+	shared new easyReset { name = "Reset a foothold trap, e.g."; ordinal = 3; }
+	shared new quit { name = "Quit"; ordinal = 4; }
+	shared actual Comparison compare(TrapperCommand other) => ordinal <=> other.ordinal;
 }
 class QueueWrapper(variable {String*} wrapped) satisfies Queue<String> {
 	shared actual String? accept() {
@@ -56,9 +58,7 @@ class QueueWrapper(variable {String*} wrapped) satisfies Queue<String> {
 todo("Tests")
 shared object trappingCLI satisfies SimpleDriver {
 	Integer minutesPerHour = 60;
-	// TODO: Use `TrapperCommand`.caseValues?
-	TrapperCommand[] commands = [TrapperCommand.setTrap, TrapperCommand.check, TrapperCommand.move,
-		TrapperCommand.easyReset, TrapperCommand.quit];
+	TrapperCommand[] commands = sort(`TrapperCommand`.caseValues);
 	shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"], ParamCount.one,
 		"Run a player's trapping", "Determine the results a player's trapper finds.");
 	String inHours(Integer minutes) {
