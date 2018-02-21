@@ -29,21 +29,6 @@ class ProxyMember satisfies UnitMember&ProxyFor<UnitMember> {
         }
         return retval;
     }
-    "Returns the ID number shared by all the proxied members, or -1 if either there are no
-     proxied members or some have a different ID."
-    shared actual Integer id {
-        if (exists first = proxiedMembers.first) {
-            Integer retval = first.id;
-            for (member in proxiedMembers.rest) {
-                if (member.id != retval) {
-                    return -1;
-                }
-            }
-            return retval;
-        } else {
-            return -1;
-        }
-    }
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         log.warn("ProxyMember.equalsIgnoringID() called");
         if (is ProxyMember fixture) {
@@ -66,4 +51,7 @@ class ProxyMember satisfies UnitMember&ProxyFor<UnitMember> {
         }
     }
     shared actual Boolean parallel = true;
+    "Returns the ID number shared by all the proxied members, or -1 if either there are no
+     proxied members or some have a different ID."
+    shared actual Integer id => getConsensus(UnitMember.id) else -1;
 }

@@ -66,7 +66,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         return retval;
     }
     "Call a function on every proxied member, and return the value returned if it was
-     always the same, or else a provided value."
+     always the same, or else a provided value." // TODO: Can we get rid of this in favor of getConsensus()?
     Result getCommonValue<Result>(Result(IUnit) method, Result ifEmpty, Result ifDiffer)
             given Result satisfies Object {
         variable Result? retval = null;
@@ -116,11 +116,10 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         return retval;
     }
     Player defaultPlayer = PlayerImpl(-1, "proxied");
-    shared actual Player owner =>
-            getCommonValue(IUnit.owner, defaultPlayer, defaultPlayer);
+    shared actual Player owner => getConsensus(IUnit.owner) else defaultPlayer;
     shared actual String kind {
         if (parallel) {
-            return getCommonValue(IUnit.kind, "proxied", "proxied");
+            return getConsensus(IUnit.kind) else "proxied";
         } else {
             assert (is String temp = identifier);
             return temp;
@@ -157,7 +156,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     }
     shared actual String defaultImage => getCommonValue(IUnit.defaultImage, "",
         "unit.png");
-    shared actual String image => getCommonValue(IUnit.image, "", "");
+    shared actual String image => getConsensus(IUnit.image) else "";
     assign image {
         log.warn("ProxyUnit.image setter called");
         for (unit in proxiedList) {
@@ -215,7 +214,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         }
         return map.items.iterator();
     }
-    shared actual String name => getCommonValue(IUnit.name, "proxied", "proxied");
+    shared actual String name => getConsensus(IUnit.name) else "proxied";
     assign name {
         for (unit in proxiedList) {
             if (is HasMutableName unit) {
@@ -239,9 +238,9 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         return super.isSubset(obj, (String str) => report("In proxy unit:\t``str``"));
     }
     shared actual String getOrders(Integer turn) =>
-            getCommonValue((unit) => unit.getOrders(turn), "", "");
+            getConsensus((unit) => unit.getOrders(turn)) else "";
     shared actual String getResults(Integer turn) =>
-            getCommonValue((unit) => unit.getResults(turn), "", "");
+            getConsensus((unit) => unit.getResults(turn)) else "";
     shared actual void setOrders(Integer turn, String newOrders) {
         for (unit in proxiedList) {
             unit.setOrders(turn, newOrders);
@@ -313,7 +312,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     }
     shared actual Integer hash =>
             proxiedList.map(Object.hash).fold(0)((left, right) => left.or(right));
-    shared actual Integer dc => getCommonValue(IUnit.dc, 10, 10);
+    shared actual Integer dc => getConsensus(IUnit.dc) else 10;
     "Proxy an additonal unit."
     shared actual void addProxied(IUnit item) {
         if (is Identifiable item, item === this) {

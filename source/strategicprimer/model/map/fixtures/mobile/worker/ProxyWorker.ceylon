@@ -179,51 +179,15 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
         }
         return retval else "worker.png";
     }
-    shared actual String image {
-        variable String? retval = null;
-        for (worker in workers) {
-            if (exists temp = retval) {
-                if (temp != worker.image) {
-                    return "";
-                }
-            } else {
-                retval = worker.image;
-            }
-        }
-        return retval else "";
-    }
+    shared actual String image => getConsensus(IWorker.image) else "";
     assign image {
         log.warn("image setter called on a ProxyWorker");
         for (worker in workers) {
             worker.image = image;
         }
     }
-    shared actual String race {
-        variable String? retval = null;
-        for (worker in workers) {
-            if (exists temp = retval) {
-                if (temp != worker.race) {
-                    return "proxied";
-                }
-            } else {
-                retval = worker.race;
-            }
-        }
-        return retval else "proxied";
-    }
-    shared actual String name {
-        variable String? retval = null;
-        for (worker in workers) {
-            if (exists temp = retval) {
-                if (temp != worker.name) {
-                    return "proxied";
-                }
-            } else {
-                retval = worker.name;
-            }
-        }
-        return retval else "proxied";
-    }
+    shared actual String race => getConsensus(IWorker.race) else "proxied";
+    shared actual String name => getConsensus(IWorker.name) else "proxied";
     shared actual IJob getJob(String jobName) {
         for (job in proxyJobs) {
             if (job.name == jobName) {
