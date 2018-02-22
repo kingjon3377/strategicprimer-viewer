@@ -9,9 +9,6 @@ import strategicprimer.drivers.common {
 	IDriverModel,
 	IDriverUsage
 }
-import java.lang {
-	JInteger=Integer
-}
 import strategicprimer.model.map {
 	HasName,
 	Point
@@ -82,7 +79,7 @@ shared object trappingCLI satisfies SimpleDriver {
 			String? top = fixtures.accept();
 			if (!top exists) {
 				cli.println("Ran out of results");
-				return JInteger.maxValue;
+				return runtime.maxIntegerValue;
 			}
 			assert (exists top);
 			if (HuntingModel.noResults == top) {

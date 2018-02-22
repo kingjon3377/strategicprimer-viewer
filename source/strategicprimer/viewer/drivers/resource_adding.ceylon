@@ -417,7 +417,7 @@ object resourceAddingGUI satisfies SimpleDriver {
         logLabel.minimumSize = Dimension(retval.width - 20, 50);
         JComponent temp = logLabel;
         temp.preferredSize = Dimension(retval.width, 100);
-        JInteger maximum = JInteger(JInteger.maxValue);
+        JInteger maximum = JInteger(runtime.maxIntegerValue);
         resourceCreatedModel.maximum = maximum;
         resourceQuantityModel.maximum = maximum;
         implementQuantityModel.maximum = maximum;

@@ -3,10 +3,6 @@ import ceylon.collection {
     MutableList
 }
 
-import java.lang {
-    JInteger=Integer
-}
-
 import lovelace.util.common {
     todo
 }
@@ -123,7 +119,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     case (7) { direction = Direction.northwest; }
     case (8) { direction = Direction.north; }
     case (9) { direction = Direction.northeast; }
-    else { fireMovementCost(JInteger.maxValue); return; }
+    else { fireMovementCost(runtime.maxIntegerValue); return; }
         Point point = model.selectedUnitLocation;
         Point destPoint = model.getDestination(point, direction);
         try {

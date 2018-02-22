@@ -3,9 +3,6 @@ import ceylon.collection {
     ArrayList
 }
 
-import java.lang {
-    JInteger=Integer
-}
 import java.nio.file {
     JPath=Path
 }
@@ -31,7 +28,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "The starting zoom level."
     shared static Integer defaultZoomLevel = 8;
     "The maximum zoom level, to make sure that the tile size never overflows."
-    static Integer maxZoomLevel = JInteger.maxValue / 4;
+    static Integer maxZoomLevel = runtime.maxIntegerValue / 4;
     "The list of graphical-parameter listeners."
     MutableList<GraphicalParamsListener> gpListeners =
             ArrayList<GraphicalParamsListener>();

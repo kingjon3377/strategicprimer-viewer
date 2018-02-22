@@ -3,10 +3,6 @@ import ceylon.collection {
     ArrayList
 }
 
-import java.lang {
-    JInteger=Integer
-}
-
 import lovelace.util.common {
     todo
 }
@@ -90,7 +86,7 @@ shared object simpleMovementModel {
 	        {TileFixture*} fixtures) {
 	    if (exists terrain) {
 	        if (TileType.ocean == terrain) {
-	            return JInteger.maxValue;
+	            return runtime.maxIntegerValue;
 	        } else if (forest || mountain || !fixtures.narrow<Forest|Hill>().empty ||
 	                TileType.desert == terrain) {
 	            return (river) then 2 else 3;
@@ -102,7 +98,7 @@ shared object simpleMovementModel {
 	            return (river) then 1 else 2;
 	        }
 	    } else {
-	        return JInteger.maxValue;
+	        return runtime.maxIntegerValue;
 	    }
 	}
 

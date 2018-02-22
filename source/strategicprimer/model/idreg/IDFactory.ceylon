@@ -3,7 +3,6 @@ import ceylon.interop.java {
 }
 
 import java.lang {
-    JInteger=Integer,
     IllegalStateException
 }
 import java.util {
@@ -51,7 +50,7 @@ shared class IDFactory() satisfies IDRegistrar {
     shared actual Integer createID() {
         variable Integer retval = -1;
         synchronize(usedIDs, () {
-            if (usedIDs.cardinality() < JInteger.maxValue) {
+            if (usedIDs.cardinality() < runtime.maxIntegerValue) {
                 retval = register(usedIDs.nextClearBit(0));
             } else {
                 throw IllegalStateException("Exhausted all possible integers");
