@@ -103,35 +103,23 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
         trivialMatcher(`Fortress`, "Fortresses"),
         // TODO: Towns should be broken up by kind or size, and maybe by status or owner
         trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
-        // TODO: Village through Centaur were all 45, so their ordering happened by chance
-        trivialMatcher(`Village`),
-        trivialMatcher(`Troll`),
-        trivialMatcher(`Simurgh`),
-        trivialMatcher(`Ogre`),
-        trivialMatcher(`Minotaur`),
-        trivialMatcher(`Mine`),
-        trivialMatcher(`Griffin`),
-        trivialMatcher(`Sphinx`, "Sphinxes"),
-        trivialMatcher(`Phoenix`, "Phoenixes"),
-        trivialMatcher(`Djinn`, "Djinni"),
-        trivialMatcher(`Centaur`),
-        // TODO: StoneDeposit through Animal were all 40; they too should be reviewed
-        trivialMatcher(`StoneDeposit`, "Stone Deposits"),
-        trivialMatcher(`MineralVein`, "Mineral Veins"),
-        trivialMatcher(`Fairy`, "Fairies"), trivialMatcher(`Giant`),
-        trivialMatcher(`Dragon`), trivialMatcher(`Cave`), trivialMatcher(`Battlefield`),
+        trivialMatcher(`Village`), trivialMatcher(`Mine`), trivialMatcher(`Troll`),
+        trivialMatcher(`Simurgh`), trivialMatcher(`Ogre`), trivialMatcher(`Minotaur`),
+        trivialMatcher(`Griffin`), trivialMatcher(`Sphinx`, "Sphinxes"),
+        trivialMatcher(`Phoenix`, "Phoenixes"), trivialMatcher(`Djinn`, "Djinni"),
+        trivialMatcher(`Centaur`), trivialMatcher(`Fairy`, "Fairies"),
+        trivialMatcher(`Giant`), trivialMatcher(`Dragon`), trivialMatcher(`Cave`),
+        trivialMatcher(`Battlefield`),
         complements<Animal>((Animal animal) => !animal.traces, "Animals",
             "Animal tracks"),
+        trivialMatcher(`StoneDeposit`, "Stone Deposits"),
+        trivialMatcher(`MineralVein`, "Mineral Veins"),
         complements<Grove>(Grove.orchard, "Orchards", "Groves"),
-        // TODO: TextFixture thru AdventureFixture were all 25, and should be considered
-        trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"),
-        trivialMatcher(`Portal`), trivialMatcher(`Oasis`, "Oases"),
+        trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"), trivialMatcher(`Portal`),
         trivialMatcher(`AdventureFixture`, "Adventures"),
-        trivialMatcher(`CacheFixture`, "Caches"), trivialMatcher(`Forest`),
-        // TODO: Shrub and Meadow were both 15; consider
-        trivialMatcher(`Shrub`), complements<Meadow>(Meadow.field, "Fields", "Meadows"),
-        // TODO: Sandbar and Hill were both 5; consider
-        trivialMatcher(`Sandbar`), trivialMatcher(`Hill`),
+        trivialMatcher(`CacheFixture`, "Caches"), trivialMatcher(`Oasis`, "Oases"),
+        trivialMatcher(`Forest`), complements<Meadow>(Meadow.field, "Fields", "Meadows"),
+        trivialMatcher(`Shrub`), trivialMatcher(`Hill`), trivialMatcher(`Sandbar`),
         complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
     }) {
         if (is Iterable<FixtureMatcher> arg) {
