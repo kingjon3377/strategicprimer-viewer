@@ -50,7 +50,7 @@ shared class IDFactory() satisfies IDRegistrar {
     shared actual Integer createID() {
         variable Integer retval = -1;
         synchronize(usedIDs, () {
-            if (usedIDs.cardinality() < runtime.maxIntegerValue) {
+            if (usedIDs.cardinality() < runtime.maxIntegerValue) { // TODO: Reduce the upper bound somewhat?
                 retval = register(usedIDs.nextClearBit(0));
             } else {
                 throw IllegalStateException("Exhausted all possible integers");

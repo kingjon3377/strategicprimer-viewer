@@ -296,7 +296,7 @@ SPFrame explorationFrame(IExplorationModel model,
         headerPanel.add(locLabel);
         headerPanel.add(JLabel("Remaining Movement Points:"));
         JTextField mpField = JTextField(explorerSelectingPanel.mpDocument, null, 5);
-        mpField.maximumSize = Dimension(runtime.maxIntegerValue,
+        mpField.maximumSize = Dimension(runtime.maxArraySize,
             mpField.preferredSize.height.integer);
         headerPanel.add(mpField);
         headerPanel.add(JLabel("Current relative speed:"));

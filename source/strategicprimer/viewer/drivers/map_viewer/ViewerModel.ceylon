@@ -28,7 +28,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "The starting zoom level."
     shared static Integer defaultZoomLevel = 8;
     "The maximum zoom level, to make sure that the tile size never overflows."
-    static Integer maxZoomLevel = runtime.maxIntegerValue / 4;
+    static Integer maxZoomLevel = runtime.maxArraySize / 2;
     "The list of graphical-parameter listeners."
     MutableList<GraphicalParamsListener> gpListeners =
             ArrayList<GraphicalParamsListener>();

@@ -79,7 +79,7 @@ shared object trappingCLI satisfies SimpleDriver {
 			String? top = fixtures.accept();
 			if (!top exists) {
 				cli.println("Ran out of results");
-				return runtime.maxIntegerValue;
+				return runtime.maxArraySize;
 			}
 			assert (exists top);
 			if (HuntingModel.noResults == top) {

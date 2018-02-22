@@ -119,7 +119,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     case (7) { direction = Direction.northwest; }
     case (8) { direction = Direction.north; }
     case (9) { direction = Direction.northeast; }
-    else { fireMovementCost(runtime.maxIntegerValue); return; }
+    else { fireMovementCost(runtime.maxArraySize); return; }
         Point point = model.selectedUnitLocation;
         Point destPoint = model.getDestination(point, direction);
         try {

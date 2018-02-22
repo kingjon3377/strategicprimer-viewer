@@ -37,7 +37,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
         for (job in proxiedJobs) {
             for (skill in job.filter(notThis)) {
                 if (skill.name == name,
-                        skill.level < (retval else runtime.maxIntegerValue)) {
+                        skill.level < (retval else runtime.maxArraySize)) {
                     retval = skill.level;
                 }
             }
