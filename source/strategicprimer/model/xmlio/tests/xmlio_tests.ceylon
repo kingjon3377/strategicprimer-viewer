@@ -856,27 +856,26 @@ object xmlTests {
 	         code_name=\"playerOne\" /><xy:xyzzy><row index=\"0\"><tile row=\"0\"
 	         column=\"0\" kind=\"steppe\"><xy:hill id=\"0\" /></tile></row></xy:xyzzy></map>
 	         ");
-	    try {
-	        assertMapDeserialization("Root tag must be in supported namespace", firstMap,
-	            """<map xmlns="xyzzy" version="2" rows="1" columns="1" current_player="1">
-	               <player number="1" code_name="playerOne" /><row index="0"><tile row="0"
-	               column="0" kind="steppe" /></row></map>""");
-	        fail("Map in an unsupported namespace shouldn't be accepted");
-	    } catch (UnwantedChildException except) {
-	        assertEquals(except.tag.localPart, "root",
-	            "'Tag' that had the unexpected child was what we expected");
-	        assertEquals(except.child, QName("xyzzy", "map"),
-	            "Unwanted child was the one we expected");
-	    } catch (XMLStreamException except) {
-	        assertEquals(except.message, "XML stream didn't contain a start element",
-	            "Reason for stream exception was as expected");
-	    }
-	    try {
-	        assertUnwantedChild<AdventureFixture>(
-	            """<adventure xmlns="xyzzy" id="1" brief="one" full="two" />""", null);
-	    } catch (XMLStreamException except) {
-	        // pass()
-	    }
+	    for (reader in {oldReader, newReader}) {
+		        assertFormatIssue<IMapNG,UnwantedChildException|XMLStreamException>(reader,
+		            """<map xmlns="xyzzy" version="2" rows="1" columns="1" current_player="1">
+		               <player number="1" code_name="playerOne" /><row index="0"><tile row="0"
+		               column="0" kind="steppe" /></row></map>""", null, (except) {
+			                switch (except)
+		                    case (is UnwantedChildException) {
+			                    assertEquals(except.tag.localPart, "root",
+			                        "'Tag' that had the unexpected child was what we expected");
+			                    assertEquals(except.child, QName("xyzzy", "map"),
+			                        "Unwanted child was the one we expected");
+		                    }
+		                    case (is XMLStreamException) {
+		                        assertThatException(except)
+		                                .hasMessage("XML stream didn't contain a start element");
+		                    }
+		            });
+	            assertFormatIssue<AdventureFixture,UnwantedChildException|XMLStreamException>(reader,
+	                """<adventure xmlns="xyzzy" id="1" brief="one" full="two" />""", null);
+	        }
 	}
 
 	test
