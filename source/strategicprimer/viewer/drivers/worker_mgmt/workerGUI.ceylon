@@ -46,7 +46,7 @@ shared object workerGUI satisfies SimpleDriver {
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Manage a player's workers in units";
         longDescription = "Organize the members of a player's units.";
-        supportedOptionsTemp = [ "--current-turn=NN", "--print-empty" ];
+        supportedOptionsTemp = [ "--current-turn=NN", "--print-empty", "--include-unleveled-jobs" ];
     };
     suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,

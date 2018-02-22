@@ -45,8 +45,12 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
     void writeMember(Writer writer, UnitMember? member) {
         if (is IWorker member) {
             writer.write(member.name);
-            // TODO: Make whether to include zero-level-but-nonempty Jobs configurable
-            {IJob*} jobs = member.filter((job) => job.level > 0);
+            {IJob*} jobs;
+            if (options.hasOption("--include-unleveled-jobs")) {
+                jobs = member.filter((job) => !job.empty);
+            } else {
+	            jobs = member.filter((job) => job.level > 0);
+	        }
             if (exists first = jobs.first) {
                 writer.write(" (``first.name`` ``first.level``");
                 for (job in jobs.rest) {
