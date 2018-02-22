@@ -69,8 +69,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     throws(`class XMLStreamException`,
         "on XML parsing error in parsing the <include> tag or opening the included file")
     throws(`class SPFormatException`, "on SP format problem in <include>")
-    todo("Add tests covering include-non-XML case",
-        "Ensure that any thrown exceptions make clear that there's inclusion involved")
+    todo("Ensure that any thrown exceptions make clear that there's inclusion involved")
     void handleInclude(StartElement tag) {
         try {
             String file = getFileAttribute(tag);
@@ -80,7 +79,6 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
             throw NoSuchElementBecauseException("File referenced by <include> not found",
                 except);
         } catch (XMLStreamException except) {
-            // TODO: Tests should handle include-non-XML case
             throw NoSuchElementBecauseException(
                 "XML stream error parsing <include> tag or opening file", except);
         } catch (SPFormatException except) {
