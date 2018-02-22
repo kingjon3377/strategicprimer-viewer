@@ -68,7 +68,7 @@ import strategicprimer.drivers.gui.common {
 }
 "An interface for the map viewer main window, to hold the method needed by the worker
  management app."
-todo("Merge into ISPWindow (with a broader return type)?")
+todo("Merge into [[strategicprimer.drivers.gui.common::ISPWindow]] (with a broader return type)?")
 shared interface IViewerFrame {
     shared formal IViewerModel model;
 }
