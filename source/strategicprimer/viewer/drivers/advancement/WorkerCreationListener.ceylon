@@ -46,10 +46,10 @@ import strategicprimer.drivers.worker.common {
 "A listener to keep track of the currently selected unit and listen for new-worker
  notifications, then pass this information on to the tree model."
 class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
-        satisfies ActionListener&UnitSelectionListener&NewWorkerListener {
+        satisfies ActionListener&UnitSelectionListener {
     "The currently selected unit"
     variable IUnit? selectedUnit = null;
-    shared actual void addNewWorker(IWorker worker) {
+    shared void addNewWorker(IWorker worker) {
         if (exists local = selectedUnit) {
             model.addUnitMember(local, worker);
         } else {
