@@ -13,7 +13,9 @@ import ceylon.collection {
 	ArrayList,
 	MutableList,
 	HashSet,
-	Queue
+	Queue,
+	MutableMap,
+	HashMap
 }
 import java.io {
 	IOException
@@ -34,7 +36,8 @@ import strategicprimer.drivers.common.cli {
 	ICLIHelper
 }
 import lovelace.util.common {
-	todo
+	todo,
+	comparingOn
 }
 import strategicprimer.model.map.fixtures.terrain {
 	Forest
@@ -48,7 +51,8 @@ import strategicprimer.model.map.fixtures.mobile {
 	IWorker
 }
 import strategicprimer.drivers.exploration.common {
-	surroundingPointIterable
+	surroundingPointIterable,
+	simpleMovementModel
 }
 import strategicprimer.model {
 	DistanceComparator
@@ -119,13 +123,63 @@ shared object queryCLI satisfies SimpleDriver {
 		}
 		return sqrt((xDiff * xDiff + yDiff * yDiff).float);
 	}
+	"The shortest-path distance, avoiding obstacles, in MP, between two points, using Dijkstra's algorithm."
+	Integer getTravelDistance(IMapNG map, Point start, Point end) {
+		MutableSet<Point> unvisited = HashSet { *map.locations };
+		MutableMap<Point, Integer> tentativeDistances = HashMap<Point, Integer> {
+			*map.locations.map((point) => point->runtime.maxArraySize) };
+			tentativeDistances[start] = 0;
+			variable Point current = start;
+			variable Integer iterations = 0;
+			while (!unvisited.empty) {
+				iterations++;
+				assert (exists Integer currentDistance = tentativeDistances[current]);
+				if (currentDistance >= runtime.maxArraySize) {
+					log.info("Considering a tile estimated as an infinite distance away after ``iterations`` iterations");
+					return currentDistance;
+				} else if (current == end) {
+					log.info("Reached the end after ``iterations`` iterations");
+					return currentDistance;
+				}
+				for (neighbor in surroundingPointIterable(current, map.dimensions, 1)) {
+					if (!unvisited.contains(neighbor)) {
+						continue;
+					}
+					assert (exists estimate = tentativeDistances[neighbor]);
+					Integer tentativeDistance = currentDistance + simpleMovementModel.movementCost(map.baseTerrain[neighbor],
+						!map.fixtures.get(neighbor).narrow<Forest>().empty, map.mountainous.get(neighbor),
+						!map.rivers.get(neighbor).empty || !map.rivers.get(current).empty, map.fixtures.get(neighbor));
+					tentativeDistances[neighbor] = Integer.smallest(estimate, tentativeDistance);
+					if (estimate < 0) {
+						log.warn("Old estimate at ``neighbor`` was negative");
+						return runtime.maxArraySize;
+					} else if (tentativeDistance < 0) {
+						log.warn("Recomputed estimate at ``neighbor`` was negative");
+						return runtime.maxArraySize;
+					}
+				}
+				unvisited.remove(current);
+				if (exists next = tentativeDistances.sort(comparingOn(Entry<Point, Integer>.item, increasing<Integer>)).
+					map(Entry.key).filter(unvisited.contains).first) {
+					current = next;
+				} else {
+					log.info("Couldn't find a smallest-estimate unchecked tile after ``iterations`` iterations");
+					return runtime.maxArraySize;
+				}
+			}
+			log.info("Apparently ran out of tiles after ``iterations`` iterations");
+			return tentativeDistances[end] else runtime.maxArraySize;
+		}
 	"Report the distance between two points."
-	todo("Use some sort of pathfinding.")
-	void printDistance(MapDimensions dimensions, ICLIHelper cli) {
+	void printDistance(IMapNG map, ICLIHelper cli) {
 		Point start = cli.inputPoint("Starting point:\t");
 		Point end = cli.inputPoint("Destination:\t");
-		cli.println("Distance (as the crow flies, in tiles):\t``Float
-			.format(distance(start, end, dimensions), 0, 0)``");
+		if (cli.inputBoolean("Compute ground travel distance?")) {
+			cli.println("Distance (on the ground, in MP cost):\t``getTravelDistance(map, start, end)``");
+		} else {
+			cli.println("Distance (as the crow flies, in tiles):\t``Float
+				.format(distance(start, end, map.dimensions), 0, 0)``");
+		}
 	}
 	void huntGeneral(
 			"How much time is left in the day."
@@ -381,7 +435,7 @@ shared object queryCLI satisfies SimpleDriver {
 			"gather"->(()=>gather(huntModel, cli.inputPoint("Location to gather? "), cli, hunterHours * 60)),
 			"herd"->(()=>herd(cli, huntModel)),
 			"trap"->(()=>trappingCLI.startDriverOnModel(cli, options, model)),
-			"distance"->(()=>printDistance(model.mapDimensions, cli)),
+			"distance"->(()=>printDistance(model.map, cli)),
 			"count"->(()=>countWorkers(model.map, cli, *model.map.players)),
 			"unexplored"->(() {
 				Point base = cli.inputPoint("Starting point? ");
