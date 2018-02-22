@@ -32,7 +32,6 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc)
     shared actual variable String portrait = "";
     "The contents of the town."
     shared actual variable CommunityStats? population = null;
-    todo("Test this")
     shared actual Boolean isSubset(AbstractTown other, Anything(String) report) {
         if (id != other.id) {
             report("Fixtures' ID #s differ");

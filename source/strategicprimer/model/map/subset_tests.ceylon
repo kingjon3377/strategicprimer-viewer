@@ -3,7 +3,8 @@ import ceylon.test {
     test,
     assertFalse,
     assertEquals,
-    assertNotEquals
+    assertNotEquals,
+	parameters
 }
 
 import strategicprimer.model.map {
@@ -45,8 +46,13 @@ import strategicprimer.model.map.fixtures.towns {
     Fortress,
     AbstractTown,
     TownStatus,
-    Fortification
+    Fortification,
+	Town,
+	City,
+	CommunityStats
 }
+{[TownSize, TownStatus]*} townParameters =
+		`TownSize`.caseValues.product(`TownStatus`.caseValues);
 object subsetTests {
 	void assertIsSubset<T,U=T>(T&U one, T&U two, String message)
 	        given T satisfies Subsettable<U> given U satisfies Object =>
@@ -236,5 +242,200 @@ object subsetTests {
 	    assertEquals(uOne.copy(false), uOne, "clone equals original");
 	    assertNotEquals(uOne.copy(true), uOne, "zeroed clone doesn't equal original");
 	    assertIsSubset(uOne, uOne.copy(true), "zeroed clone is subset of original");
+	}
+
+	"Test [[AbstractTown]] subset calculations, specifically in the [[Town]] instantiation."
+	test
+	parameters(`value townParameters`)
+	shared void testTownSubsets(TownSize size, TownStatus status) {
+		TownSize differentSize;
+		TownStatus differentStatus;
+		Player playerOne = PlayerImpl(0, "playerOne");
+		Player playerTwo = PlayerImpl(1, "playerTwo");
+		Player independent = PlayerImpl(2, "independent");
+		if (size == TownSize.small) {
+			differentSize = TownSize.large;
+		} else {
+			differentSize = TownSize.small;
+		}
+		if (status == TownStatus.active) {
+			differentStatus = TownStatus.ruined;
+		} else {
+			differentStatus = TownStatus.active;
+		}
+		assertNotSubset(Town(status, size, -1, "townName", 0, playerOne),
+			Town(status, size, -1, "townName", 1, playerOne),
+			"Different IDs break Town subsets");
+		assertNotSubset(Town(status, size, -1, "nameOne", 2, playerOne),
+			Town(status, size, -1, "nameTwo", 2, playerOne),
+			"Different names breaks Town subsets");
+		assertIsSubset(Town(status, size, -1, "townName", 3, playerOne),
+			Town(status, size, -1, "unknown", 3, playerOne),
+			"""Town with "unknown" name is still subset""");
+		assertNotSubset(Town(status, size, -1, "unknown", 3, playerOne),
+			Town(status, size, -1, "townName", 3, playerOne),
+			"""Name of "unknown" doesn't work in reverse""");
+		assertNotSubset(Town(status, size, -1, "townName", 4, playerOne),
+			City(status, size, -1, "townName", 4, playerOne),
+			"City not a subset of town");
+		assertNotSubset(Town(status, size, -1, "townName", 5, playerOne),
+			Fortification(status, size, -1, "townName", 5, playerOne),
+			"Fortification not a subset of town");
+		assertNotSubset(Town(status, size, -1, "townName", 6, playerOne),
+			Town(differentStatus, size, -1, "townName", 6, playerOne),
+			"Different status breaks subset");
+		assertIsSubset(Town(status, size, 5, "townName", 7, playerOne),
+			Town(status, size, 10, "townName", 7, playerOne),
+			"Different DC doesn't break subset");
+		assertNotSubset(Town(status, size, -1, "townName", 8, playerOne),
+			Town(status, differentSize, -1, "townName", 8, playerOne),
+			"Different size breaks subset");
+		assertNotSubset(Town(status, size, -1, "townName", 9, playerOne),
+			Town(status, size, -1, "townName", 9, playerTwo),
+			"Different owner breaks subset");
+		assertIsSubset(Town(status, size, -1, "townName", 10, playerOne),
+			Town(status, size, -1, "townName", 10, independent),
+			"Still a subset if they think independently owned");
+		assertNotSubset(Town(status, size, -1, "townName", 11, independent),
+			Town(status, size, -1, "townName", 11, playerOne),
+			"Owned is not a subset of independently owned");
+		Town first = Town(status, size, -1, "townName", 12, playerOne);
+		Town second = Town(status, size, -1, "townName", 12, playerOne);
+		first.population = CommunityStats(8);
+		assertIsSubset(first, second, "Missing population detils doesn't break subset");
+		assertNotSubset(second, first,
+			"Having population details when we don't does break subset");
+		second.population = CommunityStats(10);
+		assertNotSubset(first, second, "Having non-subset population details breaks subset");
+	}
+
+	"Test [[AbstractTown]] subset calculations, specifically in the [[City]] instantiation."
+	test
+	parameters(`value townParameters`)
+	shared void testCitySubsets(TownSize size, TownStatus status) {
+		TownSize differentSize;
+		TownStatus differentStatus;
+		Player playerOne = PlayerImpl(0, "playerOne");
+		Player playerTwo = PlayerImpl(1, "playerTwo");
+		Player independent = PlayerImpl(2, "independent");
+		if (size == TownSize.small) {
+			differentSize = TownSize.large;
+		} else {
+			differentSize = TownSize.small;
+		}
+		if (status == TownStatus.active) {
+			differentStatus = TownStatus.ruined;
+		} else {
+			differentStatus = TownStatus.active;
+		}
+		assertNotSubset(City(status, size, -1, "townName", 0, playerOne),
+			City(status, size, -1, "townName", 1, playerOne),
+			"Different IDs break City subsets");
+		assertNotSubset(City(status, size, -1, "nameOne", 2, playerOne),
+			City(status, size, -1, "nameTwo", 2, playerOne),
+			"Different names breaks City subsets");
+		assertIsSubset(City(status, size, -1, "townName", 3, playerOne),
+			City(status, size, -1, "unknown", 3, playerOne),
+			"""City with "unknown" name is still subset""");
+		assertNotSubset(City(status, size, -1, "unknown", 3, playerOne),
+			City(status, size, -1, "townName", 3, playerOne),
+			"""Name of "unknown" doesn't work in reverse""");
+		assertNotSubset(City(status, size, -1, "townName", 4, playerOne),
+			Town(status, size, -1, "townName", 4, playerOne),
+			"Town not a subset of City");
+		assertNotSubset(City(status, size, -1, "townName", 5, playerOne),
+			Fortification(status, size, -1, "townName", 5, playerOne),
+			"Fortification not a subset of City");
+		assertNotSubset(City(status, size, -1, "townName", 6, playerOne),
+			City(differentStatus, size, -1, "townName", 6, playerOne),
+			"Different status breaks subset");
+		assertIsSubset(City(status, size, 5, "townName", 7, playerOne),
+			City(status, size, 10, "townName", 7, playerOne),
+			"Different DC doesn't break subset");
+		assertNotSubset(City(status, size, -1, "townName", 8, playerOne),
+			City(status, differentSize, -1, "townName", 8, playerOne),
+			"Different size breaks subset");
+		assertNotSubset(City(status, size, -1, "townName", 9, playerOne),
+			City(status, size, -1, "townName", 9, playerTwo),
+			"Different owner breaks subset");
+		assertIsSubset(City(status, size, -1, "townName", 10, playerOne),
+			City(status, size, -1, "townName", 10, independent),
+			"Still a subset if they think independently owned");
+		assertNotSubset(City(status, size, -1, "townName", 11, independent),
+			City(status, size, -1, "townName", 11, playerOne),
+			"Owned is not a subset of independently owned");
+		City first = City(status, size, -1, "townName", 12, playerOne);
+		City second = City(status, size, -1, "townName", 12, playerOne);
+		first.population = CommunityStats(8);
+		assertIsSubset(first, second, "Missing population detils doesn't break subset");
+		assertNotSubset(second, first,
+			"Having population details when we don't does break subset");
+		second.population = CommunityStats(10);
+		assertNotSubset(first, second, "Having non-subset population details breaks subset");
+	}
+
+	"Test [[AbstractTown]] subset calculations, specifically in the [[Fortification]] instantiation."
+	test
+	parameters(`value townParameters`)
+	shared void testFortificationSubsets(TownSize size, TownStatus status) {
+		TownSize differentSize;
+		TownStatus differentStatus;
+		Player playerOne = PlayerImpl(0, "playerOne");
+		Player playerTwo = PlayerImpl(1, "playerTwo");
+		Player independent = PlayerImpl(2, "independent");
+		if (size == TownSize.small) {
+			differentSize = TownSize.large;
+		} else {
+			differentSize = TownSize.small;
+		}
+		if (status == TownStatus.active) {
+			differentStatus = TownStatus.ruined;
+		} else {
+			differentStatus = TownStatus.active;
+		}
+		assertNotSubset(Fortification(status, size, -1, "townName", 0, playerOne),
+			Fortification(status, size, -1, "townName", 1, playerOne),
+			"Different IDs break Fortification subsets");
+		assertNotSubset(Fortification(status, size, -1, "nameOne", 2, playerOne),
+			Fortification(status, size, -1, "nameTwo", 2, playerOne),
+			"Different names breaks Fortification subsets");
+		assertIsSubset(Fortification(status, size, -1, "townName", 3, playerOne),
+			Fortification(status, size, -1, "unknown", 3, playerOne),
+			"""Fortification with "unknown" name is still subset""");
+		assertNotSubset(Fortification(status, size, -1, "unknown", 3, playerOne),
+			Fortification(status, size, -1, "townName", 3, playerOne),
+			"""Name of "unknown" doesn't work in reverse""");
+		assertNotSubset(Fortification(status, size, -1, "townName", 4, playerOne),
+			Town(status, size, -1, "townName", 4, playerOne),
+			"Town not a subset of Fortification");
+		assertNotSubset(Fortification(status, size, -1, "townName", 5, playerOne),
+			City(status, size, -1, "townName", 5, playerOne),
+			"City not a subset of Fortification");
+		assertNotSubset(Fortification(status, size, -1, "townName", 6, playerOne),
+			Fortification(differentStatus, size, -1, "townName", 6, playerOne),
+			"Different status breaks subset");
+		assertIsSubset(Fortification(status, size, 5, "townName", 7, playerOne),
+			Fortification(status, size, 10, "townName", 7, playerOne),
+			"Different DC doesn't break subset");
+		assertNotSubset(Fortification(status, size, -1, "townName", 8, playerOne),
+			Fortification(status, differentSize, -1, "townName", 8, playerOne),
+			"Different size breaks subset");
+		assertNotSubset(Fortification(status, size, -1, "townName", 9, playerOne),
+			Fortification(status, size, -1, "townName", 9, playerTwo),
+			"Different owner breaks subset");
+		assertIsSubset(Fortification(status, size, -1, "townName", 10, playerOne),
+			Fortification(status, size, -1, "townName", 10, independent),
+			"Still a subset if they think independently owned");
+		assertNotSubset(Fortification(status, size, -1, "townName", 11, independent),
+			Fortification(status, size, -1, "townName", 11, playerOne),
+			"Owned is not a subset of independently owned");
+		Fortification first = Fortification(status, size, -1, "townName", 12, playerOne);
+		Fortification second = Fortification(status, size, -1, "townName", 12, playerOne);
+		first.population = CommunityStats(8);
+		assertIsSubset(first, second, "Missing population detils doesn't break subset");
+		assertNotSubset(second, first,
+			"Having population details when we don't does break subset");
+		second.population = CommunityStats(10);
+		assertNotSubset(first, second, "Having non-subset population details breaks subset");
 	}
 }
