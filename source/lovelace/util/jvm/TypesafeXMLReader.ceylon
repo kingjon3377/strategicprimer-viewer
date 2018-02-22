@@ -14,7 +14,7 @@ import javax.xml.stream.events {
 "A wrapper around [[XMLEventReader]] that makes the Iterator declaration take a type
  argument. Also contains factory methods so callers don't need to deal *at all* with the
  object this wraps. If the provided reader is [[Closeable|JCloseable]], we call its `close`
- method before returning [[finished]], to help mitigate the resource leak in [[IncludingIterator]]."
+ method before returning [[finished]], to help mitigate the resource leak in IncludingIterator."
 shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent> {
     XMLEventReader wrapped;
     JCloseable? handle;
