@@ -90,10 +90,10 @@ import strategicprimer.viewer.drivers {
 }
 import strategicprimer.viewer.drivers.map_viewer {
     newUnitDialog,
-    IViewerFrame,
     viewerFrame,
     ViewerModel,
-    IViewerModel
+    IViewerModel,
+	MapGUI
 }
 import strategicprimer.model.xmlio {
     readMap
@@ -127,19 +127,19 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
     }
     IViewerModel getViewerModel() {
         for (frame in WindowList.getFrames(false, true, true)) {
-            if (is IViewerFrame frame,
-                    anythingEqual(frame.model.mapFile, model.mapFile)) {
+            if (is MapGUI frame,
+                    anythingEqual(frame.mapModel.mapFile, model.mapFile)) {
                 frame.toFront();
                 if (frame.extendedState == Frame.iconified) {
                     frame.extendedState = Frame.normal;
                 }
-                return frame.model;
+                return frame.mapModel;
             }
         } else {
-            SPFrame&IViewerFrame frame = viewerFrame(ViewerModel(model.map,
+            SPFrame&MapGUI frame = viewerFrame(ViewerModel(model.map,
                 model.mapFile), menuHandler.actionPerformed);
             SwingUtilities.invokeLater(() => frame.setVisible(true));
-            return frame.model;
+            return frame.mapModel;
         }
     }
     JTree createReportTree(DefaultTreeModel reportModel) {

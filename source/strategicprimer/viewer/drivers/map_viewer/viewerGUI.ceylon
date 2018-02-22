@@ -90,7 +90,7 @@ shared object viewerGUI satisfies SimpleDriver {
                     topRow + visible.height, leftColumn, leftColumn + visible.width);
             }, "center");
             SwingUtilities.invokeLater(() {
-                SPFrame&IViewerFrame frame = viewerFrame(model,
+                SPFrame&MapGUI frame = viewerFrame(model,
                     menuHandler.actionPerformed);
                 menuHandler.register((event) => frame.dispose(), "close");
                 menuHandler.register((event) =>

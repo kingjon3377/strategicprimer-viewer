@@ -35,7 +35,6 @@ import javax.swing.table {
 }
 
 import lovelace.util.common {
-    todo,
     Comparator
 }
 import lovelace.util.jvm {
@@ -66,18 +65,12 @@ import strategicprimer.model.xmlio {
 import strategicprimer.drivers.gui.common {
     SPFrame
 }
-"An interface for the map viewer main window, to hold the method needed by the worker
- management app."
-todo("Merge into [[strategicprimer.drivers.gui.common::ISPWindow]] (with a broader return type)?")
-shared interface IViewerFrame {
-    shared formal IViewerModel model;
-}
 "The main window for the map viewer app."
-shared SPFrame&IViewerFrame viewerFrame(IViewerModel driverModel,
+shared SPFrame&MapGUI viewerFrame(IViewerModel driverModel,
         Anything(ActionEvent) menuHandler) {
     object retval extends SPFrame("Map Viewer", driverModel.mapFile)
-            satisfies IViewerFrame {
-        shared actual IViewerModel model = driverModel;
+            satisfies MapGUI {
+        shared actual IViewerModel mapModel = driverModel;
         shared actual String windowName = "Map Viewer";
         // TODO: Keep track of whether the map has been modified and if not replace it
         // instead of opening a new window

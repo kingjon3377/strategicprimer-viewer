@@ -21,8 +21,7 @@ import javax.swing {
 }
 
 import lovelace.util.common {
-    Comparator,
-    todo
+    Comparator
 }
 
 import strategicprimer.drivers.common {
@@ -39,8 +38,7 @@ import strategicprimer.model.map {
     pointFactory
 }
 "An interface for a UI representing a map."
-todo("Is this needed anymore?")
-interface MapGUI {
+shared interface MapGUI {
     "The driver model the GUI represents."
     shared formal IViewerModel mapModel;
 }
