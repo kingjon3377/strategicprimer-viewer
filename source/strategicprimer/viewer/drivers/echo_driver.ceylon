@@ -28,10 +28,9 @@ import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.model.xmlio {
-    readMap,
+    mapIOHelper,
     warningLevels,
-    SPFormatException,
-    writeMap
+    SPFormatException
 }
 import strategicprimer.drivers.common {
     IMultiMapModel,
@@ -65,7 +64,7 @@ object echoDriver satisfies UtilityDriver {
         if (exists inArg = args.first, exists outArg = args.rest.first, args.size == 2) {
             IMutableMapNG map;
             try {
-                map = readMap(JPaths.get(inArg), warningLevels.ignore);
+                map = mapIOHelper.readMap(JPaths.get(inArg), warningLevels.ignore);
             } catch (IOException except) {
                 throw DriverFailedException(except, "I/O error reading file ``inArg``");
             } catch (XMLStreamException except) {
@@ -106,7 +105,7 @@ object echoDriver satisfies UtilityDriver {
                 }
             }
             try {
-                writeMap(parsePath(outArg), map);
+                mapIOHelper.writeMap(parsePath(outArg), map);
             } catch (IOException except) {
                 throw DriverFailedException(except, "I/O error writing ``outArg``");
             }

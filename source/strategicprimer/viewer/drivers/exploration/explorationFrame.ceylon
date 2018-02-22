@@ -123,7 +123,7 @@ import ceylon.random {
     randomize
 }
 import strategicprimer.model.xmlio {
-    readMap
+    mapIOHelper
 }
 import strategicprimer.model.idreg {
     IDRegistrar,
@@ -150,7 +150,7 @@ SPFrame explorationFrame(IExplorationModel model,
         Direction.nowhere->KeyStroke.getKeyStroke(KeyEvent.vkNumpad5, 0)
     };
     SPFrame retval = SPFrame("Exploration", model.mapFile, Dimension(768, 48), true,
-        (file) => model.addSubordinateMap(readMap(file), file));
+        (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file));
     CardLayout layoutObj = CardLayout();
     retval.setLayout(layoutObj);
     JTextField mpField = JTextField(5);

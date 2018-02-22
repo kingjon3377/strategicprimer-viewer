@@ -58,7 +58,7 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.model.xmlio {
     Warning,
     warningLevels,
-    readMap,
+    mapIOHelper,
     SPFormatException
 }
 import strategicprimer.model.map.fixtures {
@@ -171,7 +171,7 @@ shared object mapCheckerCLI satisfies UtilityDriver {
         outStream("Starting ``file``");
         IMapNG map;
         try {
-            map = readMap(file, warner);
+            map = mapIOHelper.readMap(file, warner);
         } catch (FileNotFoundException|NoSuchFileException except) {
             err("``file`` not found");
             log.error("``file`` not found");

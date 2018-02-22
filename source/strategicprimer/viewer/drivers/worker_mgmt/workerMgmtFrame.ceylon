@@ -96,7 +96,7 @@ import strategicprimer.viewer.drivers.map_viewer {
 	MapGUI
 }
 import strategicprimer.model.xmlio {
-    readMap
+    mapIOHelper
 }
 import lovelace.util.common {
     anythingEqual
@@ -185,7 +185,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         return report;
     }
     object retval extends SPFrame("Worker Management", model.mapFile,
-                Dimension(640, 480), true, (file) => model.addSubordinateMap(readMap(file), file))
+                Dimension(640, 480), true, (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
             satisfies PlayerChangeListener {
         IMapNG mainMap = model.map;
         IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));

@@ -73,7 +73,7 @@ import strategicprimer.model.map.fixtures.towns {
     Fortification
 }
 import strategicprimer.model.xmlio {
-    readMap,
+    mapIOHelper,
     warningLevels,
     SPWriter,
     testReaderFactory
@@ -83,7 +83,7 @@ object oneToTwoConverterTests {
 	    Regex matcher = regex("id=\"[0-9]*\"", true);
 	    try (inStream = StringReader(matcher.replace(serialized, "id=\"-1\""))) {
 	        assertTrue(
-	            map.isSubset(readMap(inStream, warningLevels.ignore), err),
+	            map.isSubset(mapIOHelper.readMap(inStream, warningLevels.ignore), err),
 	            "Actual is at least subset of expected converted, modulo IDs");
 	    }
 	}

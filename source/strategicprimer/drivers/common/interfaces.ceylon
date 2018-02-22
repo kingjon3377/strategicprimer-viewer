@@ -22,13 +22,12 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.xmlio {
     warningLevels,
-    namesToFiles
+    mapIOHelper
 }
 import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
-    readMultiMapModel,
-    writeModel
+    mapReaderAdapter
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
@@ -145,7 +144,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                     throw IncorrectUsageException(usage);
                 }
                 value subordinatePath = secondSelectedPaths.first;
-                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     masterPath, subordinatePath);
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
@@ -166,7 +165,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                 } else {
                     throw IncorrectUsageException(usage);
                 }
-                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     masterPath, *secondSelectedPaths);
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
@@ -176,7 +175,7 @@ shared interface SimpleDriver satisfies ISPDriver {
             case (ParamCount.one) {
                 value chosenFiles = askUserForFiles();
                 if (exists chosenFile = chosenFiles.first, !chosenFiles.rest.first exists) {
-                    IDriverModel mapModel = readMapModel(chosenFile,
+                    IDriverModel mapModel = mapReaderAdapter.readMapModel(chosenFile,
                         warningLevels.default);
                     turnFixer(mapModel.map);
                     startDriverOnModel(cli, options, mapModel);
@@ -187,7 +186,7 @@ shared interface SimpleDriver satisfies ISPDriver {
             case (ParamCount.atLeastOne) {
                 value chosenFiles = askUserForFiles();
                 if (exists chosenFile = chosenFiles.first) {
-                    IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                    IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                         chosenFile, *chosenFiles.rest);
                     for (pair in mapModel.allMaps) {
                         turnFixer(pair.first);
@@ -210,7 +209,7 @@ shared interface SimpleDriver satisfies ISPDriver {
             if (chosenFiles.empty || chosenFiles.rest.first exists) {
                 throw IncorrectUsageException(usage);
             } else {
-                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     JPaths.get(firstArg), *chosenFiles);
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
@@ -223,7 +222,7 @@ shared interface SimpleDriver satisfies ISPDriver {
             if (chosenFiles.empty) {
                 throw IncorrectUsageException(usage);
             } else {
-                IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
+                IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     JPaths.get(firstArg), *chosenFiles);
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
@@ -233,8 +232,8 @@ shared interface SimpleDriver satisfies ISPDriver {
         } else {
             assert (exists firstArg = args.first);
             assert (nonempty temp = args.map(Types.nativeString).sequence());
-            IMultiMapModel mapModel = readMultiMapModel(warningLevels.default,
-                JPaths.get(firstArg), *namesToFiles(*args.rest));
+            IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
+                JPaths.get(firstArg), *mapIOHelper.namesToFiles(*args.rest));
             for (pair in mapModel.allMaps) {
                 turnFixer(pair.first);
             }
@@ -342,8 +341,8 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
         assert (nonempty temp = args.map(Types.nativeString).sequence());
         // We declare this as IMultiMapModel so we can correct the current turn in all
         // maps if needed.
-        IMultiMapModel model = readMultiMapModel(warningLevels.ignore,
-            JPaths.get(firstArg), *namesToFiles(*args.rest));
+        IMultiMapModel model = mapReaderAdapter.readMultiMapModel(warningLevels.ignore,
+            JPaths.get(firstArg), *mapIOHelper.namesToFiles(*args.rest));
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {
@@ -355,7 +354,7 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
             }
         }
         startDriverOnModel(cli, options, model);
-        writeModel(model);
+        mapReaderAdapter.writeModel(model);
     }
 }
 "An exception to throw whenever a driver fails, so drivers only have to directly handle

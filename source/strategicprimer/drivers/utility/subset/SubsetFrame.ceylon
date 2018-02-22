@@ -43,7 +43,7 @@ import strategicprimer.model.map {
     PlayerCollection
 }
 import strategicprimer.model.xmlio {
-    readMap,
+    mapIOHelper,
     warningLevels,
     SPFormatException
 }
@@ -90,7 +90,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
     shared void loadMain(IMapNG|JPath arg) {
         if (is JPath path = arg) {
             try {
-                mainMap = readMap(path, warningLevels.ignore);
+                mainMap = mapIOHelper.readMap(path, warningLevels.ignore);
             } catch (FileNotFoundException|NoSuchFileException except) {
                 printParagraph("File ``path`` not found", LabelTextColor.red);
                 throw except;
@@ -149,7 +149,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
         printParagraph("Testing ``path`` ...");
         IMapNG map;
         try {
-            map = readMap(path, warningLevels.ignore);
+            map = mapIOHelper.readMap(path, warningLevels.ignore);
         } catch (FileNotFoundException|NoSuchFileException except) {
             printParagraph("FAIL: File not found", LabelTextColor.red);
             log.error("``path`` not found", except);

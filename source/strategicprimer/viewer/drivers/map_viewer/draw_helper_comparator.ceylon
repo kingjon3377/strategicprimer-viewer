@@ -41,7 +41,7 @@ import ceylon.random {
 	randomize
 }
 import strategicprimer.model.xmlio {
-	readMap,
+	mapIOHelper,
 	warningLevels
 }
 import ceylon.collection {
@@ -257,7 +257,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
         MutableMap<String, Integer> mapSizes = HashMap<String, Integer>();
         for (arg in args) {
             Path path = Paths.get(arg);
-            IMapNG map = readMap(path, warningLevels.ignore);
+            IMapNG map = mapIOHelper.readMap(path, warningLevels.ignore);
             mapSizes[arg] = map.locations.size;
             runTestProcedure(cli, map, path.string else "an unsaved map");
         }

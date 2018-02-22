@@ -35,28 +35,28 @@ import strategicprimer.model.xmlio.fluidxml {
 
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
-// TODO: Encapsulate all this (except the test method) in a single object
-// Can't call it "mapReaderAdapter", though, because we'll want that name for another such object ...
-IMapReader reader = SPFluidReader();
-SPWriter writer = yaXMLWriter;
-"Turn a series of Strings into a series of equvalent Paths, optionally omitting the
- first."
-shared {JPath*} namesToFiles(String* names) =>
-        { for (name in names) JPaths.get(name) };
-"Read a map from a file or a stream.."
-todo("Port to use ceylon.file, ceylon.io, or ceylon.buffer")
-shared IMutableMapNG readMap(JPath|JReader file, Warning warner = warningLevels.warn) {
-    if (is JPath file) {
-        return reader.readMap(file, warner);
-    } else {
-        return reader.readMapFromStream(JPaths.get(""), file, warner);
-    }
-}
-"Write a map to file."
-shared void writeMap(Path file, IMapNG map) => writer.write(file, map);
-test
-void testNamesToFiles() {
-    JPath[] expected = [ JPaths.get("two"), JPaths.get("three"), JPaths.get("four") ];
-    assertEquals([*namesToFiles("two", "three", "four")], expected,
-        "Returns all names");
+shared object mapIOHelper {
+	IMapReader reader = SPFluidReader();
+	SPWriter writer = yaXMLWriter;
+	"Turn a series of Strings into a series of equvalent Paths, optionally omitting the
+	 first." // FIXME: no longer accurate
+	shared {JPath*} namesToFiles(String* names) =>
+	        { for (name in names) JPaths.get(name) };
+	"Read a map from a file or a stream.."
+	todo("Port to use ceylon.file, ceylon.io, or ceylon.buffer")
+	shared IMutableMapNG readMap(JPath|JReader file, Warning warner = warningLevels.warn) {
+	    if (is JPath file) {
+	        return reader.readMap(file, warner);
+	    } else {
+	        return reader.readMapFromStream(JPaths.get(""), file, warner);
+	    }
+	}
+	"Write a map to file."
+	shared void writeMap(Path file, IMapNG map) => writer.write(file, map);
+	test
+	shared void testNamesToFiles() {
+	    JPath[] expected = [ JPaths.get("two"), JPaths.get("three"), JPaths.get("four") ];
+	    assertEquals([*namesToFiles("two", "three", "four")], expected,
+	        "Returns all names");
+	}
 }

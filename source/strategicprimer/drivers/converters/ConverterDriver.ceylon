@@ -31,9 +31,8 @@ import strategicprimer.model.map {
     IMapNG
 }
 import strategicprimer.model.xmlio {
-    readMap,
+    mapIOHelper,
     warningLevels,
-    writeMap,
     SPFormatException
 }
 import ceylon.file {
@@ -62,7 +61,7 @@ class ConverterDriver(
         for (filename in args.coalesced) {
             cli.print("Reading ``filename ``... ");
             try {
-                IMutableMapNG old = readMap(Paths.get(filename),
+                IMutableMapNG old = mapIOHelper.readMap(Paths.get(filename),
                     warningLevels.default);
                 if (options.hasOption("--current-turn")) {
                     value currentTurn =
@@ -78,7 +77,7 @@ class ConverterDriver(
                 cli.println(" ... Converting ... ");
                 IMapNG map = decreaseResolution(old);
                 cli.println("About to write ``filename``.new.xml");
-                writeMap(parsePath(filename + ".new.xml"), map);
+                mapIOHelper.writeMap(parsePath(filename + ".new.xml"), map);
             } catch (FileNotFoundException|NoSuchFileException except) {
                 log.error("``filename`` not found", except);
             } catch (IOException except) {

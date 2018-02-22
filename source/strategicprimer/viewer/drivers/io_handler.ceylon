@@ -54,8 +54,7 @@ import strategicprimer.model.map {
     PlayerCollection
 }
 import strategicprimer.model.xmlio {
-    readMap,
-    writeMap,
+    mapIOHelper,
     warningLevels,
     SPFormatException
 }
@@ -155,7 +154,7 @@ shared class IOHandler
         case ("load") {
             FileChooser.open(null).call((path) {
                 try {
-                    mapModel.setMap(readMap(path, warningLevels.default), path);
+                    mapModel.setMap(mapIOHelper.readMap(path, warningLevels.default), path);
                 } catch (IOException|SPFormatException|XMLStreamException except) {
                     handleError(except, path.string);
                 }
@@ -164,7 +163,7 @@ shared class IOHandler
         case ("save") {
             if (exists givenFile = mapModel.mapFile) {
                 try {
-                    writeMap(parsePath(givenFile.string), mapModel.map);
+                    mapIOHelper.writeMap(parsePath(givenFile.string), mapModel.map);
                 } catch (IOException except) {
                     showErrorDialog(source, "Strategic Primer Assistive Programs",
                         "I/O error writing to ``givenFile``");
@@ -178,7 +177,7 @@ shared class IOHandler
         case ("save as") {
             FileChooser.save(null, filteredFileChooser(false)).call((path) {
                 try {
-                    writeMap(parsePath(path.string), mapModel.map);
+                    mapIOHelper.writeMap(parsePath(path.string), mapModel.map);
                 } catch (IOException except) {
                     showErrorDialog(source, "Strategic Primer Assistive Programs",
                         "I/O error writing to ``path``");
@@ -195,7 +194,7 @@ shared class IOHandler
             if (is IMultiMapModel mapModel) {
                 FileChooser.open(null).call((path) {
                     try {
-                        mapModel.addSubordinateMap(readMap(path, warningLevels.default),
+                        mapModel.addSubordinateMap(mapIOHelper.readMap(path, warningLevels.default),
                             path);
                     } catch (IOException|SPFormatException|XMLStreamException except) {
                         handleError(except, path.string);
@@ -208,7 +207,7 @@ shared class IOHandler
                 for ([map, file] in mapModel.allMaps) {
                     if (exists file) {
                         try {
-                            writeMap(parsePath(file.string), map);
+                            mapIOHelper.writeMap(parsePath(file.string), map);
                         } catch (IOException except) {
                             showErrorDialog(source, "Strategic Primer Assistive Programs",
                                 "I/O error writing to ``file``");
@@ -219,7 +218,7 @@ shared class IOHandler
             } else {
                 FileChooser.save(null, filteredFileChooser(false)).call((path) {
                     try {
-                        writeMap(parsePath(path.string), mapModel.map);
+                        mapIOHelper.writeMap(parsePath(path.string), mapModel.map);
                     } catch (IOException except) {
                         showErrorDialog(source, "Strategic Primer Assistive Programs",
                             "I/O error writing to ``path``");

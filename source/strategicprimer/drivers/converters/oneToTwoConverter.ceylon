@@ -20,7 +20,7 @@ import strategicprimer.model.map {
     IMapNG
 }
 import strategicprimer.model.xmlio {
-    writeMap
+    mapIOHelper
 }
 import strategicprimer.drivers.exploration.old {
     ExplorationRunner,
@@ -60,7 +60,7 @@ object oneToTwoConverter satisfies SimpleDriver {
     }
     void writeConvertedMap(JPath old, IMapNG map) {
         try {
-            writeMap(parsePath(old.string).siblingPath("``old.fileName``.converted.xml"),
+            mapIOHelper.writeMap(parsePath(old.string).siblingPath("``old.fileName``.converted.xml"),
                 map);
         } catch (IOException except) {
             throw DriverFailedException(except,

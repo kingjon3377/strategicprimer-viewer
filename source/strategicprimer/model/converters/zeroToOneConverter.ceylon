@@ -84,7 +84,7 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.model.xmlio {
     spNamespace,
     SPWriter,
-    readMap,
+    mapIOHelper,
     warningLevels,
     testReaderFactory
 }
@@ -280,7 +280,7 @@ object zeroToOneConversionTests {
 	    StringBuilder actualXML = StringBuilder();
 	    SPWriter writer = testReaderFactory.oldWriter;
 	    writer.writeSPObject(actualXML.append,
-	        readMap(StringReader(ostream.string), warningLevels.ignore));
+	        mapIOHelper.readMap(StringReader(ostream.string), warningLevels.ignore));
 	    IMutableMapNG expected = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
 	    Player player = PlayerImpl(0, "Test Player");
 	    expected.addPlayer(player);
@@ -296,7 +296,7 @@ object zeroToOneConversionTests {
 	    writer.writeSPObject((String str) => expectedXML.append(str), expected);
 	    assertEquals(actualXML.string, expectedXML.string,
 	        "Converted map's serialized form was as expected");
-	    assertEquals(readMap(StringReader(ostream.string),
+	    assertEquals(mapIOHelper.readMap(StringReader(ostream.string),
 	        warningLevels.ignore), expected, "Converted map was as expected");
 	}
 	"""Convert files provided on command line; prints results to files with ".converted.xml"

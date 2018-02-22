@@ -89,7 +89,7 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu
 }
 import strategicprimer.model.xmlio {
-    readMap
+    mapIOHelper
 }
 import strategicprimer.drivers.gui.common {
     SPFrame
@@ -403,7 +403,7 @@ object resourceAddingGUI satisfies SimpleDriver {
         scrolledLog.minimumSize = logLabel.minimumSize;
 
         object retval extends SPFrame("Resource Entry", model.mapFile, null, true,
-                    (file) => model.addSubordinateMap(readMap(file), file))
+                    (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
                 satisfies PlayerChangeListener {
             shared actual void playerChanged(Player? old, Player newPlayer) {
                 currentPlayer = newPlayer;

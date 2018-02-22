@@ -50,7 +50,7 @@ import strategicprimer.drivers.common {
     VersionChangeListener,
     MapChangeListener,
     SelectionChangeListener,
-    readMapModel,
+    mapReaderAdapter,
 	FixtureMatcher
 }
 import strategicprimer.model.map {
@@ -77,7 +77,7 @@ shared SPFrame&MapGUI viewerFrame(IViewerModel driverModel,
         shared actual void acceptDroppedFile(JPath file) =>
                 SwingUtilities.invokeLater(() =>
                     viewerFrame(ViewerModel.copyConstructor(
-                        readMapModel(file, warningLevels.default)),
+                        mapReaderAdapter.readMapModel(file, warningLevels.default)),
                         menuHandler).setVisible(true));
         shared actual Boolean supportsDroppedFiles = true;
     }

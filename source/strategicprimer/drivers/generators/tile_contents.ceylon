@@ -3,7 +3,7 @@ import lovelace.util.common {
 }
 import strategicprimer.model.xmlio {
     warningLevels,
-    readMap
+    mapIOHelper
 }
 import ceylon.collection {
     MutableMap,
@@ -60,7 +60,7 @@ TileContentsGenerator tileContentsInstance(String filename) {
         return retval;
     } else {
         TileContentsGenerator retval =
-                TileContentsGenerator(readMap(JPaths.get(filename),
+                TileContentsGenerator(mapIOHelper.readMap(JPaths.get(filename),
                     warningLevels.default));
         tileContentsInstances[filename] = retval;
         return retval;

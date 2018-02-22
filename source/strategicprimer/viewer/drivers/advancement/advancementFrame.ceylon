@@ -45,7 +45,7 @@ import strategicprimer.drivers.common {
     PlayerChangeListener
 }
 import strategicprimer.model.xmlio {
-    readMap
+    mapIOHelper
 }
 import strategicprimer.drivers.gui.common {
     SPFrame
@@ -81,7 +81,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     FormattedLabel playerLabel = FormattedLabel("%s's Units:", "");
     object retval
             extends SPFrame("Worker Advancement", model.mapFile, Dimension(640, 480), true,
-                (file) => model.addSubordinateMap(readMap(file), file))
+                (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
             satisfies PlayerChangeListener{
         shared actual void playerChanged(Player? old, Player newPlayer) {
             playerLabel.setArgs(newPlayer.name);
