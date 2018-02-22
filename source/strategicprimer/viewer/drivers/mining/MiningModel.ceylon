@@ -34,7 +34,7 @@ class MiningModel(initial, seed, kind) {
     Queue<Point> queue = LinkedList<Point>();
     queue.offer(pointFactory(0, 0));
     Random rng = DefaultRandom(seed);
-    LodeStatus(LodeStatus) horizontalGenerator;
+    LodeStatus?(LodeStatus) horizontalGenerator;
     switch (kind)
     case (MineKind.normal) {
         horizontalGenerator = (LodeStatus current) => current.adjacent(rng.nextFloat);
@@ -42,9 +42,16 @@ class MiningModel(initial, seed, kind) {
     case (MineKind.banded) {
         horizontalGenerator = (LodeStatus current) => current.bandedAdjacent(rng);
     }
-    LodeStatus verticalGenerator(LodeStatus current) => current.adjacent(rng.nextFloat);
+    LodeStatus? verticalGenerator(LodeStatus current) => current.adjacent(rng.nextFloat);
     variable Integer counter = 0;
     variable Integer pruneCounter = 0;
+    void unnormalizedSet(Point loc, LodeStatus? status) {
+        if (exists status) {
+            unnormalized[loc] = status;
+        } else {
+            unnormalized.remove(loc);
+        }
+    }
     void modelPoint(Point point) {
         Point left = pointFactory(point.row, point.column - 1);
         Point down = pointFactory(point.row + 1, point.column);
@@ -55,15 +62,15 @@ class MiningModel(initial, seed, kind) {
         }
         assert (exists current);
         if (!unnormalized.defines(right)) {
-            unnormalized[right] = horizontalGenerator(current);
+            unnormalizedSet(right, horizontalGenerator(current));
             queue.offer(right);
         }
         if (!unnormalized.defines(down)) {
-            unnormalized[down] = verticalGenerator(current);
+            unnormalizedSet(down, verticalGenerator(current));
             queue.offer(down);
         }
         if (!unnormalized.defines(left)) {
-            unnormalized[left] = horizontalGenerator(current);
+            unnormalizedSet(left, horizontalGenerator(current));
             queue.offer(left);
         }
     }
@@ -86,7 +93,7 @@ class MiningModel(initial, seed, kind) {
     process.writeLine("Pruned ``pruneCounter`` branches beyond our boundaries");
     for (row->points in unnormalized.keys.group(Point.row).
                 sort((numOne->_, numTwo->__) => numTwo<=>numOne)) {
-        if (!points.map(unnormalized.get).coalesced.every(LodeStatus.none.equals)) {
+        if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
         for (point in points) {
@@ -95,7 +102,7 @@ class MiningModel(initial, seed, kind) {
     }
     for (column->points in unnormalized.keys.group(Point.column).
                 sort((numOne->_, numTwo->__) => numOne<=>numTwo)) {
-        if (!points.map(unnormalized.get).coalesced.every(LodeStatus.none.equals)) {
+        if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
         for (point in points) {
@@ -104,7 +111,7 @@ class MiningModel(initial, seed, kind) {
     }
     for (column->points in unnormalized.keys.group(Point.column).
                 sort((numOne->_, numTwo->__) => numTwo<=>numOne)) {
-        if (!points.map(unnormalized.get).coalesced.every(LodeStatus.none.equals)) {
+        if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
         for (point in points) {
@@ -122,5 +129,5 @@ class MiningModel(initial, seed, kind) {
     "The farthest row and column we reached."
     shared Point maximumPoint = pointFactory(max(data.keys.map(Point.row)) else 0,
         max(data.keys.map(Point.column)) else 0);
-    shared LodeStatus statusAt(Point point) => data[point] else LodeStatus.none;
+    shared LodeStatus? statusAt(Point point) => data[point];
 }

@@ -80,7 +80,7 @@ shared object miningCLI satisfies UtilityDriver {
                     for (row in 0..(lowerRight.row)) {
                         for (col in 0..(lowerRight.column)) {
                             writer.write("``model.statusAt(
-                                pointFactory(row, col)).ratio``,");
+                                pointFactory(row, col))?.ratio else -1``,");
                         }
                         writer.writeLine();
                     }
