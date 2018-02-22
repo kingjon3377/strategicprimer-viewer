@@ -38,8 +38,7 @@ Logger log = logger(`module strategicprimer.model`);
 shared object mapIOHelper {
 	IMapReader reader = SPFluidReader();
 	SPWriter writer = yaXMLWriter;
-	"Turn a series of Strings into a series of equvalent Paths, optionally omitting the
-	 first." // FIXME: no longer accurate
+	"Turn a series of Strings into a series of equvalent Paths."
 	shared {JPath*} namesToFiles(String* names) =>
 	        { for (name in names) JPaths.get(name) };
 	"Read a map from a file or a stream.."
