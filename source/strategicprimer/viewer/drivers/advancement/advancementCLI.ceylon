@@ -53,7 +53,7 @@ todo("Move most implementation stuff out into a class that takes the CLI as a cl
       *doesn't* pass it around in callback style.")
 shared object advancementCLI satisfies SimpleCLIDriver {
 	"Let the user add hours to a Skill or Skills in a Job."
-	void advanceJob(IJob job, ICLIHelper cli) {
+	void advanceJob(IJob job, ICLIHelper cli, Boolean allowExpertMentoring) {
 		MutableList<ISkill> skills = ArrayList{ *job };
 		cli.loopOnMutableList<ISkill>(skills, (clh, List<ISkill> list) => clh.chooseFromList(
 			list, "Skills in Job:", "No existing Skills.", "Skill to advance: ", false),
@@ -69,22 +69,28 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 		}, (ISkill skill, clh) {
 			Integer oldLevel = skill.level;
 			Integer hours = clh.inputNumber("Hours of experience to add: ");
-			// TODO: Make frequency of leveling checks (i.e. size of hour-chunks to add at
-			// a time) configurable. This is correct (per documentation before I added
-			// support for workers to the map format) for ordinary experience, but workers
-			// learning or working under a more experienced mentor can get multiple
-			// "hours" per hour, and they should only check for a level with each
-			// *actual* hour.
-			for (hour in 0:hours) {
-				skill.addHours(1, singletonRandom.nextInteger(100));
-				if (skill.level != oldLevel) {
-					clh.println("Worker(s) gained a level in ``skill.name``");
+			if (allowExpertMentoring) {
+				Integer hoursPerHour = clh.inputNumber("'Hours' between hourly checks: ");
+				variable Integer remaining = hours;
+				while (remaining > 0) {
+					skill.addHours(Integer.largest(remaining, hoursPerHour), singletonRandom.nextInteger(100));
+					if (skill.level != oldLevel) {
+						clh.println("Worker(s) gained a level in ``skill.name``");
+					}
+					remaining -= hoursPerHour;
+				}
+			} else {
+				for (hour in 0:hours) {
+					skill.addHours(1, singletonRandom.nextInteger(100));
+					if (skill.level != oldLevel) {
+						clh.println("Worker(s) gained a level in ``skill.name``");
+					}
 				}
 			}
 		});
 	}
 	"Let the user add experience to a worker."
-	void advanceSingleWorker(IWorker worker, ICLIHelper cli) {
+	void advanceSingleWorker(IWorker worker, ICLIHelper cli, Boolean allowExpertMentoring) {
 		MutableList<IJob> jobs = ArrayList { *worker };
 		cli.loopOnMutableList(jobs, (clh, List<IJob> list) => clh.chooseFromList(list,
 			"Jobs in worker:", "No existing Jobs.", "Job to advance: ", false),
@@ -97,7 +103,7 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 				list.add(job);
 			}
 			return list.find((item) => jobName == item.name);
-		}, advanceJob);
+		}, (IJob job, clh) => advanceJob(job, clh, allowExpertMentoring));
 	}
 	"Let the user add experience in a single Skill to all of a list of workers."
 	void advanceWorkersInSkill(String jobName, String skillName, ICLIHelper cli,
@@ -172,13 +178,13 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 				advanceWorkersInSkill(jobName, skill.name, clh, *workers));
 	}
 	"Let the user add experience to a worker or workers in a unit."
-	void advanceWorkersInUnit(IUnit unit, ICLIHelper cli) {
+	void advanceWorkersInUnit(IUnit unit, ICLIHelper cli, Boolean allowExpertMentoring) {
 		IWorker[] workers = [for (member in unit) if (is IWorker member) member];
 		if (cli.inputBooleanInSeries("Add experience to workers individually? ")) {
 			cli.loopOnList(workers, (clh, List<IWorker> list) => clh.chooseFromList(list,
 				"Workers in unit:", "No unadvanced workers remain.", "Chosen worker: ",
 				false),
-			"Choose another worker? ", advanceSingleWorker);
+			"Choose another worker? ", (IWorker worker, clh) => advanceSingleWorker(worker, clh, allowExpertMentoring));
 		} else if (workers.empty) {
 			cli.println("No workers in unit.");
 		} else {
@@ -202,12 +208,12 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 			}
 		}
 	"Let the user add experience to a player's workers."
-	void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli) {
+	void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli, Boolean allowExpertMentoring) {
 		IUnit[] units = [*model.getUnits(player).filter((unit) => !unit.narrow<IWorker>().empty)];
 		cli.loopOnList(units, (clh, List<IUnit> list) => clh.chooseFromList(list,
 			"``player.name``'s units:", "No unadvanced units remain.",
 			"Chosen unit: ", false),
-		"Choose another unit? ", advanceWorkersInUnit);
+		"Choose another unit? ", (IUnit unit, clh) => advanceWorkersInUnit(unit, clh, allowExpertMentoring));
 	}
     "Let the user choose a player to run worker advancement for."
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
@@ -225,7 +231,8 @@ shared object advancementCLI satisfies SimpleCLIDriver {
                             "Available players:", "No players found.", "Chosen player: ",
                             false),
                 "Select another player? ",
-                        (Player player, clh) => advanceWorkers(workerModel, player, clh));
+                        (Player player, clh) => advanceWorkers(workerModel, player, clh,
+                            options.hasOption("--allow-expert-mentoring")));
         } catch (IOException except) {
             throw DriverFailedException(except, "I/O error interacting with user");
         }
@@ -238,6 +245,6 @@ shared object advancementCLI satisfies SimpleCLIDriver {
         longDescription = """View a player's units, the workers in those units, each
                              worker's Jobs, and his or her level in each Skill in each
                              Job.""";
-        supportedOptionsTemp = [ "--current-turn=NN" ];
+        supportedOptionsTemp = [ "--current-turn=NN", "--allow-expert-mentoring" ];
     };
 }
