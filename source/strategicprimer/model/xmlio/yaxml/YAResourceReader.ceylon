@@ -85,6 +85,12 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             expectAttributes(element, "kind", "contents", "id", "image");
             retval = CacheFixture(getParameter(element, "kind"),
                 getParameter(element, "contents"), idNum);
+            // We want to transition from arbitrary-String 'contents' to sub-tags. As a first
+            // step, future-proof *this* version of the suite by only firing a warning if
+            // such children are detected, instead of aborting.
+            spinUntilEnd(element.name, stream, {"resource", "implement"});
+            retval.image = getParameter(element, "image", "");
+            return retval;
         }
         case ("field") { retval = createMeadow(element, true, idNum); }
         case ("grove") { retval = createGrove(element, false, idNum); }

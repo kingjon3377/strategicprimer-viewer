@@ -15,7 +15,8 @@ import javax.xml.stream {
 }
 import javax.xml.stream.events {
     StartElement,
-    XMLEvent
+    XMLEvent,
+	EndElement
 }
 
 import strategicprimer.model.idreg {
@@ -49,7 +50,8 @@ import strategicprimer.model.xmlio {
 }
 import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException,
-    DeprecatedPropertyException
+    DeprecatedPropertyException,
+	UnwantedChildException
 }
 import ceylon.math.whole {
     Whole
@@ -101,7 +103,20 @@ object fluidResourceHandler extends FluidBase() {
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "cache");
 	    expectAttributes(element, warner, "kind", "contents", "id", "image");
-	    spinUntilEnd(element.name, stream);
+	    // We want to transition from arbitrary-String 'contents' to sub-tags. As a first
+	    // step, future-proof *this* version of the suite by only firing a warning if
+	    // such children are detected, instead of aborting.
+	    for (event in stream) {
+	        if (is StartElement event, isSPStartElement(event)) {
+	            if (event.name.localPart == "resource" || event.name.localPart == "implement") {
+	                warner.handle(UnwantedChildException(element.name, event));
+	            } else {
+		            throw UnwantedChildException(element.name, event);
+		        }
+	        } else if (is EndElement event, element.name == event.name) {
+	            break;
+	        }
+	    }
 	    return setImage(
 	        CacheFixture(getAttribute(element, "kind"),
 	            getAttribute(element, "contents"),
