@@ -72,11 +72,12 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
        map."""
     void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
         Boolean approveRemoval(Point location, TileFixture fixture, TileFixture matching) {
+            String fCls = classDeclaration(fixture).name;
+            String mCls = classDeclaration(matching).name;
             return cli.inputBooleanInSeries(
-                "At ``location``: Remove '``fixture.shortDescription``', of class '``classDeclaration(fixture)
-                        .name``', ID #``fixture.id``, which matches '``matching
-                        .shortDescription``', of class '``classDeclaration(matching).name
-                ``', ID #``matching.id``?", "duplicate");
+                "At ``location``: Remove '``fixture.shortDescription``', of class '``fCls``', ID #``
+		            fixture.id``, which matches '``matching.shortDescription``', of class '``mCls
+		            ``', ID #``matching.id``?", "duplicate``fCls````mCls``");
         }
         for (location in map.locations) {
             MutableList<TileFixture> fixtures = ArrayList<TileFixture>();
