@@ -107,17 +107,6 @@ abstract class YAAbstractReader<Element>
             return false;
         }
     }
-    "Advance the stream until we hit an end element matching the given name, but object to
-     any start elements."
-    shared static void spinUntilEnd(QName tag, {XMLEvent*} reader) {
-        for (event in reader) {
-            if (is StartElement event, isSupportedNamespace(event.name)) {
-                throw UnwantedChildException(tag, event);
-            } else if (isMatchingEnd(tag, event)) {
-                break;
-            }
-        }
-    }
     "Whether the given tag has the given parameter."
     shared static Boolean hasParameter(StartElement element, String param) =>
             getAttributeByName(element, param) exists;
@@ -231,6 +220,21 @@ abstract class YAAbstractReader<Element>
     shared new (Warning warning, IDRegistrar idRegistrar) {
         warner = warning;
         idf = idRegistrar;
+    }
+    "Advance the stream until we hit an end element matching the given name, but object to
+     any start elements."
+    shared void spinUntilEnd(QName tag, {XMLEvent*} reader, {String*} futureTags = {}) {
+        for (event in reader) {
+            if (is StartElement event, isSupportedNamespace(event.name)) {
+                if (futureTags.contains(event.name.localPart)) {
+                    warner.handle(UnwantedChildException(tag, event));
+                } else {
+                    throw UnwantedChildException(tag, event);
+                }
+            } else if (isMatchingEnd(tag, event)) {
+                break;
+            }
+        }
     }
     "Read a parameter from XML whose value must be a boolean."
     shared Boolean getBooleanParameter(StartElement element, String parameter,
