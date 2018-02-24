@@ -36,7 +36,8 @@ import javax.swing {
     JComponent,
     JLabel,
     ImageIcon,
-    Icon
+    Icon,
+	DropMode
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -101,6 +102,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         rootVisible = false;
         dragEnabled = true;
         showsRootHandles = true;
+        dropMode = DropMode.on;
         object workerTreeTransferHandler extends TransferHandler() {
             "Unit members can only be moved, not copied or linked."
             shared actual Integer getSourceActions(JComponent component) =>
