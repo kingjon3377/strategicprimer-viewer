@@ -21,7 +21,8 @@ import java.lang {
 import strategicprimer.model.map {
     IFixture,
     IMutableMapNG,
-    TileFixture
+    TileFixture,
+	Point
 }
 import strategicprimer.model.map.fixtures {
     ResourcePile,
@@ -70,9 +71,9 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
        kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile in a
        map."""
     void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
-        Boolean approveRemoval(TileFixture fixture, TileFixture matching) {
+        Boolean approveRemoval(Point location, TileFixture fixture, TileFixture matching) {
             return cli.inputBooleanInSeries(
-                "Remove '``fixture.shortDescription``', of class '``classDeclaration(fixture)
+                "At ``location``: Remove '``fixture.shortDescription``', of class '``classDeclaration(fixture)
                         .name``', ID #``fixture.id``, which matches '``matching
                         .shortDescription``', of class '``classDeclaration(matching).name
                 ``', ID #``matching.id``?", "duplicate");
@@ -88,12 +89,12 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                     continue;
                 }
                 if (exists matching = fixtures.find((fixture.equalsIgnoringID)),
-                    approveRemoval(fixture, matching)) {
+                    approveRemoval(location, fixture, matching)) {
                     toRemove.add(fixture);
                 } else {
                     fixtures.add(fixture);
                     if (is {IFixture*} fixture) {
-                        coalesceResources(fixture, cli);
+                        coalesceResources("At ``location``: ", fixture, cli);
                     }
                 }
             }
@@ -103,7 +104,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
         }
     }
     "Offer to combine like resources in a unit or fortress."
-    void coalesceResources({IFixture*} stream, ICLIHelper cli) {
+    void coalesceResources(String context, {IFixture*} stream, ICLIHelper cli) {
         MutableMap<[String, String, String, Integer], MutableList<ResourcePile>> resources =
                 HashMap<[String, String, String, Integer], MutableList<ResourcePile>>();
         MutableMap<[String, String, Integer], MutableList<Animal>> animals =
@@ -112,7 +113,13 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 HashMap<String, MutableList<Implement>>();
         for (fixture in stream) {
             if (is {IFixture*} fixture) {
-                coalesceResources(fixture, cli);
+                String shortDesc;
+                if (is TileFixture fixture) {
+                    shortDesc = fixture.shortDescription;
+                } else {
+                    shortDesc = fixture.string;
+                }
+                coalesceResources(context + "In ``shortDesc``: ", fixture, cli);
             } else if (is ResourcePile fixture) {
                 [String, String, String, Integer] key = [fixture.kind, fixture.contents,
                 fixture.quantity.units, fixture.created];
@@ -158,6 +165,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
             if (list.size <= 1) {
                 continue;
             }
+            cli.print(context);
             cli.println("The following items could be combined:");
             for (item in list) {
                 cli.println(item.string);
@@ -181,6 +189,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
             if (list.size <= 1) {
                 continue;
             }
+            cli.print(context);
             cli.println("The following animals could be grouped into one population:");
             for (item in list) {
                 cli.println(item.string);
@@ -200,6 +209,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
             if (list.size <= 1) {
                 continue;
             }
+            cli.print(context);
             cli.println("The following equipment can be combined into a single group:");
             for (item in list) {
                 cli.println(item.string);
