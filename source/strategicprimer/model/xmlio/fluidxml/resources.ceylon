@@ -127,7 +127,7 @@ object fluidResourceHandler extends FluidBase() {
 	shared Grove readGrove(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "grove");
-	    expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id", "image");
+	    expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id", "image", "count");
 	    spinUntilEnd(element.name, stream);
 	    Boolean cultivated;
 	    if (hasAttribute(element, "cultivated")) {
@@ -141,14 +141,14 @@ object fluidResourceHandler extends FluidBase() {
 	    return setImage(
 	        Grove(false, cultivated,
 	            getAttrWithDeprecatedForm(element, "kind", "tree", warner),
-	            getOrGenerateID(element, warner, idFactory)),
+	            getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element, "count", -1)),
 	        element, warner);
 	}
 
 	shared Grove readOrchard(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "orchard");
-	    expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id", "image");
+	    expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id", "image", "count");
 	    spinUntilEnd(element.name, stream);
 	    Boolean cultivated;
 	    if (hasAttribute(element, "cultivated")) {
@@ -162,7 +162,7 @@ object fluidResourceHandler extends FluidBase() {
 	    return setImage(
 	        Grove(true, cultivated,
 	            getAttrWithDeprecatedForm(element, "kind", "tree", warner),
-	            getOrGenerateID(element, warner, idFactory)),
+	            getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element, "count", -1)),
 	        element, warner);
 	}
 
@@ -234,11 +234,11 @@ object fluidResourceHandler extends FluidBase() {
 	shared Shrub readShrub(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "shrub");
-	    expectAttributes(element, warner, "kind", "shrub", "id", "image");
+	    expectAttributes(element, warner, "kind", "shrub", "id", "image", "count");
 	    spinUntilEnd(element.name, stream);
 	    return setImage(Shrub(
 	        getAttrWithDeprecatedForm(element, "kind", "shrub", warner),
-	        getOrGenerateID(element, warner, idFactory)),
+	        getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element, "count", -1)),
 	        element, warner);
 	}
 
@@ -319,6 +319,9 @@ object fluidResourceHandler extends FluidBase() {
 	    writeTag(ostream, (obj.orchard) then "orchard" else "grove", indent, true);
 	    writeAttributes(ostream, "cultivated"->obj.cultivated, "kind"->obj.kind,
 	        "id"->obj.id);
+	    if (obj.population >= 1) {
+	        writeAttributes(ostream, "count"->obj.population);
+	    }
 	    writeImage(ostream, obj);
 	}
 
@@ -340,5 +343,14 @@ object fluidResourceHandler extends FluidBase() {
 	    writeTag(ostream, "stone", indent, true);
 	    writeAttributes(ostream, "kind"->obj.stone.string, "dc"->obj.dc, "id"->obj.id);
 	    writeImage(ostream, obj);
+	}
+
+	shared void writeShrub(XMLStreamWriter ostream, Shrub obj, Integer indent) {
+		writeTag(ostream, "shrub", indent, true);
+		writeAttributes(ostream, "kind"->obj.kind, "id"->obj.id);
+		if (obj.population >= 1) {
+			writeAttributes(ostream, "count"->obj.population);
+		}
+		writeImage(ostream, obj);
 	}
 }

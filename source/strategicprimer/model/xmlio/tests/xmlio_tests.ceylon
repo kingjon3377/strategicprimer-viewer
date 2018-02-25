@@ -969,6 +969,7 @@ object xmlTests {
 	        """<grove cultivated="false" kind="tree" id="0" />""", warningLevels.ignore);
 	    assertImageSerialization("Grove image property is preserved", Grove(false, false,
 	        "five", 5));
+	    assertSerialization("Groves can have 'count' property", Grove(true, true, "kind", 6, 4));
 	}
 
 	test
@@ -1034,6 +1035,7 @@ object xmlTests {
 	    assertMissingProperty<Shrub>("<shrub />", "kind", null);
 	    assertMissingProperty<Shrub>("""<shrub kind="kind" />""", "id", Shrub("kind", 0));
 	    assertImageSerialization("Shrub image property is preserved", secondShrub);
+	    assertSerialization("Shrub can have 'count' property", Shrub("three", 4, 3));
 	}
 
 	test

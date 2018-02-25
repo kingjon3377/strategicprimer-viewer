@@ -69,9 +69,10 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
     }
     todo("Inline?")
     HarvestableFixture createGrove(StartElement element, Boolean orchard, Integer idNum) {
-            expectAttributes(element, "kind", "tree", "cultivated", "wild", "id", "image");
+            expectAttributes(element, "kind", "tree", "cultivated", "wild", "id", "image", "count");
             return Grove(orchard, isCultivated(element),
-                getParamWithDeprecatedForm(element, "kind", "tree"), idNum);
+                getParamWithDeprecatedForm(element, "kind", "tree"), idNum,
+                getIntegerParameter(element, "count", -1));
     }
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
@@ -113,8 +114,9 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         }
         case ("orchard") { retval = createGrove(element, true, idNum); }
         case ("shrub") {
-            expectAttributes(element, "kind", "shrub", "id", "image");
-            retval = Shrub(getParamWithDeprecatedForm(element, "kind", "shrub"), idNum);
+            expectAttributes(element, "kind", "shrub", "id", "image", "count");
+            retval = Shrub(getParamWithDeprecatedForm(element, "kind", "shrub"), idNum,
+                getIntegerParameter(element, "count", -1));
         }
         case ("stone") {
             expectAttributes(element, "kind", "stone", "id", "dc", "image");
@@ -148,6 +150,9 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             writeTag(ostream, (obj.orchard) then "orchard" else "grove", indent);
             writeProperty(ostream, "cultivated", obj.cultivated.string);
             writeProperty(ostream, "kind", obj.kind);
+            if (obj.population >= 1) {
+                writeProperty(ostream, "count", obj.population);
+            }
         } else if (is Mine obj) {
             writeTag(ostream, "mine", indent);
             writeProperty(ostream, "kind", obj.kind);
@@ -160,6 +165,9 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         } else if (is Shrub obj) {
             writeTag(ostream, "shrub", indent);
             writeProperty(ostream, "kind", obj.kind);
+            if (obj.population >= 1) {
+                writeProperty(ostream, "count", obj.population);
+            }
         } else if (is StoneDeposit obj) {
             writeTag(ostream, "stone", indent);
             writeProperty(ostream, "kind", obj.stone.string);

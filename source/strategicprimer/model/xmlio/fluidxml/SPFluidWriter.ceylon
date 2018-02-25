@@ -353,7 +353,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         `Grove`->castingWriter<Grove>(fluidResourceHandler.writeGrove),
         `Mine`->castingWriter<Mine>(fluidResourceHandler.writeMine),
         `MineralVein`->castingWriter<MineralVein>(fluidResourceHandler.writeMineral),
-        simpleFixtureWriter(`Shrub`, "shrub"),
+        `Shrub`->castingWriter<Shrub>(fluidResourceHandler.writeShrub),
         `StoneDeposit`->castingWriter<StoneDeposit>(fluidResourceHandler.writeStone),
         `IWorker`->castingWriter<IWorker>(unitMemberHandler.writeWorker),
         `IJob`->castingWriter<IJob>(unitMemberHandler.writeJob),

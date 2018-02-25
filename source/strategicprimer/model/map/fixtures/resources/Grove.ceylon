@@ -2,7 +2,7 @@ import strategicprimer.model.map {
     IFixture
 }
 "An orchard (fruit trees) or grove (other trees) on the map."
-shared class Grove(orchard, cultivated, kind, id)
+shared class Grove(orchard, cultivated, kind, id, population = -1)
         satisfies HarvestableFixture {
     "If true, this is a fruit orchard; if false, a non-fruit grove."
     shared Boolean orchard;
@@ -14,20 +14,22 @@ shared class Grove(orchard, cultivated, kind, id)
     shared actual Integer id;
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
+    "How many individual trees are in this grove or orchard."
+    shared Integer population; // FIXME: Make Subsettable so we can compare this properly
     shared actual Grove copy(Boolean zero) {
-        Grove retval = Grove(orchard, cultivated, kind, id);
+        Grove retval = Grove(orchard, cultivated, kind, id, (zero) then -1 else population);
         retval.image = image;
         return retval;
     }
     shared actual String defaultImage = (orchard) then "orchard.png" else "tree.png";
     shared actual String shortDescription =>
             "``(cultivated) then "Cultivated" else "Wild"`` ``kind`` ``(orchard) then
-                "orchard" else "grove"``";
+                "orchard" else "grove"````(population < 0) then "" else " of ``population`` trees"``";
     shared actual String string = shortDescription;
     shared actual Boolean equals(Object obj) {
         if (is Grove obj) {
             return kind == obj.kind && orchard == obj.orchard &&
-                cultivated == obj.cultivated && id == obj.id;
+                cultivated == obj.cultivated && id == obj.id && population == obj.population;
         } else {
             return false;
         }
@@ -36,7 +38,7 @@ shared class Grove(orchard, cultivated, kind, id)
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is Grove fixture) {
             return kind == fixture.kind && orchard == fixture.orchard &&
-                cultivated == fixture.cultivated;
+                cultivated == fixture.cultivated && population == fixture.population;
         } else {
             return false;
         }
