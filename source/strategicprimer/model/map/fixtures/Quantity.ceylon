@@ -14,14 +14,13 @@ import strategicprimer.model.map {
 }
 
 import lovelace.util.common {
-    comparingOn
+    comparingOn,
+	Comparator
 }
 shared alias SPNumber=>Integer|Float|Decimal|Whole;
-"A number paired with its units. This class is immutable."
-shared class Quantity
-        satisfies Subsettable<Quantity>&Comparable<Quantity> {
+shared object numberComparator satisfies Comparator<SPNumber> {
 	"Convert an arbitrary Number to a Float."
-	static Float floatValue(Number<out Anything> number) {
+	shared Float floatValue(Number<out Anything> number) {
 		switch (number)
 		case (is Integer) { return number.float; }
 		case (is Float) { return number; }
@@ -29,7 +28,7 @@ shared class Quantity
 		case (is Whole) { return number.float; }
 		else { throw IllegalArgumentException("Unknown Number type"); }
 	}
-	static Comparison compareNumbers(/*Number<out Anything>*/SPNumber one,
+	shared actual Comparison compare(/*Number<out Anything>*/SPNumber one,
 		/*Number<out Anything>*/SPNumber two) {
 		if (is Integer one, is Integer two) {
 			return one <=> two;
@@ -45,6 +44,10 @@ shared class Quantity
 			return oneValue <=> twoValue;
 		}
 	}
+}
+"A number paired with its units. This class is immutable."
+shared class Quantity
+        satisfies Subsettable<Quantity>&Comparable<Quantity> {
     "The numeric quantity."
     shared /*Number<out Object>*/SPNumber number;
     "The units in which that number is measured."
@@ -54,13 +57,13 @@ shared class Quantity
 		this.units = units;
 	}
 	"That quantity as a Float"
-	shared Float floatNumber => floatValue(number);
+	shared Float floatNumber => numberComparator.floatValue(number);
     shared actual String string => "``number`` ``units``";
     "A Quantity is a subset iff it has the same units and either the same or a lesser
      quantity."
     shared actual Boolean isSubset(Quantity obj, Anything(String) report) {
         if (units == obj.units) {
-            if (compareNumbers(number, obj.number) == smaller) {
+            if (numberComparator.compare(number, obj.number) == smaller) {
                 report("Has greater quantity than we do");
                 return false;
             } else {
@@ -81,5 +84,5 @@ shared class Quantity
     shared actual Integer hash => units.hash.or(number.hash);
     shared actual Comparison compare(Quantity quantity) =>
             comparing(comparingOn(Quantity.units, (String x, String y) => x <=> y),
-                comparingOn(Quantity.number, compareNumbers))(this, quantity);
+                comparingOn(Quantity.number, numberComparator.compare))(this, quantity);
 }
