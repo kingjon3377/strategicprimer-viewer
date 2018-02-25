@@ -406,6 +406,15 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
+                // We're thinking about storing per-fortress "standing orders" or general regulations,
+                // building-progress results, and possibly scientific research progress within fortresses.
+                // To ease the transition, we *now* warn, instead of aborting, if the tags we expect to use
+                // for this appear in this position in the XML.
+                if (event.name.localPart == "orders" || event.name.localPart == "results" ||
+                    event.name.localPart == "science") {
+                    warner.handle(UnwantedChildException(element.name, event));
+                    continue;
+                }
                 if (is FortressMember child = readSPObject(event, element.name, stream,
                         players, warner, idFactory)) {
                     retval.addMember(child);

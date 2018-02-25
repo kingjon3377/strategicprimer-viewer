@@ -227,6 +227,14 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 if (exists reader = memberReaders
                         .find((yar) => yar.isSupportedTag(memberTag))) {
                     retval.addMember(reader.read(event, element.name, stream));
+                } else if (memberTag == "orders" || memberTag == "results" ||
+                        memberTag == "science") {
+                    // We're thinking about storing per-fortress "standing orders" or general regulations,
+                    // building-progress results, and possibly scientific research progress within fortresses.
+                    // To ease the transition, we *now* warn, instead of aborting, if the tags we expect to use
+                    // for this appear in this position in the XML.
+                    warner.handle(UnwantedChildException(element.name, event));
+                    continue;
                 } else {
                     throw UnwantedChildException(element.name, event);
                 }
