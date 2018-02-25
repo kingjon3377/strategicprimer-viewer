@@ -10,7 +10,7 @@ ant \
 	-Dpump.awt.path="$(pwd)/pump-awt-1.0.00.jar" \
 	-Dpump.image.path="$(pwd)/pump-image-1.0.00.jar" \
 	-Dpump.button.path="$(pwd)/pump-button-1.0.00.jar" \
-	-Dstub-script-path="$(pwd)/universalJavaApplicationStub-2.1.0/src/universalJavaApplicationStub" \
+	-Dstub-script-path="$(pwd)/universalJavaApplicationStub-3.0.0/src/universalJavaApplicationStub" \
 	-Dapple.extensions.path="$(pwd)/orange-extensions-1.3.0.jar" \
 	-Dceylon.home="$(pwd)/ceylon-1.3.3" \
 	release
