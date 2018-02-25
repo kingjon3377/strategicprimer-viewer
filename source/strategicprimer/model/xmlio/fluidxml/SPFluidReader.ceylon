@@ -308,12 +308,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireNonEmptyAttribute(element, "number", true, warner);
         requireNonEmptyAttribute(element, "code_name", true, warner);
         expectAttributes(element, warner, "number", "code_name");
-        // We're thinking about storing "standing orders" in the XML under the <player> tag;
-        // so as to not require players to upgrade to even read their maps once we start doing
-        // so, we *now* only *warn* instead of *dying* if the XML contains that idiom.
+        // We're thinking about storing "standing orders" in the XML under the <player> tag, and
+        // also possibly scientific progress; so as to not require players to upgrade to even read
+        // their maps once we start doing so, we *now* only *warn* instead of *dying* if the XML
+        // contains that idiom.
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
-                if (event.name.localPart == "orders" || event.name.localPart == "results") {
+                if (event.name.localPart == "orders" || event.name.localPart == "results" ||
+	                        event.name.localPart == "science") {
                     warner.handle(UnwantedChildException(element.name, event));
                 } else {
 	                throw UnwantedChildException(element.name, event);
