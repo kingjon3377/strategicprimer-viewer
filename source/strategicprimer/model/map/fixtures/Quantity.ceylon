@@ -18,7 +18,7 @@ import lovelace.util.common {
 	Comparator
 }
 shared alias SPNumber=>Integer|Float|Decimal|Whole;
-shared object numberComparator satisfies Comparator<SPNumber> {
+shared object numberComparator satisfies Comparator<SPNumber> { // TODO: Move to lovelace.util
 	"Convert an arbitrary Number to a Float."
 	shared Float floatValue(Number<out Anything> number) {
 		switch (number)

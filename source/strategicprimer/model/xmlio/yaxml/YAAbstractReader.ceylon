@@ -48,6 +48,10 @@ import strategicprimer.model.xmlio.exceptions {
 import lovelace.util.jvm {
     ConvertingIterable
 }
+import ceylon.math.decimal {
+	Decimal,
+	parseDecimal
+}
 "A parser for numeric data, so integers can contain commas."
 NumberFormat numParser = NumberFormat.integerInstance;
 "Patterns to match XML metacharacters, and their qutoed forms."
@@ -178,6 +182,31 @@ abstract class YAAbstractReader<Element>
                 return parseInt(retval, element.location);
             } catch (ParseException|JParseException except) {
                 throw MissingPropertyException(element, parameter, except);
+            }
+        } else if (exists defaultValue) {
+            return defaultValue;
+        } else {
+            throw MissingPropertyException(element, parameter);
+        }
+    }
+    "Read a parameter from XML whose value can be an Integer or a Decimal."
+    shared static Integer|Decimal getNumericParameter(StartElement element, String parameter,
+		    Integer|Decimal? defaultValue = null) {
+        if (hasParameter(element, parameter)) {
+            String paramString = getParameter(element, parameter);
+            if (paramString.contains(".")) {
+                if (exists parsed = parseDecimal(paramString)) {
+                    return parsed;
+                } else {
+                    throw MissingPropertyException(element, parameter);
+                }
+            } else {
+                value parsed = Integer.parse(paramString);
+                if (is Integer parsed) {
+                    return parsed;
+                } else {
+                    throw MissingPropertyException(element, parameter, parsed);
+                }
             }
         } else if (exists defaultValue) {
             return defaultValue;

@@ -1,7 +1,3 @@
-import ceylon.math.decimal {
-    parseDecimal
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -15,15 +11,12 @@ import strategicprimer.model.idreg {
 }
 import strategicprimer.model.map.fixtures {
     ResourcePile,
-    Quantity,
-    SPNumber
+    Quantity
 }
 import strategicprimer.model.xmlio {
     Warning
 }
-import strategicprimer.model.xmlio.exceptions {
-    MissingPropertyException
-}
+
 "A reader for resource piles."
 class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<ResourcePile>(warning, idRegistrar) {
@@ -31,25 +24,10 @@ class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
             {XMLEvent*} stream) {
         requireTag(element, parent, "resource");
         expectAttributes(element, "quantity", "kind", "contents", "unit", "created", "id", "image");
-        String quantityString = getParameter(element, "quantity");
-        SPNumber quantity;
-        if (quantityString.contains(".")) {
-            if (exists temp = parseDecimal(quantityString)) {
-                quantity = temp;
-            } else {
-                throw MissingPropertyException(element, "quantity");
-            }
-        } else {
-            value temp = Integer.parse(quantityString);
-            if (is Integer temp) {
-                quantity = temp;
-            } else {
-                throw MissingPropertyException(element, "quantity", temp);
-            }
-        }
         ResourcePile retval = ResourcePile(getOrGenerateID(element),
             getParameter(element, "kind"), getParameter(element, "contents"),
-            Quantity(quantity, getParameter(element, "unit", "")));
+            Quantity(getNumericParameter(element, "quantity"),
+                getParameter(element, "unit", "")));
         if (hasParameter(element, "created")) {
             retval.created = getIntegerParameter(element, "created");
         }

@@ -55,7 +55,8 @@ import lovelace.util.jvm {
     ConvertingIterable
 }
 import ceylon.math.decimal {
-	Decimal
+	Decimal,
+	parseDecimal
 }
 import ceylon.math.whole {
 	Whole
@@ -338,6 +339,40 @@ abstract class FluidBase {
 	    } else {
 	        throw MissingPropertyException(tag, parameter);
 	    }
+	}
+	"Parse an XML parameter whose value can be an Integer or a Decimal."
+	todo("Replace this with a conversion function passed to [[getAttribute]]")
+	throws(`class SPFormatException`,
+		"if the tag doesn't have that parameter and no default given, or if its value is
+		 non-numeric or otherwise malformed")
+	shared static Integer|Decimal getNumericAttribute(
+			"The tag to get the parameter from"
+			StartElement tag,
+			"The name of the desired parameter"
+			String parameter,
+			"The number to return if the parameter doesn't exist"
+			Integer|Decimal? defaultValue = null,
+	        "The [[Warning]] instance to use if input is malformed"
+	        Warning warner = warningLevels.warn) {
+		if (exists attr = getAttributeByName(tag, parameter), exists val = attr.\ivalue) {
+			if (val.contains(".")) {
+				if (exists parsed = parseDecimal(val)) {
+					return parsed;
+				} else {
+					throw MissingPropertyException(tag, parameter);
+				}
+			} else {
+				try {
+					return parseInt(val, tag.location);
+				} catch (ParseException|JParseException except) {
+					throw MissingPropertyException(tag, parameter, except);
+				}
+			}
+		} else if (exists defaultValue) {
+			return defaultValue;
+		} else {
+			throw MissingPropertyException(tag, parameter);
+		}
 	}
 
 	"Write the necessary number of tab characters and a tag."

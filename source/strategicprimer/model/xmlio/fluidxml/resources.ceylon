@@ -1,7 +1,3 @@
-import ceylon.math.decimal {
-    parseDecimal
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -23,7 +19,6 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
     ResourcePile,
     Quantity,
-    SPNumber,
     Implement
 }
 import strategicprimer.model.map.fixtures.resources {
@@ -55,27 +50,11 @@ object fluidResourceHandler extends FluidBase() {
 	    requireTag(element, parent, "resource");
 	    expectAttributes(element, warner, "quantity", "kind", "contents", "unit", "created", "id", "image");
 	    spinUntilEnd(element.name, stream);
-	    String quantityStr = getAttribute(element, "quantity");
-	    SPNumber quantity;
-	    if (quantityStr.contains(".")) {
-	        if (exists temp = parseDecimal(quantityStr)) {
-	            quantity = temp;
-	        } else {
-	            throw MissingPropertyException(element, "quantity");
-	        }
-	    } else {
-	        value temp = Integer.parse(quantityStr);
-	        if (is Integer temp) {
-	            quantity = temp;
-	        } else {
-	            throw MissingPropertyException(element, "quantity", temp);
-	        }
-	    }
 	    ResourcePile retval = ResourcePile(
 	        getOrGenerateID(element, warner, idFactory),
 	        getAttribute(element, "kind"),
 	        getAttribute(element, "contents"),
-	        Quantity(quantity, getAttribute(element, "unit", "")));
+	        Quantity(getNumericAttribute(element, "quantity"), getAttribute(element, "unit", "")));
 	    if (hasAttribute(element, "created")) {
 	        retval.created = getIntegerAttribute(element, "created");
 	    }
