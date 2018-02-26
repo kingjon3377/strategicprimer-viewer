@@ -17,7 +17,8 @@ import strategicprimer.model.map {
     River
 }
 import strategicprimer.model.map.fixtures {
-    Ground
+    Ground,
+	numberComparator
 }
 import strategicprimer.model.map.fixtures.terrain {
     Forest
@@ -46,13 +47,14 @@ object fluidTerrainHandler extends FluidBase() {
 	shared Forest readForest(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "forest");
-	    expectAttributes(element, warner, "id", "kind", "rows", "image");
+	    expectAttributes(element, warner, "id", "kind", "rows", "image", "acres");
 	    Integer id = getIntegerAttribute(element, "id", -1, warner);
 	    if (id >= 0) {
 	        idFactory.register(id, warner, element.location);
 	    }
 	    Forest retval = Forest(getAttribute(element, "kind"),
-	        getBooleanAttribute(element, "rows", false), id);
+	        getBooleanAttribute(element, "rows", false), id,
+	        getNumericAttribute(element, "acres", -1));
 	    spinUntilEnd(element.name, stream);
 	    return setImage(retval, element, warner);
 	}
@@ -68,6 +70,9 @@ object fluidTerrainHandler extends FluidBase() {
 	    writeAttributes(ostream, "kind"->obj.kind);
 	    if (obj.rows) {
 	        writeAttributes(ostream, "rows"->true);
+	    }
+	    if (numberComparator.compare(0, obj.acres) == smaller) {
+	        writeAttributes(ostream, "acres"->obj.acres);
 	    }
 	    writeAttributes(ostream, "id"->obj.id);
 	    writeImage(ostream, obj);

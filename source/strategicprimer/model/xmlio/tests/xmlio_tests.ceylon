@@ -996,6 +996,8 @@ object xmlTests {
 	        "status", Meadow("kind", true, true, 0, FieldStatus.random(0)));
 	    assertImageSerialization("Meadow image property is preserved",
 	        Meadow("five", false, false, 5, FieldStatus.fallow));
+	    assertSerialization("Meadows can have acreage numbers", Meadow("six", false, true, 6,
+	        FieldStatus.growing, decimalNumber(5).divided(decimalNumber(4))));
 	}
 
 	test
@@ -1361,6 +1363,8 @@ object xmlTests {
 	        encapsulateTileString("<forest kind=\"trees\" id=\"``id``\" />"),
 	        encapsulateTileString("<forest kind=\"trees\" rows=\"false\" id=\"``id``\" />"),
 	        warningLevels.ignore);
+	    assertSerialization("Forests can have acreage numbers", Forest("thirdForest", false, 6,
+	        decimalNumber(3).divided(decimalNumber(2))));
 	}
 
 	test

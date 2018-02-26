@@ -19,7 +19,8 @@ import strategicprimer.model.map {
     HasImage
 }
 import strategicprimer.model.map.fixtures {
-    TerrainFixture
+    TerrainFixture,
+	numberComparator
 }
 import strategicprimer.model.map.fixtures.terrain {
     Sandbar,
@@ -42,13 +43,14 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         TerrainFixture retval;
         switch (element.name.localPart.lowercased)
         case ("forest") {
-            expectAttributes(element, "id", "image", "kind", "rows");
+            expectAttributes(element, "id", "image", "kind", "rows", "acres");
             Integer id = getIntegerParameter(element, "id", -1);
             if (id >= 0) {
                 registerID(id, element.location);
             }
             retval = Forest(getParameter(element, "kind"),
-                getBooleanParameter(element, "rows", false), id);
+                getBooleanParameter(element, "rows", false), id,
+                getNumericParameter(element, "acres", -1));
         }
         case ("hill") {
             expectAttributes(element, "id", "image");
@@ -79,6 +81,9 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
             writeProperty(ostream, "kind", obj.kind);
             if (obj.rows) {
                 writeProperty(ostream, "rows", "true");
+            }
+            if (numberComparator.compare(0, obj.acres) == smaller) {
+                writeProperty(ostream, "acres", obj.acres.string);
             }
         } else if (is Hill obj) {
             writeTag(ostream, "hill", indent);

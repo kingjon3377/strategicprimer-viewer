@@ -19,7 +19,8 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
     ResourcePile,
     Quantity,
-    Implement
+    Implement,
+	numberComparator
 }
 import strategicprimer.model.map.fixtures.resources {
     FieldStatus,
@@ -141,7 +142,7 @@ object fluidResourceHandler extends FluidBase() {
 	shared Meadow readMeadow(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "meadow");
-	    expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image");
+	    expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image", "acres");
 	    spinUntilEnd(element.name, stream);
 	    Integer id = getOrGenerateID(element, warner, idFactory);
 	    if (!hasAttribute(element, "status")) {
@@ -151,7 +152,8 @@ object fluidResourceHandler extends FluidBase() {
 	        FieldStatus.random(id).string));
 	    if (is FieldStatus status) {
 	        return setImage(Meadow(getAttribute(element, "kind"), false,
-	            getBooleanAttribute(element, "cultivated"), id, status), element, warner);
+	            getBooleanAttribute(element, "cultivated"), id, status,
+	            getNumericAttribute(element, "acres", -1)), element, warner);
 	    } else {
 	        throw MissingPropertyException(element, "status", status);
 	    }
@@ -261,6 +263,9 @@ object fluidResourceHandler extends FluidBase() {
 	    writeTag(ostream, (obj.field) then "field" else "meadow", indent, true);
 	    writeAttributes(ostream, "kind"->obj.kind, "cultivated"->obj.cultivated,
 	        "status"->obj.status.string, "id"->obj.id);
+	    if (numberComparator.compare(0, obj.acres) == smaller) {
+	        writeAttributes(ostream, "acres"->obj.acres);
+	    }
 	    writeImage(ostream, obj);
 	}
 

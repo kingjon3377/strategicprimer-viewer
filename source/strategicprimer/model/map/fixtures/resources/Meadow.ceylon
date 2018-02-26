@@ -4,10 +4,14 @@ import lovelace.util.common {
 import strategicprimer.model.map {
     IFixture
 }
+import strategicprimer.model.map.fixtures {
+	SPNumber,
+	numberComparator
+}
 "A field or meadow. If in forest, should increase a unit's vision slightly when the unit
  is on it."
 todo("Implement that effect")
-shared class Meadow(kind, field, cultivated, id, status)
+shared class Meadow(kind, field, cultivated, id, status, acres = -1)
         satisfies HarvestableFixture {
     "The kind of grain or grass growing in this field or meadow."
     shared actual String kind;
@@ -23,8 +27,10 @@ shared class Meadow(kind, field, cultivated, id, status)
     shared FieldStatus status;
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
+    "The size of the field or meadow, in acres. (Or a negative number if unknown.)"
+    shared SPNumber acres; // FIXME: Make Subsettable so we can compare this properly
     shared actual Meadow copy(Boolean zero) {
-        Meadow retval = Meadow(kind, field, cultivated, id, status);
+        Meadow retval = Meadow(kind, field, cultivated, id, status, (zero) then -1 else acres);
         retval.image = image;
         return retval;
     }
@@ -32,18 +38,24 @@ shared class Meadow(kind, field, cultivated, id, status)
     todo("Make more granular based on [[kind]]")
     shared actual String defaultImage = (field) then "field.png" else "meadow.png";
     shared actual String shortDescription {
-        if (field) {
-            return (cultivated) then "``kind`` field"
-                else "Wild or abandoned ``kind`` field";
+        String acreage;
+        if (numberComparator.compare(acres, 0) == smaller) {
+            acreage = "";
         } else {
-            return "``kind`` meadow";
+            acreage = "``acres``-acre ";
+        }
+        if (field) {
+            return (cultivated) then "``acreage````kind`` field"
+                else "Wild or abandoned ``acreage````kind`` field";
+        } else {
+            return "``acreage````kind`` meadow";
         }
     }
     shared actual String string = shortDescription;
     shared actual Boolean equals(Object obj) {
         if (is Meadow obj) {
             return kind == obj.kind && field == obj.field && status == obj.status &&
-                cultivated == obj.cultivated && id == obj.id;
+                cultivated == obj.cultivated && id == obj.id && acres == obj.acres;
         } else {
             return false;
         }
@@ -51,12 +63,13 @@ shared class Meadow(kind, field, cultivated, id, status)
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is Meadow fixture) {
             return kind == fixture.kind && field == fixture.field &&
-                status == fixture.status && cultivated == fixture.cultivated;
+                status == fixture.status && cultivated == fixture.cultivated &&
+                acres == fixture.acres;
         } else {
             return false;
         }
     }
     shared actual String plural = "Fields and meadows";
     "The required Perception check to find the fixture."
-    shared actual Integer dc = 18;
+    shared actual Integer dc = 18; // TODO: reflect size
 }

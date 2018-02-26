@@ -40,19 +40,23 @@ import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException,
     DeprecatedPropertyException
 }
+import strategicprimer.model.map.fixtures {
+	numberComparator
+}
 "A reader for resource-bearing [[strategicprimer.model.map::TileFixture]]s."
 class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         extends YAAbstractReader<HarvestableFixture>(warner, idRegistrar) {
     {String*} supportedTags = set { "cache", "grove", "orchard", "field", "meadow",
         "mine", "mineral", "shrub", "stone"};
     HarvestableFixture createMeadow(StartElement element, Boolean field, Integer idNum) {
-        expectAttributes(element, "status", "kind", "id", "cultivated", "image");
+        expectAttributes(element, "status", "kind", "id", "cultivated", "image", "acres");
         requireNonEmptyParameter(element, "status", false);
         value status = FieldStatus.parse(getParameter(element, "status",
             FieldStatus.random(idNum).string));
         if (is FieldStatus status) {
             return Meadow(getParameter(element, "kind"), field,
-                getBooleanParameter(element, "cultivated"), idNum, status);
+                getBooleanParameter(element, "cultivated"), idNum, status,
+                getNumericParameter(element, "acres", -1));
         } else {
             throw MissingPropertyException(element, "status", status);
         }
@@ -146,6 +150,9 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             writeProperty(ostream, "kind", obj.kind);
             writeProperty(ostream, "cultivated", obj.cultivated.string);
             writeProperty(ostream, "status", obj.status.string);
+            if (numberComparator.compare(0, obj.acres) == smaller) {
+                writeProperty(ostream, "acres", obj.acres.string);
+            }
         } else if (is Grove obj) {
             writeTag(ostream, (obj.orchard) then "orchard" else "grove", indent);
             writeProperty(ostream, "cultivated", obj.cultivated.string);
