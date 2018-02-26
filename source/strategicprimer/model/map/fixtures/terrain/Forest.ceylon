@@ -3,8 +3,7 @@ import lovelace.util.common {
 }
 import strategicprimer.model.map.fixtures {
     TerrainFixture,
-	SPNumber,
-	numberComparator
+	SPNumber
 }
 import strategicprimer.model.map {
     HasMutableImage,
@@ -51,7 +50,7 @@ shared class Forest(kind, rows, id, acres = -1)
     }
     shared actual String plural = "Forests";
     shared actual String shortDescription {
-        if (numberComparator.compare(acres, 0) == smaller) {
+        if (!acres.positive) {
             if (rows) {
                 return "Rows of ``kind`` trees";
             } else {

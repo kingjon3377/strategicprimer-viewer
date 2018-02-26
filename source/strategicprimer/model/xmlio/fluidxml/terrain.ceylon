@@ -17,8 +17,7 @@ import strategicprimer.model.map {
     River
 }
 import strategicprimer.model.map.fixtures {
-    Ground,
-	numberComparator
+    Ground
 }
 import strategicprimer.model.map.fixtures.terrain {
     Forest
@@ -71,7 +70,7 @@ object fluidTerrainHandler extends FluidBase() {
 	    if (obj.rows) {
 	        writeAttributes(ostream, "rows"->true);
 	    }
-	    if (numberComparator.compare(0, obj.acres) == smaller) {
+	    if (obj.acres.positive) {
 	        writeAttributes(ostream, "acres"->obj.acres);
 	    }
 	    writeAttributes(ostream, "id"->obj.id);

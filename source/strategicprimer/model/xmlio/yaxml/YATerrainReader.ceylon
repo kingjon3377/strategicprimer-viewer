@@ -19,8 +19,7 @@ import strategicprimer.model.map {
     HasImage
 }
 import strategicprimer.model.map.fixtures {
-    TerrainFixture,
-	numberComparator
+    TerrainFixture
 }
 import strategicprimer.model.map.fixtures.terrain {
     Sandbar,
@@ -82,7 +81,7 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
             if (obj.rows) {
                 writeProperty(ostream, "rows", "true");
             }
-            if (numberComparator.compare(0, obj.acres) == smaller) {
+            if (obj.acres.positive) {
                 writeProperty(ostream, "acres", obj.acres.string);
             }
         } else if (is Hill obj) {

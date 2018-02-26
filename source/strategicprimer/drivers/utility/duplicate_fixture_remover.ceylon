@@ -31,7 +31,6 @@ import strategicprimer.model.map.fixtures {
     ResourcePile,
     Quantity,
     Implement,
-	numberComparator,
 	SPNumber
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -114,7 +113,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                     continue;
                 } else if (is HasPopulation fixture, fixture.population > 0) {
                     continue;
-                } else if (is HasExtent fixture, numberComparator.compare(0, fixture.acres) == smaller) {
+                } else if (is HasExtent fixture, fixture.acres.positive) {
                     continue;
                 }
                 if (exists matching = fixtures.find((fixture.equalsIgnoringID)),
@@ -208,7 +207,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 }
             } else if (is HasPopulation fixture, fixture.population < 0) {
                 continue;
-            } else if (is HasExtent fixture, numberComparator.compare(0, fixture.acres) != smaller) {
+            } else if (is HasExtent fixture, !fixture.acres.positive) {
                 continue;
             } else if (exists handler = mapping[type(fixture)]) {
                 handler.addIfType(fixture);

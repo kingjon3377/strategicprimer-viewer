@@ -40,9 +40,6 @@ import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException,
     DeprecatedPropertyException
 }
-import strategicprimer.model.map.fixtures {
-	numberComparator
-}
 "A reader for resource-bearing [[strategicprimer.model.map::TileFixture]]s."
 class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         extends YAAbstractReader<HarvestableFixture>(warner, idRegistrar) {
@@ -150,7 +147,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             writeProperty(ostream, "kind", obj.kind);
             writeProperty(ostream, "cultivated", obj.cultivated.string);
             writeProperty(ostream, "status", obj.status.string);
-            if (numberComparator.compare(0, obj.acres) == smaller) {
+            if (obj.acres.positive) {
                 writeProperty(ostream, "acres", obj.acres.string);
             }
         } else if (is Grove obj) {

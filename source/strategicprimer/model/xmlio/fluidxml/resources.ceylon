@@ -19,8 +19,7 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
     ResourcePile,
     Quantity,
-    Implement,
-	numberComparator
+    Implement
 }
 import strategicprimer.model.map.fixtures.resources {
     FieldStatus,
@@ -263,7 +262,7 @@ object fluidResourceHandler extends FluidBase() {
 	    writeTag(ostream, (obj.field) then "field" else "meadow", indent, true);
 	    writeAttributes(ostream, "kind"->obj.kind, "cultivated"->obj.cultivated,
 	        "status"->obj.status.string, "id"->obj.id);
-	    if (numberComparator.compare(0, obj.acres) == smaller) {
+	    if (obj.acres.positive) {
 	        writeAttributes(ostream, "acres"->obj.acres);
 	    }
 	    writeImage(ostream, obj);

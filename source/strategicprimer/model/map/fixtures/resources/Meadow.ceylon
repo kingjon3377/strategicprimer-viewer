@@ -6,8 +6,7 @@ import strategicprimer.model.map {
 	HasExtent
 }
 import strategicprimer.model.map.fixtures {
-	SPNumber,
-	numberComparator
+	SPNumber
 }
 "A field or meadow. If in forest, should increase a unit's vision slightly when the unit
  is on it."
@@ -40,7 +39,7 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
     shared actual String defaultImage = (field) then "field.png" else "meadow.png";
     shared actual String shortDescription {
         String acreage;
-        if (numberComparator.compare(acres, 0) == smaller) {
+        if (!acres.positive) {
             acreage = "";
         } else {
             acreage = "``acres``-acre ";
