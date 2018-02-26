@@ -5,7 +5,8 @@ import ceylon.collection {
     HashMap
 }
 import ceylon.language.meta {
-    classDeclaration
+    classDeclaration,
+	type
 }
 import ceylon.math.decimal {
     decimalNumber,
@@ -30,7 +31,9 @@ import strategicprimer.model.map.fixtures {
     ResourcePile,
     Quantity,
     Implement,
-	numberComparator
+	numberComparator,
+	UnitMember,
+	FortressMember
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -57,6 +60,12 @@ import strategicprimer.drivers.common {
 }
 import java.io {
     IOException
+}
+import lovelace.util.common {
+	NonNullCorrespondence
+}
+import ceylon.language.meta.model {
+	Class
 }
 """A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
    takes up on disk and the memory and CPU it takes to deal with it)."""
@@ -111,15 +120,43 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
             }
         }
     }
+    class CoalescedHolder<Type,Key>(Key(Type) extractor, shared Type({Type*}) combiner)
+            satisfies NonNullCorrespondence<Type, MutableList<Type>>&{List<Type>*}
+            given Type satisfies IFixture given Key satisfies Object {
+        MutableMap<Key, MutableList<Type>> map = HashMap<Key, MutableList<Type>>();
+        shared actual Boolean defines(Type key) => true;
+        shared variable String plural = "unknown";
+        shared actual MutableList<Type> get(Type item) {
+            Key key = extractor(item);
+            plural = item.plural;
+            if (exists retval = map[key]) {
+                return retval;
+            } else {
+                MutableList<Type> retval = ArrayList<Type>();
+                map[key] = retval;
+                return retval;
+            }
+        }
+        shared actual Iterator<List<Type>> iterator() => map.items.iterator();
+        shared void addIfType(Anything item) {
+            if (is Type item) {
+                get(item).add(item);
+            }
+        }
+        shared Type combineRaw({IFixture*} list) {
+            assert (is {Type*} list);
+            return combiner(list);
+        }
+    }
     "Offer to combine like resources in a unit or fortress."
     void coalesceResources(String context, {IFixture*} stream, ICLIHelper cli) {
-        // TODO: Use indirection/abstraction to condense this and make it easier to add new cases
-        MutableMap<[String, String, String, Integer], MutableList<ResourcePile>> resources =
-                HashMap<[String, String, String, Integer], MutableList<ResourcePile>>();
-        MutableMap<[String, String, Integer], MutableList<Animal>> animals =
-                HashMap<[String, String, Integer], MutableList<Animal>>();
-        MutableMap<String, MutableList<Implement>> implements =
-                HashMap<String, MutableList<Implement>>();
+        Map<Class<IFixture>, CoalescedHolder<out IFixture, out Object>> mapping = map {
+            `ResourcePile`->CoalescedHolder<ResourcePile, [String, String, String, Integer]>(
+                (pile) => [pile.kind, pile.contents, pile.quantity.units, pile.created], combineResources),
+            `Animal`->CoalescedHolder<Animal, [String, String, Integer]>(
+                (animal) => [animal.kind, animal.status, animal.born], combineAnimals),
+            `Implement`->CoalescedHolder<Implement, String>(Implement.kind, combineEquipment)
+        };
         for (fixture in stream) {
             if (is {IFixture*} fixture) {
                 String shortDesc;
@@ -129,41 +166,15 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                     shortDesc = fixture.string;
                 }
                 coalesceResources(context + "In ``shortDesc``: ", fixture, cli);
-            } else if (is ResourcePile fixture) {
-                [String, String, String, Integer] key = [fixture.kind, fixture.contents,
-                fixture.quantity.units, fixture.created];
-                MutableList<ResourcePile> list;
-                if (exists temp = resources[key]) {
-                    list = temp;
-                } else {
-                    list = ArrayList<ResourcePile>();
-                    //                resources[key] = list; // TODO: report backend-error bug
-                    resources.put(key, list);
-                }
-                list.add(fixture);
             } else if (is Animal fixture) {
                 if (fixture.traces || fixture.talking) {
                     continue;
                 }
-                [String, String, Integer] key = [fixture.kind, fixture.status, fixture.born];
-                MutableList<Animal> list;
-                if (exists temp = animals[key]) {
-                    list = temp;
-                } else {
-                    list = ArrayList<Animal>();
-                    //                animals[key] = list; TODO: report backend-error bug
-                    animals.put(key, list);
+                if (exists handler = mapping[`Animal`]) {
+                    handler.addIfType(fixture);
                 }
-                list.add(fixture);
-            } else if (is Implement fixture) {
-                MutableList<Implement> list;
-                if (exists temp = implements[fixture.kind]) {
-                    list = temp;
-                } else {
-                    list = ArrayList<Implement>();
-                    implements[fixture.kind] = list;
-                }
-                list.add(fixture);
+            } else if (exists handler = mapping[type(fixture)]) {
+                handler.addIfType(fixture);
             }
         }
         if (!stream is IUnit|Fortress) {
@@ -171,71 +182,29 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
             // FIXME: Take add() and remove() parameters to let us do so at the tile level
             return;
         }
-        for (list in resources.items) {
-            if (list.size <= 1) {
-                continue;
-            }
-            cli.print(context);
-            cli.println("The following items could be combined:");
-            for (item in list) {
-                cli.println(item.string);
-            }
-            if (cli.inputBooleanInSeries("Combine them? ")) {
-                ResourcePile combined = combineResources(list);
-                if (is IUnit stream) {
-                    for (item in list) {
-                        stream.removeMember(item);
-                    }
-                    stream.addMember(combined);
-                } else if (is Fortress stream) {
-                    for (item in list) {
-                        stream.removeMember(item);
-                    }
-                    stream.addMember(combined);
+        for (helper in mapping.items) {
+            for (list in helper) {
+                if (list.size <= 1) {
+                    continue;
                 }
-            }
-        }
-        for (list in animals.items) {
-            if (list.size <= 1) {
-                continue;
-            }
-            cli.print(context);
-            cli.println("The following animals could be grouped into one population:");
-            for (item in list) {
-                cli.println(item.string);
-            }
-            if (cli.inputBooleanInSeries("Group these animals together? ")) {
-                Animal combined = combineAnimals(list);
-                if (is IUnit stream) {
-                    for (item in list) {
-                        stream.removeMember(item);
-                    }
-                    stream.addMember(combined);
+                cli.print(context);
+                cli.println("The following ``helper.plural.lowercased`` could be combined:");
+                for (item in list) {
+                    cli.println(item.string);
                 }
-                // Can't add animals to any other kind of stream.
-            }
-        }
-        for (list in implements.items) {
-            if (list.size <= 1) {
-                continue;
-            }
-            cli.print(context);
-            cli.println("The following equipment can be combined into a single group:");
-            for (item in list) {
-                cli.println(item.string);
-            }
-            if (cli.inputBooleanInSeries("Group these equipment items together? ")) {
-                Implement combined = combineEquipment(list);
-                if (is IUnit stream) {
-                    for (item in list) {
-                        stream.removeMember(item);
+                if (cli.inputBoolean("Combine them? ")) {
+                    IFixture combined = helper.combineRaw(list);
+                    if (is IUnit stream, is UnitMember combined, is {UnitMember*} list) {
+                        for (item in list) {
+                            stream.removeMember(item);
+                        }
+                        stream.addMember(combined);
+                    } else if (is Fortress stream, is FortressMember combined, is {FortressMember*} list) {
+                        for (item in list) {
+                            stream.removeMember(item);
+                        }
+                        stream.addMember(combined);
                     }
-                    stream.addMember(combined);
-                } else if (is Fortress stream) {
-                    for (item in list) {
-                        stream.removeMember(item);
-                    }
-                    stream.addMember(combined);
                 }
             }
         }
