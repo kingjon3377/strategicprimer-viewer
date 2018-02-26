@@ -31,9 +31,7 @@ import strategicprimer.model.map.fixtures {
     ResourcePile,
     Quantity,
     Implement,
-	numberComparator,
-	UnitMember,
-	FortressMember
+	numberComparator
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -79,6 +77,11 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                            same tile) from a map.";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
+    void ifApplicable<Desired, Provided>(Anything(Desired) func)(Provided item) {
+        if (is Desired item) {
+            func(item);
+        }
+    }
     """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests, of the same
        kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile in a
        map."""
@@ -94,6 +97,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
         for (location in map.locations) {
             MutableList<TileFixture> fixtures = ArrayList<TileFixture>();
             MutableList<TileFixture> toRemove = ArrayList<TileFixture>();
+            String context = "At ``location``: ";
             //        for (fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(location)) {
                 if (is IUnit fixture, fixture.kind.contains("TODO")) {
@@ -110,8 +114,12 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                     toRemove.add(fixture);
                 } else {
                     fixtures.add(fixture);
-                    if (is {IFixture*} fixture) {
-                        coalesceResources("At ``location``: ", fixture, cli);
+                    if (is IUnit fixture) {
+                        coalesceResources(context, fixture, cli, ifApplicable(fixture.addMember),
+                            ifApplicable(fixture.removeMember));
+                    } else if (is Fortress fixture) {
+                        coalesceResources(context, fixture, cli, ifApplicable(fixture.addMember),
+	                        ifApplicable(fixture.removeMember));
                     }
                 }
             }
@@ -149,7 +157,8 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
         }
     }
     "Offer to combine like resources in a unit or fortress."
-    void coalesceResources(String context, {IFixture*} stream, ICLIHelper cli) {
+    void coalesceResources(String context, {IFixture*} stream, ICLIHelper cli, Anything(IFixture) add,
+	        Anything(IFixture) remove) {
         Map<Class<IFixture>, CoalescedHolder<out IFixture, out Object>> mapping = map {
             `ResourcePile`->CoalescedHolder<ResourcePile, [String, String, String, Integer]>(
                 (pile) => [pile.kind, pile.contents, pile.quantity.units, pile.created], combineResources),
@@ -165,7 +174,13 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 } else {
                     shortDesc = fixture.string;
                 }
-                coalesceResources(context + "In ``shortDesc``: ", fixture, cli);
+                if (is IUnit fixture) {
+                    coalesceResources(context + "In ``shortDesc``: ", fixture, cli,
+                        ifApplicable(fixture.addMember),ifApplicable(fixture.removeMember));
+                } else if (is Fortress fixture) {
+                    coalesceResources(context + "In ``shortDesc``: ", fixture, cli,
+                        ifApplicable(fixture.addMember),ifApplicable(fixture.removeMember));
+                }
             } else if (is Animal fixture) {
                 if (fixture.traces || fixture.talking) {
                     continue;
@@ -176,11 +191,6 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
             } else if (exists handler = mapping[type(fixture)]) {
                 handler.addIfType(fixture);
             }
-        }
-        if (!stream is IUnit|Fortress) {
-            // We can't add items to or remove them from any other iterable
-            // FIXME: Take add() and remove() parameters to let us do so at the tile level
-            return;
         }
         for (helper in mapping.items) {
             for (list in helper) {
@@ -194,17 +204,10 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 }
                 if (cli.inputBoolean("Combine them? ")) {
                     IFixture combined = helper.combineRaw(list);
-                    if (is IUnit stream, is UnitMember combined, is {UnitMember*} list) {
-                        for (item in list) {
-                            stream.removeMember(item);
-                        }
-                        stream.addMember(combined);
-                    } else if (is Fortress stream, is FortressMember combined, is {FortressMember*} list) {
-                        for (item in list) {
-                            stream.removeMember(item);
-                        }
-                        stream.addMember(combined);
+                    for (item in list) {
+                        remove(item);
                     }
+                    add(combined);
                 }
             }
         }
