@@ -5,8 +5,6 @@ import lovelace.util.common {
 "Something that can go on a tile."
 todo("Any other members?")
 shared interface TileFixture satisfies IFixture&Comparable<TileFixture> {
-    "A plural phrase describing all members of the kind of fixture."
-    shared formal String plural;
     "A *short*, no more than one line and preferably no more than two dozen characters,
      description of the fixture, suitable for saying what it is when an explorer happens
      on it."

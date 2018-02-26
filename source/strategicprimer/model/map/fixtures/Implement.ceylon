@@ -14,6 +14,7 @@ import strategicprimer.model.map.fixtures {
 todo("More members?")
 shared class Implement(kind, id, count = 1)
         satisfies UnitMember&FortressMember&HasKind&HasMutableImage {
+	shared actual String plural = "Equipment";
     """The "kind" of the implement."""
     shared actual String kind;
     "The ID number."

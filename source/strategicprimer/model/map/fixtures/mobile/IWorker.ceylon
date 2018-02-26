@@ -36,4 +36,5 @@ shared interface IWorker satisfies UnitMember&{IJob*}&HasName&HasKind&HasMutable
     "Get the Job that the worker has with the given name, or a newly-constructed one if it
      didn't have one before."
     shared formal IJob getJob(String jobName);
+    shared actual String plural => "Workers";
 }

@@ -16,6 +16,7 @@ import strategicprimer.model.map.fixtures {
 todo("More members?")
 shared class ResourcePile(id, kind, contents, quantity)
         satisfies UnitMember&FortressMember&HasKind&HasMutableImage {
+	shared actual String plural = "Resource Piles";
     "The ID # of the resource pile."
     shared actual Integer id;
     "What general kind of thing is in the resource pile."
