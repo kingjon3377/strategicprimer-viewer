@@ -1,9 +1,10 @@
 import strategicprimer.model.map {
-    IFixture
+    IFixture,
+	HasPopulation
 }
 "An orchard (fruit trees) or grove (other trees) on the map."
 shared class Grove(orchard, cultivated, kind, id, population = -1)
-        satisfies HarvestableFixture {
+        satisfies HarvestableFixture&HasPopulation {
     "If true, this is a fruit orchard; if false, a non-fruit grove."
     shared Boolean orchard;
     "If true, this is a cultivated grove or orchard; if false, wild or abandoned."
@@ -15,7 +16,7 @@ shared class Grove(orchard, cultivated, kind, id, population = -1)
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "How many individual trees are in this grove or orchard."
-    shared Integer population; // FIXME: Make Subsettable so we can compare this properly
+    shared actual Integer population; // FIXME: Make Subsettable so we can compare this properly
     shared actual Grove copy(Boolean zero) {
         Grove retval = Grove(orchard, cultivated, kind, id, (zero) then -1 else population);
         retval.image = image;

@@ -4,7 +4,8 @@ import lovelace.util.common {
 import strategicprimer.model.map {
     HasMutableImage,
     IFixture,
-    HasKind
+    HasKind,
+	HasPopulation
 }
 import strategicprimer.model.map.fixtures {
     UnitMember
@@ -14,7 +15,7 @@ import lovelace.util.jvm {
 }
 "An animal or group of animals."
 shared class Animal(kind, traces, talking, status, id, born = -1, population = 1)
-        satisfies MobileFixture&HasMutableImage&HasKind&UnitMember {
+        satisfies MobileFixture&HasMutableImage&HasKind&UnitMember&HasPopulation {
     "ID number."
     shared actual Integer id;
     "If true, this is only traces or tracks, not an actual animal."
@@ -31,7 +32,7 @@ shared class Animal(kind, traces, talking, status, id, born = -1, population = 1
     "The turn the animal was born, or -1 if it is an adult (or if this is traces ...)"
     shared variable Integer born;
     "How many individual animals are in the population this represents."
-    shared Integer population;
+    shared actual Integer population;
     "A population cannot have fewer than one individual."
     assert (population >= 1);
     shared actual String shortDescription {

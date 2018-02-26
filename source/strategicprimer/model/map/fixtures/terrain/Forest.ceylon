@@ -9,10 +9,12 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.model.map {
     HasMutableImage,
     IFixture,
-    HasKind
+    HasKind,
+	HasExtent
 }
 "A forest on a tile."
-shared class Forest(kind, rows, id, acres = -1) satisfies TerrainFixture&HasMutableImage&HasKind {
+shared class Forest(kind, rows, id, acres = -1)
+		satisfies TerrainFixture&HasMutableImage&HasKind&HasExtent {
     "What kind of trees dominate this forest."
     shared actual String kind;
     """Whether this is "rows of" trees."""
@@ -22,7 +24,7 @@ shared class Forest(kind, rows, id, acres = -1) satisfies TerrainFixture&HasMuta
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "The size of the forest, in acres. (Or a negative number if unknown.)"
-    shared SPNumber acres; // FIXME: Make Subsettable so we can compare this properly
+    shared actual SPNumber acres; // FIXME: Make Subsettable so we can compare this properly
     "Clone the forest"
     shared actual Forest copy(Boolean zero) {
         Forest retval = Forest(kind, rows, id, (zero) then -1 else acres);

@@ -2,7 +2,8 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.model.map {
-    IFixture
+    IFixture,
+	HasExtent
 }
 import strategicprimer.model.map.fixtures {
 	SPNumber,
@@ -12,7 +13,7 @@ import strategicprimer.model.map.fixtures {
  is on it."
 todo("Implement that effect")
 shared class Meadow(kind, field, cultivated, id, status, acres = -1)
-        satisfies HarvestableFixture {
+        satisfies HarvestableFixture&HasExtent {
     "The kind of grain or grass growing in this field or meadow."
     shared actual String kind;
     "If true, this is a field; if false, a meadow."
@@ -28,7 +29,7 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "The size of the field or meadow, in acres. (Or a negative number if unknown.)"
-    shared SPNumber acres; // FIXME: Make Subsettable so we can compare this properly
+    shared actual SPNumber acres; // FIXME: Make Subsettable so we can compare this properly
     shared actual Meadow copy(Boolean zero) {
         Meadow retval = Meadow(kind, field, cultivated, id, status, (zero) then -1 else acres);
         retval.image = image;

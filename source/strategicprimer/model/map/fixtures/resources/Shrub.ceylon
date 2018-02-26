@@ -2,11 +2,12 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.model.map {
-    IFixture
+    IFixture,
+	HasPopulation
 }
 "A [[strategicprimer.model.map::TileFixture]] to represent shrubs, or their aquatic
  equivalents, on a tile."
-shared class Shrub(kind, id, population = -1) satisfies HarvestableFixture {
+shared class Shrub(kind, id, population = -1) satisfies HarvestableFixture&HasPopulation {
     "What kind of shrub this is"
     shared actual String kind;
     "The ID number."
@@ -14,7 +15,7 @@ shared class Shrub(kind, id, population = -1) satisfies HarvestableFixture {
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "How many individual plants are in this planting of this shrub, or on this tile."
-    shared Integer population; // FIXME: Make Subsettable so we can compare this properly
+    shared actual Integer population; // FIXME: Make Subsettable so we can compare this properly
     shared actual Shrub copy(Boolean zero) {
         Shrub retval = Shrub(kind, id, (zero) then -1 else population);
         retval.image = image;
