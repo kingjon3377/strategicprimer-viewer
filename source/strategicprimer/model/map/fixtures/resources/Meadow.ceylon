@@ -6,7 +6,8 @@ import strategicprimer.model.map {
 	HasExtent
 }
 import strategicprimer.model.map.fixtures {
-	SPNumber
+	SPNumber,
+	numberComparator
 }
 "A field or meadow. If in forest, should increase a unit's vision slightly when the unit
  is on it."
@@ -28,7 +29,7 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "The size of the field or meadow, in acres. (Or a negative number if unknown.)"
-    shared actual SPNumber acres; // FIXME: Make Subsettable so we can compare this properly
+    shared actual SPNumber acres;
     shared actual Meadow copy(Boolean zero) {
         Meadow retval = Meadow(kind, field, cultivated, id, status, (zero) then -1 else acres);
         retval.image = image;
@@ -66,6 +67,43 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
                 status == fixture.status && cultivated == fixture.cultivated &&
                 acres == fixture.acres;
         } else {
+            return false;
+        }
+    }
+    shared actual Boolean isSubset(IFixture other, Anything(String) report) {
+        if (other.id != id) {
+            report("IDs differ");
+            return false;
+        } else if (is Meadow other) {
+            if (other.field != field) {
+                report("One field, one meadow for ID #``id``");
+                return false;
+            } else if (kind != other.kind) {
+                report("In ``(field) then "field" else "meadow"`` with ID #``id``:\tKinds differ");
+                return false;
+            }
+            Anything(String) localReport;
+            if (field) {
+                localReport = (String str) => report("In ``kind`` field (ID #``id``):\t``str``");
+            } else {
+                localReport = (String str) => report("In ``kind`` meadow (ID #``id``):\t``str``");
+            }
+            variable Boolean retval = true;
+            if (status != other.status) {
+                localReport("Field status differs");
+                retval = false;
+            }
+            if (cultivated != other.cultivated) {
+                localReport("Cultivation status differs");
+                retval = false;
+            }
+            if (numberComparator.compare(acres, other.acres) == smaller) {
+                localReport("Has larger extent");
+                retval = false;
+            }
+            return false;
+        } else {
+            report("Different kinds of fixtures for ID #``id``");
             return false;
         }
     }

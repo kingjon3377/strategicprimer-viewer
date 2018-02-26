@@ -3,7 +3,8 @@ import lovelace.util.common {
 }
 import strategicprimer.model.map.fixtures {
     TerrainFixture,
-	SPNumber
+	SPNumber,
+	numberComparator
 }
 import strategicprimer.model.map {
     HasMutableImage,
@@ -23,7 +24,7 @@ shared class Forest(kind, rows, id, acres = -1)
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "The size of the forest, in acres. (Or a negative number if unknown.)"
-    shared actual SPNumber acres; // FIXME: Make Subsettable so we can compare this properly
+    shared actual SPNumber acres;
     "Clone the forest"
     shared actual Forest copy(Boolean zero) {
         Forest retval = Forest(kind, rows, id, (zero) then -1 else acres);
@@ -65,5 +66,30 @@ shared class Forest(kind, rows, id, acres = -1)
         }
     }
     shared actual String string => shortDescription;
+    shared actual Boolean isSubset(IFixture other, Anything(String) report) {
+        if (id != other.id) {
+            report("Different IDs");
+            return false;
+        } else if (is Forest other) {
+            if (other.kind != kind) {
+                report("In forest with ID #``id``: Kinds differ");
+                return false;
+            }
+            variable Boolean retval = true;
+            void localReport(String str) => report("In ``kind`` forest (ID #``id``):\t``str``");
+            if (other.rows, !rows) {
+                localReport("In rows when we aren't");
+                retval = false;
+            }
+            if (numberComparator.compare(other.acres, acres) == larger) {
+                localReport("Has larger extent than we do");
+                retval = false;
+            }
+            return retval;
+        } else {
+            report("Different types for ID #``id``");
+            return false;
+        }
+    }
     shared actual Integer dc = 5;
 }

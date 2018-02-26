@@ -15,7 +15,7 @@ shared class Shrub(kind, id, population = -1) satisfies HarvestableFixture&HasPo
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "How many individual plants are in this planting of this shrub, or on this tile."
-    shared actual Integer population; // FIXME: Make Subsettable so we can compare this properly
+    shared actual Integer population;
     shared actual Shrub copy(Boolean zero) {
         Shrub retval = Shrub(kind, id, (zero) then -1 else population);
         retval.image = image;
@@ -44,6 +44,25 @@ shared class Shrub(kind, id, population = -1) satisfies HarvestableFixture&HasPo
             return kind;
         } else {
             return "``population`` ``kind``";
+        }
+    }
+    shared actual Boolean isSubset(IFixture other, Anything(String) report) {
+        if (other.id != id) {
+            report("Different IDs");
+            return false;
+        } else if (is Shrub other) {
+            if (other.kind != kind) {
+                report("In shrub with ID #``id``:\tKinds differ");
+                return false;
+            } else if (other.population > population) {
+                report("In shrub ``kind`` (#``id``):\tHas higher count than we do");
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            report("Different types for ID #``id``");
+            return false;
         }
     }
     "The required Perception check for an explorer to find the fixture."

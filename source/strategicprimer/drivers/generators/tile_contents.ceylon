@@ -32,7 +32,7 @@ import strategicprimer.drivers.exploration.old {
     ExplorationRunner,
     loadAllTables
 }
-"A class to non-interactively generate a tile's contents."
+"A class to non-interactively generate a tile's contents." // TODO: Replace this with a *map* contents generator
 todo("Figure out how to run the Ceylon version repeatedly on a single JVM")
 class TileContentsGenerator(IMapNG map) {
     ExplorationRunner runner = ExplorationRunner();
