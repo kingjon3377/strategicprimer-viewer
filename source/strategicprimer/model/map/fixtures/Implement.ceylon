@@ -4,7 +4,8 @@ import lovelace.util.common {
 import strategicprimer.model.map {
     HasMutableImage,
     IFixture,
-    HasKind
+    HasKind,
+	HasPopulation
 }
 import strategicprimer.model.map.fixtures {
     UnitMember,
@@ -13,7 +14,7 @@ import strategicprimer.model.map.fixtures {
 "A piece of equipment."
 todo("More members?")
 shared class Implement(kind, id, count = 1)
-        satisfies UnitMember&FortressMember&HasKind&HasMutableImage {
+        satisfies UnitMember&FortressMember&HasKind&HasMutableImage&HasPopulation {
 	shared actual String plural = "Equipment";
     """The "kind" of the implement."""
     shared actual String kind;
@@ -21,6 +22,7 @@ shared class Implement(kind, id, count = 1)
     shared actual Integer id;
     "How many of this kind of equipment are in this stack."
     shared Integer count;
+    shared actual Integer population => count;
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "If we ignore ID, a fixture is equal iff itis an Implement of the same kind."
