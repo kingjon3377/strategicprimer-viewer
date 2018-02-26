@@ -126,6 +126,9 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
             for (fixture in toRemove) {
                 map.removeFixture(location, fixture);
             }
+            coalesceResources(context, map.fixtures.get(location), cli,
+                ifApplicable<TileFixture, IFixture>((fix) => map.addFixture(location, fix)),
+                ifApplicable<TileFixture, IFixture>((fix) => map.removeFixture(location, fix)));
         }
     }
     class CoalescedHolder<Type,Key>(Key(Type) extractor, shared Type({Type*}) combiner)
