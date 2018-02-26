@@ -31,14 +31,19 @@ import strategicprimer.model.map.fixtures {
     ResourcePile,
     Quantity,
     Implement,
-	numberComparator
+	numberComparator,
+	SPNumber
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal
 }
 import strategicprimer.model.map.fixtures.resources {
-    CacheFixture
+    CacheFixture,
+	Grove,
+	Meadow,
+	Shrub,
+	FieldStatus
 }
 import strategicprimer.model.map.fixtures.towns {
     Fortress
@@ -64,6 +69,9 @@ import lovelace.util.common {
 }
 import ceylon.language.meta.model {
 	Class
+}
+import strategicprimer.model.map.fixtures.terrain {
+	Forest
 }
 """A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
    takes up on disk and the memory and CPU it takes to deal with it)."""
@@ -167,7 +175,14 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 (pile) => [pile.kind, pile.contents, pile.quantity.units, pile.created], combineResources),
             `Animal`->CoalescedHolder<Animal, [String, String, Integer]>(
                 (animal) => [animal.kind, animal.status, animal.born], combineAnimals),
-            `Implement`->CoalescedHolder<Implement, String>(Implement.kind, combineEquipment)
+            `Implement`->CoalescedHolder<Implement, String>(Implement.kind, combineEquipment),
+            `Forest`->CoalescedHolder<Forest, [String, Boolean]>((forest) => [forest.kind, forest.rows],
+                combineForests),
+            `Grove`->CoalescedHolder<Grove, [Boolean, Boolean, String]>(
+                (grove) => [grove.orchard, grove.cultivated, grove.kind], combineGroves),
+            `Meadow`->CoalescedHolder<Meadow, [String, Boolean, Boolean, FieldStatus]>(
+                (meadow) => [meadow.kind, meadow.field, meadow.cultivated, meadow.status], combineMeadows),
+            `Shrub`->CoalescedHolder<Shrub, String>(Shrub.kind, combineShrubs)
         };
         for (fixture in stream) {
             if (is {IFixture*} fixture) {
@@ -191,6 +206,10 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 if (exists handler = mapping[`Animal`]) {
                     handler.addIfType(fixture);
                 }
+            } else if (is HasPopulation fixture, fixture.population < 0) {
+                continue;
+            } else if (is HasExtent fixture, numberComparator.compare(0, fixture.acres) != smaller) {
+                continue;
             } else if (exists handler = mapping[type(fixture)]) {
                 handler.addIfType(fixture);
             }
@@ -214,6 +233,38 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 }
             }
         }
+    }
+    Decimal decimalize(SPNumber num) {
+        switch (num)
+        case (is Decimal) {
+            return num;
+        }
+        case (is Whole|Integer|Float) {
+            return decimalNumber(num);
+        }
+    }
+    "Combine like [[Forest]]s into a single object. We assume that all Forests are of the
+     same kind of tree and either all or none are in rows."
+    Forest combineForests({Forest*} list) {
+        assert (exists top = list.first);
+        return Forest(top.kind, top.rows, top.id,
+            list.map(Forest.acres).map(decimalize).fold(decimalNumber(0))(plus));
+    }
+    "Combine like [[Meadow]]s into a single object. We assume all Meadows are identical except for acreage and ID."
+    Meadow combineMeadows({Meadow*} list) {
+        assert (exists top = list.first);
+        return Meadow(top.kind, top.field, top.cultivated, top.id, top.status,
+            list.map(Meadow.acres).map(decimalize).fold(decimalNumber(0))(plus));
+    }
+    "Combine like [[Grove]]s into a single object. We assume all Groves are identical except for population and ID."
+    Grove combineGroves({Grove*} list) {
+        assert (exists top = list.first);
+        return Grove(top.orchard, top.cultivated, top.kind, top.id, list.map(Grove.population).fold(0)(plus));
+    }
+    "Combine like [[Shrub]]s into a single object. We assume all Shrubs are of the same kind."
+    Shrub combineShrubs({Shrub*} list) {
+        assert (exists top = list.first);
+        return Shrub(top.kind, top.id, list.map(Shrub.population).fold(0)(plus));
     }
     "Combine like [[Implement]]s into a single object. We assume that all Implements are of
      the same kind."
