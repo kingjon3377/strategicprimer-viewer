@@ -22,12 +22,15 @@ import strategicprimer.model.map {
     IFixture,
     IMutableMapNG,
     TileFixture,
-	Point
+	Point,
+	HasPopulation,
+	HasExtent
 }
 import strategicprimer.model.map.fixtures {
     ResourcePile,
     Quantity,
-    Implement
+    Implement,
+	numberComparator
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -88,6 +91,10 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                     continue;
                 } else if (is CacheFixture fixture) {
                     continue;
+                } else if (is HasPopulation fixture, fixture.population > 0) {
+                    continue;
+                } else if (is HasExtent fixture, numberComparator.compare(0, fixture.acres) == smaller) {
+                    continue;
                 }
                 if (exists matching = fixtures.find((fixture.equalsIgnoringID)),
                     approveRemoval(location, fixture, matching)) {
@@ -106,6 +113,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
     }
     "Offer to combine like resources in a unit or fortress."
     void coalesceResources(String context, {IFixture*} stream, ICLIHelper cli) {
+        // TODO: Use indirection/abstraction to condense this and make it easier to add new cases
         MutableMap<[String, String, String, Integer], MutableList<ResourcePile>> resources =
                 HashMap<[String, String, String, Integer], MutableList<ResourcePile>>();
         MutableMap<[String, String, Integer], MutableList<Animal>> animals =
@@ -160,6 +168,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
         }
         if (!stream is IUnit|Fortress) {
             // We can't add items to or remove them from any other iterable
+            // FIXME: Take add() and remove() parameters to let us do so at the tile level
             return;
         }
         for (list in resources.items) {
