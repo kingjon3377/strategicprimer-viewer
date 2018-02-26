@@ -91,7 +91,8 @@ import strategicprimer.drivers.gui.common.about {
 }
 import strategicprimer.drivers.generators {
     townGeneratingCLI,
-    statGeneratingCLI
+    statGeneratingCLI,
+	populationGeneratingCLI
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
@@ -197,6 +198,7 @@ object appChooserState {
 			townGeneratingCLI,
 			randomMovementCLI,
 			mapTradeCLI,
+			populationGeneratingCLI,
 			workerPrintCLI
 		);
 	    return [cliCache, guiCache];
