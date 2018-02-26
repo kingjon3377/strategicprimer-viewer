@@ -54,6 +54,12 @@ import strategicprimer.model.xmlio.exceptions {
 import lovelace.util.jvm {
     ConvertingIterable
 }
+import ceylon.math.decimal {
+	Decimal
+}
+import ceylon.math.whole {
+	Whole
+}
 abstract class FluidBase {
 	static NumberFormat numParser = NumberFormat.integerInstance;
 	"Require that an XML tag be one of the specified tags."
@@ -366,10 +372,15 @@ abstract class FluidBase {
 	        "The stream to write to"
 	        XMLStreamWriter ostream,
 	        "The name and values of the attributes to write"
-	        <String-><String|Integer|Boolean>>* attributes) {
+	        <String-><String|Integer|Boolean|Float|Whole|Decimal>>* attributes) {
 	    for (name->item in attributes) {
 	        if (is String item) {
 	            ostream.writeAttribute(spNamespace, name, item);
+	        } else if (is Decimal item, item.scale <= 0) {
+	            // TODO: Java code from which this is derived used BigDecimal.toPlainString() for scale > 0 case, not .toString()
+	            ostream.writeAttribute(spNamespace, name, item.integer.string);
+	        } else if (is Whole item) {
+	            ostream.writeAttribute(spNamespace, name, item.integer.string);
 	        } else {
 	            ostream.writeAttribute(spNamespace, name, item.string);
 	        }

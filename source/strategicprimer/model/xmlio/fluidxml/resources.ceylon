@@ -1,10 +1,5 @@
 import ceylon.math.decimal {
-    Decimal,
     parseDecimal
-}
-
-import java.lang {
-    IllegalArgumentException
 }
 
 import javax.xml.namespace {
@@ -53,9 +48,7 @@ import strategicprimer.model.xmlio.exceptions {
     DeprecatedPropertyException,
 	UnwantedChildException
 }
-import ceylon.math.whole {
-    Whole
-}
+
 object fluidResourceHandler extends FluidBase() {
 	shared ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
@@ -263,30 +256,7 @@ object fluidResourceHandler extends FluidBase() {
 	shared void writeResource(XMLStreamWriter ostream, ResourcePile obj, Integer indent) {
 	    writeTag(ostream, "resource", indent, true);
 	    writeAttributes(ostream, "id"->obj.id, "kind"->obj.kind,
-	        "contents"->obj.contents);
-	    switch (quantity = obj.quantity.number)
-	    case (is Integer) {
-	        writeAttributes(ostream, "quantity"->quantity);
-	    }
-	    case (is Decimal) {
-	        if (quantity.scale > 0) {
-	            // TODO: Java used BigDecimal.toPlainString(); this is .toString().
-	            writeAttributes(ostream, "quantity"->quantity.string);
-	        } else {
-	            writeAttributes(ostream, "quantity"->quantity.integer);
-	        }
-	    }
-	    case (is Float) {
-	        writeAttributes(ostream, "quantity"->quantity.string);
-	    }
-	    case (is Whole) {
-	        writeAttributes(ostream, "quantity"->quantity.integer);
-	    }
-	    else {
-	        throw IllegalArgumentException(
-	            "ResourcePile with non-Integer, non-Decimal quantity");
-	    }
-	    writeAttributes(ostream, "unit"->obj.quantity.units);
+	        "contents"->obj.contents, "quantity"->obj.quantity.number, "unit"->obj.quantity.units);
 	    if (obj.created >= 0) {
 	        writeAttributes(ostream, "created"->obj.created);
 	    }
