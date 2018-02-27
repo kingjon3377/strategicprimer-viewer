@@ -52,9 +52,9 @@ shared class Grove(orchard, cultivated, kind, id, population = -1)
 			variable Boolean retval = true;
 			Anything(String) localReport;
 			if (orchard) {
-				localReport = (String str) => "In orchard with ID #``id``:\t``str``";
+				localReport = (String str) => report("In orchard with ID #``id``:\t``str``");
 			} else {
-				localReport = (String str) => "In grove with ID #``id``:\t``str``";
+				localReport = (String str) => report("In grove with ID #``id``:\t``str``");
 			}
 			if (kind != other.kind) {
 				localReport("Kinds differ");
