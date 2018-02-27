@@ -376,7 +376,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                     } else if (is AbstractTown fixture, exists list = ourTowns[idNum],
                             list.contains(fixture)) {
                         continue;
-                    } else if (!is Subsettable<IFixture> fixture) {
+                    } else {
                         ourFixtures.add(fixture);
                     }
                 }
