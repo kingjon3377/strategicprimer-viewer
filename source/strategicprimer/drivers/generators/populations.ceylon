@@ -69,17 +69,27 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 		if (count == 0) {
 			return;
 		}
-		Integer total = cli.inputNumber("There are ``count`` groups of ``(talking) then "talking " else ""
-			````kind`` in the world; what should their total population be? ");
+		String key = (talking) then "talking ``kind``" else kind;
+		Integer total = cli.inputNumber("There are ``count`` groups of ``key`` in the world; what should their total population be?");
 		variable Integer remainingTotal = total;
 		variable Integer remainingCount = count;
 		Random rng = DefaultRandom();
 		for (location in locations) {
-			if (remainingTotal < remainingCount * 2) {
+			Integer temp = (remainingCount * 2) + 2;
+			if (remainingTotal == temp || remainingTotal < temp) {
 				cli.println("With ``remainingCount`` groups left, there is only ``remainingTotal`` left, not enough for 2 or more each");
-				return;
+				cli.println("Adjusting up by ``remainingCount * 3``");
+				remainingTotal += remainingCount * 3;
 			}
-			Integer nextPopulation = if (remainingCount == 1) then remainingTotal else rng.nextInteger(remainingTotal-(remainingCount * 2) - 2) + 2;
+			Integer nextPopulation;
+			if (remainingCount == 1) {
+				nextPopulation = remainingTotal;
+			} else if (remainingCount < 1) {
+				cli.println("Ran out of locations while generating ``key``");
+				return;
+			} else {
+				nextPopulation = rng.nextInteger(remainingTotal - (remainingCount * 2) - 2) + 2;
+			}
 			//if (exists animal = map.fixtures[location].narrow<Animal>().filter((animal) => !animal.traces) // TODO: syntax sugar
 			if (exists animal = map.fixtures.get(location).narrow<Animal>().filter((animal) => !animal.traces)
 					.filter((animal) => animal.talking == talking).find((item) => item.kind == kind)) {
