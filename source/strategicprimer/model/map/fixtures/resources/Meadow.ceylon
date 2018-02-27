@@ -101,7 +101,7 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
                 localReport("Has larger extent");
                 retval = false;
             }
-            return false;
+            return retval;
         } else {
             report("Different kinds of fixtures for ID #``id``");
             return false;
