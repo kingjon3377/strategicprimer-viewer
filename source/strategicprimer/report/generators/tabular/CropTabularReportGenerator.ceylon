@@ -23,13 +23,35 @@ import strategicprimer.model.map.fixtures.resources {
 import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
+import strategicprimer.model.map.fixtures {
+	SPNumber
+}
+import ceylon.math.whole {
+	Whole
+}
+import ceylon.math.decimal {
+	Decimal
+}
 "A tabular report generator for crops---forests, groves, orchards, fields, meadows, and
  shrubs"
 shared class CropTabularReportGenerator(Point hq, MapDimensions dimensions)
         satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
+	// TODO: Make class have a constructor so this can be static
+	String truncatedNumberString(SPNumber number) {
+		switch (number)
+		case (is Integer|Whole) {
+			return number.string;
+		}
+		case (is Float) {
+			return Float.format(number, 0, 2);
+		}
+		case (is Decimal) {
+			return truncatedNumberString(number.float);
+		}
+	}
     "The header row for the table."
-    shared actual [String+] headerRow = ["Distance", "Location", "Kind", "Cultivation",
-        "Status", "Crop"];
+    shared actual [String+] headerRow = ["Distance", "Location", "Kind", "Size", "Size Unit",
+	    "Cultivation", "Status", "Crop"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "crops";
     "Create a GUI table row representing the crop."
@@ -38,31 +60,61 @@ shared class CropTabularReportGenerator(Point hq, MapDimensions dimensions)
         String kind;
         String cultivation;
         String status;
+        String size;
+        String sizeUnit;
         String crop = item.kind;
         switch (item)
         case (is Forest) {
             kind = (item.rows) then "rows" else "forest";
             cultivation = "---";
             status = "---";
+            if (item.acres.positive) {
+	            size = truncatedNumberString(item.acres);
+	            sizeUnit = "acres";
+	        } else {
+	            size = "unknown";
+	            sizeUnit = "---";
+	        }
         }
         case (is Shrub) {
             kind = "shrub";
             cultivation = "---";
             status = "---";
+            if (item.population.positive) {
+	            size = item.population.string;
+	            sizeUnit = "plants";
+	        } else {
+	            size = "unknown";
+	            sizeUnit = "---";
+	        }
         }
         case (is Meadow) {
             kind = (item.field) then "field" else "meadow";
             cultivation = (item.cultivated) then "cultivated" else "wild";
             status = item.status.string;
+            if (item.acres.positive) {
+                size = truncatedNumberString(item.acres);
+                sizeUnit = "acres";
+            } else {
+                size = "unknown";
+                sizeUnit = "---";
+            }
         }
         case (is Grove) {
             kind = (item.orchard) then "orchard" else "grove";
             cultivation = (item.cultivated) then "cultivated" else "wild";
             status = "---";
+            if (item.population.positive) {
+	            size = item.population.string;
+	            sizeUnit = "trees";
+	        } else {
+	            size = "unknown";
+	            sizeUnit = "---";
+	        }
         }
         fixtures.remove(key);
-        return [[distanceString(loc, hq, dimensions), loc.string, kind, cultivation,
-            status, crop]];
+        return [[distanceString(loc, hq, dimensions), loc.string, kind, size, sizeUnit,
+	        cultivation, status, crop]];
     }
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, Forest|Shrub|Meadow|Grove] one,
