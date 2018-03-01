@@ -201,7 +201,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 		{Point*} locations = randomize(map.locations.filter(
 			//(loc) => !map.fixtures[loc].narrow<Forest>() // TODO: syntax sugar
 			(loc) => !map.fixtures.get(loc).narrow<Forest>()
-					.map(Forest.acres).filter((num) => num.positive).empty));
+					.map(Forest.acres).filter((num) => !num.positive).empty));
 		for (location in locations) {
 			//assert (exists primaryForest = map.fixtures[location].narrow<Forest>().first); // TODO: syntax sugar
 			assert (exists primaryForest = map.fixtures.get(location).narrow<Forest>().first);
