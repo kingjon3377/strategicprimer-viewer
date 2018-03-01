@@ -18,7 +18,9 @@ import strategicprimer.model.map {
     IMapNG,
     invalidPoint,
     IFixture,
-    MapDimensions
+    MapDimensions,
+	HasPopulation,
+	HasExtent
 }
 import strategicprimer.model.map.fixtures.resources {
     Meadow,
@@ -40,16 +42,48 @@ import strategicprimer.report.nodes {
     SectionReportNode,
     emptyReportNode
 }
+import ceylon.math.whole {
+	Whole
+}
+import ceylon.math.decimal {
+	Decimal
+}
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
 shared class HarvestableReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Point hq = invalidPoint)
         extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) {
+	// TODO: Convert initializer to constructors so these can become static
     "Convert a Map from kinds to Points to a HtmlList."
     HeadedList<String>&MutableList<String> mapToList(Map<String, MutableList<Point>> map,
             String heading) =>
             HtmlList(heading, map.items.map(Object.string).sort(increasing));
+	String populationCountString(HasPopulation item, String singular, String plural = singular + "s") {
+		if (item.population <= 0) {
+			return "";
+		} else if (item.population == 1) {
+			return " (1 ``singular``)";
+		} else {
+			return " (``item.population`` ``plural``)";
+		}
+	}
+	String acreageString(HasExtent item) {
+		if (item.acres.positive) {
+			switch (acres = item.acres)
+			case (is Integer|Whole) {
+				return " (``acres`` acres)";
+			}
+			case (is Float) {
+				return " (``Float.format(acres, 0, 2)`` acres)";
+			}
+			case (is Decimal) {
+				return " (``Float.format(acres.float, 0, 2)`` acres)";
+			}
+		} else {
+			return "";
+		}
+	}
     """Produce a sub-report(s) dealing with a single "harvestable" fixture(s). It is to be
        removed from the collection. Caves and battlefields, though HarvestableFixtures, are *not*
        handled here.""""
@@ -64,13 +98,14 @@ shared class HarvestableReportGenerator(
         case (is Grove) {
             ostream("At ``loc``: ``(item.cultivated) then "cultivated" else
             "wild"`` ``item.kind`` ``(item.orchard) then "orchard" else
-            "grove"`` ``distCalculator.distanceString(loc)``");
+            "grove"`` ``populationCountString(item, "tree")````
+            distCalculator.distanceString(loc)``");
         }
         case (is Meadow) {
             ostream("At ``loc``: ``item.status`` ``(item.cultivated) then
             "cultivated" else "wild or abandoned"`` ``item.kind`` ``(item
-                .field) then "field" else "meadow"`` ``distCalculator
-                .distanceString(loc)``");
+                .field) then "field" else "meadow"`` ``acreageString(item)````
+	            distCalculator.distanceString(loc)``");
         }
         case (is Mine) {
             ostream("At ``loc``: ``item`` ``distCalculator
@@ -82,8 +117,8 @@ shared class HarvestableReportGenerator(
                 .kind`` ``distCalculator.distanceString(loc)``");
         }
         case (is Shrub) {
-            ostream("At ``loc``: ``item.kind`` ``distCalculator
-                .distanceString(loc)``");
+            ostream("At ``loc``: ``item.kind`` ``populationCountString(item, "plant")````
+                distCalculator.distanceString(loc)``");
         }
         case (is StoneDeposit) {
             ostream("At ``loc``: An exposed ``item
