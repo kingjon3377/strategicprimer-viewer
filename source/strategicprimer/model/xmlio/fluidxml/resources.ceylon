@@ -161,7 +161,7 @@ object fluidResourceHandler extends FluidBase() {
 	shared Meadow readField(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "field");
-	    expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image");
+	    expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image", "acres");
 	    spinUntilEnd(element.name, stream);
 	    Integer id = getOrGenerateID(element, warner, idFactory);
 	    if (!hasAttribute(element, "status")) {
@@ -171,7 +171,8 @@ object fluidResourceHandler extends FluidBase() {
 	        FieldStatus.random(id).string));
 	    if (is FieldStatus status) {
 	        return setImage(Meadow(getAttribute(element, "kind"), true,
-	            getBooleanAttribute(element, "cultivated"), id, status), element, warner);
+	            getBooleanAttribute(element, "cultivated"), id, status,
+	            getNumericAttribute(element, "acres", -1)), element, warner);
 	    } else {
 	        throw MissingPropertyException(element, "status", status);
 	    }

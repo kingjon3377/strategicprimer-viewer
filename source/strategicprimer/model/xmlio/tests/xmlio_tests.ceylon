@@ -998,6 +998,8 @@ object xmlTests {
 	        Meadow("five", false, false, 5, FieldStatus.fallow));
 	    assertSerialization("Meadows can have acreage numbers", Meadow("six", false, true, 6,
 	        FieldStatus.growing, decimalNumber(5).divided(decimalNumber(4))));
+	    assertSerialization("Meadows can have acreage numbers", Meadow("seven", true, false, 7,
+	        FieldStatus.fallow, decimalNumber(3).divided(decimalNumber(4))));
 	}
 
 	test
