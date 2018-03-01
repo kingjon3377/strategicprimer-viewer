@@ -43,7 +43,10 @@ import strategicprimer.model.map.fixtures.towns {
 }
 import ceylon.math.decimal {
 	decimalNumber,
-	Decimal
+	Decimal,
+	round,
+	halfEven,
+	implicitlyRounded
 }
 import ceylon.math.whole {
 	Whole
@@ -262,7 +265,8 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 				for (forest in otherForests) {
 					map.removeFixture(location, forest);
 					map.addFixture(location, Forest(forest.kind, forest.rows, forest.id,
-						decimalNumber(160 - reserved) / decimalNumber(otherForests.size)));
+						implicitlyRounded(() => decimalNumber(160 - reserved) / decimalNumber(otherForests.size),
+							round(12, halfEven))));
 				}
 			}
 		}
