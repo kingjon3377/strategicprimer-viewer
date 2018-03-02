@@ -70,11 +70,11 @@
   </target>
   <target name="init-ceylon">
       <ceylon-import-jar jar="${pump.common.path}" module="com.pump.common/1.0.00" failOnError="true" />
-      <ceylon-import-jar jar="${pump.awt.path}" module="com.pump.awt/1.0.00" 
+      <ceylon-import-jar jar="${pump.awt.path}" module="com.pump.awt/1.0.00"
           descriptor="lib/com.pump.awt.module.properties" failOnError="true" />
-      <ceylon-import-jar jar="${pump.image.path}" module="com.pump.image/1.0.00" 
+      <ceylon-import-jar jar="${pump.image.path}" module="com.pump.image/1.0.00"
           descriptor="lib/com.pump.image.module.properties" failOnError="true" />
-      <ceylon-import-jar jar="${pump.button.path}" module="com.pump.button/1.0.00" 
+      <ceylon-import-jar jar="${pump.button.path}" module="com.pump.button/1.0.00"
           descriptor="lib/com.pump.button.module.properties" failOnError="true" />
       <ceylon-import-jar jar="${windowmenu.jar.path}" descriptor="lib/com.pump.swing.module.properties"
           module="com.pump.swing/1.0.00" failOnError="true" />
