@@ -123,15 +123,24 @@
   <taskdef name="jarbundler"
     classname="com.ultramixer.jarbundler.JarBundler" />
 
+  <macrodef name="x-ceylon-fat-jar" description='Create a Ceylon "fat JAR" of the project'>
+      <attribute name="out" default="${release}/${basename}.jar" description="Where to place the JAR" />
+      <attribute name="run" default="${ceylon-main-run}"
+          description="The method that should run by default when the JAR is invoked" />
+      <attribute name="module" default="${main-module}" description="Which module to package into the JAR" />
+      <sequential>
+          <!-- there isn't a ceylon-fat-jar Ant task (yet) -->
+          <exec executable="${ceylon.executable}" failOnError="true">
+              <arg value="fat-jar" />
+              <arg value="--out=@{out}" />
+              <arg value="--run=@{run}" />
+              <arg value="@{module}" />
+          </exec>
+      </sequential>
+  </macrodef>
   <!-- Release targets -->
   <target name="jar" depends="test,get-builder,build">
-    <!-- there isn't a ceylon-fat-jar Ant task (yet) -->
-    <exec executable="${ceylon.executable}" failOnError="true">
-        <arg value="fat-jar" />
-        <arg value="--out=${release}/${basename}.jar" />
-        <arg value="--run=${ceylon-main-run}" />
-        <arg value="${main-module}" />
-    </exec>
+    <x-ceylon-fat-jar out="${release}/${basename}.jar" run="${ceylon-main-run}" module="${main-module}" />
   </target>
   <target name="icon">
     <for list="512,256,128,64,48,32,16" param="resolution">
