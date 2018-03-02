@@ -206,13 +206,18 @@ object appChooserState {
 	"Create the usage message for a particular driver."
 	shared String usageMessage(IDriverUsage usage, Boolean verbose) {
 	    StringBuilder builder = StringBuilder();
-	    // FIXME: should open with either "ceylon run" or "java -jar /path/to/fat.jar"
-	    // and this module's name.
-	    builder.append("Usage: java controller.map.drivers.AppStarter ");
-	    if (usage.graphical) {
-	        builder.append("[-g|--gui]");
+	    builder.append("Usage: ");
+	    String mainInvocation;
+	    if (exists invocationResource = `module strategicprimer.viewer`.resourceByPath("invocation")) {
+	        mainInvocation = invocationResource.textContent().trimmed;
 	    } else {
-	        builder.append("-c|--cli");
+	        mainInvocation = "ceylon --cwd=. run `` `module strategicprimer.viewer`.name```";
+	    }
+	    builder.append(mainInvocation);
+	    if (usage.graphical) {
+	        builder.append(" [-g|--gui] ");
+	    } else {
+	        builder.append(" -c|--cli ");
 	    }
 	    builder.append("``usage.invocations.first``");
 	    for (invocation in usage.invocations.rest) {

@@ -28,6 +28,7 @@
   <!-- Clean targets -->
   <target name="clean">
     <delete dir="${bin_dir}" />
+    <delete file="resource/strategicprimer/viewer/invocation" />
     <delete>
       <fileset dir="${basedir}" includes="icon_*px.png" />
       <fileset dir="${basedir}" includes="icon.ic*" />
@@ -89,6 +90,10 @@
     </sequential>
   </macrodef>
   <target name="build" depends="init-ceylon">
+      <!-- TODO: store this filename in a property instead of explicitly including it 4+ times -->
+      <!-- TODO: make a generated-resources folder instead of storing this in the same hierarchy as 
+           non-generated resource files -->
+      <concat destfile="resource/strategicprimer/viewer/invocation" overwrite="true">ceylon run ${main-module}</concat>
       <x-rebuild />
   </target>
   <target name="doc" depends="build">
@@ -145,6 +150,8 @@
   </macrodef>
   <!-- Release targets -->
   <target name="jar" depends="test,get-builder,build">
+    <concat destfile="resource/strategicprimer/viewer/invocation" overwrite="true">java -jar /path/to/${basename}.jar</concat>
+    <x-rebuild />
     <x-ceylon-fat-jar out="${release}/${basename}.jar" run="${ceylon-main-run}" module="${main-module}" />
   </target>
   <target name="icon">
@@ -168,8 +175,11 @@
       <arg value="icon_32px.png" />
       <arg value="icon_16px.png" />
     </exec>
+    <concat destfile="resource/strategicprimer/viewer/invocation" overwrite="true">/path/to/${basename}.exe</concat>
+    <x-rebuild />
+    <x-ceylon-fat-jar out="${release}/${basename}-for-exe.jar" run="${ceylon-main-run}" module="${main-module}" />
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
-      outfile="${release}/${basename}.exe" jar="${release}/${basename}.jar" />
+      outfile="${release}/${basename}.exe" jar="${release}/${basename}-for-exe.jar" />
   </target>
   <target name="app" depends="jar,icon">
       <exec executable="${png2icns.path}" dir="${basedir}">
@@ -181,7 +191,9 @@
       <arg value="icon_32px.png" />
       <arg value="icon_16px.png" />
     </exec>
-    <copy file="${release}/${basename}.jar" tofile="${release}/${shortname}.jar" />
+    <concat destfile="resource/strategicprimer/viewer/invocation" overwrite="true">open /path/to/${basename}.app --args</concat>
+    <x-rebuild />
+    <x-ceylon-fat-jar out="${release}/${shortname}.jar" run="${ceylon-main-run}" module="${main-module}" />
     <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
       jar="${release}/${shortname}.jar" version="${version-number}"
       shortname="SPHelpers" stubfile="${stub-script-path}"
@@ -214,6 +226,8 @@
     <delete><fileset dir="${release}/dmgtmp" /></delete>
   </target>
   <target name="dist" depends="build,doc">
+    <concat destfile="resource/strategicprimer/viewer/invocation" overwrite="true">ceylon run ${main-module}</concat>
+    <x-rebuild />
     <tar destfile="${release}/${basename}.tbz2" compression="bzip2">
       <tarfileset dir="${project_home}" prefix="${basename}">
         <include name="*.properties" />
