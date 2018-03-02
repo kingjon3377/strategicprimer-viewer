@@ -1,6 +1,7 @@
 import java.lang {
     ObjectArray,
-    IllegalArgumentException
+    IllegalArgumentException,
+	IntArray
 }
 import strategicprimer.model.map.fixtures {
     UnitMember
@@ -26,10 +27,6 @@ import strategicprimer.model.map {
     HasMutableName,
     Player,
     HasKind
-}
-import ceylon.interop.java {
-    createJavaIntArray,
-    createJavaObjectArray
 }
 import strategicprimer.drivers.worker.common {
     IWorkerModel,
@@ -150,10 +147,10 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             }
             newNode.insert(node, newNode.childCount);
             fireTreeNodesInserted(this,
-                createJavaObjectArray<Object>({playerNode,
+                ObjectArray<Object>.with({playerNode,
                     getNode(playerNode, newOwner.kind), newNode}),
-                createJavaIntArray({newNode.getIndex(node)}),
-                createJavaObjectArray<Object>({node}));
+                IntArray.with({newNode.getIndex(node)}),
+                ObjectArray<Object>.with({node}));
             for ([unit, innerMember] in zipPairs(newList, members)) {
                 unit.addMember(innerMember);
             }
@@ -161,10 +158,10 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             old.removeMember(member);
             newNode.add(node);
             fireTreeNodesInserted(this,
-                createJavaObjectArray<Object>({playerNode,
+                ObjectArray<Object>.with({playerNode,
                     getNode(playerNode, newOwner.kind), newNode}),
-                createJavaIntArray({newNode.getIndex(node)}),
-                createJavaObjectArray<Object>({node}));
+                IntArray.with({newNode.getIndex(node)}),
+                ObjectArray<Object>.with({node}));
             Iterable<UnitMember> iter = member.proxied;
             if (iter.empty) {
                 newOwner.addMember(member);
@@ -189,9 +186,9 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 oldIndex = -1;
             }
             fireTreeNodesRemoved(this,
-                createJavaObjectArray<Object>({playerNode, getNode(playerNode, old.kind),
-                    oldNode}), createJavaIntArray({oldIndex}),
-                createJavaObjectArray<Object>({node}));
+                ObjectArray<Object>.with({playerNode, getNode(playerNode, old.kind),
+                    oldNode}), IntArray.with({oldIndex}),
+                ObjectArray<Object>.with({node}));
             if (exists oldNode) {
                 oldNode.remove(node);
             }
@@ -202,10 +199,10 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 old.removeMember(member);
                 newNode.add(node);
                 fireTreeNodesInserted(this,
-                    createJavaObjectArray<Object>({playerNode, getNode(playerNode,
+                    ObjectArray<Object>.with({playerNode, getNode(playerNode,
                         newOwner.kind), newNode}),
-                    createJavaIntArray({newNode.getIndex(node)}),
-                    createJavaObjectArray<Object>({node}));
+                    IntArray.with({newNode.getIndex(node)}),
+                    ObjectArray<Object>.with({node}));
             }
         }
     }
@@ -219,16 +216,16 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 if (is KindNode child, kind == child.userObjectNarrowed) {
                     child.add(node);
                     fireTreeNodesInserted(this, getPathToRoot(node),
-                        createJavaIntArray({child.childCount - 1}),
-                        createJavaObjectArray<Object>({node}));
+                        IntArray.with({child.childCount - 1}),
+                        ObjectArray<Object>.with({node}));
                     break;
                 }
             } else {
                 KindNode kindNode = KindNode(kind, matchingUnit);
                 temp.add(kindNode);
                 fireTreeNodesInserted(this, getPathToRoot(kindNode),
-                    createJavaIntArray({temp.childCount - 1}),
-                    createJavaObjectArray<Object>({kindNode}));
+                    IntArray.with({temp.childCount - 1}),
+                    ObjectArray<Object>.with({kindNode}));
             }
         }
     }
@@ -259,9 +256,9 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             unit.addMember(member);
             MutableTreeNode newNode = UnitMemberNode(member);
             unitNode.add(newNode);
-            fireTreeNodesInserted(this, createJavaObjectArray<Object>({root, unitNode}),
-                createJavaIntArray({unitNode.childCount - 1}),
-                createJavaObjectArray<Object>({newNode}));
+            fireTreeNodesInserted(this, ObjectArray<Object>.with({root, unitNode}),
+                IntArray.with({unitNode.childCount - 1}),
+                ObjectArray<Object>.with({newNode}));
         }
     }
     shared actual void renameItem(HasMutableName item) {
@@ -269,9 +266,9 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             value path = getPathToRoot(node);
             Integer index = getIndexOfChild(path[path.size - 2], node);
             fireTreeNodesChanged(this,
-                createJavaObjectArray<Object>(path.array.exceptLast),
-                createJavaIntArray({index}),
-                createJavaObjectArray({node}));
+                ObjectArray<Object>.with(path.array.exceptLast),
+                IntArray.with({index}),
+                ObjectArray.with({node}));
         }
     }
     shared actual void moveItem(HasKind item, String priorKind) {
@@ -282,8 +279,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 Integer index = getIndexOfChild(path.array.last, node);
                 // fireNodesChanged() is *correct*: a change in a unit member's kind
                 // does *not* mean any node should move.
-                fireTreeNodesChanged(this, path, createJavaIntArray({ index }),
-                    createJavaObjectArray({ node }));
+                fireTreeNodesChanged(this, path, IntArray.with({ index }),
+                    ObjectArray.with({ node }));
             }
         } else if (is IUnit item) {
             if (is TreeNode node = getNode(temp, item)) {
@@ -304,29 +301,29 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     assert (exists lastParentParent =
                             pathOne.array.exceptLast.exceptLast.last);
                     Integer parentIndex = lastParentParent.getIndex(lastParent);
-                    pathSubset = createJavaObjectArray<Object>(pathOne.array.exceptLast.exceptLast);
+                    pathSubset = ObjectArray<Object>.with(pathOne.array.exceptLast.exceptLast);
                     lastParent.removeFromParent();
                     fireTreeNodesRemoved(this, pathSubset,
-                        createJavaIntArray({parentIndex}),
-                        createJavaObjectArray({lastParent}));
+                        IntArray.with({parentIndex}),
+                        ObjectArray.with({lastParent}));
                 } else {
-                    pathSubset = createJavaObjectArray<Object>(pathOne.array.exceptLast);
-                    fireTreeNodesRemoved(this, pathSubset, createJavaIntArray({indexOne}),
-                        createJavaObjectArray({node}));
+                    pathSubset = ObjectArray<Object>.with(pathOne.array.exceptLast);
+                    fireTreeNodesRemoved(this, pathSubset, IntArray.with({indexOne}),
+                        ObjectArray.with({node}));
                 }
                 if (is MutableTreeNode nodeTwo) {
                     Integer indexTwo = nodeTwo.childCount;
                     nodeTwo.insert(node, indexTwo);
                     fireTreeNodesInserted(this,
-                        createJavaObjectArray<Object>({root, nodeTwo}),
-                        createJavaIntArray({indexTwo}),
-                        createJavaObjectArray({node}));
+                        ObjectArray<Object>.with({root, nodeTwo}),
+                        IntArray.with({indexTwo}),
+                        ObjectArray.with({node}));
                 } else {
                     MutableTreeNode kindNode = KindNode(item.kind, item);
                     temp.add(kindNode);
-                    fireTreeNodesInserted(this, createJavaObjectArray<TreeNode>({temp}),
-                        createJavaIntArray({getIndexOfChild(temp, kindNode)}),
-                        createJavaObjectArray<Object>({kindNode}));
+                    fireTreeNodesInserted(this, ObjectArray<TreeNode>.with({temp}),
+                        IntArray.with({getIndexOfChild(temp, kindNode)}),
+                        ObjectArray<Object>.with({kindNode}));
                 }
             }
         }
@@ -338,8 +335,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             value path = getPathToRoot(node);
             Integer index = getIndexOfChild(path.array.last, node);
             parentNode.remove(node);
-            fireTreeNodesRemoved(this, path, createJavaIntArray({index}),
-                createJavaObjectArray<Object>({node}));
+            fireTreeNodesRemoved(this, path, IntArray.with({index}),
+                ObjectArray<Object>.with({node}));
             dismissedMembers.add(member);
         }
     }
@@ -350,8 +347,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             UnitMemberNode childNode = UnitMemberNode(sibling);
             parentNode.add(childNode);
             Integer index = getIndexOfChild(parentNode, childNode);
-            fireTreeNodesInserted(this, getPathToRoot(parentNode), createJavaIntArray({index}),
-                createJavaObjectArray<Object>({childNode}));
+            fireTreeNodesInserted(this, getPathToRoot(parentNode), IntArray.with({index}),
+                ObjectArray<Object>.with({childNode}));
         }
     }
 }

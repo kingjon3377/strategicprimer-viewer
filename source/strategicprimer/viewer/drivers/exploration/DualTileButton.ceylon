@@ -1,7 +1,3 @@
-import ceylon.interop.java {
-    createJavaIntArray
-}
-
 import java.awt {
     Graphics,
     Polygon
@@ -24,6 +20,10 @@ import strategicprimer.model.map {
 import strategicprimer.drivers.common {
 	FixtureMatcher
 }
+import java.lang {
+	IntArray
+}
+
 "A button (visually) representing a tile in two maps."
 class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matchers)
         extends JButton() {
@@ -38,11 +38,11 @@ class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matche
                 (TileFixture fix) => true, matchers);
     shared actual void paintComponent(Graphics pen) {
         super.paintComponent(pen);
-        pen.clip = Polygon(createJavaIntArray({width - margin, margin, margin}),
-            createJavaIntArray({margin, height - margin, margin}), 3);
+        pen.clip = Polygon(IntArray.with({width - margin, margin, margin}),
+            IntArray.with({margin, height - margin, margin}), 3);
         helper.drawTileTranslated(pen, master, point, width, height);
-        pen.clip = Polygon(createJavaIntArray({width - margin, width - margin, margin}),
-            createJavaIntArray({margin, height - margin, height - margin}), 3);
+        pen.clip = Polygon(IntArray.with({width - margin, width - margin, margin}),
+            IntArray.with({margin, height - margin, height - margin}), 3);
         helper.drawTileTranslated(pen, subordinate, point, width, height);
     }
 }

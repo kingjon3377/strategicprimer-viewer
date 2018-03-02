@@ -1,7 +1,3 @@
-import ceylon.interop.java {
-    createJavaObjectArray
-}
-
 import java.awt.datatransfer {
     DataFlavor,
     UnsupportedFlavorException,
@@ -24,7 +20,7 @@ class FixtureTransferable satisfies Transferable {
     TileFixture payload;
     shared new (TileFixture data) { payload = data; }
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>
-            createJavaObjectArray({flavor});
+            ObjectArray.with({flavor});
     shared actual Boolean isDataFlavorSupported(DataFlavor candidate) =>
             flavor == candidate;
     shared actual TileFixture getTransferData(DataFlavor candidate) {
@@ -55,7 +51,7 @@ class CurriedFixtureTransferable satisfies Transferable {
         payload = list.map(`FixtureTransferable`).sequence();
     }
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>
-            createJavaObjectArray({flavor});
+            ObjectArray.with({flavor});
     shared actual Boolean isDataFlavorSupported(DataFlavor candidate) =>
             flavor == candidate;
     shared actual {Transferable*} getTransferData(DataFlavor candidate) {

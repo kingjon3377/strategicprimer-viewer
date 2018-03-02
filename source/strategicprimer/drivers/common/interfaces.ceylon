@@ -5,8 +5,7 @@ import ceylon.collection {
 
 import java.lang {
     IllegalStateException,
-    IllegalArgumentException,
-    Types
+    IllegalArgumentException
 }
 import java.nio.file {
     JPaths=Paths,

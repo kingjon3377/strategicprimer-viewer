@@ -1,7 +1,3 @@
-import ceylon.interop.java {
-    createJavaObjectArray
-}
-
 import java.awt.event {
     ActionEvent,
     KeyEvent
@@ -34,7 +30,8 @@ import strategicprimer.model.idreg {
     IDRegistrar
 }
 import java.lang {
-    Types
+    Types,
+	ObjectArray
 }
 "A pop-up menu to let the user edit a fixture."
 shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
@@ -90,7 +87,7 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
         addMenuItem(JMenuItem("Change owner", KeyEvent.vkO), (ActionEvent event) {
             if (is Player player = JOptionPane.showInputDialog(retval,
                 "Fixture's new owner:", "Change Fixture Owner",
-                JOptionPane.plainMessage, null, createJavaObjectArray(players),
+                JOptionPane.plainMessage, null, ObjectArray.with(players),
                 fixture.owner)) {
                 HasMutableOwner temp = fixture;
                 temp.owner = player;

@@ -6,10 +6,6 @@ import ceylon.collection {
     MutableList,
     MutableMap
 }
-import ceylon.interop.java {
-    createJavaIntArray,
-    createJavaObjectArray
-}
 
 import com.pump.window {
     WindowMenu
@@ -28,7 +24,8 @@ import java.awt.event {
 }
 import java.lang {
     JInteger=Integer,
-    IntArray
+    IntArray,
+	ObjectArray
 }
 
 import javax.swing {
@@ -178,7 +175,7 @@ SPFrame explorationFrame(IExplorationModel model,
         }
     }
     ComboBoxModel<Speed> speedModel = DefaultComboBoxModel<Speed>(
-        createJavaObjectArray<Speed>(`Speed`.caseValues));
+        ObjectArray<Speed>.with(`Speed`.caseValues));
     object explorerSelectingPanel extends BorderedPanel()
             satisfies PlayerChangeSource&CompletionSource {
         MutableList<PlayerChangeListener> listeners =
@@ -498,7 +495,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                 ([Integer, TileFixture] tuple) => tuple.rest
                                         .first,
                                 selectedUnit, speedSource()));
-                            IntArray indices = createJavaIntArray(
+                            IntArray indices = IntArray.with(
                                 {for ([index, fixture] in constants) index});
                             mainList.selectedIndices = indices;
                             outsideCritical = true;

@@ -24,7 +24,9 @@ import javax.swing.tree {
 }
 import java.lang {
     ArrayIndexOutOfBoundsException,
-    IllegalArgumentException
+    IllegalArgumentException,
+	IntArray,
+	ObjectArray
 }
 import ceylon.collection {
     ArrayList,
@@ -36,10 +38,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
     Skill,
     ISkill
 }
-import ceylon.interop.java {
-    createJavaIntArray,
-    createJavaObjectArray
-}
+
 "A model for a tree of a worker's Jobs and Skills."
 class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     MutableList<TreeModelListener> listeners = ArrayList<TreeModelListener>();
@@ -101,7 +100,7 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
             Integer childCount = getChildCount(currentRoot);
             currentRoot.addJob(job);
             fireTreeNodesInserted(TreeModelEvent(this, TreePath(currentRoot),
-                createJavaIntArray({childCount}), createJavaObjectArray({job})));
+                IntArray.with({childCount}), ObjectArray.with({job})));
         } else if ("skill" == category) {
             if (exists selectionPath = selectionModel.selectionPath,
                 is IJob job = selectionPath.lastPathComponent) {
@@ -109,9 +108,9 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
                 Integer childCount = getChildCount(job);
                 job.addSkill(skill);
                 fireTreeNodesInserted(TreeModelEvent(this,
-                    TreePath(createJavaObjectArray<Object>({localRoot, job})),
-                    createJavaIntArray({childCount}),
-                    createJavaObjectArray({skill})));
+                    TreePath(ObjectArray<Object>.with({localRoot, job})),
+                    IntArray.with({childCount}),
+                    ObjectArray.with({skill})));
             }
         }
     }

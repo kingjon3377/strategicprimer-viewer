@@ -1,6 +1,3 @@
-import ceylon.interop.java {
-    createJavaIntArray
-}
 import ceylon.math.float {
     halfEven
 }
@@ -14,6 +11,9 @@ import strategicprimer.model.map {
     Point,
     River,
     IMapNG
+}
+import java.lang {
+	IntArray
 }
 
 "A [[TileDrawHelper]] for version-1 maps that draws directly instead of creating Shapes,
@@ -97,13 +97,13 @@ object directTileDrawHelper satisfies TileDrawHelper {
             if (hasEvent(map, location)) {
                 context.color = eventColor;
                 context.fillPolygon(
-                    createJavaIntArray({
+                    IntArray.with({
                         multiply(dimensions.x,
                             drawingNumericConstants.eventStart) + coordinates.x,
                         multiply(dimensions.x,
                             drawingNumericConstants.eventOther) + coordinates.x,
                         dimensions.x + coordinates.x}),
-                    createJavaIntArray({coordinates.y,
+                    IntArray.with({coordinates.y,
                         multiply(dimensions.y,
                             drawingNumericConstants.eventOther) + coordinates.y,
                         multiply(dimensions.y,

@@ -2,9 +2,6 @@ import ceylon.collection {
     MutableMap,
     naturalOrderTreeMap
 }
-import ceylon.interop.java {
-    createJavaObjectArray
-}
 
 import java.lang {
     ObjectArray
@@ -90,7 +87,7 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
     shared actual Player independent => independentPlayer;
     "The players, as an array."
     shared actual ObjectArray<Player> asArray() =>
-            createJavaObjectArray(players.items);
+            ObjectArray.with(players.items);
     "Clone the collection."
     shared actual IMutablePlayerCollection copy() {
         IMutablePlayerCollection retval = PlayerCollection();

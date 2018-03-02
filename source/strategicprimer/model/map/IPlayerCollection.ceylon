@@ -1,7 +1,3 @@
-import ceylon.interop.java {
-    createJavaObjectArray
-}
-
 import java.lang {
     ObjectArray
 }
@@ -19,5 +15,5 @@ shared interface IPlayerCollection satisfies {Player*}&Subsettable<{Player*}> {
     "Clone the collection."
     shared formal IPlayerCollection copy();
     "The players as an array."
-    shared default ObjectArray<Player> asArray() => createJavaObjectArray(this);
+    shared default ObjectArray<Player> asArray() => ObjectArray.with(this);
 }

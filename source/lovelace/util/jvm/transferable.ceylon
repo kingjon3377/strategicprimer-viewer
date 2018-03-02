@@ -6,13 +6,10 @@ import java.awt.datatransfer {
 import java.lang {
     ObjectArray
 }
-import ceylon.interop.java {
-    createJavaObjectArray
-}
 "A [[Transferable]] implementation transferring a single Integer."
 shared class IntTransferable(DataFlavor flavor, Integer payload) satisfies Transferable {
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>
-            createJavaObjectArray({flavor});
+            ObjectArray.with({flavor});
     shared actual Boolean isDataFlavorSupported(DataFlavor possibility) =>
             possibility == flavor;
     shared actual Object getTransferData(DataFlavor wantedFlavor) {

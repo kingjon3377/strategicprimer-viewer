@@ -21,11 +21,11 @@ import java.awt {
     Polygon,
     Rectangle
 }
-import ceylon.interop.java {
-    createJavaIntArray
-}
 import ceylon.math.float {
     halfEven
+}
+import java.lang {
+	IntArray
 }
 "A class to do the drawing of a tile, whether on a component representing a single tile or
  a single-component map, using cached [[Shape]]s. Note that this is limited to version-1
@@ -87,12 +87,12 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
                 width * drawingNumericConstants.unitSize,
                 height * drawingNumericConstants.unitSize);
             event = Polygon(
-                createJavaIntArray({
+                IntArray.with({
                     halfEven(width * drawingNumericConstants.eventStart)
                         .plus(approximatelyZero).integer,
                     halfEven(width * drawingNumericConstants.eventOther)
                         .plus(approximatelyZero).integer, width}),
-                createJavaIntArray({0,
+                IntArray.with({0,
                     halfEven(height * drawingNumericConstants.eventOther)
                         .plus(approximatelyZero).integer,
                     halfEven(height * drawingNumericConstants.eventOther)

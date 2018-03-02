@@ -1,9 +1,6 @@
 import java.lang {
     ObjectArray
 }
-import ceylon.interop.java {
-    createJavaObjectArray
-}
 import strategicprimer.model.map.fixtures {
     UnitMember
 }
@@ -22,7 +19,7 @@ class UnitMemberTransferable satisfies Transferable {
     [UnitMember, IUnit][] payload;
     shared new ([UnitMember, IUnit]* data) { payload = data.sequence(); }
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>
-            createJavaObjectArray({flavor});
+            ObjectArray.with({flavor});
     shared actual Boolean isDataFlavorSupported(DataFlavor candidate) =>
             flavor == candidate;
     shared actual {[UnitMember, IUnit]*} getTransferData(DataFlavor candidate) {
