@@ -79,12 +79,17 @@
       <ceylon-import-jar jar="${windowmenu.jar.path}" descriptor="lib/com.pump.swing.module.properties"
           module="com.pump.swing/1.0.00" failOnError="true" />
   </target>
+  <macrodef name="x-rebuild" description="Rebuild the Ceylon code if anything's changed">
+    <sequential>
+      <ceylon-compile src="${ceylon.source.dir}" resource="${ceylon.resource.dir}" encoding="UTF-8">
+          <moduleset>
+              <sourcemodules dir="${ceylon.source.dir}" />
+          </moduleset>
+      </ceylon-compile>
+    </sequential>
+  </macrodef>
   <target name="build" depends="init-ceylon">
-    <ceylon-compile src="${ceylon.source.dir}" resource="${ceylon.resource.dir}" encoding="UTF-8">
-        <moduleset>
-            <sourcemodules dir="${ceylon.source.dir}" />
-        </moduleset>
-    </ceylon-compile>
+      <x-rebuild />
   </target>
   <target name="doc" depends="build">
       <!-- FIXME: Uncomment this once Ceylon bug #6749 is fixed
