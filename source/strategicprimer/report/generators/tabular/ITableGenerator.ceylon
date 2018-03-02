@@ -26,11 +26,9 @@ import javax.swing.table {
     DefaultTableModel
 }
 import ceylon.interop.java {
-    createJavaObjectArray
+	createJavaStringArray
 }
-import java.lang {
-    Types
-}
+
 "A regular expression to mtch quote characters."
 Regex quotePattern = regex("\"", true);
 "An interface for tabular-report generators. It's expected that implementers will take the
@@ -74,10 +72,10 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             .sort(comparingOn(([Integer, [Point, T]] pair) => pair.rest.first,
             comparePairs));
         DefaultTableModel retval = DefaultTableModel(
-            createJavaObjectArray(headerRow.map(Types.nativeString)), 0);
+            createJavaStringArray(headerRow), 0);
         for ([num, [loc, item]] in values) {
             for (row in produce(fixtures, item, num, loc)) {
-                retval.addRow(createJavaObjectArray(row.map(Types.nativeString)));
+                retval.addRow(createJavaStringArray(row));
             }
         }
         fixtures.coalesce();
