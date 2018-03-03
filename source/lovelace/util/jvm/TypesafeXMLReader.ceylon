@@ -11,25 +11,30 @@ import javax.xml.stream {
 import javax.xml.stream.events {
     XMLEvent
 }
+import ceylon.collection {
+	Queue,
+	LinkedList
+}
 "A wrapper around [[XMLEventReader]] that makes the Iterator declaration take a type
  argument. Also contains factory methods so callers don't need to deal *at all* with the
  object this wraps. If the provided reader is [[Closeable|JCloseable]], we call its `close`
  method before returning [[finished]], to help mitigate the resource leak in IncludingIterator."
 shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent> {
     XMLEventReader wrapped;
-    JCloseable? handle;
+    Queue<Anything()> closeHandles = LinkedList<Anything()>();
     variable Boolean closed = false;
-    shared new (XMLEventReader|JReader reader) {
+    shared new (XMLEventReader|JReader reader, {Anything()*} closeMethods = {}) {
         if (is XMLEventReader reader) {
             wrapped = reader;
             if (is JCloseable reader) {
-                handle = reader;
-            } else {
-                handle = null; // TODO: allow caller to pass in one (or more?) handles to close when we finish
+                closeHandles.offer((reader of JCloseable).close);
             }
         } else {
             wrapped = XMLInputFactory.newInstance().createXMLEventReader(reader);
-            handle = reader;
+            closeHandles.offer(reader.close);
+        }
+        for (method in closeMethods) {
+            closeHandles.offer(method);
         }
     }
     throws(`class XMLStreamException`, "on malformed XML")
@@ -39,8 +44,8 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent> {
         } else {
             if (!closed) {
 	            wrapped.close();
-	            if (exists handle) {
-	                handle.close();
+	            while (exists handle = closeHandles.accept()) {
+	                handle();
 	            }
 	            closed = true;
 	        }
