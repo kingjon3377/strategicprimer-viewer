@@ -34,10 +34,9 @@ import ceylon.math.decimal {
 }
 "A tabular report generator for crops---forests, groves, orchards, fields, meadows, and
  shrubs"
-shared class CropTabularReportGenerator(Point hq, MapDimensions dimensions)
+shared class CropTabularReportGenerator
         satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
-	// TODO: Make class have a constructor so this can be static
-	String truncatedNumberString(SPNumber number) {
+	static String truncatedNumberString(SPNumber number) {
 		switch (number)
 		case (is Integer|Whole) {
 			return number.string;
@@ -49,6 +48,13 @@ shared class CropTabularReportGenerator(Point hq, MapDimensions dimensions)
 			return truncatedNumberString(number.float);
 		}
 	}
+	Point hq;
+	MapDimensions dimensions;
+	shared new (Point hq, MapDimensions dimensions) {
+		this.hq = hq;
+		this.dimensions = dimensions;
+	}
+
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Kind", "Size", "Size Unit",
 	    "Cultivation", "Status", "Crop"];
