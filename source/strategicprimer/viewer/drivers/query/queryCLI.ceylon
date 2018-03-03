@@ -5,7 +5,8 @@ import strategicprimer.model.map {
 	Point,
 	HasOwner,
 	MapDimensions,
-	IFixture
+	IFixture,
+	IMutableMapNG
 }
 import ceylon.collection {
 	MutableSet,
@@ -48,7 +49,8 @@ import ceylon.math.float {
 	round=halfEven
 }
 import strategicprimer.model.map.fixtures.mobile {
-	IWorker
+	IWorker,
+	Animal
 }
 import strategicprimer.drivers.exploration.common {
 	surroundingPointIterable,
@@ -182,6 +184,8 @@ shared object queryCLI satisfies SimpleDriver {
 		}
 	}
 	void huntGeneral(
+			"The main map."
+			IMutableMapNG map,
 			"How much time is left in the day."
 			variable Integer time,
 			"How much time is deducted when nothing is found."
@@ -190,24 +194,37 @@ shared object queryCLI satisfies SimpleDriver {
 			String verb,
 			"The CLI helper."
 			ICLIHelper cli,
-			"Whether this produces meat, as opposed to grain or vegetables of some kind."
-			Boolean meat,
 			"The source of encounters."
-			variable {String*} encounters) {
-		while (time > 0, exists encounter = encounters.first) {
+			variable {<Point->Animal|HuntingModel.NothingFound>*} encounters) {
+		while (time > 0, exists loc->encounter = encounters.first) {
 			encounters = encounters.rest;
-			if (encounter == HuntingModel.noResults) {
+			if (is HuntingModel.NothingFound encounter) {
 				cli.println("Found nothing for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
-			} else if (cli.inputBooleanInSeries("Found ``encounter``. Should they ``verb``?", encounter)) {
+			} else if (encounter.traces) {
+				cli.println("Found only tracks or traces from ``encounter.kind`` for the next ``noResultCost`` minutes.");
+				time -= noResultCost;
+			} else if (cli.inputBooleanInSeries("Found ``encounter.kind``. Should they ``verb``?", encounter.kind)) {
 				Integer cost = cli.inputNumber("Time to ``verb``: ");
 				time -= cost;
-				if (meat, cli.inputBooleanInSeries("Handle processing now?")) {
+				if (cli.inputBooleanInSeries("Handle processing now?")) {
 					// TODO: somehow handle processing-in-parallel case
 					for (i in 0:(cli.inputNumber("How many animals?"))) {
 						Integer mass = cli.inputNumber("Weight of this animal's meat in pounds: ");
 						Integer hands = cli.inputNumber("# of workers processing this carcass: ");
 						time -= round(HuntingModel.processingTime(mass) / hands).integer;
+					}
+				}
+				if (cli.inputBooleanInSeries("Reduce animal group population of ``encounter.population``?")) {
+					Integer count = Integer.smallest(cli.inputNumber("How many animals to remove?"),
+						encounter.population);
+					if (count > 0) {
+						map.removeFixture(loc, encounter);
+						Integer remaining = encounter.population - count;
+						if (remaining > 0) {
+							map.addFixture(loc, Animal(encounter.kind, false, encounter.talking, encounter.status,
+								encounter.id, encounter.born, remaining));
+						}
 					}
 				}
 				cli.println("``time`` minutes remaining.");
@@ -218,18 +235,34 @@ shared object queryCLI satisfies SimpleDriver {
 	}
 	"""Run hunting---that is, produce a list of "encounters"."""
 	todo("Distinguish hunting from fishing in no-result time cost?")
-	void hunt(HuntingModel huntModel, Point point, ICLIHelper cli,
+	void hunt(IMutableMapNG map, HuntingModel huntModel, Point point, ICLIHelper cli,
 		"How long to spend hunting."
 		Integer time) =>
-			huntGeneral(time, 60 / hourlyEncounters, "fight and process", cli, true, huntModel.hunt(point));
+			huntGeneral(map, time, 60 / hourlyEncounters, "fight and process", cli, huntModel.hunt(point));
 	"""Run fishing---that is, produce a list of "encounters"."""
-	void fish(HuntingModel huntModel, Point point, ICLIHelper cli,
+	void fish(IMutableMapNG map, HuntingModel huntModel, Point point, ICLIHelper cli,
 		"How long to spend hunting."
 		Integer time) =>
-			huntGeneral(time, 60 / hourlyEncounters, "try to catch and process", cli, true, huntModel.fish(point));
+			huntGeneral(map, time, 60 / hourlyEncounters, "try to catch and process", cli, huntModel.fish(point));
 	"""Run food-gathering---that is, produce a list of "encounters"."""
-	void gather(HuntingModel huntModel, Point point, ICLIHelper cli, Integer time) =>
-			huntGeneral(time, 60 / hourlyEncounters, "gather", cli, false, huntModel.gather(point));
+	void gather(HuntingModel huntModel, Point point, ICLIHelper cli, variable Integer time) {
+		variable {String*} encounters = huntModel.gather(point);
+		Integer noResultCost = 60 / hourlyEncounters;
+		while (time > 0, exists encounter = encounters.first) {
+			encounters = encounters.rest;
+			if (HuntingModel.noResults == encounter) {
+				cli.println("Found nothing for the next ``noResultCost`` minutes.");
+				time -= noResultCost;
+			} else if (cli.inputBooleanInSeries("Found ``encounter``. Should they gather?", encounter)) {
+				Integer cost = cli.inputNumber("Time to gather: ");
+				time -= cost;
+				// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
+				cli.println("``time`` minutes remaining.");
+			} else {
+				time -= noResultCost;
+			}
+		}
+	}
 	"""Handle herding mammals. Returns how many hours each herder spends "herding." """
 	Integer herdMammals(ICLIHelper cli, MammalModel animal, Integer count,
 		Integer flockPerHerder) {
@@ -430,8 +463,8 @@ shared object queryCLI satisfies SimpleDriver {
 			"?"->usageLambda,
 			"help"->usageLambda,
 			"fortress"->(() => fortressInfo(model.map, cli.inputPoint("Location of fortress? "), cli)),
-			"hunt"->(()=>hunt(huntModel, cli.inputPoint("Location to hunt? "), cli, hunterHours * 60)),
-			"fish"->(()=>fish(huntModel, cli.inputPoint("Location to fish? "), cli, hunterHours * 60)),
+			"hunt"->(()=>hunt(model.map, huntModel, cli.inputPoint("Location to hunt? "), cli, hunterHours * 60)),
+			"fish"->(()=>fish(model.map, huntModel, cli.inputPoint("Location to fish? "), cli, hunterHours * 60)),
 			"gather"->(()=>gather(huntModel, cli.inputPoint("Location to gather? "), cli, hunterHours * 60)),
 			"herd"->(()=>herd(cli, huntModel)),
 			"trap"->(()=>trappingCLI.startDriverOnModel(cli, options, model)),

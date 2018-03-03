@@ -141,17 +141,17 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 allFixtures.add(fixture);
             }
         }
-        String tracks;
+        Animal|HuntingModel.NothingFound tracksAnimal;
         // Since not-visible terrain is impassable, by this point we know the tile is
         // visible.
         assert (exists terrain = model.map.baseTerrain[destPoint]);
         if (TileType.ocean == terrain) {
-            tracks = huntingModel.fish(destPoint).first else HuntingModel.noResults;
+            tracksAnimal = huntingModel.fish(destPoint).map(Entry.item).first else HuntingModel.NothingFound.nothingFound;
         } else {
-            tracks = huntingModel.hunt(destPoint).first else HuntingModel.noResults;
+            tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first else HuntingModel.NothingFound.nothingFound;
         }
-        if (HuntingModel.noResults != tracks) {
-            allFixtures.add(Animal(tracks, true, false, "wild", -1));
+        if (is Animal tracksAnimal) {
+            allFixtures.add(Animal(tracksAnimal.kind, true, false, "wild", -1));
         }
         if (Direction.nowhere == direction) {
             if (cli.inputBooleanInSeries(

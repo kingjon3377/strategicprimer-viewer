@@ -474,9 +474,11 @@ SPFrame explorationFrame(IExplorationModel model,
                                 {String*}(Point) tracksSource;
                                 if (exists terrain = model.map.baseTerrain[currentLocation],
                                     terrain == TileType.ocean) {
-                                    tracksSource = huntingModel.fish;
+                                    tracksSource = (Point point) => huntingModel.fish(point).map(Entry.item)
+                                            .narrow<Animal>().filter((animal) => !animal.traces).map(Animal.kind);
                                 } else {
-                                    tracksSource = huntingModel.hunt;
+                                    tracksSource = (Point point) => huntingModel.hunt(point).map(Entry.item)
+                                            .narrow<Animal>().filter((animal) => !animal.traces).map(Animal.kind);
                                 }
                                 if (exists possibleTracks =
                                     tracksSource(currentLocation).first,

@@ -27,6 +27,10 @@ import ceylon.random {
 }
 "A class to facilitate a better hunting/fishing driver."
 shared class HuntingModel {
+	"""A class and object for "nothing found"."""
+	shared static class NothingFound of nothingFound {
+		shared new nothingFound {}
+	}
     """The "nothing" value we insert."""
     shared static String noResults = "Nothing ...";
     "How long it should take, in man-hours, to process a carcass of the specified mass, in pounds.
@@ -50,11 +54,11 @@ shared class HuntingModel {
                         fixture.kind
     };
     "Non-aquatic animals in the map."
-    MutableMap<Point, MutableList<String>> animals =
-            HashMap<Point, MutableList<String>>();
+    MutableMap<Point, MutableList<Animal>> animals =
+            HashMap<Point, MutableList<Animal>>();
     "Aquatic animals in the map."
-    MutableMap<Point, MutableList<String>> waterAnimals =
-            HashMap<Point, MutableList<String>>();
+    MutableMap<Point, MutableList<Animal>> waterAnimals =
+            HashMap<Point, MutableList<Animal>>();
     "Plants in the map."
     MutableMap<Point, MutableList<String>> plants = HashMap<Point, MutableList<String>>();
     for (point in map.locations) {
@@ -62,21 +66,21 @@ shared class HuntingModel {
         for (fixture in map.fixtures.get(point)) {
             if (is Animal fixture, !fixture.talking, !fixture.traces) {
                 String kind = fixture.kind;
-                MutableList<String> list;
+                MutableList<Animal> list;
                 if (fishKinds.contains(kind)) {
                     if (exists temp = waterAnimals[point]) {
                         list = temp;
                     } else {
-                        list = ArrayList<String>();
+                        list = ArrayList<Animal>();
                         waterAnimals[point] = list;
                     }
                 } else if (exists temp = animals[point]) {
                     list = temp;
                 } else {
-                    list = ArrayList<String>();
+                    list = ArrayList<Animal>();
                     animals[point] = list;
                 }
-                list.add(kind);
+                list.add(fixture);
             } else if (is Grove|Meadow|Shrub fixture) {
                 if (exists list = plants[point]) {
                     list.add(fixture.string);
@@ -99,24 +103,25 @@ shared class HuntingModel {
         }
     }
     "A helper method for hunting or fishing."
-    {String*} chooseFromMap(
+    {<Point->Type|NothingFound>*} chooseFromMap<out Type>(
             "Whereabouts to search"
             Point point,
             "Which map to look in"
-            Map<Point, MutableList<String>> chosenMap) {
-        variable {String*} choices = surroundingPointIterable(point, dimensions)
-            .map((loc) => chosenMap[loc]).coalesced.flatMap(identity);
-        choices = choices.chain({noResults}.repeat(choices.size));
+            Map<Point, List<Type|NothingFound>> chosenMap) given Type satisfies Object {
+        variable {<Point->Type|NothingFound>*} choices = surroundingPointIterable(point, dimensions)
+            .map((loc) => chosenMap[loc]?.map((item) => loc->item)).coalesced.flatMap(identity);
+        choices = choices.chain({point->NothingFound.nothingFound}.repeat(choices.size));
         return DefaultRandom().elements(choices);
     }
+    // FIXME: Don't use a predefined Map for hunting or fishing now; Animals may have been replaced with reduced-population versions
     """Get a stream of hunting results from the area surrounding the given tile. About half
         will be "nothing". May be an infinite stream."""
-    shared {String*} hunt(
+    shared {<Point->Animal|NothingFound>*} hunt(
             "Whereabouts to search"
             Point point) => chooseFromMap(point, animals);
     """Get a stream of fishing results from the area surrounding the given tile. About half
         will be "nothing". May be an infinite stream."""
-    shared {String*} fish(
+    shared {<Point->Animal|NothingFound>*} fish(
             "Whereabouts to search"
             Point point) => chooseFromMap(point, waterAnimals);
     """Get a stream of gathering results from the area surrounding the given tile. Many will

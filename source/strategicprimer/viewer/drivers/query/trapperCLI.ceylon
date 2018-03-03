@@ -11,7 +11,8 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.map {
 	HasName,
-	Point
+	Point,
+	IMutableMapNG
 }
 import java.nio.file {
 	JPath=Path
@@ -28,6 +29,9 @@ import lovelace.util.common {
 import ceylon.math.float {
 	round=halfEven
 }
+import strategicprimer.model.map.fixtures.mobile {
+	Animal
+}
 "Possible actions in the trapping CLI; top-level so we can switch on the cases,
  since the other alternative, `static`, isn't possible in an `object` anymore."
 class TrapperCommand of setTrap | check | move | easyReset | quit
@@ -41,15 +45,15 @@ class TrapperCommand of setTrap | check | move | easyReset | quit
 	shared new quit { name = "Quit"; ordinal = 4; }
 	shared actual Comparison compare(TrapperCommand other) => ordinal <=> other.ordinal;
 }
-class QueueWrapper(variable {String*} wrapped) satisfies Queue<String> {
-	shared actual String? accept() {
-		String? retval = wrapped.first;
+class QueueWrapper<Type>(variable {Type*} wrapped) satisfies Queue<Type> {
+	shared actual Type? accept() {
+		Type? retval = wrapped.first;
 		wrapped = wrapped.rest;
 		return retval;
 	}
-	shared actual String? back => wrapped.last;
-	shared actual String? front => wrapped.first;
-	shared actual void offer(String element) => wrapped = wrapped.chain({element});
+	shared actual Type? back => wrapped.last;
+	shared actual Type? front => wrapped.first;
+	shared actual void offer(Type element) => wrapped = wrapped.chain({element});
 }
 "A driver to run a player's trapping activity."
 todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
@@ -68,33 +72,54 @@ shared object trappingCLI satisfies SimpleDriver {
 	}
 	"Handle a command. Returns how long it took to execute the command."
 	Integer handleCommand(
-		"The animals generated from the tile and the surrounding tiles."
-		Queue<String> fixtures, ICLIHelper cli,
+		"The main map."
+		IMutableMapNG map,
+		"The animals generated from the tile and the surrounding tiles, with their home locations."
+		Queue<Point->Animal|HuntingModel.NothingFound> fixtures, ICLIHelper cli,
 		"The command to handle"
 		TrapperCommand command,
 		"If true, we're dealing with *fish* traps, which have different costs"
 		Boolean fishing) {
 		switch (command)
 		case (TrapperCommand.check){
-			String? top = fixtures.accept();
+			<Point->Animal|HuntingModel.NothingFound>? top = fixtures.accept();
 			if (!top exists) {
 				cli.println("Ran out of results");
 				return runtime.maxArraySize;
 			}
 			assert (exists top);
-			if (HuntingModel.noResults == top) {
+			Point loc = top.key;
+			value item = top.item;
+			if (is HuntingModel.NothingFound item) {
 				cli.println("Nothing in the trap");
 				return (fishing) then 5 else 10;
+			} else if (item.traces) {
+				cli.println("Found evidence of ``item.kind`` escaping");
+				return (fishing) then 5 else 10;
 			} else {
-				cli.println("Found either ``top`` or evidence of it escaping.");
+				cli.println("Found either ``item.kind`` or evidence of it escaping.");
 				Integer num = cli.inputNumber("How long to check and deal with the animal? ");
+				Integer retval;
 				if (cli.inputBooleanInSeries("Handle processing now?")) {
 					Integer mass = cli.inputNumber("Weight of meat in pounds: ");
 					Integer hands = cli.inputNumber("# of workers processing this carcass: ");
-					return num + round(HuntingModel.processingTime(mass) / hands).integer;
+					retval = num + round(HuntingModel.processingTime(mass) / hands).integer;
 				} else {
-					return num;
+					retval = num;
 				}
+				if (cli.inputBooleanInSeries("Reduce animal group population of ``item.population``?")) {
+					Integer count = Integer.smallest(cli.inputNumber("How many animals to remove?"),
+						item.population);
+					if (count > 0) {
+						map.removeFixture(loc, item);
+						Integer remaining = item.population - count;
+						if (remaining > 0) {
+							map.addFixture(loc, Animal(item.kind, false, item.talking, item.status,
+								item.id, item.born, remaining));
+						}
+					}
+				}
+				return retval;
 			}
 		}
 		case (TrapperCommand.easyReset) { return (fishing) then 20 else 5; }
@@ -111,7 +136,7 @@ shared object trappingCLI satisfies SimpleDriver {
 				.inputNumber("How many hours will the ``name`` work? ") * minutesPerHour;
 		Point point = cli.inputPoint("Where is the ``name`` working? ");
 		HuntingModel huntModel = HuntingModel(model.map);
-		Queue<String> fixtures;
+		Queue<Point->Animal|HuntingModel.NothingFound> fixtures;
 		if (fishing) {
 			fixtures = QueueWrapper(huntModel.fish(point));
 		} else {
@@ -120,7 +145,7 @@ shared object trappingCLI satisfies SimpleDriver {
 		while (minutes > 0, exists command = cli.chooseFromList(commands,
 			"What should the ``name`` do next?", "Oops! No commands",
 			"Next action: ", false).item) {
-			minutes -= handleCommand(fixtures, cli, command, fishing);
+			minutes -= handleCommand(model.map, fixtures, cli, command, fishing);
 			cli.println("``inHours(minutes)`` remaining");
 			if (command == TrapperCommand.quit) {
 				break;
