@@ -53,35 +53,19 @@ shared class HuntingModel {
                     if (is Animal fixture)
                         fixture.kind
     };
-    "Non-aquatic animals in the map."
-    MutableMap<Point, MutableList<Animal>> animals =
-            HashMap<Point, MutableList<Animal>>();
-    "Aquatic animals in the map."
-    MutableMap<Point, MutableList<Animal>> waterAnimals =
-            HashMap<Point, MutableList<Animal>>();
+    "Animals (outside fortresses and units), both aquatic and non-aquatic, at the given location in the map."
+    {Animal*} baseAnimals(Point point) =>
+            //map.fixtures[point].narrow<Animal>().filter((animal) => !animal.talking && !animal.traces); // TODO: syntax sugar once compiler bug fixed
+            map.fixtures.get(point).narrow<Animal>().filter((animal) => !animal.talking && !animal.traces);
+    "Non-aquatic animals (outside fortresses and units) at the given location in the map."
+    {Animal*} animals(Point point) => baseAnimals(point).filter((animal) => !fishKinds.contains(animal.kind));
+    "Aquatic animals (outside fortresses and units) at the given location in the map."
+    {Animal*} waterAnimals(Point point) => baseAnimals(point).filter((animal) => fishKinds.contains(animal.kind));
     "Plants in the map."
     MutableMap<Point, MutableList<String>> plants = HashMap<Point, MutableList<String>>();
     for (point in map.locations) {
-//        for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
         for (fixture in map.fixtures.get(point)) {
-            if (is Animal fixture, !fixture.talking, !fixture.traces) {
-                String kind = fixture.kind;
-                MutableList<Animal> list;
-                if (fishKinds.contains(kind)) {
-                    if (exists temp = waterAnimals[point]) {
-                        list = temp;
-                    } else {
-                        list = ArrayList<Animal>();
-                        waterAnimals[point] = list;
-                    }
-                } else if (exists temp = animals[point]) {
-                    list = temp;
-                } else {
-                    list = ArrayList<Animal>();
-                    animals[point] = list;
-                }
-                list.add(fixture);
-            } else if (is Grove|Meadow|Shrub fixture) {
+            if (is Grove|Meadow|Shrub fixture) {
                 if (exists list = plants[point]) {
                     list.add(fixture.string);
                 } else {
@@ -106,14 +90,13 @@ shared class HuntingModel {
     {<Point->Type|NothingFound>*} chooseFromMap<out Type>(
             "Whereabouts to search"
             Point point,
-            "Which map to look in"
-            Map<Point, List<Type|NothingFound>> chosenMap) given Type satisfies Object {
+            "Filter/provider to use to find the animals."
+            {Type|NothingFound*}(Point) chosenMap) given Type satisfies Object {
         variable {<Point->Type|NothingFound>*} choices = surroundingPointIterable(point, dimensions)
-            .map((loc) => chosenMap[loc]?.map((item) => loc->item)).coalesced.flatMap(identity);
+            .map((loc) => chosenMap(loc).map((item) => loc->item)).coalesced.flatMap(identity);
         choices = choices.chain({point->NothingFound.nothingFound}.repeat(choices.size));
         return DefaultRandom().elements(choices);
     }
-    // FIXME: Don't use a predefined Map for hunting or fishing now; Animals may have been replaced with reduced-population versions
     """Get a stream of hunting results from the area surrounding the given tile. About half
         will be "nothing". May be an infinite stream."""
     shared {<Point->Animal|NothingFound>*} hunt(
