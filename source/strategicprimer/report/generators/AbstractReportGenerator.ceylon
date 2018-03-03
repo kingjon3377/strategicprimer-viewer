@@ -5,10 +5,6 @@ import ceylon.collection {
     HashMap
 }
 
-import lovelace.util.common {
-    todo
-}
-
 import strategicprimer.model {
     DistanceComparator
 }
@@ -21,7 +17,7 @@ import strategicprimer.model.map {
 "An abstract superclass for classes that generate reports for particular kinds of SP
  objects. It's mostly interface and helper methods, but contains a couple of bits of
  shared state."
-todo("Make as many methods static as possible")
+// We'd like to make methods and member types static, but a sealed class can't have constructors.
 shared sealed abstract class AbstractReportGenerator<T>(
         shared Comparison([Point, IFixture], [Point, IFixture]) pairComparator,
         MapDimensions? mapDimensions, Point referencePoint = invalidPoint)

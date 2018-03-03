@@ -50,16 +50,8 @@ import ceylon.math.decimal {
 }
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
-shared class HarvestableReportGenerator(
-        Comparison([Point, IFixture], [Point, IFixture]) comp,
-        MapDimensions dimensions, Point hq = invalidPoint)
-        extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) {
-	// TODO: Convert initializer to constructors so these can become static
-    "Convert a Map from kinds to Points to a HtmlList."
-    HeadedList<String>&MutableList<String> mapToList(Map<String, MutableList<Point>> map,
-            String heading) =>
-            HtmlList(heading, map.items.map(Object.string).sort(increasing));
-	String populationCountString(HasPopulation item, String singular, String plural = singular + "s") {
+shared class HarvestableReportGenerator extends AbstractReportGenerator<HarvestableFixture> {
+	static String populationCountString(HasPopulation item, String singular, String plural = singular + "s") {
 		if (item.population <= 0) {
 			return "";
 		} else if (item.population == 1) {
@@ -68,7 +60,7 @@ shared class HarvestableReportGenerator(
 			return " (``item.population`` ``plural``)";
 		}
 	}
-	String acreageString(HasExtent item) {
+	static String acreageString(HasExtent item) {
 		if (item.acres.positive) {
 			switch (acres = item.acres)
 			case (is Integer|Whole) {
@@ -84,6 +76,14 @@ shared class HarvestableReportGenerator(
 			return "";
 		}
 	}
+	shared new (Comparison([Point, IFixture], [Point, IFixture]) comp,
+        MapDimensions dimensions, Point hq = invalidPoint)
+			extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) { }
+    "Convert a Map from kinds to Points to a HtmlList."
+	// Can't be static because HtmlList isn't and can't be ("Class without parameter list may not be annotated sealed")
+    HeadedList<String>&MutableList<String> mapToList(Map<String, MutableList<Point>> map,
+            String heading) =>
+            HtmlList(heading, map.items.map(Object.string).sort(increasing));
     """Produce a sub-report(s) dealing with a single "harvestable" fixture(s). It is to be
        removed from the collection. Caves and battlefields, though HarvestableFixtures, are *not*
        handled here.""""
