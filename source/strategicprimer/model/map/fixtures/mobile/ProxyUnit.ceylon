@@ -65,27 +65,6 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         }
         return retval;
     }
-    "Call a function on every proxied member, and return the value returned if it was
-     always the same, or else a provided value." // TODO: Can we get rid of this in favor of getConsensus()?
-    Result getCommonValue<Result>(Result(IUnit) method, Result ifEmpty, Result ifDiffer)
-            given Result satisfies Object {
-        variable Result? retval = null;
-        for (unit in proxiedList) {
-            Result current = method(unit);
-            if (exists temp = retval) {
-                if (temp != current) {
-                    return ifDiffer;
-                }
-            } else {
-                retval = current;
-            }
-        }
-        if (exists temp = retval) {
-            return temp;
-        } else {
-            return ifEmpty;
-        }
-    }
     "If we're proxying parallel units, their ID; if we're proxying all units of a given
      kind, their kind."
     variable Integer|String identifier;
@@ -154,8 +133,15 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         log.warn("ProxyUnit.compare called");
         return super.compare(fixture);
     }
-    shared actual String defaultImage => getCommonValue(IUnit.defaultImage, "",
-        "unit.png");
+    shared actual String defaultImage {
+        if (proxiedList.empty) {
+            return "";
+        } else if (exists img = getConsensus(IUnit.defaultImage)) {
+            return img;
+        } else {
+            return "unit.png";
+        }
+    }
     shared actual String image => getConsensus(IUnit.image) else "";
     assign image {
         log.warn("ProxyUnit.image setter called");
