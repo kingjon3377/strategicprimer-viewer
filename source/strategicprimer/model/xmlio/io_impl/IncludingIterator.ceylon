@@ -3,7 +3,8 @@ import ceylon.collection {
     Stack
 }
 import java.io {
-    FileNotFoundException
+    FileNotFoundException,
+    JCloseable=Closeable
 }
 import java.nio.file {
     JPath=Path
@@ -40,6 +41,9 @@ import strategicprimer.model.xmlio {
 import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException,
     NoSuchElementBecauseException
+}
+import java.lang {
+	AutoCloseable
 }
 "An extension to the [[Iterator]] of [[XMLEvent]] to automatically handle
  `include` tags."
@@ -94,7 +98,14 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
         while (exists top = stack.top) {
             XMLEvent|Finished retval = top.rest.first.next();
             if (is Finished retval) {
-                stack.pop();
+                if (exists [oldFile, oldStream] = stack.pop()) {
+                    if (is JCloseable oldStream) {
+                        oldStream.close();
+                    } else if (is AutoCloseable oldStream) {
+                        oldStream.close();
+                    }
+                    // TODO: Handle Destroyable too?
+                }
                 continue;
             } else if (is StartElement retval, {spNamespace, XMLConstants.nullNsUri}
                         .contains(retval.name.namespaceURI),
