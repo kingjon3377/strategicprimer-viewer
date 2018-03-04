@@ -61,6 +61,9 @@ import ceylon.math.decimal {
 import ceylon.math.whole {
 	Whole
 }
+import java.math {
+	JBigDecimal=BigDecimal
+}
 abstract class FluidBase {
 	static NumberFormat numParser = NumberFormat.integerInstance;
 	"Require that an XML tag be one of the specified tags."
@@ -412,8 +415,9 @@ abstract class FluidBase {
 	        if (is String item) {
 	            ostream.writeAttribute(spNamespace, name, item);
 	        } else if (is Decimal item, item.scale <= 0) {
-	            // TODO: Java code from which this is derived used BigDecimal.toPlainString() for scale > 0 case, not .toString()
 	            ostream.writeAttribute(spNamespace, name, item.integer.string);
+	        } else if (is Decimal item, is JBigDecimal impl = item.implementation) {
+	            ostream.writeAttribute(spNamespace, name, impl.toPlainString());
 	        } else if (is Whole item) {
 	            ostream.writeAttribute(spNamespace, name, item.integer.string);
 	        } else {
