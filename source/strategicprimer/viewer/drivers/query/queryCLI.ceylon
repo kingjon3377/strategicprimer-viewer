@@ -74,6 +74,11 @@ import strategicprimer.model.map.fixtures.towns {
 	TownStatus,
 	Village
 }
+import strategicprimer.model.map.fixtures.resources {
+	Grove,
+	Shrub,
+	Meadow
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver for 'querying' the driver model about various things."
@@ -265,21 +270,30 @@ shared object queryCLI satisfies SimpleDriver {
 		Integer time) =>
 			huntGeneral(model, time, 60 / hourlyEncounters, "try to catch and process", cli, huntModel.fish(point));
 	"""Run food-gathering---that is, produce a list of "encounters"."""
-	void gather(HuntingModel huntModel, Point point, ICLIHelper cli, variable Integer time) {
-		variable {String*} encounters = huntModel.gather(point);
+	void gather(IDriverModel model, HuntingModel huntModel, Point point, ICLIHelper cli, variable Integer time) {
+		variable {<Point->Grove|Shrub|Meadow|HuntingModel.NothingFound>*} encounters = huntModel.gather(point);
 		Integer noResultCost = 60 / hourlyEncounters;
-		while (time > 0, exists encounter = encounters.first) {
+		while (time > 0, exists loc->encounter = encounters.first) {
 			encounters = encounters.rest;
-			if (HuntingModel.noResults == encounter) {
+			if (is HuntingModel.NothingFound encounter) {
 				cli.println("Found nothing for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
-			} else if (cli.inputBooleanInSeries("Found ``encounter``. Should they gather?", encounter)) {
+				continue;
+			} else if (cli.inputBooleanInSeries("Found ``encounter.shortDescription``. Should they gather?",
+					encounter.kind)) {
 				Integer cost = cli.inputNumber("Time to gather: ");
 				time -= cost;
 				// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
 				cli.println("``time`` minutes remaining.");
 			} else {
 				time -= noResultCost;
+			}
+			if (is IMultiMapModel model) {
+				for ([map, file] in model.subordinateMaps) {
+					if (!map.fixtures.get(loc).any((fix) => fix.id == encounter.id)) {
+						map.addFixture(loc, encounter.copy(true));
+					}
+				}
 			}
 		}
 	}
@@ -325,7 +339,7 @@ shared object queryCLI satisfies SimpleDriver {
 		return (ceiling((flockPerHerder * cost) / 60.0) + 0.1).integer;
 	}
 	"Run herding."
-	void herd(ICLIHelper cli, HuntingModel huntModel) {
+	void herd(IDriverModel model, ICLIHelper cli, HuntingModel huntModel) {
 		HerdModel herdModel;
 		if (cli.inputBooleanInSeries("Are these small animals, like sheep?\t")) {
 			herdModel = MammalModel.smallMammals;
@@ -362,7 +376,7 @@ shared object queryCLI satisfies SimpleDriver {
 			}
 			if (hours < hunterHours,
 				cli.inputBooleanInSeries("Spend remaining time as Food Gatherers? ")) {
-				gather(huntModel, cli.inputPoint("Gathering location? "), cli,
+				gather(model, huntModel, cli.inputPoint("Gathering location? "), cli,
 					hunterHours - hours);
 			}
 		}
@@ -485,8 +499,8 @@ shared object queryCLI satisfies SimpleDriver {
 			"fortress"->(() => fortressInfo(model.map, cli.inputPoint("Location of fortress? "), cli)),
 			"hunt"->(()=>hunt(model, huntModel, cli.inputPoint("Location to hunt? "), cli, hunterHours * 60)),
 			"fish"->(()=>fish(model, huntModel, cli.inputPoint("Location to fish? "), cli, hunterHours * 60)),
-			"gather"->(()=>gather(huntModel, cli.inputPoint("Location to gather? "), cli, hunterHours * 60)),
-			"herd"->(()=>herd(cli, huntModel)),
+			"gather"->(()=>gather(model, huntModel, cli.inputPoint("Location to gather? "), cli, hunterHours * 60)),
+			"herd"->(()=>herd(model, cli, huntModel)),
 			"trap"->(()=>trappingCLI.startDriverOnModel(cli, options, model)),
 			"distance"->(()=>printDistance(model.map, cli)),
 			"count"->(()=>countWorkers(model.map, cli, *model.map.players)),

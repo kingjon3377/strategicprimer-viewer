@@ -1,10 +1,3 @@
-import ceylon.collection {
-    MutableList,
-    MutableMap,
-    HashMap,
-    ArrayList
-}
-
 import strategicprimer.drivers.exploration.common {
     surroundingPointIterable
 }
@@ -61,30 +54,17 @@ shared class HuntingModel {
     {Animal*} animals(Point point) => baseAnimals(point).filter((animal) => !fishKinds.contains(animal.kind));
     "Aquatic animals (outside fortresses and units) at the given location in the map."
     {Animal*} waterAnimals(Point point) => baseAnimals(point).filter((animal) => fishKinds.contains(animal.kind));
-    "Plants in the map."
-    MutableMap<Point, MutableList<String>> plants = HashMap<Point, MutableList<String>>();
-    for (point in map.locations) {
-        for (fixture in map.fixtures.get(point)) {
-            if (is Grove|Meadow|Shrub fixture) {
-                if (exists list = plants[point]) {
-                    list.add(fixture.string);
-                } else {
-                    MutableList<String> list = ArrayList<String>();
-                    plants[point] = list;
-                    list.add(fixture.string);
-                }
-            }
-        }
-        if (exists plantList = plants[point]) {
-            Integer length = plantList.size - 1;
-            TileType? tileType = map.baseTerrain[point];
-            Integer nothings;
-            switch (tileType)
-            case (TileType.desert|TileType.tundra) { nothings = length * 3; }
-            case (TileType.jungle) { nothings = length / 2; }
-            else { nothings = length; }
-            plantList.addAll({noResults}.repeat(nothings));
-        }
+    """Plant-type harvestable fixtures in the map, followed by a number of "nothing found" sufficient to give the
+       proportion we want for that tile type."""
+    {Grove|Meadow|Shrub|NothingFound*} plants(Point point) {
+        value retval = map.fixtures.get(point).narrow<Grove|Meadow|Shrub>();
+        Integer length = retval.size - 1;
+        Integer nothings;
+        switch (tileType = map.baseTerrain[point])
+        case (TileType.desert|TileType.tundra) { nothings = length * 3; }
+        case (TileType.jungle) { nothings = length / 2; }
+        else { nothings = length; }
+        return retval.chain({NothingFound.nothingFound}.repeat(nothings));
     }
     "A helper method for hunting or fishing."
     {<Point->Type|NothingFound>*} chooseFromMap<out Type>(
@@ -110,15 +90,11 @@ shared class HuntingModel {
     """Get a stream of gathering results from the area surrounding the given tile. Many will
         be "nothing," especially from desert and tundra tiles and less from jungle
         tiles. This may be an infinite stream."""
-    shared {String*} gather(
+    shared {<Point->Grove|Meadow|Shrub|NothingFound>*} gather(
             "Whereabouts to search"
             Point point) {
-        variable {String*} choices = {
-            for (loc in surroundingPointIterable(point, dimensions))
-                if (exists list = plants[loc])
-                    for (plant in list)
-                        plant
-        };
-        return DefaultRandom().elements(choices);
+        {<Point->Grove|Meadow|Shrub|NothingFound>*} retval = surroundingPointIterable(point, dimensions)
+                .map((loc) => plants(loc).map((item) => loc->item)).flatMap(identity);
+        return DefaultRandom().elements(retval);
     }
 }
