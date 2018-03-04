@@ -5,8 +5,7 @@ import strategicprimer.model.map {
 	Point,
 	HasOwner,
 	MapDimensions,
-	IFixture,
-	IMutableMapNG
+	IFixture
 }
 import ceylon.collection {
 	MutableSet,
@@ -27,7 +26,8 @@ import strategicprimer.drivers.common {
 	IDriverUsage,
 	SimpleDriver,
 	DriverUsage,
-	IDriverModel
+	IDriverModel,
+	IMultiMapModel
 }
 import strategicprimer.model.map.fixtures {
 	Ground,
@@ -184,8 +184,8 @@ shared object queryCLI satisfies SimpleDriver {
 		}
 	}
 	void huntGeneral(
-			"The main map."
-			IMutableMapNG map,
+			"The map model."
+			IDriverModel model,
 			"How much time is left in the day."
 			variable Integer time,
 			"How much time is deducted when nothing is found."
@@ -219,11 +219,31 @@ shared object queryCLI satisfies SimpleDriver {
 					Integer count = Integer.smallest(cli.inputNumber("How many animals to remove?"),
 						encounter.population);
 					if (count > 0) {
-						map.removeFixture(loc, encounter);
+						model.map.removeFixture(loc, encounter);
 						Integer remaining = encounter.population - count;
 						if (remaining > 0) {
-							map.addFixture(loc, Animal(encounter.kind, false, encounter.talking, encounter.status,
-								encounter.id, encounter.born, remaining));
+							Animal addend = Animal(encounter.kind, false, encounter.talking, encounter.status,
+								encounter.id, encounter.born, remaining);
+							model.map.addFixture(loc, addend);
+							if (is IMultiMapModel model) {
+								for ([map, file] in model.subordinateMaps) {
+									if (!map.fixtures.get(loc).any((fix) => fix.id == encounter.id)) {
+										map.addFixture(loc, addend.copy(true));
+									}
+								}
+							}
+						}
+					} else if (is IMultiMapModel model) {
+						for ([map, file] in model.subordinateMaps) {
+							if (!map.fixtures.get(loc).any((fix) => fix.id == encounter.id)) {
+								map.addFixture(loc, encounter.copy(true));
+							}
+						}
+					}
+				} else if (is IMultiMapModel model) {
+					for ([map, file] in model.subordinateMaps) {
+						if (!map.fixtures.get(loc).any((fix) => fix.id == encounter.id)) {
+							map.addFixture(loc, encounter.copy(true));
 						}
 					}
 				}
@@ -235,15 +255,15 @@ shared object queryCLI satisfies SimpleDriver {
 	}
 	"""Run hunting---that is, produce a list of "encounters"."""
 	todo("Distinguish hunting from fishing in no-result time cost?")
-	void hunt(IMutableMapNG map, HuntingModel huntModel, Point point, ICLIHelper cli,
+	void hunt(IDriverModel model, HuntingModel huntModel, Point point, ICLIHelper cli,
 		"How long to spend hunting."
 		Integer time) =>
-			huntGeneral(map, time, 60 / hourlyEncounters, "fight and process", cli, huntModel.hunt(point));
+			huntGeneral(model, time, 60 / hourlyEncounters, "fight and process", cli, huntModel.hunt(point));
 	"""Run fishing---that is, produce a list of "encounters"."""
-	void fish(IMutableMapNG map, HuntingModel huntModel, Point point, ICLIHelper cli,
+	void fish(IDriverModel model, HuntingModel huntModel, Point point, ICLIHelper cli,
 		"How long to spend hunting."
 		Integer time) =>
-			huntGeneral(map, time, 60 / hourlyEncounters, "try to catch and process", cli, huntModel.fish(point));
+			huntGeneral(model, time, 60 / hourlyEncounters, "try to catch and process", cli, huntModel.fish(point));
 	"""Run food-gathering---that is, produce a list of "encounters"."""
 	void gather(HuntingModel huntModel, Point point, ICLIHelper cli, variable Integer time) {
 		variable {String*} encounters = huntModel.gather(point);
@@ -463,8 +483,8 @@ shared object queryCLI satisfies SimpleDriver {
 			"?"->usageLambda,
 			"help"->usageLambda,
 			"fortress"->(() => fortressInfo(model.map, cli.inputPoint("Location of fortress? "), cli)),
-			"hunt"->(()=>hunt(model.map, huntModel, cli.inputPoint("Location to hunt? "), cli, hunterHours * 60)),
-			"fish"->(()=>fish(model.map, huntModel, cli.inputPoint("Location to fish? "), cli, hunterHours * 60)),
+			"hunt"->(()=>hunt(model, huntModel, cli.inputPoint("Location to hunt? "), cli, hunterHours * 60)),
+			"fish"->(()=>fish(model, huntModel, cli.inputPoint("Location to fish? "), cli, hunterHours * 60)),
 			"gather"->(()=>gather(huntModel, cli.inputPoint("Location to gather? "), cli, hunterHours * 60)),
 			"herd"->(()=>herd(cli, huntModel)),
 			"trap"->(()=>trappingCLI.startDriverOnModel(cli, options, model)),
