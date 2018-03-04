@@ -281,9 +281,11 @@ shared object queryCLI satisfies SimpleDriver {
 				continue;
 			} else if (cli.inputBooleanInSeries("Found ``encounter.shortDescription``. Should they gather?",
 					encounter.kind)) {
+				// TODO: include status for fields and meadows
 				Integer cost = cli.inputNumber("Time to gather: ");
 				time -= cost;
 				// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
+				// TODO: it already does for shrubs, really
 				cli.println("``time`` minutes remaining.");
 			} else {
 				time -= noResultCost;
