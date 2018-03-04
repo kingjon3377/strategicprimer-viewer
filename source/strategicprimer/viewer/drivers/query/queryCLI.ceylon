@@ -209,7 +209,9 @@ shared object queryCLI satisfies SimpleDriver {
 			} else if (encounter.traces) {
 				cli.println("Found only tracks or traces from ``encounter.kind`` for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
-			} else if (cli.inputBooleanInSeries("Found ``encounter.kind``. Should they ``verb``?", encounter.kind)) {
+			} else if (cli.inputBooleanInSeries("Found ``(encounter.population > 1) then
+					"a group of perhaps ``encounter.population`` ``encounter.kind``" else encounter.kind
+						``. Should they ``verb``?", encounter.kind)) {
 				Integer cost = cli.inputNumber("Time to ``verb``: ");
 				time -= cost;
 				if (cli.inputBooleanInSeries("Handle processing now?")) {
