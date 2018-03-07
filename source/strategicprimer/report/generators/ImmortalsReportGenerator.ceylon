@@ -119,13 +119,16 @@ shared class ImmortalsReportGenerator(
         if (!centaurs.empty || !giants.empty, !fairies.empty || !dragons.empty ||
         !simples.empty) {
             ostream("""<h4>Immortals</h4>
-                   """);
+                       <ul>""");
             for (coll in {centaurs.items, giants.items, fairies.items, dragons.items,
                 simples.items}) {
                 for (inner in coll) {
+                    ostream("<li>");
                     ostream(inner.string);
+                    ostream("</li>\n");
                 }
             }
+            ostream("</ul>\n");
         }
     }
     "Produce a report node on an individual immortal."
