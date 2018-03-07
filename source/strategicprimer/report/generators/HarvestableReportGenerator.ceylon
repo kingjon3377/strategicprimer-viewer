@@ -132,12 +132,16 @@ shared class HarvestableReportGenerator(
                 // is in the Map!
                 if (is CacheFixture item) {
                     caches[item] = point;
+                    fixtures.remove(item.id);
                 } else if (is Grove item) {
                     groves[item] = point;
+                    fixtures.remove(item.id);
                 } else if (is Meadow item) {
                     meadows[item] = point;
+                    fixtures.remove(item.id);
                 } else if (is Mine item) {
                     mines[item] = point;
+                    fixtures.remove(item.id);
                 } else if (is MineralVein item) {
                     if (exists coll = minerals[item.shortDescription]) {
                         coll.add(point);
