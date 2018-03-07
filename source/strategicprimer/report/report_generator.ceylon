@@ -26,7 +26,8 @@ import strategicprimer.model.map {
     MapDimensions
 }
 import strategicprimer.model.map.fixtures {
-    TerrainFixture
+    TerrainFixture,
+	Ground
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit
@@ -148,7 +149,7 @@ shared String createReport(IMapNG map, Player player = map.currentPlayer) {
     for ([loc, fixture] in fixtures.items) {
         if (fixture.id < 0) {
             continue;
-        } else if (is TerrainFixture fixture) {
+        } else if (is Ground|TerrainFixture fixture) {
             fixtures.remove(fixture.id);
             continue;
         }
