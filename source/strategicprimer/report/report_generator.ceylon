@@ -26,7 +26,8 @@ import strategicprimer.model.map {
     MapDimensions
 }
 import strategicprimer.model.map.fixtures {
-    TerrainFixture
+    TerrainFixture,
+	Ground
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit
@@ -153,7 +154,7 @@ shared object reportGenerator {
 	    for ([loc, fixture] in fixtures.items) {
 	        if (fixture.id < 0) {
 	            continue;
-	        } else if (is TerrainFixture fixture) {
+	        } else if (is Ground|TerrainFixture fixture) {
 	            fixtures.remove(fixture.id);
 	            continue;
 	        }
