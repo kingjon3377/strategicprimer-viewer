@@ -53,7 +53,31 @@ import strategicprimer.drivers.gui.common {
 }
 import ceylon.collection {
     HashMap,
-    MutableMap
+    MutableMap,
+	MutableSet,
+	HashSet
+}
+import ceylon.io {
+	SocketAddress
+}
+import ceylon.http.server {
+	newServer,
+	Endpoint,
+	Request,
+	Response,
+	startsWith,
+	isRoot
+}
+import ceylon.html {
+	renderTemplate,
+	Html,
+	Head,
+	Title,
+	Body,
+	H1,
+	Ul,
+	Li,
+	A
 }
 "A driver to produce a report of the contents of a map."
 object reportCLI satisfies SimpleDriver {
@@ -67,12 +91,92 @@ object reportCLI satisfies SimpleDriver {
             ("\\" == operatingSystem.fileSeparator) then
                 "--out=C:\\path\\to\\output.html"
                 else "--out=/path/to/output.html",
-            "--player=NN", "--current-turn=NN"
+            "--player=NN", "--current-turn=NN", "--serve[=8080]"
         ];
     };
+    String suffix(JPath file, Integer count) {
+        Integer start;
+        if (count >= file.nameCount) {
+            start = 0;
+        } else {
+            start = file.nameCount - count;
+        }
+        Integer end;
+        if (file.nameCount == 0) {
+            end = 1;
+        } else {
+            end = file.nameCount;
+        }
+        return file.subpath(start, end).string;
+    }
+    String shortestSuffix({JPath*} all, JPath file) {
+        Integer longestPath = Integer.max(all.map(JPath.nameCount)) else 1;
+        MutableSet<String> localCache = HashSet<String>();
+        for (num in 1..longestPath) {
+            for (key in all) {
+                String item = suffix(key, num);
+                if (localCache.contains(item)) {
+                    break;
+                } else {
+                    localCache.add(item);
+                }
+            } else {
+                return suffix(file, num);
+            }
+        }
+        return file.string;
+    }
+    void serveReports(IDriverModel model, Integer port, Player? currentPlayer) {
+        MutableMap<JPath, String> cache = HashMap<JPath, String>();
+        if (is IMultiMapModel model) {
+            for ([map, file] in model.allMaps) {
+                if (exists file, !cache.defines(file)) {
+                    cache[file] = reportGenerator.createReport(map, currentPlayer else map.currentPlayer);
+                }
+            }
+        } else if (exists file = model.mapFile) {
+            cache[file] = reportGenerator.createReport(model.map, currentPlayer else model.map.currentPlayer);
+        }
+        if (cache.empty) {
+            return;
+        } else {
+            value localCache = cache.map((file->report) => shortestSuffix(cache.keys, file.toAbsolutePath())->report);
+            {Endpoint*} endpoints = localCache.map((file->report) =>
+                Endpoint {
+	                path = startsWith("/``file``");
+	                service(Request request, Response response) => response.writeString(report);
+	            });
+            Endpoint rootHandler = Endpoint {
+                path = isRoot();
+                void service(Request request, Response response) {
+	                	renderTemplate(Html {
+	                    Head {
+	                        Title {
+	                            "Strategic Primer Reports";
+	                        }
+	                    },
+	                    Body {
+	                        H1 {
+	                            "Strategic Primer Reports"
+	                        },
+	                        Ul {
+	                            localCache.map((file->report) => Li {
+	                                A { href="/``file``"; children = [file]; }
+		                        })
+	                        }
+	                    }
+	                }, response.writeString);
+                }
+            };
+            log.info("About to start serving on port ``port``");
+            newServer {
+                rootHandler, *endpoints
+            }.start(SocketAddress("127.0.0.1", port));
+        }
+    }
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        void writeReport(JPath? filename, IMapNG map) {
+        void writeReport(JPath? filename, IMapNG map) { // TODO: move to top level of object
             if (exists filename) {
                 Player player;
                 if (options.hasOption("--player")) {
@@ -112,13 +216,31 @@ object reportCLI satisfies SimpleDriver {
                 log.error("Asked to make report from map with no filename");
             }
         }
-        if (is IMultiMapModel model) {
-            for ([map, file] in model.allMaps) {
-                writeReport(file, map);
+        if (options.hasOption("--serve")) {
+            value tempPort = Integer.parse(options.getArgument("--serve"));
+            Integer port;
+            if (is Integer tempPort) {
+                port = tempPort;
+            } else {
+                port = 8080;
             }
+            value playerNum = Integer.parse(options.getArgument("--player"));
+            Player? player;
+            if (is Integer playerNum) {
+                player = model.map.players.find((player) => player.playerId == playerNum);
+            } else {
+                player = null;
+            }
+            serveReports(model, port, player);
         } else {
-            writeReport(model.mapFile, model.map);
-        }
+	        if (is IMultiMapModel model) {
+	            for ([map, file] in model.allMaps) {
+	                writeReport(file, map);
+	            }
+	        } else {
+	            writeReport(model.mapFile, model.map);
+	        }
+	    }
     }
     "As we're a CLI driver, we can't show a file-chooser dialog."
     shared actual {JPath*} askUserForFiles() => {};
