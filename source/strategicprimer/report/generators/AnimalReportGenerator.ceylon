@@ -107,7 +107,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                             <ul>
                             """);
                 for (key->list in items) {
-                    ostream("<li>``key``: ``list.string``</li>
+                    ostream("<li>``list.string``</li>
                          ");
                 }
                 ostream("""</ul>
