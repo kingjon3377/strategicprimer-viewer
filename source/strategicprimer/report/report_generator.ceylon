@@ -128,7 +128,8 @@ shared object reportGenerator {
 	shared String createReport(IMapNG map, Player player = map.currentPlayer) {
 	    MapDimensions dimensions = map.dimensions;
 	    StringBuilder builder = StringBuilder();
-	    builder.append("""<html>
+	    builder.append("""<!DOCTYPE html>
+	                      <html>
 	                      <head><title>Strategic Primer map summary report</title></head>
 	                      <body>
 	                      """);
@@ -167,7 +168,8 @@ shared object reportGenerator {
 	    MapDimensions dimensions = map.dimensions;
 	    StringBuilder builder = StringBuilder();
 	    builder.append(
-	        """<html>
+	        """<!DOCTYPE html>
+	           <html>
 	            <head><title>Strategic Primer map summary abridged report</title></head>
 	            <body>
 	            """);

@@ -26,7 +26,8 @@ shared class RootReportNode(variable String title)
     shared actual Integer htmlSize =>
             72 + title.size + Integer.sum(map(IReportNode.htmlSize));
     shared actual void produce(Anything(String) stream) {
-        stream("<html>
+        stream("<!DOCTYPE html>
+                <html>
                 <head><title>``title``</tile></head>
                 <body>
                 ");
