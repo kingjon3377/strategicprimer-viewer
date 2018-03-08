@@ -155,7 +155,7 @@ shared class FortressReportGenerator(
                 fixtures.remove(item.id);
             }
             if (!units.empty) {
-                ostream("""Units on the tile:<ul>
+                ostream("""<li>Units on the tile:<ul>
                            """);
                 for (unit in units) {
                     ostream("<li>");
@@ -163,11 +163,11 @@ shared class FortressReportGenerator(
                     ostream("""</li>
                                """);
                 }
-                ostream("""</ul>
+                ostream("""</ul></li>
                            """);
             }
             if (!equipment.empty) {
-                ostream("""Equipment:<ul>
+                ostream("""<li>Equipment:<ul>
                            """);
                 for (implement in equipment) {
                     ostream("<li>");
@@ -176,11 +176,11 @@ shared class FortressReportGenerator(
                     ostream("""</li>
                                """);
                 }
-                ostream("""</ul>
+                ostream("""</ul></li>
                            """);
             }
             if (!resources.empty) {
-                ostream("""Resources:<ul>
+                ostream("""<li>Resources:<ul>
                            """);
                 for (kind->list in resources) {
                     ostream("<li>``kind``
@@ -197,11 +197,11 @@ shared class FortressReportGenerator(
                                </li>
                                """);
                 }
-                ostream("""</ul>
+                ostream("""</ul></li>
                            """);
             }
             if (!contents.empty) {
-                ostream("""Other fortress contents:<ul>
+                ostream("""<li>Other fortress contents:<ul>
                            """);
                 for (member in contents) {
                     ostream("<li>");
@@ -209,7 +209,7 @@ shared class FortressReportGenerator(
                     ostream("""</li>
                                """);
                 }
-                ostream("""</ul>
+                ostream("""</ul></li>
                            """);
             }
             fixtures.remove(item.id);
