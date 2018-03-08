@@ -28,6 +28,7 @@ import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
     readMultiMapModel,
+    readMapModel,
     writeModel
 }
 import strategicprimer.drivers.common.cli {
@@ -232,7 +233,7 @@ shared interface SimpleDriver satisfies ISPDriver {
             }
         } else if (args.size == 1) {
             assert (exists arg = args.first);
-            IDriverModel mapModel = mapReaderAdapter.readMapModel(JPaths.get(arg), warningLevels.default);
+            IDriverModel mapModel = readMapModel(JPaths.get(arg), warningLevels.default);
             turnFixer(mapModel.map);
             startDriverOnModel(cli, options, mapModel);
         } else {
