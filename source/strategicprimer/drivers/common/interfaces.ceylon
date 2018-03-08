@@ -228,6 +228,11 @@ shared interface SimpleDriver satisfies ISPDriver {
                 }
                 startDriverOnModel(cli, options, mapModel);
             }
+        } else if (args.size == 1) {
+            assert (exists arg = args.first);
+            IDriverModel mapModel = mapReaderAdapter.readMapModel(JPaths.get(arg), warningLevels.default);
+            turnFixer(mapModel.map);
+            startDriverOnModel(cli, options, mapModel);
         } else {
             assert (exists firstArg = args.first);
             assert (nonempty others = args.rest);
