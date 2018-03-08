@@ -132,7 +132,8 @@ shared object queryCLI satisfies SimpleDriver {
 		Point start = cli.inputPoint("Starting point:\t");
 		Point end = cli.inputPoint("Destination:\t");
 		if (cli.inputBoolean("Compute ground travel distance?")) {
-			cli.println("Distance (on the ground, in MP cost):\t``pathfinder.getTravelDistance(map, start, end)``");
+			cli.println("Distance (on the ground, in MP cost):\t``pathfinder.
+				getTravelDistance(map, start, end).first``");
 		} else {
 			cli.println("Distance (as the crow flies, in tiles):\t``Float
 				.format(distance(start, end, map.dimensions), 0, 0)``");
