@@ -107,19 +107,19 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     shared void move() {
         assert (exists mover = model.selectedUnit);
         Integer directionNum = cli.inputNumber("Direction to move: ");
-    Direction direction;
-    switch (directionNum)
-    case (0) { changeSpeed(); return; }
-    case (1) { direction = Direction.southwest; }
-    case (2) { direction = Direction.south; }
-    case (3) { direction = Direction.southeast; }
-    case (4) { direction = Direction.west; }
-    case (5) { direction = Direction.nowhere; }
-    case (6) { direction = Direction.east; }
-    case (7) { direction = Direction.northwest; }
-    case (8) { direction = Direction.north; }
-    case (9) { direction = Direction.northeast; }
-    else { fireMovementCost(runtime.maxArraySize); return; }
+	    Direction direction;
+	    switch (directionNum)
+	    case (0) { changeSpeed(); return; }
+	    case (1) { direction = Direction.southwest; }
+	    case (2) { direction = Direction.south; }
+	    case (3) { direction = Direction.southeast; }
+	    case (4) { direction = Direction.west; }
+	    case (5) { direction = Direction.nowhere; }
+	    case (6) { direction = Direction.east; }
+	    case (7) { direction = Direction.northwest; }
+	    case (8) { direction = Direction.north; }
+	    case (9) { direction = Direction.northeast; }
+	    else { fireMovementCost(runtime.maxArraySize); return; }
         Point point = model.selectedUnitLocation;
         Point destPoint = model.getDestination(point, direction);
         try {
