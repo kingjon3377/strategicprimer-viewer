@@ -1,0 +1,71 @@
+import ceylon.collection {
+	MutableSet,
+	MutableMap,
+	HashSet,
+	HashMap
+}
+import strategicprimer.model.map {
+	IMapNG,
+	Point
+}
+import lovelace.util.common {
+	comparingOn
+}
+import strategicprimer.model.map.fixtures.terrain {
+	Forest
+}
+import ceylon.logging {
+	logger,
+	Logger
+}
+"A logger."
+Logger log = logger(`module strategicprimer.drivers.exploration.common`);
+shared object pathfinder {
+	"The shortest-path distance, avoiding obstacles, in MP, between two points, using Dijkstra's algorithm."
+	shared Integer getTravelDistance(IMapNG map, Point start, Point end) {
+		MutableSet<Point> unvisited = HashSet { *map.locations };
+		MutableMap<Point, Integer> tentativeDistances = HashMap<Point, Integer> {
+			*map.locations.map((point) => point->runtime.maxArraySize) };
+		tentativeDistances[start] = 0;
+		variable Point current = start;
+		variable Integer iterations = 0;
+		while (!unvisited.empty) {
+			iterations++;
+			assert (exists Integer currentDistance = tentativeDistances[current]);
+			if (currentDistance >= runtime.maxArraySize) {
+				log.info("Considering a tile estimated as an infinite distance away after ``iterations`` iterations");
+				return currentDistance;
+			} else if (current == end) {
+				log.info("Reached the end after ``iterations`` iterations");
+				return currentDistance;
+			}
+			for (neighbor in surroundingPointIterable(current, map.dimensions, 1)) {
+				if (!unvisited.contains(neighbor)) {
+					continue;
+				}
+				assert (exists estimate = tentativeDistances[neighbor]);
+				Integer tentativeDistance = currentDistance + simpleMovementModel.movementCost(map.baseTerrain[neighbor],
+					!map.fixtures.get(neighbor).narrow<Forest>().empty, map.mountainous.get(neighbor),
+					!map.rivers.get(neighbor).empty || !map.rivers.get(current).empty, map.fixtures.get(neighbor));
+				tentativeDistances[neighbor] = Integer.smallest(estimate, tentativeDistance);
+				if (estimate < 0) {
+					log.warn("Old estimate at ``neighbor`` was negative");
+					return runtime.maxArraySize;
+				} else if (tentativeDistance < 0) {
+					log.warn("Recomputed estimate at ``neighbor`` was negative");
+					return runtime.maxArraySize;
+				}
+			}
+			unvisited.remove(current);
+			if (exists next = tentativeDistances.sort(comparingOn(Entry<Point, Integer>.item, increasing<Integer>)).
+				map(Entry.key).filter(unvisited.contains).first) {
+				current = next;
+			} else {
+				log.info("Couldn't find a smallest-estimate unchecked tile after ``iterations`` iterations");
+				return runtime.maxArraySize;
+			}
+		}
+		log.info("Apparently ran out of tiles after ``iterations`` iterations");
+		return tentativeDistances[end] else runtime.maxArraySize;
+	}
+}
