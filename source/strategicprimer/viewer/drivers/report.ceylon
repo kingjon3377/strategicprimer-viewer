@@ -66,6 +66,7 @@ import ceylon.http.server {
 	Request,
 	Response,
 	startsWith,
+	matchEquals=equals,
 	isRoot
 }
 import ceylon.html {
@@ -78,6 +79,43 @@ import ceylon.html {
 	Ul,
 	Li,
 	A
+}
+import ceylon.http.common {
+	Header
+}
+object suffixHelper {
+	String suffix(JPath file, Integer count) {
+		Integer start;
+		if (count >= file.nameCount) {
+			start = 0;
+		} else {
+			start = file.nameCount - count;
+		}
+		Integer end;
+		if (file.nameCount == 0) {
+			end = 1;
+		} else {
+			end = file.nameCount;
+		}
+		return file.subpath(start, end).string;
+	}
+	shared String shortestSuffix({JPath*} all, JPath file) {
+		Integer longestPath = Integer.max(all.map(JPath.nameCount)) else 1;
+		MutableSet<String> localCache = HashSet<String>();
+		for (num in 1..longestPath) {
+			for (key in all) {
+				String item = suffix(key, num);
+				if (localCache.contains(item)) {
+					break;
+				} else {
+					localCache.add(item);
+				}
+			} else {
+				return suffix(file, num);
+			}
+		}
+		return file.string;
+	}
 }
 "A driver to produce a report of the contents of a map."
 object reportCLI satisfies SimpleDriver {
@@ -94,38 +132,6 @@ object reportCLI satisfies SimpleDriver {
             "--player=NN", "--current-turn=NN", "--serve[=8080]"
         ];
     };
-    String suffix(JPath file, Integer count) {
-        Integer start;
-        if (count >= file.nameCount) {
-            start = 0;
-        } else {
-            start = file.nameCount - count;
-        }
-        Integer end;
-        if (file.nameCount == 0) {
-            end = 1;
-        } else {
-            end = file.nameCount;
-        }
-        return file.subpath(start, end).string;
-    }
-    String shortestSuffix({JPath*} all, JPath file) {
-        Integer longestPath = Integer.max(all.map(JPath.nameCount)) else 1;
-        MutableSet<String> localCache = HashSet<String>();
-        for (num in 1..longestPath) {
-            for (key in all) {
-                String item = suffix(key, num);
-                if (localCache.contains(item)) {
-                    break;
-                } else {
-                    localCache.add(item);
-                }
-            } else {
-                return suffix(file, num);
-            }
-        }
-        return file.string;
-    }
     void serveReports(IDriverModel model, Integer port, Player? currentPlayer) {
         MutableMap<JPath, String> cache = HashMap<JPath, String>();
         if (is IMultiMapModel model) {
@@ -140,7 +146,7 @@ object reportCLI satisfies SimpleDriver {
         if (cache.empty) {
             return;
         } else {
-            value localCache = cache.map((file->report) => shortestSuffix(cache.keys, file.toAbsolutePath())->report);
+            value localCache = cache.map((file->report) => suffixHelper.shortestSuffix(cache.keys, file.toAbsolutePath())->report);
             {Endpoint*} endpoints = localCache.map((file->report) =>
                 Endpoint {
 	                path = startsWith("/``file``");
@@ -149,7 +155,7 @@ object reportCLI satisfies SimpleDriver {
             Endpoint rootHandler = Endpoint {
                 path = isRoot();
                 void service(Request request, Response response) {
-	                	renderTemplate(Html {
+	                    renderTemplate(Html {
 	                    Head {
 	                        Title {
 	                            "Strategic Primer Reports";
@@ -277,41 +283,45 @@ object tabularReportGUI satisfies SimpleDriver {
 }
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
 object tabularReportCLI satisfies SimpleDriver {
-    shared actual IDriverUsage usage = DriverUsage(false, ["-b", "--tabular"],
-        ParamCount.atLeastOne, "Tabular Report Generator",
-        "Produce CSV reports of the contents of a map.");
+    shared actual IDriverUsage usage = DriverUsage {
+	        graphical = false;
+	        invocations = ["-b", "--tabular"];
+	        paramsWanted = ParamCount.atLeastOne;
+	        shortDescription = "Tabular Report Generator";
+	        longDescription = "Produce CSV reports of the contents of a map.";
+	        supportedOptionsTemp = ["--serve[=8080]"];
+    };
     MutableMap<String,Writer> writers = HashMap<String,Writer>();
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        Anything(String)(String) filenameFunction(Path base) {
-            assert (exists baseName = base.elements.terminal(1).first);
-            Anything(String) retval(String tableName) {
-                if (exists writer = writers.get("``baseName``.``tableName``.csv")) {
-                    return writer.write;
+    void serveReports(IDriverModel model, Integer port) {
+        Map<JPath, IMapNG> mapping;
+        if (is IMultiMapModel model) {
+            mapping = map {
+                for ([map, path] in model.allMaps)
+                if (exists path) path->map
+            };
+        } else if (exists path = model.mapFile) {
+            mapping = map { path->model.map };
+        } else {
+            mapping = map { JPaths.get("unknown.xml")->model.map };
+        }
+        MutableMap<[String, String], StringBuilder> builders = HashMap<[String, String], StringBuilder>();
+        Anything(String)(String) filenameFunction(JPath base) {
+            String baseName = suffixHelper.shortestSuffix(mapping.keys, base);
+            return (String tableName) {
+                if (exists writer = builders.get([baseName, tableName])) {
+                    return writer.append;
                 } else {
-                    File file;
-                    switch (temp = base.siblingPath("``baseName``.``tableName``.csv").resource)
-                    case (is File) {
-                        file = temp;
-                    }
-                    case (is Nil) {
-                        file = temp.createFile();
-                    }
-                    else {
-                        throw IOException("``base``.``tableName``.csv exists but is not a file");
-                    }
-                    value writer = file.Overwriter();
-                    writers["``baseName``.``tableName``.csv"] = writer;
-                    return writer.write;
+                    StringBuilder writer = StringBuilder();
+                    builders[[baseName, tableName]] = writer;
+                    return writer.append;
                 }
-            }
-            return retval;
+            };
         }
         void createReports(IMapNG map, JPath? mapFile) {
             if (exists mapFile) {
                 try {
                     tabularReportGenerator.createTabularReports(map,
-                        filenameFunction(parsePath(mapFile.string)));
+                        filenameFunction(mapFile));
                 } catch (IOException|IOError except) {
                     throw DriverFailedException(except);
                 }
@@ -326,9 +336,122 @@ object tabularReportCLI satisfies SimpleDriver {
         } else {
             createReports(model.map, model.mapFile);
         }
-        for (writer in writers.items) {
-            writer.close();
-        }
+        {Endpoint*} endpoints = builders.map(([file, table]->builder) =>
+            Endpoint {
+            path = matchEquals("/``file``.``table``.csv");
+            void service(Request request, Response response) {
+                response.addHeader(Header("Content-Disposition", "attachment; filename=\"``table``.csv\""));
+                response.writeString(builder.string);
+            }
+        });
+        {Endpoint*} tocs = mapping.keys.map((path) => suffixHelper.shortestSuffix(mapping.keys, path))
+                .map((path) => Endpoint {
+            path = matchEquals("/``path``").or(matchEquals("/``path``/"));
+            void service(Request request, Response response) {
+                renderTemplate(Html {
+                    Head {
+                        Title {
+                            "Tabular Reports for ``path``";
+                        }
+                    }, Body {
+                        H1 {
+                            "Tabular Reports for ``path``";
+                        }, Ul {
+                            builders.keys.filter(([mapFile, table]) => mapFile == path).map(([mapFile, table]) => Li {
+                                A { href="/``mapFile``.``table``.csv"; children = ["``table``.csv"]; }
+                            })
+                        }
+                    }
+	            }, response.writeString);
+            }
+        });
+        Endpoint rootHandler = Endpoint {
+            path = isRoot();
+            void service(Request request, Response response) {
+                renderTemplate(Html {
+                    Head {
+                        Title {
+                            "Strategic Primer Tabular Reports";
+                        }
+                    },
+                    Body {
+                        H1 {
+                            "Strategic Primer Taublar Reports";
+                        },
+                        Ul {
+                            mapping.keys.map((path) => suffixHelper.shortestSuffix(mapping.keys, path))
+                                    .map((file) => Li {
+                                A { href="/``file``/"; children = [file]; }
+                            })
+                        }
+                    }
+                }, response.writeString);
+            }
+        };
+        log.info("About to start serving on port ``port``");
+        newServer {
+            rootHandler, *endpoints.chain(tocs)
+        }.start(SocketAddress("127.0.0.1", port));
+    }
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        if (options.hasOption("--serve")) {
+            value tempPort = Integer.parse(options.getArgument("--serve"));
+            Integer port;
+            if (is Integer tempPort) {
+                port = tempPort;
+            } else {
+                port = 8080;
+            }
+            serveReports(model, port);
+        } else {
+	        Anything(String)(String) filenameFunction(Path base) {
+	            assert (exists baseName = base.elements.terminal(1).first);
+	            Anything(String) retval(String tableName) {
+	                if (exists writer = writers.get("``baseName``.``tableName``.csv")) {
+	                    return writer.write;
+	                } else {
+	                    File file;
+	                    switch (temp = base.siblingPath("``baseName``.``tableName``.csv").resource)
+	                    case (is File) {
+	                        file = temp;
+	                    }
+	                    case (is Nil) {
+	                        file = temp.createFile();
+	                    }
+	                    else {
+	                        throw IOException("``base``.``tableName``.csv exists but is not a file");
+	                    }
+	                    value writer = file.Overwriter();
+	                    writers["``baseName``.``tableName``.csv"] = writer;
+	                    return writer.write;
+	                }
+	            }
+	            return retval;
+	        }
+	        void createReports(IMapNG map, JPath? mapFile) {
+	            if (exists mapFile) {
+	                try {
+	                    tabularReportGenerator.createTabularReports(map,
+	                        filenameFunction(parsePath(mapFile.string)));
+	                } catch (IOException|IOError except) {
+	                    throw DriverFailedException(except);
+	                }
+	            } else {
+	                log.error("Asked to create reports from map with no filename");
+	            }
+	        }
+	        if (is IMultiMapModel model) {
+	            for ([map, file] in model.allMaps) {
+	                createReports(map, file);
+	            }
+	        } else {
+	            createReports(model.map, model.mapFile);
+	        }
+	        for (writer in writers.items) {
+	            writer.close();
+	        }
+	    }
     }
     "Since this is a CLI driver, we can't show a file-chooser dialog."
     shared actual {JPath*} askUserForFiles() => {};
