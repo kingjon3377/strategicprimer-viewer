@@ -212,6 +212,7 @@ shared class FortressReportGenerator(
                 ostream("""</ul></li>
                            """);
             }
+            ostream("</ul>\n");
             fixtures.remove(item.id);
         } else {
             MutableMap<Fortress, Point> ours = HashMap<Fortress, Point>();
