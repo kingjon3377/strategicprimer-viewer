@@ -64,7 +64,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
 	"The first test: all in one place."
 	Integer first(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
 		BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
-		Integer start = system.nanoseconds;
+		Integer start = system.milliseconds;
 		for (rep in 0:reps) {
 			image.flush();
 			for (point in map.locations) {
@@ -72,7 +72,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
 					tileSize);
 			}
 		}
-		Integer end = system.nanoseconds;
+		Integer end = system.milliseconds;
 		return end - start;
 	}
 	"The second test: Translating."
@@ -80,7 +80,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
 		MapDimensions mapDimensions = map.dimensions;
 		BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
 			tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
-		Integer start = system.nanoseconds;
+		Integer start = system.milliseconds;
 		Coordinate dimensions = coordinateFactory(tileSize, tileSize);
 		for (rep in 0:reps) {
 			image.flush();
@@ -90,13 +90,13 @@ shared object drawHelperComparator satisfies UtilityDriver {
 					dimensions);
 			}
 		}
-		Integer end = system.nanoseconds;
+		Integer end = system.milliseconds;
 		return end - start;
 	}
 	"Third test: in-place, reusing Graphics."
 	Integer third(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
 		BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
-		Integer start = system.nanoseconds;
+		Integer start = system.milliseconds;
 		for (rep in 0:reps) {
 			image.flush();
 			Graphics pen = image.createGraphics();
@@ -105,7 +105,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
 			}
 			pen.dispose();
 		}
-		Integer end = system.nanoseconds;
+		Integer end = system.milliseconds;
 		return end - start;
 	}
 	"Fourth test: translating, reusing Graphics."
@@ -113,7 +113,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
 		MapDimensions mapDimensions = map.dimensions;
 		BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
 			tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
-		Integer start = system.nanoseconds;
+		Integer start = system.milliseconds;
 		for (rep in 0:reps) {
 			image.flush();
 			Graphics pen = image.createGraphics();
@@ -124,7 +124,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
 			}
 			pen.dispose();
 		}
-		Integer end = system.nanoseconds;
+		Integer end = system.milliseconds;
 		return end - start;
 	}
 	Range<Integer> testRowSpan = 20..40;
@@ -134,7 +134,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
 		MapDimensions mapDimensions = map.dimensions;
 		BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
 			tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
-		Integer start = system.nanoseconds;
+		Integer start = system.milliseconds;
 		for (rep in 0:reps) {
 			image.flush();
 			Graphics pen = image.createGraphics();
@@ -148,14 +148,14 @@ shared object drawHelperComparator satisfies UtilityDriver {
 			}
 			pen.dispose();
 		}
-		Integer end = system.nanoseconds;
+		Integer end = system.milliseconds;
 		return end - start;
 	}
 	Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
 		MapDimensions mapDimensions = map.dimensions;
 		BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
 			tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
-		Integer start = system.nanoseconds;
+		Integer start = system.milliseconds;
 		for (rep in 0:reps) {
 			image.flush();
 			Graphics pen = image.createGraphics();
@@ -169,7 +169,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
 			}
 			pen.dispose();
 		}
-		Integer end = system.nanoseconds;
+		Integer end = system.milliseconds;
 		return end - start;
 	}
 	{[String, Integer(TileDrawHelper, IMapNG, Integer, Integer)]*} tests = {
