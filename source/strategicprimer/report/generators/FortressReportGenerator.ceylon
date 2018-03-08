@@ -209,6 +209,7 @@ shared class FortressReportGenerator(
             ostream("""</ul></li>
                        """);
         }
+        ostream("</ul>\n");
         fixtures.remove(item.id);
     }
     "Produces a sub-report on all fortresses. All fixtures referred to in this report are
