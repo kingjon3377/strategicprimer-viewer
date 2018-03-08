@@ -82,7 +82,6 @@ shared class VillageReportGenerator(
                         } else {
                             mapping = HeadedMapImpl<Village, Point>(
                                 "<h5>Villages sworn to ``village.owner.name``</h5>
-                                 <ul>
                                  ", villageComparator);
                             others[village.owner] = mapping;
                         }
