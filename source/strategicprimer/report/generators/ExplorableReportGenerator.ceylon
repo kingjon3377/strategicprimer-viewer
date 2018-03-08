@@ -120,9 +120,11 @@ shared class ExplorableReportGenerator(
             }
             if (!caves.empty || !battles.empty || !portals.empty) {
                 ostream("<h4>Caves, Battlefields, and Portals</h4>
-                         <ul>
-                         ``caves````battles````portals``</ul>
-                         ");
+                         <ul>");
+                for (list in { caves, battles, portals }.filter((list) => !list.empty)) {
+                    ostream("<li>``list``</li>");
+                }
+                ostream("</ul>\n");
             }
             writeMap(ostream, adventures,
                         (AdventureFixture key->Point val, formatter) => produce(fixtures,
