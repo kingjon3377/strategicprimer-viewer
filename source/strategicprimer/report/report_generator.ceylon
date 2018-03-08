@@ -124,7 +124,8 @@ todo("Consider generating Markdown instead of HTML. OTOH, we'd have to keep a li
 shared String createReport(IMapNG map, Player player = map.currentPlayer) {
     MapDimensions dimensions = map.dimensions;
     StringBuilder builder = StringBuilder();
-    builder.append("""<html>
+    builder.append("""<!DOCTYPE html>
+                      <html>
                       <head><title>Strategic Primer map summary report</title></head>
                       <body>
                       """);
@@ -162,7 +163,8 @@ shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPla
     MapDimensions dimensions = map.dimensions;
     StringBuilder builder = StringBuilder();
     builder.append(
-        """<html>
+        """<!DOCTYPE html>
+           <html>
             <head><title>Strategic Primer map summary abridged report</title></head>
             <body>
             """);
