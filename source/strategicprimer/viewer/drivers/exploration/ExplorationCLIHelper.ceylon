@@ -100,96 +100,6 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
         }
     }
-    "Have the player move the selected unit. Throws an assertion-error exception if no
-     unit is selected. Movement cost is reported by the driver model to all registered
-     MovementCostListeners, while any additional costs for non-movement actions are
-     reported by this class, so a listener should be attached to both."
-    shared void move() {
-        assert (exists mover = model.selectedUnit);
-        Integer directionNum = cli.inputNumber("Direction to move: ");
-	    Direction direction;
-	    switch (directionNum)
-	    case (0) { changeSpeed(); return; }
-	    case (1) { direction = Direction.southwest; }
-	    case (2) { direction = Direction.south; }
-	    case (3) { direction = Direction.southeast; }
-	    case (4) { direction = Direction.west; }
-	    case (5) { direction = Direction.nowhere; }
-	    case (6) { direction = Direction.east; }
-	    case (7) { direction = Direction.northwest; }
-	    case (8) { direction = Direction.north; }
-	    case (9) { direction = Direction.northeast; }
-	    else { fireMovementCost(runtime.maxArraySize); return; }
-        Point point = model.selectedUnitLocation;
-        Point destPoint = model.getDestination(point, direction);
-        try {
-            model.move(direction, speed);
-        } catch (TraversalImpossibleException except) {
-            log.debug("Attempted movement to impossible destination");
-            cli.println("That direction is impassable; we've made sure all maps show that
-                         at a cost of 1 MP");
-            return;
-        }
-        MutableList<TileFixture> constants = ArrayList<TileFixture>();
-        IMutableMapNG map = model.map;
-        MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
-//        for (fixture in map.fixtures[destPoint]) { // TODO: syntax sugar once compiler bug fixed
-        for (fixture in map.fixtures.get(destPoint)) {
-            if (simpleMovementModel.shouldAlwaysNotice(mover, fixture)) {
-                constants.add(fixture);
-            } else if (simpleMovementModel.shouldSometimesNotice(mover, speed, fixture)) {
-                allFixtures.add(fixture);
-            }
-        }
-        Animal|HuntingModel.NothingFound tracksAnimal;
-        // Since not-visible terrain is impassable, by this point we know the tile is
-        // visible.
-        assert (exists terrain = model.map.baseTerrain[destPoint]);
-        if (TileType.ocean == terrain) {
-            tracksAnimal = huntingModel.fish(destPoint).map(Entry.item).first else HuntingModel.NothingFound.nothingFound;
-        } else {
-            tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first else HuntingModel.NothingFound.nothingFound;
-        }
-        if (is Animal tracksAnimal) {
-            allFixtures.add(Animal(tracksAnimal.kind, true, false, "wild", -1));
-        }
-        if (Direction.nowhere == direction) {
-            if (cli.inputBooleanInSeries(
-                "Should any village here swear to the player?  ")) {
-                model.swearVillages();
-            }
-            if (cli.inputBooleanInSeries("Dig to expose some ground here? ")) {
-                model.dig();
-            }
-        }
-        String mtn;
-//        if (map.mountainous[destPoint]) { // TODO: syntax sugar once compiler bug fixed
-        if (map.mountainous.get(destPoint)) {
-            mtn = "mountainous ";
-            for (pair in model.subordinateMaps) {
-                pair.first.mountainous[destPoint] = true;
-            }
-        } else {
-            mtn = "";
-        }
-        cli.println("The explorer comes to ``destPoint``, a ``mtn``tile with terrain ``
-                  map.baseTerrain[destPoint] else "Unknown"``");
-        {TileFixture*} noticed = simpleMovementModel.selectNoticed(allFixtures, identity<TileFixture>,
-                mover, speed);
-        if (noticed.empty) {
-            cli.println("The following were automatically noticed:");
-        } else if (noticed.size > 1) {
-            cli.println(
-                "The following were noticed, all but the last ``noticed
-                    .size`` automatically:");
-        } else {
-            cli.println("The following were noticed, all but the last automatically:");
-        }
-        constants.addAll(noticed);
-        for (fixture in constants) {
-            printAndTransferFixture(destPoint, fixture, mover);
-        }
-    }
     "Ask the user for directions the unit should move until it runs out of MP or the user
       decides to quit."
     todo("Inline back into [[explorationCLI]]?")
@@ -210,7 +120,89 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 cli.println("Current speed: ``speed.name``");
                 cli.println("""0 = Change Speed, 1 = SW, 2 = S, 3 = SE, 4 = W, 5 = Stay Here,
                                6 = E, 7 = NW, 8 = N, 9 = NE, 10 = Quit.""");
-                move();
+                Integer directionNum = cli.inputNumber("Direction to move: ");
+                Direction direction;
+                switch (directionNum)
+                case (0) { changeSpeed(); continue; }
+                case (1) { direction = Direction.southwest; }
+                case (2) { direction = Direction.south; }
+                case (3) { direction = Direction.southeast; }
+                case (4) { direction = Direction.west; }
+                case (5) { direction = Direction.nowhere; }
+                case (6) { direction = Direction.east; }
+                case (7) { direction = Direction.northwest; }
+                case (8) { direction = Direction.north; }
+                case (9) { direction = Direction.northeast; }
+                else { fireMovementCost(runtime.maxArraySize); continue; }
+                Point point = model.selectedUnitLocation;
+                Point destPoint = model.getDestination(point, direction);
+                try {
+                    model.move(direction, speed);
+                } catch (TraversalImpossibleException except) {
+                    log.debug("Attempted movement to impossible destination");
+                    cli.println("That direction is impassable; we've made sure all maps show that
+                                 at a cost of 1 MP");
+                    continue;
+                }
+                MutableList<TileFixture> constants = ArrayList<TileFixture>();
+                IMutableMapNG map = model.map;
+                MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
+                //        for (fixture in map.fixtures[destPoint]) { // TODO: syntax sugar once compiler bug fixed
+                for (fixture in map.fixtures.get(destPoint)) {
+                    if (simpleMovementModel.shouldAlwaysNotice(mover, fixture)) {
+                        constants.add(fixture);
+                    } else if (simpleMovementModel.shouldSometimesNotice(mover, speed, fixture)) {
+                        allFixtures.add(fixture);
+                    }
+                }
+                Animal|HuntingModel.NothingFound tracksAnimal;
+                // Since not-visible terrain is impassable, by this point we know the tile is
+                // visible.
+                assert (exists terrain = model.map.baseTerrain[destPoint]);
+                if (TileType.ocean == terrain) {
+                    tracksAnimal = huntingModel.fish(destPoint).map(Entry.item).first else HuntingModel.NothingFound.nothingFound;
+                } else {
+                    tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first else HuntingModel.NothingFound.nothingFound;
+                }
+                if (is Animal tracksAnimal) {
+                    allFixtures.add(Animal(tracksAnimal.kind, true, false, "wild", -1));
+                }
+                if (Direction.nowhere == direction) {
+                    if (cli.inputBooleanInSeries(
+                        "Should any village here swear to the player?  ")) {
+                        model.swearVillages();
+                    }
+                    if (cli.inputBooleanInSeries("Dig to expose some ground here? ")) {
+                        model.dig();
+                    }
+                }
+                String mtn;
+                //        if (map.mountainous[destPoint]) { // TODO: syntax sugar once compiler bug fixed
+                if (map.mountainous.get(destPoint)) {
+                    mtn = "mountainous ";
+                    for (pair in model.subordinateMaps) {
+                        pair.first.mountainous[destPoint] = true;
+                    }
+                } else {
+                    mtn = "";
+                }
+                cli.println("The explorer comes to ``destPoint``, a ``mtn``tile with terrain ``
+                    map.baseTerrain[destPoint] else "Unknown"``");
+                {TileFixture*} noticed = simpleMovementModel.selectNoticed(allFixtures, identity<TileFixture>,
+                    mover, speed);
+                if (noticed.empty) {
+                    cli.println("The following were automatically noticed:");
+                } else if (noticed.size > 1) {
+                    cli.println(
+                        "The following were noticed, all but the last ``noticed
+                                .size`` automatically:");
+                } else {
+                    cli.println("The following were noticed, all but the last automatically:");
+                }
+                constants.addAll(noticed);
+                for (fixture in constants) {
+                    printAndTransferFixture(destPoint, fixture, mover);
+                }
             }
         } else {
             cli.println("No unit is selected");
