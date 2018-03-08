@@ -238,7 +238,28 @@ shared object queryCLI satisfies SimpleDriver {
 				Integer cost = cli.inputNumber("Time to gather: ");
 				time -= cost;
 				// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
-				// TODO: it already does for shrubs, really
+				if (is Shrub encounter, encounter.population > 0,
+						cli.inputBooleanInSeries("Reduce shrub population here?")) {
+					// TODO: Extract a method for reducing HasPopulation population instead of duplicating here and when handling animals
+					Integer count = Integer.smallest(cli.inputNumber("How many plants to remove?"),
+						encounter.population);
+					if (count > 0) {
+						model.map.removeFixture(loc, encounter);
+						Integer remaining = encounter.population - count;
+						if (remaining > 0) {
+							Shrub addend = Shrub(encounter.kind, encounter.id, remaining);
+							model.map.addFixture(loc, addend);
+							if (is IMultiMapModel model) {
+								for ([map, file] in model.subordinateMaps) {
+									if (!map.fixtures.get(loc).any((fix) => fix.id == encounter.id)) {
+										map.addFixture(loc, addend.copy(true));
+									}
+								}
+							}
+						}
+					}
+					continue;
+				}
 				cli.println("``time`` minutes remaining.");
 			} else {
 				time -= noResultCost;
