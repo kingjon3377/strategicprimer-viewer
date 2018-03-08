@@ -1,6 +1,7 @@
 import ceylon.collection {
     ArrayList,
-    MutableList
+    MutableList,
+	Queue
 }
 
 import lovelace.util.common {
@@ -13,7 +14,8 @@ import strategicprimer.model.map {
     TileFixture,
     HasOwner,
     IMutableMapNG,
-    Point
+    Point,
+	IMapNG
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -33,10 +35,14 @@ import strategicprimer.drivers.exploration.common {
     MovementCostListener,
     TraversalImpossibleException,
     simpleMovementModel,
-    MovementCostSource
+    MovementCostSource,
+	pathfinder
 }
 import strategicprimer.model.map.fixtures.towns {
-    Village
+    Village,
+	Fortress,
+	AbstractTown,
+	TownStatus
 }
 
 "The logic split out of [[explorationCLI]]"
@@ -115,27 +121,69 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             model.addMovementCostListener(handleCost);
 //            addMovementCostListener(handleCost);
             listeners.add(handleCost);
+            MutableList<Point>&Queue<Point> proposedPath = ArrayList<Point>();
+            object automationConfig {
+                variable ExplorationAutomationConfig? wrapped = null;
+                shared ExplorationAutomationConfig config {
+                    if (exists temp = wrapped) {
+                        return temp;
+                    } else {
+                        value retval = ExplorationAutomationConfig(mover.owner,
+	                            cli.inputBooleanInSeries("Stop for instructions at others' fortresses?"),
+	                            cli.inputBooleanInSeries("Stop for instructions at active towns?"),
+	                            cli.inputBooleanInSeries("Stop for instructions at inactive towns?"),
+	                            cli.inputBooleanInSeries("Stop for instructions at villages?"),
+	                            cli.inputBooleanInSeries("Stop for instructions on meeting other players' units?"),
+	                            cli.inputBooleanInSeries("Stop for instructions on meeting independent units?"));
+                        wrapped = retval;
+                        return retval;
+                    }
+                }
+            }
             while (movement > 0) {
-                cli.println("``movement`` MP of ``totalMP`` remaining.");
-                cli.println("Current speed: ``speed.name``");
-                cli.println("""0 = Change Speed, 1 = SW, 2 = S, 3 = SE, 4 = W, 5 = Stay Here,
-                               6 = E, 7 = NW, 8 = N, 9 = NE, 10 = Quit.""");
-                Integer directionNum = cli.inputNumber("Direction to move: ");
-                Direction direction;
-                switch (directionNum)
-                case (0) { changeSpeed(); continue; }
-                case (1) { direction = Direction.southwest; }
-                case (2) { direction = Direction.south; }
-                case (3) { direction = Direction.southeast; }
-                case (4) { direction = Direction.west; }
-                case (5) { direction = Direction.nowhere; }
-                case (6) { direction = Direction.east; }
-                case (7) { direction = Direction.northwest; }
-                case (8) { direction = Direction.north; }
-                case (9) { direction = Direction.northeast; }
-                else { fireMovementCost(runtime.maxArraySize); continue; }
                 Point point = model.selectedUnitLocation;
-                Point destPoint = model.getDestination(point, direction);
+                Direction direction;
+                if (exists proposedDestination = proposedPath.accept()) {
+                    direction = `Direction`.caseValues.find(
+                        (dir) => model.getDestination(point, dir) == proposedDestination) else Direction.nowhere;
+                    if (proposedDestination == point) {
+                        continue;
+                    } else if (direction == Direction.nowhere) {
+                        cli.println("Intended next destination ``proposedDestination`` is not adjacent to current location ``point``");
+                        continue;
+                    }
+                    cli.println("``movement`` MP of ``totalMP`` remaining.");
+                    cli.println("Current speed: ``speed.name``");
+                } else {
+	                cli.println("``movement`` MP of ``totalMP`` remaining.");
+	                cli.println("Current speed: ``speed.name``");
+	                cli.println("""0 = Change Speed, 1 = SW, 2 = S, 3 = SE, 4 = W, 5 = Stay Here,
+	                               6 = E, 7 = NW, 8 = N, 9 = NE, 10 = Pathfind Toward Location, 11 = Quit.""");
+	                Integer directionNum = cli.inputNumber("Direction to move: ");
+	                switch (directionNum)
+	                case (0) { changeSpeed(); continue; }
+	                case (1) { direction = Direction.southwest; }
+	                case (2) { direction = Direction.south; }
+	                case (3) { direction = Direction.southeast; }
+	                case (4) { direction = Direction.west; }
+	                case (5) { direction = Direction.nowhere; }
+	                case (6) { direction = Direction.east; }
+	                case (7) { direction = Direction.northwest; }
+	                case (8) { direction = Direction.north; }
+	                case (9) { direction = Direction.northeast; }
+	                case (10) {
+	                    value [cost, path] = pathfinder.getTravelDistance(model.subordinateMaps.first?.first else model.map,
+	                        point, cli.inputPoint("Location to move toward: "));
+	                    if (path.empty) {
+	                        cli.println("The explorer doesn't know how to get there from here.");
+	                    } else {
+	                        proposedPath.addAll(path);
+	                    }
+	                    continue;
+	                }
+	                else { fireMovementCost(runtime.maxArraySize); continue; }
+	            }
+	            Point destPoint = model.getDestination(point, direction);
                 try {
                     model.move(direction, speed);
                 } catch (TraversalImpossibleException except) {
@@ -203,9 +251,41 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 for (fixture in constants) {
                     printAndTransferFixture(destPoint, fixture, mover);
                 }
+                if (!proposedPath.empty, automationConfig.config.stopAtPoint(
+	                    model.subordinateMaps.first?.first else model.map, destPoint)) {
+                    cli.println("One of your stop-pathfinding conditions triggered, so control is returned to you.");
+                    proposedPath.clear();
+                }
             }
         } else {
             cli.println("No unit is selected");
         }
     }
+}
+
+class ExplorationAutomationConfig(Player player, Boolean stopForForts,
+	Boolean stopForActiveTowns, Boolean stopForInactiveTowns, Boolean stopForVillages,
+	Boolean stopForPlayerUnits, Boolean stopForIndieUnits) {
+	shared Boolean stopAtPoint(IMapNG map, Point point) {
+		for (fixture in map.fixtures[point] else {}) {
+			if (is Fortress fixture, fixture.owner != player, stopForForts) {
+				return true;
+			} else if (is AbstractTown fixture) {
+				if (fixture.status == TownStatus.active, stopForActiveTowns) {
+					return true;
+				} else if (fixture.status != TownStatus.active, stopForInactiveTowns) {
+					return true;
+				}
+			} else if (is Village fixture, stopForVillages) {
+				return true;
+			} else if (is IUnit fixture) {
+				if (fixture.owner.independent, stopForIndieUnits) {
+					return true;
+				} else if (!fixture.owner.independent, fixture.owner != player, stopForPlayerUnits) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }
