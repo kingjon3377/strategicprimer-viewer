@@ -250,9 +250,9 @@ shared object queryCLI satisfies SimpleDriver {
 				cli.println("Found nothing for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
 				continue;
-			} else if (cli.inputBooleanInSeries("Found ``encounter.shortDescription``. Should they gather?",
+			} else if (cli.inputBooleanInSeries("Found ``encounter.shortDescription````
+					if (is Meadow encounter) then " (``encounter.status``)" else ""``. Should they gather?",
 					encounter.kind)) {
-				// TODO: include status for fields and meadows
 				Integer cost = cli.inputNumber("Time to gather: ");
 				time -= cost;
 				// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
