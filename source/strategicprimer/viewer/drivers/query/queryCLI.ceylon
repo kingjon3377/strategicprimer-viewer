@@ -141,6 +141,17 @@ shared object queryCLI satisfies SimpleDriver {
 				.format(distance(start, end, map.dimensions), 0, 0)``");
 		}
 	}
+	"If the given driver model *has* subordinate maps, add a copy of the given fixture to them at the
+	 given location iff no fixture with the same ID is already there."
+	void addToSubMaps(IDriverModel model, Point point, TileFixture fixture, Boolean zero) {
+		if (is IMultiMapModel model) {
+			for ([map, file] in model.subordinateMaps) {
+				if (!map.fixtures.get(point).any((item) => item.id == fixture.id)) {
+					map.addFixture(point, fixture.copy(zero));
+				}
+			}
+		}
+	}
 	"Reduce the population of a group of plants, animals, etc., and copy the reduced form into all
 	 subordinate maps."
 	void reducePopulation(IDriverModel model, ICLIHelper cli, Point point, HasPopulation&TileFixture fixture,
@@ -167,12 +178,8 @@ shared object queryCLI satisfies SimpleDriver {
 					}
 				}
 			}
-		} else if (is IMultiMapModel model) {
-			for ([map, file] in model.subordinateMaps) {
-				if (!map.fixtures.get(point).any((item) => item.id == fixture.id)) {
-					map.addFixture(point, fixture.copy(zero));
-				}
-			}
+		} else {
+			addToSubMaps(model, point, fixture, zero);
 		}
 	}
 	void huntGeneral(
@@ -212,12 +219,8 @@ shared object queryCLI satisfies SimpleDriver {
 				}
 				if (cli.inputBooleanInSeries("Reduce animal group population of ``encounter.population``?")) {
 					reducePopulation(model, cli, loc, encounter, "animals", true);
-				} else if (is IMultiMapModel model) {
-					for ([map, file] in model.subordinateMaps) {
-						if (!map.fixtures.get(loc).any((fix) => fix.id == encounter.id)) {
-							map.addFixture(loc, encounter.copy(true));
-						}
-					}
+				} else {
+					addToSubMaps(model, loc, encounter, true);
 				}
 				cli.println("``time`` minutes remaining.");
 			} else {
@@ -263,13 +266,7 @@ shared object queryCLI satisfies SimpleDriver {
 			} else {
 				time -= noResultCost;
 			}
-			if (is IMultiMapModel model) {
-				for ([map, file] in model.subordinateMaps) {
-					if (!map.fixtures.get(loc).any((fix) => fix.id == encounter.id)) {
-						map.addFixture(loc, encounter.copy(true));
-					}
-				}
-			}
+			addToSubMaps(model, loc, encounter, true);
 		}
 	}
 	"""Handle herding mammals. Returns how many hours each herder spends "herding." """
