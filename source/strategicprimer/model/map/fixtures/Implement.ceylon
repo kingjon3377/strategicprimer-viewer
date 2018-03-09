@@ -14,7 +14,7 @@ import strategicprimer.model.map.fixtures {
 "A piece of equipment."
 todo("More members?")
 shared class Implement(kind, id, count = 1)
-        satisfies UnitMember&FortressMember&HasKind&HasMutableImage&HasPopulation {
+        satisfies UnitMember&FortressMember&HasKind&HasMutableImage&HasPopulation/*<Implement>*/ {
 	shared actual String plural = "Equipment";
     """The "kind" of the implement."""
     shared actual String kind;
@@ -58,6 +58,7 @@ shared class Implement(kind, id, count = 1)
         }
     }
     shared actual Implement copy(Boolean zero) => Implement(kind, id, count);
+    shared actual Implement reduced(Integer newPopulation) => Implement(kind, id, newPopulation);
     shared actual String defaultImage = "implement.png";
     shared actual Boolean equals(Object obj) {
         if (is Implement obj) {

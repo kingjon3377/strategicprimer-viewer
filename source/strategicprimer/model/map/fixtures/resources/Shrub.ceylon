@@ -7,7 +7,7 @@ import strategicprimer.model.map {
 }
 "A [[strategicprimer.model.map::TileFixture]] to represent shrubs, or their aquatic
  equivalents, on a tile."
-shared class Shrub(kind, id, population = -1) satisfies HarvestableFixture&HasPopulation {
+shared class Shrub(kind, id, population = -1) satisfies HarvestableFixture&HasPopulation/*<Shrub>*/ {
     "What kind of shrub this is"
     shared actual String kind;
     "The ID number."
@@ -21,6 +21,7 @@ shared class Shrub(kind, id, population = -1) satisfies HarvestableFixture&HasPo
         retval.image = image;
         return retval;
     }
+    shared actual Shrub reduced(Integer newPopulation) => Shrub(kind, id, newPopulation);
     shared actual String defaultImage = "shrub.png";
     shared actual String string => kind;
     shared actual Boolean equals(Object obj) {

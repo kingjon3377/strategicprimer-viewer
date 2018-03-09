@@ -15,7 +15,7 @@ import lovelace.util.jvm {
 }
 "An animal or group of animals."
 shared class Animal(kind, traces, talking, status, id, born = -1, population = 1)
-        satisfies MobileFixture&HasMutableImage&HasKind&UnitMember&HasPopulation {
+        satisfies MobileFixture&HasMutableImage&HasKind&UnitMember&HasPopulation/*<Animal>*/ {
     "ID number."
     shared actual Integer id;
     "If true, this is only traces or tracks, not an actual animal."
@@ -95,6 +95,8 @@ shared class Animal(kind, traces, talking, status, id, born = -1, population = 1
         retval.image = image;
         return retval;
     }
+    shared actual Animal reduced(Integer newPopulation) =>
+            Animal(kind, traces, talking, status, id, born, newPopulation);
     "Required Perception check result to find the animal."
     todo("Should be variable, either read from XML or computed from kind using some other
           read-from-file data.") // FIXME
