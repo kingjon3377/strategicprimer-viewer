@@ -245,8 +245,7 @@
         <include name="README.md" />
         <include name="*.sh" />
         <include name="viewer.eml" />
-        <include name="viewer.iml" />
-        <include name="viewer.iml" />
+        <include name="viewer-ceylon.iml" />
       </tarfileset>
       <tarfileset dir="source" prefix="${basename}/source">
         <include name="**" />
