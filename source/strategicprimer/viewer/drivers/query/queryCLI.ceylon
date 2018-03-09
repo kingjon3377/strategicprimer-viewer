@@ -201,7 +201,7 @@ shared object queryCLI satisfies SimpleDriver {
 				cli.println("Found nothing for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
 			} else if (encounter.traces) {
-				// TODO: add the tracks to subordinate maps
+				addToSubMaps(model, loc, encounter, true);
 				cli.println("Found only tracks or traces from ``encounter.kind`` for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
 			} else if (cli.inputBooleanInSeries("Found ``(encounter.population > 1) then
@@ -224,7 +224,7 @@ shared object queryCLI satisfies SimpleDriver {
 				}
 				cli.println("``time`` minutes remaining.");
 			} else {
-				// TODO: add the encounter to subordinate maps
+				addToSubMaps(model, loc, encounter, true);
 				time -= noResultCost;
 			}
 		}
