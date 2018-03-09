@@ -5,7 +5,9 @@ import strategicprimer.model.map {
 	Point,
 	HasOwner,
 	MapDimensions,
-	IFixture
+	IFixture,
+	HasPopulation,
+	TileFixture
 }
 import ceylon.collection {
 	MutableSet,
@@ -139,6 +141,40 @@ shared object queryCLI satisfies SimpleDriver {
 				.format(distance(start, end, map.dimensions), 0, 0)``");
 		}
 	}
+	"Reduce the population of a group of plants, animals, etc., and copy the reduced form into all
+	 subordinate maps."
+	void reducePopulation(IDriverModel model, ICLIHelper cli, Point point, HasPopulation&TileFixture fixture,
+			String plural, Boolean zero) {
+		Integer count = Integer.smallest(cli.inputNumber("How many ``plural`` to remove: "), fixture.population);
+		if (count > 0) {
+			model.map.removeFixture(point, fixture);
+			Integer remaining = fixture.population - count;
+			if (remaining > 0) {
+				assert (is HasPopulation&TileFixture addend = fixture.reduced(remaining));
+				model.map.addFixture(point, addend);
+				if (is IMultiMapModel model) {
+					for ([map, file] in model.subordinateMaps) {
+						if (exists found = map.fixtures.get(point).find((item) => fixture.isSubset(item, noop))) {
+							map.removeFixture(point, found);
+						}
+						map.addFixture(point, addend.copy(zero));
+					}
+				}
+			} else if (is IMultiMapModel model) {
+				for ([map, file] in model.subordinateMaps) {
+					if (exists found = map.fixtures.get(point).find((item) => fixture.isSubset(item, noop))) {
+						map.removeFixture(point, found);
+					}
+				}
+			}
+		} else if (is IMultiMapModel model) {
+			for ([map, file] in model.subordinateMaps) {
+				if (!map.fixtures.get(point).any((item) => item.id == fixture.id)) {
+					map.addFixture(point, fixture.copy(zero));
+				}
+			}
+		}
+	}
 	void huntGeneral(
 			"The map model."
 			IDriverModel model,
@@ -158,6 +194,7 @@ shared object queryCLI satisfies SimpleDriver {
 				cli.println("Found nothing for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
 			} else if (encounter.traces) {
+				// TODO: add the tracks to subordinate maps
 				cli.println("Found only tracks or traces from ``encounter.kind`` for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
 			} else if (cli.inputBooleanInSeries("Found ``(encounter.population > 1) then
@@ -174,30 +211,7 @@ shared object queryCLI satisfies SimpleDriver {
 					}
 				}
 				if (cli.inputBooleanInSeries("Reduce animal group population of ``encounter.population``?")) {
-					Integer count = Integer.smallest(cli.inputNumber("How many animals to remove?"),
-						encounter.population);
-					if (count > 0) {
-						model.map.removeFixture(loc, encounter);
-						Integer remaining = encounter.population - count;
-						if (remaining > 0) {
-							Animal addend = Animal(encounter.kind, false, encounter.talking, encounter.status,
-								encounter.id, encounter.born, remaining);
-							model.map.addFixture(loc, addend);
-							if (is IMultiMapModel model) {
-								for ([map, file] in model.subordinateMaps) {
-									if (!map.fixtures.get(loc).any((fix) => fix.id == encounter.id)) {
-										map.addFixture(loc, addend.copy(true));
-									}
-								}
-							}
-						}
-					} else if (is IMultiMapModel model) {
-						for ([map, file] in model.subordinateMaps) {
-							if (!map.fixtures.get(loc).any((fix) => fix.id == encounter.id)) {
-								map.addFixture(loc, encounter.copy(true));
-							}
-						}
-					}
+					reducePopulation(model, cli, loc, encounter, "animals", true);
 				} else if (is IMultiMapModel model) {
 					for ([map, file] in model.subordinateMaps) {
 						if (!map.fixtures.get(loc).any((fix) => fix.id == encounter.id)) {
@@ -207,6 +221,7 @@ shared object queryCLI satisfies SimpleDriver {
 				}
 				cli.println("``time`` minutes remaining.");
 			} else {
+				// TODO: add the encounter to subordinate maps
 				time -= noResultCost;
 			}
 		}
@@ -240,24 +255,8 @@ shared object queryCLI satisfies SimpleDriver {
 				// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
 				if (is Shrub encounter, encounter.population > 0,
 						cli.inputBooleanInSeries("Reduce shrub population here?")) {
-					// TODO: Extract a method for reducing HasPopulation population instead of duplicating here and when handling animals
-					Integer count = Integer.smallest(cli.inputNumber("How many plants to remove?"),
-						encounter.population);
-					if (count > 0) {
-						model.map.removeFixture(loc, encounter);
-						Integer remaining = encounter.population - count;
-						if (remaining > 0) {
-							Shrub addend = Shrub(encounter.kind, encounter.id, remaining);
-							model.map.addFixture(loc, addend);
-							if (is IMultiMapModel model) {
-								for ([map, file] in model.subordinateMaps) {
-									if (!map.fixtures.get(loc).any((fix) => fix.id == encounter.id)) {
-										map.addFixture(loc, addend.copy(true));
-									}
-								}
-							}
-						}
-					}
+					reducePopulation(model, cli, loc, encounter, "plants", true);
+					cli.println("``time`` minutes remaining.");
 					continue;
 				}
 				cli.println("``time`` minutes remaining.");
