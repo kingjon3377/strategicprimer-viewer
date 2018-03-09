@@ -1,4 +1,4 @@
-
+// FIXME: Combine these into a single toplevel object
 "The next turn, to use when creating
  [[TextFixture|strategicprimer.model.map.fixtures::TextFixture]]s."
 Integer nextTurn = 15;
