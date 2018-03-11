@@ -469,7 +469,7 @@ object oneToTwoConverterTests {
 	    initialize(converted, pointFactory(4, 7), TileType.tundra, groundFour(),
 	        orchard("fruit4"));
 	    initialize(converted, pointFactory(5, 0), TileType.tundra, groundThree(),
-	        village("gnome"), TextFixture(maxIterationsWarning, 15));
+	        village("gnome"), TextFixture(oneToTwoConfig.maxIterationsWarning, 15));
 	    initialize(converted, pointFactory(5, 1), TileType.plains, groundThree(),
 	        orchard("fruit3"));
 	    initialize(converted, pointFactory(5, 3), TileType.plains, groundThree(),

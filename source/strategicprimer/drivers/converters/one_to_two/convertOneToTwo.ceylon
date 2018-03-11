@@ -75,8 +75,9 @@ shared IMapNG convertOneToTwo(
         return old;
     }
     IMutableMapNG retval = SPMapNG(MapDimensionsImpl(
-        oldDimensions.rows * expansionFactor,
-        oldDimensions.columns * expansionFactor, 2), PlayerCollection(), nextTurn);
+	        oldDimensions.rows * oneToTwoConfig.expansionFactor,
+	        oldDimensions.columns * oneToTwoConfig.expansionFactor, 2), PlayerCollection(),
+	    oneToTwoConfig.nextTurn);
     Player independent = old.players.find(Player.independent)
     else PlayerImpl(-1, "independent");
     retval.addPlayer(independent);
@@ -124,10 +125,10 @@ shared IMapNG convertOneToTwo(
     }
     "Convert a single version-1 tile to the equivalent version-2 tiles."
     {Point*} convertTile(Point point) {
-        Point[] initial = [ for (i in 0:expansionFactor)
-        for (j in 0:expansionFactor)
-        pointFactory(point.row * expansionFactor + i,
-            point.column * expansionFactor + j) ];
+        Point[] initial = [ for (i in 0:oneToTwoConfig.expansionFactor)
+        for (j in 0:oneToTwoConfig.expansionFactor)
+        pointFactory(point.row * oneToTwoConfig.expansionFactor + i,
+            point.column * oneToTwoConfig.expansionFactor + j) ];
         for (subtile in initial) {
 //            retval.baseTerrain[subtile] = oldCopy.baseTerrain[point]; // TODO: syntax sugar once compiler bug fixed
             retval.baseTerrain[subtile] = oldCopy.baseTerrain.get(point);
@@ -147,7 +148,7 @@ shared IMapNG convertOneToTwo(
             }
 //            for (river in oldCopy.rivers[point]) {
             for (river in oldCopy.rivers.get(point)) {
-                assert (expansionFactor == 4); // the river-dispersion algorithm is tuned
+                assert (oneToTwoConfig.expansionFactor == 4); // the river-dispersion algorithm is tuned
                 switch (river)
                 case (River.east) {
                     riversAt(initial[10], River.east);
@@ -172,7 +173,7 @@ shared IMapNG convertOneToTwo(
             Random rng = DefaultRandom((point.column.leftLogicalShift(32)) + point.row);
             Queue<Point> shuffledInitial = LinkedList(randomize(initial, rng));
             Queue<TileFixture> shuffledFixtures = LinkedList(randomize(fixtures, rng));
-            for (iteration in 0:maxIterations) {
+            for (iteration in 0:oneToTwoConfig.maxIterations) {
                 if (!shuffledFixtures.front exists) {
                     break;
                 } else if (exists currentSubtile = shuffledInitial.accept()) {
@@ -200,7 +201,7 @@ shared IMapNG convertOneToTwo(
                     assert (exists subtile = shuffledInitial.accept());
                     addFixture(subtile, fixture);
                     retval.addFixture(subtile,
-                        TextFixture(maxIterationsWarning, nextTurn));
+                        TextFixture(oneToTwoConfig.maxIterationsWarning, oneToTwoConfig.nextTurn));
                 }
             }
         }
@@ -211,7 +212,7 @@ shared IMapNG convertOneToTwo(
             converted.addAll(convertTile(pointFactory(row, column)));
         }
     }
-    Random rng = DefaultRandom(maxIterations);
+    Random rng = DefaultRandom(oneToTwoConfig.maxIterations);
     for (point in randomize(converted, rng)) {
         {Point*} neighbors = {
             for (row in ((point.row - 1)..(point.row + 1))
@@ -263,13 +264,13 @@ shared IMapNG convertOneToTwo(
                     }
                 } else if (terrain == TileType.desert) {
                     Boolean watered = adjacentWater();
-                    if ((watered && rng.nextFloat() < desertToPlains) ||
+                    if ((watered && rng.nextFloat() < oneToTwoConfig.desertToPlains) ||
 //                    !retval.rivers[point].empty &&
                     !retval.rivers.get(point).empty &&
                     rng.nextFloat() < 0.6) {
                         retval.baseTerrain[point] = TileType.plains;
                     }
-                } else if (rng.nextFloat() < addForestProbability) {
+                } else if (rng.nextFloat() < oneToTwoConfig.addForestProbability) {
                     String forestType = runner.recursiveConsultTable(
 //                        "temperate_major_tree", point, retval.baseTerrain[point], // TODO: syntax sugar once compiler bug fixed
                         "temperate_major_tree", point, retval.baseTerrain.get(point),
