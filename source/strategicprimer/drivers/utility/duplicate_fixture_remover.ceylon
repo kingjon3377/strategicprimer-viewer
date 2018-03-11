@@ -35,7 +35,8 @@ import strategicprimer.model.map.fixtures {
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
-    Animal
+    Animal,
+	AnimalImpl
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture,
@@ -67,7 +68,7 @@ import lovelace.util.common {
 	NonNullCorrespondence
 }
 import ceylon.language.meta.model {
-	Class
+	ClassOrInterface
 }
 import strategicprimer.model.map.fixtures.terrain {
 	Forest
@@ -169,7 +170,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
     "Offer to combine like resources in a unit or fortress."
     void coalesceResources(String context, {IFixture*} stream, ICLIHelper cli, Anything(IFixture) add,
 	        Anything(IFixture) remove) {
-        Map<Class<IFixture>, CoalescedHolder<out IFixture, out Object>> mapping = map {
+        Map<ClassOrInterface<IFixture>, CoalescedHolder<out IFixture, out Object>> mapping = map {
             `ResourcePile`->CoalescedHolder<ResourcePile, [String, String, String, Integer]>(
                 (pile) => [pile.kind, pile.contents, pile.quantity.units, pile.created], combineResources),
             `Animal`->CoalescedHolder<Animal, [String, String, Integer]>(
@@ -255,27 +256,27 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
         return Meadow(top.kind, top.field, top.cultivated, top.id, top.status,
             list.map(Meadow.acres).map(decimalize).fold(decimalNumber(0))(plus));
     }
-    "Combine like [[Grove]]s into a single object. We assume all Groves are identical except for population and ID."
+    "Combine like [[Grove]]s into a single object. We assume all Groves are identical except for population and ID." // TODO: Use HasPopulation.combine() once implemented.
     Grove combineGroves({Grove*} list) {
         assert (exists top = list.first);
         return Grove(top.orchard, top.cultivated, top.kind, top.id, list.map(Grove.population).fold(0)(plus));
     }
-    "Combine like [[Shrub]]s into a single object. We assume all Shrubs are of the same kind."
+    "Combine like [[Shrub]]s into a single object. We assume all Shrubs are of the same kind." // TODO: Use HasPopulation.combine() once implemented.
     Shrub combineShrubs({Shrub*} list) {
         assert (exists top = list.first);
         return Shrub(top.kind, top.id, list.map(Shrub.population).fold(0)(plus));
     }
     "Combine like [[Implement]]s into a single object. We assume that all Implements are of
-     the same kind."
+     the same kind." // TODO: Use HasPopulation.combine() once implemented.
     Implement combineEquipment({Implement*} list) {
         assert (exists top = list.first);
         return Implement(top.kind, top.id, list.map(Implement.count).fold(0)(plus));
     }
     "Combine like Animals into a single Animal population. We assume that all animals have the
-     same kind, domestication status, and turn of birth."
+     same kind, domestication status, and turn of birth." // TODO: Use HasPopulation.combine() once implemented.
     Animal combineAnimals({Animal*} list) {
         assert (exists top = list.first);
-        return Animal(top.kind, false, false, top.status, top.id, top.born,
+        return AnimalImpl(top.kind, false, false, top.status, top.id, top.born,
             list.map(Animal.population).fold(0)(plus));
     }
     "Combine like resources into a single resource pile. We assume that all resources have

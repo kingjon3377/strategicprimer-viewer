@@ -79,7 +79,8 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
-    Animal
+    Animal,
+	AnimalImpl
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -483,7 +484,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                 if (exists possibleTracks =
                                     tracksSource(currentLocation).first,
                                 HuntingModel.noResults != possibleTracks) {
-                                    Animal animal = Animal(possibleTracks, true,
+                                    Animal animal = AnimalImpl(possibleTracks, true,
                                         false, "wild", -1);
                                     assert (is FixtureListModel listModel =
                                         mainList.model);

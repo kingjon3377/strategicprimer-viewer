@@ -34,7 +34,8 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal,
-    Unit
+    Unit,
+	AnimalImpl
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -135,7 +136,7 @@ object resolutionDecreaseTests {
 	test
 	shared void testResolutionReduction() {
 	    IMutableMapNG start = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
-	    Animal fixture = Animal("animal", false, true, "domesticated", 1);
+	    Animal fixture = AnimalImpl("animal", false, true, "domesticated", 1);
 	    initialize(start, pointFactory(0, 0), TileType.desert, fixture);
 	    CacheFixture fixtureTwo = CacheFixture("gemstones", "small", 2);
 	    initialize(start, pointFactory(0, 1), TileType.desert, fixtureTwo);

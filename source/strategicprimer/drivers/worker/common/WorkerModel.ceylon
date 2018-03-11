@@ -25,11 +25,11 @@ import strategicprimer.model.map {
     PlayerCollection
 }
 import strategicprimer.model.map.fixtures.mobile {
-    Animal,
     ProxyFor,
     ProxyUnit,
     IUnit,
-    Unit
+    Unit,
+	AnimalImpl
 }
 import strategicprimer.model.map.fixtures.terrain {
     Oasis,
@@ -207,7 +207,7 @@ object workerModelTests {
 	    }
 	    MutableList<TileFixture> fixtures = ArrayList<TileFixture>();
 	    fixtures.add(Oasis(14));
-	    fixtures.add(Animal("animal", false, false, "wild", 1));
+	    fixtures.add(AnimalImpl("animal", false, false, "wild", 1));
 	    MutableList<IUnit> listOne = ArrayList<IUnit>();
 	    Player playerOne = PlayerImpl(0, "player1");
 	    addItem(Unit(playerOne, "one", "unitOne", 2), fixtures, listOne);

@@ -20,7 +20,7 @@ import strategicprimer.model.map {
     Point
 }
 import strategicprimer.model.map.fixtures.mobile {
-    Animal
+	AnimalImpl
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -161,7 +161,7 @@ object sampleMapPopulator satisfies MapPopulator {
     shared actual Float chance = 0.05;
     shared actual void create(Point location, IMutableMapNG map, IDRegistrar idf) =>
             map.addFixture(location,
-                Animal("hare", false, false, "wild", idf.createID()));
+                AnimalImpl("hare", false, false, "wild", idf.createID()));
 }
 """A driver to add some kind of fixture to suitable tiles throughout the map. Customize
    the [[populator]] field before each use."""

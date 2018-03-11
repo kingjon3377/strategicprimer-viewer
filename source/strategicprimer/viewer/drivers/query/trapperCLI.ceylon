@@ -30,7 +30,8 @@ import ceylon.math.float {
 	round=halfEven
 }
 import strategicprimer.model.map.fixtures.mobile {
-	Animal
+	Animal,
+	AnimalImpl
 }
 "Possible actions in the trapping CLI; top-level so we can switch on the cases,
  since the other alternative, `static`, isn't possible in an `object` anymore."
@@ -114,8 +115,8 @@ shared object trappingCLI satisfies SimpleDriver {
 						map.removeFixture(loc, item);
 						Integer remaining = item.population - count;
 						if (remaining > 0) {
-							map.addFixture(loc, Animal(item.kind, false, item.talking, item.status,
-								item.id, item.born, remaining));
+							map.addFixture(loc, AnimalImpl(item.kind, false, item.talking, item.status,
+								item.id, item.born, remaining)); // TODO: Use HasPopulation.reduce()
 						}
 					}
 				}

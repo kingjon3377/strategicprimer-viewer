@@ -43,7 +43,8 @@ import strategicprimer.model.map.fixtures.mobile {
 	Ogre,
 	Phoenix,
 	Simurgh,
-	Troll
+	Troll,
+	AnimalImpl
 }
 import strategicprimer.model.xmlio {
     Warning
@@ -86,7 +87,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             throw MissingPropertyException(element, "count",
                 IllegalArgumentException("Animal population must be positive"));
         }
-        return Animal(getParameter(element, "kind"), tracks,
+        return AnimalImpl(getParameter(element, "kind"), tracks,
             getBooleanParameter(element, "talking", false),
             getParameter(element, "status", "wild"), idNum,
             getIntegerParameter(element, "born", -1), count);

@@ -5,7 +5,8 @@ import strategicprimer.model.map {
     HasMutableImage,
     IFixture,
     HasKind,
-	HasPopulation
+	HasPopulation,
+	HasImage
 }
 import strategicprimer.model.map.fixtures {
     UnitMember
@@ -14,127 +15,140 @@ import lovelace.util.jvm {
     readFileContents
 }
 "An animal or group of animals."
-shared class Animal(kind, traces, talking, status, id, born = -1, population = 1)
-        satisfies MobileFixture&HasMutableImage&HasKind&UnitMember&HasPopulation/*<Animal>*/ {
+shared interface Animal
+		satisfies Identifiable&MobileFixture&HasImage&HasKind&UnitMember&HasPopulation/*<Animal>*/ {
+	"If true, this is only traces or tracks, not an actual animal."
+	shared formal Boolean traces;
+	"Whether this is a talking animal."
+	shared formal Boolean talking;
+	"The domestication status of the animal."
+	todo("Should this be an enumerated type?")
+	shared formal String status;
+	"The turn the animal was born, or -1 if it is an adult (or if this is traces ...)"
+	shared formal Integer born;
+	shared actual default String shortDescription {
+		if (traces) {
+			return "traces of ``kind``";
+		} else if (talking) {
+			return "talking ``kind``";
+		} else {
+			String popString;
+			if (population == 1) {
+				popString = "";
+			} else {
+				popString = "``population`` ";
+			}
+			if (born >= 0) {
+				return "``popString````kind`` (born ``born``)";
+			} else {
+				return "``popString````status`` ``kind``";
+			}
+		}
+	}
+	"Default image filename"
+	todo("Should depend on the kind of animal")
+	shared actual default String defaultImage => (traces) then "tracks.png" else "animal.png";
+	shared actual Integer hash => id;
+	shared actual String string => shortDescription;
+	shared actual String plural => "Animals";
+	"Whether another animal is equal except its ID and population count."
+	shared default Boolean equalExceptPopulation(Animal other) {
+		return kind == other.kind && traces == other.traces && talking == other.talking &&
+				status == other.status && born == other.born;
+	}
+	shared actual default Boolean equalsIgnoringID(IFixture fixture) {
+		if (is Animal fixture) {
+			return equalExceptPopulation(fixture) && population == fixture.population;
+		} else {
+			return false;
+		}
+	}
+	"An object is equal if it is an animal with equal kind, either both or neither are
+	 talking, either both or neither are only traces, and if not traces if the IDs are
+	 equal."
+	shared actual default Boolean equals(Object obj) {
+		if (is Animal obj) {
+			if (traces) {
+				return equalsIgnoringID(obj);
+			} else {
+				return kind == obj.kind && traces == obj.traces && talking == obj.talking
+						&& status == obj.status && id == obj.id && born == obj.born
+						&& population == obj.population;
+			}
+		} else {
+			return false;
+		}
+	}
+	shared actual formal Animal reduced(Integer newPopulation);
+	shared actual formal Animal copy(Boolean zero);
+	"Required Perception check result to find the animal."
+	todo("Should be variable, either read from XML or computed from kind using some other
+	      read-from-file data.") // FIXME
+	shared actual default Integer dc => (traces) then 12 else 22;
+	shared actual default Boolean isSubset(IFixture obj, Anything(String) report) {
+		if (obj.id == id) {
+			if (is Animal obj) {
+				if (kind != obj.kind) {
+					report("Different kinds of animal for ID #``id``");
+					return false;
+				} else if (!talking, obj.talking) {
+					report("In animal ID #``id``:\tSubmap's is talking and master's isn't");
+					return false;
+				} else if (traces, !obj.traces) {
+					report("In animal #``id``: Submap has animal and master only tracks");
+					return false;
+				} else if (status != obj.status) {
+					report("Animal domestication status differs at ID #``id``");
+					return false;
+				} else if (obj.population > population) {
+					report(
+						"In animal #``id``: Submap has greater population than master");
+					return false;
+				} else if (obj.born < born) {
+					report("In animal #``id``: Submap has greater age than master");
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				report("For ID #``id``, different kinds of members");
+				return false;
+			}
+		} else {
+			report("Called with different IDs, #``id`` and #``obj.id``");
+			return false;
+		}
+	}
+}
+shared class AnimalImpl(kind, traces, talking, status, id, born = -1, population = 1)
+        satisfies Animal&HasMutableImage {
     "ID number."
     shared actual Integer id;
     "If true, this is only traces or tracks, not an actual animal."
-    shared Boolean traces;
+    shared actual Boolean traces;
     "Whether this is a talking animal."
-    shared Boolean talking;
+    shared actual Boolean talking;
     "The domestication status of the animal."
-    todo("Should this be an enumerated type?")
-    shared variable String status;
+    shared actual variable String status;
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "What kind of animal this is"
     shared actual String kind;
     "The turn the animal was born, or -1 if it is an adult (or if this is traces ...)"
-    shared variable Integer born;
+    shared actual variable Integer born;
     "How many individual animals are in the population this represents."
     shared actual Integer population;
-    "A population cannot have fewer than one individual."
+    "A population cannot have fewer than one individual." // FIXME: Remove this; -1 means an unknown number
     assert (population >= 1);
-    shared actual String shortDescription {
-        if (traces) {
-            return "traces of ``kind``";
-        } else if (talking) {
-            return "talking ``kind``";
-        } else {
-            String popString;
-            if (population == 1) {
-                popString = "";
-            } else {
-                popString = "``population`` ";
-            }
-            if (born >= 0) {
-                return "``popString````kind`` (born ``born``)";
-            } else {
-                return "``popString````status`` ``kind``";
-            }
-        }
-    }
-    "Default image filename"
-    todo("Should depend on the kind of animal")
-    shared actual String defaultImage = (traces) then "tracks.png" else "animal.png";
-    "Whether another animal is equal except its ID and population count."
-    shared Boolean equalExceptPopulation(Animal other) {
-        return kind == other.kind && traces == other.traces && talking == other.talking &&
-        status == other.status && born == other.born;
-    }
-    shared actual Boolean equalsIgnoringID(IFixture fixture) {
-        if (is Animal fixture) {
-            return equalExceptPopulation(fixture) && population == fixture.population;
-        } else {
-            return false;
-        }
-    }
-    "An object is equal if it is an animal with equal kind, either both or neither are
-     talking, either both or neither are only traces, and if not traces if the IDs are
-     equal."
-    shared actual Boolean equals(Object obj) {
-        if (is Animal obj) {
-            if (traces) {
-                return equalsIgnoringID(obj);
-            } else {
-                return kind == obj.kind && traces == obj.traces && talking == obj.talking
-                    && status == obj.status && id == obj.id && born == obj.born
-                    && population == obj.population;
-            }
-        } else {
-            return false;
-        }
-    }
-    shared actual Integer hash => id;
-    shared actual String string => shortDescription;
-    shared actual String plural = "Animals";
     "Clone the animal."
     shared actual Animal copy(Boolean zero) {
-        Animal retval = Animal(kind, traces, talking, status, id,
+        AnimalImpl retval = AnimalImpl(kind, traces, talking, status, id,
             (zero) then -1 else born, (zero) then 1 else population);
         retval.image = image;
         return retval;
     }
     shared actual Animal reduced(Integer newPopulation) =>
-            Animal(kind, traces, talking, status, id, born, newPopulation);
-    "Required Perception check result to find the animal."
-    todo("Should be variable, either read from XML or computed from kind using some other
-          read-from-file data.") // FIXME
-    shared actual Integer dc => (traces) then 12 else 22;
-    shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
-        if (obj.id == id) {
-            if (is Animal obj) {
-                if (kind != obj.kind) {
-                    report("Different kinds of animal for ID #``id``");
-                    return false;
-                } else if (!talking, obj.talking) {
-                    report("In animal ID #``id``:\tSubmap's is talking and master's isn't");
-                    return false;
-                } else if (traces, !obj.traces) {
-                    report("In animal #``id``: Submap has animal and master only tracks");
-                    return false;
-                } else if (status != obj.status) {
-                    report("Animal domestication status differs at ID #``id``");
-                    return false;
-                } else if (obj.population > population) {
-                    report(
-                        "In animal #``id``: Submap has greater population than master");
-                    return false;
-                } else if (obj.born < born) {
-                    report("In animal #``id``: Submap has greater age than master");
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                report("For ID #``id``, different kinds of members");
-                return false;
-            }
-        } else {
-            report("Called with different IDs, #``id`` and #``obj.id``");
-            return false;
-        }
-    }
+            AnimalImpl(kind, traces, talking, status, id, born, newPopulation);
 }
 shared object maturityModel {
     assert (exists textContent = readFileContents(`module strategicprimer.model`,

@@ -26,7 +26,8 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.model.map.fixtures.mobile {
     Animal,
     IWorker,
-    IUnit
+    IUnit,
+	AnimalImpl
 }
 import strategicprimer.report {
     IReportNode
@@ -115,7 +116,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 } else if (is Animal member) {
                     if (exists existing = animals.findAndRemoveFirst(
                         member.equalExceptPopulation)) {
-                        animals.add(Animal(member.kind, member.traces, member.talking,
+                        animals.add(AnimalImpl(member.kind, member.traces, member.talking,
                             member.status, -1, member.born, member.population + existing.population));
                     } else {
                         animals.add(member);

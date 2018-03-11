@@ -19,7 +19,8 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
-    Animal
+    Animal,
+	AnimalImpl
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -213,7 +214,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                     tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first else HuntingModel.NothingFound.nothingFound;
                 }
                 if (is Animal tracksAnimal) {
-                    allFixtures.add(Animal(tracksAnimal.kind, true, false, "wild", -1));
+                    allFixtures.add(AnimalImpl(tracksAnimal.kind, true, false, "wild", -1));
                 }
                 if (Direction.nowhere == direction) {
                     if (cli.inputBooleanInSeries(

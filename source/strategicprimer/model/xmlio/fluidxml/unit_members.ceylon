@@ -26,7 +26,8 @@ import strategicprimer.model.map.fixtures.mobile {
     Worker,
     SimpleImmortal,
     Animal,
-    maturityModel
+    maturityModel,
+	AnimalImpl
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
@@ -196,7 +197,7 @@ object unitMemberHandler extends FluidBase() {
 	            IllegalArgumentException("Animal population must be positive"));
 	    }
 	    return setImage(
-	        Animal(getAttribute(element, "kind"), traces,
+	        AnimalImpl(getAttribute(element, "kind"), traces,
 	            getBooleanAttribute(element, "talking", false, warner),
 	            getAttribute(element, "status", "wild"),
 	            id, getIntegerAttribute(element, "born", -1, warner), count),
