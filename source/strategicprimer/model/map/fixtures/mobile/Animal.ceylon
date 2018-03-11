@@ -138,8 +138,6 @@ shared class AnimalImpl(kind, traces, talking, status, id, born = -1, population
     shared actual variable Integer born;
     "How many individual animals are in the population this represents."
     shared actual Integer population;
-    "A population cannot have fewer than one individual." // FIXME: Remove this; -1 means an unknown number
-    assert (population >= 1);
     "Clone the animal."
     shared actual Animal copy(Boolean zero) {
         AnimalImpl retval = AnimalImpl(kind, traces, talking, status, id,
