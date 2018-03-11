@@ -165,17 +165,17 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             }
         }
     }
-    shared actual Iterator<UnitMember> iterator() {
+    shared actual Iterator<UnitMember> iterator() { // FIXME: We should cache this instead of regenerating it every time we're iterated
         if (!parallel) {
             return {}.iterator();
         } // else
-        MutableMap<Integer, UnitMember&ProxyFor<UnitMember>|
+        MutableMap<Integer, UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|
                     IWorker&ProxyFor<IWorker>> map =
                 naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|
-                    IWorker&ProxyFor<IWorker>>({});
+                    Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker>>({});
         for (unit in proxiedList) {
             for (member in unit) {
-                UnitMember&ProxyFor<UnitMember>|IWorker&ProxyFor<IWorker> proxy;
+                UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker> proxy;
                 Integer memberID = member.id;
                 if (exists temp = map[memberID]) {
                     proxy = temp;
@@ -185,12 +185,20 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
                         } else {
                             log.warn("ProxyWorker matched non-worker");
                         }
+                    } else if (is Animal&ProxyFor<Animal> proxy) {
+                        if (is Animal member) {
+                            proxy.addProxied(member);
+                        } else {
+                            log.warn("ProxyAnimal matched non-animal");
+                        }
                     } else {
                         proxy.addProxied(member);
                     }
                 } else {
                     if (is IWorker member) {
                         proxy = ProxyWorker.fromWorkers(member);
+                    } else if (is Animal member) {
+                        proxy = ProxyAnimal(member);
                     } else {
                         proxy = ProxyMember(member);
                     }
@@ -251,7 +259,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         }
     }
     shared actual void addMember(UnitMember member) {
-        if (parallel) {
+        if (parallel) { // FIXME: If the member in question is a proxy, add the corresponding one to each unit in turn
             for (unit in proxiedList) {
                 if (!unit.any(member.equals)) {
                     unit.addMember(member.copy(false));
