@@ -259,12 +259,18 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         }
     }
     shared actual void addMember(UnitMember member) {
-        if (parallel) { // FIXME: If the member in question is a proxy, add the corresponding one to each unit in turn
-            for (unit in proxiedList) {
-                if (!unit.any(member.equals)) {
-                    unit.addMember(member.copy(false));
+        if (parallel) {
+            if (is ProxyFor<UnitMember> member, member.parallel, member.proxied.size == proxiedList.size) {
+                for ([unit, item] in zipPairs(proxiedList, member.proxied)) {
+                    unit.addMember(item);
                 }
-            }
+            } else {
+	            for (unit in proxiedList) {
+	                if (!unit.any(member.equals)) {
+	                    unit.addMember(member.copy(false));
+	                }
+	            }
+	        }
         } else {
             log.error("addMember() called on proxy for all units of one kind");
         }
