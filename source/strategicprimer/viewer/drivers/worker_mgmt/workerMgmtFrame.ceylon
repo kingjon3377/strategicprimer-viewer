@@ -213,8 +213,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             "Please wait, loading report ..."));
         void reportGeneratorThread() {
             log.info("About to generate report");
-            IReportNode report = reportGenerator.createAbbreviatedReportIR(mainMap,
-                model.currentPlayer);
+            IReportNode report = reportGenerator.createAbbreviatedReportIR(
+                model.subordinateMaps.first?.first else mainMap, model.currentPlayer);
             log.info("Finished generating report");
             SwingUtilities.invokeLater(() => reportModel.setRoot(report));
         }
