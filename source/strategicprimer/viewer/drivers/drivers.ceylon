@@ -117,6 +117,10 @@ import strategicprimer.viewer.drivers.query {
 import lovelace.util.common {
 	todo
 }
+import com.vasileff.ceylon.structures {
+	MutableMultimap,
+	ArrayListMultimap
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 object appChooserState {
@@ -134,7 +138,7 @@ object appChooserState {
 		MutableMap<String, ISPDriver> cliCache = HashMap<String, ISPDriver>();
 		MutableMap<String, ISPDriver> guiCache = HashMap<String, ISPDriver>();
 		{String*} reserved = {"-g", "-c", "--gui", "--cli"};
-		MutableMap<String, MutableList<ISPDriver>> conflicts = HashMap<String, MutableList<ISPDriver>>();
+		MutableMultimap<String, ISPDriver> conflicts = ArrayListMultimap<String, ISPDriver>();
 		void addToCache(ISPDriver* drivers) {
 			for (driver in drivers) {
 				MutableMap<String, ISPDriver> cache;
@@ -147,15 +151,15 @@ object appChooserState {
 					if (reserved.contains(option)) {
 						log.error("A driver wants to register for a reserved option '``option``': claims to be ``
 							driver.usage.shortDescription``");
-					} else if (exists list = conflicts[option]) {
+					} else if (conflicts.defines(option)) {
 						log.warn("Additional conflict for '``option``': '``driver.usage.shortDescription``'");
-						list.add(driver);
+						conflicts.put(option, driver);
 					} else if (exists existing = cache[option]) {
 						log.warn("Invocation option conflict for '``option``' between '``
 							driver.usage.shortDescription``' and '``existing.usage.shortDescription``'");
-						MutableList<ISPDriver> list = ArrayList { elements = { driver, existing }; };
+						conflicts.put(option, driver);
+						conflicts.put(option, existing);
 						cache.remove(option);
-						conflicts[option] = list;
 					} else {
 						cache[option] = driver;
 					}
