@@ -22,7 +22,8 @@ import strategicprimer.model.map.fixtures.towns {
 }
 import com.vasileff.ceylon.structures {
 	MutableMultimap,
-	HashMultimap
+	HashMultimap,
+	ArrayListMultimap
 }
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
@@ -238,46 +239,24 @@ shared class SPMapNG satisfies IMutableMapNG {
             variable Boolean retval = playerCollection.isSubset(obj.players, report);
             // Declared here to avoid object allocations in the loop.
             MutableList<TileFixture> ourFixtures = ArrayList<TileFixture>();
-            MutableMap<Integer, MutableList<[Subsettable<IFixture>, Point]>> ourSubsettables =
-                    HashMap<Integer, MutableList<[Subsettable<IFixture>, Point]>>();
+            MutableMultimap<Integer, [Subsettable<IFixture>, Point]> ourSubsettables =
+                    ArrayListMultimap<Integer, [Subsettable<IFixture>, Point]>();
             Map<TileFixture, Point> ourLocations = map {
                 for (location in locations) for (fixture in fixtures.get(location)) fixture->location
             };
             // IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
-            MutableMap<Integer, MutableList<[IUnit, Point]>> ourUnits =
-                    HashMap<Integer, MutableList<[IUnit, Point]>>();
+            MutableMultimap<Integer, [IUnit, Point]> ourUnits = HashMultimap<Integer, [IUnit, Point]>();
             // AbstractTown is Subsettable<AbstractTown>
-            MutableMap<Integer, MutableList<[AbstractTown, Point]>> ourTowns =
-                    HashMap<Integer, MutableList<[AbstractTown, Point]>>();
+            MutableMultimap<Integer, [AbstractTown, Point]> ourTowns =
+                    HashMultimap<Integer, [AbstractTown, Point]>();
             for (point in locations) {
                 for (fixture in fixtures.get(point)) {
                     if (is IUnit fixture) {
-                        MutableList<[IUnit, Point]> list;
-                        if (exists temp = ourUnits[fixture.id]) {
-                            list = temp;
-                        } else {
-                            list = ArrayList<[IUnit, Point]>();
-                            ourUnits.put(fixture.id, list);
-                        }
-                        list.add([fixture, point]);
+                        ourUnits.put(fixture.id, [fixture, point]);
                     } else if (is AbstractTown fixture) {
-                        MutableList<[AbstractTown, Point]> list;
-                        if (exists temp = ourTowns[fixture.id]) {
-                            list = temp;
-                        } else {
-                            list = ArrayList<[AbstractTown, Point]>();
-                            ourTowns.put(fixture.id, list);
-                        }
-                        list.add([fixture, point]);
+                        ourTowns.put(fixture.id, [fixture, point]);
                     } else if (is Subsettable<IFixture> fixture) {
-                        MutableList<[Subsettable<IFixture>, Point]> list;
-                        if (exists temp = ourSubsettables[fixture.id]) {
-                            list = temp;
-                        } else {
-                            list = ArrayList<[Subsettable<IFixture>, Point]>();
-                            ourSubsettables.put(fixture.id, list);
-                        }
-                        list.add([fixture, point]);
+                        ourSubsettables.put(fixture.id, [fixture, point]);
                     }
                 }
             }
@@ -353,7 +332,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                         continue;
                     }
                 }
-                if (exists theirMountains = obj.mountainous[point], theirMountains,
+                if (exists theirMountains = obj.mountainous[point], theirMountains, // TODO: Use get() to avoid nullability
                         anythingEqual(false, mountainous[point])) {
                     localReport("Has mountains we don't");
                     retval = false; // return false;
@@ -388,7 +367,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                         retval = false; // return false;
                     }
                 }
-                if (!set { *(obj.rivers[point] else {}) }
+                if (!set { *(obj.rivers[point] else {}) } // TODO: use .get() instead of else
                     .complement(set { *(rivers[point] else {}) }).empty) {
                     localReport("Extra river(s)");
                     retval = false; // return false;
