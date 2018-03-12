@@ -125,7 +125,7 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
                         num < fixture.population) {
                 Integer orig = fixture.population;
                 Integer remaining = orig - num;
-                Animal split = fixture.reduced(num);
+                Animal split = fixture.reduced(num, idf.createID());
                 Animal remainder = fixture.reduced(remaining);
                 for (listener in changeListeners) {
                     listener.addSibling(fixture, split);
