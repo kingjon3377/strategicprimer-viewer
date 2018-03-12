@@ -35,8 +35,7 @@ import strategicprimer.model.map.fixtures {
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
-    Animal,
-	AnimalImpl
+    Animal
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture,
@@ -139,7 +138,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 ifApplicable<TileFixture, IFixture>((fix) => map.removeFixture(location, fix)));
         }
     }
-    class CoalescedHolder<Type,Key>(Key(Type) extractor, shared Type({Type*}) combiner)
+    class CoalescedHolder<Type,Key>(Key(Type) extractor, shared Type({Type+}) combiner)
             satisfies NonNullCorrespondence<Type, MutableList<Type>>&{List<Type>*}
             given Type satisfies IFixture given Key satisfies Object {
         MutableMap<Key, MutableList<Type>> map = HashMap<Key, MutableList<Type>>();
@@ -162,8 +161,8 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 get(item).add(item);
             }
         }
-        shared Type combineRaw({IFixture*} list) {
-            assert (is {Type*} list);
+        shared Type combineRaw({IFixture+} list) {
+            assert (is {Type+} list);
             return combiner(list);
         }
     }
@@ -215,10 +214,11 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
             }
         }
         for (helper in mapping.items) {
-            for (list in helper) {
+            for (list in helper.map((it) => it.sequence())) {
                 if (list.size <= 1) {
                     continue;
                 }
+                assert (nonempty list);
                 cli.print(context);
                 cli.println("The following ``helper.plural.lowercased`` could be combined:");
                 for (item in list) {
@@ -256,29 +256,17 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
         return Meadow(top.kind, top.field, top.cultivated, top.id, top.status,
             list.map(Meadow.acres).map(decimalize).fold(decimalNumber(0))(plus));
     }
-    "Combine like [[Grove]]s into a single object. We assume all Groves are identical except for population and ID." // TODO: Use HasPopulation.combine() once implemented.
-    Grove combineGroves({Grove*} list) {
-        assert (exists top = list.first);
-        return Grove(top.orchard, top.cultivated, top.kind, top.id, list.map(Grove.population).fold(0)(plus));
-    }
-    "Combine like [[Shrub]]s into a single object. We assume all Shrubs are of the same kind." // TODO: Use HasPopulation.combine() once implemented.
-    Shrub combineShrubs({Shrub*} list) {
-        assert (exists top = list.first);
-        return Shrub(top.kind, top.id, list.map(Shrub.population).fold(0)(plus));
-    }
+    "Combine like [[Grove]]s into a single object. We assume all Groves are identical except for population and ID."
+    // TODO: combine these now-identical methods: easier said than done given how they are called
+    Grove combineGroves({Grove+} list) => list.rest.fold(list.first)((Grove one, Grove two) => one.combined(two));
+    "Combine like [[Shrub]]s into a single object. We assume all Shrubs are of the same kind."
+    Shrub combineShrubs({Shrub+} list) => list.rest.fold(list.first)((one, two) => one.combined(two));
     "Combine like [[Implement]]s into a single object. We assume that all Implements are of
-     the same kind." // TODO: Use HasPopulation.combine() once implemented.
-    Implement combineEquipment({Implement*} list) {
-        assert (exists top = list.first);
-        return Implement(top.kind, top.id, list.map(Implement.count).fold(0)(plus));
-    }
+     the same kind."
+    Implement combineEquipment({Implement+} list) => list.rest.fold(list.first)((one, two) => one.combined(two));
     "Combine like Animals into a single Animal population. We assume that all animals have the
-     same kind, domestication status, and turn of birth." // TODO: Use HasPopulation.combine() once implemented.
-    Animal combineAnimals({Animal*} list) {
-        assert (exists top = list.first);
-        return AnimalImpl(top.kind, false, false, top.status, top.id, top.born,
-            list.map(Animal.population).fold(0)(plus));
-    }
+     same kind, domestication status, and turn of birth."
+    Animal combineAnimals({Animal+} list) => list.rest.fold(list.first)((one, two) => one.combined(two));
     "Combine like resources into a single resource pile. We assume that all resources have
      the same kind, contents, units, and created date."
     ResourcePile combineResources({ResourcePile*} list) {
