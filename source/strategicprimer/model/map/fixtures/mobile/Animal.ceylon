@@ -81,6 +81,7 @@ shared interface Animal
 	}
 	shared actual formal Animal reduced(Integer newPopulation);
 	shared actual formal Animal copy(Boolean zero);
+	shared actual formal Animal combined(HasPopulation/*&Animal*/ addend);
 	"Required Perception check result to find the animal."
 	todo("Should be variable, either read from XML or computed from kind using some other
 	      read-from-file data.") // FIXME
@@ -141,12 +142,17 @@ shared class AnimalImpl(kind, traces, talking, status, id, born = -1, population
     "Clone the animal."
     shared actual Animal copy(Boolean zero) {
         AnimalImpl retval = AnimalImpl(kind, traces, talking, status, id,
-            (zero) then -1 else born, (zero) then 1 else population);
+            (zero) then -1 else born, (zero) then 1 else population); // TODO: change, here and elsewhere, so that "unknown" is -1 population
         retval.image = image;
         return retval;
     }
     shared actual Animal reduced(Integer newPopulation) =>
             AnimalImpl(kind, traces, talking, status, id, born, newPopulation);
+    shared actual Animal combined(HasPopulation/*&Animal*/ addend) {
+        assert (is Animal addend);
+        return AnimalImpl(kind, traces, talking, status, id, born,
+            Integer.largest(0, population) + Integer.largest(0, addend.population));
+    }
 }
 shared object maturityModel {
     assert (exists textContent = readFileContents(`module strategicprimer.model`,

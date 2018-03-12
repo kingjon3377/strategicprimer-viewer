@@ -23,6 +23,11 @@ shared class Grove(orchard, cultivated, kind, id, population = -1)
         return retval;
     }
     shared actual Grove reduced(Integer newPopulation) => Grove(orchard, cultivated, kind, id, newPopulation);
+    shared actual Grove combined(HasPopulation/*&Grove*/ addend) {
+        assert (is Grove addend);
+        return Grove(orchard, cultivated, kind, id,
+            Integer.largest(population, 0) + Integer.largest(addend.population, 0));
+    }
     shared actual String defaultImage = (orchard) then "orchard.png" else "tree.png";
     shared actual String shortDescription =>
             "``(cultivated) then "Cultivated" else "Wild"`` ``kind`` ``(orchard) then

@@ -22,6 +22,10 @@ shared class Shrub(kind, id, population = -1) satisfies HarvestableFixture&HasPo
         return retval;
     }
     shared actual Shrub reduced(Integer newPopulation) => Shrub(kind, id, newPopulation);
+    shared actual Shrub combined(HasPopulation addend) {
+        assert (is Shrub addend);
+        return Shrub(kind, id, Integer.largest(0, population) + Integer.largest(0, addend.population));
+    }
     shared actual String defaultImage = "shrub.png";
     shared actual String string => kind;
     shared actual Boolean equals(Object obj) {

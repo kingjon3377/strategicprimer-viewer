@@ -6,5 +6,7 @@ shared interface HasPopulation/*<Self>*/ satisfies IFixture&Subsettable<IFixture
 	"Return a copy of this object, except with its population the specified value
 	 instead of its current value."
 	shared formal HasPopulation/*&Self*/ reduced(Integer newPopulation);
-	// TODO: Add a combine() method
+	"Return a copy of this object, except with its population increased to its current population
+	 plus that of the [[addend]], which must be of the same type."
+	shared formal HasPopulation/*&Self*/ combined(HasPopulation/*&Self*/ addend);
 }

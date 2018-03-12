@@ -3,7 +3,8 @@ import ceylon.collection {
 	ArrayList
 }
 import strategicprimer.model.map {
-	IFixture
+	IFixture,
+	HasPopulation
 }
 class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 	"This class can only be used to represent the corresponding animals in corresponding units in different maps."
@@ -29,6 +30,14 @@ class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 	shared actual {Animal*} proxied => animals;
 	shared actual Animal reduced(Integer newPopulation) => // TODO: Is this right?
 			ProxyAnimal(*animals.map((item) => item.reduced(newPopulation)));
+	shared actual Animal combined(HasPopulation/*&Animal*/ addend) {
+		assert (is Animal addend);
+		if (is ProxyFor<Animal> addend, addend.parallel, addend.proxied.size == animals.size) {
+			return ProxyAnimal(*zipPairs(animals, addend.proxied).map(([first, second]) => first.combined(second)));
+		} else {
+			return ProxyAnimal(*animals.map((item) => item.combined(addend)));
+		}
+	}
 	shared actual String status => getConsensus(Animal.status) else "proxied";
 	shared actual Boolean talking => getConsensus(Animal.talking) else false;
 	shared actual Boolean traces => getConsensus(Animal.traces) else false;
