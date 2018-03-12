@@ -1,7 +1,5 @@
 import ceylon.collection {
-    ArrayList,
     MutableMap,
-    MutableList,
     HashMap
 }
 import ceylon.file {
@@ -35,6 +33,10 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     IJob
+}
+import com.vasileff.ceylon.structures {
+	MutableMultimap,
+	ArrayListMultimap
 }
 "A class to write a proto-strategy to file."
 class StrategyExporter(IWorkerModel model, SPOptions options)
@@ -75,30 +77,21 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             String playerName = currentPlayer.name;
             Integer turn = model.map.currentTurn;
             {IUnit*} units = model.getUnits(currentPlayer);
-            MutableMap<String, MutableList<IUnit>> unitsByKind =
-                    HashMap<String, MutableList<IUnit>>();
+            MutableMultimap<String, IUnit> unitsByKind = ArrayListMultimap<String, IUnit>();
             for (unit in units) {
                 if (unit.empty, "false" == options.getArgument("--print-empty")) {
                     continue;
                 }
-                if (exists list = unitsByKind[unit.kind]) {
-                    list.add(unit);
-                } else {
-                    MutableList<IUnit> list = ArrayList<IUnit>();
-                    list.add(unit);
-                    unitsByKind[unit.kind] = list;
-                }
+                unitsByKind.put(unit.kind, unit);
             }
             MutableMap<IUnit, String> orders = HashMap<IUnit, String>();
-            for (kind->list in unitsByKind) {
-                for (unit in list) {
-                    String unitOrders = unit.getLatestOrders(turn);
-                    Integer ordersTurn = unit.getOrdersTurn(unitOrders);
-                    if (unitOrders == unit.getOrders(turn) || ordersTurn < 0) {
-                        orders[unit] = unitOrders;
-                    } else {
-                        orders[unit] = "(From turn #``ordersTurn``) ``unitOrders``";
-                    }
+            for (kind->unit in unitsByKind) {
+                String unitOrders = unit.getLatestOrders(turn);
+                Integer ordersTurn = unit.getOrdersTurn(unitOrders);
+                if (unitOrders == unit.getOrders(turn) || ordersTurn < 0) {
+                    orders[unit] = unitOrders;
+                } else {
+                    orders[unit] = "(From turn #``ordersTurn``) ``unitOrders``";
                 }
             }
             writer.writeLine("[``playerName``");
@@ -111,7 +104,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                         if (is HasName member) then member.name
                             else (member?.string else "");
                 writer.write("Dismissed workers etc.: ``workerString(dismissed.first)``");
-                for (member in dismissed.rest) {
+                for (member in dismissed.rest) { // TODO: Use ", ".join() to simplify this
                     writer.write(", ``workerString(member)``");
                 }
                 writer.writeLine();
@@ -119,7 +112,10 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             }
             writer.writeLine("Workers:");
             writer.writeLine();
-            for (kind->list in unitsByKind) {
+            for (kind->list in unitsByKind.asMap) {
+                if (list.empty) {
+                    continue;
+                }
                 writer.writeLine("* ``kind``:");
                 for (unit in list) {
                     writer.write("  - ``unit.name``");

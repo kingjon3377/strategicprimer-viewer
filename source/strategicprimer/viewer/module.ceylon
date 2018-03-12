@@ -31,4 +31,5 @@ module strategicprimer.viewer "0.4.9015" {
     import strategicprimer.drivers.utility "0.4.9015";
     import ceylon.http.server "1.3.3";
     import ceylon.html "1.3.3";
+	import com.vasileff.ceylon.structures "1.1.3";
 }
