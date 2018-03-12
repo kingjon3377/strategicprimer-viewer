@@ -72,21 +72,21 @@ shared class ExplorableReportGenerator(
         MutableList<Point> battles = PointList(
             "Signs of long-ago battles on the following tiles:");
         MutableList<Point> caves = PointList("Caves beneath the following tiles: ");
-        Map<Type<IFixture>, Anything([Point, IFixture])> collectors =
-                createMap  {
-                    { `Portal`->(([Point, IFixture] pair) =>
-                    portals.add(pair.first)),
-                        `Battlefield`->(([Point, IFixture] pair) =>
-                        battles.add(pair.first)),
-                        `Cave`->(([Point, IFixture] pair) =>
-                        caves.add(pair.first))};
-                };
         for ([loc, item] in values) {
-            // TODO: With only three types now, this layer of indirection seems unnecessary.
-            if (exists collector = collectors[type(item)]) {
-                collector([loc, item]);
-                fixtures.remove(item.id);
+            switch (item)
+            case (is Portal) {
+                portals.add(loc);
             }
+            case (is Battlefield) {
+                battles.add(loc);
+            }
+            case (is Cave) {
+                caves.add(loc);
+            }
+            else {
+                continue;
+            }
+            fixtures.remove(item.id);
         }
         if (!caves.empty || !battles.empty || !portals.empty) {
             ostream("<h4>Caves, Battlefields, and Portals</h4>
