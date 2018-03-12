@@ -180,48 +180,48 @@ object reportCLI satisfies SimpleDriver {
             }.start(SocketAddress("127.0.0.1", port));
         }
     }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        void writeReport(JPath? filename, IMapNG map) { // TODO: move to top level of object
-            if (exists filename) {
-                Player player;
-                if (options.hasOption("--player")) {
-                    value playerNum = Integer.parse(options.getArgument("--player"));
-                    if (is Integer playerNum) {
-                            if (exists temp = map.players
-                                    .find((item) => item.playerId == playerNum)) {
-                                player = temp;
-                            } else {
-                                log.warn("No player with that number");
-                                player = PlayerImpl(playerNum, "");
-                            }
+    void writeReport(JPath? filename, IMapNG map, SPOptions options) {
+        if (exists filename) {
+            Player player;
+            if (options.hasOption("--player")) {
+                value playerNum = Integer.parse(options.getArgument("--player"));
+                if (is Integer playerNum) {
+                    if (exists temp = map.players
+                        .find((item) => item.playerId == playerNum)) {
+                        player = temp;
                     } else {
-                        log.warn("Non-numeric player", playerNum);
-                        player = map.currentPlayer;
+                        log.warn("No player with that number");
+                        player = PlayerImpl(playerNum, "");
                     }
                 } else {
+                    log.warn("Non-numeric player", playerNum);
                     player = map.currentPlayer;
                 }
-                String outString;
-                JPath outPath;
-                if (options.hasOption("--out")) {
-                    outString = options.getArgument("--out");
-                    outPath = JPaths.get(outString);
-                } else {
-                    outString = "``filename.fileName``.report.html";
-                    outPath = filename.resolveSibling(outString);
-                }
-                value outPathCeylon = parsePath(outPath.toAbsolutePath().string);
-                if (is Nil loc = outPathCeylon.resource) {
-                    value file = loc.createFile();
-                    try (writer = file.Overwriter()) {
-                        writer.write(reportGenerator.createReport(map, player));
-                    }
-                }
             } else {
-                log.error("Asked to make report from map with no filename");
+                player = map.currentPlayer;
             }
+            String outString;
+            JPath outPath;
+            if (options.hasOption("--out")) {
+                outString = options.getArgument("--out");
+                outPath = JPaths.get(outString);
+            } else {
+                outString = "``filename.fileName``.report.html";
+                outPath = filename.resolveSibling(outString);
+            }
+            value outPathCeylon = parsePath(outPath.toAbsolutePath().string);
+            if (is Nil loc = outPathCeylon.resource) {
+                value file = loc.createFile();
+                try (writer = file.Overwriter()) {
+                    writer.write(reportGenerator.createReport(map, player));
+                }
+            }
+        } else {
+            log.error("Asked to make report from map with no filename");
         }
+    }
+    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         if (options.hasOption("--serve")) {
             value tempPort = Integer.parse(options.getArgument("--serve"));
             Integer port;
@@ -241,10 +241,10 @@ object reportCLI satisfies SimpleDriver {
         } else {
 	        if (is IMultiMapModel model) {
 	            for ([map, file] in model.allMaps) {
-	                writeReport(file, map);
+	                writeReport(file, map, options);
 	            }
 	        } else {
-	            writeReport(model.mapFile, model.map);
+	            writeReport(model.mapFile, model.map, options);
 	        }
 	    }
     }
