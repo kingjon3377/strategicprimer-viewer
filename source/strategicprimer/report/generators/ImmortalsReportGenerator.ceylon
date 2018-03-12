@@ -47,6 +47,10 @@ import strategicprimer.report.nodes {
     SectionListReportNode,
     emptyReportNode
 }
+import com.vasileff.ceylon.structures {
+	MutableMultimap,
+	HashMultimap
+}
 """A report generator for "immortals"---dragons, fairies, centaurs, and such."""
 shared class ImmortalsReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, MapDimensions dimensions,
@@ -66,21 +70,9 @@ shared class ImmortalsReportGenerator(
                     .sort(pairComparator) };
         MutableMap<Type<IFixture>, Anything(String, Point)> meta =
                 HashMap<Type<IFixture>, Anything(String, Point)>();
-        MutableMap<Type<SimpleImmortal>,
-                HeadedList<Point>&MutableList<Point>> simples =
-                HashMap<Type<SimpleImmortal>,
-                HeadedList<Point>&MutableList<Point>>();
-        void handleSimple(Type<SimpleImmortal> type, String plural) {
-            meta.put(type, (_, point) {
-                if (exists list = simples[type]) {
-                    list.add(point);
-                } else {
-                    value list = PointList("``plural`` at ");
-                    simples[type] = list;
-                    list.add(point);
-                }
-                });
-        }
+        MutableMultimap<String, Point> simples = HashMultimap<String, Point>();
+        void handleSimple(Type<SimpleImmortal> type, String plural) =>
+                meta.put(type, (_, point) => simples.put(plural, point));
         handleSimple(`Sphinx`, "Sphinx(es)");
         handleSimple(`Djinn`, "Djinn(i)");
         handleSimple(`Griffin`, "Griffin(s)");
@@ -89,27 +81,16 @@ shared class ImmortalsReportGenerator(
         handleSimple(`Phoenix`, "Phoenix(es)");
         handleSimple(`Simurgh`, "Simurgh(s)");
         handleSimple(`Troll`, "Troll(s)");
-        MutableMap<String, MutableList<Point>> handleComplex(Type<Immortal> type,
+        MutableMultimap<String, Point> handleComplex(Type<Immortal> type,
                 String plural = "(s)") {
-            MutableMap<String, MutableList<Point>> retval =
-                    HashMap<String, MutableList<Point>>();
-            // If we use Correspondence syntax sugar, we have to specify types
-            // for the lambda.
-            meta.put(type, (kind, point) {
-                if (exists list = retval[kind]) {
-                    list.add(point);
-                } else {
-                    value list = PointList("``kind````plural`` at ");
-                    retval[kind] = list;
-                    list.add(point);
-                }
-            });
+            MutableMultimap<String, Point> retval = HashMultimap<String, Point>();
+            meta.put(type, (kind, point) => retval.put(kind+plural, point));
             return retval;
         }
-        MutableMap<String, MutableList<Point>> centaurs = handleComplex(`Centaur`);
-        MutableMap<String, MutableList<Point>> giants = handleComplex(`Giant`);
-        MutableMap<String, MutableList<Point>> fairies = handleComplex(`Fairy`, "");
-        MutableMap<String, MutableList<Point>> dragons = handleComplex(`Dragon`);
+        MutableMultimap<String, Point> centaurs = handleComplex(`Centaur`);
+        MutableMultimap<String, Point> giants = handleComplex(`Giant`);
+        MutableMultimap<String, Point> fairies = handleComplex(`Fairy`, "");
+        MutableMultimap<String, Point> dragons = handleComplex(`Dragon`);
         for ([point, immortal] in values) {
             if (exists func = meta[type(immortal)]) {
                 func(immortal.string, point);
@@ -120,12 +101,15 @@ shared class ImmortalsReportGenerator(
         !simples.empty) {
             ostream("""<h4>Immortals</h4>
                        <ul>""");
-            for (coll in {centaurs.items, giants.items, fairies.items, dragons.items,
-                simples.items}) {
-                for (inner in coll) {
-                    ostream("<li>");
-                    ostream(inner.string);
-                    ostream("</li>\n");
+            for (coll in {centaurs, giants, fairies, dragons, simples}) {
+                for (key->list in coll.asMap) {
+                    if (!list.empty) {
+	                    ostream("<li>");
+	                    ostream(key);
+	                    ostream(": at ");
+	                    ostream(commaSeparatedList(list));
+	                    ostream("</li>\n");
+	                }
                 }
             }
             ostream("</ul>\n");

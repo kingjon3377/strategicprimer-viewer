@@ -30,6 +30,10 @@ import strategicprimer.report.nodes {
     emptyReportNode,
     SectionListReportNode
 }
+import com.vasileff.ceylon.structures {
+	ArrayListMultimap,
+	MutableMultimap
+}
 "A report generator for sightings of animals."
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
@@ -71,8 +75,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
         MutableList<[Point, IFixture]> values =
                 ArrayList<[Point, IFixture]> { *fixtures.items
                     .sort(pairComparator) };
-        MutableMap<String, MutableList<Point>> items =
-                HashMap<String, MutableList<Point>>();
+        MutableMultimap<String, Point> items = ArrayListMultimap<String, Point>();
         for ([loc, item] in values) {
             if (is Animal animal = item) {
                 String desc;
@@ -83,14 +86,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                 } else {
                     desc = animal.kind;
                 }
-                MutableList<Point> list;
-                if (exists temp = items[desc]) {
-                    list = temp;
-                } else {
-                    list = PointList("``desc``: at ");
-                    items[desc] = list;
-                }
-                list.add(loc);
+                items.put(desc, loc);
                 if (animal.id > 0) {
                     fixtures.remove(animal.id);
                 } else {
@@ -106,9 +102,11 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
             ostream("""<h4>Animal sightings or encounters</h4>
                         <ul>
                         """);
-            for (key->list in items) {
-                ostream("<li>``list.string``</li>
-                     ");
+            for (key->list in items.asMap) {
+                if (!list.empty) {
+	                ostream("<li>``key``: at ``commaSeparatedList(*list)``</li>
+	                     ");
+	            }
             }
             ostream("""</ul>
                    """);

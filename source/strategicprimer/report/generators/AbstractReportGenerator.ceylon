@@ -48,6 +48,29 @@ shared sealed abstract class AbstractReportGenerator<T>(
             }
         }
     }
+    "Turn a series of items into a comma-separated list of their string representations." // Should be static, but can't
+    shared String commaSeparatedList(Object* list) {
+        if (exists first = list.first) {
+            StringBuilder builder = StringBuilder();
+            builder.append(first.string);
+            if (exists third = list.rest.rest.first) {
+                variable {Object*} rest = list.rest;
+                while (exists current = rest.first) {
+                    if (rest.rest.first exists) {
+                        builder.append(", ``current``");
+                    } else {
+                        builder.append(", and ``current``");
+                    }
+                    rest = rest.rest;
+                }
+            } else if (exists second = list.rest.first) {
+                builder.append(" and ``second``");
+            }
+            return builder.string;
+        } else {
+            return "";
+        }
+    }
     """A list of Points that produces a comma-separated list in its `string` and has a
        "header"."""
     shared class PointList(shared actual String header) extends ArrayList<Point>()

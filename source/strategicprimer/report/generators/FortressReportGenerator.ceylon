@@ -45,6 +45,10 @@ import strategicprimer.report.nodes {
     emptyReportNode,
     ComplexReportNode
 }
+import com.vasileff.ceylon.structures {
+	MutableMultimap,
+	ArrayListMultimap
+}
 "A report generator for fortresses."
 shared class FortressReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
@@ -129,8 +133,7 @@ shared class FortressReportGenerator(
         riversToString(ostream, *map.rivers.get(loc));
         MutableList<IUnit> units = ArrayList<IUnit>();
         MutableList<Implement> equipment = ArrayList<Implement>();
-        MutableMap<String, MutableList<ResourcePile>> resources =
-                HashMap<String, MutableList<ResourcePile>>();
+        MutableMultimap<String, ResourcePile> resources = ArrayListMultimap<String, ResourcePile>();
         MutableList<FortressMember> contents = ArrayList<FortressMember>();
         for (member in item) {
             if (is IUnit member) {
@@ -138,14 +141,7 @@ shared class FortressReportGenerator(
             } else if (is Implement member) {
                 equipment.add(member);
             } else if (is ResourcePile member) {
-                String kind = member.kind;
-                if (exists list = resources[kind]) {
-                    list.add(member);
-                } else {
-                    MutableList<ResourcePile> list = ArrayList<ResourcePile>();
-                    resources[kind] = list;
-                    list.add(member);
-                }
+                resources.put(member.kind, member);
             } else {
                 contents.add(member);
             }
@@ -179,7 +175,10 @@ shared class FortressReportGenerator(
         if (!resources.empty) {
             ostream("""<li>Resources:<ul>
                        """);
-            for (kind->list in resources) {
+            for (kind->list in resources.asMap) {
+                if (list.empty) {
+                    continue;
+                }
                 ostream("<li>``kind``
                          <ul>
                          ");

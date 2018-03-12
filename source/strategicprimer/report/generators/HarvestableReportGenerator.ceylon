@@ -48,6 +48,11 @@ import ceylon.math.whole {
 import ceylon.math.decimal {
 	Decimal
 }
+import com.vasileff.ceylon.structures {
+	HashMultimap,
+	MutableMultimap,
+	Multimap
+}
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
 shared class HarvestableReportGenerator extends AbstractReportGenerator<HarvestableFixture> {
@@ -81,9 +86,9 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 			extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) { }
     "Convert a Map from kinds to Points to a HtmlList."
 	// Can't be static because HtmlList isn't and can't be ("Class without parameter list may not be annotated sealed")
-    HeadedList<String>&MutableList<String> mapToList(Map<String, MutableList<Point>> map,
-            String heading) =>
-            HtmlList(heading, map.items.map(Object.string).sort(increasing));
+    HeadedList<String> mapToList(Multimap<String, Point> map, String heading) =>
+            HtmlList(heading, map.asMap.filter((key->list) => !list.empty)
+		        .map((key->list) => "``key``: at ``commaSeparatedList(list)``").sort(increasing));
     """Produce a sub-report(s) dealing with a single "harvestable" fixture(s). It is to be
        removed from the collection. Caves and battlefields, though HarvestableFixtures, are *not*
        handled here.""""
@@ -138,12 +143,9 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         MutableList<[Point, IFixture]> values =
                 ArrayList<[Point, IFixture]> { *fixtures.items
                     .sort(pairComparator) };
-        MutableMap<String, MutableList<Point>> stone =
-                HashMap<String, MutableList<Point>>();
-        MutableMap<String, MutableList<Point>> shrubs =
-                HashMap<String, MutableList<Point>>();
-        MutableMap<String, MutableList<Point>> minerals =
-                HashMap<String, MutableList<Point>>();
+        MutableMultimap<String, Point> stone = HashMultimap<String, Point>();
+        MutableMultimap<String, Point> shrubs = HashMultimap<String, Point>();
+        MutableMultimap<String, Point> minerals = HashMultimap<String, Point>();
         HeadedMap<Mine, Point>&MutableMap<Mine, Point> mines =
                 HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
                     comparing(byIncreasing(Mine.kind),
@@ -181,31 +183,13 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
                 mines[item] = point;
                 fixtures.remove(item.id);
             } else if (is MineralVein item) {
-                if (exists coll = minerals[item.shortDescription]) {
-                    coll.add(point);
-                } else {
-                    value coll = PointList("``item.shortDescription``: at ");
-                    minerals[item.shortDescription] = coll;
-                    coll.add(point);
-                }
+                minerals.put(item.shortDescription, point);
                 fixtures.remove(item.id);
             } else if (is Shrub item) {
-                if (exists coll = shrubs[item.kind]) {
-                    coll.add(point);
-                } else {
-                    value coll = PointList("``item.kind``: at ");
-                    shrubs[item.kind] = coll;
-                    coll.add(point);
-                }
+                shrubs.put(item.kind, point);
                 fixtures.remove(item.id);
             } else if (is StoneDeposit item) {
-                if (exists coll = stone[item.kind]) {
-                    coll.add(point);
-                } else {
-                    value coll = PointList("``item.kind``: at ");
-                    stone[item.kind] = coll;
-                    coll.add(point);
-                }
+                stone.put(item.kind, point);
                 fixtures.remove(item.id);
             }
         }

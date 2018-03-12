@@ -39,6 +39,10 @@ import strategicprimer.report.nodes {
     emptyReportNode,
     SectionReportNode
 }
+import com.vasileff.ceylon.structures {
+	MutableMultimap,
+	HashMultimap
+}
 "A report generator for units."
 shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         Player currentPlayer, MapDimensions dimensions, Integer currentTurn,
@@ -95,8 +99,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         if (!item.empty) {
             MutableList<IWorker> workers = ArrayList<IWorker>();
             MutableList<Implement> equipment = ArrayList<Implement>();
-            MutableMap<String, MutableList<ResourcePile>> resources =
-                    HashMap<String, MutableList<ResourcePile>>();
+            MutableMultimap<String, ResourcePile> resources = HashMultimap<String, ResourcePile>();
             MutableList<Animal> animals = ArrayList<Animal>();
             MutableList<UnitMember> others = ArrayList<UnitMember>();
             for (member in item) {
@@ -105,14 +108,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 } else if (is Implement member) {
                     equipment.add(member);
                 } else if (is ResourcePile member) {
-                    MutableList<ResourcePile> list;
-                    if (exists temp = resources.get(member.kind)) {
-                        list = temp;
-                    } else {
-                        list = ArrayList<ResourcePile>();
-                        resources.put(member.kind, list);
-                    }
-                    list.add(member);
+                    resources.put(member.kind, member);
                 } else if (is Animal member) {
                     if (exists existing = animals.findAndRemoveFirst(
                         member.equalExceptPopulation)) {
@@ -162,8 +158,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 ostream("<li>Resources:
                          <ul>
                          ");
-                for (kind->list in resources) {
-                    produceInner(kind, list, (ResourcePile member) =>
+                for (kind->list in resources.asMap) {
+                    produceInner(kind, list.sequence(), (ResourcePile member) =>
                         memberReportGenerator.produceSingle(fixtures, map, ostream,
                         member, loc));
                 }
