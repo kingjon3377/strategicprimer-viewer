@@ -134,8 +134,7 @@ import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException,
     MissingPropertyException,
     MissingChildException,
-    DeprecatedPropertyException,
-	NoSuchElementBecauseException
+    DeprecatedPropertyException
 }
 import ceylon.language.meta.declaration {
     OpenClassType
@@ -885,30 +884,13 @@ object xmlTests {
 	        """<include file="string:&lt;ogre id=&quot;1&quot; /&gt;" />""",
 	        Ogre(1).equals);
 	    for (reader in {oldReader, newReader}) {
-	        assertFormatIssue<Object, NoSuchElementBecauseException>(reader,
-	            """<include file="nosuchfile" />""", null,
-	            (except) {
-	                    assertThatException(except)
-	                    .hasMessage("File referenced by <include> not found");
-	                    assert (exists cause = except.cause);
-	                    assertThatException(cause).hasType(`FileNotFoundException`);
-	            });
-	        assertFormatIssue<Object, NoSuchElementBecauseException|XMLStreamException>(reader,
+	        assertFormatIssue<Object, FileNotFoundException>(reader,
+	            """<include file="nosuchfile" />""", null);
+	        assertFormatIssue<Object, XMLStreamException>(reader,
 	            """<include file="string:&lt;nonsense" />""", null,
-		        (except) {
-		            switch (except)
-		            case (is NoSuchElementBecauseException) {
-			            assertThatException(except)
-			                    .hasMessage("XML stream error parsing <include> tag or opening file");
-			            assert (exists cause = except.cause);
-			            assertThatException(cause).hasType(`XMLStreamException`);
-			        }
-			        case (is XMLStreamException) {
-			            assertThatException(except).hasMessage(
-			                """ParseError at [row,col]:[1,10]
-			                   Message: XML document structures must start and end within the same entity.""");
-			        }
-		        });
+		        (except) => assertThatException(except).hasMessage(
+		                """ParseError at [row,col]:[1,10]
+		                   Message: XML document structures must start and end within the same entity."""));
 	    }
 	}
 

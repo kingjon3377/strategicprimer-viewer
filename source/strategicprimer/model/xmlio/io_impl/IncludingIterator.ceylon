@@ -39,8 +39,7 @@ import strategicprimer.model.xmlio {
     SPFormatException
 }
 import strategicprimer.model.xmlio.exceptions {
-    MissingPropertyException,
-    NoSuchElementBecauseException
+    MissingPropertyException
 }
 import java.lang {
 	AutoCloseable
@@ -75,19 +74,10 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     throws(`class SPFormatException`, "on SP format problem in <include>")
     todo("Ensure that any thrown exceptions make clear that there's inclusion involved")
     void handleInclude(StartElement tag) {
-        try {
-            String file = getFileAttribute(tag);
-            // FIXME: The Reader here (and thus the file it opens!) get leaked if not finished
-            stack.push([file, TypesafeXMLEventReader(magicReader(file))]);
-        } catch (FileNotFoundException except) {
-            throw NoSuchElementBecauseException("File referenced by <include> not found",
-                except);
-        } catch (XMLStreamException except) {
-            throw NoSuchElementBecauseException(
-                "XML stream error parsing <include> tag or opening file", except);
-        } catch (SPFormatException except) {
-            throw NoSuchElementBecauseException("SP format problem in <include>", except);
-        }
+        // TODO: Catch exceptions and unwind our stack, closing all the files, before throwing them again
+        String file = getFileAttribute(tag);
+        // FIXME: The Reader here (and thus the file it opens!) get leaked if not finished
+        stack.push([file, TypesafeXMLEventReader(magicReader(file))]);
     }
     """Get the next item in the topmost iterator. We always make sure that there *is* a
        next item in the topmost iterator. If the next item would be an "include" tag, we
