@@ -268,7 +268,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     }
     shared actual void addMember(UnitMember member) {
         if (parallel) {
-            if (is ProxyFor<UnitMember> member) {
+            if (is ProxyFor<out UnitMember> member) {
                 if (member.parallel) {
                     if (member.proxied.size == proxiedList.size) {
                         for ([unit, item] in zipPairs(proxiedList, member.proxied)) {
