@@ -24,8 +24,7 @@ import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
 import strategicprimer.model.map.fixtures.mobile {
-    Animal,
-	AnimalImpl
+    Animal
 }
 import strategicprimer.model.idreg {
     IDRegistrar
@@ -117,7 +116,7 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
     } else {
         addDisabledMenuItem(JMenuItem("Dismiss", KeyEvent.vkD));
     }
-    if (is Animal fixture, !fixture.traces, fixture.population > 1) { // Generalize to HasPopulation more generally
+    if (is Animal fixture, !fixture.traces, fixture.population > 1) { // TODO: Generalize to HasPopulation more generally
         addMenuItem(JMenuItem("Split animal population", KeyEvent.vkS), (ActionEvent event) {
             if (exists result = JOptionPane.showInputDialog(retval,
                         "Number of animals to split to new population:", "Split Animal Population",
@@ -126,10 +125,8 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
                         num < fixture.population) {
                 Integer orig = fixture.population;
                 Integer remaining = orig - num;
-                Animal split = AnimalImpl(fixture.kind, false, fixture.talking, fixture.status,
-                    idf.createID(), fixture.born, num); // TODO: Use HasPopulation.reduced()
-                Animal remainder = AnimalImpl(fixture.kind, false, fixture.talking, fixture.status,
-                        fixture.id, fixture.born, remaining); // TODO: Use HasPopulation.reduced()
+                Animal split = fixture.reduced(num);
+                Animal remainder = fixture.reduced(remaining);
                 for (listener in changeListeners) {
                     listener.addSibling(fixture, split);
                     listener.dismissUnitMember(fixture);

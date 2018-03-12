@@ -16,8 +16,7 @@ import strategicprimer.model.map {
 	HasExtent
 }
 import strategicprimer.model.map.fixtures.mobile {
-	Animal,
-	AnimalImpl
+	Animal
 }
 import ceylon.random {
 	Random,
@@ -97,7 +96,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 			//if (exists animal = map.fixtures[location].narrow<Animal>().filter((animal) => !animal.traces) // TODO: syntax sugar
 			if (exists animal = map.fixtures.get(location).narrow<Animal>().filter((animal) => !animal.traces)
 					.filter((animal) => animal.talking == talking).find((item) => item.kind == kind)) {
-				Animal replacement = AnimalImpl(kind, false, talking, animal.status, animal.id, animal.born, nextPopulation); // TODO: Use HasPopulation.reduce()
+				Animal replacement = animal.reduced(nextPopulation);
 				map.removeFixture(location, animal);
 				map.addFixture(location, replacement);
 				remainingCount--;
