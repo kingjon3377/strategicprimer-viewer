@@ -58,7 +58,7 @@ shared class Implement(kind, id, count = 1)
         }
     }
     shared actual Implement copy(Boolean zero) => Implement(kind, id, count);
-    shared actual Implement reduced(Integer newPopulation) => Implement(kind, id, newPopulation);
+    shared actual Implement reduced(Integer newPopulation, Integer newId) => Implement(kind, newId, newPopulation);
     shared actual Implement combined(HasPopulation/*&Implement*/ addend) {
         assert (is Implement addend);
         return Implement(kind, id, Integer.largest(0, count) + Integer.largest(0, addend.count));

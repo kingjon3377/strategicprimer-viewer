@@ -22,7 +22,8 @@ shared class Grove(orchard, cultivated, kind, id, population = -1)
         retval.image = image;
         return retval;
     }
-    shared actual Grove reduced(Integer newPopulation) => Grove(orchard, cultivated, kind, id, newPopulation);
+    shared actual Grove reduced(Integer newPopulation, Integer newId) =>
+            Grove(orchard, cultivated, kind, newId, newPopulation);
     shared actual Grove combined(HasPopulation/*&Grove*/ addend) {
         assert (is Grove addend);
         return Grove(orchard, cultivated, kind, id,

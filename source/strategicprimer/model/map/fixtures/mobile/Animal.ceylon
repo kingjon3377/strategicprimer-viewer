@@ -79,7 +79,7 @@ shared interface Animal
 			return false;
 		}
 	}
-	shared actual formal Animal reduced(Integer newPopulation);
+	shared actual formal Animal reduced(Integer newPopulation, Integer newId);
 	shared actual formal Animal copy(Boolean zero);
 	shared actual formal Animal combined(HasPopulation/*&Animal*/ addend);
 	"Required Perception check result to find the animal."
@@ -146,8 +146,8 @@ shared class AnimalImpl(kind, traces, talking, status, id, born = -1, population
         retval.image = image;
         return retval;
     }
-    shared actual Animal reduced(Integer newPopulation) =>
-            AnimalImpl(kind, traces, talking, status, id, born, newPopulation);
+    shared actual Animal reduced(Integer newPopulation, Integer newId) =>
+            AnimalImpl(kind, traces, talking, status, newId, born, newPopulation);
     shared actual Animal combined(HasPopulation/*&Animal*/ addend) {
         assert (is Animal addend);
         return AnimalImpl(kind, traces, talking, status, id, born,
