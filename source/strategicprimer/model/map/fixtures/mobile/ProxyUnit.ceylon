@@ -49,6 +49,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     shared actual Boolean parallel;
     "The units we are a proxy for."
     MutableList<IUnit> proxiedList = ArrayList<IUnit>();
+    variable {UnitMember*} cachedIterable = {};
     SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) {
         MutableMap<Integer,String>&SortedMap<Integer, String> retval =
                 TreeMap<Integer, String>((x, y) => x <=> y, {});
@@ -165,48 +166,55 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             }
         }
     }
-    shared actual Iterator<UnitMember> iterator() { // FIXME: We should cache this instead of regenerating it every time we're iterated
+    shared actual Iterator<UnitMember> iterator() {
         if (!parallel) {
             return {}.iterator();
         } // else
-        MutableMap<Integer, UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|
-                    IWorker&ProxyFor<IWorker>> map =
-                naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|
-                    Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker>>({});
-        for (unit in proxiedList) {
-            for (member in unit) {
-                UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker> proxy;
-                Integer memberID = member.id;
-                if (exists temp = map[memberID]) {
-                    proxy = temp;
-                    if (is IWorker&ProxyFor<IWorker> proxy) {
-                        if (is IWorker member) {
-                            proxy.addProxied(member);
-                        } else {
-                            log.warn("ProxyWorker matched non-worker");
-                        }
-                    } else if (is Animal&ProxyFor<Animal> proxy) {
-                        if (is Animal member) {
-                            proxy.addProxied(member);
-                        } else {
-                            log.warn("ProxyAnimal matched non-animal");
-                        }
-                    } else {
-                        proxy.addProxied(member);
-                    }
-                } else {
-                    if (is IWorker member) {
-                        proxy = ProxyWorker.fromWorkers(member);
-                    } else if (is Animal member) {
-                        proxy = ProxyAnimal(member);
-                    } else {
-                        proxy = ProxyMember(member);
-                    }
-                    map[memberID] = proxy;
-                }
-            }
-        }
-        return map.items.iterator();
+        if (proxiedList.empty) {
+            return {}.iterator();
+        } else if (!cachedIterable.empty) {
+            return cachedIterable.iterator();
+        } else {
+	        MutableMap<Integer, UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|
+	                    IWorker&ProxyFor<IWorker>> map =
+	                naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|
+	                    Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker>>({});
+	        for (unit in proxiedList) {
+	            for (member in unit) {
+	                UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker> proxy;
+	                Integer memberID = member.id;
+	                if (exists temp = map[memberID]) {
+	                    proxy = temp;
+	                    if (is IWorker&ProxyFor<IWorker> proxy) {
+	                        if (is IWorker member) {
+	                            proxy.addProxied(member);
+	                        } else {
+	                            log.warn("ProxyWorker matched non-worker");
+	                        }
+	                    } else if (is Animal&ProxyFor<Animal> proxy) {
+	                        if (is Animal member) {
+	                            proxy.addProxied(member);
+	                        } else {
+	                            log.warn("ProxyAnimal matched non-animal");
+	                        }
+	                    } else {
+	                        proxy.addProxied(member);
+	                    }
+	                } else {
+	                    if (is IWorker member) {
+	                        proxy = ProxyWorker.fromWorkers(member);
+	                    } else if (is Animal member) {
+	                        proxy = ProxyAnimal(member);
+	                    } else {
+	                        proxy = ProxyMember(member);
+	                    }
+	                    map[memberID] = proxy;
+	                }
+	            }
+	        }
+	        cachedIterable = map.items;
+	        return map.items.iterator();
+	    }
     }
     shared actual String name => getConsensus(IUnit.name) else "proxied";
     assign name {
@@ -322,6 +330,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         }  else if (!parallel, identifier is String, identifier != item.kind) {
             throw IllegalArgumentException("Expected unit of kind ``identifier``");
         } else {
+            cachedIterable = {};
             proxiedList.add(item);
         }
     }
