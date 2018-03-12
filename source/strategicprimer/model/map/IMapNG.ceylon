@@ -41,8 +41,10 @@ shared interface IMapNG satisfies Subsettable<IMapNG> {
     "Whether any given point is mountainous."
     shared formal NonNullCorrespondence<Point, Boolean> mountainous;
     "The rivers in the map."
+    // TODO: define as Multimap instead
     shared formal NonNullCorrespondence<Point, {River*}> rivers;
     "The tile-fixtures at the various locations."
+    // TODO: define as Multimap instead
     shared formal NonNullCorrespondence<Point, {TileFixture*}> fixtures;
     "The current turn."
     shared formal Integer currentTurn;

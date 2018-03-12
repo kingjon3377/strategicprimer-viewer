@@ -2,8 +2,6 @@ import strategicprimer.model.map.fixtures.mobile {
     IUnit
 }
 import lovelace.util.common {
-    ArraySet,
-    todo,
     anythingEqual,
     NonNullCorrespondence
 }
@@ -21,6 +19,10 @@ import ceylon.logging {
 }
 import strategicprimer.model.map.fixtures.towns {
     AbstractTown
+}
+import com.vasileff.ceylon.structures {
+	MutableMultimap,
+	HashMultimap
 }
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
@@ -41,12 +43,10 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The players in the map."
     IMutablePlayerCollection playerCollection;
     "Fixtures at various points, other than the main ground and forest."
-    todo("Use a multimap once we add a library dependency providing such a class")
-    MutableMap<Point, MutableSet<TileFixture>> fixturesMap =
-            HashMap<Point, MutableSet<TileFixture>>();
+    MutableMultimap<Point, TileFixture> fixturesMap = HashMultimap<Point, TileFixture>();
     MapDimensions mapDimensions;
     "The rivers in the map."
-    MutableMap<Point, {River*}> riversMap = HashMap<Point, {River*}>();
+    MutableMultimap<Point, River> riversMap = HashMultimap<Point, River>();
     "The current turn."
     shared actual variable Integer currentTurn;
     shared new (MapDimensions dimensions, IMutablePlayerCollection players,
@@ -94,13 +94,14 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The rivers, if any, at the given location."
     shared actual object rivers satisfies NonNullCorrespondence<Point, {River*}> {
         shared actual Boolean defines(Point key) => contained(key);
-        shared actual {River*} get(Point key) => {*(riversMap[key] else {})};
+        //shared actual {River*} get(Point key) => riversMap[key]; // TODO: syntax sugar
+        shared actual {River*} get(Point key) => riversMap.get(key);
     }
     "The tile fixtures (other than rivers and mountains) at the given location."
     shared actual object fixtures satisfies NonNullCorrespondence<Point, {TileFixture*}> {
         shared actual Boolean defines(Point key) => contained(key);
-        shared actual {TileFixture*} get(Point key) =>
-                {*(fixturesMap[key] else {})};
+        //shared actual {TileFixture*} get(Point key) => fixturesMap[key]; // TODO: syntax sugar
+        shared actual {TileFixture*} get(Point key) => fixturesMap.get(key);
     }
     "The current player."
     shared actual Player currentPlayer => playerCollection.currentPlayer;
@@ -108,26 +109,18 @@ shared class SPMapNG satisfies IMutableMapNG {
     "Add a player."
     shared actual void addPlayer(Player player) => playerCollection.add(player);
     "Add rivers at a location."
-    shared actual void addRivers(Point location, River* addedRivers) {
-        {River*} existing = riversMap[location] else {};
-        riversMap[location] = set {*existing}.union(set {*addedRivers});
-    }
+    shared actual void addRivers(Point location, River* addedRivers) => riversMap.putMultiple(location, addedRivers);
     "Remove rivers from the given location."
     shared actual void removeRivers(Point location, River* removedRivers) {
-        if (exists existing = riversMap[location]) {
-            riversMap[location] = set {*existing}.complement(set {*removedRivers});
+        for (river in removedRivers) {
+            riversMap.remove(location, river);
         }
     }
     """Add a fixture at a location, and return whether the "all fixtures at this point"
        set has an additional member as a result of this."""
     shared actual Boolean addFixture(Point location, TileFixture fixture) {
-        MutableSet<TileFixture> local;
-        if (exists temp = fixturesMap[location]) {
-            local = temp;
-        } else {
-            local = ArraySet<TileFixture>();
-            fixturesMap[location] = local;
-        }
+        //{TileFixture*} local = fixturesMap[location]; // TODO: syntax sugar once compiler bug fixed
+        {TileFixture*} local = fixturesMap.get(location);
         if (fixture.id >= 0,
             exists existing = local.find((item) => item.id == fixture.id)) {
             Boolean subsetCheck(TileFixture one, TileFixture two) {
@@ -140,14 +133,14 @@ shared class SPMapNG satisfies IMutableMapNG {
                 }
             }
             if (existing == fixture || subsetCheck(existing, fixture)) {
-                local.remove(existing);
-                local.add(fixture);
+                fixturesMap.remove(location, existing);
+                fixturesMap.put(location, fixture);
                 // The return value is primarily used by [[FixtureListModel]], which won't
                 // care about differences, but would end up with double entries if we
                 // returned true here.
                 return false;
             } else {
-                local.add(fixture);
+                fixturesMap.put(location, fixture);
                 log.warn("Inserted duplicate-ID fixture at ``location``");
                 log.debug("Stack trace of this location: ", Exception());
                 log.debug("Existing fixture was: ``existing.shortDescription``");
@@ -156,16 +149,13 @@ shared class SPMapNG satisfies IMutableMapNG {
             }
         } else {
             Integer oldSize = local.size;
-            local.add(fixture);
-            return oldSize < local.size;
+            fixturesMap.put(location, fixture);
+            //return oldSize < fixturesMap[location].size; // TODO: syntax sugar
+            return oldSize < fixturesMap.get(location).size;
         }
     }
     "Remove a fixture from a location."
-    shared actual void removeFixture(Point location, TileFixture fixture) {
-        if (exists list = fixturesMap[location]) {
-            list.remove(fixture);
-        }
-    }
+    shared actual void removeFixture(Point location, TileFixture fixture) => fixturesMap.remove(location, fixture);
     shared actual Integer hash =>
             dimensions.hash + (currentTurn.leftLogicalShift(3)) +
             currentPlayer.hash.leftLogicalShift(5);
