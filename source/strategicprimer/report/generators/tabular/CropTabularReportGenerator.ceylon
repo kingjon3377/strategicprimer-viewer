@@ -23,22 +23,22 @@ import strategicprimer.model.map.fixtures.resources {
 import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
-import strategicprimer.model.map.fixtures {
-	SPNumber
-}
-import ceylon.math.whole {
-	Whole
-}
 import ceylon.math.decimal {
 	Decimal
 }
+import ceylon.logging {
+	logger,
+	Logger
+}
+"A logger."
+Logger log = logger(`module strategicprimer.report`);
 "A tabular report generator for crops---forests, groves, orchards, fields, meadows, and
  shrubs"
 shared class CropTabularReportGenerator
         satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
-	static String truncatedNumberString(SPNumber number) {
+	static String truncatedNumberString(Number<out Anything> number) {
 		switch (number)
-		case (is Integer|Whole) {
+		case (is Integral<out Anything>) {
 			return number.string;
 		}
 		case (is Float) {
@@ -46,6 +46,10 @@ shared class CropTabularReportGenerator
 		}
 		case (is Decimal) {
 			return truncatedNumberString(number.float);
+		}
+		else {
+			log.warn("Unhandled Number type ``typeOf(number)`` in CropTabularReportGenerator.truncatedNumberString");
+			return number.string;
 		}
 	}
 	Point hq;

@@ -28,9 +28,6 @@ import strategicprimer.model.map.fixtures.resources {
 	Shrub,
 	Meadow
 }
-import strategicprimer.model.map.fixtures {
-	SPNumber
-}
 import strategicprimer.model.map.fixtures.terrain {
 	Forest
 }
@@ -191,7 +188,8 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 		}
 		return retval;
 	}
-	Decimal decimalize(SPNumber number) {
+	Decimal decimalize(Number<out Anything> number) {
+		assert (is Decimal|Whole|Integer|Float number);
 		switch (number)
 		case (is Decimal) {
 			return number;

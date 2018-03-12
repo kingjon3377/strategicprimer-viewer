@@ -6,7 +6,6 @@ import strategicprimer.model.map {
 	HasExtent
 }
 import strategicprimer.model.map.fixtures {
-	SPNumber,
 	numberComparator
 }
 "A field or meadow. If in forest, should increase a unit's vision slightly when the unit
@@ -29,7 +28,7 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "The size of the field or meadow, in acres. (Or a negative number if unknown.)"
-    shared actual SPNumber acres;
+    shared actual Number<out Anything> acres;
     shared actual Meadow copy(Boolean zero) {
         Meadow retval = Meadow(kind, field, cultivated, id, status, (zero) then -1 else acres);
         retval.image = image;

@@ -64,7 +64,15 @@ import ceylon.math.whole {
 import java.math {
 	JBigDecimal=BigDecimal
 }
+import ceylon.language.meta {
+	type
+}
+import ceylon.logging {
+	Logger,
+	logger
+}
 abstract class FluidBase {
+	static Logger log = logger(`module strategicprimer.model`);
 	static NumberFormat numParser = NumberFormat.integerInstance;
 	"Require that an XML tag be one of the specified tags."
 	throws(`class SPFormatException`,
@@ -410,7 +418,7 @@ abstract class FluidBase {
 	        "The stream to write to"
 	        XMLStreamWriter ostream,
 	        "The name and values of the attributes to write"
-	        <String-><String|Integer|Boolean|Float|Whole|Decimal>>* attributes) {
+	        <String-><String|Boolean|Number<out Anything>>>* attributes) {
 	    for (name->item in attributes) {
 	        if (is String item) {
 	            ostream.writeAttribute(spNamespace, name, item);
@@ -420,7 +428,10 @@ abstract class FluidBase {
 	            ostream.writeAttribute(spNamespace, name, impl.toPlainString());
 	        } else if (is Whole item) {
 	            ostream.writeAttribute(spNamespace, name, item.integer.string);
+	        } else if (is Integer|Boolean item) {
+	            ostream.writeAttribute(spNamespace, name, item.string);
 	        } else {
+	            log.warn("Unhandled Number type ``type(item)`` in FluidBase.writeAttributes");
 	            ostream.writeAttribute(spNamespace, name, item.string);
 	        }
 	    }

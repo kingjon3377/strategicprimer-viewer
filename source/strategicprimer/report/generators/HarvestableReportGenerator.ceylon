@@ -42,9 +42,6 @@ import strategicprimer.report.nodes {
     SectionReportNode,
     emptyReportNode
 }
-import ceylon.math.whole {
-	Whole
-}
 import ceylon.math.decimal {
 	Decimal
 }
@@ -53,6 +50,14 @@ import com.vasileff.ceylon.structures {
 	MutableMultimap,
 	Multimap
 }
+import ceylon.language.meta {
+	type
+}
+import ceylon.logging {
+	Logger,
+	logger
+}
+Logger log = logger(`module strategicprimer.report`);
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
 shared class HarvestableReportGenerator extends AbstractReportGenerator<HarvestableFixture> {
@@ -68,7 +73,7 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 	static String acreageString(HasExtent item) {
 		if (item.acres.positive) {
 			switch (acres = item.acres)
-			case (is Integer|Whole) {
+			case (is Integral<out Anything>) {
 				return " (``acres`` acres)";
 			}
 			case (is Float) {
@@ -76,6 +81,10 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 			}
 			case (is Decimal) {
 				return " (``Float.format(acres.float, 0, 2)`` acres)";
+			}
+			else {
+				log.warn("Unhandled Number type ``type(acres)`` in HarvestableReportGenerator.acreageString");
+				return " (``acres`` acres)";
 			}
 		} else {
 			return "";

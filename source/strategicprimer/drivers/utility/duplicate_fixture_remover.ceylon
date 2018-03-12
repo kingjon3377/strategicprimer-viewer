@@ -30,8 +30,7 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
     ResourcePile,
     Quantity,
-    Implement,
-	SPNumber
+    Implement
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -234,7 +233,8 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
             }
         }
     }
-    Decimal decimalize(SPNumber num) {
+    Decimal decimalize(Number<out Anything> num) {
+        assert (is Decimal|Whole|Integer|Float num);
         switch (num)
         case (is Decimal) {
             return num;

@@ -3,7 +3,6 @@ import lovelace.util.common {
 }
 import strategicprimer.model.map.fixtures {
     TerrainFixture,
-	SPNumber,
 	numberComparator
 }
 import strategicprimer.model.map {
@@ -24,7 +23,7 @@ shared class Forest(kind, rows, id, acres = -1)
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
     "The size of the forest, in acres. (Or a negative number if unknown.)"
-    shared actual SPNumber acres;
+    shared actual Number<out Anything> acres;
     "Clone the forest"
     shared actual Forest copy(Boolean zero) {
         Forest retval = Forest(kind, rows, id, (zero) then -1 else acres);

@@ -17,8 +17,7 @@ import lovelace.util.common {
     comparingOn,
 	Comparator
 }
-shared alias SPNumber=>Integer|Float|Decimal|Whole;
-shared object numberComparator satisfies Comparator<SPNumber> { // TODO: Move to lovelace.util
+shared object numberComparator satisfies Comparator<Number<out Anything>> { // TODO: Move to lovelace.util
 	"Convert an arbitrary Number to a Float."
 	shared Float floatValue(Number<out Anything> number) {
 		switch (number)
@@ -28,8 +27,7 @@ shared object numberComparator satisfies Comparator<SPNumber> { // TODO: Move to
 		case (is Whole) { return number.float; }
 		else { throw IllegalArgumentException("Unknown Number type"); }
 	}
-	shared actual Comparison compare(/*Number<out Anything>*/SPNumber one,
-		/*Number<out Anything>*/SPNumber two) {
+	shared actual Comparison compare(Number<out Anything> one, Number<out Anything> two) {
 		if (is Integer one, is Integer two) {
 			return one <=> two;
 		} else if (is Float one, is Float two) {
@@ -49,10 +47,10 @@ shared object numberComparator satisfies Comparator<SPNumber> { // TODO: Move to
 shared class Quantity
         satisfies Subsettable<Quantity>&Comparable<Quantity> {
     "The numeric quantity."
-    shared /*Number<out Object>*/SPNumber number;
+    shared Number<out Anything> number;
     "The units in which that number is measured."
     shared String units;
-	shared new (SPNumber number, String units) {
+	shared new (Number<out Anything> number, String units) {
 		this.number = number;
 		this.units = units;
 	}
