@@ -37,7 +37,7 @@ shared class IDFactory() satisfies IDRegistrar {
         if (id >= 0) {
             if (usedIDs.get(id)) {
                 if (exists location) {
-                    warning.handle(DuplicateIDException.atLocation(id, location));
+                    warning.handle(DuplicateIDException.atLocation(id, location.lineNumber, location.columnNumber));
                 } else {
                     warning.handle(DuplicateIDException(id));
                 }
