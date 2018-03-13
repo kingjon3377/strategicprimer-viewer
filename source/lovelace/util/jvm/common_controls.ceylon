@@ -164,7 +164,11 @@ class BoxPanelImpl(BoxAxis layoutAxis) extends JPanel() satisfies BoxPanel {
     shared actual BoxAxis axis = layoutAxis;
 }
 "Create a panel laid out by a [[BoxLayout]]"
-shared JPanel&BoxPanel boxPanel(BoxAxis layoutAxis) => BoxPanelImpl(layoutAxis);
+shared JPanel&BoxPanel boxPanel(BoxAxis layoutAxis) {
+	value retval = BoxPanelImpl(layoutAxis);
+	retval.layout = BoxLayout(retval, layoutAxis.axis);
+	return retval;
+}
 "Create a panel laid out by a [[BoxLayout]] on the line axis, with glue at each end and a
  small rigid area between each component."
 shared JPanel&BoxPanel centeredHorizontalBox(Component* items) {
