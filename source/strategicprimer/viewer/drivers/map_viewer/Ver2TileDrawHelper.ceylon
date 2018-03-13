@@ -219,7 +219,7 @@ class Ver2TileDrawHelper(
         if (is Set<River> rivers) {
             return getImage(riverFiles[rivers] else "");
         } else {
-            return getImage(riverFiles[set {*rivers}] else "");
+            return getRiverImage(set {*rivers});
         }
     }
     """Get the "top" fixture at the given location"""
