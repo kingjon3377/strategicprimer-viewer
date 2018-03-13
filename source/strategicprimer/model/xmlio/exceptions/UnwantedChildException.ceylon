@@ -26,7 +26,7 @@ shared class UnwantedChildException extends SPFormatException {
             "Why this occurred" Throwable cause)
             extends SPFormatException(
                 "Unexpected child ``child.localPart`` in tag ``parent.localPart``",
-                location, cause) {
+                location.lineNumber, location.columnNumber, cause) {
         tag = parent;
         this.child = child;
     }
@@ -34,7 +34,7 @@ shared class UnwantedChildException extends SPFormatException {
             "Another exception that caused this one" Throwable? cause = null)
             extends SPFormatException(
                 "Unexpected child ``child.name.localPart`` in tag ``parent.localPart``",
-                child.location, cause) {
+                child.location.lineNumber, child.location.columnNumber, cause) {
         tag = parent;
         this.child = child.name;
     }
@@ -43,7 +43,7 @@ shared class UnwantedChildException extends SPFormatException {
     shared new addParent(QName parent, UnwantedChildException except)
             extends SPFormatException(
                 "Unexpected child ``except.child.localPart`` in tag ``parent.localPart``",
-                except.location, except.cause) {
+                except.line, except.column, except.cause) {
         tag = parent;
         child = except.child;
     }

@@ -12,7 +12,7 @@ import strategicprimer.model.xmlio {
 shared class UnsupportedPropertyException(StartElement context, param)
         extends SPFormatException(
             "Unsupported property ``param`` in tag ``context.name.localPart``",
-            context.location) {
+            context.location.lineNumber, context.location.columnNumber) {
     "The unsupported property."
     shared String param;
     "The current tag."

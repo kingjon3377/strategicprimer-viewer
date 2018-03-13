@@ -14,7 +14,7 @@ shared class MissingPropertyException("The current tag." StartElement context, p
         "The underlying cause" Throwable? cause = null)
         extends SPFormatException(
             "Missing parameter ``param`` in tag ``context.name.localPart``",
-            context.location, cause) {
+            context.location.lineNumber, context.location.columnNumber, cause) {
     "The current tag."
     shared QName tag = context.name;
     "The missing parameter."

@@ -12,7 +12,7 @@ import strategicprimer.model.xmlio {
 shared class UnsupportedTagException(StartElement unexpectedTag)
         extends SPFormatException("Unexpected tag ``unexpectedTag.name
                 .localPart``; probably a more recent map format than we support",
-            unexpectedTag.location) {
+            unexpectedTag.location.lineNumber, unexpectedTag.location.columnNumber) {
     "The unsupported tag."
     shared QName tag = unexpectedTag.name;
 }

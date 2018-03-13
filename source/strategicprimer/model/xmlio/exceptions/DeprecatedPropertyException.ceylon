@@ -13,7 +13,7 @@ shared class DeprecatedPropertyException(context, old, preferred)
         extends SPFormatException(
             "Use of the property ``old`` in tag ``context.name
                 .localPart`` is deprecated; use ``preferred`` instead",
-            context.location) {
+            context.location.lineNumber, context.location.columnNumber) {
     "The current tag."
     StartElement context;
     "The current tag."
