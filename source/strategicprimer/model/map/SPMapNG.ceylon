@@ -166,14 +166,15 @@ shared class SPMapNG satisfies IMutableMapNG {
                 obj.players.containsEvery(players), currentTurn == obj.currentTurn,
                 currentPlayer == obj.currentPlayer) {
                 for (point in locations) {
-                    assert (exists ourFixtures = fixtures[point]);
-                    assert (exists theirFixtures = obj.fixtures[point]);
                     if (!anythingEqual(baseTerrain[point], obj.baseTerrain[point]) ||
-                            !anythingEqual(mountainous[point], obj.mountainous[point]) ||
-                            set { *(rivers[point] else {}) } !=
-                                set { *(obj.rivers[point] else {})  } ||
-                            !ourFixtures.containsEvery(theirFixtures) ||
-                            !theirFixtures.containsEvery(ourFixtures)) {
+	                        //mountainous[point] != obj.mountainous[point] || // TODO: syntax sugar
+                            mountainous.get(point) != obj.mountainous.get(point) ||
+                            //set { *rivers[point] } != set { *obj.rivers[point]  } || // TODO: syntax sugar
+                            set { *rivers.get(point) } != set { *obj.rivers.get(point)  } ||
+                            //!fixtures[point].containsEvery(obj.fixtures[point]) || // TODO: syntax sugar
+                            !fixtures.get(point).containsEvery(obj.fixtures.get(point)) ||
+                            //!obj.fixtures[point].containsEvery(fixtures[point])) { // TODO: syntax sugar
+                            !obj.fixtures.get(point).containsEvery(fixtures.get(point))) {
                         return false;
                     }
                 }
@@ -338,7 +339,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                     retval = false; // return false;
                 }
                 ourFixtures.clear();
-                //for (fixture in (fixtures[point] else {})) { // TODO: syntax sugar
+                //for (fixture in (fixtures[point])) { // TODO: syntax sugar
                 for (fixture in (fixtures.get(point))) { // TODO: Unnecessary parentheses
                     Integer idNum = fixture.id;
                     if (is IUnit fixture, ourUnits.defines(idNum)) {
@@ -349,7 +350,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                         ourFixtures.add(fixture);
                     }
                 }
-                //{TileFixture*} theirFixtures = obj.fixtures[point] else {}; // TODO: syntax sugar
+                //{TileFixture*} theirFixtures = obj.fixtures[point]; // TODO: syntax sugar
                 {TileFixture*} theirFixtures = obj.fixtures.get(point);
                 for (fixture in theirFixtures) {
                     if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
@@ -370,10 +371,9 @@ shared class SPMapNG satisfies IMutableMapNG {
                         retval = false; // return false;
                     }
                 }
-                //if (!set { *(obj.rivers[point] else {}) } // TODO: syntax sugar
-                        //.complement(set { *(rivers[point] else {}) }).empty) { // TODO: syntax sugar
-                if (!set { *(obj.rivers.get(point)) }
-	                    .complement(set { *(rivers.get(point)) }).empty) {
+                //if (!set { *obj.rivers[point] } // TODO: syntax sugar
+                        //.complement(set { *rivers[point] }).empty) { // TODO: syntax sugar
+                if (!set { *obj.rivers.get(point) }.complement(set { *rivers.get(point) }).empty) {
                     localReport("Extra river(s)");
                     retval = false; // return false;
                     break;
@@ -394,10 +394,13 @@ shared class SPMapNG satisfies IMutableMapNG {
             if (exists terrain = baseTerrain[point]) {
                 retval.baseTerrain[point] = terrain;
             }
-            retval.mountainous[point] = (mountainous[point] else false);
-            retval.addRivers(point, *(rivers[point] else {}));
+            //retval.mountainous[point] = mountainous[point]; // TODO: syntax sugar
+            retval.mountainous[point] = mountainous.get(point);
+            //retval.addRivers(point, *rivers[point]); // TODO: syntax sugar
+            retval.addRivers(point, *rivers.get(point));
             // TODO: what other fixtures should we zero, or skip?
-            for (fixture in (fixtures[point] else {})) {
+            //for (fixture in fixtures[point]) { // TODO: syntax sugar
+            for (fixture in fixtures.get(point)) {
                 retval.addFixture(point,
                     fixture.copy(zero && shouldZero(fixture, player)));
             }

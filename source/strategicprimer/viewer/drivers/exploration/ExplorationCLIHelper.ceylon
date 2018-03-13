@@ -268,7 +268,8 @@ class ExplorationAutomationConfig(Player player, Boolean stopForForts,
 	Boolean stopForActiveTowns, Boolean stopForInactiveTowns, Boolean stopForVillages,
 	Boolean stopForPlayerUnits, Boolean stopForIndieUnits) {
 	shared Boolean stopAtPoint(IMapNG map, Point point) {
-		for (fixture in map.fixtures[point] else {}) {
+		//for (fixture in map.fixtures[point]) { // TODO: syntax sugar
+		for (fixture in map.fixtures.get(point)) {
 			if (is Fortress fixture, fixture.owner != player, stopForForts) {
 				return true;
 			} else if (is AbstractTown fixture) {
