@@ -241,7 +241,7 @@ shared class SPMapNG satisfies IMutableMapNG {
             MutableList<TileFixture> ourFixtures = ArrayList<TileFixture>();
             MutableMultimap<Integer, [Subsettable<IFixture>, Point]> ourSubsettables =
                     ArrayListMultimap<Integer, [Subsettable<IFixture>, Point]>();
-            Map<TileFixture, Point> ourLocations = map {
+            Map<TileFixture, Point> ourLocations = map { // TODO: Use Multimap features of fixturesMap
                 for (location in locations) for (fixture in fixtures.get(location)) fixture->location
             };
             // IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
@@ -332,28 +332,30 @@ shared class SPMapNG satisfies IMutableMapNG {
                         continue;
                     }
                 }
-                if (exists theirMountains = obj.mountainous[point], theirMountains, // TODO: Use get() to avoid nullability
-                        anythingEqual(false, mountainous[point])) {
+                //if (obj.mountainous[point], !mountainous[point]) { // TODO: syntax sugar
+                if (obj.mountainous.get(point), !mountainous.get(point)) {
                     localReport("Has mountains we don't");
                     retval = false; // return false;
                 }
                 ourFixtures.clear();
-                for (fixture in (fixtures[point] else {})) {
+                //for (fixture in (fixtures[point] else {})) { // TODO: syntax sugar
+                for (fixture in (fixtures.get(point))) {
                     Integer idNum = fixture.id;
-                    if (is IUnit fixture, exists list = ourUnits[idNum], !list.empty) {
+                    if (is IUnit fixture, exists list = ourUnits[idNum], !list.empty) { // FIXME: Update for Multimap
                         continue;
-                    } else if (is AbstractTown fixture, exists list = ourTowns[idNum],
+                    } else if (is AbstractTown fixture, exists list = ourTowns[idNum], // FIXME: Update for Multimap
                             list.contains(fixture)) {
                         continue;
                     } else {
                         ourFixtures.add(fixture);
                     }
                 }
-                {TileFixture*} theirFixtures = obj.fixtures[point] else {};
+                //{TileFixture*} theirFixtures = obj.fixtures[point] else {}; // TODO: syntax sugar
+                {TileFixture*} theirFixtures = obj.fixtures.get(point);
                 for (fixture in theirFixtures) {
                     if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
                         continue;
-                    } else if (is IUnit fixture, exists list = ourUnits[fixture.id]) {
+                    } else if (is IUnit fixture, exists list = ourUnits[fixture.id]) { // FIXME: UPdate for Multimap, and below
                         retval = testAgainstList<IFixture, IUnit>(fixture, point, list, localReport) && retval;
                     } else if (is AbstractTown fixture, exists list = ourTowns[fixture.id]) {
                         retval = testAgainstList<AbstractTown, AbstractTown>(fixture, point, list, localReport) && retval;
@@ -367,8 +369,10 @@ shared class SPMapNG satisfies IMutableMapNG {
                         retval = false; // return false;
                     }
                 }
-                if (!set { *(obj.rivers[point] else {}) } // TODO: use .get() instead of else
-                    .complement(set { *(rivers[point] else {}) }).empty) {
+                //if (!set { *(obj.rivers[point] else {}) } // TODO: syntax sugar
+                        //.complement(set { *(rivers[point] else {}) }).empty) { // TODO: syntax sugar
+                if (!set { *(obj.rivers.get(point)) } // TODO: use .get() instead of else
+	                    .complement(set { *(rivers.get(point)) }).empty) {
                     localReport("Extra river(s)");
                     retval = false; // return false;
                     break;
