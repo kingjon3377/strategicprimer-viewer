@@ -56,16 +56,8 @@ shared object workerPrintCLI satisfies SimpleDriver {
                 cli.print(")");
             }
             if (exists stats = worker.stats) {
-                Integer[6] statsArray = stats.array;
-                for (i in 0:6) {
-                    if (i == 0) {
-                        cli.print(" [");
-                    } else {
-                        cli.print(", ");
-                    }
-                     cli.print("``statLabelArray[i] else ""`` ``WorkerStats.getModifierString(statsArray[i] else -10)``");
-                }
-                cli.print("]");
+                cli.print(" [``", ".join(zipPairs(statLabelArray,
+                    stats.array.map(WorkerStats.getModifierString)).map(([one, two]) => one + " " + two))``]");
             }
             cli.println();
         }
