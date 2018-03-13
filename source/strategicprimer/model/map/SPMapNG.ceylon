@@ -339,12 +339,11 @@ shared class SPMapNG satisfies IMutableMapNG {
                 }
                 ourFixtures.clear();
                 //for (fixture in (fixtures[point] else {})) { // TODO: syntax sugar
-                for (fixture in (fixtures.get(point))) {
+                for (fixture in (fixtures.get(point))) { // TODO: Unnecessary parentheses
                     Integer idNum = fixture.id;
-                    if (is IUnit fixture, exists list = ourUnits[idNum], !list.empty) { // FIXME: Update for Multimap
+                    if (is IUnit fixture, ourUnits.defines(idNum)) {
                         continue;
-                    } else if (is AbstractTown fixture, exists list = ourTowns[idNum], // FIXME: Update for Multimap
-                            list.contains(fixture)) {
+                    } else if (is AbstractTown fixture, ourTowns.get(idNum).contains(fixture)) {
                         continue;
                     } else {
                         ourFixtures.add(fixture);
@@ -355,13 +354,15 @@ shared class SPMapNG satisfies IMutableMapNG {
                 for (fixture in theirFixtures) {
                     if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
                         continue;
-                    } else if (is IUnit fixture, exists list = ourUnits[fixture.id]) { // FIXME: UPdate for Multimap, and below
-                        retval = testAgainstList<IFixture, IUnit>(fixture, point, list, localReport) && retval;
-                    } else if (is AbstractTown fixture, exists list = ourTowns[fixture.id]) {
-                        retval = testAgainstList<AbstractTown, AbstractTown>(fixture, point, list, localReport) && retval;
-                    } else if (is Subsettable<IFixture> fixture,
-                            exists list = ourSubsettables[fixture.id]) {
-                        retval = testAgainstList(fixture, point, list, localReport) && retval;
+                    } else if (is IUnit fixture, ourUnits.defines(fixture.id)) {
+                        retval = testAgainstList<IFixture, IUnit>(fixture, point, ourUnits.get(fixture.id),
+                            localReport) && retval;
+                    } else if (is AbstractTown fixture, ourTowns.defines(fixture.id)) {
+                        retval = testAgainstList<AbstractTown, AbstractTown>(fixture, point,
+                            ourTowns.get(fixture.id), localReport) && retval;
+                    } else if (is Subsettable<IFixture> fixture, ourSubsettables.defines(fixture.id)) {
+                        retval = testAgainstList(fixture, point, ourSubsettables.get(fixture.id),
+                            localReport) && retval;
                     } else if (movedFrom(point, fixture)) {
                         retval = false; // return false;
                     } else {
@@ -371,7 +372,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                 }
                 //if (!set { *(obj.rivers[point] else {}) } // TODO: syntax sugar
                         //.complement(set { *(rivers[point] else {}) }).empty) { // TODO: syntax sugar
-                if (!set { *(obj.rivers.get(point)) } // TODO: use .get() instead of else
+                if (!set { *(obj.rivers.get(point)) }
 	                    .complement(set { *(rivers.get(point)) }).empty) {
                     localReport("Extra river(s)");
                     retval = false; // return false;
