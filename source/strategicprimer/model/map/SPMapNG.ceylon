@@ -339,8 +339,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                     retval = false; // return false;
                 }
                 ourFixtures.clear();
-                //for (fixture in (fixtures[point])) { // TODO: syntax sugar
-                for (fixture in (fixtures.get(point))) { // TODO: Unnecessary parentheses
+                //for (fixture in fixtures[point]) { // TODO: syntax sugar
+                for (fixture in fixtures.get(point)) {
                     Integer idNum = fixture.id;
                     if (is IUnit fixture, ourUnits.defines(idNum)) {
                         continue;
