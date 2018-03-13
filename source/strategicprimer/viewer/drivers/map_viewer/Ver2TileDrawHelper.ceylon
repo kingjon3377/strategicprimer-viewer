@@ -216,15 +216,11 @@ class Ver2TileDrawHelper(
     }
     "Get the image representing the given configuration of rivers."
     Image getRiverImage({River*} rivers) {
-        if (is Set<River> rivers) {
-            if (exists file = riverFiles[rivers]) {
-                return getImage(file);
-            } else {
-                log.error("No image found for the River set ``rivers``");
-                return getImage("riv00.png");
-            }
+        if (exists file = riverFiles[set { *rivers }]) {
+            return getImage(file);
         } else {
-            return getRiverImage(set {*rivers});
+            log.error("No image found for the River set ``set { *rivers }``");
+            return getImage("riv00.png");
         }
     }
     """Get the "top" fixture at the given location"""
