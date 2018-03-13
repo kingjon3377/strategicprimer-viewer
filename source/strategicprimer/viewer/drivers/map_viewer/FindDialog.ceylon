@@ -180,6 +180,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         buttonPanel.addGlue();
     }
     buttonPanel.add(cancelButton);
+    buttonPanel.addGlue();
     contentPanel.add(buttonPanel);
     SwingUtilities.invokeLater(() {
         void populate(Anything fixture) {
