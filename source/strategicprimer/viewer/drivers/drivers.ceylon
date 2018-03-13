@@ -284,6 +284,22 @@ shared void run() {
         shared actual IDriverUsage usage = DriverUsage(true, ["-p", "--app-starter"],
             ParamCount.anyNumber, "App Chooser",
             "Let the user choose an app to start, or handle options.");
+        void startCatchingErrors(ISPDriver driver, ICLIHelper cli, SPOptions options, String* args) {
+            try {
+                driver.startDriverOnArguments(cli, options, *args);
+            } catch (IncorrectUsageException except) {
+                cli.println(appChooserState.usageMessage(except.correctUsage,
+                    options.getArgument("--verbose") == "true"));
+            } catch (DriverFailedException except) {
+                if (is SPFormatException cause = except.cause) {
+                    log.error(cause.message);
+                } else if (exists cause = except.cause) {
+                    log.error("Driver failed:", cause);
+                } else {
+                    log.error("Driver failed:", except);
+                }
+            } // TODO: Catch Exception
+        }
         shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
                 String* args) {
 //            log.info("Inside appStarter.startDriver()");
@@ -295,38 +311,10 @@ shared void run() {
             MutableList<String> others = ArrayList<String>();
             void startChosenDriver(ISPDriver driver, SPOptions currentOptionsTyped) {
                 if (driver.usage.graphical) {
-                    SwingUtilities.invokeLater(() {
-                        try {
-                            driver.startDriverOnArguments(cli,
-                                currentOptionsTyped, *others);
-                        } catch (IncorrectUsageException except) { // FIXME: Extract this handling to a helper method rather than duplicating it here and below
-                            cli.println(appChooserState.usageMessage(except.correctUsage,
-                                currentOptionsTyped.getArgument("--verbose") == "true"));
-                        } catch (DriverFailedException except) {
-                            if (is SPFormatException cause = except.cause) {
-                                log.error(cause.message);
-                            } else if (exists cause = except.cause) {
-                                log.error("Driver failed:", cause);
-                            } else {
-                                log.error("Driver failed:", except);
-                            }
-                        }
-                    });
+                    SwingUtilities.invokeLater(() =>
+                        startCatchingErrors(driver, cli, currentOptionsTyped, *others));
                 } else {
-                    try {
-                            driver.startDriverOnArguments(cli, currentOptionsTyped, *others);
-                        } catch (IncorrectUsageException except) {
-                            cli.println(appChooserState.usageMessage(except.correctUsage,
-                                currentOptionsTyped.getArgument("--verbose") == "true"));
-                        } catch (DriverFailedException except) {
-                            if (is SPFormatException cause = except.cause) {
-                                log.error(cause.message);
-                            } else if (exists cause = except.cause) {
-                                log.error("Driver failed:", cause);
-                            } else {
-                                log.error("Driver failed:", except);
-                            }
-                        }
+                    startCatchingErrors(driver, cli, currentOptionsTyped, *others);
                 }
                 // TODO: clear `others` here?
             }
@@ -404,7 +392,7 @@ shared void run() {
                         "CLI apps available:", "No applications available",
                         "App to start: ", true);
                     if (exists chosenDriver = choice.item) {
-                        chosenDriver.startDriverOnArguments(cli, options, *others);
+                        startCatchingErrors(chosenDriver, cli, options, *others);
                     }
                 }
             }
@@ -422,7 +410,7 @@ shared void run() {
                     }
                 } catch (IOException except) {
                     log.error("I/O error prompting user for app to start", except);
-                }
+                } // TODO: Should catch DriverFailedException and other errors
             } else {
                 SwingUtilities.invokeLater(
                     () => appChooserFrame(cli, options, driverModel).setVisible(true));
