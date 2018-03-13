@@ -298,7 +298,9 @@ shared void run() {
                 } else {
                     log.error("Driver failed:", except);
                 }
-            } // TODO: Catch Exception
+            } catch (Exception except) {
+                log.error(except.message, except);
+            }
         }
         shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
                 String* args) {
@@ -410,9 +412,22 @@ shared void run() {
                     }
                 } catch (IOException except) {
                     log.error("I/O error prompting user for app to start", except);
-                } // TODO: Should catch DriverFailedException and other errors
+                } catch (IncorrectUsageException except) {
+                    cli.println(appChooserState.usageMessage(except.correctUsage,
+                        options.getArgument("--verbose") == "true"));
+                } catch (DriverFailedException except) {
+                    if (is SPFormatException cause = except.cause) {
+                        log.error(cause.message);
+                    } else if (exists cause = except.cause) {
+                        log.error("Driver failed:", cause);
+                    } else {
+                        log.error("Driver failed:", except);
+                    }
+                } catch (Exception except) {
+                    log.error(except.message, except);
+                }
             } else {
-                SwingUtilities.invokeLater(
+                SwingUtilities.invokeLater( // TODO: catch errors (combine with the above)
                     () => appChooserFrame(cli, options, driverModel).setVisible(true));
             }
         }
