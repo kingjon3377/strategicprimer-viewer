@@ -103,10 +103,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                 String workerString(UnitMember? member) =>
                         if (is HasName member) then member.name
                             else (member?.string else "");
-                writer.write("Dismissed workers etc.: ``workerString(dismissed.first)``");
-                for (member in dismissed.rest) { // TODO: Use ", ".join() to simplify this
-                    writer.write(", ``workerString(member)``");
-                }
+                writer.write("Dismissed workers etc.: ");
+                writer.write(", ".join(dismissed.map(workerString)));
                 writer.writeLine();
                 writer.writeLine();
             }
