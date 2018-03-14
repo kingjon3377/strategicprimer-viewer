@@ -20,7 +20,8 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal,
-	AnimalImpl
+	AnimalImpl,
+	Immortal
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -134,9 +135,12 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                             stopForForts = cli.inputBooleanInSeries("Stop for instructions at others' fortresses?");
                             stopForActiveTowns = cli.inputBooleanInSeries("Stop for instructions at active towns?");
                             stopForInactiveTowns = cli.inputBooleanInSeries("Stop for instructions at inactive towns?");
-                            stopForVillages = cli.inputBooleanInSeries("Stop for instructions at villages?");
+                            stopForIndieVillages = cli.inputBooleanInSeries("Stop for instructions at independent villages?");
+                            stopForOtherVillages = cli.inputBooleanInSeries("Stop for instructions at villages sworn to other players?");
+                            stopForYourVillages = cli.inputBooleanInSeries("Stop for instructons at villages sworn to you?");
                             stopForPlayerUnits = cli.inputBooleanInSeries("Stop for instructions on meeting other players' units?");
                             stopForIndieUnits = cli.inputBooleanInSeries("Stop for instructions on meeting independent units?");
+                            stopForImmortals = cli.inputBooleanInSeries("Stop for instructions on meeting an immortal?");
                         };
                         wrapped = retval;
                         return retval;
@@ -267,8 +271,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
 }
 
 class ExplorationAutomationConfig(Player player, Boolean stopForForts,
-	Boolean stopForActiveTowns, Boolean stopForInactiveTowns, Boolean stopForVillages,
-	Boolean stopForPlayerUnits, Boolean stopForIndieUnits) {
+	Boolean stopForActiveTowns, Boolean stopForInactiveTowns, Boolean stopForYourVillages,
+	Boolean stopForIndieVillages, Boolean stopForOtherVillages, Boolean stopForPlayerUnits,
+	Boolean stopForIndieUnits, Boolean stopForImmortals) {
 	shared Boolean stopAtPoint(IMapNG map, Point point) {
 		//for (fixture in map.fixtures[point]) { // TODO: syntax sugar
 		for (fixture in map.fixtures.get(point)) {
@@ -280,14 +285,22 @@ class ExplorationAutomationConfig(Player player, Boolean stopForForts,
 				} else if (fixture.status != TownStatus.active, stopForInactiveTowns) {
 					return true;
 				}
-			} else if (is Village fixture, stopForVillages) {
-				return true;
+			} else if (is Village fixture) {
+				if (fixture.owner == player, stopForYourVillages) {
+					return true;
+				} else if (fixture.owner.independent, stopForIndieVillages) {
+					return true;
+				} else if (!fixture.owner.independent, fixture.owner != player, stopForOtherVillages) {
+					return true;
+				}
 			} else if (is IUnit fixture) {
 				if (fixture.owner.independent, stopForIndieUnits) {
 					return true;
 				} else if (!fixture.owner.independent, fixture.owner != player, stopForPlayerUnits) {
 					return true;
 				}
+			} else if (is Immortal fixture, stopForImmortals) {
+				return true;
 			}
 		}
 		return false;
