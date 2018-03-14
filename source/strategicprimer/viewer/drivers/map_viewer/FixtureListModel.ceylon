@@ -4,7 +4,8 @@ import ceylon.collection {
 }
 
 import javax.swing {
-    DefaultListModel
+    DefaultListModel,
+	SwingUtilities
 }
 
 import lovelace.util.common {
@@ -52,7 +53,7 @@ shared class FixtureListModel(IMutableMapNG map,
         if (is TileTypeFixture fixture) {
             if (!anythingEqual(map.baseTerrain[point], fixture.tileType)) {
                 map.baseTerrain[point] = fixture.tileType;
-                selectedPointChanged(null, point);
+                SwingUtilities.invokeLater(() => selectedPointChanged(null, point));
             }
         } else if (filterTracks, is Animal fixture, fixture.traces) {
             currentTracks.add(fixture);
