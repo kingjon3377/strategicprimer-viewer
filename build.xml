@@ -179,6 +179,7 @@
     <x-ceylon-fat-jar out="${release}/${basename}-for-exe.jar" run="${ceylon-main-run}" module="${main-module}" />
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
       outfile="${release}/${basename}.exe" jar="${release}/${basename}-for-exe.jar" />
+    <delete file="${release}/${basename}-for-exe.jar" />
   </target>
   <target name="app" depends="jar,icon">
       <exec executable="${png2icns.path}" dir="${basedir}">
