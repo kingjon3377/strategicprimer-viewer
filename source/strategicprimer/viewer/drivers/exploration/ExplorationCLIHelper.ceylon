@@ -129,13 +129,15 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                     if (exists temp = wrapped) {
                         return temp;
                     } else {
-                        value retval = ExplorationAutomationConfig(mover.owner,
-	                            cli.inputBooleanInSeries("Stop for instructions at others' fortresses?"),
-	                            cli.inputBooleanInSeries("Stop for instructions at active towns?"),
-	                            cli.inputBooleanInSeries("Stop for instructions at inactive towns?"),
-	                            cli.inputBooleanInSeries("Stop for instructions at villages?"),
-	                            cli.inputBooleanInSeries("Stop for instructions on meeting other players' units?"),
-	                            cli.inputBooleanInSeries("Stop for instructions on meeting independent units?"));
+                        value retval = ExplorationAutomationConfig {
+                            player = mover.owner;
+                            stopForForts = cli.inputBooleanInSeries("Stop for instructions at others' fortresses?");
+                            stopForActiveTowns = cli.inputBooleanInSeries("Stop for instructions at active towns?");
+                            stopForInactiveTowns = cli.inputBooleanInSeries("Stop for instructions at inactive towns?");
+                            stopForVillages = cli.inputBooleanInSeries("Stop for instructions at villages?");
+                            stopForPlayerUnits = cli.inputBooleanInSeries("Stop for instructions on meeting other players' units?");
+                            stopForIndieUnits = cli.inputBooleanInSeries("Stop for instructions on meeting independent units?");
+                        };
                         wrapped = retval;
                         return retval;
                     }
