@@ -259,9 +259,6 @@
           <include name="**" />
           <exclude name="workspace.xml" />
       </tarfileset>
-      <tarfileset dir=".codepro" prefix="${basename}/.codepro">
-          <include name="**" />
-      </tarfileset>
       <tarfileset dir=".settings" prefix="${basename}/.settings">
           <include name="**" />
       </tarfileset>
