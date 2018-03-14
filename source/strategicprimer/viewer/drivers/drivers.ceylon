@@ -447,11 +447,11 @@ suppressWarnings("expressionTypeNothing")
 SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
 	SPFrame frame = SPFrame("SP App Chooser", null, Dimension(220, 110));
-	void buttonHandler(ISPDriver() target) {
+	void buttonHandler(ISPDriver target) {
 		if (is IDriverModel finalArg) {
-			target().startDriverOnModel(cli, options, finalArg);
+			target.startDriverOnModel(cli, options, finalArg);
 		} else {
-			target().startDriverOnArguments(cli, options, *finalArg);
+			target.startDriverOnArguments(cli, options, *finalArg);
 		}
 		SwingUtilities.invokeLater(() {
 			frame.setVisible(false);
@@ -459,10 +459,10 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
 		});
 	}
     JPanel buttonPanel = JPanel(GridLayout(0, 1));
-    buttonPanel.add(listenedButton("Map Viewer", (evt) => buttonHandler(() => viewerGUI)));
-    buttonPanel.add(listenedButton("Worker Skill Advancement", (evt) => buttonHandler(() => advancementGUI)));
-    buttonPanel.add(listenedButton("Unit Orders and Worker Management", (evt) => buttonHandler(() => workerGUI)));
-    buttonPanel.add(listenedButton("Exploration", (evt) => buttonHandler(() => explorationGUI)));
+    buttonPanel.add(listenedButton("Map Viewer", (evt) => buttonHandler(viewerGUI)));
+    buttonPanel.add(listenedButton("Worker Skill Advancement", (evt) => buttonHandler(advancementGUI)));
+    buttonPanel.add(listenedButton("Unit Orders and Worker Management", (evt) => buttonHandler(workerGUI)));
+    buttonPanel.add(listenedButton("Exploration", (evt) => buttonHandler(explorationGUI)));
     frame.contentPane = BorderedPanel.verticalPanel(
         JLabel("Please choose one of the applications below"),
         JScrollPane(buttonPanel), null);
