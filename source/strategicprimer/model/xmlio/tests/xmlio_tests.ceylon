@@ -380,7 +380,7 @@ object xmlTests {
 	void assertInvalid(String xml) {
 	    for (reader in {oldReader, newReader}) {
 	        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
-	                XMLStreamException>(reader,
+	                XMLStreamException|FileNotFoundException>(reader,
 	            xml, null);
 	    }
 	}
