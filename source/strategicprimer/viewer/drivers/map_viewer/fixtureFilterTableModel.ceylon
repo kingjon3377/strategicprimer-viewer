@@ -103,7 +103,9 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
         trivialMatcher(`Fortress`, "Fortresses"),
         // TODO: Towns should be broken up by kind or size, and maybe by status or owner
         trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
-        trivialMatcher(`Village`), trivialMatcher(`Mine`), trivialMatcher(`Troll`),
+        // TODO: break up by owner beyond owned/independent
+        complements<Village>((village) => village.owner.independent, "Independent Villages", "Villages With Suzerain"),
+        trivialMatcher(`Mine`), trivialMatcher(`Troll`),
         trivialMatcher(`Simurgh`), trivialMatcher(`Ogre`), trivialMatcher(`Minotaur`),
         trivialMatcher(`Griffin`), trivialMatcher(`Sphinx`, "Sphinxes"),
         trivialMatcher(`Phoenix`, "Phoenixes"), trivialMatcher(`Djinn`, "Djinni"),
