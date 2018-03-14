@@ -39,6 +39,7 @@ shared class FixtureListModel(IMutableMapNG map,
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         clear();
         currentTracks.clear();
+        point = newPoint;
         if (exists base = map.baseTerrain[newPoint]) {
             addElement(TileTypeFixture(base));
         }

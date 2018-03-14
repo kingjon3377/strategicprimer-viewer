@@ -270,17 +270,17 @@ SPFrame explorationFrame(IExplorationModel model,
             if (exists old, old == newPoint) {
                 return;
             }
-            Point selPoint = old else model.selectedUnitLocation;
+            Point oldPoint = old else model.selectedUnitLocation;
             for (direction in `Direction`.caseValues) {
-                Point point = model.getDestination(selPoint, direction);
-                mains[direction]?.fireChanges(selPoint, point);
-                seconds[direction]?.fireChanges(selPoint, point);
+                Point point = model.getDestination(newPoint, direction);
+                mains[direction]?.fireChanges(old, point);
+                seconds[direction]?.fireChanges(old, point);
                 if (exists button = buttons[direction]) {
                     button.point = point;
                     button.repaint();
                 }
             }
-            locLabel.setArgs(selPoint.row, selPoint.column);
+            locLabel.setArgs(newPoint.row, newPoint.column);
         }
         MutableList<CompletionListener> completionListeners =
                 ArrayList<CompletionListener>();
