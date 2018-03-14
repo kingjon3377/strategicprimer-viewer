@@ -24,7 +24,7 @@ import strategicprimer.drivers.common {
 	SPOptions,
 	ParamCount,
 	IDriverUsage,
-	SimpleDriver,
+	SimpleCLIDriver,
 	DriverUsage,
 	IDriverModel,
 	IMultiMapModel
@@ -81,7 +81,7 @@ import strategicprimer.model.map.fixtures.resources {
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver for 'querying' the driver model about various things."
-shared object queryCLI satisfies SimpleDriver {
+shared object queryCLI satisfies SimpleCLIDriver {
 	"How many hours we assume a working day is for a hunter or such."
 	Integer hunterHours = 10;
 	"How many encounters per hour for a hunter or such."
