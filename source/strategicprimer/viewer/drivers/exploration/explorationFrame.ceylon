@@ -43,7 +43,8 @@ import javax.swing {
     JComponent,
     JLabel,
     ListCellRenderer,
-    SwingUtilities
+    SwingUtilities,
+	JButton
 }
 import javax.swing.event {
     ListSelectionEvent
@@ -60,12 +61,11 @@ import lovelace.util.jvm {
     listenedButton,
     createHotKey,
     FormattedLabel,
-    BoxAxis,
-    boxPanel,
     verticalSplit,
     ImprovedComboBox,
     parseInt,
-    isNumeric
+    isNumeric,
+	FunctionalGroupLayout
 }
 
 import strategicprimer.model.map {
@@ -231,7 +231,8 @@ SPFrame explorationFrame(IExplorationModel model,
                 null, ImprovedComboBox<Speed>.withModel(speedModel)),
             listenedButton("Start exploring!", buttonListener))));
     JPanel tilesPanel = JPanel(GridLayout(3, 12, 2, 2));
-    JPanel headerPanel = boxPanel(BoxAxis.lineAxis);
+    JPanel headerPanel = JPanel();
+    FunctionalGroupLayout headerLayout = FunctionalGroupLayout(headerPanel);
     object explorationPanel extends BorderedPanel()
             satisfies SelectionChangeListener&CompletionSource&MovementCostListener {
         Document mpDocument = explorerSelectingPanel.mpDocument;
@@ -288,24 +289,32 @@ SPFrame explorationFrame(IExplorationModel model,
                 completionListeners.add(listener);
         shared actual void removeCompletionListener(CompletionListener listener) =>
                 completionListeners.remove(listener);
-        headerPanel.add(listenedButton("Select a different explorer",
+        JButton explorerChangeButton = listenedButton("Select a different explorer",
             (ActionEvent event) {
                 for (listener in completionListeners) {
                     listener.finished();
                 }
-            }));
-        headerPanel.add(locLabel);
-        headerPanel.add(JLabel("Remaining Movement Points:"));
+            });
+        JLabel remainingMPLabel = JLabel("Remaining Movement Points:");
         JTextField mpField = JTextField(explorerSelectingPanel.mpDocument, null, 5);
         mpField.maximumSize = Dimension(runtime.maxArraySize,
             mpField.preferredSize.height.integer);
-        headerPanel.add(mpField);
-        headerPanel.add(JLabel("Current relative speed:"));
+        JLabel speedLabel = JLabel("Current relative speed:");
         Speed() speedSource = () {
             assert (is Speed retval = speedModel.selectedItem);
             return retval;
         };
-        headerPanel.add(ImprovedComboBox<Speed>.withModel(speedModel));
+        value speedBox = ImprovedComboBox<Speed>.withModel(speedModel);
+        headerPanel.add(explorerChangeButton);
+        headerPanel.add(locLabel);
+        headerPanel.add(remainingMPLabel);
+        headerPanel.add(mpField);
+        headerPanel.add(speedLabel);
+        headerPanel.add(speedBox);
+        headerLayout.setHorizontalGroup(headerLayout.sequentialGroupOf(explorerChangeButton, locLabel,
+            remainingMPLabel, mpField, speedLabel, speedBox));
+        headerLayout.setVerticalGroup(headerLayout.parallelGroupOf(explorerChangeButton, locLabel,
+            remainingMPLabel, mpField, speedLabel, speedBox));
         IMutableMapNG secondMap;
         if (exists pair = model.subordinateMaps.first) {
             secondMap = pair.first;
