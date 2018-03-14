@@ -379,9 +379,17 @@ object xmlTests {
 	 SP format errors."
 	void assertInvalid(String xml) {
 	    for (reader in {oldReader, newReader}) {
-	        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
-	                XMLStreamException|FileNotFoundException>(reader,
-	            xml, null);
+	        try {
+		        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
+		                XMLStreamException|FileNotFoundException>(reader,
+		            xml, null);
+		    } catch (MissingPropertyException except) {
+		        if (except.tag.localPart == "include", except.param == "file") {
+		            // pass
+		        } else {
+		            throw except;
+		        }
+		    }
 	    }
 	}
 
