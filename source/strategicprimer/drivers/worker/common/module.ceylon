@@ -5,11 +5,11 @@
  bug](https://github.com/ceylon/ceylon/issues/6986) is fixed."
 license("GPL-3")
 native("jvm")
-module strategicprimer.drivers.worker.common "0.4.9015" {
+module strategicprimer.drivers.worker.common "0.4.9016" {
     shared import java.base "8";
     import ceylon.collection "1.3.3";
-    shared import strategicprimer.drivers.common "0.4.9015";
-    shared import strategicprimer.model "0.4.9015";
+    shared import strategicprimer.drivers.common "0.4.9016";
+    shared import strategicprimer.model "0.4.9016";
     import ceylon.test "1.3.3";
     import lovelace.util.jvm "0.1.0";
     shared import java.desktop "8";

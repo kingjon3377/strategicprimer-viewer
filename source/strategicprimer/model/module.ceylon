@@ -5,7 +5,7 @@
 license("GPL-3")
 // TODO: Make only the I/O parts "native"; blocked by eclipse/ceylon#7336
 native("jvm")
-module strategicprimer.model "0.4.9015" {
+module strategicprimer.model "0.4.9016" {
     shared import java.base "8";
     shared import javax.xml "8";
     import ceylon.test "1.3.3";
