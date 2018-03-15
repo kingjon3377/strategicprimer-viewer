@@ -15,6 +15,7 @@ shared interface ICLIHelper {
     shared alias ListAmendment<Element> => Element?(MutableList<Element>, ICLIHelper);
     "Ask the user to choose an item from the list, and if he does carry out an
      operation on it and then ask if he wants to do another."
+    deprecated("Leads to unmaintainable spaghetti-code")
     shared formal void loopOnList<out Element>(
             "The list."
             Element[] list,
@@ -26,6 +27,7 @@ shared interface ICLIHelper {
             Anything(Element, ICLIHelper) operation) given Element satisfies Object;
     "Ask the user to choose an item from the list, and if he does carry out an
      operation on it and then ask if he wants to do another."
+    deprecated("Leads to unmaintainable spaghetti-code")
     shared formal void loopOnMutableList<out Element>(
             "The list."
             MutableList<Element> list,
