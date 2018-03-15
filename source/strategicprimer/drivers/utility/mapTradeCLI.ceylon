@@ -77,7 +77,7 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
 		"Trade maps", "Copy contents from one map to another.");
 	FixtureMatcher trivialMatcher(ClassModel<TileFixture> type,
-		String description = "``type.declaration.name``s") {
+			String description = "``type.declaration.name``s") {
 		return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
 	}
 	Iterable<FixtureMatcher> initializeMatchers() {
