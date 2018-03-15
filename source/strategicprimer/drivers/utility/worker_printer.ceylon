@@ -43,16 +43,8 @@ shared object workerPrintCLI satisfies SimpleDriver {
             }
             {IJob*} jobs = worker.filter((job) => job.level > 0);
             if (!jobs.empty) {
-                variable Boolean first = true;
-                for (job in jobs) {
-                    if (first) {
-                        cli.print(" (");
-                        first = false;
-                    } else {
-                        cli.print(", ");
-                    }
-                    cli.print("``job.name`` ``job.level``");
-                }
+                cli.print(" (");
+                cli.print(", ".join(jobs.map((job) => job.name + " " + job.level.string)));
                 cli.print(")");
             }
             if (exists stats = worker.stats) {
