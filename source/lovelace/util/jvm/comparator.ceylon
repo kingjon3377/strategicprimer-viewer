@@ -12,7 +12,7 @@ shared Comparison(Type, Type) ceylonComparator<Type>(
 }
 "Convert a Ceylon comparator to a Java Comparator."
 shared JComparator<Type> javaComparator<Type>(Comparison(Type, Type) comparator) {
-    object retval satisfies JComparator<Type> {
+    return object satisfies JComparator<Type> {
         shared actual Integer compare(Type? x, Type? y) {
             assert (exists x, exists y);
             switch (comparator(x, y))
@@ -21,6 +21,5 @@ shared JComparator<Type> javaComparator<Type>(Comparison(Type, Type) comparator)
             case (larger) { return 1; }
         }
         shared actual Boolean equals(Object other) => false;
-    }
-    return retval;
+    };
 }
