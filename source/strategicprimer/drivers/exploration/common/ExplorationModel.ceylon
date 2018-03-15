@@ -119,9 +119,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     static Boolean doesLocationHaveFixture(IMapNG map, Point point, TileFixture fixture) {
         return map.fixtures[point]?.flatMap((element) {
             if (is {IFixture*} element) {
-                return {element, *element};
+                return element.follow(Singleton(element));
             } else {
-                return {element};
+                return Singleton(element);
             }
         })?.any(fixture.equals) else false;
     }
