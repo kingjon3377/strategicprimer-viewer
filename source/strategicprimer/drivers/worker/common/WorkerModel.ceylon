@@ -167,9 +167,9 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 }
             }
         } else {
-            if (exists tuple = temp) {
-                log.info("Added unit at fortress ``tuple.first.name``, not HQ");
-                addUnitAtLocation(unit, tuple.rest.first);
+            if (exists [fortress, loc] = temp) {
+                log.info("Added unit at fortress ``fortress.name``, not HQ");
+                addUnitAtLocation(unit, loc);
                 return;
             } else if (!unit.owner.independent) {
                 log.warn("No suitable location found for unit ``unit.name``, owned by ``unit.owner``");
