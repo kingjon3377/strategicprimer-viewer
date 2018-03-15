@@ -102,9 +102,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         } else if (subordinateMaps.empty) {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.
-            return getUnitsImpl(map.locations
-//                .flatMap((point) => map.fixtures[point]), player) // TODO: syntax sugar once compiler bug fixed
-                .flatMap((point) => map.fixtures.get(point)), player)
+            return getUnitsImpl(map.locations.flatMap(map.fixtures.get), player)
                 .sort((x, y) => x.name.compareIgnoringCase(y.name));
         } else {
             value temp = allMaps
