@@ -25,7 +25,6 @@ class RandomTable([Integer, String]* items) satisfies EncounterTable {
     shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions dimensions) =>
                 lowestMatch(singletonRandom.nextInteger(100));
-    shared actual Set<String> allEvents =>
-            set {*table.map((tuple) => tuple.rest.first)};
+    shared actual Set<String> allEvents => set {*table.map(([num, item]) => item)};
     shared actual String string = "RandomTable of ``table.size`` items";
 }
