@@ -123,7 +123,7 @@ shared class SPMapNG satisfies IMutableMapNG {
         //{TileFixture*} local = fixturesMap[location]; // TODO: syntax sugar once compiler bug fixed
         {TileFixture*} local = fixturesMap.get(location);
         if (fixture.id >= 0,
-            exists existing = local.find((item) => item.id == fixture.id)) {
+	            exists existing = local.find((item) => item.id == fixture.id)) {
             Boolean subsetCheck(TileFixture one, TileFixture two) {
                 if (is Subsettable<IFixture> one, one.isSubset(two, noop)) {
                     return true;
@@ -163,8 +163,8 @@ shared class SPMapNG satisfies IMutableMapNG {
     shared actual Boolean equals(Object obj) {
         if (is IMapNG obj) {
             if (dimensions == obj.dimensions, players.containsEvery(obj.players),
-                obj.players.containsEvery(players), currentTurn == obj.currentTurn,
-                currentPlayer == obj.currentPlayer) {
+	                obj.players.containsEvery(players), currentTurn == obj.currentTurn,
+	                currentPlayer == obj.currentPlayer) {
                 for (point in locations) {
                     if (!anythingEqual(baseTerrain[point], obj.baseTerrain[point]) ||
 	                        //mountainous[point] != obj.mountainous[point] || // TODO: syntax sugar
@@ -278,7 +278,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                 variable Subsettable<Target>? match = null;
                 variable Point? matchPoint = null;
                 variable Boolean exactly = false;
-                for ([item, ourLocation] in list.follow(list.find(([_, point]) => point == location)).coalesced.distinct) {
+                for ([item, ourLocation] in list.follow(list.find(([_, point]) => point == location))
+	                    .coalesced.distinct) {
                     count++;
                     match = item;
                     matchPoint = ourLocation;
@@ -313,7 +314,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                     ostream("Extra fixture:\t``desideratum``");
                 } else if (unmatched) {
                     ostream("Fixture with ID #``desideratum.id
-                    `` didn't match any of the subsettable fixtures sharing that ID");
+	                    `` didn't match any of the subsettable fixtures sharing that ID");
                     retval = false;
                 }
                 return retval;
