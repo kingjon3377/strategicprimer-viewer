@@ -80,7 +80,7 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			String description = "``type.declaration.name``s") {
 		return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
 	}
-	Iterable<FixtureMatcher> initializeMatchers() {
+	{FixtureMatcher*} initializeMatchers() {
 		{FixtureMatcher*} complements<out T>(Boolean(T) method,
 				String firstDescription, String secondDescription)
 					given T satisfies TileFixture {
@@ -122,7 +122,7 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			trivialMatcher(`Sandbar`), trivialMatcher(`Hill`),
 			complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
 		}) {
-			if (is Iterable<FixtureMatcher> arg) {
+			if (is {FixtureMatcher*} arg) {
 				list.addAll(arg);
 			} else {
 				list.add(arg);
