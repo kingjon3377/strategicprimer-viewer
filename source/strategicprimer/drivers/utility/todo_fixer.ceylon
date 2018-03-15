@@ -106,8 +106,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     void fixAllVillages(IMapNG map, ICLIHelper cli) {
         {Village*} villages = map.locations
             .filter((loc) => (map.baseTerrain[loc] else TileType.plains) == TileType.ocean)
-//            .flatMap((loc) => map.fixtures[loc]).narrow<Village>()
-            .flatMap((loc) => map.fixtures.get(loc)).narrow<Village>()
+            .flatMap(map.fixtures.get).narrow<Village>()
             .filter((village) => landRaces.contains(village.race));
         if (!villages.empty) {
             if (raceList.empty) {
