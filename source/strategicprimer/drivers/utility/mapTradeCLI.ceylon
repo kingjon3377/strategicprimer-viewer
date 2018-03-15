@@ -80,6 +80,13 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			String description = "``type.declaration.name``s") {
 		return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
 	}
+	{FixtureMatcher*} flatten(FixtureMatcher|{FixtureMatcher*} item) {
+		if (is {FixtureMatcher*} item) {
+			return item;
+		} else {
+			return Singleton(item);
+		}
+	}
 	{FixtureMatcher*} initializeMatchers() {
 		{FixtureMatcher*} complements<out T>(Boolean(T) method,
 				String firstDescription, String secondDescription)
@@ -88,10 +95,7 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 				simpleMatcher<T>((T fixture) => !method(fixture),
 					secondDescription)};
 		}
-		MutableList<FixtureMatcher> list = ArrayList<FixtureMatcher>();
-		// Can't use our preferred initialization form because an Iterable can only be spread
-		// as the *last* argument.
-		for (arg in {
+		return {
 			complements<IUnit>((unit) => !unit.owner.independent, "Units",
 				"Independent Units"),
 			trivialMatcher(`Fortress`, "Fortresses"),
@@ -121,14 +125,7 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			trivialMatcher(`Shrub`), complements<Meadow>(Meadow.field, "Fields", "Meadows"),
 			trivialMatcher(`Sandbar`), trivialMatcher(`Hill`),
 			complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
-		}) {
-			if (is {FixtureMatcher*} arg) {
-				list.addAll(arg);
-			} else {
-				list.add(arg);
-			}
-		}
-		return list;
+		}.flatMap(flatten);
 	}
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
 		IMapNG first = model.map;
