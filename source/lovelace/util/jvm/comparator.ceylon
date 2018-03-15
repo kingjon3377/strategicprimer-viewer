@@ -4,15 +4,11 @@ import java.util {
 "Convert a Java Comparator to a Ceylon comparator."
 shared Comparison(Type, Type) ceylonComparator<Type>(
         Integer(Type?, Type?)|Integer(Type, Type)|JComparator<Type> comparator) {
-    return (Type x, Type y) {
-        Integer temp;
-        if (is Integer(Type?, Type?)|Integer(Type, Type) comparator) {
-            temp = comparator(x, y);
-        } else {
-            temp = comparator.compare(x, y);
-        }
-        return temp <=> 0;
-    };
+	if (is Integer(Type?, Type?)|Integer(Type, Type) comparator) {
+		return (Type x, Type y) => comparator(x, y) <=> 0;
+	} else {
+		return (Type x, Type y) => comparator.compare(x, y) <=> 0;
+	}
 }
 "Convert a Ceylon comparator to a Java Comparator."
 shared JComparator<Type> javaComparator<Type>(Comparison(Type, Type) comparator) {
