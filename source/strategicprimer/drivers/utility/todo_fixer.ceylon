@@ -205,9 +205,9 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
-            for (pair in model.allMaps) {
-                fixAllUnits(pair.first, cli);
-                fixAllVillages(pair.first, cli);
+            for ([map, path] in model.allMaps) {
+                fixAllUnits(map, cli);
+                fixAllVillages(map, cli);
             }
         } else {
             fixAllUnits(model.map, cli);
