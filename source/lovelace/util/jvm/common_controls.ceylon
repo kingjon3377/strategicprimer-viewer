@@ -63,6 +63,7 @@ shared void showErrorDialog(
         String title,
         "The error message to show the user."
         String message) => JOptionPane.showMessageDialog(parent, message, title, JOptionPane.errorMessage);
+
 "An extension to [[GroupLayout]] to provide additional methods to make initialization
  less verbose and more functional in style."
 shared class FunctionalGroupLayout(Container host) extends GroupLayout(host) {
@@ -323,20 +324,25 @@ shared JMenuItem createMenuItem(
     }
     return menuItem;
 }
-String formatter(String format, Object* args) {
-    Object mapper(Object arg) {
-        switch (arg)
-        case (is Integer) { return JInteger(arg); }
-        case (is String) { return Types.nativeString(arg); }
-        case (is Float) { return JDouble(arg); }
-        else { return arg; }
-    }
-    return JString.format(format, *args.map(mapper));
-}
 "Combines JLabel with [[JString.format()]]"
 todo("Find an equivalent text-formatting API in the Ceylon SDK, if there is one.")
-shared class FormattedLabel(String format, Object* args)
-        extends JLabel(formatter(format, *args)) {
+shared class FormattedLabel extends JLabel {
+	static Object mapper(Object arg) {
+		switch (arg)
+		case (is Integer) { return JInteger(arg); }
+		case (is String) { return Types.nativeString(arg); }
+		case (is Float) { return JDouble(arg); }
+		else { return arg; }
+	}
+	static String formatter(String format, Object* args) {
+		return JString.format(format, *args.map(mapper));
+	}
+	String format;
+	shared new (String format, Object* args)
+			extends JLabel(formatter(format, *args)) {
+		this.format = format;
+	}
+
     shared void setArgs(Object* newArgs) {
         text = formatter(format, *newArgs);
     }
