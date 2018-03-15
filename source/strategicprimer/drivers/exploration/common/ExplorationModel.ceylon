@@ -96,13 +96,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             if (unit == fixture) {
                 outside = true;
                 break;
-            } else if (is Fortress fixture) {
-                for (item in fixture) {
-                    if (unit == item) {
-                        fixture.removeMember(unit);
-                        return;
-                    }
-                }
+            } else if (is Fortress fixture, exists item = fixture.find(unit.equals)) {
+                fixture.removeMember(item);
+                return;
             }
         }
         if (outside) {
