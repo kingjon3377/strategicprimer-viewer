@@ -10,10 +10,7 @@ import ceylon.collection {
     MutableList
 }
 """An interface for the "CLI helper," which encapsulates input and output streams,
-   allowing automated testing of CLIs and GUI wrappers around CLIs. We satisfy
-   [[Obtainable]] to allow instances to be created in resource expressions in
-   try-with-resources statements, but the default implementations of that
-   interface's methods are no-ops."""
+   allowing automated testing of CLIs and GUI wrappers around CLIs."""
 shared interface ICLIHelper {
     shared alias ListAmendment<Element> => Element?(MutableList<Element>, ICLIHelper);
     "Ask the user to choose an item from the list, and if he does carry out an
