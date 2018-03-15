@@ -215,19 +215,13 @@ shared class SPMapNG satisfies IMutableMapNG {
                 builder.append("mountains, ");
             }
             if (exists rvr = rivers[location], !rvr.empty) {
-                builder.append("rivers:");
-                for (river in rvr) {
-                    builder.append(" ``river``");
-                }
+                builder.append("rivers: ");
+                builder.append(" ".join(rvr));
                 builder.append(", ");
             }
             if (exists other = fixtures[location]) {
-                builder.append("fixtures: ");
-                for (fixture in other) {
-                    builder.appendNewline();
-                    builder.append(fixture.string);
-                    // builder.append(" (``type(fixture).declaration.name``)");
-                }
+                builder.append("fixtures: \n");
+                builder.append("\n".join(other));
             }
             builder.appendNewline();
         }
