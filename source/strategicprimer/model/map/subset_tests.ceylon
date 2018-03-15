@@ -123,17 +123,18 @@ object subsetTests {
 	        "Different size breaks Fortress subset");
 	}
 
+	IMutableMapNG createMap(<Point->TileType>* terrain) {
+		IMutableMapNG retval = SPMapNG(MapDimensionsImpl(2, 2, 2),
+			PlayerCollection(), -1);
+		for (point->type in terrain) {
+			retval.baseTerrain[point] = type;
+		}
+		return retval;
+	}
+
 	"Test the [[IMapNG]] subset feature"
 	test
 	shared void testMapSubset() {
-	    IMutableMapNG createMap(<Point->TileType>* terrain) {
-	        IMutableMapNG retval = SPMapNG(MapDimensionsImpl(2, 2, 2),
-	            PlayerCollection(), -1);
-	        for (point->type in terrain) {
-	            retval.baseTerrain[point] = type;
-	        }
-	        return retval;
-	    }
 	    IMutableMapNG firstMap = createMap(pointFactory(0, 0)->TileType.jungle);
 	    IMutableMapNG secondMap = createMap(pointFactory(0, 0)->TileType.jungle,
 	        pointFactory(1, 1)->TileType.ocean);
