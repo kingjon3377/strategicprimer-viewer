@@ -62,9 +62,7 @@ shared void showErrorDialog(
         "What to title the dialog."
         String title,
         "The error message to show the user."
-        String message) {
-    JOptionPane.showMessageDialog(parent, message, title, JOptionPane.errorMessage);
-}
+        String message) => JOptionPane.showMessageDialog(parent, message, title, JOptionPane.errorMessage);
 "An extension to [[GroupLayout]] to provide additional methods to make initialization
  less verbose and more functional in style."
 shared class FunctionalGroupLayout(Container host) extends GroupLayout(host) {
