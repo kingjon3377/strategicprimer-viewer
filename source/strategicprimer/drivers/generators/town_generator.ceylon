@@ -188,8 +188,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         }
     }
     IFixture? findByID(IMapNG map, Integer id) => map.locations
-//        .flatMap((loc) => map.fixtures[loc])
-        .flatMap((loc) => map.fixtures.get(loc))
+        .flatMap(map.fixtures.get)
         .find((fix) => fix.id == id);
     Point? findLocById(IMapNG map, Integer id) {
         for (location in map.locations) {
@@ -203,8 +202,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         return null;
     }
     Boolean isClaimedField(IMapNG map, Integer id) => map.locations
-//        .flatMap((loc) => map.fixtures[loc]).narrow<ITownFixture>() // TODO: syntax sugar once compiler bug fixed
-        .flatMap((loc) => map.fixtures.get(loc)).narrow<ITownFixture>()
+        .flatMap(map.fixtures.get).narrow<ITownFixture>()
         .map(ITownFixture.population).coalesced
         .flatMap(CommunityStats.workedFields).contains(id);
     Boolean isUnclaimedField(IMapNG map, Integer id) =>
@@ -248,9 +246,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
             return surroundingPointIterable(location, map.dimensions, 10).distinct
 //            .filter((point) => bothOrNeitherOcean(base, map.baseTerrain[point])) // TODO: syntax sugar once compiler bug fixed
                 .filter((point) => bothOrNeitherOcean(base, map.baseTerrain.get(point)))
-//            .flatMap((point) => map.fixtures[point]).narrow<HarvestableFixture>()
-                .flatMap((point) => map.fixtures.get(point)).narrow<HarvestableFixture>()
-                .filter(isReallyClaimable);
+                .flatMap(map.fixtures.get).narrow<HarvestableFixture>().filter(isReallyClaimable);
         } else {
             return {};
         }
