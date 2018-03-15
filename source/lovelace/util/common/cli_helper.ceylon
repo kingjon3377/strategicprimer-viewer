@@ -22,10 +22,8 @@ shared T? chooseFromList<T>(String? header, String prompt, Boolean auto,
 }
 
 shared void printList(String* list) {
-    variable Integer i = 0;
-    for (string in list) {
+    for (i->string in list.indexed) {
         print("``i``. ``string``");
-        i++;
     }
 }
 
