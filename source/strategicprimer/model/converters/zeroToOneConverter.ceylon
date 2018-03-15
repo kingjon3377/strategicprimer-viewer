@@ -125,9 +125,8 @@ object zeroToOneConverter {
     addXML("""<stone kind="limestone" dc="0" />""", 247, 248, 249);
     addXML("""<stone kind="marble" dc="0" />""", 250, 251, 252);
     addXML("""<cave dc="0" />""", 253, 254, 255);
-    Boolean isSpecifiedTag(QName tag, String desired) {
-        return tag == QName(spNamespace, desired) || tag == QName(desired);
-    }
+    Boolean isSpecifiedTag(QName tag, String desired) =>
+            tag == QName(spNamespace, desired) || tag == QName(desired);
     void printAttribute(Anything(String) ostream, Attribute attribute, QName parentTag) {
         QName name = attribute.name;
         // Based on my reading of the W3C documentation, it should only be
