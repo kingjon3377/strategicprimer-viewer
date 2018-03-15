@@ -78,7 +78,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
                         ([Integer count, TileType type]) => type)).first);
             return retval;
         } else {
-            assert (exists retval = counted.first?.rest?.first);
+            assert (exists [count, retval] = counted.first);
             return retval;
         }
     }
