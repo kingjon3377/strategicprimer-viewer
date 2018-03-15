@@ -56,7 +56,7 @@ shared object readerComparator satisfies UtilityDriver {
         SPWriter writerOne = testReaderFactory.oldWriter;
         SPWriter writerTwo = testReaderFactory.newWriter;
         Warning warner = warningLevels.ignore;
-        for (arg in args.coalesced) {
+        for (arg in args) {
             cli.println("``arg``:");
             Resource file = parsePath(arg).resource;
             JPath path = JPaths.get(arg);
