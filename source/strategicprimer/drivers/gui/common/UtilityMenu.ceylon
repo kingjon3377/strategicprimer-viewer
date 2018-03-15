@@ -37,8 +37,7 @@ shared class UtilityMenu(SPFrame parent) extends JMenuBar() {
                 parent.dispose, createAccelerator(KeyEvent.vkW)));
     if (platform.systemIsMac) {
         Application.application.setAboutHandler((AppEvent.AboutEvent event) {
-            Object source = WindowList.getWindows(true, false).iterable.coalesced
-                .sequence().last else event;
+            Object source = WindowList.getWindows(true, false).iterable.coalesced.last else event;
             aboutHandler(ActionEvent(source, ActionEvent.actionFirst,
                 "About"));
         });
