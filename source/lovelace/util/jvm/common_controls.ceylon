@@ -308,7 +308,7 @@ shared JMenuItem createMenuItem(
         "The description to show to accessibility software."
         String description,
         "The listener to handle when the item is selected."
-        Anything(ActionEvent) listener,
+        Anything(ActionEvent)|Anything() listener,
         "The keyboard accelerators (hot-keys). The first one is shown in the menu, but all
          are listened for."
         KeyStroke* accelerators) {
@@ -317,7 +317,11 @@ shared JMenuItem createMenuItem(
         menuItem.accelerator = accelerator;
     }
     menuItem.accessibleContext.accessibleDescription = description;
-    menuItem.addActionListener(listener);
+    if (is Anything(ActionEvent) listener) {
+	    menuItem.addActionListener(listener);
+	} else {
+		menuItem.addActionListener((evt) => listener());
+	}
     InputMap inputMap = menuItem.getInputMap(JComponent.whenInFocusedWindow);
     for (accelerator in accelerators) {
         inputMap.put(accelerator, menuItem.action);

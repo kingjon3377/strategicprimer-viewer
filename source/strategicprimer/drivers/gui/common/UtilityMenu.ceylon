@@ -34,7 +34,7 @@ shared class UtilityMenu(SPFrame parent) extends JMenuBar() {
             aboutDialog(parent, parent.windowName).setVisible(true);
     JMenu menu = JMenu("File");
     menu.add(createMenuItem("Close", KeyEvent.vkW, "Close this window",
-                (event) => parent.dispose(), createAccelerator(KeyEvent.vkW)));
+                parent.dispose, createAccelerator(KeyEvent.vkW)));
     if (platform.systemIsMac) {
         Application.application.setAboutHandler((AppEvent.AboutEvent event) {
             Object source = WindowList.getWindows(true, false).iterable.coalesced
@@ -47,7 +47,7 @@ shared class UtilityMenu(SPFrame parent) extends JMenuBar() {
             aboutHandler, createAccelerator(KeyEvent.vkB)));
         menu.addSeparator();
         menu.add(createMenuItem("Quit", KeyEvent.vkQ, "Quit the application",
-                    (event) => process.exit(0), createAccelerator(KeyEvent.vkQ)));
+                    (ActionEvent event) => process.exit(0), createAccelerator(KeyEvent.vkQ)));
     }
     add(menu);
     add(WindowMenu(parent));
