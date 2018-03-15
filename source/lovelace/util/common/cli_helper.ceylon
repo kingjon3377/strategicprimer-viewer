@@ -5,15 +5,13 @@ shared T? chooseFromList<T>(String? header, String prompt, Boolean auto,
             print(header);
         }
         if (auto, choices.size == 1) {
-            value item = choices.first;
-            print("Automatically choosing only item, ``item.first``");
-            return item.rest.first;
+            value [desc, item] = choices.first;
+            print("Automatically choosing only item, ``desc``");
+            return item;
         } else {
             printList(*choices.map(Tuple.first));
-            Integer number = inputNumber(prompt);
-            [String, T]? choice = choices[number];
-            if (exists choice) {
-                return choice.rest.first;
+            if (exists [description, choice] = choices[inputNumber(prompt)]) {
+                return choice;
             } else {
                 return null;
             }
