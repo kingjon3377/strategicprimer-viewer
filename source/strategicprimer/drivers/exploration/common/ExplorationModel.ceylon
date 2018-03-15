@@ -130,25 +130,13 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             "The number to increment"
             Integer number,
             "The maximum number we want to return"
-            Integer max) {
-        if (number >= max) {
-            return 0;
-        } else {
-            return number + 1;
-        }
-    }
+            Integer max) => if (number >= max) then 0 else number + 1;
     """A "minus one" method that "underflows" after 0 to a configurable, low value."""
     static Integer decrement(
             "The number to decrement"
             Integer number,
             """The number to "underflow" to"""
-            Integer max) {
-        if (number <= 0) {
-            return max;
-        } else {
-            return number - 1;
-        }
-    }
+            Integer max) => if (number <= 0) then max else number - 1;
     MutableList<MovementCostListener> mcListeners = ArrayList<MovementCostListener>();
     MutableList<SelectionChangeListener> scListeners =
             ArrayList<SelectionChangeListener>();
