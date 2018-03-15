@@ -14,10 +14,6 @@ import ceylon.math.float {
     random
 }
 
-import java.nio.file {
-    JPath=Path
-}
-
 import strategicprimer.model.idreg {
     IDRegistrar,
     createIDFactory
@@ -26,8 +22,7 @@ import strategicprimer.model.map {
     Point,
     Player,
     IFixture,
-    IMapNG,
-    IMutableMapNG
+    IMapNG
 }
 import strategicprimer.model.map.fixtures.mobile {
     Worker,
@@ -114,7 +109,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for one worker in particular."
     void enterStatsForWorker(IMultiMapModel model, Integer id, ICLIHelper cli) {
         WorkerStats stats = enterStatsCollection(cli);
-        for (map in model.allMaps.map(([IMutableMapNG, JPath?] pair) => pair.first)) {
+        for (map in model.allMaps.map(Tuple.first)) {
             if (is Worker fixture = find(map, id), !fixture.stats exists) {
                 fixture.stats = stats;
             }
