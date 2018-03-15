@@ -198,8 +198,8 @@ object zeroToOneConverter {
                 if (is Integer number) {
                     events.offer(number);
                 } else {
-                    log.error("Non-numeric 'event' in line ``element.location
-                        .lineNumber``",
+                    log.error(
+                        "Non-numeric 'event' in line ``element.location.lineNumber``",
                         number);
                 }
             } else {
