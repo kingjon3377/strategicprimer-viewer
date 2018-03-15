@@ -45,7 +45,8 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
-    suspiciousSkills
+    suspiciousSkills,
+	ISkill
 }
 import strategicprimer.model.map.fixtures.resources {
     StoneDeposit,
@@ -105,7 +106,7 @@ shared object mapCheckerCLI satisfies UtilityDriver {
         if (job.size > 1) {
             return false;
         } else {
-            return {*job}.any(suspiciousSkills.contains);
+            return {*job}.map(ISkill.name).any(suspiciousSkills.contains);
         }
     }
     void suspiciousSkillCheck(TileType terrain, Point context, IFixture fixture,
