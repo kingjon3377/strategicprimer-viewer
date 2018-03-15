@@ -55,8 +55,7 @@ shared Integer inputNumber(String prompt) {
 shared Boolean inputBoolean(String prompt) {
     while (true) {
         writePrompt(prompt);
-        String? input = process.readLine();
-        switch (input?.lowercased)
+        switch (process.readLine()?.lowercased)
         case ("yes" | "true" | "y" | "t") { return true; }
         case ("no" | "false" | "n" | "f") { return false; }
         else {
