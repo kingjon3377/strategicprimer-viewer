@@ -110,7 +110,7 @@ shared IMapNG convertOneToTwo(
                 (TileType.temperateForest == originalTerrain ||
                 TileType.borealForest == originalTerrain)) {
                 retval.addFixture(point, Forest(runner.getPrimaryTree(point,
-//                originalTerrain, retval.mountainous[point], retval.fixtures[point],
+//                originalTerrain, retval.mountainous[point], retval.fixtures[point], // TODO: syntax sugar
                     originalTerrain, retval.mountainous.get(point), retval.fixtures.get(point),
                     retval.dimensions), false, idFactory.createID()));
             }
