@@ -179,8 +179,8 @@ object todoFixerCLI satisfies SimpleCLIDriver {
         }
         for (job in jobList) {
             if (rng.nextBoolean()) {
-                cli.println("Setting unit with ID #``
-                unit.id`` (``count`` / 5328) to kind ``job``");
+                cli.println(
+                    "Setting unit with ID #``unit.id`` (``count`` / 5328) to kind ``job``");
                 unit.kind = job;
                 return;
             }
