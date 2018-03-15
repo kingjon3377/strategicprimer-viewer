@@ -16,7 +16,8 @@ import strategicprimer.model.map {
     HasOwner
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
-    WorkerStats
+    WorkerStats,
+	ISkill
 }
 
 import strategicprimer.model.map.fixtures.mobile {
@@ -145,7 +146,7 @@ shared object simpleMovementModel {
 	    }
 	    Integer ranks = worker.flatMap(identity)
 	        .filter((skill) => "perception" == skill.name.lowercased)
-	        .map((skill) => skill.level).reduce(plus) else 0;
+	        .map(ISkill.level).reduce(plus) else 0;
 	    return ability + (ranks * 2);
 	}
 
