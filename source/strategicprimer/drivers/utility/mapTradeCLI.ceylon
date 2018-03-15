@@ -87,14 +87,14 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			return Singleton(item);
 		}
 	}
-	{FixtureMatcher*} initializeMatchers() {
-		{FixtureMatcher*} complements<out T>(Boolean(T) method,
-				String firstDescription, String secondDescription)
-					given T satisfies TileFixture {
-			return {simpleMatcher<T>(method, firstDescription),
-				simpleMatcher<T>((T fixture) => !method(fixture),
-					secondDescription)};
+	{FixtureMatcher*} complements<out T>(Boolean(T) method,
+		String firstDescription, String secondDescription)
+			given T satisfies TileFixture {
+		return {simpleMatcher<T>(method, firstDescription),
+			simpleMatcher<T>((T fixture) => !method(fixture),
+				secondDescription)};
 		}
+	{FixtureMatcher*} initializeMatchers() {
 		return {
 			complements<IUnit>((unit) => !unit.owner.independent, "Units",
 				"Independent Units"),
