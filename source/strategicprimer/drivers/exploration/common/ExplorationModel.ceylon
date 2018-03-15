@@ -149,8 +149,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     "All the players shared by all the maps."
     shared actual {Player*} playerChoices {
         variable Set<Player> retval = set { *map.players };
-        for (pair in allMaps) {
-            Set<Player> temp = set { *pair.first.players };
+        for ([inner, file] in allMaps) {
+            Set<Player> temp = set { *inner.players };
             retval = retval.intersection(temp);
         }
         return { *retval };
