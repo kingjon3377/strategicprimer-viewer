@@ -84,15 +84,16 @@ object subsetTests {
 	        "Two is subset of self");
 	}
 
+	void requireMatching(Fortress one, Fortress two, String what) {
+		assertNotSubset<Fortress, IFixture>(one, two,
+			"Subset requires ``what``, first test");
+		assertNotSubset<Fortress, IFixture>(two, one,
+			"Subset requires ``what``, second test");
+	}
+
 	"A test of [[Fortress]]'s subset feature."
 	test
 	shared void testFortressSubset() {
-	    void requireMatching(Fortress one, Fortress two, String what) {
-	        assertNotSubset<Fortress, IFixture>(one, two,
-	            "Subset requires ``what``, first test");
-	        assertNotSubset<Fortress, IFixture>(two, one,
-	            "Subset requires ``what``, second test");
-	    }
 	    Integer fortId = 1;
 	    Fortress firstFort = Fortress(PlayerImpl(1, "one"), "fOne", fortId, TownSize.small);
 	    requireMatching(firstFort,
