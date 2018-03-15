@@ -45,8 +45,7 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
             return loadTable(reader.readLine, argument.name);
         }
     } else if (is Resource argument) {
-        String text = argument.textContent();
-        {String+} split = text.split('\n'.equals);
+        {String+} split = argument.textContent().split('\n'.equals);
         return loadTable(ArrayList { *split }.accept, argument.name);
     } else if (is {String*} argument) {
         return loadTable(argument.iterator().next, name);
