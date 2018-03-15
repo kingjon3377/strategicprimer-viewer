@@ -115,7 +115,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 } else if (is HasExtent fixture, fixture.acres.positive) {
                     continue;
                 }
-                if (exists matching = fixtures.find((fixture.equalsIgnoringID)),
+                if (exists matching = fixtures.find(fixture.equalsIgnoringID),
                     approveRemoval(location, fixture, matching)) {
                     toRemove.add(fixture);
                 } else {
