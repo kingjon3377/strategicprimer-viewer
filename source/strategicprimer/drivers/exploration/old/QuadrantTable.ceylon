@@ -56,8 +56,7 @@ class QuadrantTable satisfies EncounterTable {
     shared new forDimensions(Integer mapRows, Integer mapColumns, Integer rows,
             String* items) extends QuadrantTable(rows, *items) {
         MapDimensions dimensions = MapDimensionsImpl(mapRows, mapColumns, 2);
-        Map<Point, String> firstQuadrants = valuesFor(dimensions, possibleResults, rows);
-        quadrants[dimensions] = firstQuadrants;
+        quadrants[dimensions] = valuesFor(dimensions, possibleResults, rows);
     }
     "Get the item in the table at the quadrant containing the given row and column in a
      map of the specified dimensions."
