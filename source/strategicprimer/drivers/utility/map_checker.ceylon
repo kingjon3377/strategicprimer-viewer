@@ -87,16 +87,16 @@ shared object mapCheckerCLI satisfies UtilityDriver {
     class SPContentWarning(Point context, String message)
             extends Exception("At ``context``: ``message``") { }
     void lateriteChecker(TileType terrain, Point context, IFixture fixture,
-        Warning warner) {
-        if (is StoneDeposit fixture, StoneKind.laterite ==fixture.stone,
-            !TileType.jungle == terrain) {
+	        Warning warner) {
+        if (is StoneDeposit fixture, StoneKind.laterite == fixture.stone,
+	            !TileType.jungle == terrain) {
             warner.handle(SPContentWarning(context, "Laterite stone in non-jungle"));
         }
     }
     void aquaticVillageChecker(TileType terrain, Point context, IFixture fixture,
-        Warning warner) {
+	        Warning warner) {
         if (is Village fixture, landRaces.contains(fixture.race),
-            TileType.ocean == terrain) {
+	            TileType.ocean == terrain) {
             warner.handle(SPContentWarning(context,
                 "Aquatic village has non-aquatic race"));
         }
@@ -109,7 +109,7 @@ shared object mapCheckerCLI satisfies UtilityDriver {
         }
     }
     void suspiciousSkillCheck(TileType terrain, Point context, IFixture fixture,
-        Warning warner) {
+	        Warning warner) {
         if (is IWorker fixture) {
             if ({*fixture}.any(suspiciousSkill)) {
                 warner.handle(SPContentWarning(context,
@@ -129,7 +129,7 @@ shared object mapCheckerCLI satisfies UtilityDriver {
     {String+} placeholderKinds = { "various", "unknown" };
     {String+} placeholderUnits = { "unit", "units" };
     void resourcePlaceholderChecker(TileType terrain, Point context, IFixture fixture,
-        Warning warner) {
+	        Warning warner) {
         if (is ResourcePile fixture) {
             if (placeholderKinds.contains(fixture.kind)) {
                 warner.handle(SPContentWarning(context,
@@ -175,7 +175,7 @@ shared object mapCheckerCLI satisfies UtilityDriver {
         } catch (FileNotFoundException|NoSuchFileException except) {
             err("``file`` not found");
             log.error("``file`` not found");
-	    log.debug("Full stack trace of file-not-found:", except);
+		    log.debug("Full stack trace of file-not-found:", except);
             return;
         } catch (IOException except) {
             err("I/O error reading ``file``");
