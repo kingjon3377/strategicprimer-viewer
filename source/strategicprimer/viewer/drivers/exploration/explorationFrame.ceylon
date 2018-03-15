@@ -322,6 +322,24 @@ SPFrame explorationFrame(IExplorationModel model,
             secondMap = model.map;
         }
         IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
+        HuntingModel huntingModel = HuntingModel(model.map);
+        Animal? tracksCreator(Point point) {
+            if (exists terrain = model.map.baseTerrain[point]) {
+                {<Point->Animal|HuntingModel.NothingFound>*}(Point) source;
+                if (terrain == TileType.ocean) {
+                    source = huntingModel.fish;
+                } else {
+                    source = huntingModel.hunt;
+                }
+                if (is Animal animal = source(point).map(Entry.item).first) {
+                    return AnimalImpl(animal.kind, true, false, "wild", -1);
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
         class ExplorationClickListener(Direction direction, SwingList<TileFixture>&SelectionChangeListener mainList)
                 satisfies MovementCostSource&SelectionChangeSource&ActionListener {
             MutableList<MovementCostListener> movementListeners =
@@ -431,7 +449,7 @@ SPFrame explorationFrame(IExplorationModel model,
             Direction.southeast}) {
             SelectionChangeSupport mainPCS = SelectionChangeSupport();
             SwingList<TileFixture>&SelectionChangeListener mainList =
-                    fixtureList(tilesPanel, FixtureListModel(model.map, true),
+                    fixtureList(tilesPanel, FixtureListModel(model.map, tracksCreator),
                 idf, model.map.players);
             mainPCS.addSelectionChangeListener(mainList);
             tilesPanel.add(JScrollPane(mainList));
@@ -453,21 +471,12 @@ SPFrame explorationFrame(IExplorationModel model,
             """A list-data-listener to select a random but suitable set of fixtures to
                 be "discovered" if the tile is explored."""
             object ell satisfies SelectionChangeListener {
-                "A list of animal-tracks objects, which we want to remove from the
-                 main map whenever the list's target gets changed."
-                MutableList<[Point, Animal]> tracks = ArrayList<[Point, Animal]>();
-                """A "hunting model," to get the animals to have traces of."""
-                HuntingModel huntingModel = HuntingModel(model.map);
                 variable Boolean outsideCritical = true;
                 shared actual void selectedPointChanged(Point? old, Point newPoint) {
                     SwingUtilities.invokeLater(() {
                         if (outsideCritical, exists selectedUnit =
                             model.selectedUnit) {
                             outsideCritical = false;
-                            for ([location, animal] in tracks) {
-                                model.map.removeFixture(location, animal);
-                            }
-                            tracks.clear();
                             mainList.clearSelection();
                             MutableList<[Integer, TileFixture]> constants =
                                     ArrayList<[Integer, TileFixture]>();
@@ -480,30 +489,6 @@ SPFrame explorationFrame(IExplorationModel model,
                                 } else if (simpleMovementModel.shouldSometimesNotice(selectedUnit,
                                     speedSource(), fixture)) {
                                     possibles.add([index, fixture]);
-                                }
-                            }
-                            Point currentLocation = model.selectedUnitLocation;
-                            if (currentLocation.valid) {
-                                {String*}(Point) tracksSource;
-                                if (exists terrain = model.map.baseTerrain[currentLocation],
-                                    terrain == TileType.ocean) {
-                                    tracksSource = (Point point) => huntingModel.fish(point).map(Entry.item)
-                                            .narrow<Animal>().filter((animal) => !animal.traces).map(Animal.kind);
-                                } else {
-                                    tracksSource = (Point point) => huntingModel.hunt(point).map(Entry.item)
-                                            .narrow<Animal>().filter((animal) => !animal.traces).map(Animal.kind);
-                                }
-                                if (exists possibleTracks =
-                                    tracksSource(currentLocation).first,
-                                HuntingModel.noResults != possibleTracks) {
-                                    Animal animal = AnimalImpl(possibleTracks, true,
-                                        false, "wild", -1);
-                                    assert (is FixtureListModel listModel =
-                                        mainList.model);
-                                    Integer index = listModel.size;
-                                    listModel.addFixture(animal);
-                                    possibles.add([index, animal]);
-                                    tracks.add([currentLocation, animal]);
                                 }
                             }
                             constants.addAll(simpleMovementModel.selectNoticed(randomize(possibles),
@@ -522,7 +507,7 @@ SPFrame explorationFrame(IExplorationModel model,
             model.addSelectionChangeListener(ell);
             ecl.addSelectionChangeListener(ell);
             SwingList<TileFixture>&SelectionChangeListener secList =
-                    fixtureList(tilesPanel, FixtureListModel(secondMap, false),
+                    fixtureList(tilesPanel, FixtureListModel(secondMap, (point) => null),
                 idf, secondMap.players);
             SelectionChangeSupport secPCS = SelectionChangeSupport();
             secPCS.addSelectionChangeListener(secList);

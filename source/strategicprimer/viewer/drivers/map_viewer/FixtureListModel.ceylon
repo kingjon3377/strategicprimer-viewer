@@ -1,91 +1,166 @@
-import ceylon.collection {
-    ArrayList,
-    MutableList
-}
-
-import javax.swing {
-    DefaultListModel,
-	SwingUtilities
-}
-
-import lovelace.util.common {
-    todo,
-    anythingEqual
-}
-
 import strategicprimer.model.map {
-    Point,
-    TileFixture,
-    IMutableMapNG,
-    invalidPoint
+	IMutableMapNG,
+	TileFixture,
+	Point,
+	invalidPoint
 }
-import strategicprimer.model.map.fixtures.mobile {
-    Animal
+import javax.swing {
+	ListModel
 }
 import strategicprimer.drivers.common {
-    SelectionChangeListener
+	SelectionChangeListener
+}
+import ceylon.collection {
+	ArrayList,
+	MutableList
+}
+import strategicprimer.model.map.fixtures.mobile {
+	Animal
+}
+import javax.swing.event {
+	ListDataListener,
+	ListDataEvent
+}
+import java.lang {
+	ArrayIndexOutOfBoundsException
 }
 "A model for the list-based representation of the contents of a tile."
-todo("Tests")
-shared class FixtureListModel(IMutableMapNG map,
-        "Whether to keep animal tracks out of the map."
-        Boolean filterTracks) extends DefaultListModel<TileFixture>()
-        satisfies SelectionChangeListener {
-    "The currently selected point."
-    variable Point point = invalidPoint;
-    """Any animal tracks that have been "added" to the current tile but kept out of the
-       map."""
-    MutableList<Animal> currentTracks = ArrayList<Animal>();
-    shared actual void selectedPointChanged(Point? old, Point newPoint) {
-        clear();
-        currentTracks.clear();
-        point = newPoint;
-        if (exists base = map.baseTerrain[newPoint]) {
-            addElement(TileTypeFixture(base));
-        }
-//        for (fixture in map.fixtures[newPoint]) {
-        for (fixture in map.fixtures.get(newPoint)) {
-            addElement(fixture);
-        }
-    }
-    "Add a tile fixture to the current tile. Note that this modifies the map, not
-     just the list."
-    shared void addFixture(TileFixture fixture) {
-        if (is TileTypeFixture fixture) {
-            if (!anythingEqual(map.baseTerrain[point], fixture.tileType)) {
-                map.baseTerrain[point] = fixture.tileType;
-                SwingUtilities.invokeLater(() => selectedPointChanged(null, point));
-            }
-        } else if (filterTracks, is Animal fixture, fixture.traces) {
-            currentTracks.add(fixture);
-            addElement(fixture);
-        } else if (map.addFixture(point, fixture)) {
-            addElement(fixture);
-        }
-    }
-    "Remove the specified items from the tile and the list."
-    shared void removeAll(TileFixture* fixtures) {
-        for (fixture in fixtures) {
-            if (is TileTypeFixture fixture) {
-                if (removeElement(fixture)) { // no-op if it wasn't *our* terrain
-                    map.baseTerrain[point] = null;
-                }
-            } else if (filterTracks, is Animal fixture, currentTracks.contains(fixture)) {
-                if (removeElement(fixture)) {
-                    currentTracks.remove(fixture);
-                }
-            } else if (removeElement(fixture)) {
-                map.removeFixture(point, fixture);
-            }
-        }
-    }
-    shared actual Boolean equals(Object that) {
-        if (is FixtureListModel that, that.map == map, that.point == point,
-            that.filterTracks == filterTracks, that.currentTracks == currentTracks) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    shared actual Integer hash => map.hash.or(point.hash);
+shared class FixtureListModel(IMutableMapNG map, Animal?(Point) tracksSource)
+		satisfies ListModel<TileFixture>&SelectionChangeListener {
+	"The currently selected point."
+	variable Point point = invalidPoint;
+	variable TileTypeFixture? cachedTerrain = null;
+	"""Any animal tracks that have been "added" to the current tile but kept out of the
+	   map."""
+	MutableList<Animal> currentTracks = ArrayList<Animal>();
+	MutableList<ListDataListener> listDataListeners = ArrayList<ListDataListener>();
+	shared actual void addListDataListener(ListDataListener listener) =>
+			listDataListeners.add(listener);
+	shared actual void removeListDataListener(ListDataListener listener) =>
+			listDataListeners.remove(listener);
+	shared actual Integer size {
+		//Integer retval = map.fixtures[point].size + currentTracks.size; // TODO: syntax sugar
+		Integer retval = map.fixtures.get(point).size + currentTracks.size;
+		return if (map.baseTerrain[point] exists) then retval + 1 else retval;
+	}
+	void fireIntervalReplaced(Range<Integer> oldRange, Range<Integer> newRange) {
+		ListDataEvent removeEvent = ListDataEvent(this, ListDataEvent.intervalRemoved,
+			oldRange.first, oldRange.lastIndex);
+		ListDataEvent addEvent = ListDataEvent(this, ListDataEvent.intervalAdded,
+			newRange.first, newRange.lastIndex);
+		for (listener in listDataListeners) {
+			listener.intervalRemoved(removeEvent);
+			listener.intervalAdded(addEvent);
+		}
+	}
+	void fireContentsChanged(Range<Integer> range) {
+		ListDataEvent event = ListDataEvent(this, ListDataEvent.contentsChanged, range.first, range.lastIndex);
+		for (listener in listDataListeners) {
+			listener.contentsChanged(event);
+		}
+	}
+	void fireIntervalAdded(Range<Integer> range) {
+		ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalAdded, range.first, range.lastIndex);
+		for (listener in listDataListeners) {
+			listener.intervalAdded(event);
+		}
+	}
+	void fireIntervalRemoved(Range<Integer> range) {
+		ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalRemoved, range.first, range.lastIndex);
+		for (listener in listDataListeners) {
+			listener.intervalRemoved(event);
+		}
+	}
+	shared actual void selectedPointChanged(Point? old, Point newPoint) {
+		Integer oldSize = size;
+		cachedTerrain = null;
+		point = newPoint;
+		currentTracks.clear();
+		if (exists tracks = tracksSource(newPoint)) {
+			currentTracks.add(tracks);
+		}
+		Integer newSize = size;
+		fireIntervalReplaced(0..(oldSize - 1), 0..(newSize - 1));
+	}
+	shared actual TileFixture getElementAt(Integer index) {
+		//TileFixture[] main = map.fixtures[point].sequence(); // TODO: sequence sugar
+		TileFixture[] main = map.fixtures.get(point).sequence();
+		if (exists terrain = map.baseTerrain[point]) {
+			 if (index == 0) {
+			 	if (exists retval = cachedTerrain) {
+			 		return retval;
+			 	} else {
+			 		TileTypeFixture retval = TileTypeFixture(terrain);
+			 		cachedTerrain = retval;
+			 		return retval;
+			 	}
+			 } else if (index < 0) {
+			 	throw ArrayIndexOutOfBoundsException(index);
+			 } else if (exists retval = main.getFromFirst(index - 1)) {
+			 	return retval;
+			 } else if (exists retval = currentTracks.getFromFirst(index - main.size - 1)) {
+			 	return retval;
+			 } else {
+			 	throw ArrayIndexOutOfBoundsException(index);
+			 }
+		} else if (index < 0) {
+			throw ArrayIndexOutOfBoundsException(index);
+		} else if (exists retval = main.getFromFirst(index)) {
+			return retval;
+		} else if (exists retval = currentTracks.getFromFirst(index - main.size)) {
+			return retval;
+		} else {
+			throw ArrayIndexOutOfBoundsException(index);
+		}
+	}
+	Integer adjustedIndex(Integer index) {
+		if (map.baseTerrain[point] exists) {
+			return index + 1;
+		} else {
+			return index;
+		}
+	}
+	shared void addFixture(TileFixture fixture) {
+		if (is TileTypeFixture fixture) {
+			if (exists existingTerrain = map.baseTerrain[point]) {
+				if (existingTerrain == fixture.tileType) {
+					return;
+				} else {
+					map.baseTerrain[point] = fixture.tileType;
+					fireContentsChanged(0..0);
+				}
+			} else {
+				map.baseTerrain[point] = fixture.tileType;
+				fireIntervalAdded(0..0);
+			}
+		} else if (map.addFixture(point, fixture),
+				exists index = map.fixtures[point]?.indexed?.find((key->item) => item == fixture)?.key) {
+			Integer adjusted = adjustedIndex(index);
+			fireIntervalAdded(adjusted..adjusted);
+		} else if (exists index = map.fixtures[point]?.indexed?.find((key->item) => item == fixture)?.key) {
+			Integer adjusted = adjustedIndex(index);
+			fireContentsChanged(adjusted..adjusted);
+		}
+	}
+	"Remove the specified items from the tile and the list."
+	shared void removeAll(TileFixture* fixtures) {
+		for (fixture in fixtures) {
+			if (is TileTypeFixture fixture) {
+				if (exists currentTerrain = map.baseTerrain[point], currentTerrain == fixture.tileType) {
+					map.baseTerrain[point] = null;
+					fireIntervalRemoved(0..0);
+				}
+			//} else if (map.fixtures[point].contains(fixture)) { // TODO: syntax sugar
+			} else if (exists index = map.fixtures[point]?.indexed?.find((key->item) => item == fixture)?.key) {
+				map.removeFixture(point, fixture);
+				Integer adjusted = adjustedIndex(index);
+				fireIntervalRemoved(adjusted..adjusted);
+			} else if (is Animal fixture,
+					exists ctIndex = currentTracks.indexed.find((key->item) => item == fixture)?.key) {
+				//Integer index = adjustedIndex(map.fixtures[point].size + ctIndex); // TODO: syntax sugar
+				Integer index = adjustedIndex(map.fixtures.get(point).size + ctIndex);
+				fireIntervalRemoved(index..index);
+			}
+		}
+	}
 }
