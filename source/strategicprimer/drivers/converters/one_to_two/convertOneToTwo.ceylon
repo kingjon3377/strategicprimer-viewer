@@ -221,16 +221,7 @@ shared IMapNG convertOneToTwo(
                 .map((num) => num.modulo(retval.dimensions.columns)))
             pointFactory(row, column)
         }.filter((element) => point != element);
-        Boolean adjacentToTown() {
-            for (neighbor in neighbors) {
-                // if (!retval.fixtures[neighbor].narrow<ITownFixture>().empty) { // TODO: syntax sugar once compiler bug fixed
-                if (!retval.fixtures.get(neighbor).narrow<ITownFixture>().empty) {
-                    return true;
-                }
-            } else {
-                return false;
-            }
-        }
+        Boolean adjacentToTown() => !neighbors.flatMap(retval.fixtures.get).narrow<ITownFixture>().empty;
         Boolean adjacentWater() {
             for (neighbor in neighbors) {
                 if (exists terrain = retval.baseTerrain[neighbor],
