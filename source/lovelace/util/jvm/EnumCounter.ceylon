@@ -14,8 +14,7 @@ shared class EnumCounter<Type>() given Type satisfies Object {
         if (exists counter = counts[item]) {
             counter.add(1);
         } else {
-            Accumulator counter = IntHolder(1);
-            counts[item] = counter;
+            counts[item] = IntHolder(1);
         }
     }
     "Count the items in a sequence."
