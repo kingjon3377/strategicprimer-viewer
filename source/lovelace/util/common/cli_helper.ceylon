@@ -9,7 +9,7 @@ shared T? chooseFromList<T>(String? header, String prompt, Boolean auto,
             print("Automatically choosing only item, ``item.first``");
             return item.rest.first;
         } else {
-            printList(for (choice in choices) choice.first);
+            printList(*choices.map(Tuple.first));
             Integer number = inputNumber(prompt);
             [String, T]? choice = choices[number];
             if (exists choice) {
