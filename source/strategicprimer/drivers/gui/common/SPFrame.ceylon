@@ -31,8 +31,7 @@ class FileDropHandler() extends TransferHandler() {
         app.supportsDroppedFiles &&
         support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
     shared actual Boolean importData(TransferSupport support) {
-        if (!support.drop ||
-        !support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+        if (!canImport(support)) {
             return false;
         }
         JList<JFile> payload;
