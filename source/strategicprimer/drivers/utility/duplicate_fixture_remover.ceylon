@@ -110,7 +110,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                     continue;
                 } else if (is CacheFixture fixture) {
                     continue;
-                } else if (is HasPopulation fixture, fixture.population > 0) {
+                } else if (is HasPopulation fixture, fixture.population.positive) {
                     continue;
                 } else if (is HasExtent fixture, fixture.acres.positive) {
                     continue;
