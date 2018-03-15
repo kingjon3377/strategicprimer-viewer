@@ -87,7 +87,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
         for (fixture in fixtures) {
             if (fixture.id == id) {
                 return fixture;
-            } else if (is Iterable<IFixture> fixture,
+            } else if (is {IFixture*} fixture,
                     exists result = findInIterable(id, *fixture)) {
                 return result;
             }
