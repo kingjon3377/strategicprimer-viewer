@@ -134,10 +134,10 @@ shared class FixtureListModel(IMutableMapNG map, Animal?(Point) tracksSource)
 				fireIntervalAdded(0..0);
 			}
 		} else if (map.addFixture(point, fixture),
-				exists index = map.fixtures[point]?.locations(fixture.equals)?.first?.key) {
+				exists index = map.fixtures[point]?.locate(fixture.equals)?.key) {
 			Integer adjusted = adjustedIndex(index);
 			fireIntervalAdded(adjusted..adjusted);
-		} else if (exists index = map.fixtures[point]?.locations(fixture.equals)?.first?.key) {
+		} else if (exists index = map.fixtures[point]?.locate(fixture.equals)?.key) {
 			Integer adjusted = adjustedIndex(index);
 			fireContentsChanged(adjusted..adjusted);
 		}
@@ -150,12 +150,12 @@ shared class FixtureListModel(IMutableMapNG map, Animal?(Point) tracksSource)
 					map.baseTerrain[point] = null;
 					fireIntervalRemoved(0..0);
 				}
-			} else if (exists index = map.fixtures[point]?.locations(fixture.equals)?.first?.key) {
+			} else if (exists index = map.fixtures[point]?.locate(fixture.equals)?.key) {
 				map.removeFixture(point, fixture);
 				Integer adjusted = adjustedIndex(index);
 				fireIntervalRemoved(adjusted..adjusted);
 			} else if (is Animal fixture,
-					exists ctIndex = currentTracks.locations(fixture.equals)?.first?.key) {
+					exists ctIndex = currentTracks.locate(fixture.equals)?.key) {
 				//Integer index = adjustedIndex(map.fixtures[point].size + ctIndex); // TODO: syntax sugar
 				Integer index = adjustedIndex(map.fixtures.get(point).size + ctIndex);
 				fireIntervalRemoved(index..index);
