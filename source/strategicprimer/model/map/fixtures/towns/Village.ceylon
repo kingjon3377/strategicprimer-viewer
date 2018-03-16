@@ -4,6 +4,9 @@ import strategicprimer.model.map {
     Player,
     Subsettable
 }
+import lovelace.util.common {
+	anythingEqual
+}
 "A village in the map."
 shared class Village(status, name, id, owner, race)
         satisfies ITownFixture&HasMutableImage&IFixture&Subsettable<IFixture> {
@@ -49,15 +52,7 @@ shared class Village(status, name, id, owner, race)
         if (is Village obj) {
             if (status == obj.status && name == obj.name && id == obj.id &&
                     owner == obj.owner && race == obj.race) {
-                if (exists ours = population) {
-                    if (exists theirs = obj.population) {
-                        return ours == theirs;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return !obj.population exists;
-                }
+                return anythingEqual(population, obj.population);
             } else {
                 return false;
             }
@@ -73,15 +68,7 @@ shared class Village(status, name, id, owner, race)
         if (is Village fixture) {
             if (status == fixture.status && name == fixture.name &&
                     owner == fixture.owner) {
-                if (exists ours = population) {
-                    if (exists theirs = fixture.population) {
-                        return ours == theirs;
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return !fixture.population exists;
-                }
+                return anythingEqual(population, fixture.population);
             } else {
                 return false;
             }
