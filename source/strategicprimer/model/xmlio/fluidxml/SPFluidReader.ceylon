@@ -149,10 +149,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         return tag->retval;
     }
     StartElement firstStartElement({XMLEvent*} stream, StartElement parent) {
-        for (element in stream) {
-            if (is StartElement element, isSPStartElement(element)) {
-                return element;
-            }
+        if (exists element = stream.narrow<StartElement>().find(isSPStartElement)) {
+            return element;
         } else {
             throw MissingChildException(parent);
         }
