@@ -30,8 +30,13 @@ shared class UnwantedChildException extends SPFormatException {
         tag = parent;
         this.child = child;
     }
-    shared new ("The current tag" QName parent, "The unwanted child" StartElement child,
-            "Another exception that caused this one" Throwable? cause = null)
+    shared new (
+	        "The current tag"
+	        QName parent,
+	        "The unwanted child"
+	        StartElement child,
+            "Another exception that caused this one"
+            Throwable? cause = null)
             extends SPFormatException(
                 "Unexpected child ``child.name.localPart`` in tag ``parent.localPart``",
                 child.location.lineNumber, child.location.columnNumber, cause) {
