@@ -94,7 +94,7 @@ shared class ExplorableReportGenerator(
             for (list in { caves, battles, portals }.filter((list) => !list.empty)) {
                 ostream("<li>``list``</li>");
             }
-            ostream("</ul>\n");
+            ostream("</ul>``operatingSystem.newline``");
         }
     }
     "Produces a more verbose sub-report on a cave, battlefield, or portal."

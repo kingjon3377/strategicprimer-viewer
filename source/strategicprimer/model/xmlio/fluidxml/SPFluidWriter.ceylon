@@ -129,7 +129,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             {String+} lines = writer.string.lines;
             for (line in lines) {
                 ostream(snugEndTag.replace(line, "$1 />"));
-                ostream("\n");
+                ostream(operatingSystem.newline);
             }
         } else if (is Path path = arg) {
             File file;

@@ -108,11 +108,11 @@ shared class ImmortalsReportGenerator(
 	                    ostream(key);
 	                    ostream(": at ");
 	                    ostream(commaSeparatedList(list));
-	                    ostream("</li>\n");
+	                    ostream("</li>``operatingSystem.newline``");
 	                }
                 }
             }
-            ostream("</ul>\n");
+            ostream("</ul>``operatingSystem.newline``");
         }
     }
     "Produce a report node on an individual immortal."

@@ -220,8 +220,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                 builder.append(", ");
             }
             if (exists other = fixtures[location]) {
-                builder.append("fixtures: \n");
-                builder.append("\n".join(other));
+                builder.append("fixtures: ``operatingSystem.newline``");
+                builder.append(operatingSystem.newline.join(other));
             }
             builder.appendNewline();
         }

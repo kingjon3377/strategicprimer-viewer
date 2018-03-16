@@ -32,7 +32,7 @@ object cliTests {
 	    if (is String expectedOutput) {
 	        expectedOutputReal = expectedOutput;
 	    } else if (exists first = expectedOutput.first) {
-	        expectedOutputReal = "\n".join(expectedOutput);
+	        expectedOutputReal = operatingSystem.newline.join(expectedOutput);
 	    } else {
 	        expectedOutputReal = "";
 	    }
@@ -195,9 +195,9 @@ object cliTests {
 	        "inputBooleanInSeries allows no-to-all");
 	    assertEquals(cli.inputBooleanInSeries("prompt five "), false,
 	        "inputBooleanInSeries honors no-to-all when prompt is the same");
-	    assertEquals(ostream.string, "prompt five prompt five no\n",
+	    assertEquals(ostream.string, "prompt five prompt five no``operatingSystem.newline``",
 	        "inputBooleanInSeries shows automatic no");
-	    // https://github.com/ceylon/ceylon/issues/5448
+	    // https://github.com/ceylon/ceylon/issues/5448 // TODO: uncomment once that fixed
 	//      assertThatException(() => cli.inputBooleanInSeries("other prompt"))
 	//            .hasType(`IOException`);
 	    ostream.clear();
@@ -206,7 +206,7 @@ object cliTests {
 	        "inputBooleanInSeries allows yes-to-all");
 	    assertEquals(cli.inputBooleanInSeries("prompt seven ", "key"), true,
 	        "inputBooleanInSeries honors yes-to-all if prompt differs, same key");
-	    assertEquals(ostream.string, "prompt six prompt seven yes\n",
+	    assertEquals(ostream.string, "prompt six prompt seven yes``operatingSystem.newline``",
 	        "inputBooleanInSeries shows automatic yes");
 	    ostream.clear();
 	    cli = CLIHelper(ArrayList { """never""" }.accept, ostream.append);
@@ -214,7 +214,7 @@ object cliTests {
 	        "inputBooleanInSeries allows no-to-all");
 	    assertEquals(cli.inputBooleanInSeries("prompt nine ", "secondKey"), false,
 	        "inputBooleanInSeries honors no-to-all if prompt differs, same key");
-	    assertEquals(ostream.string, "prompt eight prompt nine no\n",
+	    assertEquals(ostream.string, "prompt eight prompt nine no``operatingSystem.newline``",
 	        "inputBooleanInSeries shows automatic no");
 	    ostream.clear();
 	    cli = CLIHelper(ArrayList { "all", "none" }.accept, ostream.append);
@@ -286,7 +286,8 @@ object cliTests {
 	    }
 	    assertHelper((cli) => cli.print("test string"), "test string",
 	        "print() prints string");
-	    assertHelper((cli) => cli.println("test two"), "test two\n", "println() adds newline");
+	    assertHelper((cli) => cli.println("test two"), "test two``operatingSystem.newline``",
+	        "println() adds newline");
 	}
 
 	"Test inputPoint()"
