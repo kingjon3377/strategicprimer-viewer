@@ -134,10 +134,10 @@ shared class FixtureListModel(IMutableMapNG map, Animal?(Point) tracksSource)
 				fireIntervalAdded(0..0);
 			}
 		} else if (map.addFixture(point, fixture),
-				exists index = map.fixtures[point]?.indexed?.find((key->item) => item == fixture)?.key) {
+				exists index = map.fixtures[point]?.locations(fixture.equals)?.first?.key) {
 			Integer adjusted = adjustedIndex(index);
 			fireIntervalAdded(adjusted..adjusted);
-		} else if (exists index = map.fixtures[point]?.indexed?.find((key->item) => item == fixture)?.key) {
+		} else if (exists index = map.fixtures[point]?.locations(fixture.equals)?.first?.key) {
 			Integer adjusted = adjustedIndex(index);
 			fireContentsChanged(adjusted..adjusted);
 		}
@@ -150,13 +150,12 @@ shared class FixtureListModel(IMutableMapNG map, Animal?(Point) tracksSource)
 					map.baseTerrain[point] = null;
 					fireIntervalRemoved(0..0);
 				}
-			//} else if (map.fixtures[point].contains(fixture)) { // TODO: syntax sugar
-			} else if (exists index = map.fixtures[point]?.indexed?.find((key->item) => item == fixture)?.key) {
+			} else if (exists index = map.fixtures[point]?.locations(fixture.equals)?.first?.key) {
 				map.removeFixture(point, fixture);
 				Integer adjusted = adjustedIndex(index);
 				fireIntervalRemoved(adjusted..adjusted);
 			} else if (is Animal fixture,
-					exists ctIndex = currentTracks.indexed.find((key->item) => item == fixture)?.key) {
+					exists ctIndex = currentTracks.locations(fixture.equals)?.first?.key) {
 				//Integer index = adjustedIndex(map.fixtures[point].size + ctIndex); // TODO: syntax sugar
 				Integer index = adjustedIndex(map.fixtures.get(point).size + ctIndex);
 				fireIntervalRemoved(index..index);
