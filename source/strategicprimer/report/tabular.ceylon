@@ -52,7 +52,8 @@ import strategicprimer.report.generators.tabular {
     ResourceTabularReportGenerator,
     ImmortalsTabularReportGenerator,
     ExplorableTabularReportGenerator,
-    SkillTabularReportGenerator
+    SkillTabularReportGenerator,
+	ITableGenerator
 }
 import java.util {
     JComparator=Comparator
@@ -68,7 +69,7 @@ shared object tabularReportGenerator {
 	    Player player = map.currentPlayer;
 	    MapDimensions dimensions = map.dimensions;
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
-	    /*{ITableGenerator<out Object>*}*/ value generators = {
+	    {ITableGenerator<out Object>*} generators = {
 	        FortressTabularReportGenerator(player, hq, dimensions),
 	        UnitTabularReportGenerator(player, hq, dimensions),
 	        AnimalTabularReportGenerator(hq, dimensions, map.currentTurn),
@@ -103,7 +104,7 @@ shared object tabularReportGenerator {
 	    Player player = map.currentPlayer;
 	    MapDimensions dimensions = map.dimensions;
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
-	    /*{ITableGenerator<out Object>*}*/ value generators = {
+	    {ITableGenerator<out Object>*} generators = {
 	        FortressTabularReportGenerator(player, hq, dimensions),
 	        UnitTabularReportGenerator(player, hq, dimensions),
 	        AnimalTabularReportGenerator(hq, dimensions, map.currentTurn),
