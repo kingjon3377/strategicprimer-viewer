@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    todo
+    todo,
+	anythingEqual
 }
 
 import strategicprimer.model.map {
@@ -77,15 +78,7 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc)
         if (fixture.townSize == townSize &&
                 fixture.name == name && fixture.status == status &&
                 fixture.owner == owner) {
-            if (exists ours = population) {
-                if (exists theirs = fixture.population) {
-                    return ours == theirs;
-                } else {
-                    return false;
-                }
-            } else {
-                return !fixture.population exists;
-            }
+            return anythingEqual(population, fixture.population);
         } else {
             return false;
         }
