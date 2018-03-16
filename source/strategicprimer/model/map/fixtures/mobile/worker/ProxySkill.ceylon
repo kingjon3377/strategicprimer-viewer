@@ -34,12 +34,10 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
     "The lowest level that any proxied Job has in the skill."
     shared actual Integer level {
         variable Integer? retval = null;
-        for (job in proxiedJobs) {
-            for (skill in job.filter(notThis)) {
-                if (skill.name == name,
-                        skill.level < (retval else runtime.maxArraySize)) {
-                    retval = skill.level;
-                }
+        for (skill in proxiedJobs.flatMap(identity).filter(notThis)) {
+            if (skill.name == name,
+                    skill.level < (retval else runtime.maxArraySize)) {
+                retval = skill.level;
             }
         }
         return retval else 0;
