@@ -46,7 +46,5 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
     }
     "Compare two location-town pairs."
     shared actual Comparison comparePairs([Point, AbstractTown] one,
-            [Point, AbstractTown] two) {
-        return comparator(one, two);
-    }
+            [Point, AbstractTown] two) => comparator(one, two);
 }
