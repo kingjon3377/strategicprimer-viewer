@@ -30,13 +30,11 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
     }
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, Immortal] one,
-            [Point, Immortal] two) {
-        return comparing(comparingOn(
+            [Point, Immortal] two) => comparing(comparingOn(
                     ([Point, Immortal] pair) => pair.first,
-            DistanceComparator(hq, dimensions).compare),
-            comparingOn<[Point, Immortal], Integer>(
-                        ([Point, Immortal] pair) => pair.rest.first.hash, increasing),
-            comparingOn<[Point, Immortal], Integer>((pair) => pair.rest.first.hash,
-                increasing))(one, two);
-    }
+			            DistanceComparator(hq, dimensions).compare),
+			            comparingOn<[Point, Immortal], Integer>(
+			                        ([Point, Immortal] pair) => pair.rest.first.hash, increasing),
+			            comparingOn<[Point, Immortal], Integer>((pair) => pair.rest.first.hash,
+			                increasing))(one, two);
 }
