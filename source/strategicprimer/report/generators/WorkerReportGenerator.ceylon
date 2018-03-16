@@ -41,11 +41,11 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     "Produce the sub-sub-report on a worker's stats."
     String statsString(WorkerStats stats) {
         return "He or she has the following stats: ``stats.hitPoints`` / ``stats
-            .maxHitPoints`` Hit Points, Strength ``modifierString(stats.strength)
-        ``, Dexterity ``modifierString(stats.dexterity)``, Constitution ``
-        modifierString(stats.constitution)``, Intelligence ``modifierString(stats
-            .intelligence)``, Wisdom ``modifierString(stats.wisdom)``, Charisma ``
-        modifierString(stats.charisma)``";
+	            .maxHitPoints`` Hit Points, Strength ``modifierString(stats.strength)
+	        ``, Dexterity ``modifierString(stats.dexterity)``, Constitution ``
+	        modifierString(stats.constitution)``, Intelligence ``modifierString(stats
+	            .intelligence)``, Wisdom ``modifierString(stats.wisdom)``, Charisma ``
+	        modifierString(stats.charisma)``";
     }
     "Produce text describing the given Skills."
     String skills(ISkill* job) {
