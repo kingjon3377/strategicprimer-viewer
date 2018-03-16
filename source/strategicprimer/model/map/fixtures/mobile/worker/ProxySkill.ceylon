@@ -54,7 +54,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
     "The most hours any of the proxied Jobs has for the skill."
     shared actual Integer hours {
         return Integer.max(proxiedJobs.flatMap(identity).filter(notThis)
-            .map(ISkill.hours)) else 0;
+            .filter((job) => job.name == name).map(ISkill.hours)) else 0;
     }
     "Add hours to the proxied skills."
     shared actual void addHours(Integer hours, Integer condition) {
