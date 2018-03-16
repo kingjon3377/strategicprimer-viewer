@@ -49,15 +49,11 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     }
     "Produce text describing the given Skills."
     String skills(ISkill* job) {
-        StringBuilder builder = StringBuilder();
-        if (exists first = job.first) {
-            builder.append(" (``first.name`` ``first.level``");
-            for (skill in job.rest) {
-                builder.append(", ``skill.name`` ``skill.level``");
-            }
-            builder.append(")");
+        if (job.empty) {
+            return "";
+        } else {
+            return "(``", ".join(job.map((skill) => skill.name + " " + skill.level.string))``)";
         }
-        return builder.string;
     }
     "Produce the report-intermediate-representation sub-sub-report on a Job."
     IReportNode produceJobRIR(IJob job, Point loc) {
