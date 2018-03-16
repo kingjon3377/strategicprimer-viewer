@@ -61,7 +61,8 @@ Logger log = logger(`module strategicprimer.report`);
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
 shared class HarvestableReportGenerator extends AbstractReportGenerator<HarvestableFixture> {
-	static String populationCountString(HasPopulation item, String singular, String plural = singular + "s") {
+	static String populationCountString(HasPopulation<out Anything> item, String singular,
+			String plural = singular + "s") {
 		if (item.population <= 0) {
 			return "";
 		} else if (item.population == 1) {

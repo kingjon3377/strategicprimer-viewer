@@ -154,14 +154,14 @@ shared object queryCLI satisfies SimpleCLIDriver {
 	}
 	"Reduce the population of a group of plants, animals, etc., and copy the reduced form into all
 	 subordinate maps."
-	void reducePopulation(IDriverModel model, ICLIHelper cli, Point point, HasPopulation&TileFixture fixture,
-			String plural, Boolean zero) {
+	void reducePopulation(IDriverModel model, ICLIHelper cli, Point point,
+			HasPopulation<out TileFixture>&TileFixture fixture, String plural, Boolean zero) {
 		Integer count = Integer.smallest(cli.inputNumber("How many ``plural`` to remove: "), fixture.population);
 		if (count > 0) {
 			model.map.removeFixture(point, fixture);
 			Integer remaining = fixture.population - count;
 			if (remaining > 0) {
-				assert (is HasPopulation&TileFixture addend = fixture.reduced(remaining));
+				value addend = fixture.reduced(remaining);
 				model.map.addFixture(point, addend);
 				if (is IMultiMapModel model) {
 					for ([map, file] in model.subordinateMaps) {

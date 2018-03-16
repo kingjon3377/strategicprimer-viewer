@@ -110,7 +110,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                     continue;
                 } else if (is CacheFixture fixture) {
                     continue;
-                } else if (is HasPopulation fixture, fixture.population.positive) {
+                } else if (is HasPopulation<out Anything> fixture, fixture.population.positive) {
                     continue;
                 } else if (is HasExtent fixture, fixture.acres.positive) {
                     continue;
@@ -204,7 +204,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 if (exists handler = mapping[`Animal`]) {
                     handler.addIfType(fixture);
                 }
-            } else if (is HasPopulation fixture, fixture.population < 0) {
+            } else if (is HasPopulation<out Anything> fixture, fixture.population < 0) {
                 continue;
             } else if (is HasExtent fixture, !fixture.acres.positive) {
                 continue;

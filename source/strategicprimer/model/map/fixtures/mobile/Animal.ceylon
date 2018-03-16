@@ -16,7 +16,7 @@ import lovelace.util.jvm {
 }
 "An animal or group of animals."
 shared interface Animal
-		satisfies Identifiable&MobileFixture&HasImage&HasKind&UnitMember&HasPopulation/*<Animal>*/ {
+		satisfies Identifiable&MobileFixture&HasImage&HasKind&UnitMember&HasPopulation<Animal> {
 	"If true, this is only traces or tracks, not an actual animal."
 	shared formal Boolean traces;
 	"Whether this is a talking animal."
@@ -81,7 +81,7 @@ shared interface Animal
 	}
 	shared actual formal Animal reduced(Integer newPopulation, Integer newId);
 	shared actual formal Animal copy(Boolean zero);
-	shared actual formal Animal combined(HasPopulation/*&Animal*/ addend);
+	shared actual formal Animal combined(Animal addend);
 	"Required Perception check result to find the animal."
 	todo("Should be variable, either read from XML or computed from kind using some other
 	      read-from-file data.") // FIXME
@@ -148,11 +148,8 @@ shared class AnimalImpl(kind, traces, talking, status, id, born = -1, population
     }
     shared actual Animal reduced(Integer newPopulation, Integer newId) =>
             AnimalImpl(kind, traces, talking, status, newId, born, newPopulation);
-    shared actual Animal combined(HasPopulation/*&Animal*/ addend) {
-        assert (is Animal addend);
-        return AnimalImpl(kind, traces, talking, status, id, born,
+    shared actual Animal combined(Animal addend) => AnimalImpl(kind, traces, talking, status, id, born,
             Integer.largest(0, population) + Integer.largest(0, addend.population));
-    }
 }
 shared object maturityModel {
     assert (exists textContent = readFileContents(`module strategicprimer.model`,

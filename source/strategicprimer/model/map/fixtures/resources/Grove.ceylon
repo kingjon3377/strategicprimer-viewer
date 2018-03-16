@@ -4,7 +4,7 @@ import strategicprimer.model.map {
 }
 "An orchard (fruit trees) or grove (other trees) on the map."
 shared class Grove(orchard, cultivated, kind, id, population = -1)
-        satisfies HarvestableFixture&HasPopulation/*<Grove>*/ {
+        satisfies HarvestableFixture&HasPopulation<Grove> {
     "If true, this is a fruit orchard; if false, a non-fruit grove."
     shared Boolean orchard;
     "If true, this is a cultivated grove or orchard; if false, wild or abandoned."
@@ -24,11 +24,9 @@ shared class Grove(orchard, cultivated, kind, id, population = -1)
     }
     shared actual Grove reduced(Integer newPopulation, Integer newId) =>
             Grove(orchard, cultivated, kind, newId, newPopulation);
-    shared actual Grove combined(HasPopulation/*&Grove*/ addend) {
-        assert (is Grove addend);
-        return Grove(orchard, cultivated, kind, id,
-            Integer.largest(population, 0) + Integer.largest(addend.population, 0));
-    }
+    shared actual Grove combined(Grove addend) =>
+	        Grove(orchard, cultivated, kind, id,
+	            Integer.largest(population, 0) + Integer.largest(addend.population, 0));
     shared actual String defaultImage = (orchard) then "orchard.png" else "tree.png";
     shared actual String shortDescription =>
             "``(cultivated) then "Cultivated" else "Wild"`` ``kind`` ``(orchard) then
