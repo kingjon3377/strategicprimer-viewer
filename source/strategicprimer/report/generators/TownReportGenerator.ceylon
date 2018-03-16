@@ -175,11 +175,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             });
         IReportNode retval = SectionListReportNode(4,
             "Cities, towns, and/or fortifications you know about:");
-        for (status in statuses) {
-            if (exists node = separated[status]) {
-                retval.addIfNonEmpty(node);
-            }
-        }
+        retval.addIfNonEmpty(*statuses.map(separated.get).coalesced);
         if (retval.childCount == 0) {
             return emptyReportNode;
         } else {
