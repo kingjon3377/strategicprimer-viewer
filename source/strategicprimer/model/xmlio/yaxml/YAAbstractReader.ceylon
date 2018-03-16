@@ -54,7 +54,7 @@ import ceylon.math.decimal {
 }
 "A parser for numeric data, so integers can contain commas."
 NumberFormat numParser = NumberFormat.integerInstance;
-"Patterns to match XML metacharacters, and their qutoed forms."
+"Patterns to match XML metacharacters, and their quoted forms."
 {[String, String]*} quoting = {["""&""", """&amp;"""], ["""<""", """&lt;"""],
     [""">""", """&gt;"""]};
 "A superclass for YAXML reader classes to provide helper methods."
