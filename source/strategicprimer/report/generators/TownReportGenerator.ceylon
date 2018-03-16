@@ -95,13 +95,13 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      sorted in a way that I hope is helpful. We remove the town from the set of fixtures."
     shared actual void produce(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
 	        IMapNG map, Anything(String) ostream) {
-        HeadedMap<ITownFixture, Point>&MutableMap<ITownFixture, Point> abandoned =
+        MutableHeadedMap<ITownFixture, Point> abandoned =
                 HeadedMapImpl<ITownFixture, Point>("<h5>Abandoned Communities</h5>");
-        HeadedMap<ITownFixture, Point>&MutableMap<ITownFixture, Point> active =
+        MutableHeadedMap<ITownFixture, Point> active =
                 HeadedMapImpl<ITownFixture, Point>("<h5>Active Communities</h5>");
-        HeadedMap<ITownFixture, Point>&MutableMap<ITownFixture, Point> burned =
+        MutableHeadedMap<ITownFixture, Point> burned =
                 HeadedMapImpl<ITownFixture, Point>("<h5>Burned-Out Communities</h5>");
-        HeadedMap<ITownFixture, Point>&MutableMap<ITownFixture, Point> ruined =
+        MutableHeadedMap<ITownFixture, Point> ruined =
                 HeadedMapImpl<ITownFixture, Point>("<h5>Ruined Communities</h5>");
         Map<TownStatus, MutableMap<ITownFixture, Point>> separated =
                 createMap<TownStatus, MutableMap<ITownFixture, Point>> {

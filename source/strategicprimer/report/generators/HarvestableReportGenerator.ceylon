@@ -156,26 +156,21 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         MutableMultimap<String, Point> stone = HashMultimap<String, Point>();
         MutableMultimap<String, Point> shrubs = HashMultimap<String, Point>();
         MutableMultimap<String, Point> minerals = HashMultimap<String, Point>();
-        HeadedMap<Mine, Point>&MutableMap<Mine, Point> mines =
-                HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
-                    comparing(byIncreasing(Mine.kind),
-                        byIncreasing((Mine mine) => mine.status.ordinal),
-                        byIncreasing(Mine.id)));
-        HeadedMap<Meadow, Point>&MutableMap<Meadow, Point> meadows =
-                HeadedMapImpl<Meadow, Point>(
-                    "<h5>Meadows and Fields</h5>",
-                    comparing(byIncreasing(Meadow.kind),
-                        byIncreasing((Meadow meadow) => meadow.status.ordinal),
-                        byIncreasing(Meadow.id)));
-        HeadedMap<Grove, Point>&MutableMap<Grove, Point> groves =
-                HeadedMapImpl<Grove, Point>("<h5>Groves and Orchards</h5>",
+        MutableHeadedMap<Mine, Point> mines = HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
+                comparing(byIncreasing(Mine.kind),
+                    byIncreasing((Mine mine) => mine.status.ordinal),
+                    byIncreasing(Mine.id)));
+        MutableHeadedMap<Meadow, Point> meadows = HeadedMapImpl<Meadow, Point>(
+                "<h5>Meadows and Fields</h5>", comparing(byIncreasing(Meadow.kind),
+                    byIncreasing((Meadow meadow) => meadow.status.ordinal),
+                    byIncreasing(Meadow.id)));
+        MutableHeadedMap<Grove, Point> groves = HeadedMapImpl<Grove, Point>("<h5>Groves and Orchards</h5>",
                     comparing(byIncreasing(Grove.kind), byIncreasing(Grove.id)));
-        HeadedMap<CacheFixture, Point>&MutableMap<CacheFixture, Point> caches =
-                HeadedMapImpl<CacheFixture, Point>(
-                    "<h5>Caches collected by your explorers and workers:</h5>",
-                    comparing(byIncreasing(CacheFixture.kind),
-                        byIncreasing(CacheFixture.contents),
-                        byIncreasing(CacheFixture.id)));
+        MutableHeadedMap<CacheFixture, Point> caches = HeadedMapImpl<CacheFixture, Point>(
+                "<h5>Caches collected by your explorers and workers:</h5>",
+                comparing(byIncreasing(CacheFixture.kind),
+                    byIncreasing(CacheFixture.contents),
+                    byIncreasing(CacheFixture.id)));
         for ([point, item] in values) {
             // TODO: Use a Map by type (or at least a switch); now we have reified
             // generics we can even handle differently based on whether a List or Map

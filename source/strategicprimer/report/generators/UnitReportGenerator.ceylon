@@ -180,9 +180,9 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         MutableList<[Point, IFixture]> values =
                 ArrayList<[Point, IFixture]> { *fixtures.items
                     .sort(pairComparator) };
-        HeadedMap<IUnit, Point>&MutableMap<IUnit, Point> foreign =
+        MutableHeadedMap<IUnit, Point> foreign =
                 HeadedMapImpl<IUnit, Point>("<h5>Foreign Units</h5>");
-        HeadedMap<IUnit, Point>&MutableMap<IUnit, Point> ours =
+        MutableHeadedMap<IUnit, Point> ours =
                 HeadedMapImpl<IUnit, Point>("<h5>Your units</h5>");
         for ([loc, item] in values) {
             if (is IUnit unit = item) {

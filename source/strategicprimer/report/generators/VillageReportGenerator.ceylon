@@ -42,17 +42,13 @@ shared class VillageReportGenerator(
 			.sort(pairComparator) };
 		value villageComparator = comparing(byIncreasing(Village.name),
 			byIncreasing(Village.race), byIncreasing(Village.id));
-		HeadedMap<Village, Point>&MutableMap<Village, Point> own =
-				HeadedMapImpl<Village, Point>(
+		MutableHeadedMap<Village, Point> own = HeadedMapImpl<Village, Point>(
 			"<h4>Villages pledged to your service:</h4>", villageComparator);
-		HeadedMap<Village, Point>&MutableMap<Village, Point> independents =
-				HeadedMapImpl<Village, Point>(
+		MutableHeadedMap<Village, Point> independents = HeadedMapImpl<Village, Point>(
 			"<h4>Villages you think are independent:</h4>",
 			villageComparator);
-		MutableMap<Player, HeadedMap<Village, Point>
-				&MutableMap<Village, Point>> others =
-				HashMap<Player, HeadedMap<Village, Point>
-				&MutableMap<Village, Point>>();
+		MutableMap<Player, MutableHeadedMap<Village, Point>> others =
+				HashMap<Player, MutableHeadedMap<Village, Point>>();
 		for ([loc, item] in values) {
 			if (is Village village = item) {
 				if (village.owner == currentPlayer) {
@@ -60,7 +56,7 @@ shared class VillageReportGenerator(
 				} else if (village.owner.independent) {
 					independents[village] = loc;
 				} else {
-					HeadedMap<Village, Point>&MutableMap<Village, Point> mapping;
+					MutableHeadedMap<Village, Point> mapping;
 					if (exists temp = others[village.owner]) {
 						mapping = temp;
 					} else {

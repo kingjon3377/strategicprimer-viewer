@@ -11,6 +11,9 @@ import strategicprimer.model.map {
 import strategicprimer.report {
     IReportNode
 }
+import ceylon.collection {
+	MutableMap
+}
 "An interface for report generators."
 shared interface IReportGenerator<T> given T satisfies IFixture {
     "A list that knows what its title should be when its contents are written to HTML."
@@ -24,6 +27,9 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
         "The header text."
         shared formal String header;
     }
+    "A [[HeadedMap]] that is also mutable."
+    shared /* static */ interface MutableHeadedMap<Key, Value>
+            satisfies HeadedMap<Key, Value>&MutableMap<Key, Value> given Key satisfies Object {}
     "Write a (sub-)report to a stream. All fixtures that this report references should
      be removed from the set before returning."
     shared formal void produce(

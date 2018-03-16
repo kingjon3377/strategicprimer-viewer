@@ -82,19 +82,16 @@ shared class FortressMemberReportGenerator(
         MutableList<[Point, IFixture]> values =
                 ArrayList<[Point, IFixture]> { *fixtures.items
                     .sort(pairComparator) };
-        HeadedMap<Implement, Point>&MutableMap<Implement, Point> equipment =
+        MutableHeadedMap<Implement, Point> equipment =
                 HeadedMapImpl<Implement, Point>("<li>Equipment:",
                     comparing(byIncreasing(Implement.kind),
                         byDecreasing(Implement.count),
                         byIncreasing(Implement.id)));
-        MutableMap<String, HeadedMap<ResourcePile, Point>&
-        MutableMap<ResourcePile, Point>> resources =
-                HashMap<String, HeadedMap<ResourcePile, Point>
-                &MutableMap<ResourcePile, Point>>();
+        MutableMap<String, MutableHeadedMap<ResourcePile, Point>> resources =
+                HashMap<String, MutableHeadedMap<ResourcePile, Point>>();
         for ([loc, item] in values) {
             if (is ResourcePile resource = item) {
-                HeadedMap<ResourcePile, Point>&
-                MutableMap<ResourcePile, Point> pileMap;
+                MutableHeadedMap<ResourcePile, Point> pileMap;
                 if (exists temp = resources[resource.kind]) {
                     pileMap = temp;
                 } else {

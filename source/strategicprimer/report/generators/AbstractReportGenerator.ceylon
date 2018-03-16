@@ -104,7 +104,7 @@ shared sealed abstract class AbstractReportGenerator<T>(
     "An implementation of HeadedMap."
     shared class HeadedMapImpl<Key, Value>(shared actual String header,
             Comparison(Key, Key)? comparator = null, {<Key->Value>*} initial = {})
-            satisfies IReportGenerator<T>.HeadedMap<Key, Value>&MutableMap<Key, Value>
+            satisfies IReportGenerator<T>.MutableHeadedMap<Key, Value>
             given Key satisfies Object {
         MutableMap<Key, Value> wrapped;
         if (exists comparator) {

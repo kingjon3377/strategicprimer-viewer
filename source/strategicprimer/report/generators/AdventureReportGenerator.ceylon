@@ -37,7 +37,7 @@ shared class AdventureReportGenerator(
 		MutableList<[Point, IFixture]> values =
 				ArrayList<[Point, IFixture]> { *fixtures.items
 			.sort(pairComparator) };
-		HeadedMap<AdventureFixture, Point>&MutableMap<AdventureFixture, Point> adventures =
+		MutableHeadedMap<AdventureFixture, Point> adventures =
 				HeadedMapImpl<AdventureFixture, Point>("<h4>Possible Adventures</h4>");
 		for ([loc, item] in values) {
 			if (is AdventureFixture item) {
