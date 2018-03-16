@@ -52,6 +52,7 @@ import ceylon.math.decimal {
 	Decimal,
 	parseDecimal
 }
+// TODO: If eclipse/ceylon#6991 is ever fixed, move these into YAAbstractReader
 "A parser for numeric data, so integers can contain commas."
 NumberFormat numParser = NumberFormat.integerInstance;
 "Patterns to match XML metacharacters, and their quoted forms."
