@@ -148,7 +148,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         void writeField(Anything(String) ostream, String field) {
             String quotesQuoted = quotePattern.replace(field, "\"\"");
             if ({"\"", fieldDelimiter.string, rowDelimiter, " "}
-                .any(quotesQuoted.contains)) {
+	                .any(quotesQuoted.contains)) {
                 ostream("\"``quotesQuoted``\"");
             } else {
                 ostream(quotesQuoted);
