@@ -147,7 +147,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 getOwnerOrIndependent(element), getParameter(element, "race",
                     raceFactory.randomRace(DefaultRandom(idNum))));
             retval.image = getParameter(element, "image", "");
-            retval.portrait =getParameter(element, "portrait", "");
+            retval.portrait = getParameter(element, "portrait", "");
             for (event in stream) {
                 if (is StartElement event, isSupportedNamespace(event.name)) {
                     if (retval.population exists) {

@@ -58,8 +58,8 @@ shared JDialog aboutDialog(Component? parentComponent, String? app) {
             ScrollPaneConstants.verticalScrollbarAsNeeded,
             ScrollPaneConstants.horizontalScrollbarAsNeeded);
     }
-    scrollPane.minimumSize =Dimension(300, 400);
-    scrollPane.preferredSize =Dimension(400, 500);
+    scrollPane.minimumSize = Dimension(300, 400);
+    scrollPane.preferredSize = Dimension(400, 500);
     retval.add(scrollPane, Types.nativeString(BorderLayout.center));
     retval.add(centeredHorizontalBox(listenedButton("Close",
                 (event) => retval.dispose())), Types.nativeString(BorderLayout.pageEnd));

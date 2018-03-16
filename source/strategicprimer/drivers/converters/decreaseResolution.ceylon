@@ -106,7 +106,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
             MutableSet<River> upperRightRivers = HashSet<River> {
 //                *old.rivers[subPoints[1]] };
                 *old.rivers.get(subPoints[1]) };
-            MutableSet<River> lowerLeftRivers =HashSet<River> {
+            MutableSet<River> lowerLeftRivers = HashSet<River> {
 //                *old.rivers[subPoints[2]] };
                 *old.rivers.get(subPoints[2]) };
             MutableSet<River> lowerRightRivers = HashSet<River> {

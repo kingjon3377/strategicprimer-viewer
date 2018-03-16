@@ -40,7 +40,7 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
             return fullDescription;
         }
     }
-    shared actual String defaultImage= "adventure.png";
+    shared actual String defaultImage = "adventure.png";
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is AdventureFixture obj = fixture) {
             return ((owner.independent && obj.owner.independent) ||

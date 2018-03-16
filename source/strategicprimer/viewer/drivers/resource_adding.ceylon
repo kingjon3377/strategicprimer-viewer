@@ -354,7 +354,7 @@ object resourceAddingGUI satisfies SimpleDriver {
             if (exists qty = parseDecimal(resourceQuantityModel.number.string)) {
                 ResourcePile pile = ResourcePile(idf.createID(), kind, resource,
                     Quantity(qty, units));
-                pile.created =resourceCreatedModel.number.intValue();
+                pile.created = resourceCreatedModel.number.intValue();
                 model.addResource(pile, currentPlayer);
                 logAddition(pile.string);
                 for (box in { resourceKindBox, resourceBox, resourceUnitsBox }) {

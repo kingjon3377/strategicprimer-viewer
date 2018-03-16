@@ -63,7 +63,7 @@ object fluidTownHandler extends FluidBase() {
 	                getAttribute(element, "name", ""),
 	                getOrGenerateID(element, warner, idFactory),
 	                getPlayerOrIndependent(element, warner, players));
-	            fix.portrait =getAttribute(element, "portrait", "");
+	            fix.portrait = getAttribute(element, "portrait", "");
 	            for (event in stream) {
 	                if (is StartElement event, isSPStartElement(event)) {
 	                    if (!fix.population exists) {
@@ -99,7 +99,7 @@ object fluidTownHandler extends FluidBase() {
 	                getAttribute(element, "name", ""),
 	                getOrGenerateID(element, warner, idFactory),
 	                getPlayerOrIndependent(element, warner, players));
-	            fix.portrait =getAttribute(element, "portrait", "");
+	            fix.portrait = getAttribute(element, "portrait", "");
 	            for (event in stream) {
 	                if (is StartElement event, isSPStartElement(event)) {
 	                    if (!fix.population exists) {
@@ -134,7 +134,7 @@ object fluidTownHandler extends FluidBase() {
 	                getAttribute(element, "name", ""),
 	                getOrGenerateID(element, warner, idFactory),
 	                getPlayerOrIndependent(element, warner, players));
-	            fix.portrait =getAttribute(element, "portrait", "");
+	            fix.portrait = getAttribute(element, "portrait", "");
 	            for (event in stream) {
 	                if (is StartElement event, isSPStartElement(event)) {
 	                    if (!fix.population exists) {
@@ -167,7 +167,7 @@ object fluidTownHandler extends FluidBase() {
 	        Village retval = Village(status, getAttribute(element, "name", ""), idNum,
 	            getPlayerOrIndependent(element, warner, players),
 	            getAttribute(element, "race", raceFactory.randomRace(DefaultRandom(idNum))));
-	        retval.portrait =getAttribute(element, "portrait", "");
+	        retval.portrait = getAttribute(element, "portrait", "");
 	        for (event in stream) {
 	            if (is StartElement event, isSPStartElement(event)) {
 	                if (!retval.population exists) {
@@ -235,7 +235,7 @@ object fluidTownHandler extends FluidBase() {
 	                }
 	                lambda(fluidResourceHandler.readResource(event, top.name, stream, players, warner, idFactory));
 	            }
-	            else {}
+	            else {} // TODO: Should probably throw here
 	        } else if (is EndElement event, exists top = stack.top, event.name == top.name) {
 	            stack.pop();
 	            if (top == element) {

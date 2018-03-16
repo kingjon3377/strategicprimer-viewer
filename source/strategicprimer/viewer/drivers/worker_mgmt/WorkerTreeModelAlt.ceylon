@@ -58,7 +58,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         }
         shared actual void setUserObject(Object obj) {
             if (is T obj) {
-                (super of DefaultMutableTreeNode).userObject =obj;
+                (super of DefaultMutableTreeNode).userObject = obj;
             } else {
                 throw IllegalArgumentException("PlayerNode can only contain Player");
             }
