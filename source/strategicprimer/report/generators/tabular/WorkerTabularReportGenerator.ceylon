@@ -17,7 +17,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats
 }
 "A report generator for workers. We do not cover Jobs or Skills; see the main report for
- that."
+ that." // TODO: Probably ought to ...
 shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
         satisfies ITableGenerator<IWorker> {
     "The header row of the table."
@@ -33,9 +33,7 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
         if (exists stats = item.stats) {
             return {{distanceString(loc, hq, dimensions), loc.string, item.name,
                 stats.hitPoints.string, stats.maxHitPoints.string,
-                for (stat in { stats.strength, stats.dexterity, stats.constitution,
-                    stats.intelligence, stats.wisdom, stats.charisma })
-                        WorkerStats.getModifierString(stat) }};
+                *stats.array.map(WorkerStats.getModifierString)}};
         } else {
             return {{distanceString(loc, hq, dimensions), loc.string, item.name,
                 *(0..9).map((num) => "---")}};
