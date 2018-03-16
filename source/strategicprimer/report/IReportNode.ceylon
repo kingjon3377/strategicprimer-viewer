@@ -72,11 +72,7 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&
                     retval = child.point;
                 }
             }
-            if (exists temp = retval) {
-                return temp;
-            } else {
-                return invalidPoint;
-            }
+            return retval else invalidPoint;
         }
     }
     "The HTML representation of the subtree based on this node."
