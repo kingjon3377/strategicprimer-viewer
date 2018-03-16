@@ -62,8 +62,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         if (!item.allOrders.empty || !item.allResults.empty) {
             formatter("""Orders and Results:<ul>
                          """);
-            for (turn in sort(set { *item.allOrders.keys }
-                    .union(set { *item.allResults.keys }))) {
+            for (turn in sort(item.allOrders.keys.chain(item.allResults.keys)).distinct) {
                 formatter("<li>Turn ``turn``:<ul>
                            ");
                 String orders = item.getOrders(turn);
@@ -264,8 +263,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         }
         retval.addIfNonEmpty(workers, animals, equipment, resources, others);
         ListReportNode ordersNode = ListReportNode("Orders and Results:");
-        for (turn in sort(set { *item.allOrders.keys}
-                .union(set {*item.allResults.keys}))) {
+        for (turn in sort(item.allOrders.keys.chain(item.allResults.keys)).distinct) {
             ListReportNode current = ListReportNode("Turn ``turn``:");
             String orders = item.getOrders(turn);
             if (!orders.empty) {
