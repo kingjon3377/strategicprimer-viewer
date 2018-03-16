@@ -74,15 +74,9 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc)
             "burned-out" else status.string`` ``kind````name.empty then "" else
             ", ``name``,"`` here.";
     "A helper method for equals() that checks everything except the type of the object."
-    shared Boolean equalsContents(AbstractTown fixture) {
-        if (fixture.townSize == townSize &&
+    shared Boolean equalsContents(AbstractTown fixture) => fixture.townSize == townSize &&
                 fixture.name == name && fixture.status == status &&
-                fixture.owner == owner) {
-            return anythingEqual(population, fixture.population);
-        } else {
-            return false;
-        }
-    }
+                fixture.owner == owner && anythingEqual(population, fixture.population);
     shared actual default Boolean equals(Object obj) {
         if (is AbstractTown obj) {
             return id == obj.id && equalsContents(obj);
