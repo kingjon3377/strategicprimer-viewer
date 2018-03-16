@@ -93,7 +93,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
     """Whether every proxied Skill is "empty"."""
     shared actual Boolean empty =>
             proxiedJobs.flatMap(identity).filter(notThis)
-                .filter((skill) => skill.name == name).any((skill) => !skill.empty);
+                .filter((skill) => skill.name == name).every(ISkill.empty);
     shared actual Boolean isSubset(ISkill obj, Anything(String) report) {
         report("isSubset called on ProxySkill");
         return false;
