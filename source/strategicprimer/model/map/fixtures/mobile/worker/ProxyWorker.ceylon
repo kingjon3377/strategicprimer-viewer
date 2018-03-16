@@ -46,19 +46,17 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
     shared new fromUnit(IUnit unit) {
         parallel = false;
         statsCache = null;
-        for (member in unit) {
-            if (is IWorker member) {
-                WorkerStats? tempStats = member.stats;
-                WorkerStats? priorStats = statsCache;
-                if (workers.empty) {
-                    statsCache = tempStats;
-                } else if (!anythingEqual(tempStats, priorStats)) {
-                    statsCache = null;
-                }
-                workers.add(member);
-                for (job in member) {
-                    jobNames.add(job.name);
-                }
+        for (member in unit.narrow<IWorker>()) {
+            WorkerStats? tempStats = member.stats;
+            WorkerStats? priorStats = statsCache;
+            if (workers.empty) {
+                statsCache = tempStats;
+            } else if (!anythingEqual(tempStats, priorStats)) {
+                statsCache = null;
+            }
+            workers.add(member);
+            for (job in member) {
+                jobNames.add(job.name);
             }
         }
         for (job in jobNames) {
