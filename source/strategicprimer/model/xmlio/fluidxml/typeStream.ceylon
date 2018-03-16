@@ -30,6 +30,8 @@ class TypeIterator(Object obj) satisfies Iterator<ClassOrInterface<Anything>> {
 		return finished;
 	}
 }
+"A stream of all the types that a given object satisfies."
+// TODO: Move the iterator back in so we can cache the results instead of recomputing them for every caller
 class TypeStream(Object obj) satisfies {ClassOrInterface<Anything>*} {
 	shared actual Iterator<ClassOrInterface<Anything>> iterator() => TypeIterator(obj);
 }
