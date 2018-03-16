@@ -38,31 +38,13 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     todo("Move to a 'mutable' interface?")
     shared formal void setResults(Integer turn, String newResults);
     "The unit's latest orders as of the given turn."
-    shared default String getLatestOrders(Integer turn) {
-        SortedMap<Integer, String> orders = allOrders;
-        for (i in turn..-1) {
-            if (exists temp = orders[i]) {
-                String turnOrders = temp.trimmed;
-                if (!turnOrders.empty) {
-                    return turnOrders;
-                }
-            }
-        }
-        return "";
-    }
+    shared default String getLatestOrders(Integer turn) =>
+            (turn..-1).map(allOrders.get).coalesced.map(String.trimmed)
+                .find((text) => !text.empty) else "";
     "The unit's latest results as of the given turn."
-    shared default String getLatestResults(Integer turn) {
-        SortedMap<Integer, String> results = allResults;
-        for (i in turn..-1) {
-            if (exists temp = results[i]) {
-                String turnResults = temp.trimmed;
-                if (!turnResults.empty) {
-                    return turnResults;
-                }
-            }
-        }
-        return "";
-    }
+    shared default String getLatestResults(Integer turn) =>
+            (turn..-1).map(allResults.get).coalesced.map(String.trimmed)
+                .find((text) => !text.empty) else "";
     "Get the latest turn that the given orders were the current orders."
     shared default Integer getOrdersTurn(String orders) {
         variable Integer retval = -1;
