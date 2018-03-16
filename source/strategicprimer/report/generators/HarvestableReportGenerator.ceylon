@@ -112,15 +112,15 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         }
         case (is Grove) {
             ostream("At ``loc``: ``(item.cultivated) then "cultivated" else
-            "wild"`` ``item.kind`` ``(item.orchard) then "orchard" else
-            "grove"`` ``populationCountString(item, "tree")````
-            distCalculator.distanceString(loc)``");
+	            "wild"`` ``item.kind`` ``(item.orchard) then "orchard" else
+	            "grove"`` ``populationCountString(item, "tree")````
+	            distCalculator.distanceString(loc)``");
         }
         case (is Meadow) {
             ostream("At ``loc``: ``item.status`` ``(item.cultivated) then
-            "cultivated" else "wild or abandoned"`` ``item.kind`` ``(item
-                .field) then "field" else "meadow"`` ``acreageString(item)````
-	            distCalculator.distanceString(loc)``");
+	            "cultivated" else "wild or abandoned"`` ``item.kind`` ``(item
+	                .field) then "field" else "meadow"`` ``acreageString(item)````
+		            distCalculator.distanceString(loc)``");
         }
         case (is Mine) {
             ostream("At ``loc``: ``item`` ``distCalculator
@@ -128,8 +128,8 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         }
         case (is MineralVein) {
             ostream("At ``loc``: An ``(item.exposed) then
-            "exposed" else "unexposed"`` vein of ``item
-                .kind`` ``distCalculator.distanceString(loc)``");
+	            "exposed" else "unexposed"`` vein of ``item
+	                .kind`` ``distCalculator.distanceString(loc)``");
         }
         case (is Shrub) {
             ostream("At ``loc``: ``item.kind`` ``populationCountString(item, "plant")````
@@ -228,9 +228,9 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
                 .contents``", loc);
         } else if (is Grove item) {
             retval = SimpleReportNode("At ``loc``: A ``(item.cultivated) then
-            "cultivated" else "wild"`` ``item.kind`` ``(item
-                .orchard) then "orchard" else "grove"`` ``distCalculator
-                .distanceString(loc)``", loc);
+	            "cultivated" else "wild"`` ``item.kind`` ``(item
+	                .orchard) then "orchard" else "grove"`` ``distCalculator
+	                .distanceString(loc)``", loc);
         } else if (is Meadow item) {
             retval = SimpleReportNode("At ``loc``: A ``item.status`` ``(item
                 .cultivated) then "cultivated" else "wild or abandoned"`` ``item
