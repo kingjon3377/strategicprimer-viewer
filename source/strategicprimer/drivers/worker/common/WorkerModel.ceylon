@@ -51,6 +51,9 @@ import ceylon.logging {
 import ceylon.random {
     randomize
 }
+import lovelace.util.common {
+	anythingEqual
+}
 Logger log = logger(`module strategicprimer.drivers.worker.common`);
 "A model to underlie the advancement GUI, etc."
 shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
@@ -232,10 +235,8 @@ object workerModelTests {
 	    Boolean iterableEquality<T>(Anything one, Anything two) given T satisfies Object {
 	        if (is {T*} one, is {T*} two) {
 	            return one.containsEvery(two) &&two.containsEvery(one);
-	        } else if (exists one, exists two) {
-	            return one == two;
 	        } else {
-	            return one exists == two exists;
+	            return anythingEqual(one, two);
 	        }
 	    }
 	    assertEquals(filterProxies(*model.getUnits(playerOne)),

@@ -4,7 +4,8 @@ import ceylon.language {
 
 import lovelace.util.common {
     todo,
-    ArraySet
+    ArraySet,
+	anythingEqual
 }
 import strategicprimer.model.map {
     IFixture,
@@ -28,16 +29,6 @@ shared class Worker satisfies IWorker&HasPortrait {
 	static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
 			set { *first.filter((job) => !job.emptyJob) } ==
 			set { *second.filter((job) => !job.emptyJob) };
-	"Whether two nullable values are either neither present or both present and equal."
-	static Boolean nullablesEqual(Anything one, Anything two) {
-		if (exists one) {
-			if (exists two) {
-				return one == two;
-			}
-			return false;
-		}
-		return !two exists;
-	}
     "The set of Jobs the worker is trained or experienced in."
     MutableSet<IJob> jobSet;
     "The worker's ID number."
@@ -70,7 +61,7 @@ shared class Worker satisfies IWorker&HasPortrait {
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is IWorker fixture) {
             return fixture.name == name && jobSetsEqual(jobSet, fixture)
-                && fixture.race == race && nullablesEqual(stats, fixture.stats);
+                && fixture.race == race && anythingEqual(stats, fixture.stats);
         } else {
             return false;
         }
@@ -103,7 +94,7 @@ shared class Worker satisfies IWorker&HasPortrait {
                 } else if (race != obj.race) {
                     localReport("Races differ");
                     return false;
-                } else if (!nullablesEqual(stats, obj.stats)) {
+                } else if (!anythingEqual(stats, obj.stats)) {
                     localReport("Stats differ");
                     return false;
                 }

@@ -20,21 +20,13 @@ import ceylon.logging {
     logger,
     Logger
 }
+import lovelace.util.common {
+	anythingEqual
+}
 Logger log = logger(`module strategicprimer.model`);
 "An IWorker implementation to make the UI able to operate on all of a unit's workers at
  once."
 shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
-    static Boolean comparison(Anything one, Anything two) {
-        if (exists one) {
-            if (exists two) {
-                return one == two;
-            } else {
-                return false;
-            }
-        } else {
-            return !two exists;
-        }
-    }
     "If false, this is representing all the workers in a single unit; if true, it is
      representing the corresponding workers in corresponding units in different maps."
     shared actual Boolean parallel;
@@ -60,7 +52,7 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
                 WorkerStats? priorStats = statsCache;
                 if (workers.empty) {
                     statsCache = tempStats;
-                } else if (!comparison(tempStats, priorStats)) {
+                } else if (!anythingEqual(tempStats, priorStats)) {
                     statsCache = null;
                 }
                 workers.add(member);
@@ -81,7 +73,7 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
             WorkerStats? priorStats = statsCache;
             if (workers.empty) {
                 statsCache = tempStats;
-            } else if (!comparison(tempStats, priorStats)) {
+            } else if (!anythingEqual(tempStats, priorStats)) {
                 statsCache = null;
             }
             workers.add(worker);
