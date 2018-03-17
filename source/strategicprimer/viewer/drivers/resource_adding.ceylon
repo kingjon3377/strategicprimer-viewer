@@ -172,8 +172,8 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     "Ask the user to choose units for a type of resource."
     String getResourceUnits(String resource, ICLIHelper cli) {
         if (exists unit = resourceUnits[resource],
-            cli.inputBooleanInSeries("Is ``unit`` the correct unit for ``resource``? ",
-                "correct;``unit``;``resource``")) {
+	            cli.inputBooleanInSeries("Is ``unit`` the correct unit for ``resource``? ",
+	                "correct;``unit``;``resource``")) {
             return unit;
         } else {
             String retval = cli.inputString("Unit to use for ``resource``: ");
