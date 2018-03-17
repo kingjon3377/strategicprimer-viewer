@@ -199,12 +199,10 @@ shared class SPMenu extends JMenuBar {
         fileMenu.add(createMenuItem("Close", KeyEvent.vkW, "Close this window",
             handler, createAccelerator(KeyEvent.vkW)));
         if (platform.systemIsMac) {
-            Application.application.setAboutHandler((AppEvent.AboutEvent event) {
-                Object source = WindowList.getWindows(true, false).iterable.coalesced
-                    .last else event;
-                handler(ActionEvent(source, ActionEvent.actionFirst,
-                    "About"));
-            });
+            Application.application.setAboutHandler((AppEvent.AboutEvent event) =>
+                handler(ActionEvent(WindowList.getWindows(true, false).iterable.coalesced
+                    .last else event, ActionEvent.actionFirst,
+                    "About")));
         } else {
             fileMenu.add(createMenuItem("About", KeyEvent.vkB, "Show development credits",
                 handler, createAccelerator(KeyEvent.vkB)));
