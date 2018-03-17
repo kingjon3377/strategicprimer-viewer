@@ -60,6 +60,9 @@ import strategicprimer.viewer.drivers.map_viewer {
 import strategicprimer.drivers.worker.common {
     IWorkerModel
 }
+import lovelace.util.common {
+	as
+}
 """A class to respond to "change current player" menu items."""
 shared class PlayerChangeMenuListener(IDriverModel model)
         satisfies ActionListener&PlayerChangeSource {
@@ -68,13 +71,6 @@ shared class PlayerChangeMenuListener(IDriverModel model)
             listeners.add(listener);
     shared actual void removePlayerChangeListener(PlayerChangeListener listener) =>
             listeners.remove(listener);
-    Component? eventSource(Anything obj) {
-        if (is Component obj) {
-            return obj;
-        } else {
-            return null;
-        }
-    }
     Frame? getContainingFrame(Component? component) {
         variable Component? temp = component;
         while (exists local = temp) {
@@ -97,7 +93,7 @@ shared class PlayerChangeMenuListener(IDriverModel model)
         }
         {Player*} players = model.map.players;
         if (is Player retval = JOptionPane.showInputDialog(
-                getContainingFrame(eventSource(event.source)),
+                getContainingFrame(as<Component>(event.source)),
                 "Player to view:", "Choose New Player:",
                 JOptionPane.plainMessage, null, javaObjectArray(Array<Player?>(players)),
                 currentPlayer)) {
