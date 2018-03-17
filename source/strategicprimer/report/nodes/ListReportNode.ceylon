@@ -18,6 +18,7 @@ import strategicprimer.report {
 shared class ListReportNode(variable String initialText,
         shared actual variable Point? localPoint = null)
         extends DefaultMutableTreeNode(initialText) satisfies IReportNode {
+	// TODO: convert to class-with-constructor and make these static
     Integer boilerPlateLength = "<ul></ul>".size + 3;
     Integer perChildBoilerPlate = "<li></li>".size + 1;
     shared actual void appendNode(MutableTreeNode node) {
@@ -50,7 +51,7 @@ shared class ListReportNode(variable String initialText,
     }
     shared actual Boolean equals(Object that) {
         if (is ListReportNode that, that.initialText == initialText,
-            children() == that.children()) {
+	            children() == that.children()) {
             return anythingEqual(localPoint, that.localPoint);
         } else {
             return false;

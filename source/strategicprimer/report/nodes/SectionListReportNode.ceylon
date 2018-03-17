@@ -26,7 +26,7 @@ shared class SectionListReportNode(Integer level, variable String header,
                         (node) => node.htmlSize + perChildBoilerPlate));
     shared actual default Boolean equals(Object that) {
         if (is SectionListReportNode that, that.level == level, that.header == header,
-            that.children() ==children()) {
+	            that.children() == children()) {
             return anythingEqual(localPoint, that.localPoint);
         } else {
             return false;

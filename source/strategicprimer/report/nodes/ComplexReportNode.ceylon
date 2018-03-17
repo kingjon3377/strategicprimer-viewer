@@ -22,7 +22,7 @@ shared class ComplexReportNode(String textArg = "", Point? pointArg = null)
             text.size + Integer.sum(map(IReportNode.size));
     shared actual Boolean equals(Object that) {
         if (is ComplexReportNode that, super.equals(that),
-            children() == that.children()) {
+	            children() == that.children()) {
             return true;
         } else {
             return false;
