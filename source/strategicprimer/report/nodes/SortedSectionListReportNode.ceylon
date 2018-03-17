@@ -30,7 +30,7 @@ shared class SortedSectionListReportNode
         if (sorting) {
             // We use List<> rather than Vector<> because the latter fails at runtime
             // in the metamodel with "Class has more than one overloaded constructor"
-            // TODO: report this bug (if it isn't already known)
+            // It looks like this is eclipse/ceylon#7092
             assert (is JList<IReportNode> temp = children);
             JCollections.sort(temp, sorter);
         }
