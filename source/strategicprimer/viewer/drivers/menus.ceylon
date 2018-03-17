@@ -4,10 +4,6 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import ceylon.interop.java {
-    javaObjectArray
-}
-
 import com.apple.eawt {
     Application,
     AppEvent
@@ -63,6 +59,9 @@ import strategicprimer.drivers.worker.common {
 import lovelace.util.common {
 	as
 }
+import java.lang {
+	ObjectArray
+}
 """A class to respond to "change current player" menu items."""
 shared class PlayerChangeMenuListener(IDriverModel model)
         satisfies ActionListener&PlayerChangeSource {
@@ -95,7 +94,7 @@ shared class PlayerChangeMenuListener(IDriverModel model)
         if (is Player retval = JOptionPane.showInputDialog(
                 getContainingFrame(as<Component>(event.source)),
                 "Player to view:", "Choose New Player:",
-                JOptionPane.plainMessage, null, javaObjectArray(Array<Player?>(players)),
+                JOptionPane.plainMessage, null, ObjectArray.with(players),
                 currentPlayer)) {
             if (is IWorkerModel model) {
                 model.currentPlayer = retval;
