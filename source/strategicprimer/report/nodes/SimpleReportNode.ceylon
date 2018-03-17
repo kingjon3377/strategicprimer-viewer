@@ -9,6 +9,9 @@ import strategicprimer.model.map {
 import strategicprimer.report {
     IReportNode
 }
+import lovelace.util.common {
+	anythingEqual
+}
 "A simple node representing plain text. Any children are ignored!"
 shared class SimpleReportNode(variable String nodeText,
         shared actual variable Point? localPoint = null)
@@ -22,22 +25,13 @@ shared class SimpleReportNode(variable String nodeText,
     shared actual default Integer htmlSize => text.size;
     shared actual default Boolean equals(Object that) {
         if (is SimpleReportNode that, text == that.text) {
-            if (exists ours = localPoint) {
-                if (exists theirs = that.localPoint) {
-                    return ours == theirs;
-                } else {
-                    return false;
-                }
-            } else if (that.localPoint exists) {
-                return false;
-            } else {
-                return true;
-            }
+            return anythingEqual(localPoint, that.localPoint);
         } else {
             return false;
         }
     }
     shared actual Integer hash => text.hash;
+    // TODO: We should probably print a warning, or worse, if a child-adding method is called
     shared actual default void appendNode(MutableTreeNode node) {}
     shared actual default void add(MutableTreeNode node) {}
     shared actual default void addAsFirst(MutableTreeNode node) {}
