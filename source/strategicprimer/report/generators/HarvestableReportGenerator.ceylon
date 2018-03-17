@@ -316,24 +316,14 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         }
         SortedSectionListReportNode shrubsNode = SortedSectionListReportNode(5,
             "Shrubs, Small Trees, etc.");
-        shrubsNode.suspend();
-        for (node in shrubs.items) {
-            shrubsNode.appendNode(node);
-        }
+        shrubsNode.appendNodes(*shrubs.items);
         SortedSectionListReportNode mineralsNode = SortedSectionListReportNode(5,
             "Mineral Deposits");
-        mineralsNode.suspend();
-        for (node in minerals.items) {
-            mineralsNode.appendNode(node);
-        }
+        mineralsNode.appendNodes(*minerals.items);
         SortedSectionListReportNode stoneNode = SortedSectionListReportNode(5,
             "Exposed Stone Deposits");
-        stoneNode.suspend();
-        for (node in stone.items) {
-            stoneNode.appendNode(node);
-        }
-        for (node in {shrubsNode, mineralsNode, stoneNode, mines, meadows, groves,
-                caches}) {
+        stoneNode.appendNodes(*stone.items);
+        for (node in {mines, meadows, groves, caches}) {
             node.resume();
         }
         SectionReportNode retval = SectionReportNode(4, "Resource Sources");

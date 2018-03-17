@@ -25,6 +25,18 @@ shared class SortedSectionListReportNode
     shared new (Integer level, String text)
             extends SectionListReportNode(level, text) {}
     variable Boolean sorting = true;
+    shared void appendNodes(MutableTreeNode* newChildren) {
+        for (child in newChildren) {
+            super.appendNode(child);
+        }
+        if (sorting) {
+            // We use List<> rather than Vector<> because the latter fails at runtime
+            // in the metamodel with "Class has more than one overloaded constructor"
+            // It looks like this is eclipse/ceylon#7092
+            assert (is JList<IReportNode> temp = children);
+            JCollections.sort(temp, sorter);
+        }
+    }
     shared actual void appendNode(MutableTreeNode newChild) {
         super.appendNode(newChild);
         if (sorting) {
