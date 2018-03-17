@@ -70,26 +70,26 @@ object expansionDriver satisfies SimpleCLIDriver {
             IMapNG master = model.map;
             for (pair in model.subordinateMaps) {
                 IMutableMapNG map = pair.first;
-                Player currentPlayer = map.currentPlayer;
+                Player currentPlayer = map.currentPlayer; // TODO: move these inner methods to the top level of the object
                 Boolean containsSwornVillage(Point point) { // TODO: fat arrow once syntax sugar in place
 //                    return map.fixtures[point].narrow<ITownFixture>() // TODO: syntax sugar once compiler bug fixed
                     return map.fixtures.get(point).narrow<ITownFixture>()
                         .map(HasOwner.owner).any(currentPlayer.equals);
                 }
                 void safeAdd(Point point, TileFixture fixture) {
-            if (map.fixtures.get(point).any(fixture.equals)) {
-                return;
+					if (map.fixtures.get(point).any(fixture.equals)) {
+		                return;
                     } else if (is HasOwner fixture, !fixture is ITownFixture) {
-            value zeroed = fixture.copy(fixture.owner != currentPlayer);
-            if (!map.fixtures.get(point).any(zeroed.equals)) {
-                            map.addFixture(point, fixture.copy(
-                                fixture.owner != currentPlayer));
-            }
+			            value zeroed = fixture.copy(fixture.owner != currentPlayer);
+			            if (!map.fixtures.get(point).any(zeroed.equals)) {
+	                        map.addFixture(point, fixture.copy(
+	                                fixture.owner != currentPlayer));
+			            }
                     } else {
-            value zeroed = fixture.copy(true);
-            if (!map.fixtures.get(point).any(zeroed.equals)) {
+			            value zeroed = fixture.copy(true);
+			            if (!map.fixtures.get(point).any(zeroed.equals)) {
                             map.addFixture(point, fixture.copy(true));
-            }
+			            }
                     }
                 }
                 object mock satisfies HasOwner {
