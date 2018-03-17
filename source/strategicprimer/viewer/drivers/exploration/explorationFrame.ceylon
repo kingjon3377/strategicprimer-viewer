@@ -168,7 +168,7 @@ SPFrame explorationFrame(IExplorationModel model,
             ArrayList<CompletionListener>();
     void buttonListener(ActionEvent event) {
         if (exists selectedValue = unitList.selectedValue,
-            !unitList.selectionEmpty) {
+	            !unitList.selectionEmpty) {
             model.selectedUnit = selectedValue;
             for (listener in completionListeners) {
                 listener.finished();
@@ -193,7 +193,7 @@ SPFrame explorationFrame(IExplorationModel model,
         model.addMapChangeListener(playerListModel);
         playerList.addListSelectionListener((ListSelectionEvent event) {
             if (!playerList.selectionEmpty,
-                exists newPlayer = playerList.selectedValue) {
+	                exists newPlayer = playerList.selectedValue) {
                 for (listener in listeners) {
                     listener.playerChanged(null, newPlayer);
                 }
@@ -203,8 +203,8 @@ SPFrame explorationFrame(IExplorationModel model,
         DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
         object renderer satisfies ListCellRenderer<IUnit> {
             shared actual Component getListCellRendererComponent(
-                SwingList<out IUnit>? list, IUnit? val, Integer index,
-                Boolean isSelected, Boolean cellHasFocus) {
+	                SwingList<out IUnit>? list, IUnit? val, Integer index,
+	                Boolean isSelected, Boolean cellHasFocus) {
                 Component retval = defaultRenderer.getListCellRendererComponent(list,
                     val, index, isSelected, cellHasFocus);
                 if (exists val, is JLabel retval) {
@@ -408,7 +408,7 @@ SPFrame explorationFrame(IExplorationModel model,
                             if (is TileTypeFixture fixture) {
                                 // Skip it! It'll corrupt the output XML!
                                 continue;
-//                                            } else if (!map.fixtures[destPoint] // TODO: syntax sugar once compiler bug fixed
+                            //} else if (!map.fixtures[destPoint] // TODO: syntax sugar once compiler bug fixed
                             } else if (!map.fixtures.get(destPoint)
                                 .any((that) => fixture == that)) {
                                 Boolean zero;
