@@ -241,6 +241,50 @@ object resourceAddingGUI satisfies SimpleDriver {
         longDescription = "Add resources for players to maps";
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
+    "Extends [[ImprovedComboBox]] to keep a running collection of values."
+    class UpdatedComboBox(Anything(String) logger) extends ImprovedComboBox<String>() {
+        "The values we've had in the past."
+        MutableSet<String> values = HashSet<String>();
+        "Clear the combo box, but if its value was one we haven't had previously, add it
+         to the drop-down list."
+        shared void checkAndClear() {
+            assert (is String temp = selectedItem);
+            String item = temp.trimmed;
+            if (!values.contains(item)) {
+                values.add(item);
+                addItem(item);
+            }
+            selectedItem = null;
+        }
+        shared actual Object? selectedItem {
+            Anything retval = super.selectedItem;
+            if (is String retval) {
+                return retval.trimmed;
+            } else if (exists retval) {
+                return retval.string.trimmed;
+            } else {
+                return "";
+            }
+        }
+        assign selectedItem {
+            if (is String selectedItem) {
+                super.selectedItem = selectedItem;
+            }
+        }
+        shared String selectedString {
+            assert (is String retval = selectedItem);
+            return retval;
+        }
+        shared void addSubmitListener(Anything(ActionEvent) listener) {
+            value inner = editor.editorComponent;
+            if (is JTextField inner) {
+                inner.addActionListener(listener);
+            } else {
+                logger("Editor wasn't a text field, but a ``
+                    classDeclaration(inner)``");
+            }
+        }
+    }
     "A window to let the user enter resources etc. Note that this is not a dialog to enter one
      resource and close."
     SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
@@ -251,7 +295,7 @@ object resourceAddingGUI satisfies SimpleDriver {
         FormattedLabel resourceLabel = FormattedLabel("Add resource for %s:",
             currentPlayer.name);
         mainPanel.add(resourceLabel);
-        JPanel pairPanel(Component first, Component second) {
+        JPanel pairPanel(Component first, Component second) { // TODO: Use a better layout than BoxLayout
             JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
             panel.addGlue();
             panel.add(first);
@@ -265,61 +309,17 @@ object resourceAddingGUI satisfies SimpleDriver {
         String css = """color:white; margin-bottom: 0.5em; margin-top: 0.5em;""";
         void logAddition(String addend) => logLabel.append(
             "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``");
-        "Extends [[ImprovedComboBox]] to keep a running collection of values."
-        class UpdatedComboBox() extends ImprovedComboBox<String>() {
-            "The values we've had in the past."
-            MutableSet<String> values = HashSet<String>();
-            "Clear the combo box, but if its value was one we haven't had previously, add it
-             to the drop-down list."
-            shared void checkAndClear() {
-                assert (is String temp = selectedItem);
-                String item = temp.trimmed;
-                if (!values.contains(item)) {
-                    values.add(item);
-                    addItem(item);
-                }
-                selectedItem = null;
-            }
-            shared actual Object? selectedItem {
-                Anything retval = super.selectedItem;
-                if (is String retval) {
-                    return retval.trimmed;
-                } else if (exists retval) {
-                    return retval.string.trimmed;
-                } else {
-                    return "";
-                }
-            }
-            assign selectedItem {
-                if (is String selectedItem) {
-                    super.selectedItem = selectedItem;
-                }
-            }
-            shared String selectedString {
-                assert (is String retval = selectedItem);
-                return retval;
-            }
-            shared void addSubmitListener(Anything(ActionEvent) listener) {
-                value inner = editor.editorComponent;
-                if (is JTextField inner) {
-                    inner.addActionListener(listener);
-                } else {
-                    logLabel.append("Editor wasn't a text field, but a ``
-                        classDeclaration(inner)``");
-                }
-            }
-        }
-        UpdatedComboBox resourceKindBox = UpdatedComboBox();
+        UpdatedComboBox resourceKindBox = UpdatedComboBox(logLabel.append);
         resourcePanel.add(pairPanel(JLabel("General Category"), resourceKindBox));
         // If we set the maximum high at this point, the fields would try to be unneccessarily
         // large. I'm not sure that setting it low at first helps, though.
         SpinnerNumberModel resourceCreatedModel = SpinnerNumberModel(-1, -1, 2000, 1);
         resourcePanel.add(pairPanel(JLabel("Turn created"), JSpinner(resourceCreatedModel)));
-        UpdatedComboBox resourceBox = UpdatedComboBox();
+        UpdatedComboBox resourceBox = UpdatedComboBox(logLabel.append);
         resourcePanel.add(pairPanel(JLabel("Specific Resource"), resourceBox));
         SpinnerNumberModel resourceQuantityModel = SpinnerNumberModel(0, 0, 2000, 1);
         resourcePanel.add(pairPanel(JLabel("Quantity"), JSpinner(resourceQuantityModel)));
-        UpdatedComboBox resourceUnitsBox = UpdatedComboBox();
+        UpdatedComboBox resourceUnitsBox = UpdatedComboBox(logLabel.append);
         resourcePanel.add(pairPanel(JLabel("Units"), resourceUnitsBox));
         variable Boolean playerIsDefault = true;
         void confirmPlayer() {
@@ -370,7 +370,7 @@ object resourceAddingGUI satisfies SimpleDriver {
         mainPanel.add(implementLabel);
         SpinnerNumberModel implementQuantityModel = SpinnerNumberModel(1, 1, 2000, 1);
         JSpinner implementQuantityField = JSpinner(implementQuantityModel);
-        UpdatedComboBox implementKindBox = UpdatedComboBox();
+        UpdatedComboBox implementKindBox = UpdatedComboBox(logLabel.append);
         Anything(ActionEvent) implementListener = (ActionEvent event) {
             confirmPlayer();
             String kind = implementKindBox.selectedString;
