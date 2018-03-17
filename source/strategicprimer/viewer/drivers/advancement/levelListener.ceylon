@@ -26,7 +26,7 @@ object levelListener
         if (is HasName named) {
             return named.name;
         } else {
-            return  named.string;
+            return named.string;
         }
     }
     "Notify the user of a gained level."
