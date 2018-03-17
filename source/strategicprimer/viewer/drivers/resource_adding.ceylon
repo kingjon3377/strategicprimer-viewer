@@ -101,8 +101,8 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
     shared new fromDriverModel(IDriverModel driverModel) extends
         SimpleMultiMapModel.copyConstructor(driverModel) { }
     "All the players in all the maps."
-    shared {Player*} players => allMaps.map((pair) => pair.first)
-        .flatMap((IMutableMapNG temp) => temp.players.distinct);
+    shared {Player*} players =>
+            allMaps.map(Tuple.first).flatMap(IMapNG.players).distinct;
     "Add a resource to a player's HQ."
     shared void addResource(FortressMember resource, Player player) {
         for ([map, _] in allMaps) {
