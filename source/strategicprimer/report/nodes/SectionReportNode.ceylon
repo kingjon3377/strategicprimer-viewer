@@ -29,7 +29,7 @@ shared class SectionReportNode(Integer level, variable String header,
         header = text;
     }
     shared actual Integer htmlSize =>
-            16 + header.size + Integer.sum(map(IReportNode.size));
+            16 + header.size + Integer.sum(map(IReportNode.htmlSize));
     shared actual void produce(Anything(String) stream) {
         stream("<h``level``>``header``</h``level``>
                 ");
