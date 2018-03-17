@@ -94,6 +94,10 @@ import strategicprimer.model.xmlio {
 import strategicprimer.drivers.gui.common {
     SPFrame
 }
+import com.vasileff.ceylon.structures {
+	MutableMultimap,
+	HashMultimap
+}
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
     shared new fromMap(IMutableMapNG map, JPath? file) extends
@@ -135,8 +139,8 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     MutableSet<String> resourceKinds = HashSet<String>();
-    MutableMap<String, MutableSet<String>> resourceContents =
-            HashMap<String, MutableSet<String>>();
+    MutableMultimap<String, String> resourceContents =
+            HashMultimap<String, String>();
     MutableMap<String, String> resourceUnits = HashMap<String, String>();
     "Ask the user to choose or enter a resource kind."
     String getResourceKind(ICLIHelper cli) {
@@ -153,22 +157,15 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     }
     "Ask the user to choose or enter a resource-content-type for a given resource kind."
     String getResourceContents(String kind, ICLIHelper cli) {
-        MutableSet<String> set;
-        if (exists temp = resourceContents[kind]) {
-            set = temp;
-        } else {
-            set = HashSet<String>();
-            resourceContents[kind] = set;
-        }
-        String[] list = [*set];
+        String[] list = [*resourceContents.get(kind)];
         Integer num = cli.chooseStringFromList(list,
             "Possible resources in the ``kind`` category`", "No resources entered yet",
             "Choose resource: ", false).key;
-        if (exists retval = list[num]) {
+        if (exists retval = list[num]) { // FIXME: Use the String returned instead of looking it up again
             return retval;
         } else {
             String retval = cli.inputString("Resource to use: ");
-            set.add(retval);
+            resourceContents.put(kind, retval);
             return retval;
         }
     }
