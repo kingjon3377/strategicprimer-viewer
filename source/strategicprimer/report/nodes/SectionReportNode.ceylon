@@ -4,7 +4,8 @@ import javax.swing.tree {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+	anythingEqual
 }
 
 import strategicprimer.model.map {
@@ -41,17 +42,7 @@ shared class SectionReportNode(Integer level, variable String header,
     shared actual Boolean equals(Object that) {
         if (is SectionReportNode that, level == that.level, header == that.header,
             children() == that.children()) {
-            if (exists ours = localPoint) {
-                if (exists theirs = that.localPoint) {
-                    return ours == theirs;
-                } else {
-                    return false;
-                }
-            } else if (that.localPoint exists) {
-                return false;
-            } else {
-                return true;
-            }
+            return anythingEqual(localPoint, that.localPoint);
         } else {
             return false;
         }
