@@ -61,22 +61,22 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
         fixtures.remove(key);
         return {{distanceString(loc, hq, dimensions), loc.string, population, kind, age}};
     }
+    Comparison(Animal, Animal) compareBools(Boolean(Animal) func) {
+        Comparison retval(Boolean first, Boolean second) {
+            if (first == second) {
+                return equal;
+            } else if (first) {
+                return larger;
+            } else {
+                return smaller;
+            }
+        }
+        return (Animal first, Animal second) => retval(func(first), func(second));
+    }
     "Compare two pairs of Animals and locations."
     shared actual Comparison comparePairs([Point, Animal] one, [Point, Animal] two) {
         Comparison cmp = DistanceComparator(hq, dimensions).compare(one.first, two.first);
         if (cmp == equal) {
-            Comparison(Animal, Animal) compareBools(Boolean(Animal) func) {
-                Comparison retval(Boolean first, Boolean second) {
-                    if (first == second) {
-                        return equal;
-                    } else if (first) {
-                        return larger;
-                    } else {
-                        return smaller;
-                    }
-                }
-                return (Animal first, Animal second) => retval(func(first), func(second));
-            }
             return comparing(compareBools(Animal.talking),
                 compareBools((animal) => !animal.traces), byIncreasing(Animal.kind),
                 byDecreasing(Animal.population),
