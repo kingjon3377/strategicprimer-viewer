@@ -201,7 +201,7 @@ shared class SPMenu extends JMenuBar {
         if (platform.systemIsMac) {
             Application.application.setAboutHandler((AppEvent.AboutEvent event) {
                 Object source = WindowList.getWindows(true, false).iterable.coalesced
-                    .sequence().reversed.first else event;
+                    .last else event;
                 handler(ActionEvent(source, ActionEvent.actionFirst,
                     "About"));
             });
