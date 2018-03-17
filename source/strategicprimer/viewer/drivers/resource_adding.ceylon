@@ -199,10 +199,9 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     }
     "Ask the user to enter an Implement (a piece of equipment)"
     void enterImplement(IDRegistrar idf, ResourceManagementDriverModel model,
-            ICLIHelper cli, Player player) {
+            ICLIHelper cli, Player player) =>
         model.addResource(Implement(cli.inputString("Kind of equipment: "),
             idf.createID()), player);
-    }
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
