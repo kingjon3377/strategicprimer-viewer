@@ -158,11 +158,11 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     "Ask the user to choose or enter a resource-content-type for a given resource kind."
     String getResourceContents(String kind, ICLIHelper cli) {
         String[] list = [*resourceContents.get(kind)];
-        Integer num = cli.chooseStringFromList(list,
+        value num->item = cli.chooseStringFromList(list,
             "Possible resources in the ``kind`` category`", "No resources entered yet",
-            "Choose resource: ", false).key;
-        if (exists retval = list[num]) { // FIXME: Use the String returned instead of looking it up again
-            return retval;
+            "Choose resource: ", false);
+        if (exists item) {
+            return item;
         } else {
             String retval = cli.inputString("Resource to use: ");
             resourceContents.put(kind, retval);
