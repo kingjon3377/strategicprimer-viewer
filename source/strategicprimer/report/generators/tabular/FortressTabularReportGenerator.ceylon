@@ -29,9 +29,7 @@ shared class FortressTabularReportGenerator(Player player, Point hq,
         // Players shouldn't be able to see the contents of others' fortresses
         // in other tables.
         if (player != item.owner) {
-            for (member in item) {
-                fixtures.remove(member.id);
-            }
+            fixtures.removeAll(item.map(IFixture.id));
         }
         fixtures.remove(key);
         return [retval];
