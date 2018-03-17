@@ -95,37 +95,35 @@ object expansionDriver satisfies SimpleCLIDriver {
                 object mock satisfies HasOwner {
                     shared actual Player owner = currentPlayer;
                 }
-                for (point in map.locations) {
-                    if (containsSwornVillage(point)) {
-                        for (neighbor in surroundingPointIterable(point,
-                                map.dimensions)) {
-                            if (!map.baseTerrain[neighbor] exists) {
-                                map.baseTerrain[neighbor] =
-                                    master.baseTerrain[neighbor];
-//                                if (master.mountainous[neighbor]) { // TODO: syntax sugar once compiler bug fixed
-                                if (master.mountainous.get(neighbor)) {
-                                    map.mountainous[neighbor] = true;
-                                }
+                for (point in map.locations.filter(containsSwornVillage)) {
+                    for (neighbor in surroundingPointIterable(point,
+                            map.dimensions)) {
+                        if (!map.baseTerrain[neighbor] exists) {
+                            map.baseTerrain[neighbor] =
+                                master.baseTerrain[neighbor];
+                            //if (master.mountainous[neighbor]) { // TODO: syntax sugar once compiler bug fixed
+                            if (master.mountainous.get(neighbor)) {
+                                map.mountainous[neighbor] = true;
                             }
-                            MutableList<TileFixture> possibilities =
-                                    ArrayList<TileFixture>();
-//                            for (fixture in master.fixtures[neighbor]) {
-                            for (fixture in master.fixtures.get(neighbor)) {
-                                if (fixture is CacheFixture ||
-//                                        map.fixtures[neighbor]
-                                        map.fixtures.get(neighbor)
-                                            .contains(fixture)) {
-                                    continue;
-                                } else if (simpleMovementModel.shouldAlwaysNotice(mock, fixture)) {
-                                    safeAdd(neighbor, fixture);
-                                } else if (simpleMovementModel.shouldSometimesNotice(mock, Speed.careful,
-                                        fixture)) {
-                                    possibilities.add(fixture);
-                                }
+                        }
+                        MutableList<TileFixture> possibilities =
+                                ArrayList<TileFixture>();
+                        //for (fixture in master.fixtures[neighbor]) {
+                        for (fixture in master.fixtures.get(neighbor)) {
+                            if (fixture is CacheFixture ||
+                                    //map.fixtures[neighbor]
+                                    map.fixtures.get(neighbor)
+                                        .contains(fixture)) {
+                                continue;
+                            } else if (simpleMovementModel.shouldAlwaysNotice(mock, fixture)) {
+                                safeAdd(neighbor, fixture);
+                            } else if (simpleMovementModel.shouldSometimesNotice(mock, Speed.careful,
+                                    fixture)) {
+                                possibilities.add(fixture);
                             }
-                            if (exists first = randomize(possibilities).first) {
-                                safeAdd(neighbor, first);
-                            }
+                        }
+                        if (exists first = randomize(possibilities).first) {
+                            safeAdd(neighbor, first);
                         }
                     }
                 }
