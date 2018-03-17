@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+	comparingOn
 }
 
 import strategicprimer.model {
@@ -61,25 +62,22 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
         fixtures.remove(key);
         return {{distanceString(loc, hq, dimensions), loc.string, population, kind, age}};
     }
-    Comparison(Animal, Animal) compareBools(Boolean(Animal) func) {
-        Comparison retval(Boolean first, Boolean second) {
-            if (first == second) {
-                return equal;
-            } else if (first) {
-                return larger;
-            } else {
-                return smaller;
-            }
+    Comparison compareBools(Boolean first, Boolean second) {
+        if (first == second) {
+            return equal;
+        } else if (first) {
+            return larger;
+        } else {
+            return smaller;
         }
-        return (Animal first, Animal second) => retval(func(first), func(second));
     }
     "Compare two pairs of Animals and locations."
     shared actual Comparison comparePairs([Point, Animal] one, [Point, Animal] two) {
         Comparison cmp = DistanceComparator(hq, dimensions).compare(one.first, two.first);
         if (cmp == equal) {
-            return comparing(compareBools(Animal.talking),
-                compareBools((animal) => !animal.traces), byIncreasing(Animal.kind),
-                byDecreasing(Animal.population),
+            return comparing(comparingOn(Animal.talking, compareBools),
+                comparingOn((Animal animal) => !animal.traces, compareBools),
+                byIncreasing(Animal.kind), byDecreasing(Animal.population),
                 byIncreasing(Animal.born))(one.rest.first, two.rest.first);
         } else {
             return cmp;
