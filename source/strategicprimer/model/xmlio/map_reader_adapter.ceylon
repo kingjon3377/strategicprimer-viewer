@@ -44,9 +44,12 @@ shared object mapIOHelper {
 	"Read a map from a file or a stream.."
 	todo("Port to use ceylon.file, ceylon.io, or ceylon.buffer")
 	shared IMutableMapNG readMap(JPath|JReader file, Warning warner = warningLevels.warn) {
+		log.trace("In mapIOHelper.readMap");
 	    if (is JPath file) {
+	        log.trace("Reading from ``file``");
 	        return reader.readMap(file, warner);
 	    } else {
+	        log.trace("Reading from a Reader");
 	        return reader.readMapFromStream(JPaths.get(""), file, warner);
 	    }
 	}
