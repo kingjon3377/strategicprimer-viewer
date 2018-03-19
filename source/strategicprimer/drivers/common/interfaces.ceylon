@@ -107,6 +107,7 @@ shared interface SimpleDriver satisfies ISPDriver {
        driver model, as GUIs will expose a "save" option in their UI."""
     shared actual default void startDriverOnArguments(ICLIHelper cli,
             SPOptions options, String* args) {
+        log.trace("In SimpleDriver.startDriverOnArguments()");
         ParamCount desiderata = usage.paramsWanted;
         Anything(IMutableMapNG) turnFixer;
         if (options.hasOption("--current-turn")) {
@@ -123,14 +124,17 @@ shared interface SimpleDriver satisfies ISPDriver {
         if (args.size == 0) {
             switch (desiderata)
             case (ParamCount.none|ParamCount.anyNumber) {
+                log.trace("No arguments, none needed");
                 startDriverNoArgs(cli, options);
             }
             case (ParamCount.two) {
+                log.trace("No arguments, two needed");
                 value firstSelectedPaths = askUserForFiles();
                 if (firstSelectedPaths.empty) {
                     throw IncorrectUsageException(usage);
                 }
                 assert (exists masterPath = firstSelectedPaths.first);
+                log.trace("Got the first from the user");
                 {JPath+} secondSelectedPaths;
                 if (is {JPath+} temp = firstSelectedPaths.rest) {
                     secondSelectedPaths = temp;
@@ -142,20 +146,24 @@ shared interface SimpleDriver satisfies ISPDriver {
                 if (secondSelectedPaths.rest.first exists) {
                     throw IncorrectUsageException(usage);
                 }
+                log.trace("Got the second from the user");
                 value subordinatePath = secondSelectedPaths.first;
                 IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     masterPath, subordinatePath);
+                log.trace("Read maps from the two arguments");
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
                 }
                 startDriverOnModel(cli, options, mapModel);
             }
             case (ParamCount.atLeastTwo) {
+                log.trace("No arguments, needed at least two");
                 value firstSelectedPaths = askUserForFiles();
                 if (firstSelectedPaths.empty) {
                     throw IncorrectUsageException(usage);
                 }
                 assert (exists masterPath = firstSelectedPaths.first);
+                log.trace("Got first file from the user");
                 {JPath+} secondSelectedPaths;
                 if (is {JPath+} temp = firstSelectedPaths.rest) {
                     secondSelectedPaths = temp;
@@ -164,8 +172,10 @@ shared interface SimpleDriver satisfies ISPDriver {
                 } else {
                     throw IncorrectUsageException(usage);
                 }
+                log.trace("Got second and following from the user");
                 IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     masterPath, *secondSelectedPaths);
+                log.trace("Read maps from the arguments");
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
                 }
@@ -183,10 +193,13 @@ shared interface SimpleDriver satisfies ISPDriver {
                 }
             }
             case (ParamCount.atLeastOne) {
+                log.trace("No arguments, needed at least one");
                 value chosenFiles = askUserForFiles();
+                log.trace("Asked the user to choose a file");
                 if (exists chosenFile = chosenFiles.first) {
                     IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                         chosenFile, *chosenFiles.rest);
+                    log.trace("Parsed map(s) from file(s)");
                     for (pair in mapModel.allMaps) {
                         turnFixer(pair.first);
                     }
@@ -201,43 +214,54 @@ shared interface SimpleDriver satisfies ISPDriver {
                 throw IncorrectUsageException(usage);
             }
         } else if (ParamCount.none == desiderata) {
+            log.trace("Got an argument when driver doesn't take any");
             throw IncorrectUsageException(usage);
         } else if (args.size == 1, ParamCount.two == desiderata) {
+            log.trace("Got one argument, needed exactly two");
             assert (exists firstArg = args.first);
             value chosenFiles = askUserForFiles();
+            log.trace("Asked user for second file");
             if (chosenFiles.empty || chosenFiles.rest.first exists) {
                 throw IncorrectUsageException(usage);
             } else {
                 IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     JPaths.get(firstArg), *chosenFiles);
+                log.trace("Parsed maps from the two files");
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
                 }
                 startDriverOnModel(cli, options, mapModel);
             }
         } else if (args.size == 1, ParamCount.atLeastTwo == desiderata) {
+            log.trace("Got one argument, needed at least two");
             assert (exists firstArg = args.first);
             value chosenFiles = askUserForFiles();
+            log.trace("Asked user for subsequent files");
             if (chosenFiles.empty) {
                 throw IncorrectUsageException(usage);
             } else {
                 IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     JPaths.get(firstArg), *chosenFiles);
+                log.trace("Parsed maps from the files");
                 for (pair in mapModel.allMaps) {
                     turnFixer(pair.first);
                 }
                 startDriverOnModel(cli, options, mapModel);
             }
         } else if (args.size == 1) {
+            log.trace("Got one argument, don't need more");
             assert (exists arg = args.first);
             IDriverModel mapModel = mapReaderAdapter.readMapModel(JPaths.get(arg), warningLevels.default);
+            log.trace("Parsed map from file");
             turnFixer(mapModel.map);
             startDriverOnModel(cli, options, mapModel);
         } else {
+            log.trace("Got enough arguments");
             assert (exists firstArg = args.first);
             assert (nonempty others = args.rest);
             IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                 JPaths.get(firstArg), *mapIOHelper.namesToFiles(*others));
+            log.trace("Parsed paths from arguments");
             for (pair in mapModel.allMaps) {
                 turnFixer(pair.first);
             }
