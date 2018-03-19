@@ -73,6 +73,7 @@ shared object workerGUI satisfies SimpleDriver {
                 }
                 frame.setVisible(true);
             });
+            log.trace("Worker GUI window should appear any time now");
         } else {
             startDriverOnModel(cli, options, WorkerModel.copyConstructor(model));
         }
