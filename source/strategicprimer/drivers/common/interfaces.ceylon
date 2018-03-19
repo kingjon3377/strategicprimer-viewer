@@ -330,9 +330,11 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
      after calling startDriver with the model."
     shared actual default void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
+        log.trace("In SimpleCLIDriver.startDriverOnArguments");
         switch (usage.paramsWanted)
         case (ParamCount.none) {
             if (args.size == 0) {
+                log.trace("No arguments wanted, none given");
                 super.startDriverNoArgs(cli, options);
                 return;
             } else {
@@ -341,6 +343,7 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
         }
         case (ParamCount.anyNumber) {
             if (args.size == 0) {
+                log.trace("Zero or more arguments wanted, none given");
                 super.startDriverNoArgs(cli, options);
                 return;
             }
@@ -369,8 +372,10 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
         assert (nonempty rest = args.rest);
         // We declare this as IMultiMapModel so we can correct the current turn in all
         // maps if needed.
+        log.trace("About to read maps from files");
         IMultiMapModel model = mapReaderAdapter.readMultiMapModel(warningLevels.ignore,
             JPaths.get(firstArg), *mapIOHelper.namesToFiles(*rest));
+        log.trace("Finished reading maps from files");
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {
