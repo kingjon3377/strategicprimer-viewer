@@ -14,7 +14,8 @@ import ceylon.logging {
     addLogWriter,
     Priority,
 	trace,
-	debug
+	debug,
+	defaultPriority
 }
 
 import java.awt {
@@ -278,9 +279,9 @@ shared void run() {
     UIManager.setLookAndFeel(UIManager.systemLookAndFeelClassName);
     System.setProperty("apple.laf.useScreenMenuBar", "true");
     if (process.namedArgumentPresent("trace")) {
-        log.priority = trace;
+        defaultPriority = trace;
     } else if (process.namedArgumentPresent("debug")) {
-        log.priority = debug;
+        defaultPriority = debug;
     }
     log.debug("If you can see this, debug-level log messages are enabled.");
     log.trace("If you can see this, trace-level log messages are enabled.");
