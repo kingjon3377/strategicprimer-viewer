@@ -12,7 +12,9 @@ import ceylon.logging {
     Logger,
     logger,
     addLogWriter,
-    Priority
+    Priority,
+	trace,
+	debug
 }
 
 import java.awt {
@@ -275,6 +277,13 @@ shared void run() {
     System.setProperty("apple.awt.application.name", "SP Helpers");
     UIManager.setLookAndFeel(UIManager.systemLookAndFeelClassName);
     System.setProperty("apple.laf.useScreenMenuBar", "true");
+    if (process.namedArgumentPresent("trace")) {
+        log.priority = trace;
+    } else if (process.namedArgumentPresent("debug")) {
+        log.priority = debug;
+    }
+    log.debug("If you can see this, debug-level log messages are enabled.");
+    log.trace("If you can see this, trace-level log messages are enabled.");
     SPOptionsImpl options = SPOptionsImpl();
     [Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache = appChooserState.createCache();
     if (platform.systemIsMac) {
