@@ -60,18 +60,24 @@ shared object workerGUI satisfies SimpleDriver {
             menuHandler.register(pcml, "change current player");
             menuHandler.register((event) => process.exit(0), "quit");
             SwingUtilities.invokeLater(() {
+                log.trace("Inside GUI creation lambda");
                 value frame = workerMgmtFrame(options, model, menuHandler);
+                log.trace("Created worker mgmt frame");
                 pcml.addPlayerChangeListener(frame);
+                log.trace("Added it as a listener on the PCML");
                 menuHandler.register((event) => frame.playerChanged(
                     model.currentPlayer, model.currentPlayer),
                     "reload tree");
                 menuHandler.register((event) => frame.dispose(), "close");
                 menuHandler.register((event) =>
                 aboutDialog(frame, frame.windowName).setVisible(true), "about");
+                log.trace("Registered menu handlers");
                 if (model.allMaps.every(([map, _]) => model.getUnits(map.currentPlayer).empty)) {
                     pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst, "change current player"));
                 }
+                log.trace("About to show window");
                 frame.setVisible(true);
+                log.trace("Window should now be visible");
             });
             log.trace("Worker GUI window should appear any time now");
         } else {

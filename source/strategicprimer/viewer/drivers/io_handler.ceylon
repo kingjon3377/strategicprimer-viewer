@@ -253,12 +253,15 @@ shared class FileChooser {
     JFileChooser|JFileDialog chooser;
     shared new open(JPath? loc = null,
             JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(true)) {
+        log.trace("FileChooser invoked for the Open dialog");
         switch (fileChooser)
         case (is JFileChooser) {
+            log.trace("Using Swing JFileChooser");
             chooserFunction = fileChooser.showOpenDialog;
             fileChooser.multiSelectionEnabled = true;
         }
         case (is JFileDialog) {
+            log.trace("Using AWT FileDialog");
             fileChooser.mode = JFileDialog.load;
             chooserFunction = (Component? component) {
                 fileChooser.setVisible(true);
@@ -267,19 +270,24 @@ shared class FileChooser {
             fileChooser.multipleMode = true;
         }
         if (exists loc) {
+            log.trace("A file was passed in");
             storedFile = {loc};
         } else {
+            log.trace("No file was passed in");
             storedFile = null;
         }
         chooser = fileChooser;
     }
     shared new save(JPath? loc,
             JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false)) {
+        log.trace("FileChooser invoked for Save dialog");
         switch (fileChooser)
         case (is JFileChooser) {
+            log.trace("Using Swing JFileChooser");
             chooserFunction = fileChooser.showSaveDialog;
         }
         case (is JFileDialog) {
+            log.trace("Using AWT FileDialog");
             fileChooser.mode = JFileDialog.save;
             chooserFunction = (Component? component) {
                 fileChooser.setVisible(true);
@@ -287,20 +295,25 @@ shared class FileChooser {
             };
         }
         if (exists loc) {
+            log.trace("A file was passed in");
             storedFile = {loc};
         } else {
+            log.trace("No file was passed in");
             storedFile = null;
         }
         chooser = fileChooser;
     }
     shared new custom(JPath? loc, String approveText,
             JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false)) {
+        log.trace("FileChooser invoked for a custom dialog");
         switch (fileChooser)
         case (is JFileChooser) {
+            log.trace("Using Swing JFileChooser");
             chooserFunction = (Component? component) =>
                     fileChooser.showDialog(component, approveText);
         }
         case (is JFileDialog) {
+            log.trace("Using AWT FileDialog, specifying Save");
             // Unfortunately, it's not possible to use a 'custom' action with the AWT
             // interface.
             fileChooser.mode = JFileDialog.save;
@@ -310,14 +323,17 @@ shared class FileChooser {
             };
         }
         if (exists loc) {
+            log.trace("A file was passed in");
             storedFile = {loc};
         } else {
+            log.trace("No file was passed in");
             storedFile = null;
         }
         chooser = fileChooser;
     }
     void invoke(Anything() runnable) {
         try {
+            log.trace("FileChooser.invoke(): About to invoke the provided function");
             SwingUtilities.invokeAndWait(runnable);
         } catch (InvocationTargetException|InvocationException except) {
             if (exists cause = except.cause) {
@@ -335,14 +351,18 @@ shared class FileChooser {
      exception if the choice is interrupted or the user declines to choose."
     shared {JPath+} files {
         if (exists temp = storedFile) {
+            log.trace("FileChooser.files: A file was stored, so returning it");
             return temp;
-        } else if (SwingUtilities.eventDispatchThread) {
+        } else if (SwingUtilities.eventDispatchThread) { // FIXME: Duplicated code between EDT and non-EDT cases.
+            log.trace("FileChooser.files: Have to ask the user; on EDT");
             Integer status = chooserFunction(null);
+            log.trace("FileChooser: The AWT or Swing chooser returned");
             if (is JFileChooser chooser) {
                 if (status == JFileChooser.approveOption) {
                     value retval = chooser.selectedFiles.iterable.coalesced
                         .map((file) => file.toPath());
                     if (exists first = retval.first) {
+                        log.trace("About to return the file(s) the user chose via Swing");
                         return { first, *retval.rest };
                     } else {
                         log.info("User pressed approve but selected no files");
@@ -354,6 +374,7 @@ shared class FileChooser {
                 value retval = chooser.files.iterable.coalesced
                     .map((file) => file.toPath());
                 if (exists first = retval.first) {
+                    log.trace("About to return the file(s) the user chose via AWT");
                     return { first, *retval.rest };
                 } else {
                     log.info("User failed to choose?");
@@ -361,13 +382,17 @@ shared class FileChooser {
                 }
             }
         } else {
+            log.trace("FileChooser.files: Have to ask the user; not on EDT, so putting our logic on it");
             invoke(() {
+                log.trace("Inside lambda on EDT");
                 Integer status = chooserFunction(null);
+                log.trace("FileChooser: The Swing or AWT chooser returned");
                 if (is JFileChooser chooser) {
                     if (status == JFileChooser.approveOption) {
                         value retval = chooser.selectedFiles.iterable.coalesced
                             .map((file) => file.toPath());
                         if (exists first = retval.first) {
+                            log.trace("Saving the user's choice(s) from Swing to storedFile");
                             storedFile = { first, *retval.rest };
                         } else {
                             log.info("User pressed approve but selected no files");
@@ -379,6 +404,7 @@ shared class FileChooser {
                     value retval = chooser.files.iterable.coalesced
                         .map((file) => file.toPath());
                     if (exists first = retval.first) {
+                        log.trace("Saving the user's choice(s) from AWT to storedFile");
                         storedFile = { first, *retval.rest };
                     } else {
                         log.info("User failed to choose?");

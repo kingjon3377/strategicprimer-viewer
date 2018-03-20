@@ -51,6 +51,7 @@ shared object mapReaderAdapter {
 	 simplify callers."
 	todo("Return exceptions instead of throwing them")
 	shared IMultiMapModel readMultiMapModel(Warning warner, JPath master, JPath* files) {
+		log.trace("In mapReaderAdapter.readMultiMapModel");
 	    variable String current = master.string;
 	    try {
 	        IMultiMapModel retval = SimpleMultiMapModel(mapIOHelper.readMap(master, warner),
@@ -59,6 +60,7 @@ shared object mapReaderAdapter {
 	            current = file.string;
 	            retval.addSubordinateMap(mapIOHelper.readMap(file, warner), file);
 	        }
+	        log.trace("Finished with mapReaderAdapter.readMultiMapModel");
 	        return retval;
 	    } catch (IOException except) {
 	        throw DriverFailedException(except, "I/O error reading from file ``current``");
