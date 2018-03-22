@@ -1,6 +1,5 @@
 import ceylon.collection {
 	ArrayList,
-	MutableMap,
 	MutableList
 }
 import lovelace.util.common {
