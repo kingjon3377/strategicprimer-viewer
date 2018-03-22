@@ -458,15 +458,34 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
 	SPFrame frame = SPFrame("SP App Chooser", null, Dimension(220, 110));
 	void buttonHandler(ISPDriver target) {
-		if (is IDriverModel finalArg) {
-			target.startDriverOnModel(cli, options, finalArg);
-		} else {
-			target.startDriverOnArguments(cli, options, *finalArg);
+		try {
+			if (is IDriverModel finalArg) {
+				target.startDriverOnModel(cli, options, finalArg);
+			} else {
+				target.startDriverOnArguments(cli, options, *finalArg);
+			}
+			SwingUtilities.invokeLater(() {
+				frame.setVisible(false);
+				frame.dispose();
+			});
+		} catch (IOException except) {
+			log.error("I/O error prompting user for app to start", except);
+			showErrorDialog(frame, "I/O error", except.message );
+		} catch (DriverFailedException except) {
+			if (is SPFormatException cause = except.cause) {
+				showErrorDialog(frame, except.message, cause.message);
+				log.error(cause.message);
+			} else if (exists cause = except.cause) {
+				showErrorDialog(frame, except.message, cause.message);
+				log.error("Driver failed:", cause);
+			} else {
+				showErrorDialog(frame, except.message, except.message);
+				log.error("Driver failed:", except);
+			}
+		} catch (Exception except) {
+			showErrorDialog(frame, except.message, except.message);
+			log.error(except.message, except);
 		}
-		SwingUtilities.invokeLater(() {
-			frame.setVisible(false);
-			frame.dispose();
-		});
 	}
     JPanel buttonPanel = JPanel(GridLayout(0, 1));
     buttonPanel.add(listenedButton("Map Viewer", (evt) => buttonHandler(viewerGUI)));
