@@ -77,7 +77,7 @@ object unitMemberHandler extends FluidBase() {
 	        getIntegerAttribute(element, "level"));
 	    for (event in stream) {
 	        if (is StartElement event, isSPStartElement(event)) {
-	            if ("skill" == event.name.localPart) {
+	            if ("skill" == event.name.localPart.lowercased) {
 	                retval.addSkill(readSkill(event, element.name, stream, players, warner,
 	                    idFactory));
 	            } else {
