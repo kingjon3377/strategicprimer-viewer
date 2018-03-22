@@ -87,7 +87,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             if (is EndElement event, event.name == element.name) {
                 break;
             } else if (is StartElement event, isSupportedNamespace(event.name)) {
-                switch (event.name.localPart)
+                switch (event.name.localPart.lowercased)
                 case ("expertise") {
                     expectAttributes(event, "skill", "level");
                     retval.setSkillLevel(getParameter(event, "skill"),

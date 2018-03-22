@@ -135,12 +135,12 @@ class YAMapReader("The Warning instance to use" Warning warner,
     TileFixture parseFixture(StartElement element, QName parent,
             {XMLEvent*} stream) {
         String name = element.name.localPart;
-        if (exists reader = readerCache[name]) {
+        if (exists reader = readerCache[name.lowercased]) {
             return reader.read(element, parent, stream);
         }
         for (reader in readers) {
             if (reader.isSupportedTag(name)) {
-                readerCache[name] = reader;
+                readerCache[name.lowercased] = reader;
                 return reader.read(element, parent, stream);
             }
         } else {
@@ -154,7 +154,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         requireTag(element, parent, "map", "view");
         Integer currentTurn;
         StartElement mapTag;
-        String outerTag = element.name.localPart;
+        String outerTag = element.name.localPart; // TODO: convert to switch
         if ("view" == outerTag.lowercased) {
             expectAttributes(element, "current_turn", "current_player");
             currentTurn = getIntegerParameter(element, "current_turn");

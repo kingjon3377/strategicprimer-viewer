@@ -198,7 +198,7 @@ object fluidTownHandler extends FluidBase() {
 	        if (is EndElement event, event.name == element.name) {
 	            break;
 	        } else if (is StartElement event, isSPStartElement(event)) {
-	            switch (event.name.localPart)
+	            switch (event.name.localPart.lowercased)
 	            case ("expertise") {
 	                expectAttributes(event, warner, "skill", "level");
 	                retval.setSkillLevel(getAttribute(event, "skill"),

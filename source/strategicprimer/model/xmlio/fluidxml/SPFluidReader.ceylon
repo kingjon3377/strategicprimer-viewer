@@ -231,7 +231,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "map", "view");
         Integer currentTurn;
         StartElement mapTag;
-        String outerTag = element.name.localPart;
+        String outerTag = element.name.localPart; // TODO: convert to switch to avoid creating named local variable
         if ("view" == outerTag.lowercased) {
             expectAttributes(element, warner, "current_player", "current_turn");
             currentTurn = getIntegerAttribute(element, "current_turn");
@@ -257,7 +257,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         for (event in stream) {
             QName? stackTop = tagStack.top;
             if (is StartElement event, isSPStartElement(event)) {
-                String type = event.name.localPart;
+                String type = event.name.localPart.lowercased;
                 if ("row" == type || isFutureTag(event, warner)) {
                     expectAttributes(event, warner, "index");
                     tagStack.push(event.name);
@@ -312,8 +312,9 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         // contains that idiom.
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
-                if (event.name.localPart == "orders" || event.name.localPart == "results" ||
-	                        event.name.localPart == "science") {
+                if (event.name.localPart.lowercased == "orders" ||
+		                    event.name.localPart.lowercased == "results" ||
+	                        event.name.localPart.lowercased == "science") {
                     warner.handle(UnwantedChildException(element.name, event));
                 } else {
 	                throw UnwantedChildException(element.name, event);

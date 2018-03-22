@@ -256,7 +256,7 @@ abstract class YAAbstractReader<Element>
     shared void spinUntilEnd(QName tag, {XMLEvent*} reader, {String*} futureTags = {}) {
         for (event in reader) {
             if (is StartElement event, isSupportedNamespace(event.name)) {
-                if (futureTags.contains(event.name.localPart)) {
+                if (futureTags.map(String.lowercased).contains(event.name.localPart.lowercased)) {
                     warner.handle(UnwantedChildException(tag, event));
                 } else {
                     throw UnwantedChildException(tag, event);
@@ -331,9 +331,10 @@ abstract class YAAbstractReader<Element>
     }
     "Warn if any unsupported attribute is on this tag."
     shared void expectAttributes(StartElement element, String* attributes) {
+        {String*} local = attributes.map(String.lowercased);
         for (attribute in ConvertingIterable<Attribute>(element.attributes).map(Attribute.name)
                 .filter(isSupportedNamespace)) {
-            if (!attributes.contains(attribute.localPart)) {
+            if (!local.contains(attribute.localPart.lowercased)) {
                 warner.handle(UnsupportedPropertyException(element, attribute.localPart));
             }
         }

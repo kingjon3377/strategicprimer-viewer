@@ -90,7 +90,7 @@ class YAReaderAdapter(
     shared Object parse(StartElement element, QName parent, {XMLEvent*} stream) {
         // Since all implementations of necessity check the tag's namespace, we leave that
         // to them.
-        String tag = element.name.localPart;
+        String tag = element.name.localPart.lowercased;
         // Handle rivers specially.
         if ("river" == tag || "lake" == tag) {
             return mapReader.parseRiver(element, parent);

@@ -56,7 +56,7 @@ object unitMemberHandler extends FluidBase() {
 	    retval.portrait = getAttribute(element, "portrait", "");
 	    for (event in stream) {
 	        if (is StartElement event, isSPStartElement(event)) {
-	            switch (event.name.localPart)
+	            switch (event.name.localPart.lowercased)
 	            case ("job") { retval.addJob(readJob(event, element.name, stream, players,
 	                warner, idFactory)); }
 	            case ("stats") { retval.stats = readStats(event, element.name, stream,

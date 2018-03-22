@@ -80,7 +80,8 @@ object fluidResourceHandler extends FluidBase() {
 	    // such children are detected, instead of aborting.
 	    for (event in stream) {
 	        if (is StartElement event, isSPStartElement(event)) {
-	            if (event.name.localPart == "resource" || event.name.localPart == "implement") {
+	            if (event.name.localPart.lowercased == "resource" ||
+		                event.name.localPart.lowercased == "implement") {
 	                warner.handle(UnwantedChildException(element.name, event));
 	            } else {
 		            throw UnwantedChildException(element.name, event);

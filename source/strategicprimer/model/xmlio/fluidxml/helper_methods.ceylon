@@ -508,9 +508,10 @@ abstract class FluidBase {
 			{spNamespace, XMLConstants.nullNsUri}.contains(name.namespaceURI);
 	"Warn if any unsupported attribute is on this tag."
 	static shared void expectAttributes(StartElement element, Warning warner, String* attributes) {
+		{String*} local = attributes.map(String.lowercased);
 	    for (attribute in ConvertingIterable<Attribute>(element.attributes).map(Attribute.name)
 	            .filter(isSupportedNamespace)) {
-	        if (!attributes.contains(attribute.localPart)) {
+	        if (!local.contains(attribute.localPart.lowercased)) {
 	            warner.handle(UnsupportedPropertyException(element, attribute.localPart));
 	        }
 	    }
