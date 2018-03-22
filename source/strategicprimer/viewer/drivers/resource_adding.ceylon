@@ -2,7 +2,9 @@ import ceylon.collection {
     HashMap,
     MutableSet,
     MutableMap,
-    HashSet
+    HashSet,
+	MutableList,
+	ArrayList
 }
 import ceylon.language.meta {
     classDeclaration
@@ -205,24 +207,26 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
-            Player[] players = [*model.players];
+            MutableList<Player> players = ArrayList { *model.players };
             IDRegistrar idf = createIDFactory(model.allMaps.map((pair) => pair.first));
             try {
-                cli.loopOnList(players,
-                    (clh, List<Player> list) => clh.chooseFromList(list,
-                        "Players in the maps:", "No players found.",
-                        "Player to add resources for: ", false),
-                "Choose another player?", (Player player, clh) {
-                        while (clh.inputBoolean("Keep going? ")) {
-                            if (clh.inputBooleanInSeries(
-                                    "Enter a (quantified) resource? ")) {
-                                enterResource(idf, model, clh, player);
-                            } else if (clh.inputBooleanInSeries(
-                                    "Enter equipment etc.? ")) {
-                                enterImplement(idf, model, clh, player);
-                            }
+                while (!players.empty, exists chosen = cli.chooseFromList(players,
+	                    "Players in the maps:", "No players found.",
+	                    "Player to add resources for: ", false).item) {
+                    players.remove(chosen);
+                    while (cli.inputBoolean("Keep going? ")) {
+                        if (cli.inputBooleanInSeries(
+                            "Enter a (quantified) resource? ")) {
+                            enterResource(idf, model, cli, chosen);
+                        } else if (cli.inputBooleanInSeries(
+                            "Enter equipment etc.? ")) {
+                            enterImplement(idf, model, cli, chosen);
                         }
-                    });
+                    }
+                    if (!cli.inputBoolean("Choose another player?")) {
+                        break;
+                    }
+                }
             } catch (IOException except) {
                 throw DriverFailedException(except, "I/O error interacting with user");
             }
