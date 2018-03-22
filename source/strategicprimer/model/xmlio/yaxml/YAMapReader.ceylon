@@ -154,19 +154,21 @@ class YAMapReader("The Warning instance to use" Warning warner,
         requireTag(element, parent, "map", "view");
         Integer currentTurn;
         StartElement mapTag;
-        String outerTag = element.name.localPart; // TODO: convert to switch
-        if ("view" == outerTag.lowercased) {
+        switch(element.name.localPart.lowercased)
+        case ("view") {
             expectAttributes(element, "current_turn", "current_player");
             currentTurn = getIntegerParameter(element, "current_turn");
             maturityModel.currentTurn = currentTurn;
             mapTag = getFirstStartElement(stream, element);
             requireTag(mapTag, element.name, "map");
             expectAttributes(mapTag, "version", "rows", "columns");
-        } else if ("map" == outerTag.lowercased) {
+        }
+        case ("map") {
             currentTurn = 0;
             mapTag = element;
             expectAttributes(mapTag, "version", "rows", "columns", "current_player");
-        } else {
+        }
+        else {
             throw UnwantedChildException(QName("xml"), element);
         }
         MapDimensions dimensions = MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),

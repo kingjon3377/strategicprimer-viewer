@@ -231,19 +231,21 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "map", "view");
         Integer currentTurn;
         StartElement mapTag;
-        String outerTag = element.name.localPart; // TODO: convert to switch to avoid creating named local variable
-        if ("view" == outerTag.lowercased) {
+        switch (element.name.localPart.lowercased)
+        case ("view") {
             expectAttributes(element, warner, "current_player", "current_turn");
             currentTurn = getIntegerAttribute(element, "current_turn");
             maturityModel.currentTurn = currentTurn;
             mapTag = firstStartElement(stream, element);
             requireTag(mapTag, element.name, "map");
             expectAttributes(mapTag, warner, "version", "rows", "columns");
-        } else if ("map" == outerTag.lowercased) {
+        }
+        case ("map") {
             currentTurn = 0;
             mapTag = element;
             expectAttributes(mapTag, warner, "version", "rows", "columns", "current_player");
-        } else {
+        }
+        else {
             throw UnwantedChildException(parent, element);
         }
         MapDimensions dimensions = MapDimensionsImpl(
