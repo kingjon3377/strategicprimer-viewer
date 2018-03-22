@@ -120,18 +120,13 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
     void enterStatsInUnit(IMultiMapModel model, IUnit unit, ICLIHelper cli) {
         MutableList<Worker> workers = ArrayList { *unit.narrow<Worker>()
             .filter((worker) => !worker.stats exists) };
-        while (!workers.empty) {
-            Integer->Worker? chosen = cli.chooseFromList(workers,
+        while (!workers.empty, exists chosen = cli.chooseFromList(workers,
                 "Which worker do you want to enter stats for?",
                 "There are no workers without stats in that unit.",
-                "Worker to modify: ", false);
-            if (exists item = chosen.item) {
-                workers.delete(chosen.key);
-                enterStatsForWorker(model, item.id, cli);
-                if (!cli.inputBoolean("Choose another worker?")) {
-                    break;
-                }
-            } else {
+                "Worker to modify: ", false).item) {
+            workers.remove(chosen);
+            enterStatsForWorker(model, chosen.id, cli);
+            if (!cli.inputBoolean("Choose another worker?")) {
                 break;
             }
         }
@@ -140,18 +135,13 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
      particular player."
     void enterStatsForPlayer(IExplorationModel model, Player player, ICLIHelper cli) {
         MutableList<IUnit> units = ArrayList { *removeStattedUnits(*model.getUnits(player)) };
-        while (!units.empty) {
-            Integer->IUnit? chosen = cli.chooseFromList(units,
+        while (!units.empty, exists chosen = cli.chooseFromList(units,
                     "Which unit contains the worker in question?",
                     "All that player's units already have stats.", "Unit selection: ",
-                    false);
-            if (exists item = chosen.item) {
-                units.delete(chosen.key);
-                enterStatsInUnit(model, item, cli);
-                if (!cli.inputBoolean("Choose another unit?")) {
-                    break;
-                }
-            } else {
+                    false).item) {
+            units.remove(chosen);
+            enterStatsInUnit(model, chosen, cli);
+            if (!cli.inputBoolean("Choose another unit?")) {
                 break;
             }
         }
@@ -159,18 +149,13 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for workers already in the maps."
     void enterStats(IExplorationModel model, ICLIHelper cli) {
         MutableList<Player> players = ArrayList { *model.playerChoices };
-        while (!players.empty) {
-            Integer->Player? chosen = cli.chooseFromList(players,
+        while (!players.empty, exists chosen = cli.chooseFromList(players,
                 "Which player owns the worker in question?",
                 "There are no players shared by all the maps.", "Player selection: ",
-                true);
-            if (exists item = chosen.item) {
-                players.delete(chosen.key);
-                enterStatsForPlayer(model, item, cli);
-                if (!cli.inputBoolean("Choose another player?")) {
-                    break;
-                }
-            } else {
+                true).item) {
+            players.remove(chosen);
+            enterStatsForPlayer(model, chosen, cli);
+            if (!cli.inputBoolean("Choose another player?")) {
                 break;
             }
         }
@@ -358,22 +343,17 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
     "Allow the user to create randomly-generated workers."
     void createWorkers(IExplorationModel model, IDRegistrar idf, ICLIHelper cli) {
         MutableList<Player> players = ArrayList { *model.playerChoices };
-        while (!players.empty) {
-            Integer->Player? chosen = cli.chooseFromList(players,
+        while (!players.empty, exists chosen = cli.chooseFromList(players,
                 "Which player owns the new worker(s)?",
                 "There are no players shared by all the maps.",
-                "Player selection: ", false);
-            if (exists item = chosen.item) {
-                players.delete(chosen.key);
-                variable Boolean again = true;
-                while (again) {
-                    createWorkersForPlayer(model, idf, item, cli);
-                    again = cli.inputBoolean("Add more workers to another unit?");
-                }
-                if (!cli.inputBoolean("Choose another player?")) {
-                    break;
-                }
-            } else {
+                "Player selection: ", false).item) {
+            players.remove(chosen);
+            variable Boolean again = true;
+            while (again) {
+                createWorkersForPlayer(model, idf, chosen, cli);
+                again = cli.inputBoolean("Add more workers to another unit?");
+            }
+            if (!cli.inputBoolean("Choose another player?")) {
                 break;
             }
         }
