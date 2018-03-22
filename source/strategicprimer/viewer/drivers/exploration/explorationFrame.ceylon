@@ -271,7 +271,6 @@ SPFrame explorationFrame(IExplorationModel model,
             if (exists old, old == newPoint) {
                 return;
             }
-            Point oldPoint = old else model.selectedUnitLocation;
             for (direction in `Direction`.caseValues) {
                 Point point = model.getDestination(newPoint, direction);
                 mains[direction]?.fireChanges(old, point);
