@@ -1,6 +1,6 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
-  <headerType>gui</headerType>
+  <headerType>console</headerType>
   <jar>/home/kingjon/viewer.jar</jar>
   <outfile>/home/kingjon/viewer.exe</outfile>
   <errTitle>Strategic Primer Map Viewer error</errTitle>
