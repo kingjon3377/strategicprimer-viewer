@@ -156,7 +156,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
     }
     Boolean isFutureTag(StartElement tag, Warning warner) {
-        if (futureTags.contains(tag.name.localPart)) {
+        if (futureTags.contains(tag.name.localPart.lowercased)) {
             warner.handle(UnsupportedTagException(tag));
             return true;
         } else {
