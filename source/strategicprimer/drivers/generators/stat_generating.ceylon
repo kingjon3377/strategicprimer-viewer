@@ -319,26 +319,36 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
         MutableList<IUnit> units = ArrayList{
             *model.getUnits(player)
         };
-        cli.loopOnMutableList(units, (clh, List<IUnit> list) => clh.chooseFromList(list,
+        while (true) {
+            value chosen = cli.chooseFromList(units,
                 "Which unit contains the worker in question? (Select -1 to create new.)",
                 "There are no units owned by that player.", "Unit selection: ",
-                false), "Choose another unit? ", (MutableList<out IUnit> list, clh) {
-            Point point = clh.inputPoint("Where to put new unit? ");
-            IUnit temp = Unit(player, clh.inputString("Kind of unit: "),
-                clh.inputString("Unit name: "), idf.createID());
-            for (pair in model.allMaps) {
-                pair.first.addFixture(point, temp);
-            }
-            units.add(temp);
-            return temp;
-        }, (IUnit unit, clh) {
-            if (clh.inputBooleanInSeries(
-                    "Load names from file and use randomly generated stats?")) {
-                createWorkersFromFile(model, idf, unit, clh);
+                false);
+            IUnit item;
+            if (exists temp = chosen.item) {
+                item = temp;
+            } else if (chosen.key <= units.size) {
+                Point point = cli.inputPoint("Where to put new unit? ");
+                IUnit temp = Unit(player, cli.inputString("Kind of unit: "),
+                    cli.inputString("Unit name: "), idf.createID());
+                for (pair in model.allMaps) {
+                    pair.first.addFixture(point, temp);
+                }
+                units.add(temp);
+                item = temp;
             } else {
-                createWorkersForUnit(model, idf, unit, clh);
+                break;
             }
-        });
+            if (cli.inputBooleanInSeries(
+                "Load names from file and use randomly generated stats?")) {
+                createWorkersFromFile(model, idf, item, cli);
+            } else {
+                createWorkersForUnit(model, idf, item, cli);
+            }
+            if (!cli.inputBoolean("Choose another unit? ")) {
+                break;
+            }
+        }
     }
     "Allow the user to create randomly-generated workers."
     void createWorkers(IExplorationModel model, IDRegistrar idf, ICLIHelper cli) {
