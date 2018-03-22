@@ -179,12 +179,17 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 	}
 	"Let the user add experience to a worker or workers in a unit."
 	void advanceWorkersInUnit(IUnit unit, ICLIHelper cli, Boolean allowExpertMentoring) {
-		IWorker[] workers = [for (member in unit) if (is IWorker member) member];
+		MutableList<IWorker> workers = ArrayList { *unit.narrow<IWorker>() };
 		if (cli.inputBooleanInSeries("Add experience to workers individually? ")) {
-			cli.loopOnList(workers, (clh, List<IWorker> list) => clh.chooseFromList(list,
-				"Workers in unit:", "No unadvanced workers remain.", "Chosen worker: ",
-				false),
-			"Choose another worker? ", (IWorker worker, clh) => advanceSingleWorker(worker, clh, allowExpertMentoring));
+			while (!workers.empty, exists chosen = cli.chooseFromList(workers,
+					"Workers in unit:", "No unadvanced workers remain.", "Chosen worker: ",
+					false).item) {
+				workers.remove(chosen);
+				advanceSingleWorker(chosen, cli, allowExpertMentoring);
+				if (!cli.inputBoolean("Choose another worker?")) {
+					break;
+				}
+			}
 		} else if (workers.empty) {
 			cli.println("No workers in unit.");
 		} else {
@@ -209,11 +214,15 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 		}
 	"Let the user add experience to a player's workers."
 	void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli, Boolean allowExpertMentoring) {
-		IUnit[] units = [*model.getUnits(player).filter((unit) => !unit.narrow<IWorker>().empty)];
-		cli.loopOnList(units, (clh, List<IUnit> list) => clh.chooseFromList(list,
-			"``player.name``'s units:", "No unadvanced units remain.",
-			"Chosen unit: ", false),
-		"Choose another unit? ", (IUnit unit, clh) => advanceWorkersInUnit(unit, clh, allowExpertMentoring));
+		MutableList<IUnit> units = ArrayList { *model.getUnits(player).filter((unit) => !unit.narrow<IWorker>().empty) };
+		while (!units.empty, exists chosen = cli.chooseFromList(units, "``player.name``'s units:",
+				"No unadvanced units remain.", "Chosen unit:", false).item) {
+			units.remove(chosen);
+			advanceWorkersInUnit(chosen, cli, allowExpertMentoring);
+			if (!cli.inputBoolean("Choose another unit?")) {
+				break;
+			}
+		}
 	}
     "Let the user choose a player to run worker advancement for."
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
@@ -224,15 +233,17 @@ shared object advancementCLI satisfies SimpleCLIDriver {
         } else {
             workerModel = WorkerModel.copyConstructor(model);
         }
-        Player[] playerList = [*workerModel.players];
+        MutableList<Player> playerList = ArrayList { *workerModel.players };
         try {
-            cli.loopOnList(playerList,
-                        (clh, List<Player> list) => clh.chooseFromList(list,
-                            "Available players:", "No players found.", "Chosen player: ",
-                            false),
-                "Select another player? ",
-                        (Player player, clh) => advanceWorkers(workerModel, player, clh,
-                            options.hasOption("--allow-expert-mentoring")));
+            while (!playerList.empty, exists chosen = cli.chooseFromList(playerList,
+	                "Available players:", "No players found.", "Chosen player:", false).item) {
+                playerList.remove(chosen);
+                advanceWorkers(workerModel, chosen, cli,
+                    options.hasOption("--allow-expert-mentoring"));
+                if (!cli.inputBoolean("Select another player?")) {
+                    break;
+                }
+            }
         } catch (IOException except) {
             throw DriverFailedException(except, "I/O error interacting with user");
         }
