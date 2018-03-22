@@ -6,8 +6,7 @@ import ceylon.math.decimal {
 import ceylon.collection {
     MutableMap,
     HashMap,
-    MutableList,
-    ArrayList
+    MutableList
 }
 import lovelace.util.jvm {
     isNumeric,
@@ -55,26 +54,6 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
                 ostream("""Please enter "yes", "no", "true", or "false",
                            or the first character of any of those.
                            """);
-            }
-        }
-    }
-    "Ask the user to choose an item from the list, and if he does carry out an
-     operation on it and then ask if he wants to do another."
-    shared actual void loopOnList<Element>(Element[] list,
-            <Integer->Element?>(ICLIHelper, List<Element>) choice, String prompt,
-            Anything(Element, ICLIHelper) operation)
-            given Element satisfies Object {
-        MutableList<Element> temp = ArrayList { *list };
-        while (!temp.empty) {
-            Integer->Element? chosen = choice(this, temp);
-            if (exists item = chosen.item) {
-                temp.delete(chosen.key);
-                operation(item, this);
-                if (!inputBoolean(prompt)) {
-                    break;
-                }
-            } else {
-                break;
             }
         }
     }
