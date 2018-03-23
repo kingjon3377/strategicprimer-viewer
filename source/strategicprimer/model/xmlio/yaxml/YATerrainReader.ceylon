@@ -10,8 +10,7 @@ import strategicprimer.model.idreg {
     IDRegistrar
 }
 import strategicprimer.model.map {
-    HasMutableImage,
-    HasImage
+    HasMutableImage
 }
 import strategicprimer.model.map.fixtures {
     TerrainFixture
@@ -91,9 +90,7 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         case (is Sandbar) {
             writeTag(ostream, "sandbar", indent);
         }
-        if (is HasImage obj) { // TODO: Fix warning
-            writeImageXML(ostream, obj);
-        }
+        writeImageXML(ostream, obj);
         writeProperty(ostream, "id", obj.id);
         closeLeafTag(ostream);
     }
