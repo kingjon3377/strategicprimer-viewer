@@ -93,9 +93,8 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     }
     """Get the next item in the topmost iterator. We always make sure that there *is* a
        next item in the topmost iterator. If the next item would be an "include" tag, we
-        open the file it specifies and push an iterator of its elements onto the stack. On
-        error in that process, we throw a NoSuchElementException, as that's the only
-        checked exception the Java version could throw."""
+        open the file it specifies and push an iterator of its elements onto the stack."""
+    // TODO: Unwind the stack and close all the readers on error?
     shared actual XMLEvent|Finished next() {
         while (exists top = stack.top) {
             XMLEvent|Finished retval = top.rest.first.next();
