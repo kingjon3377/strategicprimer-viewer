@@ -65,6 +65,19 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     shared new (JPath file, Iterator<XMLEvent> iter) {
         stack.push([file.string, iter]);
     }
+    "Completely unwind the stack. Should be called before throwing any exception
+     to our callers."
+    void exhaust() {
+        while (exists [file, reader] = stack.pop()) {
+            if (is TypesafeXMLEventReader reader) {
+                reader.exhaust();
+            } else if (is JCloseable reader) {
+                reader.close();
+            } else if (is AutoCloseable reader) {
+                reader.close();
+            }
+        }
+    }
     """Handle an "include" tag by adding an iterator for the contents of the file it
        references to the top of the stack."""
     throws(`class FileNotFoundException`,
@@ -79,15 +92,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
 	        // FIXME: The Reader here (and thus the file it opens!) get leaked if not finished
 	        stack.push([file, TypesafeXMLEventReader(magicReader(file))]);
 	    } catch (Exception except) {
-	        while (exists [file, reader] = stack.pop()) {
-	            if (is TypesafeXMLEventReader reader) {
-	                reader.exhaust();
-	            } else if (is JCloseable reader) {
-	                reader.close();
-	            } else if (is AutoCloseable reader) {
-	                reader.close();
-	            }
-	        }
+	        exhaust();
 	        throw except;
 	    }
     }
@@ -96,28 +101,33 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
         open the file it specifies and push an iterator of its elements onto the stack."""
     // TODO: Unwind the stack and close all the readers on error?
     shared actual XMLEvent|Finished next() {
-        while (exists top = stack.top) {
-            XMLEvent|Finished retval = top.rest.first.next();
-            if (is Finished retval) {
-                if (exists [oldFile, oldStream] = stack.pop()) {
-                    if (is JCloseable oldStream) {
-                        oldStream.close();
-                    } else if (is AutoCloseable oldStream) {
-                        oldStream.close();
-                    }
-                    // TODO: Handle Destroyable too?
-                }
-                continue;
-            } else if (is StartElement retval, {spNamespace, XMLConstants.nullNsUri}
-                        .contains(retval.name.namespaceURI),
-                    "include" == retval.name.localPart.lowercased) {
-                handleInclude(retval);
-                continue;
-            } else {
-                return retval;
-            }
-        }
-        return finished;
+        try {
+	        while (exists top = stack.top) {
+	            XMLEvent|Finished retval = top.rest.first.next();
+	            if (is Finished retval) {
+	                if (exists [oldFile, oldStream] = stack.pop()) {
+	                    if (is JCloseable oldStream) {
+	                        oldStream.close();
+	                    } else if (is AutoCloseable oldStream) {
+	                        oldStream.close();
+	                    }
+	                    // TODO: Handle Destroyable too?
+	                }
+	                continue;
+	            } else if (is StartElement retval, {spNamespace, XMLConstants.nullNsUri}
+	                        .contains(retval.name.namespaceURI),
+	                    "include" == retval.name.localPart.lowercased) {
+	                handleInclude(retval);
+	                continue;
+	            } else {
+	                return retval;
+	            }
+	        }
+	        return finished;
+	    } catch (Exception exception) {
+	        exhaust();
+	        throw exception;
+	    }
     }
     "Get the file we're currently reading from."
     todo("Tests")
