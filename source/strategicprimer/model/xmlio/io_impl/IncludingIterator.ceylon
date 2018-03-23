@@ -74,10 +74,22 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     throws(`class SPFormatException`, "on SP format problem in <include>")
     todo("Ensure that any thrown exceptions make clear that there's inclusion involved")
     void handleInclude(StartElement tag) {
-        // TODO: Catch exceptions and unwind our stack, closing all the files, before throwing them again
-        String file = getFileAttribute(tag);
-        // FIXME: The Reader here (and thus the file it opens!) get leaked if not finished
-        stack.push([file, TypesafeXMLEventReader(magicReader(file))]);
+        try {
+	        String file = getFileAttribute(tag);
+	        // FIXME: The Reader here (and thus the file it opens!) get leaked if not finished
+	        stack.push([file, TypesafeXMLEventReader(magicReader(file))]);
+	    } catch (Exception except) {
+	        while (exists [file, reader] = stack.pop()) {
+	            if (is TypesafeXMLEventReader reader) {
+	                reader.exhaust();
+	            } else if (is JCloseable reader) {
+	                reader.close();
+	            } else if (is AutoCloseable reader) {
+	                reader.close();
+	            }
+	        }
+	        throw except;
+	    }
     }
     """Get the next item in the topmost iterator. We always make sure that there *is* a
        next item in the topmost iterator. If the next item would be an "include" tag, we

@@ -37,19 +37,26 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent> {
             closeHandles.offer(method);
         }
     }
+    "Close the wrapped stream and prevent reading any further data."
+    // TODO: Should we satisfy Destroyable and rename this destroy()?
+    shared void exhaust() {
+        wrapped.close();
+        while (exists handle = closeHandles.accept()) {
+            handle();
+        }
+        closed = true;
+    }
     throws(`class XMLStreamException`, "on malformed XML")
     shared actual XMLEvent|Finished next() {
-        if (wrapped.hasNext(), exists retval = wrapped.nextEvent()) {
-            return retval;
-        } else {
-            if (!closed) {
-	            wrapped.close();
-	            while (exists handle = closeHandles.accept()) {
-	                handle();
-	            }
-	            closed = true;
-	        }
+        if (closed) {
             return finished;
+        } else {
+	        if (wrapped.hasNext(), exists retval = wrapped.nextEvent()) {
+	            return retval;
+	        } else {
+	            exhaust();
+	            return finished;
+	        }
         }
     }
 }
