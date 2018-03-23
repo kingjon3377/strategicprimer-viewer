@@ -13,20 +13,6 @@ import ceylon.collection {
    allowing automated testing of CLIs and GUI wrappers around CLIs."""
 shared interface ICLIHelper {
     shared alias ListAmendment<Element> => Element?(MutableList<Element>, ICLIHelper);
-    "Ask the user to choose an item from the list, and if he does carry out an
-     operation on it and then ask if he wants to do another."
-    deprecated("Leads to unmaintainable spaghetti-code")
-    shared formal void loopOnMutableList<out Element>(
-            "The list."
-            MutableList<Element> list,
-            "How to ask the user to choose an item from the list."
-            <Integer->Element?>(ICLIHelper, List<Element>) choice,
-            "The prompt to use to ask if the user wants to continue."
-            String prompt,
-            """What to do if the user chooses "add a new one"."""
-            ListAmendment<Element> addition,
-            "What to do with the chosen item in the list."
-            Anything(Element, ICLIHelper) operation) given Element satisfies Object;
     "Have the user choose an item from a list. Returns the index."
     shared formal Integer->Element? chooseFromList<Element>(
             "The list of items to choose from."
