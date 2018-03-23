@@ -15,12 +15,17 @@ import strategicprimer.report {
     IReportNode
 }
 "A node representing a list."
-shared class ListReportNode(variable String initialText,
-        shared actual variable Point? localPoint = null)
-        extends DefaultMutableTreeNode(initialText) satisfies IReportNode {
-	// TODO: convert to class-with-constructor and make these static
-    Integer boilerPlateLength = "<ul></ul>".size + 3;
-    Integer perChildBoilerPlate = "<li></li>".size + 1;
+shared class ListReportNode extends DefaultMutableTreeNode satisfies IReportNode {
+	static Integer boilerPlateLength = "<ul></ul>".size + 3;
+	static Integer perChildBoilerPlate = "<li></li>".size + 1;
+	variable String initialText;
+	shared actual variable Point? localPoint;
+	shared new (String initialText, Point? localPoint = null)
+			extends DefaultMutableTreeNode(initialText) {
+		this.initialText = initialText;
+		this.localPoint = localPoint;
+	}
+
     shared actual void appendNode(MutableTreeNode node) {
         if (isNonEmptyNode(node)) {
             super.add(node);
