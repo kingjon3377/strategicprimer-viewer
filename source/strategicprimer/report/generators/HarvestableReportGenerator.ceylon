@@ -5,10 +5,6 @@ import ceylon.collection {
     HashMap
 }
 
-import java.lang {
-    IllegalArgumentException
-}
-
 import lovelace.util.common {
     DelayedRemovalMap
 }
@@ -104,6 +100,7 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
        handled here.""""
     shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, HarvestableFixture item, Point loc) {
+        assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
         switch (item)
         case (is CacheFixture) {
             ostream("At ``loc``: ``distCalculator
@@ -138,10 +135,6 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         case (is StoneDeposit) {
             ostream("At ``loc``: An exposed ``item
                 .kind`` deposit ``distCalculator.distanceString(loc)``");
-        }
-        else {
-            throw IllegalArgumentException(
-                "Unexpected HarvestableFixture type");
         }
     }
     """Produce the sub-report(s) dealing with "harvestable" fixtures. All fixtures
@@ -222,35 +215,41 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
     shared actual IReportNode produceRIRSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, HarvestableFixture item, Point loc) {
         SimpleReportNode retval;
-        if (is CacheFixture item) {
+        assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
+        switch (item)
+        case (is CacheFixture) {
             retval = SimpleReportNode("At ``loc``: ``distCalculator
                 .distanceString(loc)`` A cache of ``item.kind``, containing ``item
                 .contents``", loc);
-        } else if (is Grove item) {
+        }
+        case (is Grove) {
             retval = SimpleReportNode("At ``loc``: A ``(item.cultivated) then
 	            "cultivated" else "wild"`` ``item.kind`` ``(item
 	                .orchard) then "orchard" else "grove"`` ``distCalculator
 	                .distanceString(loc)``", loc);
-        } else if (is Meadow item) {
+        }
+        case (is Meadow) {
             retval = SimpleReportNode("At ``loc``: A ``item.status`` ``(item
                 .cultivated) then "cultivated" else "wild or abandoned"`` ``item
                 .kind`` ``(item.field) then "field" else "meadow"`` ``distCalculator
                 .distanceString(loc)``", loc);
-        } else if (is Mine item) {
+        }
+        case (is Mine) {
             retval = SimpleReportNode("At ``loc``: ``item`` ``distCalculator
                 .distanceString(loc)``", loc);
-        } else if (is MineralVein item) {
+        }
+        case (is MineralVein) {
             retval = SimpleReportNode("At ``loc``: An ``(item
                 .exposed) then "exposed" else "unexposed"`` vein of ``item
                 .kind`` ``distCalculator.distanceString(loc)``", loc);
-        } else if (is Shrub item) {
+        }
+        case (is Shrub) {
             retval = SimpleReportNode("At ``loc``: ``item.kind`` ``distCalculator
                 .distanceString(loc)``", loc);
-        } else if (is StoneDeposit item) {
+        }
+        case (is StoneDeposit) {
             retval = SimpleReportNode("At ``loc``: An exposed ``item
                 .kind`` deposit ``distCalculator.distanceString(loc)``", loc);
-        } else {
-            throw IllegalArgumentException("Unexpected HarvestableFixture type");
         }
         fixtures.remove(item.id);
         return retval;

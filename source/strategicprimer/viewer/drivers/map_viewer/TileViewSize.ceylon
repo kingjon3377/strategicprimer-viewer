@@ -1,7 +1,3 @@
-import java.lang {
-    IllegalArgumentException
-}
-
 import lovelace.util.common {
     todo
 }
@@ -12,5 +8,5 @@ Integer scaleZoom(Integer zoomLevel, Integer mapVersion) {
     switch (mapVersion)
     case (1) { return zoomLevel * 2; }
     case (2) { return zoomLevel * 3; }
-    else { throw IllegalArgumentException("Unknown version"); }
+    else { throw AssertionError("Unknown version"); }
 }

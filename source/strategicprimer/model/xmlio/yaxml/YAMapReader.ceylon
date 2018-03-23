@@ -10,7 +10,6 @@ import ceylon.language.meta {
 }
 
 import java.lang {
-    IllegalArgumentException,
     IllegalStateException
 }
 
@@ -277,7 +276,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 return;
             }
         } else {
-            throw IllegalArgumentException("After checking ``readers
+            throw AssertionError("After checking ``readers
                 .size`` readers, don't know how to write a ``classDeclaration(child)
                 .name``");
         }

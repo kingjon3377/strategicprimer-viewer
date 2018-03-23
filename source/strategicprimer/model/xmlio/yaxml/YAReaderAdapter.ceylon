@@ -10,10 +10,6 @@ import ceylon.logging {
 import java.io {
     IOException
 }
-import java.lang {
-    IllegalArgumentException,
-    IllegalStateException
-}
 
 import javax.xml.namespace {
     QName
@@ -131,16 +127,13 @@ class YAReaderAdapter(
         } else if (is {River*} obj) {
             writeAllRivers(ostream, obj, indent);
         } else if (is ProxyFor<out Anything> obj) {
+            "To write a proxy object, it has to be proxying for at least one object."
+            assert (exists proxied = obj.proxied.first);
             // TODO: Handle proxies in their respective types
-            if (exists proxied = obj.proxied.first) {
-                log.error("Wanted to write a proxy",
-                    IllegalArgumentException("Wanted to write a proxy object"));
-                write(ostream, proxied, indent);
-                return;
-            } else {
-                throw IllegalStateException(
-                    "Don't know how to write a proxy not proxying any objects");
-            }
+            log.error("Wanted to write a proxy",
+                AssertionError("Shouldn't try to write proxy objects"));
+            write(ostream, proxied, indent);
+            return;
         } else if (is IJob obj) {
             YAWorkerReader.writeJob(ostream, obj, indent);
         } else if (is ISkill obj) {
@@ -157,7 +150,7 @@ class YAReaderAdapter(
                     return;
                 }
             } else {
-                throw IllegalArgumentException("After checking ``readers
+                throw AssertionError("After checking ``readers
                     .size`` readers, don't know how to write a ``classDeclaration(obj)
                     .name``");
             }

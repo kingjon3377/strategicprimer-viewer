@@ -12,7 +12,6 @@ import java.lang {
     ArrayIndexOutOfBoundsException,
     ObjectArray,
     IntArray,
-    IllegalArgumentException,
     JString=String
 }
 import ceylon.collection {
@@ -70,7 +69,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         } else if (is IUnit parent) {
             return parent.size;
         } else {
-            throw IllegalArgumentException("Not a possible member of the tree");
+            throw AssertionError("Not a possible member of the tree");
         }
     }
 

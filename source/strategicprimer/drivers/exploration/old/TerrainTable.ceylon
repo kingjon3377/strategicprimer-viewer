@@ -1,6 +1,3 @@
-import java.lang {
-    IllegalArgumentException
-}
 import strategicprimer.model.map {
     TileFixture,
     TileType,
@@ -17,29 +14,25 @@ class TerrainTable(<TileType->String>* items) satisfies EncounterTable {
     suppressWarnings("deprecation")
     shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
-        if (exists terrain) {
-            TileType actual;
-            Boolean forested = !fixtures.narrow<Forest>().empty;
-            if (mountainous) {
-                actual = TileType.mountain;
-            } else if (terrain == TileType.plains, forested) {
-                actual = TileType.temperateForest;
-            } else if (terrain == TileType.steppe, forested) {
-                actual = TileType.borealForest;
-            } else {
-                actual = terrain;
-            }
-            if (exists retval = mapping[actual]) {
-                return retval;
-            } else if (exists retval = mapping[terrain]) {
-                return retval;
-            } else {
-                throw IllegalArgumentException(
-                    "Table does not account for terrain type ``terrain``");
-            }
+        "Terrain table can only account for visible terrain"
+        assert (exists terrain);
+        TileType actual;
+        Boolean forested = !fixtures.narrow<Forest>().empty;
+        if (mountainous) {
+            actual = TileType.mountain;
+        } else if (terrain == TileType.plains, forested) {
+            actual = TileType.temperateForest;
+        } else if (terrain == TileType.steppe, forested) {
+            actual = TileType.borealForest;
         } else {
-            throw IllegalArgumentException(
-                "Terrain table cannot account for not-visible terrain");
+            actual = terrain;
+        }
+        if (exists retval = mapping[actual]) {
+            return retval;
+        } else if (exists retval = mapping[terrain]) {
+            return retval;
+        } else {
+            throw AssertionError("Table does not account for terrain type ``terrain``");
         }
     }
     shared actual Set<String> allEvents =>

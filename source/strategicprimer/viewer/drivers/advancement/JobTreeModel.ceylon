@@ -24,8 +24,7 @@ import javax.swing.tree {
 }
 import java.lang {
     ArrayIndexOutOfBoundsException,
-    IllegalArgumentException,
-	IntArray,
+    IntArray,
 	ObjectArray
 }
 import ceylon.collection {
@@ -58,12 +57,13 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
         }
     }
     shared actual Integer getChildCount(Object parent) {
-        if (is IWorker|IJob parent) {
+        assert (is IWorker|IJob|ISkill parent);
+        switch (parent)
+        case (is IWorker|IJob) {
             return parent.size;
-        } else if (is ISkill parent) {
+        }
+        case (is ISkill) {
             return 0;
-        } else {
-            throw IllegalArgumentException("Not a possible member of the tree");
         }
     }
     shared actual Boolean isLeaf(Object node) => !node is IWorker|IJob;

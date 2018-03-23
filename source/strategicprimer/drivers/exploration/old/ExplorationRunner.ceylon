@@ -15,8 +15,7 @@ import ceylon.test {
 }
 
 import java.lang {
-    UnsupportedOperationException,
-    IllegalArgumentException
+    UnsupportedOperationException
 }
 
 import lovelace.util.common {
@@ -206,7 +205,7 @@ shared class ExplorationRunner() {
                     mountainous, fixtures, mapDimensions);
             }
         } else { }
-        throw IllegalArgumentException("Only forests have primary trees");
+        throw AssertionError("Only forests have primary trees");
     }
     """Get the "default results" (primary rock and primary forest) for the given
        location."""

@@ -10,11 +10,6 @@ import ceylon.test {
     assertFalse
 }
 
-import java.lang {
-    IllegalArgumentException
-}
-
-
 import strategicprimer.model.map {
     Point,
     River,
@@ -52,10 +47,8 @@ import ceylon.random {
 }
 "A utility to convert a map to an equivalent half-resolution one."
 shared IMapNG decreaseResolution(IMapNG old) {
-    if (old.dimensions.rows % 2 != 0 || old.dimensions.columns %2 != 0) {
-        throw IllegalArgumentException(
-            "Can only convert maps with even numbers of rows and columns");
-    }
+	"Can only convert maps with even numbers of rows and columns"
+	assert (old.dimensions.rows % 2 == 0, old.dimensions.columns % 2 == 0);
     PlayerCollection players = PlayerCollection();
     for (player in old.players) {
         players.add(player);

@@ -1,7 +1,3 @@
-import java.lang {
-    IllegalArgumentException
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -40,8 +36,7 @@ import strategicprimer.model.xmlio {
     Warning
 }
 import strategicprimer.model.xmlio.exceptions {
-    UnwantedChildException,
-    MissingPropertyException
+    UnwantedChildException
 }
 object unitMemberHandler extends FluidBase() {
 	shared Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,
@@ -192,10 +187,8 @@ object unitMemberHandler extends FluidBase() {
 	        id = getOrGenerateID(element, warner, idFactory);
 	    }
 	    Integer count = getIntegerAttribute(element, "count", 1, warner);
-	    if (count < 1) {
-	        throw MissingPropertyException(element, "count",
-	            IllegalArgumentException("Animal population must be positive"));
-	    }
+	    "Animal population must be positive" // FIXME: This is (or should be) no longer true!
+	    assert (count >= 1);
 	    return setImage(
 	        AnimalImpl(getAttribute(element, "kind"), traces,
 	            getBooleanAttribute(element, "talking", false, warner),

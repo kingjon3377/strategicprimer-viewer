@@ -6,10 +6,6 @@ import ceylon.language.meta.model {
 	Class
 }
 
-import java.lang {
-    IllegalArgumentException
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -83,9 +79,9 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             idNum = getOrGenerateID(element);
         }
         Integer count = getIntegerParameter(element, "count", 1);
-        if (count < 1) {
+        if (count < 1) { // FIXME: Remove this restriciton
             throw MissingPropertyException(element, "count",
-                IllegalArgumentException("Animal population must be positive"));
+                AssertionError("Animal population must be positive"));
         }
         return AnimalImpl(getParameter(element, "kind"), tracks,
             getBooleanParameter(element, "talking", false),
@@ -93,11 +89,9 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             getIntegerParameter(element, "born", -1), count);
     }
     MobileFixture readSimple(String tag, Integer idNum) {
-        if (exists cls = simples.get(tag)) {
-            return cls(idNum);
-        } else {
-            throw IllegalArgumentException("No simple immortal matches ``tag``");
-        }
+        "We have to have a reader for ``tag``"
+        assert (exists cls = simples[tag]);
+        return cls(idNum);
     }
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
@@ -128,7 +122,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
     shared actual void write(Anything(String) ostream, MobileFixture obj,
             Integer indent) {
         if (is IUnit obj) {
-            throw IllegalArgumentException("Unit handled elsewhere");
+            throw AssertionError("Unit handled elsewhere");
         } else if (is Animal obj) {
             writeTag(ostream, "animal", indent);
             writeProperty(ostream, "kind", obj.kind);
@@ -172,7 +166,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
                 writeImageXML(ostream, obj);
             }
         } else {
-            throw IllegalArgumentException("No tag for ``obj.shortDescription``");
+            throw AssertionError("No tag for ``obj.shortDescription``");
         }
         closeLeafTag(ostream);
     }

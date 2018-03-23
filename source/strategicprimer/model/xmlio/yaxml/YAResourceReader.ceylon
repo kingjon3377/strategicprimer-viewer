@@ -1,5 +1,4 @@
 import java.lang {
-    IllegalArgumentException,
     IllegalStateException
 }
 
@@ -130,7 +129,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             }
         }
         else {
-            throw IllegalArgumentException("Unhandled harvestable tag");
+            throw AssertionError("Unhandled harvestable tag");
         }
         spinUntilEnd(element.name, stream);
         retval.image = getParameter(element, "image", "");

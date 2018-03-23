@@ -3,9 +3,6 @@ import ceylon.collection {
     TreeMap
 }
 
-import java.lang {
-    IllegalArgumentException
-}
 import lovelace.util.common {
     todo
 }
@@ -23,9 +20,8 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
     "How many levels the worker has in the Job."
     shared actual Integer level => levelNum;
     assign level {
-        if (level < 0) {
-            throw IllegalArgumentException("Job level cannot be negative");
-        }
+        "Job level cannot be negative."
+        assert (level >= 0);
         levelNum = level;
     }
     "Add a skill. Does nothing if an equal skill was already in the collection."

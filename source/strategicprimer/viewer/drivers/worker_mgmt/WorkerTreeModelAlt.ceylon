@@ -1,6 +1,5 @@
 import java.lang {
     ObjectArray,
-    IllegalArgumentException,
 	IntArray
 }
 import strategicprimer.model.map.fixtures {
@@ -57,11 +56,9 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             return narrowed;
         }
         shared actual void setUserObject(Object obj) {
-            if (is T obj) {
-                (super of DefaultMutableTreeNode).userObject = obj;
-            } else {
-                throw IllegalArgumentException("PlayerNode can only contain Player");
-            }
+            "PlayerNode can only contain Player"
+            assert (is T obj);
+            (super of DefaultMutableTreeNode).userObject = obj;
         }
         shared actual String string => (super of DefaultMutableTreeNode).string;
         shared actual default void add(MutableTreeNode child) {

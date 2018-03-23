@@ -12,7 +12,6 @@ import ceylon.logging {
 }
 
 import java.lang {
-    IllegalArgumentException,
     IllegalStateException
 }
 
@@ -344,13 +343,14 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     shared actual void addProxied(IUnit item) {
         if (is Identifiable item, item === this) {
             return;
-        } else if (parallel, identifier is Integer, identifier != item.id) {
-            throw IllegalArgumentException("Expected unit with ID #``identifier``");
-        }  else if (!parallel, identifier is String, identifier != item.kind) {
-            throw IllegalArgumentException("Expected unit of kind ``identifier``");
+        } else if (parallel) {
+            "Unit must have ID #``identifier``"
+            assert (identifier is Integer, identifier == item.id);
         } else {
-            cachedIterable = {};
-            proxiedList.add(item);
+            "Unit must have kind ``identifier``"
+            assert (identifier is String, identifier != item.kind);
         }
+        cachedIterable = {};
+        proxiedList.add(item);
     }
 }

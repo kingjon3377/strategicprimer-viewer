@@ -13,8 +13,8 @@ import java.lang {
     JString=String,
     JBoolean=Boolean,
     JClass=Class,
-    IllegalArgumentException,
-    Types
+    Types,
+	ArrayIndexOutOfBoundsException
 }
 
 import javax.swing.table {
@@ -139,9 +139,9 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
                 switch (columnIndex)
                 case (0) { return JBoolean(matcher.displayed); }
                 case (1) { return matcher.description; }
-                else { throw IllegalArgumentException("Only two columns"); }
+                else { throw ArrayIndexOutOfBoundsException(columnIndex); }
             } else {
-                throw IllegalArgumentException("Row out of bounds");
+                throw ArrayIndexOutOfBoundsException(rowIndex);
             }
         }
         shared actual String getColumnName(Integer column) {

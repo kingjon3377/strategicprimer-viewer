@@ -1,6 +1,3 @@
-import java.lang {
-    IllegalArgumentException
-}
 import java.text {
     NumberFormat,
     JParseException=ParseException
@@ -68,14 +65,14 @@ abstract class YAAbstractReader<Element>
     shared static void requireTag(StartElement element, QName parent, String* tags) {
         if (!isSupportedNamespace(element.name)) {
             throw UnwantedChildException(parent, element,
-                IllegalArgumentException("Unrecognized namespace"));
+                AssertionError("Unrecognized namespace")); // TODO: Make a custom UnrecognizedNamespaceException?
         }
         String localName = element.name.localPart;
         Integer line = element.location.lineNumber;
         if (!tags.map(String.lowercased).contains(localName.lowercased)) {
             // While we'd like tests to exercise this, we're always careful to only call
             // readers when we know they support the tag ...
-            throw UnwantedChildException(parent, element, IllegalArgumentException(
+            throw UnwantedChildException(parent, element, AssertionError( // TODO: Make an UnwantedChildException constructor taking expected tags
                 "Unexpected tag ``localName`` on line ``line``, expected one of these: ``
                 ", ".join(tags)``"));
         }

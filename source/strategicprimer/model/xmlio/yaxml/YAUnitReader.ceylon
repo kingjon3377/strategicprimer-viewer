@@ -2,10 +2,6 @@ import ceylon.language.meta {
     classDeclaration
 }
 
-import java.lang {
-    IllegalArgumentException
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -160,7 +156,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 return;
             }
         } else {
-            throw IllegalArgumentException("After checking ``readers
+            throw AssertionError("After checking ``readers
                 .size`` readers, don't know how to write a ``classDeclaration(child)
                 .name``");
         }

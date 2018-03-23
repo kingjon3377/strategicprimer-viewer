@@ -5,10 +5,6 @@ import ceylon.collection {
     HashMap
 }
 
-import java.lang {
-    IllegalArgumentException
-}
-
 import lovelace.util.common {
     DelayedRemovalMap
 }
@@ -47,30 +43,32 @@ shared class FortressMemberReportGenerator(
 	 to in this report are removed from the collection."
 	shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 			IMapNG map, Anything(String) ostream, FortressMember item, Point loc) {
+		assert (is IUnit|ResourcePile|Implement item);
 		if (is IUnit item) {
 			UnitReportGenerator(pairComparator, currentPlayer, dimensions,
 				currentTurn, hq).produceSingle(fixtures, map, ostream, item, loc);
-		} else if (is ResourcePile item) {
-			fixtures.remove(item.id);
-			if (item.quantity.units.empty) {
-				ostream("A pile of ``item.quantity`` ``item.contents`` (``item
-					.kind``)");
-			} else {
-				ostream(
-					"A pile of ``item.quantity`` of ``item.contents`` (``item
-							.kind``)");
-			}
-			if (item.created >= 0) {
-				ostream(" from turn ``item.created``");
-			}
-		} else if (is Implement item) {
-			fixtures.remove(item.id);
-			ostream("Equipment: ``item.kind``");
-			if (item.count > 1) {
-				ostream(" (``item.count``)");
-			}
 		} else {
-			throw IllegalArgumentException("Unexpected FortressMember type");
+			switch (item)
+			case (is ResourcePile) {
+				fixtures.remove(item.id);
+				if (item.quantity.units.empty) {
+					ostream("A pile of ``item.quantity`` ``item.contents`` (``item
+						.kind``)");
+				} else {
+					ostream(
+						"A pile of ``item.quantity`` of ``item.contents`` (``item
+								.kind``)");
+				}
+				if (item.created >= 0) {
+					ostream(" from turn ``item.created``");
+				}
+			} case (is Implement) {
+				fixtures.remove(item.id);
+				ostream("Equipment: ``item.kind``");
+				if (item.count > 1) {
+					ostream(" (``item.count``)");
+				}
+			}
 		}
 	}
     "Produces a sub-report on all fortress members. All fixtures referred to in this report
@@ -140,36 +138,39 @@ shared class FortressMemberReportGenerator(
      to in this report are removed from the collection."
     shared actual IReportNode produceRIRSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map, FortressMember item, Point loc) {
+        assert (is IUnit|ResourcePile|Implement item);
         if (is IUnit item) {
             return UnitReportGenerator(pairComparator, currentPlayer, dimensions,
                 currentTurn, hq).produceRIRSingle(fixtures, map, item, loc);
-        } else if (is ResourcePile item) {
-            fixtures.remove(item.id);
-            String age;
-            if (item.created < 0) {
-                age = "";
-            } else {
-                age = " from turn ``item.created``";
-            }
-            if (item.quantity.units.empty) {
-                return SimpleReportNode(
-                    "A pile of ``item.quantity.number`` ``item.contents`` (``item
-                            .kind``)``age``");
-            } else {
-                return SimpleReportNode(
-                    "A pile of ``item.quantity`` of ``item.contents`` (``item
-                            .kind``)``age``");
-            }
-        } else if (is Implement item) {
-            fixtures.remove(item.id);
-            if (item.count > 1) {
-                return SimpleReportNode("Equipment: ``item.kind`` (``item.count``)");
-            } else {
-                return SimpleReportNode("Equipment: ``item.kind``");
-            }
         } else {
-            throw IllegalArgumentException("Unexpected FortressMember type");
-        }
+            switch (item)
+            case (is ResourcePile) {
+	            fixtures.remove(item.id);
+	            String age;
+	            if (item.created < 0) {
+	                age = "";
+	            } else {
+	                age = " from turn ``item.created``";
+	            }
+	            if (item.quantity.units.empty) {
+	                return SimpleReportNode(
+	                    "A pile of ``item.quantity.number`` ``item.contents`` (``item
+	                            .kind``)``age``");
+	            } else {
+	                return SimpleReportNode(
+	                    "A pile of ``item.quantity`` of ``item.contents`` (``item
+	                            .kind``)``age``");
+	            }
+	        }
+	        case (is Implement) {
+	            fixtures.remove(item.id);
+	            if (item.count > 1) {
+	                return SimpleReportNode("Equipment: ``item.kind`` (``item.count``)");
+	            } else {
+	                return SimpleReportNode("Equipment: ``item.kind``");
+	            }
+	        }
+	    }
     }
     "Produces a sub-report on all fortress members. All fixtures referred to in this report are
      removed from the collection. This method should probably never actually be called, since

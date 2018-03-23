@@ -133,18 +133,15 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                                     (String partial, element) =>
                                     "``partial`` ``element``"));
                         value leftVal = TileType.parse(left);
-                        if (is TileType leftVal) {
-                            list.add(leftVal->right);
-                        } else {
-                            throw IllegalArgumentException(
-                                "'Tile type' wasn't a recognized tile type", leftVal);
-                        }
+                        "Terrain tables must only contain recognized tile types"
+                        assert (is TileType leftVal);
+                        list.add(leftVal->right);
                     }
                     first = false;
                 }
                 return TerrainTable(*list);
             }
-            else { throw IllegalArgumentException("unknown table type '``line`` in file ``name``"); }
+            else { throw AssertionError("unknown table type '``line`` in file ``name``"); }
         } else {
             throw IOException("File ``name`` doesn't specify a table type");
         }

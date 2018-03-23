@@ -1,5 +1,4 @@
 import java.lang {
-    IllegalArgumentException,
     IllegalStateException
 }
 
@@ -64,7 +63,7 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
             retval = Sandbar(getOrGenerateID(element));
         }
         else {
-            throw IllegalArgumentException("Unhandled terrain fixture tag ``element.name
+            throw AssertionError("Unhandled terrain fixture tag ``element.name
                 .localPart``");
         }
         spinUntilEnd(element.name, stream);

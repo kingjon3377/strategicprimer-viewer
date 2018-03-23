@@ -1,6 +1,5 @@
 import java.lang {
-    NumberFormatException,
-    IllegalArgumentException
+    NumberFormatException
 }
 import java.text {
     NumberFormat,
@@ -498,12 +497,10 @@ abstract class FluidBase {
 	static shared Anything(XMLStreamWriter, Object, Integer) castingWriter<T>(
 	            Anything(XMLStreamWriter, T, Integer) wrapped) =>
 	        void (XMLStreamWriter ostream, Object obj, Integer indent) {
-	        if (is T obj) {
+				"Can only write `` `T` ```"
+				assert (is T obj);
 	            wrapped(ostream, obj, indent);
-	        } else {
-	            throw IllegalArgumentException("Can only write `` `T` ``");
-	        }
-	    };
+		    };
 	static Boolean isSupportedNamespace(QName name) =>
 			{spNamespace, XMLConstants.nullNsUri}.contains(name.namespaceURI);
 	"Warn if any unsupported attribute is on this tag."

@@ -1,9 +1,6 @@
 import java.io {
     IOException
 }
-import java.lang {
-    IllegalArgumentException
-}
 import java.nio.file {
     JPaths=Paths
 }
@@ -100,7 +97,7 @@ object echoDriver satisfies UtilityDriver {
                 if (is Integer currentTurn) {
                     map.currentTurn = currentTurn;
                 } else {
-                    warningLevels.default.handle(IllegalArgumentException(
+                    warningLevels.default.handle(AssertionError(
                         "--current-turn must be an integer"));
                 }
             }

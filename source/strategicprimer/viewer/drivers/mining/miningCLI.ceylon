@@ -6,9 +6,6 @@ import ceylon.file {
 import java.io {
     IOException
 }
-import java.lang {
-    IllegalArgumentException
-}
 
 import strategicprimer.model.map {
     Point,
@@ -61,7 +58,7 @@ shared object miningCLI satisfies UtilityDriver {
                      exists specified = `LodeStatus`.caseValues[index]) {
                 initial = specified;
             } else {
-                throw DriverFailedException(IllegalArgumentException(
+                throw DriverFailedException(AssertionError(
                     "Status must be a valid status or the index of a valid status"));
             }
             MineKind mineKind;

@@ -5,10 +5,6 @@ import ceylon.math.whole {
     Whole
 }
 
-import java.lang {
-    IllegalArgumentException
-}
-
 import strategicprimer.model.map {
     Subsettable
 }
@@ -20,12 +16,13 @@ import lovelace.util.common {
 shared object numberComparator satisfies Comparator<Number<out Anything>> { // TODO: Move to lovelace.util
 	"Convert an arbitrary Number to a Float."
 	shared Float floatValue(Number<out Anything> number) {
+		"We only know how to handle Integers, Floats, Decimals, and Wholes."
+		assert (is Integer|Float|Decimal|Whole number);
 		switch (number)
 		case (is Integer) { return number.float; }
 		case (is Float) { return number; }
 		case (is Decimal) { return number.float; }
 		case (is Whole) { return number.float; }
-		else { throw IllegalArgumentException("Unknown Number type"); }
 	}
 	shared actual Comparison compare(Number<out Anything> one, Number<out Anything> two) {
 		if (is Integer one, is Integer two) {

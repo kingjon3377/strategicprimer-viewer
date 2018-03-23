@@ -10,10 +10,6 @@ import java.io {
     StringWriter,
     IOException
 }
-import java.lang {
-    IllegalArgumentException,
-    IllegalStateException
-}
 
 import javax.xml.stream {
     XMLStreamWriter,
@@ -174,20 +170,17 @@ shared class SPFluidWriter() satisfies SPWriter {
     Entry<ClassOrInterface<Anything>, LocalXMLWriter> simpleFixtureWriter(
             ClassOrInterface<Anything> cls, String tag) {
         void retval(XMLStreamWriter ostream, Object obj, Integer indentation) {
-            if (!cls.typeOf(obj)) {
-                throw IllegalArgumentException("Can only write ``cls.declaration.name``");
+            "Can only write ``cls.declaration.name``"
+            assert (cls.typeOf(obj));
+            """Can only "simply" write fixtures."""
+            assert (is IFixture obj);
+            writeTag(ostream, tag, indentation, true);
+            if (is HasKind obj) {
+                writeAttributes(ostream, "kind"->obj.kind);
             }
-            if (is IFixture obj) {
-                writeTag(ostream, tag, indentation, true);
-                if (is HasKind obj) {
-                    writeAttributes(ostream, "kind"->obj.kind);
-                }
-                writeAttributes(ostream, "id"->obj.id);
-                if (is HasImage obj) {
-                    writeImage(ostream, obj);
-                }
-            } else {
-                throw IllegalStateException("Can only 'simply' write fixtures");
+            writeAttributes(ostream, "id"->obj.id);
+            if (is HasImage obj) {
+                writeImage(ostream, obj);
             }
         }
         return cls->retval;

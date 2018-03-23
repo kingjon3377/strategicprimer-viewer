@@ -1,9 +1,6 @@
 import java.awt {
     Image
 }
-import java.lang {
-    IllegalArgumentException
-}
 
 import lovelace.util.common {
     todo
@@ -36,5 +33,5 @@ shared TileDrawHelper tileDrawHelperFactory(
         assert (exists zof);
         return Ver2TileDrawHelper(observer, zof, matchers);
     }
-    else { throw IllegalArgumentException("Unsupported map version"); }
+    else { throw AssertionError("Unsupported map version"); }
 }
