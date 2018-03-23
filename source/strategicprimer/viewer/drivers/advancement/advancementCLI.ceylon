@@ -55,27 +55,35 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 	"Let the user add hours to a Skill or Skills in a Job."
 	void advanceJob(IJob job, ICLIHelper cli, Boolean allowExpertMentoring) {
 		MutableList<ISkill> skills = ArrayList{ *job };
-		cli.loopOnMutableList<ISkill>(skills, (clh, List<ISkill> list) => clh.chooseFromList(
-			list, "Skills in Job:", "No existing Skills.", "Skill to advance: ", false),
-		"Select another Skill in this Job? ",
-		(MutableList<ISkill> list, ICLIHelper clh) {
-			String skillName = clh.inputString("Name of new Skill: ");
-			job.addSkill(Skill(skillName, 0, 0));
-			list.clear();
-			for (skill in job) {
-				list.add(skill);
+		while (true) {
+			value chosen = cli.chooseFromList(skills, "Skills in Job:", "No existing Skills.",
+				"Skill to advance: ", false);
+			ISkill skill;
+			if (exists temp = chosen.item) {
+				skill = temp;
+			} else if (chosen.key <= skills.size) {
+				String skillName = cli.inputString("Name of new Skill: ");
+				job.addSkill(Skill(skillName, 0, 0));
+				skills.clear();
+				skills.addAll(job);
+				if (exists temp = skills.find((item) => skillName == item.name)) {
+					skill = temp;
+				} else {
+					cli.println("Select the new item at the next prompt.");
+					continue;
+				}
+			} else {
+				break;
 			}
-			return list.find((item) => skillName == item.name);
-		}, (ISkill skill, clh) {
 			Integer oldLevel = skill.level;
-			Integer hours = clh.inputNumber("Hours of experience to add: ");
+			Integer hours = cli.inputNumber("Hours of experience to add: ");
 			if (allowExpertMentoring) {
-				Integer hoursPerHour = clh.inputNumber("'Hours' between hourly checks: ");
+				Integer hoursPerHour = cli.inputNumber("'Hours' between hourly checks: ");
 				variable Integer remaining = hours;
 				while (remaining > 0) {
 					skill.addHours(Integer.largest(remaining, hoursPerHour), singletonRandom.nextInteger(100));
 					if (skill.level != oldLevel) {
-						clh.println("Worker(s) gained a level in ``skill.name``");
+						cli.println("Worker(s) gained a level in ``skill.name``");
 					}
 					remaining -= hoursPerHour;
 				}
@@ -83,27 +91,43 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 				for (hour in 0:hours) {
 					skill.addHours(1, singletonRandom.nextInteger(100));
 					if (skill.level != oldLevel) {
-						clh.println("Worker(s) gained a level in ``skill.name``");
+						cli.println("Worker(s) gained a level in ``skill.name``");
 					}
 				}
 			}
-		});
+			if (!cli.inputBoolean("Select another Skill in this Job?")) {
+				break;
+			}
+		}
 	}
 	"Let the user add experience to a worker."
 	void advanceSingleWorker(IWorker worker, ICLIHelper cli, Boolean allowExpertMentoring) {
 		MutableList<IJob> jobs = ArrayList { *worker };
-		cli.loopOnMutableList(jobs, (clh, List<IJob> list) => clh.chooseFromList(list,
-			"Jobs in worker:", "No existing Jobs.", "Job to advance: ", false),
-		"Select another Job in this worker? ",
-		(MutableList<IJob> list, clh) {
-			String jobName = clh.inputString("Name of new Job: ");
-			worker.addJob(Job(jobName, 0));
-			list.clear();
-			for (job in worker) {
-				list.add(job);
+		while (true) {
+			value chosen = cli.chooseFromList(jobs,
+				"Jobs in worker:", "No existing Jobs.", "Job to advance: ", false);
+			IJob job;
+			if (exists temp = chosen.item) {
+				job = temp;
+			} else if (chosen.key <= jobs.size ) {
+				String jobName = cli.inputString("Name of new Job: ");
+				worker.addJob(Job(jobName, 0));
+				jobs.clear();
+				jobs.addAll(worker);
+				if (exists temp = jobs.find((item) => jobName == item.name)) {
+					job = temp;
+				} else {
+					cli.println("Select the new item at the next prompt.");
+					continue;
+				}
+			} else {
+				break;
 			}
-			return list.find((item) => jobName == item.name);
-		}, (IJob job, clh) => advanceJob(job, clh, allowExpertMentoring));
+			advanceJob(job, cli, allowExpertMentoring);
+			if (!cli.inputBoolean("Select another Job in this worker?")) {
+				break;
+			}
+		}
 	}
 	"Let the user add experience in a single Skill to all of a list of workers."
 	void advanceWorkersInSkill(String jobName, String skillName, ICLIHelper cli,
@@ -161,21 +185,33 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 		MutableList<ISkill> skills = ArrayList {
 			for (skill in ProxyJob(jobName, false, *workers)) skill
 		};
-		cli.loopOnMutableList(skills, (clh, List<ISkill> list) => clh.chooseFromList(list,
-			"Skills in Jobs:", "No existing skills.", "Skill to advance: ", false),
-		"Select another Skill in this Job? ",
-		(MutableList<ISkill> list, clh) {
-			String skillName = clh.inputString("Name of new Skill: ");
-			for (job in jobs) {
-				job.addSkill(Skill(skillName, 0, 0));
+		while (true) {
+			value chosen = cli.chooseFromList(skills,
+				"Skills in Jobs:", "No existing skills.", "Skill to advance: ", false);
+			ISkill skill;
+			if (exists temp = chosen.item) {
+				skill = temp;
+			} else if (chosen.key <= skills.size ) {
+				String skillName = cli.inputString("Name of new Skill: ");
+				for (job in jobs) {
+					job.addSkill(Skill(skillName, 0, 0));
+				}
+				skills.clear();
+				skills.addAll(ProxyJob(jobName, false, *workers));
+				if (exists temp = skills.find((item) => skillName == item.name)) {
+					skill = temp;
+				} else {
+					cli.println("Select the new item at the next prompt.");
+					continue;
+				}
+			} else {
+				break;
 			}
-			skills.clear();
-			for (skill in ProxyJob(jobName, false, *workers)) {
-				skills.add(skill);
+			advanceWorkersInSkill(jobName, skill.name, cli, *workers);
+			if (!cli.inputBoolean("Select another Skill in this Job?")) {
+				break;
 			}
-			return skills.find((item) => skillName == item.name);
-		}, (ISkill skill, clh) =>
-				advanceWorkersInSkill(jobName, skill.name, clh, *workers));
+		}
 	}
 	"Let the user add experience to a worker or workers in a unit."
 	void advanceWorkersInUnit(IUnit unit, ICLIHelper cli, Boolean allowExpertMentoring) {
@@ -194,24 +230,35 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 			cli.println("No workers in unit.");
 		} else {
 			MutableList<IJob> jobs = ArrayList { *ProxyWorker.fromUnit(unit) };
-			cli.loopOnMutableList(jobs,
-				(ICLIHelper clh, List<IJob> list) => clh.chooseFromList(
-					list, "Jobs in workers:", "No existing jobs.",
-					"Job to advance: ", false),
-				"Select another Job in these workers? ",
-				(MutableList<IJob> list, ICLIHelper clh) {
-					String jobName = clh.inputString("Name of new Job: ");
+			while (true) {
+				value chosen = cli.chooseFromList(jobs, "Jobs in workers:", "No existing jobs.",
+					"Job to advance: ", false);
+				IJob job;
+				if (exists temp = chosen.item) {
+					job = temp;
+				} else if (chosen.key <= jobs.size ) {
+					String jobName = cli.inputString("Name of new Job: ");
 					for (worker in workers) {
 						worker.addJob(Job(jobName, 0));
 					}
-					list.clear();
-					for (job in ProxyWorker.fromUnit(unit)) {
-						list.add(job);
+					jobs.clear();
+					jobs.addAll(ProxyWorker.fromUnit(unit));
+					if (exists temp = jobs.find((item) => jobName == item.name)) {
+						job = temp;
+					} else {
+						cli.println("Select the new item at the next prompt.");
+						continue;
 					}
-					return list.find((item) => jobName == item.name);
-				}, (IJob job, clh) => advanceWorkersInJob(job.name, clh, *workers));
+				} else {
+					break;
+				}
+				advanceWorkersInJob(job.name, cli, *workers);
+				if (!cli.inputBoolean("Select another Job in these workers?")) {
+					break;
+				}
 			}
 		}
+	}
 	"Let the user add experience to a player's workers."
 	void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli, Boolean allowExpertMentoring) {
 		MutableList<IUnit> units = ArrayList { *model.getUnits(player).filter((unit) => !unit.narrow<IWorker>().empty) };
