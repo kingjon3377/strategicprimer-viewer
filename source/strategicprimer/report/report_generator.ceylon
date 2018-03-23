@@ -52,6 +52,10 @@ import strategicprimer.report.generators {
 import strategicprimer.report.nodes {
     RootReportNode
 }
+import ceylon.collection {
+	MutableMap,
+	HashMap
+}
 "A logger."
 Logger log = logger(`module strategicprimer.report`);
 object reportGeneratorHelper {
@@ -106,6 +110,24 @@ object reportGeneratorHelper {
 			//        for (IFixture fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
 			for (IFixture fixture in map.fixtures.get(location)) {
 				addToMap(location, fixture);
+			}
+		}
+		return retval;
+	}
+	void parentMapImpl(MutableMap<Integer, Integer> retval, IFixture parent, {IFixture*} stream) {
+		for (fixture in stream) {
+			retval.put(fixture.id, parent.id);
+			if (is {IFixture*} fixture) {
+				parentMapImpl(retval, fixture, fixture);
+			}
+		}
+	}
+	"Create a mapping from child ID numbers to parent ID numbers."
+	shared Map<Integer, Integer> getParentMap(IMapNG map) {
+		MutableMap<Integer, Integer> retval = HashMap<Integer, Integer>();
+		for (fixture in map.locations.flatMap(map.fixtures.get)) {
+			if (is {IFixture*} fixture) {
+				parentMapImpl(retval, fixture, fixture);
 			}
 		}
 		return retval;

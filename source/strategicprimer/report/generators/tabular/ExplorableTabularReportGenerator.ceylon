@@ -34,7 +34,7 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq,
     "Create a GUI table row representing the given fixture."
     shared actual {{String+}*} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            ExplorableFixture|TextFixture item, Integer key, Point loc) {
+            ExplorableFixture|TextFixture item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
         String brief;
         String owner;
         String longDesc;

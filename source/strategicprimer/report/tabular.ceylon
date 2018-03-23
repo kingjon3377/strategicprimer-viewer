@@ -66,6 +66,7 @@ shared object tabularReportGenerator {
 	"A method to produce tabular reports based on a map for a player."
 	shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
 	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper.getFixtures(map);
+	    Map<Integer, Integer> parentMap = reportGeneratorHelper.getParentMap(map);
 	    Player player = map.currentPlayer;
 	    MapDimensions dimensions = map.dimensions;
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
@@ -84,7 +85,7 @@ shared object tabularReportGenerator {
 	        ExplorableTabularReportGenerator(player, hq, dimensions)
 	    };
 	    for (generator in generators) {
-	        generator.produceTable(source(generator.tableName), fixtures);
+	        generator.produceTable(source(generator.tableName), fixtures, parentMap);
 	    }
 	    for ([loc, fixture] in fixtures.items) {
 	        if (is TerrainFixture fixture) {
@@ -101,6 +102,7 @@ shared object tabularReportGenerator {
 	        "The map to base the reports on"
 	        IMapNG map) {
 	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper.getFixtures(map);
+	    Map<Integer, Integer> parentMap = reportGeneratorHelper.getParentMap(map);
 	    Player player = map.currentPlayer;
 	    MapDimensions dimensions = map.dimensions;
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
@@ -139,7 +141,7 @@ shared object tabularReportGenerator {
 	    }
 	    JComparator<out Object> wrapped = javaComparator(sorter);
 	    for (generator in generators) {
-	        value tableModel = generator.produceTableModel(fixtures);
+	        value tableModel = generator.produceTableModel(fixtures, parentMap);
 	        value table = JTable(tableModel);
 	        value modelSorter = TableRowSorter<TableModel>(tableModel);
 	        value distanceFields = generator.headerRow.locations("distance".equalsIgnoringCase);

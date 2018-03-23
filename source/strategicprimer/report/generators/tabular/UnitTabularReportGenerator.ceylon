@@ -21,16 +21,17 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
         satisfies ITableGenerator<IUnit> {
     "The header row for this table."
     shared actual [String+] headerRow =
-            ["Distance", "Location", "Owner", "Kind/Category", "Name", "Orders"];
+            ["Distance", "Location", "Owner", "Kind/Category", "Name", "Orders", "ID #"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "units";
     "Create a GUI table row representing the unit."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IUnit item,
-            Integer key, Point loc) {
+            Integer key, Point loc, Map<Integer, Integer> parentMap) {
         {String+} retval = {distanceString(loc, hq, dimensions), loc.string,
                 ownerString(player, item.owner), item.kind, item.name,
-                item.allOrders.last?.item else ""};
+                item.allOrders.last?.item else "",
+                (player == item.owner) then item.id.string else "---"};
         for (member in item) {
             if (is Animal member) {
                 // We don't want animals inside a unit showing up in the wild-animal

@@ -38,7 +38,7 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
     "Create a GUI table row representing a town."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            AbstractTown item, Integer key, Point loc) {
+            AbstractTown item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
         fixtures.remove(key);
         return {{distanceString(loc, hq, dimensions), loc.string,
                 ownerString(player, item.owner), item.kind, item.townSize.string,

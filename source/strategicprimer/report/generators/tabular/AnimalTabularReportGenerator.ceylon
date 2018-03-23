@@ -25,7 +25,7 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
     "Create a GUI table row representing the given animal."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Animal item, Integer key, Point loc) {
+            Animal item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
         String kind;
         String age;
         String population;

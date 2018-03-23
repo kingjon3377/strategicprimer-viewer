@@ -37,7 +37,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
     "Produce a tabular report on a particular category of fixtures in the map, and remove
       all fixtures covered in the table from the collection."
     shared default void produceTable(Anything(String) ostream, DelayedRemovalMap<Integer,
-    [Point, IFixture]> fixtures) {
+		    [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
         MutableList<[Integer, [Point, T]]> temp =
                 ArrayList<[Integer, [Point, T]]>();
         for (key->val in fixtures) {
@@ -50,7 +50,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             comparePairs));
         writeRow(ostream, headerRow.first, *headerRow.rest);
         for ([num, [loc, item]] in values) {
-            for (row in produce(fixtures, item, num, loc)) {
+            for (row in produce(fixtures, item, num, loc, parentMap)) {
                 writeRow(ostream, row.first, *row.rest);
             }
         }
@@ -60,7 +60,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
      format of a model for a Swing JTable, and remove all fixtures covered in the table
      from the collection."
     shared default TableModel produceTableModel(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
         MutableList<[Integer, [Point, T]]> temp =
                 ArrayList<[Integer, [Point, T]]>();
         for (key->val in fixtures) {
@@ -74,7 +74,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         DefaultTableModel retval = DefaultTableModel(
             createJavaStringArray(headerRow), 0);
         for ([num, [loc, item]] in values) {
-            for (row in produce(fixtures, item, num, loc)) {
+            for (row in produce(fixtures, item, num, loc, parentMap)) {
                 retval.addRow(createJavaStringArray(row));
             }
         }
@@ -92,7 +92,9 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             "Its key in the colleciton (usually its ID, but not always)"
             Integer key,
             "The location of this item in the map."
-            Point loc);
+            Point loc,
+            "The map from children's to parents' IDs"
+            Map<Integer, Integer> parentMap);
     "Given two points, return a number sufficiently proportional to the distance between
      them for ordering points based on distance from a base. The default implementation
      returns the *square* of the distance, for efficiency."

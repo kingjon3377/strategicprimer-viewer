@@ -30,7 +30,7 @@ shared class ResourceTabularReportGenerator()
     "Create a GUI table row representing the given fixture."
     shared actual [{String+}+] produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Implement|CacheFixture|ResourcePile item, Integer key, Point loc) {
+            Implement|CacheFixture|ResourcePile item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
         String kind;
         String quantity;
         String specifics;
@@ -90,7 +90,7 @@ shared class ResourceTabularReportGenerator()
     }
     "Write rows for equipment, counting multiple identical Implements in one line."
     shared actual void produceTable(Anything(String) ostream,
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
         {[Integer, [Point, CacheFixture|Implement|ResourcePile]]*} values =
                 { for (key->item in fixtures)
                 if (is CacheFixture|Implement|ResourcePile resource = item.rest.first)
@@ -115,11 +115,11 @@ shared class ResourceTabularReportGenerator()
             } case (is CacheFixture) {
                 // FIXME: combine with ResourcePile case once compiler accepts it
                 // TODO: Distill MWE and report/find bug
-                value [row, *_] = produce(fixtures, fixture, key, loc);
+                value [row, *_] = produce(fixtures, fixture, key, loc, parentMap);
                 writeRow(ostream, row.first, *row.rest);
                 fixtures.remove(key);
             } case (is ResourcePile) {
-                value [row, *_] = produce(fixtures, fixture, key, loc);
+                value [row, *_] = produce(fixtures, fixture, key, loc, parentMap);
                 writeRow(ostream, row.first, *row.rest);
                 fixtures.remove(key);
             }

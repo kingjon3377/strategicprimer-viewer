@@ -20,21 +20,23 @@ shared class SkillTabularReportGenerator()
     "For this purpose, compare by worker name only."
     shared actual Comparison comparePairs([Point, IWorker] one, [Point, IWorker] two) =>
             one.rest.first.name <=> two.rest.first.name;
-    shared actual [String+] headerRow => ["Worker", "Job", "Skill"];
+    shared actual [String+] headerRow => ["Worker", "Job", "Skill", "Containing Unit ID #"];
     shared actual {{String+}*} produce(
-            DelayedRemovalMap<Integer,[Point, IFixture]> fixtures, IWorker item, Integer key, Point loc) {
+            DelayedRemovalMap<Integer,[Point, IFixture]> fixtures, IWorker item, Integer key,
+            Point loc, Map<Integer, Integer> parentMap) {
         MutableList<{String+}> retval = ArrayList<{String+}>();
+        String unitId = parentMap[item.id]?.string else "---";
         for (job in item) {
             variable Boolean any = false;
             for (skill in job) {
                 if (!skill.empty) {
                     any = true;
                     retval.add([item.name, "``job.name`` ``job.level``",
-                        "``skill.name`` ``skill.level``"]);
+                        "``skill.name`` ``skill.level``", unitId]);
                 }
             }
             if (!any, job.level > 0) {
-                retval.add([item.name, "``job.name`` ``job.level``", "---"]);
+                retval.add([item.name, "``job.name`` ``job.level``", "---", unitId]);
             }
         }
         // We deliberately do *not* remove the worker from the collection!

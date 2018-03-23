@@ -31,7 +31,7 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
     "Create a GUI table row representing a fixture."
     shared actual {{String+}*} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, MineralFixture item,
-            Integer key, Point loc) {
+            Integer key, Point loc, Map<Integer, Integer> parentMap) {
         String classField;
         String statusField;
         switch (item)

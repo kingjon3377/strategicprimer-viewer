@@ -24,7 +24,7 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
     "Create a GUI table row representing the given fixture."
     shared actual [{String+}+] produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Immortal item, Integer key, Point loc) {
+            Immortal item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
         fixtures.remove(key);
         return [{distanceString(loc, hq, dimensions), loc.string, item.string}];
     }
