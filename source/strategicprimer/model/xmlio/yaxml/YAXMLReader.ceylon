@@ -2,9 +2,6 @@ import java.io {
     JReader=Reader,
     IOException
 }
-import java.lang {
-    IllegalStateException
-}
 import java.nio.file {
     JPath=Path,
     JFiles=Files
@@ -49,7 +46,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
     "Read an object from XML."
     throws(`class XMLStreamException`, "if the XML isn't well-formed")
     throws(`class SPFormatException`, "on SP XML format error")
-    throws(`class IllegalStateException`,
+    throws(`class AssertionError`,
         "if a reader produces a different type than requested")
     shared actual Element readXML<Element>(
             "The file we're reading from" JPath file,
@@ -62,12 +59,8 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
         if (exists event = eventReader.narrow<StartElement>().first) {
             Object retval = YAReaderAdapter(warner, idFactory).parse(event, QName("root"),
                 eventReader);
-            if (is Element retval) {
-                return retval;
-            } else {
-                throw IllegalStateException(
-                    "Reader produced different type than we expected");
-            }
+            assert (is Element retval);
+            return retval;
         } else {
             throw XMLStreamException("XML stream didn't contain a start element");
         }

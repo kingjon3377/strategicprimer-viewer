@@ -5,10 +5,6 @@ import ceylon.collection {
     MutableSet
 }
 
-import java.lang {
-    IllegalStateException
-}
-
 import lovelace.util.common {
     todo,
     ArraySet
@@ -82,7 +78,7 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
     shared actual void addMember(UnitMember member) {
         if (is ProxyFor<out Anything> member) {
             log.error("ProxyWorker added to Unit",
-                IllegalStateException("ProxyWorker added to Unit"));
+                AssertionError("ProxyWorker added to Unit"));
         }
         members.add(member);
     }

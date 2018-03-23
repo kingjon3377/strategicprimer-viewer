@@ -9,10 +9,6 @@ import ceylon.language.meta {
 	type
 }
 
-import java.lang {
-    IllegalStateException
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -230,7 +226,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     if (is Fortress child, !retval.fixtures.get(point).narrow<Fortress>()
                             .filter((fix) => fix.owner == child.owner).empty) {
                         warner.handle(UnwantedChildException(top, event,
-                            IllegalStateException(
+                            AssertionError(
                                 "Multiple fortresses owned by same player on same tile")));
                     }
                     retval.addFixture(point, child);

@@ -3,10 +3,6 @@ import ceylon.file {
     parsePath
 }
 
-import java.lang {
-    IllegalStateException
-}
-
 import strategicprimer.drivers.common {
     IDriverModel,
     IDriverUsage,
@@ -23,11 +19,9 @@ import strategicprimer.drivers.common.cli {
    results" framework I implemented."""
 object tableDebugger satisfies SimpleCLIDriver {
     ExplorationRunner runner = ExplorationRunner();
-    if (is Directory directory = parsePath("tables").resource) {
-        loadAllTables(directory, runner);
-    } else {
-        throw IllegalStateException("Table debugger requires a tables directory");
-    }
+    "Table debugger requires a tables directory"
+    assert (is Directory directory = parsePath("tables").resource);
+    loadAllTables(directory, runner);
     shared actual IDriverUsage usage = DriverUsage(false, ["-T", "--table-debug"],
         ParamCount.none, "Debug old-model encounter tables",
         "See whether old-model encounter tables refer to a nonexistent table");

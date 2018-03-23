@@ -1,7 +1,3 @@
-import java.lang {
-    IllegalStateException
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -74,7 +70,9 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
     }
     shared actual void write(Anything(String) ostream, TerrainFixture obj,
             Integer indent) {
-        if (is Forest obj) {
+        assert (is Forest|Hill|Oasis|Sandbar obj);
+        switch (obj)
+        case (is Forest) {
             writeTag(ostream, "forest", indent);
             writeProperty(ostream, "kind", obj.kind);
             if (obj.rows) {
@@ -83,16 +81,17 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
             if (obj.acres.positive) {
                 writeProperty(ostream, "acres", obj.acres.string);
             }
-        } else if (is Hill obj) {
-            writeTag(ostream, "hill", indent);
-        } else if (is Oasis obj) {
-            writeTag(ostream, "oasis", indent);
-        } else if (is Sandbar obj) {
-            writeTag(ostream, "sandbar", indent);
-        } else {
-            throw IllegalStateException("Unexpected TerrainFixture type");
         }
-        if (is HasImage obj) {
+        case (is Hill) {
+            writeTag(ostream, "hill", indent);
+        }
+        case (is Oasis) {
+            writeTag(ostream, "oasis", indent);
+        }
+        case (is Sandbar) {
+            writeTag(ostream, "sandbar", indent);
+        }
+        if (is HasImage obj) { // TODO: Fix warning
             writeImageXML(ostream, obj);
         }
         writeProperty(ostream, "id", obj.id);

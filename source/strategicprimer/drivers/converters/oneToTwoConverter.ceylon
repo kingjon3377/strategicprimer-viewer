@@ -6,9 +6,6 @@ import ceylon.file {
 import java.io {
     IOException
 }
-import java.lang {
-    IllegalStateException
-}
 import java.nio.file {
     JPath=Path
 }
@@ -53,11 +50,9 @@ object oneToTwoConverter satisfies SimpleDriver {
     };
     "Source for forest and ground types"
     ExplorationRunner runner = ExplorationRunner();
-    if (is Directory directory = parsePath("tables").resource) {
-        loadAllTables(directory, runner);
-    } else {
-        throw IllegalStateException("1-to-2 converter requires a tables directory");
-    }
+    "1-to-2 converter requires a tables directory"
+    assert (is Directory directory = parsePath("tables").resource);
+    loadAllTables(directory, runner);
     void writeConvertedMap(JPath old, IMapNG map) {
         try {
             mapIOHelper.writeMap(parsePath(old.string).siblingPath("``old.fileName``.converted.xml"),

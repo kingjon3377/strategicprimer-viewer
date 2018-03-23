@@ -112,10 +112,10 @@ object oneToTwoConverterTests {
 	}
 	//void writeToFile(String filename, String text) {
 	//    File file;
-	//    switch (res = parsePath("/Users/kingjon/strategicprimer-viewer/" + filename).resource)
+	//    assert (is File|Nil res = parsePath("/Users/kingjon/strategicprimer-viewer/" + filename).resource)
+	//    switch (res)
 	//    case (is File) { file = res; }
 	//    case (is Nil) { file = res.createFile(); }
-	//    else { throw IllegalStateException("Exists but is not a file"); }
 	//    try (writer = file.Overwriter()) {
 	//        writer.write(text);
 	//    }

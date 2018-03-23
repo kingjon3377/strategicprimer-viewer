@@ -3,9 +3,6 @@ import ceylon.collection {
     HashMap
 }
 
-import java.lang {
-    IllegalStateException
-}
 import java.nio.file {
     JPaths=Paths,
     JPath=Path
@@ -398,7 +395,7 @@ shared class DriverFailedException
             String message = "The driver could not start because of an exception:")
             extends Exception(message, cause) {}
     shared new illegalState(String message) extends
-            DriverFailedException(IllegalStateException(message), message) {}
+            DriverFailedException(AssertionError(message), message) {}
  }
 "An exception to throw when a driver fails because the user tried to use it improperly."
 shared class IncorrectUsageException(correctUsage)

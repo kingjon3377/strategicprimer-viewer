@@ -16,9 +16,6 @@ import ceylon.math.whole {
     Whole
 }
 
-import java.lang {
-    IllegalStateException
-}
 import strategicprimer.model.map {
     IFixture,
     IMutableMapNG,
@@ -275,12 +272,13 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
             top.contents, Quantity(list
                 .map(ResourcePile.quantity).map(Quantity.number)
                     .map((num) {
-                if (is Decimal num) {
+                assert (is Decimal|Integer|Float|Whole num);
+                switch (num)
+                case (is Decimal) {
                     return num;
-                } else if (is Integer|Float|Whole num) {
+                }
+                case (is Integer|Float|Whole) {
                     return decimalNumber(num);
-                } else {
-                    throw IllegalStateException("Can't get here");
                 }
             }).fold(decimalNumber(0))(
                 (Decimal partial, Decimal element) => partial.plus(element)),

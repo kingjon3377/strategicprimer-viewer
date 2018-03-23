@@ -1,7 +1,3 @@
-import java.lang {
-    IllegalStateException
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -137,11 +133,14 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
     }
     shared actual void write(Anything(String) ostream, HarvestableFixture obj,
             Integer indent) {
-        if (is CacheFixture obj) {
+        assert (is CacheFixture|Meadow|Grove|Mine|MineralVein|Shrub|StoneDeposit obj);
+        switch (obj)
+        case (is CacheFixture) {
             writeTag(ostream, "cache", indent);
             writeProperty(ostream, "kind", obj.kind);
             writeProperty(ostream, "contents", obj.contents);
-        } else if (is Meadow obj) {
+        }
+        case (is Meadow) {
             writeTag(ostream, (obj.field) then "field" else "meadow", indent);
             writeProperty(ostream, "kind", obj.kind);
             writeProperty(ostream, "cultivated", obj.cultivated.string);
@@ -149,34 +148,37 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             if (obj.acres.positive) {
                 writeProperty(ostream, "acres", obj.acres.string);
             }
-        } else if (is Grove obj) {
+        }
+        case (is Grove) {
             writeTag(ostream, (obj.orchard) then "orchard" else "grove", indent);
             writeProperty(ostream, "cultivated", obj.cultivated.string);
             writeProperty(ostream, "kind", obj.kind);
             if (obj.population >= 1) {
                 writeProperty(ostream, "count", obj.population);
             }
-        } else if (is Mine obj) {
+        }
+        case (is Mine) {
             writeTag(ostream, "mine", indent);
             writeProperty(ostream, "kind", obj.kind);
             writeProperty(ostream, "status", obj.status.string);
-        } else if (is MineralVein obj) {
+        }
+        case (is MineralVein) {
             writeTag(ostream, "mineral", indent);
             writeProperty(ostream, "kind", obj.kind);
             writeProperty(ostream, "exposed", obj.exposed.string);
             writeProperty(ostream, "dc", obj.dc);
-        } else if (is Shrub obj) {
+        }
+        case (is Shrub) {
             writeTag(ostream, "shrub", indent);
             writeProperty(ostream, "kind", obj.kind);
             if (obj.population >= 1) {
                 writeProperty(ostream, "count", obj.population);
             }
-        } else if (is StoneDeposit obj) {
+        }
+        case (is StoneDeposit) {
             writeTag(ostream, "stone", indent);
             writeProperty(ostream, "kind", obj.stone.string);
             writeProperty(ostream, "dc", obj.dc);
-        } else {
-            throw IllegalStateException("Unhandled HarvestableFixture subtype");
         }
         writeProperty(ostream, "id", obj.id);
         writeImageXML(ostream, obj);

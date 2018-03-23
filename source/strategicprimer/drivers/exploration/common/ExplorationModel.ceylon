@@ -5,9 +5,6 @@ import ceylon.collection {
 import ceylon.math.float {
     ceiling
 }
-import java.lang {
-    IllegalStateException
-}
 import java.nio.file {
     JPath=Path
 }
@@ -242,11 +239,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             Speed speed) {
         [Point, IUnit?] local = selection;
         Point point = local.first;
-        IUnit? unit = local.rest.first;
-        if (!unit exists) {
-            throw IllegalStateException("move() called when no unit selected");
-        }
-        assert (exists unit);
+        assert (exists unit = local.rest.first);
         Point dest = getDestination(point, direction);
         if (exists terrain = map.baseTerrain[dest], exists startingTerrain = map.baseTerrain[point],
                     ((simpleMovementModel.landMovementPossible(terrain) && startingTerrain != TileType.ocean) ||

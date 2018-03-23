@@ -21,9 +21,6 @@ import strategicprimer.model.map {
 import ceylon.math.float {
     random
 }
-import java.lang {
-    IllegalStateException
-}
 import ceylon.file {
     parsePath,
     Directory
@@ -36,12 +33,9 @@ import strategicprimer.drivers.exploration.old {
 todo("Figure out how to run the Ceylon version repeatedly on a single JVM")
 class TileContentsGenerator(IMapNG map) {
     ExplorationRunner runner = ExplorationRunner();
-    if (is Directory directory = parsePath("tables").resource) {
-        loadAllTables(directory, runner);
-    } else {
-        throw IllegalStateException(
-            "Tile-contents generator requires a tables directory");
-    }
+    "Tile-contents generator requires a tables directory"
+    assert (is Directory directory = parsePath("tables").resource);
+    loadAllTables(directory, runner);
     shared void generateTileContents(Point point,
             TileType? terrain = map.baseTerrain[point]) {
         Integer reps = (random() * 4).integer + 1;

@@ -8,10 +8,6 @@ import ceylon.language {
     createMap=map
 }
 
-import java.lang {
-    IllegalStateException
-}
-
 import lovelace.util.common {
     todo,
     DelayedRemovalMap
@@ -68,13 +64,17 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      the set of fixtures."
     shared actual void produceSingle(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, ITownFixture item, Point loc) {
-        if (is Village item) {
+        assert (is Village|Fortress|AbstractTown item);
+        switch (item)
+        case (is Village) {
             VillageReportGenerator(comp, currentPlayer, dimensions, hq)
                 .produceSingle(fixtures, map, ostream, item, loc);
-        } else if (is Fortress item) {
+        }
+        case (is Fortress) {
             FortressReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq)
                 .produceSingle(fixtures, map, ostream, item, loc);
-        } else if (is AbstractTown item) {
+        }
+        case (is AbstractTown) {
             fixtures.remove(item.id);
             ostream("At ``loc``: ``item.name``, ");
             if (item.owner.independent) {
@@ -87,8 +87,6 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     item.owner``");
             }
             ostream(" ``distCalculator.distanceString(loc)``");
-        } else {
-            throw IllegalStateException("Unhandled ITownFixture subclass");
         }
     }
     "Produce a report on all towns. This report omits fortresses and villages, and is
@@ -130,13 +128,17 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     shared actual IReportNode produceRIRSingle(
             DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
             IMapNG map, ITownFixture item, Point loc) {
-        if (is Village item) {
+        assert (is Village|Fortress|AbstractTown item);
+        switch (item)
+        case (is Village) {
             return VillageReportGenerator(comp, currentPlayer, dimensions, hq)
                 .produceRIRSingle(fixtures, map, item, loc);
-        } else if (is Fortress item) {
+        }
+        case (is Fortress) {
             return FortressReportGenerator(comp, currentPlayer, dimensions,
                 currentTurn, hq).produceRIRSingle(fixtures, map, item, loc);
-        } else if (is AbstractTown item) {
+        }
+        case (is AbstractTown) {
             fixtures.remove(item.id);
             if (item.owner.independent) {
                 return SimpleReportNode("At ``loc``: ``item.name``, an independent ``
@@ -151,8 +153,6 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     `` ``item.status`` ``item.kind`` allied with ``item.owner`` ``
                     distCalculator.distanceString(loc)``", loc);
             }
-        } else {
-            throw IllegalStateException("Unhandled ITownFixture subclass");
         }
     }
     "Produce a report for all towns. (Fortresses and villages are not included in this report.)

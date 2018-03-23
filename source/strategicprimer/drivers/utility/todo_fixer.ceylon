@@ -50,9 +50,6 @@ import ceylon.file {
 	parsePath,
 	Directory
 }
-import java.lang {
-	IllegalStateException
-}
 class SimpleTerrain of unforested | forested | ocean {
 	"Plains, desert, and mountains"
 	shared new unforested { }
@@ -137,11 +134,9 @@ object todoFixerCLI satisfies SimpleCLIDriver {
                     .any((str) => str.contains('#')));
         if (!brokenTownContents.empty) {
             value runner = ExplorationRunner();
-            if (is Directory directory = parsePath("tables").resource) {
-                loadAllTables(directory, runner);
-            } else {
-                throw IllegalStateException("TODO fixer requires a tables directory");
-            }
+            "TODO fixer requires a tables directory"
+            assert (is Directory directory = parsePath("tables").resource);
+            loadAllTables(directory, runner);
 	        for ([loc, population] in brokenTownContents) {
 	            value production = population.yearlyProduction;
 	            for (resource in production.sequence()) {

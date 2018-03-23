@@ -9,10 +9,6 @@ import ceylon.file {
     Nil
 }
 
-import java.lang {
-    IllegalStateException
-}
-
 import strategicprimer.drivers.common {
     SPOptions,
     PlayerChangeListener
@@ -66,12 +62,12 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
     }
     shared void writeStrategy(Resource path, {UnitMember*} dismissed) {
         File file;
-        if (is Nil path) {
+        assert (is File|Nil path);
+        switch (path)
+        case (is Nil) {
             file = path.createFile();
-        } else if (is File path) {
+        } case (is File) {
             file = path;
-        } else {
-            throw IllegalStateException("Can't write to a directory or link");
         }
         try (writer = file.Overwriter()) {
             String playerName = currentPlayer.name;

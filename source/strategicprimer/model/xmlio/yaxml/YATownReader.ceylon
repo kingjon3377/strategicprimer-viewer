@@ -2,10 +2,6 @@ import ceylon.language.meta {
     classDeclaration
 }
 
-import java.lang {
-    IllegalStateException
-}
-
 import javax.xml.namespace {
     QName
 }
@@ -184,7 +180,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     retval = Fortification(status, size, dc, name, id, owner);
                 }
                 else {
-                    throw IllegalStateException("Unhandled town tag");
+                    throw AssertionError("Unhandled town tag");
                 }
                 for (event in stream) {
                     if (is StartElement event, isSupportedNamespace(event.name)) {
@@ -311,9 +307,12 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         else { return parseTown(element, stream); }
     }
     shared actual void write(Anything(String) ostream, ITownFixture obj, Integer tabs) {
-        if (is AbstractTown obj) {
+        assert (is AbstractTown|Village|Fortress obj);
+        switch (obj)
+        case (is AbstractTown) {
             writeAbstractTown(ostream, obj, tabs);
-        } else if (is Village obj) {
+        }
+        case (is Village) {
             writeTag(ostream, "village", tabs);
             writeProperty(ostream, "status", obj.status.string);
             writeNonemptyProperty(ostream, "name", obj.name);
@@ -329,7 +328,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             } else {
                 closeLeafTag(ostream);
             }
-        } else if (is Fortress obj) {
+        }
+        case (is Fortress) {
             writeTag(ostream, "fortress", tabs);
             writeProperty(ostream, "owner", obj.owner.playerId);
             writeNonemptyProperty(ostream, "name", obj.name);
@@ -355,8 +355,6 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             }
             ostream("</fortress>");
             ostream(operatingSystem.newline);
-        } else {
-            throw IllegalStateException("Unexpected TownFixture type");
         }
     }
     shared actual Boolean canWrite(Object obj) => obj is ITownFixture;

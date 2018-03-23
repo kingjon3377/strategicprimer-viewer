@@ -6,9 +6,6 @@ import ceylon.collection {
 import java.io {
     JReader=Reader
 }
-import java.lang {
-    IllegalStateException
-}
 import java.nio.file {
     JPath=Path,
     JFiles=Files
@@ -185,7 +182,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             if (is Fortress child, !map.fixtures.get(currentTile).narrow<Fortress>()
                     .filter((fix) => fix.owner == child.owner).empty) {
                 warner.handle(UnwantedChildException(parent.name, element,
-                    IllegalStateException(
+                    AssertionError(
                         "Multiple fortresses owned by same player on same tile")));
             }
             map.addFixture(currentTile, child);
@@ -288,7 +285,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
                 warner.handle(UnwantedChildException.childInTag(top,
                     QName(XMLConstants.nullNsUri, "text"),
                     event.location,
-                    IllegalStateException("Random text outside any tile")));
+                    AssertionError("Random text outside any tile")));
             }
         }
         if (hasAttribute(mapTag, "current_player")) {

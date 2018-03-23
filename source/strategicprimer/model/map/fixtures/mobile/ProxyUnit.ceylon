@@ -12,7 +12,7 @@ import ceylon.logging {
 }
 
 import java.lang {
-    IllegalStateException
+	UnsupportedOperationException
 }
 
 import lovelace.util.common {
@@ -127,7 +127,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     todo("Implement") // FIXME
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         log.warn("ProxyUnit.equalsIgnoringID called");
-        throw IllegalStateException("FIXME: implement equalsIgnoringID");
+        throw UnsupportedOperationException("FIXME: Implement ProxyUnit.equalsIgnoringID");
     }
     shared actual Comparison compare(TileFixture fixture) {
         log.warn("ProxyUnit.compare called");

@@ -9,9 +9,6 @@ import java.awt.datatransfer {
 import java.io {
     IOException
 }
-import java.lang {
-    IllegalStateException
-}
 
 import javax.swing {
     JTable,
@@ -47,13 +44,13 @@ object fixtureFilterTransferHandler extends TransferHandler() {
     "Create a wrapper to transfer contents of the given component, which must be a
      [[SwingList]] or a [[JTable]]."
     shared actual Transferable createTransferable(JComponent component) {
-        if (is SwingList<out Anything> component) {
+        assert (is SwingList<out Anything>|JTable component);
+        switch (component)
+        case (is SwingList<out Anything>) {
             return IntTransferable(flavor, component.selectedIndex);
-        } else if (is JTable component) {
+        }
+        case (is JTable) {
             return IntTransferable(flavor, component.selectedRow);
-        } else {
-            throw IllegalStateException(
-                "Tried to create transferable from non-list");
         }
     }
     "This listener only allows move operations."

@@ -2,9 +2,6 @@ import ceylon.interop.java {
     synchronize
 }
 
-import java.lang {
-    IllegalStateException
-}
 import java.util {
     BitSet
 }
@@ -50,11 +47,8 @@ shared class IDFactory() satisfies IDRegistrar {
     shared actual Integer createID() {
         variable Integer retval = -1;
         synchronize(usedIDs, () {
-            if (usedIDs.cardinality() < runtime.maxIntegerValue) { // TODO: Reduce the upper bound somewhat?
-                retval = register(usedIDs.nextClearBit(0));
-            } else {
-                throw IllegalStateException("Exhausted all possible integers");
-            }
+            assert (usedIDs.cardinality() < runtime.maxIntegerValue); // TODO: Reduce the upper bound somewhat?
+            retval = register(usedIDs.nextClearBit(0));
         });
         assert (retval >= 0);
         return retval;
