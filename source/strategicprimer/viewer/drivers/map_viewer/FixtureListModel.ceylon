@@ -83,7 +83,7 @@ shared class FixtureListModel(IMutableMapNG map, Animal?(Point) tracksSource)
 		fireIntervalReplaced(0..(oldSize - 1), 0..(newSize - 1));
 	}
 	shared actual TileFixture getElementAt(Integer index) {
-		//TileFixture[] main = map.fixtures[point].sequence(); // TODO: sequence sugar
+		//TileFixture[] main = map.fixtures[point].sequence(); // TODO: syntax sugar
 		TileFixture[] main = map.fixtures.get(point).sequence();
 		if (exists terrain = map.baseTerrain[point]) {
 			 if (index == 0) {
