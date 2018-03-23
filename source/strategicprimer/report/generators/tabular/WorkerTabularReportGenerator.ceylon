@@ -21,7 +21,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
         satisfies ITableGenerator<IWorker> {
     "The header row of the table."
-    shared actual [String+] headerRow = ["Distance", "Location", "Name", "HP", "Max HP", "Str",
+    shared actual [String+] headerRow = ["Distance", "Location", "Name", "Race", "HP", "Max HP", "Str",
         "Dex", "Con", "Int", "Wis", "Cha"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "workers";
@@ -32,11 +32,11 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
         fixtures.remove(key);
         if (exists stats = item.stats) {
             return {{distanceString(loc, hq, dimensions), loc.string, item.name,
-                stats.hitPoints.string, stats.maxHitPoints.string,
+                item.race, stats.hitPoints.string, stats.maxHitPoints.string,
                 *stats.array.map(WorkerStats.getModifierString)}};
         } else {
             return {{distanceString(loc, hq, dimensions), loc.string, item.name,
-                *(0..9).map((num) => "---")}};
+                item.race, *(0..9).map((num) => "---")}};
         }
     }
     "Compare two worker-location pairs."
