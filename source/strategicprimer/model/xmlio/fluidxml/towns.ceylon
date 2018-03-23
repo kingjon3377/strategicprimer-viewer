@@ -235,7 +235,9 @@ object fluidTownHandler extends FluidBase() {
 	                }
 	                lambda(fluidResourceHandler.readResource(event, top.name, stream, players, warner, idFactory));
 	            }
-	            else {} // TODO: Should probably throw here
+	            else {
+	                throw UnwantedChildException(event.name, element);
+	            }
 	        } else if (is EndElement event, exists top = stack.top, event.name == top.name) {
 	            stack.pop();
 	            if (top == element) {
