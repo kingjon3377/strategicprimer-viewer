@@ -64,17 +64,13 @@ abstract class YAAbstractReader<Element>
     "Require that an element be one of the specified tags."
     shared static void requireTag(StartElement element, QName parent, String* tags) {
         if (!isSupportedNamespace(element.name)) {
-            throw UnwantedChildException(parent, element,
-                AssertionError("Unrecognized namespace")); // TODO: Make a custom UnrecognizedNamespaceException?
+            throw UnwantedChildException.unexpectedNamespace(parent, element);
         }
         String localName = element.name.localPart;
-        Integer line = element.location.lineNumber;
         if (!tags.map(String.lowercased).contains(localName.lowercased)) {
             // While we'd like tests to exercise this, we're always careful to only call
             // readers when we know they support the tag ...
-            throw UnwantedChildException(parent, element, AssertionError( // TODO: Make an UnwantedChildException constructor taking expected tags
-                "Unexpected tag ``localName`` on line ``line``, expected one of these: ``
-                ", ".join(tags)``"));
+            throw UnwantedChildException.listingExpectedTags(parent, element, tags);
         }
     }
     "Create a [[QName]] for the given tag in our namespace."

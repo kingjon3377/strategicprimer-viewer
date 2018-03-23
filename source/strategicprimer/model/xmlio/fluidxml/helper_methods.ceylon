@@ -85,11 +85,11 @@ abstract class FluidBase {
 	        String* tags) {
 	    if (!{spNamespace, XMLConstants.nullNsUri}
 	            .contains(element.name.namespaceURI)) {
-	        throw UnwantedChildException(parent, element);
+	        throw UnwantedChildException.unexpectedNamespace(parent, element);
 	    }
 	    String localName = element.name.localPart.lowercased;
 	    if (!tags.map(String.lowercased).contains(localName)) {
-	        throw UnwantedChildException(parent, element);
+	        throw UnwantedChildException.listingExpectedTags(parent, element, tags);
 	    }
 	}
 

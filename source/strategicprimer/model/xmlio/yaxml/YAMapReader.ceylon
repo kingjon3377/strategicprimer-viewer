@@ -164,7 +164,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
             expectAttributes(mapTag, "version", "rows", "columns", "current_player");
         }
         else {
-            throw UnwantedChildException(QName("xml"), element);
+            throw UnwantedChildException.listingExpectedTags(QName("xml"), element, {"map", "view"});
         }
         MapDimensions dimensions = MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
             getIntegerParameter(mapTag, "columns"),
@@ -212,7 +212,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 } else if (invalidPoint == point) {
                     // fixture outside tile
                     assert (exists top = tagStack.top);
-                    throw UnwantedChildException(top, event);
+                    throw UnwantedChildException.listingExpectedTags(top, event, {"tile"});
                 } else if ("lake" == type || "river" == type) {
                     assert (exists top = tagStack.top);
                     retval.addRivers(point, parseRiver(event, top));
@@ -225,9 +225,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     value child = parseFixture(event, top, stream);
                     if (is Fortress child, !retval.fixtures.get(point).narrow<Fortress>()
                             .filter((fix) => fix.owner == child.owner).empty) {
-                        warner.handle(UnwantedChildException(top, event,
-                            AssertionError(
-                                "Multiple fortresses owned by same player on same tile")));
+                        warner.handle(UnwantedChildException.withMessage(top, event,
+                                "Multiple fortresses owned by same player on same tile"));
                     }
                     retval.addFixture(point, child);
                 }

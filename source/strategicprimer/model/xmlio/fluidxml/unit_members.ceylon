@@ -56,7 +56,10 @@ object unitMemberHandler extends FluidBase() {
 	                warner, idFactory)); }
 	            case ("stats") { retval.stats = readStats(event, element.name, stream,
 	                players, warner, idFactory); }
-	            else { throw UnwantedChildException(element.name, event); }
+	            else {
+	                throw UnwantedChildException.listingExpectedTags(element.name, event,
+	                    {"job", "stats"});
+	            }
 	        } else if (is EndElement event, element.name == event.name) {
 	            break;
 	        }
@@ -76,7 +79,7 @@ object unitMemberHandler extends FluidBase() {
 	                retval.addSkill(readSkill(event, element.name, stream, players, warner,
 	                    idFactory));
 	            } else {
-	                throw UnwantedChildException(element.name, event);
+	                throw UnwantedChildException.listingExpectedTags(element.name, event, {"skill"});
 	            }
 	        } else if (is EndElement event, element.name == event.name) {
 	            break;

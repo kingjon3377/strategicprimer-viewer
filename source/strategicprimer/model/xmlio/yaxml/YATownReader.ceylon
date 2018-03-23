@@ -116,11 +116,12 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                         lambda = retval.yearlyConsumption.add;
                     }
                     else {
-                        throw UnwantedChildException(top.name, event);
+                        throw UnwantedChildException.listingExpectedTags(top.name, event,
+                            {"production", "consumption"});
                     }
                     lambda(resourceReader.read(event, top.name, stream));
                 }
-                else {}
+                else {} // TODO: Object to unwanted child
             } else if (is EndElement event, exists top = stack.top,
                     event.name == top.name) {
                 stack.pop();

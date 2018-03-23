@@ -231,12 +231,14 @@ object fluidTownHandler extends FluidBase() {
 	                    lambda = retval.yearlyConsumption.add;
 	                }
 	                else {
-	                    throw UnwantedChildException(top.name, event);
+	                    throw UnwantedChildException.listingExpectedTags(top.name, event,
+	                        {"production", "consumption"});
 	                }
 	                lambda(fluidResourceHandler.readResource(event, top.name, stream, players, warner, idFactory));
 	            }
 	            else {
-	                throw UnwantedChildException(event.name, element);
+	                throw UnwantedChildException.listingExpectedTags(event.name, element,
+	                    {"expertise", "claim", "production", "consumption", "resource"});
 	            }
 	        } else if (is EndElement event, exists top = stack.top, event.name == top.name) {
 	            stack.pop();
