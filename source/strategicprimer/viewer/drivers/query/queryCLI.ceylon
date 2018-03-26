@@ -445,11 +445,8 @@ shared object queryCLI satisfies SimpleCLIDriver {
 		cli.println("help, ?: Print this list of commands.");
 		cli.println(
 			"fortress: Show what a player automatically knows about a fortress's tile.");
-		Integer encounters = hunterHours * hourlyEncounters;
-		cli.println("hunt, fish: Generate up to ``encounters`` encounters with animals.`");
-		cli.println("gather: Generate up to ``
-			encounters`` encounters with fields, meadows, groves,");
-		cli.println("orchards, or shrubs.");
+		cli.println("hunt, fish: Generate encounters with animals.`");
+		cli.println("gather: Generate encounters with fields, meadows, groves, orchards, or shrubs.");
 		cli.println(
 			"herd: Determine the output from and time required for maintaining a herd.");
 		cli.println(
