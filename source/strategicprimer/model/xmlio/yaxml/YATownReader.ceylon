@@ -117,11 +117,14 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     }
                     else {
                         throw UnwantedChildException.listingExpectedTags(top.name, event,
-                            {"production", "consumption"});
+                            {"production", "consumption"}); // FIXME: That's the expected *parents*, not the expected *children*!
                     }
                     lambda(resourceReader.read(event, top.name, stream));
                 }
-                else {} // TODO: Object to unwanted child
+                else {
+                    throw UnwantedChildException.listingExpectedTags(stack.top?.name else element.name, event,
+                        {"expertise", "claim", "production", "consumption"}); // TODO: Make sure this is accurate whenever it occurs
+                }
             } else if (is EndElement event, exists top = stack.top,
                     event.name == top.name) {
                 stack.pop();
