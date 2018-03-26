@@ -391,10 +391,10 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
 	        if (options.hasOption("--currentTurn")) {
 	            if (is Integer currentTurn = Integer.parse(options.getArgument("--current-turn"))) {
 	                model.map.currentTurn = currentTurn;
-	            }
-	        } else {
-	            cli.println("--current-turn must be an integer");
-	        }
+		        } else {
+		            cli.println("--current-turn must be an integer");
+		        }
+		    }
 	    }
         startDriverOnModel(cli, options, model);
         mapReaderAdapter.writeModel(model);
