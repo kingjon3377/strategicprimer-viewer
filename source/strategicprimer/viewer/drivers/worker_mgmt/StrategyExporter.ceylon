@@ -1,6 +1,8 @@
 import ceylon.collection {
     MutableMap,
-    HashMap
+    HashMap,
+	MutableList,
+	ArrayList
 }
 import ceylon.file {
     Resource,
@@ -60,6 +62,49 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             writer.write(member.string);
         }
     }
+    void summarizeUnitMembers(Writer writer, IUnit unit) {
+        MutableList<IWorker> leveledWorkers = ArrayList<IWorker>();
+        MutableList<UnitMember> nonWorkers = ArrayList<UnitMember>();
+        MutableList<IWorker> unleveledWorkers = ArrayList<IWorker>();
+        for (member in unit) {
+            if (is IWorker member) {
+                if (member.map(IJob.level).any(Integer.positive)) {
+                    leveledWorkers.add(member);
+                } else {
+                    unleveledWorkers.add(member);
+                }
+            } else {
+                nonWorkers.add(member);
+            }
+        }
+        variable Boolean needComma;
+        if (leveledWorkers.empty) {
+            if (unleveledWorkers.empty) {
+                needComma = false;
+            } else {
+	            writeMember(writer, unleveledWorkers.first);
+	            writer.write(", ``unleveledWorkers.rest.size`` other unleveled workers");
+	            needComma = true;
+	        }
+        } else {
+            needComma = true;
+            writeMember(writer, leveledWorkers.first);
+            for (worker in leveledWorkers) {
+                writer.write(", ");
+                writeMember(writer, worker);
+            }
+            if (!unleveledWorkers.empty) {
+                writer.write(", ``unleveledWorkers.size`` unleveled workers");
+            }
+        }
+        for (member in nonWorkers) {
+            if (needComma) {
+                writer.write(", ");
+            }
+            writeMember(writer, member);
+            needComma = true;
+        }
+    }
     shared void writeStrategy(Resource path, {UnitMember*} dismissed) {
         File file;
         assert (is File|Nil path);
@@ -115,12 +160,16 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                     writer.write("  - ``unit.name``");
                     if (!unit.empty) {
                         writer.write(" [");
-                        writeMember(writer, unit.first);
-                        for (member in unit.rest) {
-                            writer.write(", ");
-                            writeMember(writer, member);
-                        }
-                        writer.write("]");
+                        if (unit.size > 4, "true" == options.getArgument("--summarize-large-units")) {
+                            summarizeUnitMembers(writer, unit);
+                        } else {
+	                        writeMember(writer, unit.first);
+	                        for (member in unit.rest) {
+	                            writer.write(", ");
+	                            writeMember(writer, member);
+	                        }
+	                        writer.write("]");
+	                    }
                     }
                     writer.writeLine(":");
                     writer.writeLine();
