@@ -189,9 +189,8 @@ object unitMemberHandler extends FluidBase() {
 	    } else {
 	        id = getOrGenerateID(element, warner, idFactory);
 	    }
+	    // TODO: We'd like the default to be 1 inside a unit and -1 outside
 	    Integer count = getIntegerAttribute(element, "count", 1, warner);
-	    "Animal population must be positive" // FIXME: This is (or should be) no longer true!
-	    assert (count >= 1);
 	    return setImage(
 	        AnimalImpl(getAttribute(element, "kind"), traces,
 	            getBooleanAttribute(element, "talking", false, warner),

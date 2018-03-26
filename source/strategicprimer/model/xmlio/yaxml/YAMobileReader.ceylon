@@ -45,9 +45,6 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.xmlio {
     Warning
 }
-import strategicprimer.model.xmlio.exceptions {
-    MissingPropertyException
-}
 "A reader for 'mobile fixtures'"
 class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<MobileFixture>(warning, idRegistrar) {
@@ -78,11 +75,8 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         } else {
             idNum = getOrGenerateID(element);
         }
+        // TODO: We'd like default to be 1 inside a unit and -1 outside
         Integer count = getIntegerParameter(element, "count", 1);
-        if (count < 1) { // FIXME: Remove this restriciton
-            throw MissingPropertyException(element, "count",
-                AssertionError("Animal population must be positive"));
-        }
         return AnimalImpl(getParameter(element, "kind"), tracks,
             getBooleanParameter(element, "talking", false),
             getParameter(element, "status", "wild"), idNum,
