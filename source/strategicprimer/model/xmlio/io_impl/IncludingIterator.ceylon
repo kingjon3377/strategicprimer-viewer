@@ -99,7 +99,6 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     """Get the next item in the topmost iterator. We always make sure that there *is* a
        next item in the topmost iterator. If the next item would be an "include" tag, we
         open the file it specifies and push an iterator of its elements onto the stack."""
-    // TODO: Unwind the stack and close all the readers on error?
     shared actual XMLEvent|Finished next() {
         try {
 	        while (exists top = stack.top) {
