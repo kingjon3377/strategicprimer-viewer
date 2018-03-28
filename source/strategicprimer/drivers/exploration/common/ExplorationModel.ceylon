@@ -119,15 +119,29 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             map.mountainous[point] = true;
         }
     }
+    "Whether the given fixture is contained in the given stream."
+    static Boolean doesStreamContainFixture({IFixture*} stream, IFixture fixture) {
+        for (member in stream) {
+            if (member == fixture) {
+                return true;
+            } else if (is {IFixture*} member, doesStreamContainFixture(member, fixture)) {
+                return true;
+            }
+        }
+        return false;
+    }
     "Whether the given fixture is at the given location in the given map."
     static Boolean doesLocationHaveFixture(IMapNG map, Point point, TileFixture fixture) {
-        return map.fixtures[point]?.flatMap((element) {
-            if (is {IFixture*} element) {
-                return {element, *element};
-            } else {
-                return {element};
+        if (exists fixtures = map.fixtures[point]) {
+            for (member in fixtures) {
+                if (member == fixture) {
+                    return true;
+                } else if (is {IFixture*} member, doesStreamContainFixture(member, fixture)) {
+                    return true;
+                }
             }
-        })?.any(fixture.equals) else false;
+        }
+        return false;
     }
     """A "plus one" method with a configurable, low "overflow"."""
     static Integer increment(
