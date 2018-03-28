@@ -15,7 +15,9 @@ import strategicprimer.model.map {
     HasOwner,
     IMutableMapNG,
     Point,
-	IMapNG
+	IMapNG,
+	HasPopulation,
+	HasExtent
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -96,6 +98,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             cli.println(fixture.string);
             Boolean zero;
             if (is HasOwner fixture, fixture.owner != mover.owner || fixture is Village) {
+                zero = true;
+            } else if (is HasPopulation<Anything>|HasExtent fixture) {
                 zero = true;
             } else {
                 zero = false;
