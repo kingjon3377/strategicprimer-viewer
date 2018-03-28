@@ -318,6 +318,22 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             fixMovedUnits(dest);
             return retval;
         } else {
+            if (!map.baseTerrain[point] exists) {
+                log.trace("Started outside explored territory in main map");
+            } else if (!map.baseTerrain[dest] exists) {
+                log.trace("Main map doesn't have terrain for destination");
+            } else {
+                assert (exists terrain = map.baseTerrain[dest], exists startingTerrain = map.baseTerrain[point]);
+                if ((simpleMovementModel.landMovementPossible(terrain) && startingTerrain == TileType.ocean)) {
+                    log.trace("Starting in ocean, trying to get to ``terrain``");
+                } else if (startingTerrain == TileType.ocean, terrain != TileType.ocean) {
+                    log.trace("Land movement not possible, starting in ocean, trying to get to ``terrain``");
+                } else if (startingTerrain != TileType.ocean, terrain == TileType.ocean) {
+                    log.trace("Starting in ``startingTerrain``, trying to get to ocean");
+                } else {
+                    log.trace("Unknown reason for movement-impossible condition");
+                }
+            }
             for (pair in subordinateMaps) {
                 ensureTerrain(map, pair.first, dest);
             }
@@ -343,8 +359,15 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Point oldLoc = selection.first;
         Point loc;
         if (exists selectedUnit) {
+            log.trace("Setting a newly selected unit");
             loc = find(selectedUnit);
+            if (loc.valid) {
+                log.trace("Found at ``loc``");
+            } else {
+                log.trace("Not found using our 'find' method");
+            }
         } else {
+            log.trace("Unsetting currently-selected-unit property");
             loc = invalidPoint;
         }
         selection = [loc, selectedUnit];

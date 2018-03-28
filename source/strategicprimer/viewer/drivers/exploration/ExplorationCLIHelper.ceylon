@@ -113,6 +113,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     shared void moveUntilDone() {
         if (exists mover = model.selectedUnit) {
             cli.println("Details of the unit:");
+            cli.println("That unit appears to be at ``model.selectedUnitLocation``");
             cli.println(mover.verbose);
             Integer totalMP = cli.inputNumber("MP the unit has: ");
             variable Integer movement = totalMP;
