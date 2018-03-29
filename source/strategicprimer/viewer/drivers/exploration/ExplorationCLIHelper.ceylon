@@ -263,9 +263,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
 	                    printAndTransferFixture(destPoint, fixture, mover);
 	                }
 	            }
-                if (!proposedPath.empty, automationConfig.config.stopAtPoint(
+                if (!proposedPath.empty, automationConfig.config.stopAtPoint(cli,
 	                    model.subordinateMaps.first?.first else model.map, destPoint)) {
-                    cli.println("One of your stop-pathfinding conditions triggered, so control is returned to you.");
                     proposedPath.clear();
                 }
             }
@@ -279,32 +278,41 @@ class ExplorationAutomationConfig(Player player, Boolean stopForForts,
 	Boolean stopForActiveTowns, Boolean stopForInactiveTowns, Boolean stopForYourVillages,
 	Boolean stopForIndieVillages, Boolean stopForOtherVillages, Boolean stopForPlayerUnits,
 	Boolean stopForIndieUnits, Boolean stopForImmortals) {
-	shared Boolean stopAtPoint(IMapNG map, Point point) {
+	shared Boolean stopAtPoint(ICLIHelper cli, IMapNG map, Point point) {
 		//for (fixture in map.fixtures[point]) { // TODO: syntax sugar
 		for (fixture in map.fixtures.get(point)) {
 			if (is Fortress fixture, fixture.owner != player, stopForForts) {
+				cli.println("There is a fortress belonging to ``fixture.owner`` here, so the explorer stops.");
 				return true;
 			} else if (is AbstractTown fixture) {
 				if (fixture.status == TownStatus.active, stopForActiveTowns) {
+					cli.println("There is a ``fixture.townSize`` active ``fixture.kind`` here, so the explorer stops.");
 					return true;
 				} else if (fixture.status != TownStatus.active, stopForInactiveTowns) {
+					cli.println("There is a ``fixture.townSize`` ``fixture.status`` ``fixture.kind`` here, so the explorer stops.");
 					return true;
 				}
 			} else if (is Village fixture) {
 				if (fixture.owner == player, stopForYourVillages) {
+					cli.println("There is one of your villages here, so the explorer stops.");
 					return true;
 				} else if (fixture.owner.independent, stopForIndieVillages) {
+					cli.println("There is an independent village here, so the explorer stops.");
 					return true;
 				} else if (!fixture.owner.independent, fixture.owner != player, stopForOtherVillages) {
+					cli.println("There is another player's village here, so the explorer stops.");
 					return true;
 				}
 			} else if (is IUnit fixture) {
 				if (fixture.owner.independent, stopForIndieUnits) {
+					cli.println("There is an independent unit here, so the explorer stops.");
 					return true;
 				} else if (!fixture.owner.independent, fixture.owner != player, stopForPlayerUnits) {
+					cli.println("There is a unit belonging to ``fixture.owner`` here, so the explorer stops.");
 					return true;
 				}
 			} else if (is Immortal fixture, stopForImmortals) {
+				cli.print("There is a(n) ``fixture.shortDescription`` here, so the explorer stops.");
 				return true;
 			}
 		}
