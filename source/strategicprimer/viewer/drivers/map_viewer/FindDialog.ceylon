@@ -40,7 +40,7 @@ import strategicprimer.drivers.gui.common {
     SPDialog
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
-class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") { // TODO: Fix indentation of if statements, anything else needing it
+class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
     JTextField searchField = JTextField("", 20);
     JCheckBox backwards = JCheckBox("Search backwards");
     JCheckBox vertically = JCheckBox("Search vertically then horizontally");
