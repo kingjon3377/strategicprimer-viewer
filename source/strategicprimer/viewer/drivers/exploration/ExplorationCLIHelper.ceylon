@@ -167,8 +167,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                     cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``speed.name``.");
                 } else {
 	                cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``speed.name``.");
-	                cli.println("""0 = Change Speed, 1 = SW, 2 = S, 3 = SE, 4 = W, 5 = Stay Here,
-	                               6 = E, 7 = NW, 8 = N, 9 = NE, 10 = Pathfind Toward Location, 11 = Quit.""");
+	                cli.println("""0: Change Speed, 1: SW, 2: S, 3: SE, 4: W, 5: Linger, 6: E, 7: NW, 8: N, 9: NE, 10: Toward Point, 11: Quit.""");
 	                Integer directionNum = cli.inputNumber("Direction to move: ");
 	                switch (directionNum)
 	                case (0) { changeSpeed(); continue; }
