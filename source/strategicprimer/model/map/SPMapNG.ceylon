@@ -321,6 +321,9 @@ shared class SPMapNG satisfies IMutableMapNG {
                             localReport("Base terrain differs");
                             retval = false;
                             continue;
+                        //} else if (rivers[point] != obj.rivers[point]) { // TODO: syntax sugar
+                        } else if (!rivers.get(point).empty, obj.rivers.get(point).empty) {
+                            localReport("Has terrain but not our rivers");
                         }
                     } else {
                         localReport("Has terrain information we don't");
