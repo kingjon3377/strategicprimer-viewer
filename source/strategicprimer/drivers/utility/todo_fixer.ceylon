@@ -34,7 +34,8 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.map {
     TileType,
     IMapNG,
-    Point
+    Point,
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.terrain {
     Forest
@@ -197,12 +198,27 @@ object todoFixerCLI satisfies SimpleCLIDriver {
             }
         }
     }
+    "Add rivers missing from the subordinate map where it has other terrain information."
+    void fixMissingRivers(IMapNG mainMap, IMutableMapNG subordinateMap) {
+        for (location in mainMap.locations) {
+            if (exists mainTerrain = mainMap.baseTerrain[location],
+	                exists subTerrain = subordinateMap.baseTerrain[location], mainTerrain == subTerrain,
+	                //!mainMap.rivers[location].empty, subordinateMap.rivers[location].empty) { // TODO: syntax sugar
+	                !mainMap.rivers.get(location).empty, subordinateMap.rivers.get(location).empty) {
+                //subordinateMap.addRivers(location, *mainMap.rivers[location]); // TODO: syntax sugar
+                subordinateMap.addRivers(location, *mainMap.rivers.get(location));
+            }
+        }
+    }
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
             for ([map, path] in model.allMaps) {
                 fixAllUnits(map, cli);
                 fixAllVillages(map, cli);
+            }
+            for ([map, path] in model.subordinateMaps) {
+                fixMissingRivers(model.map, map);
             }
         } else {
             fixAllUnits(model.map, cli);
