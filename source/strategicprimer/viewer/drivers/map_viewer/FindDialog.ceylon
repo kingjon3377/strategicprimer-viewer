@@ -146,12 +146,12 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             model.selection = result;
         }
     }
-    Anything(ActionEvent) okListener = (ActionEvent event) { // TODO: Make member function to reduce JVM namespace pollution / JAR size
+    void okListener(ActionEvent event) {
         search();
         setVisible(false);
         parent.requestFocus();
         dispose();
-    };
+    }
     searchField.addActionListener(okListener);
     searchField.setActionCommand("OK");
     JPanel searchBoxPane = JPanel();
@@ -164,11 +164,12 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     JPanel&BoxPanel buttonPanel = boxPanel(BoxAxis.lineAxis);
     buttonPanel.addGlue();
     JButton okButton = listenedButton("OK", okListener);
-    JButton cancelButton = listenedButton("Cancel", (ActionEvent event) { // TODO: Make listener a member function to reduce JVM namespace pollution / JAR size
+    void cancelListener(ActionEvent event) {
         setVisible(false);
         parent.requestFocus();
         dispose();
-    });
+    }
+    JButton cancelButton = listenedButton("Cancel", cancelListener);
     platform.makeButtonsSegmented(okButton, cancelButton);
     buttonPanel.add(okButton);
     if (platform.systemIsMac) {
@@ -182,20 +183,21 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     buttonPanel.add(cancelButton);
     buttonPanel.addGlue();
     contentPanel.add(buttonPanel);
-    SwingUtilities.invokeLater(() { // TODO: Make member function to reduce JVM namespace pollution / JAR size
-        void populate(Anything fixture) { // TODO: Make member function to reduce JVM namespace pollution / JAR size
-            if (is TileFixture fixture) {
-                filterList.shouldDisplay(fixture);
-            } else if (is Iterable<Anything> fixture) {
-                for (item in fixture) {
-                    populate(item);
-                }
+    void populate(Anything fixture) {
+        if (is TileFixture fixture) {
+            filterList.shouldDisplay(fixture);
+        } else if (is Iterable<Anything> fixture) {
+            for (item in fixture) {
+                populate(item);
             }
         }
+    }
+    void populateAll() {
         for (point in model.map.locations) {
             populate(model.map.fixtures[point]);
         }
-    });
+    }
+    SwingUtilities.invokeLater(populateAll);
     JScrollPane scrollPane;
     if (platform.systemIsMac) {
         scrollPane = JScrollPane(filterList,
