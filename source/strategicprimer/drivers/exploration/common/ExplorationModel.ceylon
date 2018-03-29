@@ -111,6 +111,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         if (mainMap.mountainous.get(point)) {
             map.mountainous[point] = true;
         }
+        //map.addRivers(point, *mainMap.rivers[point]); // TODO: syntax sugar
+        map.addRivers(point, *mainMap.rivers.get(point));
     }
     "Whether the given fixture is contained in the given stream."
     static Boolean doesStreamContainFixture({IFixture*} stream, IFixture fixture) {
