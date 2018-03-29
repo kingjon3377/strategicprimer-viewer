@@ -176,7 +176,7 @@ SPFrame explorationFrame(IExplorationModel model,
         }
     }
     ComboBoxModel<Speed> speedModel = DefaultComboBoxModel<Speed>(
-        ObjectArray<Speed>.with(`Speed`.caseValues));
+        ObjectArray<Speed>.with(sort(`Speed`.caseValues)));
     object explorerSelectingPanel extends BorderedPanel()
             satisfies PlayerChangeSource&CompletionSource {
         MutableList<PlayerChangeListener> listeners =
