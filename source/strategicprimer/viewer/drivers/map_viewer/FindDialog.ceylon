@@ -40,7 +40,7 @@ import strategicprimer.drivers.gui.common {
     SPDialog
 }
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
-class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
+class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") { // TODO: Fix indentation of if statements, anything else needing it
     JTextField searchField = JTextField("", 20);
     JCheckBox backwards = JCheckBox("Search backwards");
     JCheckBox vertically = JCheckBox("Search vertically then horizontally");
@@ -142,11 +142,11 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
                     (point) => model.map.fixtures.get(point).any(
                         (fixture) => matches(pattern, idNum, fixture,
                             caseSensitivity)))) {
-            log.info("Found in point ``result``");
+            log.debug("Found in point ``result``");
             model.selection = result;
         }
     }
-    Anything(ActionEvent) okListener = (ActionEvent event) {
+    Anything(ActionEvent) okListener = (ActionEvent event) { // TODO: Make member function to reduce JVM namespace pollution / JAR size
         search();
         setVisible(false);
         parent.requestFocus();
@@ -164,7 +164,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     JPanel&BoxPanel buttonPanel = boxPanel(BoxAxis.lineAxis);
     buttonPanel.addGlue();
     JButton okButton = listenedButton("OK", okListener);
-    JButton cancelButton = listenedButton("Cancel", (ActionEvent event) {
+    JButton cancelButton = listenedButton("Cancel", (ActionEvent event) { // TODO: Make listener a member function to reduce JVM namespace pollution / JAR size
         setVisible(false);
         parent.requestFocus();
         dispose();
@@ -182,8 +182,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     buttonPanel.add(cancelButton);
     buttonPanel.addGlue();
     contentPanel.add(buttonPanel);
-    SwingUtilities.invokeLater(() {
-        void populate(Anything fixture) {
+    SwingUtilities.invokeLater(() { // TODO: Make member function to reduce JVM namespace pollution / JAR size
+        void populate(Anything fixture) { // TODO: Make member function to reduce JVM namespace pollution / JAR size
             if (is TileFixture fixture) {
                 filterList.shouldDisplay(fixture);
             } else if (is Iterable<Anything> fixture) {
