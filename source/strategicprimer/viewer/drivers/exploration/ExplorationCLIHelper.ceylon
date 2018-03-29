@@ -248,19 +248,21 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                     map.baseTerrain[destPoint] else "Unknown"``");
                 {TileFixture*} noticed = simpleMovementModel.selectNoticed(allFixtures, identity<TileFixture>,
                     mover, speed);
-                if (noticed.empty) {
-                    cli.println("The following were automatically noticed:");
-                } else if (noticed.size > 1) {
-                    cli.println(
-                        "The following were noticed, all but the last ``noticed
-                                .size`` automatically:");
-                } else {
-                    cli.println("The following were noticed, all but the last automatically:");
-                }
-                constants.addAll(noticed);
-                for (fixture in constants) {
-                    printAndTransferFixture(destPoint, fixture, mover);
-                }
+                if (!constants.empty || !noticed.empty) {
+	                if (noticed.empty) {
+	                    cli.println("The following were automatically noticed:");
+	                } else if (noticed.size > 1) {
+	                    cli.println(
+	                        "The following were noticed, all but the last ``noticed
+	                                .size`` automatically:");
+	                } else {
+	                    cli.println("The following were noticed, all but the last automatically:");
+	                }
+	                constants.addAll(noticed);
+	                for (fixture in constants) {
+	                    printAndTransferFixture(destPoint, fixture, mover);
+	                }
+	            }
                 if (!proposedPath.empty, automationConfig.config.stopAtPoint(
 	                    model.subordinateMaps.first?.first else model.map, destPoint)) {
                     cli.println("One of your stop-pathfinding conditions triggered, so control is returned to you.");
