@@ -46,13 +46,16 @@ shared class Speed of hurried|normal|observant|careful|meticulous satisfies HasN
     "The modifier to add to Perception checks."
     shared Integer perceptionModifier;
     "A description to use in menus."
-    shared actual String name; // TODO: Add a 'shortname' for use in CLI
+    shared actual String name;
+    "A description to use in prose text."
+    shared String shortName;
     abstract new delegate(Float multMod, Integer addMod, String desc) {
         mpMultiplier = multMod;
         perceptionModifier = addMod;
         String perceptionString = (addMod >= 0) then "+``addMod``" else addMod.string;
         name = "``desc``: x``Float.format(multMod, 0,
             1)`` MP costs, ``perceptionString`` Perception";
+        shortName = desc;
     }
     "Traveling as quickly as possible."
     shared new hurried extends delegate(0.66, -6, "Hurried") {}
