@@ -46,7 +46,7 @@ shared class Speed of hurried|normal|observant|careful|meticulous satisfies HasN
     "The modifier to add to Perception checks."
     shared Integer perceptionModifier;
     "A description to use in menus."
-    shared actual String name;
+    shared actual String name; // TODO: Add a 'shortname' for use in CLI
     abstract new delegate(Float multMod, Integer addMod, String desc) {
         mpMultiplier = multMod;
         perceptionModifier = addMod;

@@ -164,11 +164,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         cli.println("Intended next destination ``proposedDestination`` is not adjacent to current location ``point``");
                         continue;
                     }
-                    cli.println("``movement`` MP of ``totalMP`` remaining.");
-                    cli.println("Current speed: ``speed.name``");
+                    cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``speed.name``.");
                 } else {
-	                cli.println("``movement`` MP of ``totalMP`` remaining.");
-	                cli.println("Current speed: ``speed.name``");
+	                cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``speed.name``.");
 	                cli.println("""0 = Change Speed, 1 = SW, 2 = S, 3 = SE, 4 = W, 5 = Stay Here,
 	                               6 = E, 7 = NW, 8 = N, 9 = NE, 10 = Pathfind Toward Location, 11 = Quit.""");
 	                Integer directionNum = cli.inputNumber("Direction to move: ");
