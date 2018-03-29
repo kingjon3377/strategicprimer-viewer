@@ -75,7 +75,9 @@ import strategicprimer.model.map {
     TileFixture,
     IMutableMapNG,
     PlayerImpl,
-    HasOwner
+    HasOwner,
+	HasExtent,
+	HasPopulation
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -412,6 +414,8 @@ SPFrame explorationFrame(IExplorationModel model,
                                 .any((that) => fixture == that)) {
                                 Boolean zero;
                                 if (is HasOwner fixture, fixture.owner != player || fixture is Village) {
+                                    zero = true;
+                                } else if (is HasPopulation<Anything>|HasExtent fixture) {
                                     zero = true;
                                 } else {
                                     zero = false;
