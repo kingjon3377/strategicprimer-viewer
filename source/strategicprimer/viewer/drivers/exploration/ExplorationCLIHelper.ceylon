@@ -244,8 +244,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 } else {
                     mtn = "";
                 }
-                cli.println("The explorer comes to ``destPoint``, a ``mtn``tile with terrain ``
-                    map.baseTerrain[destPoint] else "Unknown"``");
+                cli.println("The explorer comes to ``destPoint``, a ``mtn````
+                    map.baseTerrain[destPoint] else "unknown-terrain"``tile");
                 {TileFixture*} noticed = simpleMovementModel.selectNoticed(allFixtures, identity<TileFixture>,
                     mover, speed);
                 if (!constants.empty || !noticed.empty) {
