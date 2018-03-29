@@ -275,9 +275,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
 }
 
 class ExplorationAutomationConfig(Player player, Boolean stopForForts,
-	Boolean stopForActiveTowns, Boolean stopForInactiveTowns, Boolean stopForYourVillages,
-	Boolean stopForIndieVillages, Boolean stopForOtherVillages, Boolean stopForPlayerUnits,
-	Boolean stopForIndieUnits, Boolean stopForImmortals) {
+		Boolean stopForActiveTowns, Boolean stopForInactiveTowns, Boolean stopForYourVillages,
+		Boolean stopForIndieVillages, Boolean stopForOtherVillages, Boolean stopForPlayerUnits,
+		Boolean stopForIndieUnits, Boolean stopForImmortals) {
 	shared Boolean stopAtPoint(ICLIHelper cli, IMapNG map, Point point) {
 		//for (fixture in map.fixtures[point]) { // TODO: syntax sugar
 		for (fixture in map.fixtures.get(point)) {
