@@ -1,4 +1,4 @@
-import ceylon.math.decimal {
+import ceylon.decimal {
     Decimal,
     decimalNumber,
     parseDecimal

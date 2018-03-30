@@ -2,7 +2,6 @@
 license("GPL-3")
 native("jvm")
 module lovelace.util.jvm "0.1.0" {
-    import ceylon.math "1.3.3";
     import ceylon.collection "1.3.3";
     shared import java.base "8";
     shared import java.desktop "8";

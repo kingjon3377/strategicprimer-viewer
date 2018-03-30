@@ -8,11 +8,11 @@ import ceylon.language.meta {
     classDeclaration,
 	type
 }
-import ceylon.math.decimal {
+import ceylon.decimal {
     decimalNumber,
     Decimal
 }
-import ceylon.math.whole {
+import ceylon.whole {
     Whole
 }
 

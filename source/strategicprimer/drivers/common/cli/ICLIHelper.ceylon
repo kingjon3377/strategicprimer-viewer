@@ -3,7 +3,7 @@ import strategicprimer.model.map {
     pointFactory,
     HasName
 }
-import ceylon.math.decimal {
+import ceylon.decimal {
     Decimal
 }
 import ceylon.collection {

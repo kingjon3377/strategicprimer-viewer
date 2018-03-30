@@ -1,4 +1,4 @@
-import ceylon.math.decimal {
+import ceylon.decimal {
     decimalNumber
 }
 import ceylon.random {

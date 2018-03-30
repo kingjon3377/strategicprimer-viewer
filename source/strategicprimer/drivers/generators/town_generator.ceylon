@@ -37,7 +37,7 @@ import strategicprimer.model.idreg {
     IDRegistrar,
     createIDFactory
 }
-import ceylon.math.decimal {
+import ceylon.decimal {
     Decimal
 }
 import strategicprimer.model.map.fixtures.resources {

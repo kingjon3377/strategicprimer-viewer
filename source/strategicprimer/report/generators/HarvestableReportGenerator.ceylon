@@ -38,7 +38,7 @@ import strategicprimer.report.nodes {
     SectionReportNode,
     emptyReportNode
 }
-import ceylon.math.decimal {
+import ceylon.decimal {
 	Decimal
 }
 import com.vasileff.ceylon.structures {

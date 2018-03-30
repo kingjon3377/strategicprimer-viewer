@@ -45,7 +45,7 @@ import strategicprimer.model.xmlio.exceptions {
 import lovelace.util.jvm {
     ConvertingIterable
 }
-import ceylon.math.decimal {
+import ceylon.decimal {
 	Decimal,
 	parseDecimal
 }

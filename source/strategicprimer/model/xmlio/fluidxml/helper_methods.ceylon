@@ -53,11 +53,11 @@ import strategicprimer.model.xmlio.exceptions {
 import lovelace.util.jvm {
     ConvertingIterable
 }
-import ceylon.math.decimal {
+import ceylon.decimal {
 	Decimal,
 	parseDecimal
 }
-import ceylon.math.whole {
+import ceylon.whole {
 	Whole
 }
 import java.math {

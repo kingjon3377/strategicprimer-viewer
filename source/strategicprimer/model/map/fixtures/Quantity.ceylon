@@ -1,7 +1,7 @@
-import ceylon.math.decimal {
+import ceylon.decimal {
     Decimal
 }
-import ceylon.math.whole {
+import ceylon.whole {
     Whole
 }
 

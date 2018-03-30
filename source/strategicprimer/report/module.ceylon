@@ -16,4 +16,5 @@ module strategicprimer.report "0.4.9016" {
     shared import ceylon.file "1.3.3";
     import ceylon.random "1.3.3";
 	import com.vasileff.ceylon.structures "1.1.3";
+	import ceylon.decimal "1.3.3";
 }

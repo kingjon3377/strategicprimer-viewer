@@ -18,9 +18,6 @@ import strategicprimer.model.map {
     IMapNG,
     Point
 }
-import ceylon.math.float {
-    random
-}
 import ceylon.file {
     parsePath,
     Directory
@@ -28,6 +25,9 @@ import ceylon.file {
 import strategicprimer.drivers.exploration.old {
     ExplorationRunner,
     loadAllTables
+}
+import lovelace.util.jvm {
+	singletonRandom
 }
 "A class to non-interactively generate a tile's contents." // TODO: Replace this with a *map* contents generator
 todo("Figure out how to run the Ceylon version repeatedly on a single JVM")
@@ -38,7 +38,7 @@ class TileContentsGenerator(IMapNG map) {
     loadAllTables(directory, runner);
     shared void generateTileContents(Point point,
             TileType? terrain = map.baseTerrain[point]) {
-        Integer reps = (random() * 4).integer + 1;
+        Integer reps = singletonRandom.nextInteger(4) + 1;
         for (i in 0:reps) {
             process.writeLine(runner.recursiveConsultTable("fisher", point, terrain,
 //                map.mountainous[point], {}, map.dimensions)); // TODO: syntax sugar once compiler bug fixed

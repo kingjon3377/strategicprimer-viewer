@@ -38,14 +38,14 @@ import strategicprimer.model.map.fixtures.towns {
 	ITownFixture,
 	TownSize
 }
-import ceylon.math.decimal {
+import ceylon.decimal {
 	decimalNumber,
 	Decimal,
 	round,
 	halfEven,
 	implicitlyRounded
 }
-import ceylon.math.whole {
+import ceylon.whole {
 	Whole
 }
 

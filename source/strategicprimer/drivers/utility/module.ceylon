@@ -6,7 +6,8 @@ license("GPL-3")
 native("jvm")
 module strategicprimer.drivers.utility "0.4.9016" {
     import ceylon.collection "1.3.3";
-    import ceylon.math "1.3.3";
+    import ceylon.decimal "1.3.3";
+    import ceylon.whole "1.3.3";
     shared import java.base "8";
     import strategicprimer.model "0.4.9016";
     import java.desktop "8";

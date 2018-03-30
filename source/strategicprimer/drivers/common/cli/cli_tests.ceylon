@@ -9,7 +9,7 @@ import strategicprimer.model.map {
     PlayerImpl,
     pointFactory
 }
-import ceylon.math.decimal {
+import ceylon.decimal {
     decimalNumber
 }
 object cliTests {

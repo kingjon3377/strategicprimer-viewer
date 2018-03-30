@@ -10,9 +10,6 @@ import ceylon.file {
     parsePath,
     lines
 }
-import ceylon.math.float {
-    random
-}
 
 import strategicprimer.model.idreg {
     IDRegistrar,
@@ -52,7 +49,8 @@ import strategicprimer.drivers.exploration.common {
     ExplorationModel
 }
 import lovelace.util.jvm {
-    readFileContents
+    readFileContents,
+	singletonRandom
 }
 import ceylon.logging {
     logger,
@@ -192,7 +190,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
     variable Boolean alwaysLowest = false;
     "Create randomly-generated stats for a worker, with racial adjustments applied."
     WorkerStats createWorkerStats(String race, Integer levels, ICLIHelper cli) {
-        Integer die(Integer max) => (random() * max).integer + 1;
+        Integer die(Integer max) => singletonRandom.nextInteger(max) + 1;
         WorkerStats base = WorkerStats.random(() => die(6) + die(6) + die(6));
         Integer lowestScore = getMinIndex(base.array);
         WorkerStats racialBonus;
@@ -253,7 +251,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
             String race = raceFactory.randomRace();
             String name = cli.inputString("Worker is a ``race``. Worker name: ");
             Worker worker = Worker(name, race, idf.createID());
-            Integer levels = {0, 1, 2}.count((int) => (random() * 20).integer == 0 );
+            Integer levels = {0, 1, 2}.count((int) => singletonRandom.nextInteger(20) == 0 );
             if (levels == 1) {
                 cli.println("Worker has 1 Job level.");
             } else if (levels > 1) {
@@ -296,7 +294,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
             String race = raceFactory.randomRace();
             cli.println("Worker ``name`` is a ``race``");
             Worker worker = Worker(name, race, idf.createID());
-            Integer levels = {0, 1, 2}.count((int) => (random() * 20).integer == 0 );
+            Integer levels = {0, 1, 2}.count((int) => singletonRandom.nextInteger(20) == 0 );
             if (levels == 1) {
                 cli.println("Worker has 1 Job level.");
             } else if (levels > 1) {

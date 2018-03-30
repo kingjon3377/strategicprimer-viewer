@@ -23,7 +23,7 @@ import strategicprimer.model.map.fixtures.resources {
 import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
-import ceylon.math.decimal {
+import ceylon.decimal {
 	Decimal
 }
 import ceylon.logging {

@@ -9,7 +9,7 @@ import ceylon.collection {
 import ceylon.language.meta {
     classDeclaration
 }
-import ceylon.math.decimal {
+import ceylon.decimal {
     parseDecimal
 }
 

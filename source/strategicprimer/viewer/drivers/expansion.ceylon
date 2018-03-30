@@ -2,9 +2,6 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import ceylon.math.float {
-    random
-}
 
 import strategicprimer.model.idreg {
     IDRegistrar,
@@ -51,6 +48,9 @@ import ceylon.random {
 }
 import strategicprimer.model.map.fixtures.terrain {
     Forest
+}
+import lovelace.util.jvm {
+	singletonRandom
 }
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""
@@ -184,7 +184,7 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
         for (location in map.locations) {
             if (populator.isSuitable(map, location)) {
                 suitableCount++;
-                if (random() < populator.chance) {
+                if (singletonRandom.nextFloat() < populator.chance) {
                     changedCount++;
                     populator.create(location, map, idf);
                 }
