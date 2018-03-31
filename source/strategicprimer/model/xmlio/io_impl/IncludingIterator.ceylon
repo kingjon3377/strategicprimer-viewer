@@ -82,7 +82,11 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
 	            }
 	        } catch (Exception except) {
 	            if (exists cause) {
-	                cause.addSuppressed(except);
+	                if (cause === except) {
+	                    // This shouldn't be possible but in practice occurs.
+	                } else {
+	                	cause.addSuppressed(except);
+	                }
 	            } else if (exists previous = first) {
 	                previous.addSuppressed(except);
 	            } else {
