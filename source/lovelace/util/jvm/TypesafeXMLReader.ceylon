@@ -19,7 +19,7 @@ import ceylon.collection {
  argument. Also contains factory methods so callers don't need to deal *at all* with the
  object this wraps. If the provided reader is [[Closeable|JCloseable]], we call its `close`
  method before returning [[finished]], to help mitigate the resource leak in IncludingIterator."
-shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent> {
+shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent>&Destroyable {
     XMLEventReader wrapped;
     Queue<Anything()> closeHandles = LinkedList<Anything()>();
     variable Boolean closed = false;
@@ -38,13 +38,15 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent> {
         }
     }
     "Close the wrapped stream and prevent reading any further data."
-    // TODO: Should we satisfy Destroyable and rename this destroy()?
-    shared void exhaust() {
+    shared actual void destroy(Throwable? error) {
         wrapped.close();
         while (exists handle = closeHandles.accept()) {
             handle();
         }
         closed = true;
+        if (exists error) {
+            throw error;
+        }
     }
     throws(`class XMLStreamException`, "on malformed XML")
     shared actual XMLEvent|Finished next() {
@@ -54,7 +56,7 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent> {
 	        if (wrapped.hasNext(), exists retval = wrapped.nextEvent()) {
 	            return retval;
 	        } else {
-	            exhaust();
+	            destroy(null);
 	            return finished;
 	        }
         }

@@ -70,7 +70,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     void exhaust() {
         while (exists [file, reader] = stack.pop()) {
             if (is TypesafeXMLEventReader reader) {
-                reader.exhaust();
+                reader.destroy(null);
             } else if (is JCloseable reader) {
                 reader.close();
             } else if (is AutoCloseable reader) {
