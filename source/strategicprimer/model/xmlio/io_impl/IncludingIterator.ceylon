@@ -66,18 +66,32 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
         stack.push([file.string, iter]);
     }
     "Completely unwind the stack. Should be called before throwing any exception
-     to our callers." // TODO: Defer any exceptions thrown while doing this
-    void exhaust() {
+     to our callers."
+    void exhaust(Throwable? cause) {
+        variable Exception? first = null;
         while (exists [file, reader] = stack.pop()) {
-            if (is Destroyable reader) {
-                reader.destroy(null);
-            } else if (is JCloseable reader) {
-                reader.close();
-            } else if (is AutoCloseable reader) {
-                reader.close();
-            } else if (is Obtainable reader) {
-                reader.release(null);
-            }
+            try {
+	            if (is Destroyable reader) {
+	                reader.destroy(cause);
+	            } else if (is JCloseable reader) {
+	                reader.close();
+	            } else if (is AutoCloseable reader) {
+	                reader.close();
+	            } else if (is Obtainable reader) {
+	                reader.release(cause);
+	            }
+	        } catch (Exception except) {
+	            if (exists cause) {
+	                cause.addSuppressed(except);
+	            } else if (exists previous = first) {
+	                previous.addSuppressed(except);
+	            } else {
+	                first = except;
+	            }
+	        }
+        }
+        if (!cause exists, exists exception = first) {
+            throw exception;
         }
     }
     """Handle an "include" tag by adding an iterator for the contents of the file it
@@ -94,7 +108,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
 	        // FIXME: The Reader here (and thus the file it opens!) get leaked if not finished
 	        stack.push([file, TypesafeXMLEventReader(magicReader(file))]);
 	    } catch (Exception except) {
-	        exhaust();
+	        exhaust(except);
 	        throw except;
 	    }
     }
@@ -129,7 +143,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
 	        }
 	        return finished;
 	    } catch (Exception exception) {
-	        exhaust();
+	        exhaust(exception);
 	        throw exception;
 	    }
     }
