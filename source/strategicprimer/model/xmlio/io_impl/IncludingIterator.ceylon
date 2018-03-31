@@ -66,15 +66,17 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
         stack.push([file.string, iter]);
     }
     "Completely unwind the stack. Should be called before throwing any exception
-     to our callers."
+     to our callers." // TODO: Defer any exceptions thrown while doing this
     void exhaust() {
         while (exists [file, reader] = stack.pop()) {
-            if (is TypesafeXMLEventReader reader) {
+            if (is Destroyable reader) {
                 reader.destroy(null);
             } else if (is JCloseable reader) {
                 reader.close();
             } else if (is AutoCloseable reader) {
                 reader.close();
+            } else if (is Obtainable reader) {
+                reader.release(null);
             }
         }
     }
@@ -109,8 +111,11 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
 	                        oldStream.close();
 	                    } else if (is AutoCloseable oldStream) {
 	                        oldStream.close();
+	                    } else if (is Destroyable oldStream) {
+	                        oldStream.destroy(null);
+	                    } else if (is Obtainable oldStream) {
+	                        oldStream.release(null);
 	                    }
-	                    // TODO: Handle Destroyable too?
 	                }
 	                continue;
 	            } else if (is StartElement retval, {spNamespace, XMLConstants.nullNsUri}
