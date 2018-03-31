@@ -3,8 +3,7 @@ import ceylon.test {
     test,
     assertFalse,
     assertEquals,
-    assertNotEquals,
-	parameters
+    assertNotEquals
 }
 
 import strategicprimer.model.map {
@@ -51,8 +50,9 @@ import strategicprimer.model.map.fixtures.towns {
 	City,
 	CommunityStats
 }
-{[TownSize, TownStatus]*} townParameters =
-		`TownSize`.caseValues.product(`TownStatus`.caseValues);
+import lovelace.util.common {
+	enumeratedParameters
+}
 object subsetTests {
 	void assertIsSubset<T,U=T>(T&U one, T&U two, String message)
 	        given T satisfies Subsettable<U> given U satisfies Object =>
@@ -248,7 +248,7 @@ object subsetTests {
 
 	"Test [[AbstractTown]] subset calculations, specifically in the [[Town]] instantiation."
 	test
-	parameters(`value townParameters`)
+	enumeratedParameters(`class TownSize`, `class TownStatus`)
 	shared void testTownSubsets(TownSize size, TownStatus status) {
 		TownSize differentSize;
 		TownStatus differentStatus;
@@ -313,7 +313,7 @@ object subsetTests {
 
 	"Test [[AbstractTown]] subset calculations, specifically in the [[City]] instantiation."
 	test
-	parameters(`value townParameters`)
+	enumeratedParameters(`class TownSize`, `class TownStatus`)
 	shared void testCitySubsets(TownSize size, TownStatus status) {
 		TownSize differentSize;
 		TownStatus differentStatus;
@@ -378,7 +378,7 @@ object subsetTests {
 
 	"Test [[AbstractTown]] subset calculations, specifically in the [[Fortification]] instantiation."
 	test
-	parameters(`value townParameters`)
+	enumeratedParameters(`class TownSize`, `class TownStatus`)
 	shared void testFortificationSubsets(TownSize size, TownStatus status) {
 		TownSize differentSize;
 		TownStatus differentStatus;

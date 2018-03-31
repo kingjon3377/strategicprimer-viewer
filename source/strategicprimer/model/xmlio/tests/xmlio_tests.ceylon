@@ -39,7 +39,9 @@ import javax.xml.stream {
 
 import lovelace.util.common {
     todo,
-    assertAny
+    assertAny,
+	enumeratedParameter,
+	enumeratedParameters
 }
 
 import strategicprimer.model.idreg {
@@ -146,11 +148,6 @@ import ceylon.language.meta.declaration {
 {[Integer, Integer]*} threeRandomPairs() => DefaultRandom().integers(1200000).paired.take(3);
 {[TownStatus, String]*} villageParameters =
 		`TownStatus`.caseValues.product(raceFactory.races.distinct);
-{[TownSize, TownStatus]*} townParameters =
-		`TownSize`.caseValues.product(`TownStatus`.caseValues);
-{[StoneKind]*} stoneParameters = `StoneKind`.caseValues.map((val) => [val]);
-{[River]*} riverParameters = {*`River`.caseValues}.map((val) => [val]);
-
 
 object xmlTests {
 	JPath fakeFilename = JPaths.get("");
@@ -436,7 +433,7 @@ object xmlTests {
 	}
 
 	test
-	parameters(`value townParameters`)
+	enumeratedParameters(`class TownSize`, `class TownStatus`)
 	shared void testCitySerialization(TownSize size, TownStatus status) {
 	    Player owner = PlayerImpl(-1, "");
 	    assertSerialization("First City serialization test, status ``status``, size ``size``",
@@ -472,7 +469,7 @@ object xmlTests {
 	}
 
 	test
-	parameters(`value townParameters`)
+	enumeratedParameters(`class TownSize`, `class TownStatus`)
 	shared void testFortificationSerialization(TownSize size, TownStatus status) {
 	    Player owner = PlayerImpl(-1, "");
 	    assertSerialization("First Fortification serialization test, status ``status
@@ -509,7 +506,7 @@ object xmlTests {
 	}
 
 	test
-	parameters(`value townParameters`)
+	enumeratedParameters(`class TownSize`, `class TownStatus`)
 	shared void testTownSerialization(TownSize size, TownStatus status) {
 	    Player owner = PlayerImpl(-1, "");
 	    assertSerialization("First Town serialization test, status ``status``, size ``size``",
@@ -548,7 +545,7 @@ object xmlTests {
 	}
 
 	test
-	parameters(`value stoneParameters`)
+	enumeratedParameter(`class StoneKind`)
 	shared void testStoneSerialization(StoneKind kind) {
 	    assertSerialization("First StoneDeposit test, kind: ``kind``",
 	        StoneDeposit(kind, 8, 1));
@@ -559,7 +556,7 @@ object xmlTests {
 	}
 
 	test
-	parameters(`value stoneParameters`)
+	enumeratedParameter(`class StoneKind`)
 	shared void testOldStoneIdiom(StoneKind kind) {
 	    StoneDeposit thirdDeposit = StoneDeposit(kind, 10, 3);
 	    for (deprecated in {true, false}) {
@@ -569,7 +566,7 @@ object xmlTests {
 	}
 
 	test
-	parameters(`value stoneParameters`)
+	enumeratedParameter(`class StoneKind`)
 	shared void testStoneSerializationErrors(StoneKind kind) {
 	    assertUnwantedChild<StoneDeposit>(
 	        "<stone kind=\"``kind``\" dc=\"10\"><troll /></stone>", null);
@@ -609,7 +606,7 @@ object xmlTests {
 	}
 
 	test
-	parameters(`value riverParameters`)
+	enumeratedParameter(`class River`)
 	shared void testSimpleRiverSerialization(River river) {
 	    assertSerialization("River alone", river);
 	    Point loc = pointFactory(0, 0);
