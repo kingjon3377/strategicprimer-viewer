@@ -181,7 +181,7 @@ object mapPopulatorDriver satisfies SimpleCLIDriver {
     "Populate the map. You shouldn't need to customize this."
     void populate(IMutableMapNG map) {
         IDRegistrar idf = createIDFactory(map);
-        for (location in map.locations) {
+        for (location in randomize(map.locations)) {
             if (populator.isSuitable(map, location)) {
                 suitableCount++;
                 if (singletonRandom.nextFloat() < populator.chance) {
