@@ -70,7 +70,7 @@ import java.io {
 import java.nio.file {
     NoSuchFileException
 }
-import ceylon.math.float {
+import ceylon.numeric.float {
     halfEven
 }
 import strategicprimer.drivers.worker.common {

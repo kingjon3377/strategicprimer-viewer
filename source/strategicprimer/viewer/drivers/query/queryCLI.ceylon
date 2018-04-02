@@ -42,7 +42,7 @@ import lovelace.util.common {
 import strategicprimer.model.map.fixtures.terrain {
 	Forest
 }
-import ceylon.math.float {
+import ceylon.numeric.float {
 	ceiling,
 	sqrt,
 	round=halfEven

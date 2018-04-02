@@ -10,7 +10,7 @@ module strategicprimer.viewer "0.4.9016" {
     import ceylon.logging "1.3.3";
     shared import lovelace.util.common "0.1.0";
     shared import javax.xml "8";
-    shared import ceylon.math "1.3.3";
+    shared import ceylon.numeric "1.3.3";
     shared import ceylon.file "1.3.3";
 //    import ceylon.io "1.3.3";
 //    import maven:"com.pump:pump-swing" "1.0.00";

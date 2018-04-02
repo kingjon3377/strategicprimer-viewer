@@ -2,7 +2,7 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import ceylon.math.float {
+import ceylon.numeric.float {
     ceiling
 }
 import java.nio.file {

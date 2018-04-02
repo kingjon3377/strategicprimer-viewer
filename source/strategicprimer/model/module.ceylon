@@ -13,7 +13,7 @@ module strategicprimer.model "0.4.9016" {
     shared import lovelace.util.common "0.1.0";
     import ceylon.interop.java "1.3.3";
     import ceylon.logging "1.3.3";
-    shared import ceylon.math "1.3.3";
+    shared import ceylon.numeric "1.3.3";
     import lovelace.util.jvm "0.1.0";
     import ceylon.regex "1.3.3";
     shared import ceylon.random "1.3.3";

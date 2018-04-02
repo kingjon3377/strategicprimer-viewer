@@ -1,4 +1,4 @@
-import ceylon.math.float {
+import ceylon.numeric.float {
     sqrt
 }
 

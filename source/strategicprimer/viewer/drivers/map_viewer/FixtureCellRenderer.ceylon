@@ -37,7 +37,7 @@ import ceylon.collection {
 import java.nio.file {
     NoSuchFileException
 }
-import ceylon.math.float {
+import ceylon.numeric.float {
     halfEven,
     ceiling
 }

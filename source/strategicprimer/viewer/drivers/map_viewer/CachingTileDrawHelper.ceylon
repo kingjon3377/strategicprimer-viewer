@@ -21,7 +21,7 @@ import java.awt {
     Polygon,
     Rectangle
 }
-import ceylon.math.float {
+import ceylon.numeric.float {
     halfEven
 }
 import java.lang {

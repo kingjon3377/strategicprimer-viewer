@@ -26,7 +26,7 @@ import strategicprimer.drivers.common.cli {
 import lovelace.util.common {
 	todo
 }
-import ceylon.math.float {
+import ceylon.numeric.float {
 	round=halfEven
 }
 import strategicprimer.model.map.fixtures.mobile {
