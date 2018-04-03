@@ -387,7 +387,7 @@ object resourceAddingGUI satisfies SimpleDriver {
                 model.addResource(Implement(kind, idf.createID()), currentPlayer);
             }
             logAddition("``quantity`` x ``kind``");
-            implementQuantityModel.\ivalue = 1;
+            implementQuantityModel.\ivalue = JInteger(1);
             implementKindBox.checkAndClear();
             implementQuantityField.requestFocusInWindow();
         };
