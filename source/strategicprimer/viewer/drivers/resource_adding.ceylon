@@ -360,8 +360,8 @@ object resourceAddingGUI satisfies SimpleDriver {
                 for (box in { resourceKindBox, resourceBox, resourceUnitsBox }) {
                     box.checkAndClear();
                 }
-                resourceCreatedModel.\ivalue = -1;
-                resourceQuantityModel.\ivalue = 0;
+                resourceCreatedModel.\ivalue = JInteger(-1);
+                resourceQuantityModel.\ivalue = JInteger(0);
             } else {
                 logLabel.append("Failed to convert quantity into the form we need.
                                  ");
