@@ -333,9 +333,9 @@ todo("Find an equivalent text-formatting API in the Ceylon SDK, if there is one.
 shared class FormattedLabel extends JLabel {
 	static Object mapper(Object arg) {
 		switch (arg)
-		case (is Integer) { return JInteger(arg); }
+		case (is Integer) { return JInteger.valueOf(arg); }
 		case (is String) { return Types.nativeString(arg); }
-		case (is Float) { return JDouble(arg); }
+		case (is Float) { return JDouble.valueOf(arg); }
 		else { return arg; }
 	}
 	static String formatter(String format, Object* args) {

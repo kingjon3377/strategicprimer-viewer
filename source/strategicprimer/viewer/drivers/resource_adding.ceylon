@@ -356,8 +356,8 @@ object resourceAddingGUI satisfies SimpleDriver {
                 for (box in { resourceKindBox, resourceBox, resourceUnitsBox }) {
                     box.checkAndClear();
                 }
-                resourceCreatedModel.\ivalue = JInteger(-1);
-                resourceQuantityModel.\ivalue = JInteger(0);
+                resourceCreatedModel.\ivalue = JInteger.valueOf(-1);
+                resourceQuantityModel.\ivalue = JInteger.valueOf(0);
             } else {
                 logLabel.append("Failed to convert quantity into the form we need.
                                  ");
@@ -387,7 +387,7 @@ object resourceAddingGUI satisfies SimpleDriver {
                 model.addResource(Implement(kind, idf.createID()), currentPlayer);
             }
             logAddition("``quantity`` x ``kind``");
-            implementQuantityModel.\ivalue = JInteger(1);
+            implementQuantityModel.\ivalue = JInteger.valueOf(1);
             implementKindBox.checkAndClear();
             implementQuantityField.requestFocusInWindow();
         };
@@ -413,7 +413,7 @@ object resourceAddingGUI satisfies SimpleDriver {
         logLabel.minimumSize = Dimension(retval.width - 20, 50);
         JComponent temp = logLabel;
         temp.preferredSize = Dimension(retval.width, 100);
-        JInteger maximum = JInteger(runtime.maxArraySize);
+        JInteger maximum = JInteger.valueOf(runtime.maxArraySize);
         resourceCreatedModel.maximum = maximum;
         resourceQuantityModel.maximum = maximum;
         implementQuantityModel.maximum = maximum;

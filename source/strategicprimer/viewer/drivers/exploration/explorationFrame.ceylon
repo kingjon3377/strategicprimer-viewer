@@ -261,7 +261,7 @@ SPFrame explorationFrame(IExplorationModel model,
         FormattedLabel locLabel = FormattedLabel(
             "<html><body>Currently exploring (%d, %d); click a tile to explore it.
              Selected fixtures in its left-hand list will be 'discovered'.
-             </body></html>", JInteger(-1), JInteger(-1));
+             </body></html>", JInteger.valueOf(-1), JInteger.valueOf(-1));
         MutableMap<Direction, SelectionChangeSupport> mains =
                 HashMap<Direction, SelectionChangeSupport>();
         MutableMap<Direction, SelectionChangeSupport> seconds =
