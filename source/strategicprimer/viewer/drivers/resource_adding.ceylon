@@ -432,6 +432,9 @@ object resourceAddingGUI satisfies SimpleDriver {
         if (is ResourceManagementDriverModel model) {
             PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
             MenuBroker menuHandler = MenuBroker();
+            menuHandler.register(IOHandler(model, options, cli), "load", "save",
+                "save as", "new", "load secondary", "save all", "open in map viewer",
+                "open secondary map in map viewer");
             menuHandler.register(pcml, "change current player");
             SwingUtilities.invokeLater(() {
                 value frame = resourceAddingFrame(model, menuHandler.actionPerformed);
