@@ -101,6 +101,9 @@ import com.vasileff.ceylon.structures {
 	MutableMultimap,
 	HashMultimap
 }
+import strategicprimer.drivers.gui.common.about {
+	aboutDialog
+}
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
     shared new fromMap(IMutableMapNG map, JPath? file) extends
@@ -463,6 +466,9 @@ object resourceAddingGUI satisfies SimpleDriver {
             menuHandler.register(pcml, "change current player");
             SwingUtilities.invokeLater(() {
                 value frame = resourceAddingFrame(model, menuHandler.actionPerformed);
+                menuHandler.register((event) => frame.dispose(), "close");
+                menuHandler.register((event) =>
+                    aboutDialog(frame, frame.windowName).setVisible(true), "about");
                 pcml.addPlayerChangeListener(frame);
                 frame.setVisible(true);
             });
