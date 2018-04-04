@@ -300,7 +300,7 @@ object resourceAddingGUI satisfies SimpleDriver {
     "A window to let the user enter resources etc. Note that this is not a dialog to enter one
      resource and close."
     SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
-        Anything(ActionEvent) menuHandler) {
+	        Anything(ActionEvent) menuHandler) {
         IDRegistrar idf = createIDFactory(model.allMaps.map((pair) => pair.first));
         variable Player currentPlayer = PlayerImpl(-1, "");
         JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
