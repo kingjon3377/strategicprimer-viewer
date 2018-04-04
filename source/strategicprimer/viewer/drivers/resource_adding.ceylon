@@ -326,11 +326,13 @@ object resourceAddingGUI satisfies SimpleDriver {
         // If we set the maximum high at this point, the fields would try to be unneccessarily
         // large. I'm not sure that setting it low at first helps, though.
         SpinnerNumberModel resourceCreatedModel = SpinnerNumberModel(-1, -1, 2000, 1);
-        resourcePanel.add(pairPanel(JLabel("Turn created"), JSpinner(resourceCreatedModel)));
+        JSpinner creationSpinner = JSpinner(resourceCreatedModel);
+        resourcePanel.add(pairPanel(JLabel("Turn created"), creationSpinner));
         UpdatedComboBox resourceBox = UpdatedComboBox(logLabel.append);
         resourcePanel.add(pairPanel(JLabel("Specific Resource"), resourceBox));
         SpinnerNumberModel resourceQuantityModel = SpinnerNumberModel(0, 0, 2000, 1);
-        resourcePanel.add(pairPanel(JLabel("Quantity"), JSpinner(resourceQuantityModel)));
+        JSpinner resourceQuantitySpinner = JSpinner(resourceQuantityModel);
+        resourcePanel.add(pairPanel(JLabel("Quantity"), resourceQuantitySpinner));
         UpdatedComboBox resourceUnitsBox = UpdatedComboBox(logLabel.append);
         resourcePanel.add(pairPanel(JLabel("Units"), resourceUnitsBox));
         variable Boolean playerIsDefault = true;
@@ -374,6 +376,22 @@ object resourceAddingGUI satisfies SimpleDriver {
         resourcePanel.add(pairPanel(JLabel(""),
             listenedButton("Add Resource", resourceListener)));
         resourceUnitsBox.addSubmitListener(resourceListener);
+        if (is JTextField editor = creationSpinner.editor) {
+            editor.addActionListener(resourceListener);
+        } else {
+            logLabel.append("Turn-created spinner's editor wasn't a text field, but a ``
+				                classDeclaration(creationSpinner.editor)``
+				             ");
+        }
+        if (is JTextField editor = resourceQuantitySpinner.editor) {
+            editor.addActionListener(resourceListener);
+        } else {
+            logLabel.append("Quantity spinner's editor wasn't a text field, but a ``
+				                classDeclaration(resourceQuantitySpinner.editor)``
+                             ");
+        }
+        resourceBox.addSubmitListener(resourceListener);
+        resourceKindBox.addSubmitListener(resourceListener);
         mainPanel.add(resourcePanel);
 
         mainPanel.addGlue();
@@ -400,6 +418,13 @@ object resourceAddingGUI satisfies SimpleDriver {
             implementQuantityField.requestFocusInWindow();
         };
         implementKindBox.addSubmitListener(implementListener);
+        if (is JTextField editor = implementQuantityField.editor) {
+            editor.addActionListener(implementListener);
+        } else {
+            logLabel.append("Implement quantity spinner's editor wasn't a text field, but a ``
+				                classDeclaration(implementQuantityField.editor)``
+                             ");
+        }
         mainPanel.add(centeredHorizontalBox(implementQuantityField,
             implementKindBox, listenedButton("Add Equipment", implementListener)));
         mainPanel.addGlue();
