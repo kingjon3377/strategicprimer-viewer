@@ -304,6 +304,13 @@ object resourceAddingGUI satisfies SimpleDriver {
                 }
             }
             shared String selectedString {
+                if (is JTextField inner = editor.editorComponent) {
+                    value text = inner.text;
+                    if (!text.empty) {
+                        selectedItem = text;
+                        return text;
+                    }
+                }
                 assert (is String retval = selectedItem);
                 return retval;
             }
