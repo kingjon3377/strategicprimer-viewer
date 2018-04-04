@@ -24,7 +24,8 @@ import java.io {
     IOException
 }
 import java.lang {
-    JInteger=Integer
+    JInteger=Integer,
+    JString=String
 }
 import java.nio.file {
     JPath=Path
@@ -271,7 +272,7 @@ object resourceAddingGUI satisfies SimpleDriver {
             }
         }
         assign selectedItem {
-            if (is String selectedItem) {
+            if (is String|JString selectedItem) {
                 super.selectedItem = selectedItem;
             }
         }
