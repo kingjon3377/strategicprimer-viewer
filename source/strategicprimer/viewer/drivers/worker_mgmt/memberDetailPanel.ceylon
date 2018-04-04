@@ -56,7 +56,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     statPanel.border = BorderFactory.createEmptyBorder();
     statLayout.autoCreateGaps = true;
     statLayout.autoCreateContainerGaps = true;
-    class StatLabel(Integer(WorkerStats ) stat) extends JLabel("+NaN") {
+    class StatLabel(Integer(WorkerStats) stat) extends JLabel("+NaN") {
         shared void recache(WorkerStats? stats) {
             if (exists stats) {
                 text = WorkerStats.getModifierString(stat(stats));
