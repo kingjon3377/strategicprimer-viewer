@@ -90,7 +90,7 @@
     </sequential>
   </macrodef>
   <target name="build" depends="init-ceylon">
-      <!-- TODO: make a generated-resources folder instead of storing this in the same hierarchy as 
+      <!-- TODO: make a generated-resources folder instead of storing this in the same hierarchy as
            non-generated resource files -->
       <concat destfile="${invocation.path}" overwrite="true">ceylon run ${main-module}</concat>
       <x-rebuild />
@@ -140,6 +140,9 @@
       <sequential>
           <!-- there isn't a ceylon-fat-jar Ant task (yet) -->
           <exec executable="${ceylon.executable}" failOnError="true">
+              <!-- TODO: We'd like to use 'ceylon assemble' instead, but a) it
+                   generates a _larger_ JAR file, and b) it's blocked by
+                   eclipse/ceylon#7225. -->
               <arg value="fat-jar" />
               <arg value="--out=@{out}" />
               <arg value="--run=@{run}" />
