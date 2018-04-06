@@ -220,7 +220,7 @@ shared IMapNG convertOneToTwo(
             for (column in ((point.column - 1)..(point.column + 1))
                 .map((num) => num.modulo(retval.dimensions.columns)))
             pointFactory(row, column)
-        }.filter((element) => point != element);
+        }.filter((element) => point != element).sequence();
         Boolean adjacentToTown() => !neighbors.flatMap(retval.fixtures.get).narrow<ITownFixture>().empty;
         Boolean adjacentWater() {
             for (neighbor in neighbors) {
