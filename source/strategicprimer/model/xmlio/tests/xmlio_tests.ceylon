@@ -375,17 +375,13 @@ object xmlTests {
 	 SP format errors."
 	void assertInvalid(String xml) {
 	    for (reader in readers) {
-	        try {
-		        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
-		                XMLStreamException|FileNotFoundException>(reader,
-		            xml, null);
-		    } catch (MissingPropertyException except) { // TODO: Can this be converted to assertThatException or some such?
-		        if (except.tag.localPart == "include", except.param == "file") {
-		            // pass
-		        } else {
-		            throw except;
-		        }
-		    }
+	        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
+	                XMLStreamException|FileNotFoundException>(reader,
+	            xml, (Exception exception) {
+	                if (is MissingPropertyException exception) {
+	                    assert (exception.tag.localPart == "include", exception.param == "file");
+	                }
+	            });
 	    }
 	}
 
