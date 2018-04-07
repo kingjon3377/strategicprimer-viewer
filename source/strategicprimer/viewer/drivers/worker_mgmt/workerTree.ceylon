@@ -347,12 +347,12 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     if (exists stats = localNode.stats) {
                         StringBuilder temp = StringBuilder();
                         temp.append("<html><p>");
-                        for ([desc, func] in [["Str", WorkerStats.strength], // TODO: Fix indentation // TODO: Use a lambda and String.join instead of a loop?
-                            ["Dex", WorkerStats.dexterity],
-                            ["Con", WorkerStats.constitution],
-                            ["Int", WorkerStats.intelligence],
-                            ["Wis", WorkerStats.wisdom],
-                            ["Cha", WorkerStats.charisma]]) {
+                        for ([desc, func] in [["Str", WorkerStats.strength], // TODO: Use a lambda and String.join instead of a loop?
+	                            ["Dex", WorkerStats.dexterity],
+	                            ["Con", WorkerStats.constitution],
+	                            ["Int", WorkerStats.intelligence],
+	                            ["Wis", WorkerStats.wisdom],
+	                            ["Cha", WorkerStats.charisma]]) {
                             temp.append(desc);
                             temp.append(" ");
                             temp.append(WorkerStats.getModifierString(func(stats)));

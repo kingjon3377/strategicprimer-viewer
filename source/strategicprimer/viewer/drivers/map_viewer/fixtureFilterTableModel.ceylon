@@ -97,32 +97,32 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
     MutableList<FixtureMatcher> list = ArrayList<FixtureMatcher>();
     // Can't use our preferred initialization form because an Iterable can only be spread
     // as the *last* argument.
-    for (arg in [ // TODO: Fix indentation
-        complements<IUnit>((unit) => !unit.owner.independent, "Units",
-            "Independent Units"),
-        trivialMatcher(`Fortress`, "Fortresses"),
-        // TODO: Towns should be broken up by kind or size, and maybe by status or owner
-        trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
-        // TODO: break up by owner beyond owned/independent
-        complements<Village>((village) => village.owner.independent, "Independent Villages", "Villages With Suzerain"),
-        trivialMatcher(`Mine`), trivialMatcher(`Troll`),
-        trivialMatcher(`Simurgh`), trivialMatcher(`Ogre`), trivialMatcher(`Minotaur`),
-        trivialMatcher(`Griffin`), trivialMatcher(`Sphinx`, "Sphinxes"),
-        trivialMatcher(`Phoenix`, "Phoenixes"), trivialMatcher(`Djinn`, "Djinni"),
-        trivialMatcher(`Centaur`), trivialMatcher(`Fairy`, "Fairies"),
-        trivialMatcher(`Giant`), trivialMatcher(`Dragon`), trivialMatcher(`Cave`),
-        trivialMatcher(`Battlefield`),
-        complements<Animal>((Animal animal) => !animal.traces, "Animals",
-            "Animal tracks"),
-        trivialMatcher(`StoneDeposit`, "Stone Deposits"),
-        trivialMatcher(`MineralVein`, "Mineral Veins"),
-        complements<Grove>(Grove.orchard, "Orchards", "Groves"),
-        trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"), trivialMatcher(`Portal`),
-        trivialMatcher(`AdventureFixture`, "Adventures"),
-        trivialMatcher(`CacheFixture`, "Caches"), trivialMatcher(`Oasis`, "Oases"),
-        trivialMatcher(`Forest`), complements<Meadow>(Meadow.field, "Fields", "Meadows"),
-        trivialMatcher(`Shrub`), trivialMatcher(`Hill`), trivialMatcher(`Sandbar`),
-        complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
+    for (arg in [
+	        complements<IUnit>((unit) => !unit.owner.independent, "Units",
+	            "Independent Units"),
+	        trivialMatcher(`Fortress`, "Fortresses"),
+	        // TODO: Towns should be broken up by kind or size, and maybe by status or owner
+	        trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
+	        // TODO: break up by owner beyond owned/independent
+	        complements<Village>((village) => village.owner.independent, "Independent Villages", "Villages With Suzerain"),
+	        trivialMatcher(`Mine`), trivialMatcher(`Troll`),
+	        trivialMatcher(`Simurgh`), trivialMatcher(`Ogre`), trivialMatcher(`Minotaur`),
+	        trivialMatcher(`Griffin`), trivialMatcher(`Sphinx`, "Sphinxes"),
+	        trivialMatcher(`Phoenix`, "Phoenixes"), trivialMatcher(`Djinn`, "Djinni"),
+	        trivialMatcher(`Centaur`), trivialMatcher(`Fairy`, "Fairies"),
+	        trivialMatcher(`Giant`), trivialMatcher(`Dragon`), trivialMatcher(`Cave`),
+	        trivialMatcher(`Battlefield`),
+	        complements<Animal>((Animal animal) => !animal.traces, "Animals",
+	            "Animal tracks"),
+	        trivialMatcher(`StoneDeposit`, "Stone Deposits"),
+	        trivialMatcher(`MineralVein`, "Mineral Veins"),
+	        complements<Grove>(Grove.orchard, "Orchards", "Groves"),
+	        trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"), trivialMatcher(`Portal`),
+	        trivialMatcher(`AdventureFixture`, "Adventures"),
+	        trivialMatcher(`CacheFixture`, "Caches"), trivialMatcher(`Oasis`, "Oases"),
+	        trivialMatcher(`Forest`), complements<Meadow>(Meadow.field, "Fields", "Meadows"),
+	        trivialMatcher(`Shrub`), trivialMatcher(`Hill`), trivialMatcher(`Sandbar`),
+	        complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
     ]) {
         if (is Iterable<FixtureMatcher> arg) {
             list.addAll(arg);

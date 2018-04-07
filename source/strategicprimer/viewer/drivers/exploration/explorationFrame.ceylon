@@ -442,14 +442,14 @@ SPFrame explorationFrame(IExplorationModel model,
                 }
             });
         }
-        for (direction in [Direction.northwest, // TODO: Fix indentation
-            Direction.north,
-            Direction.northeast,
-            Direction.west, Direction.nowhere,
-            Direction.east,
-            Direction.southwest,
-            Direction.south,
-            Direction.southeast]) {
+        for (direction in [Direction.northwest,
+	            Direction.north,
+	            Direction.northeast,
+	            Direction.west, Direction.nowhere,
+	            Direction.east,
+	            Direction.southwest,
+	            Direction.south,
+	            Direction.southeast]) {
             SelectionChangeSupport mainPCS = SelectionChangeSupport();
             SwingList<TileFixture>&SelectionChangeListener mainList =
                     fixtureList(tilesPanel, FixtureListModel(model.map, tracksCreator),
