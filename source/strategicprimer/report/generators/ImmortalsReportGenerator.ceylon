@@ -49,7 +49,8 @@ import strategicprimer.report.nodes {
 }
 import com.vasileff.ceylon.structures {
 	MutableMultimap,
-	HashMultimap
+	HashMultimap,
+	Multimap
 }
 """A report generator for "immortals"---dragons, fairies, centaurs, and such."""
 shared class ImmortalsReportGenerator(
@@ -101,15 +102,13 @@ shared class ImmortalsReportGenerator(
         !simples.empty) {
             ostream("""<h4>Immortals</h4>
                        <ul>""");
-            for (coll in [centaurs, giants, fairies, dragons, simples]) { // TODO: Combine the loops
-                for (key->list in coll.asMap) {
-                    if (!list.empty) {
-	                    ostream("<li>");
-	                    ostream(key);
-	                    ostream(": at ");
-	                    ostream(commaSeparatedList(list));
-	                    ostream("</li>``operatingSystem.newline``");
-	                }
+            for (key->list in [centaurs, giants, fairies, dragons, simples].flatMap(Multimap.asMap)) {
+                if (!list.empty) {
+                    ostream("<li>");
+                    ostream(key);
+                    ostream(": at ");
+                    ostream(commaSeparatedList(list));
+                    ostream("</li>``operatingSystem.newline``");
                 }
             }
             ostream("</ul>``operatingSystem.newline``");
