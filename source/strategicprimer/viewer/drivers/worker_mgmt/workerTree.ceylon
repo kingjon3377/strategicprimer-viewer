@@ -345,21 +345,15 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     getPathForLocation(event.x, event.y)?.lastPathComponent) {
                 if (is IWorker localNode = wtModel.getModelObject(pathLast)) {
                     if (exists stats = localNode.stats) {
-                        StringBuilder temp = StringBuilder();
+                        StringBuilder temp = StringBuilder(); // TODO: Get rid of the StringBuilder, since we're already doing some interpolation
                         temp.append("<html><p>");
-                        for ([desc, func] in [["Str", WorkerStats.strength], // TODO: Use a lambda and String.join instead of a loop?
+                        temp.append(", ".join([["Str", WorkerStats.strength], // TODO: Move the list of description-function pairs elsewhere so it only gets defined once
 	                            ["Dex", WorkerStats.dexterity],
 	                            ["Con", WorkerStats.constitution],
 	                            ["Int", WorkerStats.intelligence],
 	                            ["Wis", WorkerStats.wisdom],
-	                            ["Cha", WorkerStats.charisma]]) {
-                            temp.append(desc);
-                            temp.append(" ");
-                            temp.append(WorkerStats.getModifierString(func(stats)));
-                            if ("Cha" != desc) {
-                                temp.append(", ");
-                            }
-                        }
+	                            ["Cha", WorkerStats.charisma]]
+	                                    .map(([desc, func]) => "``desc`` ``WorkerStats.getModifierString(func(stats))``")));
                         temp.append("</p></html>");
                         return temp.string;
                     } else {
