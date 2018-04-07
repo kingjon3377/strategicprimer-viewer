@@ -112,15 +112,13 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                             builder.append("Worker needs a race.");
                             builder.appendNewline();
                         }
-                        for ([stat, val] in [["HP", hpValue],
-	                            ["Max HP", maxHPValue], ["Strength", strValue],
-	                            ["Dexterity", dexValue], ["Constitution", conValue],
-	                            ["Intelligence", intValue], ["Wisdom", wisValue],
-	                            ["Charisma", chaValue]]) {
-                            if (is ParseException val) { // TODO: If we use Entries, can we use Iterable.narrow() instead of an if?
-                                builder.append("``stat`` must be a number.");
-                                builder.appendNewline();
-                            }
+                        for (stat->val in ["HP"->hpValue,
+	                            "Max HP"->maxHPValue, "Strength"->strValue,
+	                            "Dexterity"->dexValue, "Constitution"->conValue,
+	                            "Intelligence"->intValue, "Wisdom"->wisValue,
+	                            "Charisma"->chaValue].narrow<String->ParseException>()) {
+                            builder.append("``stat`` must be a number.");
+                            builder.appendNewline();
                         }
                         showErrorDialog(null, "Strategic Primer Worker Advancement",
                             builder.string);
