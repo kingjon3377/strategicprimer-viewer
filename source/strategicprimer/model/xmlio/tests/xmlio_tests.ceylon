@@ -151,8 +151,7 @@ import ceylon.language.meta.declaration {
 
 object xmlTests {
 	JPath fakeFilename = JPaths.get("");
-	ISPReader oldReader = testReaderFactory.oldReader;
-	ISPReader newReader = testReaderFactory.newReader;
+	[ISPReader+] readers = [testReaderFactory.oldReader, testReaderFactory.newReader];
 	"Assert that the given XML will produce the given kind of warning and that the warning
 	 satisfies the given additional assertions. If [[desideratum]] is [[null]], assert that
 	 the exception is always thrown; if not, assert that the XML will fail with warnings made
@@ -185,7 +184,7 @@ object xmlTests {
 	 with warnings made fatal."
 	void assertUnsupportedTag<Type>(String xml, String tag, Type? desideratum)
 	        given Type satisfies Object {
-	    for (reader in [oldReader, newReader]) { // TODO: Make a single 'testReaders' tuple instead of redefining it in every assertion method
+	    for (reader in readers) {
 	        assertFormatIssue<Type, UnsupportedTagException>(reader, xml, desideratum,
 	                    (UnsupportedTagException except) => assertEquals(except.tag.localPart,
 	                tag, "Unsupported tag was the tag we expected"));
@@ -197,7 +196,7 @@ object xmlTests {
 	 fail with warnings made fatal."
 	void assertUnwantedChild<Type>(String xml, Type? desideratum)
 	        given Type satisfies Object {
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        assertFormatIssue<Type, UnwantedChildException>(reader, xml, desideratum);
 	    }
 	}
@@ -207,7 +206,7 @@ object xmlTests {
 	 object with them made fatal."
 	void assertMissingProperty<Type>(String xml, String property,
 	        Type? desideratum) given Type satisfies Object {
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        assertFormatIssue<Type, MissingPropertyException>(reader, xml, desideratum,
 	                    (except) => assertEquals(except.param, property,
 	                "Missing property should be the one we're expecting"));
@@ -216,7 +215,7 @@ object xmlTests {
 
 	"Assert that reading the given XML will give a MissingChildException."
 	void assertMissingChild<Type>(String xml) given Type satisfies Object {
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        assertFormatIssue<Type, MissingChildException>(reader, xml, null);
 	    }
 	}
@@ -226,7 +225,7 @@ object xmlTests {
 	 them made fatal."
 	void assertDeprecatedProperty<Type>(String xml, String deprecated, String preferred,
 	        String tag, Type? desideratum) given Type satisfies Object {
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        assertFormatIssue<Type, DeprecatedPropertyException>(reader, xml, desideratum,
 	                    (except) {
 	            assertEquals(except.old, deprecated,
@@ -256,7 +255,7 @@ object xmlTests {
 	"Assert that the serialized form of the given object will deserialize without error."
 	void assertSerialization(String message, Object obj,
 	        Warning warner = warningLevels.die) {
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        for (deprecated in `Boolean`.caseValues) {
 	            try (stringReader = StringReader(createSerializedForm(obj,
 	                    deprecated))) {
@@ -279,7 +278,7 @@ object xmlTests {
 	 exiting this method."
 	void assertImageSerialization(String message, HasMutableImage obj) {
 	    String oldImage = obj.image;
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        for (deprecated in `Boolean`.caseValues) {
 	            obj.image = "xyzzy";
 	            try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
@@ -302,7 +301,7 @@ object xmlTests {
 	 exiting this method."
 	void assertPortraitSerialization(String message, HasPortrait obj) {
 	    String oldPortrait = obj.portrait;
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        for (deprecated in `Boolean`.caseValues) {
 	            obj.portrait = "xyzzy";
 	            try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
@@ -327,7 +326,7 @@ object xmlTests {
 	        "A lambda to check the state of the deserialized object"
 	        todo("Should this be Anything(Type) instead?")
 	        Boolean(Type) assertion) given Type satisfies Object {
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        try (stringReader = StringReader(xml)) {
 	            assertTrue(assertion(reader.readXML<Type>(fakeFilename, stringReader,
 	                warningLevels.die)), message);
@@ -345,7 +344,7 @@ object xmlTests {
 	        String secondForm,
 	        "The warning level to use"
 	        Warning warningLevel) {
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        try (firstReader = StringReader(firstForm),
 	                secondReader = StringReader(secondForm)) {
 	            assertEquals(reader.readXML<Object>(fakeFilename, secondReader, warningLevel),
@@ -356,7 +355,7 @@ object xmlTests {
 
 	"Assert that a map is properly deserialized (by the main map-deserialization methods)."
 	void assertMapDeserialization(String message, IMapNG expected, String xml) {
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        assert (is IMapReader reader);
 	        try (stringReader = StringReader(xml)) {
 	            assertEquals(reader.readMapFromStream(fakeFilename, stringReader,
@@ -367,7 +366,7 @@ object xmlTests {
 
 	"Assert that the given XML will produce warnings about duplicate IDs."
 	void assertDuplicateID<Type>(String xml, Type desideratum) given Type satisfies Object {
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        assertFormatIssue<Type, DuplicateIDException>(reader, xml, desideratum);
 	    }
 	}
@@ -375,7 +374,7 @@ object xmlTests {
 	"Assert that a given piece of XML will fail to deserialize with XML format errors, not
 	 SP format errors."
 	void assertInvalid(String xml) {
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        try {
 		        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
 		                XMLStreamException|FileNotFoundException>(reader,
@@ -861,7 +860,7 @@ object xmlTests {
 	         code_name=\"playerOne\" /><xy:xyzzy><row index=\"0\"><tile row=\"0\"
 	         column=\"0\" kind=\"steppe\"><xy:hill id=\"0\" /></tile></row></xy:xyzzy></map>
 	         ");
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 		        assertFormatIssue<IMapNG,UnwantedChildException|XMLStreamException>(reader,
 		            """<map xmlns="xyzzy" version="2" rows="1" columns="1" current_player="1">
 		               <player number="1" code_name="playerOne" /><row index="0"><tile row="0"
@@ -888,7 +887,7 @@ object xmlTests {
 	    assertForwardDeserialization<SimpleImmortal>("Reading Ogre via <include>",
 	        """<include file="string:&lt;ogre id=&quot;1&quot; /&gt;" />""",
 	        Ogre(1).equals);
-	    for (reader in [oldReader, newReader]) {
+	    for (reader in readers) {
 	        assertFormatIssue<Object, FileNotFoundException>(reader,
 	            """<include file="nosuchfile" />""", null);
 	        assertFormatIssue<Object, XMLStreamException>(reader,
