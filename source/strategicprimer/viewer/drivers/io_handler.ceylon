@@ -390,10 +390,10 @@ shared class FileChooser {
                 if (is JFileChooser chooser) {
                     if (status == JFileChooser.approveOption) {
                         value retval = chooser.selectedFiles.iterable.coalesced
-                            .map((file) => file.toPath());
-                        if (exists first = retval.first) {
+                            .map((file) => file.toPath()).sequence();
+                        if (nonempty retval) {
                             log.trace("Saving the user's choice(s) from Swing to storedFile");
-                            storedFile = [ first, *retval.rest ];  // TODO: Use nonempty instead of exists to avoid spreading into a new tuple
+                            storedFile = retval;
                         } else {
                             log.info("User pressed approve but selected no files");
                         }
@@ -402,10 +402,10 @@ shared class FileChooser {
                     }
                 } else {
                     value retval = chooser.files.iterable.coalesced
-                        .map((file) => file.toPath());
-                    if (exists first = retval.first) {
+                        .map((file) => file.toPath()).sequence();
+                    if (nonempty retval) {
                         log.trace("Saving the user's choice(s) from AWT to storedFile");
-                        storedFile = [ first, *retval.rest ]; // TODO: Use nonempty instead of exists to avoid spreading into a new tuple
+                        storedFile = retval;
                     } else {
                         log.info("User failed to choose?");
                         log.info("Returned iterable was ``retval`` (``type(retval)``");
