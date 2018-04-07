@@ -1,6 +1,7 @@
 import ceylon.test {
     test,
-    assertEquals
+    assertEquals,
+	parameters
 }
 import ceylon.collection {
     ArrayList
@@ -12,6 +13,8 @@ import strategicprimer.model.map {
 import ceylon.decimal {
     decimalNumber
 }
+String[] truePossibilities = ["yes", "true", "y", "t"];
+String[] falsePossibilities = ["no", "false", "n", "f"];
 object cliTests {
 	"A helper method to condense tests."
 	void assertCLI<out T>(
@@ -139,37 +142,44 @@ object cliTests {
 	    assertCLI((cli) => cli.inputString("third prompt"), {}, "third prompt ", "",
 	        "inputString returns empty on EOF", "inputString displays prompt");
 	}
+	parameters(`value truePossibilities`)
+	test
+	shared void testInputBooleanSimpleTrue(String arg) {
+		assertCLI((cli) => cli.inputBoolean("bool prompt"), Singleton(arg), "bool prompt ",
+			true, "inputBoolean returns true on ``arg``", "inputBoolean displays prompt");
+	}
+	parameters(`value falsePossibilities`)
+	test
+	shared void testInputBooleanSimpleFalse(String arg) {
+		assertCLI((cli) => cli.inputBoolean("prompt two"), Singleton(arg), "prompt two ", false,
+			"inputBoolean returns false on ``arg``", "inputBoolean displays prompt");
+	}
 	"Test for inputBoolean()"
 	test
-	shared void testInputBoolean() {
-	    for (arg in ["yes", "true", "y", "t"]) {
-	        assertCLI((cli) => cli.inputBoolean("bool prompt"), {arg}, "bool prompt ", true,
-	            "inputBoolean returns true on '``arg``", "inputBoolean displays prompt");
-	    }
-	    for (arg in ["no", "false", "n", "f"]) {
-	        assertCLI((cli) => cli.inputBoolean("prompt two"), {arg}, "prompt two ", false,
-	            "inputBoolean returns false on ``arg``", "inputBoolean displays prompt");
-	    }
+	shared void testInputBooleanInvalidInput() {
 	    assertCLI((cli) => cli.inputBoolean("prompt three "), {"yoo-hoo", "no"},
 	        {"""prompt three Please enter "yes", "no", "true", or "false",""",
 	            "or the first character of any of those.", "prompt three "}, false,
 	        "inputBoolean rejects other input",
 	        "inputBoolean gives message on invalid input");
 	}
-
+	parameters(`value truePossibilities`)
+	test
+	shared void testInputBooleanInSeriesSimpleTrue(String arg) {
+		assertCLI((cli) => cli.inputBooleanInSeries("bool prompt"), {arg}, "bool prompt ",
+			true, "inputBooleanInSeries returns true on '``arg``",
+			"inputBooleanInSeries displays prompt");
+	}
+	parameters(`value falsePossibilities`)
+	test
+	shared void testInputBooleanInSeriesSimpleFalse(String arg) {
+		assertCLI((cli) => cli.inputBooleanInSeries("prompt two"), {arg}, "prompt two ",
+			false, "inputBooleanInSeries returns false on ``arg``",
+			"inputBooleanInSeries displays prompt");
+	}
 	"Test the input-boolean-with-skipping functionality."
 	test
 	shared void testInputBooleanInSeries() {
-	    for (arg in ["yes", "true", "y", "t"]) { // TODO: Loops like this should be converted to parameterized tests
-	        assertCLI((cli) => cli.inputBooleanInSeries("bool prompt"), {arg}, "bool prompt ",
-	            true, "inputBooleanInSeries returns true on '``arg``",
-	            "inputBooleanInSeries displays prompt");
-	    }
-	    for (arg in ["no", "false", "n", "f"]) {
-	        assertCLI((cli) => cli.inputBooleanInSeries("prompt two"), {arg}, "prompt two ",
-	            false, "inputBooleanInSeries returns false on ``arg``",
-	            "inputBooleanInSeries displays prompt");
-	    }
 	    assertCLI((cli) => cli.inputBooleanInSeries("prompt three "), {"nothing", "true"},
 	        {"""prompt three Please enter "yes", "no", "true", or "false", the first""",
 	            """character of any of those, or "all", "none", "always", or""",
