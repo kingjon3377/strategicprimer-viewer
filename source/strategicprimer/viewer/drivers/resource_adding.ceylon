@@ -205,9 +205,16 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     }
     "Ask the user to enter an Implement (a piece of equipment)"
     void enterImplement(IDRegistrar idf, ResourceManagementDriverModel model,
-            ICLIHelper cli, Player player) => // TODO: Allow adding multiple of a kind at once
-        model.addResource(Implement(cli.inputString("Kind of equipment: "),
-            idf.createID()), player);
+            ICLIHelper cli, Player player) {
+        String kind = cli.inputString("Kind of equipment: ");
+        Integer count;
+        if (cli.inputBooleanInSeries("Add more than one? ")) {
+            count = cli.inputNumber("Number to add: ");
+        } else {
+            count = 1;
+        }
+        model.addResource(Implement(kind, idf.createID(), count), player);
+    }
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
