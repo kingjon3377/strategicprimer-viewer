@@ -226,10 +226,7 @@ object appChooserState {
 	    } else {
 	        builder.append(" -c|--cli ");
 	    }
-	    builder.append("``usage.invocations.first``");
-	    for (invocation in usage.invocations.rest) {
-	        builder.append("|``invocation``");
-	    }
+	    builder.append("|".join(usage.invocations));
 	    for (option in usage.supportedOptions) {
 	        builder.append(" [``option``]");
 	    }
