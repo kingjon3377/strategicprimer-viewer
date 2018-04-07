@@ -280,7 +280,7 @@ object xmlTests {
 	void assertImageSerialization(String message, HasMutableImage obj) {
 	    String oldImage = obj.image;
 	    for (reader in [oldReader, newReader]) {
-	        for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues instead here
+	        for (deprecated in `Boolean`.caseValues) {
 	            obj.image = "xyzzy";
 	            try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
 	                assertEquals(reader.readXML<HasMutableImage>(fakeFilename, stringReader,
@@ -303,7 +303,7 @@ object xmlTests {
 	void assertPortraitSerialization(String message, HasPortrait obj) {
 	    String oldPortrait = obj.portrait;
 	    for (reader in [oldReader, newReader]) {
-	        for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues here
+	        for (deprecated in `Boolean`.caseValues) {
 	            obj.portrait = "xyzzy";
 	            try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
 	                assertEquals(reader.readXML<HasPortrait>(fakeFilename, stringReader,
@@ -404,7 +404,7 @@ object xmlTests {
 	    assertSerialization("Second Village serialization test, ``status``",
 	        Village(status, "villageTwo", 2, owner, race));
 	    Village thirdVillage = Village(status, "", 3, owner, race);
-	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecated in `Boolean`.caseValues) {
 	        assertMissingProperty(createSerializedForm(thirdVillage, deprecated),
 	            "name", thirdVillage);
 	    }
@@ -444,7 +444,7 @@ object xmlTests {
 	    City thirdCity = City(status, size, 30, "", 3, owner);
 	    assertSerialization("Serialization of City without a name", thirdCity,
 	        warningLevels.ignore);
-	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecation in `Boolean`.caseValues) {
 	        assertMissingProperty<City>(createSerializedForm(thirdCity, deprecation), "name",
 	            thirdCity);
 	    }
@@ -480,7 +480,7 @@ object xmlTests {
 	    Fortification thirdFort = Fortification(status, size, 30, "", 3, owner);
 	    assertSerialization("Serialization of Fortification without a name", thirdFort,
 	        warningLevels.ignore);
-	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecation in `Boolean`.caseValues) {
 	        assertMissingProperty<Fortification>(createSerializedForm(thirdFort, deprecation),
 	            "name", thirdFort);
 	    }
@@ -517,7 +517,7 @@ object xmlTests {
 	    Town thirdTown = Town(status, size, 30, "", 3, owner);
 	    assertSerialization("Serialization of Town without a name", thirdTown,
 	        warningLevels.ignore);
-	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecation in `Boolean`.caseValues) {
 	        assertMissingProperty<Town>(createSerializedForm(thirdTown, deprecation), "name",
 	            thirdTown);
 	    }
@@ -559,7 +559,7 @@ object xmlTests {
 	enumeratedParameter(`class StoneKind`)
 	shared void testOldStoneIdiom(StoneKind kind) {
 	    StoneDeposit thirdDeposit = StoneDeposit(kind, 10, 3);
-	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecated in `Boolean`.caseValues) {
 	        assertDeprecatedProperty<StoneDeposit>(createSerializedForm(thirdDeposit, deprecated)
 	            .replace("kind", "stone"), "stone", "kind", "stone", thirdDeposit);
 	    }
@@ -677,7 +677,7 @@ object xmlTests {
 	    assertSerialization("More complex tile", thirdMap);
 	    IMutableMapNG fourthMap = createSimpleMap(pointFactory(5, 5),
 	        pointFactory(4, 4)->TileType.plains);
-	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecated in `Boolean`.caseValues) {
 	        assertDeprecatedProperty<IMapNG>(createSerializedForm(fourthMap, deprecated)
 	                .replace("kind", "type"), "type", "kind", "tile", fourthMap);
 	    }
@@ -766,7 +766,7 @@ object xmlTests {
 	    six.addFixture(pointFactory(0, 1), Ground(22, "basalt", false));
 	    six.addFixture(pointFactory(1, 0), Forest("pine", false, 19));
 	    six.addFixture(pointFactory(1, 1), AnimalImpl("beaver", false, false, "wild", 18));
-	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecated in `Boolean`.caseValues) {
 	        assertMissingProperty(createSerializedForm(six, deprecated), "kind", six);
 	    }
 	}
@@ -935,8 +935,8 @@ object xmlTests {
 	shared void testGroveSerialization() {
 	    variable Integer i = 0;
 	    variable String[] trees = ["firstGrove", "secondGrove", "thirdGrove", "fourthGrove"];
-	    for (fruit in [true, false]) { // TODO: Use `Boolean`.caseValues
-	        for (cultivation in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (fruit in `Boolean`.caseValues) {
+	        for (cultivation in `Boolean`.caseValues) {
 	            assertSerialization("Test of [[Grove]] serialization",
 	                Grove(fruit, cultivation, trees.first else "", i++));
 	            trees = trees.rest;
@@ -965,8 +965,8 @@ object xmlTests {
 	    variable Integer i = 0;
 	    variable {FieldStatus*} statuses = `FieldStatus`.caseValues.cycled;
 	    variable String[] names = ["first", "second", "third", "fourth"];
-	    for (field in [true, false]) { // TODO: Use `Boolean`.caseValues
-	        for (cultivated in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (field in `Boolean`.caseValues) {
+	        for (cultivated in `Boolean`.caseValues) {
 	            assert (exists name = names.first, exists status = statuses.first);
 	            assertSerialization("Test of [[Meadow]] serialization",
 	                Meadow(name, field, cultivated, i++, status));
@@ -1001,7 +1001,7 @@ object xmlTests {
 	        names = names.rest;
 	    }
 	    Mine mine = Mine("four", TownStatus.ruined, 4);
-	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecation in `Boolean`.caseValues) {
 	        assertDeprecatedProperty(createSerializedForm(mine, deprecation)
 	            .replace("kind=", "product="), "product", "kind", "mine", mine);
 	    }
@@ -1019,7 +1019,7 @@ object xmlTests {
 	    assertSerialization("First test of Shrub serialization", Shrub("one", 0));
 	    Shrub secondShrub = Shrub("two", 2);
 	    assertSerialization("Second test of Shrub serialization", secondShrub);
-	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecation in `Boolean`.caseValues) {
 	        assertDeprecatedProperty(createSerializedForm(secondShrub, deprecation)
 	            .replace("kind", "shrub"), "shrub", "kind", "shrub", secondShrub);
 	    }
@@ -1068,7 +1068,7 @@ object xmlTests {
 	    assertUnwantedChild<IUnit>("<unit><unit /></unit>", null);
 	    IUnit firstUnit = Unit(PlayerImpl(1, ""), "unitType",
 	        "unitName", 1);
-	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecated in `Boolean`.caseValues) {
 	        assertDeprecatedProperty(createSerializedForm(firstUnit, deprecated)
 	            .replace("kind", "type"), "type", "kind", "unit", firstUnit);
 	    }
@@ -1079,7 +1079,7 @@ object xmlTests {
 	    assertMissingProperty("""<unit kind="kind" name="unitThree" id="3" />""", "owner",
 	        Unit(PlayerImpl(-1, ""), "kind", "unitThree", 3));
 	    IUnit fourthUnit = Unit(PlayerImpl(4, ""), "unitKind", "", 4);
-	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecated in `Boolean`.caseValues) {
 	        assertMissingProperty(createSerializedForm(fourthUnit, deprecated), "name",
 	            fourthUnit);
 	    }
@@ -1220,8 +1220,8 @@ object xmlTests {
 	parameters(`function threeRandomNumbers`)
 	shared void testAnimalSerialization(Integer id) {
 	    String[] statuses = ["wild", "semi-domesticated", "domesticated", "tame"];
-	    for (tracks in [false, true]) { // TODO: Use `Boolean`.caseValues
-	        for (talking in [false, true]) { // TODO: Use `Boolean`.caseValues
+	    for (tracks in `Boolean`.caseValues) {
+	        for (talking in `Boolean`.caseValues) {
 	            for (status in statuses) {
 	                assertSerialization("Test of [[Animal]] serialization",
 	                    AnimalImpl("animalKind", tracks, talking, status, id));
@@ -1497,7 +1497,7 @@ object xmlTests {
 	        MineralVein("one", true, dc, id));
 	    MineralVein secondVein = MineralVein("two", false, dc, id);
 	    assertSerialization("Second MineralEvent serialization test", secondVein);
-	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
+	    for (deprecation in `Boolean`.caseValues) {
 	        assertDeprecatedProperty(createSerializedForm(secondVein, deprecation)
 	                .replace("kind", "mineral"), "mineral", "kind", "mineral", secondVein);
 	    }
