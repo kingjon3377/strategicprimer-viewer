@@ -41,8 +41,8 @@ todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         Player currentPlayer, MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
         extends AbstractReportGenerator<ITownFixture>(comp, dimensions, hq) {
-    {TownStatus+} statuses = {TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
-        TownStatus.burned};
+    {TownStatus+} statuses = [TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
+        TownStatus.burned];
     "Separate towns by status."
     void separateByStatus<T>(Map<TownStatus, T> mapping,
             Collection<[Point, IFixture]> collection,
@@ -116,7 +116,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         if (separated.items.any((mapping) => !mapping.empty)) {
             ostream("""<h4>Cities, towns, and/or fortifications you know about:</h4>
                    """);
-            for (mapping in {abandoned, active, burned, ruined}) {
+            for (mapping in [abandoned, active, burned, ruined]) {
                 writeMap(ostream, mapping,
                             (ITownFixture key->Point val, formatter) =>
                     produceSingle(fixtures, map, formatter, key, val));

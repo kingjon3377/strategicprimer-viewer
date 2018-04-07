@@ -76,7 +76,7 @@ import ceylon.logging {
 
 Logger log = logger(`module strategicprimer.drivers.utility`);
 // Left outside mapCheckerCLI because it's also used in the todoFixerCLI.
-{String+} landRaces = { "Danan", "dwarf", "elf", "half-elf", "gnome", "human" };
+{String+} landRaces = [ "Danan", "dwarf", "elf", "half-elf", "gnome", "human" ];
 "A driver to check every map file in a list for errors."
 shared object mapCheckerCLI satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-k", "--check"],
@@ -127,8 +127,8 @@ shared object mapCheckerCLI satisfies UtilityDriver {
             }
         }
     }
-    {String+} placeholderKinds = { "various", "unknown" };
-    {String+} placeholderUnits = { "unit", "units" };
+    {String+} placeholderKinds = [ "various", "unknown" ];
+    {String+} placeholderUnits = [ "unit", "units" ];
     void resourcePlaceholderChecker(TileType terrain, Point context, IFixture fixture,
 	        Warning warner) {
         if (is ResourcePile fixture) {
@@ -156,8 +156,8 @@ shared object mapCheckerCLI satisfies UtilityDriver {
             }
         }
     }
-    {Checker+} extraChecks = { lateriteChecker, aquaticVillageChecker, suspiciousSkillCheck,
-        resourcePlaceholderChecker };
+    {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker, suspiciousSkillCheck,
+        resourcePlaceholderChecker ];
     void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
             IFixture* list) {
         for (fixture in list) {

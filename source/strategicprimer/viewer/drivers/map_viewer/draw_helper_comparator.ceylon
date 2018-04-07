@@ -172,14 +172,14 @@ shared object drawHelperComparator satisfies UtilityDriver {
 		Integer end = system.milliseconds;
 		return end - start;
 	}
-	{[String, Integer(TileDrawHelper, IMapNG, Integer, Integer)]*} tests = {
+	{[String, Integer(TileDrawHelper, IMapNG, Integer, Integer)]*} tests = [
 		["1. All in one place", first],
 		["2. Translating", second],
 		["3. In-place, reusing Graphics", third],
 		["4. Translating, reusing Graphics", fourth],
 		["5a. Ordered iteration vs filtering: Iteration", fifthOne],
 		["5b. Ordered iteration vs filtering: Filtering", fifthTwo]
-	};
+	];
 	Boolean dummyObserver(Image? image, Integer infoflags,
 		Integer xCoordinate, Integer yCoordinate, Integer width, Integer height) =>
 			false;

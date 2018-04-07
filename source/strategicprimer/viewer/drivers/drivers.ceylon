@@ -140,7 +140,7 @@ object appChooserState {
 	shared [Map<String, ISPDriver>, Map<String, ISPDriver>] createCache() {
 		MutableMap<String, ISPDriver> cliCache = HashMap<String, ISPDriver>();
 		MutableMap<String, ISPDriver> guiCache = HashMap<String, ISPDriver>();
-		{String*} reserved = {"-g", "-c", "--gui", "--cli"};
+		{String*} reserved = ["-g", "-c", "--gui", "--cli"];
 		MutableMultimap<String, ISPDriver> conflicts = ArrayListMultimap<String, ISPDriver>();
 		void addToCache(ISPDriver* drivers) {
 			for (driver in drivers) {

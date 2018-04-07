@@ -255,8 +255,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
             shared actual void playerChanged(Player? old, Player newPlayer) =>
                     Thread(reportGeneratorThread).start();
         }
-        {PlayerChangeListener+} pcListeners = { newUnitFrame, treeModel, ordersPanelObj,
-            reportUpdater, resultsPanel };
+        {PlayerChangeListener+} pcListeners = [ newUnitFrame, treeModel, ordersPanelObj,
+            reportUpdater, resultsPanel ];
         shared actual void playerChanged(Player? old, Player newPlayer) {
             for (listener in pcListeners) {
                 listener.playerChanged(old, newPlayer);

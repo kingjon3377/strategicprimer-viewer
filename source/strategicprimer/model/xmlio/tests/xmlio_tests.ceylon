@@ -185,7 +185,7 @@ object xmlTests {
 	 with warnings made fatal."
 	void assertUnsupportedTag<Type>(String xml, String tag, Type? desideratum)
 	        given Type satisfies Object {
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) { // TODO: Make a single 'testReaders' tuple instead of redefining it in every assertion method
 	        assertFormatIssue<Type, UnsupportedTagException>(reader, xml, desideratum,
 	                    (UnsupportedTagException except) => assertEquals(except.tag.localPart,
 	                tag, "Unsupported tag was the tag we expected"));
@@ -197,7 +197,7 @@ object xmlTests {
 	 fail with warnings made fatal."
 	void assertUnwantedChild<Type>(String xml, Type? desideratum)
 	        given Type satisfies Object {
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 	        assertFormatIssue<Type, UnwantedChildException>(reader, xml, desideratum);
 	    }
 	}
@@ -207,7 +207,7 @@ object xmlTests {
 	 object with them made fatal."
 	void assertMissingProperty<Type>(String xml, String property,
 	        Type? desideratum) given Type satisfies Object {
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 	        assertFormatIssue<Type, MissingPropertyException>(reader, xml, desideratum,
 	                    (except) => assertEquals(except.param, property,
 	                "Missing property should be the one we're expecting"));
@@ -216,7 +216,7 @@ object xmlTests {
 
 	"Assert that reading the given XML will give a MissingChildException."
 	void assertMissingChild<Type>(String xml) given Type satisfies Object {
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 	        assertFormatIssue<Type, MissingChildException>(reader, xml, null);
 	    }
 	}
@@ -226,7 +226,7 @@ object xmlTests {
 	 them made fatal."
 	void assertDeprecatedProperty<Type>(String xml, String deprecated, String preferred,
 	        String tag, Type? desideratum) given Type satisfies Object {
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 	        assertFormatIssue<Type, DeprecatedPropertyException>(reader, xml, desideratum,
 	                    (except) {
 	            assertEquals(except.old, deprecated,
@@ -256,7 +256,7 @@ object xmlTests {
 	"Assert that the serialized form of the given object will deserialize without error."
 	void assertSerialization(String message, Object obj,
 	        Warning warner = warningLevels.die) {
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 	        for (deprecated in `Boolean`.caseValues) {
 	            try (stringReader = StringReader(createSerializedForm(obj,
 	                    deprecated))) {
@@ -279,8 +279,8 @@ object xmlTests {
 	 exiting this method."
 	void assertImageSerialization(String message, HasMutableImage obj) {
 	    String oldImage = obj.image;
-	    for (reader in {oldReader, newReader}) {
-	        for (deprecated in {true, false}) {
+	    for (reader in [oldReader, newReader]) {
+	        for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues instead here
 	            obj.image = "xyzzy";
 	            try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
 	                assertEquals(reader.readXML<HasMutableImage>(fakeFilename, stringReader,
@@ -302,8 +302,8 @@ object xmlTests {
 	 exiting this method."
 	void assertPortraitSerialization(String message, HasPortrait obj) {
 	    String oldPortrait = obj.portrait;
-	    for (reader in {oldReader, newReader}) {
-	        for (deprecated in {true, false}) {
+	    for (reader in [oldReader, newReader]) {
+	        for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues here
 	            obj.portrait = "xyzzy";
 	            try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
 	                assertEquals(reader.readXML<HasPortrait>(fakeFilename, stringReader,
@@ -327,7 +327,7 @@ object xmlTests {
 	        "A lambda to check the state of the deserialized object"
 	        todo("Should this be Anything(Type) instead?")
 	        Boolean(Type) assertion) given Type satisfies Object {
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 	        try (stringReader = StringReader(xml)) {
 	            assertTrue(assertion(reader.readXML<Type>(fakeFilename, stringReader,
 	                warningLevels.die)), message);
@@ -345,7 +345,7 @@ object xmlTests {
 	        String secondForm,
 	        "The warning level to use"
 	        Warning warningLevel) {
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 	        try (firstReader = StringReader(firstForm),
 	                secondReader = StringReader(secondForm)) {
 	            assertEquals(reader.readXML<Object>(fakeFilename, secondReader, warningLevel),
@@ -356,7 +356,7 @@ object xmlTests {
 
 	"Assert that a map is properly deserialized (by the main map-deserialization methods)."
 	void assertMapDeserialization(String message, IMapNG expected, String xml) {
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 	        assert (is IMapReader reader);
 	        try (stringReader = StringReader(xml)) {
 	            assertEquals(reader.readMapFromStream(fakeFilename, stringReader,
@@ -367,7 +367,7 @@ object xmlTests {
 
 	"Assert that the given XML will produce warnings about duplicate IDs."
 	void assertDuplicateID<Type>(String xml, Type desideratum) given Type satisfies Object {
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 	        assertFormatIssue<Type, DuplicateIDException>(reader, xml, desideratum);
 	    }
 	}
@@ -375,12 +375,12 @@ object xmlTests {
 	"Assert that a given piece of XML will fail to deserialize with XML format errors, not
 	 SP format errors."
 	void assertInvalid(String xml) {
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 	        try {
 		        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
 		                XMLStreamException|FileNotFoundException>(reader,
 		            xml, null);
-		    } catch (MissingPropertyException except) {
+		    } catch (MissingPropertyException except) { // TODO: Can this be converted to assertThatException or some such?
 		        if (except.tag.localPart == "include", except.param == "file") {
 		            // pass
 		        } else {
@@ -404,7 +404,7 @@ object xmlTests {
 	    assertSerialization("Second Village serialization test, ``status``",
 	        Village(status, "villageTwo", 2, owner, race));
 	    Village thirdVillage = Village(status, "", 3, owner, race);
-	    for (deprecated in {true, false}) {
+	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertMissingProperty(createSerializedForm(thirdVillage, deprecated),
 	            "name", thirdVillage);
 	    }
@@ -444,7 +444,7 @@ object xmlTests {
 	    City thirdCity = City(status, size, 30, "", 3, owner);
 	    assertSerialization("Serialization of City without a name", thirdCity,
 	        warningLevels.ignore);
-	    for (deprecation in {true, false}) {
+	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertMissingProperty<City>(createSerializedForm(thirdCity, deprecation), "name",
 	            thirdCity);
 	    }
@@ -480,7 +480,7 @@ object xmlTests {
 	    Fortification thirdFort = Fortification(status, size, 30, "", 3, owner);
 	    assertSerialization("Serialization of Fortification without a name", thirdFort,
 	        warningLevels.ignore);
-	    for (deprecation in {true, false}) {
+	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertMissingProperty<Fortification>(createSerializedForm(thirdFort, deprecation),
 	            "name", thirdFort);
 	    }
@@ -517,7 +517,7 @@ object xmlTests {
 	    Town thirdTown = Town(status, size, 30, "", 3, owner);
 	    assertSerialization("Serialization of Town without a name", thirdTown,
 	        warningLevels.ignore);
-	    for (deprecation in {true, false}) {
+	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertMissingProperty<Town>(createSerializedForm(thirdTown, deprecation), "name",
 	            thirdTown);
 	    }
@@ -559,7 +559,7 @@ object xmlTests {
 	enumeratedParameter(`class StoneKind`)
 	shared void testOldStoneIdiom(StoneKind kind) {
 	    StoneDeposit thirdDeposit = StoneDeposit(kind, 10, 3);
-	    for (deprecated in {true, false}) {
+	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertDeprecatedProperty<StoneDeposit>(createSerializedForm(thirdDeposit, deprecated)
 	            .replace("kind", "stone"), "stone", "kind", "stone", thirdDeposit);
 	    }
@@ -677,7 +677,7 @@ object xmlTests {
 	    assertSerialization("More complex tile", thirdMap);
 	    IMutableMapNG fourthMap = createSimpleMap(pointFactory(5, 5),
 	        pointFactory(4, 4)->TileType.plains);
-	    for (deprecated in {true, false}) {
+	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertDeprecatedProperty<IMapNG>(createSerializedForm(fourthMap, deprecated)
 	                .replace("kind", "type"), "type", "kind", "tile", fourthMap);
 	    }
@@ -766,7 +766,7 @@ object xmlTests {
 	    six.addFixture(pointFactory(0, 1), Ground(22, "basalt", false));
 	    six.addFixture(pointFactory(1, 0), Forest("pine", false, 19));
 	    six.addFixture(pointFactory(1, 1), AnimalImpl("beaver", false, false, "wild", 18));
-	    for (deprecated in {true, false}) {
+	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertMissingProperty(createSerializedForm(six, deprecated), "kind", six);
 	    }
 	}
@@ -861,7 +861,7 @@ object xmlTests {
 	         code_name=\"playerOne\" /><xy:xyzzy><row index=\"0\"><tile row=\"0\"
 	         column=\"0\" kind=\"steppe\"><xy:hill id=\"0\" /></tile></row></xy:xyzzy></map>
 	         ");
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 		        assertFormatIssue<IMapNG,UnwantedChildException|XMLStreamException>(reader,
 		            """<map xmlns="xyzzy" version="2" rows="1" columns="1" current_player="1">
 		               <player number="1" code_name="playerOne" /><row index="0"><tile row="0"
@@ -888,7 +888,7 @@ object xmlTests {
 	    assertForwardDeserialization<SimpleImmortal>("Reading Ogre via <include>",
 	        """<include file="string:&lt;ogre id=&quot;1&quot; /&gt;" />""",
 	        Ogre(1).equals);
-	    for (reader in {oldReader, newReader}) {
+	    for (reader in [oldReader, newReader]) {
 	        assertFormatIssue<Object, FileNotFoundException>(reader,
 	            """<include file="nosuchfile" />""", null);
 	        assertFormatIssue<Object, XMLStreamException>(reader,
@@ -935,8 +935,8 @@ object xmlTests {
 	shared void testGroveSerialization() {
 	    variable Integer i = 0;
 	    variable String[] trees = ["firstGrove", "secondGrove", "thirdGrove", "fourthGrove"];
-	    for (fruit in {true, false}) {
-	        for (cultivation in {true, false}) {
+	    for (fruit in [true, false]) { // TODO: Use `Boolean`.caseValues
+	        for (cultivation in [true, false]) { // TODO: Use `Boolean`.caseValues
 	            assertSerialization("Test of [[Grove]] serialization",
 	                Grove(fruit, cultivation, trees.first else "", i++));
 	            trees = trees.rest;
@@ -965,8 +965,8 @@ object xmlTests {
 	    variable Integer i = 0;
 	    variable {FieldStatus*} statuses = `FieldStatus`.caseValues.cycled;
 	    variable String[] names = ["first", "second", "third", "fourth"];
-	    for (field in {true, false}) {
-	        for (cultivated in {true, false}) {
+	    for (field in [true, false]) { // TODO: Use `Boolean`.caseValues
+	        for (cultivated in [true, false]) { // TODO: Use `Boolean`.caseValues
 	            assert (exists name = names.first, exists status = statuses.first);
 	            assertSerialization("Test of [[Meadow]] serialization",
 	                Meadow(name, field, cultivated, i++, status));
@@ -1001,7 +1001,7 @@ object xmlTests {
 	        names = names.rest;
 	    }
 	    Mine mine = Mine("four", TownStatus.ruined, 4);
-	    for (deprecation in {true, false}) {
+	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertDeprecatedProperty(createSerializedForm(mine, deprecation)
 	            .replace("kind=", "product="), "product", "kind", "mine", mine);
 	    }
@@ -1019,7 +1019,7 @@ object xmlTests {
 	    assertSerialization("First test of Shrub serialization", Shrub("one", 0));
 	    Shrub secondShrub = Shrub("two", 2);
 	    assertSerialization("Second test of Shrub serialization", secondShrub);
-	    for (deprecation in {true, false}) {
+	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertDeprecatedProperty(createSerializedForm(secondShrub, deprecation)
 	            .replace("kind", "shrub"), "shrub", "kind", "shrub", secondShrub);
 	    }
@@ -1068,7 +1068,7 @@ object xmlTests {
 	    assertUnwantedChild<IUnit>("<unit><unit /></unit>", null);
 	    IUnit firstUnit = Unit(PlayerImpl(1, ""), "unitType",
 	        "unitName", 1);
-	    for (deprecated in {true, false}) {
+	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertDeprecatedProperty(createSerializedForm(firstUnit, deprecated)
 	            .replace("kind", "type"), "type", "kind", "unit", firstUnit);
 	    }
@@ -1079,7 +1079,7 @@ object xmlTests {
 	    assertMissingProperty("""<unit kind="kind" name="unitThree" id="3" />""", "owner",
 	        Unit(PlayerImpl(-1, ""), "kind", "unitThree", 3));
 	    IUnit fourthUnit = Unit(PlayerImpl(4, ""), "unitKind", "", 4);
-	    for (deprecated in {true, false}) {
+	    for (deprecated in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertMissingProperty(createSerializedForm(fourthUnit, deprecated), "name",
 	            fourthUnit);
 	    }
@@ -1220,8 +1220,8 @@ object xmlTests {
 	parameters(`function threeRandomNumbers`)
 	shared void testAnimalSerialization(Integer id) {
 	    String[] statuses = ["wild", "semi-domesticated", "domesticated", "tame"];
-	    for (tracks in {false, true}) {
-	        for (talking in {false, true}) {
+	    for (tracks in [false, true]) { // TODO: Use `Boolean`.caseValues
+	        for (talking in [false, true]) { // TODO: Use `Boolean`.caseValues
 	            for (status in statuses) {
 	                assertSerialization("Test of [[Animal]] serialization",
 	                    AnimalImpl("animalKind", tracks, talking, status, id));
@@ -1497,7 +1497,7 @@ object xmlTests {
 	        MineralVein("one", true, dc, id));
 	    MineralVein secondVein = MineralVein("two", false, dc, id);
 	    assertSerialization("Second MineralEvent serialization test", secondVein);
-	    for (deprecation in {true, false}) {
+	    for (deprecation in [true, false]) { // TODO: Use `Boolean`.caseValues
 	        assertDeprecatedProperty(createSerializedForm(secondVein, deprecation)
 	                .replace("kind", "mineral"), "mineral", "kind", "mineral", secondVein);
 	    }

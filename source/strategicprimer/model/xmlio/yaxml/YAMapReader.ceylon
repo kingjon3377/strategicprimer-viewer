@@ -72,17 +72,17 @@ class YAMapReader("The Warning instance to use" Warning warner,
     "The reader for players"
     YAReader<Player> playerReader = YAPlayerReader(warner, idRegistrar);
     "The readers we'll try sub-tags on"
-    value readers = {YAMobileReader(warner, idRegistrar),
+    value readers = [YAMobileReader(warner, idRegistrar),
         YAResourceReader(warner, idRegistrar), YATerrainReader(warner, idRegistrar),
         YATextReader(warner, idRegistrar), YATownReader(warner, idRegistrar, players),
         YAGroundReader(warner, idRegistrar),
         YAAdventureReader(warner, idRegistrar, players),
         YAPortalReader(warner, idRegistrar), YAExplorableReader(warner, idRegistrar),
-        YAUnitReader(warner, idRegistrar, players) };
-        MutableMap<String, YAAbstractReader<out TileFixture>> readerCache =
-                HashMap<String, YAAbstractReader<out TileFixture>>();
-        MutableMap<ClassOrInterface<TileFixture>, YAAbstractReader<out TileFixture>> writerCache =
-                HashMap<ClassOrInterface<TileFixture>, YAAbstractReader<out TileFixture>>();
+        YAUnitReader(warner, idRegistrar, players) ];
+    MutableMap<String, YAAbstractReader<out TileFixture>> readerCache =
+            HashMap<String, YAAbstractReader<out TileFixture>>();
+    MutableMap<ClassOrInterface<TileFixture>, YAAbstractReader<out TileFixture>> writerCache =
+            HashMap<ClassOrInterface<TileFixture>, YAAbstractReader<out TileFixture>>();
     "Get the first open-tag event in our namespace in the stream."
     StartElement getFirstStartElement({XMLEvent*} stream, StartElement parent) {
         for (element in stream) {

@@ -57,10 +57,10 @@ import lovelace.util.common {
 class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players)
         extends YAAbstractReader<ITownFixture>(warner, idRegistrar) {
     value resourceReader = YAResourcePileReader(warner, idRegistrar);
-    value memberReaders = {
+    value memberReaders = [
         YAUnitReader(warner, idRegistrar, players),
         resourceReader, YAImplementReader(warner, idRegistrar)
-    };
+    ];
     """If the tag has an "owner" parameter, return the player it indicates; otherwise
        trigger a warning and return the "independent" player."""
     Player getOwnerOrIndependent(StartElement element) {

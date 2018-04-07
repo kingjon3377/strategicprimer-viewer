@@ -24,7 +24,7 @@ shared class TileType
     abstract new delegate(String desc, String xmlDesc, Integer* vers) {
         string = desc;
         xml = xmlDesc;
-        versions = {*vers};
+        versions = vers.sequence();
     }
     "Tundra."
     shared new tundra extends delegate("tundra", "tundra", 1, 2) {}

@@ -271,7 +271,7 @@ shared class FileChooser {
         }
         if (exists loc) {
             log.trace("A file was passed in");
-            storedFile = {loc};
+            storedFile = Singleton(loc);
         } else {
             log.trace("No file was passed in");
             storedFile = null;
@@ -296,7 +296,7 @@ shared class FileChooser {
         }
         if (exists loc) {
             log.trace("A file was passed in");
-            storedFile = {loc};
+            storedFile = Singleton(loc);
         } else {
             log.trace("No file was passed in");
             storedFile = null;
@@ -324,7 +324,7 @@ shared class FileChooser {
         }
         if (exists loc) {
             log.trace("A file was passed in");
-            storedFile = {loc};
+            storedFile = Singleton(loc);
         } else {
             log.trace("No file was passed in");
             storedFile = null;
@@ -393,7 +393,7 @@ shared class FileChooser {
                             .map((file) => file.toPath());
                         if (exists first = retval.first) {
                             log.trace("Saving the user's choice(s) from Swing to storedFile");
-                            storedFile = { first, *retval.rest };
+                            storedFile = [ first, *retval.rest ];  // TODO: Use nonempty instead of exists to avoid spreading into a new tuple
                         } else {
                             log.info("User pressed approve but selected no files");
                         }
@@ -405,7 +405,7 @@ shared class FileChooser {
                         .map((file) => file.toPath());
                     if (exists first = retval.first) {
                         log.trace("Saving the user's choice(s) from AWT to storedFile");
-                        storedFile = { first, *retval.rest };
+                        storedFile = [ first, *retval.rest ]; // TODO: Use nonempty instead of exists to avoid spreading into a new tuple
                     } else {
                         log.info("User failed to choose?");
                         log.info("Returned iterable was ``retval`` (``type(retval)``");

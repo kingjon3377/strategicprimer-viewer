@@ -36,11 +36,11 @@ import strategicprimer.model.xmlio.exceptions {
 "A reader for units."
 class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players)
         extends YAAbstractReader<IUnit>(warner, idRegistrar) {
-    value readers = { YAMobileReader(warner, idRegistrar),
+    value readers = [ YAMobileReader(warner, idRegistrar),
         YAResourceReader(warner, idRegistrar), YATerrainReader(warner, idRegistrar),
         YATextReader(warner, idRegistrar), YAWorkerReader(warner, idRegistrar),
         YAResourcePileReader(warner, idRegistrar), YAImplementReader(warner, idRegistrar)
-    };
+    ];
     """Parse the kind of unit, from the "kind" or deprecated "type" parameter, but merely
        warn if neither is present."""
     String parseKind(StartElement element) {

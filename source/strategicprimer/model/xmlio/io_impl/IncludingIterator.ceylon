@@ -50,7 +50,7 @@ todo("Use `ceylon.file`")
 shared class IncludingIterator satisfies Iterator<XMLEvent> {
     "Get the 'file' attribute for the given tag."
     static String getFileAttribute(StartElement element) {
-        for (QName name in { QName(spNamespace, "file"), QName("file") }) {
+        for (QName name in [ QName(spNamespace, "file"), QName("file") ]) {
             if (exists attr = element.getAttributeByName(name),
                     exists val = attr.\ivalue) {
                 return val;

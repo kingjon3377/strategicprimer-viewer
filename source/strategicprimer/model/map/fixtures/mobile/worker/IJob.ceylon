@@ -7,10 +7,10 @@ import strategicprimer.model.map {
 }
 """Skill names that are suspicious when they are the only Skill a Job has. In many
    cases they should be "miscellaneous" instead."""
-shared {String*} suspiciousSkills = {"hunter", "hunting", "explorer",
+shared {String*} suspiciousSkills = ["hunter", "hunting", "explorer",
     "exploration", "research", "carpentry", "woodcutting", "farming",
     "food gathering", "scientist", "woodcutter", "farmer", "brickmaker",
-    "brickmaking", "administration"};
+    "brickmaking", "administration"];
 "An interface for Jobs."
 shared interface IJob satisfies HasName&{ISkill*}&Subsettable<IJob> {
     "Add a skill.

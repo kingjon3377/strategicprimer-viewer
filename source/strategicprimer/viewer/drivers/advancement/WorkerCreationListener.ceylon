@@ -112,12 +112,12 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                             builder.append("Worker needs a race.");
                             builder.appendNewline();
                         }
-                        for ([stat, val] in {["HP", hpValue],
+                        for ([stat, val] in [["HP", hpValue], // TODO: Fix indentation
                             ["Max HP", maxHPValue], ["Strength", strValue],
                             ["Dexterity", dexValue], ["Constitution", conValue],
                             ["Intelligence", intValue], ["Wisdom", wisValue],
-                            ["Charisma", chaValue]}) {
-                            if (is ParseException val) {
+                            ["Charisma", chaValue]]) {
+                            if (is ParseException val) { // TODO: If we use Entries, can we use Iterable.narrow() instead of an if?
                                 builder.append("``stat`` must be a number.");
                                 builder.appendNewline();
                             }
@@ -136,10 +136,10 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                 addLabeledField(statsPanel, "HP:", hpBox);
                 maxHP.text = "8";
                 addLabeledField(statsPanel, "Max HP:", maxHP);
-                for ([stat, box] in {["Strength:", strength],
+                for ([stat, box] in [["Strength:", strength], // TODO: Fix indentation
                     ["Intelligence:", intelligence], ["Dexterity:", dexterity],
                     ["Wisdom:", wisdom], ["Constitution:", constitution],
-                    ["Charisma:", charisma]}) {
+                    ["Charisma:", charisma]]) {
                     box.text = singletonRandom.elements(1..6).take(3)
                         .reduce(plus)?.string else "0";
                     addLabeledField(statsPanel, stat, box);

@@ -101,8 +101,8 @@ object oneToTwoConverterTests {
 	"Create an ExplorationRunner initialized with test data."
 	ExplorationRunner initializeRunner() {
 	    ExplorationRunner retval = ExplorationRunner();
-	    for (table in {"boreal_major_tree", "fruit_trees", "grain", "major_rock",
-	            "temperate_major_tree"}) {
+	    for (table in ["boreal_major_tree", "fruit_trees", "grain", "major_rock",
+	            "temperate_major_tree"]) {
 	        assert (exists tableAsResource = `module strategicprimer.drivers.converters`
 	            .resourceByPath("tables/``table``"));
 	        retval.loadTable(table,
@@ -186,29 +186,29 @@ object oneToTwoConverterTests {
 	        field(FieldStatus.seeding, "grain3"));
 	    initialize(converted, pointFactory(6, 4), TileType.plains, groundFour(),
 	        forest("ttree4"));
-	    for (loc in { pointFactory(0, 2), pointFactory(1, 2),
+	    for (loc in [ pointFactory(0, 2), pointFactory(1, 2),
 	            pointFactory(1, 3), pointFactory(2, 1), pointFactory(2, 3),
-	            pointFactory(3, 0), pointFactory(3, 2), pointFactory(3, 3) }) {
+	            pointFactory(3, 0), pointFactory(3, 2), pointFactory(3, 3) ]) {
 	        initialize(converted, loc, TileType.steppe, groundOne(), forest("btree1"));
 	    }
-	    for (loc in { pointFactory(0, 4), pointFactory(0, 5), pointFactory(0, 6),
+	    for (loc in [ pointFactory(0, 4), pointFactory(0, 5), pointFactory(0, 6),
 	            pointFactory(0, 7), pointFactory(1, 4), pointFactory(1, 5),
 	            pointFactory(1, 6), pointFactory(1, 7), pointFactory(2, 4),
 	            pointFactory(2, 6), pointFactory(2, 7), pointFactory(3, 5),
-	            pointFactory(3, 6), pointFactory(3, 7) }) {
+	            pointFactory(3, 6), pointFactory(3, 7) ]) {
 	        initialize(converted, loc, TileType.plains, groundTwo(), forest("ttree2"));
 	    }
-	    for (loc in { pointFactory(5, 1), pointFactory(5, 3), pointFactory(6, 0),
+	    for (loc in [ pointFactory(5, 1), pointFactory(5, 3), pointFactory(6, 0),
 	            pointFactory(6, 1), pointFactory(6, 2), pointFactory(6, 3),
 	            pointFactory(7, 0), pointFactory(7, 1), pointFactory(7, 2),
-	            pointFactory(7, 3) }) {
+	            pointFactory(7, 3) ]) {
 	        initialize(converted, loc, TileType.desert, groundThree());
 	    }
-	    for (loc in { pointFactory(4, 5), pointFactory(4, 6), pointFactory(5, 4),
+	    for (loc in [ pointFactory(4, 5), pointFactory(4, 6), pointFactory(5, 4),
 	            pointFactory(5, 5), pointFactory(5, 6), pointFactory(5, 7),
 	            pointFactory(6, 5), pointFactory(6, 6), pointFactory(6, 7),
 	            pointFactory(7, 4), pointFactory(7, 5), pointFactory(7, 6),
-	            pointFactory(7, 7) }) {
+	            pointFactory(7, 7) ]) {
 	        initialize(converted, loc, TileType.plains, groundFour());
 	    }
 
@@ -315,34 +315,34 @@ object oneToTwoConverterTests {
 	        field(FieldStatus.fallow, "grain4"));
 	    initialize(converted, pointFactory(6, 7), TileType.tundra, groundFour(),
 	        groundOne());
-	    for (loc in { pointFactory(0, 0), pointFactory(0, 1), pointFactory(0, 2),
+	    for (loc in [ pointFactory(0, 0), pointFactory(0, 1), pointFactory(0, 2),
 	            pointFactory(0, 3), pointFactory(1, 0), pointFactory(1, 2),
-	            pointFactory(1, 3), pointFactory(3, 0) }) {
+	            pointFactory(1, 3), pointFactory(3, 0) ]) {
 	        initialize(converted, loc, TileType.jungle, groundOne());
 	    }
-	    for (loc in { pointFactory(0, 4), pointFactory(0, 5),
+	    for (loc in [ pointFactory(0, 4), pointFactory(0, 5),
 	            pointFactory(0, 6), pointFactory(0, 7), pointFactory(1, 4),
 	            pointFactory(1, 5), pointFactory(1, 6), pointFactory(1, 7),
 	            pointFactory(2, 6), pointFactory(2, 7), pointFactory(3, 6),
-	            pointFactory(3, 7) }) {
+	            pointFactory(3, 7) ]) {
 	        initialize(converted, loc, TileType.plains, groundTwo(), forest("ttree2"));
 	    }
-	    for (loc in { pointFactory(4, 0), pointFactory(5, 0), pointFactory(6, 0),
+	    for (loc in [ pointFactory(4, 0), pointFactory(5, 0), pointFactory(6, 0),
 	            pointFactory(6, 1), pointFactory(6, 2),  pointFactory(6, 3),
 	            pointFactory(7, 0), pointFactory(7, 1), pointFactory(7, 2),
-	            pointFactory(7, 3) }) {
+	            pointFactory(7, 3) ]) {
 	        initialize(converted, loc, TileType.plains, groundThree());
 	        converted.mountainous[loc] = true;
 	    }
-	    for (loc in { pointFactory(4, 6), pointFactory(4, 7), pointFactory(5, 6),
+	    for (loc in [ pointFactory(4, 6), pointFactory(4, 7), pointFactory(5, 6),
 	            pointFactory(5, 7), pointFactory(6, 4), pointFactory(6, 5),
 	            pointFactory(6, 6), pointFactory(7, 4), pointFactory(7, 5),
-	            pointFactory(7, 6), pointFactory(7, 7) }) {
+	            pointFactory(7, 6), pointFactory(7, 7) ]) {
 	        initialize(converted, loc, TileType.tundra, groundFour());
 	    }
-	    for (loc in { pointFactory(4, 0), pointFactory(4, 1), pointFactory(4, 2),
+	    for (loc in [ pointFactory(4, 0), pointFactory(4, 1), pointFactory(4, 2),
 	            pointFactory(4, 3), pointFactory(5, 1), pointFactory(5, 2),
-	            pointFactory(5, 3) }) {
+	            pointFactory(5, 3) ]) {
 	        converted.mountainous[loc] = true;
 	    }
 	    ExplorationRunner runner = initializeRunner();
@@ -496,15 +496,15 @@ object oneToTwoConverterTests {
 	        field(FieldStatus.fallow, "grain4"));
 	    initialize(converted, pointFactory(7, 6), TileType.tundra, groundFour(),
 	        orchard("fruit4"));
-	    for (loc in { pointFactory(4, 1), pointFactory(4, 2), pointFactory(5, 0),
+	    for (loc in [ pointFactory(4, 1), pointFactory(4, 2), pointFactory(5, 0),
 	            pointFactory(5, 2), pointFactory(6, 1),
 	            pointFactory(6, 3), pointFactory(7, 0),
-	            pointFactory(7, 1), pointFactory(7, 2), pointFactory(7, 3) }) {
+	            pointFactory(7, 1), pointFactory(7, 2), pointFactory(7, 3) ]) {
 	        initialize(converted, loc, TileType.plains, groundThree());
 	        converted.mountainous[loc] = true;
 	    }
-	    for (loc in { pointFactory(4, 4), pointFactory(4, 6), pointFactory(5, 6),
-	            pointFactory(6, 4), pointFactory(6, 5),  pointFactory(7, 7) }) {
+	    for (loc in [ pointFactory(4, 4), pointFactory(4, 6), pointFactory(5, 6),
+	            pointFactory(6, 4), pointFactory(6, 5),  pointFactory(7, 7) ]) {
 	        initialize(converted, loc, TileType.tundra, groundFour());
 	    }
 	    converted.addRivers(pointFactory(2, 6), River.lake, River.south);
@@ -576,8 +576,8 @@ object oneToTwoConverterTests {
 	shared void testFourthOneToTwoConversion() {
 	    IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
 	    initialize(original, pointFactory(0, 0), TileType.ocean);
-	    for (point in { pointFactory(0, 1), pointFactory(1, 0),
-	        pointFactory(1, 1) }) {
+	    for (point in [ pointFactory(0, 1), pointFactory(1, 0),
+		        pointFactory(1, 1) ]) {
 	        initialize(original, point, TileType.desert);
 	    }
 	    Player player = PlayerImpl(1, "playerName");
@@ -646,15 +646,15 @@ object oneToTwoConverterTests {
 	                "rock4", false));
 	        }
 	    }
-	    for (point in { pointFactory(0, 1), pointFactory(0, 2),
+	    for (point in [ pointFactory(0, 1), pointFactory(0, 2),
 	        pointFactory(0, 3), pointFactory(1, 0), pointFactory(1, 1),
 	        pointFactory(1, 2), pointFactory(1, 3), pointFactory(2, 0),
 	        pointFactory(2, 1), pointFactory(2, 2), pointFactory(2, 3),
 	        pointFactory(3, 0), pointFactory(3, 1), pointFactory(3, 2),
-	        pointFactory(3, 3) }) {
+	        pointFactory(3, 3) ]) {
 	        initialize(converted, point, TileType.ocean);
 	    }
-	    for (point in { pointFactory(0, 5), pointFactory(0, 6),
+	    for (point in [ pointFactory(0, 5), pointFactory(0, 6),
 	            pointFactory(0, 7), pointFactory(1, 4), pointFactory(1, 5),
 	            pointFactory(1, 6), pointFactory(2, 4),pointFactory(2, 6),
 	            pointFactory(3, 4), pointFactory(3, 6), pointFactory(4, 0),
@@ -665,12 +665,12 @@ object oneToTwoConverterTests {
 	            pointFactory(6, 2), pointFactory(6, 3), pointFactory(6, 4),
 	            pointFactory(6, 5), pointFactory(6, 6), pointFactory(6, 7),
 	            pointFactory(7, 0), pointFactory(7, 2), pointFactory(7, 4),
-	            pointFactory(7, 5), pointFactory(7, 6), pointFactory(7, 7) }) {
+	            pointFactory(7, 5), pointFactory(7, 6), pointFactory(7, 7) ]) {
 	        initialize(converted, point, TileType.desert);
 	    }
-	    for (point in { pointFactory(0, 4), pointFactory(1, 7), pointFactory(2, 7),
+	    for (point in [ pointFactory(0, 4), pointFactory(1, 7), pointFactory(2, 7),
 	            pointFactory(3, 7), pointFactory(4, 7), pointFactory(7, 1),
-	            pointFactory(7, 3) }) {
+	            pointFactory(7, 3) ]) {
 	        initialize(converted, point, TileType.plains);
 	    }
 

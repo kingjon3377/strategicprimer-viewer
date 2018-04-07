@@ -101,7 +101,7 @@ shared class ImmortalsReportGenerator(
         !simples.empty) {
             ostream("""<h4>Immortals</h4>
                        <ul>""");
-            for (coll in {centaurs, giants, fairies, dragons, simples}) {
+            for (coll in [centaurs, giants, fairies, dragons, simples]) { // TODO: Combine the loops
                 for (key->list in coll.asMap) {
                     if (!list.empty) {
 	                    ostream("<li>");

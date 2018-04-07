@@ -205,7 +205,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     }
     "Ask the user to enter an Implement (a piece of equipment)"
     void enterImplement(IDRegistrar idf, ResourceManagementDriverModel model,
-            ICLIHelper cli, Player player) =>
+            ICLIHelper cli, Player player) => // TODO: Allow adding multiple of a kind at once
         model.addResource(Implement(cli.inputString("Kind of equipment: "),
             idf.createID()), player);
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
@@ -366,7 +366,7 @@ object resourceAddingGUI satisfies SimpleDriver {
                 pile.created = resourceCreatedModel.number.intValue();
                 model.addResource(pile, currentPlayer);
                 logAddition(pile.string);
-                for (box in { resourceKindBox, resourceBox, resourceUnitsBox }) {
+                for (box in [ resourceKindBox, resourceBox, resourceUnitsBox ]) {
                     box.checkAndClear();
                 }
                 resourceCreatedModel.\ivalue = JInteger.valueOf(-1);

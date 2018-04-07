@@ -41,12 +41,12 @@ import strategicprimer.drivers.common {
 SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
     DefaultListModel<FixtureMatcher> matcherListModel =
             ReorderableListModel<FixtureMatcher>();
-    for (matcher in {simpleMatcher<Ground>(Ground.exposed, "Ground (exposed)"),
+    for (matcher in [simpleMatcher<Ground>(Ground.exposed, "Ground (exposed)"), // TODO: Fix indentation
         simpleMatcher<Ground>((Ground ground) => !ground.exposed, "Ground"),
         simpleMatcher<Grove>(Grove.orchard, "Orchards"),
         simpleMatcher<Grove>((Grove grove) => !grove.orchard, "Groves"),
         simpleMatcher<Meadow>(Meadow.field, "Fields"),
-        simpleMatcher<Meadow>((Meadow meadow) => !meadow.field, "Meadows")}) {
+        simpleMatcher<Meadow>((Meadow meadow) => !meadow.field, "Meadows")]) {
         matcherListModel.addElement(matcher);
     }
     object retval extends SwingList<FixtureMatcher>(matcherListModel)

@@ -94,7 +94,7 @@ class Ver2TileDrawHelper(
         set {River.east,River.south,River.west,River.lake}->"riv30.png",
         set {River.north,River.east,River.south,River.west,River.lake}->"riv31.png"
     };
-    for (file in {"trees.png", "mountain.png"}) {
+    for (file in ["trees.png", "mountain.png"]) {
         try {
             imageLoader.loadImage(file);
         } catch (FileNotFoundException|NoSuchFileException except) {

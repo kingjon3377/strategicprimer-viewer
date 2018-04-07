@@ -373,7 +373,7 @@ SPFrame explorationFrame(IExplorationModel model,
             "A list of things the explorer can do: pairs of explanations (in the
              form of questions to ask the user to see if the explorer does them)
              and references to methods for doing them."
-            {[String, Anything()]*} explorerActions = {[
+            {[String, Anything()]*} explorerActions = [[
                 "Should the explorer swear any villages on this tile?", () {
                 model.swearVillages();
 //                        for (fixture in model.map.fixtures[model.selectedUnitLocation] // TODO: syntax sugar once compiler bug fixed
@@ -381,7 +381,7 @@ SPFrame explorationFrame(IExplorationModel model,
                     .narrow<Village>()) {
                     selectedValuesList.add(fixture);
                 }
-            }], ["Should the explorer dig to find what kind of ground is here?", model.dig]};
+            }], ["Should the explorer dig to find what kind of ground is here?", model.dig]];
             shared actual void actionPerformed(ActionEvent event) =>
                     SwingUtilities.invokeLater(() {
                 try {
@@ -442,14 +442,14 @@ SPFrame explorationFrame(IExplorationModel model,
                 }
             });
         }
-        for (direction in {Direction.northwest,
+        for (direction in [Direction.northwest, // TODO: Fix indentation
             Direction.north,
             Direction.northeast,
             Direction.west, Direction.nowhere,
             Direction.east,
             Direction.southwest,
             Direction.south,
-            Direction.southeast}) {
+            Direction.southeast]) {
             SelectionChangeSupport mainPCS = SelectionChangeSupport();
             SwingList<TileFixture>&SelectionChangeListener mainList =
                     fixtureList(tilesPanel, FixtureListModel(model.map, tracksCreator),

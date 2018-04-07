@@ -97,7 +97,7 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
     MutableList<FixtureMatcher> list = ArrayList<FixtureMatcher>();
     // Can't use our preferred initialization form because an Iterable can only be spread
     // as the *last* argument.
-    for (arg in {
+    for (arg in [ // TODO: Fix indentation
         complements<IUnit>((unit) => !unit.owner.independent, "Units",
             "Independent Units"),
         trivialMatcher(`Fortress`, "Fortresses"),
@@ -123,7 +123,7 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
         trivialMatcher(`Forest`), complements<Meadow>(Meadow.field, "Fields", "Meadows"),
         trivialMatcher(`Shrub`), trivialMatcher(`Hill`), trivialMatcher(`Sandbar`),
         complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
-    }) {
+    ]) {
         if (is Iterable<FixtureMatcher> arg) {
             list.addAll(arg);
         } else {

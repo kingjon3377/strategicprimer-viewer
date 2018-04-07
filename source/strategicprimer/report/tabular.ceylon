@@ -70,7 +70,7 @@ shared object tabularReportGenerator {
 	    Player player = map.currentPlayer;
 	    MapDimensions dimensions = map.dimensions;
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
-	    {ITableGenerator<out Object>*} generators = {
+	    {ITableGenerator<out Object>*} generators = [
 	        FortressTabularReportGenerator(player, hq, dimensions),
 	        UnitTabularReportGenerator(player, hq, dimensions),
 	        AnimalTabularReportGenerator(hq, dimensions, map.currentTurn),
@@ -83,7 +83,7 @@ shared object tabularReportGenerator {
 	        ResourceTabularReportGenerator(),
 	        ImmortalsTabularReportGenerator(hq, dimensions),
 	        ExplorableTabularReportGenerator(player, hq, dimensions)
-	    };
+	    ];
 	    for (generator in generators) {
 	        generator.produceTable(source(generator.tableName), fixtures, parentMap);
 	    }
@@ -106,7 +106,7 @@ shared object tabularReportGenerator {
 	    Player player = map.currentPlayer;
 	    MapDimensions dimensions = map.dimensions;
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
-	    {ITableGenerator<out Object>*} generators = {
+	    {ITableGenerator<out Object>*} generators = [
 	        FortressTabularReportGenerator(player, hq, dimensions),
 	        UnitTabularReportGenerator(player, hq, dimensions),
 	        AnimalTabularReportGenerator(hq, dimensions, map.currentTurn),
@@ -119,7 +119,7 @@ shared object tabularReportGenerator {
 	        ResourceTabularReportGenerator(),
 	        ImmortalsTabularReportGenerator(hq, dimensions),
 	        ExplorableTabularReportGenerator(player, hq, dimensions)
-	    };
+	    ];
 	    Comparison sorter(Object one, Object two) {
 	        String actualOne;
 	        String actualTwo;

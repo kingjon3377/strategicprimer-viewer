@@ -101,7 +101,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
     LazyInit<Map<String,{[Quantity, String, String]*}>> consumption = LazyInit(() {
         MutableMap<String, {[Quantity, String, String]*}> retval =
                 HashMap<String, {[Quantity, String, String]*}>();
-        for (terrain in {"mountain", "forest", "plains", "ocean"}) {
+        for (terrain in ["mountain", "forest", "plains", "ocean"]) {
             String file = "``terrain``_consumption";
              assert (exists tableContents = readFileContents(`module strategicprimer.drivers.generators`,
                  "tables/``file``"));

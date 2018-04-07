@@ -269,7 +269,7 @@ shared class SPMenu extends JMenuBar {
 
         // We *create* these items here (early) so that we can enable or disable them
         // without an extra branch.
-        {JMenuItem*} treeItems = {
+        {JMenuItem*} treeItems = [
             createMenuItem("Reload tree", KeyEvent.vkR, "Refresh the view of the workers",
                 handler, createAccelerator(KeyEvent.vkR)),
             createMenuItem("Expand All", KeyEvent.vkX,
@@ -278,7 +278,7 @@ shared class SPMenu extends JMenuBar {
                 "Expand all unit kinds to show the units", handler),
             createMenuItem("Collapse All", KeyEvent.vkC,
                 "Collapse all nodes in the unit tree", handler)
-        };
+        ];
         JMenuItem currentPlayerItem;
         if (is IWorkerModel model) {
             currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,

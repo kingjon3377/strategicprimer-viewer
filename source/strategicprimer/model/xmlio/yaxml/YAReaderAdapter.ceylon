@@ -70,14 +70,14 @@ class YAReaderAdapter(
     "The reader for towns, etc."
     YATownReader townReader = YATownReader(warning, idFactory, players);
     "The set of readers."
-    value readers = { YAAdventureReader(warning, idFactory, players),
+    value readers = [ YAAdventureReader(warning, idFactory, players),
         YAExplorableReader(warning, idFactory), YAGroundReader(warning, idFactory),
         YAImplementReader(warning, idFactory), mapReader,
         YAMobileReader(warning, idFactory), YAPlayerReader(warning, idFactory),
         YAPortalReader(warning, idFactory), YAResourcePileReader(warning, idFactory),
         YAResourceReader(warning, idFactory), YATerrainReader(warning, idFactory),
         YATextReader(warning, idFactory), townReader,
-        YAUnitReader(warning, idFactory, players), YAWorkerReader(warning, idFactory) };
+        YAUnitReader(warning, idFactory, players), YAWorkerReader(warning, idFactory) ];
     MutableMap<String, YAAbstractReader<out Object>> readerCache = HashMap<String, YAAbstractReader<out Object>>();
     MutableMap<ClassOrInterface<Object>, YAAbstractReader<out Object>> writerCache =
             HashMap<ClassOrInterface<Object>, YAAbstractReader<out Object>>();

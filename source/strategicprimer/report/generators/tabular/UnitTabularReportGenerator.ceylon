@@ -28,10 +28,10 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IUnit item,
             Integer key, Point loc, Map<Integer, Integer> parentMap) {
-        {String+} retval = {distanceString(loc, hq, dimensions), loc.string,
+        {String+} retval = [distanceString(loc, hq, dimensions), loc.string,
                 ownerString(player, item.owner), item.kind, item.name,
                 item.allOrders.last?.item else "",
-                (player == item.owner) then item.id.string else "---"};
+                (player == item.owner) then item.id.string else "---"];
         for (member in item) {
             if (is Animal member) {
                 // We don't want animals inside a unit showing up in the wild-animal

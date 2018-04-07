@@ -142,11 +142,11 @@ object cliTests {
 	"Test for inputBoolean()"
 	test
 	shared void testInputBoolean() {
-	    for (arg in {"yes", "true", "y", "t"}) {
+	    for (arg in ["yes", "true", "y", "t"]) {
 	        assertCLI((cli) => cli.inputBoolean("bool prompt"), {arg}, "bool prompt ", true,
 	            "inputBoolean returns true on '``arg``", "inputBoolean displays prompt");
 	    }
-	    for (arg in {"no", "false", "n", "f"}) {
+	    for (arg in ["no", "false", "n", "f"]) {
 	        assertCLI((cli) => cli.inputBoolean("prompt two"), {arg}, "prompt two ", false,
 	            "inputBoolean returns false on ``arg``", "inputBoolean displays prompt");
 	    }
@@ -160,12 +160,12 @@ object cliTests {
 	"Test the input-boolean-with-skipping functionality."
 	test
 	shared void testInputBooleanInSeries() {
-	    for (arg in {"yes", "true", "y", "t"}) {
+	    for (arg in ["yes", "true", "y", "t"]) { // TODO: Loops like this should be converted to parameterized tests
 	        assertCLI((cli) => cli.inputBooleanInSeries("bool prompt"), {arg}, "bool prompt ",
 	            true, "inputBooleanInSeries returns true on '``arg``",
 	            "inputBooleanInSeries displays prompt");
 	    }
-	    for (arg in {"no", "false", "n", "f"}) {
+	    for (arg in ["no", "false", "n", "f"]) {
 	        assertCLI((cli) => cli.inputBooleanInSeries("prompt two"), {arg}, "prompt two ",
 	            false, "inputBooleanInSeries returns false on ``arg``",
 	            "inputBooleanInSeries displays prompt");
