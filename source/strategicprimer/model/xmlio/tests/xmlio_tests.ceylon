@@ -160,6 +160,10 @@ object xmlTests {
 	        Type? desideratum, Anything(Expectation) checks = (Expectation warning) {} )
 	        given Expectation satisfies Exception given Type satisfies Object {
 	    if (exists desideratum) {
+	        if (desideratum is Callable<Anything, Nothing>) {
+	            warningLevels.warn.handle(AssertionError(
+	                "assertFormatIssue() given a Callable as desideratum; you probably need to put 'null' first"));
+	        }
 	        try (stringReader = StringReader(xml)) {
 	            Type returned = reader.readXML<Type>(fakeFilename, stringReader, warningLevels.ignore);
 	            assertEquals(returned, desideratum, "Parsed value should be as expected with warnings ignored.");
