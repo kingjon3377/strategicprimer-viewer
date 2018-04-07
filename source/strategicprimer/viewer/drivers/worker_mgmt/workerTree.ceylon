@@ -348,17 +348,10 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 return null;
             }
             if (exists pathLast =
-                    getPathForLocation(event.x, event.y)?.lastPathComponent) {
-                if (is IWorker localNode = wtModel.getModelObject(pathLast)) {
-                    if (exists stats = localNode.stats) {
-                        return "<html><p>``", ".join(statReferencesList
-	                                    .map(([desc, func]) => "``desc`` ``WorkerStats.getModifierString(func(stats))``"))``</p></html>";
-                    } else {
-                        return null;
-                    }
-                } else {
-                    return null;
-                }
+                    getPathForLocation(event.x, event.y)?.lastPathComponent,
+		            is IWorker localNode = wtModel.getModelObject(pathLast), exists stats = localNode.stats) {
+                return "<html><p>``", ".join(statReferencesList
+                                .map(([desc, func]) => "``desc`` ``WorkerStats.getModifierString(func(stats))``"))``</p></html>";
             } else {
                 return null;
             }
