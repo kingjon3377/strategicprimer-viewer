@@ -376,8 +376,8 @@ object xmlTests {
 	void assertInvalid(String xml) {
 	    for (reader in readers) {
 	        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
-	                XMLStreamException|FileNotFoundException>(reader,
-	            xml, (Exception exception) {
+	                XMLStreamException|FileNotFoundException|MissingPropertyException>(reader,
+	            xml, null, (Exception exception) {
 	                if (is MissingPropertyException exception) {
 	                    assert (exception.tag.localPart == "include", exception.param == "file");
 	                }
