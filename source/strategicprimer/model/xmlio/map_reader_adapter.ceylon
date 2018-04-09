@@ -32,12 +32,16 @@ import ceylon.file {
 import strategicprimer.model.xmlio.fluidxml {
 	SPFluidReader
 }
+import strategicprimer.model.dbio {
+	spDatabaseWriter
+}
 
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
 shared object mapIOHelper {
 	IMapReader reader = SPFluidReader();
 	SPWriter writer = yaXMLWriter;
+	SPWriter dbWriter = spDatabaseWriter;
 	"Turn a series of Strings into a series of equvalent Paths."
 	shared {JPath+} namesToFiles(String+ names) =>
 	        { for (name in names) JPaths.get(name) };
@@ -54,7 +58,13 @@ shared object mapIOHelper {
 	    }
 	}
 	"Write a map to file."
-	shared void writeMap(Path file, IMapNG map) => writer.write(file, map);
+	shared void writeMap(Path file, IMapNG map) {
+		if (file.string.endsWith(".db")) {
+			dbWriter.write(file, map);
+		} else {
+			writer.write(file, map);
+		}
+	}
 	test
 	shared void testNamesToFiles() {
 	    JPath[] expected = [ JPaths.get("two"), JPaths.get("three"), JPaths.get("four") ];

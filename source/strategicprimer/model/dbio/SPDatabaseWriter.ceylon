@@ -26,9 +26,9 @@ import strategicprimer.model.map {
 import ceylon.language.meta {
 	classDeclaration
 }
-class SPDatabaseWriter() satisfies SPWriter {
+shared object spDatabaseWriter satisfies SPWriter {
 	MutableMap<Path, Sql> connections = HashMap<Path, Sql>();
-	DataSource getBaseConnection(Path path) {
+	DataSource getBaseConnection(Path path) { // TODO: Figure out how to use Derby/JavaDB for an empty Path
 		SQLiteDataSource retval = SQLiteDataSource();
 		retval.url = "jdbc:sqlite:``path``";
 		return retval;
@@ -43,18 +43,26 @@ class SPDatabaseWriter() satisfies SPWriter {
 			return retval;
 		}
 	}
-	DatabaseWriter<Anything>[] writers = [];
-	shared actual void writeSPObject(Path|Anything(String) arg, Object obj) {
-		"SPDatabaseWriter can only write to a database file, not to a stream"
-		assert (is Path arg);
-		Sql sql = getSQL(arg);
+	DatabaseWriter<Nothing, Nothing>[] writers = [dbAdventureWriter, dbExplorableWriter,
+		dbGroundWriter, dbImplementWriter, dbMapWriter, dbAnimalWriter, dbImmortalWriter,
+		dbPlayerWriter, dbPortalWriter, dbResourcePileWriter, dbCacheWriter, dbFieldWriter,
+		dbGroveWriter, dbMineWriter, dbMineralWriter, dbShrubWriter, dbSimpleTerrainWriter,
+		dbForestWriter, dbTextWriter, dbTownWriter, dbCommunityStatsWriter, dbVillageWriter,
+		dbFortressWriter, dbUnitWriter, dbWorkerWriter];
+	shared void writeSPObjectInContext(Sql sql, Object obj, Object context) {
 		for (writer in writers) {
-			if (writer.canWrite(obj)) {
-				writer.writeRaw(sql, obj);
+			if (writer.canWrite(obj, context)) {
+				writer.writeRaw(sql, obj, context);
 				return;
 			}
 		}
 		throw AssertionError("No writer for ``classDeclaration(obj).name`` found");
+	}
+	shared actual void writeSPObject(Path|Anything(String) arg, Object obj) {
+		"SPDatabaseWriter can only write to a database file, not to a stream"
+		assert (is Path arg);
+		Sql sql = getSQL(arg);
+		writeSPObjectInContext(sql, obj, obj);
 	}
 	shared actual void write(Path|Anything(String) arg, IMapNG map) => writeSPObject(arg, map);
 }
