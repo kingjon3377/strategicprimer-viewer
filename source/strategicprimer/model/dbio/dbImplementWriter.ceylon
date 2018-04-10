@@ -17,19 +17,24 @@ import ceylon.dbc {
 import java.sql {
 	Types
 }
-object dbImplementWriter  satisfies DatabaseWriter<Implement, Point|IUnit|Fortress> {
+object dbImplementWriter extends AbstractDatabaseWriter<Implement, Point|IUnit|Fortress>() {
+	shared actual {String+} initializers = [
+		"""CREATE TABLE IF NOT EXISTS implements (
+			   row INTEGER,
+			   column INTEGER
+				   CHECK ((row NOT NULL AND column NOT NULL)
+					   OR (row IS NULL AND column IS NULL)),
+			   parent INTEGER
+				   CHECK ((row NOT NULL AND parent IS NULL)
+					   OR (row IS NULL AND parent NOT NULL)),
+			   id INTEGER NOT NULL,
+			   kind VARCHAR(255) NOT NULL,
+			   count INTEGER NOT NULL DEFAULT 1,
+			   image VARCHAR(255)
+		   )"""
+	];
 	shared actual void write(Sql db, Implement obj, Point|IUnit|Fortress context) {
-		db.Statement(
-			"""CREATE TABLE IF NOT EXISTS implements (
-			    row INTEGER,
-			    column INTEGER CHECK ((row NOT NULL AND column NOT NULL) OR (row IS NULL AND column IS NULL)),
-			    parent INTEGER CHECK ((row NOT NULL AND parent IS NULL) OR (row IS NULL AND parent NOT NULL)),
-			    id INTEGER NOT NULL,
-			    kind VARCHAR(255) NOT NULL,
-			    count INTEGER NOT NULL DEFAULT 1,
-			    image VARCHAR(255)
-			   )""").execute();
-		value insertion =  db.Insert(
+		value insertion = db.Insert(
 			"""INSERT INTO implements (row, column, parent, id, kind, count, image)
 			   VALUES(?, ?, ?, ?, ?, ?, ?)""");
 		if (is Point context) {

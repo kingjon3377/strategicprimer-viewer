@@ -7,33 +7,36 @@ import ceylon.dbc {
 	Sql
 }
 variable Integer currentTurn = -1;
-object dbMapWriter satisfies DatabaseWriter<IMutableMapNG, IMapNG> {
+object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 	Boolean[5] riverFlags(River* rivers) {
 		return [rivers.contains(River.north), rivers.contains(River.south), rivers.contains(River.east),
-		rivers.contains(River.west), rivers.contains(River.lake)];
+			rivers.contains(River.west), rivers.contains(River.lake)];
 	}
+	shared actual {String+} initializers = [
+		"""CREATE TABLE IF NOT EXISTS metadata (
+			   version INTEGER NOT NULL,
+			   rows INTEGER NOT NULL,
+			   columns INTEGER NOT NULL,
+			   current_turn INTEGER NOT NULL
+		   )""",
+	"""CREATE TABLE IF NOT EXISTS terrain (
+		   row INTEGER NOT NULL,
+		   column INTEGER NOT NULL,
+		   terrain VARCHAR(16) NOT NULL,
+		   mountainous BOOLEAN NOT NULL,
+		   north_river BOOLEAN NOT NULL,
+		   south_river BOOLEAN NOT NULL,
+		   east_river BOOLEAN NOT NULL,
+		   west_river BOOLEAN NOT NULL,
+		   lake BOOLEAN NOT NULL
+	   )"""
+	];
 	shared actual void write(Sql db, IMutableMapNG obj, IMapNG context) {
-		db.Statement("""CREATE TABLE IF NOT EXISTS metadata (
-			                version INTEGER NOT NULL,
-			                rows INTEGER NOT NULL,
-			                columns INTEGER NOT NULL,
-			                current_turn INTEGER NOT NULL
-		                )""").execute();
-		db.Statement("""CREATE TABLE IF NOT EXISTS terrain (
-			                row INTEGER NOT NULL,
-			                column INTEGER NOT NULL,
-			                terrain VARCHAR(16) NOT NULL,
-			                mountainous BOOLEAN NOT NULL,
-			                north_river BOOLEAN NOT NULL,
-			                south_river BOOLEAN NOT NULL,
-			                east_river BOOLEAN NOT NULL,
-			                west_river BOOLEAN NOT NULL,
-			                lake BOOLEAN NOT NULL
-		                )""").execute();
 		db.Insert("""INSERT INTO metadata (version, rows, columns, current_turn)
 		             VALUES(?, ?, ?, ?)""").execute(obj.dimensions.version, obj.dimensions.rows,
 						obj.dimensions.columns, obj.currentTurn);
 		currentTurn = obj.currentTurn;
+		dbPlayerWriter.initialize(db);
 		for (player in obj.players) {
 			dbPlayerWriter.write(db, player, obj);
 		}

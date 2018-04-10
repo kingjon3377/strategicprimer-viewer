@@ -52,6 +52,7 @@ shared object spDatabaseWriter satisfies SPWriter {
 	shared void writeSPObjectInContext(Sql sql, Object obj, Object context) {
 		for (writer in writers) {
 			if (writer.canWrite(obj, context)) {
+				writer.initialize(sql);
 				writer.writeRaw(sql, obj, context);
 				return;
 			}

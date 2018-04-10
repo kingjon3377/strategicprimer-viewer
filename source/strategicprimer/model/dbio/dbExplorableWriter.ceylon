@@ -8,22 +8,24 @@ import strategicprimer.model.map.fixtures.explorable {
 import ceylon.dbc {
 	Sql
 }
-object dbExplorableWriter satisfies DatabaseWriter<Cave|Battlefield, Point> {
+object dbExplorableWriter extends AbstractDatabaseWriter<Cave|Battlefield, Point>() {
+	shared actual {String+} initializers = [
+		"""CREATE TABLE IF NOT EXISTS caves (
+			   row INTEGER NOT NULL,
+			   column INTEGER NOT NULL,
+			   id INTEGER NOT NULL,
+			   dc INTEGER,
+			   image VARCHAR(255)
+		   )""",
+		"""CREATE TABLE IF NOT EXISTS battlefields (
+			   row INTEGER NOT NULL,
+			   column INTEGER NOT NULL,
+			   id INTEGER NOT NULL,
+			   dc INTEGER,
+			   image VARCHAR(255)
+		   )"""
+	];
 	shared actual void write(Sql db, Cave|Battlefield obj, Point context) {
-		db.Statement("""CREATE TABLE IF NOT EXISTS caves (
-			                row INTEGER NOT NULL,
-			                column INTEGER NOT NULL,
-			                id INTEGER NOT NULL,
-			                dc INTEGER,
-			                image VARCHAR(255)
-		                )""").execute();
-		db.Statement("""CREATE TABLE IF NOT EXISTS battlefields (
-		                 row INTEGER NOT NULL,
-		                 column INTEGER NOT NULL,
-		                 id INTEGER NOT NULL,
-		                 dc INTEGER,
-		                 image VARCHAR(255)
-		                )""").execute();
 		Sql.Insert insertion;
 		switch (obj)
 		case (is Cave) {

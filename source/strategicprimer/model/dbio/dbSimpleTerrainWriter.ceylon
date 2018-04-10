@@ -9,15 +9,18 @@ import strategicprimer.model.map.fixtures.terrain {
 import ceylon.dbc {
 	Sql
 }
-object dbSimpleTerrainWriter satisfies DatabaseWriter<Hill|Oasis|Sandbar, Point> {
+object dbSimpleTerrainWriter extends AbstractDatabaseWriter<Hill|Oasis|Sandbar, Point>() {
+	shared actual {String+} initializers = [
+		"""CREATE TABLE IF NOT EXISTS simple_terrain (
+			   row INTEGER NOT NULL,
+			   column INTEGER NOT NULL,
+			   type VARCHAR(7) NOT NULL
+				   CHECK(type IN('hill', 'oasis', 'sandbar')),
+			   id INTEGER NOT NULL,
+			   image VARCHAR(255)
+		   )"""
+	];
 	shared actual void write(Sql db, Hill|Oasis|Sandbar obj, Point context) {
-		db.Statement("""CREATE TABLE IF NOT EXISTS simple_terrain (
-			                row INTEGER NOT NULL,
-			                column INTEGER NOT NULL,
-			                type VARCHAR(7) NOT NULL CHECK(type IN('hill', 'oasis', 'sandbar')),
-			                id INTEGER NOT NULL,
-			                image VARCHAR(255)
-		                )""").execute();
 		String type;
 		switch (obj)
 		case (is Hill) {

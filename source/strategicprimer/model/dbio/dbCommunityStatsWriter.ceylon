@@ -5,37 +5,39 @@ import strategicprimer.model.map.fixtures.towns {
 import ceylon.dbc {
 	Sql
 }
-object dbCommunityStatsWriter satisfies DatabaseWriter<CommunityStats, ITownFixture> {
+object dbCommunityStatsWriter extends AbstractDatabaseWriter<CommunityStats, ITownFixture>() {
+	shared actual {String+} initializers = [
+		"""CREATE TABLE IF NOT EXISTS town_expertise (
+			   town INTEGER NOT NULL,
+			   skill VARCHAR(255) NOT NULL,
+			   level INTEGER NOT NULL
+		   )""",
+		"""CREATE TABLE IF NOT EXISTS town_worked_resources (
+			   town INTEGER NOT NULL,
+			   resource INTEGER NOT NULL
+		   )""",
+		"""CREATE TABLE IF NOT EXISTS town_production (
+			   town INTEGER NOT NULL,
+			   id INTEGER NOT NULL,
+			   kind VARCHAR(64) NOT NULL,
+			   contents VARCHAR(64) NOT NULL,
+			   quantity VARCHAR(128) NOT NULL
+				   CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%'),
+			   units VARCHAR(32) NOT NULL,
+			   created INTEGER
+		   )""",
+		"""CREATE TABLE IF NOT EXISTS town_consumption (
+			   town INTEGER NOT NULL,
+			   id INTEGER NOT NULL,
+			   kind VARCHAR(64) NOT NULL,
+			   contents VARCHAR(64) NOT NULL,
+			   quantity VARCHAR(128) NOT NULL
+				   CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%'),
+			   units VARCHAR(32) NOT NULL,
+			   created INTEGER
+		   )"""
+	];
 	shared actual void write(Sql db, CommunityStats obj, ITownFixture context) {
-		db.Statement("""CREATE TABLE IF NOT EXISTS town_expertise (
-			                town INTEGER NOT NULL,
-			                skill VARCHAR(255) NOT NULL,
-			                level INTEGER NOT NULL
-		                )""").execute();
-		db.Statement("""CREATE TABLE IF NOT EXISTS town_worked_resources (
-			                town INTEGER NOT NULL,
-			                resource INTEGER NOT NULL
-		                )""").execute();
-		db.Statement("""CREATE TABLE IF NOT EXISTS town_production (
-			                town INTEGER NOT NULL,
-			                id INTEGER NOT NULL,
-			                kind VARCHAR(64) NOT NULL,
-			                contents VARCHAR(64) NOT NULL,
-			                quantity VARCHAR(128) NOT NULL
-				                CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%'),
-			                units VARCHAR(32) NOT NULL,
-			                created INTEGER
-		                )""").execute();
-		db.Statement("""CREATE TABLE IF NOT EXISTS town_consumption (
-		                 town INTEGER NOT NULL,
-		                 id INTEGER NOT NULL,
-		                 kind VARCHAR(64) NOT NULL,
-		                 contents VARCHAR(64) NOT NULL,
-		                 quantity VARCHAR(128) NOT NULL
-		                  CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%'),
-		                 units VARCHAR(32) NOT NULL,
-		                 created INTEGER
-		                )""").execute();
 		value expertise = db.Insert("""INSERT INTO town_expertise (town, skill, level) VALUES(?, ?, ?)""");
 		value fields = db.Insert("""INSERT INTO town_worked_resources (town, resource) VALUES(?, ?)""");
 		value production = db.Insert(

@@ -20,27 +20,37 @@ import strategicprimer.model.map.fixtures.mobile {
 	Fairy,
 	Giant
 }
-object dbImmortalWriter satisfies DatabaseWriter<Immortal, Point|IUnit> {
+object dbImmortalWriter extends AbstractDatabaseWriter<Immortal, Point|IUnit>() {
+	shared actual {String+} initializers = [
+		"""CREATE TABLE IF NOT EXISTS simple_immortals (
+			   row INTEGER,
+			   column INTEGER
+				   CHECK ((row NOT NULL AND column NOT NULL)
+					   OR (row IS NULL AND column IS NULL)),
+			   parent INTEGER
+				   CHECK ((row NOT NULL AND parent IS NULL)
+					   OR (row IS NULL AND parent NOT NULL)),
+			   type VARCHAR(16) NOT NULL,
+			   id INTEGER NOT NULL,
+			   dc INTEGER NOT NULL,
+			   image VARCHAR(255)
+		   )""",
+	"""CREATE TABLE IF NOT EXISTS kinded_immortals (
+		   row INTEGER,
+		   column INTEGER
+			   CHECK ((row NOT NULL AND column NOT NULL)
+				   OR (row IS NULL AND column IS NULL)),
+		   parent INTEGER
+			   CHECK ((row NOT NULL AND parent IS NULL)
+				   OR (row IS NULL AND parent NOT NULL)),
+		   type VARCHAR(16) NOT NULL,
+		   kind VARCHAR(32) NOT NULL,
+		   id INTEGER NOT NULL,
+		   dc INTEGER NOT NULL,
+		   image VARCHAR(255)
+	   )"""
+	];
 	shared actual void write(Sql db, Immortal obj, Point|IUnit context) {
-		db.Statement("""CREATE TABLE IF NOT EXISTS simple_immortals (
-		                  row INTEGER,
-		                  column INTEGER CHECK ((row NOT NULL AND column NOT NULL) OR (row IS NULL AND column IS NULL)),
-		                  parent INTEGER CHECK ((row NOT NULL AND parent IS NULL) OR (row IS NULL AND parent NOT NULL)),
-		                  type VARCHAR(16) NOT NULL,
-		                  id INTEGER NOT NULL,
-		                  dc INTEGER NOT NULL,
-		                  image VARCHAR(255)
-		                )""").execute();
-		db.Statement("""CREATE TABLE IF NOT EXISTS kinded_immortals (
-		                  row INTEGER,
-		                  column INTEGER CHECK ((row NOT NULL AND column NOT NULL) OR (row IS NULL AND column IS NULL)),
-		                  parent INTEGER CHECK ((row NOT NULL AND parent IS NULL) OR (row IS NULL AND parent NOT NULL)),
-		                  type VARCHAR(16) NOT NULL,
-		                  kind VARCHAR(32) NOT NULL,
-		                  id INTEGER NOT NULL,
-		                  dc INTEGER NOT NULL,
-		                  image VARCHAR(255)
-		                )""").execute();
 		if (is SimpleImmortal obj) {
 			value insertion = db.Insert("""INSERT INTO simple_immortals (row, column, parent, type, id, dc, image)
 			                               VALUES(?, ?, ?, ?, ?, ?, ?)""");

@@ -3,6 +3,9 @@ import ceylon.dbc {
 }
 interface DatabaseWriter<in Item, in Context>
 		given Item satisfies Object given Context satisfies Object {
+	"Set up the tables that this writer uses on the given connection. Should be a no-op
+	 if called with the same Sql again."
+	shared formal void initialize(Sql db);
 	"Write an object to the database."
 	shared formal void write(Sql db, Item obj, Context context);
 	"Whether we can write the given object."

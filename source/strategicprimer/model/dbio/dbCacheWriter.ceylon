@@ -7,16 +7,17 @@ import strategicprimer.model.map {
 import ceylon.dbc {
 	Sql
 }
-object dbCacheWriter satisfies DatabaseWriter<CacheFixture, Point> {
+object dbCacheWriter extends AbstractDatabaseWriter<CacheFixture, Point>() {
+	shared actual {String+} initializers =
+			["""CREATE TABLE IF NOT EXISTS caches (
+				    row INTEGER NOT NULL,
+				    column INTEGER NOT NULL,
+				    id INTEGER NOT NULL,
+				    kind VARCHAR(32) NOT NULL,
+				    contents VARCHAR(512) NOT NULL,
+				    image VARCHAR(256) NOT NULL
+			    )"""];
 	shared actual void write(Sql db, CacheFixture obj, Point context) {
-		db.Statement("""CREATE TABLE IF NOT EXISTS caches (
-			                row INTEGER NOT NULL,
-			                column INTEGER NOT NULL,
-			                id INTEGER NOT NULL,
-			                kind VARCHAR(32) NOT NULL,
-			                contents VARCHAR(512) NOT NULL,
-			                image VARCHAR(256) NOT NULL
-		                )""").execute();
 		db.Insert(
 			"""INSERT INTO caches (row, column, id, kind, contents, image) VALUES(?, ?, ?, ?, ?, ?)""")
 				.execute(context.row, context.column, obj.id, obj.kind, obj.contents, obj.image);

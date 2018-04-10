@@ -17,29 +17,31 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.towns {
 	Fortress
 }
-object dbUnitWriter satisfies DatabaseWriter<IUnit, Point|Fortress> {
+object dbUnitWriter extends AbstractDatabaseWriter<IUnit, Point|Fortress>() {
+	shared actual {String+} initializers = [
+		"""CREATE TABLE IF NOT EXISTS units (
+			   row INTEGER,
+			   column INTEGER CHECK ((row NOT NULL AND column NOT NULL) OR (row IS NULL AND column IS NULL)),
+			   parent INTEGER CHECK ((row NOT NULL AND parent IS NULL) OR (row IS NULL AND parent NOT NULL)),
+			   owner INTEGER NOT NULL,
+			   kind VARCHAR(32) NOT NULL,
+			   name VARCHAR(64) NOT NULL,
+			   id INTEGER NOT NULL,
+			   image VARCHAR(255),
+			   portrait VARCHAR(255)
+		   )""",
+		"""CREATE TABLE IF NOT EXISTS orders (
+			   unit INTEGER NOT NULL,
+			   turn INTEGER,
+			   orders VARCHAR(2048) NOT NULL
+		   )""",
+		"""CREATE TABLE IF NOT EXISTS results (
+			   unit INTEGER NOT NULL,
+			   turn INTEGER,
+			   result VARCHAR(2048) NOT NULL
+		   )"""
+	];
 	shared actual void write(Sql db, IUnit obj, Point|Fortress context) {
-		db.Statement("""CREATE TABLE IF NOT EXISTS units (
-			                row INTEGER,
-			                column INTEGER CHECK ((row NOT NULL AND column NOT NULL) OR (row IS NULL AND column IS NULL)),
-			                parent INTEGER CHECK ((row NOT NULL AND parent IS NULL) OR (row IS NULL AND parent NOT NULL)),
-			                owner INTEGER NOT NULL,
-			                kind VARCHAR(32) NOT NULL,
-			                name VARCHAR(64) NOT NULL,
-			                id INTEGER NOT NULL,
-			                image VARCHAR(255),
-			                portrait VARCHAR(255)
-		                )""").execute();
-		db.Statement("""CREATE TABLE IF NOT EXISTS orders (
-			                unit INTEGER NOT NULL,
-			                turn INTEGER,
-			                orders VARCHAR(2048) NOT NULL
-		                )""").execute();
-		db.Statement("""CREATE TABLE IF NOT EXISTS results (
-		                 unit INTEGER NOT NULL,
-		                 turn INTEGER,
-		                 result VARCHAR(2048) NOT NULL
-		                )""").execute();
 		value unit = db.Insert("""INSERT INTO units (row, column, parent, owner, kind, name, id, image, portrait)
 		                          VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)""");
 		value order = db.Insert("""INSERT INTO orders (unit, turn, orders) VALUES(?, ?, ?)""");
