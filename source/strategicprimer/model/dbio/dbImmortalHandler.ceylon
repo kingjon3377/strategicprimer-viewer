@@ -32,7 +32,7 @@ import strategicprimer.model.map.fixtures.mobile {
 	Troll
 }
 object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>() satisfies MapContentsReader {
-	shared actual {String+} initializers = [ // TODO: Add constraint on 'type'? // TODO: 'dc' is not actually mutable; drop
+	shared actual {String+} initializers = [ // TODO: Add constraint on 'type'?
 		"""CREATE TABLE IF NOT EXISTS simple_immortals (
 			   row INTEGER,
 			   column INTEGER
@@ -43,9 +43,8 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 					   OR (row IS NULL AND parent NOT NULL)),
 			   type VARCHAR(16) NOT NULL,
 			   id INTEGER NOT NULL,
-			   dc INTEGER NOT NULL,
 			   image VARCHAR(255)
-		   )""", // TODO: Add constraint on 'type'? // TODO: drop 'dc' as is not variable
+		   )""", // TODO: Add constraint on 'type'?
 		"""CREATE TABLE IF NOT EXISTS kinded_immortals (
 			   row INTEGER,
 			   column INTEGER
@@ -57,20 +56,19 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			   type VARCHAR(16) NOT NULL,
 			   kind VARCHAR(32) NOT NULL,
 			   id INTEGER NOT NULL,
-			   dc INTEGER NOT NULL,
 			   image VARCHAR(255)
 		   )"""
 	];
 	shared actual void write(Sql db, Immortal obj, Point|IUnit context) {
 		if (is SimpleImmortal obj) {
-			value insertion = db.Insert("""INSERT INTO simple_immortals (row, column, parent, type, id, dc, image)
-			                               VALUES(?, ?, ?, ?, ?, ?, ?)""");
+			value insertion = db.Insert("""INSERT INTO simple_immortals (row, column, parent, type, id, image)
+			                               VALUES(?, ?, ?, ?, ?, ?)""");
 			if (is Point context) {
 				insertion.execute(context.row, context.column, SqlNull(Types.integer), obj.kind, obj.id,
-					obj.dc, obj.image);
+					obj.image);
 			} else {
 				insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer), context.id,
-					obj.kind, obj.id, obj.dc, obj.image);
+					obj.kind, obj.id, obj.image);
 			}
 		} else {
 			assert (is HasKind obj);
@@ -90,14 +88,14 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 				type = "giant";
 			}
 			value insertion = db.Insert(
-				"""INSERT INTO kinded_immortals (row, column, parent, type, kind, id, dc, image)
-				   VALUES(?, ?, ?, ?, ?, ?, ?, ?)""");
+				"""INSERT INTO kinded_immortals (row, column, parent, type, kind, id, image)
+				   VALUES(?, ?, ?, ?, ?, ?, ?)""");
 			if (is Point context) {
 				insertion.execute(context.row, context.column, SqlNull(Types.integer), type,
-					obj.kind, obj.id, obj.dc, obj.image);
+					obj.kind, obj.id, obj.image);
 			} else {
 				insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer), context.id,
-					type, obj.kind, obj.id, obj.dc, obj.image);
+					type, obj.kind, obj.id, obj.image);
 			}
 		}
 	}
