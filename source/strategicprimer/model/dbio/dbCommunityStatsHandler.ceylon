@@ -55,8 +55,8 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 		value production = db.Insert(
 			"""INSERT INTO town_production(town, id, kind, contents, quantity, units, created)
 			   VALUES(?, ?, ?, ?, ?, ?, ?)""");
-		value consumption = db.Insert( // FIXME: Should be consumption, not production
-			"""INSERT INTO town_production(town, id, kind, contents, quantity, units, created)
+		value consumption = db.Insert(
+			"""INSERT INTO town_consumption(town, id, kind, contents, quantity, units, created)
 			   VALUES(?, ?, ?, ?, ?, ?, ?)""");
 		db.transaction(() {
 			for (skill->level in obj.highestSkillLevels) {
