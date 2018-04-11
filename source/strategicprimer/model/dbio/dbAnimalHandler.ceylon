@@ -18,10 +18,8 @@ import strategicprimer.model.map.fixtures.mobile {
 	maturityModel,
 	AnimalImpl
 }
-import strategicprimer.model.map.fixtures.towns {
-	Fortress
-}
-object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit|Fortress>() satisfies MapContentsReader { // FIXME: Animal isn't a FortressMember
+
+object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() satisfies MapContentsReader {
 	Integer|SqlNull born(Animal animal) {
 		if (exists maturityAge = maturityModel.maturityAges[animal.kind],
 				maturityAge <= (currentTurn - animal.born)) {
@@ -56,9 +54,9 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit|Fortre
 			   image VARCHAR(255)
 		   )"""
 	];
-	shared actual void write(Sql db, Animal obj, Point|IUnit|Fortress context) {
+	shared actual void write(Sql db, Animal obj, Point|IUnit context) {
 		if (obj.traces) {
-			"We assume that animal tracks can't occur inside a unit or fortress."
+			"We assume that animal tracks can't occur inside a unit."
 			assert (is Point context);
 			db.Insert("""INSERT INTO tracks (row, column, kind, image) VALUES(?, ?, ?, ?)""")
 					.execute(context.row, context.column, obj.kind, obj.image);
