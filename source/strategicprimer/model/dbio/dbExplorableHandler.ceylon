@@ -12,19 +12,19 @@ import strategicprimer.model.map.fixtures.explorable {
 	Cave
 }
 object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Point>() satisfies MapContentsReader {
-	shared actual {String+} initializers = [ // TODO: Can dc really be null?
+	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS caves (
 			   row INTEGER NOT NULL,
 			   column INTEGER NOT NULL,
 			   id INTEGER NOT NULL,
-			   dc INTEGER,
+			   dc INTEGER NOT NULL,
 			   image VARCHAR(255)
 		   )""",
 		"""CREATE TABLE IF NOT EXISTS battlefields (
 			   row INTEGER NOT NULL,
 			   column INTEGER NOT NULL,
 			   id INTEGER NOT NULL,
-			   dc INTEGER,
+			   dc INTEGER NOT NULL,
 			   image VARCHAR(255)
 		   )"""
 	];
