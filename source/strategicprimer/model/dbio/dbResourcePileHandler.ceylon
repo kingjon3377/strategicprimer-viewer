@@ -19,7 +19,7 @@ import strategicprimer.model.map.fixtures.towns {
 	Fortress
 }
 object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|Fortress>() satisfies MapContentsReader {
-	shared actual {String+} initializers = [ // FIXME: Store image
+	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS resource_piles (
 			   parent INTEGER NOT NULL,
 			   id INTEGER NOT NULL,
@@ -28,13 +28,14 @@ object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|
 			   quantity VARCHAR(128) NOT NULL
 				   CHECK (quantity NOT LIKE '%[^0-9.]%' AND quantity NOT LIKE '%.%.%'),
 			   units VARCHAR(32) NOT NULL,
-			   created INTEGER
+			   created INTEGER,
+			   image VARCHAR(255)
 		   )"""
 	];
 	shared actual void write(Sql db, ResourcePile obj, IUnit|Fortress context) {
-		db.Insert("""INSERT INTO resource_piles (parent, id, kind, contents, quantity, units, created)
-		             VALUES(?, ?, ?, ?, ?, ?, ?)""").execute(context.id, obj.id, obj.kind, obj.contents,
-						obj.quantity.number.string, obj.quantity.units, obj.created);
+		db.Insert("""INSERT INTO resource_piles (parent, id, kind, contents, quantity, units, created, image)
+		             VALUES(?, ?, ?, ?, ?, ?, ?, ?)""").execute(context.id, obj.id, obj.kind, obj.contents,
+						obj.quantity.number.string, obj.quantity.units, obj.created, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map) {}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map) {
