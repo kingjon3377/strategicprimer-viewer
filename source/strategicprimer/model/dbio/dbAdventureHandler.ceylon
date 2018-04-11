@@ -12,14 +12,14 @@ import strategicprimer.model.map.fixtures.explorable {
 	AdventureFixture
 }
 object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point>() satisfies MapContentsReader {
-	shared actual {String+} initializers =  // TODO: Make 'owner' NOT NULL. Make 'brief' and 'full' NOT NULL!!
+	shared actual {String+} initializers =
 			["""CREATE TABLE IF NOT EXISTS adventures (
 				    row INTEGER NOT NULL,
 				    column INTEGER NOT NULL,
 				    id INTEGER NOT NULL,
-				    brief VARCHAR(255),
-				    full VARCHAR(512),
-				    owner INTEGER,
+				    brief VARCHAR(255) NOT NULL,
+				    full VARCHAR(512) NOT NULL,
+				    owner INTEGER NOT NULL,
 				    image VARCHAR(255)
 			    )"""];
 	shared actual void write(Sql db, AdventureFixture obj, Point context) {
