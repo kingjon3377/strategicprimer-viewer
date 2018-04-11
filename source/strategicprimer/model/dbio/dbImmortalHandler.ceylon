@@ -32,7 +32,7 @@ import strategicprimer.model.map.fixtures.mobile {
 	Troll
 }
 object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>() satisfies MapContentsReader {
-	shared actual {String+} initializers = [ // TODO: Add constraint on 'type'?
+	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS simple_immortals (
 			   row INTEGER,
 			   column INTEGER
@@ -41,10 +41,12 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			   parent INTEGER
 				   CHECK ((row NOT NULL AND parent IS NULL)
 					   OR (row IS NULL AND parent NOT NULL)),
-			   type VARCHAR(16) NOT NULL,
+			   type VARCHAR(16) NOT NULL
+				   CHECK (type IN('sphinx', 'djinn', 'griffin', 'minotaur', 'ogre',
+					   'phoenix', 'simurgh', 'troll')),
 			   id INTEGER NOT NULL,
 			   image VARCHAR(255)
-		   )""", // TODO: Add constraint on 'type'?
+		   )""",
 		"""CREATE TABLE IF NOT EXISTS kinded_immortals (
 			   row INTEGER,
 			   column INTEGER
@@ -53,7 +55,8 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			   parent INTEGER
 				   CHECK ((row NOT NULL AND parent IS NULL)
 					   OR (row IS NULL AND parent NOT NULL)),
-			   type VARCHAR(16) NOT NULL,
+			   type VARCHAR(16) NOT NULL
+				   CHECK (type IN ('centaur', 'dragon', 'fairy', 'giant')),
 			   kind VARCHAR(32) NOT NULL,
 			   id INTEGER NOT NULL,
 			   image VARCHAR(255)
