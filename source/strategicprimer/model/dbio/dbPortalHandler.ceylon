@@ -1,18 +1,22 @@
-import strategicprimer.model.map.fixtures.explorable {
-	Portal
-}
-import strategicprimer.model.map {
-	Point
-}
 import ceylon.dbc {
 	Sql,
 	SqlNull
 }
+
 import java.sql {
 	Types
 }
-object dbPortalWriter extends AbstractDatabaseWriter<Portal, Point>() {
-	shared actual {String+} initializers = [
+
+import strategicprimer.model.map {
+	Point,
+	IMutableMapNG,
+	pointFactory
+}
+import strategicprimer.model.map.fixtures.explorable {
+	Portal
+}
+object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>() satisfies MapContentsReader {
+	shared actual {String+} initializers = [ // FIXME: Missing image field
 		"""CREATE TABLE IF NOT EXISTS portals (
 			   row INTEGER NOT NULL,
 			   column INTEGER NOT NULL,
@@ -35,5 +39,19 @@ object dbPortalWriter extends AbstractDatabaseWriter<Portal, Point>() {
 			"""INSERT INTO portals (row, column, id, destination_world, destination_row, destination_column)
 			   VALUES(?, ?, ?, ?, ?, ?)""")
 				.execute(context.row, context.column, obj.id, obj.destinationWorld, *destinationCoordinates);
+	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+		for (dbRow in db.Select("""SELECT * FROM portals""").Results()) {
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is Integer id = dbRow["id"], is String? destinationWorld = dbRow["destination_world"],
+				is Integer? destinationRow = dbRow["destination_row"],
+				is Integer? destinationColumn = dbRow["destination_column"], is String? image = dbRow["image"]);
+			value portal = Portal(destinationWorld else "unknown",
+				pointFactory(destinationRow else -1, destinationColumn else -1), id);
+			if (exists image) {
+				portal.image = image;
+			}
+			map.addFixture(pointFactory(row, column), portal);
+		}
 	}
 }

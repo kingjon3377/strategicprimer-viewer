@@ -43,12 +43,12 @@ shared object spDatabaseWriter satisfies SPWriter {
 			return retval;
 		}
 	}
-	DatabaseWriter<Nothing, Nothing>[] writers = [dbAdventureWriter, dbExplorableWriter,
-		dbGroundWriter, dbImplementWriter, dbMapWriter, dbAnimalWriter, dbImmortalWriter,
-		dbPlayerWriter, dbPortalWriter, dbResourcePileWriter, dbCacheWriter, dbFieldWriter,
-		dbGroveWriter, dbMineWriter, dbMineralWriter, dbShrubWriter, dbSimpleTerrainWriter,
-		dbForestWriter, dbTextWriter, dbTownWriter, dbCommunityStatsWriter, dbVillageWriter,
-		dbFortressWriter, dbUnitWriter, dbWorkerWriter];
+	DatabaseWriter<Nothing, Nothing>[] writers = [dbAdventureHandler, dbExplorableHandler,
+		dbGroundHandler, dbImplementHandler, dbMapWriter, dbAnimalHandler, dbImmortalHandler,
+		dbPlayerHandler, dbPortalHandler, dbResourcePileHandler, dbCacheHandler, dbFieldHandler,
+		dbGroveHandler, dbMineHandler, dbMineralHandler, dbShrubHandler, dbSimpleTerrainHandler,
+		dbForestHandler, dbTextWriter, dbTownHandler, dbCommunityStatsHandler, dbVillageHandler,
+		dbFortressHandler, dbUnitHandler, dbWorkerHandler];
 	shared void writeSPObjectInContext(Sql sql, Object obj, Object context) {
 		for (writer in writers) {
 			if (writer.canWrite(obj, context)) {
@@ -65,5 +65,5 @@ shared object spDatabaseWriter satisfies SPWriter {
 		Sql sql = getSQL(arg);
 		writeSPObjectInContext(sql, obj, obj);
 	}
-	shared actual void write(Path|Anything(String) arg, IMapNG map) => writeSPObject(arg, map);
+	shared actual void write(Path|Anything(String) arg, IMapNG map) => writeSPObject(arg, map); // FIXME: Allow caller to pass in an Sql, for use in tests
 }

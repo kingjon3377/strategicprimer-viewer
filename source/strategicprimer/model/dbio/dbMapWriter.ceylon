@@ -19,6 +19,7 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 			   columns INTEGER NOT NULL,
 			   current_turn INTEGER NOT NULL
 		   )""",
+	// FIXME: check that 'terrain' is one of the known types
 	"""CREATE TABLE IF NOT EXISTS terrain (
 		   row INTEGER NOT NULL,
 		   column INTEGER NOT NULL,
@@ -36,9 +37,9 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 		             VALUES(?, ?, ?, ?)""").execute(obj.dimensions.version, obj.dimensions.rows,
 						obj.dimensions.columns, obj.currentTurn);
 		currentTurn = obj.currentTurn;
-		dbPlayerWriter.initialize(db);
+		dbPlayerHandler.initialize(db);
 		for (player in obj.players) {
-			dbPlayerWriter.write(db, player, obj);
+			dbPlayerHandler.write(db, player, obj);
 		}
 		value terrainInsertion = db.Insert(
 			"""INSERT INTO terrain (row, column, terrain, mountainous, north_river,

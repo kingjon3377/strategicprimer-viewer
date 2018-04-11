@@ -1,3 +1,7 @@
+import ceylon.collection {
+	MutableMap,
+	HashMap
+}
 import ceylon.dbc {
 	Sql,
 	SqlNull
@@ -8,13 +12,20 @@ import java.sql {
 }
 
 import strategicprimer.model.map {
-	HasPortrait
+	HasPortrait,
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.mobile {
 	IWorker,
-	IUnit
+	IUnit,
+	Worker
 }
-object dbWorkerWriter extends AbstractDatabaseWriter<IWorker, IUnit>() {
+import strategicprimer.model.map.fixtures.mobile.worker {
+	WorkerStats,
+	Job,
+	Skill
+}
+object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS workers (
 			   unit INTEGER NOT NULL,
@@ -75,5 +86,43 @@ object dbWorkerWriter extends AbstractDatabaseWriter<IWorker, IUnit>() {
 			}
 			return true;
 		});
+	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map) {}
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map) {
+		MutableMap<Integer, Worker> workers = HashMap<Integer, Worker>();
+		for (row in db.Select("""SELECT * FROM workers""").Results()) {
+			assert (is Integer unitId = row["unit"], is IUnit unit = super.findById(map, unitId),
+				is Integer id = row["id"], is String name = row["name"], is String race = row["race"],
+				is String? image = row["image"], is String? portrait = row["portrait"],
+				is Integer? hp = row["hp"], is Integer? maxHp = row["max_hp"], is Integer? str = row["str"],
+				is Integer? dex = row["dex"], is Integer? con = row["con"], is Integer? int = row["int"],
+				is Integer? wis = row["wis"], is Integer? cha = row["cha"]);
+			Worker worker = Worker(name, race, id);
+			if (exists hp) {
+				assert (exists maxHp, exists str, exists dex, exists con, exists int, exists wis, exists cha);
+				worker.stats = WorkerStats(hp, maxHp, str, dex, con, int, wis, cha);
+			}
+			if (exists image) {
+				worker.image = image;
+			}
+			if (exists portrait) {
+				worker.portrait = portrait;
+			}
+			if (exists existing = workers[id]) {
+				// FIXME: Handle with a DuplicateIDException via Warning
+				throw AssertionError("Duplicate ID");
+			}
+			workers[id] = worker;
+		}
+		for (row in db.Select("""SELECT * FROM worker_job_levels""").Results()) {
+			assert (is Integer id = row["worker"], exists worker = workers[id], is String job = row["job"],
+				is Integer level = row["level"]);
+			worker.addJob(Job(job, level));
+		}
+		for (row in db.Select("""SELECT * FROM worke_skill_levels""").Results()) {
+			assert (is Integer id = row["worker"], exists worker = workers[id], is String job = row["associated_job"],
+				is String skill = row["skill"], is Integer level = row["level"], is Integer hours = row["hours"]);
+			worker.getJob(job).addSkill(Skill(skill, level, hours));
+		}
 	}
 }

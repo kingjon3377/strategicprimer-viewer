@@ -1,0 +1,40 @@
+import ceylon.dbc {
+	Sql
+}
+
+import strategicprimer.model.map {
+	IMutableMapNG,
+	IFixture,
+	IMapNG
+}
+"An interface for code to read map contents from an SQL database."
+interface MapContentsReader {
+	"Read map direct contents---that is, anything directly at a location on the map."
+	shared formal void readMapContents(Sql db, IMutableMapNG map);
+	"Read non-direct contents---that is, unit and fortress members and the like. Because
+	 in many cases this doesn't apply, it's by default a noop."
+	shared default void readExtraMapContents(Sql db, IMutableMapNG map) {}
+	"Expand any fixture that is itself a stream of fixtures to its contents plus itself."
+	shared default {IFixture+} expand(IFixture fixture) {
+		if (is {IFixture*} fixture) {
+			return fixture.flatMap(expand).follow(fixture);
+		} else {
+			return Singleton(fixture);
+		}
+	}
+	"Find a tile fixture or unit or fortress member by ID."
+	shared default IFixture findById(IMapNG map, Integer id) { // FIXME: Pass in a Warning instance
+		{IFixture*} retval = map.locations.flatMap(map.fixtures.get).flatMap(expand)
+				.filter((fixture) => fixture.id == id);
+		if (exists first = retval.first) {
+			if (exists another = retval.rest.first) {
+				// TODO: Handle with a DuplicateIDException to the Warning instance
+				throw AssertionError("Duplicate ID");
+			} else {
+				return first;
+			}
+		} else {
+			throw AssertionError("ID not found");
+		}
+	}
+}

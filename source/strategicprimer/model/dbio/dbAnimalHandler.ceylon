@@ -1,22 +1,27 @@
-import strategicprimer.model.map.fixtures.mobile {
-	Animal,
-	IUnit,
-	maturityModel
-}
 import ceylon.dbc {
 	Sql,
 	SqlNull
 }
+
+import java.sql {
+	Types
+}
+
 import strategicprimer.model.map {
-	Point
+	Point,
+	IMutableMapNG,
+	pointFactory
+}
+import strategicprimer.model.map.fixtures.mobile {
+	Animal,
+	IUnit,
+	maturityModel,
+	AnimalImpl
 }
 import strategicprimer.model.map.fixtures.towns {
 	Fortress
 }
-import java.sql {
-	Types
-}
-object dbAnimalWriter extends AbstractDatabaseWriter<Animal, Point|IUnit|Fortress>() {
+object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit|Fortress>() satisfies MapContentsReader { // FIXME: Animal isn't a FortressMember
 	Integer|SqlNull born(Animal animal) {
 		if (exists maturityAge = maturityModel.maturityAges[animal.kind],
 				maturityAge <= (currentTurn - animal.born)) {
@@ -68,6 +73,41 @@ object dbAnimalWriter extends AbstractDatabaseWriter<Animal, Point|IUnit|Fortres
 				insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer), context.id,
 					obj.kind, obj.talking, obj.status, born(obj), obj.population, obj.id, obj.image);
 			}
+		}
+	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+		for (dbRow in db.Select("""SELECT * FROM animals WHERE row NOT NULL""").Results()) {
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is String kind = dbRow["kind"], is Boolean talking = dbRow["talking"],
+				is String status = dbRow["status"], is Integer? born = dbRow["born"],
+				is Integer count = dbRow["count"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);
+			value animal = AnimalImpl(kind, false, talking, status, id, born else -1, count);
+			if (exists image) {
+				animal.image = image;
+			}
+			map.addFixture(pointFactory(row, column), animal);
+		}
+		for (dbRow in db.Select("""SELECT * FROM tracks""").Results()) {
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is String kind = dbRow["kind"], is String? image = dbRow["image"]);
+			value track = AnimalImpl(kind, true, false, "wild", -1, -1, -1);
+			if (exists image) {
+				track.image = image;
+			}
+			map.addFixture(pointFactory(row, column), track);
+		}
+	}
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map) {
+		for (dbRow in db.Select("""SELECT * FROM animals WHERE parent NOT NULL""").Results()) {
+			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId),
+				is String kind = dbRow["kind"], is Boolean talking = dbRow["talking"],
+				is String status = dbRow["status"], is Integer? born = dbRow["born"],
+				is Integer count = dbRow["count"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);
+			value animal = AnimalImpl(kind, false, talking, status, id, born else -1, count);
+			if (exists image) {
+				animal.image = image;
+			}
+			parent.addMember(animal);
 		}
 	}
 }

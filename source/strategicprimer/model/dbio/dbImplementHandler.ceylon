@@ -1,5 +1,15 @@
+import ceylon.dbc {
+	Sql,
+	SqlNull
+}
+
+import java.sql {
+	Types
+}
+
 import strategicprimer.model.map {
-	Point
+	Point,
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures {
 	Implement
@@ -10,15 +20,8 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.towns {
 	Fortress
 }
-import ceylon.dbc {
-	Sql,
-	SqlNull
-}
-import java.sql {
-	Types
-}
-object dbImplementWriter extends AbstractDatabaseWriter<Implement, Point|IUnit|Fortress>() {
-	shared actual {String+} initializers = [
+object dbImplementHandler extends AbstractDatabaseWriter<Implement, Point|IUnit|Fortress>() satisfies MapContentsReader {
+	shared actual {String+} initializers = [ // FIXME: An Implement can't be outside a unit or fortress; drop Point as parent.
 		"""CREATE TABLE IF NOT EXISTS implements (
 			   row INTEGER,
 			   column INTEGER
@@ -41,6 +44,23 @@ object dbImplementWriter extends AbstractDatabaseWriter<Implement, Point|IUnit|F
 			insertion.execute(context.row, context.column, SqlNull(Types.integer), obj.id, obj.kind, obj.count, obj.image);
 		} else {
 			insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer), context.id, obj.id, obj.kind, obj.count, obj.image);
+		}
+	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map) {}
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map) {
+		for (row in db.Select("""SELECT * FROM implements WHERE parent NOT NULL""").Results()) {
+			assert (is Integer parentId = row["parent"], is IUnit|Fortress parent = findById(map, parentId),
+				is Integer id = row["id"], is String kind = row["kind"], is Integer count = row["count"],
+				is String? image = row["image"]);
+			value implement = Implement(kind, id, count);
+			if (exists image) {
+				implement.image = image;
+			}
+			if (is IUnit parent) {
+				parent.addMember(implement);
+			} else {
+				parent.addMember(implement);
+			}
 		}
 	}
 }
