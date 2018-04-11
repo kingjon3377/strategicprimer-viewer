@@ -16,11 +16,12 @@ import strategicprimer.model.map.fixtures.explorable {
 	Portal
 }
 object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>() satisfies MapContentsReader {
-	shared actual {String+} initializers = [ // FIXME: Missing image field
+	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS portals (
 			   row INTEGER NOT NULL,
 			   column INTEGER NOT NULL,
 			   id INTEGER NOT NULL,
+			   image VARCHAR(255),
 			   destination_world VARCHAR(16),
 			   destination_row INTEGER,
 			   destination_column INTEGER
@@ -36,9 +37,9 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>() satisfies
 			destinationCoordinates = [SqlNull(Types.integer), SqlNull(Types.integer)];
 		}
 		db.Insert(
-			"""INSERT INTO portals (row, column, id, destination_world, destination_row, destination_column)
-			   VALUES(?, ?, ?, ?, ?, ?)""")
-				.execute(context.row, context.column, obj.id, obj.destinationWorld, *destinationCoordinates);
+			"""INSERT INTO portals (row, column, id, image, destination_world, destination_row, destination_column)
+			   VALUES(?, ?, ?, ?, ?, ?, ?)""")
+				.execute(context.row, context.column, obj.id, obj.image, obj.destinationWorld, *destinationCoordinates);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map) {
 		for (dbRow in db.Select("""SELECT * FROM portals""").Results()) {
