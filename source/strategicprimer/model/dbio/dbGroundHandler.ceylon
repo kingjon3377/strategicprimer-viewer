@@ -11,13 +11,13 @@ import strategicprimer.model.map.fixtures {
 	Ground
 }
 object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>() satisfies MapContentsReader {
-	shared actual {String+} initializers = [ // FIXME: kind and exposed shouldn't be nullable
+	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS ground (
 			   row INTEGER NOT NULL,
 			   column INTEGER NOT NULL,
 			   id INTEGER NOT NULL,
-			   kind VARCHAR(32),
-			   exposed BOOLEAN,
+			   kind VARCHAR(32) NOT NULL,
+			   exposed BOOLEAN NOT NULL,
 			   image VARCHAR(255)
 		   )"""
 	];
