@@ -23,7 +23,7 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 		   row INTEGER NOT NULL,
 		   column INTEGER NOT NULL,
 		   terrain VARCHAR(16) NOT NULL
-			   CHECK (terrain IN '', 'tundra', 'desert', 'mountain', 'boreal_forest',
+			   CHECK (terrain IN ('', 'tundra', 'desert', 'mountain', 'boreal_forest',
 				   'temperate_forest', 'ocean', 'plains', 'jungle', 'steppe', 'swamp')),
 		   mountainous BOOLEAN NOT NULL,
 		   north_river BOOLEAN NOT NULL,
