@@ -105,8 +105,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             return getUnitsImpl(map.locations.flatMap(map.fixtures.get), player)
                 .sort((x, y) => x.name.compareIgnoringCase(y.name));
         } else {
-            value temp = allMaps
-                    .map(([IMutableMapNG, JPath?] pair) => pair.first)
+            value temp = allMaps.map(Tuple.first)
                     .flatMap((indivMap) => indivMap.locations.flatMap(
 //                        (point) => getUnitsImpl(indivMap.fixtures[point], player)));
                         (point) => getUnitsImpl(indivMap.fixtures.get(point), player)));
