@@ -11,6 +11,9 @@ import strategicprimer.model.map.fixtures.explorable {
 	Battlefield,
 	Cave
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS caves (
@@ -39,7 +42,7 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 		}
 		insertion.execute(context.row, context.column, obj.id, obj.dc, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM caves""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is Integer dc = dbRow["dc"], is String? image = dbRow["image"]);

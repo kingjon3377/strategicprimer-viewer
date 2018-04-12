@@ -11,6 +11,9 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.explorable {
 	AdventureFixture
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers =
 			["""CREATE TABLE IF NOT EXISTS adventures (
@@ -28,7 +31,7 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
 					.execute(context.row, context.column, obj.id, obj.briefDescription,
 						obj.fullDescription, obj.owner.playerId, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM adventures""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String brief = dbRow["brief"], is String full = dbRow["full"],

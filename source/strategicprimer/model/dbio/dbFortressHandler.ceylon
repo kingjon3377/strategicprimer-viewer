@@ -12,6 +12,9 @@ import strategicprimer.model.map.fixtures.towns {
 	Fortress,
 	TownSize
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS fortresses (
@@ -35,7 +38,7 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>() satis
 			spDatabaseWriter.writeSPObjectInContext(db, member, obj);
 		}
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM fortresses""").Results()) { // TODO: Add a findPlayer helper to MapContentsReader
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer ownerId = dbRow["owner"], is String name = dbRow["name"],

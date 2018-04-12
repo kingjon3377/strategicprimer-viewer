@@ -43,7 +43,7 @@ shared object spDatabaseReader satisfies IMapReader {
 	}
 	shared actual IMutableMapNG readMap(Path file, Warning warner) { // FIXME: Allow caller to pass in an Sql, for use in tests
 		Sql sql = getSQL(file);
-		return dbMapReader.readMap(sql);
+		return dbMapReader.readMap(sql, warner);
 	}
 
 	shared actual IMutableMapNG readMapFromStream(Path file, Reader istream, Warning warner) {

@@ -10,6 +10,9 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.resources {
 	Grove
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS groves (
@@ -30,7 +33,7 @@ object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>() satisfies M
 				.execute(context.row, context.column, obj.id, (obj.orchard) then "orchard" else "grove",
 					obj.kind, obj.cultivated, obj.population, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM groves""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String type = dbRow["type"], is String kind = dbRow["kind"],

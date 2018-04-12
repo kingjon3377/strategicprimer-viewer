@@ -18,6 +18,9 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.towns {
 	Fortress
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|Fortress>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS resource_piles (
@@ -37,8 +40,8 @@ object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|
 		             VALUES(?, ?, ?, ?, ?, ?, ?, ?)""").execute(context.id, obj.id, obj.kind, obj.contents,
 						obj.quantity.number.string, obj.quantity.units, obj.created, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {}
-	shared actual void readExtraMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (row in db.Select("""SELECT * FROM resource_piles""").Results()) {
 			assert (is Integer parentId = row["parent"], is IUnit|Fortress parent = findById(map, parentId),
 				is Integer id = row["id"], is String kind = row["kind"], is String contents = row["contents"],

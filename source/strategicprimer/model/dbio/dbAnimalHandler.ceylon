@@ -18,6 +18,9 @@ import strategicprimer.model.map.fixtures.mobile {
 	maturityModel,
 	AnimalImpl
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 
 object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() satisfies MapContentsReader {
 	Integer|SqlNull born(Animal animal) {
@@ -73,7 +76,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 			}
 		}
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM animals WHERE row NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String kind = dbRow["kind"], is Boolean talking = dbRow["talking"],
@@ -95,7 +98,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 			map.addFixture(pointFactory(row, column), track);
 		}
 	}
-	shared actual void readExtraMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM animals WHERE parent NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId),
 				is String kind = dbRow["kind"], is Boolean talking = dbRow["talking"],

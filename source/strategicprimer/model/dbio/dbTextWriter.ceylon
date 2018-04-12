@@ -15,6 +15,9 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
 	TextFixture
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS text_notes (
@@ -35,7 +38,7 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>() satisf
 		db.Insert("""INSERT INTO text_notes (row, column, turn, text, image) VALUES(?, ?, ?, ?, ?)""")
 				.execute(context.row, context.column, turn, obj.text, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM text_notes""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer? turn = dbRow["turn"], is String text = dbRow["text"], is String? image = dbRow["image"]);

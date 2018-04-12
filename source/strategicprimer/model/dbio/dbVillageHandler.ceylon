@@ -18,6 +18,9 @@ import strategicprimer.model.map.fixtures.towns {
 	TownStatus,
 	CommunityStats
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS villages (
@@ -44,7 +47,7 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>() satisfi
 			dbCommunityStatsHandler.write(db, stats, obj);
 		}
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * from villages""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String statusString = dbRow["status"], is TownStatus status = TownStatus.parse(statusString),

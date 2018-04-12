@@ -10,6 +10,9 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.resources {
 	Shrub
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS shrubs (
@@ -27,7 +30,7 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>() satisfies M
 				.execute(context.row, context.column, obj.id, obj.kind,
 					obj.population, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM shrubs""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String kind = dbRow["kind"], is Integer? count = dbRow["count"], is String? image = dbRow["image"]);

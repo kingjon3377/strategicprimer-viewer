@@ -31,6 +31,9 @@ import strategicprimer.model.map.fixtures.mobile {
 	Simurgh,
 	Troll
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS simple_immortals (
@@ -102,7 +105,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			}
 		}
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) { // TODO: Reduce code duplication (and in other readers)
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) { // TODO: Reduce code duplication (and in other readers)
 		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE row NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is String type = dbRow["type"],
 				is Integer id = dbRow["id"], is String? image = dbRow["image"]);
@@ -167,7 +170,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			map.addFixture(pointFactory(row, column), immortal);
 		}
 	}
-	shared actual void readExtraMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE parent NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId),
 				is String type = dbRow["type"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);

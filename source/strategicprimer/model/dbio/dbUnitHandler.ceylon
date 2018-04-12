@@ -21,6 +21,9 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.towns {
 	Fortress
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS units (
@@ -76,7 +79,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 			spDatabaseWriter.writeSPObjectInContext(db, member, obj);
 		}
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM units WHERE row NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
@@ -101,7 +104,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 			map.addFixture(pointFactory(row, column), unit);
 		}
 	}
-	shared actual void readExtraMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM units WHERE parent NOT NULL""").Results()) {
 			assert (is Integer parentNum = dbRow["parent"], is Fortress parent = super.findById(map, parentNum),
 				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],

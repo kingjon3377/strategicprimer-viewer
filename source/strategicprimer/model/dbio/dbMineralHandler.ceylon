@@ -12,6 +12,9 @@ import strategicprimer.model.map.fixtures.resources {
 	StoneDeposit,
 	StoneKind
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS minerals (
@@ -42,7 +45,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 			   VALUES(?, ?, ?, ?, ?, ?, ?, ?)""").execute(context.row, context.column, type,
 					obj.id, obj.kind, exposed, obj.dc, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String kindString = dbRow["kind"], is StoneKind kind = StoneKind.parse(kindString),

@@ -10,6 +10,9 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures {
 	Ground
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS ground (
@@ -26,7 +29,7 @@ object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>() satisfies
 		             VALUES(?, ?, ?, ?, ?, ?)""")
 				.execute(context.row, context.column, obj.id, obj.kind, obj.exposed, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM ground""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer id = dbRow["id"], is String kind = dbRow["kind"],

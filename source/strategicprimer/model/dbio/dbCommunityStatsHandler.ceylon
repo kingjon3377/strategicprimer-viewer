@@ -17,6 +17,9 @@ import strategicprimer.model.map.fixtures.towns {
 	CommunityStats,
 	ITownFixture
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, ITownFixture>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS town_expertise (
@@ -76,8 +79,8 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 			return true;
 		});
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {}
-	shared actual void readExtraMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (row in db.Select("""SELECT * FROM town_expertise""").Results()) {
 			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId),
 				exists population = town.population, is String skill = row["skill"],

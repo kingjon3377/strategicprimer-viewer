@@ -15,6 +15,9 @@ import strategicprimer.model.map.fixtures.resources {
 	Meadow,
 	FieldStatus
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS fields (
@@ -38,7 +41,7 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>() satisfies 
 				.execute(context.row, context.column, obj.id, (obj.field) then "field" else "meadow", obj.kind,
 					obj.cultivated, obj.status.string, obj.acres.string, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM fields""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String type = dbRow["type"], is String kind = dbRow["kind"],

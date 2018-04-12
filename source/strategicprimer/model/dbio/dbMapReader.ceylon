@@ -15,13 +15,16 @@ import strategicprimer.model.map {
 	TileType,
 	River
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbMapReader {
 	{MapContentsReader*} readers = [dbPlayerHandler, dbCacheHandler, dbExplorableHandler, dbFieldHandler,
 		dbFortressHandler, dbUnitHandler, dbGroundHandler, dbGroveHandler, dbImmortalHandler, dbImplementHandler,
 		dbMineralHandler, dbMineHandler, dbPortalHandler, dbShrubHandler, dbSimpleTerrainHandler,
 		dbTextHandler, dbTownHandler, dbVillageHandler, dbResourcePileHandler, dbAnimalHandler,
 		dbCommunityStatsHandler, dbWorkerHandler];
-	shared IMutableMapNG readMap(Sql db) {
+	shared IMutableMapNG readMap(Sql db, Warning warner) {
 		assert (exists metadata = db.Select("""SELECT version, rows, columns, current_turn FROM metadata LIMIT 1""")
 				.execute().first, is Integer version = metadata["version"], is Integer rows = metadata["row"],
 			is Integer columns = metadata["columns"], is Integer turn = metadata["current_turn"]);
@@ -64,10 +67,10 @@ object dbMapReader {
 			}
 		}
 		for (reader in readers) {
-			reader.readMapContents(db, retval);
+			reader.readMapContents(db, retval, warner);
 		}
 		for (reader in readers) {
-			reader.readExtraMapContents(db, retval);
+			reader.readExtraMapContents(db, retval, warner);
 		}
 		return retval;
 	}

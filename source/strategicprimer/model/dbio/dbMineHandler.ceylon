@@ -13,6 +13,9 @@ import strategicprimer.model.map.fixtures.resources {
 import strategicprimer.model.map.fixtures.towns {
 	TownStatus
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS mines (
@@ -29,7 +32,7 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>() satisfies Map
 		db.Insert("""INSERT INTO mines (row, column, id, kind, status, image) VALUES(?, ?, ?, ?, ?, ?)""")
 				.execute(context.row, context.column, obj.id, obj.kind, obj.status.string, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM mines""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String kind = dbRow["kind"], is String statusString = dbRow["status"],

@@ -19,6 +19,9 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.towns {
 	Fortress
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortress>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS implements (
@@ -35,8 +38,8 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 				.execute(SqlNull(Types.integer), SqlNull(Types.integer), context.id, obj.id, obj.kind,
 					obj.count, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {}
-	shared actual void readExtraMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (row in db.Select("""SELECT * FROM implements""").Results()) {
 			assert (is Integer parentId = row["parent"], is IUnit|Fortress parent = findById(map, parentId),
 				is Integer id = row["id"], is String kind = row["kind"], is Integer count = row["count"],

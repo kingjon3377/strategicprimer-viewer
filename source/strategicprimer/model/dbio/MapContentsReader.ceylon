@@ -7,13 +7,16 @@ import strategicprimer.model.map {
 	IFixture,
 	IMapNG
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 "An interface for code to read map contents from an SQL database."
 interface MapContentsReader {
 	"Read map direct contents---that is, anything directly at a location on the map."
-	shared formal void readMapContents(Sql db, IMutableMapNG map);
+	shared formal void readMapContents(Sql db, IMutableMapNG map, Warning warner);
 	"Read non-direct contents---that is, unit and fortress members and the like. Because
 	 in many cases this doesn't apply, it's by default a noop."
-	shared default void readExtraMapContents(Sql db, IMutableMapNG map) {}
+	shared default void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 	"Expand any fixture that is itself a stream of fixtures to its contents plus itself."
 	shared default {IFixture+} expand(IFixture fixture) {
 		if (is {IFixture*} fixture) {

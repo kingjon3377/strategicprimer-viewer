@@ -11,6 +11,9 @@ import java.sql {
 	Types
 }
 
+import strategicprimer.model.idreg {
+	DuplicateIDException
+}
 import strategicprimer.model.map {
 	HasPortrait,
 	IMutableMapNG
@@ -24,6 +27,9 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 	WorkerStats,
 	Job,
 	Skill
+}
+import strategicprimer.model.xmlio {
+	Warning
 }
 object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
@@ -87,8 +93,8 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 			return true;
 		});
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {}
-	shared actual void readExtraMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		MutableMap<Integer, Worker> workers = HashMap<Integer, Worker>();
 		for (row in db.Select("""SELECT * FROM workers""").Results()) {
 			assert (is Integer unitId = row["unit"], is IUnit unit = super.findById(map, unitId),
@@ -109,8 +115,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 				worker.portrait = portrait;
 			}
 			if (exists existing = workers[id]) {
-				// FIXME: Handle with a DuplicateIDException via Warning
-				throw AssertionError("Duplicate ID");
+				warner.handle(DuplicateIDException(id));
 			}
 			workers[id] = worker;
 		}

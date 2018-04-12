@@ -15,6 +15,9 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.explorable {
 	Portal
 }
+import strategicprimer.model.xmlio {
+	Warning
+}
 object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS portals (
@@ -41,7 +44,7 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>() satisfies
 			   VALUES(?, ?, ?, ?, ?, ?, ?)""")
 				.execute(context.row, context.column, obj.id, obj.image, obj.destinationWorld, *destinationCoordinates);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map) {
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM portals""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer id = dbRow["id"], is String? destinationWorld = dbRow["destination_world"],
