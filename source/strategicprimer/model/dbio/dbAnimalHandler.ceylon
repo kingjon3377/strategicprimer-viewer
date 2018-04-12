@@ -100,7 +100,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM animals WHERE parent NOT NULL""").Results()) {
-			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId),
+			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
 				is String kind = dbRow["kind"], is Boolean talking = dbRow["talking"],
 				is String status = dbRow["status"], is Integer? born = dbRow["born"],
 				is Integer count = dbRow["count"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);

@@ -104,7 +104,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM units WHERE parent NOT NULL""").Results()) {
-			assert (is Integer parentNum = dbRow["parent"], is Fortress parent = super.findById(map, parentNum),
+			assert (is Integer parentNum = dbRow["parent"], is Fortress parent = super.findById(map, parentNum, warner),
 				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
 				is String name = dbRow["name"], is Integer id = dbRow["id"], is String? image = dbRow["image"],
 				is String? portrait = dbRow["portrait"]);

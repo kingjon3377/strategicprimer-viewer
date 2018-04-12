@@ -172,7 +172,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE parent NOT NULL""").Results()) {
-			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId),
+			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
 				is String type = dbRow["type"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);
 			SimpleImmortal immortal;
 			switch (type)
@@ -209,7 +209,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			parent.addMember(immortal);
 		}
 		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE parent NOT NULL""").Results()) {
-			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId),
+			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
 				is String type = dbRow["type"], is String kind = dbRow["kind"], is Integer id = dbRow["id"],
 				is String? image = dbRow["image"]);
 			Immortal&HasMutableImage immortal;

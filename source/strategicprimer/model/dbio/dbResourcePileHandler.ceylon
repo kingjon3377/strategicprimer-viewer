@@ -43,7 +43,7 @@ object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (row in db.Select("""SELECT * FROM resource_piles""").Results()) {
-			assert (is Integer parentId = row["parent"], is IUnit|Fortress parent = findById(map, parentId),
+			assert (is Integer parentId = row["parent"], is IUnit|Fortress parent = findById(map, parentId, warner),
 				is Integer id = row["id"], is String kind = row["kind"], is String contents = row["contents"],
 				is String qtyString = row["quantity"], is String units = row ["units"],
 				is Integer? created = row["created"], is String? image = row["image"]);

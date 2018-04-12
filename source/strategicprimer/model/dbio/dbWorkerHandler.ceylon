@@ -97,7 +97,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		MutableMap<Integer, Worker> workers = HashMap<Integer, Worker>();
 		for (row in db.Select("""SELECT * FROM workers""").Results()) {
-			assert (is Integer unitId = row["unit"], is IUnit unit = super.findById(map, unitId),
+			assert (is Integer unitId = row["unit"], is IUnit unit = super.findById(map, unitId, warner),
 				is Integer id = row["id"], is String name = row["name"], is String race = row["race"],
 				is String? image = row["image"], is String? portrait = row["portrait"],
 				is Integer? hp = row["hp"], is Integer? maxHp = row["max_hp"], is Integer? str = row["str"],

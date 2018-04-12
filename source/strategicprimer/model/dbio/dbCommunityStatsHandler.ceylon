@@ -82,18 +82,18 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (row in db.Select("""SELECT * FROM town_expertise""").Results()) {
-			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId),
+			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId, warner),
 				exists population = town.population, is String skill = row["skill"],
 				is Integer level = row["level"]);
 			population.setSkillLevel(skill, level);
 		}
 		for (row in db.Select("""SELECT * FROM town_worked_resources""").Results()) {
-			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId),
+			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId, warner),
 				exists population = town.population, is Integer resource = row["resource"]);
 			population.addWorkedField(resource);
 		}
 		for (row in db.Select("""SELECT * FROM town_production""").Results()) {
-			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId),
+			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId, warner),
 				exists population = town.population, is Integer id = row["id"], is String kind = row["kind"],
 				is String contents = row["contents"], is String qtyString = row["quantity"],
 				is String units = row["units"], is Integer? created = row["created"]);
@@ -111,7 +111,7 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 			population.yearlyProduction.add(pile);
 		}
 		for (row in db.Select("""SELECT * FROM town_consumption""").Results()) {
-			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId),
+			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId, warner),
 				exists population = town.population, is Integer id = row["id"], is String kind = row["kind"],
 				is String contents = row["contents"], is String qtyString = row["quantity"],
 				is String units = row["units"], is Integer? created = row["created"]);
