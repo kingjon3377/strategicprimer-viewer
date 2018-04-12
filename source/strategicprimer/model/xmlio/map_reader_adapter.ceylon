@@ -66,7 +66,7 @@ shared object mapIOHelper {
 	}
 	"Write a map to file."
 	shared void writeMap(Path file, IMapNG map) {
-		if (file.string.endsWith(".db")) {
+		if (file.string.endsWith(".db") || file.string.empty) {
 			dbWriter.write(file, map);
 		} else {
 			writer.write(file, map);

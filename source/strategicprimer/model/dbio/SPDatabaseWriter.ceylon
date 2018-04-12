@@ -26,18 +26,30 @@ import strategicprimer.model.map {
 import ceylon.language.meta {
 	classDeclaration
 }
+import org.apache.derby.jdbc {
+	EmbeddedDataSource
+}
 shared object spDatabaseWriter satisfies SPWriter {
 	MutableMap<Path, Sql> connections = HashMap<Path, Sql>();
 	DataSource getBaseConnection(Path path) { // TODO: Figure out how to use Derby/JavaDB for an empty Path
-		SQLiteDataSource retval = SQLiteDataSource();
-		retval.url = "jdbc:sqlite:``path``";
-		return retval;
+		if (path.string.empty) {
+			value retval = EmbeddedDataSource();
+			retval.databaseName = "spdbui";
+			retval.createDatabase = "create";
+			return retval;
+		} else {
+			SQLiteDataSource retval = SQLiteDataSource();
+			retval.url = "jdbc:sqlite:``path``";
+			return retval;
+		}
 	}
 	Sql getSQL(Path path) {
 		if (exists connection = connections[path]) {
 			return connection;
 		} else {
-			assert (is File|Nil res = path.resource);
+			if (!path.string.empty) {
+				assert (is File|Nil res = path.resource);
+			}
 			Sql retval = Sql(newConnectionFromDataSource(getBaseConnection(path)));
 			connections[path] = retval;
 			return retval;
