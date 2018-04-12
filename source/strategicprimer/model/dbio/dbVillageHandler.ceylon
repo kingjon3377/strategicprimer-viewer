@@ -10,7 +10,6 @@ import java.sql {
 import strategicprimer.model.map {
 	Point,
 	IMutableMapNG,
-	PlayerImpl,
 	pointFactory
 }
 import strategicprimer.model.map.fixtures.towns {
@@ -54,8 +53,7 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>() satisfi
 				is String name = dbRow["name"], is Integer id = dbRow["id"], is Integer ownerId = dbRow["owner"],
 				is String race = dbRow["race"], is String? image = dbRow["image"], is String? portrait = dbRow["portrait"],
 				is Integer? population = dbRow["population"]);
-			value village = Village(status, name, id,
-				map.players.find((player) => player.playerId == ownerId) else PlayerImpl(ownerId, ""), race);
+			value village = Village(status, name, id, map.players.getPlayer(ownerId), race);
 			if (exists image) {
 				village.image = image;
 			}

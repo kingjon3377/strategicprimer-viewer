@@ -5,7 +5,6 @@ import ceylon.dbc {
 import strategicprimer.model.map {
 	Point,
 	IMutableMapNG,
-	PlayerImpl,
 	pointFactory
 }
 import strategicprimer.model.map.fixtures.explorable {
@@ -36,8 +35,7 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String brief = dbRow["brief"], is String full = dbRow["full"],
 				is Integer ownerId = dbRow["owner"], is String? image = dbRow["image"]);
-			value adventure = AdventureFixture(map.players.find((player) => player.playerId == ownerId) else PlayerImpl(ownerId, ""),
-				brief, full, id);
+			value adventure = AdventureFixture(map.players.getPlayer(ownerId), brief, full, id);
 			if (exists image) {
 				adventure.image = image;
 			}

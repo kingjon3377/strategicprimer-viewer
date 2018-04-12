@@ -24,8 +24,7 @@ import strategicprimer.model.map {
     Point,
     SPMapNG,
     MapDimensionsImpl,
-    PlayerCollection,
-    PlayerImpl
+    PlayerCollection
 }
 import strategicprimer.model.map.fixtures {
     Ground,
@@ -81,8 +80,7 @@ shared IMapNG convertOneToTwo(
 	        oldDimensions.rows * oneToTwoConfig.expansionFactor,
 	        oldDimensions.columns * oneToTwoConfig.expansionFactor, 2), PlayerCollection(),
 	    oneToTwoConfig.nextTurn);
-    Player independent = old.players.find(Player.independent)
-    else PlayerImpl(-1, "independent");
+    Player independent = old.players.independent;
     retval.addPlayer(independent);
     for (player in old.players) {
         retval.addPlayer(player);

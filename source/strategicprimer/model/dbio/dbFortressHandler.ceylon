@@ -5,7 +5,6 @@ import ceylon.dbc {
 import strategicprimer.model.map {
 	Point,
 	IMutableMapNG,
-	PlayerImpl,
 	pointFactory
 }
 import strategicprimer.model.map.fixtures.towns {
@@ -45,8 +44,7 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>() satis
 				is String sizeString = dbRow["size"], is TownSize size = TownSize.parse(sizeString),
 				is Integer id = dbRow["id"], is String? image = dbRow["image"],
 				is String? portrait = dbRow["portrait"]);
-			value fortress = Fortress(map.players.find((player) => player.playerId == ownerId) else PlayerImpl(ownerId, ""),
-				name, id, size);
+			value fortress = Fortress(map.players.getPlayer(ownerId), name, id, size);
 			if (exists image) {
 				fortress.image = image;
 			}

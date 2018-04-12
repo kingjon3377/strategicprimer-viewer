@@ -95,7 +95,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             iter.flatMap(flatten).narrow<IUnit>().filter((unit) => unit.owner.playerId == player.playerId);
     "All the players in all the maps."
     shared actual {Player*} players {
-        return allMaps.map(([IMutableMapNG, JPath?] pair) => pair.first)
+        return allMaps.map(([IMutableMapNG, JPath?] pair) => pair.first) // TODO: Can we use Tuple.first here?
                 .flatMap(IMutableMapNG.players).distinct;
     }
     "Get all the given player's units, or only those of a specified kind."

@@ -10,7 +10,6 @@ import java.sql {
 import strategicprimer.model.map {
 	Point,
 	IMutableMapNG,
-	PlayerImpl,
 	Player
 }
 import strategicprimer.model.map.fixtures.towns {
@@ -65,7 +64,7 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>() satis
 				is String name = dbRow["name"], is Integer ownerNum = dbRow["owner"], is String? image = dbRow["image"],
 				is String? portrait = dbRow["portrait"], is Integer? population = dbRow["population"]);
 			AbstractTown town;
-			Player owner = map.players.find((player) => player.playerId == ownerNum) else PlayerImpl(ownerNum, "");
+			Player owner = map.players.getPlayer(ownerNum);
 			switch (kind)
 			case ("fortification") {
 				town = Fortification(status, size, dc, name, id, owner);

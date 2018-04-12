@@ -85,7 +85,7 @@ shared class PlayerChangeMenuListener(IDriverModel model)
     }
     shared actual void actionPerformed(ActionEvent event) {
         Player currentPlayer;
-        if (is IWorkerModel model) {
+        if (is IWorkerModel model) { // TODO: Specialize choices to model.players here too?
             currentPlayer = model.currentPlayer;
         } else {
             currentPlayer = model.map.currentPlayer;

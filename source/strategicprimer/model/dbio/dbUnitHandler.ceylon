@@ -11,8 +11,7 @@ import strategicprimer.model.map {
 	Point,
 	HasPortrait,
 	IMutableMapNG,
-	pointFactory,
-	PlayerImpl
+	pointFactory
 }
 import strategicprimer.model.map.fixtures.mobile {
 	IUnit,
@@ -85,8 +84,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
 				is String name = dbRow["name"], is Integer id = dbRow["id"],
 				is String? image = dbRow["image"], is String? portrait = dbRow["portrait"]);
-			value unit = Unit(map.players.find((player) => player.playerId == ownerNum) else PlayerImpl(ownerNum, ""),
-				kind, name, id);
+			value unit = Unit(map.players.getPlayer(ownerNum), kind, name, id);
 			if (exists image) {
 				unit.image = image;
 			}
@@ -110,8 +108,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
 				is String name = dbRow["name"], is Integer id = dbRow["id"], is String? image = dbRow["image"],
 				is String? portrait = dbRow["portrait"]);
-			value unit = Unit(map.players.find((player) => player.playerId == ownerNum) else PlayerImpl(ownerNum, ""),
-				kind, name, id);
+			value unit = Unit(map.players.getPlayer(ownerNum), kind, name, id);
 			if (exists image) {
 				unit.image = image;
 			}
