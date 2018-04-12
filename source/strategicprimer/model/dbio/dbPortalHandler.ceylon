@@ -28,7 +28,7 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>() satisfies
 			   destination_world VARCHAR(16),
 			   destination_row INTEGER,
 			   destination_column INTEGER
-				   CHECK ((destination_row NOT NULL AND destination_column NOT NULL) OR
+				   CHECK ((destination_row IS NOT NULL AND destination_column IS NOT NULL) OR
 					   (destination_row IS NULL AND destination_column IS NULL))
 		   )"""
 	];

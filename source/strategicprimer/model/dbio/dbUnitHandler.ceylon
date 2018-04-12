@@ -27,8 +27,8 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS units (
 			   row INTEGER,
-			   column INTEGER CHECK ((row NOT NULL AND column NOT NULL) OR (row IS NULL AND column IS NULL)),
-			   parent INTEGER CHECK ((row NOT NULL AND parent IS NULL) OR (row IS NULL AND parent NOT NULL)),
+			   column INTEGER CHECK ((row IS NOT NULL AND column IS NOT NULL) OR (row IS NULL AND column IS NULL)),
+			   parent INTEGER CHECK ((row IS NOT NULL AND parent IS NULL) OR (row IS NULL AND parent IS NOT NULL)),
 			   owner INTEGER NOT NULL,
 			   kind VARCHAR(32) NOT NULL,
 			   name VARCHAR(64) NOT NULL,
@@ -79,7 +79,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 		}
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		for (dbRow in db.Select("""SELECT * FROM units WHERE row NOT NULL""").Results()) {
+		for (dbRow in db.Select("""SELECT * FROM units WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
 				is String name = dbRow["name"], is Integer id = dbRow["id"],
@@ -103,7 +103,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 		}
 	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		for (dbRow in db.Select("""SELECT * FROM units WHERE parent NOT NULL""").Results()) {
+		for (dbRow in db.Select("""SELECT * FROM units WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentNum = dbRow["parent"], is Fortress parent = super.findById(map, parentNum, warner),
 				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
 				is String name = dbRow["name"], is Integer id = dbRow["id"], is String? image = dbRow["image"],

@@ -35,11 +35,11 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 		"""CREATE TABLE IF NOT EXISTS animals (
 			   row INTEGER,
 			   column INTEGER
-				   CHECK ((row NOT NULL AND column NOT NULL) OR
-					   (row IS NULL AND column IS NULL)),
+				   CHECK ((animals.row IS NOT NULL AND column IS NOT NULL) OR
+					   (animals.row IS NULL AND column IS NULL)),
 			   parent INTEGER
-				   CHECK ((row NOT NULL AND parent IS NULL) OR
-					   (row IS NULL AND parent NOT NULL)),
+				   CHECK ((row IS NOT NULL AND parent IS NULL) OR
+					   (row IS NULL AND parent IS NOT NULL)),
 			   kind VARCHAR(32) NOT NULL,
 			   talking BOOLEAN NOT NULL,
 			   status VARCHAR(32) NOT NULL,
@@ -77,7 +77,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 		}
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		for (dbRow in db.Select("""SELECT * FROM animals WHERE row NOT NULL""").Results()) {
+		for (dbRow in db.Select("""SELECT * FROM animals WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String kind = dbRow["kind"], is Boolean talking = dbRow["talking"],
 				is String status = dbRow["status"], is Integer? born = dbRow["born"],
@@ -99,7 +99,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 		}
 	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		for (dbRow in db.Select("""SELECT * FROM animals WHERE parent NOT NULL""").Results()) {
+		for (dbRow in db.Select("""SELECT * FROM animals WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
 				is String kind = dbRow["kind"], is Boolean talking = dbRow["talking"],
 				is String status = dbRow["status"], is Integer? born = dbRow["born"],

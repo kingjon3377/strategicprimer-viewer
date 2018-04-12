@@ -41,13 +41,13 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 			   image VARCHAR(255),
 			   portrait VARCHAR(255),
 			   hp INTEGER,
-			   max_hp INTEGER CHECK((hp IS NULL AND max_hp IS NULL) OR (hp NOT NULL AND max_hp NOT NULL)),
-			   str INTEGER CHECK((hp IS NULL AND str IS NULL) OR (hp NOT NULL AND str NOT NULL)),
-			   dex INTEGER CHECK((hp IS NULL AND dex IS NULL) OR (hp NOT NULL AND dex NOT NULL)),
-			   con INTEGER CHECK((hp IS NULL AND con IS NULL) OR (hp NOT NULL AND con NOT NULL)),
-			   int INTEGER CHECK((hp IS NULL AND int IS NULL) OR (hp NOT NULL AND int NOT NULL)),
-			   wis INTEGER CHECK((hp IS NULL AND wis IS NULL) OR (hp NOT NULL AND wis NOT NULL)),
-			   cha INTEGER CHECK((hp IS NULL AND cha IS NULL) OR (hp NOT NULL AND cha NOT NULL))
+			   max_hp INTEGER CHECK((hp IS NULL AND max_hp IS NULL) OR (hp IS NOT NULL AND max_hp IS NOT NULL)),
+			   str INTEGER CHECK((hp IS NULL AND str IS NULL) OR (hp IS NOT NULL AND str IS NOT NULL)),
+			   dex INTEGER CHECK((hp IS NULL AND dex IS NULL) OR (hp IS NOT NULL AND dex IS NOT NULL)),
+			   con INTEGER CHECK((hp IS NULL AND con IS NULL) OR (hp IS NOT NULL AND con IS NOT NULL)),
+			   int INTEGER CHECK((hp IS NULL AND int IS NULL) OR (hp IS NOT NULL AND int IS NOT NULL)),
+			   wis INTEGER CHECK((hp IS NULL AND wis IS NULL) OR (hp IS NOT NULL AND wis IS NOT NULL)),
+			   cha INTEGER CHECK((hp IS NULL AND cha IS NULL) OR (hp IS NOT NULL AND cha IS NOT NULL))
 		   )""",
 		"""CREATE TABLE IF NOT EXISTS worker_job_levels (
 			   worker INTEGER NOT NULL,

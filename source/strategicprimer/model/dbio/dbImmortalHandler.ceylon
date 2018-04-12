@@ -39,11 +39,11 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 		"""CREATE TABLE IF NOT EXISTS simple_immortals (
 			   row INTEGER,
 			   column INTEGER
-				   CHECK ((row NOT NULL AND column NOT NULL)
+				   CHECK ((row IS NOT NULL AND column IS NOT NULL)
 					   OR (row IS NULL AND column IS NULL)),
 			   parent INTEGER
-				   CHECK ((row NOT NULL AND parent IS NULL)
-					   OR (row IS NULL AND parent NOT NULL)),
+				   CHECK ((row IS NOT NULL AND parent IS NULL)
+					   OR (row IS NULL AND parent IS NOT NULL)),
 			   type VARCHAR(16) NOT NULL
 				   CHECK (type IN('sphinx', 'djinn', 'griffin', 'minotaur', 'ogre',
 					   'phoenix', 'simurgh', 'troll')),
@@ -53,11 +53,11 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 		"""CREATE TABLE IF NOT EXISTS kinded_immortals (
 			   row INTEGER,
 			   column INTEGER
-				   CHECK ((row NOT NULL AND column NOT NULL)
+				   CHECK ((row IS NOT NULL AND column IS NOT NULL)
 					   OR (row IS NULL AND column IS NULL)),
 			   parent INTEGER
-				   CHECK ((row NOT NULL AND parent IS NULL)
-					   OR (row IS NULL AND parent NOT NULL)),
+				   CHECK ((row IS NOT NULL AND parent IS NULL)
+					   OR (row IS NULL AND parent IS NOT NULL)),
 			   type VARCHAR(16) NOT NULL
 				   CHECK (type IN ('centaur', 'dragon', 'fairy', 'giant')),
 			   kind VARCHAR(32) NOT NULL,
@@ -106,7 +106,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 		}
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) { // TODO: Reduce code duplication (and in other readers)
-		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE row NOT NULL""").Results()) {
+		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is String type = dbRow["type"],
 				is Integer id = dbRow["id"], is String? image = dbRow["image"]);
 			SimpleImmortal immortal;
@@ -143,7 +143,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			}
 			map.addFixture(pointFactory(row, column), immortal);
 		}
-		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE row NOT NULL""").Results()) {
+		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String type = dbRow["type"], is String kind = dbRow["kind"], is Integer id = dbRow["id"],
 				is String? image = dbRow["image"]);
@@ -171,7 +171,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 		}
 	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE parent NOT NULL""").Results()) {
+		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
 				is String type = dbRow["type"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);
 			SimpleImmortal immortal;
@@ -208,7 +208,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			}
 			parent.addMember(immortal);
 		}
-		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE parent NOT NULL""").Results()) {
+		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
 				is String type = dbRow["type"], is String kind = dbRow["kind"], is Integer id = dbRow["id"],
 				is String? image = dbRow["image"]);
