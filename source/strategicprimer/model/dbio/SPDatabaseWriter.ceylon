@@ -65,5 +65,6 @@ shared object spDatabaseWriter satisfies SPWriter {
 		Sql sql = getSQL(arg);
 		writeSPObjectInContext(sql, obj, obj);
 	}
-	shared actual void write(Path|Anything(String) arg, IMapNG map) => writeSPObject(arg, map); // FIXME: Allow caller to pass in an Sql, for use in tests
+	shared actual void write(Path|Anything(String) arg, IMapNG map) => writeSPObject(arg, map);
+	shared void writeToDatabase(Sql db, IMapNG map) => writeSPObjectInContext(db, map, map);
 }

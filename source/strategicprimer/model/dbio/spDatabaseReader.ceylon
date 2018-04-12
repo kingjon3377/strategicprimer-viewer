@@ -41,7 +41,7 @@ shared object spDatabaseReader satisfies IMapReader {
 			return retval;
 		}
 	}
-	shared actual IMutableMapNG readMap(Path file, Warning warner) { // FIXME: Allow caller to pass in an Sql, for use in tests
+	shared actual IMutableMapNG readMap(Path file, Warning warner) {
 		Sql sql = getSQL(file);
 		return dbMapReader.readMap(sql, warner);
 	}
@@ -49,4 +49,6 @@ shared object spDatabaseReader satisfies IMapReader {
 	shared actual IMutableMapNG readMapFromStream(Path file, Reader istream, Warning warner) {
 		throw AssertionError("Can't read a database from a stream");
 	}
+
+	shared IMutableMapNG readMapFromDatabase(Sql db, Warning warner) => dbMapReader.readMap(db, warner);
 }
