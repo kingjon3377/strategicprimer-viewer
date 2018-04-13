@@ -292,17 +292,18 @@ object cliTests {
 	        "chooseStringFromList handles empty list",
 	        "chooseStringFromList handles empty list");
 	}
+	void assertPrintingOutput(Method<ICLIHelper, Anything, String[1]> method, String argument,
+			String expected, String message) {
+		StringBuilder ostream = StringBuilder();
+		method(CLIHelper(ArrayList<String>().accept, ostream.append))(argument);
+		assertEquals(ostream.string, expected, message);
+	}
 	"Test print() and friends"
 	test
 	shared void testPrinting() {
-	    void assertHelper(Anything(ICLIHelper) method, String expected, String message) {
-	        StringBuilder ostream = StringBuilder();
-	        method(CLIHelper(ArrayList<String>().accept, ostream.append));
-	        assertEquals(ostream.string, expected, message);
-	    }
-	    assertHelper((cli) => cli.print("test string"), "test string",
+	    assertPrintingOutput(`ICLIHelper.print`, "test string", "test string",
 	        "print() prints string");
-	    assertHelper((cli) => cli.println("test two"), "test two``operatingSystem.newline``",
+	    assertPrintingOutput(`ICLIHelper.println`, "test two", "test two``operatingSystem.newline``",
 	        "println() adds newline");
 	}
 
