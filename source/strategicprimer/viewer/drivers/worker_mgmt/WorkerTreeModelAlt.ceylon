@@ -134,7 +134,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             ProxyUnit newOwner, UnitNode newNode, MutableTreeNode node) {
         assert (is PlayerNode playerNode = root);
         if (old.proxied.size == newOwner.proxied.size,
-            old.proxied.size == member.proxied.size) { // FIXME: Indentation
+	            old.proxied.size == member.proxied.size) {
             Queue<UnitMember>&Iterable<UnitMember> members = LinkedList<UnitMember>();
             Queue<IUnit>&Iterable<IUnit> newList = LinkedList<IUnit>();
             for ([item, innerOld, innerNew] in
