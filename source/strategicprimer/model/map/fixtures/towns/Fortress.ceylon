@@ -172,6 +172,6 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
     }
     shared actual String kind => "fortress";
     "The required Perception check for an explorer to find the fortress."
-    shared actual Integer dc => min { *members.narrow<TileFixture>().map(TileFixture.dc) } // TODO: Can we avoid spreading?
+    shared actual Integer dc => min(members.narrow<TileFixture>().map(TileFixture.dc))
             else 20 - members.size - townSize.ordinal * 2;
 }
