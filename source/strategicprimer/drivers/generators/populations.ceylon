@@ -205,8 +205,8 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 	void generateForestExtents(IMutableMapNG map, ICLIHelper cli) {
 		{Point*} locations = randomize(map.locations.filter(
 			//(loc) => !map.fixtures[loc].narrow<Forest>() // TODO: syntax sugar
-			(loc) => !map.fixtures.get(loc).narrow<Forest>()
-					.map(Forest.acres).filter((num) => !num.positive).empty)); // TODO: Use Iterable.any // TODO: Make a 'numberPositive' helper method, since we can't use a method reference ...
+			(loc) => map.fixtures.get(loc).narrow<Forest>()
+					.map(Forest.acres).any((num) => !num.positive))); // TODO: Make a 'numberPositive' helper method, since we can't use a method reference ...
 		for (location in locations) {
 			//assert (exists primaryForest = map.fixtures[location].narrow<Forest>().first); // TODO: syntax sugar
 			assert (exists primaryForest = map.fixtures.get(location).narrow<Forest>().first);

@@ -130,8 +130,8 @@ object todoFixerCLI satisfies SimpleCLIDriver {
         }
         {[Point, CommunityStats]*} brokenTownContents = map.locations
         //            .flatMap((loc) => [loc, map.fixtures[loc]]).narrow<ITownFixture>()
-                .flatMap((loc) => map.fixtures.get(loc).narrow<ITownFixture>().map((item) => [loc, item])) // TODO: s/item/item.population
-                .map(([loc, town]) => [loc, town.population]).narrow<[Point, CommunityStats]>()
+                .flatMap((loc) => map.fixtures.get(loc).narrow<ITownFixture>().map((item) => [loc, item.population]))
+                .narrow<[Point, CommunityStats]>()
                 .filter(([loc, pop]) => pop.yearlyProduction.map(ResourcePile.contents)
                     .any((str) => str.contains('#')));
         if (!brokenTownContents.empty) {

@@ -226,8 +226,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 } else {
                     assert (exists top = tagStack.top);
                     value child = parseFixture(event, top, stream);
-                    if (is Fortress child, !retval.fixtures.get(point).narrow<Fortress>()
-                            .filter(matchingValue(child.owner, Fortress.owner)).empty) { // TODO: Use Iterable.any
+                    if (is Fortress child, retval.fixtures.get(point).narrow<Fortress>()
+                            .any(matchingValue(child.owner, Fortress.owner))) {
                         warner.handle(UnwantedChildException.withMessage(top, event,
                                 "Multiple fortresses owned by same player on same tile"));
                     }
