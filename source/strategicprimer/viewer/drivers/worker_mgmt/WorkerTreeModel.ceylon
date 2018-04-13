@@ -107,8 +107,8 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         Integer oldIndex = getIndexOfChild(old, member);
         TreeModelEvent removedEvent = TreeModelEvent(this,
             TreePath(ObjectArray<Object>.with({ root, old.kind, old })),
-            IntArray.with({ oldIndex }),
-            ObjectArray.with({ member }));
+            IntArray.with(Singleton(oldIndex)),
+            ObjectArray.with(Singleton(member)));
         TreeModelEvent removedChangeEvent = TreeModelEvent(this,
             TreePath(ObjectArray<Object>.with({ root, old.kind, old })));
         for (listener in listeners) {
@@ -118,8 +118,8 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         newOwner.addMember(member);
         TreeModelEvent insertedEvent = TreeModelEvent(this,
             TreePath(ObjectArray<Object>.with({ root, newOwner.kind, newOwner })),
-            IntArray.with({ getIndexOfChild(newOwner, member) }),
-            ObjectArray<Object>.with({ member }));
+            IntArray.with(Singleton(getIndexOfChild(newOwner, member))),
+            ObjectArray<Object>.with(Singleton(member)));
         TreeModelEvent insertedChangeEvent = TreeModelEvent(this,
             TreePath(ObjectArray<Object>.with({ root, newOwner.kind, newOwner })));
         for (listener in listeners) {
@@ -130,8 +130,8 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
     shared actual void addUnit(IUnit unit) {
         model.addUnit(unit);
         TreePath path = TreePath(ObjectArray<Object>.with({root, unit.kind}));
-        value indices = IntArray.with({model.getUnits(player, unit.kind).size});
-        value children = ObjectArray.with({unit});
+        value indices = IntArray.with(Singleton(model.getUnits(player, unit.kind).size));
+        value children = ObjectArray.with(Singleton(unit));
         TreeModelEvent event = TreeModelEvent(this, path, indices, children);
         for (listener in listeners) {
             listener.treeNodesInserted(event);
@@ -157,8 +157,8 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
     shared actual void addUnitMember(IUnit unit, UnitMember member) {
         unit.addMember(member);
         TreePath path = TreePath(ObjectArray<Object>.with({root, unit.kind, unit}));
-        IntArray indices = IntArray.with({getIndexOfChild(unit, member)});
-        ObjectArray<Object> children = ObjectArray<Object>.with({member});
+        IntArray indices = IntArray.with(Singleton(getIndexOfChild(unit, member)));
+        ObjectArray<Object> children = ObjectArray<Object>.with(Singleton(member));
         TreeModelEvent event = TreeModelEvent(this, path, indices,
             children);
         for (listener in listeners) {
@@ -171,13 +171,13 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         ObjectArray<Object> children;
         if (is IUnit item) {
             path = TreePath(ObjectArray<Object>.with({root, item.kind}));
-            indices = IntArray.with({getIndexOfChild(item.kind, item)});
-            children = ObjectArray<Object>.with({item});
+            indices = IntArray.with(Singleton(getIndexOfChild(item.kind, item)));
+            children = ObjectArray<Object>.with(Singleton(item));
         } else if (is UnitMember item,
             exists parent = model.getUnits(player).find(containingItem(item))) {
             path = TreePath(ObjectArray<Object>.with({root, parent.kind, parent}));
-            indices = IntArray.with({getIndexOfChild(parent, item)});
-            children = ObjectArray<Object>.with({item});
+            indices = IntArray.with(Singleton(getIndexOfChild(parent, item)));
+            children = ObjectArray<Object>.with(Singleton(item));
         } else if (is Player item) {
             // ignore
             return;
@@ -196,14 +196,14 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
         IntArray indices;
         ObjectArray<Object> children;
         if (is IUnit item) {
-            path = TreePath(ObjectArray.with({root}));
+            path = TreePath(ObjectArray.with(Singleton(root)));
             indices = IntArray.with({getIndexOfChild(root, priorKind), getIndexOfChild(root, item.kind)});
             children = ObjectArray<Object>.with({priorKind, item.kind});
         } else if (is UnitMember item,
             exists parent = model.getUnits(player).find(containingItem(item))) {
             path = TreePath(ObjectArray<Object>.with({root, parent.kind, parent}));
-            indices = IntArray.with({getIndexOfChild(parent, item)});
-            children = ObjectArray<Object>.with({item});
+            indices = IntArray.with(Singleton(getIndexOfChild(parent, item)));
+            children = ObjectArray<Object>.with(Singleton(item));
         } else {
             // Impossible at present, so ignore
             return;
@@ -220,7 +220,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
                 unit.removeMember(member);
                 TreeModelEvent event = TreeModelEvent(this,
                     TreePath(ObjectArray<Object>.with({root, unit})),
-                    IntArray.with({index}), ObjectArray.with({member}));
+                    IntArray.with(Singleton(index)), ObjectArray.with(Singleton(member)));
                 for (listener in listeners) {
                     listener.treeNodesRemoved(event);
                 }
@@ -237,16 +237,16 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
                 if (countAfterAdding > existingMembersCount) {
                     TreeModelEvent event = TreeModelEvent(this,
                             TreePath(ObjectArray<Object>.with({root, unit.kind, unit})),
-                            IntArray.with({existingMembersCount}),
-                            ObjectArray.with({sibling}));
+                            IntArray.with(Singleton(existingMembersCount)),
+                            ObjectArray.with(Singleton(sibling)));
                     for (listener in listeners) {
                         listener.treeNodesInserted(event);
                     }
                 } else {
                     TreeModelEvent event = TreeModelEvent(this,
                             TreePath(ObjectArray<Object>.with({root, unit.kind})),
-                            IntArray.with({getIndexOfChild(unit.kind, unit)}),
-                            ObjectArray.with({unit}));
+                            IntArray.with(Singleton(getIndexOfChild(unit.kind, unit))),
+                            ObjectArray.with(Singleton(unit)));
                     for (listener in listeners) {
                         listener.treeStructureChanged(event);
                     }
