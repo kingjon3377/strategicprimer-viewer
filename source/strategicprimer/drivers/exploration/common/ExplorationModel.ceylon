@@ -399,9 +399,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                             .flatMap((point) => mainMap.fixtures.get(point)
                                 .map((fixture) => [point, fixture]));
                 [Point, TileFixture]? vegetation = surroundingFixtures
-                    .filter(([loc, fixture]) => fixture is Meadow|Grove).first;
+                        .narrow<[Point, Meadow|Grove]>().first;
                 [Point, TileFixture]? animal = surroundingFixtures
-                    .filter(([loc, fixture]) => fixture is Animal).first;
+                        .narrow<[Point, Animal]>().first;
                 for (pair in subordinateMaps) {
                     if (exists vegetation) {
                         pair.first.addFixture(vegetation.first,
