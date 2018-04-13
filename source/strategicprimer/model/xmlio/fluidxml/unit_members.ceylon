@@ -58,7 +58,7 @@ object unitMemberHandler extends FluidBase() {
 	                players, warner, idFactory); }
 	            else {
 	                throw UnwantedChildException.listingExpectedTags(element.name, event,
-	                    {"job", "stats"});
+	                    ["job", "stats"]);
 	            }
 	        } else if (is EndElement event, element.name == event.name) {
 	            break;
@@ -79,7 +79,7 @@ object unitMemberHandler extends FluidBase() {
 	                retval.addSkill(readSkill(event, element.name, stream, players, warner,
 	                    idFactory));
 	            } else {
-	                throw UnwantedChildException.listingExpectedTags(element.name, event, {"skill"});
+	                throw UnwantedChildException.listingExpectedTags(element.name, event, Singleton("skill"));
 	            }
 	        } else if (is EndElement event, element.name == event.name) {
 	            break;

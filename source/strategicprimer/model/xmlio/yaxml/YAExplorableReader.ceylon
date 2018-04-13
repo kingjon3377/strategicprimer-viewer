@@ -23,7 +23,7 @@ import strategicprimer.model.xmlio.exceptions {
 class YAExplorableReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Cave|Battlefield>(warning, idRegistrar) {
     shared actual Boolean isSupportedTag(String tag) =>
-            {"cave", "battlefield"}.contains(tag.lowercased);
+            ["cave", "battlefield"].contains(tag.lowercased);
     shared actual Cave|Battlefield read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "battlefield", "cave");

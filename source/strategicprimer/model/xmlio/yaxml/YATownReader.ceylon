@@ -117,13 +117,13 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     }
                     else {
                         throw UnwantedChildException.listingExpectedTags(top.name, event,
-                            {"production", "consumption"}); // FIXME: That's the expected *parents*, not the expected *children*!
+                            ["production", "consumption"]); // FIXME: That's the expected *parents*, not the expected *children*!
                     }
                     lambda(resourceReader.read(event, top.name, stream));
                 }
                 else {
                     throw UnwantedChildException.listingExpectedTags(stack.top?.name else element.name, event,
-                        {"expertise", "claim", "production", "consumption"}); // TODO: Make sure this is accurate whenever it occurs
+                        ["expertise", "claim", "production", "consumption"]); // TODO: Make sure this is accurate whenever it occurs
                 }
             } else if (is EndElement event, exists top = stack.top,
                     event.name == top.name) {
@@ -299,7 +299,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         closeTag(ostream, tabs, "population");
     }
     shared actual Boolean isSupportedTag(String tag) =>
-            {"village", "fortress", "town", "city", "fortification"}
+            ["village", "fortress", "town", "city", "fortification"]
                 .contains(tag.lowercased);
     shared actual ITownFixture read(StartElement element, QName parent,
             {XMLEvent*} stream) {

@@ -90,7 +90,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
                     retval.addSkill(parseSkill(event, element.name));
                     spinUntilEnd(event.name, stream);
                 } else {
-                    throw UnwantedChildException.listingExpectedTags(element.name, event, {"skill"});
+                    throw UnwantedChildException.listingExpectedTags(element.name, event, Singleton("skill"));
                 }
             } else if (isMatchingEnd(element.name, event)) {
                 break;
@@ -127,7 +127,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
                 } else if ("stats" == event.name.localPart.lowercased) {
                     retval.stats = parseStats(event, element.name, stream);
                 } else {
-                    throw UnwantedChildException.listingExpectedTags(element.name, event, {"job", "stats"});
+                    throw UnwantedChildException.listingExpectedTags(element.name, event, ["job", "stats"]);
                 }
             } else if (isMatchingEnd(element.name, event)) {
                 break;

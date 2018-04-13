@@ -85,7 +85,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             // We want to transition from arbitrary-String 'contents' to sub-tags. As a first
             // step, future-proof *this* version of the suite by only firing a warning if
             // such children are detected, instead of aborting.
-            spinUntilEnd(element.name, stream, {"resource", "implement"});
+            spinUntilEnd(element.name, stream, ["resource", "implement"]);
             retval.image = getParameter(element, "image", "");
             return retval;
         }

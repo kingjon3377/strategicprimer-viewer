@@ -232,13 +232,13 @@ object fluidTownHandler extends FluidBase() {
 	                }
 	                else {
 	                    throw UnwantedChildException.listingExpectedTags(top.name, event,
-	                        {"production", "consumption"});
+	                        ["production", "consumption"]);
 	                }
 	                lambda(fluidResourceHandler.readResource(event, top.name, stream, players, warner, idFactory));
 	            }
 	            else {
 	                throw UnwantedChildException.listingExpectedTags(event.name, element,
-	                    {"expertise", "claim", "production", "consumption", "resource"});
+	                    ["expertise", "claim", "production", "consumption", "resource"]);
 	            }
 	        } else if (is EndElement event, exists top = stack.top, event.name == top.name) {
 	            stack.pop();
