@@ -181,12 +181,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         MutableTreeNode? oldNode = getNode(playerNode, old);
         if (is UnitNode newNode = getNode(playerNode, newOwner),
 	            exists node = getNode(playerNode, member)) {
-            Integer oldIndex;
-            if (exists oldNode) { // TODO: Condense to oldNode?.getIndex(node) else -1;
-                oldIndex = oldNode.getIndex(node);
-            } else {
-                oldIndex = -1;
-            }
+            Integer oldIndex = oldNode?.getIndex(node) else -1;
             fireTreeNodesRemoved(this,
                 ObjectArray<Object>.with([playerNode, getNode(playerNode, old.kind),
                     oldNode]), IntArray.with(Singleton(oldIndex)),
