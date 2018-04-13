@@ -60,7 +60,7 @@ class LegacyTable() satisfies EncounterTable {
             shared actual Integer id => nothing;
             shared actual String plural => nothing;
             shared actual String shortDescription => nothing;
-            shared actual String text => "Nothing intersting here ..."; // FIXME: Typo in second word
+            shared actual String text => "Nothing interesting here ...";
         }
         retval.add(temp);
         for (stone in `StoneKind`.caseValues) {
