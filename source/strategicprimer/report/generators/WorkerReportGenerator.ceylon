@@ -93,9 +93,9 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
                 ArrayList<[Point, IFixture]> { elements = fixtures.items
             .sort(pairComparator); };
         MutableList<[IWorker, Point]> workers = ArrayList<[IWorker, Point]>();
-        for (tuple in values) { // TODO: destructure
-            if (is IWorker worker = tuple.rest.first) {
-                workers.add([worker, tuple.first]);
+        for ([loc, worker] in values) {
+            if (is IWorker worker) {
+                workers.add([worker, loc]);
             }
         }
         if (!workers.empty) {
@@ -144,9 +144,9 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
                 ArrayList<[Point, IFixture]> { elements = fixtures.items
             .sort(pairComparator); };
         IReportNode retval = SectionListReportNode(5, "Workers");
-        for (tuple in values) { // TODO: Destructure
-            if (is IWorker worker = tuple.rest.first) {
-                retval.appendNode(produceRIRSingle(fixtures, map, worker, tuple.first));
+        for ([loc, worker] in values) {
+            if (is IWorker worker) {
+                retval.appendNode(produceRIRSingle(fixtures, map, worker, loc));
             }
         }
         if (retval.childCount == 0) {
