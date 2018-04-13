@@ -101,7 +101,7 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
                     }
                 }
                 if (retval) {
-                    if ({name, kind}.contains("unassigned"), !empty,
+                    if ([name, kind].contains("unassigned"), !empty,
                             obj.empty) {
                         localReport(
                             """Non-empty "unassigned" when submap has it empty""");

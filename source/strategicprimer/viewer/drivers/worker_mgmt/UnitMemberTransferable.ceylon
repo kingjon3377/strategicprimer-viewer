@@ -19,7 +19,7 @@ class UnitMemberTransferable satisfies Transferable {
     [UnitMember, IUnit][] payload;
     shared new ([UnitMember, IUnit]* data) { payload = data.sequence(); }
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>
-            ObjectArray.with({flavor});
+            ObjectArray.with(Singleton(flavor));
     shared actual Boolean isDataFlavorSupported(DataFlavor candidate) =>
             flavor == candidate;
     shared actual {[UnitMember, IUnit]*} getTransferData(DataFlavor candidate) {

@@ -97,17 +97,17 @@ object directTileDrawHelper satisfies TileDrawHelper {
             if (hasEvent(map, location)) {
                 context.color = eventColor;
                 context.fillPolygon(
-                    IntArray.with({
+                    IntArray.with([
                         multiply(dimensions.x,
                             drawingNumericConstants.eventStart) + coordinates.x,
                         multiply(dimensions.x,
                             drawingNumericConstants.eventOther) + coordinates.x,
-                        dimensions.x + coordinates.x}),
-                    IntArray.with({coordinates.y,
+                        dimensions.x + coordinates.x]),
+                    IntArray.with([coordinates.y,
                         multiply(dimensions.y,
                             drawingNumericConstants.eventOther) + coordinates.y,
                         multiply(dimensions.y,
-                            drawingNumericConstants.eventOther) + coordinates.y}),
+                            drawingNumericConstants.eventOther) + coordinates.y]),
                     3);
             }
         } finally {

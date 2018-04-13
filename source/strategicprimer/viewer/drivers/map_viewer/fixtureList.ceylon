@@ -154,8 +154,8 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
         shared actual void drop(DropTargetDropEvent dtde) {
             if (isXfrFromOutside(dtde)) {
                 for (flavor in dtde.currentDataFlavorsAsList) {
-                    if ({FixtureTransferable.flavor,
-                        CurriedFixtureTransferable.flavor}.contains(flavor)) {
+                    if ([FixtureTransferable.flavor,
+                        CurriedFixtureTransferable.flavor].contains(flavor)) { // FIXME: INdentation
                         try {
                             dtde.acceptDrop(dtde.dropAction);
                             if (exists trans = dtde.transferable) {

@@ -8,7 +8,7 @@ import ceylon.random {
 shared object raceFactory {
 	"""A list of races for use in the map. All of them are equally likely except
 	   human, which is more likely than the others put together."""
-	shared String[] races = {"dwarf", "elf", "gnome", "half-elf", "Danan"}.chain({"human"}.cycled)
+	shared String[] races = ["dwarf", "elf", "gnome", "half-elf", "Danan"].chain(Singleton("human").cycled)
 			.take(20).sequence();
 	"Select a race at random."
 	shared String randomRace(

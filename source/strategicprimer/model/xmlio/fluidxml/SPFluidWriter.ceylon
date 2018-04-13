@@ -299,7 +299,7 @@ shared class SPFluidWriter() satisfies SPWriter {
                     }
 //                        for (fixture in obj.fixtures[loc]) {
                     for (fixture in obj.fixtures.get(loc)) {
-                        if ({ground, forest}.coalesced.contains(fixture)) {
+                        if ([ground, forest].coalesced.contains(fixture)) {
                             continue;
                         }
                         anyContents = true;

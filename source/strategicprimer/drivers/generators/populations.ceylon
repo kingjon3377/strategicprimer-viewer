@@ -164,10 +164,10 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 		}
 	}
 	void generateFieldExtents(IMutableMapNG map, ICLIHelper cli) {
-		{<Point->Meadow>*} entries = randomize({for (loc in map.locations)
+		{<Point->Meadow>*} entries = randomize([for (loc in map.locations)
 			//for (item in map.fixtures[loc]) if (is Meadow item) // TODO: syntax sugar
 			for (item in map.fixtures.get(loc)) if (is Meadow item)
-				if (item.acres.negative) loc->item});
+				if (item.acres.negative) loc->item]);
 		Random rng = DefaultRandom();
 		for (loc->field in entries) {
 			Float acres = rng.nextFloat() * 5.5 + 0.5;

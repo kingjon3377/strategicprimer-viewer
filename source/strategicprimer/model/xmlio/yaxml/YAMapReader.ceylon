@@ -344,7 +344,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     }
 //                    for (fixture in obj.fixtures[loc]) {
                     for (fixture in obj.fixtures.get(loc)) {
-                        if ({ground, forest}.coalesced.contains(fixture)) {
+                        if ([ground, forest].coalesced.contains(fixture)) {
                             continue;
                         }
                         eolIfNeeded(needEol, ostream);

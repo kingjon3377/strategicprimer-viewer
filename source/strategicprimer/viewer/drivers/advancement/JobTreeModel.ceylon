@@ -100,7 +100,7 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
             Integer childCount = getChildCount(currentRoot);
             currentRoot.addJob(job);
             fireTreeNodesInserted(TreeModelEvent(this, TreePath(currentRoot),
-                IntArray.with({childCount}), ObjectArray.with({job})));
+                IntArray.with(Singleton(childCount)), ObjectArray.with(Singleton(job))));
         } else if ("skill" == category) {
             if (exists selectionPath = selectionModel.selectionPath,
                 is IJob job = selectionPath.lastPathComponent) {
@@ -108,9 +108,9 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
                 Integer childCount = getChildCount(job);
                 job.addSkill(skill);
                 fireTreeNodesInserted(TreeModelEvent(this,
-                    TreePath(ObjectArray<Object>.with({localRoot, job})),
-                    IntArray.with({childCount}),
-                    ObjectArray.with({skill})));
+                    TreePath(ObjectArray<Object>.with([localRoot, job])),
+                    IntArray.with(Singleton(childCount)),
+                    ObjectArray.with(Singleton(skill))));
             }
         }
     }

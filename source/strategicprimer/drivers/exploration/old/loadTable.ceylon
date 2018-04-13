@@ -167,8 +167,8 @@ shared void loadAllTables(Directory path, ExplorationRunner runner) {
 object loadTableTests {
 	test
 	shared void testLoadQuadrantTable() {
-	    Queue<String> data = LinkedList<String>({"quadrant", "2", "one", "two", "three",
-	        "four", "five", "six"});
+	    Queue<String> data = LinkedList<String>(["quadrant", "2", "one", "two", "three",
+	        "four", "five", "six"]);
 	    EncounterTable result = loadTable(data.accept, "testLoadQuadrantTable().result");
 	    Point point = pointFactory(0, 0);
 	    MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);

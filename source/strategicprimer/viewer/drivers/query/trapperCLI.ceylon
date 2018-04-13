@@ -53,7 +53,7 @@ class QueueWrapper<Type>(variable {Type*} wrapped) satisfies Queue<Type> {
 	}
 	shared actual Type? back => wrapped.last;
 	shared actual Type? front => wrapped.first;
-	shared actual void offer(Type element) => wrapped = wrapped.chain({element});
+	shared actual void offer(Type element) => wrapped = wrapped.chain(Singleton(element));
 }
 "A driver to run a player's trapping activity."
 todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed

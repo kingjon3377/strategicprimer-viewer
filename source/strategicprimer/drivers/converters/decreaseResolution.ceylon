@@ -93,6 +93,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
                     retval.addFixture(point, fixture);
                 }
             }
+            // TODO: Use Set.complement instead of MutableSets and removeAll().
             MutableSet<River> upperLeftRivers = HashSet<River> {
 //                *old.rivers[subPoints[0]] }; // TODO: syntax sugar once Ceylon bug #4517 fixed
                 *old.rivers.get(subPoints[0]) };
@@ -105,12 +106,13 @@ shared IMapNG decreaseResolution(IMapNG old) {
             MutableSet<River> lowerRightRivers = HashSet<River> {
 //                *old.rivers[subPoints[3]] };
                 *old.rivers.get(subPoints[3]) };
-            upperLeftRivers.removeAll({River.east, River.south});
-            upperRightRivers.removeAll({River.west, River.south});
-            lowerLeftRivers.removeAll({River.east, River.north});
-            lowerRightRivers.removeAll({River.west, River.north});
-            retval.addRivers(point, *({ upperLeftRivers, upperRightRivers, lowerLeftRivers,
-                lowerRightRivers}.reduce((Set<River> partial, Set<River> element) =>
+            upperLeftRivers.removeAll([River.east, River.south]);
+            upperRightRivers.removeAll([River.west, River.south]);
+            lowerLeftRivers.removeAll([River.east, River.north]);
+            lowerRightRivers.removeAll([River.west, River.north]);
+            // TODO: There's only four of them; just use an ordinary chain instead of reduce().
+            retval.addRivers(point, *([ upperLeftRivers, upperRightRivers, lowerLeftRivers,
+                lowerRightRivers].reduce((Set<River> partial, Set<River> element) =>
             partial.union(element))));
         }
     }
@@ -142,7 +144,7 @@ object resolutionDecreaseTests {
 	    Point zeroPoint = pointFactory(0, 0);
 	//    assertTrue(converted.fixtures[zeroPoint] // TODO: syntax sugar once compiler bug fixed
 	    assertTrue(converted.fixtures.get(zeroPoint)
-	        .containsEvery({fixture, fixtureTwo, fixtureThree, fixtureFour}),
+	        .containsEvery([fixture, fixtureTwo, fixtureThree, fixtureFour]),
 	        "Combined tile should contain fixtures from all four original tiles");
 	    assertEquals(converted.baseTerrain[zeroPoint], TileType.desert,
 	        "Combined tile has type of most of input tiles");
@@ -177,14 +179,14 @@ object resolutionDecreaseTests {
 	        "Forest carries over");
 	//    assertTrue(converted.fixtures[zeroPoint]
 	    assertTrue(converted.fixtures.get(zeroPoint)
-	        .containsEvery({groundTwo, forestTwo}),
+	        .containsEvery([groundTwo, forestTwo]),
 	        "Ground and forest carry over even when already set");
 	//    assertTrue(converted.rivers[zeroPoint]
 	    assertTrue(converted.rivers.get(zeroPoint)
-	        .containsEvery({River.lake, River.north}),
+	        .containsEvery([River.lake, River.north]),
 	        "Non-interior rivers carry over");
-	//    assertFalse(converted.rivers[zeroPoint].containsAny({River.east, River.south}),
-	    assertFalse(converted.rivers.get(zeroPoint).containsAny({River.east, River.south}),
+	//    assertFalse(converted.rivers[zeroPoint].containsAny([River.east, River.south]),
+	    assertFalse(converted.rivers.get(zeroPoint).containsAny([River.east, River.south]),
 	        "Interior rivers do not carry over");
 	    assertEquals(converted.baseTerrain[zeroPoint], TileType.steppe,
 	        "Combined tile has most common terrain type among inputs");

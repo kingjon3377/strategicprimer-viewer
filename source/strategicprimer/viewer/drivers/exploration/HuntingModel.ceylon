@@ -64,7 +64,7 @@ shared class HuntingModel {
         case (TileType.desert|TileType.tundra) { nothings = length * 3; }
         case (TileType.jungle) { nothings = length / 2; }
         else { nothings = length; }
-        return retval.chain({NothingFound.nothingFound}.repeat(nothings));
+        return retval.chain(Singleton(NothingFound.nothingFound).repeat(nothings));
     }
     "A helper method for hunting or fishing."
     {<Point->Type|NothingFound>*} chooseFromMap<out Type>(
@@ -74,7 +74,7 @@ shared class HuntingModel {
             {Type|NothingFound*}(Point) chosenMap) given Type satisfies Object {
         variable {<Point->Type|NothingFound>*} choices = surroundingPointIterable(point, dimensions)
             .map((loc) => chosenMap(loc).map((item) => loc->item)).coalesced.flatMap(identity);
-        choices = choices.chain({point->NothingFound.nothingFound}.repeat(choices.size));
+        choices = choices.chain(Singleton(point->NothingFound.nothingFound).repeat(choices.size));
         return DefaultRandom().elements(choices);
     }
     """Get a stream of hunting results from the area surrounding the given tile. About half

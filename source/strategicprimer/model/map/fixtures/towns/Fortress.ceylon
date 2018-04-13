@@ -124,7 +124,7 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
             report("Size mismatch between Fortresses");
             return false;
         }
-        if ({name, "unknown"}.contains(obj.name), obj.owner.playerId == owner.playerId) {
+        if ([name, "unknown"].contains(obj.name), obj.owner.playerId == owner.playerId) {
             Map<Integer, FortressMember> ours = createMap {
                 *members.map((member) => member.id->member)
             };
@@ -172,6 +172,6 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
     }
     shared actual String kind => "fortress";
     "The required Perception check for an explorer to find the fortress."
-    shared actual Integer dc => min { *members.narrow<TileFixture>().map(TileFixture.dc) }
+    shared actual Integer dc => min { *members.narrow<TileFixture>().map(TileFixture.dc) } // TODO: Can we avoid spreading?
             else 20 - members.size - townSize.ordinal * 2;
 }

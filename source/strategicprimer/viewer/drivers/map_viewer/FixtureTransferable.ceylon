@@ -20,7 +20,7 @@ class FixtureTransferable satisfies Transferable {
     TileFixture payload;
     shared new (TileFixture data) { payload = data; }
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>
-            ObjectArray.with({flavor});
+            ObjectArray.with(Singleton(flavor));
     shared actual Boolean isDataFlavorSupported(DataFlavor candidate) =>
             flavor == candidate;
     shared actual TileFixture getTransferData(DataFlavor candidate) {
@@ -51,7 +51,7 @@ class CurriedFixtureTransferable satisfies Transferable {
         payload = list.map(`FixtureTransferable`).sequence();
     }
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>
-            ObjectArray.with({flavor});
+            ObjectArray.with(Singleton(flavor));
     shared actual Boolean isDataFlavorSupported(DataFlavor candidate) =>
             flavor == candidate;
     shared actual {Transferable*} getTransferData(DataFlavor candidate) {

@@ -87,16 +87,16 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
                 width * drawingNumericConstants.unitSize,
                 height * drawingNumericConstants.unitSize);
             event = Polygon(
-                IntArray.with({
+                IntArray.with([
                     halfEven(width * drawingNumericConstants.eventStart)
                         .plus(approximatelyZero).integer,
                     halfEven(width * drawingNumericConstants.eventOther)
-                        .plus(approximatelyZero).integer, width}),
-                IntArray.with({0,
+                        .plus(approximatelyZero).integer, width]),
+                IntArray.with([0,
                     halfEven(height * drawingNumericConstants.eventOther)
                         .plus(approximatelyZero).integer,
                     halfEven(height * drawingNumericConstants.eventOther)
-                        .plus(approximatelyZero).integer}), 3);
+                        .plus(approximatelyZero).integer]), 3);
         }
     }
     updateCache(2, 2);

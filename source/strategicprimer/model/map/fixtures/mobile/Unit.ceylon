@@ -173,6 +173,6 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
     }
     "The required Perception check result for an explorer to notice the unit."
     shared actual Integer dc =>
-            Integer.min({25 - members.size,
-                *members.narrow<TileFixture>().map(TileFixture.dc)});
+            Integer.min([25 - members.size, // TODO: Use follow() instead of spreading and a Tuple.
+                *members.narrow<TileFixture>().map(TileFixture.dc)]);
 }
