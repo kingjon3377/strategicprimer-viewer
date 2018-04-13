@@ -26,7 +26,7 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>() satisf
 			   turn INTEGER,
 			   text VARCHAR(1024) NOT NULL,
 			   image VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, TextFixture obj, Point context) {
 		Integer|SqlNull turn;
@@ -35,7 +35,7 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>() satisf
 		} else {
 			turn = SqlNull(Types.integer);
 		}
-		db.Insert("""INSERT INTO text_notes (row, column, turn, text, image) VALUES(?, ?, ?, ?, ?)""")
+		db.Insert("""INSERT INTO text_notes (row, column, turn, text, image) VALUES(?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, turn, obj.text, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {

@@ -35,23 +35,23 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 			   id INTEGER NOT NULL,
 			   image VARCHAR(255),
 			   portrait VARCHAR(255)
-		   )""",
+		   );""",
 		"""CREATE TABLE IF NOT EXISTS orders (
 			   unit INTEGER NOT NULL,
 			   turn INTEGER,
 			   orders VARCHAR(2048) NOT NULL
-		   )""",
+		   );""",
 		"""CREATE TABLE IF NOT EXISTS results (
 			   unit INTEGER NOT NULL,
 			   turn INTEGER,
 			   result VARCHAR(2048) NOT NULL
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, IUnit obj, Point|Fortress context) {
 		value unit = db.Insert("""INSERT INTO units (row, column, parent, owner, kind, name, id, image, portrait)
-		                          VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)""");
-		value order = db.Insert("""INSERT INTO orders (unit, turn, orders) VALUES(?, ?, ?)""");
-		value result = db.Insert("""INSERT INTO results (unit, turn, result) VALUES(?, ?, ?)""");
+		                          VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""");
+		value order = db.Insert("""INSERT INTO orders (unit, turn, orders) VALUES(?, ?, ?);""");
+		value result = db.Insert("""INSERT INTO results (unit, turn, result) VALUES(?, ?, ?);""");
 		db.transaction(() {
 			String|SqlNull portrait;
 			if (is HasPortrait obj) {

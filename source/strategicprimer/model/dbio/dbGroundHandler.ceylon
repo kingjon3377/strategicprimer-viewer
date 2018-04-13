@@ -22,11 +22,11 @@ object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>() satisfies
 			   kind VARCHAR(32) NOT NULL,
 			   exposed BOOLEAN NOT NULL,
 			   image VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Ground obj, Point context) {
 		db.Insert("""INSERT INTO ground (row, column, id, kind, exposed, image)
-		             VALUES(?, ?, ?, ?, ?, ?)""")
+		             VALUES(?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id, obj.kind, obj.exposed, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {

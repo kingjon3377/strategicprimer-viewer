@@ -33,11 +33,11 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>() satisfies 
 			   acres VARCHAR(128)
 				   CHECK (acres NOT LIKE '%[^0-9.]%' AND acres NOT LIKE '%.%.%'),
 			   image VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Meadow obj, Point context) {
 		db.Insert("""INSERT INTO fields (row, column, id, type, kind, cultivated, status, acres, image)
-		             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)""")
+		             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id, (obj.field) then "field" else "meadow", obj.kind,
 					obj.cultivated, obj.status.string, obj.acres.string, obj.image);
 	}

@@ -47,7 +47,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 			   count INTEGER NOT NULL,
 			   id INTEGER NOT NULL,
 			   image VARCHAR(255)
-		   )""",
+		   );""",
 		// We assume that animal tracks can't occur inside a unit or fortress, and ignore their 'domestication status',
 		// 'talking', 'born', and 'count'. We also follow the XML I/O framework in discarding their IDs.
 		"""CREATE TABLE IF NOT EXISTS tracks (
@@ -55,18 +55,18 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 			   column INTEGER NOT NULL,
 			   kind VARCHAR(32) NOT NULL,
 			   image VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Animal obj, Point|IUnit context) {
 		if (obj.traces) {
 			"We assume that animal tracks can't occur inside a unit."
 			assert (is Point context);
-			db.Insert("""INSERT INTO tracks (row, column, kind, image) VALUES(?, ?, ?, ?)""")
+			db.Insert("""INSERT INTO tracks (row, column, kind, image) VALUES(?, ?, ?, ?);""")
 					.execute(context.row, context.column, obj.kind, obj.image);
 		} else {
 			value insertion = db.Insert(
 				"""INSERT INTO animals (row, column, parent, kind, talking, status, born, count, id, image)
-				   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""");
+				   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""");
 			if (is Point context) {
 				insertion.execute(context.row, context.column, SqlNull(Types.integer),
 					obj.kind, obj.talking, obj.status, born(obj), obj.population, obj.id, obj.image);

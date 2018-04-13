@@ -49,7 +49,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 					   'phoenix', 'simurgh', 'troll')),
 			   id INTEGER NOT NULL,
 			   image VARCHAR(255)
-		   )""",
+		   );""",
 		"""CREATE TABLE IF NOT EXISTS kinded_immortals (
 			   row INTEGER,
 			   column INTEGER
@@ -63,12 +63,12 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			   kind VARCHAR(32) NOT NULL,
 			   id INTEGER NOT NULL,
 			   image VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Immortal obj, Point|IUnit context) {
 		if (is SimpleImmortal obj) {
 			value insertion = db.Insert("""INSERT INTO simple_immortals (row, column, parent, type, id, image)
-			                               VALUES(?, ?, ?, ?, ?, ?)""");
+			                               VALUES(?, ?, ?, ?, ?, ?);""");
 			if (is Point context) {
 				insertion.execute(context.row, context.column, SqlNull(Types.integer), obj.kind, obj.id,
 					obj.image);
@@ -95,7 +95,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			}
 			value insertion = db.Insert(
 				"""INSERT INTO kinded_immortals (row, column, parent, type, kind, id, image)
-				   VALUES(?, ?, ?, ?, ?, ?, ?)""");
+				   VALUES(?, ?, ?, ?, ?, ?, ?);""");
 			if (is Point context) {
 				insertion.execute(context.row, context.column, SqlNull(Types.integer), type,
 					obj.kind, obj.id, obj.image);

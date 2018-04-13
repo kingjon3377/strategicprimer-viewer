@@ -34,11 +34,11 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>() satisfi
 			   image VARCHAR(255),
 			   portrait VARCHAR(255),
 			   population INTEGER
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Village obj, Point context) {
 		db.Insert("""INSERT INTO villages (row, column, status, name, id, owner, race, image, portrait, population)
-		             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""")
+		             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.status.string, obj.name, obj.id, obj.owner.playerId,
 					obj.race, obj.image, obj.portrait, obj.population?.population else SqlNull(Types.integer));
 		if (exists stats = obj.population) {

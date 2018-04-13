@@ -18,7 +18,7 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 			   rows INTEGER NOT NULL,
 			   columns INTEGER NOT NULL,
 			   current_turn INTEGER NOT NULL
-		   )""",
+		   );""",
 	"""CREATE TABLE IF NOT EXISTS terrain (
 		   row INTEGER NOT NULL,
 		   column INTEGER NOT NULL,
@@ -31,11 +31,11 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 		   east_river BOOLEAN NOT NULL,
 		   west_river BOOLEAN NOT NULL,
 		   lake BOOLEAN NOT NULL
-	   )"""
+	   );"""
 	];
 	shared actual void write(Sql db, IMutableMapNG obj, IMapNG context) {
 		db.Insert("""INSERT INTO metadata (version, rows, columns, current_turn)
-		             VALUES(?, ?, ?, ?)""").execute(obj.dimensions.version, obj.dimensions.rows,
+		             VALUES(?, ?, ?, ?);""").execute(obj.dimensions.version, obj.dimensions.rows,
 						obj.dimensions.columns, obj.currentTurn);
 		currentTurn = obj.currentTurn;
 		dbPlayerHandler.initialize(db);
@@ -44,7 +44,7 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 		}
 		value terrainInsertion = db.Insert(
 			"""INSERT INTO terrain (row, column, terrain, mountainous, north_river,
-				   south_river, east_river, west_river, lake) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)""");
+				   south_river, east_river, west_river, lake) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""");
 		for (location in obj.locations) {
 			terrainInsertion.execute(location.row, location.column, obj.baseTerrain[location]?.xml else "",
 				//obj.mountainous[location], *riverFlags(obj.rivers[location])); // TODO: syntax sugar

@@ -17,10 +17,10 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>() satisfie
 			   id INTEGER,
 			   codename VARCHAR(64) NOT NULL,
 			   current BOOLEAN NOT NULL
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Player obj, IMapNG context) {
-		db.Insert("""INSERT INTO players (id, codename, current) VALUES(?, ?, ?)""")
+		db.Insert("""INSERT INTO players (id, codename, current) VALUES(?, ?, ?);""")
 				.execute(obj.playerId, obj.name, obj.current);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {

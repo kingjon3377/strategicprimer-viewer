@@ -30,11 +30,11 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 			   kind VARCHAR(255) NOT NULL,
 			   count INTEGER NOT NULL DEFAULT 1,
 			   image VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Implement obj, IUnit|Fortress context) {
 		db.Insert("""INSERT INTO implements (parent, id, kind, count, image)
-		             VALUES(?, ?, ?, ?, ?)""")
+		             VALUES(?, ?, ?, ?, ?);""")
 				.execute(SqlNull(Types.integer), SqlNull(Types.integer), context.id, obj.id, obj.kind,
 					obj.count, obj.image);
 	}

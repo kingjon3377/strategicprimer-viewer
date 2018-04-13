@@ -26,7 +26,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 			   exposed BOOLEAN NOT NULL CHECK(exposed OR type IN('mineral')),
 			   dc INTEGER NOT NULL,
 			   image VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, MineralVein|StoneDeposit obj, Point context) {
 		String type;
@@ -42,7 +42,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 		}
 		db.Insert(
 			"""INSERT INTO minerals (row, column, type, id, kind, exposed, dc, image)
-			   VALUES(?, ?, ?, ?, ?, ?, ?, ?)""").execute(context.row, context.column, type,
+			   VALUES(?, ?, ?, ?, ?, ?, ?, ?);""").execute(context.row, context.column, type,
 					obj.id, obj.kind, exposed, obj.dc, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {

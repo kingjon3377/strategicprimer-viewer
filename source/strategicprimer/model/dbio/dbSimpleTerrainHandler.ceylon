@@ -26,7 +26,7 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar,
 				   CHECK(type IN('hill', 'oasis', 'sandbar')),
 			   id INTEGER NOT NULL,
 			   image VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Hill|Oasis|Sandbar obj, Point context) {
 		String type;
@@ -40,7 +40,7 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar,
 		case (is Sandbar) {
 			type = "sandbar";
 		}
-		db.Insert("""INSERT INTO simple_terrain (row, column, type, id, image) VALUES(?, ?, ?, ?, ?)""")
+		db.Insert("""INSERT INTO simple_terrain (row, column, type, id, image) VALUES(?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, type, obj.id, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {

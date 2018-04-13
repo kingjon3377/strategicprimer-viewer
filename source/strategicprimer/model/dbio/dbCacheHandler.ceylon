@@ -22,10 +22,10 @@ object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>() sati
 				    kind VARCHAR(32) NOT NULL,
 				    contents VARCHAR(512) NOT NULL,
 				    image VARCHAR(256) NOT NULL
-			    )"""];
+			    );"""];
 	shared actual void write(Sql db, CacheFixture obj, Point context) {
 		db.Insert(
-			"""INSERT INTO caches (row, column, id, kind, contents, image) VALUES(?, ?, ?, ?, ?, ?)""")
+			"""INSERT INTO caches (row, column, id, kind, contents, image) VALUES(?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id, obj.kind, obj.contents, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {

@@ -23,10 +23,10 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
 				    full VARCHAR(512) NOT NULL,
 				    owner INTEGER NOT NULL,
 				    image VARCHAR(255)
-			    )"""];
+			    );"""];
 	shared actual void write(Sql db, AdventureFixture obj, Point context) {
 			db.Insert("""INSERT INTO adventures (row, column, id, brief, full, owner, image)
-			             VALUES(?, ?, ?, ?, ?, ?, ?)""")
+			             VALUES(?, ?, ?, ?, ?, ?, ?);""")
 					.execute(context.row, context.column, obj.id, obj.briefDescription,
 						obj.fullDescription, obj.owner.playerId, obj.image);
 	}

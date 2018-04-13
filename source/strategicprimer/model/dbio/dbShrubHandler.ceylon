@@ -22,11 +22,11 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>() satisfies M
 			   kind VARCHAR(64) NOT NULL,
 			   count INTEGER,
 			   image VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Shrub obj, Point context) {
 		db.Insert("""INSERT INTO shrubs (row, column, id, kind, count, image)
-		             VALUES(?, ?, ?, ?, ?, ?)""")
+		             VALUES(?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id, obj.kind,
 					obj.population, obj.image);
 	}

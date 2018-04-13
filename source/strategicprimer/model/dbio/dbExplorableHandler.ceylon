@@ -22,23 +22,23 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 			   id INTEGER NOT NULL,
 			   dc INTEGER NOT NULL,
 			   image VARCHAR(255)
-		   )""",
+		   );""",
 		"""CREATE TABLE IF NOT EXISTS battlefields (
 			   row INTEGER NOT NULL,
 			   column INTEGER NOT NULL,
 			   id INTEGER NOT NULL,
 			   dc INTEGER NOT NULL,
 			   image VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Cave|Battlefield obj, Point context) {
 		Sql.Insert insertion;
 		switch (obj)
 		case (is Cave) {
-			insertion = db.Insert("""INSERT INTO caves (row, column, id, dc, image) VALUES(?, ?, ?, ?, ?)""");
+			insertion = db.Insert("""INSERT INTO caves (row, column, id, dc, image) VALUES(?, ?, ?, ?, ?);""");
 		}
 		case (is Battlefield) {
-			insertion = db.Insert("""INSERT INTO battlefields (row, column, id, dc, image) VALUES(?, ?, ?, ?, ?)""");
+			insertion = db.Insert("""INSERT INTO battlefields (row, column, id, dc, image) VALUES(?, ?, ?, ?, ?);""");
 		}
 		insertion.execute(context.row, context.column, obj.id, obj.dc, obj.image);
 	}

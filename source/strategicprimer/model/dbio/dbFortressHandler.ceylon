@@ -26,11 +26,11 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>() satis
 			   id INTEGER NOT NULL,
 			   image VARCHAR(255),
 			   portrait VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Fortress obj, Point context) {
 		db.Insert("""INSERT INTO fortresses (row, column, owner, name, size, id, image, portrait)
-		             VALUES(?, ?, ?, ?, ?, ?, ?, ?)""")
+		             VALUES(?, ?, ?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.owner.playerId, obj.name, obj.townSize.string,
 					obj.id, obj.image, obj.portrait);
 		for (member in obj) {

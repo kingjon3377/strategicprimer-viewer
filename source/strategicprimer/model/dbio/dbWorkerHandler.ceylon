@@ -48,27 +48,27 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 			   int INTEGER CHECK((hp IS NULL AND int IS NULL) OR (hp IS NOT NULL AND int IS NOT NULL)),
 			   wis INTEGER CHECK((hp IS NULL AND wis IS NULL) OR (hp IS NOT NULL AND wis IS NOT NULL)),
 			   cha INTEGER CHECK((hp IS NULL AND cha IS NULL) OR (hp IS NOT NULL AND cha IS NOT NULL))
-		   )""",
+		   );""",
 		"""CREATE TABLE IF NOT EXISTS worker_job_levels (
 			   worker INTEGER NOT NULL,
 			   job VARCHAR(32) NOT NULL,
 			   level INTEGER NOT NULL CHECK(level >= 0)
-		   )""",
+		   );""",
 		"""CREATE TABLE IF NOT EXISTS worker_skill_levels (
 			   worker INTEGER NOT NULL,
 			   associated_job VARCHAR(32) NOT NULL,
 			   skill VARCHAR(32) NOT NULL,
 			   level INTEGER NOT NULL check(level >= 0),
 			   hours INTEGER NOT NULL check(hours >= 0)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, IWorker obj, IUnit context) {
 		value worker = db.Insert(
 			"""INSERT INTO workers (unit, id, name, race, image, portrait, hp, max_hp, str, dex, con, int, wis, cha)
-			   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""");
-		value jobRow = db.Insert("""INSERT INTO worker_job_levels (worker, job, level) VALUES(?, ?, ?)""");
+			   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""");
+		value jobRow = db.Insert("""INSERT INTO worker_job_levels (worker, job, level) VALUES(?, ?, ?);""");
 		value skillRow = db.Insert("""INSERT INTO worker_skill_levels (worker, associated_job, skill, level, hours)
-		                              VALUES(?, ?, ?, ?, ?)""");
+		                              VALUES(?, ?, ?, ?, ?);""");
 		db.transaction(() {
 			String|SqlNull portrait;
 			if (is HasPortrait obj) {

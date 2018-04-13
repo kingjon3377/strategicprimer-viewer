@@ -26,10 +26,10 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>() satisfies Map
 			   status VARCHAR(9) NOT NULL
 				   CHECK(status IN ('abandoned', 'active', 'burned', 'ruined')),
 			   image VARCHAR(255)
-		   )"""
+		   );"""
 	];
 	shared actual void write(Sql db, Mine obj, Point context) {
-		db.Insert("""INSERT INTO mines (row, column, id, kind, status, image) VALUES(?, ?, ?, ?, ?, ?)""")
+		db.Insert("""INSERT INTO mines (row, column, id, kind, status, image) VALUES(?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id, obj.kind, obj.status.string, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
