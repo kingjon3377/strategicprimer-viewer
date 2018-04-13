@@ -72,9 +72,9 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     "The units in the given collection that have workers without stats."
-    IUnit[] removeStattedUnits(IUnit* units) => units.filter(
+    IUnit[] removeStattedUnits(IUnit* units) => units.select(
                 (unit) => unit.narrow<Worker>().map(Worker.stats)
-                    .any((stats) => !stats exists)).sequence();
+                    .any((stats) => !stats exists));
     "Find a fixture in a given iterable with the given ID."
     IFixture? findInIterable(Integer id, IFixture* fixtures) {
         for (fixture in fixtures) {

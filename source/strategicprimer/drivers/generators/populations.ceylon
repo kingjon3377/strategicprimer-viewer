@@ -213,7 +213,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 			}
 			//{Forest*} otherForests = map.fixtures[location].narrow<Forest>().rest; // TODO: syntax sugar
 			{Forest*} otherForests = map.fixtures.get(location).narrow<Forest>()
-					.filter((item) => !item.acres.positive).rest.sequence();
+					.select((item) => !item.acres.positive).rest;
 			Integer adjacentCount = countAdjacentForests(map, location, primaryForest.kind);
 			//for (town in map.fixtures[location].narrow<ITownFixture>()) { // TODO: syntax sugar
 			for (town in map.fixtures.get(location).narrow<ITownFixture>()) {

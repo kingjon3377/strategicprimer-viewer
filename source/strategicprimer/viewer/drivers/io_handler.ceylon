@@ -390,7 +390,7 @@ shared class FileChooser {
                 if (is JFileChooser chooser) {
                     if (status == JFileChooser.approveOption) {
                         value retval = chooser.selectedFiles.iterable.coalesced
-                            .map((file) => file.toPath()).sequence();
+                            .collect((file) => file.toPath());
                         if (nonempty retval) {
                             log.trace("Saving the user's choice(s) from Swing to storedFile");
                             storedFile = retval;
@@ -402,7 +402,7 @@ shared class FileChooser {
                     }
                 } else {
                     value retval = chooser.files.iterable.coalesced
-                        .map((file) => file.toPath()).sequence();
+                        .collect((file) => file.toPath());
                     if (nonempty retval) {
                         log.trace("Saving the user's choice(s) from AWT to storedFile");
                         storedFile = retval;

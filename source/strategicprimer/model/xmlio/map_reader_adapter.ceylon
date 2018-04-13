@@ -58,7 +58,7 @@ shared object mapIOHelper {
 	test
 	shared void testNamesToFiles() {
 	    JPath[] expected = [ JPaths.get("two"), JPaths.get("three"), JPaths.get("four") ];
-	    assertEquals(namesToFiles("two", "three", "four").sequence(), expected,
+	    assertEquals(namesToFiles("two", "three", "four").sequence(), expected, // TODO: Drop .sequence() in tests
 	        "Returns all names");
 	}
 }

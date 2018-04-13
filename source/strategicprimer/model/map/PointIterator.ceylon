@@ -139,7 +139,7 @@ object pointIterationTests {
 	        pointFactory(0, 1), pointFactory(0, 2), pointFactory(1, 0),
 	        pointFactory(1, 1)];
 	    Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, true,
-	        pointFactory(1, 1)).sequence();
+	        pointFactory(1, 1)).sequence(); // TODO: Drop the .sequence() in these tests
 	    assertEquals(actual, expected, "Iterator produced points in expected order");
 	}
 

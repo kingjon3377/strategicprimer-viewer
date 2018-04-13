@@ -148,7 +148,7 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 						ISkill replacement;
 						String replacementName;
 						Integer->ISkill? choice = cli.chooseFromList(
-							job.filter((skl) => "miscellaneous" != skl.name).sequence(),
+							job.select((skl) => "miscellaneous" != skl.name),
 							"Skill to gain level in:", "No other skill", "Chosen skill:", false);
 						if (exists chosenSkill = choice.item) {
 							replacement = chosenSkill;

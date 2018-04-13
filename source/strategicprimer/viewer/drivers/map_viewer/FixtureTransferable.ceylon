@@ -48,7 +48,7 @@ class CurriedFixtureTransferable satisfies Transferable {
             DataFlavor(`CurriedFixtureTransferable`, "CurriedTransferable");
     Transferable[] payload;
     shared new (TileFixture* list) {
-        payload = list.map(`FixtureTransferable`).sequence();
+        payload = list.collect(`FixtureTransferable`);
     }
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>
             ObjectArray.with(Singleton(flavor));
