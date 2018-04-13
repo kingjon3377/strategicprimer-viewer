@@ -120,6 +120,16 @@ object oneToTwoConverterTests {
 	//        writer.write(text);
 	//    }
 	//}
+	Ground groundOne() => Ground(-1, "rock1", false);
+	Ground groundTwo() => Ground(-1, "rock2", false);
+	Ground groundThree() => Ground(-1, "rock3", false);
+	Ground groundFour() => Ground(-1, "rock4", false);
+	Village village(String race, Player owner) =>
+			Village(TownStatus.active, "", -1, owner, race);
+	Forest forest(String kind) => Forest(kind, false, -1);
+	Meadow field(FieldStatus status, String kind = "grain1") =>
+			Meadow(kind, true, true, -1, status);
+	Grove orchard(String kind = "fruit1") => Grove(true, true, kind, -1);
 	test
 	suppressWarnings("deprecation")
 	shared void testOneToTwoConversion() {
@@ -136,16 +146,6 @@ object oneToTwoConverterTests {
 	    IMutableMapNG converted = SPMapNG(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
 	    converted.addPlayer(player);
 	    converted.addPlayer(independent);
-	    Ground groundOne() => Ground(-1, "rock1", false);
-	    Ground groundTwo() => Ground(-1, "rock2", false);
-	    Ground groundThree() => Ground(-1, "rock3", false);
-	    Ground groundFour() => Ground(-1, "rock4", false);
-	    Village village(String race) =>
-	            Village(TownStatus.active, "", -1, independent, race);
-	    Forest forest(String kind) => Forest(kind, false, -1);
-	    Meadow field(FieldStatus status, String kind = "grain1") =>
-	            Meadow(kind, true, true, -1, status);
-	    Grove orchard(String kind = "fruit1") => Grove(true, true, kind, -1);
 	    initialize(converted, pointFactory(0, 0), TileType.steppe, groundOne());
 	    initialize(converted, pointFactory(0, 1), TileType.steppe, groundOne());
 	    initialize(converted, pointFactory(0, 3), TileType.steppe, groundOne(),
@@ -163,21 +163,21 @@ object oneToTwoConverterTests {
 	    initialize(converted, pointFactory(2, 5), TileType.plains, groundTwo(),
 	        forest("ttree2"), field(FieldStatus.fallow, "grain2"));
 	    initialize(converted, pointFactory(3, 1), TileType.steppe, groundOne(),
-	        forest("btree1"), village("human"), orchard());
+	        forest("btree1"), village("human", independent), orchard());
 	    initialize(converted, pointFactory(3, 3), TileType.steppe, groundOne(),
 	        forest("btree1"), field(FieldStatus.fallow));
 	    initialize(converted, pointFactory(3, 4), TileType.plains, groundTwo(),
-	        forest("ttree2"), village("human"), field(FieldStatus.seeding, "grain2"));
+	        forest("ttree2"), village("human", independent), field(FieldStatus.seeding, "grain2"));
 	    initialize(converted, pointFactory(4, 0), TileType.desert, groundThree(),
 	        orchard("fruit3"));
 	    initialize(converted, pointFactory(4, 1), TileType.desert, groundThree(),
-	        village("human"), orchard("fruit3"));
+	        village("human", independent), orchard("fruit3"));
 	    initialize(converted, pointFactory(4, 2), TileType.desert, groundThree(),
 	        orchard("fruit3"));
 	    initialize(converted, pointFactory(4, 3), TileType.desert, groundThree(),
 	        field(FieldStatus.seeding, "grain3"));
 	    initialize(converted, pointFactory(4, 4), TileType.plains, groundFour(),
-	        village("human"), field(FieldStatus.fallow, "grain4"));
+	        village("human", independent), field(FieldStatus.fallow, "grain4"));
 	    initialize(converted, pointFactory(4, 7), TileType.plains, groundFour(),
 	        forest("ttree4"));
 	    initialize(converted, pointFactory(5, 0), TileType.desert, groundThree(),
@@ -230,9 +230,9 @@ object oneToTwoConverterTests {
 	    outTwo.clear();
 	    assertEquals(
 	        converted.isSubset(convertOneToTwo(original, runner, true),
-	                    (String str) => writeLine(outTwo, str)),
+	                    inlineWriter(outTwo)),
 	        converted.isSubset(convertOneToTwo(original, runner, true),
-	                    (String str) => writeLine(outOne, str)),
+	                    inlineWriter(outOne)),
 	        "Products of two runs are both or neither subsets of expected");
 	    assertEquals(outTwo.string, outOne.string,
 	        "Two runs produce identical results");
@@ -259,16 +259,6 @@ object oneToTwoConverterTests {
 	    IMutableMapNG converted = SPMapNG(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
 	    converted.addPlayer(player);
 	    converted.addPlayer(independent);
-	    Ground groundOne() => Ground(-1, "rock1", false);
-	    Ground groundTwo() => Ground(-1, "rock2", false);
-	    Ground groundThree() => Ground(-1, "rock3", false);
-	    Ground groundFour() => Ground(-1, "rock4", false);
-	    Village village(String race) =>
-	            Village(TownStatus.active, "", -1, independent, race);
-	    Forest forest(String kind) => Forest(kind, false, -1);
-	    Meadow field(FieldStatus status, String kind = "grain1") =>
-	            Meadow(kind, true, true, -1, status);
-	    Grove orchard(String kind = "fruit1") => Grove(true, true, kind, -1);
 	    initialize(converted, pointFactory(1, 1), TileType.jungle, groundOne(),
 	        forest("ttree1"));
 	    initialize(converted, pointFactory(2, 0), TileType.jungle, groundOne(),
@@ -284,23 +274,23 @@ object oneToTwoConverterTests {
 	    initialize(converted, pointFactory(2, 5), TileType.plains, groundTwo(),
 	        forest("ttree2"), orchard("fruit2"));
 	    initialize(converted, pointFactory(3, 1), TileType.jungle, groundOne(),
-	        village("human"), orchard());
+	        village("human", independent), orchard());
 	    initialize(converted, pointFactory(3, 2), TileType.jungle, groundOne(),
 	        field(FieldStatus.bearing));
 	    initialize(converted, pointFactory(3, 3), TileType.jungle, groundOne(),
 	        field(FieldStatus.fallow));
 	    initialize(converted, pointFactory(3, 4), TileType.plains, groundTwo(),
-	        forest("ttree2"), village("human"), field(FieldStatus.seeding, "grain2"));
+	        forest("ttree2"), village("human", independent), field(FieldStatus.seeding, "grain2"));
 	    initialize(converted, pointFactory(3, 5), TileType.plains, groundTwo(),
 	        forest("ttree2"), field(FieldStatus.fallow, "grain2"));
 	    initialize(converted, pointFactory(4, 1), TileType.plains, groundThree(),
-	        village("gnome"));
+	        village("gnome", independent));
 	    initialize(converted, pointFactory(4, 2), TileType.plains, groundThree(),
 	        field(FieldStatus.fallow, "grain3"));
 	    initialize(converted, pointFactory(4, 3), TileType.plains, groundThree(),
 	        field(FieldStatus.growing, "grain3"));
 	    initialize(converted, pointFactory(4, 4), TileType.tundra, groundFour(),
-	        village("elf"));
+	        village("elf", independent));
 	    initialize(converted, pointFactory(4, 5), TileType.tundra, groundFour(),
 	        forest("ttree4"));
 	    initialize(converted, pointFactory(5, 1), TileType.plains, groundThree(),
@@ -363,9 +353,9 @@ object oneToTwoConverterTests {
 	    outTwo.clear();
 	    assertEquals(
 	        converted.isSubset(convertOneToTwo(original, runner, true),
-	                    (String str) => writeLine(outTwo, str)),
+	                    inlineWriter(outTwo)),
 	        converted.isSubset(convertOneToTwo(original, runner, true),
-	                    (String str) => writeLine(outOne, str)),
+	                    inlineWriter(outOne)),
 	        "Products of two runs are both or neither subsets of expected");
 	    assertEquals(outTwo.string, outOne.string,
 	        "Two runs produce identical results");
@@ -377,17 +367,7 @@ object oneToTwoConverterTests {
 	test
 	suppressWarnings("deprecation")
 	shared void testThirdOneToTwoConversion() {
-	    Ground groundOne() => Ground(-1, "rock1", false);
-	    Ground groundTwo() => Ground(-1, "rock2", false);
-	    Ground groundThree() => Ground(-1, "rock3", false);
-	    Ground groundFour() => Ground(-1, "rock4", false);
 	    Player independent = PlayerImpl(2, "independent");
-	    Village village(String race) =>
-	            Village(TownStatus.active, "", -1, independent, race);
-	    Forest forest(String kind) => Forest(kind, false, -1);
-	    Meadow field(FieldStatus status, String kind = "grain1") =>
-	            Meadow(kind, true, true, -1, status);
-	    Grove orchard(String kind = "fruit1") => Grove(true, true, kind, -1);
 
 	    IMutableMapNG original = SPMapNG(MapDimensionsImpl(2, 2, 1), PlayerCollection(), 0);
 	    initialize(original, pointFactory(0, 0), null, groundOne());
@@ -425,7 +405,7 @@ object oneToTwoConverterTests {
 	    initialize(converted, pointFactory(0, 7), TileType.steppe, groundTwo(),
 	        forest("btree2"), StoneDeposit(StoneKind.conglomerate, 0, -1),
 	        field(FieldStatus.seeding, "grain2"));
-	    initialize(converted, pointFactory(1, 0), null, village("human"));
+	    initialize(converted, pointFactory(1, 0), null, village("human", independent));
 	    initialize(converted, pointFactory(1, 4), TileType.steppe, groundTwo(),
 	        forest("btree2"), Centaur("hill", -1), orchard("fruit2"));
 	    initialize(converted, pointFactory(1, 5), TileType.steppe, groundTwo(),
@@ -451,7 +431,7 @@ object oneToTwoConverterTests {
 	        field(FieldStatus.growing, "grain2"));
 	    initialize(converted, pointFactory(3, 1), null, groundOne());
 	    initialize(converted, pointFactory(3, 4), TileType.steppe, groundTwo(),
-	        forest("btree2"), village("human"), Hill(-1));
+	        forest("btree2"), village("human", independent), Hill(-1));
 	    initialize(converted, pointFactory(3, 5), TileType.steppe, groundTwo(),
 	        forest("btree2"), Mine("mineral", TownStatus.active, -1));
 	    initialize(converted, pointFactory(3, 6), TileType.steppe, groundTwo(),
@@ -464,12 +444,12 @@ object oneToTwoConverterTests {
 	    initialize(converted, pointFactory(4, 3), TileType.plains, groundThree(),
 	        field(FieldStatus.growing, "grain3"));
 	    initialize(converted, pointFactory(4, 4), TileType.tundra, groundFour(),
-	        village("elf"), field(FieldStatus.bearing, "grain4"));
+	        village("elf", independent), field(FieldStatus.bearing, "grain4"));
 	    initialize(converted, pointFactory(4, 5), TileType.tundra, groundFour());
 	    initialize(converted, pointFactory(4, 7), TileType.tundra, groundFour(),
 	        orchard("fruit4"));
 	    initialize(converted, pointFactory(5, 0), TileType.tundra, groundThree(),
-	        village("gnome"), TextFixture(oneToTwoConfig.maxIterationsWarning, 15));
+	        village("gnome", independent), TextFixture(oneToTwoConfig.maxIterationsWarning, 15));
 	    initialize(converted, pointFactory(5, 1), TileType.plains, groundThree(),
 	        orchard("fruit3"));
 	    initialize(converted, pointFactory(5, 3), TileType.plains, groundThree(),
@@ -556,9 +536,9 @@ object oneToTwoConverterTests {
 	    outTwo.clear();
 	    assertEquals(
 	        converted.isSubset(convertOneToTwo(original, runner, true),
-	                    (String str) => writeLine(outTwo, str)),
+	                    inlineWriter(outTwo)),
 	        converted.isSubset(convertOneToTwo(original, runner, true),
-	                    (String str) => writeLine(outOne, str)),
+	                    inlineWriter(outOne)),
 	        "Products of two runs are both or neither subsets of expected");
 	    assertEquals(outTwo.string, outOne.string,
 	        "Two runs produce identical results");
@@ -567,10 +547,11 @@ object oneToTwoConverterTests {
 	    newWriter.writeSPObject(outOne.append, convertOneToTwo(original, runner, true));
 	    assertModuloID(converted, outOne.string, noop);
 	}
-
-	void writeLine(StringBuilder ostream, String line) {
-	    ostream.append(line);
-	    ostream.appendNewline();
+	Anything(String) inlineWriter(StringBuilder ostream) {
+		return (String line) {
+		    ostream.append(line);
+		    ostream.appendNewline();
+		};
 	}
 	test
 	shared void testFourthOneToTwoConversion() {
@@ -688,9 +669,9 @@ object oneToTwoConverterTests {
 	    outTwo.clear();
 	    assertEquals(
 	        converted.isSubset(convertOneToTwo(original, runner, true),
-	                    (String str) => writeLine(outTwo, str)),
+	                    inlineWriter(outTwo)),
 	        converted.isSubset(convertOneToTwo(original, runner, true),
-	                    (String str) => writeLine(outOne, str)),
+	                    inlineWriter(outOne)),
 	        "Products of two runs are both or neither subsets of expected");
 	    assertEquals(outTwo.string, outOne.string,
 	        "Two runs produce identical results");
