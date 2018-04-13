@@ -180,7 +180,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         assert (is TreeNode playerNode = root);
         MutableTreeNode? oldNode = getNode(playerNode, old);
         if (is UnitNode newNode = getNode(playerNode, newOwner),
-            exists node = getNode(playerNode, member)) {
+	            exists node = getNode(playerNode, member)) {
             Integer oldIndex;
             if (exists oldNode) { // TODO: Condense to oldNode?.getIndex(node) else -1;
                 oldIndex = oldNode.getIndex(node);
