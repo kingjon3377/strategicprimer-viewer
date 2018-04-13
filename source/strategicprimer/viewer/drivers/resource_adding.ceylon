@@ -150,7 +150,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     MutableMap<String, String> resourceUnits = HashMap<String, String>();
     "Ask the user to choose or enter a resource kind."
     String getResourceKind(ICLIHelper cli) {
-        String[] list = [*resourceKinds];
+        String[] list = resourceKinds.sequence();
         value choice = cli.chooseStringFromList(list, "Possible kinds of resources:",
             "No resource kinds entered yet", "Chosen kind: ", false);
         if (exists retval = choice.item) {
@@ -163,7 +163,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     }
     "Ask the user to choose or enter a resource-content-type for a given resource kind."
     String getResourceContents(String kind, ICLIHelper cli) {
-        String[] list = [*resourceContents.get(kind)];
+        String[] list = resourceContents.get(kind).sequence();
         value num->item = cli.chooseStringFromList(list,
             "Possible resources in the ``kind`` category`", "No resources entered yet",
             "Choose resource: ", false);

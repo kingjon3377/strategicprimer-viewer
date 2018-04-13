@@ -100,7 +100,7 @@ shared object queryCLI satisfies SimpleCLIDriver {
 	}
 	"Count the workers belonging to a player."
 	void countWorkers(IMapNG map, ICLIHelper cli, Player* players) {
-		Player[] playerList = [*players];
+		Player[] playerList = players.sequence();
 		value choice = cli.chooseFromList(playerList,
 			"Players in the map:", "Map contains no players",
 			"Owner of workers to count: ", true);

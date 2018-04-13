@@ -396,7 +396,7 @@ shared void run() {
                             "Strategic Primer Assistive Programs", except.message));
                     }
                 } else {
-                    ISPDriver[] driversList = [*driverCache[0].items.distinct];
+                    ISPDriver[] driversList = driverCache[0].items.distinct.sequence(); // TODO: Why [0] instead of first?
                     value choice = cli.chooseFromList(driversList,
                         "CLI apps available:", "No applications available",
                         "App to start: ", true);
@@ -410,7 +410,7 @@ shared void run() {
         shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
                 IDriverModel driverModel) {
             if (GraphicsEnvironment.headless || options.getArgument("--gui") == "false") {
-                ISPDriver[] cliDrivers = [*driverCache[0].items];
+                ISPDriver[] cliDrivers = driverCache[0].items.sequence(); // FIXME: 'distinct' // TODO: Why [0] instead of first?
                 try {
                     if (exists driver = cli.chooseFromList(
                             cliDrivers, "CLI apps available:",

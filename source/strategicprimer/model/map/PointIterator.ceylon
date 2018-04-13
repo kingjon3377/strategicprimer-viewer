@@ -127,7 +127,7 @@ object pointIterationTests {
 	        pointFactory(0, 2), pointFactory(1, 0), pointFactory(1, 1),
 	        pointFactory(1, 2), pointFactory(2, 0), pointFactory(2, 1),
 	        pointFactory(2, 2)];
-	    Point[] actual = [*PointIterator(MapDimensionsImpl(3, 3, 1), true, true)];
+	    Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, true).sequence();
 	    assertEquals(actual, expected, "Iterator produced points in expected order");
 	}
 
@@ -138,8 +138,8 @@ object pointIterationTests {
 	        pointFactory(2, 1), pointFactory(2, 2), pointFactory(0, 0),
 	        pointFactory(0, 1), pointFactory(0, 2), pointFactory(1, 0),
 	        pointFactory(1, 1)];
-	    Point[] actual = [*PointIterator(MapDimensionsImpl(3, 3, 1), true, true,
-	        pointFactory(1, 1))];
+	    Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, true,
+	        pointFactory(1, 1)).sequence();
 	    assertEquals(actual, expected, "Iterator produced points in expected order");
 	}
 
@@ -150,8 +150,8 @@ object pointIterationTests {
 	        pointFactory(2, 0), pointFactory(0, 1), pointFactory(1, 1),
 	        pointFactory(2, 1), pointFactory(0, 2), pointFactory(1, 2),
 	        pointFactory(2, 2)];
-	    Point[] actual = [*PointIterator(MapDimensionsImpl(3, 3, 1), true, false,
-	        invalidPoint)];
+	    Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, false,
+	        invalidPoint).sequence();
 	    assertEquals(actual, expected, "Iterator produced points in expected order");
 	}
 
@@ -163,7 +163,7 @@ object pointIterationTests {
 	        pointFactory(1, 1), pointFactory(1, 0),
 	        pointFactory(0, 2), pointFactory(0, 1),
 	        pointFactory(0, 0)];
-	    Point[] actual = [*PointIterator(MapDimensionsImpl(3, 3, 1), false, true)];
+	    Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, true).sequence();
 	    assertEquals(actual, expected, "Iterator produced points in expected order");
 	}
 
@@ -174,7 +174,7 @@ object pointIterationTests {
 	        pointFactory(0, 2), pointFactory(2, 1), pointFactory(1, 1),
 	        pointFactory(0, 1), pointFactory(2, 0), pointFactory(1, 0),
 	        pointFactory(0, 0)];
-	    Point[] actual = [*PointIterator(MapDimensionsImpl(3, 3, 1), false, false)];
+	    Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, false).sequence();
 	    assertEquals(actual, expected, "Iterator produced points in expected order");
 	}
 }

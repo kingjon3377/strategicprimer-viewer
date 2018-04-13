@@ -209,6 +209,6 @@ void testComparison() {
 //        assertEquals(sorted[i], expected[i],
 //            "``i``th element in sorted list of towns is as expected");
 //    }
-    assertEquals(sorted, [*expected],
+    assertEquals(sorted, expected,
         "Sorted list of towns is in the order we expect");
 }
