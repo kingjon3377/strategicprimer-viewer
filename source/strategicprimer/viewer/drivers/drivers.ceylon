@@ -410,7 +410,7 @@ shared void run() {
         shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
                 IDriverModel driverModel) {
             if (GraphicsEnvironment.headless || options.getArgument("--gui") == "false") {
-                ISPDriver[] cliDrivers = driverCache.first.items.sequence(); // FIXME: 'distinct'
+                ISPDriver[] cliDrivers = driverCache.first.items.distinct.sequence();
                 try {
                     if (exists driver = cli.chooseFromList(
                             cliDrivers, "CLI apps available:",
