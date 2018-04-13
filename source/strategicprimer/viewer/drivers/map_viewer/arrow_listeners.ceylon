@@ -44,12 +44,12 @@ object arrowListenerInitializer {
 	   for "jumping," to the Strings we'll use to represent them."""
 	Map<Integer, String> jumpInputs = map {
 	    KeyEvent.vkHome->"ctrl-home", KeyEvent.vkEnd->"ctrl-end",
-	    *maybe(platform.systemIsMac, { // TODO: Use [] instead of {}
+	    *maybe(platform.systemIsMac, [
 	        KeyEvent.vkUp->"home", KeyEvent.vkKpUp->"home", KeyEvent.vkNumpad8->"home",
 	        KeyEvent.vkDown->"end", KeyEvent.vkKpDown->"end", KeyEvent.vkNumpad2->"end",
 	        KeyEvent.vkLeft->"caret",KeyEvent.vkKpLeft->"caret", KeyEvent.vkNumpad4->"caret",
 	        KeyEvent.vkRight->"dollar", KeyEvent.vkKpRight->"dollar",
-	        KeyEvent.vkNumpad6->"dollar"})
+	        KeyEvent.vkNumpad6->"dollar"])
 	};
 	"A map from other key-codes to the Strings we'll use to represent them"
 	Map<Integer, String> otherInputs = map {
