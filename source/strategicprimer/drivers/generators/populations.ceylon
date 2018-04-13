@@ -62,6 +62,8 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 		shortDescription = "Generate animal populations, etc.";
 		longDescription = "Generate animal and shrub populations, meadow and grove sizes, and forest acreages.";
 	};
+	"Whether the given number is positive."
+	shared Boolean positiveNumber(Number<out Anything> number) => number.positive;
 	void generateAnimalPopulations(IMutableMapNG map, Boolean talking, String kind, ICLIHelper cli) {
 		// We assume there is at most one population of each kind of animal per tile.
 		{Point*} locations = randomize(map.locations.filter(
@@ -206,7 +208,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 		{Point*} locations = randomize(map.locations.filter(
 			//(loc) => !map.fixtures[loc].narrow<Forest>() // TODO: syntax sugar
 			(loc) => map.fixtures.get(loc).narrow<Forest>()
-					.map(Forest.acres).any((num) => !num.positive))); // TODO: Make a 'numberPositive' helper method, since we can't use a method reference ...
+					.map(Forest.acres).any(positiveNumber)));
 		for (location in locations) {
 			//assert (exists primaryForest = map.fixtures[location].narrow<Forest>().first); // TODO: syntax sugar
 			assert (exists primaryForest = map.fixtures.get(location).narrow<Forest>().first);
@@ -237,7 +239,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 					.map(Grove.population).filter(Integer.positive).fold(0)(plus) / 500;
 			//reserved += map.fixtures[location].narrow<HasExtent>() // TODO: syntax sugar
 			reserved += map.fixtures.get(location).narrow<HasExtent>()
-					.map(HasExtent.acres).filter((num) => num.positive).map(decimalize)
+					.map(HasExtent.acres).filter(positiveNumber).map(decimalize)
 					.fold(decimalNumber(0))(plus).integer;
 			if (reserved >= 160) {
 				process.writeLine("The whole tile or more was reserved, despite forests, at ``location``");
