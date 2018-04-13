@@ -9,7 +9,7 @@ class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 	"This class can only be used to represent the corresponding animals in corresponding units in different maps."
 	shared actual Boolean parallel = true;
 	"The animals being proxied."
-	MutableList<Animal> animals = ArrayList<Animal>{ *proxiedAnimals };
+	MutableList<Animal> animals = ArrayList<Animal>{ elements = proxiedAnimals; };
 	shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
 		report("isSubset called on ProxyAnimal");
 		return false;

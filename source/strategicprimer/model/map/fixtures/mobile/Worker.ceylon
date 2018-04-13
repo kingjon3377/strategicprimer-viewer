@@ -27,8 +27,8 @@ todo("Convert some other [[MobileFixture]]s similarly?")
 shared class Worker satisfies IWorker&HasPortrait {
 	"Whether neither of two collections of Jobs contains a nonempty Job the other does not."
 	static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
-			set { *first.filter((job) => !job.emptyJob) } ==
-			set { *second.filter((job) => !job.emptyJob) };
+			set(first.filter((job) => !job.emptyJob)) ==
+			set(second.filter((job) => !job.emptyJob));
     "The set of Jobs the worker is trained or experienced in."
     MutableSet<IJob> jobSet;
     "The worker's ID number."
@@ -41,7 +41,7 @@ shared class Worker satisfies IWorker&HasPortrait {
 		this.name = name;
 		this.race = race;
 		this.id = id;
-		jobSet = ArraySet<IJob> { *jobs };
+		jobSet = ArraySet<IJob>(jobs);
 	}
 
     "The worker's stats."
@@ -98,7 +98,7 @@ shared class Worker satisfies IWorker&HasPortrait {
                     localReport("Stats differ");
                     return false;
                 }
-                Map<String, IJob> ours = createMap { *map((job) => job.name->job) };
+                Map<String, IJob> ours = createMap(map((job) => job.name->job));
                 variable Boolean retval = true;
                 for (job in obj) {
                     if (exists corresponding = ours[job.name]) {

@@ -134,7 +134,7 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			}
 		}
 		Boolean copyRivers = cli.inputBoolean("Include rivers?");
-		MutableList<FixtureMatcher> matchers = ArrayList { *initializeMatchers() };
+		MutableList<FixtureMatcher> matchers = ArrayList { elements = initializeMatchers(); };
 		void askAbout(FixtureMatcher matcher, String key = "include") => matcher.displayed =
 					cli.inputBooleanInSeries("Include \"``matcher.description``\" items?", key);
 		for (matcher in matchers) {

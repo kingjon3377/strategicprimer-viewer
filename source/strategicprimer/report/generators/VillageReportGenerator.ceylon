@@ -38,8 +38,8 @@ shared class VillageReportGenerator(
 	shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 		IMapNG map, Anything(String) ostream) {
 		MutableList<[Point, IFixture]> values =
-				ArrayList<[Point, IFixture]> { *fixtures.items
-			.sort(pairComparator) };
+				ArrayList<[Point, IFixture]> { elements = fixtures.items
+			.sort(pairComparator); };
 		value villageComparator = comparing(byIncreasing(Village.name),
 			byIncreasing(Village.race), byIncreasing(Village.id));
 		MutableHeadedMap<Village, Point> own = HeadedMapImpl<Village, Point>(
@@ -103,8 +103,8 @@ shared class VillageReportGenerator(
 	shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 			IMapNG map) {
 		MutableList<[Point, IFixture]> values =
-				ArrayList<[Point, IFixture]> { *fixtures.items
-			.sort(pairComparator) };
+				ArrayList<[Point, IFixture]> { elements = fixtures.items
+			.sort(pairComparator); };
 		IReportNode own = SectionListReportNode(5,
 			"Villages pledged to your service:");
 		IReportNode independents =

@@ -90,10 +90,10 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
         		IMapNG map, Anything(String) ostream) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-            .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+            .sort(pairComparator); };
         MutableList<[IWorker, Point]> workers = ArrayList<[IWorker, Point]>();
-        for (tuple in values) {
+        for (tuple in values) { // TODO: destructure
             if (is IWorker worker = tuple.rest.first) {
                 workers.add([worker, tuple.first]);
             }
@@ -141,10 +141,10 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-            .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+            .sort(pairComparator); };
         IReportNode retval = SectionListReportNode(5, "Workers");
-        for (tuple in values) {
+        for (tuple in values) { // TODO: Destructure
             if (is IWorker worker = tuple.rest.first) {
                 retval.appendNode(produceRIRSingle(fixtures, map, worker, tuple.first));
             }

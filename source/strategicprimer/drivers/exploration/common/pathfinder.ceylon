@@ -25,7 +25,7 @@ Logger log = logger(`module strategicprimer.drivers.exploration.common`);
 shared object pathfinder {
 	"The shortest-path distance, avoiding obstacles, in MP, between two points, using Dijkstra's algorithm."
 	shared [Integer, {Point*}] getTravelDistance(IMapNG map, Point start, Point end) {
-		MutableSet<Point> unvisited = HashSet { *map.locations };
+		MutableSet<Point> unvisited = HashSet { elements = map.locations; };
 		MutableMap<Point, Integer> tentativeDistances = HashMap<Point, Integer> {
 			*map.locations.map((point) => point->runtime.maxArraySize) };
 		tentativeDistances[start] = 0;

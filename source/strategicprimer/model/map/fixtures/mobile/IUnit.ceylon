@@ -85,7 +85,7 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
                     return false;
                 }
                 Map<Integer, UnitMember> ours =
-                        createMap { *map((member) => member.id->member) };
+                        createMap(map((member) => member.id->member));
                 variable Boolean retval = true;
                 void localReport(String string) =>
                         report(

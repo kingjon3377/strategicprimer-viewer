@@ -216,10 +216,10 @@ class Ver2TileDrawHelper(
     }
     "Get the image representing the given configuration of rivers."
     Image getRiverImage({River*} rivers) {
-        if (exists file = riverFiles[set { *rivers }]) {
+        if (exists file = riverFiles[set(rivers)]) {
             return getImage(file);
         } else {
-            log.error("No image found for the River set ``set { *rivers }``");
+            log.error("No image found for the River set ``set(rivers)``");
             return getImage("riv00.png");
         }
     }

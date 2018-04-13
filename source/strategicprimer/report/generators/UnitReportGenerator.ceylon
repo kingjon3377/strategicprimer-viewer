@@ -177,8 +177,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-                    .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+                    .sort(pairComparator); };
         MutableHeadedMap<IUnit, Point> foreign =
                 HeadedMapImpl<IUnit, Point>("<h5>Foreign Units</h5>");
         MutableHeadedMap<IUnit, Point> ours =
@@ -286,8 +286,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 		    IMapNG map) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-                    .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+                    .sort(pairComparator); };
         IReportNode theirs = SectionListReportNode(5, "Foreign Units");
         IReportNode ours = SectionListReportNode(5, "Your Units");
         for ([loc, item] in values) {

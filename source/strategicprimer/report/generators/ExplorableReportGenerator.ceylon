@@ -66,8 +66,8 @@ shared class ExplorableReportGenerator(
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-                    .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+                    .sort(pairComparator); };
         MutableList<Point> portals = PointList("Portals to other worlds: ");
         MutableList<Point> battles = PointList(
             "Signs of long-ago battles on the following tiles:");
@@ -121,8 +121,8 @@ shared class ExplorableReportGenerator(
     "Produces the report section on all caves, battlefields, and portals."
     shared actual IReportNode produceRIR(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-            .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+            .sort(pairComparator); };
         IReportNode portals = ListReportNode("Portals");
         IReportNode battles = ListReportNode("Battlefields");
         IReportNode caves = ListReportNode("Caves");

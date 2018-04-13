@@ -25,7 +25,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
           [[ProxyFor<IJob>]], and use a private variable for the
           parallel-or-corresponding-Worker question.")
     shared actual Boolean parallel;
-    MutableList<IJob> proxiedJobs = ArrayList<IJob> { *proxiedJobsStream };
+    MutableList<IJob> proxiedJobs = ArrayList<IJob> { elements = proxiedJobsStream; };
     "The name of the skill we're proxying across workers."
     shared actual String name;
     "Clone this object."

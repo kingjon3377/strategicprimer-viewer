@@ -246,7 +246,7 @@ shared class ExplorationRunner() {
 
 "A mock [[EncounterTable]] for the apparatus to test the ExplorationRunner."
 class MockTable(String* values) satisfies EncounterTable {
-    Queue<String> queue = LinkedList<String> { *values };
+    Queue<String> queue = LinkedList<String>(values);
     shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
         assert (exists retval = queue.accept());

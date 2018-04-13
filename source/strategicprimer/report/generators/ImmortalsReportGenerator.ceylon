@@ -67,8 +67,8 @@ shared class ImmortalsReportGenerator(
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-                    .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+                    .sort(pairComparator); };
         MutableMap<Type<IFixture>, Anything(String, Point)> meta =
                 HashMap<Type<IFixture>, Anything(String, Point)>();
         MutableMultimap<String, Point> simples = HashMultimap<String, Point>();
@@ -126,8 +126,8 @@ shared class ImmortalsReportGenerator(
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-                    .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+                    .sort(pairComparator); };
         MutableMap<String, IReportNode> simples = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> centaurs = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> giants = HashMap<String, IReportNode>();

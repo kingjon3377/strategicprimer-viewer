@@ -40,7 +40,7 @@ class QuadrantTable satisfies EncounterTable {
                     i++;
                 }
             }
-            Map<Point,String> temp = map { *retval };
+            Map<Point,String> temp = map(retval);
             quadrants[dimensions] = temp;
             return temp;
         }
@@ -81,7 +81,7 @@ class QuadrantTable satisfies EncounterTable {
     shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) =>
                 getQuadrantValue(point.row, point.column, mapDimensions);
-    shared actual Set<String> allEvents => set { *possibleResults };
+    shared actual Set<String> allEvents => set(possibleResults);
     shared actual String string =>
             "QuadrantTable in ``quadrantRows`` rows of quadrants";
 }

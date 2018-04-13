@@ -78,8 +78,8 @@ shared class FortressMemberReportGenerator(
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-                    .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+                    .sort(pairComparator); };
         MutableHeadedMap<Implement, Point> equipment =
                 HeadedMapImpl<Implement, Point>("<li>Equipment:",
                     comparing(byIncreasing(Implement.kind),
@@ -179,8 +179,8 @@ shared class FortressMemberReportGenerator(
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-                    .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+                    .sort(pairComparator); };
         MutableMap<String, IReportNode> resourceKinds =
                 HashMap<String, IReportNode>();
         IReportNode equipment = ListReportNode("Equipment:");

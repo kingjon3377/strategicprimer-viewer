@@ -144,8 +144,8 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map, Anything(String) ostream) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-                    .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+                    .sort(pairComparator); };
         MutableMultimap<String, Point> stone = HashMultimap<String, Point>();
         MutableMultimap<String, Point> shrubs = HashMultimap<String, Point>();
         MutableMultimap<String, Point> minerals = HashMultimap<String, Point>();

@@ -34,8 +34,8 @@ shared class AdventureReportGenerator(
 	shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
 			Anything(String) ostream) {
 		MutableList<[Point, IFixture]> values =
-				ArrayList<[Point, IFixture]> { *fixtures.items
-			.sort(pairComparator) };
+				ArrayList<[Point, IFixture]> { elements = fixtures.items
+			.sort(pairComparator); };
 		MutableHeadedMap<AdventureFixture, Point> adventures =
 				HeadedMapImpl<AdventureFixture, Point>("<h4>Possible Adventures</h4>");
 		for ([loc, item] in values) {
@@ -65,8 +65,8 @@ shared class AdventureReportGenerator(
 	"Produce the report on all adventure hooks in the map."
 	shared actual IReportNode produceRIR(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
 		MutableList<[Point, IFixture]> values =
-				ArrayList<[Point, IFixture]> { *fixtures.items
-			.sort(pairComparator) };
+				ArrayList<[Point, IFixture]> { elements = fixtures.items
+			.sort(pairComparator); };
 		IReportNode adventures = SectionListReportNode(4, "Possible Adventures");
 		for ([loc, item] in values) {
 			if (is AdventureFixture item) {

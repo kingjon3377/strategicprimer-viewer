@@ -10,7 +10,7 @@ import strategicprimer.model.map.fixtures.terrain {
 "An [[EncounterTable]] that gives its result based on the terrain type of the tile in
  question."
 class TerrainTable(<TileType->String>* items) satisfies EncounterTable {
-    Map<TileType, String> mapping = map { *items };
+    Map<TileType, String> mapping = map(items);
     suppressWarnings("deprecation")
     shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
@@ -35,8 +35,7 @@ class TerrainTable(<TileType->String>* items) satisfies EncounterTable {
             throw AssertionError("Table does not account for terrain type ``terrain``");
         }
     }
-    shared actual Set<String> allEvents =>
-            set { *mapping.items };
+    shared actual Set<String> allEvents => set(mapping.items);
     shared actual String string =
             "TerrainTable covering ``mapping.size`` terrain types";
 }

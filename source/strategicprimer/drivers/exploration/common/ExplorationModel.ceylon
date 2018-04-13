@@ -161,7 +161,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             extends SimpleMultiMapModel.copyConstructor(model) {}
     "All the players shared by all the maps."
     shared actual {Player*} playerChoices => allMaps.map(Tuple.first).map(IMapNG.players).map(set)
-                .fold(set { *map.players })((one, two) => one.intersection(two));
+                .fold(set(map.players))((one, two) => one.intersection(two));
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) {
 //        {Object*} temp = map.locations.flatMap((point) => map.fixtures[point]) // TODO: syntax sugar once compiler bug fixed

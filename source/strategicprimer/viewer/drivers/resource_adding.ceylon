@@ -218,7 +218,7 @@ object resourceAddingCLI satisfies SimpleCLIDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
-            MutableList<Player> players = ArrayList { *model.players };
+            MutableList<Player> players = ArrayList { elements = model.players; };
             IDRegistrar idf = createIDFactory(model.allMaps.map((pair) => pair.first));
             try {
                 while (!players.empty, exists chosen = cli.chooseFromList(players,

@@ -53,14 +53,14 @@ class LegacyTable() satisfies EncounterTable {
             retval.add(MineralVein(mineral.string, false, 0, 0));
         }
         suppressWarnings("expressionTypeNothing")
-        object temp satisfies IEvent {
+        object temp satisfies IEvent { // TODO: Move to top level of class
             shared actual TileFixture copy(Boolean zero) => nothing;
             shared actual Integer dc => nothing;
             shared actual Boolean equalsIgnoringID(IFixture fix) => nothing;
             shared actual Integer id => nothing;
             shared actual String plural => nothing;
             shared actual String shortDescription => nothing;
-            shared actual String text => "Nothing intersting here ...";
+            shared actual String text => "Nothing intersting here ..."; // FIXME: Typo in second word
         }
         retval.add(temp);
         for (stone in `StoneKind`.caseValues) {
@@ -71,12 +71,12 @@ class LegacyTable() satisfies EncounterTable {
     {String*} data = createEvents().map(IEvent.text);
     shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
-        for (fixture in fixtures) {
+        for (fixture in fixtures) { // TODO: Replace with fixtures.narrow<IEvent>().map(IEvent.text).first else ...
             if (is IEvent fixture) {
                 return fixture.text;
             }
         }
         return "Nothing interesting here ...";
     }
-    shared actual Set<String> allEvents => set { *data };
+    shared actual Set<String> allEvents => set(data);
 }

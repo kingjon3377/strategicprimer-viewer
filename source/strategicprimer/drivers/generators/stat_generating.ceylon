@@ -116,8 +116,8 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for workers already in the maps that are part of one
      particular unit."
     void enterStatsInUnit(IMultiMapModel model, IUnit unit, ICLIHelper cli) {
-        MutableList<Worker> workers = ArrayList { *unit.narrow<Worker>()
-            .filter((worker) => !worker.stats exists) };
+        MutableList<Worker> workers = ArrayList { elements = unit.narrow<Worker>()
+            .filter((worker) => !worker.stats exists); };
         while (!workers.empty, exists chosen = cli.chooseFromList(workers,
                 "Which worker do you want to enter stats for?",
                 "There are no workers without stats in that unit.",
@@ -132,7 +132,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
     "Let the user enter stats for workers already in the maps that belong to one
      particular player."
     void enterStatsForPlayer(IExplorationModel model, Player player, ICLIHelper cli) {
-        MutableList<IUnit> units = ArrayList { *removeStattedUnits(*model.getUnits(player)) };
+        MutableList<IUnit> units = ArrayList { elements = removeStattedUnits(*model.getUnits(player)); };
         while (!units.empty, exists chosen = cli.chooseFromList(units,
                     "Which unit contains the worker in question?",
                     "All that player's units already have stats.", "Unit selection: ",
@@ -146,7 +146,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Let the user enter stats for workers already in the maps."
     void enterStats(IExplorationModel model, ICLIHelper cli) {
-        MutableList<Player> players = ArrayList { *model.playerChoices };
+        MutableList<Player> players = ArrayList { elements = model.playerChoices; };
         while (!players.empty, exists chosen = cli.chooseFromList(players,
                 "Which player owns the worker in question?",
                 "There are no players shared by all the maps.", "Player selection: ",
@@ -279,7 +279,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
         String filename = cli.inputString("Filename to load names from: ");
         Queue<String> names;
         if (is File file = parsePath(filename).resource) {
-            names = ArrayList { *lines(file) };
+            names = ArrayList { elements = lines(file); }; // TODO: Use LinkedList instead?
         } else {
             names = ArrayList<String>();
             cli.println("No such file.");
@@ -350,7 +350,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Allow the user to create randomly-generated workers."
     void createWorkers(IExplorationModel model, IDRegistrar idf, ICLIHelper cli) {
-        MutableList<Player> players = ArrayList { *model.playerChoices };
+        MutableList<Player> players = ArrayList { elements = model.playerChoices; };
         while (!players.empty, exists chosen = cli.chooseFromList(players,
                 "Which player owns the new worker(s)?",
                 "There are no players shared by all the maps.",

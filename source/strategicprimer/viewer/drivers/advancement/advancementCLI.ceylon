@@ -54,7 +54,7 @@ todo("Move most implementation stuff out into a class that takes the CLI as a cl
 shared object advancementCLI satisfies SimpleCLIDriver {
 	"Let the user add hours to a Skill or Skills in a Job."
 	void advanceJob(IJob job, ICLIHelper cli, Boolean allowExpertMentoring) {
-		MutableList<ISkill> skills = ArrayList{ *job };
+		MutableList<ISkill> skills = ArrayList{ elements = job; };
 		while (true) {
 			value chosen = cli.chooseFromList(skills, "Skills in Job:", "No existing Skills.",
 				"Skill to advance: ", false);
@@ -102,7 +102,7 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 	}
 	"Let the user add experience to a worker."
 	void advanceSingleWorker(IWorker worker, ICLIHelper cli, Boolean allowExpertMentoring) {
-		MutableList<IJob> jobs = ArrayList { *worker };
+		MutableList<IJob> jobs = ArrayList { elements = worker; };
 		while (true) {
 			value chosen = cli.chooseFromList(jobs,
 				"Jobs in worker:", "No existing Jobs.", "Job to advance: ", false);
@@ -215,7 +215,7 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 	}
 	"Let the user add experience to a worker or workers in a unit."
 	void advanceWorkersInUnit(IUnit unit, ICLIHelper cli, Boolean allowExpertMentoring) {
-		MutableList<IWorker> workers = ArrayList { *unit.narrow<IWorker>() };
+		MutableList<IWorker> workers = ArrayList { elements = unit.narrow<IWorker>(); };
 		if (cli.inputBooleanInSeries("Add experience to workers individually? ")) {
 			while (!workers.empty, exists chosen = cli.chooseFromList(workers,
 					"Workers in unit:", "No unadvanced workers remain.", "Chosen worker: ",
@@ -229,7 +229,7 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 		} else if (workers.empty) {
 			cli.println("No workers in unit.");
 		} else {
-			MutableList<IJob> jobs = ArrayList { *ProxyWorker.fromUnit(unit) };
+			MutableList<IJob> jobs = ArrayList { elements = ProxyWorker.fromUnit(unit); };
 			while (true) {
 				value chosen = cli.chooseFromList(jobs, "Jobs in workers:", "No existing jobs.",
 					"Job to advance: ", false);
@@ -261,7 +261,8 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 	}
 	"Let the user add experience to a player's workers."
 	void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli, Boolean allowExpertMentoring) {
-		MutableList<IUnit> units = ArrayList { *model.getUnits(player).filter((unit) => !unit.narrow<IWorker>().empty) };
+		MutableList<IUnit> units = ArrayList {
+			elements = model.getUnits(player).filter((unit) => !unit.narrow<IWorker>().empty); };
 		while (!units.empty, exists chosen = cli.chooseFromList(units, "``player.name``'s units:",
 				"No unadvanced units remain.", "Chosen unit:", false).item) {
 			units.remove(chosen);
@@ -280,7 +281,7 @@ shared object advancementCLI satisfies SimpleCLIDriver {
         } else {
             workerModel = WorkerModel.copyConstructor(model);
         }
-        MutableList<Player> playerList = ArrayList { *workerModel.players };
+        MutableList<Player> playerList = ArrayList { elements = workerModel.players; };
         try {
             while (!playerList.empty, exists chosen = cli.chooseFromList(playerList,
 	                "Available players:", "No players found.", "Chosen player:", false).item) {

@@ -71,7 +71,7 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
     shared actual Boolean equals(Object obj) {
         if (is Fortress obj) {
             return name == obj.name && owner.playerId == obj.owner.playerId &&
-                set { *members } == set { *obj.members } && id == obj.id;
+                set(members) == set(obj.members) && id == obj.id;
         } else {
             return false;
         }
@@ -150,7 +150,7 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is Fortress fixture) {
             return name == fixture.name && owner.playerId == fixture.owner.playerId &&
-                set { *members } == set { *fixture.members };
+                set(members) == set(fixture.members);
         } else {
             return false;
         }

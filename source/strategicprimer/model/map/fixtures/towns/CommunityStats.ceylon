@@ -32,7 +32,7 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
     }
     MutableMap<String, Integer> skillLevels = HashMap<String, Integer>();
     "The highest Job (skill) levels in the community."
-    shared Map<String, Integer> highestSkillLevels => map { *skillLevels };
+    shared Map<String, Integer> highestSkillLevels => map(skillLevels);
     "Set the highest level in the community for the given Job"
     shared void setSkillLevel(String skill, Integer level) {
         "Skill level cannot be negative; zero removes the skill entirely"

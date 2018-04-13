@@ -173,10 +173,9 @@ shared object maturityModel {
 shared object animalPlurals satisfies Correspondence<String, String> {
     assert (exists textContent = readFileContents(`module strategicprimer.model`,
         "animal_plurals.txt"));
-    Map<String, String> plurals = map { *textContent.split('\n'.equals)
+    Map<String, String> plurals = map(textContent.split('\n'.equals)
         .map((String line) => line.split('\t'.equals, true, true, 1))
-        .map(({String+} line) => line.first->(line.rest.first else line.first))
-    };
+        .map(({String+} line) => line.first->(line.rest.first else line.first)));
     shared actual String get(String key) => plurals[key] else key;
     shared actual Boolean defines(String key) => plurals.defines(key);
 

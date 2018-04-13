@@ -73,8 +73,8 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
         		Anything(String) ostream) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-                    .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+                    .sort(pairComparator); };
         MutableMultimap<String, Point> items = ArrayListMultimap<String, Point>();
         for ([loc, item] in values) {
             if (is Animal animal = item) {
@@ -129,8 +129,8 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     "Produce the sub-report about animals."
     shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures, IMapNG map) {
         MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { *fixtures.items
-                    .sort(pairComparator) };
+                ArrayList<[Point, IFixture]> { elements = fixtures.items
+                    .sort(pairComparator); };
         MutableMap<String, IReportNode> items = HashMap<String, IReportNode>();
         for ([loc, item] in values) {
             if (is Animal animal = item) {

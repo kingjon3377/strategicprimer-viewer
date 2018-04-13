@@ -46,7 +46,7 @@ object cliTests {
 	        expectedOutputReal = "";
 	    }
 	    StringBuilder ostream = StringBuilder();
-	    ICLIHelper cli = CLIHelper(ArrayList { *input }.accept, ostream.append);
+	    ICLIHelper cli = CLIHelper(ArrayList { elements = input; }.accept, ostream.append);
 	    assertEquals(method(cli)(*arguments), expectedResult, resultMessage);
 	    assertEquals(ostream.string, expectedOutputReal, outputMessage);
 	}

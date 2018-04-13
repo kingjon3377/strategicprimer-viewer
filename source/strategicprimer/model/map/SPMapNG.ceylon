@@ -169,8 +169,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                     if (!anythingEqual(baseTerrain[point], obj.baseTerrain[point]) ||
 	                        //mountainous[point] != obj.mountainous[point] || // TODO: syntax sugar
                             mountainous.get(point) != obj.mountainous.get(point) ||
-                            //set { *rivers[point] } != set { *obj.rivers[point]  } || // TODO: syntax sugar
-                            set { *rivers.get(point) } != set { *obj.rivers.get(point)  } ||
+                            //set(rivers[point]) != set (obj.rivers[point]) || // TODO: syntax sugar
+                            set(rivers.get(point)) != set(obj.rivers.get(point)) ||
                             //!fixtures[point].containsEvery(obj.fixtures[point]) || // TODO: syntax sugar
                             !fixtures.get(point).containsEvery(obj.fixtures.get(point)) ||
                             //!obj.fixtures[point].containsEvery(fixtures[point])) { // TODO: syntax sugar
@@ -369,9 +369,9 @@ shared class SPMapNG satisfies IMutableMapNG {
                         retval = false; // return false;
                     }
                 }
-                //if (!set { *obj.rivers[point] } // TODO: syntax sugar
-                        //.complement(set { *rivers[point] }).empty) { // TODO: syntax sugar
-                if (!set { *obj.rivers.get(point) }.complement(set { *rivers.get(point) }).empty) {
+                //if (!set(obj.rivers[point]) // TODO: syntax sugar
+                        //.complement(set(rivers[point])).empty) { // TODO: syntax sugar
+                if (!set(obj.rivers.get(point)).complement(set(rivers.get(point))).empty) {
                     localReport("Extra river(s)");
                     retval = false; // return false;
                     break;

@@ -55,7 +55,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         `Ogre`->"ogre", `Phoenix`->"phoenix", `Simurgh`->"simurgh",
         `Troll`->"troll"
     };
-    Set<String> supportedTags = set { *tagMap.items };
+    Set<String> supportedTags = set(tagMap.items);
     Map<String, Class<SimpleImmortal, [Integer]>> simples = map {
         "sphinx"->`Sphinx`,
         "djinn"->`Djinn`, "griffin"->`Griffin`, "minotaur"->`Minotaur`,
