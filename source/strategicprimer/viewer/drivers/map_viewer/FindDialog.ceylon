@@ -77,8 +77,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
                 return true;
             } else if ("me".equals(pattern.lowercased), owner.current) {
                 return true;
-            } else if (["none", "independent"].any(pattern.lowercased.equals), // TODO: Use contains() instead of any()
-                owner.independent) {
+            } else if (["none", "independent"].contains(pattern.lowercased), owner.independent) {
                 return true;
             } else {
                 return false;
