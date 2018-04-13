@@ -79,7 +79,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
                 pointFactory((row * 2) + 1, column * 2),
                 pointFactory((row * 2) + 1, (column * 2) + 1) ];
             retval.baseTerrain[point] =
-                consensus([ *subPoints.map((location) => old.baseTerrain[location]) ]);
+                consensus(subPoints.map((location) => old.baseTerrain[location]).sequence()); // TODO: Replace lambda with method reference
             for (oldPoint in subPoints) {
                 if (exists mtn = old.mountainous[oldPoint], mtn) {
                     retval.mountainous[point] = true;
