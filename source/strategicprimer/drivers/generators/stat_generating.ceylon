@@ -3,7 +3,8 @@ import ceylon.collection {
     Queue,
     MutableMap,
     HashMap,
-    MutableList
+    MutableList,
+	LinkedList
 }
 import ceylon.file {
     File,
@@ -279,9 +280,9 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
         String filename = cli.inputString("Filename to load names from: ");
         Queue<String> names;
         if (is File file = parsePath(filename).resource) {
-            names = ArrayList { elements = lines(file); }; // TODO: Use LinkedList instead?
+            names = LinkedList(lines(file));
         } else {
-            names = ArrayList<String>();
+            names = LinkedList<String>();
             cli.println("No such file.");
         }
         for (i in 0:count) {

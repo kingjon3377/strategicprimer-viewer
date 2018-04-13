@@ -4,7 +4,7 @@ import ceylon.test {
 	parameters
 }
 import ceylon.collection {
-    ArrayList
+	LinkedList
 }
 import strategicprimer.model.map {
     PlayerImpl,
@@ -46,7 +46,7 @@ object cliTests {
 	        expectedOutputReal = "";
 	    }
 	    StringBuilder ostream = StringBuilder();
-	    ICLIHelper cli = CLIHelper(ArrayList { elements = input; }.accept, ostream.append);
+	    ICLIHelper cli = CLIHelper(LinkedList(input).accept, ostream.append);
 	    assertEquals(method(cli)(*arguments), expectedResult, resultMessage);
 	    assertEquals(ostream.string, expectedOutputReal, outputMessage);
 	}
@@ -114,7 +114,7 @@ object cliTests {
 	        "inputNumber asks again on non-numeric input",
 	        "inputNumber asks again on non-numeric input");
 	    // https://github.com/ceylon/ceylon/issues/5448
-	//    try (cli = CLIHelper(ArrayList { "" }.accept, noop)) {
+	//    try (cli = CLIHelper(LinkedList(Singleton("")).accept, noop)) {
 	//       assertThatException(() => cli.inputNumber("test prompt")).hasType(`IOException`);
 	//    }
 	}
@@ -194,7 +194,7 @@ object cliTests {
 	        "inputBoolean rejects other input",
 	        "inputBoolean gives message on invalid input");
 	    StringBuilder ostream = StringBuilder();
-	    variable ICLIHelper cli = CLIHelper(ArrayList { "all" }.accept, ostream.append);
+	    variable ICLIHelper cli = CLIHelper(LinkedList(Singleton("all")).accept, ostream.append);
 	    assertEquals(cli.inputBooleanInSeries("prompt four "), true,
 	        "inputBooleanInSeries allows yes-to-all");
 	    assertEquals(cli.inputBooleanInSeries("prompt four "), true,
@@ -206,7 +206,7 @@ object cliTests {
 	//        assertThatException(() => cli.inputBooleanInSeries("other prompt"))
 	//            .hasType(`IOException`);
 	    ostream.clear();
-	    cli = CLIHelper(ArrayList { """none""" }.accept, ostream.append);
+	    cli = CLIHelper(LinkedList(Singleton("""none""")).accept, ostream.append);
 	    assertEquals(cli.inputBooleanInSeries("prompt five "), false,
 	        "inputBooleanInSeries allows no-to-all");
 	    assertEquals(cli.inputBooleanInSeries("prompt five "), false,
@@ -217,7 +217,7 @@ object cliTests {
 	//      assertThatException(() => cli.inputBooleanInSeries("other prompt"))
 	//            .hasType(`IOException`);
 	    ostream.clear();
-	    cli = CLIHelper(ArrayList  { "always" }.accept, ostream.append);
+	    cli = CLIHelper(LinkedList(Singleton("always")).accept, ostream.append);
 	    assertEquals(cli.inputBooleanInSeries("prompt six ", "key"), true,
 	        "inputBooleanInSeries allows yes-to-all");
 	    assertEquals(cli.inputBooleanInSeries("prompt seven ", "key"), true,
@@ -225,7 +225,7 @@ object cliTests {
 	    assertEquals(ostream.string, "prompt six prompt seven yes``operatingSystem.newline``",
 	        "inputBooleanInSeries shows automatic yes");
 	    ostream.clear();
-	    cli = CLIHelper(ArrayList { """never""" }.accept, ostream.append);
+	    cli = CLIHelper(LinkedList(Singleton("""never""")).accept, ostream.append);
 	    assertEquals(cli.inputBooleanInSeries("prompt eight ", "secondKey"), false,
 	        "inputBooleanInSeries allows no-to-all");
 	    assertEquals(cli.inputBooleanInSeries("prompt nine ", "secondKey"), false,
@@ -233,7 +233,7 @@ object cliTests {
 	    assertEquals(ostream.string, "prompt eight prompt nine no``operatingSystem.newline``",
 	        "inputBooleanInSeries shows automatic no");
 	    ostream.clear();
-	    cli = CLIHelper(ArrayList { "all", "none" }.accept, ostream.append);
+	    cli = CLIHelper(LinkedList(["all", "none"]).accept, ostream.append);
 	    assertEquals(cli.inputBooleanInSeries("prompt ten ", "thirdKey"), true,
 	        "inputBooleanInSeries allows yes-to-all with one key");
 	    assertEquals(cli.inputBooleanInSeries("prompt eleven ", "fourthKey"), false,
@@ -295,7 +295,7 @@ object cliTests {
 	void assertPrintingOutput(Method<ICLIHelper, Anything, String[1]> method, String argument,
 			String expected, String message) {
 		StringBuilder ostream = StringBuilder();
-		method(CLIHelper(ArrayList<String>().accept, ostream.append))(argument);
+		method(CLIHelper(LinkedList<String>().accept, ostream.append))(argument);
 		assertEquals(ostream.string, expected, message);
 	}
 	"Test print() and friends"

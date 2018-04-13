@@ -46,7 +46,7 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
         }
     } else if (is Resource argument) {
         {String+} split = argument.textContent().split('\n'.equals);
-        return loadTable(ArrayList { elements = split; }.accept, argument.name); // TODO: Should we really be using ArrayList for this, here and elsewhere?
+        return loadTable(LinkedList(split).accept, argument.name);
     } else if (is {String*} argument) {
         return loadTable(argument.iterator().next, name);
     } else {
