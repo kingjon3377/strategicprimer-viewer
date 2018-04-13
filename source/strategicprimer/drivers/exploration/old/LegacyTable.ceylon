@@ -33,6 +33,16 @@ import strategicprimer.model.map.fixtures.towns {
 }
 """An [[EncounterTable]] for legacy "events"."""
 class LegacyTable() satisfies EncounterTable {
+	suppressWarnings("expressionTypeNothing")
+	object nothingEvent satisfies IEvent {
+		shared actual TileFixture copy(Boolean zero) => nothing;
+		shared actual Integer dc => nothing;
+		shared actual Boolean equalsIgnoringID(IFixture fix) => nothing;
+		shared actual Integer id => nothing;
+		shared actual String plural => nothing;
+		shared actual String shortDescription => nothing;
+		shared actual String text => "Nothing interesting here ...";
+	}
     {IEvent*} createEvents() {
         Player player = PlayerImpl(-1, "Independent");
         MutableList<IEvent> retval = ArrayList<IEvent>();
@@ -52,17 +62,7 @@ class LegacyTable() satisfies EncounterTable {
             retval.add(MineralVein(mineral.string, true, 0, 0));
             retval.add(MineralVein(mineral.string, false, 0, 0));
         }
-        suppressWarnings("expressionTypeNothing")
-        object temp satisfies IEvent { // TODO: Move to top level of class
-            shared actual TileFixture copy(Boolean zero) => nothing;
-            shared actual Integer dc => nothing;
-            shared actual Boolean equalsIgnoringID(IFixture fix) => nothing;
-            shared actual Integer id => nothing;
-            shared actual String plural => nothing;
-            shared actual String shortDescription => nothing;
-            shared actual String text => "Nothing interesting here ...";
-        }
-        retval.add(temp);
+        retval.add(nothingEvent);
         for (stone in `StoneKind`.caseValues) {
             retval.add(StoneDeposit(stone, 0, 0));
         }
