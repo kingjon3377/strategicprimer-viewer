@@ -9,7 +9,7 @@ import java.lang {
 "A [[Transferable]] implementation transferring a single Integer."
 shared class IntTransferable(DataFlavor flavor, Integer payload) satisfies Transferable {
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>
-            ObjectArray.with({flavor});
+            ObjectArray.with(Singleton(flavor));
     shared actual Boolean isDataFlavorSupported(DataFlavor possibility) =>
             possibility == flavor;
     shared actual Object getTransferData(DataFlavor wantedFlavor) {
