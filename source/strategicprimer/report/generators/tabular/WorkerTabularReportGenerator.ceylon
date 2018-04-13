@@ -31,12 +31,12 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
             Integer key, Point loc, Map<Integer, Integer> parentMap) {
         fixtures.remove(key);
         if (exists stats = item.stats) {
-            return {{distanceString(loc, hq, dimensions), loc.string, item.name,
+            return [[distanceString(loc, hq, dimensions), loc.string, item.name,
                 item.race, stats.hitPoints.string, stats.maxHitPoints.string,
-                *stats.array.map(WorkerStats.getModifierString)}};
+                *stats.array.map(WorkerStats.getModifierString)]];
         } else {
-            return {{distanceString(loc, hq, dimensions), loc.string, item.name,
-                item.race, *(0..9).map((num) => "---")}};
+            return [[distanceString(loc, hq, dimensions), loc.string, item.name,
+                item.race, *(0..9).map((num) => "---")]];
         }
     }
     "Compare two worker-location pairs."

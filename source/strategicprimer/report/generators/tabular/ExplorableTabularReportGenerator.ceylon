@@ -82,7 +82,7 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq,
             return [];
         }
         fixtures.remove(key);
-        return {{distanceString(loc, hq, dimensions), loc.string, brief, owner, longDesc}};
+        return [[distanceString(loc, hq, dimensions), loc.string, brief, owner, longDesc]];
     }
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, ExplorableFixture|TextFixture] one,
