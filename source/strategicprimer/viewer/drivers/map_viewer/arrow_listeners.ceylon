@@ -32,8 +32,7 @@ object arrowListenerInitializer {
 	    }
 	    return retval;
 	}
-	Iterable<Entry<Integer, String>> maybe(Boolean condition, // TODO: Use abbreviations for these types
-	        Iterable<Entry<Integer, String>> ifTrue) {
+	{<Integer->String>*} maybe(Boolean condition, {<Integer->String>*} ifTrue) {
 	    if (condition) {
 	        return ifTrue;
 	    } else {
