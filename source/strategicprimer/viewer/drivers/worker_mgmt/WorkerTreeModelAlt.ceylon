@@ -31,24 +31,25 @@ import strategicprimer.drivers.worker.common {
     IWorkerModel,
     IWorkerTreeModel
 }
+import java.util {
+	Enumeration
+}
 "An alternative implementation of the worker tree model."
 shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
+	static class EnumerationWrapper<T>(Enumeration<out Object> enumeration) satisfies Iterator<T> {
+		shared actual T|Finished next() {
+			if (enumeration.hasMoreElements()) {
+				assert (is T item = enumeration.nextElement());
+				return item;
+			} else {
+				return finished;
+			}
+		}
+	}
     shared static class WorkerTreeNode<T>(T userObj, Boolean permitsChildren = true)
             extends DefaultMutableTreeNode(userObj, permitsChildren)
             satisfies Iterable<TreeNode> given T satisfies Object {
-        shared actual Iterator<TreeNode> iterator() {
-            value wrapped = children();
-            return object satisfies Iterator<TreeNode> {
-                shared actual TreeNode|Finished next() {
-                    if (wrapped.hasMoreElements()) {
-                        assert (is TreeNode item = wrapped.nextElement());
-                        return item;
-                    } else {
-                        return finished;
-                    }
-                }
-            };
-        }
+        shared actual Iterator<TreeNode> iterator() => EnumerationWrapper<TreeNode>(children());
         // Can't refine userObject to narrow its type because that would narrow the type
         // of the setter as well, which Ceylon's type system doesn't allow.
         shared T userObjectNarrowed {
