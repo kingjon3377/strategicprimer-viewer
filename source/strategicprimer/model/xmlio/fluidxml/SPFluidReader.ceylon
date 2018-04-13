@@ -122,8 +122,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         throw UnsupportedTagException(element);
     }
-    String->LocalXMLReader simpleFixtureReader(String tag, Object(Integer) factory) {
-        Object retval(StartElement element, QName parent, {XMLEvent*} stream,
+    class SimpleFixtureReader(String tag, Object(Integer) factory) {
+        shared Object reader(StartElement element, QName parent, {XMLEvent*} stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
             requireTag(element, parent, tag);
             expectAttributes(element, warner, "id", "image");
@@ -131,11 +131,10 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             return setImage(factory(getOrGenerateID(element, warner,
                 idFactory)), element, warner);
         }
-        return tag->retval;
+        shared String->LocalXMLReader entry => tag->reader;
     }
-    String->LocalXMLReader simpleHasKindReader(String tag,
-            HasKind(String, Integer) factory) {
-        Object retval(StartElement element, QName parent, {XMLEvent*} stream,
+    class SimpleHasKindReader(String tag, HasKind(String, Integer) factory) {
+        shared Object reader(StartElement element, QName parent, {XMLEvent*} stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
             requireTag(element, parent, tag);
             expectAttributes(element, warner, "id", "kind", "image");
@@ -143,7 +142,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             return setImage(factory(getAttribute(element, "kind"),
                 getOrGenerateID(element, warner, idFactory)), element, warner);
         }
-        return tag->retval;
+        shared String->LocalXMLReader entry => tag->reader;
     }
     StartElement firstStartElement({XMLEvent*} stream, StartElement parent) {
         if (exists element = stream.narrow<StartElement>().find(isSPStartElement)) {
@@ -434,14 +433,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         "battlefield"->fluidExplorableHandler.readBattlefield,
         "ground"->fluidTerrainHandler.readGround,
         "forest"->fluidTerrainHandler.readForest,
-        simpleFixtureReader("hill", Hill),
-        simpleFixtureReader("oasis", Oasis),
-        simpleFixtureReader("sandbar", Sandbar),
+        SimpleFixtureReader("hill", Hill).entry,
+        SimpleFixtureReader("oasis", Oasis).entry,
+        SimpleFixtureReader("sandbar", Sandbar).entry,
         "animal"->unitMemberHandler.readAnimal,
-        simpleHasKindReader("centaur", Centaur),
-        simpleHasKindReader("dragon", Dragon),
-        simpleHasKindReader("fairy", Fairy),
-        simpleHasKindReader("giant", Giant),
+        SimpleHasKindReader("centaur", Centaur).entry,
+        SimpleHasKindReader("dragon", Dragon).entry,
+        SimpleHasKindReader("fairy", Fairy).entry,
+        SimpleHasKindReader("giant", Giant).entry,
         "text"->fluidExplorableHandler.readTextFixture,
         "implement"->fluidResourceHandler.readImplement,
         "resource"->fluidResourceHandler.readResource,
@@ -470,14 +469,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         "lake"->fluidTerrainHandler.readLake,
         "player"->readPlayer,
         "population"->fluidTownHandler.readCommunityStats,
-        simpleFixtureReader("sphinx", `Sphinx`),
-        simpleFixtureReader("djinn", `Djinn`),
-        simpleFixtureReader("griffin", `Griffin`),
-        simpleFixtureReader("minotaur", `Minotaur`),
-        simpleFixtureReader("ogre", `Ogre`),
-        simpleFixtureReader("phoenix", `Phoenix`),
-        simpleFixtureReader("simurgh", `Simurgh`),
-        simpleFixtureReader("troll", `Troll`) ]);
+        SimpleFixtureReader("sphinx", `Sphinx`).entry,
+        SimpleFixtureReader("djinn", `Djinn`).entry,
+        SimpleFixtureReader("griffin", `Griffin`).entry,
+        SimpleFixtureReader("minotaur", `Minotaur`).entry,
+        SimpleFixtureReader("ogre", `Ogre`).entry,
+        SimpleFixtureReader("phoenix", `Phoenix`).entry,
+        SimpleFixtureReader("simurgh", `Simurgh`).entry,
+        SimpleFixtureReader("troll", `Troll`).entry ]);
     shared actual Type readXML<Type>(JPath file, JReader istream, Warning warner)
             given Type satisfies Object {
         // TODO: Pass in Closeables so we can pass it to the TypesafeMLEventReader to make sure the file descriptor gets closed
