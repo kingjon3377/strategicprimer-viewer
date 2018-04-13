@@ -425,6 +425,9 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         retval.portrait = getAttribute(element, "portrait", "");
         return setImage(retval, element, warner);
     }
+    IMutableMapNG mapOrViewTagHandler(StartElement element, QName parent, {XMLEvent*} stream,
+        IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) =>
+            readMapOrViewTag(element, parent, stream, players, warner, idFactory);
     readers = map {
         "adventure"->fluidExplorableHandler.readAdventure,
         "portal"->fluidExplorableHandler.readPortal,
@@ -462,12 +465,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         "city"->fluidTownHandler.readCity,
         "fortification"->fluidTownHandler.readFortification,
         "village"->fluidTownHandler.readVillage,
-        "map"->((StartElement element, QName parent, {XMLEvent*} stream,
-                IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
-            => readMapOrViewTag(element, parent, stream, players, warner, idFactory)),
-        "view"->((StartElement element, QName parent, {XMLEvent*} stream,
-                IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory)
-            => readMapOrViewTag(element, parent, stream, players, warner, idFactory)),
+        "map"->mapOrViewTagHandler,
+        "view"->mapOrViewTagHandler,
         "river"->fluidTerrainHandler.readRiver,
         "lake"->fluidTerrainHandler.readLake,
         "player"->readPlayer,
