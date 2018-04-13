@@ -30,6 +30,8 @@ import strategicprimer.drivers.worker.common {
     IWorkerModel,
     IWorkerTreeModel
 }
+// TODO: Make WorkerTreeModel a class-with-constructor so this can be static in it
+Boolean(IUnit) containingItem(UnitMember item) => (IUnit unit) => unit.contains(item);
 "A TreeModel implementation for a player's units and workers."
 class WorkerTreeModel(variable Player player, IWorkerModel model)
         satisfies IWorkerTreeModel {
@@ -172,8 +174,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
             indices = IntArray.with({getIndexOfChild(item.kind, item)});
             children = ObjectArray<Object>.with({item});
         } else if (is UnitMember item,
-            exists parent = model.getUnits(player)
-                .find((unit) => unit.contains(item))) {
+            exists parent = model.getUnits(player).find(containingItem(item))) {
             path = TreePath(ObjectArray<Object>.with({root, parent.kind, parent}));
             indices = IntArray.with({getIndexOfChild(parent, item)});
             children = ObjectArray<Object>.with({item});
@@ -199,8 +200,7 @@ class WorkerTreeModel(variable Player player, IWorkerModel model)
             indices = IntArray.with({getIndexOfChild(root, priorKind), getIndexOfChild(root, item.kind)});
             children = ObjectArray<Object>.with({priorKind, item.kind});
         } else if (is UnitMember item,
-            exists parent = model.getUnits(player)
-                .find((unit) => unit.contains(item))) {
+            exists parent = model.getUnits(player).find(containingItem(item))) {
             path = TreePath(ObjectArray<Object>.with({root, parent.kind, parent}));
             indices = IntArray.with({getIndexOfChild(parent, item)});
             children = ObjectArray<Object>.with({item});
