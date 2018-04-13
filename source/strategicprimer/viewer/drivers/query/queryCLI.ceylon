@@ -37,7 +37,8 @@ import strategicprimer.drivers.common.cli {
 	ICLIHelper
 }
 import lovelace.util.common {
-	todo
+	todo,
+	matchingValue
 }
 import strategicprimer.model.map.fixtures.terrain {
 	Forest
@@ -146,7 +147,7 @@ shared object queryCLI satisfies SimpleCLIDriver {
 	void addToSubMaps(IDriverModel model, Point point, TileFixture fixture, Boolean zero) {
 		if (is IMultiMapModel model) {
 			for ([map, file] in model.subordinateMaps) {
-				if (!map.fixtures.get(point).any((item) => item.id == fixture.id)) {
+				if (!map.fixtures.get(point).any(matchingValue(fixture.id, TileFixture.id))) {
 					map.addFixture(point, fixture.copy(zero));
 				}
 			}

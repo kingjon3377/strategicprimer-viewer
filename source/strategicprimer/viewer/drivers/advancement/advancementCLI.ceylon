@@ -41,7 +41,9 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 	Skill
 }
 import lovelace.util.common {
-	todo
+	todo,
+	matchingValue,
+	inverse
 }
 import lovelace.util.jvm {
 	singletonRandom
@@ -148,7 +150,7 @@ shared object advancementCLI satisfies SimpleCLIDriver {
 						ISkill replacement;
 						String replacementName;
 						Integer->ISkill? choice = cli.chooseFromList(
-							job.select((skl) => "miscellaneous" != skl.name),
+							job.select(inverse(matchingValue("miscellaneous", ISkill.name))),
 							"Skill to gain level in:", "No other skill", "Chosen skill:", false);
 						if (exists chosenSkill = choice.item) {
 							replacement = chosenSkill;

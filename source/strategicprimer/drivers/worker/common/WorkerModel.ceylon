@@ -52,7 +52,8 @@ import ceylon.random {
     randomize
 }
 import lovelace.util.common {
-	anythingEqual
+	anythingEqual,
+	matchingValue
 }
 Logger log = logger(`module strategicprimer.drivers.worker.common`);
 "A model to underlie the advancement GUI, etc."
@@ -100,7 +101,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     "Get all the given player's units, or only those of a specified kind."
     shared actual {IUnit*} getUnits(Player player, String? kind) {
         if (exists kind) {
-            return getUnits(player).filter((unit) => kind == unit.kind);
+            return getUnits(player).filter(matchingValue(kind, IUnit.kind));
         } else if (subordinateMaps.empty) {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.

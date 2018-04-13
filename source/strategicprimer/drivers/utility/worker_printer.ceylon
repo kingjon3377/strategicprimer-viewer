@@ -24,6 +24,9 @@ import strategicprimer.drivers.exploration.common {
 	IExplorationModel,
 	ExplorationModel
 }
+import lovelace.util.common {
+	matchingPredicate
+}
 "A driver to print a mini-report on workers, suitable for inclusion in a player's results."
 shared object workerPrintCLI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -41,7 +44,7 @@ shared object workerPrintCLI satisfies SimpleDriver {
             if (worker.race != "human") {
                 cli.print(" (``worker.race``)");
             }
-            {IJob*} jobs = worker.filter((job) => job.level > 0);
+            {IJob*} jobs = worker.filter(matchingPredicate(Integer.positive, IJob.level));
             if (!jobs.empty) {
                 cli.print(" (");
                 cli.print(", ".join(jobs.map((job) => job.name + " " + job.level.string)));

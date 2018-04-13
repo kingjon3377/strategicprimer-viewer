@@ -28,7 +28,8 @@ import javax.xml.stream.events {
 }
 
 import lovelace.util.common {
-    IteratorWrapper
+    IteratorWrapper,
+	matchingValue
 }
 import lovelace.util.jvm {
     TypesafeXMLEventReader
@@ -179,7 +180,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             map.addRivers(currentTile, *child);
         } else if (is TileFixture child) {
             if (is Fortress child, !map.fixtures.get(currentTile).narrow<Fortress>()
-                    .filter((fix) => fix.owner == child.owner).empty) {
+                    .filter(matchingValue(child.owner, Fortress.owner)).empty) { // TODO: Use Iterable.any
                 warner.handle(UnwantedChildException.withMessage(parent.name, element,
                         "Multiple fortresses owned by same player on same tile"));
             }

@@ -72,6 +72,9 @@ import ceylon.language.meta.model {
 import ceylon.language.meta {
 	type
 }
+import lovelace.util.common {
+	matchingValue
+}
 "An app to copy selected contents from one map to another."
 shared object mapTradeCLI satisfies SimpleCLIDriver {
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
@@ -158,8 +161,8 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			}
 			//for (fixture in first.fixtures[location].filter(testFixture)) { // TODO: syntax sugar
 			for (fixture in first.fixtures.get(location).filter(testFixture)) {
-				//if (!second.fixtures[location].any((fix) => fix.id == fixture.id)) {
-				if (fixture.id >= 0, !second.fixtures.get(location).any((fix) => fix.id == fixture.id)) {
+				//if (!second.fixtures[location].any(matchingValue(fixture.id, TileFixture.id))) {
+				if (fixture.id >= 0, !second.fixtures.get(location).any(matchingValue(fixture.id, TileFixture.id))) {
 					second.addFixture(location, fixture.copy(true));
 				}
 			}

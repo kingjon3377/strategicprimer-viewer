@@ -63,6 +63,9 @@ import strategicprimer.model.map.fixtures.towns {
 import ceylon.language.meta.model {
 	ClassOrInterface
 }
+import lovelace.util.common {
+	matchingValue
+}
 variable Integer currentTurn = -1;
 "A reader for Strategic Primer maps."
 class YAMapReader("The Warning instance to use" Warning warner,
@@ -224,7 +227,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     assert (exists top = tagStack.top);
                     value child = parseFixture(event, top, stream);
                     if (is Fortress child, !retval.fixtures.get(point).narrow<Fortress>()
-                            .filter((fix) => fix.owner == child.owner).empty) {
+                            .filter(matchingValue(child.owner, Fortress.owner)).empty) { // TODO: Use Iterable.any
                         warner.handle(UnwantedChildException.withMessage(top, event,
                                 "Multiple fortresses owned by same player on same tile"));
                     }

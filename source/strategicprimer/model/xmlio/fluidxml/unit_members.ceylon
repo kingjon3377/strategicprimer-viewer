@@ -38,6 +38,9 @@ import strategicprimer.model.xmlio {
 import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException
 }
+import lovelace.util.common {
+	matchingValue
+}
 object unitMemberHandler extends FluidBase() {
 	shared Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
@@ -116,7 +119,7 @@ object unitMemberHandler extends FluidBase() {
 
 	shared void writeWorker(XMLStreamWriter ostream, IWorker obj, Integer indentation) {
 	    WorkerStats? stats = obj.stats;
-	    {IJob*} jobs = obj.filter((job) => !job.emptyJob);
+	    {IJob*} jobs = obj.filter(matchingValue(false, IJob.emptyJob));
 	    Boolean hasJobs = !jobs.empty;
 	    writeTag(ostream, "worker", indentation, !hasJobs && !stats exists);
 	    writeAttributes(ostream, "name"->obj.name);

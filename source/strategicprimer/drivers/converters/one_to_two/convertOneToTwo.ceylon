@@ -59,6 +59,9 @@ import ceylon.random {
     Random,
     DefaultRandom
 }
+import lovelace.util.common {
+	matchingValue
+}
 Logger log = logger(`module strategicprimer.model`);
 "Convert a version-1 map to a higher-resolution version-2 map."
 suppressWarnings("deprecation")
@@ -220,7 +223,7 @@ shared IMapNG convertOneToTwo(
             for (column in ((point.column - 1)..(point.column + 1))
                 .map((num) => num.modulo(retval.dimensions.columns)))
             pointFactory(row, column)
-        }.select((element) => point != element);
+        }.select(matchingValue(false, point.equals));
         Boolean adjacentToTown() => !neighbors.flatMap(retval.fixtures.get).narrow<ITownFixture>().empty;
         Boolean adjacentWater() {
             for (neighbor in neighbors) {

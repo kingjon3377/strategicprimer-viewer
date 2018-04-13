@@ -52,6 +52,9 @@ import strategicprimer.model.map.fixtures.towns {
 import ceylon.random {
     randomize
 }
+import lovelace.util.common {
+	matchingPredicate
+}
 "A model for exploration drivers."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
     """A fixture is "diggable" if it is a [[MineralFixture]] or a [[Mine]]."""
@@ -370,7 +373,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             {Village*} villages = allMaps.map((pair) => pair.first)
 //                .flatMap((world) => world.fixtures[currentPoint]) // TODO: syntax sugar once compiler bug fixed
                 .flatMap((world) => world.fixtures.get(currentPoint))
-                .narrow<Village>().filter((village) => village.owner.independent);
+                .narrow<Village>().filter(matchingPredicate(Player.independent, Village.owner));
             if (!villages.empty) {
                 variable Boolean subordinate = false;
                 for (village in villages) {

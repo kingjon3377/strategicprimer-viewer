@@ -82,6 +82,9 @@ import ceylon.language.meta {
 import strategicprimer.model.idreg {
     IDRegistrar
 }
+import lovelace.util.common {
+	matchingValue
+}
 "A tree of a player's units."
 shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         "The tree model"
@@ -227,7 +230,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
             String jobCSL(IWorker worker) {
                 StringBuilder builder = StringBuilder();
-                {IJob*} jobs = worker.filter((IJob job) => !job.emptyJob);
+                {IJob*} jobs = worker.filter(matchingValue(false, IJob.emptyJob));
                 if (exists first = jobs.first) {
                     builder.append(" (``first.name`` ``first.level``");
                     for (job in jobs.rest) {

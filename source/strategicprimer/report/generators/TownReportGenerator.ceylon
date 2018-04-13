@@ -10,7 +10,8 @@ import ceylon.language {
 
 import lovelace.util.common {
     todo,
-    DelayedRemovalMap
+    DelayedRemovalMap,
+	matchingValue
 }
 
 import strategicprimer.model.map {
@@ -113,7 +114,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 assert (is ITownFixture town = pair.rest.first);
                 mapping[town] = pair.first;
             });
-        if (separated.items.any((mapping) => !mapping.empty)) {
+        if (separated.items.any(matchingValue(false, Iterable<Anything>.empty))) {
             ostream("""<h4>Cities, towns, and/or fortifications you know about:</h4>
                    """);
             for (mapping in [abandoned, active, burned, ruined]) {

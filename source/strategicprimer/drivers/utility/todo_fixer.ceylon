@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    todo
+    todo,
+	matchingPredicate
 }
 import strategicprimer.model.map.fixtures.towns {
     Village,
@@ -105,7 +106,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
         {Village*} villages = map.locations
             .filter((loc) => (map.baseTerrain[loc] else TileType.plains) == TileType.ocean)
             .flatMap(map.fixtures.get).narrow<Village>()
-            .filter((village) => landRaces.contains(village.race));
+            .filter(matchingPredicate(landRaces.contains, Village.race));
         if (!villages.empty) {
             if (raceList.empty) {
                 while (true) {
@@ -129,7 +130,7 @@ object todoFixerCLI satisfies SimpleCLIDriver {
         }
         {[Point, CommunityStats]*} brokenTownContents = map.locations
         //            .flatMap((loc) => [loc, map.fixtures[loc]]).narrow<ITownFixture>()
-                .flatMap((loc) => map.fixtures.get(loc).narrow<ITownFixture>().map((item) => [loc, item]))
+                .flatMap((loc) => map.fixtures.get(loc).narrow<ITownFixture>().map((item) => [loc, item])) // TODO: s/item/item.population
                 .map(([loc, town]) => [loc, town.population]).narrow<[Point, CommunityStats]>()
                 .filter(([loc, pop]) => pop.yearlyProduction.map(ResourcePile.contents)
                     .any((str) => str.contains('#')));

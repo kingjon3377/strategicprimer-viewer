@@ -33,6 +33,9 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.drivers.common {
 	FixtureMatcher
 }
+import lovelace.util.common {
+	matchingValue
+}
 
 "A [[TileDrawHelper]] for version-2 maps."
 class Ver2TileDrawHelper(
@@ -123,7 +126,7 @@ class Ver2TileDrawHelper(
     Color? getFixtureColor(IMapNG map, Point location) {
         if (exists top = getTopFixture(map, location)) {
             if (exists topTerrain = getDrawableFixtures(map, location)
-                    .filter((fixture) => fixture != top)
+                    .filter(matchingValue(false, top.equals))
                     .narrow<TerrainFixture>()
                     .first, exists color = colorHelper.getFeatureColor(topTerrain)) {
                 return color;

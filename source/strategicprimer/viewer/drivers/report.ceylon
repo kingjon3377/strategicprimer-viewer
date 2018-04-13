@@ -83,6 +83,9 @@ import ceylon.html {
 import ceylon.http.common {
 	Header
 }
+import lovelace.util.common {
+	matchingValue
+}
 object suffixHelper {
 	String suffix(JPath file, Integer count) {
 		Integer start;
@@ -357,7 +360,8 @@ object tabularReportCLI satisfies SimpleDriver {
                         H1 {
                             "Tabular Reports for ``path``";
                         }, Ul {
-                            builders.keys.filter(([mapFile, table]) => mapFile == path).map(([mapFile, table]) => Li {
+                            builders.keys.filter(matchingValue(path, Tuple<String, String, String[]>.first))
+                                    .map(([mapFile, table]) => Li {
                                 A { href="/``mapFile``.``table``.csv"; children = ["``table``.csv"]; }
                             })
                         }

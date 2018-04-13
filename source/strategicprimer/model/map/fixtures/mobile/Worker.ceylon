@@ -5,7 +5,8 @@ import ceylon.language {
 import lovelace.util.common {
     todo,
     ArraySet,
-	anythingEqual
+	anythingEqual,
+	matchingValue
 }
 import strategicprimer.model.map {
     IFixture,
@@ -27,8 +28,8 @@ todo("Convert some other [[MobileFixture]]s similarly?")
 shared class Worker satisfies IWorker&HasPortrait {
 	"Whether neither of two collections of Jobs contains a nonempty Job the other does not."
 	static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
-			set(first.filter((job) => !job.emptyJob)) ==
-			set(second.filter((job) => !job.emptyJob));
+			set(first.filter(matchingValue(false, IJob.emptyJob))) ==
+			set(second.filter(matchingValue(false, IJob.emptyJob)));
     "The set of Jobs the worker is trained or experienced in."
     MutableSet<IJob> jobSet;
     "The worker's ID number."

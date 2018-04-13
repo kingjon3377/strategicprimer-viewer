@@ -48,6 +48,10 @@ import ceylon.decimal {
 import ceylon.whole {
 	Whole
 }
+import lovelace.util.common {
+	matchingValue,
+	matchingPredicate
+}
 
 "A driver to let the user generate animal and shrub populations, meadow and grove sizes, and forest acreages."
 shared object populationGeneratingCLI satisfies SimpleCLIDriver {
@@ -61,9 +65,9 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 	void generateAnimalPopulations(IMutableMapNG map, Boolean talking, String kind, ICLIHelper cli) {
 		// We assume there is at most one population of each kind of animal per tile.
 		{Point*} locations = randomize(map.locations.filter(
-			//(loc) => map.fixtures[loc].narrow<Animal>().filter((animal) => !animal.traces) // TODO: syntax sugar once compiler bug fixed
-			(loc) => map.fixtures.get(loc).narrow<Animal>().filter((animal) => !animal.traces)
-					.filter((animal) => animal.talking == talking).filter((animal) => animal.population <= 1)
+			//(loc) => map.fixtures[loc].narrow<Animal>().filter(matching(false, Animal.traces)) // TODO: syntax sugar once compiler bug fixed
+			(loc) => map.fixtures.get(loc).narrow<Animal>().filter(matchingValue(false, Animal.traces))
+					.filter(matchingValue(talking, Animal.talking)).filter((animal) => animal.population <= 1)
 					.map(Animal.kind).any(kind.equals)));
 		Integer count = locations.size;
 		if (count == 0) {
@@ -90,9 +94,9 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 			} else {
 				nextPopulation = rng.nextInteger(remainingTotal - (remainingCount * 2) - 2) + 2;
 			}
-			//if (exists animal = map.fixtures[location].narrow<Animal>().filter((animal) => !animal.traces) // TODO: syntax sugar
-			if (exists animal = map.fixtures.get(location).narrow<Animal>().filter((animal) => !animal.traces)
-					.filter((animal) => animal.talking == talking).find((item) => item.kind == kind)) {
+			//if (exists animal = map.fixtures[location].narrow<Animal>().filter(matching(false, Animal.traces)) // TODO: syntax sugar
+			if (exists animal = map.fixtures.get(location).narrow<Animal>().filter(matchingValue(false, Animal.traces))
+					.filter(matchingValue(talking, Animal.talking)).find(matchingValue(kind, Animal.kind))) {
 				Animal replacement = animal.reduced(nextPopulation);
 				map.removeFixture(location, animal);
 				map.addFixture(location, replacement);
@@ -104,8 +108,8 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 	void generateGroveCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
 		// We assume there is at most one grove or orchard of each kind per tile.
 		{Point*} locations = randomize(map.locations.filter(
-			//(loc) => map.fixtures[loc].narrow<Grove>().filter((gr) => gr.population < 0) // TODO: syntax sugar
-			(loc) => map.fixtures.get(loc).narrow<Grove>().filter((gr) => gr.population < 0)
+			//(loc) => map.fixtures[loc].narrow<Grove>().filter(matchingPredicate(Integer.negative, Grove.population)) // TODO: syntax sugar
+			(loc) => map.fixtures.get(loc).narrow<Grove>().filter(matchingPredicate(Integer.negative, Grove.population))
 					.map(Grove.kind).any(kind.equals)));
 		Integer count = locations.size;
 		if (count == 0) {
@@ -135,8 +139,8 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 	void generateShrubCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
 		// We assume there is at most one population of each kind of shrub per tile.
 		{Point*} locations = randomize(map.locations.filter(
-			//(loc) => map.fixtures[loc].narrow<Shrub>().filter((shr) => shr.population < 0) // TODO: syntax sugar
-			(loc) => map.fixtures.get(loc).narrow<Shrub>().filter((shr) => shr.population < 0)
+			//(loc) => map.fixtures[loc].narrow<Shrub>().filter(matchingPredicate(Integer.negative, Shrub.population)) // TODO: syntax sugar
+			(loc) => map.fixtures.get(loc).narrow<Shrub>().filter(matchingPredicate(Integer.negative, Shrub.population))
 				.map(Shrub.kind).any(kind.equals)));
 		Integer count = locations.size;
 		if (count == 0) {
@@ -202,7 +206,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 		{Point*} locations = randomize(map.locations.filter(
 			//(loc) => !map.fixtures[loc].narrow<Forest>() // TODO: syntax sugar
 			(loc) => !map.fixtures.get(loc).narrow<Forest>()
-					.map(Forest.acres).filter((num) => !num.positive).empty));
+					.map(Forest.acres).filter((num) => !num.positive).empty)); // TODO: Use Iterable.any // TODO: Make a 'numberPositive' helper method, since we can't use a method reference ...
 		for (location in locations) {
 			//assert (exists primaryForest = map.fixtures[location].narrow<Forest>().first); // TODO: syntax sugar
 			assert (exists primaryForest = map.fixtures.get(location).narrow<Forest>().first);
@@ -271,7 +275,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 	}
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
 		for (kind in model.map.locations.flatMap(model.map.fixtures.get).narrow<Animal>()
-					.filter((animal) => !animal.traces).filter((animal) => animal.population <= 1)
+					.filter(matchingValue(false, Animal.traces)).filter((animal) => animal.population <= 1)
 				.map(Animal.kind).distinct) {
 			generateAnimalPopulations(model.map, true, kind, cli);
 			generateAnimalPopulations(model.map, false, kind, cli);

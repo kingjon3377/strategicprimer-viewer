@@ -18,6 +18,10 @@ import strategicprimer.model.map.fixtures.resources {
 import ceylon.random {
     DefaultRandom
 }
+import lovelace.util.common {
+	matchingPredicate,
+	inverse
+}
 "A class to facilitate a better hunting/fishing driver."
 shared class HuntingModel {
 	"""A class and object for "nothing found"."""
@@ -51,9 +55,9 @@ shared class HuntingModel {
             //map.fixtures[point].narrow<Animal>().filter((animal) => !animal.talking && !animal.traces); // TODO: syntax sugar once compiler bug fixed
             map.fixtures.get(point).narrow<Animal>().filter((animal) => !animal.talking && !animal.traces);
     "Non-aquatic animals (outside fortresses and units) at the given location in the map."
-    {Animal*} animals(Point point) => baseAnimals(point).filter((animal) => !fishKinds.contains(animal.kind));
+    {Animal*} animals(Point point) => baseAnimals(point).filter(inverse(matchingPredicate(fishKinds.contains, Animal.kind)));
     "Aquatic animals (outside fortresses and units) at the given location in the map."
-    {Animal*} waterAnimals(Point point) => baseAnimals(point).filter((animal) => fishKinds.contains(animal.kind));
+    {Animal*} waterAnimals(Point point) => baseAnimals(point).filter(matchingPredicate(fishKinds.contains, Animal.kind));
     """Plant-type harvestable fixtures in the map, followed by a number of "nothing found" sufficient to give the
        proportion we want for that tile type."""
     {Grove|Meadow|Shrub|NothingFound*} plants(Point point) {

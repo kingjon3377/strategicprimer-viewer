@@ -41,6 +41,9 @@ import strategicprimer.model.map.fixtures.towns {
 import ceylon.random {
     randomize
 }
+import lovelace.util.common {
+	matchingValue
+}
 "A utility to convert a map to an equivalent half-resolution one."
 shared IMapNG decreaseResolution(IMapNG old) {
 	"Can only convert maps with even numbers of rows and columns"
@@ -61,7 +64,8 @@ shared IMapNG decreaseResolution(IMapNG old) {
                     ([Integer, TileType] first, [Integer, TileType] second) =>
                         first.rest.first.xml <=> second.rest.first.xml)).reversed;
         assert (exists largestCount = counted.first?.first);
-        value matchingCount = counted.filter((item) => item.first == largestCount);
+        value matchingCount = counted.filter(matchingValue(largestCount,
+            Tuple<Integer|TileType, Integer, TileType[]>.first));
         if (matchingCount.size > 1) {
             assert (exists retval = randomize(matchingCount.map(
                         ([Integer count, TileType type]) => type)).first);

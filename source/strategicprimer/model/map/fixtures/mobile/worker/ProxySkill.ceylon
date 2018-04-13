@@ -3,7 +3,8 @@ import ceylon.collection {
     ArrayList
 }
 import lovelace.util.common {
-    todo
+    todo,
+	matchingValue
 }
 
 import strategicprimer.model.map.fixtures.mobile {
@@ -33,7 +34,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
             ProxySkill(name, parallel, *proxiedJobs.map((job) => job.copy()));
     "The lowest level that any proxied Job has in the skill."
     shared actual Integer level => Integer.min(proxiedJobs.flatMap(identity).filter(notThis)
-            .filter((job) => job.name == name).map(ISkill.level)) else 0;
+            .filter(matchingValue(name, ISkill.name)).map(ISkill.level)) else 0;
     Boolean notThis(Anything obj) {
         if (is Identifiable obj) {
             return !(obj === this);
@@ -44,7 +45,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
     "The most hours any of the proxied Jobs has for the skill."
     shared actual Integer hours {
         return Integer.max(proxiedJobs.flatMap(identity).filter(notThis)
-            .filter((job) => job.name == name).map(ISkill.hours)) else 0;
+            .filter(matchingValue(name, ISkill.name)).map(ISkill.hours)) else 0;
     }
     "Add hours to the proxied skills."
     shared actual void addHours(Integer hours, Integer condition) {
@@ -93,7 +94,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
     """Whether every proxied Skill is "empty"."""
     shared actual Boolean empty =>
             proxiedJobs.flatMap(identity).filter(notThis)
-                .filter((skill) => skill.name == name).every(ISkill.empty);
+                .filter(matchingValue(name, ISkill.name)).every(ISkill.empty);
     shared actual Boolean isSubset(ISkill obj, Anything(String) report) {
         report("isSubset called on ProxySkill");
         return false;

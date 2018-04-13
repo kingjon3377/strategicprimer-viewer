@@ -76,6 +76,9 @@ import ceylon.collection {
 import java.lang {
     synchronized
 }
+import lovelace.util.common {
+	matchingValue
+}
 class LazyInit<Wrapped>(Wrapped() generator) {
     variable Wrapped? inner = null;
     shared synchronized Wrapped wrapped {
@@ -182,14 +185,12 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
             CommunityStats stats) {
 //        for (item in map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
         for (item in map.fixtures.get(location)
-                .narrow<ModifiableTown>()
-                .filter((item) => item.id == townId)) {
+                .narrow<ModifiableTown>().filter(matchingValue(townId, ModifiableTown.id))) {
             assignStatsToTown(item, stats);
         }
     }
     IFixture? findByID(IMapNG map, Integer id) => map.locations
-        .flatMap(map.fixtures.get)
-        .find((fix) => fix.id == id);
+        .flatMap(map.fixtures.get).find(matchingValue(id, IFixture.id));
     Point? findLocById(IMapNG map, Integer id) {
         for (location in map.locations) {
 //            for (fixture in map.fixtures[location]) {

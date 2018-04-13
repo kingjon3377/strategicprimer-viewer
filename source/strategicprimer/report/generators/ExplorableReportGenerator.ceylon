@@ -10,7 +10,8 @@ import ceylon.language.meta.model {
 }
 
 import lovelace.util.common {
-    DRMap=DelayedRemovalMap
+    DRMap=DelayedRemovalMap,
+	matchingValue
 }
 
 import strategicprimer.model.map {
@@ -91,7 +92,7 @@ shared class ExplorableReportGenerator(
         if (!caves.empty || !battles.empty || !portals.empty) {
             ostream("<h4>Caves, Battlefields, and Portals</h4>
                      <ul>");
-            for (list in [ caves, battles, portals ].filter((list) => !list.empty)) {
+            for (list in [ caves, battles, portals ].filter(matchingValue(false, Iterable<Anything>.empty))) {
                 ostream("<li>``list``</li>");
             }
             ostream("</ul>``operatingSystem.newline``");
