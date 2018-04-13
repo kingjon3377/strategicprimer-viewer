@@ -248,8 +248,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             }
             return null;
         }
-        UnitNode? unitNode = findUnitNode(); // TODO: Inline into if statement
-        if (exists unitNode) {
+        if (exists unitNode = findUnitNode()) {
             unit.addMember(member);
             MutableTreeNode newNode = UnitMemberNode(member);
             unitNode.add(newNode);
