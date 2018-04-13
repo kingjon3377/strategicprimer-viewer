@@ -51,7 +51,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             writer.write(member.name);
             {IJob*} jobs;
             if (options.hasOption("--include-unleveled-jobs")) {
-                jobs = member.filter(matchingValue(false, IJob.empty)); // TODO: Should use emptyJob instead
+                jobs = member.filter(matchingValue(false, IJob.emptyJob));
             } else {
 	            jobs = member.filter(matchingPredicate(Integer.positive, IJob.level));
 	        }
