@@ -157,7 +157,7 @@ object xmlTests {
 	 the exception is always thrown; if not, assert that the XML will fail with warnings made
 	 fatal, but will pass and produce [[desideratum]] with warnings ignored."
 	void assertFormatIssue<Type, Expectation>(ISPReader reader, String xml,
-	        Type? desideratum, Anything(Expectation) checks = (Expectation warning) {} ) // TODO: Can we default to ceylon.language::noop instead of a lambda?
+	        Type? desideratum, Anything(Expectation) checks = noop)
 	        given Expectation satisfies Exception given Type satisfies Object {
 	    if (exists desideratum) {
 	        if (desideratum is Callable<Anything, Nothing>) {
