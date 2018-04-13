@@ -1,7 +1,3 @@
-import ceylon.collection {
-    MutableSet,
-    HashSet
-}
 import ceylon.test {
     assertEquals,
     assertTrue,
@@ -93,27 +89,20 @@ shared IMapNG decreaseResolution(IMapNG old) {
                     retval.addFixture(point, fixture);
                 }
             }
-            // TODO: Use Set.complement instead of MutableSets and removeAll().
-            MutableSet<River> upperLeftRivers = HashSet<River> {
-//                *old.rivers[subPoints[0]] }; // TODO: syntax sugar once Ceylon bug #4517 fixed
-                *old.rivers.get(subPoints[0]) };
-            MutableSet<River> upperRightRivers = HashSet<River> {
-//                *old.rivers[subPoints[1]] };
-                *old.rivers.get(subPoints[1]) };
-            MutableSet<River> lowerLeftRivers = HashSet<River> {
-//                *old.rivers[subPoints[2]] };
-                *old.rivers.get(subPoints[2]) };
-            MutableSet<River> lowerRightRivers = HashSet<River> {
-//                *old.rivers[subPoints[3]] };
-                *old.rivers.get(subPoints[3]) };
-            upperLeftRivers.removeAll([River.east, River.south]);
-            upperRightRivers.removeAll([River.west, River.south]);
-            lowerLeftRivers.removeAll([River.east, River.north]);
-            lowerRightRivers.removeAll([River.west, River.north]);
-            // TODO: There's only four of them; just use an ordinary chain instead of reduce().
-            retval.addRivers(point, *([ upperLeftRivers, upperRightRivers, lowerLeftRivers,
-                lowerRightRivers].reduce((Set<River> partial, Set<River> element) =>
-            partial.union(element))));
+            Set<River> upperLeftRivers = set(
+//                old.rivers[subPoints[0]]).complement(set([River.east, River.south])); // TODO: syntax sugar once Ceylon bug #4517 fixed
+                old.rivers.get(subPoints[0])).complement(set([River.east, River.south]));
+            Set<River> upperRightRivers = set(
+//                old.rivers[subPoints[1]]).complement(set([River.west, River.south]));
+                old.rivers.get(subPoints[1])).complement(set([River.west, River.south]));
+            Set<River> lowerLeftRivers = set(
+//                old.rivers[subPoints[2]]).complement(set([River.east, River.north]));
+                old.rivers.get(subPoints[2])).complement(set([River.east, River.north]));
+            Set<River> lowerRightRivers = set(
+//                old.rivers[subPoints[3]]).complement(set([River.west, River.north]));
+                old.rivers.get(subPoints[3])).complement(set([River.west, River.north]));
+            retval.addRivers(point, *upperLeftRivers.union(upperRightRivers)
+                .union(lowerLeftRivers).union(lowerRightRivers));
         }
     }
     return retval;
