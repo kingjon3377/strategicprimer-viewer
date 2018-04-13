@@ -428,8 +428,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     IMutableMapNG mapOrViewTagHandler(StartElement element, QName parent, {XMLEvent*} stream,
         IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) =>
             readMapOrViewTag(element, parent, stream, players, warner, idFactory);
-    readers = map {
-        "adventure"->fluidExplorableHandler.readAdventure,
+    readers = map([ "adventure"->fluidExplorableHandler.readAdventure,
         "portal"->fluidExplorableHandler.readPortal,
         "cave"->fluidExplorableHandler.readCave,
         "battlefield"->fluidExplorableHandler.readBattlefield,
@@ -478,8 +477,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         simpleFixtureReader("ogre", `Ogre`),
         simpleFixtureReader("phoenix", `Phoenix`),
         simpleFixtureReader("simurgh", `Simurgh`),
-        simpleFixtureReader("troll", `Troll`)
-    };
+        simpleFixtureReader("troll", `Troll`) ]);
     shared actual Type readXML<Type>(JPath file, JReader istream, Warning warner)
             given Type satisfies Object {
         // TODO: Pass in Closeables so we can pass it to the TypesafeMLEventReader to make sure the file descriptor gets closed
