@@ -40,8 +40,7 @@ shared class River of north|east|south|west|lake satisfies Comparable<River> {
         ordinal = 4;
     }
     "The description with the first letter capitalized."
-    shared actual String string = String {
-        *{ description.first?.uppercased, *description.rest}.coalesced };
+    shared actual String string = String(description.rest.follow(description.first?.uppercased).coalesced);
     shared actual Comparison compare(River other) => ordinal <=> other.ordinal;
 
 }

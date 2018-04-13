@@ -461,7 +461,7 @@ SPFrame explorationFrame(IExplorationModel model,
             tilesPanel.add(dtb);
             ExplorationClickListener ecl = ExplorationClickListener(direction, mainList);
             createHotKey(dtb, direction.string, ecl, JComponent.whenInFocusedWindow,
-                *{arrowKeys[direction], numKeys[direction]}.coalesced);
+                *[arrowKeys[direction], numKeys[direction]].coalesced);
             dtb.addActionListener(ecl);
             ecl.addSelectionChangeListener(object satisfies SelectionChangeListener {
                 shared actual void selectedPointChanged(Point? old, Point newSel) =>

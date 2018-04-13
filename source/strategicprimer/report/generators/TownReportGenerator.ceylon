@@ -1,8 +1,7 @@
 import ceylon.collection {
     MutableList,
     MutableMap,
-    ArrayList,
-    HashMap
+    ArrayList
 }
 import ceylon.language {
     createMap=map
@@ -103,10 +102,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         MutableHeadedMap<ITownFixture, Point> ruined =
                 HeadedMapImpl<ITownFixture, Point>("<h5>Ruined Communities</h5>");
         Map<TownStatus, MutableMap<ITownFixture, Point>> separated =
-                createMap<TownStatus, MutableMap<ITownFixture, Point>> {
-                    *{ TownStatus.abandoned->abandoned, TownStatus.active->active,
-                        TownStatus.burned->burned, TownStatus.ruined->ruined }
-                };
+                createMap<TownStatus, MutableMap<ITownFixture, Point>>([TownStatus.abandoned->abandoned,
+			            TownStatus.active->active, TownStatus.burned->burned, TownStatus.ruined->ruined]);
         // separateByStatus() sorts using pairComparator, which should be by distance
         // from HQ
         separateByStatus(separated, fixtures.items,
@@ -160,15 +157,13 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      We remove the towns from the set of fixtures."
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
 	        IMapNG map) {
-        Map<TownStatus, IReportNode> separated = HashMap<TownStatus, IReportNode> {
-            *{TownStatus.abandoned -> SectionListReportNode(5,
+        Map<TownStatus, IReportNode> separated = createMap([TownStatus.abandoned -> SectionListReportNode(5,
                 "Abandoned Communities"),
                 TownStatus.active->SectionListReportNode(5, "Active Communities"),
                 TownStatus.burned->SectionListReportNode(5,
                     "Burned-Out Communities"),
                 TownStatus.ruined->SectionListReportNode(5,
-                    "Ruined Communities") }
-        };
+                    "Ruined Communities")]);
         separateByStatus(separated, fixtures.items,
                     (IReportNode node, pair) {
                 assert (is ITownFixture town = pair.rest.first);
