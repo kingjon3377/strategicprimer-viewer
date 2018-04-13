@@ -68,9 +68,8 @@ class LegacyTable() satisfies EncounterTable {
         }
         return retval;
     }
-    {String*} data = createEvents().map(IEvent.text);
     shared actual String generateEvent(Point point, TileType? terrain,
         Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) =>
             fixtures.narrow<IEvent>().map(IEvent.text).first else "Nothing interesting here ...";
-    shared actual Set<String> allEvents => set(data);
+    shared actual Set<String> allEvents = set(createEvents().map(IEvent.text));
 }
