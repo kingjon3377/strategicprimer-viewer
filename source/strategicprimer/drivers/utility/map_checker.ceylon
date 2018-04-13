@@ -106,13 +106,13 @@ shared object mapCheckerCLI satisfies UtilityDriver {
         if (job.size > 1) {
             return false;
         } else {
-            return {*job}.map(ISkill.name).any(suspiciousSkills.contains); // TODO: Use collect() instead of spreading and map().
+            return job.map(ISkill.name).any(suspiciousSkills.contains);
         }
     }
     void suspiciousSkillCheck(TileType terrain, Point context, IFixture fixture,
 	        Warning warner) {
         if (is IWorker fixture) {
-            if ([*fixture].any(suspiciousSkill)) { // FIXME: Don't spread-and-unspread
+            if (fixture.any(suspiciousSkill)) {
                 warner.handle(SPContentWarning(context,
                     "``fixture.name`` has a Job with one suspiciously-named Skill"));
             }
