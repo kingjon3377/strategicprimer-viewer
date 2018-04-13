@@ -63,7 +63,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         }
         shared actual String string => (super of DefaultMutableTreeNode).string;
         shared actual default void add(MutableTreeNode child) {
-            if (is WorkerTreeNode<out Anything> child) {
+            if (is WorkerTreeNode<out Anything> child) { // TODO: Should probably log if it's not
                 super.add(child);
             }
         }
@@ -75,7 +75,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             insert(UnitMemberNode(member), index);
         }
         shared actual void add(MutableTreeNode child) {
-            if (is UnitMemberNode child) {
+            if (is UnitMemberNode child) { // TODO: should probably log if it's not
                 unit.addMember(child.userObjectNarrowed);
             }
             super.add(child);
@@ -134,7 +134,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             ProxyUnit newOwner, UnitNode newNode, MutableTreeNode node) {
         assert (is PlayerNode playerNode = root);
         if (old.proxied.size == newOwner.proxied.size,
-            old.proxied.size == member.proxied.size) {
+            old.proxied.size == member.proxied.size) { // FIXME: Indentation
             Queue<UnitMember>&Iterable<UnitMember> members = LinkedList<UnitMember>();
             Queue<IUnit>&Iterable<IUnit> newList = LinkedList<IUnit>();
             for ([item, innerOld, innerNew] in
@@ -145,10 +145,10 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             }
             newNode.insert(node, newNode.childCount);
             fireTreeNodesInserted(this,
-                ObjectArray<Object>.with({playerNode,
-                    getNode(playerNode, newOwner.kind), newNode}),
-                IntArray.with({newNode.getIndex(node)}),
-                ObjectArray<Object>.with({node}));
+                ObjectArray<Object>.with([playerNode,
+                    getNode(playerNode, newOwner.kind), newNode]),
+                IntArray.with(Singleton(newNode.getIndex(node))),
+                ObjectArray<Object>.with(Singleton(node)));
             for ([unit, innerMember] in zipPairs(newList, members)) {
                 unit.addMember(innerMember);
             }
@@ -156,10 +156,10 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             old.removeMember(member);
             newNode.add(node);
             fireTreeNodesInserted(this,
-                ObjectArray<Object>.with({playerNode,
-                    getNode(playerNode, newOwner.kind), newNode}),
-                IntArray.with({newNode.getIndex(node)}),
-                ObjectArray<Object>.with({node}));
+                ObjectArray<Object>.with([playerNode,
+                    getNode(playerNode, newOwner.kind), newNode]),
+                IntArray.with(Singleton(newNode.getIndex(node))),
+                ObjectArray<Object>.with(Singleton(node)));
             Iterable<UnitMember> iter = member.proxied;
             if (iter.empty) {
                 newOwner.addMember(member);
@@ -178,15 +178,15 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         if (is UnitNode newNode = getNode(playerNode, newOwner),
             exists node = getNode(playerNode, member)) {
             Integer oldIndex;
-            if (exists oldNode) {
+            if (exists oldNode) { // TODO: Condense to oldNode?.getIndex(node) else -1;
                 oldIndex = oldNode.getIndex(node);
             } else {
                 oldIndex = -1;
             }
             fireTreeNodesRemoved(this,
-                ObjectArray<Object>.with({playerNode, getNode(playerNode, old.kind),
-                    oldNode}), IntArray.with({oldIndex}),
-                ObjectArray<Object>.with({node}));
+                ObjectArray<Object>.with([playerNode, getNode(playerNode, old.kind),
+                    oldNode]), IntArray.with(Singleton(oldIndex)),
+                ObjectArray<Object>.with(Singleton(node)));
             if (exists oldNode) {
                 oldNode.remove(node);
             }
@@ -197,10 +197,10 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 old.removeMember(member);
                 newNode.add(node);
                 fireTreeNodesInserted(this,
-                    ObjectArray<Object>.with({playerNode, getNode(playerNode,
-                        newOwner.kind), newNode}),
-                    IntArray.with({newNode.getIndex(node)}),
-                    ObjectArray<Object>.with({node}));
+                    ObjectArray<Object>.with([playerNode, getNode(playerNode,
+                        newOwner.kind), newNode]),
+                    IntArray.with(Singleton(newNode.getIndex(node))),
+                    ObjectArray<Object>.with(Singleton(node)));
             }
         }
     }
@@ -214,16 +214,16 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 if (is KindNode child, kind == child.userObjectNarrowed) {
                     child.add(node);
                     fireTreeNodesInserted(this, getPathToRoot(node),
-                        IntArray.with({child.childCount - 1}),
-                        ObjectArray<Object>.with({node}));
+                        IntArray.with(Singleton(child.childCount - 1)),
+                        ObjectArray<Object>.with(Singleton(node)));
                     break;
                 }
             } else {
                 KindNode kindNode = KindNode(kind, matchingUnit);
                 temp.add(kindNode);
                 fireTreeNodesInserted(this, getPathToRoot(kindNode),
-                    IntArray.with({temp.childCount - 1}),
-                    ObjectArray<Object>.with({kindNode}));
+                    IntArray.with(Singleton(temp.childCount - 1)),
+                    ObjectArray<Object>.with(Singleton(kindNode)));
             }
         }
     }
@@ -249,14 +249,14 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             }
             return null;
         }
-        UnitNode? unitNode = findUnitNode();
+        UnitNode? unitNode = findUnitNode(); // TODO: Inline into if statement
         if (exists unitNode) {
             unit.addMember(member);
             MutableTreeNode newNode = UnitMemberNode(member);
             unitNode.add(newNode);
-            fireTreeNodesInserted(this, ObjectArray<Object>.with({root, unitNode}),
-                IntArray.with({unitNode.childCount - 1}),
-                ObjectArray<Object>.with({newNode}));
+            fireTreeNodesInserted(this, ObjectArray<Object>.with([root, unitNode]),
+                IntArray.with(Singleton(unitNode.childCount - 1)),
+                ObjectArray<Object>.with(Singleton(newNode)));
         }
     }
     shared actual void renameItem(HasMutableName item) {
@@ -265,8 +265,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             Integer index = getIndexOfChild(path[path.size - 2], node);
             fireTreeNodesChanged(this,
                 ObjectArray<Object>.with(path.array.exceptLast),
-                IntArray.with({index}),
-                ObjectArray.with({node}));
+                IntArray.with(Singleton(index)),
+                ObjectArray.with(Singleton(node)));
         }
     }
     shared actual void moveItem(HasKind item, String priorKind) {
@@ -277,14 +277,14 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 Integer index = getIndexOfChild(path.array.last, node);
                 // fireNodesChanged() is *correct*: a change in a unit member's kind
                 // does *not* mean any node should move.
-                fireTreeNodesChanged(this, path, IntArray.with({ index }),
-                    ObjectArray.with({ node }));
+                fireTreeNodesChanged(this, path, IntArray.with(Singleton(index)),
+                    ObjectArray.with(Singleton(node)));
             }
         } else if (is IUnit item) {
             if (is TreeNode node = getNode(temp, item)) {
                 value pathOne = getPathToRoot(node);
                 Integer indexOne = getIndexOfChild(pathOne.array.exceptLast.last, node);
-                value nodeTwo = temp.find((child) {
+                value nodeTwo = temp.find((child) { // TODO: Make a matching() method in lovelace.util for cases like this, where we want to map().find(something.equals) except we want to un-map() for the return value
                     if (is KindNode child, item.kind == child.userObjectNarrowed) {
                         return true;
                     } else {
@@ -302,26 +302,26 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     pathSubset = ObjectArray<Object>.with(pathOne.array.exceptLast.exceptLast);
                     lastParent.removeFromParent();
                     fireTreeNodesRemoved(this, pathSubset,
-                        IntArray.with({parentIndex}),
-                        ObjectArray.with({lastParent}));
+                        IntArray.with(Singleton(parentIndex)),
+                        ObjectArray.with(Singleton(lastParent)));
                 } else {
                     pathSubset = ObjectArray<Object>.with(pathOne.array.exceptLast);
-                    fireTreeNodesRemoved(this, pathSubset, IntArray.with({indexOne}),
-                        ObjectArray.with({node}));
+                    fireTreeNodesRemoved(this, pathSubset, IntArray.with(Singleton(indexOne)),
+                        ObjectArray.with(Singleton(node)));
                 }
                 if (is MutableTreeNode nodeTwo) {
                     Integer indexTwo = nodeTwo.childCount;
                     nodeTwo.insert(node, indexTwo);
                     fireTreeNodesInserted(this,
-                        ObjectArray<Object>.with({root, nodeTwo}),
-                        IntArray.with({indexTwo}),
-                        ObjectArray.with({node}));
+                        ObjectArray<Object>.with([root, nodeTwo]),
+                        IntArray.with(Singleton(indexTwo)),
+                        ObjectArray.with(Singleton(node)));
                 } else {
                     MutableTreeNode kindNode = KindNode(item.kind, item);
                     temp.add(kindNode);
-                    fireTreeNodesInserted(this, ObjectArray<TreeNode>.with({temp}),
-                        IntArray.with({getIndexOfChild(temp, kindNode)}),
-                        ObjectArray<Object>.with({kindNode}));
+                    fireTreeNodesInserted(this, ObjectArray<TreeNode>.with(Singleton(temp)),
+                        IntArray.with(Singleton(getIndexOfChild(temp, kindNode))),
+                        ObjectArray<Object>.with(Singleton(kindNode)));
                 }
             }
         }
@@ -333,8 +333,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             value path = getPathToRoot(node);
             Integer index = getIndexOfChild(path.array.last, node);
             parentNode.remove(node);
-            fireTreeNodesRemoved(this, path, IntArray.with({index}),
-                ObjectArray<Object>.with({node}));
+            fireTreeNodesRemoved(this, path, IntArray.with(Singleton(index)),
+                ObjectArray<Object>.with(Singleton(node)));
             dismissedMembers.add(member);
         }
     }
@@ -345,8 +345,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             UnitMemberNode childNode = UnitMemberNode(sibling);
             parentNode.add(childNode);
             Integer index = getIndexOfChild(parentNode, childNode);
-            fireTreeNodesInserted(this, getPathToRoot(parentNode), IntArray.with({index}),
-                ObjectArray<Object>.with({childNode}));
+            fireTreeNodesInserted(this, getPathToRoot(parentNode), IntArray.with(Singleton(index)),
+                ObjectArray<Object>.with(Singleton(childNode)));
         }
     }
 }
