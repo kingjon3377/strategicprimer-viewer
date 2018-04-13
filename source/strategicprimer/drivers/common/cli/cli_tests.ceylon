@@ -8,18 +8,24 @@ import ceylon.collection {
 }
 import strategicprimer.model.map {
     PlayerImpl,
-    pointFactory
+    pointFactory,
+	Player
 }
 import ceylon.decimal {
     decimalNumber
+}
+import ceylon.language.meta.model {
+	Method
 }
 String[] truePossibilities = ["yes", "true", "y", "t"];
 String[] falsePossibilities = ["no", "false", "n", "f"];
 object cliTests {
 	"A helper method to condense tests."
-	void assertCLI<out T>(
-	        "The method under test, partially applied so all it lacks is the CLIHelper."
-	        T(ICLIHelper) method,
+	void assertCLI<out T, in Arguments>(
+	        "The method under test."
+	        Method<ICLIHelper, T, Arguments> method,
+	        "The arguments to pass to the method."
+	        Arguments arguments,
 	        "The lines of input to pass to the CLIHelper's input stream."
 	        {String*} input,
 	        "What the CLIHelper is expected to print to its output stream. If an Iterable,
@@ -30,7 +36,7 @@ object cliTests {
 	        "The assertion message for the assertion that the result is as expected."
 	        String resultMessage = "CLIHelper method result was as expected",
 	        "The assertion message for the assertion that the output is as expected."
-	        String outputMessage = "CLIHelper output was as expected") {
+	        String outputMessage = "CLIHelper output was as expected") given Arguments satisfies Anything[] {
 	    String expectedOutputReal;
 	    if (is String expectedOutput) {
 	        expectedOutputReal = expectedOutput;
@@ -41,31 +47,31 @@ object cliTests {
 	    }
 	    StringBuilder ostream = StringBuilder();
 	    ICLIHelper cli = CLIHelper(ArrayList { *input }.accept, ostream.append);
-	    assertEquals(method(cli), expectedResult, resultMessage);
+	    assertEquals(method(cli)(*arguments), expectedResult, resultMessage);
 	    assertEquals(ostream.string, expectedOutputReal, outputMessage);
 	}
 
 	"Test chooseFromList()."
 	test
 	shared void testChooseFromList() {
-	    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
-	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", false), {"0"},
+	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
+	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", false], {"0"},
 	        {"test desc", "0: one", "1: two", "prompt "}, 0->PlayerImpl(1, "one"),
 	        "chooseFromList chooses the one specified by the user",
 	        "chooseFromList prompted the user");
-	    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
-	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", true), {"1"},
+	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
+	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", true], {"1"},
 	        {"test desc", "0: one", "1: two", "prompt "}, 1->PlayerImpl(2, "two"),
 	        "chooseFromList chooses the one specified by the user",
 	        "chooseFromList prompted the user");
-	    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one")],
-	        "test desc", "none present", "prompt", true), {},
+	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one")],
+	        "test desc", "none present", "prompt", true], {},
 	        {"test desc", "Automatically choosing only item, one.", ""},
 	        0->PlayerImpl(1, "one"),
 	        "chooseFromList chooses only choice when this is specified",
 	        "chooseFromList automatically chose only choice");
-	    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one")],
-	        "test desc", "none present", "prompt", false), {"0"},
+	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one")],
+	        "test desc", "none present", "prompt", false], {"0"},
 	        {"test desc", "0: one", "prompt "}, 0->PlayerImpl(1, "one"),
 	        "chooseFromList doesn't always auto-choose only choice",
 	        "chooseFromList didn't automatically choose only choice");
@@ -73,37 +79,37 @@ object cliTests {
 	"A second test of chooseFromList"
 	test
 	shared void testChooseFromListMore() {
-	    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
-	        PlayerImpl(2, "two")], "test desc", "none present", "prompt ", false),
+	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
+	        PlayerImpl(2, "two")], "test desc", "none present", "prompt ", false],
 	        {"-1", "0"}, {"test desc", "0: one", "1: two", "prompt prompt "},
 	        0->PlayerImpl(1, "one"), "chooseFromList prompts again when negative index given",
 	        "chooseFromList prompts again when negative index given");
-	    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
-	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", false), {"3"},
+	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
+	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", false], {"3"},
 	        {"test desc", "0: one", "1: two", "prompt "}, 3->null,
 	        "chooseFromList allows too-large choice",
 	        "chooseFromList allows too-large choice");
-	    assertCLI((cli) => cli.chooseFromList([PlayerImpl(1, "one"),
-	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", true), {"0"},
+	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
+	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", true], {"0"},
 	        {"test desc", "0: one", "1: two", "prompt "}, 0->PlayerImpl(1, "one"),
 	        "chooseFromList asks even if 'auto' when multiple items",
 	        "chooseFromList prompted the user");
-	    assertCLI((cli) => cli.chooseFromList([], "test desc", "none present",
-	        "prompt", false), {}, {"none present", ""}, -1->null,
+	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[], "test desc", "none present",
+	        "prompt", false], {}, {"none present", ""}, -1->null,
 	        "chooseFromList handles no-item case", "chooseFromList didn't prompt the user");
 	}
 	"Test inputNumber"
 	test
 	shared void testInputNumber() {
-	    assertCLI((cli) => cli.inputNumber("test prompt"), {"2"}, "test prompt ", 2,
+	    assertCLI(`ICLIHelper.inputNumber`, ["test prompt"], {"2"}, "test prompt ", 2,
 	        "inputNumber works", "inputNumber uses given prompt");
-	    assertCLI((cli) => cli.inputNumber("test prompt two"), {"8"}, "test prompt two ", 8,
+	    assertCLI(`ICLIHelper.inputNumber`, ["test prompt two"], {"8"}, "test prompt two ", 8,
 	        "inputNumber works", "inputNumber uses given prompt");
-	    assertCLI((cli) => cli.inputNumber("test prompt three "), {"-1", "0"},
+	    assertCLI(`ICLIHelper.inputNumber`, ["test prompt three "], {"-1", "0"},
 	        "test prompt three test prompt three ", 0,
 	        "inputNumber asks again on negative input",
 	        "inputNumber asks again on negative input");
-	    assertCLI((cli) => cli.inputNumber("test prompt four "), {"not-number", "9"},
+	    assertCLI(`ICLIHelper.inputNumber`, ["test prompt four "], {"not-number", "9"},
 	        "test prompt four test prompt four ", 9,
 	        "inputNumber asks again on non-numeric input",
 	        "inputNumber asks again on non-numeric input");
@@ -115,17 +121,17 @@ object cliTests {
 	"Test inputDecimal"
 	test
 	shared void testInputDecimal() {
-	    assertCLI((cli) => cli.inputDecimal("test prompt"), {"10"}, "test prompt ",
+	    assertCLI(`ICLIHelper.inputDecimal`, ["test prompt"], {"10"}, "test prompt ",
 	        decimalNumber(10), "inputDecimal works with integers",
 	        "inputDecimal uses given prompt");
-	    assertCLI((cli) => cli.inputDecimal("test prompt two"), {"2.5"}, "test prompt two ",
+	    assertCLI(`ICLIHelper.inputDecimal`, ["test prompt two"], {"2.5"}, "test prompt two ",
 	        decimalNumber(5) / decimalNumber(2), "inputDecimal works with decimals",
 	        "inputDecimal uses given prompt");
-	    assertCLI((cli) => cli.inputDecimal("test prompt three "), {"-2.5", "0.5"},
+	    assertCLI(`ICLIHelper.inputDecimal`, ["test prompt three "], {"-2.5", "0.5"},
 	        "test prompt three test prompt three ", decimalNumber(1) / decimalNumber(2),
 	        "inputDecimal asks again on negative input",
 	        "inputDecimal asks again on negative input");
-	    assertCLI((cli) => cli.inputDecimal("test prompt four "), {"non-number", ".1"},
+	    assertCLI(`ICLIHelper.inputDecimal`, ["test prompt four "], {"non-number", ".1"},
 	        {"test prompt four Invalid number.", "test prompt four "},
 	        decimalNumber(1) / decimalNumber(10),
 	        "inputDecimal asks again on non-numerc input",
@@ -134,30 +140,30 @@ object cliTests {
 	"Test for inputString()"
 	test
 	shared void testInputString() {
-	    assertCLI((cli) => cli.inputString("string prompt"), {"first"}, "string prompt ",
+	    assertCLI(`ICLIHelper.inputString`, ["string prompt"], {"first"}, "string prompt ",
 	        "first", "inputString returns the entered string", "inputString displays prompt");
-	    assertCLI((cli) => cli.inputString("second prompt"), {"second"}, "second prompt ",
+	    assertCLI(`ICLIHelper.inputString`, ["second prompt"], {"second"}, "second prompt ",
 	        "second", "inputString returns the entered string",
 	        "inputString displays prompt");
-	    assertCLI((cli) => cli.inputString("third prompt"), {}, "third prompt ", "",
+	    assertCLI(`ICLIHelper.inputString`, ["third prompt"], {}, "third prompt ", "",
 	        "inputString returns empty on EOF", "inputString displays prompt");
 	}
 	parameters(`value truePossibilities`)
 	test
 	shared void testInputBooleanSimpleTrue(String arg) {
-		assertCLI((cli) => cli.inputBoolean("bool prompt"), Singleton(arg), "bool prompt ",
+		assertCLI(`ICLIHelper.inputBoolean`, ["bool prompt"], Singleton(arg), "bool prompt ",
 			true, "inputBoolean returns true on ``arg``", "inputBoolean displays prompt");
 	}
 	parameters(`value falsePossibilities`)
 	test
 	shared void testInputBooleanSimpleFalse(String arg) {
-		assertCLI((cli) => cli.inputBoolean("prompt two"), Singleton(arg), "prompt two ", false,
+		assertCLI(`ICLIHelper.inputBoolean`, ["prompt two"], Singleton(arg), "prompt two ", false,
 			"inputBoolean returns false on ``arg``", "inputBoolean displays prompt");
 	}
 	"Test for inputBoolean()"
 	test
 	shared void testInputBooleanInvalidInput() {
-	    assertCLI((cli) => cli.inputBoolean("prompt three "), {"yoo-hoo", "no"},
+	    assertCLI(`ICLIHelper.inputBoolean`, ["prompt three "], {"yoo-hoo", "no"},
 	        {"""prompt three Please enter "yes", "no", "true", or "false",""",
 	            "or the first character of any of those.", "prompt three "}, false,
 	        "inputBoolean rejects other input",
@@ -166,21 +172,21 @@ object cliTests {
 	parameters(`value truePossibilities`)
 	test
 	shared void testInputBooleanInSeriesSimpleTrue(String arg) {
-		assertCLI((cli) => cli.inputBooleanInSeries("bool prompt"), {arg}, "bool prompt ",
+		assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["bool prompt"], {arg}, "bool prompt ",
 			true, "inputBooleanInSeries returns true on '``arg``",
 			"inputBooleanInSeries displays prompt");
 	}
 	parameters(`value falsePossibilities`)
 	test
 	shared void testInputBooleanInSeriesSimpleFalse(String arg) {
-		assertCLI((cli) => cli.inputBooleanInSeries("prompt two"), {arg}, "prompt two ",
+		assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["prompt two"], {arg}, "prompt two ",
 			false, "inputBooleanInSeries returns false on ``arg``",
 			"inputBooleanInSeries displays prompt");
 	}
 	"Test the input-boolean-with-skipping functionality."
 	test
 	shared void testInputBooleanInSeries() {
-	    assertCLI((cli) => cli.inputBooleanInSeries("prompt three "), {"nothing", "true"},
+	    assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["prompt three "], {"nothing", "true"},
 	        {"""prompt three Please enter "yes", "no", "true", or "false", the first""",
 	            """character of any of those, or "all", "none", "always", or""",
 	            """"never" to use the same answer for all further questions""",
@@ -243,46 +249,46 @@ object cliTests {
 	"Test of chooseStringFromList()"
 	test
 	shared void testChooseStringFromList() {
-	    assertCLI((cli) => cli.chooseStringFromList(["one", "two"],
-	        "test desc", "none present", "prompt", false), {"0"},
+	    assertCLI(`ICLIHelper.chooseStringFromList`, [["one", "two"],
+	        "test desc", "none present", "prompt", false], {"0"},
 	        {"test desc", "0: one", "1: two", "prompt "}, 0->"one",
 	        "chooseStringFromList chooses the one specified by the user",
 	        "chooseStringFromList prompts the user");
-	    assertCLI((cli) => cli.chooseStringFromList(["one",
+	    assertCLI(`ICLIHelper.chooseStringFromList`, [["one",
 	        "two", "three"], "test desc", "none present",
-	        "prompt two", true), {"1"},
+	        "prompt two", true], {"1"},
 	        {"test desc", "0: one", "1: two", "2: three", "prompt two "}, 1->"two",
 	        "chooseStringFromList chooses the one specified by the user",
 	        "chooseStringFromList prompts the user");
-	    assertCLI((cli) => cli.chooseStringFromList(["one"], "test desc", "none present",
-	        "prompt", true), {}, {"test desc", "Automatically choosing only item, one.", ""},
+	    assertCLI(`ICLIHelper.chooseStringFromList`, [["one"], "test desc", "none present",
+	        "prompt", true], {}, {"test desc", "Automatically choosing only item, one.", ""},
 	        0->"one", "chooseStringFromList automatically chooses only choice when told to",
 	        "chooseStringFromList automatically chose only choice");
-	    assertCLI((cli) => cli.chooseStringFromList(["one"], "test desc", "none present",
-	        "prompt", false), {"0"}, {"test desc", "0: one", "prompt "}, 0->"one",
+	    assertCLI(`ICLIHelper.chooseStringFromList`, [["one"], "test desc", "none present",
+	        "prompt", false], {"0"}, {"test desc", "0: one", "prompt "}, 0->"one",
 	        "chooseStringFromList doesn't always auto-choose",
 	        "chooseStringFromList didn't automatically choose only choice");
 	}
 	"A second test of chooseStringFromList"
 	test
 	shared void testChooseStringFromListMore() {
-	    assertCLI((cli) => cli.chooseStringFromList(["zero", "one", "two"],
-	        "test desc", "none present", "prompt", true), {"1"},
+	    assertCLI(`ICLIHelper.chooseStringFromList`, [["zero", "one", "two"],
+	        "test desc", "none present", "prompt", true], {"1"},
 	        {"test desc", "0: zero", "1: one", "2: two", "prompt "}, 1->"one",
 	        "chooseStringFromList doesn't auto-choose when more than one item",
 	        "chooseStringFromList doesn't auto-choose when more than one item");
-	    assertCLI((cli) => cli.chooseStringFromList(["one", "two"],
-	        "test desc", "none present", "prompt", false),
+	    assertCLI(`ICLIHelper.chooseStringFromList`, [["one", "two"],
+	        "test desc", "none present", "prompt", false],
 	        {"-1", "0"}, {"test desc", "0: one", "1: two", "prompt prompt "}, 0->"one",
 	        "chooseStringFromList prompts again when negative index given",
 	        "chooseStringFromList prompts again when negative index given");
-	    assertCLI((cli) => cli.chooseStringFromList(["one",
-	        "two"], "test desc", "none present", "prompt", false), {"3"},
+	    assertCLI(`ICLIHelper.chooseStringFromList`, [["one",
+	        "two"], "test desc", "none present", "prompt", false], {"3"},
 	        {"test desc", "0: one", "1: two", "prompt "}, 3->null,
 	        "chooseStringFromList allows too-large choice",
 	        "chooseStringFromList allows too-large choice");
-	    assertCLI((cli) => cli.chooseStringFromList([], "test desc", "none present",
-	        "prompt", false), {}, {"none present", ""}, -1->null,
+	    assertCLI(`ICLIHelper.chooseStringFromList`, [[], "test desc", "none present",
+	        "prompt", false], {}, {"none present", ""}, -1->null,
 	        "chooseStringFromList handles empty list",
 	        "chooseStringFromList handles empty list");
 	}
@@ -303,10 +309,10 @@ object cliTests {
 	"Test inputPoint()"
 	test
 	shared void testInputPoint() {
-	    assertCLI((cli) => cli.inputPoint("point prompt one "), {"2", "3"},
+	    assertCLI(`ICLIHelper.inputPoint`, ["point prompt one "], {"2", "3"},
 	        "point prompt one Row: Column: ", pointFactory(2, 3),
 	        "reads row then column", "prompts as expected");
-	    assertCLI((cli) => cli.inputPoint("point prompt two "), {"-1", "0", "-2", "4"},
+	    assertCLI(`ICLIHelper.inputPoint`, ["point prompt two "], {"-1", "0", "-2", "4"},
 	        "point prompt two Row: Row: Column: Column: ", pointFactory(0, 4),
 	        "doesn't accept negative row or column", "prompts as expected");
 	}
