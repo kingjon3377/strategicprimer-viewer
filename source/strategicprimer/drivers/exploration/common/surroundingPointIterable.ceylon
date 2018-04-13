@@ -37,5 +37,5 @@ shared {Point*} surroundingPointIterable(Point startingPoint, MapDimensions dime
             }
         }
     }
-    return {*points};
+    return points.sequence();
 }

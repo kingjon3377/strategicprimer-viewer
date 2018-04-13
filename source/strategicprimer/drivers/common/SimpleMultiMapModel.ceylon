@@ -19,7 +19,7 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
             ArrayList<[IMutableMapNG, JPath?]>();
     "Subordinate maps and the files from which they were loaded."
     shared actual {[IMutableMapNG, JPath?]*} subordinateMaps =>
-            {*subordinateMapsList};
+            subordinateMapsList.sequence();
     shared new (IMutableMapNG map, JPath? file)
             extends SimpleDriverModel(map, file) { }
     shared new copyConstructor(IDriverModel model)

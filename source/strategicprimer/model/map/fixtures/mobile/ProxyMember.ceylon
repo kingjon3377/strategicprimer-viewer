@@ -37,7 +37,7 @@ class ProxyMember satisfies UnitMember&ProxyFor<UnitMember> {
         report("isSubset called on ProxyMember");
         return false;
     }
-    shared actual Iterable<UnitMember> proxied => {*proxiedMembers};
+    shared actual Iterable<UnitMember> proxied => proxiedMembers.sequence();
     shared actual Boolean parallel = true;
     shared actual String string {
         if (proxiedMembers.empty) {

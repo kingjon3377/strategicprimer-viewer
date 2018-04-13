@@ -89,7 +89,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
     shared actual void addProxied(IJob item) => proxiedJobs.add(item);
     "Note that this is the *one* place where [[ProxySkill]] should be a
      [[ProxyFor<ISkill>]] instead of a [[ProxyFor<IJob>]]."
-    shared actual {IJob*} proxied => {*proxiedJobs};
+    shared actual {IJob*} proxied => proxiedJobs.sequence();
     """Whether every proxied Skill is "empty"."""
     shared actual Boolean empty =>
             proxiedJobs.flatMap(identity).filter(notThis)

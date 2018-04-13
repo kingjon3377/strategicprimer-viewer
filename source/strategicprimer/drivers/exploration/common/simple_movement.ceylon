@@ -181,7 +181,7 @@ shared object simpleMovementModel {
 	            perception -= 5;
 	        }
 	    }
-	    return {*retval};
+	    return retval.sequence();
 	}
 }
 "An exception thrown to signal traversal is impossible."

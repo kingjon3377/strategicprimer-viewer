@@ -194,7 +194,7 @@ object workerModelTests {
 	            retval.add(item);
 	        }
 	    }
-	    return {*retval};
+	    return retval.sequence();
 	}
 
 	test

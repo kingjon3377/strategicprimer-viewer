@@ -58,7 +58,7 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
      every number here should be the ID number of a
       [[strategicprimer.model.map.fixtures.resources::HarvestableFixture]] that is not
       claimed by any other community."
-    shared {Integer*} workedFields => {*workedFieldIDs};
+    shared {Integer*} workedFields => workedFieldIDs.sequence();
     "Add a field (or orchard, or other harvestable resource source) (ID number) to the
      collection of worked fields."
     shared void addWorkedField(Integer fieldID) => workedFieldIDs.add(fieldID);

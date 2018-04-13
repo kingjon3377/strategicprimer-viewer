@@ -120,7 +120,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
                      throw quantity;
                  }
              }
-             retval.put(terrain, {*inner});
+             retval.put(terrain, inner.sequence());
         }
         return map(retval);
     });

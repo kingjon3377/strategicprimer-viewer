@@ -101,7 +101,7 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
         }
     }
     "A view of the proxied Jobs."
-    shared actual Iterable<IJob> proxied => {*proxiedJobs};
+    shared actual Iterable<IJob> proxied => proxiedJobs.sequence();
     """Whether all of the Jobs this is a proxy for are "empty," i.e. having no levels and
        containing no Skills that report either levels or hours of experience."""
     shared actual Boolean emptyJob => proxiedJobs.every(IJob.emptyJob);

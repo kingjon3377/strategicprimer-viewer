@@ -153,7 +153,7 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
             }
         }
     }
-    shared actual Iterable<IWorker> proxied => {*workers};
+    shared actual Iterable<IWorker> proxied => workers.sequence();
     shared actual String defaultImage {
         variable String? retval = null;
         for (worker in workers) {
