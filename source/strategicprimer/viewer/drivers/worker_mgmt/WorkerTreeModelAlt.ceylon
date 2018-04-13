@@ -63,8 +63,10 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         }
         shared actual String string => (super of DefaultMutableTreeNode).string;
         shared actual default void add(MutableTreeNode child) {
-            if (is WorkerTreeNode<out Anything> child) { // TODO: Should probably log if it's not
+            if (is WorkerTreeNode<out Anything> child) {
                 super.add(child);
+            } else {
+                log.info("Asked to add a non-WorkerTreeNode to a WorkerTreeNode");
             }
         }
     }
@@ -75,8 +77,10 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             insert(UnitMemberNode(member), index);
         }
         shared actual void add(MutableTreeNode child) {
-            if (is UnitMemberNode child) { // TODO: should probably log if it's not
+            if (is UnitMemberNode child) {
                 unit.addMember(child.userObjectNarrowed);
+            } else {
+                log.info("Added a non-UnitMemberNode to a UnitNode");
             }
             super.add(child);
         }
