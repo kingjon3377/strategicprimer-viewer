@@ -409,9 +409,8 @@ SPFrame explorationFrame(IExplorationModel model,
                             if (is TileTypeFixture fixture) {
                                 // Skip it! It'll corrupt the output XML!
                                 continue;
-                            //} else if (!map.fixtures[destPoint] // TODO: syntax sugar once compiler bug fixed
-                            } else if (!map.fixtures.get(destPoint)
-                                .any((that) => fixture == that)) {
+                            //} else if (!map.fixtures[destPoint].any(fixture.equals)) { // TODO: syntax sugar once compiler bug fixed
+                            } else if (!map.fixtures.get(destPoint).any(fixture.equals)) {
                                 Boolean zero;
                                 if (is HasOwner fixture, fixture.owner != player || fixture is Village) {
                                     zero = true;
