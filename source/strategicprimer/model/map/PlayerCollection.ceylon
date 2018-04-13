@@ -17,7 +17,7 @@ import strategicprimer.model.map {
  one isn't given in the XML."
 shared class PlayerCollection() satisfies IMutablePlayerCollection {
     "The collection this class wraps."
-    MutableMap<Integer, Player> players = naturalOrderTreeMap<Integer, Player>({});
+    MutableMap<Integer, Player> players = naturalOrderTreeMap<Integer, Player>([]);
     """The player for "independent" fixtures."""
     variable Player independentPlayer = PlayerImpl(-1, "Independent");
     "Get a player by ID number."

@@ -23,7 +23,7 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent>&Destroyable {
     XMLEventReader wrapped;
     Queue<Anything()> closeHandles = LinkedList<Anything()>();
     variable Boolean closed = false;
-    shared new (XMLEventReader|JReader reader, {Anything()*} closeMethods = {}) {
+    shared new (XMLEventReader|JReader reader, {Anything()*} closeMethods = []) {
         if (is XMLEventReader reader) {
             wrapped = reader;
             if (is JCloseable reader) {

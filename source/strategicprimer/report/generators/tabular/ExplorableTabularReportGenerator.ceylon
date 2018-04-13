@@ -79,7 +79,7 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq,
             longDesc = item.fullDescription;
         }
         else {
-            return {};
+            return [];
         }
         fixtures.remove(key);
         return {{distanceString(loc, hq, dimensions), loc.string, brief, owner, longDesc}};

@@ -54,7 +54,7 @@ shared object workerPrintCLI satisfies SimpleDriver {
             cli.println();
         }
     }
-    shared actual {JPath*} askUserForFiles() => {};
+    shared actual {JPath*} askUserForFiles() => [];
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
         IDriverModel model) {
         if (is IExplorationModel model) {

@@ -86,5 +86,5 @@ object oneToTwoConverter satisfies SimpleDriver {
         }
     }
     "This is a CLI driver, so we can't show a file-chooser dialog."
-    shared actual {JPath*} askUserForFiles() => {};
+    shared actual {JPath*} askUserForFiles() => [];
 }

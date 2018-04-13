@@ -246,7 +246,7 @@ abstract class YAAbstractReader<Element>
     }
     "Advance the stream until we hit an end element matching the given name, but object to
      any start elements."
-    shared void spinUntilEnd(QName tag, {XMLEvent*} reader, {String*} futureTags = {}) {
+    shared void spinUntilEnd(QName tag, {XMLEvent*} reader, {String*} futureTags = []) {
         for (event in reader) {
             if (is StartElement event, isSupportedNamespace(event.name)) {
                 if (futureTags.map(String.lowercased).contains(event.name.localPart.lowercased)) {

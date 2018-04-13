@@ -32,11 +32,11 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
     "The unit's orders. This is serialized to and from XML, but does not affect equality
      or hashing, and is not printed in [[string]]."
     SortedMap<Integer, String>&MutableMap<Integer, String> orders =
-            naturalOrderTreeMap<Integer, String>({});
+            naturalOrderTreeMap<Integer, String>([]);
     "The unit's results. This is serialized to and from XML, but does not affect equality
      or hashing, and is not printed in [[string]]."
     SortedMap<Integer, String>&MutableMap<Integer, String> results =
-            naturalOrderTreeMap<Integer, String>({});
+            naturalOrderTreeMap<Integer, String>([]);
     "The members of the unit."
     MutableSet<UnitMember> members = ArraySet<UnitMember>();
     "The ID number."

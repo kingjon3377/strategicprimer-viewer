@@ -48,10 +48,10 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     shared actual Boolean parallel;
     "The units we are a proxy for."
     MutableList<IUnit> proxiedList = ArrayList<IUnit>();
-    variable {UnitMember*} cachedIterable = {};
+    variable {UnitMember*} cachedIterable = [];
     SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) {
         MutableMap<Integer,String>&SortedMap<Integer, String> retval =
-                TreeMap<Integer, String>((x, y) => x <=> y, {});
+                TreeMap<Integer, String>((x, y) => x <=> y, []);
         for (map in proxiedList.map(method)) {
             for (key-> item in map) {
                 if (exists existing = retval[key]) {
@@ -167,17 +167,17 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     }
     shared actual Iterator<UnitMember> iterator() {
         if (!parallel) {
-            return {}.iterator();
+            return emptyIterator;
         } // else
         if (proxiedList.empty) {
-            return {}.iterator();
+            return emptyIterator;
         } else if (!cachedIterable.empty) {
             return cachedIterable.iterator();
         } else {
 	        MutableMap<Integer, UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|
 	                    IWorker&ProxyFor<IWorker>> map =
 	                naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|
-	                    Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker>>({});
+	                    Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker>>([]);
 	        for (unit in proxiedList) {
 	            for (member in unit) {
 	                UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker> proxy;
@@ -350,7 +350,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             "Unit must have kind ``identifier``"
             assert (identifier is String, identifier != item.kind);
         }
-        cachedIterable = {};
+        cachedIterable = [];
         proxiedList.add(item);
     }
 }

@@ -37,7 +37,7 @@ shared object pathfinder {
 			assert (exists Integer currentDistance = tentativeDistances[current]);
 			if (currentDistance >= runtime.maxArraySize) {
 				log.debug("Considering a tile estimated as an infinite distance away after ``iterations`` iterations");
-				return [currentDistance, {}];
+				return [currentDistance, []];
 			} else if (current == end) {
 				log.debug("Reached the end after ``iterations`` iterations");
 				MutableList<Point> path = ArrayList<Point>();
@@ -62,10 +62,10 @@ shared object pathfinder {
 				}
 				if (estimate < 0) {
 					log.warn("Old estimate at ``neighbor`` was negative");
-					return [runtime.maxArraySize, {}];
+					return [runtime.maxArraySize, []];
 				} else if (tentativeDistance < 0) {
 					log.warn("Recomputed estimate at ``neighbor`` was negative");
-					return [runtime.maxArraySize, {}];
+					return [runtime.maxArraySize, []];
 				}
 			}
 			unvisited.remove(current);
@@ -74,10 +74,10 @@ shared object pathfinder {
 				current = next;
 			} else {
 				log.debug("Couldn't find a smallest-estimate unchecked tile after ``iterations`` iterations");
-				return [runtime.maxArraySize, {}];
+				return [runtime.maxArraySize, []];
 			}
 		}
 		log.debug("Apparently ran out of tiles after ``iterations`` iterations");
-		return [tentativeDistances[end] else runtime.maxArraySize, {}];
+		return [tentativeDistances[end] else runtime.maxArraySize, []];
 	}
 }

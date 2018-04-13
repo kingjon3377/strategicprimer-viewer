@@ -36,7 +36,7 @@ shared object strategyExportCLI satisfies SimpleDriver {
         if (is IWorkerModel model) {
             if (options.hasOption("--export")) {
                 StrategyExporter(model, options).writeStrategy(parsePath(
-                    options.getArgument("--export")).resource, {});
+                    options.getArgument("--export")).resource, []);
             } else {
                 throw DriverFailedException.illegalState("--export option is required");
             }
@@ -45,5 +45,5 @@ shared object strategyExportCLI satisfies SimpleDriver {
         }
     }
     "This is a CLI driver, so we can't show a file-chooser dialog."
-    shared actual {JPath*} askUserForFiles() => {};
+    shared actual {JPath*} askUserForFiles() => [];
 }

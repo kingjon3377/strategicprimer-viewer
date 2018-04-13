@@ -152,5 +152,5 @@ shared object trappingCLI satisfies SimpleDriver {
 		}
 	}
 	"As this is a CLI, we can't show a file-chooser dialog."
-	shared actual {JPath*} askUserForFiles() => {};
+	shared actual {JPath*} askUserForFiles() => [];
 }

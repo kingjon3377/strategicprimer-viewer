@@ -524,5 +524,5 @@ shared object queryCLI satisfies SimpleCLIDriver {
 		}
 	}
 	"As we're a CLI driver, we can't show a file-chooser dialog."
-	shared actual {JPath*} askUserForFiles() => {};
+	shared actual {JPath*} askUserForFiles() => [];
 }

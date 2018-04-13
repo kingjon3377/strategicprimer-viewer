@@ -262,7 +262,7 @@ object explorationRunnerTests {
 	    ExplorationRunner runner = ExplorationRunner();
 	    runner.loadTable("major_rock", MockTable("primary_rock_test"));
 	    assertEquals(runner.getPrimaryRock(pointFactory(0, 0),
-	            TileType.tundra, false, {}, MapDimensionsImpl(69, 88, 2)),
+	            TileType.tundra, false, [], MapDimensionsImpl(69, 88, 2)),
 	        "primary_rock_test", "primary rock test");
 	}
 	test
@@ -275,9 +275,9 @@ object explorationRunnerTests {
 	        "temperate_second_test"));
 	    Point point = pointFactory(0, 0);
 	    MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
-	    assertEquals(runner.getPrimaryTree(point, TileType.borealForest, false, {},
+	    assertEquals(runner.getPrimaryTree(point, TileType.borealForest, false, [],
 	        dimensions), "boreal_major_test", "primary tree test for boreal forest");
-	    assertEquals(runner.getPrimaryTree(point, TileType.temperateForest, false, {},
+	    assertEquals(runner.getPrimaryTree(point, TileType.temperateForest, false, [],
 	        dimensions), "temperate_major_test", "primary tree test for temperate forest");
 	    assertEquals(runner.getPrimaryTree(point, TileType.steppe, false,
 	        {Forest("kind", false, 3)}, dimensions), "boreal_second_test",
@@ -293,7 +293,7 @@ object explorationRunnerTests {
 	    Point point = pointFactory(0, 0);
 	    assertThatException(
 	                () => ExplorationRunner().getPrimaryTree(point,
-	                    TileType.tundra, false, {}, MapDimensionsImpl(69, 88, 2)))
+	                    TileType.tundra, false, [], MapDimensionsImpl(69, 88, 2)))
 	        /*.hasType(`IllegalArgumentException`)*/;
 	}
 
@@ -306,11 +306,11 @@ object explorationRunnerTests {
 	    Point point = pointFactory(0, 0);
 	    MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
 	    assertEquals(runner.consultTable("test_table_one", point,
-	            TileType.tundra, false, {}, dimensions), "test_one", "first table");
+	            TileType.tundra, false, [], dimensions), "test_one", "first table");
 	    assertEquals(runner.consultTable("test_table_two", point,
-	            TileType.tundra, false, {}, dimensions), "test_two", "second table");
+	            TileType.tundra, false, [], dimensions), "test_two", "second table");
 	    assertEquals(runner.consultTable("test_table_three", point,
-	            TileType.tundra, false, {}, dimensions), "test_three", "third table");
+	            TileType.tundra, false, [], dimensions), "test_three", "third table");
 	}
 	"Test the recursiveConsultTable method: the one method under test whose correctness
 	 is non-obvious. We don't use mock tables here because setting them up would be
@@ -325,15 +325,15 @@ object explorationRunnerTests {
 	    Point point = pointFactory(0, 0);
 	    MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
 	    assertEquals(runner.recursiveConsultTable("test_table_one", point,
-	            TileType.tundra, false, {}, dimensions),
+	            TileType.tundra, false, [], dimensions),
 	        "( ( test_three ) )", "two levels of recursion");
 	    assertEquals(runner.recursiveConsultTable("test_table_two", point,
-	            TileType.tundra, false, {}, dimensions),
+	            TileType.tundra, false, [], dimensions),
 	        "( test_three )", "one level of recursion");
 	    assertEquals(runner.recursiveConsultTable("test_table_three", point,
-	        TileType.tundra, false, {}, dimensions), "test_three", "no recursion");
+	        TileType.tundra, false, [], dimensions), "test_three", "no recursion");
 	    assertEquals(runner.recursiveConsultTable("test_table_four", point,
-	            TileType.plains, false, {}, dimensions), "_ ( ( test_three ) )",
+	            TileType.plains, false, [], dimensions), "_ ( ( test_three ) )",
 	        "one-sided split");
 	}
 
@@ -347,16 +347,16 @@ object explorationRunnerTests {
 	    Point point = pointFactory(0, 0);
 	    MapDimensions dimensions = MapDimensionsImpl(69, 88, 0);
 	    assertEquals(runner.defaultResults(point, TileType.tundra,
-	        false, {}, dimensions), """The primary rock type here is test_rock.
+	        false, [], dimensions), """The primary rock type here is test_rock.
 	                            """,
 	        "defaultResults in non-forest");
 	    assertEquals(runner.defaultResults(point, TileType.borealForest,
-	        false, {}, dimensions),
+	        false, [], dimensions),
 	        """The primary rock type here is test_rock.
 	           The main kind of tree is boreal_tree.
 	           """, "defaultResults in boreal forest");
 	    assertEquals(runner.defaultResults(point, TileType.temperateForest,
-	        false, {}, dimensions),
+	        false, [], dimensions),
 	        """The primary rock type here is test_rock.
 	           The main kind of tree is temperate_tree.
 	           """, "defaultResults in temperate forest");

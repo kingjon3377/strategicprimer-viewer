@@ -52,7 +52,7 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
             statusField = (item.exposed) then "exposed" else "not exposed";
         }
         else {
-            return {};
+            return [];
         }
         fixtures.remove(key);
         return {{distanceString(loc, hq, dimensions), loc.string, classField, item.kind,
@@ -61,7 +61,7 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, MineralFixture] one,
             [Point, MineralFixture] two) {
-        return comparing(
+        return comparing( // TODO: Use comparingOn() to convert lambdas to method reference logic
             byIncreasing(([Point, MineralFixture] pair) => pair.rest.first.kind),
                     ([Point, MineralFixture] first, [Point, MineralFixture] second) =>
             DistanceComparator(hq, dimensions).compare(first.first, second.first),

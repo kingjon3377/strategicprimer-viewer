@@ -65,7 +65,7 @@ object cliTests {
 	        "chooseFromList chooses the one specified by the user",
 	        "chooseFromList prompted the user");
 	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one")],
-	        "test desc", "none present", "prompt", true], {},
+	        "test desc", "none present", "prompt", true], [],
 	        {"test desc", "Automatically choosing only item, one.", ""},
 	        0->PlayerImpl(1, "one"),
 	        "chooseFromList chooses only choice when this is specified",
@@ -95,7 +95,7 @@ object cliTests {
 	        "chooseFromList asks even if 'auto' when multiple items",
 	        "chooseFromList prompted the user");
 	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[], "test desc", "none present",
-	        "prompt", false], {}, {"none present", ""}, -1->null,
+	        "prompt", false], [], {"none present", ""}, -1->null,
 	        "chooseFromList handles no-item case", "chooseFromList didn't prompt the user");
 	}
 	"Test inputNumber"
@@ -145,7 +145,7 @@ object cliTests {
 	    assertCLI(`ICLIHelper.inputString`, ["second prompt"], {"second"}, "second prompt ",
 	        "second", "inputString returns the entered string",
 	        "inputString displays prompt");
-	    assertCLI(`ICLIHelper.inputString`, ["third prompt"], {}, "third prompt ", "",
+	    assertCLI(`ICLIHelper.inputString`, ["third prompt"], [], "third prompt ", "",
 	        "inputString returns empty on EOF", "inputString displays prompt");
 	}
 	parameters(`value truePossibilities`)
@@ -261,7 +261,7 @@ object cliTests {
 	        "chooseStringFromList chooses the one specified by the user",
 	        "chooseStringFromList prompts the user");
 	    assertCLI(`ICLIHelper.chooseStringFromList`, [["one"], "test desc", "none present",
-	        "prompt", true], {}, {"test desc", "Automatically choosing only item, one.", ""},
+	        "prompt", true], [], {"test desc", "Automatically choosing only item, one.", ""},
 	        0->"one", "chooseStringFromList automatically chooses only choice when told to",
 	        "chooseStringFromList automatically chose only choice");
 	    assertCLI(`ICLIHelper.chooseStringFromList`, [["one"], "test desc", "none present",
@@ -288,7 +288,7 @@ object cliTests {
 	        "chooseStringFromList allows too-large choice",
 	        "chooseStringFromList allows too-large choice");
 	    assertCLI(`ICLIHelper.chooseStringFromList`, [[], "test desc", "none present",
-	        "prompt", false], {}, {"none present", ""}, -1->null,
+	        "prompt", false], [], {"none present", ""}, -1->null,
 	        "chooseStringFromList handles empty list",
 	        "chooseStringFromList handles empty list");
 	}

@@ -67,6 +67,6 @@ object tableDebugger satisfies SimpleCLIDriver {
         runner.verboseGlobalRecursiveCheck((String line) => cli.println(line));
         EncounterTable mainTable = runner.getTable("main");
         debugSingleTable("", "", mainTable, "main",
-                    (string) => cli.println(string), {});
+                    (string) => cli.println(string), []);
     }
 }

@@ -83,7 +83,7 @@ shared class ArraySet<Element> satisfies MutableSet<Element>
         given Element satisfies Object {
     "The backing array."
     MutableList<Element> impl;
-    shared new ({Element*} initial = {}) { impl = ArrayList { *initial }; }
+    shared new ({Element*} initial = []) { impl = ArrayList { *initial }; }
     shared new copy(ArraySet<Element> orig) { impl = orig.impl.clone(); }
     "Hash value."
     shared actual Integer hash => (super of Set<Element>).hash;

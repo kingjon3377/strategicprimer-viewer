@@ -44,7 +44,7 @@ shared interface SPOptions satisfies Iterable<String->String> {
 """The command-line options passed by the user. At this point we assume that if any option
    is passed to an app more than once, the subsequent option overrides the previous, and
    any option passed without argument has an implied argument of "true"."""
-shared class SPOptionsImpl({<String->String>*} existing = {}) satisfies SPOptions {
+shared class SPOptionsImpl({<String->String>*} existing = []) satisfies SPOptions {
     MutableMap<String, String> options = HashMap<String, String>();
     options.putAll(existing);
     shared void addOption(String option, String argument = "true") {
@@ -319,7 +319,7 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
         IDriverModel model);
     "As CLI drivers can't ask the user to choose a file using a file-chooser dialog, we
      simply return the empty stream here as a default."
-    shared actual default {JPath*} askUserForFiles() => {};
+    shared actual default {JPath*} askUserForFiles() => [];
     "Run the driver. If the driver is a GUIDriver, this should use
      SwingUtilities.invokeLater(); if it's a CLI driver, that's not necessary. This
      default implementation assumes a CLI driver, and writes the model back to file(s)

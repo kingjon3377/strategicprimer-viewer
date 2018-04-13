@@ -248,7 +248,7 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
                 .filter((point) => bothOrNeitherOcean(base, map.baseTerrain.get(point)))
                 .flatMap(map.fixtures.get).narrow<HarvestableFixture>().filter(isReallyClaimable);
         } else {
-            return {};
+            return [];
         }
     }
     CommunityStats enterStats(ICLIHelper cli, IDRegistrar idf, IMapNG map, Point location, ModifiableTown town) {
