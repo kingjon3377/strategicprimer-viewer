@@ -10,7 +10,8 @@ import java.sql {
 import strategicprimer.model.map {
 	Point,
 	IMutableMapNG,
-	Player
+	Player,
+	pointFactory
 }
 import strategicprimer.model.map.fixtures.towns {
 	AbstractTown,
@@ -88,6 +89,7 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>() satis
 			if (is Integer population) {
 				town.population = CommunityStats(population);
 			}
+			map.addFixture(pointFactory(row, column), town);
 		}
 	}
 }
