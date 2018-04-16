@@ -38,7 +38,7 @@ interface MapContentsReader {
 			}
 			return first;
 		} else {
-			throw AssertionError("ID not found");
+			throw AssertionError("ID ``id`` not found");
 		}
 	}
 }
