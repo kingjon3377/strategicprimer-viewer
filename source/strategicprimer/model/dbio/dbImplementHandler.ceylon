@@ -1,10 +1,5 @@
 import ceylon.dbc {
-	Sql,
-	SqlNull
-}
-
-import java.sql {
-	Types
+	Sql
 }
 
 import strategicprimer.model.map {
@@ -35,8 +30,7 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 	shared actual void write(Sql db, Implement obj, IUnit|Fortress context) {
 		db.Insert("""INSERT INTO implements (parent, id, kind, count, image)
 		             VALUES(?, ?, ?, ?, ?);""")
-				.execute(SqlNull(Types.integer), SqlNull(Types.integer), context.id, obj.id, obj.kind,
-					obj.count, obj.image);
+				.execute(context.id, obj.id, obj.kind, obj.count, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
