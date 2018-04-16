@@ -45,6 +45,8 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 		value terrainInsertion = db.Insert(
 			"""INSERT INTO terrain (row, column, terrain, mountainous, north_river,
 				   south_river, east_river, west_river, lake) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""");
+		variable Integer count = 0;
+		variable Integer fixtureCount = 0;
 		for (location in obj.locations) {
 			terrainInsertion.execute(location.row, location.column, obj.baseTerrain[location]?.xml else "",
 				//obj.mountainous[location], *riverFlags(obj.rivers[location])); // TODO: syntax sugar
@@ -52,6 +54,11 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 			//for (fixture in obj.fixtures[location]) { // TODO: syntax sugar
 			for (fixture in obj.fixtures.get(location)) {
 				spDatabaseWriter.writeSPObjectInContext(db, fixture, location);
+				fixtureCount++;
+			}
+			count++;
+			if (count % 25 == 0) {
+				log.trace("Finished writing ``count`` points, with ``fixtureCount`` fixtures so far");
 			}
 		}
 	}
