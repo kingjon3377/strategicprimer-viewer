@@ -26,7 +26,7 @@ object dbMapReader {
 		dbCommunityStatsHandler, dbWorkerHandler];
 	shared IMutableMapNG readMap(Sql db, Warning warner) {
 		assert (exists metadata = db.Select("""SELECT version, rows, columns, current_turn FROM metadata LIMIT 1""")
-				.execute().first, is Integer version = metadata["version"], is Integer rows = metadata["row"],
+				.execute().first, is Integer version = metadata["version"], is Integer rows = metadata["rows"],
 			is Integer columns = metadata["columns"], is Integer turn = metadata["current_turn"]);
 		IMutablePlayerCollection players = PlayerCollection();
 		for (row in db.Select("""SELECT id, codename, current FROM players""").Results()) {
