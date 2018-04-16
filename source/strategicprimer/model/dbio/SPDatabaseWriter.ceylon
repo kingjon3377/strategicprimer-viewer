@@ -10,6 +10,10 @@ import ceylon.file {
 	File,
 	Nil
 }
+import ceylon.logging {
+	Logger,
+	logger
+}
 import ceylon.dbc {
 	Sql,
 	newConnectionFromDataSource
@@ -26,21 +30,20 @@ import strategicprimer.model.map {
 import ceylon.language.meta {
 	classDeclaration
 }
-import org.h2.jdbcx {
-	H2DataSource=JdbcDataSource
-}
+"A logger."
+Logger log = logger(`module strategicprimer.model`);
 shared object spDatabaseWriter satisfies SPWriter {
 	MutableMap<Path, Sql> connections = HashMap<Path, Sql>();
-	DataSource getBaseConnection(Path path) { // TODO: Figure out how to use Derby/JavaDB for an empty Path
+	DataSource getBaseConnection(Path path) {
+		SQLiteDataSource retval = SQLiteDataSource();
 		if (path.string.empty) {
-			value retval = H2DataSource();
-			retval.setUrl("jdbc:h2:mem:");
-			return retval;
+			log.trace("Trying to set up an in-memory database");
+			retval.url = "jdbc:sqlite:file::memory:";
 		} else {
-			SQLiteDataSource retval = SQLiteDataSource();
+			log.trace("Setting up an SQLite database for file ``path``");
 			retval.url = "jdbc:sqlite:``path``";
-			return retval;
 		}
+		return retval;
 	}
 	Sql getSQL(Path path) {
 		if (exists connection = connections[path]) {
