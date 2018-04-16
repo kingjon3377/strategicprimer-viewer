@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 
 import strategicprimer.model.map {
@@ -34,9 +35,9 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
 		for (dbRow in db.Select("""SELECT * FROM adventures""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String brief = dbRow["brief"], is String full = dbRow["full"],
-				is Integer ownerId = dbRow["owner"], is String? image = dbRow["image"]);
+				is Integer ownerId = dbRow["owner"], is String|SqlNull image = dbRow["image"]);
 			value adventure = AdventureFixture(map.players.getPlayer(ownerId), brief, full, id);
-			if (exists image) {
+			if (is String image) {
 				adventure.image = image;
 			}
 			map.addFixture(pointFactory(row, column), adventure);

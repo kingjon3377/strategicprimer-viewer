@@ -99,19 +99,21 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 		for (row in db.Select("""SELECT * FROM workers""").Results()) {
 			assert (is Integer unitId = row["unit"], is IUnit unit = super.findById(map, unitId, warner),
 				is Integer id = row["id"], is String name = row["name"], is String race = row["race"],
-				is String? image = row["image"], is String? portrait = row["portrait"],
-				is Integer? hp = row["hp"], is Integer? maxHp = row["max_hp"], is Integer? str = row["str"],
-				is Integer? dex = row["dex"], is Integer? con = row["con"], is Integer? int = row["int"],
-				is Integer? wis = row["wis"], is Integer? cha = row["cha"]);
+				is String|SqlNull image = row["image"], is String|SqlNull portrait = row["portrait"],
+				is Integer|SqlNull hp = row["hp"], is Integer|SqlNull maxHp = row["max_hp"],
+				is Integer|SqlNull str = row["str"], is Integer|SqlNull dex = row["dex"],
+				is Integer|SqlNull con = row["con"], is Integer|SqlNull int = row["int"],
+				is Integer|SqlNull wis = row["wis"], is Integer|SqlNull cha = row["cha"]);
 			Worker worker = Worker(name, race, id);
-			if (exists hp) {
-				assert (exists maxHp, exists str, exists dex, exists con, exists int, exists wis, exists cha);
+			if (is Integer hp) {
+				assert (is Integer maxHp, is Integer str, is Integer dex, is Integer con, is Integer int,
+					is Integer wis, is Integer cha);
 				worker.stats = WorkerStats(hp, maxHp, str, dex, con, int, wis, cha);
 			}
-			if (exists image) {
+			if (is String image) {
 				worker.image = image;
 			}
-			if (exists portrait) {
+			if (is String portrait) {
 				worker.portrait = portrait;
 			}
 			if (exists existing = workers[id]) {

@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 import ceylon.decimal {
 	parseDecimal
@@ -46,7 +47,7 @@ object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|
 			assert (is Integer parentId = row["parent"], is IUnit|Fortress parent = findById(map, parentId, warner),
 				is Integer id = row["id"], is String kind = row["kind"], is String contents = row["contents"],
 				is String qtyString = row["quantity"], is String units = row ["units"],
-				is Integer? created = row["created"], is String? image = row["image"]);
+				is Integer|SqlNull created = row["created"], is String|SqlNull image = row["image"]);
 			Number<out Anything> quantity;
 			if (is Integer num = Integer.parse(qtyString)) {
 				quantity = num;
@@ -54,8 +55,8 @@ object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|
 				assert (exists num = parseDecimal(qtyString));
 				quantity = num;
 			}
-			value pile = ResourcePile(id, kind, contents, Quantity(quantity, units));
-			if (exists image) {
+			value pile = ResourcePile(id, kind, contents, Quantity(quantity, units)); // FIXME: Set 'created' if present
+			if (is String image) {
 				pile.image = image;
 			}
 			if (is IUnit parent) {

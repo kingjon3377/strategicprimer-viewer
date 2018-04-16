@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 
 import strategicprimer.model.map {
@@ -49,9 +50,9 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 		for (dbRow in db.Select("""SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String kindString = dbRow["kind"], is StoneKind kind = StoneKind.parse(kindString),
-				is Integer dc = dbRow["dc"], is String? image = dbRow["image"]);
+				is Integer dc = dbRow["dc"], is String|SqlNull image = dbRow["image"]);
 			value stone = StoneDeposit(kind, dc, id);
-			if (exists image) {
+			if (is String image) {
 				stone.image = image;
 			}
 			map.addFixture(pointFactory(row, column), stone);
@@ -59,9 +60,9 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 		for (dbRow in db.Select("""SELECT row, column, id, kind, exposed, dc, image FROM minerals WHERE type = 'mineral'""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String kind = dbRow["kind"], is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
-				is Integer dc = dbRow["dc"], is String? image = dbRow["image"]);
+				is Integer dc = dbRow["dc"], is String|SqlNull image = dbRow["image"]);
 			value mineral = MineralVein(kind, exposed, dc, id);
-			if (exists image) {
+			if (is String image) {
 				mineral.image = image;
 			}
 			map.addFixture(pointFactory(row, column), mineral);

@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 
 import strategicprimer.model.map {
@@ -37,9 +38,9 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 		for (row in db.Select("""SELECT * FROM implements""").Results()) {
 			assert (is Integer parentId = row["parent"], is IUnit|Fortress parent = findById(map, parentId, warner),
 				is Integer id = row["id"], is String kind = row["kind"], is Integer count = row["count"],
-				is String? image = row["image"]);
+				is String|SqlNull image = row["image"]);
 			value implement = Implement(kind, id, count);
-			if (exists image) {
+			if (is String image) {
 				implement.image = image;
 			}
 			if (is IUnit parent) {

@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 
 import strategicprimer.model.map {
@@ -34,9 +35,9 @@ object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>() satisfies
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
 				is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
-				is String? image = dbRow["image"]);
+				is String|SqlNull image = dbRow["image"]);
 			value ground = Ground(id, kind, exposed);
-			if (exists image) {
+			if (is String image) {
 				ground.image = image;
 			}
 			map.addFixture(pointFactory(row, column), ground);

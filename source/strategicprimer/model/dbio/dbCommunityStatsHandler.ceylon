@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 import ceylon.decimal {
 	Decimal,
@@ -96,7 +97,7 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId, warner),
 				exists population = town.population, is Integer id = row["id"], is String kind = row["kind"],
 				is String contents = row["contents"], is String qtyString = row["quantity"],
-				is String units = row["units"], is Integer? created = row["created"]);
+				is String units = row["units"], is Integer|SqlNull created = row["created"]);
 			Number<out Anything> quantity;
 			if (is Integer num = Integer.parse(qtyString)) {
 				quantity = num;
@@ -105,7 +106,7 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 				quantity = num;
 			}
 			value pile = ResourcePile(id, kind, contents, Quantity(quantity, units));
-			if (exists created) {
+			if (is Integer created) {
 				pile.created = created;
 			}
 			population.yearlyProduction.add(pile);
@@ -114,7 +115,7 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId, warner),
 				exists population = town.population, is Integer id = row["id"], is String kind = row["kind"],
 				is String contents = row["contents"], is String qtyString = row["quantity"],
-				is String units = row["units"], is Integer? created = row["created"]);
+				is String units = row["units"], is Integer|SqlNull created = row["created"]);
 			Number<out Anything> quantity;
 			if (is Integer num = Integer.parse(qtyString)) {
 				quantity = num;
@@ -123,7 +124,7 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 				quantity = num;
 			}
 			value pile = ResourcePile(id, kind, contents, Quantity(quantity, units));
-			if (exists created) {
+			if (is Integer created) {
 				pile.created = created;
 			}
 			population.yearlyConsumption.add(pile);

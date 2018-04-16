@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 
 import strategicprimer.model.map {
@@ -13,6 +14,11 @@ import strategicprimer.model.map.fixtures.resources {
 import strategicprimer.model.xmlio {
 	Warning
 }
+
+import lovelace.util.common {
+	as
+}
+
 object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS shrubs (
@@ -33,9 +39,10 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>() satisfies M
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM shrubs""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
-				is String kind = dbRow["kind"], is Integer? count = dbRow["count"], is String? image = dbRow["image"]);
-			value shrub = Shrub(kind, id, count else -1);
-			if (exists image) {
+				is String kind = dbRow["kind"], is Integer|SqlNull count = dbRow["count"],
+				is String|SqlNull image = dbRow["image"]);
+			value shrub = Shrub(kind, id, as<Integer>(count) else -1);
+			if (is String image) {
 				shrub.image = image;
 			}
 			map.addFixture(pointFactory(row, column), shrub);

@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 import ceylon.decimal {
 	Decimal,
@@ -39,7 +40,7 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>() satisfies
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
 				is Boolean rows = dbMapReader.databaseBoolean(dbRow["rows"]),
-				is String acresString = dbRow["acres"], is String? image = dbRow["image"]);
+				is String acresString = dbRow["acres"], is String|SqlNull image = dbRow["image"]);
 			Number<out Anything> acres;
 			if (is Integer num = Integer.parse(acresString)) {
 				acres = num;
@@ -48,7 +49,7 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>() satisfies
 				acres = num;
 			}
 			value forest = Forest(kind, rows, id, acres);
-			if (exists image) {
+			if (is String image) {
 				forest.image = image;
 			}
 			map.addFixture(pointFactory(row, column), forest);

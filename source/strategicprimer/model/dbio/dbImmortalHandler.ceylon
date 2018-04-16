@@ -108,7 +108,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) { // TODO: Reduce code duplication (and in other readers)
 		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is String type = dbRow["type"],
-				is Integer id = dbRow["id"], is String? image = dbRow["image"]);
+				is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
 			SimpleImmortal immortal;
 			switch (type)
 			case ("sphinx") {
@@ -138,7 +138,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			else {
 				throw AssertionError("Unhandled 'simple immortal' type");
 			}
-			if (exists image) {
+			if (is String image) {
 				immortal.image = image;
 			}
 			map.addFixture(pointFactory(row, column), immortal);
@@ -146,7 +146,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String type = dbRow["type"], is String kind = dbRow["kind"], is Integer id = dbRow["id"],
-				is String? image = dbRow["image"]);
+				is String|SqlNull image = dbRow["image"]);
 			Immortal&HasMutableImage immortal;
 			switch (type)
 			case ("centaur") {
@@ -164,7 +164,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			else {
 				throw AssertionError("Unexpected immortal kind");
 			}
-			if (exists image) {
+			if (is String image) {
 				immortal.image = image;
 			}
 			map.addFixture(pointFactory(row, column), immortal);
@@ -173,7 +173,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
-				is String type = dbRow["type"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);
+				is String type = dbRow["type"], is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
 			SimpleImmortal immortal;
 			switch (type)
 			case ("sphinx") {
@@ -203,7 +203,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			else {
 				throw AssertionError("Unhandled 'simple immortal' type");
 			}
-			if (exists image) {
+			if (is String image) {
 				immortal.image = image;
 			}
 			parent.addMember(immortal);
@@ -211,7 +211,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
 				is String type = dbRow["type"], is String kind = dbRow["kind"], is Integer id = dbRow["id"],
-				is String? image = dbRow["image"]);
+				is String|SqlNull image = dbRow["image"]);
 			Immortal&HasMutableImage immortal;
 			switch (type)
 			case ("centaur") {
@@ -229,7 +229,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			else {
 				throw AssertionError("Unexpected immortal kind");
 			}
-			if (exists image) {
+			if (is String image) {
 				immortal.image = image;
 			}
 			parent.addMember(immortal);

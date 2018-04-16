@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 
 import strategicprimer.model.map {
@@ -36,9 +37,9 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>() satisfies Map
 		for (dbRow in db.Select("""SELECT * FROM mines""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String kind = dbRow["kind"], is String statusString = dbRow["status"],
-				is TownStatus status = TownStatus.parse(statusString), is String? image = dbRow["image"]);
+				is TownStatus status = TownStatus.parse(statusString), is String|SqlNull image = dbRow["image"]);
 			value mine = Mine(kind, status, id);
-			if (exists image) {
+			if (is String image) {
 				mine.image = image;
 			}
 			map.addFixture(pointFactory(row, column), mine);

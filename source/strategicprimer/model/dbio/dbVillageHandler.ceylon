@@ -51,16 +51,16 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>() satisfi
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String statusString = dbRow["status"], is TownStatus status = TownStatus.parse(statusString),
 				is String name = dbRow["name"], is Integer id = dbRow["id"], is Integer ownerId = dbRow["owner"],
-				is String race = dbRow["race"], is String? image = dbRow["image"], is String? portrait = dbRow["portrait"],
-				is Integer? population = dbRow["population"]);
+				is String race = dbRow["race"], is String|SqlNull image = dbRow["image"],
+				is String|SqlNull portrait = dbRow["portrait"], is Integer|SqlNull population = dbRow["population"]);
 			value village = Village(status, name, id, map.players.getPlayer(ownerId), race);
-			if (exists image) {
+			if (is String image) {
 				village.image = image;
 			}
-			if (exists portrait) {
+			if (is String portrait) {
 				village.portrait = portrait;
 			}
-			if (exists population) {
+			if (is Integer population) {
 				village.population = CommunityStats(population);
 			}
 			map.addFixture(pointFactory(row, column), village);

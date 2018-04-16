@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 
 import strategicprimer.model.map {
@@ -46,7 +47,8 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar,
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM simple_terrain""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is String type = dbRow["type"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);
+				is String type = dbRow["type"], is Integer id = dbRow["id"],
+				is String|SqlNull image = dbRow["image"]);
 			TileFixture&HasMutableImage fixture;
 			switch (type)
 			case ("hill") {
@@ -61,7 +63,7 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar,
 			else {
 				throw AssertionError("Unhandled simple terrain-fixture type");
 			}
-			if (exists image) {
+			if (is String image) {
 				fixture.image = image;
 			}
 			map.addFixture(pointFactory(row, column), fixture);

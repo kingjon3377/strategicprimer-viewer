@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 
 import strategicprimer.model.map {
@@ -42,13 +43,13 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>() satis
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer ownerId = dbRow["owner"], is String name = dbRow["name"],
 				is String sizeString = dbRow["size"], is TownSize size = TownSize.parse(sizeString),
-				is Integer id = dbRow["id"], is String? image = dbRow["image"],
-				is String? portrait = dbRow["portrait"]);
+				is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"],
+				is String|SqlNull portrait = dbRow["portrait"]);
 			value fortress = Fortress(map.players.getPlayer(ownerId), name, id, size);
-			if (exists image) {
+			if (is String image) {
 				fortress.image = image;
 			}
-			if (exists portrait) {
+			if (is String portrait) {
 				fortress.portrait = portrait;
 			}
 			map.addFixture(pointFactory(row, column), fortress);

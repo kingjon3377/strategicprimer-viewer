@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 
 import strategicprimer.model.map {
@@ -14,7 +15,7 @@ import strategicprimer.model.xmlio {
 	Warning
 }
 object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>() satisfies MapContentsReader {
-	shared actual {String+} initializers =
+	shared actual {String+} initializers = // FIXME: We constrain image to be NOT NULL here but assume it might be when reading below
 			["""CREATE TABLE IF NOT EXISTS caches (
 				    row INTEGER NOT NULL,
 				    column INTEGER NOT NULL,
@@ -32,9 +33,9 @@ object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>() sati
 		for (dbRow in db.Select("""SELECT * FROM caches""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
-				is String contents = dbRow["contents"], is String? image = dbRow["image"]);
+				is String contents = dbRow["contents"], is String|SqlNull image = dbRow["image"]);
 			value cache = CacheFixture(kind, contents, id);
-			if (exists image) {
+			if (is String image) {
 				cache.image = image;
 			}
 			map.addFixture(pointFactory(row, column), cache);

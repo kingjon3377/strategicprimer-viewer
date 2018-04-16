@@ -22,6 +22,10 @@ import strategicprimer.model.xmlio {
 	Warning
 }
 
+import lovelace.util.common {
+	as
+}
+
 object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() satisfies MapContentsReader {
 	Integer|SqlNull born(Animal animal) {
 		if (exists maturityAge = maturityModel.maturityAges[animal.kind],
@@ -80,19 +84,19 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 		for (dbRow in db.Select("""SELECT * FROM animals WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String kind = dbRow["kind"], is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
-				is String status = dbRow["status"], is Integer? born = dbRow["born"],
-				is Integer count = dbRow["count"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);
-			value animal = AnimalImpl(kind, false, talking, status, id, born else -1, count);
-			if (exists image) {
+				is String status = dbRow["status"], is Integer|SqlNull born = dbRow["born"],
+				is Integer count = dbRow["count"], is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
+			value animal = AnimalImpl(kind, false, talking, status, id, as<Integer>(born) else -1, count);
+			if (is String image) {
 				animal.image = image;
 			}
 			map.addFixture(pointFactory(row, column), animal);
 		}
 		for (dbRow in db.Select("""SELECT * FROM tracks""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is String kind = dbRow["kind"], is String? image = dbRow["image"]);
+				is String kind = dbRow["kind"], is String|SqlNull image = dbRow["image"]);
 			value track = AnimalImpl(kind, true, false, "wild", -1, -1, -1);
-			if (exists image) {
+			if (is String image) {
 				track.image = image;
 			}
 			map.addFixture(pointFactory(row, column), track);
@@ -102,10 +106,10 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 		for (dbRow in db.Select("""SELECT * FROM animals WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
 				is String kind = dbRow["kind"], is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
-				is String status = dbRow["status"], is Integer? born = dbRow["born"],
-				is Integer count = dbRow["count"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);
-			value animal = AnimalImpl(kind, false, talking, status, id, born else -1, count);
-			if (exists image) {
+				is String status = dbRow["status"], is Integer|SqlNull born = dbRow["born"],
+				is Integer count = dbRow["count"], is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
+			value animal = AnimalImpl(kind, false, talking, status, id, as<Integer>(born) else -1, count);
+			if (is String image) {
 				animal.image = image;
 			}
 			parent.addMember(animal);

@@ -61,8 +61,9 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>() satis
 				is String kind = dbRow["kind"], is String statusString = dbRow["status"],
 				is TownStatus status = TownStatus.parse(statusString), is String sizeString = dbRow["size"],
 				is TownSize size = TownSize.parse(sizeString), is Integer dc = dbRow["dc"],
-				is String name = dbRow["name"], is Integer ownerNum = dbRow["owner"], is String? image = dbRow["image"],
-				is String? portrait = dbRow["portrait"], is Integer? population = dbRow["population"]);
+				is String name = dbRow["name"], is Integer ownerNum = dbRow["owner"],
+				is String|SqlNull image = dbRow["image"], is String|SqlNull portrait = dbRow["portrait"],
+				is Integer|SqlNull population = dbRow["population"]);
 			AbstractTown town;
 			Player owner = map.players.getPlayer(ownerNum);
 			switch (kind)
@@ -78,13 +79,13 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>() satis
 			else {
 				throw AssertionError("Unhandled kind of town");
 			}
-			if (exists image) {
+			if (is String image) {
 				town.image = image;
 			}
-			if (exists portrait) {
+			if (is String portrait) {
 				town.portrait = portrait;
 			}
-			if (exists population) {
+			if (is Integer population) {
 				town.population = CommunityStats(population);
 			}
 		}

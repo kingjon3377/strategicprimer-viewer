@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 
 import strategicprimer.model.map {
@@ -38,7 +39,7 @@ object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>() satisfies M
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String type = dbRow["type"], is String kind = dbRow["kind"],
 				is Boolean cultivated = dbMapReader.databaseBoolean(dbRow["cultivated"]),
-				is Integer count = dbRow["count"], is String? image = dbRow["image"]);
+				is Integer count = dbRow["count"], is String|SqlNull image = dbRow["image"]);
 			Boolean orchard;
 			switch (type)
 			case ("grove") {
@@ -51,7 +52,7 @@ object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>() satisfies M
 				throw AssertionError("Unexpected grove type");
 			}
 			value grove = Grove(orchard, cultivated, kind, id, count);
-			if (exists image) {
+			if (is String image) {
 				grove.image = image;
 			}
 			map.addFixture(pointFactory(row, column), grove);

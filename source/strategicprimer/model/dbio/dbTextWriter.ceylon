@@ -18,6 +18,11 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.model.xmlio {
 	Warning
 }
+
+import lovelace.util.common {
+	as
+}
+
 object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS text_notes (
@@ -41,9 +46,10 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>() satisf
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM text_notes""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer? turn = dbRow["turn"], is String text = dbRow["text"], is String? image = dbRow["image"]);
-			value fixture = TextFixture(text, turn else -1);
-			if (exists image) {
+				is Integer|SqlNull turn = dbRow["turn"], is String text = dbRow["text"],
+				is String|SqlNull image = dbRow["image"]);
+			value fixture = TextFixture(text, as<Integer>(turn) else -1);
+			if (is String image) {
 				fixture.image = image;
 			}
 			map.addFixture(pointFactory(row, column), fixture);

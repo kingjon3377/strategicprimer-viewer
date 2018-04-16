@@ -18,6 +18,11 @@ import strategicprimer.model.map.fixtures.explorable {
 import strategicprimer.model.xmlio {
 	Warning
 }
+
+import lovelace.util.common {
+	as
+}
+
 object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS portals (
@@ -47,12 +52,13 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>() satisfies
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM portals""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String? destinationWorld = dbRow["destination_world"],
-				is Integer? destinationRow = dbRow["destination_row"],
-				is Integer? destinationColumn = dbRow["destination_column"], is String? image = dbRow["image"]);
-			value portal = Portal(destinationWorld else "unknown",
-				pointFactory(destinationRow else -1, destinationColumn else -1), id);
-			if (exists image) {
+				is Integer id = dbRow["id"], is String|SqlNull destinationWorld = dbRow["destination_world"],
+				is Integer|SqlNull destinationRow = dbRow["destination_row"],
+				is Integer|SqlNull destinationColumn = dbRow["destination_column"],
+				is String|SqlNull image = dbRow["image"]);
+			value portal = Portal(as<String>(destinationWorld) else "unknown",
+				pointFactory(as<Integer>(destinationRow) else -1, as<Integer>(destinationColumn) else -1), id);
+			if (is String image) {
 				portal.image = image;
 			}
 			map.addFixture(pointFactory(row, column), portal);

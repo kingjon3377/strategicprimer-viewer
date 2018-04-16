@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 import ceylon.decimal {
 	Decimal,
@@ -47,7 +48,7 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>() satisfies 
 				is String type = dbRow["type"], is String kind = dbRow["kind"],
 				is Boolean cultivated = dbMapReader.databaseBoolean(dbRow["cultivated"]),
 				is String statusString = dbRow["status"], is FieldStatus status = FieldStatus.parse(statusString),
-				is String acresString = dbRow["acres"], is String? image = dbRow["image"]);
+				is String acresString = dbRow["acres"], is String|SqlNull image = dbRow["image"]);
 			Number<out Anything> acres;
 			if (is Integer num = Integer.parse(acresString)) {
 				acres = num;
@@ -67,7 +68,7 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>() satisfies 
 				throw AssertionError("Unhandled field type");
 			}
 			value meadow = Meadow(kind, field, cultivated, id, status, acres);
-			if (exists image) {
+			if (is String image) {
 				meadow.image = image;
 			}
 			map.addFixture(pointFactory(row, column), meadow);

@@ -23,6 +23,11 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.model.xmlio {
 	Warning
 }
+
+import lovelace.util.common {
+	as
+}
+
 object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS units (
@@ -83,21 +88,21 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
 				is String name = dbRow["name"], is Integer id = dbRow["id"],
-				is String? image = dbRow["image"], is String? portrait = dbRow["portrait"]);
+				is String|SqlNull image = dbRow["image"], is String|SqlNull portrait = dbRow["portrait"]);
 			value unit = Unit(map.players.getPlayer(ownerNum), kind, name, id);
-			if (exists image) {
+			if (is String image) {
 				unit.image = image;
 			}
-			if (exists portrait) {
+			if (is String portrait) {
 				unit.portrait = portrait;
 			}
 			for (ordersRow in db.Select("""SELECT * from orders WHERE unit = ?""").Results(id)) {
-				assert (is Integer? turn = ordersRow["turn"], is String orders = ordersRow["orders"]);
-				unit.setOrders(turn else -1, orders);
+				assert (is Integer|SqlNull turn = ordersRow["turn"], is String orders = ordersRow["orders"]);
+				unit.setOrders(as<Integer>(turn) else -1, orders);
 			}
 			for (resultsRow in db.Select("""SELECT * from results WHERE unit = ?""").Results(id)) {
-				assert (is Integer? turn = resultsRow["turn"], is String results = resultsRow["results"]);
-				unit.setResults(turn else -1, results);
+				assert (is Integer|SqlNull turn = resultsRow["turn"], is String results = resultsRow["results"]);
+				unit.setResults(as<Integer>(turn) else -1, results);
 			}
 			map.addFixture(pointFactory(row, column), unit);
 		}
@@ -106,22 +111,22 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 		for (dbRow in db.Select("""SELECT * FROM units WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentNum = dbRow["parent"], is Fortress parent = super.findById(map, parentNum, warner),
 				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
-				is String name = dbRow["name"], is Integer id = dbRow["id"], is String? image = dbRow["image"],
-				is String? portrait = dbRow["portrait"]);
+				is String name = dbRow["name"], is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"],
+				is String|SqlNull portrait = dbRow["portrait"]);
 			value unit = Unit(map.players.getPlayer(ownerNum), kind, name, id);
-			if (exists image) {
+			if (is String image) {
 				unit.image = image;
 			}
-			if (exists portrait) {
+			if (is String portrait) {
 				unit.portrait = portrait;
 			}
 			for (ordersRow in db.Select("""SELECT * from orders WHERE unit = ?""").Results(id)) {
-				assert (is Integer? turn = ordersRow["turn"], is String orders = ordersRow["orders"]);
-				unit.setOrders(turn else -1, orders);
+				assert (is Integer|SqlNull turn = ordersRow["turn"], is String orders = ordersRow["orders"]);
+				unit.setOrders(as<Integer>(turn) else -1, orders);
 			}
 			for (resultsRow in db.Select("""SELECT * from results WHERE unit = ?""").Results(id)) {
-				assert (is Integer? turn = resultsRow["turn"], is String results = resultsRow["results"]);
-				unit.setResults(turn else -1, results);
+				assert (is Integer|SqlNull turn = resultsRow["turn"], is String results = resultsRow["results"]);
+				unit.setResults(as<Integer>(turn) else -1, results);
 			}
 			parent.addMember(unit);
 		}
