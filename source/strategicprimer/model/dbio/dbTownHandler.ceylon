@@ -31,7 +31,7 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>() satis
 			   column INTEGER NOT NULL,
 			   id INTEGER NOT NULL,
 			   kind VARCHAR(13) NOT NULL
-				   CHECK(kind IN ('town', 'city', 'fortification'))
+				   CHECK(kind IN ('town', 'city', 'fortification')),
 			   status VARCHAR(9) NOT NULL
 				   CHECK(status IN ('abandoned', 'active', 'burned', 'ruined')),
 			   size VARCHAR(6) NOT NULL
