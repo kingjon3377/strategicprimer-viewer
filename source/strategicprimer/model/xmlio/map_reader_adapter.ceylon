@@ -67,8 +67,10 @@ shared object mapIOHelper {
 	"Write a map to file."
 	shared void writeMap(Path file, IMapNG map) {
 		if (file.string.endsWith(".db") || file.string.empty) {
+			log.trace("Writing to ``file`` as an SQLite database");
 			dbWriter.write(file, map);
 		} else {
+			log.trace("Writing to ``file``");
 			writer.write(file, map);
 		}
 	}
