@@ -37,8 +37,8 @@ object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>() satisfies M
 		for (dbRow in db.Select("""SELECT * FROM groves""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String type = dbRow["type"], is String kind = dbRow["kind"],
-				is Boolean cultivated = dbRow["cultivated"], is Integer count = dbRow["count"],
-				is String? image = dbRow["image"]);
+				is Boolean cultivated = dbMapReader.databaseBoolean(dbRow["cultivated"]),
+				is Integer count = dbRow["count"], is String? image = dbRow["image"]);
 			Boolean orchard;
 			switch (type)
 			case ("grove") {

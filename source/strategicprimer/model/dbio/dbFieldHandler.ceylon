@@ -45,8 +45,8 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>() satisfies 
 		for (dbRow in db.Select("""SELECT * FROM fields""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String type = dbRow["type"], is String kind = dbRow["kind"],
-				is Boolean cultivated = dbRow["cultivated"], is String statusString = dbRow["status"],
-				is FieldStatus status = FieldStatus.parse(statusString),
+				is Boolean cultivated = dbMapReader.databaseBoolean(dbRow["cultivated"]),
+				is String statusString = dbRow["status"], is FieldStatus status = FieldStatus.parse(statusString),
 				is String acresString = dbRow["acres"], is String? image = dbRow["image"]);
 			Number<out Anything> acres;
 			if (is Integer num = Integer.parse(acresString)) {

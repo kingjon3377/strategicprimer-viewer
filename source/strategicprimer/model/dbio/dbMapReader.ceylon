@@ -24,13 +24,32 @@ object dbMapReader {
 		dbMineralHandler, dbMineHandler, dbPortalHandler, dbShrubHandler, dbSimpleTerrainHandler,
 		dbTextHandler, dbTownHandler, dbVillageHandler, dbResourcePileHandler, dbAnimalHandler,
 		dbCommunityStatsHandler, dbWorkerHandler];
+	"If [[field]] is is an Integer and either 0 or 1, which is how SQLite stores Boolean
+	 values, convert to the equivalent Boolean and return that; otherwise, return the original value."
+	shared Anything databaseBoolean(Anything field) {
+		if (is Integer field) {
+			switch (field)
+			case (0) {
+				return false;
+			}
+			case (1) {
+				return true;
+			}
+			else {
+				return field;
+			}
+		} else {
+			return field;
+		}
+	}
 	shared IMutableMapNG readMap(Sql db, Warning warner) {
 		assert (exists metadata = db.Select("""SELECT version, rows, columns, current_turn FROM metadata LIMIT 1""")
 				.execute().first, is Integer version = metadata["version"], is Integer rows = metadata["rows"],
 			is Integer columns = metadata["columns"], is Integer turn = metadata["current_turn"]);
 		IMutablePlayerCollection players = PlayerCollection();
 		for (row in db.Select("""SELECT id, codename, current FROM players""").Results()) {
-			assert (is Integer id = row["id"], is String codename = row["codename"], is Boolean current = row["current"]);
+			assert (is Integer id = row["id"], is String codename = row["codename"],
+				is Boolean current = databaseBoolean(row["current"]));
 			MutablePlayer player = PlayerImpl(id, codename);
 			if (current) {
 				player.current = true;
@@ -40,10 +59,10 @@ object dbMapReader {
 		IMutableMapNG retval = SPMapNG(MapDimensionsImpl(rows, columns, version), players, turn);
 		for (dbRow in db.Select("""SELECT * FROM terrain""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is String terrainString = dbRow["terrain"], is Boolean mtn = dbRow["mountainous"],
-				is Boolean northR = dbRow["north_river"], is Boolean southR = dbRow["south_river"],
-				is Boolean eastR = dbRow["east_river"], is Boolean westR = dbRow["west_river"],
-				is Boolean lake = dbRow["lake"]);
+				is String terrainString = dbRow["terrain"], is Boolean mtn = databaseBoolean(dbRow["mountainous"]),
+				is Boolean northR = databaseBoolean(dbRow["north_river"]), is Boolean southR = databaseBoolean(dbRow["south_river"]),
+				is Boolean eastR = databaseBoolean(dbRow["east_river"]), is Boolean westR = databaseBoolean(dbRow["west_river"]),
+				is Boolean lake = databaseBoolean(dbRow["lake"]));
 			Point location = pointFactory(row, column);
 			if (!terrainString.empty) {
 				assert (is TileType terrain = TileType.parse(terrainString));

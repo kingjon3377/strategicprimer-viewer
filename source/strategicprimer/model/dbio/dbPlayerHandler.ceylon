@@ -25,7 +25,8 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>() satisfie
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (row in db.Select("""SELECT * FROM PLAYERS""").Results()) {
-			assert (is Integer id = row["id"], is String name = row["codename"], is Boolean current = row["current"]);
+			assert (is Integer id = row["id"], is String name = row["codename"],
+				is Boolean current = dbMapReader.databaseBoolean(row["current"]));
 			value player = PlayerImpl(id, name);
 			player.current = current;
 			map.addPlayer(player);

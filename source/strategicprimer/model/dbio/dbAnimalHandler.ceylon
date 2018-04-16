@@ -79,7 +79,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM animals WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is String kind = dbRow["kind"], is Boolean talking = dbRow["talking"],
+				is String kind = dbRow["kind"], is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
 				is String status = dbRow["status"], is Integer? born = dbRow["born"],
 				is Integer count = dbRow["count"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);
 			value animal = AnimalImpl(kind, false, talking, status, id, born else -1, count);
@@ -101,7 +101,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM animals WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
-				is String kind = dbRow["kind"], is Boolean talking = dbRow["talking"],
+				is String kind = dbRow["kind"], is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
 				is String status = dbRow["status"], is Integer? born = dbRow["born"],
 				is Integer count = dbRow["count"], is Integer id = dbRow["id"], is String? image = dbRow["image"]);
 			value animal = AnimalImpl(kind, false, talking, status, id, born else -1, count);

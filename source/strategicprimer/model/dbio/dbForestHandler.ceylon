@@ -37,7 +37,8 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>() satisfies
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		for (dbRow in db.Select("""SELECT * FROM forests""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String kind = dbRow["kind"], is Boolean rows = dbRow["rows"],
+				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
+				is Boolean rows = dbMapReader.databaseBoolean(dbRow["rows"]),
 				is String acresString = dbRow["acres"], is String? image = dbRow["image"]);
 			Number<out Anything> acres;
 			if (is Integer num = Integer.parse(acresString)) {

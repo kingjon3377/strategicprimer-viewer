@@ -58,8 +58,8 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 		}
 		for (dbRow in db.Select("""SELECT row, column, id, kind, exposed, dc, image FROM minerals WHERE type = 'mineral""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
-				is String kind = dbRow["kind"], is Boolean exposed = dbRow["exposed"], is Integer dc = dbRow["dc"],
-				is String? image = dbRow["image"]);
+				is String kind = dbRow["kind"], is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
+				is Integer dc = dbRow["dc"], is String? image = dbRow["image"]);
 			value mineral = MineralVein(kind, exposed, dc, id);
 			if (exists image) {
 				mineral.image = image;

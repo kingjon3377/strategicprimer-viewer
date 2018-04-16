@@ -33,7 +33,8 @@ object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>() satisfies
 		for (dbRow in db.Select("""SELECT * FROM ground""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
-				is Boolean exposed = dbRow["exposed"], is String? image = dbRow["image"]);
+				is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
+				is String? image = dbRow["image"]);
 			value ground = Ground(id, kind, exposed);
 			if (exists image) {
 				ground.image = image;
