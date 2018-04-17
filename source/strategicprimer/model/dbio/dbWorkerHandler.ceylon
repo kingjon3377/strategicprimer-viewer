@@ -140,7 +140,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 		}
 		log.trace("Finished reading Job levels, about to start Skill levels");
 		count = 0;
-		for (row in db.Select("""SELECT * FROM worke_skill_levels""").Results()) {
+		for (row in db.Select("""SELECT * FROM worker_skill_levels""").Results()) {
 			assert (is Integer id = row["worker"], exists worker = workers[id], is String job = row["associated_job"],
 				is String skill = row["skill"], is Integer level = row["level"], is Integer hours = row["hours"]);
 			worker.getJob(job).addSkill(Skill(skill, level, hours));
