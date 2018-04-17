@@ -8,7 +8,9 @@ import ceylon.decimal {
 }
 
 import strategicprimer.model.map {
-	IMutableMapNG
+	IMutableMapNG,
+	IFixture,
+	IMapNG
 }
 import strategicprimer.model.map.fixtures {
 	ResourcePile,
@@ -20,6 +22,10 @@ import strategicprimer.model.map.fixtures.towns {
 }
 import strategicprimer.model.xmlio {
 	Warning
+}
+import ceylon.collection {
+	MutableMap,
+	HashMap
 }
 object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, ITownFixture>() satisfies MapContentsReader {
 	shared actual {String+} initializers = [
@@ -53,6 +59,16 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 			   created INTEGER
 		   );"""
 	];
+	MutableMap<[IMapNG, Integer], IFixture> cache = HashMap<[IMapNG, Integer], IFixture>();
+	shared actual IFixture findById(IMapNG map, Integer id, Warning warner) { // TODO: Extract this from here and the superclass to a helper object, so other readers can make use of this memoization
+		if (exists retval = cache[[map, id]]) {
+			return retval;
+		} else {
+			value retval = super.findById(map, id, warner);
+			cache[[map, id]] = retval;
+			return retval;
+		}
+	}
 	shared actual void write(Sql db, CommunityStats obj, ITownFixture context) {
 		value expertise = db.Insert("""INSERT INTO town_expertise (town, skill, level) VALUES(?, ?, ?);""");
 		value fields = db.Insert("""INSERT INTO town_worked_resources (town, resource) VALUES(?, ?);""");
