@@ -31,7 +31,7 @@ interface MapContentsReader {
 	"Find a tile fixture or unit or fortress member by ID."
 	shared default IFixture findById(IMapNG map, Integer id, Warning warner) {
 		{IFixture*} retval = map.locations.flatMap(map.fixtures.get).flatMap(expand)
-				.filter((fixture) => fixture.id == id);
+				.filter((fixture) => fixture.id == id); // TODO: Use matching() to avoid the lambda
 		if (exists first = retval.first) {
 			if (exists another = retval.rest.first) {
 				warner.handle(DuplicateIDException(id));

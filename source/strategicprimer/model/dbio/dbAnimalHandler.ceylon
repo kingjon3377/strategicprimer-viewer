@@ -81,6 +81,8 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 		}
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read directly-in-map animals");
+		variable Integer runningTotal = 0;
 		for (dbRow in db.Select("""SELECT * FROM animals WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String kind = dbRow["kind"], is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
@@ -91,7 +93,13 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 				animal.image = image;
 			}
 			map.addFixture(pointFactory(row, column), animal);
+			runningTotal++;
+			if ((runningTotal % 50) == 0) {
+				log.trace("Finished reading ``runningTotal`` animal populations");
+			}
 		}
+		log.trace("Finished reading directly-in-map animals; about to read tracks");
+		runningTotal = 0;
 		for (dbRow in db.Select("""SELECT * FROM tracks""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String kind = dbRow["kind"], is String|SqlNull image = dbRow["image"]);
@@ -100,9 +108,16 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 				track.image = image;
 			}
 			map.addFixture(pointFactory(row, column), track);
+			runningTotal++;
+			if ((runningTotal % 50) == 0) {
+				log.trace("Finished reading ``runningTotal`` tracks");
+			}
 		}
+		log.trace("Finished reading animal tracks");
 	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read animals in units");
+		variable Integer runningTotal = 0;
 		for (dbRow in db.Select("""SELECT * FROM animals WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
 				is String kind = dbRow["kind"], is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
@@ -113,6 +128,11 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 				animal.image = image;
 			}
 			parent.addMember(animal);
+			runningTotal++;
+			if ((runningTotal % 50) == 0) {
+				log.trace("Finished reading ``runningTotal`` in-unit animal populations");
+			}
 		}
+		log.trace("Finished reading animals in units");
 	}
 }

@@ -34,6 +34,8 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>() satisfies Map
 				.execute(context.row, context.column, obj.id, obj.kind, obj.status.string, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read mines");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM mines""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String kind = dbRow["kind"], is String statusString = dbRow["status"],
@@ -43,6 +45,11 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>() satisfies Map
 				mine.image = image;
 			}
 			map.addFixture(pointFactory(row, column), mine);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` mines");
+			}
 		}
+		log.trace("Finished reading mines");
 	}
 }

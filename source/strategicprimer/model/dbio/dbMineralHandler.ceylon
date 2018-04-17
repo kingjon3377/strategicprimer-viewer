@@ -47,6 +47,8 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 					obj.id, obj.kind, exposed, obj.dc, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read mineral veins");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String kindString = dbRow["kind"], is StoneKind kind = StoneKind.parse(kindString),
@@ -56,7 +58,13 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 				stone.image = image;
 			}
 			map.addFixture(pointFactory(row, column), stone);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` mineral veins");
+			}
 		}
+		log.trace("Finished reading mineral veins, about to read stone deposits");
+		count = 0;
 		for (dbRow in db.Select("""SELECT row, column, id, kind, exposed, dc, image FROM minerals WHERE type = 'mineral'""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String kind = dbRow["kind"], is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
@@ -66,6 +74,11 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 				mineral.image = image;
 			}
 			map.addFixture(pointFactory(row, column), mineral);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` stone deposits");
+			}
 		}
+		log.trace("Finished reading stone deposits");
 	}
 }

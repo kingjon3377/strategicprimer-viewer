@@ -30,6 +30,8 @@ object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>() sati
 				.execute(context.row, context.column, obj.id, obj.kind, obj.contents, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read caches");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM caches""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
@@ -39,6 +41,11 @@ object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>() sati
 				cache.image = image;
 			}
 			map.addFixture(pointFactory(row, column), cache);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` caches");
+			}
 		}
+		log.trace("Finished reading caches");
 	}
 }

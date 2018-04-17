@@ -44,6 +44,8 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 		insertion.execute(context.row, context.column, obj.id, obj.dc, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to start reading caves");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM caves""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is Integer dc = dbRow["dc"], is String|SqlNull image = dbRow["image"]);
@@ -52,7 +54,13 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 				cave.image = image;
 			}
 			map.addFixture(pointFactory(row, column), cave);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` caves");
+			}
 		}
+		count = 0;
+		log.trace("Finished reading caves; about to start on battlefields");
 		for (dbRow in db.Select("""SELECT * FROM battlefields""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is Integer dc = dbRow["dc"], is String|SqlNull image = dbRow["image"]);
@@ -61,6 +69,11 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 				battlefield.image = image;
 			}
 			map.addFixture(pointFactory(row, column), battlefield);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` battlefields");
+			}
 		}
+		log.trace("Finished reading battlefields");
 	}
 }

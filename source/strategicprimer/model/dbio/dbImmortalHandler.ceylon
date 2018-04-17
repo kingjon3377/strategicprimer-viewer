@@ -106,6 +106,8 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 		}
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) { // TODO: Reduce code duplication (and in other readers)
+		log.trace("About to read simple immortals");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is String type = dbRow["type"],
 				is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
@@ -142,7 +144,13 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 				immortal.image = image;
 			}
 			map.addFixture(pointFactory(row, column), immortal);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` simple immortals");
+			}
 		}
+		log.trace("Finished reading simple immortals; about to start on immortals with kinds");
+		count = 0;
 		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String type = dbRow["type"], is String kind = dbRow["kind"], is Integer id = dbRow["id"],
@@ -168,9 +176,16 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 				immortal.image = image;
 			}
 			map.addFixture(pointFactory(row, column), immortal);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` immortals with kinds");
+			}
 		}
+		log.trace("Finished reading immortals with kinds");
 	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read simple immortals in units");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
 				is String type = dbRow["type"], is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
@@ -207,7 +222,13 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 				immortal.image = image;
 			}
 			parent.addMember(immortal);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` simple immortals in units");
+			}
 		}
+		log.trace("Finished reading simple immortals in units; about to read immortals with kinds in units");
+		count = 0;
 		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
 				is String type = dbRow["type"], is String kind = dbRow["kind"], is Integer id = dbRow["id"],
@@ -233,6 +254,11 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 				immortal.image = image;
 			}
 			parent.addMember(immortal);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` immortals with kinds in units");
+			}
 		}
+		log.trace("Finished reading immortals with kinds in units");
 	}
 }

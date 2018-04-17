@@ -43,6 +43,8 @@ object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read resource piles");
+		variable Integer count = 0;
 		for (row in db.Select("""SELECT * FROM resource_piles""").Results()) {
 			assert (is Integer parentId = row["parent"], is IUnit|Fortress parent = findById(map, parentId, warner),
 				is Integer id = row["id"], is String kind = row["kind"], is String contents = row["contents"],
@@ -64,6 +66,11 @@ object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|
 			} else {
 				parent.addMember(pile);
 			}
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` resource piles");
+			}
 		}
+		log.trace("Finished reading resource piles");
 	}
 }

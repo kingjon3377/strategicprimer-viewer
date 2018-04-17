@@ -35,6 +35,8 @@ object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>() satisfies M
 					obj.kind, obj.cultivated, obj.population, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read groves");
+		variable Integer runningTotal = 0;
 		for (dbRow in db.Select("""SELECT * FROM groves""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String type = dbRow["type"], is String kind = dbRow["kind"],
@@ -56,6 +58,11 @@ object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>() satisfies M
 				grove.image = image;
 			}
 			map.addFixture(pointFactory(row, column), grove);
+			runningTotal++;
+			if ((runningTotal % 50) == 0) {
+				log.trace("Finished reading ``runningTotal`` groves");
+			}
 		}
+		log.trace("Finished reading groves");
 	}
 }

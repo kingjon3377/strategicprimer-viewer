@@ -16,6 +16,7 @@ abstract class AbstractDatabaseWriter<in Item, in Context>()
 			sql.transaction(() {
 				for (initializer in initializers) {
 					sql.Statement(initializer).execute();
+					log.trace("Executed initializer beginning ``initializer.lines.first``");
 				}
 				connections.add(sql);
 				return true;

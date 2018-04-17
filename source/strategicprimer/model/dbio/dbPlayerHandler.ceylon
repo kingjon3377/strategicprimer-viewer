@@ -24,12 +24,19 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>() satisfie
 				.execute(obj.playerId, obj.name, obj.current);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read players");
+		variable Integer count = 0;
 		for (row in db.Select("""SELECT * FROM PLAYERS""").Results()) {
 			assert (is Integer id = row["id"], is String name = row["codename"],
 				is Boolean current = dbMapReader.databaseBoolean(row["current"]));
 			value player = PlayerImpl(id, name);
 			player.current = current;
 			map.addPlayer(player);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` players");
+			}
 		}
+		log.trace("Finished reading players");
 	}
 }

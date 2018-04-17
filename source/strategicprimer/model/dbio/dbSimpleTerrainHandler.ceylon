@@ -45,6 +45,8 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar,
 				.execute(context.row, context.column, type, obj.id, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read simple terrain fixtures");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM simple_terrain""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String type = dbRow["type"], is Integer id = dbRow["id"],
@@ -67,6 +69,11 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar,
 				fixture.image = image;
 			}
 			map.addFixture(pointFactory(row, column), fixture);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` simple terrain fixtures");
+			}
 		}
+		log.trace("Finished reading simple terrain fixtures");
 	}
 }

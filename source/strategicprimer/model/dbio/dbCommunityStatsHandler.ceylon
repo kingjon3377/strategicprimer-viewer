@@ -82,17 +82,31 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("Starting to read town population data");
+		variable Integer count = 0;
 		for (row in db.Select("""SELECT * FROM town_expertise""").Results()) {
 			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId, warner),
 				exists population = town.population, is String skill = row["skill"],
 				is Integer level = row["level"]);
 			population.setSkillLevel(skill, level);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` expertise levels");
+			}
 		}
+		log.trace("Finished reading expertise levels, about to start worked resource sources");
+		count = 0;
 		for (row in db.Select("""SELECT * FROM town_worked_resources""").Results()) {
 			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId, warner),
 				exists population = town.population, is Integer resource = row["resource"]);
 			population.addWorkedField(resource);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` worked resource sources");
+			}
 		}
+		log.trace("Finished reading worked resource sources, about to start on produced resources");
+		count = 0;
 		for (row in db.Select("""SELECT * FROM town_production""").Results()) {
 			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId, warner),
 				exists population = town.population, is Integer id = row["id"], is String kind = row["kind"],
@@ -110,7 +124,13 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 				pile.created = created;
 			}
 			population.yearlyProduction.add(pile);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` produced resources");
+			}
 		}
+		log.trace("Finished reading produced resources, about to start on consumed resources");
+		count = 0;
 		for (row in db.Select("""SELECT * FROM town_consumption""").Results()) {
 			assert (is Integer townId = row["town"], is ITownFixture town = findById(map, townId, warner),
 				exists population = town.population, is Integer id = row["id"], is String kind = row["kind"],
@@ -128,6 +148,11 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 				pile.created = created;
 			}
 			population.yearlyConsumption.add(pile);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` consumed resources");
+			}
 		}
+		log.trace("Finished reading consumed resources, and with town and village contents");
 	}
 }

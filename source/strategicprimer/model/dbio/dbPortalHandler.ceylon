@@ -50,6 +50,8 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>() satisfies
 				.execute(context.row, context.column, obj.id, obj.image, obj.destinationWorld, *destinationCoordinates);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read portals");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM portals""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer id = dbRow["id"], is String|SqlNull destinationWorld = dbRow["destination_world"],
@@ -62,6 +64,11 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>() satisfies
 				portal.image = image;
 			}
 			map.addFixture(pointFactory(row, column), portal);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` portals");
+			}
 		}
+		log.trace("Finished reading portals");
 	}
 }

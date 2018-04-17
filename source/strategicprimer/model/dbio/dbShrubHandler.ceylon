@@ -37,6 +37,8 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>() satisfies M
 					obj.population, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read shrubs");
+		variable Integer runningTotal = 0;
 		for (dbRow in db.Select("""SELECT * FROM shrubs""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String kind = dbRow["kind"], is Integer|SqlNull count = dbRow["count"],
@@ -46,6 +48,11 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>() satisfies M
 				shrub.image = image;
 			}
 			map.addFixture(pointFactory(row, column), shrub);
+			runningTotal++;
+			if ((runningTotal % 50) == 0) {
+				log.trace("Read ``runningTotal`` shrubs");
+			}
 		}
+		log.trace("Finished reading shrubs");
 	}
 }

@@ -44,6 +44,8 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>() satisf
 				.execute(context.row, context.column, turn, obj.text, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read text notes");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM text_notes""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer|SqlNull turn = dbRow["turn"], is String text = dbRow["text"],
@@ -53,6 +55,11 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>() satisf
 				fixture.image = image;
 			}
 			map.addFixture(pointFactory(row, column), fixture);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` text notes");
+			}
 		}
+		log.trace("Finished reading text notes");
 	}
 }

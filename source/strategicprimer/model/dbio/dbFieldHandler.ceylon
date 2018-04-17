@@ -43,6 +43,8 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>() satisfies 
 					obj.cultivated, obj.status.string, obj.acres.string, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to start reading meadows");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM fields""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String type = dbRow["type"], is String kind = dbRow["kind"],
@@ -72,6 +74,11 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>() satisfies 
 				meadow.image = image;
 			}
 			map.addFixture(pointFactory(row, column), meadow);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` meadows");
+			}
 		}
+		log.trace("Finished reading meadows");
 	}
 }

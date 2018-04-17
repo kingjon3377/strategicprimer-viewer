@@ -39,6 +39,8 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>() satis
 		}
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read fortresses");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM fortresses""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer ownerId = dbRow["owner"], is String name = dbRow["name"],
@@ -53,6 +55,11 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>() satis
 				fortress.portrait = portrait;
 			}
 			map.addFixture(pointFactory(row, column), fortress);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` fortresses");
+			}
 		}
+		log.trace("Finished reading fortresses");
 	}
 }

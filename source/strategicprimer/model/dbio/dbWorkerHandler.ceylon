@@ -95,6 +95,8 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read worker stats");
+		variable Integer count = 0;
 		MutableMap<Integer, Worker> workers = HashMap<Integer, Worker>();
 		for (row in db.Select("""SELECT * FROM workers""").Results()) {
 			assert (is Integer unitId = row["unit"], is IUnit unit = super.findById(map, unitId, warner),
@@ -120,16 +122,33 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 				warner.handle(DuplicateIDException(id));
 			}
 			workers[id] = worker;
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` workers' stats");
+			}
 		}
+		log.trace("Finished reading workers' stats, about to start Job levels");
+		count = 0;
 		for (row in db.Select("""SELECT * FROM worker_job_levels""").Results()) {
 			assert (is Integer id = row["worker"], exists worker = workers[id], is String job = row["job"],
 				is Integer level = row["level"]);
 			worker.addJob(Job(job, level));
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` Job levels");
+			}
 		}
+		log.trace("Finished reading Job levels, about to start Skill levels");
+		count = 0;
 		for (row in db.Select("""SELECT * FROM worke_skill_levels""").Results()) {
 			assert (is Integer id = row["worker"], exists worker = workers[id], is String job = row["associated_job"],
 				is String skill = row["skill"], is Integer level = row["level"], is Integer hours = row["hours"]);
 			worker.getJob(job).addSkill(Skill(skill, level, hours));
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` Skill levels");
+			}
 		}
+		log.trace("Finished reading Skill levels, and everything having to do with workers");
 	}
 }

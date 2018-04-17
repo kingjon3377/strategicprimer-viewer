@@ -57,6 +57,8 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>() satis
 		}
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read towns");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM towns""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String kind = dbRow["kind"], is String statusString = dbRow["status"],
@@ -90,6 +92,11 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>() satis
 				town.population = CommunityStats(population);
 			}
 			map.addFixture(pointFactory(row, column), town);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` towns");
+			}
 		}
+		log.trace("Finished reading towns");
 	}
 }

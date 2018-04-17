@@ -35,6 +35,8 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read equipment");
+		variable Integer runningTotal = 0;
 		for (row in db.Select("""SELECT * FROM implements""").Results()) {
 			assert (is Integer parentId = row["parent"], is IUnit|Fortress parent = findById(map, parentId, warner),
 				is Integer id = row["id"], is String kind = row["kind"], is Integer count = row["count"],
@@ -48,6 +50,11 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 			} else {
 				parent.addMember(implement);
 			}
+			runningTotal++;
+			if ((runningTotal % 50) == 0) {
+				log.trace("Finished reading ``runningTotal`` pieces of equipment");
+			}
 		}
+		log.trace("Finished reading equipment");
 	}
 }

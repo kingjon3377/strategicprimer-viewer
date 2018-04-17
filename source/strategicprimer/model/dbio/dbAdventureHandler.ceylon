@@ -32,6 +32,8 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
 						obj.fullDescription, obj.owner.playerId, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read adventures");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM adventures""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
 				is String brief = dbRow["brief"], is String full = dbRow["full"],
@@ -41,6 +43,11 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
 				adventure.image = image;
 			}
 			map.addFixture(pointFactory(row, column), adventure);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` adventures");
+			}
 		}
+		log.trace("Finished reading adventures");
 	}
 }

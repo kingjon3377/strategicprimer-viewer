@@ -36,6 +36,8 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>() satisfies
 				.execute(context.row, context.column, obj.id, obj.kind, obj.rows, obj.acres.string, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to start reading forests");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM forests""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
@@ -53,6 +55,11 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>() satisfies
 				forest.image = image;
 			}
 			map.addFixture(pointFactory(row, column), forest);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` forests");
+			}
 		}
+		log.trace("Finished reading forests");
 	}
 }

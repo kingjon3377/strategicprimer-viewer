@@ -84,6 +84,8 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 		}
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read units outside fortresses");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM units WHERE row IS NOT NULL""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
@@ -105,9 +107,16 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 				unit.setResults(as<Integer>(turn) else -1, results);
 			}
 			map.addFixture(pointFactory(row, column), unit);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` units outside fortresses");
+			}
 		}
+		log.trace("Finished reading units outside fortresses");
 	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read units in fortresses");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM units WHERE parent IS NOT NULL""").Results()) {
 			assert (is Integer parentNum = dbRow["parent"], is Fortress parent = super.findById(map, parentNum, warner),
 				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
@@ -129,6 +138,11 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 				unit.setResults(as<Integer>(turn) else -1, results);
 			}
 			parent.addMember(unit);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Read ``count`` units in fortresses");
+			}
 		}
+		log.trace("Finished reading units in fortresses");
 	}
 }

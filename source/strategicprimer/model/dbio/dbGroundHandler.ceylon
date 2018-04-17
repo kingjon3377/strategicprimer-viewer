@@ -31,6 +31,8 @@ object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>() satisfies
 				.execute(context.row, context.column, obj.id, obj.kind, obj.exposed, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		log.trace("About to read ground");
+		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM ground""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
@@ -41,6 +43,11 @@ object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>() satisfies
 				ground.image = image;
 			}
 			map.addFixture(pointFactory(row, column), ground);
+			count++;
+			if ((count % 50) == 0) {
+				log.trace("Finished reading ``count`` ground");
+			}
 		}
+		log.trace("Finished reading ground");
 	}
 }
