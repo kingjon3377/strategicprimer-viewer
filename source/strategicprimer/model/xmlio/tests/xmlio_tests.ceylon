@@ -1,9 +1,6 @@
 import ceylon.decimal {
     decimalNumber
 }
-import ceylon.random {
-    DefaultRandom
-}
 import ceylon.test {
     assertEquals,
     fail,
@@ -141,11 +138,14 @@ import strategicprimer.model.xmlio.exceptions {
 import ceylon.language.meta.declaration {
     OpenClassType
 }
+import lovelace.util.jvm {
+	singletonRandom
+}
 
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"
-{Integer*} threeRandomNumbers() => DefaultRandom().integers(1200000).take(3); // TODO: Change all of these to singletonRandom instead of DefaultRandom()
-{[Integer, Integer]*} threeRandomPairs() => DefaultRandom().integers(1200000).paired.take(3);  // FIXME: Change paired to partition(2) // TODO: Just use threeRandomNumbers on each parameter instead
+{Integer*} threeRandomNumbers() => singletonRandom.integers(1200000).take(3);
+{[Integer, Integer]*} threeRandomPairs() => singletonRandom.integers(1200000).paired.take(3);  // FIXME: Change paired to partition(2) // TODO: Just use threeRandomNumbers on each parameter instead
 {[TownStatus, String]*} villageParameters =
 		`TownStatus`.caseValues.product(raceFactory.races.distinct);
 

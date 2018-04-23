@@ -36,7 +36,6 @@ import strategicprimer.model.map {
 	pointCachingStrategy
 }
 import ceylon.random {
-    DefaultRandom,
 	Random,
 	randomize
 }
@@ -52,6 +51,9 @@ import ceylon.file {
 	File,
 	parsePath,
 	Nil
+}
+import lovelace.util.jvm {
+	singletonRandom
 }
 
 class Accumulator() {
@@ -240,7 +242,7 @@ shared object drawHelperComparator satisfies UtilityDriver {
         if (args.size == 0) {
             throw IncorrectUsageException(usage);
         }
-        Random random = DefaultRandom();
+        Random random = singletonRandom;
         Integer reps = 50;
         {CachingStrategy*} cachingStrategies = `CachingStrategy`.caseValues;
         void runTestProcedure(ICLIHelper cli, IMapNG map, String filename) {
