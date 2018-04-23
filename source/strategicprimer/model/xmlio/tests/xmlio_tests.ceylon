@@ -145,7 +145,6 @@ import lovelace.util.jvm {
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"
 {Integer*} threeRandomNumbers() => singletonRandom.integers(1200000).take(3);
-{[Integer, Integer]*} threeRandomPairs() => singletonRandom.integers(1200000).paired.take(3);  // FIXME: Change paired to partition(2) // TODO: Just use threeRandomNumbers on each parameter instead
 {[TownStatus, String]*} villageParameters =
 		`TownStatus`.caseValues.product(raceFactory.races.distinct);
 
@@ -1171,8 +1170,8 @@ object xmlTests {
 	}
 
 	test
-	parameters(`function threeRandomPairs`)
-	shared void testAdventureSerialization(Integer idOne, Integer idTwo) {
+	shared void testAdventureSerialization(parameters(`function threeRandomNumbers`) Integer idOne,
+			parameters(`function threeRandomNumbers`) Integer idTwo) {
 	    Player independent = PlayerImpl(1, "independent");
 	    AdventureFixture first = AdventureFixture(independent, "first hook brief",
 	        "first hook full", idOne);
@@ -1480,8 +1479,8 @@ object xmlTests {
 
 
 	test
-	parameters(`function threeRandomPairs`)
-	shared void testCaveSerialization(Integer dc, Integer id) {
+	shared void testCaveSerialization(parameters(`function threeRandomNumbers`) Integer dc,
+			parameters(`function threeRandomNumbers`) Integer id) {
 	    assertSerialization("Cave serialization test", Cave(dc, id));
 	    assertUnwantedChild<Cave>("<cave dc=\"``dc``\"><troll /></cave>", null);
 	    assertMissingProperty<Cave>("<cave />", "dc", null);
@@ -1490,8 +1489,8 @@ object xmlTests {
 	}
 
 	test
-	parameters(`function threeRandomPairs`)
-	shared void testMineralSerialization(Integer dc, Integer id) {
+	shared void testMineralSerialization(parameters(`function threeRandomNumbers`) Integer dc,
+			parameters(`function threeRandomNumbers`) Integer id) {
 	    assertSerialization("First MineralEvent serialization test",
 	        MineralVein("one", true, dc, id));
 	    MineralVein secondVein = MineralVein("two", false, dc, id);
@@ -1515,8 +1514,8 @@ object xmlTests {
 	}
 
 	test
-	parameters(`function threeRandomPairs`)
-	shared void testBattlefieldSerialization(Integer dc, Integer id) {
+	shared void testBattlefieldSerialization(parameters(`function threeRandomNumbers`) Integer dc,
+			parameters(`function threeRandomNumbers`) Integer id) {
 	    assertSerialization("Battlefield serialization test", Battlefield(dc, id));
 	    assertUnwantedChild<Battlefield>("<battlefield dc=\"``dc``\"><hill /></battlefield>",
 	        null);
