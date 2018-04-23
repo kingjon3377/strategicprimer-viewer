@@ -15,14 +15,14 @@ import strategicprimer.model.xmlio {
 	Warning
 }
 object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>() satisfies MapContentsReader {
-	shared actual {String+} initializers = // FIXME: We constrain image to be NOT NULL here but assume it might be when reading below
+	shared actual {String+} initializers =
 			["""CREATE TABLE IF NOT EXISTS caches (
 				    row INTEGER NOT NULL,
 				    column INTEGER NOT NULL,
 				    id INTEGER NOT NULL,
 				    kind VARCHAR(32) NOT NULL,
 				    contents VARCHAR(512) NOT NULL,
-				    image VARCHAR(256) NOT NULL
+				    image VARCHAR(256)
 			    );"""];
 	shared actual void write(Sql db, CacheFixture obj, Point context) {
 		db.Insert(
