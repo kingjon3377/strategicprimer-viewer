@@ -51,7 +51,7 @@ import strategicprimer.model.map.fixtures.towns {
 	CommunityStats
 }
 import lovelace.util.common {
-	enumeratedParameters
+	enumeratedParameter
 }
 object subsetTests {
 	void assertIsSubset<T,U=T>(T&U one, T&U two, String message)
@@ -248,8 +248,8 @@ object subsetTests {
 
 	"Test [[AbstractTown]] subset calculations, specifically in the [[Town]] instantiation."
 	test
-	enumeratedParameters(`class TownSize`, `class TownStatus`)
-	shared void testTownSubsets(TownSize size, TownStatus status) {
+	shared void testTownSubsets(enumeratedParameter(`class TownSize`) TownSize size,
+			enumeratedParameter(`class TownStatus`) TownStatus status) {
 		TownSize differentSize;
 		TownStatus differentStatus;
 		Player playerOne = PlayerImpl(0, "playerOne");
@@ -313,8 +313,8 @@ object subsetTests {
 
 	"Test [[AbstractTown]] subset calculations, specifically in the [[City]] instantiation."
 	test
-	enumeratedParameters(`class TownSize`, `class TownStatus`)
-	shared void testCitySubsets(TownSize size, TownStatus status) {
+	shared void testCitySubsets(enumeratedParameter(`class TownSize`) TownSize size,
+			enumeratedParameter(`class TownStatus`) TownStatus status) {
 		TownSize differentSize;
 		TownStatus differentStatus;
 		Player playerOne = PlayerImpl(0, "playerOne");
@@ -378,8 +378,8 @@ object subsetTests {
 
 	"Test [[AbstractTown]] subset calculations, specifically in the [[Fortification]] instantiation."
 	test
-	enumeratedParameters(`class TownSize`, `class TownStatus`)
-	shared void testFortificationSubsets(TownSize size, TownStatus status) {
+	shared void testFortificationSubsets(enumeratedParameter(`class TownSize`) TownSize size,
+			enumeratedParameter(`class TownStatus`) TownStatus status) {
 		TownSize differentSize;
 		TownStatus differentStatus;
 		Player playerOne = PlayerImpl(0, "playerOne");
