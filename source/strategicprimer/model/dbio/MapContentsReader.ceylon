@@ -2,9 +2,6 @@ import ceylon.dbc {
 	Sql
 }
 
-import strategicprimer.model.idreg {
-	DuplicateIDException
-}
 import strategicprimer.model.map {
 	IMutableMapNG,
 	IFixture,
