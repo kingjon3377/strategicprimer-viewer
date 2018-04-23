@@ -144,8 +144,7 @@ import lovelace.util.jvm {
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"
 {Integer*} threeRandomNumbers() => singletonRandom.integers(1200000).take(3);
-{[TownStatus, String]*} villageParameters =
-		`TownStatus`.caseValues.product(raceFactory.races.distinct);
+{String*} races = raceFactory.races.distinct;
 
 object xmlTests {
 	JPath fakeFilename = JPaths.get("");
@@ -393,8 +392,8 @@ object xmlTests {
 	            <tile row=\"1\" column=\"1\" kind=\"plains\">``str``</tile></map>";
 	}
 	test
-	parameters(`value villageParameters`)
-	shared void testVillageSerialization(TownStatus status, String race) {
+	shared void testVillageSerialization(enumeratedParameter(`class TownStatus`) TownStatus status,
+			parameters(`value races`) String race) {
 	    Player owner = PlayerImpl(-1, "");
 	    assertSerialization("First Village serialization test, ``status``",
 	        Village(status, "villageOne", 1, owner, race));
