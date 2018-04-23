@@ -20,7 +20,6 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import ceylon.random {
 	Random,
-	DefaultRandom,
 	randomize
 }
 import strategicprimer.model.map.fixtures.resources {
@@ -52,6 +51,9 @@ import lovelace.util.common {
 	matchingValue,
 	matchingPredicate
 }
+import lovelace.util.jvm {
+	singletonRandom
+}
 
 "A driver to let the user generate animal and shrub populations, meadow and grove sizes, and forest acreages."
 shared object populationGeneratingCLI satisfies SimpleCLIDriver {
@@ -79,7 +81,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 		Integer total = cli.inputNumber("There are ``count`` groups of ``key`` in the world; what should their total population be?");
 		variable Integer remainingTotal = total;
 		variable Integer remainingCount = count;
-		Random rng = DefaultRandom();
+		Random rng = singletonRandom;
 		for (location in locations) {
 			Integer temp = (remainingCount * 2) + 2;
 			if (remainingTotal == temp || remainingTotal < temp) {
@@ -121,7 +123,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 			`` in the world; what should their total population be? ");
 		variable Integer remainingTotal = total;
 		variable Integer remainingCount = count;
-		Random rng = DefaultRandom();
+		Random rng = singletonRandom;
 		for (location in locations) {
 			if (remainingTotal < remainingCount) {
 				cli.println("With ``remainingCount`` groups left, there is only ``remainingTotal`` left");
@@ -152,7 +154,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 			`` in the world; what should their total population be? ");
 		variable Integer remainingTotal = total;
 		variable Integer remainingCount = count;
-		Random rng = DefaultRandom();
+		Random rng = singletonRandom;
 		for (location in locations) {
 			if (remainingTotal < remainingCount) {
 				cli.println("With ``remainingCount`` groups left, there is only ``remainingTotal`` left");
@@ -174,7 +176,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 			//for (item in map.fixtures[loc]) if (is Meadow item) // TODO: syntax sugar
 			for (item in map.fixtures.get(loc)) if (is Meadow item)
 				if (item.acres.negative) loc->item]);
-		Random rng = DefaultRandom();
+		Random rng = singletonRandom;
 		for (loc->field in entries) {
 			Float acres = rng.nextFloat() * 5.5 + 0.5;
 			map.removeFixture(loc, field);

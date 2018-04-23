@@ -15,12 +15,12 @@ import strategicprimer.model.map.fixtures.resources {
     Shrub,
     Meadow
 }
-import ceylon.random {
-    DefaultRandom
-}
 import lovelace.util.common {
 	matchingPredicate,
 	inverse
+}
+import lovelace.util.jvm {
+	singletonRandom
 }
 "A class to facilitate a better hunting/fishing driver."
 shared class HuntingModel {
@@ -79,7 +79,7 @@ shared class HuntingModel {
         variable {<Point->Type|NothingFound>*} choices = surroundingPointIterable(point, dimensions)
             .map((loc) => chosenMap(loc).map((item) => loc->item)).coalesced.flatMap(identity);
         choices = choices.chain(Singleton(point->NothingFound.nothingFound).repeat(choices.size));
-        return DefaultRandom().elements(choices);
+        return singletonRandom.elements(choices);
     }
     """Get a stream of hunting results from the area surrounding the given tile. About half
         will be "nothing". May be an infinite stream."""
@@ -99,6 +99,6 @@ shared class HuntingModel {
             Point point) {
         {<Point->Grove|Meadow|Shrub|NothingFound>*} retval = surroundingPointIterable(point, dimensions)
                 .map((loc) => plants(loc).map((item) => loc->item)).flatMap(identity);
-        return DefaultRandom().elements(retval);
+        return singletonRandom.elements(retval);
     }
 }
