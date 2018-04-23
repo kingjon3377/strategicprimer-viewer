@@ -99,17 +99,15 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.model.xmlio {
 	warningLevels
 }
+import lovelace.util.common {
+	enumeratedParameter
+}
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"
 {Integer*} threeRandomNumbers() => singletonRandom.integers(1200000).take(3);
-{Boolean*} booleanCases => `Boolean`.caseValues;
-{TownStatus*} townStatuses = `TownStatus`.caseValues;
-{TownSize*} townSizes = `TownSize`.caseValues;
-{FieldStatus*} fieldStatuses = `FieldStatus`.caseValues;
 {Immortal(Integer)*} simpleImmortalConstructors =
 		[`Sphinx`, `Djinn`, `Griffin`, `Minotaur`, `Ogre`, `Phoenix`, `Simurgh`, `Troll`];
 {Immortal(String, Integer)*} kindedImmortalConstructors = [`Centaur`, `Dragon`, `Fairy`, `Giant`];
-{StoneKind*} stoneKinds = `StoneKind`.caseValues;
 {TileFixture(Integer)*} simpleTerrainConstructors = [`Hill`, `Sandbar`, `Oasis`];
 {String*} races = raceFactory.races.distinct;
 object dbio_tests { // TODO: All tests should be more robust, as if developed test-first
@@ -148,7 +146,7 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 			assertFixtureSerialization(Portal("portal dest", pointFactory(row, column), id));
 	test
 	shared void testAnimalSerialization(parameters(`function threeRandomNumbers`) Integer id, // TODO: animals inside units
-		parameters(`value booleanCases`) Boolean talking) =>
+		enumeratedParameter(`class Boolean`) Boolean talking) =>
 			assertFixtureSerialization(AnimalImpl("animal kind", false, talking, "status", id, -1, 1));
 	test
 	shared void testTracksSerialization() =>
@@ -164,7 +162,8 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 		parameters(`function threeRandomNumbers`) Integer dc) => assertFixtureSerialization(Battlefield(dc, id));
 	test
 	shared void testFortificationSerialization(parameters(`function threeRandomNumbers`) Integer id,
-			parameters(`value townStatuses`) TownStatus status, parameters(`value townSizes`) TownSize size,
+			enumeratedParameter(`class TownStatus`) TownStatus status,
+			enumeratedParameter(`class TownSize`) TownSize size,
 			parameters(`function threeRandomNumbers`) Integer dc) { // TODO: We want more of the state to be random
 		value town = Fortification(status, size, dc, "name", id, PlayerImpl(0, ""));
 		CommunityStats stats = CommunityStats(5);
@@ -183,7 +182,8 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 	}
 	test
 	shared void testCitySerialization(parameters(`function threeRandomNumbers`) Integer id,
-		parameters(`value townStatuses`) TownStatus status, parameters(`value townSizes`) TownSize size,
+		enumeratedParameter(`class TownStatus`) TownStatus status,
+		enumeratedParameter(`class TownSize`) TownSize size,
 		parameters(`function threeRandomNumbers`) Integer dc) { // TODO: We want more of the state to be random
 		value town = City(status, size, dc, "name", id, PlayerImpl(0, ""));
 		CommunityStats stats = CommunityStats(5);
@@ -202,7 +202,7 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 	}
 	test
 	shared void testTownSerialization(parameters(`function threeRandomNumbers`) Integer id,
-		parameters(`value townStatuses`) TownStatus status, parameters(`value townSizes`) TownSize size,
+		enumeratedParameter(`class TownStatus`) TownStatus status, enumeratedParameter(`class TownSize`) TownSize size,
 		parameters(`function threeRandomNumbers`) Integer dc) { // TODO: We want more of the state to be random
 		value town = Town(status, size, dc, "name", id, PlayerImpl(0, ""));
 		CommunityStats stats = CommunityStats(5);
@@ -220,34 +220,34 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 		assertFixtureSerialization(town);
 	}
 	test
-	shared void testMeadowSerialization(parameters(`value booleanCases`) Boolean field,
-		parameters(`value booleanCases`) Boolean cultivated,
+	shared void testMeadowSerialization(enumeratedParameter(`class Boolean`) Boolean field,
+		enumeratedParameter(`class Boolean`) Boolean cultivated,
 		parameters(`function threeRandomNumbers`) Integer id,
-		parameters(`value fieldStatuses`) FieldStatus status,
+		enumeratedParameter(`class FieldStatus`) FieldStatus status,
 		parameters(`function threeRandomNumbers`) Integer acres) =>
 			assertFixtureSerialization(Meadow("kind", field, cultivated, id, status, acres));
 	test
-	shared void testFractionalMeadowSerialization(parameters(`value booleanCases`) Boolean field,
-		parameters(`value booleanCases`) Boolean cultivated,
+	shared void testFractionalMeadowSerialization(enumeratedParameter(`class Boolean`) Boolean field,
+		enumeratedParameter(`class Boolean`) Boolean cultivated,
 		parameters(`function threeRandomNumbers`) Integer id,
-		parameters(`value fieldStatuses`) FieldStatus status,
+		enumeratedParameter(`class FieldStatus`) FieldStatus status,
 		parameters(`function threeRandomNumbers`) Integer acres) =>
 			assertFixtureSerialization(Meadow("kind", field, cultivated, id, status,
 				decimalNumber(acres) + decimalNumber(1) / decimalNumber(2)));
 	test
-	shared void testForestSerialization(parameters(`value booleanCases`) Boolean rows,
+	shared void testForestSerialization(enumeratedParameter(`class Boolean`) Boolean rows,
 		parameters(`function threeRandomNumbers`) Integer id,
 		parameters(`function threeRandomNumbers`) Integer acres) =>
 			assertFixtureSerialization(Forest("kind", rows, id, acres));
 	test
-	shared void testFractionalForestSerialization(parameters(`value booleanCases`) Boolean rows,
+	shared void testFractionalForestSerialization(enumeratedParameter(`class Boolean`) Boolean rows,
 		parameters(`function threeRandomNumbers`) Integer id,
 		parameters(`function threeRandomNumbers`) Integer acres) =>
 			assertFixtureSerialization(Forest("kind", rows, id,
 				decimalNumber(acres) + decimalNumber(1) / decimalNumber(4)));
 	test
 	shared void testFortressSerialization(parameters(`function threeRandomNumbers`) Integer id,
-			parameters(`value townSizes`) TownSize size) {
+			enumeratedParameter(`class TownSize`) TownSize size) {
 		Player owner = PlayerImpl(1, "owner");
 		value fortress = Fortress(owner, "fortress", id, size);
 		value unit = Unit(owner, "unitKind", "unitName", id + 2);
@@ -262,11 +262,11 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 	}
 	test
 	shared void testGroundSerialization(parameters(`function threeRandomNumbers`) Integer id,
-		parameters(`value booleanCases`) Boolean exposed) =>
+		enumeratedParameter(`class Boolean`) Boolean exposed) =>
 			assertFixtureSerialization(Ground(id, "ground kind", exposed));
 	test
-	shared void testGroveSerialization(parameters(`value booleanCases`) Boolean orchard,
-		parameters(`value booleanCases`) Boolean cultivated,
+	shared void testGroveSerialization(enumeratedParameter(`class Boolean`) Boolean orchard,
+		enumeratedParameter(`class Boolean`) Boolean cultivated,
 		parameters(`function threeRandomNumbers`) Integer id,
 		parameters(`function threeRandomNumbers`) Integer count) =>
 			assertFixtureSerialization(Grove(orchard, cultivated, "kind", id, count));
@@ -279,16 +279,16 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 		parameters(`value kindedImmortalConstructors`) Immortal(String, Integer) constructor,
 		parameters(`function threeRandomNumbers`) Integer id) => assertFixtureSerialization(constructor("kind", id));
 	test
-	shared void testMineSerialization(parameters(`value townStatuses`) TownStatus status,
+	shared void testMineSerialization(enumeratedParameter(`class TownStatus`) TownStatus status,
 		parameters(`function threeRandomNumbers`) Integer id) =>
 			assertFixtureSerialization(Mine("mine kind", status, id));
 	test
-	shared void testMineralSerialization(parameters(`value booleanCases`) Boolean exposed,
+	shared void testMineralSerialization(enumeratedParameter(`class Boolean`) Boolean exposed,
 		parameters(`function threeRandomNumbers`) Integer dc,
 		parameters(`function threeRandomNumbers`) Integer id) =>
 			assertFixtureSerialization(MineralVein("mineral kind", exposed, dc, id));
 	test
-	shared void testStoneSerialization(parameters(`value stoneKinds`) StoneKind kind,
+	shared void testStoneSerialization(enumeratedParameter(`class StoneKind`) StoneKind kind,
 		parameters(`function threeRandomNumbers`) Integer dc,
 		parameters(`function threeRandomNumbers`) Integer id) =>
 			assertFixtureSerialization(StoneDeposit(kind, dc, id));
@@ -313,7 +313,7 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 		assertFixtureSerialization(unit);
 	}
 	test
-	shared void testVillageSerialization(parameters(`value townStatuses`) TownStatus status,
+	shared void testVillageSerialization(enumeratedParameter(`class TownStatus`) TownStatus status,
 		parameters(`function threeRandomNumbers`) Integer id, parameters(`value races`) String race) =>
 			assertFixtureSerialization(Village(status, "village name", id, PlayerImpl(1, "player name"), race));
 }
