@@ -23,7 +23,7 @@ object dbMapReader {
 		dbFortressHandler, dbUnitHandler, dbGroundHandler, dbGroveHandler, dbImmortalHandler, dbImplementHandler,
 		dbMineralHandler, dbMineHandler, dbPortalHandler, dbShrubHandler, dbSimpleTerrainHandler,
 		dbTextHandler, dbTownHandler, dbVillageHandler, dbResourcePileHandler, dbAnimalHandler,
-		dbCommunityStatsHandler, dbWorkerHandler];
+		dbCommunityStatsHandler, dbWorkerHandler, dbAdventureHandler, dbForestHandler];
 	"If [[field]] is is an Integer and either 0 or 1, which is how SQLite stores Boolean
 	 values, convert to the equivalent Boolean and return that; otherwise, return the original value."
 	shared Anything databaseBoolean(Anything field) {
