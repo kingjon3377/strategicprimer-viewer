@@ -1,10 +1,12 @@
 import ceylon.language.meta.declaration {
 	FunctionDeclaration,
-	ClassOrInterfaceDeclaration
+	ClassOrInterfaceDeclaration,
+	FunctionOrValueDeclaration
 }
 import ceylon.test.engine.spi {
 	ArgumentListProvider,
-	ArgumentProviderContext
+	ArgumentProviderContext,
+	ArgumentProvider
 }
 "The annotation class for the [[todo]] annotation."
 by("Jonathan Lovelace")
@@ -22,10 +24,12 @@ shared annotation TodoAnnotation todo(
 "The annotation class for the [[enumeratedParameter]] annotation."
 by("Jonathan Lovelace")
 shared final annotation class EnumSingleParameterAnnotation(ClassOrInterfaceDeclaration type)
-		satisfies OptionalAnnotation<EnumSingleParameterAnnotation,FunctionDeclaration> & ArgumentListProvider {
+		satisfies OptionalAnnotation<EnumSingleParameterAnnotation,FunctionOrValueDeclaration> & ArgumentListProvider & ArgumentProvider {
 	[Object] entuple(Object item) => [item];
 	shared actual {Anything[]*} argumentLists(ArgumentProviderContext context) =>
 			type.apply<Anything>().caseValues.coalesced.map(entuple);
+	shared actual {Anything*} arguments(ArgumentProviderContext context) => type.apply<Anything>().caseValues.coalesced;
+
 }
 "Annotation to replace [[ceylon.test::parameters]], providing each case value of an enumerated type as an
  argument for the test method in turn."
