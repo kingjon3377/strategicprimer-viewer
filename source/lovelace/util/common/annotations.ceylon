@@ -1,5 +1,4 @@
 import ceylon.language.meta.declaration {
-	FunctionDeclaration,
 	ClassOrInterfaceDeclaration,
 	FunctionOrValueDeclaration
 }
@@ -36,15 +35,3 @@ shared final annotation class EnumSingleParameterAnnotation(ClassOrInterfaceDecl
 by("Jonathan Lovelace")
 shared annotation EnumSingleParameterAnnotation enumeratedParameter(ClassOrInterfaceDeclaration type) =>
 		EnumSingleParameterAnnotation(type);
-"The annotation class for the [[enumeratedParameters]] annotation."
-by("Jonathan Lovelace")
-shared final annotation class EnumDoubleParameterAnnotation(ClassOrInterfaceDeclaration first, ClassOrInterfaceDeclaration second)
-		satisfies OptionalAnnotation<EnumDoubleParameterAnnotation,FunctionDeclaration>&ArgumentListProvider {
-	shared actual {Anything[]*} argumentLists(ArgumentProviderContext context) =>
-			first.apply<Anything>().caseValues.product(second.apply<Anything>().caseValues);
-}
-"Annotation to replace [[ceylon.test::parameters]], providing each combination of values of two enumerated types in turn
- as arguments for the test method."
-by("Jonathan Lovelace")
-shared annotation EnumDoubleParameterAnnotation enumeratedParameters(ClassOrInterfaceDeclaration first,
-	ClassOrInterfaceDeclaration second) => EnumDoubleParameterAnnotation(first, second);

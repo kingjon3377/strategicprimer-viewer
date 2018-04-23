@@ -37,8 +37,7 @@ import javax.xml.stream {
 import lovelace.util.common {
     todo,
     assertAny,
-	enumeratedParameter,
-	enumeratedParameters
+	enumeratedParameter
 }
 
 import strategicprimer.model.idreg {
@@ -431,8 +430,8 @@ object xmlTests {
 	}
 
 	test
-	enumeratedParameters(`class TownSize`, `class TownStatus`)
-	shared void testCitySerialization(TownSize size, TownStatus status) {
+	shared void testCitySerialization(enumeratedParameter(`class TownSize`) TownSize size,
+			enumeratedParameter(`class TownStatus`) TownStatus status) {
 	    Player owner = PlayerImpl(-1, "");
 	    assertSerialization("First City serialization test, status ``status``, size ``size``",
 	        City(status, size, 10, "oneCity", 0, owner));
@@ -467,8 +466,8 @@ object xmlTests {
 	}
 
 	test
-	enumeratedParameters(`class TownSize`, `class TownStatus`)
-	shared void testFortificationSerialization(TownSize size, TownStatus status) {
+	shared void testFortificationSerialization(enumeratedParameter(`class TownSize`) TownSize size,
+			enumeratedParameter(`class TownStatus`) TownStatus status) {
 	    Player owner = PlayerImpl(-1, "");
 	    assertSerialization("First Fortification serialization test, status ``status
 	        ``, size ``size``", Fortification(status, size, 10, "one", 0, owner));
@@ -504,8 +503,8 @@ object xmlTests {
 	}
 
 	test
-	enumeratedParameters(`class TownSize`, `class TownStatus`)
-	shared void testTownSerialization(TownSize size, TownStatus status) {
+	shared void testTownSerialization(enumeratedParameter(`class TownSize`) TownSize size,
+			enumeratedParameter(`class TownStatus`) TownStatus status) {
 	    Player owner = PlayerImpl(-1, "");
 	    assertSerialization("First Town serialization test, status ``status``, size ``size``",
 	        Town(status, size, 10, "one", 0, owner));
