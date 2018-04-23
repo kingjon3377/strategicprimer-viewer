@@ -2,6 +2,10 @@ import ceylon.dbc {
 	Sql
 }
 
+import java.sql {
+	SQLException
+}
+
 import strategicprimer.model.map {
 	IMutableMapNG,
 	SPMapNG,
@@ -94,10 +98,26 @@ object dbMapReader {
 		}
 		log.trace("Finished reading terrain");
 		for (reader in readers) {
-			reader.readMapContents(db, retval, warner);
+			try {
+				reader.readMapContents(db, retval, warner);
+			} catch (SQLException exception) {
+				if (exception.message.contains("no such table")) {
+					continue;
+				} else {
+					throw exception;
+				}
+			}
 		}
 		for (reader in readers) {
-			reader.readExtraMapContents(db, retval, warner);
+			try {
+				reader.readExtraMapContents(db, retval, warner);
+			} catch (SQLException exception) {
+				if (exception.message.contains("no such table")) {
+					continue;
+				} else {
+					throw exception;
+				}
+			}
 		}
 		log.trace("Finished reading the map");
 		return retval;
