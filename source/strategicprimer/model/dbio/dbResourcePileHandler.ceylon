@@ -57,9 +57,12 @@ object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|
 				assert (exists num = parseDecimal(qtyString));
 				quantity = num;
 			}
-			value pile = ResourcePile(id, kind, contents, Quantity(quantity, units)); // FIXME: Set 'created' if present
+			value pile = ResourcePile(id, kind, contents, Quantity(quantity, units));
 			if (is String image) {
 				pile.image = image;
+			}
+			if (is Integer created) {
+				pile.created = created;
 			}
 			if (is IUnit parent) {
 				parent.addMember(pile);
