@@ -122,6 +122,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 				warner.handle(DuplicateIDException(id));
 			}
 			workers[id] = worker;
+			unit.addMember(worker);
 			count++;
 			if ((count % 50) == 0) {
 				log.trace("Read ``count`` workers' stats");
