@@ -144,8 +144,8 @@ import ceylon.language.meta.declaration {
 
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"
-{Integer*} threeRandomNumbers() => DefaultRandom().integers(1200000).take(3);
-{[Integer, Integer]*} threeRandomPairs() => DefaultRandom().integers(1200000).paired.take(3);
+{Integer*} threeRandomNumbers() => DefaultRandom().integers(1200000).take(3); // TODO: Change all of these to singletonRandom instead of DefaultRandom()
+{[Integer, Integer]*} threeRandomPairs() => DefaultRandom().integers(1200000).paired.take(3);  // FIXME: Change paired to partition(2) // TODO: Just use threeRandomNumbers on each parameter instead
 {[TownStatus, String]*} villageParameters =
 		`TownStatus`.caseValues.product(raceFactory.races.distinct);
 
@@ -403,7 +403,7 @@ object xmlTests {
 	    assertSerialization("Second Village serialization test, ``status``",
 	        Village(status, "villageTwo", 2, owner, race));
 	    Village thirdVillage = Village(status, "", 3, owner, race);
-	    for (deprecated in `Boolean`.caseValues) {
+	    for (deprecated in `Boolean`.caseValues) { // TODO: Use parameters() in a separate test, and similarly for other like cases
 	        assertMissingProperty(createSerializedForm(thirdVillage, deprecated),
 	            "name", thirdVillage);
 	    }
