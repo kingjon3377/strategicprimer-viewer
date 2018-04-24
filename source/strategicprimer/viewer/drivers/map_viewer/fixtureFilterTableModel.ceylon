@@ -23,7 +23,8 @@ import javax.swing.table {
 
 import lovelace.util.common {
     Reorderable,
-    Comparator
+    Comparator,
+	inverse
 }
 
 import strategicprimer.model.map {
@@ -91,8 +92,7 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
             String firstDescription, String secondDescription)
             given T satisfies TileFixture {
         return [simpleMatcher<T>(method, firstDescription),
-            simpleMatcher<T>((T fixture) => !method(fixture), // TODO: Can we use lovelace.util.common::inverse to avoid the lambda?
-                secondDescription)];
+            simpleMatcher<T>(inverse(method), secondDescription)];
     }
     MutableList<FixtureMatcher> list = ArrayList<FixtureMatcher>();
     // Can't use our preferred initialization form because an Iterable can only be spread
