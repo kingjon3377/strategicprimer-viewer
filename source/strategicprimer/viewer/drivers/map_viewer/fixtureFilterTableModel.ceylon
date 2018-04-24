@@ -137,7 +137,7 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
         shared actual Object getValueAt(Integer rowIndex, Integer columnIndex) {
             if (exists matcher = list[rowIndex]) {
                 switch (columnIndex)
-                case (0) { return JBoolean(matcher.displayed); }
+                case (0) { return JBoolean.valueOf(matcher.displayed); }
                 case (1) { return matcher.description; }
                 else { throw ArrayIndexOutOfBoundsException(columnIndex); }
             } else {

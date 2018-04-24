@@ -272,7 +272,7 @@ object zeroToOneConversionTests {
 	                   </map>""".replace("spNamespaceXYZZY", spNamespace);
 	    StringBuilder ostream = StringBuilder();
 	    XMLInputFactory xif = XMLInputFactory.newInstance();
-	    xif.setProperty(XMLInputFactory.supportDtd, JBoolean(false));
+	    xif.setProperty(XMLInputFactory.supportDtd, JBoolean.valueOf(false));
 	    zeroToOneConverter.convert(IteratorWrapper(TypesafeXMLEventReader(
 	        XMLInputFactory.newInstance().createXMLEventReader(StringReader(orig)))),
 	        ostream.append);
