@@ -221,9 +221,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     void fixMovedUnits(Point base) {
 		{<Point->TileFixture>*} localFind(IMapNG mapParam, TileFixture target) => {
 				for (point in mapParam.locations)
-					for (fixture in mapParam.fixtures.get(point)) // TODO: syntax sugar once bug fixed
-						if (fixture == target)
-							point->target
+					for (fixture in mapParam.fixtures.get(point).filter(target.equals)) // TODO: syntax sugar once bug fixed
+						point->target
 			};
         // TODO: Unit vision range
         {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
