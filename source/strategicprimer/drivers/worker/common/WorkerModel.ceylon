@@ -198,14 +198,15 @@ object workerModelTests {
 	    return retval.sequence();
 	}
 
+	"Helper method: Add an item to multiple lists at once."
+	void addItem<T>(T item, ListMutator<T>* lists) {
+		for (list in lists) {
+			list.add(item);
+		}
+	}
+
 	test
 	shared void testGetUnits() {
-	    "Helper method: Add an item to multiple lists at once."
-	    void addItem<T>(T item, ListMutator<T>* lists) {
-	        for (list in lists) {
-	            list.add(item);
-	        }
-	    }
 	    MutableList<TileFixture> fixtures = ArrayList<TileFixture>();
 	    fixtures.add(Oasis(14));
 	    fixtures.add(AnimalImpl("animal", false, false, "wild", 1));
