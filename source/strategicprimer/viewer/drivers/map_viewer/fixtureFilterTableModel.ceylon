@@ -206,7 +206,7 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
             }
             return equal;
         }
-        shared actual Boolean equals(Object that) => (this of Identifiable).equals(that);
+        shared actual Boolean equals(Object that) => (super of Identifiable).equals(that);
     }
     return retval;
 }
