@@ -90,9 +90,9 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
     {FixtureMatcher*} complements<out T>(Boolean(T) method,
             String firstDescription, String secondDescription)
             given T satisfies TileFixture {
-        return {simpleMatcher<T>(method, firstDescription),
-            simpleMatcher<T>((T fixture) => !method(fixture),
-                secondDescription)};
+        return [simpleMatcher<T>(method, firstDescription),
+            simpleMatcher<T>((T fixture) => !method(fixture), // TODO: Can we use lovelace.util.common::inverse to avoid the lambda?
+                secondDescription)];
     }
     MutableList<FixtureMatcher> list = ArrayList<FixtureMatcher>();
     // Can't use our preferred initialization form because an Iterable can only be spread

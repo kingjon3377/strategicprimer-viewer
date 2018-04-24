@@ -96,7 +96,7 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			simpleMatcher<T>((T fixture) => !method(fixture),
 				secondDescription)};
 	{FixtureMatcher*} initializeMatchers() {
-		return {
+		return [
 			complements<IUnit>((unit) => !unit.owner.independent, "Units",
 				"Independent Units"),
 			trivialMatcher(`Fortress`, "Fortresses"),
@@ -126,7 +126,7 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			trivialMatcher(`Shrub`), complements<Meadow>(Meadow.field, "Fields", "Meadows"),
 			trivialMatcher(`Sandbar`), trivialMatcher(`Hill`),
 			complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
-		}.flatMap(flatten);
+		].flatMap(flatten);
 	}
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
 		IMapNG first = model.map;
