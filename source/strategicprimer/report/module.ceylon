@@ -3,18 +3,21 @@
 license("GPL-3")
 native("jvm")
 module strategicprimer.report "0.4.9016" {
-    import lovelace.util.jvm "0.1.0";
-    import ceylon.regex "1.3.3";
-    import java.base "8";
-    import ceylon.interop.java "1.3.3";
-    shared import java.desktop "8";
-    import ceylon.collection "1.3.3";
-    import ceylon.logging "1.3.3";
+    value ceylonVersion = "1.3.3";
+    value javaVersion = "8";
+    value lovelaceUtilsVersion = "0.1.0";
+    import lovelace.util.jvm lovelaceUtilsVersion;
+    import ceylon.regex ceylonVersion;
+    import java.base javaVersion;
+    import ceylon.interop.java ceylonVersion;
+    shared import java.desktop javaVersion;
+    import ceylon.collection ceylonVersion;
+    import ceylon.logging ceylonVersion;
     shared import strategicprimer.model "0.4.9016";
-    shared import lovelace.util.common "0.1.0";
-    import ceylon.test "1.3.3";
-    shared import ceylon.file "1.3.3";
-    import ceylon.random "1.3.3";
-	import com.vasileff.ceylon.structures "1.1.3";
-	import ceylon.decimal "1.3.3";
+    shared import lovelace.util.common lovelaceUtilsVersion;
+    import ceylon.test ceylonVersion;
+    shared import ceylon.file ceylonVersion;
+    import ceylon.random ceylonVersion;
+    import com.vasileff.ceylon.structures "1.1.3";
+    import ceylon.decimal ceylonVersion;
 }

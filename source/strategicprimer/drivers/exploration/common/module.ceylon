@@ -2,12 +2,14 @@
 license("GPL-3")
 native("jvm")
 module strategicprimer.drivers.exploration.common "0.4.9016" {
-    shared import strategicprimer.drivers.common "0.4.9016";
-    import strategicprimer.model "0.4.9016";
-    import ceylon.collection "1.3.3";
-    import ceylon.numeric "1.3.3";
-    import ceylon.test "1.3.3";
+    value ceylonVersion = "1.3.3";
+    value spVersion = "0.4.9016";
+    shared import strategicprimer.drivers.common spVersion;
+    import strategicprimer.model spVersion;
+    import ceylon.collection ceylonVersion;
+    import ceylon.numeric ceylonVersion;
+    import ceylon.test ceylonVersion;
     import lovelace.util.jvm "0.1.0";
-    import ceylon.random "1.3.3";
-	import ceylon.logging "1.3.3";
+    import ceylon.random ceylonVersion;
+	import ceylon.logging ceylonVersion;
 }

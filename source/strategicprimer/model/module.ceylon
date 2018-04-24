@@ -6,19 +6,22 @@ license("GPL-3")
 // TODO: Make only the I/O parts "native"; blocked by eclipse/ceylon#7336
 native("jvm")
 module strategicprimer.model "0.4.9016" {
-    shared import java.base "8";
-    shared import javax.xml "8";
-    import ceylon.test "1.3.3";
-    shared import ceylon.collection "1.3.3";
-    shared import lovelace.util.common "0.1.0";
-    import ceylon.interop.java "1.3.3";
-    import ceylon.logging "1.3.3";
-    shared import ceylon.numeric "1.3.3";
-    import lovelace.util.jvm "0.1.0";
-    import ceylon.regex "1.3.3";
-    shared import ceylon.random "1.3.3";
-    shared import ceylon.file "1.3.3";
+    value ceylonVersion = "1.3.3";
+    value javaVersion = "8";
+    value lovelaceUtilsVersion = "0.1.0";
+    shared import java.base javaVersion;
+    shared import javax.xml javaVersion;
+    import ceylon.test ceylonVersion;
+    shared import ceylon.collection ceylonVersion;
+    shared import lovelace.util.common lovelaceUtilsVersion;
+    import ceylon.interop.java ceylonVersion;
+    import ceylon.logging ceylonVersion;
+    shared import ceylon.numeric ceylonVersion;
+    import lovelace.util.jvm lovelaceUtilsVersion;
+    import ceylon.regex ceylonVersion;
+    shared import ceylon.random ceylonVersion;
+    shared import ceylon.file ceylonVersion;
     import com.vasileff.ceylon.structures "1.1.3";
-    import ceylon.decimal "1.3.3";
-    import ceylon.whole "1.3.3";
+    import ceylon.decimal ceylonVersion;
+    import ceylon.whole ceylonVersion;
 }

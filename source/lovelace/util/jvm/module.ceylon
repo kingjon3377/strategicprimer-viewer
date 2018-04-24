@@ -2,17 +2,19 @@
 license("GPL-3")
 native("jvm")
 module lovelace.util.jvm "0.1.0" {
-    import ceylon.collection "1.3.3";
-    shared import java.base "8";
-    shared import java.desktop "8";
+    value ceylonVersion = "1.3.3";
+    value javaVersion = "8";
+    import ceylon.collection ceylonVersion;
+    shared import java.base javaVersion;
+    shared import java.desktop javaVersion;
     shared import lovelace.util.common "0.1.0";
-    import ceylon.interop.java "1.3.3";
+    import ceylon.interop.java ceylonVersion;
     // TODO: Uncomment tests once Ceylon bug #6986 is fixed
-//    import ceylon.test "1.3.3";
-    shared import javax.xml "8";
-    shared import ceylon.random "1.3.3";
-    import ceylon.logging "1.3.3";
-    import ceylon.file "1.3.3";
-    import ceylon.io "1.3.3";
-    shared import ceylon.buffer "1.3.3";
+//    import ceylon.test ceylonVersion;
+    shared import javax.xml javaVersion;
+    shared import ceylon.random ceylonVersion;
+    import ceylon.logging ceylonVersion;
+    import ceylon.file ceylonVersion;
+    import ceylon.io ceylonVersion;
+    shared import ceylon.buffer ceylonVersion;
 }

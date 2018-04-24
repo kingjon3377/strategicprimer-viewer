@@ -5,21 +5,24 @@
 license("GPL-3")
 native("jvm")
 module strategicprimer.drivers.utility "0.4.9016" {
-    import ceylon.collection "1.3.3";
-    import ceylon.decimal "1.3.3";
-    import ceylon.whole "1.3.3";
-    shared import java.base "8";
-    import strategicprimer.model "0.4.9016";
-    import java.desktop "8";
-    import ceylon.regex "1.3.3";
+    value ceylonVersion = "1.3.3";
+    value javaVersion = "8";
+    value spVersion = "0.4.9016";
+    import ceylon.collection ceylonVersion;
+    import ceylon.decimal ceylonVersion;
+    import ceylon.whole ceylonVersion;
+    shared import java.base javaVersion;
+    import strategicprimer.model spVersion;
+    import java.desktop javaVersion;
+    import ceylon.regex ceylonVersion;
     import lovelace.util.jvm "0.1.0";
-    import strategicprimer.drivers.gui.common "0.4.9016";
+    import strategicprimer.drivers.gui.common spVersion;
 //    import maven:"com.pump:pump-swing" "1.0.00";
     import com.pump.swing "1.0.00";
     import maven:"com.massisframework:orange-extensions" "1.3.1";
-    import ceylon.logging "1.3.3";
-    shared import strategicprimer.drivers.common "0.4.9016";
-    import strategicprimer.drivers.exploration.old "0.4.9016";
-    import strategicprimer.drivers.exploration.common "0.4.9016";
-    import ceylon.random "1.3.3";
+    import ceylon.logging ceylonVersion;
+    shared import strategicprimer.drivers.common spVersion;
+    import strategicprimer.drivers.exploration.old spVersion;
+    import strategicprimer.drivers.exploration.common spVersion;
+    import ceylon.random ceylonVersion;
 }
