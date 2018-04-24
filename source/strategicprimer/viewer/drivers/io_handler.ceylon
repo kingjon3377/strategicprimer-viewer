@@ -360,10 +360,10 @@ shared class FileChooser {
             if (is JFileChooser chooser) {
                 if (status == JFileChooser.approveOption) {
                     value retval = chooser.selectedFiles.iterable.coalesced
-                        .map((file) => file.toPath());
-                    if (exists first = retval.first) {
+                        .map((file) => file.toPath()).sequence();
+                    if (nonempty retval) {
                         log.trace("About to return the file(s) the user chose via Swing");
-                        return { first, *retval.rest };
+                        return retval;
                     } else {
                         log.info("User pressed approve but selected no files");
                     }
@@ -372,10 +372,10 @@ shared class FileChooser {
                 }
             } else {
                 value retval = chooser.files.iterable.coalesced
-                    .map((file) => file.toPath());
-                if (exists first = retval.first) {
+                    .map((file) => file.toPath()).sequence();
+                if (nonempty retval) {
                     log.trace("About to return the file(s) the user chose via AWT");
-                    return { first, *retval.rest };
+                    return retval;
                 } else {
                     log.info("User failed to choose?");
                     log.info("Returned iterable was ``retval`` (``type(retval)``");
