@@ -109,7 +109,7 @@ shared interface SimpleDriver satisfies ISPDriver {
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn =
                     Integer.parse(options.getArgument("--current-turn"))) {
-                turnFixer = (IMutableMapNG map) => map.currentTurn = currentTurn;
+                turnFixer = IMutableMapNG.currentTurn;
             } else {
                 log.warn("--current-turn must be an integer");
                 turnFixer = noop;
