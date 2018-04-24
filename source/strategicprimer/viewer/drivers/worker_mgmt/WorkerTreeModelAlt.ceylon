@@ -34,6 +34,9 @@ import strategicprimer.drivers.worker.common {
 import java.util {
 	Enumeration
 }
+import lovelace.util.common {
+	matchingValue
+}
 "An alternative implementation of the worker tree model."
 shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
 	static class EnumerationWrapper<T>(Enumeration<out Object> enumeration) satisfies Iterator<T> {
@@ -282,13 +285,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             if (is TreeNode node = getNode(temp, item)) {
                 value pathOne = getPathToRoot(node);
                 Integer indexOne = getIndexOfChild(pathOne.array.exceptLast.last, node);
-                value nodeTwo = temp.find((child) { // TODO: Make a matching() method in lovelace.util for cases like this, where we want to map().find(something.equals) except we want to un-map() for the return value
-                    if (is KindNode child, item.kind == child.userObjectNarrowed) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                });
+                value nodeTwo = temp.narrow<KindNode>()
+                        .find(matchingValue(item.kind, KindNode.userObjectNarrowed));
                 assert (is MutableTreeNode end = pathOne.array.last);
                 end.removeFromParent();
                 ObjectArray<Object> pathSubset;
