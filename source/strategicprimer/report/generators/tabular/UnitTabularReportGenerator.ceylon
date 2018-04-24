@@ -44,7 +44,7 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
             }
         }
         fixtures.remove(key);
-        return {retval};
+        return Singleton(retval);
     }
     "Compare two location-unit pairs."
     shared actual Comparison comparePairs([Point, IUnit] one, [Point, IUnit] two) {

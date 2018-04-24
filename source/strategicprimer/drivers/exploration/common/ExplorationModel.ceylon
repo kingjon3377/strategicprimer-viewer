@@ -174,7 +174,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 if (is Fortress element) {
                     return element;
                 } else {
-                    return {element};
+                    return Singleton(element);
                 }
             }).narrow<IUnit>().filter(matchingValue(player, HasOwner.owner));
     }
