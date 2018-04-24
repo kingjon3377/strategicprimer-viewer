@@ -53,7 +53,8 @@ import ceylon.random {
     randomize
 }
 import lovelace.util.common {
-	matchingPredicate
+	matchingPredicate,
+	matchingValue
 }
 "A model for exploration drivers."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
@@ -167,18 +168,15 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 .fold(set(map.players))((one, two) => one.intersection(two));
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) {
-//        {IUnit*} temp = map.locations.flatMap((point) => map.fixtures[point]) // TODO: syntax sugar once compiler bug fixed
-        {IUnit*} temp = map.locations.flatMap((point) => map.fixtures.get(point))
+//        return map.locations.flatMap((point) => map.fixtures[point]) // TODO: syntax sugar once compiler bug fixed
+        return map.locations.flatMap((point) => map.fixtures.get(point))
             .flatMap((element) {
                 if (is Fortress element) {
                     return element;
                 } else {
                     return {element};
                 }
-            }).narrow<IUnit>();
-        return {
-            for (item in temp) if (item.owner == player) item
-        };
+            }).narrow<IUnit>().filter(matchingValue(player, HasOwner.owner));
     }
     "Tell listeners that the selected point changed."
     void fireSelectionChange(Point old, Point newSelection) {
