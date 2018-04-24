@@ -106,4 +106,5 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
             return false;
         }
     }
+    shared actual Integer hash => name.hash;
 }

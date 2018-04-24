@@ -109,4 +109,5 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
     shared actual String plural = "Fields and meadows";
     "The required Perception check to find the fixture."
     shared actual Integer dc = 18; // TODO: reflect size
+    shared actual Integer hash => id;
 }

@@ -71,6 +71,10 @@ shared class WorkerStats {
             return false;
         }
     }
+    shared actual Integer hash => hitPoints + maxHitPoints.leftLogicalShift(3) +
+            strength.leftLogicalShift(6) + dexterity.leftLogicalShift(9) +
+            constitution.leftLogicalShift(12) + intelligence.leftLogicalShift(15) +
+            wisdom.leftLogicalShift(18) + charisma.leftLogicalShift(21);
     shared actual String string =>
             "HP: ``hitPoints`` / ``maxHitPoints``
              Str: ``strength``

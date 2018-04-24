@@ -149,4 +149,6 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
             return true;
         }
     }
+    // Going for speed rather than excellent hashing
+    shared actual Integer hash => population;
 }
