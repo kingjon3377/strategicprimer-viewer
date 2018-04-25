@@ -315,9 +315,7 @@ shared object statGeneratingCLI satisfies SimpleCLIDriver {
      player."
     void createWorkersForPlayer(IExplorationModel model, IDRegistrar idf, Player player,
             ICLIHelper cli) {
-        MutableList<IUnit> units = ArrayList{
-            *model.getUnits(player)
-        };
+        MutableList<IUnit> units = ArrayList { elements = model.getUnits(player); };
         while (true) {
             value chosen = cli.chooseFromList(units,
                 "Which unit contains the worker in question? (Select -1 to create new.)",
