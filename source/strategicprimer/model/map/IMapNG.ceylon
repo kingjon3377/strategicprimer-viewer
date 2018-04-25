@@ -31,7 +31,7 @@ shared interface IMapNG satisfies Subsettable<IMapNG> {
     "The dimensions (and version) of the map."
     shared formal MapDimensions dimensions;
     "(A view of) the players in the map."
-    shared formal {Player*} players;
+    shared formal IPlayerCollection players;
     """The locations in the map. This should *not* include locations outside the
        dimensions of the map even if callers have modified them, but *should* include all
        points within the dimensions of the map even if they are "empty"."""
@@ -41,7 +41,7 @@ shared interface IMapNG satisfies Subsettable<IMapNG> {
     "Whether any given point is mountainous."
     shared formal NonNullCorrespondence<Point, Boolean> mountainous;
     "The rivers in the map."
-    // TODO: define as Multimap instead
+    // TODO: define as Multimap instead // TODO: Define item in each entry as a Set?
     shared formal NonNullCorrespondence<Point, {River*}> rivers;
     "The tile-fixtures at the various locations."
     // TODO: define as Multimap instead

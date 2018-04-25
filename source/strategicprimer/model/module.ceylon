@@ -24,4 +24,6 @@ module strategicprimer.model "0.4.9016" {
     import com.vasileff.ceylon.structures "1.1.3";
     import ceylon.decimal ceylonVersion;
     import ceylon.whole ceylonVersion;
+    import ceylon.dbc ceylonVersion;
+    import maven:"org.xerial:sqlite-jdbc" "3.19.3";
 }

@@ -400,7 +400,7 @@ object xmlTests {
 	    assertSerialization("Second Village serialization test, ``status``",
 	        Village(status, "villageTwo", 2, owner, race));
 	    Village thirdVillage = Village(status, "", 3, owner, race);
-	    for (deprecated in `Boolean`.caseValues) {
+	    for (deprecated in `Boolean`.caseValues) { // TODO: Use parameters() in a separate test, and similarly for other like cases
 	        assertMissingProperty(createSerializedForm(thirdVillage, deprecated),
 	            "name", thirdVillage);
 	    }

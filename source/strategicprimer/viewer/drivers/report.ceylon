@@ -30,8 +30,7 @@ import strategicprimer.drivers.common.cli {
 }
 import strategicprimer.model.map {
     IMapNG,
-    Player,
-    PlayerImpl
+    Player
 }
 import strategicprimer.report {
     reportGenerator,
@@ -189,13 +188,7 @@ object reportCLI satisfies SimpleDriver {
             if (options.hasOption("--player")) {
                 value playerNum = Integer.parse(options.getArgument("--player"));
                 if (is Integer playerNum) {
-                    if (exists temp = map.players
-                        .find((item) => item.playerId == playerNum)) {
-                        player = temp;
-                    } else {
-                        log.warn("No player with that number");
-                        player = PlayerImpl(playerNum, "");
-                    }
+                    player = map.players.getPlayer(playerNum);
                 } else {
                     log.warn("Non-numeric player", playerNum);
                     player = map.currentPlayer;
@@ -236,7 +229,7 @@ object reportCLI satisfies SimpleDriver {
             value playerNum = Integer.parse(options.getArgument("--player"));
             Player? player;
             if (is Integer playerNum) {
-                player = model.map.players.find((player) => player.playerId == playerNum);
+                player = model.map.players.getPlayer(playerNum);
             } else {
                 player = null;
             }

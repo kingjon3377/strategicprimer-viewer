@@ -3,7 +3,7 @@ import ceylon.collection {
     ArrayList,
     ListMutator,
     MutableMap,
-    TreeMap
+	naturalOrderTreeMap
 }
 import ceylon.test {
     test,
@@ -94,10 +94,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     {IUnit*} getUnitsImpl({Anything*} iter, Player player) =>
             iter.flatMap(flatten).narrow<IUnit>().filter((unit) => unit.owner.playerId == player.playerId);
     "All the players in all the maps."
-    shared actual {Player*} players {
-        return allMaps.map(([IMutableMapNG, JPath?] pair) => pair.first)
-                .flatMap(IMutableMapNG.players).distinct;
-    }
+    shared actual {Player*} players => allMaps.map(Tuple.first).flatMap(IMutableMapNG.players).distinct;
     "Get all the given player's units, or only those of a specified kind."
     shared actual {IUnit*} getUnits(Player player, String? kind) {
         if (exists kind) {
@@ -108,13 +105,12 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             return getUnitsImpl(map.locations.flatMap(map.fixtures.get), player)
                 .sort((x, y) => x.name.compareIgnoringCase(y.name));
         } else {
-            value temp = allMaps
-                    .map(([IMutableMapNG, JPath?] pair) => pair.first)
+            value temp = allMaps.map(Tuple.first)
                     .flatMap((indivMap) => indivMap.locations.flatMap(
 //                        (point) => getUnitsImpl(indivMap.fixtures[point], player)));
                         (point) => getUnitsImpl(indivMap.fixtures.get(point), player)));
             MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
-                    TreeMap<Integer, IUnit&ProxyFor<IUnit>>((x, y) => x<=>y);
+                    naturalOrderTreeMap<Integer, IUnit&ProxyFor<IUnit>>({});
             for (unit in temp) {
                 Integer key = unit.id;
                 ProxyFor<IUnit> proxy;

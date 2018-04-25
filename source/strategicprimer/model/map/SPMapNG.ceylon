@@ -63,7 +63,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The dimensions of the map."
     shared actual MapDimensions dimensions => mapDimensions;
     "A stream of the players known in the map"
-    shared actual {Player*} players => playerCollection.sequence();
+    shared actual IPlayerCollection players => playerCollection;
     "The locations in the map."
     shared actual {Point*} locations => PointIterator(dimensions, true, true);
     "The base terrain at the given location."
