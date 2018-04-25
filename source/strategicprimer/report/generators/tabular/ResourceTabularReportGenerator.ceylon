@@ -92,11 +92,9 @@ shared class ResourceTabularReportGenerator()
     shared actual void produceTable(Anything(String) ostream,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
         {[Integer, [Point, CacheFixture|Implement|ResourcePile]]*} values =
-                { for (key->item in fixtures)
-                if (is CacheFixture|Implement|ResourcePile resource = item.rest.first)
-                [key, [item.first, resource]]}
+                fixtures.narrow<Integer->[Point, CacheFixture|Implement|ResourcePile]>().map(Entry.pair)
                     .sort(comparingOn(
-                            ([Integer,
+                            ([Integer, // TODO: Can we use method-reference logic instead of a lambda?
                                 [Point, CacheFixture|Implement|ResourcePile]] pair) =>
                     pair.rest.first, comparePairs));
         writeRow(ostream, headerRow.first, *headerRow.rest);
