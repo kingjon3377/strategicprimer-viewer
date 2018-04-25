@@ -170,9 +170,8 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
     "The (for now active) towns in the given map that don't have 'stats' yet."
     {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) => {
         for (loc in map.locations)
-//            for (fixture in map.fixtures[loc]) // TODO: syntax sugar once compiler bug fixed
-            for (fixture in map.fixtures.get(loc))
-                if (is ModifiableTown fixture, fixture.status == TownStatus.active)
+//            for (fixture in map.fixtures[loc].narrow<ModifiableTown>().filter(matchingValue(TownStatus.active, ITownFixture.status))) // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(loc).narrow<ModifiableTown>().filter(matchingValue(TownStatus.active, ITownFixture.status)))
                     loc->fixture };
     void assignStatsToTown(ModifiableTown town, CommunityStats stats) {
         if (is AbstractTown town) {
