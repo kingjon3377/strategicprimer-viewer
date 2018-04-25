@@ -35,7 +35,8 @@ import java.util {
 	Enumeration
 }
 import lovelace.util.common {
-	matchingValue
+	matchingValue,
+	as
 }
 "An alternative implementation of the worker tree model."
 shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
@@ -242,9 +243,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         }
     }
     shared actual void addUnitMember(IUnit unit, UnitMember member) {
-        assert (is Iterable<TreeNode> temp = root);
-        if (exists unitNode = temp.narrow<UnitNode>()
-	            .find(matchingValue(unit, UnitNode.userObjectNarrowed))) {
+        if (exists unitNode = as<{TreeNode*}>(root)?.narrow<UnitNode>()
+	            ?.find(matchingValue(unit, UnitNode.userObjectNarrowed))) {
             unit.addMember(member);
             MutableTreeNode newNode = UnitMemberNode(member);
             unitNode.add(newNode);
