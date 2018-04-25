@@ -1,6 +1,7 @@
 import lovelace.util.common {
     todo,
-	matchingPredicate
+	matchingPredicate,
+	matchingValue
 }
 import strategicprimer.model.map.fixtures.towns {
     Village,
@@ -191,11 +192,9 @@ object todoFixerCLI satisfies SimpleCLIDriver {
     void fixAllUnits(IMapNG map, ICLIHelper cli) {
         for (point in map.locations) {
             SimpleTerrain terrain = getTerrain(map, point);
-//            for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
-            for (fixture in map.fixtures.get(point)) {
-                if (is Unit fixture, "TODO" == fixture.kind) {
-                    fixUnit(fixture, terrain, cli);
-                }
+//            for (fixture in map.fixtures[point].narrow<Unit>().filter(matchingValue("TODO", Unit.kind))) { // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(point).narrow<Unit>().filter(matchingValue("TODO", Unit.kind))) {
+                fixUnit(fixture, terrain, cli);
             }
         }
     }
