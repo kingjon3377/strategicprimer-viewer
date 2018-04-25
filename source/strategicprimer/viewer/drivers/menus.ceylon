@@ -85,12 +85,14 @@ shared class PlayerChangeMenuListener(IDriverModel model)
     }
     shared actual void actionPerformed(ActionEvent event) {
         Player currentPlayer;
-        if (is IWorkerModel model) { // TODO: Specialize choices to model.players here too?
+        {Player*} players;
+        if (is IWorkerModel model) {
             currentPlayer = model.currentPlayer;
+            players = model.players;
         } else {
             currentPlayer = model.map.currentPlayer;
+            players = model.map.players;
         }
-        {Player*} players = model.map.players;
         if (is Player retval = JOptionPane.showInputDialog(
                 getContainingFrame(as<Component>(event.source)),
                 "Player to view:", "Choose New Player:",
