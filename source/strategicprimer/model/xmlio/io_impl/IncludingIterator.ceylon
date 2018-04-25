@@ -136,7 +136,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
 	                    }
 	                }
 	                continue;
-	            } else if (is StartElement retval, {spNamespace, XMLConstants.nullNsUri}
+	            } else if (is StartElement retval, [spNamespace, XMLConstants.nullNsUri]
 	                        .contains(retval.name.namespaceURI),
 	                    "include" == retval.name.localPart.lowercased) {
 	                handleInclude(retval);
