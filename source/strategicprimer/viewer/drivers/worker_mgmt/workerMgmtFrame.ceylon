@@ -99,7 +99,9 @@ import strategicprimer.model.xmlio {
     mapIOHelper
 }
 import lovelace.util.common {
-    anythingEqual
+    anythingEqual,
+	matchingPredicate,
+	matchingValue
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
@@ -111,15 +113,12 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
     Point findHQ() {
         variable Point retval = invalidPoint;
         for (location in model.map.locations) {
-//            for (fixture in model.map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
-            for (fixture in model.map.fixtures.get(location)) { // TODO: syntax sugar once compiler bug fixed
-                if (is Fortress fixture,
-                        fixture.owner.playerId == model.currentPlayer.playerId) {
-                    if ("HQ" == fixture.name) {
-                        return location;
-                    } else if (location.valid, !retval.valid) {
-                        retval = location;
-                    }
+//            for (fixture in model.map.fixtures[location].narrow<Fortress>().filter(matchingPredicate(matchingValue(model.currentPlayer.playerId, Player.playerId), Fortress.owner))) { // TODO: syntax sugar once compiler bug fixed
+            for (fixture in model.map.fixtures.get(location).narrow<Fortress>().filter(matchingPredicate(matchingValue(model.currentPlayer.playerId, Player.playerId), Fortress.owner))) { // TODO: syntax sugar once compiler bug fixed
+                if ("HQ" == fixture.name) {
+                    return location;
+                } else if (location.valid, !retval.valid) {
+                    retval = location;
                 }
             }
         }
