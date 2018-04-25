@@ -53,7 +53,8 @@ import ceylon.random {
 }
 import lovelace.util.common {
 	anythingEqual,
-	matchingValue
+	matchingValue,
+	matchingPredicate
 }
 Logger log = logger(`module strategicprimer.drivers.worker.common`);
 "A model to underlie the advancement GUI, etc."
@@ -155,13 +156,12 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     shared actual void addUnit(IUnit unit) {
         variable [Fortress, Point]? temp = null;
         for (point in map.locations) {
-            //            for (fixture in map.fixtures[point]) { // TODO: syntax sugar once compiler bug fixed
-            for (fixture in map.fixtures.get(point)) {
-                if (is Fortress fixture, "HQ" == fixture.name,
-                    fixture.owner.playerId == unit.owner.playerId) {
+            //            for (fixture in map.fixtures[point].narrow<Fortress>().filter(matchingPredicate(matchingValue(unit.owner.playerId, Player.playerId), Fortress.owner))) { // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(point).narrow<Fortress>().filter(matchingPredicate(matchingValue(unit.owner.playerId, Player.playerId), Fortress.owner))) {
+                if ("HQ" == fixture.name) {
                     addUnitAtLocation(unit, point);
                     return;
-                } else if (is Fortress fixture, fixture.owner.playerId == unit.owner.playerId, !temp exists) {
+                } else if (!temp exists) {
                     temp = [fixture, point];
                 }
             }
