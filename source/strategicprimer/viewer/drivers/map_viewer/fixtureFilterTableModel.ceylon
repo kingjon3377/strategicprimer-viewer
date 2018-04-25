@@ -124,7 +124,7 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
 	        trivialMatcher(`Shrub`), trivialMatcher(`Hill`), trivialMatcher(`Sandbar`),
 	        complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
     ]) {
-        if (is Iterable<FixtureMatcher> arg) {
+        if (is {FixtureMatcher*} arg) {
             list.addAll(arg);
         } else {
             list.add(arg);
