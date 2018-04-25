@@ -44,7 +44,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Separate towns by status."
     void separateByStatus<T>(Map<TownStatus, T> mapping,
             Collection<[Point, IFixture]> collection,
-            Anything(T, [Point, IFixture]) func) { // TODO: Can we narrow IFixture to ITownFixture here?
+            Anything(T, [Point, ITownFixture]) func) {
         for ([loc, item] in collection.narrow<[Point, AbstractTown]>().sort(pairComparator)) {
             if (exists result = mapping[item.status]) {
                 func(result, [loc, item]);
@@ -100,8 +100,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         // from HQ
         separateByStatus(separated, fixtures.items,
                     (MutableMap<ITownFixture, Point> mapping, pair) {
-                assert (is ITownFixture town = pair.rest.first);
-                mapping[town] = pair.first;
+                mapping[pair.rest.first] = pair.first;
             });
         if (separated.items.any(matchingValue(false, Iterable<Anything>.empty))) {
             ostream("""<h4>Cities, towns, and/or fortifications you know about:</h4>
@@ -158,8 +157,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     "Ruined Communities")]);
         separateByStatus(separated, fixtures.items,
                     (IReportNode node, pair) {
-                assert (is ITownFixture town = pair.rest.first);
-                node.appendNode(produceRIRSingle(fixtures, map, town, pair.first));
+                node.appendNode(produceRIRSingle(fixtures, map, pair.rest.first, pair.first));
             });
         IReportNode retval = SectionListReportNode(4,
             "Cities, towns, and/or fortifications you know about:");
