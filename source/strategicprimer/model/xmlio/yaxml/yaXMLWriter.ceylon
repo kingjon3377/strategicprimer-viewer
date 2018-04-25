@@ -24,12 +24,14 @@ shared object yaXMLWriter satisfies SPWriter {
             wrapped.write(ostream, obj, 0);
         } else if (is Path path = arg) {
             File file;
-            value res = path.resource;
-            if (is File res) {
+            switch (res = path.resource)
+            case (is File) {
                 file = res;
-            } else if (is Nil res) {
+            }
+            case (is Nil) {
                 file = res.createFile();
-            } else {
+            }
+            else {
                 throw IOException("``path`` exists but is not a file");
             }
             try (writer = file.Overwriter()) {

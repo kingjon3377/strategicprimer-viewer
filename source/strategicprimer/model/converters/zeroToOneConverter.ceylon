@@ -304,11 +304,14 @@ object zeroToOneConversionTests {
 	    for (argument in process.arguments) {
 	        Resource outFileRaw = parsePath("``argument``.converted.xml").resource;
 	        File outFile;
-	        if (is File outFileRaw) {
+	        switch (outFileRaw)
+	        case (is File) {
 	            outFile = outFileRaw;
-	        } else if (is Nil outFileRaw) {
+	        }
+	        case (is Nil) {
 	            outFile = outFileRaw.createFile();
-	        } else {
+	        }
+	        else {
 	            process.write(
 	                "``argument``.converted.xml already exists but is not a file; skipping ...");
 	            continue;

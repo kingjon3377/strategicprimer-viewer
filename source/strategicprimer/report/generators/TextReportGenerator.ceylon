@@ -52,7 +52,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 fixtures.remove(key);
             }
         }
-        List<[Point, TextFixture]> retItems = items.sort(
+        List<[Point, TextFixture]> retItems = items.sort( // TODO: Use method references and comparingOn instead of lambda
             ([Point, TextFixture] x, [Point, TextFixture] y) =>
                     x[1].turn <=> y[1].turn);
         if (!retItems.empty) {

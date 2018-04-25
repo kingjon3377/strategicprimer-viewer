@@ -33,7 +33,7 @@ shared class AdventureReportGenerator(
 	"Produce the report on all adventure hooks in the map."
 	shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
 			Anything(String) ostream) {
-		MutableList<[Point, IFixture]> values =
+		MutableList<[Point, IFixture]> values = // FIXME: Does this need to be a mutable list?
 				ArrayList<[Point, IFixture]> { elements = fixtures.items
 			.sort(pairComparator); };
 		MutableHeadedMap<AdventureFixture, Point> adventures =
@@ -64,7 +64,7 @@ shared class AdventureReportGenerator(
 	}
 	"Produce the report on all adventure hooks in the map."
 	shared actual IReportNode produceRIR(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
-		MutableList<[Point, IFixture]> values =
+		MutableList<[Point, IFixture]> values = // FIXME: Does this really need to be a mutable list?
 				ArrayList<[Point, IFixture]> { elements = fixtures.items
 			.sort(pairComparator); };
 		IReportNode adventures = SectionListReportNode(4, "Possible Adventures");

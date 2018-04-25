@@ -70,7 +70,7 @@ shared interface Animal
 		if (is Animal obj) {
 			if (traces) {
 				return equalsIgnoringID(obj);
-			} else {
+			} else { // TODO: delegate to equalsIgnoringID and additionally check ID
 				return kind == obj.kind && traces == obj.traces && talking == obj.talking
 						&& status == obj.status && id == obj.id && born == obj.born
 						&& population == obj.population;

@@ -70,7 +70,7 @@ shared class Quantity
         }
     }
     shared actual Boolean equals(Object obj) {
-        if (is Quantity obj) {
+        if (is Quantity obj) { // FIXME: Uses == to compare numbers that could be floats
             return units == obj.units && number == obj.number;
         } else {
             return false;

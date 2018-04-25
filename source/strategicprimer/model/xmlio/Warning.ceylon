@@ -45,7 +45,7 @@ shared class CustomWarningHandler(
     if (is Anything(Throwable) handler) {
         handle = handler;
     } else {
-        handle = (Throwable warning) {
+        handle = (Throwable warning) { // TODO: Convert from lambda to named member function
             if (is SPFormatException warning) {
                 handler("SP format warning: ``warning.message``");
             } else {

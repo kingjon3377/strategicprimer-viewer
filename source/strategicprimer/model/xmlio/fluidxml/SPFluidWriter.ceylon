@@ -129,12 +129,14 @@ shared class SPFluidWriter() satisfies SPWriter {
             }
         } else if (is Path path = arg) {
             File file;
-            value res = path.resource;
-            if (is File res) {
+            switch (res = path.resource)
+            case (is File) {
                 file = res;
-            } else if (is Nil res) {
+            }
+            case (is Nil) {
                 file = res.createFile();
-            } else {
+            }
+            else {
                 throw IOException("``path`` exists but is not a file");
             }
             try (writer = file.Overwriter()) {
@@ -145,12 +147,14 @@ shared class SPFluidWriter() satisfies SPWriter {
     shared actual void write(Path|Anything(String) arg, IMapNG map) {
         if (is Path path = arg) {
             File file;
-            value res = path.resource;
-            if (is File res) {
+            switch (res = path.resource)
+            case (is File) {
                 file = res;
-            } else if (is Nil res) {
+            }
+            case (is Nil) {
                 file = res.createFile();
-            } else {
+            }
+            else {
                 throw IOException("``path`` exists but is not a file");
             }
             try (writer = file.Overwriter()) {
