@@ -184,15 +184,10 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 			map.addFixture(loc, Meadow(field.kind, field.field, field.cultivated, field.id, field.status, acres));
 		}
 	}
-	Integer countAdjacentForests(IMapNG map, Point center, String kind) {
-		variable Integer retval = 0;
-		for (loc in surroundingPointIterable(center, map.dimensions, 1)) { // TODO: can we replace this loop with stream operations?
-			if (map.fixtures.get(loc).narrow<Forest>().any(matchingValue(kind, Forest.kind))) {
-				retval++;
-			}
-		}
-		return retval;
-	}
+	Boolean hasAdjacentForests(IMapNG map, String kind)(Point point) =>
+			map.fixtures.get(point).narrow<Forest>().any(matchingValue(kind, Forest.kind));
+	Integer countAdjacentForests(IMapNG map, Point center, String kind) =>
+			surroundingPointIterable(center, map.dimensions, 1).count(hasAdjacentForests(map, kind));
 	Decimal decimalize(Number<out Anything> number) {
 		assert (is Decimal|Whole|Integer|Float number);
 		switch (number)
