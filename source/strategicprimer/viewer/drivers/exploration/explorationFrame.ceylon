@@ -485,7 +485,7 @@ SPFrame explorationFrame(IExplorationModel model,
                             MutableList<[Integer, TileFixture]> possibles =
                                     ArrayList<[Integer, TileFixture]>();
                             for (index->fixture in ListModelWrapper(mainList.model)
-                                .indexed) {
+	                                .indexed) {
                                 if (simpleMovementModel.shouldAlwaysNotice(selectedUnit, fixture)) {
                                     constants.add([index, fixture]);
                                 } else if (simpleMovementModel.shouldSometimesNotice(selectedUnit,
