@@ -69,7 +69,8 @@ shared class ExplorableReportGenerator(
         MutableList<Point> battles = PointList(
             "Signs of long-ago battles on the following tiles:");
         MutableList<Point> caves = PointList("Caves beneath the following tiles: ");
-        for ([loc, item] in fixtures.items.sort(pairComparator)) {
+        for ([loc, item] in fixtures.items.narrow<[Point, Portal|Battlefield|Cave]>()
+	            .sort(pairComparator)) {
             switch (item)
             case (is Portal) {
                 portals.add(loc);
@@ -79,9 +80,6 @@ shared class ExplorableReportGenerator(
             }
             case (is Cave) {
                 caves.add(loc);
-            }
-            else {
-                continue;
             }
             fixtures.remove(item.id);
         }
@@ -125,7 +123,7 @@ shared class ExplorableReportGenerator(
             `Cave`->caves };
         };
         for ([loc, item] in fixtures.items.sort(pairComparator)) {
-            if (is Battlefield|Cave|Portal item,
+            if (is Battlefield|Cave|Portal item, // Using Iterable.narrow() instead of an if here causes a compiler backend error
 	                exists node = nodes[type(item)]) {
                 node.appendNode(produceRIRSingle(fixtures, map, item, loc));
             }

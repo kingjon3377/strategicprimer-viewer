@@ -31,10 +31,8 @@ shared class AdventureReportGenerator(
 			Anything(String) ostream) {
 		MutableHeadedMap<AdventureFixture, Point> adventures =
 				HeadedMapImpl<AdventureFixture, Point>("<h4>Possible Adventures</h4>");
-		for ([loc, item] in fixtures.items.sort(pairComparator)) {
-			if (is AdventureFixture item) {
-				adventures[item] = loc;
-			}
+		for ([loc, item] in fixtures.items.narrow<[Point, AdventureFixture]>().sort(pairComparator)) {
+			adventures[item] = loc;
 		}
 		writeMap(ostream, adventures, (AdventureFixture key->Point val, formatter) => produceSingle(
 				fixtures, map, formatter, key, val));
@@ -58,10 +56,8 @@ shared class AdventureReportGenerator(
 	"Produce the report on all adventure hooks in the map."
 	shared actual IReportNode produceRIR(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
 		IReportNode adventures = SectionListReportNode(4, "Possible Adventures");
-		for ([loc, item] in fixtures.items.sort(pairComparator)) {
-			if (is AdventureFixture item) {
-				adventures.appendNode(produceRIRSingle(fixtures, map, item, loc));
-			}
+		for ([loc, item] in fixtures.items.narrow<[Point, AdventureFixture]>().sort(pairComparator)) {
+			adventures.appendNode(produceRIRSingle(fixtures, map, item, loc));
 		}
 		if (adventures.childCount == 0) {
 			return emptyReportNode;

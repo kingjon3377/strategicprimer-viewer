@@ -159,7 +159,7 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
                 comparing(byIncreasing(CacheFixture.kind),
                     byIncreasing(CacheFixture.contents),
                     byIncreasing(CacheFixture.id)));
-        for ([point, item] in fixtures.items.sort(pairComparator)) {
+        for ([point, item] in fixtures.items.narrow<[Point, HarvestableFixture]>().sort(pairComparator)) {
             // TODO: Use a Map by type; with reified generics we can even handle differently
             // based on whether a List or Map is in the Map!
             switch (item)
@@ -260,7 +260,7 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
        referred to in this report are to be removed from the collection."""
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map) {
-        value values = fixtures.items.sort(pairComparator);
+        value values = fixtures.items.narrow<[Point, HarvestableFixture]>().sort(pairComparator); // TODO: inline into sole reference
         MutableMap<String, IReportNode> stone = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> shrubs = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> minerals = HashMap<String, IReportNode>();
@@ -276,43 +276,41 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         groves.suspend();
         caches.suspend();
         for ([loc, item] in values) {
-            if (is HarvestableFixture item) {
-                if (is CacheFixture item) {
-                    caches.appendNode(produceRIRSingle(fixtures, map, item, loc));
-                } else if (is Grove item) {
-                    groves.appendNode(produceRIRSingle(fixtures, map, item, loc));
-                } else if (is Meadow item) {
-                    meadows.appendNode(produceRIRSingle(fixtures, map, item, loc));
-                } else if (is Mine item) {
-                    mines.appendNode(produceRIRSingle(fixtures, map, item, loc));
-                } else if (is MineralVein item) {
-                    IReportNode node;
-                    if (exists temp = minerals[item.shortDescription]) {
-                        node = temp;
-                    } else {
-                        node = ListReportNode(item.shortDescription);
-                        minerals[item.shortDescription] = node;
-                    }
-                    node.appendNode(produceRIRSingle(fixtures, map, item, loc));
-                } else if (is Shrub item) {
-                    IReportNode node;
-                    if (exists temp = shrubs[item.shortDescription]) {
-                        node = temp;
-                    } else {
-                        node = ListReportNode(item.shortDescription);
-                        shrubs[item.shortDescription] = node;
-                    }
-                    node.appendNode(produceRIRSingle(fixtures, map, item, loc));
-                } else if (is StoneDeposit item) {
-                    IReportNode node;
-                    if (exists temp = stone[item.kind]) {
-                        node = temp;
-                    } else {
-                        node = ListReportNode(item.kind);
-                        stone[item.kind] = node;
-                    }
-                    node.appendNode(produceRIRSingle(fixtures, map, item, loc));
+            if (is CacheFixture item) {
+                caches.appendNode(produceRIRSingle(fixtures, map, item, loc));
+            } else if (is Grove item) {
+                groves.appendNode(produceRIRSingle(fixtures, map, item, loc));
+            } else if (is Meadow item) {
+                meadows.appendNode(produceRIRSingle(fixtures, map, item, loc));
+            } else if (is Mine item) {
+                mines.appendNode(produceRIRSingle(fixtures, map, item, loc));
+            } else if (is MineralVein item) {
+                IReportNode node;
+                if (exists temp = minerals[item.shortDescription]) {
+                    node = temp;
+                } else {
+                    node = ListReportNode(item.shortDescription);
+                    minerals[item.shortDescription] = node;
                 }
+                node.appendNode(produceRIRSingle(fixtures, map, item, loc));
+            } else if (is Shrub item) {
+                IReportNode node;
+                if (exists temp = shrubs[item.shortDescription]) {
+                    node = temp;
+                } else {
+                    node = ListReportNode(item.shortDescription);
+                    shrubs[item.shortDescription] = node;
+                }
+                node.appendNode(produceRIRSingle(fixtures, map, item, loc));
+            } else if (is StoneDeposit item) {
+                IReportNode node;
+                if (exists temp = stone[item.kind]) {
+                    node = temp;
+                } else {
+                    node = ListReportNode(item.kind);
+                    stone[item.kind] = node;
+                }
+                node.appendNode(produceRIRSingle(fixtures, map, item, loc));
             }
         }
         SortedSectionListReportNode shrubsNode = SortedSectionListReportNode(5,

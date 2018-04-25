@@ -71,24 +71,22 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
         		Anything(String) ostream) {
         MutableMultimap<String, Point> items = ArrayListMultimap<String, Point>();
-        for ([loc, item] in fixtures.items.sort(pairComparator)) {
-            if (is Animal animal = item) {
-                String desc;
-                if (animal.traces) {
-                    desc = "tracks or traces of ``animal.kind``";
-                } else if (animal.talking) {
-                    desc = "talking ``animal.kind``";
-                } else {
-                    desc = animal.kind;
-                }
-                items.put(desc, loc);
-                if (animal.id > 0) {
-                    fixtures.remove(animal.id);
-                } else {
-                    for (key->val in fixtures) {
-                        if (val == [loc, item]) {
-                            fixtures.remove(key);
-                        }
+        for ([loc, animal] in fixtures.items.narrow<[Point, Animal]>().sort(pairComparator)) {
+            String desc;
+            if (animal.traces) {
+                desc = "tracks or traces of ``animal.kind``";
+            } else if (animal.talking) {
+                desc = "talking ``animal.kind``";
+            } else {
+                desc = animal.kind;
+            }
+            items.put(desc, loc);
+            if (animal.id > 0) {
+                fixtures.remove(animal.id);
+            } else {
+                for (key->val in fixtures) { // TODO: Keep key in main loop
+                    if (val == [loc, animal]) {
+                        fixtures.remove(key);
                     }
                 }
             }
@@ -124,23 +122,21 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     "Produce the sub-report about animals."
     shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures, IMapNG map) {
         MutableMap<String, IReportNode> items = HashMap<String, IReportNode>();
-        for ([loc, item] in fixtures.items.sort(pairComparator)) {
-            if (is Animal animal = item) {
-                IReportNode node;
-                if (exists temp = items[animal.kind]) {
-                    node = temp;
-                } else {
-                    node = ListReportNode(animal.kind);
-                    items[animal.kind] = node;
-                }
-                node.appendNode(produceRIRSingle(fixtures, map, animal, loc));
-                if (animal.id > 0) {
-                    fixtures.remove(animal.id);
-                } else {
-                    for (key->val in fixtures) {
-                        if (val == [loc, item]) {
-                            fixtures.remove(key);
-                        }
+        for ([loc, animal] in fixtures.items.narrow<[Point, Animal]>().sort(pairComparator)) {
+            IReportNode node;
+            if (exists temp = items[animal.kind]) {
+                node = temp;
+            } else {
+                node = ListReportNode(animal.kind);
+                items[animal.kind] = node;
+            }
+            node.appendNode(produceRIRSingle(fixtures, map, animal, loc));
+            if (animal.id > 0) {
+                fixtures.remove(animal.id);
+            } else {
+                for (key->val in fixtures) { // TODO: Keep the key from the main loop
+                    if (val == [loc, animal]) {
+                        fixtures.remove(key);
                     }
                 }
             }

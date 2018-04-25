@@ -44,7 +44,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Separate towns by status."
     void separateByStatus<T>(Map<TownStatus, T> mapping,
             Collection<[Point, IFixture]> collection,
-            Anything(T, [Point, IFixture]) func) {
+            Anything(T, [Point, IFixture]) func) { // TODO: Can we narrow IFixture to ITownFixture here?
         for ([loc, item] in collection.narrow<[Point, AbstractTown]>().sort(pairComparator)) {
             if (exists result = mapping[item.status]) {
                 func(result, [loc, item]);

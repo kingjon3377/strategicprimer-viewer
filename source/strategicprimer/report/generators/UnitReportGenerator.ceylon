@@ -180,13 +180,11 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 HeadedMapImpl<IUnit, Point>("<h5>Foreign Units</h5>");
         MutableHeadedMap<IUnit, Point> ours =
                 HeadedMapImpl<IUnit, Point>("<h5>Your units</h5>");
-        for ([loc, item] in fixtures.items.sort(pairComparator)) {
-            if (is IUnit unit = item) {
-                if (currentPlayer == unit.owner) {
-                    ours[unit] = loc;
-                } else {
-                    foreign[unit] = loc;
-                }
+        for ([loc, unit] in fixtures.items.narrow<[Point, IUnit]>().sort(pairComparator)) {
+            if (currentPlayer == unit.owner) {
+                ours[unit] = loc;
+            } else {
+                foreign[unit] = loc;
             }
         }
         if (!ours.empty || !foreign.empty) {
@@ -284,17 +282,15 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
 		    IMapNG map) {
         IReportNode theirs = SectionListReportNode(5, "Foreign Units");
         IReportNode ours = SectionListReportNode(5, "Your Units");
-        for ([loc, item] in fixtures.items.sort(pairComparator)) {
-            if (is IUnit unit = item) {
-                IReportNode unitNode = produceRIRSingle(fixtures, map, unit,
-                    loc);
-                unitNode.text = "At ``loc``: ``unitNode.text`` ``distCalculator
-                    .distanceString(loc)``";
-                if (currentPlayer == unit.owner) {
-                    ours.appendNode(unitNode);
-                } else {
-                    theirs.appendNode(unitNode);
-                }
+        for ([loc, unit] in fixtures.items.narrow<[Point, IUnit]>().sort(pairComparator)) {
+            IReportNode unitNode = produceRIRSingle(fixtures, map, unit,
+                loc);
+            unitNode.text = "At ``loc``: ``unitNode.text`` ``distCalculator
+                .distanceString(loc)``";
+            if (currentPlayer == unit.owner) {
+                ours.appendNode(unitNode);
+            } else {
+                theirs.appendNode(unitNode);
             }
         }
         IReportNode textNode = SimpleReportNode(

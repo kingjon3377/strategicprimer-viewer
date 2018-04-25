@@ -87,7 +87,7 @@ shared class ImmortalsReportGenerator(
         MutableMultimap<String, Point> giants = handleComplex(`Giant`);
         MutableMultimap<String, Point> fairies = handleComplex(`Fairy`, "");
         MutableMultimap<String, Point> dragons = handleComplex(`Dragon`);
-        for ([point, immortal] in fixtures.items.sort(pairComparator)) {
+        for ([point, immortal] in fixtures.items.narrow<[Point, Immortal]>().sort(pairComparator)) {
             if (exists func = meta[type(immortal)]) {
                 func(immortal.string, point);
                 fixtures.remove(immortal.id);
@@ -138,7 +138,7 @@ shared class ImmortalsReportGenerator(
                 return node;
             }
         }
-        for ([point, item] in fixtures.items.sort(pairComparator)) {
+        for ([point, item] in fixtures.items.narrow<[Point, Immortal]>().sort(pairComparator)) {
             IFixture immortal = item;
             if (is Dragon immortal) {
                 separateByKind(dragons, immortal)

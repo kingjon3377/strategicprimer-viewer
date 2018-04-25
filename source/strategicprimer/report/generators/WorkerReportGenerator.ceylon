@@ -130,7 +130,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map) {
         IReportNode retval = SectionListReportNode(5, "Workers");
-        for ([loc, worker] in fixtures.items.narrow<[Point, IWorker]>().sort(pairComparator)) { // TODO: Similarly narrow before sorting in other generators
+        for ([loc, worker] in fixtures.items.narrow<[Point, IWorker]>().sort(pairComparator)) {
             retval.appendNode(produceRIRSingle(fixtures, map, worker, loc));
         }
         if (retval.childCount == 0) {

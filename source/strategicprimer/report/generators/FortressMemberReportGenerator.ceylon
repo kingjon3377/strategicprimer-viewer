@@ -82,7 +82,8 @@ shared class FortressMemberReportGenerator(
                         byIncreasing(Implement.id)));
         MutableMap<String, MutableHeadedMap<ResourcePile, Point>> resources =
                 HashMap<String, MutableHeadedMap<ResourcePile, Point>>();
-        for ([loc, item] in fixtures.items.sort(pairComparator)) {
+        for ([loc, item] in fixtures.items.narrow<[Point, ResourcePile|Implement]>()
+	            .sort(pairComparator)) {
             if (is ResourcePile resource = item) {
                 MutableHeadedMap<ResourcePile, Point> pileMap;
                 if (exists temp = resources[resource.kind]) {
@@ -176,7 +177,8 @@ shared class FortressMemberReportGenerator(
         MutableMap<String, IReportNode> resourceKinds =
                 HashMap<String, IReportNode>();
         IReportNode equipment = ListReportNode("Equipment:");
-        for ([loc, item] in fixtures.items.sort(pairComparator)) {
+        for ([loc, item] in fixtures.items.narrow<[Point, ResourcePile|Implement]>()
+	            .sort(pairComparator)) {
             if (is ResourcePile resource = item) {
                 String kind = resource.kind;
                 IReportNode node;

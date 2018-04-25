@@ -44,24 +44,22 @@ shared class VillageReportGenerator(
 			villageComparator);
 		MutableMap<Player, MutableHeadedMap<Village, Point>> others =
 				HashMap<Player, MutableHeadedMap<Village, Point>>();
-		for ([loc, item] in fixtures.items.sort(pairComparator)) {
-			if (is Village village = item) {
-				if (village.owner == currentPlayer) {
-					own[village] = loc;
-				} else if (village.owner.independent) {
-					independents[village] = loc;
+		for ([loc, village] in fixtures.items.narrow<[Point, Village]>().sort(pairComparator)) {
+			if (village.owner == currentPlayer) {
+				own[village] = loc;
+			} else if (village.owner.independent) {
+				independents[village] = loc;
+			} else {
+				MutableHeadedMap<Village, Point> mapping;
+				if (exists temp = others[village.owner]) {
+					mapping = temp;
 				} else {
-					MutableHeadedMap<Village, Point> mapping;
-					if (exists temp = others[village.owner]) {
-						mapping = temp;
-					} else {
-						mapping = HeadedMapImpl<Village, Point>(
-							"<h5>Villages sworn to ``village.owner.name``</h5>
-							 ", villageComparator);
-						others[village.owner] = mapping;
-					}
-					mapping[village] = loc;
+					mapping = HeadedMapImpl<Village, Point>(
+						"<h5>Villages sworn to ``village.owner.name``</h5>
+						 ", villageComparator);
+					others[village.owner] = mapping;
 				}
+				mapping[village] = loc;
 			}
 		}
 		Comparison byDistance(Village->Point first, Village->Point second) =>
@@ -102,22 +100,20 @@ shared class VillageReportGenerator(
 		IReportNode independents =
 				SectionListReportNode(5, "Villages you think are independent:");
 		MutableMap<Player, IReportNode> othersMap = HashMap<Player, IReportNode>();
-		for ([loc, item] in fixtures.items.sort(pairComparator)) {
-			if (is Village village = item) {
-				Player owner = village.owner;
-				IReportNode parent;
-				if (owner == currentPlayer) {
-					parent = own;
-				} else if (owner.independent) {
-					parent = independents;
-				} else if (exists temp = othersMap[owner]) {
-					parent = temp;
-				} else {
-					parent = SectionListReportNode(6, "Villages sworn to ``owner``");
-					othersMap[owner] = parent;
-				}
-				parent.appendNode(produceRIRSingle(fixtures, map, village, loc));
+		for ([loc, village] in fixtures.items.narrow<[Point, Village]>().sort(pairComparator)) {
+			Player owner = village.owner;
+			IReportNode parent;
+			if (owner == currentPlayer) {
+				parent = own;
+			} else if (owner.independent) {
+				parent = independents;
+			} else if (exists temp = othersMap[owner]) {
+				parent = temp;
+			} else {
+				parent = SectionListReportNode(6, "Villages sworn to ``owner``");
+				othersMap[owner] = parent;
 			}
+			parent.appendNode(produceRIRSingle(fixtures, map, village, loc));
 		}
 		IReportNode others = SectionListReportNode(5,
 			"Other villages you know about:");

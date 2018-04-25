@@ -218,13 +218,11 @@ shared class FortressReportGenerator(
             IMapNG map, Anything(String) ostream) {
         MutableMap<Fortress, Point> ours = HashMap<Fortress, Point>();
         MutableMap<Fortress, Point> others = HashMap<Fortress, Point>();
-        for ([loc, item] in fixtures.items.sort(pairComparator)) {
-            if (is Fortress fort = item) {
-                if (currentPlayer == fort.owner) {
-                    ours[fort] = loc;
-                } else {
-                    others[fort] = loc;
-                }
+        for ([loc, fort] in fixtures.items.narrow<[Point, Fortress]>().sort(pairComparator)) {
+            if (currentPlayer == fort.owner) {
+                ours[fort] = loc;
+            } else {
+                others[fort] = loc;
             }
         }
         if (!ours.empty) {
@@ -293,15 +291,13 @@ shared class FortressReportGenerator(
 	        IMapNG map) {
         IReportNode foreign = SectionReportNode(4, "Foreign fortresses in the map:");
         IReportNode ours = SectionReportNode(4, "Your fortresses in the map:");
-        for ([loc, item] in fixtures.items.sort(pairComparator)) {
-            if (is Fortress fort = item) {
-                if (currentPlayer == fort.owner) {
-                    ours.appendNode(produceRIRSingle(fixtures, map, fort,
-                        loc));
-                } else {
-                    foreign.appendNode(produceRIRSingle(fixtures, map, fort,
-                        loc));
-                }
+        for ([loc, fort] in fixtures.items.narrow<[Point, Fortress]>().sort(pairComparator)) {
+            if (currentPlayer == fort.owner) {
+                ours.appendNode(produceRIRSingle(fixtures, map, fort,
+                    loc));
+            } else {
+                foreign.appendNode(produceRIRSingle(fixtures, map, fort,
+                    loc));
             }
         }
         if (ours.childCount == 0) {
