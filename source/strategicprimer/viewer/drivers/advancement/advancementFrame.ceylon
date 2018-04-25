@@ -57,7 +57,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
     IDRegistrar idf = createIDFactory(map);
     JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
-        map.players, () => model.map.currentTurn, false, idf); // TODO: Use model.players instead of map.players?
+        model.players, () => model.map.currentTurn, false, idf);
     WorkerCreationListener newWorkerListener = WorkerCreationListener(treeModel,
         idf);
     tree.addUnitSelectionListener(newWorkerListener);
