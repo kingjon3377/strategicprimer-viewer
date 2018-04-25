@@ -72,13 +72,13 @@ object fixtureFilterTransferHandler extends TransferHandler() {
             return false;
         }
         if (is SwingList<out Anything> component,
-            is Reorderable model = component.model,
-            is SwingList<out Anything>.DropLocation dropLocation) {
+	            is Reorderable model = component.model,
+	            is SwingList<out Anything>.DropLocation dropLocation) {
             Integer index = dropLocation.index;
             model.reorder(payload, index);
             return true;
         } else if (is JTable component, is Reorderable model = component.model,
-            is JTable.DropLocation dropLocation) {
+	            is JTable.DropLocation dropLocation) {
             Integer index = dropLocation.row;
             Integer selection = component.selectedRow;
             model.reorder(payload, index);
