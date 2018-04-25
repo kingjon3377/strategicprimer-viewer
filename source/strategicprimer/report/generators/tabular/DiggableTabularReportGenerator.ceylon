@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+	comparingOn
 }
 
 import strategicprimer.model {
@@ -60,12 +61,13 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
     }
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, MineralFixture] one,
-            [Point, MineralFixture] two) {
-        return comparing( // TODO: Use comparingOn() to convert lambdas to method reference logic
-            byIncreasing(([Point, MineralFixture] pair) => pair.rest.first.kind),
-                    ([Point, MineralFixture] first, [Point, MineralFixture] second) =>
-            DistanceComparator(hq, dimensions).compare(first.first, second.first),
-            byIncreasing(([Point, MineralFixture] pair) => pair.rest.first.hash))
-        (one, two);
-    }
+            [Point, MineralFixture] two) => comparing(
+            comparingOn(Tuple<Point|MineralFixture, Point, MineralFixture[1]>.rest,
+                comparingOn(Tuple<MineralFixture, MineralFixture, []>.first,
+                    comparingOn(MineralFixture.kind, increasing<String>))),
+            comparingOn(Tuple<Point|MineralFixture, Point, MineralFixture[1]>.first,
+                DistanceComparator(hq, dimensions).compare),
+            comparingOn(Tuple<Point|MineralFixture, Point, MineralFixture[1]>.rest,
+                comparingOn(Tuple<MineralFixture, MineralFixture, []>.first,
+                    comparingOn(Object.hash, increasing<Integer>))))(one, two);
 }
