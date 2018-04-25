@@ -305,19 +305,17 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     }
                 } else if (orderCheck,
 	                    is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
-                    for (child in item) {
-                        if (is WorkerTreeModelAlt.WorkerTreeNode<IUnit> child) {
-                            IUnit unit = child.userObjectNarrowed;
-                            if (!unit.empty) {
-                                String orders = unit.getLatestOrders(turnSource())
-                                    .lowercased;
-                                if (orders.contains("fixme")) {
-                                    shouldError = true;
-                                    shouldWarn = false;
-                                    break;
-                                } else if (orders.contains("todo")) {
-                                    shouldWarn = true;
-                                }
+                    for (child in item.narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()) {
+                        IUnit unit = child.userObjectNarrowed;
+                        if (!unit.empty) {
+                            String orders = unit.getLatestOrders(turnSource())
+                                .lowercased;
+                            if (orders.contains("fixme")) {
+                                shouldError = true;
+                                shouldWarn = false;
+                                break;
+                            } else if (orders.contains("todo")) {
+                                shouldWarn = true;
                             }
                         }
                     }
