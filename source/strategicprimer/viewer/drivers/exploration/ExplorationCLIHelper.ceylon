@@ -53,19 +53,15 @@ import strategicprimer.model.map.fixtures.towns {
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         satisfies MovementCostSource {
     HuntingModel huntingModel = HuntingModel(model.map);
-    MutableList<Anything(Integer)|MovementCostListener> listeners =
-            ArrayList<Anything(Integer)|MovementCostListener>();
+    MutableList<MovementCostListener> listeners =
+            ArrayList<MovementCostListener>();
     shared actual void addMovementCostListener(MovementCostListener listener) =>
             listeners.add(listener);
     shared actual void removeMovementCostListener(MovementCostListener listener) =>
             listeners.remove(listener);
     void fireMovementCost(Integer cost) {
         for (listener in listeners) {
-            if (is MovementCostListener listener) {
-                listener.deduct(cost);
-            } else {
-                listener(cost);
-            }
+            listener.deduct(cost);
         }
     }
     "Have the user choose a player."
