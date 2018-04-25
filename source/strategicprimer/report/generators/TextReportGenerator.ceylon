@@ -1,10 +1,6 @@
-import ceylon.collection {
-    MutableList,
-    ArrayList
-}
-
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+	comparingOn
 }
 
 import strategicprimer.model.map {
@@ -43,21 +39,15 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Produce the part of the report dealing with arbitrary-text notes."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map, Anything(String) ostream) {
-        MutableList<[Point, TextFixture]> items = ArrayList<[Point, TextFixture]>();
-        for (key->[loc, item] in fixtures) {
-            if (is TextFixture fixture = item) {
-                items.add([loc, fixture]);
-                fixtures.remove(key);
-            }
-        }
-        List<[Point, TextFixture]> retItems = items.sort( // TODO: Use method references and comparingOn instead of lambda
-            ([Point, TextFixture] x, [Point, TextFixture] y) =>
-                    x[1].turn <=> y[1].turn);
-        if (!retItems.empty) {
+        {<Integer->[Point, TextFixture]>*} items = fixtures.narrow<Integer->[Point, TextFixture]>().sort(
+            comparingOn(Entry<Integer, [Point, TextFixture]>.item, comparingOn(Tuple<Point|TextFixture, Point, TextFixture[1]>.rest,
+                comparingOn(Tuple<TextFixture, TextFixture, []>.first, comparingOn(TextFixture.turn, increasing<Integer>)))));
+        if (!items.empty) {
             ostream("""<h4>Miscellaneous Notes</h4>
                        <ul>
                        """);
-            for ([location, item] in retItems) {
+            for (key->[location, item] in items) {
+                fixtures.remove(key);
                 ostream("<li>");
                 produceSingle(fixtures, map, ostream, item, location);
                 ostream("""</li>
