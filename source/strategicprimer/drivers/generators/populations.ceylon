@@ -187,12 +187,8 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 	Integer countAdjacentForests(IMapNG map, Point center, String kind) {
 		variable Integer retval = 0;
 		for (loc in surroundingPointIterable(center, map.dimensions, 1)) {
-			//for (fixture in map.fixtures[loc]) { // TODO: syntax sugar
-			for (fixture in map.fixtures.get(loc)) {
-				if (is Forest fixture, fixture.kind == kind) {
-					retval++;
-					break;
-				}
+			if (map.fixtures.get(loc).narrow<Forest>().any(matchingValue(kind, Forest.kind))) {
+				retval++;
 			}
 		}
 		return retval;
