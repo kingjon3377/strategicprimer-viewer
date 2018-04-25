@@ -513,15 +513,8 @@ object oneToTwoConverterTests {
 	    // The conversion process generates a second Ground, which with our ID-replacing we
 	    // can only match by removing it.
 	    assert (is IMutableMapNG actual = convertOneToTwo(original, runner, true));
-	    variable Boolean temp = true;
-	    for (fixture in actual.fixtures.get(pointFactory(3, 1))) {
-	        if (is Ground fixture) {
-	            if (temp) {
-	                temp = false;
-	            } else {
-	                actual.removeFixture(pointFactory(3, 1), fixture);
-	            }
-	        }
+	    for (fixture in actual.fixtures.get(pointFactory(3, 1)).narrow<Ground>().rest) {
+            actual.removeFixture(pointFactory(3, 1), fixture);
 	    }
 	    newWriter.write(outTwo.append, actual);
 	    assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,

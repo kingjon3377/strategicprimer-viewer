@@ -40,7 +40,7 @@ object cliTests {
 	    String expectedOutputReal;
 	    if (is String expectedOutput) {
 	        expectedOutputReal = expectedOutput;
-	    } else if (exists first = expectedOutput.first) {
+	    } else if (exists first = expectedOutput.first) { // TODO: Use expectedOutput.empty instead
 	        expectedOutputReal = operatingSystem.newline.join(expectedOutput);
 	    } else {
 	        expectedOutputReal = "";
