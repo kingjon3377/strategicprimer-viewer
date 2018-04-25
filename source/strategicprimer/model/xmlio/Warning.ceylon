@@ -38,19 +38,20 @@ shared object die satisfies Warning {
     }
 }
 "A warning handler that takes a user-provided handler."
-shared class CustomWarningHandler(
-        Anything(Throwable)|Anything(String) handler = process.writeLine)
-        satisfies Warning {
-    shared actual void handle(Throwable warning);
-    if (is Anything(Throwable) handler) {
-        handle = handler;
-    } else {
-        handle = (Throwable warning) { // TODO: Convert from lambda to named member function
-            if (is SPFormatException warning) {
-                handler("SP format warning: ``warning.message``");
-            } else {
-                handler("Warning: ``warning.message``");
-            }
-        };
-    }
+shared class CustomWarningHandler satisfies Warning {
+	static void defaultHandler(Anything(String) handler)(Throwable warning) {
+		if (is SPFormatException warning) {
+			handler("SP format warning: ``warning.message``");
+		} else {
+			handler("Warning: ``warning.message``");
+		}
+	}
+	shared actual void handle(Throwable warning);
+	shared new (Anything(Throwable)|Anything(String) handler = process.writeLine) {
+		if (is Anything(Throwable) handler) {
+			handle = handler;
+		} else {
+			handle = defaultHandler(handler);
+		}
+	}
 }
