@@ -233,11 +233,9 @@ object subsetTests {
 	    assertIsSubset(clone, zero, "unfilled map is still a subset of zeroed clone");
 	    // DCs, the only thing zeroed out in *map* copy() at the moment, are ignored by
 	    // equals().
-	//    for (fixture in clone.fixtures[pointFactory(0, 0)]) { // TODO: syntax sugar once compiler bug fixed
-	    for (fixture in clone.fixtures.get(pointFactory(0, 0))) {
-	        if (is AbstractTown fixture) {
-	            assertEquals(fixture.dc, 0, "Copied map didn't copy DCs");
-	        }
+	//    for (fixture in clone.fixtures[pointFactory(0, 0)].narrow<AbstractTown>()) { // TODO: syntax sugar once compiler bug fixed
+	    for (fixture in clone.fixtures.get(pointFactory(0, 0)).narrow<AbstractTown>()) {
+            assertEquals(fixture.dc, 0, "Copied map didn't copy DCs");
 	    }
 	    Unit uOne = Unit(PlayerImpl(0, ""), "type", "name", 7);
 	    uOne.addMember(Worker("worker", "dwarf", 8, Job("job", 1)));
