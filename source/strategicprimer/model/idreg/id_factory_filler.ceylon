@@ -38,9 +38,9 @@ void recursiveRegister(IDRegistrar factory, IMapNG|{IMapNG*}|{IFixture*} arg) {
             if (is {IFixture*} fixture) {
                 recursiveRegister(factory, fixture);
             }
-        if (is ITownFixture fixture, exists population = fixture.population) {
-            recursiveRegister(factory, population.yearlyProduction);
-	        recursiveRegister(factory, population.yearlyConsumption);
+	        if (is ITownFixture fixture, exists population = fixture.population) {
+	            recursiveRegister(factory, population.yearlyProduction);
+		        recursiveRegister(factory, population.yearlyConsumption);
 	        }
         }
     }

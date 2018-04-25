@@ -188,11 +188,11 @@ abstract class FluidBase {
 		if (is StartElement element,
 			{spNamespace, XMLConstants.nullNsUri}
 					.contains(element.name.namespaceURI)) {
-						return true;
-					} else {
-						return false;
-					}
-				}
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	"Move along the stream until we hit an end element matching hte given start-element,
 	 but object to any other start elements in our namespaces."
