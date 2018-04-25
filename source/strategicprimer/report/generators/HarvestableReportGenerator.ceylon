@@ -165,31 +165,38 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
                     byIncreasing(CacheFixture.contents),
                     byIncreasing(CacheFixture.id)));
         for ([point, item] in values) {
-            // TODO: Use a Map by type (or at least a switch); now we have reified
-            // generics we can even handle differently based on whether a List or Map
-            // is in the Map!
-            if (is CacheFixture item) {
+            // TODO: Use a Map by type; with reified generics we can even handle differently
+            // based on whether a List or Map is in the Map!
+            switch (item)
+            case (is CacheFixture) {
                 caches[item] = point;
                 fixtures.remove(item.id);
-            } else if (is Grove item) {
+            }
+            case (is Grove) {
                 groves[item] = point;
                 fixtures.remove(item.id);
-            } else if (is Meadow item) {
+            }
+            case (is Meadow) {
                 meadows[item] = point;
                 fixtures.remove(item.id);
-            } else if (is Mine item) {
+            }
+            case (is Mine) {
                 mines[item] = point;
                 fixtures.remove(item.id);
-            } else if (is MineralVein item) {
+            }
+            case (is MineralVein) {
                 minerals.put(item.shortDescription, point);
                 fixtures.remove(item.id);
-            } else if (is Shrub item) {
+            }
+            case (is Shrub) {
                 shrubs.put(item.kind, point);
                 fixtures.remove(item.id);
-            } else if (is StoneDeposit item) {
+            }
+            case (is StoneDeposit) {
                 stone.put(item.kind, point);
                 fixtures.remove(item.id);
             }
+            else {}
         }
         {HeadedList<String>+} all = [mapToList(minerals, "<h5>Mineral Deposits</h5>"),
             mapToList(stone, "<h5>Exposed Stone Deposits</h5>"),
