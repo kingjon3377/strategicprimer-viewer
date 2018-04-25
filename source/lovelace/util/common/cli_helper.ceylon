@@ -38,14 +38,11 @@ shared Integer inputNumber(String prompt) {
     variable Integer retval = -1;
     while (retval < 0) {
         writePrompt(prompt);
-        if (exists input = process.readLine()) {
-            if (is Integer temp = Integer.parse(input.replace(",", ""))) {
-                retval = temp;
-            } else {
-                retval = -1;
-            }
+        if (exists input = process.readLine(),
+	            is Integer temp = Integer.parse(input.replace(",", ""))) {
+            retval = temp;
         } else {
-            return -1;
+            retval = -1;
         }
     }
     return retval;
