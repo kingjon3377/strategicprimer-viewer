@@ -1,7 +1,3 @@
-import ceylon.collection {
-    ArrayList,
-    MutableList
-}
 import ceylon.numeric.float {
     sqrt
 }
@@ -38,14 +34,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
       all fixtures covered in the table from the collection."
     shared default void produceTable(Anything(String) ostream, DelayedRemovalMap<Integer,
 		    [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
-        MutableList<[Integer, [Point, T]]> temp =
-                ArrayList<[Integer, [Point, T]]>();
-        for (key->val in fixtures) {
-            if (is T fixture = val.rest.first) {
-                temp.add([key, [val.first, fixture]]);
-            }
-        }
-        {[Integer, [Point, T]]*} values = temp
+        {[Integer, [Point, T]]*} values = fixtures.narrow<Integer->[Point, T]>().map(Entry.pair)
             .sort(comparingOn(([Integer, [Point, T]] pair) => pair.rest.first,
             comparePairs));
         writeRow(ostream, headerRow.first, *headerRow.rest);
@@ -61,15 +50,8 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
      from the collection."
     shared default TableModel produceTableModel(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
-        MutableList<[Integer, [Point, T]]> temp =
-                ArrayList<[Integer, [Point, T]]>();
-        for (key->val in fixtures) {
-            if (is T fixture = val.rest.first) {
-                temp.add([key, [val.first, fixture]]);
-            }
-        }
-        {[Integer, [Point, T]]*} values = temp
-            .sort(comparingOn(([Integer, [Point, T]] pair) => pair.rest.first,
+        {[Integer, [Point, T]]*} values = fixtures.narrow<Integer->[Point, T]>().map(Entry.pair)
+                .sort(comparingOn(([Integer, [Point, T]] pair) => pair.rest.first,
             comparePairs));
         DefaultTableModel retval = DefaultTableModel(
             createJavaStringArray(headerRow), 0);
