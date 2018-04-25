@@ -243,15 +243,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     }
     shared actual void addUnitMember(IUnit unit, UnitMember member) {
         assert (is Iterable<TreeNode> temp = root);
-        UnitNode? findUnitNode() {
-            for (node in temp) {
-                if (is UnitNode node, node.userObjectNarrowed == unit) {
-                    return node;
-                }
-            }
-            return null;
-        }
-        if (exists unitNode = findUnitNode()) {
+        if (exists unitNode = temp.narrow<UnitNode>()
+	            .find(matchingValue(unit, UnitNode.userObjectNarrowed))) {
             unit.addMember(member);
             MutableTreeNode newNode = UnitMemberNode(member);
             unitNode.add(newNode);
