@@ -17,7 +17,8 @@ import strategicprimer.model.map.fixtures.resources {
 }
 import lovelace.util.common {
 	matchingPredicate,
-	inverse
+	inverse,
+	matchingValue
 }
 import lovelace.util.jvm {
 	singletonRandom
@@ -42,14 +43,8 @@ shared class HuntingModel {
         this.map = map;
     }
     MapDimensions dimensions = map.dimensions;
-    {String*} fishKinds = set {
-        for (point in map.locations)
-            if (exists terrain = map.baseTerrain[point], terrain == TileType.ocean)
-//                for (fixture in map.fixtures[point]) // TODO: syntax sugar once compiler bug fixed
-                for (fixture in map.fixtures.get(point))
-                    if (is Animal fixture)
-                        fixture.kind
-    };
+    {String*} fishKinds = map.locations.filter(matchingValue(TileType.ocean, map.baseTerrain.get))
+            .flatMap(map.fixtures.get).narrow<Animal>().map(Animal.kind).distinct;
     "Animals (outside fortresses and units), both aquatic and non-aquatic, at the given location in the map."
     {Animal*} baseAnimals(Point point) =>
             //map.fixtures[point].narrow<Animal>().filter((animal) => !animal.talking && !animal.traces); // TODO: syntax sugar once compiler bug fixed
