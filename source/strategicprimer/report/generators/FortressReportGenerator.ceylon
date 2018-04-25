@@ -218,10 +218,7 @@ shared class FortressReportGenerator(
             IMapNG map, Anything(String) ostream) {
         MutableMap<Fortress, Point> ours = HashMap<Fortress, Point>();
         MutableMap<Fortress, Point> others = HashMap<Fortress, Point>();
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-                    .sort(pairComparator); };
-        for ([loc, item] in values) {
+        for ([loc, item] in fixtures.items.sort(pairComparator)) {
             if (is Fortress fort = item) {
                 if (currentPlayer == fort.owner) {
                     ours[fort] = loc;
@@ -294,12 +291,9 @@ shared class FortressReportGenerator(
      this report are removed from the collection."
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-                    .sort(pairComparator); };
         IReportNode foreign = SectionReportNode(4, "Foreign fortresses in the map:");
         IReportNode ours = SectionReportNode(4, "Your fortresses in the map:");
-        for ([loc, item] in values) {
+        for ([loc, item] in fixtures.items.sort(pairComparator)) {
             if (is Fortress fort = item) {
                 if (currentPlayer == fort.owner) {
                     ours.appendNode(produceRIRSingle(fixtures, map, fort,

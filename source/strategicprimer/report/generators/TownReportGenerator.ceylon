@@ -1,7 +1,5 @@
 import ceylon.collection {
-    MutableList,
-    MutableMap,
-    ArrayList
+    MutableMap
 }
 import ceylon.language {
     createMap=map
@@ -47,14 +45,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     void separateByStatus<T>(Map<TownStatus, T> mapping,
             Collection<[Point, IFixture]> collection,
             Anything(T, [Point, IFixture]) func) {
-        MutableList<[Point, IFixture]> list = ArrayList<[Point, IFixture]>();
-        for (pair in collection) {
-            if (pair.rest.first is AbstractTown) {
-                list.add(pair);
-            }
-        }
-        for ([loc, item] in list.sort(pairComparator)) {
-            if (is ITownFixture item, exists result = mapping[item.status]) {
+        for ([loc, item] in collection.narrow<[Point, AbstractTown]>().sort(pairComparator)) {
+            if (exists result = mapping[item.status]) {
                 func(result, [loc, item]);
             }
         }

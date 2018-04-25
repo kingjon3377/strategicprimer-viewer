@@ -1,8 +1,3 @@
-import ceylon.collection {
-    MutableList,
-    ArrayList
-}
-
 import lovelace.util.common {
     DelayedRemovalMap
 }
@@ -85,19 +80,13 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
                    """);
         }
     }
+    [Second, First] reversePair<First, Second>([First, Second] pair) => [pair.rest.first, pair.first];
     "Produce a sub-sub-report on all workers. This should never be called, but we'll
      implement it properly anyway."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
         		IMapNG map, Anything(String) ostream) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-            .sort(pairComparator); };
-        MutableList<[IWorker, Point]> workers = ArrayList<[IWorker, Point]>();
-        for ([loc, worker] in values) {
-            if (is IWorker worker) {
-                workers.add([worker, loc]);
-            }
-        }
+        {[IWorker, Point]*} workers = fixtures.items.narrow<[Point, IWorker]>()
+                .sort(pairComparator).map(reversePair);
         if (!workers.empty) {
             ostream("""<h5>Workers</h5>
                        <ul>
@@ -140,14 +129,9 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
      implement it properly anyway)."
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-            .sort(pairComparator); };
         IReportNode retval = SectionListReportNode(5, "Workers");
-        for ([loc, worker] in values) {
-            if (is IWorker worker) {
-                retval.appendNode(produceRIRSingle(fixtures, map, worker, loc));
-            }
+        for ([loc, worker] in fixtures.items.narrow<[Point, IWorker]>().sort(pairComparator)) { // TODO: Similarly narrow before sorting in other generators
+            retval.appendNode(produceRIRSingle(fixtures, map, worker, loc));
         }
         if (retval.childCount == 0) {
             return emptyReportNode;

@@ -1,5 +1,4 @@
 import ceylon.collection {
-    ArrayList,
     MutableList
 }
 import ceylon.language.meta {
@@ -66,14 +65,11 @@ shared class ExplorableReportGenerator(
     "Produces the report on all caves, battlefields, and portals."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-                    .sort(pairComparator); };
         MutableList<Point> portals = PointList("Portals to other worlds: ");
         MutableList<Point> battles = PointList(
             "Signs of long-ago battles on the following tiles:");
         MutableList<Point> caves = PointList("Caves beneath the following tiles: ");
-        for ([loc, item] in values) {
+        for ([loc, item] in fixtures.items.sort(pairComparator)) {
             switch (item)
             case (is Portal) {
                 portals.add(loc);
@@ -121,9 +117,6 @@ shared class ExplorableReportGenerator(
     }
     "Produces the report section on all caves, battlefields, and portals."
     shared actual IReportNode produceRIR(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-            .sort(pairComparator); };
         IReportNode portals = ListReportNode("Portals");
         IReportNode battles = ListReportNode("Battlefields");
         IReportNode caves = ListReportNode("Caves");
@@ -131,7 +124,7 @@ shared class ExplorableReportGenerator(
                 createMap { { `Portal`->portals, `Battlefield`->battles,
             `Cave`->caves };
         };
-        for ([loc, item] in values) {
+        for ([loc, item] in fixtures.items.sort(pairComparator)) {
             if (is Battlefield|Cave|Portal item,
 	                exists node = nodes[type(item)]) {
                 node.appendNode(produceRIRSingle(fixtures, map, item, loc));

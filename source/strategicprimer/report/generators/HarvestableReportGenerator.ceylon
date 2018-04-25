@@ -1,7 +1,5 @@
 import ceylon.collection {
-    ArrayList,
     MutableMap,
-    MutableList,
     HashMap
 }
 
@@ -143,9 +141,6 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
        already.""""
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map, Anything(String) ostream) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-                    .sort(pairComparator); };
         MutableMultimap<String, Point> stone = HashMultimap<String, Point>();
         MutableMultimap<String, Point> shrubs = HashMultimap<String, Point>();
         MutableMultimap<String, Point> minerals = HashMultimap<String, Point>();
@@ -164,7 +159,7 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
                 comparing(byIncreasing(CacheFixture.kind),
                     byIncreasing(CacheFixture.contents),
                     byIncreasing(CacheFixture.id)));
-        for ([point, item] in values) {
+        for ([point, item] in fixtures.items.sort(pairComparator)) {
             // TODO: Use a Map by type; with reified generics we can even handle differently
             // based on whether a List or Map is in the Map!
             switch (item)

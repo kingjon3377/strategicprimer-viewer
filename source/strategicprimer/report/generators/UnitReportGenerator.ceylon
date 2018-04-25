@@ -176,14 +176,11 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Produce the part of the report on all units not covered as part of fortresses."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-                    .sort(pairComparator); };
         MutableHeadedMap<IUnit, Point> foreign =
                 HeadedMapImpl<IUnit, Point>("<h5>Foreign Units</h5>");
         MutableHeadedMap<IUnit, Point> ours =
                 HeadedMapImpl<IUnit, Point>("<h5>Your units</h5>");
-        for ([loc, item] in values) {
+        for ([loc, item] in fixtures.items.sort(pairComparator)) {
             if (is IUnit unit = item) {
                 if (currentPlayer == unit.owner) {
                     ours[unit] = loc;
@@ -285,12 +282,9 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Produce the part of the report dealing with all units not already covered."
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 		    IMapNG map) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-                    .sort(pairComparator); };
         IReportNode theirs = SectionListReportNode(5, "Foreign Units");
         IReportNode ours = SectionListReportNode(5, "Your Units");
-        for ([loc, item] in values) {
+        for ([loc, item] in fixtures.items.sort(pairComparator)) {
             if (is IUnit unit = item) {
                 IReportNode unitNode = produceRIRSingle(fixtures, map, unit,
                     loc);

@@ -1,8 +1,6 @@
 import ceylon.collection {
-    MutableList,
     MutableMap,
-    HashMap,
-    ArrayList
+    HashMap
 }
 import ceylon.language.meta {
     type
@@ -66,9 +64,6 @@ shared class ImmortalsReportGenerator(
     "Produce a report on all immortals."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-                    .sort(pairComparator); };
         MutableMap<Type<IFixture>, Anything(String, Point)> meta =
                 HashMap<Type<IFixture>, Anything(String, Point)>();
         MutableMultimap<String, Point> simples = HashMultimap<String, Point>();
@@ -92,7 +87,7 @@ shared class ImmortalsReportGenerator(
         MutableMultimap<String, Point> giants = handleComplex(`Giant`);
         MutableMultimap<String, Point> fairies = handleComplex(`Fairy`, "");
         MutableMultimap<String, Point> dragons = handleComplex(`Dragon`);
-        for ([point, immortal] in values) {
+        for ([point, immortal] in fixtures.items.sort(pairComparator)) {
             if (exists func = meta[type(immortal)]) {
                 func(immortal.string, point);
                 fixtures.remove(immortal.id);
@@ -125,9 +120,6 @@ shared class ImmortalsReportGenerator(
      report on all immortals."
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-                    .sort(pairComparator); };
         MutableMap<String, IReportNode> simples = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> centaurs = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> giants = HashMap<String, IReportNode>();
@@ -146,7 +138,7 @@ shared class ImmortalsReportGenerator(
                 return node;
             }
         }
-        for ([point, item] in values) {
+        for ([point, item] in fixtures.items.sort(pairComparator)) {
             IFixture immortal = item;
             if (is Dragon immortal) {
                 separateByKind(dragons, immortal)

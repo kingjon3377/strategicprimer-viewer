@@ -1,7 +1,5 @@
 import ceylon.collection {
-    ArrayList,
     MutableMap,
-    MutableList,
     HashMap
 }
 
@@ -77,9 +75,6 @@ shared class FortressMemberReportGenerator(
      we'll handle this properly anyway."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-                    .sort(pairComparator); };
         MutableHeadedMap<Implement, Point> equipment =
                 HeadedMapImpl<Implement, Point>("<li>Equipment:",
                     comparing(byIncreasing(Implement.kind),
@@ -87,7 +82,7 @@ shared class FortressMemberReportGenerator(
                         byIncreasing(Implement.id)));
         MutableMap<String, MutableHeadedMap<ResourcePile, Point>> resources =
                 HashMap<String, MutableHeadedMap<ResourcePile, Point>>();
-        for ([loc, item] in values) {
+        for ([loc, item] in fixtures.items.sort(pairComparator)) {
             if (is ResourcePile resource = item) {
                 MutableHeadedMap<ResourcePile, Point> pileMap;
                 if (exists temp = resources[resource.kind]) {
@@ -178,13 +173,10 @@ shared class FortressMemberReportGenerator(
      this properly anyway."
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map) {
-        MutableList<[Point, IFixture]> values =
-                ArrayList<[Point, IFixture]> { elements = fixtures.items
-                    .sort(pairComparator); };
         MutableMap<String, IReportNode> resourceKinds =
                 HashMap<String, IReportNode>();
         IReportNode equipment = ListReportNode("Equipment:");
-        for ([loc, item] in values) {
+        for ([loc, item] in fixtures.items.sort(pairComparator)) {
             if (is ResourcePile resource = item) {
                 String kind = resource.kind;
                 IReportNode node;

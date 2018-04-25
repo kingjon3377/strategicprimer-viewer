@@ -1,6 +1,4 @@
 import ceylon.collection {
-    MutableList,
-    ArrayList,
     MutableMap,
     HashMap
 }
@@ -37,9 +35,6 @@ shared class VillageReportGenerator(
 	"Produce the report on all known villages."
 	shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 		IMapNG map, Anything(String) ostream) {
-		MutableList<[Point, IFixture]> values =
-				ArrayList<[Point, IFixture]> { elements = fixtures.items
-			.sort(pairComparator); };
 		value villageComparator = comparing(byIncreasing(Village.name),
 			byIncreasing(Village.race), byIncreasing(Village.id));
 		MutableHeadedMap<Village, Point> own = HeadedMapImpl<Village, Point>(
@@ -49,7 +44,7 @@ shared class VillageReportGenerator(
 			villageComparator);
 		MutableMap<Player, MutableHeadedMap<Village, Point>> others =
 				HashMap<Player, MutableHeadedMap<Village, Point>>();
-		for ([loc, item] in values) {
+		for ([loc, item] in fixtures.items.sort(pairComparator)) {
 			if (is Village village = item) {
 				if (village.owner == currentPlayer) {
 					own[village] = loc;
@@ -102,15 +97,12 @@ shared class VillageReportGenerator(
 	"Produce the report on all known villages."
 	shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 			IMapNG map) {
-		MutableList<[Point, IFixture]> values =
-				ArrayList<[Point, IFixture]> { elements = fixtures.items
-			.sort(pairComparator); };
 		IReportNode own = SectionListReportNode(5,
 			"Villages pledged to your service:");
 		IReportNode independents =
 				SectionListReportNode(5, "Villages you think are independent:");
 		MutableMap<Player, IReportNode> othersMap = HashMap<Player, IReportNode>();
-		for ([loc, item] in values) {
+		for ([loc, item] in fixtures.items.sort(pairComparator)) {
 			if (is Village village = item) {
 				Player owner = village.owner;
 				IReportNode parent;
