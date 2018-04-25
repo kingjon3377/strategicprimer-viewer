@@ -40,10 +40,10 @@ object cliTests {
 	    String expectedOutputReal;
 	    if (is String expectedOutput) {
 	        expectedOutputReal = expectedOutput;
-	    } else if (exists first = expectedOutput.first) { // TODO: Use expectedOutput.empty instead
-	        expectedOutputReal = operatingSystem.newline.join(expectedOutput);
-	    } else {
+	    } else if (expectedOutput.empty) {
 	        expectedOutputReal = "";
+	    } else {
+	        expectedOutputReal = operatingSystem.newline.join(expectedOutput);
 	    }
 	    StringBuilder ostream = StringBuilder();
 	    ICLIHelper cli = CLIHelper(LinkedList(input).accept, ostream.append);
