@@ -192,7 +192,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
                 newUnitDialog(model.currentPlayer,
                     idf);
         IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
-        value tree = workerTree(treeModel, mainMap.players, () => mainMap.currentTurn, // TODO: Use model.players instead of mainMap.players?
+        value tree = workerTree(treeModel, model.players, () => mainMap.currentTurn,
             true, idf);
         newUnitFrame.addNewUnitListener(treeModel);
         Integer keyMask = platform.shortcutMask;
