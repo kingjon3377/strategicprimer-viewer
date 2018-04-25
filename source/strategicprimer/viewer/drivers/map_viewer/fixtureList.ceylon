@@ -108,7 +108,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
         todo("Figure out how to skip all this (return true) on non-local drags")
         Boolean isXfrFromOutside(DropTargetEvent dtde) {
             if (is Component source = dtde.source,
-                parentComponent.isAncestorOf(source)) {
+	                parentComponent.isAncestorOf(source)) {
                 return false;
             } else {
                 return true;
