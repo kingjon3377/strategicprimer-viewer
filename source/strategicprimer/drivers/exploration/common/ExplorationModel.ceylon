@@ -130,16 +130,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     }
     "Whether the given fixture is at the given location in the given map."
     static Boolean doesLocationHaveFixture(IMapNG map, Point point, TileFixture fixture) {
-        if (exists fixtures = map.fixtures[point]) {
-            for (member in fixtures) {
-                if (member == fixture) {
-                    return true;
-                } else if (is {IFixture*} member, doesStreamContainFixture(member, fixture)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return doesStreamContainFixture(map.fixtures.get(point), fixture); // TODO: syntax sugar
     }
     """A "plus one" method with a configurable, low "overflow"."""
     static Integer increment(
