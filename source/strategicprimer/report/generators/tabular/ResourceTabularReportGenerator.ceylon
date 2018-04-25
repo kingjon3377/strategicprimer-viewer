@@ -92,11 +92,9 @@ shared class ResourceTabularReportGenerator()
     shared actual void produceTable(Anything(String) ostream,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
         {[Integer, [Point, CacheFixture|Implement|ResourcePile]]*} values =
-                fixtures.narrow<Integer->[Point, CacheFixture|Implement|ResourcePile]>().map(Entry.pair)
-                    .sort(comparingOn(
-                            ([Integer, // TODO: Can we use method-reference logic instead of a lambda?
-                                [Point, CacheFixture|Implement|ResourcePile]] pair) =>
-                    pair.rest.first, comparePairs));
+                fixtures.narrow<Integer->[Point, CacheFixture|Implement|ResourcePile]>()
+                    .sort(comparingOn(Entry<Integer, [Point, CacheFixture|Implement|ResourcePile]>.item, comparePairs))
+                .map(Entry.pair);
         writeRow(ostream, headerRow.first, *headerRow.rest);
         MutableMap<String, Integer> implementCounts = HashMap<String, Integer>();
         for ([key, [loc, fixture]] in values) {
