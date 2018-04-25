@@ -171,11 +171,12 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 			}
 		}
 	}
+	Boolean negativeNumber(Number<out Anything> number) => number.negative;
 	void generateFieldExtents(IMutableMapNG map, ICLIHelper cli) {
 		{<Point->Meadow>*} entries = randomize([for (loc in map.locations)
-			//for (item in map.fixtures[loc]) if (is Meadow item) // TODO: syntax sugar
-			for (item in map.fixtures.get(loc)) if (is Meadow item)
-				if (item.acres.negative) loc->item]);
+			//for (item in map.fixtures[loc].narrow<Meadow>().filter(matchingPredicate(negativeNumber, Meadow.acres))) // TODO: syntax sugar
+			for (item in map.fixtures.get(loc).narrow<Meadow>().filter(matchingPredicate(negativeNumber, Meadow.acres)))
+				loc->item]);
 		Random rng = singletonRandom;
 		for (loc->field in entries) {
 			Float acres = rng.nextFloat() * 5.5 + 0.5;
