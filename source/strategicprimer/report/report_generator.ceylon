@@ -6,7 +6,8 @@ import ceylon.logging {
 import lovelace.util.common {
     todo,
     DelayedRemovalMap,
-    IntMap
+    IntMap,
+	matchingValue
 }
 
 import strategicprimer.model {
@@ -64,14 +65,12 @@ object reportGeneratorHelper {
 	shared Point findHQ(IMapNG map, Player player) {
 		variable Point? retval = null;
 		for (location in map.locations) {
-			//        for (fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
-			for (fixture in map.fixtures.get(location)) {
-				if (is Fortress fixture, fixture.owner == player) {
-					if ("hq" == fixture.name) {
-						return location;
-					} else if (location.valid, !retval exists) {
-						retval = location;
-					}
+			//        for (fixture in map.fixtures[location].narrow<Fortress>().filter(matchingValue(player, Fortress.owner))) { // TODO: syntax sugar once compiler bug fixed
+			for (fixture in map.fixtures.get(location).narrow<Fortress>().filter(matchingValue(player, Fortress.owner))) {
+				if ("hq" == fixture.name) {
+					return location;
+				} else if (location.valid, !retval exists) {
+					retval = location;
 				}
 			}
 		} else {
