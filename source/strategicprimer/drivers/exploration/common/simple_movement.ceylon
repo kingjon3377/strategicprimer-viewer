@@ -155,15 +155,11 @@ shared object simpleMovementModel {
 	todo("""Very-observant units should "always" notice some things that others might
 	        "sometimes" notice.""")
 	shared Boolean shouldAlwaysNotice(HasOwner unit, TileFixture? fixture) {
-	    if (exists fixture) {
-	        if (is ITownFixture fixture) {
-	            return fixture.owner == unit.owner;
-	        } else {
-	            return fixture is Hill|Forest;
-	        }
-	    } else {
-	        return false;
-	    }
+        if (is ITownFixture fixture) {
+            return fixture.owner == unit.owner;
+        } else {
+            return fixture is Hill|Forest;
+        }
 	}
 
 	"Choose what the mover should in fact find from the list of things he or she might find.
