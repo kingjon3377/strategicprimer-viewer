@@ -5,7 +5,8 @@ import java.awt {
     Dimension
 }
 import lovelace.util.common {
-    todo
+    todo,
+	as
 }
 import ceylon.regex {
     Regex,
@@ -28,17 +29,10 @@ import strategicprimer.drivers.gui.common {
 import java.lang {
     Types
 }
-Frame? asFrame(Component? parent) {
-    if (is Frame parent) {
-        return parent;
-    } else {
-        return null;
-    }
-}
 "A dialog to explain what this program is, and the sources of code and graphics."
 todo("FIXME: Credits for other images?") // FIXME
 shared JDialog aboutDialog(Component? parentComponent, String? app) {
-    JDialog retval = SPDialog(asFrame(parentComponent), "About");
+    JDialog retval = SPDialog(as<Frame>(parentComponent), "About");
     retval.setLayout(BorderLayout());
     assert (exists resource =
             `module strategicprimer.drivers.gui.common`.resourceByPath("about.html"));
