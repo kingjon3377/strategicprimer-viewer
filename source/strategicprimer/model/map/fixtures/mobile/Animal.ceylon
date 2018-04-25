@@ -27,7 +27,7 @@ shared interface Animal
 	"The turn the animal was born, or -1 if it is an adult (or if this is traces ...)"
 	shared formal Integer born;
 	shared actual default String shortDescription {
-		if (traces) {
+		if (traces) { // TODO: Split "animal tracks" into a separate type, which will significantly simplify most callers
 			return "traces of ``kind``";
 		} else if (talking) {
 			return "talking ``kind``";

@@ -126,7 +126,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     if (exists last = path.lastPathComponent,
                             exists parentObj = path.parentPath?.lastPathComponent) {
                         if (is IUnit parent = wtModel.getModelObject(parentObj),
-                            is UnitMember selection = wtModel.getModelObject(last)) {
+	                            is UnitMember selection = wtModel.getModelObject(last)) {
                             toTransfer.add([selection, parent]);
                         } else {
                             log.info("Selection included non-UnitMember: ``type(wtModel.getModelObject(last))``");
@@ -304,7 +304,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         shouldWarn = true;
                     }
                 } else if (orderCheck,
-                    is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
+	                    is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
                     for (child in item) {
                         if (is WorkerTreeModelAlt.WorkerTreeNode<IUnit> child) {
                             IUnit unit = child.userObjectNarrowed;
