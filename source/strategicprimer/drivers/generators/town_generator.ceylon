@@ -337,15 +337,20 @@ shared object townGeneratingCLI satisfies SimpleCLIDriver {
         return retval;
     }
     String getHarvestableKind(HarvestableFixture fixture) {
-        if (is Grove fixture) {
+        switch (fixture)
+        case (is Grove) {
             return (fixture.orchard) then "food" else "wood";
-        } else if (is Meadow fixture) {
+        }
+        case (is Meadow) {
             return (fixture.field) then "food" else "fodder";
-        } else if (is MineralVein fixture) {
+        }
+        case (is MineralVein) {
             return "mineral";
-        } else if (is StoneDeposit fixture) {
+        }
+        case (is StoneDeposit) {
             return "stone";
-        } else {
+        }
+        else {
             return "unknown";
         }
     }
