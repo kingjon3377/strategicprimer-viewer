@@ -51,10 +51,8 @@ MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
         if (exists top = stream.first) {
             accept(top);
         }
-        for (fixture in stream) {
-            if (is TerrainFixture fixture) {
-                accept(fixture);
-            }
+        for (fixture in stream.narrow<TerrainFixture>()) {
+            accept(fixture);
         }
         return builder.string;
     }
