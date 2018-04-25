@@ -44,9 +44,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map, Anything(String) ostream) {
         MutableList<[Point, TextFixture]> items = ArrayList<[Point, TextFixture]>();
-        for (key->tuple in fixtures) {
-            Point loc = tuple.first;
-            IFixture item = tuple.rest.first;
+        for (key->[loc, item] in fixtures) {
             if (is TextFixture fixture = item) {
                 items.add([loc, fixture]);
                 fixtures.remove(key);
@@ -88,9 +86,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map) {
         IReportNode retval = SectionListReportNode(4, "Miscellaneous Notes");
-        for (key->tuple in fixtures) {
-            Point loc = tuple.first;
-            IFixture item = tuple.rest.first;
+        for (key->[loc, item] in fixtures) {
             if (is TextFixture fixture = item) {
                 retval.appendNode(produceRIRSingle(fixtures, map, fixture, loc));
                 fixtures.remove(key);
