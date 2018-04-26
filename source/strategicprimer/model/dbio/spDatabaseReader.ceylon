@@ -27,9 +27,14 @@ import javax.sql {
 }
 shared object spDatabaseReader satisfies IMapReader {
 	MutableMap<Path, Sql> connections = HashMap<Path, Sql>();
-	DataSource getBaseConnection(Path path) { // TODO: Figure out how to use Derby/JavaDB for an empty Path
+	DataSource getBaseConnection(Path path) {
 		SQLiteDataSource retval = SQLiteDataSource();
-		retval.url = "jdbc:sqlite:``path``";
+		if (path.string.empty) {
+			log.warn("Setting up an (empty) in-memory database for reading");
+			retval.url = "jdbc:sqlite:file::memory:";
+		} else {
+			retval.url = "jdbc:sqlite:``path``";
+		}
 		return retval;
 	}
 	Sql getSQL(Path path) {
