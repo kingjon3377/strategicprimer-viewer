@@ -146,7 +146,7 @@ import lovelace.util.jvm {
 // results in a compile error about it being a "metamodel reference to local declaration"
 {Integer*} threeRandomNumbers() => singletonRandom.integers(1200000).take(3);
 {String*} races = raceFactory.races.distinct;
-
+String[] animalStatuses = ["wild", "semi-domesticated", "domesticated", "tame"];
 object xmlTests {
 	JPath fakeFilename = JPaths.get("");
 	[ISPReader+] readers = [testReaderFactory.oldReader, testReaderFactory.newReader];
@@ -1220,15 +1220,11 @@ object xmlTests {
 			warningLevels.die);
 	}
 	test
-	parameters(`function threeRandomNumbers`)
-	shared void testAnimalSerialization(Integer id) {
-	    String[] statuses = ["wild", "semi-domesticated", "domesticated", "tame"];
-        for (talking in `Boolean`.caseValues) { // TODO: Convert to enumeratedParameter()
-            for (status in statuses) {
-                assertSerialization("Test of [[Animal]] serialization",
-                    AnimalImpl("animalKind", talking, status, id));
-            }
-        }
+	shared void testAnimalSerialization(parameters(`function threeRandomNumbers`) Integer id,
+			parameters(`value animalStatuses`) String status,
+			enumeratedParameter(`class Boolean`) Boolean talking) {
+        assertSerialization("Test of [[Animal]] serialization",
+            AnimalImpl("animalKind", talking, status, id));
 	    assertUnwantedChild<Animal>("""<animal kind="animal"><troll /></animal>"""", null);
 	    assertMissingProperty<Animal>("<animal />", "kind", null);
 	    assertForwardDeserialization<Animal>("Forward-looking in re talking",
@@ -1252,14 +1248,14 @@ object xmlTests {
 	        "<animal kind=\"kind\" traces=\"false\" status=\"wild\" id=\"``id``\" />",
 	        warningLevels.die);
 	    assertSerialization("Animal age is preserved",
-	        AnimalImpl("youngKind", false, "domesticated", id, 8));
+	        AnimalImpl("youngKind", talking, status, id, 8));
 	    assertSerialization("Animal population count is preserved",
-	        AnimalImpl("population", false, "wild", id, -1, 55));
-	    assertNotEquals(AnimalImpl("animal", false, "wild", id, -1),
-	        AnimalImpl("animal", false, "wild", id, 8),
+	        AnimalImpl("population", talking, status, id, -1, 55));
+	    assertNotEquals(AnimalImpl("animal", talking, status, id, -1),
+	        AnimalImpl("animal", talking, status, id, 8),
 	        "But animal age is checked in equals()");
-	    assertNotEquals(AnimalImpl("animal", false, "wild", id, -1, 1),
-	        AnimalImpl("animal", false, "wild", id, -1, 2),
+	    assertNotEquals(AnimalImpl("animal", talking, status, id, -1, 1),
+	        AnimalImpl("animal", talking, status, id, -1, 2),
 	        "Animal population count is checked in equals()");
 	}
 
