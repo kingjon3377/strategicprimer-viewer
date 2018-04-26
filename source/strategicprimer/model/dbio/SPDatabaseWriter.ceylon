@@ -37,10 +37,10 @@ shared object spDatabaseWriter satisfies SPWriter {
 	DataSource getBaseConnection(Path path) {
 		SQLiteDataSource retval = SQLiteDataSource();
 		if (path.string.empty) {
-			log.trace("Trying to set up an in-memory database");
+			log.debug("Trying to set up an in-memory database");
 			retval.url = "jdbc:sqlite:file::memory:";
 		} else {
-			log.trace("Setting up an SQLite database for file ``path``");
+			log.debug("Setting up an SQLite database for file ``path``");
 			retval.url = "jdbc:sqlite:``path``";
 		}
 		return retval;
