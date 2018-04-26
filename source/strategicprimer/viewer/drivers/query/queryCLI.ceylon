@@ -50,7 +50,8 @@ import ceylon.numeric.float {
 }
 import strategicprimer.model.map.fixtures.mobile {
 	IWorker,
-	Animal
+	Animal,
+	AnimalTracks
 }
 import strategicprimer.drivers.exploration.common {
 	surroundingPointIterable,
@@ -195,13 +196,13 @@ shared object queryCLI satisfies SimpleCLIDriver {
 			"The CLI helper."
 			ICLIHelper cli,
 			"The source of encounters."
-			variable {<Point->Animal|HuntingModel.NothingFound>*} encounters) {
+			variable {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*} encounters) {
 		while (time > 0, exists loc->encounter = encounters.first) {
 			encounters = encounters.rest;
 			if (is HuntingModel.NothingFound encounter) {
 				cli.println("Found nothing for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
-			} else if (encounter.traces) {
+			} else if (is AnimalTracks encounter) { // TODO: Is this case actually possible?
 				addToSubMaps(model, loc, encounter, true);
 				cli.println("Found only tracks or traces from ``encounter.kind`` for the next ``noResultCost`` minutes.");
 				time -= noResultCost;

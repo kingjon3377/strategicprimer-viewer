@@ -1,5 +1,5 @@
 import strategicprimer.model.map.fixtures.mobile {
-    Animal
+	AnimalTracks
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -72,11 +72,7 @@ shared interface IMapNG satisfies Subsettable<IMapNG> {
         }
     }
     "Strict-subset calculations should skip caches, text fixtures, and animal tracks."
-    shared default Boolean shouldSkip(TileFixture fixture) {
-        if (is Animal fixture) {
-            return fixture.traces;
-        } else {
-            return fixture is CacheFixture|TextFixture;
-        }
+    shared default Boolean shouldSkip(TileFixture fixture) { // TODO: =>
+        return fixture is CacheFixture|TextFixture|AnimalTracks;
     }
 }

@@ -374,7 +374,7 @@ object oneToTwoConverterTests {
 	    original.addPlayer(independent);
 	    initialize(original, pointFactory(0, 1), TileType.borealForest,
 	        Forest("ttree1", false, 1), Hill(1),
-	        AnimalImpl("animalKind", false, false, "wild", 2),
+	        AnimalImpl("animalKind", false, "wild", 2),
 	        Mine("mineral", TownStatus.active, 3), AdventureFixture(independent,
 	            "briefDescription", "fullDescription", 4),
 	        Simurgh(5), Griffin(6),
@@ -422,7 +422,7 @@ object oneToTwoConverterTests {
 	        AdventureFixture(independent, "briefDescription", "fullDescription", -1),
 	        Djinn(-1), orchard("fruit2"));
 	    initialize(converted, pointFactory(2, 5), TileType.steppe, groundTwo(),
-	        forest("btree2"), AnimalImpl("animalKind", false, false, "wild", -1),
+	        forest("btree2"), AnimalImpl("animalKind", false, "wild", -1),
 	        field(FieldStatus.fallow, "grain2"));
 	    initialize(converted, pointFactory(2, 6), TileType.steppe, groundTwo(),
 	        forest("btree2"), Dragon("ice", -1), field(FieldStatus.fallow, "grain2"));

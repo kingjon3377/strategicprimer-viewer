@@ -6,7 +6,8 @@ import ceylon.language.meta {
     type
 }
 import ceylon.language.meta.model {
-    ClassModel
+    ClassModel,
+	ClassOrInterface
 }
 
 import java.lang {
@@ -55,7 +56,8 @@ import strategicprimer.model.map.fixtures.mobile {
     Griffin,
     Sphinx,
     Phoenix,
-    Djinn
+    Djinn,
+	AnimalTracks
 }
 import strategicprimer.model.map.fixtures.resources {
     Grove,
@@ -84,7 +86,7 @@ import strategicprimer.drivers.common {
 "A class to allow the Z-order of fixtures to be represented as a table."
 shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
         Comparator<TileFixture> fixtureFilterTableModel() {
-    FixtureMatcher trivialMatcher(ClassModel<TileFixture> type,
+    FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
             String description = "``type.declaration.name``s") {
         return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
     }
@@ -112,8 +114,7 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
 	        trivialMatcher(`Centaur`), trivialMatcher(`Fairy`, "Fairies"),
 	        trivialMatcher(`Giant`), trivialMatcher(`Dragon`), trivialMatcher(`Cave`),
 	        trivialMatcher(`Battlefield`),
-	        complements<Animal>((Animal animal) => !animal.traces, "Animals",
-	            "Animal tracks"),
+	        trivialMatcher(`Animal`), trivialMatcher(`AnimalTracks`),
 	        trivialMatcher(`StoneDeposit`, "Stone Deposits"),
 	        trivialMatcher(`MineralVein`, "Mineral Veins"),
 	        complements<Grove>(Grove.orchard, "Orchards", "Groves"),

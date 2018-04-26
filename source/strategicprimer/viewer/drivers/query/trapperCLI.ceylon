@@ -30,7 +30,8 @@ import ceylon.numeric.float {
 	round=halfEven
 }
 import strategicprimer.model.map.fixtures.mobile {
-	Animal
+	Animal,
+	AnimalTracks
 }
 "Possible actions in the trapping CLI; top-level so we can switch on the cases,
  since the other alternative, `static`, isn't possible in an `object` anymore."
@@ -75,14 +76,14 @@ shared object trappingCLI satisfies SimpleDriver {
 		"The main map."
 		IMutableMapNG map,
 		"The animals generated from the tile and the surrounding tiles, with their home locations."
-		Queue<Point->Animal|HuntingModel.NothingFound> fixtures, ICLIHelper cli,
+		Queue<Point->Animal|AnimalTracks|HuntingModel.NothingFound> fixtures, ICLIHelper cli,
 		"The command to handle"
 		TrapperCommand command,
 		"If true, we're dealing with *fish* traps, which have different costs"
 		Boolean fishing) {
 		switch (command)
 		case (TrapperCommand.check){
-			<Point->Animal|HuntingModel.NothingFound>? top = fixtures.accept();
+			<Point->Animal|AnimalTracks|HuntingModel.NothingFound>? top = fixtures.accept();
 			if (!top exists) {
 				cli.println("Ran out of results");
 				return runtime.maxArraySize;
@@ -93,7 +94,7 @@ shared object trappingCLI satisfies SimpleDriver {
 			if (is HuntingModel.NothingFound item) {
 				cli.println("Nothing in the trap");
 				return (fishing) then 5 else 10;
-			} else if (item.traces) {
+			} else if (is AnimalTracks item) { // TODO: Is this really possible now?
 				cli.println("Found evidence of ``item.kind`` escaping");
 				return (fishing) then 5 else 10;
 			} else {
@@ -135,7 +136,7 @@ shared object trappingCLI satisfies SimpleDriver {
 				.inputNumber("How many hours will the ``name`` work? ") * minutesPerHour;
 		Point point = cli.inputPoint("Where is the ``name`` working? ");
 		HuntingModel huntModel = HuntingModel(model.map);
-		Queue<Point->Animal|HuntingModel.NothingFound> fixtures;
+		Queue<Point->Animal|AnimalTracks|HuntingModel.NothingFound> fixtures;
 		if (fishing) {
 			fixtures = QueueWrapper(huntModel.fish(point));
 		} else {

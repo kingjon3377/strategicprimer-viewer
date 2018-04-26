@@ -205,7 +205,7 @@ object workerModelTests {
 	shared void testGetUnits() {
 	    MutableList<TileFixture> fixtures = ArrayList<TileFixture>();
 	    fixtures.add(Oasis(14));
-	    fixtures.add(AnimalImpl("animal", false, false, "wild", 1));
+	    fixtures.add(AnimalImpl("animal", false, "wild", 1));
 	    MutableList<IUnit> listOne = ArrayList<IUnit>();
 	    Player playerOne = PlayerImpl(0, "player1");
 	    addItem(Unit(playerOne, "one", "unitOne", 2), fixtures, listOne);

@@ -14,11 +14,52 @@ import strategicprimer.model.map.fixtures {
 import lovelace.util.jvm {
     readFileContents
 }
+"An interface to cover animals and animal tracks, to try to work around eclipse/ceylon#7372."
+todo("Remove once that fixed and the fix released")
+shared interface AnimalOrTracks of Animal|AnimalTracks satisfies IFixture&UnitMember {}
+"Animal tracks or other traces."
+shared class AnimalTracks(kind) satisfies HasMutableImage&HasKind&MobileFixture&AnimalOrTracks { // TODO: We'd prefer this to not be MobileFixture, but changing that would require serious refactoring of XML I/O code.
+	"The kind of animal of which this is tracks or traces."
+	shared actual String kind;
+	shared actual String shortDescription = "traces of ``kind``";
+	todo("Should perhaps depend on the kind of animal")
+	shared actual String defaultImage = "tracks.png";
+	shared actual Integer hash => kind.hash;
+	shared actual String string => shortDescription;
+	shared actual String plural => "Animal tracks";
+	shared actual Boolean equals(Object other) {
+		if (is AnimalTracks other) {
+			return other.kind == kind;
+		} else {
+			return false;
+		}
+	}
+	shared actual Boolean equalsIgnoringID(IFixture other) => equals(other);
+	todo("Allow user to customize via XML?")
+	shared actual Integer dc = 12;
+	shared actual Integer id = -1;
+	shared actual AnimalTracks copy(Boolean zero) => AnimalTracks(kind);
+	shared actual variable String image = "";
+	shared actual Boolean isSubset(IFixture fixture, Anything(String) report) {
+		if (is AnimalTracks fixture) {
+			if (fixture.kind == kind) {
+				return true;
+			} else {
+				report("Comparing tracks from different kinds of animals: ``fixture.kind`` and ``kind``");
+				return false;
+			}
+		} else if (is Animal fixture, fixture.kind == kind) {
+			report("Has full ``kind`` animal where we have only tracks");
+			return false;
+		} else {
+			report("Different kind of fixture");
+			return false;
+		}
+	}
+}
 "An animal or group of animals."
 shared interface Animal
-		satisfies Identifiable&MobileFixture&HasImage&HasKind&UnitMember&HasPopulation<Animal> {
-	"If true, this is only traces or tracks, not an actual animal."
-	shared formal Boolean traces;
+		satisfies AnimalOrTracks&Identifiable&MobileFixture&HasImage&HasKind&UnitMember&HasPopulation<Animal> {
 	"Whether this is a talking animal."
 	shared formal Boolean talking;
 	"The domestication status of the animal."
@@ -27,9 +68,7 @@ shared interface Animal
 	"The turn the animal was born, or -1 if it is an adult (or if this is traces ...)"
 	shared formal Integer born;
 	shared actual default String shortDescription {
-		if (traces) { // TODO: Split "animal tracks" into a separate type, which will significantly simplify most callers
-			return "traces of ``kind``";
-		} else if (talking) {
+		if (talking) {
 			return "talking ``kind``";
 		} else {
 			String popString;
@@ -47,13 +86,13 @@ shared interface Animal
 	}
 	"Default image filename"
 	todo("Should depend on the kind of animal")
-	shared actual default String defaultImage => (traces) then "tracks.png" else "animal.png";
+	shared actual default String defaultImage => "animal.png";
 	shared actual Integer hash => id;
 	shared actual String string => shortDescription;
 	shared actual String plural => "Animals";
 	"Whether another animal is equal except its ID and population count."
 	shared default Boolean equalExceptPopulation(Animal other) {
-		return kind == other.kind && traces == other.traces && talking == other.talking &&
+		return kind == other.kind && talking == other.talking &&
 				status == other.status && born == other.born;
 	}
 	shared actual default Boolean equalsIgnoringID(IFixture fixture) {
@@ -68,11 +107,7 @@ shared interface Animal
 	 equal."
 	shared actual default Boolean equals(Object obj) {
 		if (is Animal obj) {
-			if (traces) {
-				return equalsIgnoringID(obj);
-			} else {
-				return obj.id == id && equalsIgnoringID(obj);
-			}
+			return obj.id == id && equalsIgnoringID(obj);
 		} else {
 			return false;
 		}
@@ -83,7 +118,7 @@ shared interface Animal
 	"Required Perception check result to find the animal."
 	todo("Should be variable, either read from XML or computed from kind using some other
 	      read-from-file data.") // FIXME
-	shared actual default Integer dc => (traces) then 12 else 22;
+	shared actual default Integer dc => 22;
 	shared actual default Boolean isSubset(IFixture obj, Anything(String) report) {
 		if (obj.id == id) {
 			if (is Animal obj) {
@@ -92,9 +127,6 @@ shared interface Animal
 					return false;
 				} else if (!talking, obj.talking) {
 					report("In animal ID #``id``:\tSubmap's is talking and master's isn't");
-					return false;
-				} else if (traces, !obj.traces) {
-					report("In animal #``id``: Submap has animal and master only tracks");
 					return false;
 				} else if (status != obj.status) {
 					report("Animal domestication status differs at ID #``id``");
@@ -109,6 +141,8 @@ shared interface Animal
 				} else {
 					return true;
 				}
+			} else if (is AnimalTracks obj, kind == obj.kind) {
+				return true;
 			} else {
 				report("For ID #``id``, different kinds of members");
 				return false;
@@ -119,12 +153,10 @@ shared interface Animal
 		}
 	}
 }
-shared class AnimalImpl(kind, traces, talking, status, id, born = -1, population = 1)
+shared class AnimalImpl(kind, talking, status, id, born = -1, population = 1)
         satisfies Animal&HasMutableImage {
     "ID number."
     shared actual Integer id;
-    "If true, this is only traces or tracks, not an actual animal."
-    shared actual Boolean traces;
     "Whether this is a talking animal."
     shared actual Boolean talking;
     "The domestication status of the animal."
@@ -139,14 +171,14 @@ shared class AnimalImpl(kind, traces, talking, status, id, born = -1, population
     shared actual Integer population;
     "Clone the animal."
     shared actual Animal copy(Boolean zero) {
-        AnimalImpl retval = AnimalImpl(kind, traces, talking, status, id,
+        AnimalImpl retval = AnimalImpl(kind, talking, status, id,
             (zero) then -1 else born, (zero) then 1 else population); // TODO: change, here and elsewhere, so that "unknown" is -1 population
         retval.image = image;
         return retval;
     }
     shared actual Animal reduced(Integer newPopulation, Integer newId) =>
-            AnimalImpl(kind, traces, talking, status, newId, born, newPopulation);
-    shared actual Animal combined(Animal addend) => AnimalImpl(kind, traces, talking, status, id, born,
+            AnimalImpl(kind, talking, status, newId, born, newPopulation);
+    shared actual Animal combined(Animal addend) => AnimalImpl(kind, talking, status, id, born,
             Integer.largest(0, population) + Integer.largest(0, addend.population));
 }
 shared object maturityModel {

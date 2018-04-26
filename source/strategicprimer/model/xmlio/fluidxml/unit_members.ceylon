@@ -23,7 +23,8 @@ import strategicprimer.model.map.fixtures.mobile {
     SimpleImmortal,
     Animal,
     maturityModel,
-	AnimalImpl
+	AnimalImpl,
+	AnimalTracks
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
@@ -36,7 +37,8 @@ import strategicprimer.model.xmlio {
     Warning
 }
 import strategicprimer.model.xmlio.exceptions {
-    UnwantedChildException
+    UnwantedChildException,
+	UnsupportedPropertyException
 }
 import lovelace.util.common {
 	matchingValue
@@ -174,7 +176,7 @@ object unitMemberHandler extends FluidBase() {
 	    }
 	}
 
-	shared Animal readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
+	shared Animal|AnimalTracks readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "animal");
 	    expectAttributes(element, warner, "traces", "id", "count", "kind", "talking", "status", "wild", "born", "image");
@@ -186,50 +188,64 @@ object unitMemberHandler extends FluidBase() {
 	    Boolean traces = getBooleanAttribute(element, "traces",
 	        hasAttribute(element, "traces") && getAttribute(element, "traces", "").empty,
 	        warner);
-	    Integer id;
-	    if (traces, !hasAttribute(element, "id")) {
-	        id = -1;
-	    } else {
-	        id = getOrGenerateID(element, warner, idFactory);
-	    }
+	    Boolean talking = getBooleanAttribute(element, "talking", false, warner);
+	    String status = getAttribute(element, "status", "wild");
+	    Integer born = getIntegerAttribute(element, "born", -1, warner);
 	    // TODO: We'd like the default to be 1 inside a unit and -1 outside
 	    Integer count = getIntegerAttribute(element, "count", 1, warner);
-	    return setImage(
-	        AnimalImpl(getAttribute(element, "kind"), traces,
-	            getBooleanAttribute(element, "talking", false, warner),
-	            getAttribute(element, "status", "wild"),
-	            id, getIntegerAttribute(element, "born", -1, warner), count),
-	            element, warner);
+	    Integer id;
+	    if (traces) {
+	        if (hasAttribute(element, "id")) {
+	            warner.handle(UnsupportedPropertyException(element, "id")); // TODO: Need some way to make clear that it's _when tracks=true_
+	        }
+	        if (talking) {
+	            warner.handle(UnsupportedPropertyException(element, "talking")); // TODO: Need some way to make clear that it's _when tracks=true_
+	        }
+	        if (status != "wild") {
+	            warner.handle(UnsupportedPropertyException(element, "status")); // TODO: Need some way to make clear that it's _when tracks=true_
+	        }
+	        if (born != -1) {
+	            warner.handle(UnsupportedPropertyException(element, "born")); // TODO: Need some way to make clear that it's _when tracks=true_
+	        }
+	        if (count != 1) {
+	            warner.handle(UnsupportedPropertyException(element, "count")); // TODO: Need some way to make clear that it's _when tracks=true_
+	        }
+	        return setImage(AnimalTracks(getAttribute(element, "kind")), element, warner);
+	    } else {
+	        id = getOrGenerateID(element, warner, idFactory);
+	        return setImage(
+	            AnimalImpl(getAttribute(element, "kind"), talking, status,
+	                id, born, count), element, warner);
+	    }
 	}
-
+	shared void writeAnimalTracks(XMLStreamWriter ostream, AnimalTracks obj, Integer indentation) {
+		writeTag(ostream, "animal", indentation, true);
+		writeAttributes(ostream, "kind"->obj.kind, "traces"->true);
+		writeImage(ostream, obj);
+	}
 	shared void writeAnimal(XMLStreamWriter ostream, Animal obj, Integer indentation) {
 	    writeTag(ostream, "animal", indentation, true);
 	    writeAttributes(ostream, "kind"->obj.kind);
-	    if (obj.traces) {
-	        writeAttributes(ostream, "traces"->true);
-	    }
 	    if (obj.talking) {
 	        writeAttributes(ostream, "talking"->true);
 	    }
 	    if ("wild" != obj.status) {
 	        writeAttributes(ostream, "status"->obj.status);
 	    }
-	    if (!obj.traces) {
-	        writeAttributes(ostream, "id"->obj.id);
-	        if (obj.born >= 0) {
-	            // Write turn-of-birth if and only if it is fewer turns before the current
-	            // turn than this kind of animal's age of maturity.
-	            if (currentTurn >= 0, exists maturityAge = maturityModel.maturityAges[obj.kind],
-	                    maturityAge <= (currentTurn - obj.born)) {
-	                // do nothing
-	            } else {
-	                writeAttributes(ostream, "born"->obj.born);
-	            }
-	        }
-	        if (obj.population > 1) {
-	            writeAttributes(ostream, "count"->obj.population);
-	        }
-	    }
+        writeAttributes(ostream, "id"->obj.id);
+        if (obj.born >= 0) {
+            // Write turn-of-birth if and only if it is fewer turns before the current
+            // turn than this kind of animal's age of maturity.
+            if (currentTurn >= 0, exists maturityAge = maturityModel.maturityAges[obj.kind],
+                    maturityAge <= (currentTurn - obj.born)) {
+                // do nothing
+            } else {
+                writeAttributes(ostream, "born"->obj.born);
+            }
+        }
+        if (obj.population > 1) {
+            writeAttributes(ostream, "count"->obj.population);
+        }
 	    writeImage(ostream, obj);
 	}
 

@@ -16,7 +16,8 @@ import strategicprimer.model.map.fixtures.mobile {
 	Animal,
 	IUnit,
 	maturityModel,
-	AnimalImpl
+	AnimalImpl,
+	AnimalTracks
 }
 import strategicprimer.model.xmlio {
 	Warning
@@ -26,7 +27,7 @@ import lovelace.util.common {
 	as
 }
 
-object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() satisfies MapContentsReader {
+object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point|IUnit>() satisfies MapContentsReader {
 	Integer|SqlNull born(Animal animal) {
 		if (exists maturityAge = maturityModel.maturityAges[animal.kind],
 				maturityAge <= (currentTurn - animal.born)) {
@@ -61,8 +62,8 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 			   image VARCHAR(255)
 		   );"""
 	];
-	shared actual void write(Sql db, Animal obj, Point|IUnit context) {
-		if (obj.traces) {
+	shared actual void write(Sql db, Animal|AnimalTracks obj, Point|IUnit context) {
+		if (is AnimalTracks obj) {
 			"We assume that animal tracks can't occur inside a unit."
 			assert (is Point context);
 			db.Insert("""INSERT INTO tracks (row, column, kind, image) VALUES(?, ?, ?, ?);""")
@@ -88,7 +89,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 				is String kind = dbRow["kind"], is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
 				is String status = dbRow["status"], is Integer|SqlNull born = dbRow["born"],
 				is Integer count = dbRow["count"], is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
-			value animal = AnimalImpl(kind, false, talking, status, id, as<Integer>(born) else -1, count);
+			value animal = AnimalImpl(kind, talking, status, id, as<Integer>(born) else -1, count);
 			if (is String image) {
 				animal.image = image;
 			}
@@ -103,7 +104,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 		for (dbRow in db.Select("""SELECT * FROM tracks""").Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
 				is String kind = dbRow["kind"], is String|SqlNull image = dbRow["image"]);
-			value track = AnimalImpl(kind, true, false, "wild", -1, -1, -1);
+			value track = AnimalTracks(kind);
 			if (is String image) {
 				track.image = image;
 			}
@@ -123,7 +124,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal, Point|IUnit>() sat
 				is String kind = dbRow["kind"], is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
 				is String status = dbRow["status"], is Integer|SqlNull born = dbRow["born"],
 				is Integer count = dbRow["count"], is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
-			value animal = AnimalImpl(kind, false, talking, status, id, as<Integer>(born) else -1, count);
+			value animal = AnimalImpl(kind, talking, status, id, as<Integer>(born) else -1, count);
 			if (is String image) {
 				animal.image = image;
 			}

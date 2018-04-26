@@ -15,7 +15,8 @@ import ceylon.collection {
 	MutableList
 }
 import strategicprimer.model.map.fixtures.mobile {
-	Animal
+	Animal,
+	AnimalTracks
 }
 import javax.swing.event {
 	ListDataListener,
@@ -25,14 +26,14 @@ import java.lang {
 	ArrayIndexOutOfBoundsException
 }
 "A model for the list-based representation of the contents of a tile."
-shared class FixtureListModel(IMutableMapNG map, Animal?(Point) tracksSource)
+shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSource)
 		satisfies ListModel<TileFixture>&SelectionChangeListener {
 	"The currently selected point."
 	variable Point point = invalidPoint;
 	variable TileTypeFixture? cachedTerrain = null;
 	"""Any animal tracks that have been "added" to the current tile but kept out of the
 	   map."""
-	MutableList<Animal> currentTracks = ArrayList<Animal>();
+	MutableList<AnimalTracks> currentTracks = ArrayList<AnimalTracks>();
 	MutableList<ListDataListener> listDataListeners = ArrayList<ListDataListener>();
 	shared actual void addListDataListener(ListDataListener listener) =>
 			listDataListeners.add(listener);

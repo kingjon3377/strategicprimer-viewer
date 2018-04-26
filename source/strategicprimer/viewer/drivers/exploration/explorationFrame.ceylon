@@ -82,7 +82,7 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal,
-	AnimalImpl
+	AnimalTracks
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -324,16 +324,19 @@ SPFrame explorationFrame(IExplorationModel model,
         }
         IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
         HuntingModel huntingModel = HuntingModel(model.map);
-        Animal? tracksCreator(Point point) {
+        AnimalTracks? tracksCreator(Point point) {
             if (exists terrain = model.map.baseTerrain[point]) {
-                {<Point->Animal|HuntingModel.NothingFound>*}(Point) source;
+                {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*}(Point) source;
                 if (terrain == TileType.ocean) {
                     source = huntingModel.fish;
                 } else {
                     source = huntingModel.hunt;
                 }
-                if (is Animal animal = source(point).map(Entry.item).first) {
-                    return AnimalImpl(animal.kind, true, false, "wild", -1);
+                value animal = source(point).map(Entry.item).first;
+                if (is Animal animal) {
+                    return AnimalTracks(animal.kind);
+                } else if (is AnimalTracks animal) {
+                    return animal.copy(true);
                 } else {
                     return null;
                 }

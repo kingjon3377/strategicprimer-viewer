@@ -70,7 +70,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 		// We assume there is at most one population of each kind of animal per tile.
 		{Point*} locations = randomize(map.locations.filter(
 			//(loc) => map.fixtures[loc].narrow<Animal>().filter(matching(false, Animal.traces)) // TODO: syntax sugar once compiler bug fixed
-			(loc) => map.fixtures.get(loc).narrow<Animal>().filter(matchingValue(false, Animal.traces))
+			(loc) => map.fixtures.get(loc).narrow<Animal>()
 					.filter(matchingValue(talking, Animal.talking)).filter((animal) => animal.population <= 1)
 					.map(Animal.kind).any(kind.equals)));
 		Integer count = locations.size;
@@ -99,7 +99,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 				nextPopulation = rng.nextInteger(remainingTotal - (remainingCount * 2) - 2) + 2;
 			}
 			//if (exists animal = map.fixtures[location].narrow<Animal>().filter(matching(false, Animal.traces)) // TODO: syntax sugar
-			if (exists animal = map.fixtures.get(location).narrow<Animal>().filter(matchingValue(false, Animal.traces))
+			if (exists animal = map.fixtures.get(location).narrow<Animal>()
 					.filter(matchingValue(talking, Animal.talking)).find(matchingValue(kind, Animal.kind))) {
 				Animal replacement = animal.reduced(nextPopulation);
 				map.removeFixture(location, animal);
@@ -271,7 +271,7 @@ shared object populationGeneratingCLI satisfies SimpleCLIDriver {
 	}
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
 		for (kind in model.map.locations.flatMap(model.map.fixtures.get).narrow<Animal>()
-					.filter(matchingValue(false, Animal.traces)).filter((animal) => animal.population <= 1)
+					.filter((animal) => animal.population <= 1)
 				.map(Animal.kind).distinct) {
 			generateAnimalPopulations(model.map, true, kind, cli);
 			generateAnimalPopulations(model.map, false, kind, cli);

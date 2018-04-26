@@ -22,8 +22,8 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal,
-	AnimalImpl,
-	Immortal
+	Immortal,
+	AnimalTracks
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -208,7 +208,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         allFixtures.add(fixture);
                     }
                 }
-                Animal|HuntingModel.NothingFound tracksAnimal;
+                Animal|AnimalTracks|HuntingModel.NothingFound tracksAnimal;
                 // Since not-visible terrain is impassable, by this point we know the tile is
                 // visible.
                 assert (exists terrain = model.map.baseTerrain[destPoint]);
@@ -218,7 +218,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                     tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first else HuntingModel.NothingFound.nothingFound;
                 }
                 if (is Animal tracksAnimal) {
-                    allFixtures.add(AnimalImpl(tracksAnimal.kind, true, false, "wild", -1));
+                    allFixtures.add(AnimalTracks(tracksAnimal.kind));
+                } else if (is AnimalTracks tracksAnimal) {
+                    allFixtures.add(tracksAnimal.copy(false));
                 }
                 if (Direction.nowhere == direction) {
                     if (cli.inputBooleanInSeries(

@@ -62,7 +62,8 @@ import strategicprimer.model.map.fixtures.mobile {
 	Centaur,
 	Dragon,
 	Fairy,
-	Giant
+	Giant,
+	AnimalTracks
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
 	raceFactory,
@@ -147,10 +148,10 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 	test
 	shared void testAnimalSerialization(parameters(`function threeRandomNumbers`) Integer id, // TODO: animals inside units
 		enumeratedParameter(`class Boolean`) Boolean talking) =>
-			assertFixtureSerialization(AnimalImpl("animal kind", false, talking, "status", id, -1, 1));
+			assertFixtureSerialization(AnimalImpl("animal kind", talking, "status", id, -1, 1));
 	test
 	shared void testTracksSerialization() =>
-			assertFixtureSerialization(AnimalImpl("kind", true, false, "wild", -1, -1, -1));
+			assertFixtureSerialization(AnimalTracks("kind"));
 	test
 	shared void testCacheSerialization(parameters(`function threeRandomNumbers`) Integer id) =>
 			assertFixtureSerialization(CacheFixture("kind", "contents", id));

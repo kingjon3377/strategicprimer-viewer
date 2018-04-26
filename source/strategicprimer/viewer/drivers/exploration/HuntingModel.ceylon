@@ -8,7 +8,8 @@ import strategicprimer.model.map {
     Point
 }
 import strategicprimer.model.map.fixtures.mobile {
-    Animal
+    Animal,
+	AnimalTracks
 }
 import strategicprimer.model.map.fixtures.resources {
     Grove,
@@ -48,7 +49,7 @@ shared class HuntingModel {
     "Animals (outside fortresses and units), both aquatic and non-aquatic, at the given location in the map."
     {Animal*} baseAnimals(Point point) =>
             //map.fixtures[point].narrow<Animal>().filter((animal) => !animal.talking && !animal.traces); // TODO: syntax sugar once compiler bug fixed
-            map.fixtures.get(point).narrow<Animal>().filter((animal) => !animal.talking && !animal.traces);
+            map.fixtures.get(point).narrow<Animal>().filter((animal) => !animal.talking);
     "Non-aquatic animals (outside fortresses and units) at the given location in the map."
     {Animal*} animals(Point point) => baseAnimals(point).filter(inverse(matchingPredicate(fishKinds.contains, Animal.kind)));
     "Aquatic animals (outside fortresses and units) at the given location in the map."
@@ -78,12 +79,12 @@ shared class HuntingModel {
     }
     """Get a stream of hunting results from the area surrounding the given tile. About half
         will be "nothing". May be an infinite stream."""
-    shared {<Point->Animal|NothingFound>*} hunt(
+    shared {<Point->Animal|AnimalTracks|NothingFound>*} hunt(
             "Whereabouts to search"
             Point point) => chooseFromMap(point, animals);
     """Get a stream of fishing results from the area surrounding the given tile. About half
         will be "nothing". May be an infinite stream."""
-    shared {<Point->Animal|NothingFound>*} fish(
+    shared {<Point->Animal|AnimalTracks|NothingFound>*} fish(
             "Whereabouts to search"
             Point point) => chooseFromMap(point, waterAnimals);
     """Get a stream of gathering results from the area surrounding the given tile. Many will

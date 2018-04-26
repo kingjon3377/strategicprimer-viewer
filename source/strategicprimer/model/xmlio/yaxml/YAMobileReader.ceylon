@@ -40,7 +40,8 @@ import strategicprimer.model.map.fixtures.mobile {
 	Phoenix,
 	Simurgh,
 	Troll,
-	AnimalImpl
+	AnimalImpl,
+	AnimalTracks
 }
 import strategicprimer.model.xmlio {
     Warning
@@ -62,25 +63,28 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         "ogre"->`Ogre`, "phoenix"->`Phoenix`, "simurgh"->`Simurgh`,
         "troll"->`Troll` };
     MobileFixture createAnimal(StartElement element) {
-        expectAttributes(element, "traces", "id", "count", "talking", "kind", "status", "wild", "born", "image");
         // To get the intended meaning of existing maps, we have to parse
         // traces="" as traces="true". If compatibility with existing maps
         // ever becomes unnecessary, I will change the default-value here to
         // simply `false`.
         Boolean tracks = getBooleanParameter(element, "traces",
             hasParameter(element, "traces") && getParameter(element, "traces", "").empty);
-        Integer idNum;
-        if (tracks && !hasParameter(element, "id")) {
-            idNum = -1;
+        if (tracks) {
+            if (getParameter(element, "status", "wild") == "wild") {
+                expectAttributes(element, "traces", "status", "image", "kind");
+            } else {
+                expectAttributes(element, "traces", "image", "kind");
+            }
+            return AnimalTracks(getParameter(element, "kind"));
         } else {
-            idNum = getOrGenerateID(element);
-        }
-        // TODO: We'd like default to be 1 inside a unit and -1 outside
-        Integer count = getIntegerParameter(element, "count", 1);
-        return AnimalImpl(getParameter(element, "kind"), tracks,
-            getBooleanParameter(element, "talking", false),
-            getParameter(element, "status", "wild"), idNum,
-            getIntegerParameter(element, "born", -1), count);
+	        expectAttributes(element, "traces", "id", "count", "talking", "kind", "status", "wild", "born", "image");
+	        // TODO: We'd like default to be 1 inside a unit and -1 outside
+	        Integer count = getIntegerParameter(element, "count", 1);
+	        return AnimalImpl(getParameter(element, "kind"),
+	            getBooleanParameter(element, "talking", false),
+	            getParameter(element, "status", "wild"), getOrGenerateID(element),
+	            getIntegerParameter(element, "born", -1), count);
+	    }
     }
     MobileFixture readSimple(String tag, Integer idNum) {
         "We have to have a reader for ``tag``"
@@ -117,33 +121,33 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             Integer indent) {
         if (is IUnit obj) {
             throw AssertionError("Unit handled elsewhere");
+        } else if (is AnimalTracks obj) {
+            writeTag(ostream, "animal", indent);
+            writeProperty(ostream, "kind", obj.kind);
+            writeProperty(ostream, "traces", "true");
+            writeImageXML(ostream, obj);
         } else if (is Animal obj) {
             writeTag(ostream, "animal", indent);
             writeProperty(ostream, "kind", obj.kind);
-            if (obj.traces) {
-                writeProperty(ostream, "traces", "true");
-            }
             if (obj.talking) {
                 writeProperty(ostream, "talking", "true");
             }
             if ("wild" != obj.status) {
                 writeProperty(ostream, "status", obj.status);
             }
-            if (!obj.traces) {
-                writeProperty(ostream, "id", obj.id);
-                if (obj.born >= 0) {
-                    // Write turn-of-birth if and only if it is fewer turns before the current
-                    // turn than this kind of animal's age of maturity.
-                    if (exists maturityAge = maturityModel.maturityAges[obj.kind],
-                            maturityAge <= (currentTurn - obj.born)) {
-                        // do nothing
-                    } else {
-                        writeProperty(ostream, "born", obj.born);
-                    }
+            writeProperty(ostream, "id", obj.id);
+            if (obj.born >= 0) {
+                // Write turn-of-birth if and only if it is fewer turns before the current
+                // turn than this kind of animal's age of maturity.
+                if (exists maturityAge = maturityModel.maturityAges[obj.kind],
+                        maturityAge <= (currentTurn - obj.born)) {
+                    // do nothing
+                } else {
+                    writeProperty(ostream, "born", obj.born);
                 }
-                if (obj.population > 1) {
-                    writeProperty(ostream, "count", obj.population);
-                }
+            }
+            if (obj.population > 1) {
+                writeProperty(ostream, "count", obj.population);
             }
             writeImageXML(ostream, obj);
         } else if (is SimpleImmortal obj) {

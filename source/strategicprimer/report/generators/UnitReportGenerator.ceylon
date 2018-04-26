@@ -27,7 +27,8 @@ import strategicprimer.model.map.fixtures.mobile {
     Animal,
     IWorker,
     IUnit,
-	AnimalImpl
+	AnimalImpl,
+	AnimalOrTracks
 }
 import strategicprimer.report {
     IReportNode
@@ -51,7 +52,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     IReportGenerator<FortressMember> memberReportGenerator =
             FortressMemberReportGenerator(comp, currentPlayer, dimensions, currentTurn,
                 hq);
-    IReportGenerator<Animal> animalReportGenerator =
+    IReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks> animalReportGenerator =
             AnimalReportGenerator(comp, dimensions, currentTurn, hq);
     IReportGenerator<IWorker> ourWorkerReportGenerator = WorkerReportGenerator(comp,
         true, dimensions, hq);
@@ -111,7 +112,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 } else if (is Animal member) {
                     if (exists existing = animals.findAndRemoveFirst(
                         member.equalExceptPopulation)) {
-                        animals.add(AnimalImpl(member.kind, member.traces, member.talking,
+                        animals.add(AnimalImpl(member.kind, member.talking,
                             member.status, -1, member.born, member.population + existing.population));
                     } else {
                         animals.add(member);
@@ -149,7 +150,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             }
             produceInner<IWorker>("Workers", workers, (worker) =>
                 workerReportGenerator.produceSingle(fixtures, map, ostream, worker, loc));
-            produceInner<Animal>("Animals", animals, (animal) => animalReportGenerator
+            produceInner</*Animal|AnimalTracks*/AnimalOrTracks>("Animals", animals, (animal) => animalReportGenerator
                 .produceSingle(fixtures, map, ostream, animal, loc));
             produceInner<Implement>("Equipment", equipment, (member) =>
                 memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc));

@@ -29,7 +29,8 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.model.map.fixtures.mobile {
     Unit,
     Worker,
-	AnimalImpl
+	AnimalImpl,
+	AnimalTracks
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     Job
@@ -159,9 +160,9 @@ object subsetTests {
 	    assertIsSubset(secondMap, firstMap, "Subset calculation ignores caches");
 	    firstMap.addFixture(pointFactory(1, 1), TextFixture("text", -1));
 	    assertIsSubset(secondMap, firstMap, "Subset calculation ignores text fixtures");
-	    firstMap.addFixture(pointFactory(1, 1), AnimalImpl("animal", true, false, "status", 5));
+	    firstMap.addFixture(pointFactory(1, 1), AnimalTracks("animal"));
 	    assertIsSubset(secondMap, firstMap, "Subset calculation ignores animal tracks");
-	    firstMap.addFixture(pointFactory(1, 1), AnimalImpl("animal", false, true, "status", 7));
+	    firstMap.addFixture(pointFactory(1, 1), AnimalImpl("animal", true, "status", 7));
 	    assertNotSubset(secondMap, firstMap,
 	        "Subset calculation does not ignore other fixtures");
 	}
@@ -175,7 +176,7 @@ object subsetTests {
 	        baseMap.baseTerrain[point] = TileType.plains;
 	    }
 	    baseMap.addFixture(pointFactory(1, 1), Forest("elm", false, 1));
-	    baseMap.addFixture(pointFactory(1, 1), AnimalImpl("skunk", false, false, "wild", 2));
+	    baseMap.addFixture(pointFactory(1, 1), AnimalImpl("skunk", false, "wild", 2));
 	    baseMap.addRivers(pointFactory(1, 1), River.east);
 
 	    IMutableMapNG testMap = SPMapNG(MapDimensionsImpl(2, 2, 2),
@@ -184,7 +185,7 @@ object subsetTests {
 	        testMap.baseTerrain[point] = TileType.plains;
 	    }
 	    Forest forest = Forest("elm", false, 1);
-	    TileFixture animal = AnimalImpl("skunk", false, false, "wild", 2);
+	    TileFixture animal = AnimalImpl("skunk", false, "wild", 2);
 	    for (point in testMap.locations) {
 	        assertIsSubset(baseMap, testMap,
 	            "Subset invariant before attempt using ``point``");
@@ -224,7 +225,7 @@ object subsetTests {
 	    secondMap.baseTerrain[pointFactory(1, 1)] = TileType.plains;
 	    firstMap.addFixture(pointFactory(1, 1), CacheFixture("category", "contents", 3));
 	    firstMap.addFixture(pointFactory(1, 1), TextFixture("text", -1));
-	    firstMap.addFixture(pointFactory(1, 1), AnimalImpl("animal", true, false, "status", 5));
+	    firstMap.addFixture(pointFactory(1, 1), AnimalTracks("animal"));
 	    firstMap.addFixture(pointFactory(0, 0),
 	        Fortification(TownStatus.burned, TownSize.large, 15, "fortification", 6,
 	            PlayerImpl(0, "")));

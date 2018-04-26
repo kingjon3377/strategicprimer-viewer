@@ -52,7 +52,8 @@ import strategicprimer.model.map.fixtures.mobile {
 	Ogre,
 	Minotaur,
 	Troll,
-	Simurgh
+	Simurgh,
+	AnimalTracks
 }
 import strategicprimer.model.map.fixtures.terrain {
 	Hill,
@@ -67,7 +68,8 @@ import strategicprimer.model.map.fixtures.explorable {
 	Battlefield
 }
 import ceylon.language.meta.model {
-	ClassModel
+	ClassModel,
+	ClassOrInterface
 }
 import ceylon.language.meta {
 	type
@@ -79,7 +81,7 @@ import lovelace.util.common {
 shared object mapTradeCLI satisfies SimpleCLIDriver {
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
 		"Trade maps", "Copy contents from one map to another.");
-	FixtureMatcher trivialMatcher(ClassModel<TileFixture> type,
+	FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
 			String description = "``type.declaration.name``s") {
 		return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
 	}
@@ -106,8 +108,7 @@ shared object mapTradeCLI satisfies SimpleCLIDriver {
 			trivialMatcher(`CacheFixture`, "Caches"), trivialMatcher(`Forest`),
 			trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
 			trivialMatcher(`Village`),
-			complements<Animal>((Animal animal) => !animal.traces, "Animals",
-				"Animal tracks"),
+			trivialMatcher(`Animal`), trivialMatcher(`AnimalTracks`),
 			trivialMatcher(`Troll`),
 			trivialMatcher(`Simurgh`),
 			trivialMatcher(`Ogre`),

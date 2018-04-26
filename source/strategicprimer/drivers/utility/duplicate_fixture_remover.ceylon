@@ -195,7 +195,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                         ifApplicable(fixture.addMember),ifApplicable(fixture.removeMember));
                 }
             } else if (is Animal fixture) {
-                if (fixture.traces || fixture.talking) {
+                if (fixture.talking) {
                     continue;
                 }
                 if (exists handler = mapping[`Animal`]) {

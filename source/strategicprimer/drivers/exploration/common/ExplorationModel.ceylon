@@ -217,9 +217,6 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         for ([submap, file] in subordinateMaps) {
             for (point in points) {
                 for (fixture in submap.fixtures.get(point).narrow<MobileFixture>()) { // TODO: syntax sugar once bug fixed
-                    if (is Animal fixture, fixture.traces) {
-                        continue;
-                    }
                     for (innerPoint->match in localFind(submap, fixture)) {
                         if (innerPoint != point, !map.fixtures.get(innerPoint).contains(match)) {// TODO: syntax sugar
                             submap.removeFixture(innerPoint, match);

@@ -84,7 +84,8 @@ import strategicprimer.model.map.fixtures.mobile {
     Animal,
     Griffin,
     Ogre,
-	AnimalImpl
+	AnimalImpl,
+	AnimalTracks
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     Job,
@@ -773,7 +774,7 @@ object xmlTests {
 	    six.mountainous[pointFactory(0, 0)] = true;
 	    six.addFixture(pointFactory(0, 1), Ground(22, "basalt", false));
 	    six.addFixture(pointFactory(1, 0), Forest("pine", false, 19));
-	    six.addFixture(pointFactory(1, 1), AnimalImpl("beaver", false, false, "wild", 18));
+	    six.addFixture(pointFactory(1, 1), AnimalImpl("beaver", false, "wild", 18));
         assertMissingProperty(createSerializedForm(six, deprecatedWriter), "kind", six);
 	}
 
@@ -1082,7 +1083,7 @@ object xmlTests {
 	test
 	shared void testUnitMemberSerialization() {
 	    IUnit firstUnit = Unit(PlayerImpl(1, ""), "unitType", "unitName", 1);
-	    firstUnit.addMember(AnimalImpl("animal", false, true, "wild", 2));
+	    firstUnit.addMember(AnimalImpl("animal", true, "wild", 2));
 	    assertSerialization("Unit can have an animal as a member", firstUnit);
 	    firstUnit.addMember(Worker("worker", "human", 3));
 	    assertSerialization("Unit can have a worker as a member", firstUnit);
@@ -1207,52 +1208,58 @@ object xmlTests {
 	}
 
 	test
+	shared void testAnimalTracksSerialization(parameters(`value races`) String kind) {
+		assertSerialization("Test of animal-track serialization", AnimalTracks(kind));
+		assertUnwantedChild<AnimalTracks>(
+			"""<animal kind="tracks" traces="true"><troll /></animal>""", null);
+		assertMissingProperty<AnimalTracks>("""<animal traces="true" />""", "kind", null);
+		assertImageSerialization("Animal-track image property is preserved", AnimalTracks(kind));
+		assertEquivalentForms("""Former idiom still works""",
+			"<animal kind=\"kind\" status=\"wild\" traces=\"\" />",
+			"<animal kind=\"kind\" status=\"wild\" traces=\"true\" />",
+			warningLevels.die);
+	}
+	test
 	parameters(`function threeRandomNumbers`)
 	shared void testAnimalSerialization(Integer id) {
 	    String[] statuses = ["wild", "semi-domesticated", "domesticated", "tame"];
-	    for (tracks in `Boolean`.caseValues) { // TODO: Convert to enumeratedParameter()
-	        for (talking in `Boolean`.caseValues) {
-	            for (status in statuses) {
-	                assertSerialization("Test of [[Animal]] serialization",
-	                    AnimalImpl("animalKind", tracks, talking, status, id));
-	            }
-	        }
-	    }
+        for (talking in `Boolean`.caseValues) { // TODO: Convert to enumeratedParameter()
+            for (status in statuses) {
+                assertSerialization("Test of [[Animal]] serialization",
+                    AnimalImpl("animalKind", talking, status, id));
+            }
+        }
 	    assertUnwantedChild<Animal>("""<animal kind="animal"><troll /></animal>"""", null);
 	    assertMissingProperty<Animal>("<animal />", "kind", null);
 	    assertForwardDeserialization<Animal>("Forward-looking in re talking",
 	        "<animal kind=\"animalFive\" talking=\"false\" id=\"``id``\" />",
-	        AnimalImpl("animalFive", false, false, "wild", id).equals);
+	        AnimalImpl("animalFive", false, "wild", id).equals);
 	    assertMissingProperty<Animal>("""<animal kind="animalSix" talking="true" />""", "id",
-	        AnimalImpl("animalSix", false, true, "wild", 0));
+	        AnimalImpl("animalSix", true, "wild", 0));
 	    assertMissingProperty<Animal>("""<animal kind="animalEight" id="nonNumeric" />""",
 	        "id", null);
 	    assertForwardDeserialization<Animal>("Explicit default status of animal",
 	        "<animal kind=\"animalSeven\" status=\"wild\" id=\"``id``\" />",
-	        AnimalImpl("animalSeven", false, false, "wild", id).equals);
+	        AnimalImpl("animalSeven", false, "wild", id).equals);
 	    assertImageSerialization("Animal image property is preserved",
-	        AnimalImpl("animalFour", true, true, "status", id));
+	        AnimalImpl("animalFour", true, "status", id));
 	    assertForwardDeserialization<Animal>("Namespaced attribute",
 	        "<animal xmlns:sp=\"``spNamespace``\" sp:kind=\"animalNine\"
-	         sp:talking=\"true\" sp:traces=\"true\" sp:status=\"tame\" sp:id=\"``id``\" />",
-	        AnimalImpl("animalNine", true, true, "tame", id).equals);
+	         sp:talking=\"true\" sp:traces=\"false\" sp:status=\"tame\" sp:id=\"``id``\" />",
+	        AnimalImpl("animalNine", true, "tame", id).equals);
 	    assertEquivalentForms("""Supports 'traces="false"'""",
 	        "<animal kind=\"kind\" status=\"wild\" id=\"``id``\" />",
 	        "<animal kind=\"kind\" traces=\"false\" status=\"wild\" id=\"``id``\" />",
 	        warningLevels.die);
-	    assertEquivalentForms("""Former idiom still works""",
-	        "<animal kind=\"kind\" status=\"wild\" id=\"``id``\" traces=\"\" />",
-	        "<animal kind=\"kind\" status=\"wild\" id=\"``id``\" traces=\"true\" />",
-	        warningLevels.die);
 	    assertSerialization("Animal age is preserved",
-	        AnimalImpl("youngKind", false, false, "domesticated", id, 8));
+	        AnimalImpl("youngKind", false, "domesticated", id, 8));
 	    assertSerialization("Animal population count is preserved",
-	        AnimalImpl("population", false, false, "wild", id, -1, 55));
-	    assertNotEquals(AnimalImpl("animal", false, false, "wild", id, -1),
-	        AnimalImpl("animal", false, false, "wild", id, 8),
+	        AnimalImpl("population", false, "wild", id, -1, 55));
+	    assertNotEquals(AnimalImpl("animal", false, "wild", id, -1),
+	        AnimalImpl("animal", false, "wild", id, 8),
 	        "But animal age is checked in equals()");
-	    assertNotEquals(AnimalImpl("animal", false, false, "wild", id, -1, 1),
-	        AnimalImpl("animal", false, false, "wild", id, -1, 2),
+	    assertNotEquals(AnimalImpl("animal", false, "wild", id, -1, 1),
+	        AnimalImpl("animal", false, "wild", id, -1, 2),
 	        "Animal population count is checked in equals()");
 	}
 

@@ -13,11 +13,12 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures.mobile {
     Animal,
-    maturityModel
+    maturityModel,
+	AnimalTracks
 }
 "A report generator for sightings of animals."
 shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
-        Integer currentTurn) satisfies ITableGenerator<Animal> {
+        Integer currentTurn) satisfies ITableGenerator<Animal|AnimalTracks> {
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Number", "Kind", "Age"];
     "The file-name to (by default) write this table to."
@@ -25,11 +26,11 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
     "Create a GUI table row representing the given animal."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Animal item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
+            Animal|AnimalTracks item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
         String kind;
         String age;
         String population;
-        if (item.traces) {
+        if (is AnimalTracks item) {
             kind = "tracks or traces of ``item.kind``";
             age = "---";
             population = "---";
@@ -72,13 +73,22 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
         }
     }
     "Compare two pairs of Animals and locations."
-    shared actual Comparison comparePairs([Point, Animal] one, [Point, Animal] two) {
+    shared actual Comparison comparePairs([Point, Animal|AnimalTracks] one, [Point, Animal|AnimalTracks] two) {
         Comparison cmp = DistanceComparator(hq, dimensions).compare(one.first, two.first);
         if (cmp == equal) {
-            return comparing(comparingOn(Animal.talking, compareBools),
-                comparingOn((Animal animal) => !animal.traces, compareBools),
-                byIncreasing(Animal.kind), byDecreasing(Animal.population),
-                byIncreasing(Animal.born))(one.rest.first, two.rest.first);
+            if (is Animal first = one.rest.first) {
+                if (is Animal second = two.rest.first) {
+                    return comparing(comparingOn(Animal.talking, compareBools),
+                        byIncreasing(Animal.kind), byDecreasing(Animal.population),
+                        byIncreasing(Animal.born))(first, second);
+                } else {
+                    return larger;
+                }
+            } else if (is Animal second = two.rest.first) {
+                return smaller;
+            } else {
+                return one.rest.first.kind <=> two.rest.first.kind;
+            }
         } else {
             return cmp;
         }

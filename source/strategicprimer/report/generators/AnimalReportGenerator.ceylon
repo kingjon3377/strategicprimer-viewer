@@ -17,7 +17,9 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.mobile {
     Animal,
     maturityModel,
-    animalPlurals
+    animalPlurals,
+	AnimalTracks,
+	AnimalOrTracks
 }
 import strategicprimer.report {
     IReportNode
@@ -35,35 +37,37 @@ import com.vasileff.ceylon.structures {
 "A report generator for sightings of animals."
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
-        extends AbstractReportGenerator<Animal>(comp, dimensions, hq) {
+        extends AbstractReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks>(comp, dimensions, hq) {
 	"Produce the sub-report about an individual Animal. We assume that individual Animals are
 	 members of the player's units, or that for some other reason the player is allowed to see
 	 the precise count of the population."
 	shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
-			IMapNG map, Anything(String) ostream, Animal item, Point loc) {
+				IMapNG map, Anything(String) ostream, /*Animal|AnimalTracks*/AnimalOrTracks item, Point loc) {
 			ostream("At ``loc``:");
-			if (item.traces) {
-				ostream(" tracks or traces of");
-			} else if (item.talking) {
-				ostream(" talking");
-			}
-			if (item.born >= 0, currentTurn >= 0) {
-				if (item.born > currentTurn) {
-					ostream(" unborn");
-				} else if (item.born == currentTurn) {
-					ostream(" newborn");
-				} else if (exists maturityAge = maturityModel.maturityAges[item.kind],
-					maturityAge <= (currentTurn - item.born)) {
-					// do nothing
-				} else {
-					ostream(" ``currentTurn - item.born``-turn-old");
-				}
-			}
-			if (item.population == 1) {
-				ostream(" ``item.kind``");
+			if (is AnimalTracks item) {
+				ostream(" tracks or traces of ``item.kind``");
 			} else {
-				//                ostream(" ``item.population`` ``animalPlurals[item.kind]``"); // TODO: syntax sugar once compiler bug fixed
-				ostream(" ``item.population`` ``animalPlurals.get(item.kind)``");
+				if (item.talking) {
+					ostream(" talking");
+				}
+				if (item.born >= 0, currentTurn >= 0) {
+					if (item.born > currentTurn) {
+						ostream(" unborn");
+					} else if (item.born == currentTurn) {
+						ostream(" newborn");
+					} else if (exists maturityAge = maturityModel.maturityAges[item.kind],
+						maturityAge <= (currentTurn - item.born)) {
+						// do nothing
+					} else {
+						ostream(" ``currentTurn - item.born``-turn-old");
+					}
+				}
+				if (item.population == 1) {
+					ostream(" ``item.kind``");
+				} else {
+					//                ostream(" ``item.population`` ``animalPlurals[item.kind]``"); // TODO: syntax sugar once compiler bug fixed
+					ostream(" ``item.population`` ``animalPlurals.get(item.kind)``");
+				}
 			}
 			ostream(" ``distCalculator.distanceString(loc)``");
 	}
@@ -71,9 +75,9 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
         		Anything(String) ostream) {
         MutableMultimap<String, Point> items = ArrayListMultimap<String, Point>();
-        for ([loc, animal] in fixtures.items.narrow<[Point, Animal]>().sort(pairComparator)) {
+        for ([loc, animal] in fixtures.items.narrow<[Point, Animal|AnimalTracks]>().sort(pairComparator)) {
             String desc;
-            if (animal.traces) {
+            if (is AnimalTracks animal) {
                 desc = "tracks or traces of ``animal.kind``";
             } else if (animal.talking) {
                 desc = "talking ``animal.kind``";
@@ -107,8 +111,8 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     }
     "Produce the sub-report about an individual Animal."
     shared actual IReportNode produceRIRSingle(DRMap<Integer,[Point,IFixture]> fixtures,
-	        IMapNG map, Animal item, Point loc) {
-        if (item.traces) {
+	        IMapNG map, /*Animal|AnimalTracks*/AnimalOrTracks item, Point loc) {
+        if (is AnimalTracks item) {
             return SimpleReportNode("At ``loc``: tracks or traces of ``item
                 .kind`` ``distCalculator.distanceString(loc)``", loc);
         } else if (item.talking) {
@@ -122,7 +126,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     "Produce the sub-report about animals."
     shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures, IMapNG map) {
         MutableMap<String, IReportNode> items = HashMap<String, IReportNode>();
-        for ([loc, animal] in fixtures.items.narrow<[Point, Animal]>().sort(pairComparator)) {
+        for ([loc, animal] in fixtures.items.narrow<[Point, Animal|AnimalTracks]>().sort(pairComparator)) {
             IReportNode node;
             if (exists temp = items[animal.kind]) {
                 node = temp;
