@@ -4,7 +4,8 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    DRMap=DelayedRemovalMap
+    DRMap=DelayedRemovalMap,
+	comparingOn
 }
 
 import strategicprimer.model.map {
@@ -75,7 +76,8 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
         		Anything(String) ostream) {
         MutableMultimap<String, Point> items = ArrayListMultimap<String, Point>();
-        for ([loc, animal] in fixtures.items.narrow<[Point, Animal|AnimalTracks]>().sort(pairComparator)) {
+        for (key->[loc, animal] in fixtures.narrow<Integer->[Point, Animal|AnimalTracks]>()
+	            .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item, pairComparator))) {
             String desc;
             if (is AnimalTracks animal) {
                 desc = "tracks or traces of ``animal.kind``";
@@ -85,15 +87,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                 desc = animal.kind;
             }
             items.put(desc, loc);
-            if (animal.id > 0) {
-                fixtures.remove(animal.id);
-            } else {
-                for (key->val in fixtures) { // TODO: Keep key in main loop
-                    if (val == [loc, animal]) {
-                        fixtures.remove(key);
-                    }
-                }
-            }
+            fixtures.remove(key);
         }
         if (!items.empty) {
             ostream("""<h4>Animal sightings or encounters</h4>
@@ -126,7 +120,8 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     "Produce the sub-report about animals."
     shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures, IMapNG map) {
         MutableMap<String, IReportNode> items = HashMap<String, IReportNode>();
-        for ([loc, animal] in fixtures.items.narrow<[Point, Animal|AnimalTracks]>().sort(pairComparator)) {
+        for (key->[loc, animal] in fixtures.narrow<Integer->[Point, Animal|AnimalTracks]>()
+	            .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item, pairComparator))) {
             IReportNode node;
             if (exists temp = items[animal.kind]) {
                 node = temp;
@@ -135,15 +130,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                 items[animal.kind] = node;
             }
             node.appendNode(produceRIRSingle(fixtures, map, animal, loc));
-            if (animal.id > 0) {
-                fixtures.remove(animal.id);
-            } else {
-                for (key->val in fixtures) { // TODO: Keep the key from the main loop
-                    if (val == [loc, animal]) {
-                        fixtures.remove(key);
-                    }
-                }
-            }
+            fixtures.remove(key);
         }
         if (items.empty) {
             return emptyReportNode;
