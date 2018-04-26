@@ -95,6 +95,9 @@ import lovelace.util.common {
 import strategicprimer.model.xmlio.fluidxml {
 	FluidBase { ... }
 }
+import ceylon.language.meta {
+	classDeclaration
+}
 Regex snugEndTag = regex("([^ ])/>", true);
 variable Integer currentTurn = -1;
 """The main writer-to-XML class in the "fluid XML" implementation."""
@@ -108,6 +111,7 @@ shared class SPFluidWriter() satisfies SPWriter {
                 return;
             }
         }
+        throw AssertionError("No writer present for ``classDeclaration(obj).name``");
     }
     shared actual void writeSPObject(Anything(String)|Path arg, Object obj) {
         if (is Anything(String) ostream = arg) {
