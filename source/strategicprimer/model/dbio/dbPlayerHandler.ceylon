@@ -12,9 +12,9 @@ import strategicprimer.model.xmlio {
 	Warning
 }
 object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>() satisfies MapContentsReader {
-	shared actual {String+} initializers = [ // TODO: id should be NOT NULL, but that gave problems for some reason
+	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS players (
-			   id INTEGER,
+			   id INTEGER NOT NULL,
 			   codename VARCHAR(64) NOT NULL,
 			   current BOOLEAN NOT NULL
 		   );"""
