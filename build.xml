@@ -144,6 +144,7 @@
                    generates a _larger_ JAR file, and b) it's blocked by
                    eclipse/ceylon#7225. -->
               <arg value="fat-jar" />
+              <arg value="--force" /> <!-- TODO: Needed because ceylon.dbc pulls in multiple versions of org.jboss.logging -->
               <arg value="--out=@{out}" />
               <arg value="--run=@{run}" />
               <arg value="@{module}" />
