@@ -101,7 +101,7 @@ object arrowListenerInitializer {
 	        "dollar");
 	    actionMap.put("ctrl-home", DirectionListener(join(selListener.jumpUp,
 	        selListener.jumpLeft)));
-	    actionMap.put("home", DirectionListener(() => selListener.jumpUp()));
+	    actionMap.put("home", DirectionListener(selListener.jumpUp));
 	    actionMap.put("ctrl-end", DirectionListener(join(selListener.jumpDown,
 	        selListener.jumpRight)));
 	    actionMap.put("end", DirectionListener(selListener.jumpDown));
