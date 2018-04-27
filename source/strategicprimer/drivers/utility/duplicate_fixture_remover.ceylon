@@ -280,8 +280,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
                 case (is Integer|Float|Whole) {
                     return decimalNumber(num);
                 }
-            }).fold(decimalNumber(0))(
-                (Decimal partial, Decimal element) => partial.plus(element)),
+            }).fold(decimalNumber(0))(plus),
             top.quantity.units));
             combined.created = top.created;
             return combined;
