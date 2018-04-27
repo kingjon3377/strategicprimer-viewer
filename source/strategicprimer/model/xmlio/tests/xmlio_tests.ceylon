@@ -1041,11 +1041,7 @@ object xmlTests {
 	    assertForwardDeserialization("Deprecated text-in-map still works",
 	        """<map version="2" rows="1" columns="1" current_player="-1">
 	           <tile row="0" column="0" kind="plains">one</tile></map>""",
-	                (Object obj) {
-	                    assertEquals(obj, wrapper,
-	                        "Deprecated text-in-map still works");
-	                    return obj == wrapper;
-	                });
+	        wrapper.equals);
 	}
 
 	test
