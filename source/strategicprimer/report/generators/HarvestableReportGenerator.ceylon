@@ -260,7 +260,6 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
        referred to in this report are to be removed from the collection."""
     shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map) {
-        value values = fixtures.items.narrow<[Point, HarvestableFixture]>().sort(pairComparator); // TODO: inline into sole reference
         MutableMap<String, IReportNode> stone = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> shrubs = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> minerals = HashMap<String, IReportNode>();
@@ -275,7 +274,7 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         meadows.suspend();
         groves.suspend();
         caches.suspend();
-        for ([loc, item] in values) {
+        for ([loc, item] in fixtures.items.narrow<[Point, HarvestableFixture]>().sort(pairComparator)) {
             if (is CacheFixture item) {
                 caches.appendNode(produceRIRSingle(fixtures, map, item, loc));
             } else if (is Grove item) {
