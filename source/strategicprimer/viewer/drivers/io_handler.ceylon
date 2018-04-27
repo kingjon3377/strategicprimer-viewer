@@ -248,6 +248,7 @@ shared class FileChooser {
             extends Exception(
                 (cause exists) then "Choice of a file was iterrupted by an exception:"
                 else "No file was selected", cause) { }
+    static JPath fileToPath(JFile file) => file.toPath();
     Integer(Component?) chooserFunction;
     variable {JPath+}? storedFile;
     JFileChooser|JFileDialog chooser;
@@ -360,7 +361,7 @@ shared class FileChooser {
             if (is JFileChooser chooser) {
                 if (status == JFileChooser.approveOption) {
                     value retval = chooser.selectedFiles.iterable.coalesced
-                        .map((file) => file.toPath()).sequence();// TODO: Extract 'file.toPath()' to a named method, to replace the four lambdas here
+                        .map(fileToPath).sequence();// TODO: Use collect(), here and elsewhere
                     if (nonempty retval) {
                         log.trace("About to return the file(s) the user chose via Swing");
                         return retval;
@@ -372,7 +373,7 @@ shared class FileChooser {
                 }
             } else {
                 value retval = chooser.files.iterable.coalesced
-                    .map((file) => file.toPath()).sequence();
+                    .map(fileToPath).sequence();
                 if (nonempty retval) {
                     log.trace("About to return the file(s) the user chose via AWT");
                     return retval;
@@ -390,7 +391,7 @@ shared class FileChooser {
                 if (is JFileChooser chooser) {
                     if (status == JFileChooser.approveOption) {
                         value retval = chooser.selectedFiles.iterable.coalesced
-                            .collect((file) => file.toPath());
+                            .collect(fileToPath);
                         if (nonempty retval) {
                             log.trace("Saving the user's choice(s) from Swing to storedFile");
                             storedFile = retval;
@@ -402,7 +403,7 @@ shared class FileChooser {
                     }
                 } else {
                     value retval = chooser.files.iterable.coalesced
-                        .collect((file) => file.toPath());
+                        .collect(fileToPath);
                     if (nonempty retval) {
                         log.trace("Saving the user's choice(s) from AWT to storedFile");
                         storedFile = retval;
