@@ -501,7 +501,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                         .first,
                                 selectedUnit, speedSource()));
                             IntArray indices = IntArray.with(
-                                {for ([index, fixture] in constants) index});
+                                constants.map(Tuple.first));
                             mainList.selectedIndices = indices;
                             outsideCritical = true;
                         }
