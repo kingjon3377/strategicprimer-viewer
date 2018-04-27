@@ -477,8 +477,8 @@ object resourceAddingGUI satisfies SimpleDriver {
             SwingUtilities.invokeLater(() {
                 value frame = resourceAddingFrame(model, menuHandler.actionPerformed);
                 menuHandler.register(silentListener(frame.dispose), "close");
-                menuHandler.register((event) =>
-                    aboutDialog(frame, frame.windowName).setVisible(true), "about");
+                menuHandler.registerWindowShower(
+                    aboutDialog(frame, frame.windowName), "about");
                 pcml.addPlayerChangeListener(frame);
                 frame.setVisible(true);
             });

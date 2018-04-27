@@ -263,7 +263,7 @@ object tabularReportGUI satisfies SimpleDriver {
         window.add(frame);
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(silentListener(window.dispose), "close");
-        menuHandler.register((event) => aboutDialog(frame, window.windowName).setVisible(true), "about");
+        menuHandler.registerWindowShower(aboutDialog(frame, window.windowName), "about");
         menuHandler.register((event) => process.exit(0), "quit");
         window.jMenuBar = UtilityMenu(window);
         window.setVisible(true);

@@ -73,8 +73,7 @@ shared object workerGUI satisfies SimpleDriver {
                     model.currentPlayer, model.currentPlayer),
                     "reload tree");
                 menuHandler.register(silentListener(frame.dispose), "close");
-                menuHandler.register((event) =>
-                aboutDialog(frame, frame.windowName).setVisible(true), "about");
+                menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName), "about");
                 log.trace("Registered menu handlers");
                 if (model.allMaps.every(([map, _]) => model.getUnits(map.currentPlayer).empty)) {
                     pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst, "change current player"));

@@ -496,7 +496,7 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
     frame.pack();
     MenuBroker menuHandler = MenuBroker();
     menuHandler.register(silentListener(frame.dispose), "close");
-    menuHandler.register((event) => aboutDialog(frame, frame.windowName).setVisible(true), "about");
+    menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName), "about");
     menuHandler.register((event) => process.exit(0), "quit");
     frame.jMenuBar = UtilityMenu(frame);
     return frame;

@@ -74,8 +74,7 @@ shared object advancementGUI satisfies SimpleDriver {
             frame.playerChanged(workerModel.currentPlayer, workerModel.currentPlayer),
                 "reload tree");
             menuHandler.register(silentListener(frame.dispose), "close");
-            menuHandler.register((event) =>
-            aboutDialog(frame, frame.windowName).setVisible(true), "about");
+            menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName), "about");
             frame.setVisible(true);
         });
     }

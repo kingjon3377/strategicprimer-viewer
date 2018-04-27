@@ -96,8 +96,9 @@ shared object viewerGUI satisfies SimpleDriver {
                 SPFrame&MapGUI frame = viewerFrame(model,
                     menuHandler.actionPerformed);
                 menuHandler.register(silentListener(frame.dispose), "close");
-                menuHandler.register((event) =>
-                selectTileDialog(frame, model).setVisible(true), "go to tile");
+                value selectTileDialogInstance = selectTileDialog(frame, model);
+                menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");
+                selectTileDialogInstance.dispose();
                 variable FindDialog? finder = null;
                 FindDialog getFindDialog() {
                     if (exists temp = finder) {
@@ -108,11 +109,9 @@ shared object viewerGUI satisfies SimpleDriver {
                         return local;
                     }
                 }
-                menuHandler.register((event) => getFindDialog().setVisible(true),
-                    "find a fixture");
+                menuHandler.registerWindowShower(getFindDialog, "find a fixture");
                 menuHandler.register((event) => getFindDialog().search(), "find next");
-                menuHandler.register((event) =>
-                aboutDialog(frame, frame.windowName).setVisible(true), "about");
+                menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName), "about");
                 frame.setVisible(true);
             });
         } else if (is IMultiMapModel model) {

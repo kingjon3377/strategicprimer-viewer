@@ -14,7 +14,8 @@ import com.pump.window {
 
 import java.awt {
     Component,
-    Frame
+    Frame,
+	Window
 }
 import java.awt.event {
     ActionListener,
@@ -126,6 +127,14 @@ shared class MenuBroker() satisfies ActionListener {
             mapping[action.lowercased] = actual;
         }
     }
+    "Register a listener for an action command that shows the given window."
+    shared void registerWindowShower(Window()|Window window, String* actions) {
+        if (is Window window) {
+            register((event) => window.setVisible(true), *actions);
+	    } else {
+	        register((event) => window().setVisible(true), *actions);
+	    }
+	}
     "Handle an event by passing it to the listener that's registered to handle its action
      command. If none is registered, log a warning."
     shared actual void actionPerformed(ActionEvent event) {
