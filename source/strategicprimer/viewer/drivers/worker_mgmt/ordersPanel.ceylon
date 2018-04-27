@@ -98,13 +98,14 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
                 revert();
             }
         }
-        shared actual void playerChanged(Player? old, Player newPlayer) {
+        shared actual void playerChanged(Player? old, Player newPlayer) { // TODO: =>
             currentPlayer = newPlayer;
         }
     }
+    value revertListener = silentListener(retval.revert);
     if (exists ordersConsumer) {
         JButton applyButton = listenedButton("Apply", silentListener(retval.apply));
-        JButton revertButton = listenedButton("Revert", silentListener(retval.revert));
+        JButton revertButton = listenedButton("Revert", revertListener);
         platform.makeButtonsSegmented(applyButton, revertButton);
         JPanel buttonPanel = (platform.systemIsMac) then
         centeredHorizontalBox(revertButton, applyButton)
@@ -124,7 +125,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
     retval.center = JScrollPane(area);
     area.lineWrap = true;
     area.wrapStyleWord = true;
-    spinnerModel.addChangeListener(silentListener(retval.revert));
+    spinnerModel.addChangeListener(revertListener);
     object modifiedEnterListener extends KeyAdapter() {
         shared actual void keyPressed(KeyEvent event) {
             if (event.keyCode == KeyEvent.vkEnter, platform.hotKeyPressed(event)) {
