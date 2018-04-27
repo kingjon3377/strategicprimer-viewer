@@ -97,9 +97,8 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
                 revert();
             }
         }
-        shared actual void playerChanged(Player? old, Player newPlayer) { // TODO: =>
-            currentPlayer = newPlayer;
-        }
+        shared actual void playerChanged(Player? old, Player newPlayer) =>
+                currentPlayer = newPlayer;
     }
     value revertListener = silentListener(retval.revert);
     if (exists ordersConsumer) {
