@@ -8,7 +8,7 @@ import ceylon.language {
 import lovelace.util.common {
     todo,
     DelayedRemovalMap,
-	matchingValue
+	inverse
 }
 
 import strategicprimer.model.map {
@@ -102,7 +102,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     (MutableMap<ITownFixture, Point> mapping, pair) {
                 mapping[pair.rest.first] = pair.first;
             });
-        if (separated.items.any(matchingValue(false, Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile // TODO: matchingValue(false, predicate) should be equivalent to inverse(predicate)
+        if (separated.items.any(inverse(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
             ostream("""<h4>Cities, towns, and/or fortifications you know about:</h4>
                    """);
             for (mapping in [abandoned, active, burned, ruined]) {
