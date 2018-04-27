@@ -244,10 +244,9 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         menuHandler.register(silentListener(expander.collapseAll), "collapse all");
         menuHandler.register((event) => expander.expandSome(2), "expand unit kinds");
         expander.expandAll();
-        object closeListener extends WindowAdapter() { // TODO: inline into sole caller
+        addWindowListener(object extends WindowAdapter() {
             shared actual void windowClosed(WindowEvent event) => newUnitFrame.dispose();
-        }
-        addWindowListener(closeListener);
+        });
         model.addMapChangeListener(object satisfies MapChangeListener {
             shared actual void mapChanged() => Thread(reportGeneratorThread).start();
         });
