@@ -187,10 +187,10 @@ shared object drawHelperComparator satisfies UtilityDriver {
 			false;
 
 	Boolean dummyFilter(TileFixture? fix) => true;
-	{[TileDrawHelper, String]*} createHelpers() => { [CachingTileDrawHelper(), "Caching:"],
+	{[TileDrawHelper, String]*} createHelpers() => [ [CachingTileDrawHelper(), "Caching:"],
 		[directTileDrawHelper, "Direct:"],
-		[Ver2TileDrawHelper(dummyObserver, dummyFilter, {FixtureMatcher(dummyFilter, "test")}), "Ver 2:"]
-	};
+		[Ver2TileDrawHelper(dummyObserver, dummyFilter, Singleton(FixtureMatcher(dummyFilter, "test"))), "Ver 2:"]
+	];
 	MutableMap<[CachingStrategy, String, String, String], Accumulator> results = HashMap<[CachingStrategy, String, String, String], Accumulator>();
 	Accumulator getResultsAccumulator(String file, String testee, String test) {
 		[CachingStrategy, String, String, String] tuple = [pointCachingStrategy, file, testee, test];
