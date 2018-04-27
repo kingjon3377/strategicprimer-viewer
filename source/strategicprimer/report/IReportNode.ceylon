@@ -23,7 +23,7 @@ import strategicprimer.report.nodes {
 todo("The interface has been ported directly over from Java; with String interpolation,
       only replacing Formatter with Anything(String); reconsider the interface!")
 shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&
-        Iterable<IReportNode> {
+        {IReportNode*} {
     "Write the HTML representation to a stream."
     shared formal void produce(Anything(String) stream);
     "How large the HTML representation will be, approximately."

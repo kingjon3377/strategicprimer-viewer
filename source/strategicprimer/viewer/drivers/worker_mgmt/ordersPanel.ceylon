@@ -47,7 +47,7 @@ import lovelace.util.common {
 "A panel for the user to enter a unit's orders or read a unit's results."
 JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel(
         Integer currentTurn, variable Player currentPlayer,
-        Iterable<IUnit>(Player, String) playerUnits,
+        {IUnit*}(Player, String) playerUnits,
         String(IUnit, Integer) ordersSupplier,
         Anything(IUnit, Integer, String)? ordersConsumer) {
     JTextArea area = JTextArea();

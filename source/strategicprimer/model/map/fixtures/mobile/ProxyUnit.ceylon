@@ -325,7 +325,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             log.error("RemoveMember() called on proxy for all units of one kind");
         }
     }
-    shared actual Iterable<IUnit> proxied => proxiedList.sequence();
+    shared actual {IUnit*} proxied => proxiedList.sequence();
     shared actual String string => (parallel) then "ProxyUnit for ID #``identifier``"
         else "ProxyUnit for units of kind ``identifier``";
     shared actual Boolean equals(Object obj) {

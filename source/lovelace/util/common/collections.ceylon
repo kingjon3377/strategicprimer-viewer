@@ -112,7 +112,7 @@ shared class ArraySet<Element> satisfies MutableSet<Element>
 "A wrapper around an [[Iterator]] to let it be used in for-each loops. XML parsing in
  particular always seems to hand me an iterator."
 shared class IteratorWrapper<out Element>(Iterator<Element>? wrapped)
-        satisfies Iterable<Element> {
+        satisfies {Element*} {
     shared actual Iterator<Element> iterator() => wrapped else emptyIterator;
 }
 """A [[Correspondence]] that uses something other than [[null]] for "absent" values."""

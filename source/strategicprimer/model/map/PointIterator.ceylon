@@ -11,7 +11,7 @@ import strategicprimer.model.map {
 }
 "A view of locations on the map in order, starting at a given point."
 shared class PointIterator(dimensions, forwards, horizontal,
-        selection = null) satisfies Iterable<Point> {
+        selection = null) satisfies {Point*} {
     "The dimensions of the map we're a view of."
     MapDimensions dimensions;
     "Whether we should search forwards (if true) or backwards (if false)."
@@ -21,7 +21,7 @@ shared class PointIterator(dimensions, forwards, horizontal,
     "The selected point; we start from (just before) (0, 0) if omitted."
     Point? selection;
     shared actual Iterator<Point> iterator() {
-        object retval satisfies Iterator<Point> {
+        object retval satisfies Iterator<Point> { // TODO: Convert to static inner class
             variable Integer remainingCount = dimensions.rows * dimensions.columns;
             "The maximum row in the map."
             Integer maxRow = dimensions.rows - 1;

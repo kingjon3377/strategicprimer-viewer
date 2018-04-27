@@ -52,7 +52,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
 	}
     shared static class WorkerTreeNode<T>(T userObj, Boolean permitsChildren = true)
             extends DefaultMutableTreeNode(userObj, permitsChildren)
-            satisfies Iterable<TreeNode> given T satisfies Object {
+            satisfies {TreeNode*} given T satisfies Object {
         shared actual Iterator<TreeNode> iterator() => EnumerationWrapper<TreeNode>(children());
         // Can't refine userObject to narrow its type because that would narrow the type
         // of the setter as well, which Ceylon's type system doesn't allow.
@@ -143,8 +143,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         assert (is PlayerNode playerNode = root);
         if (old.proxied.size == newOwner.proxied.size,
 	            old.proxied.size == member.proxied.size) {
-            Queue<UnitMember>&Iterable<UnitMember> members = LinkedList<UnitMember>();
-            Queue<IUnit>&Iterable<IUnit> newList = LinkedList<IUnit>();
+            Queue<UnitMember>&{UnitMember*} members = LinkedList<UnitMember>();
+            Queue<IUnit>&{IUnit*} newList = LinkedList<IUnit>();
             for ([item, innerOld, innerNew] in
                     zip(member.proxied, zipPairs(old.proxied, newOwner.proxied))) {
                 innerOld.removeMember(item);
@@ -168,7 +168,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     getNode(playerNode, newOwner.kind), newNode]),
                 IntArray.with(Singleton(newNode.getIndex(node))),
                 ObjectArray<Object>.with(Singleton(node)));
-            Iterable<UnitMember> iter = member.proxied;
+            {UnitMember*} iter = member.proxied;
             if (iter.empty) {
                 newOwner.addMember(member);
             } else {

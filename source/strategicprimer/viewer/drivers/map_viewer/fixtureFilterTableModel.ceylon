@@ -83,8 +83,8 @@ import strategicprimer.drivers.common {
 	FixtureMatcher,
 	simpleMatcher
 }
-"A class to allow the Z-order of fixtures to be represented as a table."
-shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
+"A class to allow the Z-order of fixtures to be represented as a table." // TODO: Try again to get it to compile as a class rather than a factory with inner object
+shared AbstractTableModel&Reorderable&ZOrderFilter&{FixtureMatcher*}&
         Comparator<TileFixture> fixtureFilterTableModel() {
     FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
             String description = "``type.declaration.name``s") {
@@ -132,7 +132,7 @@ shared AbstractTableModel&Reorderable&ZOrderFilter&Iterable<FixtureMatcher>&
         }
     }
     object retval extends AbstractTableModel() satisfies Reorderable&ZOrderFilter&
-            Iterable<FixtureMatcher>&Comparator<TileFixture> {
+            {FixtureMatcher*}&Comparator<TileFixture> {
         shared actual Integer rowCount => list.size;
         shared actual Integer columnCount => 2;
         shared actual Object getValueAt(Integer rowIndex, Integer columnIndex) {

@@ -86,7 +86,7 @@ shared class ExplorableReportGenerator(
         if (!caves.empty || !battles.empty || !portals.empty) {
             ostream("<h4>Caves, Battlefields, and Portals</h4>
                      <ul>");
-            for (list in [ caves, battles, portals ].filter(matchingValue(false, Iterable<Anything>.empty))) {
+            for (list in [ caves, battles, portals ].filter(matchingValue(false, Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile // TODO: matchingValue(false, predicate) is equivalent to inverse(predicate), right?
                 ostream("<li>``list``</li>");
             }
             ostream("</ul>``operatingSystem.newline``");

@@ -15,7 +15,7 @@ import strategicprimer.model.map.fixtures.mobile {
 "A class to transfer a UnitMember via drag-and-drop."
 class UnitMemberTransferable satisfies Transferable {
     shared static DataFlavor flavor =
-            DataFlavor(`Iterable<[UnitMember, IUnit]>`, "List<UnitMember>");
+            DataFlavor(`{[UnitMember, IUnit]*}`, "List<UnitMember>");
     [UnitMember, IUnit][] payload;
     shared new ([UnitMember, IUnit]* data) { payload = data.sequence(); }
     shared actual ObjectArray<DataFlavor> transferDataFlavors =>

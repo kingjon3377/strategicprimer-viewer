@@ -32,7 +32,7 @@ import strategicprimer.drivers.common.cli {
    assume that if any option is passed to an app more than once, the subsequent option
    overrides the previous, and any option passed without argument has an implied argument
    of "true"."""
-shared interface SPOptions satisfies Iterable<String->String> {
+shared interface SPOptions satisfies {<String->String>*} {
     "Whether the specified option was given, with or without an argument."
     shared formal Boolean hasOption(String option);
     """Get the argument provided for the given argument ("true" if given without one,

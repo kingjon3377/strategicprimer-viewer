@@ -49,7 +49,7 @@ shared interface MapGUI {
  and adding the visible tiles back in every time the map was scrolled)."
 JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
 mapComponent(IViewerModel model, Boolean(TileFixture) zof,
-        Iterable<FixtureMatcher>&Comparator<TileFixture> matchers) {
+        {FixtureMatcher*}&Comparator<TileFixture> matchers) {
     MouseListener&ToolTipSource&SelectionChangeSource cml =
             componentMouseListener(model, zof, matchers.compare);
     DirectionSelectionChanger dsl = DirectionSelectionChanger(model);
