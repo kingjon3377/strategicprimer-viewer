@@ -83,7 +83,8 @@ import ceylon.http.common {
 	Header
 }
 import lovelace.util.common {
-	matchingValue
+	matchingValue,
+	silentListener
 }
 object suffixHelper {
 	String suffix(JPath file, Integer count) {
@@ -261,7 +262,7 @@ object tabularReportGUI satisfies SimpleDriver {
             (String str, Component comp) => frame.addTab(str, comp), model.map);
         window.add(frame);
         MenuBroker menuHandler = MenuBroker();
-        menuHandler.register((event) => window.dispose(), "close");
+        menuHandler.register(silentListener(window.dispose), "close");
         menuHandler.register((event) => aboutDialog(frame, window.windowName).setVisible(true), "about");
         menuHandler.register((event) => process.exit(0), "quit");
         window.jMenuBar = UtilityMenu(window);

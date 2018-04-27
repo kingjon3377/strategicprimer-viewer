@@ -36,6 +36,9 @@ import strategicprimer.drivers.worker.common {
 import java.awt.event {
     ActionEvent
 }
+import lovelace.util.common {
+	silentListener
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to start the worker management GUI."
@@ -69,7 +72,7 @@ shared object workerGUI satisfies SimpleDriver {
                 menuHandler.register((event) => frame.playerChanged(
                     model.currentPlayer, model.currentPlayer),
                     "reload tree");
-                menuHandler.register((event) => frame.dispose(), "close");
+                menuHandler.register(silentListener(frame.dispose), "close");
                 menuHandler.register((event) =>
                 aboutDialog(frame, frame.windowName).setVisible(true), "about");
                 log.trace("Registered menu handlers");

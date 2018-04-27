@@ -118,7 +118,8 @@ import strategicprimer.viewer.drivers.query {
 	trappingCLI
 }
 import lovelace.util.common {
-	todo
+	todo,
+	silentListener
 }
 import com.vasileff.ceylon.structures {
 	MutableMultimap,
@@ -494,7 +495,7 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         JScrollPane(buttonPanel), null);
     frame.pack();
     MenuBroker menuHandler = MenuBroker();
-    menuHandler.register((event) => frame.dispose(), "close");
+    menuHandler.register(silentListener(frame.dispose), "close");
     menuHandler.register((event) => aboutDialog(frame, frame.windowName).setVisible(true), "about");
     menuHandler.register((event) => process.exit(0), "quit");
     frame.jMenuBar = UtilityMenu(frame);

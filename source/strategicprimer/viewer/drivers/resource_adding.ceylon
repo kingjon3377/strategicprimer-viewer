@@ -104,6 +104,9 @@ import com.vasileff.ceylon.structures {
 import strategicprimer.drivers.gui.common.about {
 	aboutDialog
 }
+import lovelace.util.common {
+	silentListener
+}
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
     shared new fromMap(IMutableMapNG map, JPath? file) extends
@@ -473,7 +476,7 @@ object resourceAddingGUI satisfies SimpleDriver {
             menuHandler.register(pcml, "change current player");
             SwingUtilities.invokeLater(() {
                 value frame = resourceAddingFrame(model, menuHandler.actionPerformed);
-                menuHandler.register((event) => frame.dispose(), "close");
+                menuHandler.register(silentListener(frame.dispose), "close");
                 menuHandler.register((event) =>
                     aboutDialog(frame, frame.windowName).setVisible(true), "about");
                 pcml.addPlayerChangeListener(frame);

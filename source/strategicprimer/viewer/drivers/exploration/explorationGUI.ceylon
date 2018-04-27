@@ -33,6 +33,9 @@ import strategicprimer.drivers.exploration.common {
 import strategicprimer.drivers.gui.common {
     SPFrame
 }
+import lovelace.util.common {
+	silentListener
+}
 "An object to start the exploration GUI."
 shared object explorationGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -61,7 +64,7 @@ shared object explorationGUI satisfies SimpleDriver {
         SwingUtilities.invokeLater(() {
             SPFrame frame = explorationFrame(explorationModel,
                 menuHandler.actionPerformed);
-            menuHandler.register((event) => frame.dispose(), "close");
+            menuHandler.register(silentListener(frame.dispose), "close");
             menuHandler.register((event) =>
             aboutDialog(frame, frame.windowName).setVisible(true), "about");
             frame.setVisible(true);

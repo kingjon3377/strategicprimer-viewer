@@ -39,6 +39,9 @@ import strategicprimer.viewer.drivers {
 import strategicprimer.drivers.gui.common {
     SPFrame
 }
+import lovelace.util.common {
+	silentListener
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to start the map viewer."
@@ -92,7 +95,7 @@ shared object viewerGUI satisfies SimpleDriver {
             SwingUtilities.invokeLater(() {
                 SPFrame&MapGUI frame = viewerFrame(model,
                     menuHandler.actionPerformed);
-                menuHandler.register((event) => frame.dispose(), "close");
+                menuHandler.register(silentListener(frame.dispose), "close");
                 menuHandler.register((event) =>
                 selectTileDialog(frame, model).setVisible(true), "go to tile");
                 variable FindDialog? finder = null;

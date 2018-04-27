@@ -243,7 +243,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         menuHandler.register((event) => expander.collapseAll(), "collapse all");
         menuHandler.register((event) => expander.expandSome(2), "expand unit kinds");
         expander.expandAll();
-        object closeListener extends WindowAdapter() {
+        object closeListener extends WindowAdapter() { // TODO: inline into sole caller
             shared actual void windowClosed(WindowEvent event) => newUnitFrame.dispose();
         }
         addWindowListener(closeListener);
