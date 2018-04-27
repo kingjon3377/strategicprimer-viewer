@@ -158,8 +158,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 .fold(set(map.players))((one, two) => one.intersection(two));
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) {
-//        return map.locations.flatMap((point) => map.fixtures[point]) // TODO: syntax sugar once compiler bug fixed
-        return map.locations.flatMap((point) => map.fixtures.get(point))
+        return map.locations.flatMap(map.fixtures.get)
             .flatMap((element) {
                 if (is Fortress element) {
                     return element;
