@@ -124,7 +124,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
     retval.center = JScrollPane(area);
     area.lineWrap = true;
     area.wrapStyleWord = true;
-    spinnerModel.addChangeListener((event) => retval.revert());
+    spinnerModel.addChangeListener(silentListener(retval.revert));
     object modifiedEnterListener extends KeyAdapter() {
         shared actual void keyPressed(KeyEvent event) {
             if (event.keyCode == KeyEvent.vkEnter, platform.hotKeyPressed(event)) {

@@ -141,7 +141,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             }
         }
         shared actual void selectedPointChanged(Point? old, Point newPoint) {
-            SwingUtilities.invokeLater(() => requestFocusInWindow());
+            SwingUtilities.invokeLater(() => requestFocusInWindow()); // Can't use silentListener() because requestFocusInWindow is overloaded
             if (!selectionVisible) {
                 fixVisibility();
             }

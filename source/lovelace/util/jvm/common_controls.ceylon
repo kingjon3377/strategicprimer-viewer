@@ -33,7 +33,8 @@ import java.awt {
 }
 import lovelace.util.common {
     todo,
-    Reorderable
+    Reorderable,
+	silentListener
 }
 import java.lang {
     JDouble=Double,
@@ -320,7 +321,7 @@ shared JMenuItem createMenuItem(
     if (is Anything(ActionEvent) listener) {
 	    menuItem.addActionListener(listener);
 	} else {
-		menuItem.addActionListener((evt) => listener());
+		menuItem.addActionListener(silentListener(listener));
 	}
     InputMap inputMap = menuItem.getInputMap(JComponent.whenInFocusedWindow);
     for (accelerator in accelerators) {

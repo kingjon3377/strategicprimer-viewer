@@ -360,7 +360,7 @@ shared class FileChooser {
             if (is JFileChooser chooser) {
                 if (status == JFileChooser.approveOption) {
                     value retval = chooser.selectedFiles.iterable.coalesced
-                        .map((file) => file.toPath()).sequence();
+                        .map((file) => file.toPath()).sequence();// TODO: Extract 'file.toPath()' to a named method, to replace the four lambdas here
                     if (nonempty retval) {
                         log.trace("About to return the file(s) the user chose via Swing");
                         return retval;
