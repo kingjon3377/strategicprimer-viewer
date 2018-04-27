@@ -85,7 +85,7 @@ todo("Further splitting up", "Fix circular dependency between this and viewerGUI
 shared class IOHandler
         satisfies ActionListener {
 	static FileFilter mapExtensionsFilter = FileNameExtensionFilter(
-		"Strategic Primer world map files", "map", "xml");
+		"Strategic Primer world map files", "map", "xml", "db");
 	"A factory method for [[JFileChooser]] (or AWT [[FileDialog|JFileDialog]] taking a
 	 [[FileFilter]] to apply in the same operation."
 	todo("Move functionality into FileChooser somehow?")
