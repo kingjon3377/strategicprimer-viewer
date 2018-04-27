@@ -326,9 +326,9 @@ abstract class YAAbstractReader<Element>
     shared void expectAttributes(StartElement element, String* attributes) {
         {String*} local = attributes.map(String.lowercased);
         for (attribute in ConvertingIterable<Attribute>(element.attributes).map(Attribute.name)
-                .filter(isSupportedNamespace)) { // TODO: map to .localPart
-            if (!local.contains(attribute.localPart.lowercased)) {
-                warner.handle(UnsupportedPropertyException(element, attribute.localPart));
+                .filter(isSupportedNamespace).map(QName.localPart)) {
+            if (!local.contains(attribute.lowercased)) {
+                warner.handle(UnsupportedPropertyException(element, attribute));
             }
         }
     }
