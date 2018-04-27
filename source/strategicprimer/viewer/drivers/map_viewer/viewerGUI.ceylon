@@ -63,9 +63,9 @@ shared object viewerGUI satisfies SimpleDriver {
                 "save as", "new", "load secondary", "save all", "open in map viewer",
                 "open secondary map in map viewer");
             menuHandler.register((event) => process.exit(0), "quit");
-            menuHandler.register((event) => model.zoomIn(), "zoom in");
-            menuHandler.register((event) => model.zoomOut(), "zoom out");
-            menuHandler.register((event) => model.resetZoom(), "reset zoom");
+            menuHandler.register(silentListener(model.zoomIn), "zoom in");
+            menuHandler.register(silentListener(model.zoomOut), "zoom out");
+            menuHandler.register(silentListener(model.resetZoom), "reset zoom");
             menuHandler.register((event) {
                 Point selection = model.selection;
                 MapDimensions dimensions = model.mapDimensions;

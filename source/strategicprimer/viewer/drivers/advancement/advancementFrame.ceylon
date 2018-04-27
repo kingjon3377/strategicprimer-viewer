@@ -50,6 +50,9 @@ import strategicprimer.model.xmlio {
 import strategicprimer.drivers.gui.common {
     SPFrame
 }
+import lovelace.util.common {
+	silentListener
+}
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
         MenuBroker menuHandler) {
@@ -74,8 +77,8 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     jobsTreeObject.addSkillSelectionListener(hoursAdditionPanel);
     hoursAdditionPanel.addLevelGainListener(levelListener);
     TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
-    menuHandler.register((event) => expander.expandAll(), "expand all");
-    menuHandler.register((event) => expander.collapseAll(), "collapse all");
+    menuHandler.register(silentListener(expander.expandAll), "expand all");
+    menuHandler.register(silentListener(expander.collapseAll), "collapse all");
     menuHandler.register((event) => expander.expandSome(2), "expand unit kinds");
     expander.expandAll();
     FormattedLabel playerLabel = FormattedLabel("%s's Units:", "");

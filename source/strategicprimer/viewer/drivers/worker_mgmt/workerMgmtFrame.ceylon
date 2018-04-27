@@ -101,7 +101,8 @@ import strategicprimer.model.xmlio {
 import lovelace.util.common {
     anythingEqual,
 	matchingPredicate,
-	matchingValue
+	matchingValue,
+	silentListener
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
@@ -239,8 +240,8 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
                 JScrollPane(createReportTree(reportModel)), null),
                 mdp));
         TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
-        menuHandler.register((event) => expander.expandAll(), "expand all");
-        menuHandler.register((event) => expander.collapseAll(), "collapse all");
+        menuHandler.register(silentListener(expander.expandAll), "expand all");
+        menuHandler.register(silentListener(expander.collapseAll), "collapse all");
         menuHandler.register((event) => expander.expandSome(2), "expand unit kinds");
         expander.expandAll();
         object closeListener extends WindowAdapter() { // TODO: inline into sole caller
