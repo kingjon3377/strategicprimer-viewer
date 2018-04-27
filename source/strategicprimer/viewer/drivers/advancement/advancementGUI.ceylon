@@ -35,6 +35,9 @@ import strategicprimer.viewer.drivers {
 import strategicprimer.drivers.gui.common {
     SPFrame
 }
+import lovelace.util.common {
+	silentListener
+}
 "The worker-advancement GUI driver."
 shared object advancementGUI satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -70,7 +73,7 @@ shared object advancementGUI satisfies SimpleDriver {
             menuHandler.register((event) =>
             frame.playerChanged(workerModel.currentPlayer, workerModel.currentPlayer),
                 "reload tree");
-            menuHandler.register((event) => frame.dispose(), "close");
+            menuHandler.register(silentListener(frame.dispose), "close");
             menuHandler.register((event) =>
             aboutDialog(frame, frame.windowName).setVisible(true), "about");
             frame.setVisible(true);
