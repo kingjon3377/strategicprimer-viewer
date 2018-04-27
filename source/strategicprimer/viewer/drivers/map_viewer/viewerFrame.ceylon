@@ -85,7 +85,7 @@ shared SPFrame&MapGUI viewerFrame(IViewerModel driverModel,
             fixtureFilterTableModel();
     JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
     mapPanel = mapComponent(driverModel, tableModel.shouldDisplay, tableModel);
-    tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint());
+    tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint()); // can't use silentListener because repaint() is overloaded
     driverModel.addGraphicalParamsListener(mapPanel);
     driverModel.addMapChangeListener(mapPanel);
     driverModel.addSelectionChangeListener(mapPanel);

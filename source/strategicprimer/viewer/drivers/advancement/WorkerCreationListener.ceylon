@@ -43,6 +43,9 @@ import strategicprimer.viewer.drivers.worker_mgmt {
 import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
+import lovelace.util.common {
+	silentListener
+}
 "A listener to keep track of the currently selected unit and listen for new-worker
  notifications, then pass this information on to the tree model."
 class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
@@ -125,8 +128,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                     }
                 });
                 buttonPanel.add(addButton);
-                JButton cancelButton = listenedButton("Cancel",
-                            (ActionEvent event) => dispose());
+                JButton cancelButton = listenedButton("Cancel", silentListener(dispose));
                 buttonPanel.add(cancelButton);
                 platform.makeButtonsSegmented(addButton, cancelButton);
                 JPanel statsPanel = JPanel(GridLayout(0, 4));

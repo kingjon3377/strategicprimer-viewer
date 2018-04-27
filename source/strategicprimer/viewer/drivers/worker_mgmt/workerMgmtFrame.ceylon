@@ -197,7 +197,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
         newUnitFrame.addNewUnitListener(treeModel);
         Integer keyMask = platform.shortcutMask;
         createHotKey(tree, "openUnits",
-                    (ActionEvent event) => tree.requestFocusInWindow(),
+                    (ActionEvent event) => tree.requestFocusInWindow(), // can't use silentListener() because requestFocusInWindow() is overloaded
             JComponent.whenInFocusedWindow,
             KeyStroke.getKeyStroke(KeyEvent.vkU, keyMask));
         FormattedLabel playerLabel = FormattedLabel("Units belonging to %s: (%sU)",

@@ -41,6 +41,9 @@ import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     ProxyUnit
 }
+import lovelace.util.common {
+	silentListener
+}
 "A panel for the user to enter a unit's orders or read a unit's results."
 JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel(
         Integer currentTurn, variable Player currentPlayer,
@@ -100,10 +103,8 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
         }
     }
     if (exists ordersConsumer) {
-        JButton applyButton = listenedButton("Apply",
-                    (ActionEvent event) => retval.apply());
-        JButton revertButton = listenedButton("Revert",
-                    (ActionEvent event) => retval.revert());
+        JButton applyButton = listenedButton("Apply", silentListener(retval.apply));
+        JButton revertButton = listenedButton("Revert", silentListener(retval.revert));
         platform.makeButtonsSegmented(applyButton, revertButton);
         JPanel buttonPanel = (platform.systemIsMac) then
         centeredHorizontalBox(revertButton, applyButton)
