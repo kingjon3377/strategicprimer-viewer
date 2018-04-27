@@ -271,16 +271,7 @@ shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
         ResourcePile combined = ResourcePile(top.id, top.kind,
             top.contents, Quantity(list
                 .map(ResourcePile.quantity).map(Quantity.number)
-                    .map((num) {
-                assert (is Decimal|Integer|Float|Whole num);
-                switch (num)
-                case (is Decimal) {
-                    return num;
-                }
-                case (is Integer|Float|Whole) {
-                    return decimalNumber(num);
-                }
-            }).fold(decimalNumber(0))(plus),
+                    .map(decimalize).fold(decimalNumber(0))(plus),
             top.quantity.units));
             combined.created = top.created;
             return combined;
