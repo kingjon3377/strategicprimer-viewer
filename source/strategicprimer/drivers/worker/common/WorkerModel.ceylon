@@ -111,7 +111,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
 //                        (point) => getUnitsImpl(indivMap.fixtures[point], player)));
                         (point) => getUnitsImpl(indivMap.fixtures.get(point), player)));
             MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
-                    naturalOrderTreeMap<Integer, IUnit&ProxyFor<IUnit>>({});
+                    naturalOrderTreeMap<Integer, IUnit&ProxyFor<IUnit>>([]);
             for (unit in temp) {
                 Integer key = unit.id;
                 ProxyFor<IUnit> proxy;
