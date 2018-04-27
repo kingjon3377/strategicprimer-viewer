@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    todo
+    todo,
+	silentListener
 }
 import com.apple.eawt {
     Application,
@@ -28,25 +29,27 @@ import lovelace.util.jvm {
 "A simple menu for utility drivers that don't need the full complement of menus that other
  apps have."
 todo("OTOH, they should probably use an almost-fully-disabled SPMenu, for consistency.")
-suppressWarnings("expressionTypeNothing")
 shared class UtilityMenu(SPFrame parent) extends JMenuBar() {
-    void aboutHandler(ActionEvent event) =>
+    void aboutHandler(ActionEvent event) => // TODO: Make these static methods?
             aboutDialog(parent, parent.windowName).setVisible(true);
+    void macAboutHandler(AppEvent.AboutEvent event) {
+        Object source = WindowList.getWindows(true, false).iterable.coalesced.last else event;
+        aboutHandler(ActionEvent(source, ActionEvent.actionFirst,
+            "About"));
+    }
+    suppressWarnings("expressionTypeNothing")
+    void quit() => process.exit(0);
     JMenu menu = JMenu("File");
     menu.add(createMenuItem("Close", KeyEvent.vkW, "Close this window",
                 parent.dispose, createAccelerator(KeyEvent.vkW)));
     if (platform.systemIsMac) {
-        Application.application.setAboutHandler((AppEvent.AboutEvent event) {
-            Object source = WindowList.getWindows(true, false).iterable.coalesced.last else event;
-            aboutHandler(ActionEvent(source, ActionEvent.actionFirst,
-                "About"));
-        });
+        Application.application.setAboutHandler(macAboutHandler);
     } else {
         menu.add(createMenuItem("About", KeyEvent.vkB, "Show development credits",
             aboutHandler, createAccelerator(KeyEvent.vkB)));
         menu.addSeparator();
         menu.add(createMenuItem("Quit", KeyEvent.vkQ, "Quit the application",
-                    (ActionEvent event) => process.exit(0), createAccelerator(KeyEvent.vkQ)));
+                    silentListener(quit), createAccelerator(KeyEvent.vkQ)));
     }
     add(menu);
     add(WindowMenu(parent));
