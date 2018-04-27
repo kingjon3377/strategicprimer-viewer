@@ -360,8 +360,7 @@ shared class FileChooser {
             log.trace("FileChooser: The AWT or Swing chooser returned");
             if (is JFileChooser chooser) {
                 if (status == JFileChooser.approveOption) {
-                    value retval = chooser.selectedFiles.iterable.coalesced
-                        .map(fileToPath).sequence();// TODO: Use collect(), here and elsewhere
+                    value retval = chooser.selectedFiles.iterable.coalesced.collect(fileToPath);
                     if (nonempty retval) {
                         log.trace("About to return the file(s) the user chose via Swing");
                         return retval;
@@ -372,8 +371,7 @@ shared class FileChooser {
                     log.info("Chooser function returned ``status``");
                 }
             } else {
-                value retval = chooser.files.iterable.coalesced
-                    .map(fileToPath).sequence();
+                value retval = chooser.files.iterable.coalesced.collect(fileToPath);
                 if (nonempty retval) {
                     log.trace("About to return the file(s) the user chose via AWT");
                     return retval;
