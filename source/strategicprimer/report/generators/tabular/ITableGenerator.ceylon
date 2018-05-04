@@ -55,11 +55,14 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             comparePairs));
         DefaultTableModel retval = DefaultTableModel(
             createJavaStringArray(headerRow), 0);
+        variable Integer count = 0;
         for ([num, [loc, item]] in values) {
             for (row in produce(fixtures, item, num, loc, parentMap)) {
                 retval.addRow(createJavaStringArray(row));
+                count++;
             }
         }
+        log.trace("Added ``count`` rows in ``tableName``");
         fixtures.coalesce();
         return retval;
     }
