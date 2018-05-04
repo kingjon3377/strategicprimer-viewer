@@ -15,15 +15,26 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
+import java.lang {
+	synchronized
+}
 
 """A driver to help debug "exploration tables", which were the second "exploration
    results" framework I implemented."""
 service(`interface ISPDriver`)
 shared class TableDebugger() satisfies SimpleCLIDriver {
-    ExplorationRunner runner = ExplorationRunner();
-    "Table debugger requires a tables directory"
-    assert (is Directory directory = parsePath("tables").resource);
-    loadAllTables(directory, runner);
+	ExplorationRunner runner = ExplorationRunner();
+	variable Boolean initialized = false;
+	synchronized void init() {
+		if (initialized) {
+			return;
+		} else {
+			initialized = true;
+		}
+	    "Table debugger requires a tables directory"
+	    assert (is Directory directory = parsePath("tables").resource);
+	    loadAllTables(directory, runner);
+	}
     shared actual IDriverUsage usage = DriverUsage(false, ["-T", "--table-debug"],
         ParamCount.none, "Debug old-model encounter tables",
         "See whether old-model encounter tables refer to a nonexistent table");
@@ -66,9 +77,10 @@ shared class TableDebugger() satisfies SimpleCLIDriver {
         }
     }
     shared actual void startDriverNoArgs(ICLIHelper cli, SPOptions options) {
-        runner.verboseGlobalRecursiveCheck((String line) => cli.println(line));
+        init();
+        runner.verboseGlobalRecursiveCheck((String line) => cli.println(line)); // TODO: lambda could be method reference, I think
         EncounterTable mainTable = runner.getTable("main");
         debugSingleTable("", "", mainTable, "main",
-                    (string) => cli.println(string), []);
+                    (string) => cli.println(string), []); // TODO: lambda could be method reference, I think
     }
 }
