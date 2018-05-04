@@ -40,7 +40,8 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    SPOptions
+    SPOptions,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -62,7 +63,8 @@ import ceylon.logging {
 Logger log = logger(`module strategicprimer.drivers.generators`);
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
-shared object statGeneratingCLI satisfies SimpleCLIDriver {
+service(`interface ISPDriver`)
+shared class StatGeneratingCLI() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-t", "--stats"];

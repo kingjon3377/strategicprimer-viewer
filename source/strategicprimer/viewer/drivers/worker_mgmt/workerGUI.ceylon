@@ -24,7 +24,8 @@ import strategicprimer.drivers.common {
     SPOptions,
     IDriverModel,
     SimpleDriver,
-    DriverFailedException
+    DriverFailedException,
+	ISPDriver
 }
 import java.nio.file {
     JPath=Path
@@ -42,7 +43,8 @@ import lovelace.util.common {
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to start the worker management GUI."
-shared object workerGUI satisfies SimpleDriver {
+service(`interface ISPDriver`)
+shared class WorkerGUI() satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
         invocations = ["-w", "--worker"];

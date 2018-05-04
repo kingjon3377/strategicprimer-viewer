@@ -33,7 +33,8 @@ import strategicprimer.drivers.common {
     SPOptions,
     ParamCount,
     IDriverUsage,
-    DriverUsage
+    DriverUsage,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -54,7 +55,8 @@ import lovelace.util.jvm {
 }
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""
-object expansionDriver satisfies SimpleCLIDriver {
+service(`interface ISPDriver`)
+shared class ExpansionDriver() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-n", "--expand"];
@@ -136,7 +138,7 @@ object expansionDriver satisfies SimpleCLIDriver {
 }
 "An interface for map-populating passes to implement. Create an object satisfying this
  interface, and assign a reference to it to the designated field in
- [[mapPopulatorDriver]], and run the driver."
+ [[MapPopulatorDriver]], and run the driver."
 interface MapPopulator {
     "Whether a point is suitable for the kind of fixture we're creating."
     shared formal Boolean isSuitable(IMapNG map, Point location);
@@ -163,7 +165,8 @@ object sampleMapPopulator satisfies MapPopulator {
 }
 """A driver to add some kind of fixture to suitable tiles throughout the map. Customize
    the [[populator]] field before each use."""
-object mapPopulatorDriver satisfies SimpleCLIDriver {
+service(`interface ISPDriver`)
+shared class MapPopulatorDriver() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-l", "--populate"];

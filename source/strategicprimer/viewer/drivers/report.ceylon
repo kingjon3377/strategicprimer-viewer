@@ -23,7 +23,8 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     SPOptions,
     DriverUsage,
-    DriverFailedException
+    DriverFailedException,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -121,7 +122,8 @@ object suffixHelper {
 	}
 }
 "A driver to produce a report of the contents of a map."
-object reportCLI satisfies SimpleDriver {
+service(`interface ISPDriver`)
+shared class ReportCLI() satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-m", "--report"];
@@ -249,7 +251,8 @@ object reportCLI satisfies SimpleDriver {
     shared actual {JPath*} askUserForFiles() => [];
 }
 "A driver to show tabular reports of the contents of a player's map in a GUI."
-object tabularReportGUI satisfies SimpleDriver {
+service(`interface ISPDriver`)
+shared class TabularReportGUI() satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage(true, ["-b", "--tabular"],
         ParamCount.one, "Tabular Report Viewer",
         "Show the contents of a map in tabular form");
@@ -279,7 +282,8 @@ object tabularReportGUI satisfies SimpleDriver {
     }
 }
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
-object tabularReportCLI satisfies SimpleDriver {
+service(`interface ISPDriver`)
+shared class TabularReportCLI() satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
 	        graphical = false;
 	        invocations = ["-b", "--tabular"];

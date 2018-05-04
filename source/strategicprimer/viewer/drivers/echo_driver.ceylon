@@ -39,7 +39,8 @@ import strategicprimer.drivers.common {
     SimpleCLIDriver,
     SPOptions,
     DriverUsage,
-    IDriverUsage
+    IDriverUsage,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -50,7 +51,8 @@ import ceylon.file {
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated
    syntax. (Because of that usage, warnings are disabled.)"""
-object echoDriver satisfies UtilityDriver {
+service(`interface ISPDriver`)
+shared class EchoDriver() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-e", "--echo"], ParamCount.two,
         "Read, then write a map.", "Read and write a map, correcting deprecated syntax.",
         "input.xml", "output.xml", "--current-turn=NN");
@@ -112,7 +114,8 @@ object echoDriver satisfies UtilityDriver {
     }
 }
 "A driver to fix ID mismatches between forests and Ground in the main and player maps."
-object forestFixerDriver satisfies SimpleCLIDriver {
+service(`interface ISPDriver`)
+shared class ForestFixerDriver() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-f", "--fix-forest"],
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map");

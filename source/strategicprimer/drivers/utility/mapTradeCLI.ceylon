@@ -7,7 +7,8 @@ import strategicprimer.drivers.common {
 	IDriverModel,
 	IMultiMapModel,
 	FixtureMatcher,
-	simpleMatcher
+	simpleMatcher,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
 	ICLIHelper
@@ -78,7 +79,8 @@ import lovelace.util.common {
 	matchingValue
 }
 "An app to copy selected contents from one map to another."
-shared object mapTradeCLI satisfies SimpleCLIDriver {
+service(`interface ISPDriver`)
+shared class MapTradeCLI() satisfies SimpleCLIDriver {
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
 		"Trade maps", "Copy contents from one map to another.");
 	FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,

@@ -49,7 +49,7 @@ import strategicprimer.model.map.fixtures.towns {
 	TownStatus
 }
 
-"The logic split out of [[explorationCLI]]"
+"The logic split out of [[ExplorationCLI]]"
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         satisfies MovementCostSource {
     HuntingModel huntingModel = HuntingModel(model.map);
@@ -110,7 +110,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     }
     "Ask the user for directions the unit should move until it runs out of MP or the user
       decides to quit."
-    todo("Inline back into [[explorationCLI]]?")
+    todo("Inline back into [[ExplorationCLI]]?")
     shared void moveUntilDone() {
         if (exists mover = model.selectedUnit) {
             cli.println("Details of the unit:");

@@ -59,7 +59,7 @@ import strategicprimer.model.xmlio {
     SPFormatException
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    viewerGUI,
+    ViewerGUI,
     ViewerModel
 }
 import strategicprimer.drivers.common {
@@ -186,7 +186,7 @@ shared class IOHandler
             });
         }
         case ("new") {
-            viewerGUI.startDriverOnModel(cli, options, ViewerModel(SPMapNG(
+            ViewerGUI().startDriverOnModel(cli, options, ViewerModel(SPMapNG(
                     mapModel.mapDimensions, PlayerCollection(), mapModel.map.currentTurn),
                 null));
         }
@@ -228,13 +228,13 @@ shared class IOHandler
             }
         }
         case ("open in map viewer") {
-            viewerGUI.startDriverOnModel(cli, options,
+            ViewerGUI().startDriverOnModel(cli, options,
                 ViewerModel.copyConstructor(mapModel));
         }
         case ("open secondary map in map viewer") {
             if (is IMultiMapModel mapModel,
                     exists mapPair = mapModel.subordinateMaps.first) {
-                viewerGUI.startDriverOnModel(cli, options, ViewerModel.fromPair(mapPair));
+                ViewerGUI().startDriverOnModel(cli, options, ViewerModel.fromPair(mapPair));
             }
         }
         else {

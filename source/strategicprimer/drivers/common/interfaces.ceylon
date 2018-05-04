@@ -452,6 +452,7 @@ shared interface IDriverUsage {
     """Options this driver supports. (To show the user, so "=NN" to mean a numeric option
        is reasonable."""
     shared formal {String*} supportedOptions;
+    // TODO: For service-discovery transition, add Boolean includeInList(Boolean gui)
 }
 shared class DriverUsage(
     "Whether this driver is graphical or not."

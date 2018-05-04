@@ -14,7 +14,8 @@ import strategicprimer.drivers.common {
     IDriverModel,
     SimpleDriver,
     DriverFailedException,
-    PlayerChangeListener
+    PlayerChangeListener,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -39,7 +40,8 @@ import lovelace.util.common {
 	silentListener
 }
 "The worker-advancement GUI driver."
-shared object advancementGUI satisfies SimpleDriver {
+service(`interface ISPDriver`)
+shared class AdvancementGUI() satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
         invocations = ["-a", "--adv"];

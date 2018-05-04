@@ -5,7 +5,8 @@ import strategicprimer.drivers.common {
     ParamCount,
     SPOptions,
     IDriverModel,
-    IMultiMapModel
+    IMultiMapModel,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -92,7 +93,8 @@ class LazyInit<Wrapped>(Wrapped() generator) {
     }
 }
 "A driver to let the user enter or generate 'stats' for towns."
-shared object townGeneratingCLI satisfies SimpleCLIDriver {
+service(`interface ISPDriver`)
+shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-o", "--town"];

@@ -27,7 +27,8 @@ import strategicprimer.drivers.common {
 	SimpleCLIDriver,
 	DriverUsage,
 	IDriverModel,
-	IMultiMapModel
+	IMultiMapModel,
+	ISPDriver
 }
 import strategicprimer.model.map.fixtures {
 	Ground,
@@ -83,7 +84,8 @@ import strategicprimer.model.map.fixtures.resources {
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver for 'querying' the driver model about various things."
-shared object queryCLI satisfies SimpleCLIDriver {
+service(`interface ISPDriver`)
+shared class QueryCLI() satisfies SimpleCLIDriver {
 	"How many hours we assume a working day is for a hunter or such."
 	Integer hunterHours = 10;
 	"How many encounters per hour for a hunter or such."
@@ -472,7 +474,7 @@ shared object queryCLI satisfies SimpleCLIDriver {
 			"fish"->(()=>fish(model, huntModel, cli.inputPoint("Location to fish? "), cli, hunterHours * 60)),
 			"gather"->(()=>gather(model, huntModel, cli.inputPoint("Location to gather? "), cli, hunterHours * 60)),
 			"herd"->(()=>herd(model, cli, huntModel)),
-			"trap"->(()=>trappingCLI.startDriverOnModel(cli, options, model)),
+			"trap"->(()=>TrappingCLI().startDriverOnModel(cli, options, model)),
 			"distance"->(()=>printDistance(model.map, cli)),
 			"count"->(()=>countWorkers(model.map, cli, *model.map.players)),
 			"unexplored"->(() {

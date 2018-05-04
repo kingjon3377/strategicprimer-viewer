@@ -21,7 +21,8 @@ import strategicprimer.drivers.common {
     ParamCount,
 	UtilityDriver,
 	IncorrectUsageException,
-	FixtureMatcher
+	FixtureMatcher,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -62,7 +63,8 @@ class Accumulator() {
     shared void add(Integer addend) { accumulatedValue = accumulatedValue + addend; }
 }
 "A driver to compare the performance of TileDrawHelpers."
-shared object drawHelperComparator satisfies UtilityDriver {
+service(`interface ISPDriver`)
+shared class DrawHelperComparator() satisfies UtilityDriver {
 	"The first test: all in one place."
 	Integer first(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
 		BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);

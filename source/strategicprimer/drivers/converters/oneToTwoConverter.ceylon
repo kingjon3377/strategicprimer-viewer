@@ -31,13 +31,15 @@ import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
     IDriverUsage,
-    SimpleDriver
+    SimpleDriver,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 "A class to convert a version-1 map to a version-2 map with greater resolution."
-object oneToTwoConverter satisfies SimpleDriver {
+service(`interface ISPDriver`)
+shared class OneToTwoConverter() satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-12", "--one-to-two"];

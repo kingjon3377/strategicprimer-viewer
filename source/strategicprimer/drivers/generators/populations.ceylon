@@ -4,7 +4,8 @@ import strategicprimer.drivers.common {
 	DriverUsage,
 	ParamCount,
 	SPOptions,
-	IDriverModel
+	IDriverModel,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
 	ICLIHelper
@@ -56,7 +57,8 @@ import lovelace.util.jvm {
 }
 
 "A driver to let the user generate animal and shrub populations, meadow and grove sizes, and forest acreages."
-shared object populationGeneratingCLI satisfies SimpleCLIDriver {
+service(`interface ISPDriver`)
+shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	shared actual IDriverUsage usage = DriverUsage {
 		graphical = false;
 		invocations = ["--populations"];

@@ -21,7 +21,8 @@ import strategicprimer.drivers.common {
     ParamCount,
     UtilityDriver,
     IDriverUsage,
-    SPOptions
+    SPOptions,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -41,7 +42,8 @@ import ceylon.file {
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.converters`);
 "A driver to convert maps: at present, halving their resolution."
-class ConverterDriver(
+service(`interface ISPDriver`)
+shared class ConverterDriver(
         """Set to true when the provided [[ICLIHelper]] is connected to a graphical window
            instead of standard output."""
         Boolean gui = false) satisfies UtilityDriver {

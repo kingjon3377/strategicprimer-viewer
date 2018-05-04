@@ -9,7 +9,8 @@ import strategicprimer.drivers.common {
     DriverUsage,
     SPOptions,
     SimpleCLIDriver,
-    ParamCount
+    ParamCount,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -17,7 +18,8 @@ import strategicprimer.drivers.common.cli {
 
 """A driver to help debug "exploration tables", which were the second "exploration
    results" framework I implemented."""
-object tableDebugger satisfies SimpleCLIDriver {
+service(`interface ISPDriver`)
+shared class TableDebugger() satisfies SimpleCLIDriver {
     ExplorationRunner runner = ExplorationRunner();
     "Table debugger requires a tables directory"
     assert (is Directory directory = parsePath("tables").resource);

@@ -54,7 +54,8 @@ import strategicprimer.drivers.common {
     ParamCount,
     IDriverUsage,
     IDriverModel,
-    DriverFailedException
+    DriverFailedException,
+	ISPDriver
 }
 import java.io {
     IOException
@@ -70,7 +71,8 @@ import strategicprimer.model.map.fixtures.terrain {
 }
 """A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
    takes up on disk and the memory and CPU it takes to deal with it)."""
-shared object duplicateFixtureRemoverCLI satisfies SimpleCLIDriver {
+service(`interface ISPDriver`)
+shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-u", "--duplicates"];

@@ -7,7 +7,8 @@ import strategicprimer.drivers.common {
 	DriverUsage,
 	ParamCount,
 	IDriverModel,
-	IDriverUsage
+	IDriverUsage,
+	ISPDriver
 }
 import strategicprimer.model.map {
 	HasName,
@@ -58,7 +59,8 @@ class QueueWrapper<Type>(variable {Type*} wrapped) satisfies Queue<Type> {
 }
 "A driver to run a player's trapping activity."
 todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
-shared object trappingCLI satisfies SimpleDriver {
+service(`interface ISPDriver`)
+shared class TrappingCLI() satisfies SimpleDriver {
 	Integer minutesPerHour = 60;
 	TrapperCommand[] commands = sort(`TrapperCommand`.caseValues);
 	shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"], ParamCount.one,

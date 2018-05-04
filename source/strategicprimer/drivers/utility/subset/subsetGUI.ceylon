@@ -38,8 +38,9 @@ import strategicprimer.drivers.common.cli {
 }
 "A driver to check whether player maps are subsets of the main map and display the
  results graphically."
-todo("Unify with [[subsetCLI]]")
-shared object subsetGUI satisfies ISPDriver {
+todo("Unify with [[SubsetCLI]]")
+service(`interface ISPDriver`)
+shared class SubsetGUI() satisfies ISPDriver {
     shared actual IDriverUsage usage = DriverUsage(true, ["-s", "--subset"],
         ParamCount.atLeastTwo, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that

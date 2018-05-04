@@ -28,14 +28,16 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    SPOptions
+    SPOptions,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 
 "A driver for comparing map readers."
-shared object readerComparator satisfies UtilityDriver {
+service(`interface ISPDriver`)
+shared class ReaderComparator() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["--test", "--compare-readers"],
         ParamCount.atLeastOne, "Test map readers",
         "Test map-reading implementations by comparing their results on the same file.");

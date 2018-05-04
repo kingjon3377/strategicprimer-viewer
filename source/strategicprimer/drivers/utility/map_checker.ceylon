@@ -29,7 +29,8 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    SPOptions
+    SPOptions,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -78,7 +79,8 @@ Logger log = logger(`module strategicprimer.drivers.utility`);
 // Left outside mapCheckerCLI because it's also used in the todoFixerCLI.
 {String+} landRaces = [ "Danan", "dwarf", "elf", "half-elf", "gnome", "human" ];
 "A driver to check every map file in a list for errors."
-shared object mapCheckerCLI satisfies UtilityDriver {
+service(`interface ISPDriver`)
+shared class MapCheckerCLI() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-k", "--check"],
         ParamCount.atLeastOne, "Check map for errors",
         "Check a map file for errors, deprecated syntax, etc.");
@@ -214,6 +216,7 @@ shared object mapCheckerCLI satisfies UtilityDriver {
 "The map-checker GUI window."
 class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
         Dimension(640, 320), true, noop, "Map Checker") {
+	MapCheckerCLI mapCheckerCLI = MapCheckerCLI();
     StreamingLabel label = StreamingLabel();
     void printParagraph(String paragraph,
             LabelTextColor color = LabelTextColor.white) {
@@ -225,20 +228,21 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
     contentPane = JScrollPane(label);
     contentPane.background = Color.black;
     shared void check(JPath filename) {
-        mapCheckerCLI.check(filename, (text) {
+        mapCheckerCLI.check(filename, (text) { // TODO: Convert lambda to class method
             if (text.startsWith("No errors")) {
                 printParagraph(text, LabelTextColor.green);
             } else {
                 printParagraph(text);
             }
-        }, (text) => printParagraph(text, LabelTextColor.red),
+        }, (text) => printParagraph(text, LabelTextColor.red), // TODO: convert lambda to class method
             warningLevels.custom(customPrinter));
     }
     shared actual void acceptDroppedFile(JPath file) => check(file);
 }
 "A driver to check every map file in a list for errors and report the results in a
  window."
-shared object mapCheckerGUI satisfies UtilityDriver {
+service(`interface ISPDriver`)
+shared class MapCheckerGUI() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(true, ["-k", "--check"],
         ParamCount.atLeastOne, "Check map for errors",
         "Check a map file for errors, deprecated syntax, etc.");

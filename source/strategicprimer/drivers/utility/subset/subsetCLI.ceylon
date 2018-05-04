@@ -10,7 +10,8 @@ import strategicprimer.drivers.common {
     SimpleMultiMapModel,
     IMultiMapModel,
     IDriverModel,
-    SimpleDriver
+    SimpleDriver,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -21,7 +22,8 @@ import java.nio.file {
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.utility`);
 "A driver to check whether player maps are subsets of the main map."
-shared object subsetCLI satisfies SimpleDriver {
+service(`interface ISPDriver`)
+shared class SubsetCLI() satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-s", "--subset"],
         ParamCount.atLeastTwo, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that

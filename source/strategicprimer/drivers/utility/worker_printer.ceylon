@@ -4,7 +4,8 @@ import strategicprimer.drivers.common {
 	DriverUsage,
 	ParamCount,
 	SPOptions,
-	IDriverModel
+	IDriverModel,
+	ISPDriver
 }
 import strategicprimer.model.map.fixtures.mobile {
 	IUnit,
@@ -28,7 +29,8 @@ import lovelace.util.common {
 	matchingPredicate
 }
 "A driver to print a mini-report on workers, suitable for inclusion in a player's results."
-shared object workerPrintCLI satisfies SimpleDriver {
+service(`interface ISPDriver`)
+shared class WorkerPrintCLI() satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["--print"];

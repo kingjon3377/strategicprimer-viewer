@@ -18,7 +18,8 @@ import strategicprimer.drivers.common {
     DriverUsage,
     ParamCount,
     SPOptions,
-    IncorrectUsageException
+    IncorrectUsageException,
+	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -26,7 +27,8 @@ import strategicprimer.drivers.common.cli {
 """A driver to create a spreadsheet model of a mine. Its parameters are the name of the
    file to write the CSV to and the value at the top center (as an index into the
    LodeStatus values array).""""
-shared object miningCLI satisfies UtilityDriver {
+service(`interface ISPDriver`)
+shared class MiningCLI() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-i", "--mining"];

@@ -12,7 +12,7 @@ module strategicprimer.drivers.exploration.old "0.4.9016" {
     import ceylon.test ceylonVersion;
     shared import ceylon.file ceylonVersion;
     import ceylon.logging ceylonVersion;
-    import strategicprimer.drivers.common spVersion;
+    shared import strategicprimer.drivers.common spVersion;
     import lovelace.util.common lovelaceUtilsVersion;
     import lovelace.util.jvm lovelaceUtilsVersion;
 }
