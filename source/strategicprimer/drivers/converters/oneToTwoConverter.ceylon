@@ -48,6 +48,8 @@ shared class OneToTwoConverter() satisfies SimpleDriver {
         longDescription = "Convert a map from format version 1 to format version 2";
         firstParamDescription = "mainMap.xml";
         subsequentParamDescription = "playerMap.xml";
+        includeInCLIList = false;
+        includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     "Source for forest and ground types"

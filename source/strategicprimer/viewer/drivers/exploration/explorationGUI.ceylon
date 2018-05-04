@@ -47,6 +47,8 @@ shared class ExplorationGUI() satisfies SimpleDriver {
         shortDescription = "Run exploration.";
         longDescription = "Move a unit around the map, updating the player's map with what
                            it sees.";
+        includeInCLIList = false;
+        includeInGUIList = true;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     suppressWarnings("expressionTypeNothing")

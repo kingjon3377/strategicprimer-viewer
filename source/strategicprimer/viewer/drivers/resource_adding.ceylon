@@ -147,6 +147,8 @@ shared class ResourceAddingCLI() satisfies SimpleCLIDriver {
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Add resources to maps";
         longDescription = "Add resources for players to maps.";
+        includeInCLIList = true;
+        includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     MutableSet<String> resourceKinds = HashSet<String>();
@@ -260,6 +262,8 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Add resources to maps";
         longDescription = "Add resources for players to maps";
+        includeInCLIList = false;
+        includeInGUIList = true;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     "Extends [[ImprovedComboBox]] to keep a running collection of values."

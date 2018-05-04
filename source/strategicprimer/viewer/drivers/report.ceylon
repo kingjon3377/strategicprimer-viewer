@@ -130,6 +130,8 @@ shared class ReportCLI() satisfies SimpleDriver {
         paramsWanted = ParamCount.one;
         shortDescription = "Report Generator";
         longDescription = "Produce HTML report of the contents of a map";
+        includeInCLIList = true;
+        includeInGUIList = false;
         supportedOptionsTemp = [
             ("\\" == operatingSystem.fileSeparator) then
                 "--out=C:\\path\\to\\output.html"
@@ -255,7 +257,7 @@ service(`interface ISPDriver`)
 shared class TabularReportGUI() satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage(true, ["-b", "--tabular"],
         ParamCount.one, "Tabular Report Viewer",
-        "Show the contents of a map in tabular form");
+        "Show the contents of a map in tabular form", false, true);
     suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
@@ -290,6 +292,8 @@ shared class TabularReportCLI() satisfies SimpleDriver {
 	        paramsWanted = ParamCount.atLeastOne;
 	        shortDescription = "Tabular Report Generator";
 	        longDescription = "Produce CSV reports of the contents of a map.";
+	        includeInCLIList = true;
+	        includeInGUIList = false;
 	        supportedOptionsTemp = ["--serve[=8080]"];
     };
     MutableMap<String,Writer> writers = HashMap<String,Writer>();

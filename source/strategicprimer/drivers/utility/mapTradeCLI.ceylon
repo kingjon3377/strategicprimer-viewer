@@ -82,7 +82,7 @@ import lovelace.util.common {
 service(`interface ISPDriver`)
 shared class MapTradeCLI() satisfies SimpleCLIDriver {
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
-		"Trade maps", "Copy contents from one map to another.");
+		"Trade maps", "Copy contents from one map to another.", true, false);
 	FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
 			String description = "``type.declaration.name``s") {
 		return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);

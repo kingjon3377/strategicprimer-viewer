@@ -38,6 +38,8 @@ shared class MiningCLI() satisfies UtilityDriver {
         longDescription = "Create a CSV spreadsheet representing a mine's area";
         firstParamDescription = "output.csv";
         subsequentParamDescription = "status";
+        includeInCLIList = true;
+        includeInGUIList = false;
         supportedOptionsTemp = [ "--seed=NN", "--banded" ];
     };
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,

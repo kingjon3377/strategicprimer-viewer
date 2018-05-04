@@ -44,7 +44,7 @@ shared class SubsetGUI() satisfies ISPDriver {
     shared actual IDriverUsage usage = DriverUsage(true, ["-s", "--subset"],
         ParamCount.atLeastTwo, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
-         it does not contain in the same place.");
+         it does not contain in the same place.", false, true);
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {

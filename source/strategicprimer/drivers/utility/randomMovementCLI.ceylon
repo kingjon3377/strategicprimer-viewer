@@ -28,7 +28,7 @@ import ceylon.random {
 service(`interface ISPDriver`)
 shared class RandomMovementCLI() satisfies SimpleCLIDriver {
 	shared actual IDriverUsage usage = DriverUsage(false, ["-v", "--move"], ParamCount.one,
-		"Move independent units at random", "Move independent units randomly around the map.");
+		"Move independent units at random", "Move independent units randomly around the map.", true, false); // TODO: We'd like a GUI for this, perhaps adding customization or limiting the area or something
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
 		IExplorationModel emodel;
 		if (is IExplorationModel model) {

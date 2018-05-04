@@ -55,7 +55,7 @@ service(`interface ISPDriver`)
 shared class EchoDriver() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-e", "--echo"], ParamCount.two,
         "Read, then write a map.", "Read and write a map, correcting deprecated syntax.",
-        "input.xml", "output.xml", "--current-turn=NN");
+        true, false, "input.xml", "output.xml", "--current-turn=NN");
     """Run the driver: read the map, then write it, correcting deprecated syntax and
        forest and Ground IDs."""
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
@@ -118,7 +118,7 @@ service(`interface ISPDriver`)
 shared class ForestFixerDriver() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-f", "--fix-forest"],
         ParamCount.atLeastTwo, "Fix forest IDs",
-        "Make sure that forest IDs in submaps match the main map");
+        "Make sure that forest IDs in submaps match the main map", false, false);
     {Forest*} extractForests(IMapNG map, Point location) =>
 //            map.fixtures[location].narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed
             map.fixtures.get(location).narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed

@@ -37,6 +37,8 @@ shared class WorkerPrintCLI() satisfies SimpleDriver {
         paramsWanted = ParamCount.one;
         shortDescription = "Print stats of workers";
         longDescription = "Print stats of workers in a unit in a brief list.";
+        includeInCLIList = true;
+        includeInGUIList = false;
     };
     String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
     void printWorkers(IUnit unit, ICLIHelper cli) {

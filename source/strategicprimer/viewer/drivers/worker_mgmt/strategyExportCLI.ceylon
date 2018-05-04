@@ -30,6 +30,8 @@ shared class StrategyExportCLI() satisfies SimpleDriver {
         paramsWanted = ParamCount.one;
         shortDescription = "Export a proto-strategy";
         longDescription = "Create a proto-strategy using orders stored in the map";
+        includeInCLIList = true;
+        includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN", "--print-empty",
             "--export=filename.txt", "--include-unleveled-jobs", "--summarize-large-units" ];
     };

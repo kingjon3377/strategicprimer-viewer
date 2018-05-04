@@ -102,6 +102,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Enter or generate stats and contents for towns and villages";
         longDescription = "Enter or generate stats and contents for towns and villages";
+        includeInCLIList = true;
+        includeInGUIList = false;
     };
     alias ModifiableTown=>AbstractTown|Village;
     LazyInit<Map<String,{[Quantity, String, String]*}>> consumption = LazyInit(() {

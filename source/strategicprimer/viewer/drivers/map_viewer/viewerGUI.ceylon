@@ -54,6 +54,8 @@ shared class ViewerGUI() satisfies SimpleDriver {
         paramsWanted = ParamCount.one;
         shortDescription = "Map viewer";
         longDescription = "Look at the map visually. This is probably the app you want.";
+        includeInCLIList = false;
+        includeInGUIList = true;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     suppressWarnings("expressionTypeNothing")

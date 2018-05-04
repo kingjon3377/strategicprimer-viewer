@@ -50,6 +50,8 @@ shared class AdvancementGUI() satisfies SimpleDriver {
         longDescription = """View a player's units, the workers in those units, each
                              worker's Jobs, and his or her level in each Skill in each
                              Job.""";
+        includeInCLIList = false;
+        includeInGUIList = true;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     suppressWarnings("expressionTypeNothing")

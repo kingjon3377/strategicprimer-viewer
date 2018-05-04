@@ -229,10 +229,10 @@ object appChooserState {
 	    }
 	}
 }
-class AppStarter() satisfies ISPDriver {
+class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDriver implementation for this?
 	shared actual IDriverUsage usage = DriverUsage(true, ["-p", "--app-starter"],
 		ParamCount.anyNumber, "App Chooser",
-		"Let the user choose an app to start, or handle options.");
+		"Let the user choose an app to start, or handle options.", false, false);
 	[Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache = appChooserState.createCache();
 	void startCatchingErrors(ISPDriver driver, ICLIHelper cli, SPOptions options, String* args) {
 		try {
@@ -252,6 +252,7 @@ class AppStarter() satisfies ISPDriver {
 			log.error(except.message, except);
 		}
 	}
+	Boolean includeInCLIList(ISPDriver driver) => driver.usage.includeInList(false);
 	shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
 		String* args) {
 		//            log.info("Inside appStarter.startDriver()");
@@ -339,8 +340,9 @@ class AppStarter() satisfies ISPDriver {
 						"Strategic Primer Assistive Programs", except.message));
 				}
 			} else {
-				ISPDriver[] driversList = driverCache.first.items.distinct.sequence();
-				value choice = cli.chooseFromList(driversList,
+				ISPDriver[] driversList =
+						driverCache.first.items.distinct.filter(includeInCLIList).sequence();
+				value choice = cli.chooseFromList(driversList, // TODO: inline into if statement
 					"CLI apps available:", "No applications available",
 					"App to start: ", true);
 				if (exists chosenDriver = choice.item) {

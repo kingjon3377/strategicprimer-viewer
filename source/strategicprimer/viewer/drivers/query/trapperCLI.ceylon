@@ -65,7 +65,7 @@ shared class TrappingCLI() satisfies SimpleDriver {
 	Integer minutesPerHour = 60;
 	TrapperCommand[] commands = sort(`TrapperCommand`.caseValues);
 	shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"], ParamCount.one,
-		"Run a player's trapping", "Determine the results a player's trapper finds.");
+		"Run a player's trapping", "Determine the results a player's trapper finds.", true, false);
 	String inHours(Integer minutes) {
 		if (minutes < minutesPerHour) {
 			return "``minutes`` minutes";

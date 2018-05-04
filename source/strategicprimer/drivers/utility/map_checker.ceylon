@@ -83,7 +83,7 @@ service(`interface ISPDriver`)
 shared class MapCheckerCLI() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-k", "--check"],
         ParamCount.atLeastOne, "Check map for errors",
-        "Check a map file for errors, deprecated syntax, etc.");
+        "Check a map file for errors, deprecated syntax, etc.", true, false);
     """An interface for checks of a map's *contents* that we don't want the XML-*reading*
        code to do."""
     alias Checker=>Anything(TileType, Point, IFixture, Warning);
@@ -248,7 +248,7 @@ service(`interface ISPDriver`)
 shared class MapCheckerGUI() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(true, ["-k", "--check"],
         ParamCount.atLeastOne, "Check map for errors",
-        "Check a map file for errors, deprecated syntax, etc.");
+        "Check a map file for errors, deprecated syntax, etc.", false, true);
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         MapCheckerFrame window = MapCheckerFrame();

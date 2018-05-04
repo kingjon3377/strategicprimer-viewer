@@ -452,7 +452,8 @@ shared interface IDriverUsage {
     """Options this driver supports. (To show the user, so "=NN" to mean a numeric option
        is reasonable."""
     shared formal {String*} supportedOptions;
-    // TODO: For service-discovery transition, add Boolean includeInList(Boolean gui)
+    "Whether this driver should be included in the list presented for the user to choose from."
+    shared formal Boolean includeInList("If true, this is a GUI list; if false, a CLI list" Boolean gui);
 }
 shared class DriverUsage(
     "Whether this driver is graphical or not."
@@ -466,6 +467,10 @@ shared class DriverUsage(
     shared actual String shortDescription,
     "A longer description of the driver"
     shared actual String longDescription,
+    "Whether to include in a CLI list for the user to choose from."
+    Boolean includeInCLIList,
+    "Whether to include in a GUI list for the user to choose from."
+    Boolean includeInGUIList,
     "A description of the first (non-option) parameter, for use in a usage statement."
     shared actual String firstParamDescription = "filename.xml",
     "A description of a later parameter, for use in a usage statement. (We assume that all
@@ -476,4 +481,5 @@ shared class DriverUsage(
 ) satisfies IDriverUsage {
     shared actual {String*} supportedOptions =
             supportedOptionsTemp;
+    shared actual Boolean includeInList(Boolean gui) => (gui) then includeInGUIList else includeInCLIList;
 }

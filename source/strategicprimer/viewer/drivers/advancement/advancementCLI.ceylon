@@ -308,6 +308,8 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
         longDescription = """View a player's units, the workers in those units, each
                              worker's Jobs, and his or her level in each Skill in each
                              Job.""";
+        includeInCLIList = true;
+        includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN", "--allow-expert-mentoring" ];
     };
 }

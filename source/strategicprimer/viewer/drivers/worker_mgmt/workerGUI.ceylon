@@ -51,6 +51,8 @@ shared class WorkerGUI() satisfies SimpleDriver {
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Manage a player's workers in units";
         longDescription = "Organize the members of a player's units.";
+        includeInCLIList = false;
+        includeInGUIList = true;
         supportedOptionsTemp = [ "--current-turn=NN", "--print-empty", "--include-unleveled-jobs",
 	        "--summarize-large-units" ];
     };

@@ -65,6 +65,8 @@ shared class ExpansionDriver() satisfies SimpleCLIDriver {
         shortDescription = "Expand a player's map.";
         longDescription = "Ensure a player's map covers all terrain allied villages can
                            see.";
+        includeInCLIList = true;
+        includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
@@ -176,6 +178,8 @@ shared class MapPopulatorDriver() satisfies SimpleCLIDriver {
         shortDescription = "Add missing fixtures to a map";
         longDescription = "Add specified kinds of fixtures to suitable points throughout
                            a map";
+        includeInCLIList = true;
+        includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     "The object that does the heavy lifting of populating the map. This is the one field

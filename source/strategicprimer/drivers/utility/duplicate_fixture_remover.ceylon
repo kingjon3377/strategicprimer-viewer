@@ -81,6 +81,8 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
         shortDescription = "Remove duplicate fixtures";
         longDescription = "Remove duplicate fixtures (identical except ID# and on the
                            same tile) from a map.";
+        includeInCLIList = true;
+        includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     void ifApplicable<Desired, Provided>(Anything(Desired) func)(Provided item) {

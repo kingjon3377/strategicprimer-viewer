@@ -81,7 +81,7 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
     variable Integer count = -1;
     shared actual IDriverUsage usage = DriverUsage(false, ["-o", "--fix-todos"],
         ParamCount.atLeastOne, "Fix TODOs in maps",
-        "Fix TODOs in unit kinds and aquatic villages with non-aquatic races");
+        "Fix TODOs in unit kinds and aquatic villages with non-aquatic races", false, false);
     "Get the simplified-terrain-model instance covering the map's terrain at the given
      location." // We don't just use TileType because we need mountains and forests in ver-2 maps.
     suppressWarnings("deprecation")

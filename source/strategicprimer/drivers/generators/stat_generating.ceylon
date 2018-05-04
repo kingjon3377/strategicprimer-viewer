@@ -73,6 +73,8 @@ shared class StatGeneratingCLI() satisfies SimpleCLIDriver {
         shortDescription = "Enter worker stats or generate new workers.";
         longDescription = "Enter stats for existing workers or generate new workers
                            randomly.";
+        includeInCLIList = true;
+        includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     "The units in the given collection that have workers without stats."

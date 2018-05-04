@@ -55,6 +55,8 @@ shared class ConverterDriver(
         shortDescription = "Convert a map's format";
         longDescription = "Convert a map. At present, this means reducing its
                            resolution.";
+        includeInCLIList = false;
+        includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
     "Run the driver."

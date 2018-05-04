@@ -65,6 +65,8 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 		paramsWanted = ParamCount.one;
 		shortDescription = "Generate animal populations, etc.";
 		longDescription = "Generate animal and shrub populations, meadow and grove sizes, and forest acreages.";
+		includeInCLIList = true;
+		includeInGUIList = false; // TODO: We'd like a GUI equivalent
 	};
 	"Whether the given number is positive."
 	shared Boolean positiveNumber(Number<out Anything> number) => number.positive;

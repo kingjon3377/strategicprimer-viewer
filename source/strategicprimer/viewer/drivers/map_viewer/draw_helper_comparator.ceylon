@@ -236,6 +236,8 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 	        longDescription =
 	            """Test the performance of the TileDrawHelper classes---which do the heavy lifting
 	               of rendering the map in the viewer---using a variety of automated tests.""";
+	        includeInCLIList = true;
+	        includeInGUIList = false;
 	        supportedOptionsTemp = ["--report=out.csv"];
     };
     "Run the tests."

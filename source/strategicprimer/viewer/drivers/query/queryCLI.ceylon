@@ -517,7 +517,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 	}
 	shared actual IDriverUsage usage = DriverUsage(false, ["-q", "--query"], ParamCount.one,
 		"Answer questions about a map.",
-		"Look a tiles on a map. Or run hunting, gathering, or fishing.");
+		"Look a tiles on a map. Or run hunting, gathering, or fishing.", true, false);
 	"Accept and respond to commands."
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
 		IDriverModel model) {
