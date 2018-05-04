@@ -34,7 +34,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
       all fixtures covered in the table from the collection."
     shared default void produceTable(Anything(String) ostream, DelayedRemovalMap<Integer,
 		    [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
-        {[Integer, [Point, T]]*} values = fixtures.narrow<Integer->[Point, T]>().map(Entry.pair)
+        {[Integer, [Point, T]]*} values = fixtures.map(Entry.pair).narrow<[Integer, [Point, T]]>()
             .sort(comparingOn(([Integer, [Point, T]] pair) => pair.rest.first,
             comparePairs));
         writeRow(ostream, headerRow.first, *headerRow.rest);
@@ -50,7 +50,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
      from the collection."
     shared default TableModel produceTableModel(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
-        {[Integer, [Point, T]]*} values = fixtures.narrow<Integer->[Point, T]>().map(Entry.pair)
+        {[Integer, [Point, T]]*} values = fixtures.map(Entry.pair).narrow<[Integer, [Point, T]]>()
                 .sort(comparingOn(([Integer, [Point, T]] pair) => pair.rest.first,
             comparePairs));
         DefaultTableModel retval = DefaultTableModel(
