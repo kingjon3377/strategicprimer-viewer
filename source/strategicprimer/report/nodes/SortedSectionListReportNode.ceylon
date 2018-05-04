@@ -20,8 +20,7 @@ import strategicprimer.report {
  [[resume]].)"
 shared class SortedSectionListReportNode
         extends SectionListReportNode {
-    static JComparator<IReportNode> sorter =
-            JavaComparator((IReportNode x, IReportNode y) => x <=> y);
+    static JComparator<IReportNode> sorter = JavaComparator(increasing<IReportNode>);
     shared new (Integer level, String text)
             extends SectionListReportNode(level, text) {}
     variable Boolean sorting = true;
