@@ -227,14 +227,17 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
     setBackground(Color.black);
     contentPane = JScrollPane(label);
     contentPane.background = Color.black;
+    void outHandler(String text) {
+        if (text.startsWith("No errors")) {
+            printParagraph(text, LabelTextColor.green);
+        } else {
+            printParagraph(text);
+        }
+    }
+    void errHandler(String text) =>
+            printParagraph(text, LabelTextColor.red);
     shared void check(JPath filename) {
-        mapCheckerCLI.check(filename, (text) { // TODO: Convert lambda to class method
-            if (text.startsWith("No errors")) {
-                printParagraph(text, LabelTextColor.green);
-            } else {
-                printParagraph(text);
-            }
-        }, (text) => printParagraph(text, LabelTextColor.red), // TODO: convert lambda to class method
+        mapCheckerCLI.check(filename, outHandler, errHandler,
             warningLevels.custom(customPrinter));
     }
     shared actual void acceptDroppedFile(JPath file) => check(file);
