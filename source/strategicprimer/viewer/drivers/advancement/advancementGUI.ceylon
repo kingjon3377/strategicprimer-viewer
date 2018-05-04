@@ -46,7 +46,7 @@ shared class AdvancementGUI() satisfies SimpleDriver {
         graphical = true;
         invocations = ["-a", "--adv"];
         paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "View a player's workers and manage their advancement";
+        shortDescription = "Worker Skill Advancement";
         longDescription = """View a player's units, the workers in those units, each
                              worker's Jobs, and his or her level in each Skill in each
                              Job.""";
