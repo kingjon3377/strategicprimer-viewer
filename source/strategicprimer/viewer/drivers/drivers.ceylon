@@ -45,18 +45,6 @@ import lovelace.util.jvm {
 	listenedButton
 }
 
-import strategicprimer.viewer.drivers.advancement {
-    AdvancementGUI
-}
-import strategicprimer.viewer.drivers.exploration {
-    ExplorationGUI
-}
-import strategicprimer.viewer.drivers.map_viewer {
-    ViewerGUI
-}
-import strategicprimer.viewer.drivers.worker_mgmt {
-    WorkerGUI
-}
 import strategicprimer.drivers.common {
     IDriverModel,
     ISPDriver,
@@ -391,12 +379,12 @@ suppressWarnings("expressionTypeNothing")
 SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
 	SPFrame frame = SPFrame("SP App Chooser", null, Dimension(220, 110));
-	void buttonHandler(ISPDriver() target) {
+	void buttonHandler(ISPDriver target) {
 		try {
 			if (is IDriverModel finalArg) {
-				target().startDriverOnModel(cli, options, finalArg);
+				target.startDriverOnModel(cli, options, finalArg);
 			} else {
-				target().startDriverOnArguments(cli, options, *finalArg);
+				target.startDriverOnArguments(cli, options, *finalArg);
 			}
 			SwingUtilities.invokeLater(() {
 				frame.setVisible(false);
@@ -421,11 +409,11 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
 			log.error(except.message, except);
 		}
 	}
+	Boolean includeInGUIList(ISPDriver driver) => driver.usage.includeInList(true);
     JPanel buttonPanel = JPanel(GridLayout(0, 1));
-    buttonPanel.add(listenedButton("Map Viewer", (evt) => buttonHandler(ViewerGUI)));
-    buttonPanel.add(listenedButton("Worker Skill Advancement", (evt) => buttonHandler(AdvancementGUI)));
-    buttonPanel.add(listenedButton("Unit Orders and Worker Management", (evt) => buttonHandler(WorkerGUI)));
-    buttonPanel.add(listenedButton("Exploration", (evt) => buttonHandler(ExplorationGUI)));
+    for (driver in `module strategicprimer.viewer`.findServiceProviders(`ISPDriver`).filter(includeInGUIList)) {
+        buttonPanel.add(listenedButton(driver.usage.shortDescription, (evt) => buttonHandler(driver)));
+    }
     frame.contentPane = BorderedPanel.verticalPanel(
         JLabel("Please choose one of the applications below"),
         JScrollPane(buttonPanel), null);
