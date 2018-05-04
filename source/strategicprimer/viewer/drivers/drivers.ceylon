@@ -21,7 +21,8 @@ import ceylon.logging {
 import java.awt {
     GraphicsEnvironment,
     GridLayout,
-    Dimension
+    Dimension,
+	Graphics2D
 }
 import java.io {
     IOException
@@ -35,7 +36,8 @@ import javax.swing {
     SwingUtilities,
     JPanel,
     JScrollPane,
-    JLabel
+    JLabel,
+	JEditorPane
 }
 
 import lovelace.util.jvm {
@@ -83,6 +85,9 @@ import lovelace.util.common {
 import com.vasileff.ceylon.structures {
 	MutableMultimap,
 	ArrayListMultimap
+}
+import java.awt.image {
+	BufferedImage
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -378,7 +383,20 @@ shared void run() {
 suppressWarnings("expressionTypeNothing")
 SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
-	SPFrame frame = SPFrame("SP App Chooser", null, Dimension(220, 110));
+	value tempComponent = JEditorPane();
+	value font = tempComponent.font;
+	assert (is Graphics2D pen = BufferedImage(1, 1, BufferedImage.typeIntRgb).createGraphics());
+	value context = pen.fontRenderContext;
+	variable Integer width = 0;
+	variable Integer height = 10;
+	Boolean includeInGUIList(ISPDriver driver) => driver.usage.includeInList(true);
+	value drivers = `module strategicprimer.viewer`.findServiceProviders(`ISPDriver`).filter(includeInGUIList).sequence();
+	for (driver in drivers) {
+		value dimensions = font.getStringBounds(driver.usage.shortDescription, context);
+		width = Integer.largest(width, dimensions.width.integer);
+		height += dimensions.height.integer;
+	}
+	SPFrame frame = SPFrame("SP App Chooser", null, Dimension(width, height));
 	void buttonHandler(ISPDriver target) {
 		try {
 			if (is IDriverModel finalArg) {
@@ -409,9 +427,8 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
 			log.error(except.message, except);
 		}
 	}
-	Boolean includeInGUIList(ISPDriver driver) => driver.usage.includeInList(true);
     JPanel buttonPanel = JPanel(GridLayout(0, 1));
-    for (driver in `module strategicprimer.viewer`.findServiceProviders(`ISPDriver`).filter(includeInGUIList)) {
+    for (driver in drivers) {
         buttonPanel.add(listenedButton(driver.usage.shortDescription, (evt) => buttonHandler(driver)));
     }
     frame.contentPane = BorderedPanel.verticalPanel(
