@@ -304,12 +304,10 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 						"Strategic Primer Assistive Programs", except.message));
 				}
 			} else {
-				ISPDriver[] driversList =
-						driverCache.first.items.distinct.filter(includeInCLIList).sequence();
-				value choice = cli.chooseFromList(driversList, // TODO: inline into if statement
-					"CLI apps available:", "No applications available",
-					"App to start: ", true);
-				if (exists chosenDriver = choice.item) {
+				if (exists chosenDriver = cli.chooseFromList(
+						driverCache.first.items.distinct.filter(includeInCLIList).sequence(),
+						"CLI apps available:", "No applications available",
+						"App to start: ", true).item) {
 					startCatchingErrors(chosenDriver, cli, options, *others);
 				}
 			}
