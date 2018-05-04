@@ -46,27 +46,16 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.viewer.drivers.advancement {
-    AdvancementCLI,
     AdvancementGUI
 }
 import strategicprimer.viewer.drivers.exploration {
-    ExplorationGUI,
-    ExplorationCLI
+    ExplorationGUI
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    ViewerGUI,
-    DrawHelperComparator
-}
-import strategicprimer.viewer.drivers.mining {
-    MiningCLI
-}
-import strategicprimer.drivers.utility.subset {
-    SubsetCLI,
-    SubsetGUI
+    ViewerGUI
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
-    WorkerGUI,
-    StrategyExportCLI
+    WorkerGUI
 }
 import strategicprimer.drivers.common {
     IDriverModel,
@@ -92,30 +81,12 @@ import com.pump.window {
 import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
-import strategicprimer.drivers.generators {
-    TownGeneratingCLI,
-    StatGeneratingCLI,
-	PopulationGeneratingCLI
-}
 import strategicprimer.drivers.gui.common {
     SPFrame,
     UtilityMenu
 }
-import strategicprimer.drivers.utility {
-    MapCheckerCLI,
-    ReaderComparator,
-    MapCheckerGUI,
-    DuplicateFixtureRemoverCLI,
-	RandomMovementCLI,
-	MapTradeCLI,
-	WorkerPrintCLI
-}
 import strategicprimer.model.xmlio {
     SPFormatException
-}
-import strategicprimer.viewer.drivers.query {
-	QueryCLI,
-	TrappingCLI
 }
 import lovelace.util.common {
 	todo,
