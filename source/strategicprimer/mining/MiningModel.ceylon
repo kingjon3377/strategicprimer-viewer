@@ -22,6 +22,7 @@ class MineKind of normal | banded {
 }
 "A class to model the distribution of a mineral to be mined. Note that the constructor
  can be *very* computationally expensive!"
+native("jvm") // TODO: Change from using Point to using [Integer, Integer]
 class MiningModel(initial, seed, kind) {
     "The status to give the mine's starting point."
     LodeStatus initial;

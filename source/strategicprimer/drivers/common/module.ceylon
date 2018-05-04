@@ -3,7 +3,7 @@
  one level up from `strategicprimer.model`."
 license("GPL-3")
 // TODO: add tagged() annotations throughout
-native("jvm")
+native("jvm") // TODO: Make only the parts actually using JVM-specific idioms "native".
 module strategicprimer.drivers.common "0.4.9016" {
     value ceylonVersion = "1.3.3";
     value lovelaceUtilsVersion = "0.1.0";

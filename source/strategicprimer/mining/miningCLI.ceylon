@@ -29,6 +29,7 @@ import strategicprimer.drivers.common.cli {
    LodeStatus values array).""""
 service(`interface ISPDriver`)
 // TODO: Write GUI to allow user to visually explore a mine
+native("jvm") // TODO: Try removing once strategicprimer.drivers.common isn't declared entirely "native".
 shared class MiningCLI() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
