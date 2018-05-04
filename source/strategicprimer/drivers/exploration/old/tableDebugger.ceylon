@@ -78,9 +78,8 @@ shared class TableDebugger() satisfies SimpleCLIDriver {
     }
     shared actual void startDriverNoArgs(ICLIHelper cli, SPOptions options) {
         init();
-        runner.verboseGlobalRecursiveCheck((String line) => cli.println(line)); // TODO: lambda could be method reference, I think
+        runner.verboseGlobalRecursiveCheck(cli.println);
         EncounterTable mainTable = runner.getTable("main");
-        debugSingleTable("", "", mainTable, "main",
-                    (string) => cli.println(string), []); // TODO: lambda could be method reference, I think
+        debugSingleTable("", "", mainTable, "main", cli.println, []);
     }
 }
