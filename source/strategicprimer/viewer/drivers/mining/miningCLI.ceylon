@@ -28,6 +28,7 @@ import strategicprimer.drivers.common.cli {
    file to write the CSV to and the value at the top center (as an index into the
    LodeStatus values array).""""
 service(`interface ISPDriver`)
+// TODO: Write GUI to allow user to visually explore a mine
 shared class MiningCLI() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;

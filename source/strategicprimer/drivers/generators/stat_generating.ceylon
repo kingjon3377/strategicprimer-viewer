@@ -64,6 +64,7 @@ Logger log = logger(`module strategicprimer.drivers.generators`);
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
 service(`interface ISPDriver`)
+// FIXME: Write stat-generating/stat-entering GUI
 shared class StatGeneratingCLI() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;

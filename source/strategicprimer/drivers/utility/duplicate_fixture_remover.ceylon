@@ -72,6 +72,7 @@ import strategicprimer.model.map.fixtures.terrain {
 """A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
    takes up on disk and the memory and CPU it takes to deal with it)."""
 service(`interface ISPDriver`)
+// FIXME: Write GUI for the duplicate fixture remover
 shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;

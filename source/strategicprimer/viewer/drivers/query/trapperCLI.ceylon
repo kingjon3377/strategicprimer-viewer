@@ -60,6 +60,7 @@ class QueueWrapper<Type>(variable {Type*} wrapped) satisfies Queue<Type> {
 "A driver to run a player's trapping activity."
 todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
 service(`interface ISPDriver`)
+// FIXME: Write trapping (and hunting, etc.) GUI
 shared class TrappingCLI() satisfies SimpleDriver {
 	Integer minutesPerHour = 60;
 	TrapperCommand[] commands = sort(`TrapperCommand`.caseValues);

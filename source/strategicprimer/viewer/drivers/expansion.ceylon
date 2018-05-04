@@ -56,6 +56,7 @@ import lovelace.util.jvm {
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""
 service(`interface ISPDriver`)
+// FIXME: Write GUI for map-expanding driver
 shared class ExpansionDriver() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
@@ -166,6 +167,7 @@ object sampleMapPopulator satisfies MapPopulator {
 """A driver to add some kind of fixture to suitable tiles throughout the map. Customize
    the [[populator]] field before each use."""
 service(`interface ISPDriver`)
+// TODO: Write GUI equivalent of Map Populator Driver
 shared class MapPopulatorDriver() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;

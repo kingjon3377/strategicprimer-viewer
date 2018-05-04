@@ -170,45 +170,7 @@ object appChooserState {
 				}
 			}
 		}
-		addToCache(
-			ReportCLI(),
-			ViewerGUI(),
-			AdvancementCLI(),
-			AdvancementGUI(),
-			StrategyExportCLI(),
-			WorkerGUI(),
-			ExplorationCLI(),
-			ExplorationGUI(),
-			ReaderComparator(),
-			DrawHelperComparator(),
-			MapCheckerCLI(),
-			MapCheckerGUI(),
-			SubsetCLI(),
-			SubsetGUI(),
-			// FIXME: Write GUI equivalent of query CLI
-			QueryCLI(),
-			EchoDriver(),
-			// FIXME: Write GUI for the duplicate fixture remover
-			DuplicateFixtureRemoverCLI(),
-			// FIXME: Write trapping (and hunting, etc.) GUI
-			TrappingCLI(),
-			// FIXME: Write stat-generating/stat-entering GUI
-			StatGeneratingCLI(),
-			// FIXME: Write GUI for map-expanding driver
-			ExpansionDriver(),
-			// TODO: Write GUI equivalent of Map Populator Driver
-			MapPopulatorDriver(),
-			ResourceAddingCLI(), ResourceAddingGUI(),
-			TabularReportCLI(), TabularReportGUI(),
-			// TODO: Write GUI to allow user to visually explore a mine
-			MiningCLI(),
-			// TODO: Write GUI to allow user to generate or enter town contents
-			TownGeneratingCLI(),
-			RandomMovementCLI(),
-			MapTradeCLI(),
-			PopulationGeneratingCLI(),
-			WorkerPrintCLI()
-		);
+		addToCache(*`module strategicprimer.viewer`.findServiceProviders(`ISPDriver`));
 	    return [cliCache, guiCache];
 	}
 	"Create the usage message for a particular driver."
@@ -267,8 +229,7 @@ object appChooserState {
 	    }
 	}
 }
-service(`interface ISPDriver`)
-shared class AppStarter() satisfies ISPDriver {
+class AppStarter() satisfies ISPDriver {
 	shared actual IDriverUsage usage = DriverUsage(true, ["-p", "--app-starter"],
 		ParamCount.anyNumber, "App Chooser",
 		"Let the user choose an app to start, or handle options.");

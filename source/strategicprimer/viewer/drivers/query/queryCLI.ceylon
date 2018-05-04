@@ -85,6 +85,7 @@ import strategicprimer.model.map.fixtures.resources {
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver for 'querying' the driver model about various things."
 service(`interface ISPDriver`)
+// FIXME: Write GUI equivalent of query CLI
 shared class QueryCLI() satisfies SimpleCLIDriver {
 	"How many hours we assume a working day is for a hunter or such."
 	Integer hunterHours = 10;
