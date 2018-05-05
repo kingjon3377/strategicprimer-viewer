@@ -54,7 +54,8 @@ import ceylon.random {
 import lovelace.util.common {
 	anythingEqual,
 	matchingValue,
-	matchingPredicate
+	matchingPredicate,
+	comparingOn
 }
 Logger log = logger(`module strategicprimer.drivers.worker.common`);
 "A model to underlie the advancement GUI, etc."
@@ -93,7 +94,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     "Flatten and filter the stream to include only units, and only those owned by the
      given player."
     {IUnit*} getUnitsImpl({Anything*} iter, Player player) =>
-            iter.flatMap(flatten).narrow<IUnit>().filter((unit) => unit.owner.playerId == player.playerId);
+            iter.flatMap(flatten).narrow<IUnit>()
+	            .filter(matchingPredicate(matchingValue(player.playerId, Player.playerId), IUnit.owner));
     "All the players in all the maps."
     shared actual {Player*} players => allMaps.map(Tuple.first).flatMap(IMutableMapNG.players).distinct;
     "Get all the given player's units, or only those of a specified kind."
@@ -104,7 +106,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.
             return getUnitsImpl(map.locations.flatMap(map.fixtures.get), player)
-                .sort((x, y) => x.name.compareIgnoringCase(y.name));
+                .sort(comparingOn(IUnit.name, comparingOn(String.lowercased, increasing<String>)));
         } else {
             value temp = allMaps.map(Tuple.first)
                     .flatMap((indivMap) => indivMap.locations.flatMap(
@@ -124,13 +126,14 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 }
                 proxy.addProxied(unit);
             }
-            return tempMap.items.sort((x, y) => x.name.compareIgnoringCase(y.name));
+            return tempMap.items.sort(comparingOn(IUnit.name,
+                comparingOn(String.lowercased, increasing<String>)));
         }
     }
     """All the "kinds" of units the given player has."""
     shared actual {String*} getUnitKinds(Player player) =>
             getUnits(player).map(IUnit.kind).distinct
-                .sort((x, y) => x.compareIgnoringCase(y));
+                .sort(comparingOn(String.lowercased, increasing<String>));
     "Add the given unit at the given location in all maps."
     void addUnitAtLocation(IUnit unit, Point location) {
         void impl(IMutableMapNG map) {
