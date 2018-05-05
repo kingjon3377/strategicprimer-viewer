@@ -7,7 +7,8 @@ import ceylon.collection {
 
 
 import lovelace.util.common {
-    todo
+    todo,
+	matchingValue
 }
 
 import strategicprimer.model.map.fixtures.mobile {
@@ -40,7 +41,7 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
         if (unmodified) {
             IJob job = Job(name, 0);
             worker.addJob(job);
-            proxiedJobs.add(worker.find((temp) => temp.name == name) else job);
+            proxiedJobs.add(worker.find(matchingValue(name, IJob.name)) else job);
         }
     }
     "Proxy-skills."
@@ -107,7 +108,7 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
     shared actual Boolean emptyJob => proxiedJobs.every(IJob.emptyJob);
     "Get a Skill by name."
     shared actual ISkill getSkill(String skillName) {
-        if (exists retval = proxiedSkills.find((skill) => skill.name == skillName)) {
+        if (exists retval = proxiedSkills.find(matchingValue(skillName, ISkill.name))) {
             return retval;
         }
         value retval = ProxySkill(skillName, parallel, *proxiedJobs);
