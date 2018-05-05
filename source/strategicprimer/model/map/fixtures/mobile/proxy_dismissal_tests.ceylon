@@ -5,7 +5,11 @@ import ceylon.test {
 }
 import strategicprimer.model.map {
 	Player,
-	PlayerImpl
+	PlayerImpl,
+	IFixture
+}
+import lovelace.util.common {
+	matchingValue
 }
 test
 void testProxyDismissal() {
@@ -36,7 +40,7 @@ void testProxyDismissal() {
 	proxyUnit.addProxied(secondUnit);
 	assertEquals(firstUnit, secondUnit, "Two units in proxy are initially equal");
 	assertEquals(firstUnit, thirdUnit, "Units in and not in proxy are initially equal");
-	assert (is ProxyFor<out IWorker> proxiedWorker = proxyUnit.find((member) => member.id == 4));
+	assert (is ProxyFor<out IWorker> proxiedWorker = proxyUnit.find(matchingValue(4, IFixture.id)));
 	proxyUnit.removeMember(proxiedWorker);
 	assertEquals(firstUnit, secondUnit, "Two units in proxy are still equal after removing via proxy-worker");
 	assertNotEquals(firstUnit, thirdUnit,
