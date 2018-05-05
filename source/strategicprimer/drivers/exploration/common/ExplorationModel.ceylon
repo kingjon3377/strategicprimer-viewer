@@ -353,7 +353,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Point currentPoint = localSelection.first;
         if (exists unit = localSelection.rest.first) {
             Player owner = unit.owner;
-            {Village*} villages = allMaps.map((pair) => pair.first)
+            {Village*} villages = allMaps.map(Tuple.first)
 //                .flatMap((world) => world.fixtures[currentPoint]) // TODO: syntax sugar once compiler bug fixed
                 .flatMap((world) => world.fixtures.get(currentPoint))
                 .narrow<Village>().filter(matchingPredicate(Player.independent, Village.owner));
