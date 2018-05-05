@@ -121,10 +121,9 @@ class MiningModel(initial, seed, kind) {
     Integer minimumColumn = min(unnormalized.keys.map(getColumn)) else 0;
     "A mapping from positions (normalized so they could be spit out into a spreadsheet)
      to [[LodeStatus]]es."
-    Map<[Integer, Integer], LodeStatus> data = map { // TODO: Don't spread only to unspread
-        *unnormalized
-            .map(([row, column]->status) => [row, column - minimumColumn]->status)
-    };
+    Map<[Integer, Integer], LodeStatus> data = map(
+        unnormalized
+            .map(([row, column]->status) => [row, column - minimumColumn]->status));
     "The farthest row and column we reached."
     shared [Integer, Integer] maximumPoint = [max(data.keys.map(Tuple.first)) else 0,
         max(data.keys.map(getColumn)) else 0];
