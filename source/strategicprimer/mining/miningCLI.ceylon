@@ -7,10 +7,6 @@ import java.io {
     IOException
 }
 
-import strategicprimer.model.map {
-    Point,
-    pointFactory
-}
 import strategicprimer.drivers.common {
     DriverFailedException,
     UtilityDriver,
@@ -75,15 +71,15 @@ shared class MiningCLI() satisfies UtilityDriver {
                 mineKind = MineKind.normal;
             }
             MiningModel model = MiningModel(initial, seed, mineKind);
-            Point lowerRight = model.maximumPoint;
+            value [lowerRightRow, lowerRightColumn] = model.maximumPoint;
             value path = parsePath(filename);
             if (is Nil loc = path.resource) {
                 value file = loc.createFile();
                 try (writer = file.Overwriter()) {
-                    for (row in 0..(lowerRight.row)) {
-                        for (col in 0..(lowerRight.column)) {
+                    for (row in 0..lowerRightRow) {
+                        for (col in 0..lowerRightColumn) {
                             writer.write("``model.statusAt(
-                                pointFactory(row, col))?.ratio else -1``,");
+                                [row, col])?.ratio else -1``,");
                         }
                         writer.writeLine();
                     }

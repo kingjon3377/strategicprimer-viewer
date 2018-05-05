@@ -5,10 +5,6 @@ import ceylon.collection {
     Queue
 }
 
-import strategicprimer.model.map {
-    Point,
-    pointFactory
-}
 import ceylon.random {
     DefaultRandom,
     Random
@@ -22,7 +18,7 @@ class MineKind of normal | banded {
 }
 "A class to model the distribution of a mineral to be mined. Note that the constructor
  can be *very* computationally expensive!"
-native("jvm") // TODO: Change from using Point to using [Integer, Integer]
+native("jvm")
 class MiningModel(initial, seed, kind) {
     "The status to give the mine's starting point."
     LodeStatus initial;
@@ -30,12 +26,13 @@ class MiningModel(initial, seed, kind) {
     Integer seed;
     "What kind of mine to model."
     MineKind kind;
-    MutableMap<Point, LodeStatus> unnormalized = HashMap<Point, LodeStatus>();
-    unnormalized[pointFactory(0, 0)] = initial;
-    Queue<Point> queue = LinkedList<Point>();
-    queue.offer(pointFactory(0, 0));
+    MutableMap<[Integer, Integer], LodeStatus> unnormalized = HashMap<[Integer, Integer], LodeStatus>();
+    unnormalized[[0, 0]] = initial;
+    Queue<[Integer, Integer]> queue = LinkedList<[Integer, Integer]>();
+    queue.offer([0, 0]);
     Random rng = DefaultRandom(seed);
     LodeStatus?(LodeStatus) horizontalGenerator;
+    Integer getColumn([Integer, Integer] tuple) => tuple.rest.first;
     switch (kind)
     case (MineKind.normal) {
         horizontalGenerator = (LodeStatus current) => current.adjacent(rng.nextFloat);
@@ -46,17 +43,19 @@ class MiningModel(initial, seed, kind) {
     LodeStatus? verticalGenerator(LodeStatus current) => current.adjacent(rng.nextFloat);
     variable Integer counter = 0;
     variable Integer pruneCounter = 0;
-    void unnormalizedSet(Point loc, LodeStatus? status) {
+    void unnormalizedSet([Integer, Integer] loc, LodeStatus? status) {
         if (exists status) {
             unnormalized[loc] = status;
         } else {
             unnormalized.remove(loc);
         }
     }
-    void modelPoint(Point point) {
-        Point left = pointFactory(point.row, point.column - 1);
-        Point down = pointFactory(point.row + 1, point.column);
-        Point right = pointFactory(point.row, point.column + 1);
+    void modelPoint([Integer, Integer] point) {
+        Integer row = point.first;
+        Integer column = point.rest.first;
+        [Integer, Integer] left = [row, column - 1];
+        [Integer, Integer] down = [row + 1, column];
+        [Integer, Integer] right = [row, column + 1];
         value current = unnormalized[point];
         if (!current exists) {
             return;
@@ -83,7 +82,7 @@ class MiningModel(initial, seed, kind) {
             process.write(".");
         }
         // Limit the size of the output spreadsheet.
-        if (point.row.magnitude > 200 || point.column.magnitude > 100) {
+        if (point.first.magnitude > 200 || getColumn(point).magnitude > 100) {
             pruneCounter++;
             continue;
         } else {
@@ -92,8 +91,8 @@ class MiningModel(initial, seed, kind) {
     }
     process.writeLine();
     process.writeLine("Pruned ``pruneCounter`` branches beyond our boundaries");
-    for (row->points in unnormalized.keys.group(Point.row).
-                sort((numOne->_, numTwo->__) => numTwo<=>numOne)) {
+    for (row->points in unnormalized.keys.group(Tuple.first).
+                sort((numOne->_, numTwo->__) => numTwo<=>numOne)) { // TODO: Use comparingOn instead of a lambda
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
@@ -101,8 +100,8 @@ class MiningModel(initial, seed, kind) {
             unnormalized.remove(point);
         }
     }
-    for (column->points in unnormalized.keys.group(Point.column).
-                sort((numOne->_, numTwo->__) => numOne<=>numTwo)) {
+    for (column->points in unnormalized.keys.group(getColumn).
+                sort((numOne->_, numTwo->__) => numOne<=>numTwo)) { // TODO: use comparingOn
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
@@ -110,8 +109,8 @@ class MiningModel(initial, seed, kind) {
             unnormalized.remove(point);
         }
     }
-    for (column->points in unnormalized.keys.group(Point.column).
-                sort((numOne->_, numTwo->__) => numTwo<=>numOne)) {
+    for (column->points in unnormalized.keys.group(getColumn).
+                sort((numOne->_, numTwo->__) => numTwo<=>numOne)) { // TODO: Use comparingOn
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
@@ -119,16 +118,15 @@ class MiningModel(initial, seed, kind) {
             unnormalized.remove(point);
         }
     }
-    Integer minimumColumn = min(unnormalized.keys.map(Point.column)) else 0;
+    Integer minimumColumn = min(unnormalized.keys.map(getColumn)) else 0;
     "A mapping from positions (normalized so they could be spit out into a spreadsheet)
      to [[LodeStatus]]es."
-    Map<Point, LodeStatus> data = map {
+    Map<[Integer, Integer], LodeStatus> data = map { // TODO: Don't spread only to unspread
         *unnormalized
-            .map((key->status) => pointFactory(key.row,
-                key.column - minimumColumn)->status)
+            .map(([row, column]->status) => [row, column - minimumColumn]->status)
     };
     "The farthest row and column we reached."
-    shared Point maximumPoint = pointFactory(max(data.keys.map(Point.row)) else 0,
-        max(data.keys.map(Point.column)) else 0);
-    shared LodeStatus? statusAt(Point point) => data[point];
+    shared [Integer, Integer] maximumPoint = [max(data.keys.map(Tuple.first)) else 0,
+        max(data.keys.map(getColumn)) else 0];
+    shared LodeStatus? statusAt([Integer, Integer] point) => data[point];
 }
