@@ -35,8 +35,8 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
     shared default void produceTable(Anything(String) ostream, DelayedRemovalMap<Integer,
 		    [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
         {[Integer, [Point, T]]*} values = fixtures.map(Entry.pair).narrow<[Integer, [Point, T]]>()
-            .sort(comparingOn(([Integer, [Point, T]] pair) => pair.rest.first,
-            comparePairs));
+            .sort(comparingOn(Tuple<Integer|[Point, T], Integer, [[Point, T]]>.rest,
+	            comparingOn(Tuple<[Point, T], [Point, T], []>.first, comparePairs)));
         writeRow(ostream, headerRow.first, *headerRow.rest);
         for ([num, [loc, item]] in values) {
             for (row in produce(fixtures, item, num, loc, parentMap)) {
