@@ -10,7 +10,6 @@ import java.awt {
 import java.awt.event {
     ComponentEvent,
     MouseMotionAdapter,
-    MouseListener,
     MouseEvent,
     ComponentAdapter
 }
@@ -27,7 +26,6 @@ import lovelace.util.common {
 import strategicprimer.drivers.common {
     MapChangeListener,
     SelectionChangeListener,
-    SelectionChangeSource,
 	FixtureMatcher
 }
 
@@ -50,8 +48,7 @@ shared interface MapGUI {
 JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
 mapComponent(IViewerModel model, Boolean(TileFixture) zof, // TODO: Try to convert back to class
         {FixtureMatcher*}&Comparator<TileFixture> matchers) {
-    MouseListener&ToolTipSource&SelectionChangeSource cml =
-            componentMouseListener(model, zof, matchers.compare);
+    ComponentMouseListener cml = ComponentMouseListener(model, zof, matchers.compare);
     DirectionSelectionChanger dsl = DirectionSelectionChanger(model);
     Rectangle boundsCheck(Rectangle? rect) {
         if (exists rect) {
