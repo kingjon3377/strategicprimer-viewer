@@ -226,7 +226,7 @@ shared class ResourceAddingCLI() satisfies SimpleCLIDriver {
             IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
             MutableList<Player> players = ArrayList { elements = model.players; };
-            IDRegistrar idf = createIDFactory(model.allMaps.map((pair) => pair.first));
+            IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
             try {
                 while (!players.empty, exists chosen = cli.chooseFromList(players,
 	                    "Players in the maps:", "No players found.",
@@ -321,7 +321,7 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
      resource and close."
     SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
 	        Anything(ActionEvent) menuHandler) {
-        IDRegistrar idf = createIDFactory(model.allMaps.map((pair) => pair.first));
+        IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
         variable Player currentPlayer = PlayerImpl(-1, "");
         JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
         FormattedLabel resourceLabel = FormattedLabel("Add resource for %s:",
