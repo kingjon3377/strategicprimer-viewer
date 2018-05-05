@@ -12,6 +12,9 @@ import strategicprimer.model.map {
     Player,
     IPlayerCollection
 }
+import lovelace.util.common {
+	matchingValue
+}
 
 "A collection of players. Using a simple List doesn't work when -1 is the default index if
  one isn't given in the XML."
@@ -107,7 +110,7 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
         }
         if (contains(currentPlayer)) {
             current = currentPlayer;
-        } else if (exists temp = find((player) => player.playerId == currentPlayer.playerId)) {
+        } else if (exists temp = find(matchingValue(currentPlayer.playerId, Player.playerId))) {
             current = temp;
         } else {
             current = currentPlayer;
