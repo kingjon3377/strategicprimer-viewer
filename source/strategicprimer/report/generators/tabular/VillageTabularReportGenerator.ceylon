@@ -33,11 +33,11 @@ shared class VillageTabularReportGenerator(Player player, Point hq,
     shared actual Comparison comparePairs([Point, Village] one,
             [Point, Village] two) {
         return comparing(
-            comparingOn(([Point, Village] pair) => pair.first,
+            comparingOn(Tuple<Point|Village, Point, [Village]>.first,
                 DistanceComparator(hq, dimensions).compare),
-            comparingOn(([Point, Village] pair) => pair.rest.first.owner,
-                increasing<Player>),
-            comparingOn(([Point, Village] pair) => pair.rest.first.name,
-                increasing<String>))(one, two);
+            comparingOn(Tuple<Point|Village, Point, [Village]>.rest,
+                comparingOn(Tuple<Village, Village, []>.first,
+                    comparing(comparingOn(Village.owner, increasing<Player>),
+                        comparingOn(Village.name, increasing<String>)))))(one, two);
     }
 }
