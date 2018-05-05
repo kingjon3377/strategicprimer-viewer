@@ -180,7 +180,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     }
     "Get a unit by its owner and ID."
     shared actual IUnit? getUnitByID(Player owner, Integer id) =>
-            getUnits(owner).find((unit) => id == unit.id);
+            getUnits(owner).find(matchingValue(id, IUnit.id));
 }
 object workerModelTests {
 	"Helper method: Flatten any proxies in the list by replacing them with what they are
