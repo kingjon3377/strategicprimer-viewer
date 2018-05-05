@@ -58,6 +58,10 @@ import ceylon.logging {
     logger,
     Logger
 }
+import lovelace.util.common {
+	matchingValue,
+	comparingOn
+}
 
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.generators`);
@@ -79,8 +83,8 @@ shared class StatGeneratingCLI() satisfies SimpleCLIDriver {
     };
     "The units in the given collection that have workers without stats."
     IUnit[] removeStattedUnits(IUnit* units) => units.select(
-                (unit) => unit.narrow<Worker>().map(Worker.stats)
-                    .any((stats) => !stats exists));
+                (unit) => unit.narrow<Worker>()
+                    .any(matchingValue(null, Worker.stats)));
     "Find a fixture in a given iterable with the given ID."
     IFixture? findInIterable(Integer id, IFixture* fixtures) {
         for (fixture in fixtures) {
@@ -174,7 +178,7 @@ shared class StatGeneratingCLI() satisfies SimpleCLIDriver {
     }
     "Get the index of the lowest value in an array."
     Integer getMinIndex(Integer[] array) =>
-            array.indexed.max((kOne->iOne, kTwo->iTwo) => iTwo <=> iOne)?.key else 0;
+            array.indexed.max(comparingOn(Entry<Integer, Integer>.item, decreasing<Integer>))?.key else 0;
     MutableMap<String, WorkerStats> racialBonuses = HashMap<String, WorkerStats>();
     WorkerStats loadRacialBonus(String race) {
         if (exists retval = racialBonuses[race]) {
@@ -378,7 +382,7 @@ shared class StatGeneratingCLI() satisfies SimpleCLIDriver {
                 enterStats(model, cli);
             } else {
                 createWorkers(model, createIDFactory(model.allMaps
-                    .map((pair) => pair.first)), cli);
+                    .map(Tuple.first)), cli);
             }
         } else {
             startDriverOnModel(cli, options, ExplorationModel.copyConstructor(model));
