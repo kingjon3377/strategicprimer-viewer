@@ -1,3 +1,6 @@
+import lovelace.util.common {
+	matchingValue
+}
 "The kinds of stone we know about."
 shared class StoneKind
         of limestone|marble|slate|pumice|conglomerate|sandstone|laterite|shale {
@@ -15,5 +18,5 @@ shared class StoneKind
     shared new shale { string = "shale"; }
 }
 StoneKind|ParseException parseStoneKind(String stone) =>
-        `StoneKind`.caseValues.find((kind) => kind.string == stone)
+        `StoneKind`.caseValues.find(matchingValue(stone, StoneKind.string))
             else ParseException("Failed to parse StoneKind from '``stone``");
