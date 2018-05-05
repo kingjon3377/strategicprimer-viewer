@@ -29,11 +29,10 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
         return [{distanceString(loc, hq, dimensions), loc.string, item.string}];
     }
     "Compare two Point-fixture pairs."
+    // TODO: There were two identical hash-based comparators in sequence; I'd guess an earlier refactoring lost a desired comparator. Recover it.
     shared actual Comparison comparePairs([Point, Immortal] one,
             [Point, Immortal] two) =>
             comparing(comparingOn<[Point, Immortal], Point>(
 	                Tuple.first, DistanceComparator(hq, dimensions).compare),
-	            comparingOn<[Point, Immortal], Integer>(([loc, item]) => item.hash, increasing),
-			            comparingOn<[Point, Immortal], Integer>(([loc, item]) => item.hash,
-			                increasing))(one, two);
+	            comparingOn<[Point, Immortal], Integer>(([loc, item]) => item.hash, increasing))(one, two);
 }
