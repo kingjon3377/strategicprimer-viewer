@@ -36,7 +36,7 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
                 *stats.array.map(WorkerStats.getModifierString)]];
         } else {
             return [[distanceString(loc, hq, dimensions), loc.string, item.name,
-                item.race, *(0..9).map((num) => "---")]];
+                item.race, *["---"].cycled.take(9)]];
         }
     }
     "Compare two worker-location pairs."
