@@ -51,7 +51,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     variable {UnitMember*} cachedIterable = [];
     SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) {
         MutableMap<Integer,String>&SortedMap<Integer, String> retval =
-                TreeMap<Integer, String>((x, y) => x <=> y, []);
+                TreeMap<Integer, String>(increasing, []);
         for (map in proxiedList.map(method)) {
             for (key-> item in map) {
                 if (exists existing = retval[key]) {
