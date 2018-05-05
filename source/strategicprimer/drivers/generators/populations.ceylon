@@ -50,7 +50,8 @@ import ceylon.whole {
 }
 import lovelace.util.common {
 	matchingValue,
-	matchingPredicate
+	matchingPredicate,
+	inverse
 }
 import lovelace.util.jvm {
 	singletonRandom
@@ -73,9 +74,10 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	void generateAnimalPopulations(IMutableMapNG map, Boolean talking, String kind, ICLIHelper cli) {
 		// We assume there is at most one population of each kind of animal per tile.
 		{Point*} locations = randomize(map.locations.filter(
-			//(loc) => map.fixtures[loc].narrow<Animal>().filter(matching(false, Animal.traces)) // TODO: syntax sugar once compiler bug fixed
+			//(loc) => map.fixtures[loc].narrow<Animal>() // TODO: syntax sugar once compiler bug fixed
 			(loc) => map.fixtures.get(loc).narrow<Animal>()
-					.filter(matchingValue(talking, Animal.talking)).filter((animal) => animal.population <= 1)
+					.filter(matchingValue(talking, Animal.talking))
+					.filter(inverse(matchingPredicate(Integer.positive, Animal.population)))
 					.map(Animal.kind).any(kind.equals)));
 		Integer count = locations.size;
 		if (count == 0) {
@@ -134,8 +136,8 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 				return;
 			}
 			Integer nextPopulation = if (remainingCount == 1) then remainingTotal else rng.nextInteger(remainingTotal-remainingCount - 1) + 1;
-			//if (exists grove = map.fixtures[location].narrow<Grove>().find((item) => item.kind == kind)) { // TODO: syntax sugar
-			if (exists grove = map.fixtures.get(location).narrow<Grove>().find((item) => item.kind == kind)) {
+			//if (exists grove = map.fixtures[location].narrow<Grove>().find(matchingValue(kind, Grove.kind))) { // TODO: syntax sugar
+			if (exists grove = map.fixtures.get(location).narrow<Grove>().find(matchingValue(kind, Grove.kind))) {
 				Grove replacement = Grove(grove.orchard, grove.cultivated, grove.kind, grove.id, nextPopulation);
 				map.removeFixture(location, grove);
 				map.addFixture(location, replacement);
@@ -165,8 +167,8 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 				return;
 			}
 			Integer nextPopulation = if (remainingCount == 1) then remainingTotal else rng.nextInteger(remainingTotal-remainingCount - 1) + 1;
-			//if (exists grove = map.fixtures[location].narrow<Grove>().find((item) => item.kind == kind)) { // TODO: syntax sugar
-			if (exists shrub = map.fixtures.get(location).narrow<Shrub>().find((item) => item.kind == kind)) {
+			//if (exists grove = map.fixtures[location].narrow<Shrub>().find(matchingValue(kind, Shrub.kind))) { // TODO: syntax sugar
+			if (exists shrub = map.fixtures.get(location).narrow<Shrub>().find(matchingValue(kind, Shrub.kind))) {
 				Shrub replacement = Shrub(kind, shrub.id, nextPopulation);
 				map.removeFixture(location, shrub);
 				map.addFixture(location, replacement);
@@ -215,9 +217,9 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 				cli.println("First forest at ``location`` had acreage set already, skipping that tile.");
 				continue;
 			}
-			//{Forest*} otherForests = map.fixtures[location].narrow<Forest>().rest; // TODO: syntax sugar
+			//{Forest*} otherForests = map.fixtures[location].narrow<Forest>() // TODO: syntax sugar
 			{Forest*} otherForests = map.fixtures.get(location).narrow<Forest>()
-					.select((item) => !item.acres.positive).rest;
+					.select(inverse(matchingPredicate(positiveNumber, Forest.acres))).rest;
 			Integer adjacentCount = countAdjacentForests(map, location, primaryForest.kind);
 			//for (town in map.fixtures[location].narrow<ITownFixture>()) { // TODO: syntax sugar
 			for (town in map.fixtures.get(location).narrow<ITownFixture>()) {
@@ -275,7 +277,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	}
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
 		for (kind in model.map.locations.flatMap(model.map.fixtures.get).narrow<Animal>()
-					.filter((animal) => animal.population <= 1)
+					.filter(inverse(matchingPredicate(Integer.positive, Animal.population)))
 				.map(Animal.kind).distinct) {
 			generateAnimalPopulations(model.map, true, kind, cli);
 			generateAnimalPopulations(model.map, false, kind, cli);
