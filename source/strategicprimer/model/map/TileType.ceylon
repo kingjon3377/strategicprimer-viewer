@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    todo
+    todo,
+	matchingValue
 }
 "Possible tile types."
 todo("Other additional types for use in other worlds' maps?")
@@ -66,5 +67,5 @@ shared class TileType
 {TileType*} getTypesForVersion(Integer version) =>
         `TileType`.caseValues.filter((type) => type.isSupportedByVersion(version));
 TileType|ParseException parseTileType(String xml) =>
-        `TileType`.caseValues.find((type) => type.xml == xml) else
+        `TileType`.caseValues.find(matchingValue(xml, TileType.xml)) else
             ParseException("Failed to parse TileType from '``xml``'");
