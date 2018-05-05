@@ -7,7 +7,8 @@ import java.awt.event {
 import javax.swing {
     InputMap,
     ActionMap,
-    KeyStroke
+    KeyStroke,
+	AbstractAction
 }
 
 import lovelace.util.jvm {
@@ -61,10 +62,12 @@ object arrowListenerInitializer {
 	        func();
 	    }
 	}
+	class DirectionListener(Anything() action, Integer num = 1)
+			extends AbstractAction() {
+		shared actual void actionPerformed(ActionEvent event) => repeatVoid(action, num);
+	}
 	shared void setUpArrowListeners(DirectionSelectionChanger selListener, InputMap inputMap,
 	        ActionMap actionMap) {
-	    class DirectionListener(Anything() action, Integer num = 1)
-	            extends ActionWrapper((ActionEvent event) => repeatVoid(action, num)) { }
 	    Integer fiveMask = (platform.systemIsMac) then InputEvent.altDownMask
 	    else InputEvent.ctrlDownMask;
 	    for (stroke->action in arrowInputs) {
