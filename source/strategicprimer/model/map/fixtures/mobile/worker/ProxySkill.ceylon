@@ -78,7 +78,7 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
                 if (unmodified) {
                     ISkill skill = Skill(name, 0, 0);
                     job.addSkill(skill);
-                    (job.find((temp) => temp.name == name) else skill)
+                    (job.find(matchingValue(name, ISkill.name)) else skill)
                         .addHours(hours, random.nextInteger(100));
                 }
             }
