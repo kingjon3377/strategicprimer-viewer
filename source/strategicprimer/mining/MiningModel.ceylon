@@ -9,6 +9,9 @@ import ceylon.random {
     DefaultRandom,
     Random
 }
+import lovelace.util.common {
+	comparingOn
+}
 "Kinds of mines we know how to create."
 class MineKind of normal | banded {
     """"Normal," which *tries* to create randomly-branching "veins"."""
@@ -92,7 +95,7 @@ class MiningModel(initial, seed, kind) {
     process.writeLine();
     process.writeLine("Pruned ``pruneCounter`` branches beyond our boundaries");
     for (row->points in unnormalized.keys.group(Tuple.first).
-                sort((numOne->_, numTwo->__) => numTwo<=>numOne)) { // TODO: Use comparingOn instead of a lambda
+                sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, decreasing<Integer>))) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
@@ -101,7 +104,7 @@ class MiningModel(initial, seed, kind) {
         }
     }
     for (column->points in unnormalized.keys.group(getColumn).
-                sort((numOne->_, numTwo->__) => numOne<=>numTwo)) { // TODO: use comparingOn
+                sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, increasing<Integer>))) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
@@ -110,7 +113,7 @@ class MiningModel(initial, seed, kind) {
         }
     }
     for (column->points in unnormalized.keys.group(getColumn).
-                sort((numOne->_, numTwo->__) => numTwo<=>numOne)) { // TODO: Use comparingOn
+                sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, decreasing<Integer>))) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
