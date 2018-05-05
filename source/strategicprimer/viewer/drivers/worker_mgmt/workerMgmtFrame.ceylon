@@ -111,11 +111,38 @@ import strategicprimer.drivers.gui.common {
     SPDialog
 }
 "A window to let the player manage units."
-class WorkerMgmtFrame(SPOptions options, IWorkerModel model, MenuBroker menuHandler)
-		extends SPFrame("Worker Management", model.mapFile,
+class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
+	static class ReportTreeRenderer(DistanceComparator calculator)
+			extends DefaultTreeCellRenderer() {
+		shared actual Component getTreeCellRendererComponent(JTree tree, Object val,
+			Boolean selected, Boolean expanded, Boolean leaf, Integer row,
+			Boolean hasFocus) {
+			assert (is JComponent retval =
+				super.getTreeCellRendererComponent(tree, val, selected, expanded,
+				leaf, row, hasFocus));
+			if (is IReportNode val) {
+				Point point = val.point;
+				if (point.valid) {
+					retval.toolTipText = calculator.distanceString(point);
+				} else {
+					retval.toolTipText = null;
+				}
+			}
+			return retval;
+		}
+	}
+	SPOptions options;
+	IWorkerModel model;
+	MenuBroker menuHandler;
+	shared new (SPOptions options, IWorkerModel model, MenuBroker menuHandler)
+			extends SPFrame("Worker Management", model.mapFile,
                 Dimension(640, 480), true,
-                (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
-		satisfies PlayerChangeListener {
+                (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file)) {
+		this.options = options;
+		this.model = model;
+		this.menuHandler = menuHandler;
+	}
+
 	Point findHQ() {
 		variable Point retval = invalidPoint;
 		for (location in model.map.locations) {
@@ -152,26 +179,7 @@ class WorkerMgmtFrame(SPOptions options, IWorkerModel model, MenuBroker menuHand
 		report.rootVisible = true;
 		assert (is DefaultMutableTreeNode root = reportModel.root);
 		report.expandPath(TreePath(root.path));
-		DistanceComparator calculator = DistanceComparator(findHQ(), model.mapDimensions);
-		object renderer extends DefaultTreeCellRenderer() {
-			shared actual Component getTreeCellRendererComponent(JTree tree, Object val,
-					Boolean selected, Boolean expanded, Boolean leaf, Integer row,
-					Boolean hasFocus) {
-				assert (is JComponent retval =
-					super.getTreeCellRendererComponent(tree, val, selected, expanded,
-					leaf, row, hasFocus));
-				if (is IReportNode val) {
-					Point point = val.point;
-					if (point.valid) {
-						retval.toolTipText = calculator.distanceString(point);
-					} else {
-						retval.toolTipText = null;
-					}
-				}
-				return retval;
-			}
-		}
-		report.cellRenderer = renderer;
+		report.cellRenderer = ReportTreeRenderer(DistanceComparator(findHQ(), model.mapDimensions));
 		ToolTipManager.sharedInstance().registerComponent(report);
 		object reportMouseHandler extends MouseAdapter() {
 			shared actual void mousePressed(MouseEvent event) {
