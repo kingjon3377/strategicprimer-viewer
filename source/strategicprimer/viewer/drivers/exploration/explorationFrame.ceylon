@@ -96,7 +96,7 @@ import strategicprimer.drivers.gui.common {
 }
 import strategicprimer.viewer.drivers.map_viewer {
 	SelectionChangeSupport,
-	fixtureFilterTableModel,
+	FixtureFilterTableModel,
 	FixtureListModel,
 	fixtureList,
 	TileTypeFixture
@@ -268,7 +268,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 HashMap<Direction, SelectionChangeSupport>();
         MutableMap<Direction, DualTileButton> buttons =
                 HashMap<Direction, DualTileButton>();
-        {FixtureMatcher*} matchers = fixtureFilterTableModel();
+        {FixtureMatcher*} matchers = FixtureFilterTableModel();
         shared actual void selectedPointChanged(Point? old, Point newPoint) {
             if (exists old, old == newPoint) {
                 return;

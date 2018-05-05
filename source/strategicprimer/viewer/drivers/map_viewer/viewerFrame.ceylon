@@ -82,7 +82,7 @@ shared SPFrame&MapGUI viewerFrame(IViewerModel driverModel,
         shared actual Boolean supportsDroppedFiles = true;
     }
     AbstractTableModel&{FixtureMatcher*}&ZOrderFilter&Comparator<TileFixture> tableModel =
-            fixtureFilterTableModel();
+            FixtureFilterTableModel();
     JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
     mapPanel = mapComponent(driverModel, tableModel.shouldDisplay, tableModel);
     tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint()); // can't use silentListener because repaint() is overloaded
