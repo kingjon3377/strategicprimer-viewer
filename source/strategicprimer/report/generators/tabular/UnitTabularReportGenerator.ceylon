@@ -49,13 +49,12 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
     "Compare two location-unit pairs."
     shared actual Comparison comparePairs([Point, IUnit] one, [Point, IUnit] two) {
         return comparing(
-            comparingOn(([Point, IUnit] pair) => pair.first,
+            comparingOn(Tuple<Point|IUnit, Point, [IUnit]>.first,
                 DistanceComparator(hq, dimensions).compare),
-            comparingOn(([Point, IUnit] pair) =>
-                pair.rest.first.owner, increasing<Player>),
-            comparingOn(([Point, IUnit] pair) => pair.rest.first.kind,
-                increasing<String>),
-            comparingOn(([Point, IUnit] pair) => pair.rest.first.name,
-                increasing<String>))(one, two);
+            comparingOn(Tuple<Point|IUnit, Point, [IUnit]>.rest,
+                comparingOn(Tuple<IUnit, IUnit, []>.first,
+                    comparing(comparingOn(IUnit.owner, increasing<Player>),
+                        comparingOn(IUnit.kind, increasing<String>),
+                        comparingOn(IUnit.name, increasing<String>)))))(one, two);
     }
 }
