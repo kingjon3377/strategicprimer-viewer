@@ -140,7 +140,7 @@ shared class Worker satisfies IWorker&HasPortrait {
     "Get a Job by name: the Job by that name the worker has, or a newly-constructed one if
      it didn't have one."
     shared actual IJob getJob(String name) {
-        if (exists retval = find((job) => job.name == name)) {
+        if (exists retval = find(matchingValue(name, IJob.name))) {
             return retval;
         } else {
             IJob retval = Job(name, 0);
