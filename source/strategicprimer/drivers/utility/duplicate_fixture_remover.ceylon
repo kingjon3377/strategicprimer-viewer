@@ -174,15 +174,15 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
             `ResourcePile`->CoalescedHolder<ResourcePile, [String, String, String, Integer]>(
                 (pile) => [pile.kind, pile.contents, pile.quantity.units, pile.created], combineResources),
             `Animal`->CoalescedHolder<Animal, [String, String, Integer]>(
-                (animal) => [animal.kind, animal.status, animal.born], combineAnimals),
-            `Implement`->CoalescedHolder<Implement, String>(Implement.kind, combineEquipment),
+                (animal) => [animal.kind, animal.status, animal.born], combinePopulations<Animal>),
+            `Implement`->CoalescedHolder<Implement, String>(Implement.kind, combinePopulations<Implement>),
             `Forest`->CoalescedHolder<Forest, [String, Boolean]>((forest) => [forest.kind, forest.rows],
                 combineForests),
             `Grove`->CoalescedHolder<Grove, [Boolean, Boolean, String]>(
-                (grove) => [grove.orchard, grove.cultivated, grove.kind], combineGroves),
+                (grove) => [grove.orchard, grove.cultivated, grove.kind], combinePopulations<Grove>),
             `Meadow`->CoalescedHolder<Meadow, [String, Boolean, Boolean, FieldStatus]>(
                 (meadow) => [meadow.kind, meadow.field, meadow.cultivated, meadow.status], combineMeadows),
-            `Shrub`->CoalescedHolder<Shrub, String>(Shrub.kind, combineShrubs)
+            `Shrub`->CoalescedHolder<Shrub, String>(Shrub.kind, combinePopulations<Shrub>)
         };
         for (fixture in stream) {
             if (is {IFixture*} fixture) {
@@ -260,17 +260,10 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
     }
     "A two-parameter wrapper around [[HasPopulation.combined]]."
     Type combine<Type>(Type one, Type two) given Type satisfies HasPopulation<Type> => one.combined(two);
-    "Combine like [[Grove]]s into a single object. We assume all Groves are identical except for population and ID."
-    // TODO: combine these now-identical methods: easier said than done given how they are called
-    Grove combineGroves({Grove+} list) => list.rest.fold(list.first)(combine);
-    "Combine like [[Shrub]]s into a single object. We assume all Shrubs are of the same kind."
-    Shrub combineShrubs({Shrub+} list) => list.rest.fold(list.first)(combine);
-    "Combine like [[Implement]]s into a single object. We assume that all Implements are of
-     the same kind."
-    Implement combineEquipment({Implement+} list) => list.rest.fold(list.first)(combine);
-    "Combine like Animals into a single Animal population. We assume that all animals have the
-     same kind, domestication status, and turn of birth."
-    Animal combineAnimals({Animal+} list) => list.rest.fold(list.first)(combine);
+    "Combine like populations into a single object. We assume all are identical (i.e. of the same kind, and
+     in the case of animals have the same domestication status and turn of birth) except for population."
+    Type combinePopulations<Type>({Type+} list) given Type satisfies HasPopulation<Type> =>
+            list.rest.fold(list.first)(combine);
     "Combine like resources into a single resource pile. We assume that all resources have
      the same kind, contents, units, and created date."
     ResourcePile combineResources({ResourcePile*} list) {
