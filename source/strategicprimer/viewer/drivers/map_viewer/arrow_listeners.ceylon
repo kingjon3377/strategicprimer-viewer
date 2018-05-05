@@ -12,8 +12,7 @@ import javax.swing {
 }
 
 import lovelace.util.jvm {
-    platform,
-    ActionWrapper
+    platform
 }
 object arrowListenerInitializer {
 	"A map from key-codes for arrow keys and the numeric keypad to Strings we will use to
