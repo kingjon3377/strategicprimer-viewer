@@ -258,17 +258,19 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
         return Meadow(top.kind, top.field, top.cultivated, top.id, top.status,
             list.map(Meadow.acres).map(decimalize).fold(decimalNumber(0))(plus));
     }
+    "A two-parameter wrapper around [[HasPopulation.combined]]."
+    Type combine<Type>(Type one, Type two) given Type satisfies HasPopulation<Type> => one.combined(two);
     "Combine like [[Grove]]s into a single object. We assume all Groves are identical except for population and ID."
     // TODO: combine these now-identical methods: easier said than done given how they are called
-    Grove combineGroves({Grove+} list) => list.rest.fold(list.first)((Grove one, Grove two) => one.combined(two));
+    Grove combineGroves({Grove+} list) => list.rest.fold(list.first)(combine);
     "Combine like [[Shrub]]s into a single object. We assume all Shrubs are of the same kind."
-    Shrub combineShrubs({Shrub+} list) => list.rest.fold(list.first)((one, two) => one.combined(two));
+    Shrub combineShrubs({Shrub+} list) => list.rest.fold(list.first)(combine);
     "Combine like [[Implement]]s into a single object. We assume that all Implements are of
      the same kind."
-    Implement combineEquipment({Implement+} list) => list.rest.fold(list.first)((one, two) => one.combined(two));
+    Implement combineEquipment({Implement+} list) => list.rest.fold(list.first)(combine);
     "Combine like Animals into a single Animal population. We assume that all animals have the
      same kind, domestication status, and turn of birth."
-    Animal combineAnimals({Animal+} list) => list.rest.fold(list.first)((one, two) => one.combined(two));
+    Animal combineAnimals({Animal+} list) => list.rest.fold(list.first)(combine);
     "Combine like resources into a single resource pile. We assume that all resources have
      the same kind, contents, units, and created date."
     ResourcePile combineResources({ResourcePile*} list) {
