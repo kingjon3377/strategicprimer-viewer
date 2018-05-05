@@ -69,7 +69,7 @@ shared class WorkerGUI() satisfies SimpleDriver {
             menuHandler.register((event) => process.exit(0), "quit");
             SwingUtilities.invokeLater(() {
                 log.trace("Inside GUI creation lambda");
-                value frame = workerMgmtFrame(options, model, menuHandler);
+                value frame = WorkerMgmtFrame(options, model, menuHandler);
                 log.trace("Created worker mgmt frame");
                 pcml.addPlayerChangeListener(frame);
                 log.trace("Added it as a listener on the PCML");
