@@ -106,7 +106,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
         includeInGUIList = false;
     };
     alias ModifiableTown=>AbstractTown|Village;
-    LazyInit<Map<String,{[Quantity, String, String]*}>> consumption = LazyInit(() {
+    Map<String, {[Quantity, String, String]*}> initConsumption() {
         MutableMap<String, {[Quantity, String, String]*}> retval =
                 HashMap<String, {[Quantity, String, String]*}>();
         for (terrain in ["mountain", "forest", "plains", "ocean"]) {
@@ -131,8 +131,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
              retval.put(terrain, inner.sequence());
         }
         return map(retval);
-    });
-    LazyInit<ExplorationRunner> runner = LazyInit(() {
+    }
+    ExplorationRunner initProduction() {
         ExplorationRunner retval = ExplorationRunner();
         Stack<String> firstTables = LinkedList {
             "mountain_skills", "forest_skills", "plains_skills", "ocean_skills"
@@ -171,7 +171,9 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             }
         }
         return retval;
-    });
+    }
+    LazyInit<Map<String,{[Quantity, String, String]*}>> consumption = LazyInit(initConsumption);
+    LazyInit<ExplorationRunner> runner = LazyInit(initProduction);
     "The (for now active) towns in the given map that don't have 'stats' yet."
     {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) => {
         for (loc in map.locations)
