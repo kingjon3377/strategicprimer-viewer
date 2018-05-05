@@ -4,12 +4,7 @@ import java.awt.event {
     MouseEvent
 }
 
-import javax.swing {
-    JPopupMenu
-}
-
 import strategicprimer.drivers.common {
-    VersionChangeListener,
     SelectionChangeSource,
     SelectionChangeListener
 }
@@ -32,8 +27,7 @@ interface ToolTipSource {
 MouseListener&ToolTipSource&SelectionChangeSource componentMouseListener(
         IViewerModel model, Boolean(TileFixture) zof,
         Comparison(TileFixture, TileFixture) comparator) {
-    JPopupMenu&VersionChangeListener&SelectionChangeSource&SelectionChangeListener menu =
-            terrainChangingMenu(model.mapDimensions.version, model);
+    TerrainChangingMenu menu = TerrainChangingMenu(model.mapDimensions.version, model);
     model.addSelectionChangeListener(menu);
     model.addVersionChangeListener(menu);
     String terrainFixturesAndTop(Point point) {
