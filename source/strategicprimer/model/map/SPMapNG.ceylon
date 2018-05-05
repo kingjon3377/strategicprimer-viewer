@@ -3,7 +3,9 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import lovelace.util.common {
     anythingEqual,
-    NonNullCorrespondence
+    NonNullCorrespondence,
+	matchingValue,
+	matchingPredicate
 }
 import ceylon.collection {
     MutableSet,
@@ -123,7 +125,7 @@ shared class SPMapNG satisfies IMutableMapNG {
         //{TileFixture*} local = fixturesMap[location]; // TODO: syntax sugar once compiler bug fixed
         {TileFixture*} local = fixturesMap.get(location);
         if (fixture.id >= 0,
-	            exists existing = local.find((item) => item.id == fixture.id)) {
+	            exists existing = local.find(matchingValue(fixture.id, TileFixture.id))) {
             Boolean subsetCheck(TileFixture one, TileFixture two) {
                 if (is Subsettable<IFixture> one, one.isSubset(two, noop)) {
                     return true;
@@ -272,7 +274,9 @@ shared class SPMapNG satisfies IMutableMapNG {
                 variable Subsettable<Target>? match = null;
                 variable Point? matchPoint = null;
                 variable Boolean exactly = false;
-                for ([item, ourLocation] in list.follow(list.find(([_, point]) => point == location))
+                for ([item, ourLocation] in list.follow(list
+	                    .find(matchingPredicate(matchingValue(location, Tuple<Point, Point, []>.first),
+		                    Tuple<SubsetType|Point, SubsetType, [Point]>.rest)))
 	                    .coalesced.distinct) {
                     count++;
                     match = item;
