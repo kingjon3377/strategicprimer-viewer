@@ -90,7 +90,7 @@ import strategicprimer.viewer.drivers {
 }
 import strategicprimer.viewer.drivers.map_viewer {
     newUnitDialog,
-    viewerFrame,
+    ViewerFrame,
     ViewerModel,
     IViewerModel,
 	MapGUI
@@ -136,7 +136,7 @@ SPFrame&PlayerChangeListener workerMgmtFrame(SPOptions options,
                 return frame.mapModel;
             }
         } else {
-            SPFrame&MapGUI frame = viewerFrame(ViewerModel(model.map,
+            SPFrame&MapGUI frame = ViewerFrame(ViewerModel(model.map,
                 model.mapFile), menuHandler.actionPerformed);
             SwingUtilities.invokeLater(() => frame.setVisible(true));
             return frame.mapModel;

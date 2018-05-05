@@ -97,7 +97,7 @@ shared class ViewerGUI() satisfies SimpleDriver {
                     topRow + visible.height, leftColumn, leftColumn + visible.width);
             }, "center");
             SwingUtilities.invokeLater(() {
-                SPFrame&MapGUI frame = viewerFrame(model,
+                SPFrame&MapGUI frame = ViewerFrame(model,
                     menuHandler.actionPerformed);
                 menuHandler.register(silentListener(frame.dispose), "close");
                 value selectTileDialogInstance = selectTileDialog(frame, model);
