@@ -27,7 +27,7 @@ shared object pathfinder {
 	shared [Integer, {Point*}] getTravelDistance(IMapNG map, Point start, Point end) {
 		MutableSet<Point> unvisited = HashSet { elements = map.locations; };
 		MutableMap<Point, Integer> tentativeDistances = HashMap<Point, Integer> {
-			*map.locations.map((point) => point->runtime.maxArraySize) };
+			entries = map.locations.map((point) => point->runtime.maxArraySize); };
 		tentativeDistances[start] = 0;
 		variable Point current = start;
 		variable Integer iterations = 0;
