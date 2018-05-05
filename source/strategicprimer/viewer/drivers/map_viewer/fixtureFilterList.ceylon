@@ -37,16 +37,19 @@ import strategicprimer.drivers.common {
 	FixtureMatcher,
 	simpleMatcher
 }
+import lovelace.util.common {
+	inverse
+}
 "A list to let the user select which fixtures ought to be searched."
 SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
     DefaultListModel<FixtureMatcher> matcherListModel =
             ReorderableListModel<FixtureMatcher>();
     for (matcher in [simpleMatcher<Ground>(Ground.exposed, "Ground (exposed)"),
-	        simpleMatcher<Ground>((Ground ground) => !ground.exposed, "Ground"),
+	        simpleMatcher<Ground>(inverse(Ground.exposed), "Ground"),
 	        simpleMatcher<Grove>(Grove.orchard, "Orchards"),
-	        simpleMatcher<Grove>((Grove grove) => !grove.orchard, "Groves"),
+	        simpleMatcher<Grove>(inverse(Grove.orchard), "Groves"),
 	        simpleMatcher<Meadow>(Meadow.field, "Fields"),
-	        simpleMatcher<Meadow>((Meadow meadow) => !meadow.field, "Meadows")]) {
+	        simpleMatcher<Meadow>(inverse(Meadow.field), "Meadows")]) {
         matcherListModel.addElement(matcher);
     }
     object retval extends SwingList<FixtureMatcher>(matcherListModel)
@@ -60,7 +63,7 @@ SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
             }
             value cls = type(fixture);
             matcherListModel.addElement(
-                FixtureMatcher((TileFixture fix) => cls.typeOf(fix), fixture.plural));
+                FixtureMatcher(cls.typeOf, fixture.plural));
             Integer size = matcherListModel.size;
             selectionModel.addSelectionInterval(size - 1, size - 1);
             return true;
