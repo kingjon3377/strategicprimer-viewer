@@ -124,7 +124,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 			workers[id] = worker;
 			unit.addMember(worker);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read ``count`` workers' stats");
 			}
 		}
@@ -135,7 +135,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 				is Integer level = row["level"]);
 			worker.addJob(Job(job, level));
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read ``count`` Job levels");
 			}
 		}
@@ -146,7 +146,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>() satisfie
 				is String skill = row["skill"], is Integer level = row["level"], is Integer hours = row["hours"]);
 			worker.getJob(job).addSkill(Skill(skill, level, hours));
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read ``count`` Skill levels");
 			}
 		}

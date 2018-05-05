@@ -108,7 +108,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 			}
 			map.addFixture(pointFactory(row, column), unit);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read ``count`` units outside fortresses");
 			}
 		}
@@ -139,7 +139,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>() sat
 			}
 			parent.addMember(unit);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read ``count`` units in fortresses");
 			}
 		}

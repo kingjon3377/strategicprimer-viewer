@@ -56,7 +56,7 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>() satisfies
 			}
 			map.addFixture(pointFactory(row, column), forest);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` forests");
 			}
 		}

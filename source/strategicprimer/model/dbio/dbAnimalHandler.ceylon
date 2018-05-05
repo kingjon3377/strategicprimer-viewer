@@ -95,7 +95,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
 			}
 			map.addFixture(pointFactory(row, column), animal);
 			runningTotal++;
-			if ((runningTotal % 50) == 0) {
+			if (50.divides(runningTotal)) {
 				log.trace("Finished reading ``runningTotal`` animal populations");
 			}
 		}
@@ -110,7 +110,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
 			}
 			map.addFixture(pointFactory(row, column), track);
 			runningTotal++;
-			if ((runningTotal % 50) == 0) {
+			if (50.divides(runningTotal)) {
 				log.trace("Finished reading ``runningTotal`` tracks");
 			}
 		}
@@ -130,7 +130,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
 			}
 			parent.addMember(animal);
 			runningTotal++;
-			if ((runningTotal % 50) == 0) {
+			if (50.divides(runningTotal)) {
 				log.trace("Finished reading ``runningTotal`` in-unit animal populations");
 			}
 		}

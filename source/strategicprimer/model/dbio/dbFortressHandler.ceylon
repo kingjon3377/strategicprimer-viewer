@@ -56,7 +56,7 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>() satis
 			}
 			map.addFixture(pointFactory(row, column), fortress);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` fortresses");
 			}
 		}

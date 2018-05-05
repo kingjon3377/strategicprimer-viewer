@@ -92,7 +92,7 @@ object dbMapReader {
 				retval.addRivers(location, River.lake);
 			}
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read terrain for ``count`` tiles");
 			}
 		}

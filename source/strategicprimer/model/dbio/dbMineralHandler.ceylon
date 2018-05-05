@@ -59,7 +59,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 			}
 			map.addFixture(pointFactory(row, column), stone);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read ``count`` mineral veins");
 			}
 		}
@@ -75,7 +75,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 			}
 			map.addFixture(pointFactory(row, column), mineral);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read ``count`` stone deposits");
 			}
 		}

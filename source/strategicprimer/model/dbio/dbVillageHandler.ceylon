@@ -67,7 +67,7 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>() satisfi
 			}
 			map.addFixture(pointFactory(row, column), village);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read ``count`` villages");
 			}
 		}

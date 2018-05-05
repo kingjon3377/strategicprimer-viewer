@@ -46,7 +46,7 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>() satisfies Map
 			}
 			map.addFixture(pointFactory(row, column), mine);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` mines");
 			}
 		}

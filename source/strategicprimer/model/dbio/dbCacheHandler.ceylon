@@ -42,7 +42,7 @@ object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>() sati
 			}
 			map.addFixture(pointFactory(row, column), cache);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` caches");
 			}
 		}

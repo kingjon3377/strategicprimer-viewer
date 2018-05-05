@@ -44,7 +44,7 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
 			}
 			map.addFixture(pointFactory(row, column), adventure);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` adventures");
 			}
 		}

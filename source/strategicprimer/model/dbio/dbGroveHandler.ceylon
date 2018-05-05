@@ -59,7 +59,7 @@ object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>() satisfies M
 			}
 			map.addFixture(pointFactory(row, column), grove);
 			runningTotal++;
-			if ((runningTotal % 50) == 0) {
+			if (50.divides(runningTotal)) {
 				log.trace("Finished reading ``runningTotal`` groves");
 			}
 		}

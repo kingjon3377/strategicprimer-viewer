@@ -106,7 +106,7 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 				is Integer level = row["level"]);
 			population.setSkillLevel(skill, level);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` expertise levels");
 			}
 		}
@@ -117,7 +117,7 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 				exists population = town.population, is Integer resource = row["resource"]);
 			population.addWorkedField(resource);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` worked resource sources");
 			}
 		}
@@ -141,7 +141,7 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 			}
 			population.yearlyProduction.add(pile);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` produced resources");
 			}
 		}
@@ -165,7 +165,7 @@ object dbCommunityStatsHandler extends AbstractDatabaseWriter<CommunityStats, IT
 			}
 			population.yearlyConsumption.add(pile);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` consumed resources");
 			}
 		}

@@ -145,7 +145,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			}
 			map.addFixture(pointFactory(row, column), immortal);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` simple immortals");
 			}
 		}
@@ -177,7 +177,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			}
 			map.addFixture(pointFactory(row, column), immortal);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` immortals with kinds");
 			}
 		}
@@ -223,7 +223,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			}
 			parent.addMember(immortal);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` simple immortals in units");
 			}
 		}
@@ -255,7 +255,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			}
 			parent.addMember(immortal);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` immortals with kinds in units");
 			}
 		}

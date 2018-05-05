@@ -51,7 +51,7 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 				parent.addMember(implement);
 			}
 			runningTotal++;
-			if ((runningTotal % 50) == 0) {
+			if (50.divides(runningTotal)) {
 				log.trace("Finished reading ``runningTotal`` pieces of equipment");
 			}
 		}

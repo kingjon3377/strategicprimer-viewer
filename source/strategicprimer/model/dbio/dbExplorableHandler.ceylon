@@ -55,7 +55,7 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 			}
 			map.addFixture(pointFactory(row, column), cave);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` caves");
 			}
 		}
@@ -70,7 +70,7 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 			}
 			map.addFixture(pointFactory(row, column), battlefield);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` battlefields");
 			}
 		}

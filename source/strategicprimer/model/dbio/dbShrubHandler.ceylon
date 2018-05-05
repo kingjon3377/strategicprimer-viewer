@@ -49,7 +49,7 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>() satisfies M
 			}
 			map.addFixture(pointFactory(row, column), shrub);
 			runningTotal++;
-			if ((runningTotal % 50) == 0) {
+			if (50.divides(runningTotal)) {
 				log.trace("Read ``runningTotal`` shrubs");
 			}
 		}

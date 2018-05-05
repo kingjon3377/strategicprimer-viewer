@@ -44,7 +44,7 @@ object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>() satisfies
 			}
 			map.addFixture(pointFactory(row, column), ground);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` ground");
 			}
 		}

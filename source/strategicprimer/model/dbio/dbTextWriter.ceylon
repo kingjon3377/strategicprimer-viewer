@@ -56,7 +56,7 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>() satisf
 			}
 			map.addFixture(pointFactory(row, column), fixture);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read ``count`` text notes");
 			}
 		}

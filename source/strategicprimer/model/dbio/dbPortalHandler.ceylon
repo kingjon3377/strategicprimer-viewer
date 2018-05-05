@@ -65,7 +65,7 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>() satisfies
 			}
 			map.addFixture(pointFactory(row, column), portal);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read ``count`` portals");
 			}
 		}

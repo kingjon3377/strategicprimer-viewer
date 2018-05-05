@@ -33,7 +33,7 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>() satisfie
 			player.current = current;
 			map.addPlayer(player);
 			count++;
-			if ((count % 50) == 0) {
+			if (50.divides(count)) {
 				log.trace("Read ``count`` players");
 			}
 		}
