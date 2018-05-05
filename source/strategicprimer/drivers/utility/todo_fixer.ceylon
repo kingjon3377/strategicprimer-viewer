@@ -107,7 +107,7 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
     "Search for and fix aquatic villages with non-aquatic races."
     void fixAllVillages(IMapNG map, ICLIHelper cli) {
         {Village*} villages = map.locations
-            .filter((loc) => (map.baseTerrain[loc] else TileType.plains) == TileType.ocean)
+            .filter(matchingValue(TileType.ocean, map.baseTerrain.get))
             .flatMap(map.fixtures.get).narrow<Village>()
             .filter(matchingPredicate(landRaces.contains, Village.race));
         if (!villages.empty) {
