@@ -56,7 +56,7 @@ shared class WorkerPrintCLI() satisfies SimpleDriver {
             }
             if (exists stats = worker.stats) {
                 cli.print(" [``", ".join(zipPairs(statLabelArray,
-                    stats.array.map(WorkerStats.getModifierString)).map(([one, two]) => one + " " + two))``]");
+                    stats.array.map(WorkerStats.getModifierString)).map(" ".join))``]");
             }
             cli.println();
         }
