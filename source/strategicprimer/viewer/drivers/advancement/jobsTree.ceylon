@@ -13,7 +13,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
     ISkill
 }
 "A tree representing a worker's Jobs and Skills."
-JTree&SkillSelectionSource jobsTree(JobTreeModel jtModel) {
+JTree&SkillSelectionSource jobsTree(JobTreeModel jtModel) { // TODO: Convert back to class if we can
     object retval extends JTree(jtModel) satisfies SkillSelectionSource {
         MutableList<SkillSelectionListener> listeners =
                 ArrayList<SkillSelectionListener>();
@@ -29,7 +29,7 @@ JTree&SkillSelectionSource jobsTree(JobTreeModel jtModel) {
             expandRow(i);
         }
         showsRootHandles = true;
-        selectionModel.addTreeSelectionListener((event) {
+        selectionModel.addTreeSelectionListener((event) { // TODO: If this becomes a class again, make a class method and use silentListener().
             ISkill? retval;
             if (exists selectionPath = event.newLeadSelectionPath,
 	                is ISkill component = selectionPath.lastPathComponent) {
