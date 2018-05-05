@@ -70,7 +70,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
 				job.addSkill(Skill(skillName, 0, 0));
 				skills.clear();
 				skills.addAll(job);
-				if (exists temp = skills.find((item) => skillName == item.name)) {
+				if (exists temp = skills.find(matchingValue(skillName, ISkill.name))) {
 					skill = temp;
 				} else {
 					cli.println("Select the new item at the next prompt.");
@@ -118,7 +118,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
 				worker.addJob(Job(jobName, 0));
 				jobs.clear();
 				jobs.addAll(worker);
-				if (exists temp = jobs.find((item) => jobName == item.name)) {
+				if (exists temp = jobs.find(matchingValue(jobName, IJob.name))) {
 					job = temp;
 				} else {
 					cli.println("Select the new item at the next prompt.");
@@ -202,7 +202,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
 				}
 				skills.clear();
 				skills.addAll(ProxyJob(jobName, false, *workers));
-				if (exists temp = skills.find((item) => skillName == item.name)) {
+				if (exists temp = skills.find(matchingValue(skillName, ISkill.name))) {
 					skill = temp;
 				} else {
 					cli.println("Select the new item at the next prompt.");
@@ -247,7 +247,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
 					}
 					jobs.clear();
 					jobs.addAll(ProxyWorker.fromUnit(unit));
-					if (exists temp = jobs.find((item) => jobName == item.name)) {
+					if (exists temp = jobs.find(matchingValue(jobName, IJob.name))) {
 						job = temp;
 					} else {
 						cli.println("Select the new item at the next prompt.");
