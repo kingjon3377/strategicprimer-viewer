@@ -55,7 +55,8 @@ import lovelace.util.jvm {
 import strategicprimer.drivers.common {
     MapChangeListener,
     SPOptions,
-    PlayerChangeListener
+    PlayerChangeListener,
+	IDriverModel
 }
 import strategicprimer.drivers.worker.common {
     IWorkerModel,
@@ -131,6 +132,23 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			return retval;
 		}
 	}
+	static IViewerModel getViewerModel(IDriverModel model, MenuBroker menuHandler) {
+		for (frame in WindowList.getFrames(false, true, true)) {
+			if (is MapGUI frame,
+				anythingEqual(frame.mapModel.mapFile, model.mapFile)) {
+				frame.toFront();
+				if (frame.extendedState == Frame.iconified) {
+					frame.extendedState = Frame.normal;
+				}
+				return frame.mapModel;
+			}
+		} else {
+			SPFrame&MapGUI frame = ViewerFrame(ViewerModel(model.map,
+				model.mapFile), menuHandler.actionPerformed);
+			SwingUtilities.invokeLater(() => frame.setVisible(true));
+			return frame.mapModel;
+		}
+	}
 	SPOptions options;
 	IWorkerModel model;
 	MenuBroker menuHandler;
@@ -157,23 +175,6 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		}
 		return retval;
 	}
-	IViewerModel getViewerModel() {
-		for (frame in WindowList.getFrames(false, true, true)) {
-			if (is MapGUI frame,
-				anythingEqual(frame.mapModel.mapFile, model.mapFile)) {
-				frame.toFront();
-				if (frame.extendedState == Frame.iconified) {
-					frame.extendedState = Frame.normal;
-				}
-				return frame.mapModel;
-			}
-		} else {
-			SPFrame&MapGUI frame = ViewerFrame(ViewerModel(model.map,
-				model.mapFile), menuHandler.actionPerformed);
-			SwingUtilities.invokeLater(() => frame.setVisible(true));
-			return frame.mapModel;
-		}
-	}
 	JTree createReportTree(DefaultTreeModel reportModel) {
 		JTree report = JTree(reportModel);
 		report.rootVisible = true;
@@ -188,7 +189,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 						is IReportNode node = selPath.lastPathComponent) {
 					Point point = node.point;
 					if (point.valid) {
-						IViewerModel viewerModel = getViewerModel();
+						IViewerModel viewerModel = getViewerModel(model, menuHandler);
 						SwingUtilities.invokeLater(() => viewerModel.selection = point);
 					}
 				}
