@@ -17,7 +17,6 @@ import ceylon.test {
 }
 
 import java.io {
-    StringWriter,
     StringReader,
     FileNotFoundException,
     IOException,
@@ -291,8 +290,8 @@ object zeroToOneConversionTests {
 	        Fortress(player, "HQ", 15, TownSize.small));
 	    initialize(expected, pointFactory(1, 1), TileType.temperateForest,
 	        MineralVein("coal", true, 0, 1));
-	    StringWriter expectedXML = StringWriter();
-	    writer.writeSPObject((String str) => expectedXML.append(str), expected);
+	    StringBuilder expectedXML = StringBuilder();
+	    writer.writeSPObject(expectedXML.append, expected);
 	    assertEquals(actualXML.string, expectedXML.string,
 	        "Converted map's serialized form was as expected");
 	    assertEquals(mapIOHelper.readMap(StringReader(ostream.string),
