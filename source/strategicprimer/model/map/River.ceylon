@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    todo
+    todo,
+	matchingValue
 }
 "If a tile has a river, it could be in any one of several directions. This class
  enumerates those directions. Tiles should have a *set* of these.
@@ -44,6 +45,6 @@ shared class River of north|east|south|west|lake satisfies Comparable<River> {
     shared actual Comparison compare(River other) => ordinal <=> other.ordinal;
 
 }
-River|ParseException parseRiver(String description) =>
-        `River`.caseValues.find((river) => river.description == description) else
+River|ParseException parseRiver(String description) => // TODO: Make one generic parseEnum method to replace all the type-specific parseX methods
+        `River`.caseValues.find(matchingValue(description, River.description)) else
             ParseException("Failed to parse River from '``description``'");
