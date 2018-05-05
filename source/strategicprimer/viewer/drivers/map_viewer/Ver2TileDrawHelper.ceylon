@@ -245,8 +245,7 @@ class Ver2TileDrawHelper(
      at the given location"
     Boolean needsFixtureColor(IMapNG map, Point location) {
         if (hasTerrainFixture(map, location), exists top = getTopFixture(map, location)) {
-            if (exists bottom = getDrawableFixtures(map, location)
-                    .reduce((TileFixture? partial, element) => element)) {
+            if (exists bottom = getDrawableFixtures(map, location).last) {
                 return top != bottom;
 //            } else if (map.mountainous[location]) {
             } else if (map.mountainous.get(location)) {
