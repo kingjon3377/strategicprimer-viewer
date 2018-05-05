@@ -22,16 +22,16 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
     shared actual String tableName = "towns";
     Comparison([Point, AbstractTown], [Point, AbstractTown]) comparator =
             comparing(
-                comparingOn(([Point, AbstractTown] pair) => pair.rest.first,
-                    townComparators.compareTownKind),
-                comparingOn(([Point, AbstractTown] pair) => pair.first,
+                comparingOn(Tuple<Point|AbstractTown, Point, [AbstractTown]>.rest,
+                    comparingOn(Tuple<AbstractTown, AbstractTown, []>.first,
+                        townComparators.compareTownKind)),
+                comparingOn(Tuple<Point|AbstractTown, Point, [AbstractTown]>.first,
                     DistanceComparator(hq, dimensions).compare),
-                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.townSize,
-                    townComparators.compareTownSize),
-                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.status,
-                    townComparators.compareTownStatus),
-                comparingOn(([Point, AbstractTown] pair) => pair.rest.first.name,
-                    increasing<String>));
+                comparingOn(Tuple<Point|AbstractTown, Point, [AbstractTown]>.rest,
+                    comparingOn(Tuple<AbstractTown, AbstractTown, []>.first,
+                        comparing(comparingOn(AbstractTown.townSize, townComparators.compareTownSize),
+                            comparingOn(AbstractTown.status, townComparators.compareTownStatus),
+                            comparingOn(AbstractTown.name, increasing<String>)))));
     "The header row for this table."
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Kind", "Size",
         "Status", "Name"];
