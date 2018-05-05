@@ -149,6 +149,20 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			return frame.mapModel;
 		}
 	}
+	static class ReportMouseHandler(JTree reportTree, IDriverModel model, MenuBroker menuHandler)
+			extends MouseAdapter() {
+		shared actual void mousePressed(MouseEvent event) {
+			if (exists selPath = reportTree.getPathForLocation(event.x, event.y),
+				platform.hotKeyPressed(event),
+				is IReportNode node = selPath.lastPathComponent) {
+				Point point = node.point;
+				if (point.valid) {
+					IViewerModel viewerModel = getViewerModel(model, menuHandler);
+					SwingUtilities.invokeLater(() => viewerModel.selection = point);
+				}
+			}
+		}
+	}
 	SPOptions options;
 	IWorkerModel model;
 	MenuBroker menuHandler;
@@ -182,20 +196,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		report.expandPath(TreePath(root.path));
 		report.cellRenderer = ReportTreeRenderer(DistanceComparator(findHQ(), model.mapDimensions));
 		ToolTipManager.sharedInstance().registerComponent(report);
-		object reportMouseHandler extends MouseAdapter() {
-			shared actual void mousePressed(MouseEvent event) {
-				if (exists selPath = report.getPathForLocation(event.x, event.y),
-						platform.hotKeyPressed(event),
-						is IReportNode node = selPath.lastPathComponent) {
-					Point point = node.point;
-					if (point.valid) {
-						IViewerModel viewerModel = getViewerModel(model, menuHandler);
-						SwingUtilities.invokeLater(() => viewerModel.selection = point);
-					}
-				}
-			}
-		}
-		report.addMouseListener(reportMouseHandler);
+		report.addMouseListener(ReportMouseHandler(report, model, menuHandler));
 		return report;
 	}
 	IMapNG mainMap = model.map;
