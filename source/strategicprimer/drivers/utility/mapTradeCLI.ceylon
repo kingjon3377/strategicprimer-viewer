@@ -15,7 +15,8 @@ import strategicprimer.drivers.common.cli {
 }
 import strategicprimer.model.map {
 	IMapNG,
-	TileFixture
+	TileFixture,
+	Player
 }
 import ceylon.collection {
 	ArrayList,
@@ -76,7 +77,9 @@ import ceylon.language.meta {
 	type
 }
 import lovelace.util.common {
-	matchingValue
+	matchingValue,
+	inverse,
+	matchingPredicate
 }
 "An app to copy selected contents from one map to another."
 service(`interface ISPDriver`)
@@ -84,8 +87,8 @@ shared class MapTradeCLI() satisfies SimpleCLIDriver {
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
 		"Trade maps", "Copy contents from one map to another.", true, false);
 	FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
-			String description = "``type.declaration.name``s") {
-		return FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
+			String description = "``type.declaration.name``s") { // TODO: =>
+		return FixtureMatcher(type.typeOf, description);
 	}
 	{FixtureMatcher*} flatten(FixtureMatcher|{FixtureMatcher*} item) {
 		if (is {FixtureMatcher*} item) {
@@ -96,12 +99,11 @@ shared class MapTradeCLI() satisfies SimpleCLIDriver {
 	}
 	{FixtureMatcher*} complements<out T>(Boolean(T) method,
 		String firstDescription, String secondDescription)
-			given T satisfies TileFixture => {simpleMatcher<T>(method, firstDescription),
-			simpleMatcher<T>((T fixture) => !method(fixture),
-				secondDescription)};
+			given T satisfies TileFixture => {simpleMatcher<T>(method, firstDescription), // TODO: [] instead of {}
+			simpleMatcher<T>(inverse(method), secondDescription)};
 	{FixtureMatcher*} initializeMatchers() {
 		return [
-			complements<IUnit>((unit) => !unit.owner.independent, "Units",
+			complements<IUnit>(inverse(matchingPredicate(Player.independent, IUnit.owner)), "Units",
 				"Independent Units"),
 			trivialMatcher(`Fortress`, "Fortresses"),
 			trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"),
