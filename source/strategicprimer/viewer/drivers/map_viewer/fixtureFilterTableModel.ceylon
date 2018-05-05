@@ -25,11 +25,13 @@ import javax.swing.table {
 import lovelace.util.common {
     Reorderable,
     Comparator,
-	inverse
+	inverse,
+	matchingPredicate
 }
 
 import strategicprimer.model.map {
-    TileFixture
+    TileFixture,
+	Player
 }
 import strategicprimer.model.map.fixtures {
     TextFixture,
@@ -87,7 +89,7 @@ import strategicprimer.drivers.common {
 shared class FixtureFilterTableModel extends AbstractTableModel satisfies Reorderable&ZOrderFilter&{FixtureMatcher*}&Comparator<TileFixture> {
 	static FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
 		String description = type.declaration.name + "s") =>
-			FixtureMatcher((TileFixture fixture) => type.typeOf(fixture), description);
+			FixtureMatcher(type.typeOf, description);
 	static {FixtureMatcher*} complements<out T>(Boolean(T) method, String firstDescription,
 		String secondDescription) given T satisfies TileFixture =>
 			[simpleMatcher<T>(method, firstDescription), simpleMatcher<T>(inverse(method), secondDescription)];
@@ -97,13 +99,14 @@ shared class FixtureFilterTableModel extends AbstractTableModel satisfies Reorde
 		// Can't use our preferred initialization form because an Iterable can only be spread
 		// as the *last* argument.
 		for (arg in [
-				complements<IUnit>((unit) => !unit.owner.independent, "Units", // TODO: Use matchingPredicate and inverse instead of lambda
+				complements<IUnit>(matchingPredicate(inverse(Player.independent), IUnit.owner), "Units",
 					"Independent Units"),
 				trivialMatcher(`Fortress`, "Fortresses"),
 				// TODO: Towns should be broken up by kind or size, and maybe by status or owner
 				trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
 				// TODO: break up by owner beyond owned/independent
-				complements<Village>((village) => village.owner.independent, "Independent Villages", "Villages With Suzerain"),
+				complements<Village>(matchingPredicate(Player.independent, Village.owner),
+					"Independent Villages", "Villages With Suzerain"),
 				trivialMatcher(`Mine`), trivialMatcher(`Troll`),
 				trivialMatcher(`Simurgh`), trivialMatcher(`Ogre`), trivialMatcher(`Minotaur`),
 				trivialMatcher(`Griffin`), trivialMatcher(`Sphinx`, "Sphinxes"),
