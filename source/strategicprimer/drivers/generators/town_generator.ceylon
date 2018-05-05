@@ -23,7 +23,8 @@ import strategicprimer.model.map {
     Point,
     IMapNG,
     IFixture,
-    TileType
+    TileType,
+	HasName
 }
 import lovelace.util.jvm {
     isNumeric,
@@ -78,7 +79,8 @@ import java.lang {
     synchronized
 }
 import lovelace.util.common {
-	matchingValue
+	matchingValue,
+	matchingPredicate
 }
 class LazyInit<Wrapped>(Wrapped() generator) {
     variable Wrapped? inner = null;
@@ -471,7 +473,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             IDriverModel model) {
         IDRegistrar idf;
         if (is IMultiMapModel model) {
-            idf = createIDFactory(model.allMaps.map((pair) => pair.first));
+            idf = createIDFactory(model.allMaps.map(Tuple.first));
         } else {
             idf = createIDFactory(model.map);
         }
@@ -484,11 +486,13 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                 if (input.empty) {
                     break;
                 } else if (isNumeric(input), exists id = parseInt(input)) {
-                    value temp = unstattedTowns(model.map).find((loc->town) => town.id == id);
+                    value temp = unstattedTowns(model.map)
+                            .find(matchingPredicate(matchingValue(id, IFixture.id), Entry<Point, ITownFixture>.item));
                     location = temp?.key;
                     town = temp?.item;
                 } else {
-                    value temp = unstattedTowns(model.map).find((loc->town) => town.name == input);
+                    value temp = unstattedTowns(model.map)
+                            .find(matchingPredicate(matchingValue(input, HasName.name), Entry<Point, ITownFixture>.item));
                     location = temp?.key;
                     town = temp?.item;
                 }
