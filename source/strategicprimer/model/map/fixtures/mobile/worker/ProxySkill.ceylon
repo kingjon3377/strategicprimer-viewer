@@ -29,9 +29,10 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
     MutableList<IJob> proxiedJobs = ArrayList<IJob> { elements = proxiedJobsStream; };
     "The name of the skill we're proxying across workers."
     shared actual String name;
+    IJob copyJob(IJob job) => job.copy();
     "Clone this object."
     shared actual ISkill copy() =>
-            ProxySkill(name, parallel, *proxiedJobs.map((job) => job.copy()));
+            ProxySkill(name, parallel, *proxiedJobs.map(copyJob));
     "The lowest level that any proxied Job has in the skill."
     shared actual Integer level => Integer.min(proxiedJobs.flatMap(identity).filter(notThis)
             .filter(matchingValue(name, ISkill.name)).map(ISkill.level)) else 0;
