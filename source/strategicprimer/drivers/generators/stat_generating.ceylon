@@ -127,7 +127,7 @@ shared class StatGeneratingCLI() satisfies SimpleCLIDriver {
      particular unit."
     void enterStatsInUnit(IMultiMapModel model, IUnit unit, ICLIHelper cli) {
         MutableList<Worker> workers = ArrayList { elements = unit.narrow<Worker>()
-            .filter((worker) => !worker.stats exists); };
+            .filter(matchingValue(null, Worker.stats)); };
         while (!workers.empty, exists chosen = cli.chooseFromList(workers,
                 "Which worker do you want to enter stats for?",
                 "There are no workers without stats in that unit.",
