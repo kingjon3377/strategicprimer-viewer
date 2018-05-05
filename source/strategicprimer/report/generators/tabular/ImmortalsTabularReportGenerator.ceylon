@@ -34,5 +34,7 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
             [Point, Immortal] two) =>
             comparing(comparingOn<[Point, Immortal], Point>(
 	                Tuple.first, DistanceComparator(hq, dimensions).compare),
-	            comparingOn<[Point, Immortal], Integer>(([loc, item]) => item.hash, increasing))(one, two);
+	            comparingOn(Tuple<Point|Immortal, Point, [Immortal]>.rest,
+	                comparingOn(Tuple<Immortal, Immortal, []>.first,
+	                    comparingOn(Object.hash, increasing<Integer>))))(one, two);
 }
