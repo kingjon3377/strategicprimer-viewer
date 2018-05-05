@@ -336,8 +336,9 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             return false;
         }
     }
+    Integer hashAccumulator(Integer left, Integer right) => left.or(right);
     shared actual Integer hash =>
-            proxiedList.map(Object.hash).fold(0)((left, right) => left.or(right));
+            proxiedList.map(Object.hash).fold(0)(hashAccumulator);
     shared actual Integer dc => getConsensus(IUnit.dc) else 10;
     "Proxy an additonal unit."
     shared actual void addProxied(IUnit item) {
