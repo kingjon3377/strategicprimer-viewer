@@ -4,7 +4,10 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+	matchingPredicate,
+	inverse,
+	comparingOn
 }
 
 import strategicprimer.model.map {
@@ -24,7 +27,8 @@ import strategicprimer.model.map.fixtures.resources {
     Shrub,
     MineralVein,
     Grove,
-	HarvestableFixture
+	HarvestableFixture,
+	FieldStatus
 }
 import strategicprimer.report {
     IReportNode
@@ -50,6 +54,9 @@ import ceylon.language.meta {
 import ceylon.logging {
 	Logger,
 	logger
+}
+import strategicprimer.model.map.fixtures.towns {
+	TownStatus
 }
 Logger log = logger(`module strategicprimer.report`);
 "A report generator for harvestable fixtures (other than caves and battlefields, which
@@ -91,7 +98,8 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
     "Convert a Map from kinds to Points to a HtmlList."
 	// Can't be static because HtmlList isn't and can't be ("Class without parameter list may not be annotated sealed")
     HeadedList<String> mapToList(Multimap<String, Point> map, String heading) =>
-            HtmlList(heading, map.asMap.filter((key->list) => !list.empty)
+            HtmlList(heading, map.asMap.filter(inverse(matchingPredicate(Iterable<Point>.empty,
+			        Entry<String, {Point*}>.item)))
 		        .map((key->list) => "``key``: at ``commaSeparatedList(list)``").sort(increasing));
     """Produce a sub-report(s) dealing with a single "harvestable" fixture(s). It is to be
        removed from the collection. Caves and battlefields, though HarvestableFixtures, are *not*
@@ -146,11 +154,11 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         MutableMultimap<String, Point> minerals = HashMultimap<String, Point>();
         MutableHeadedMap<Mine, Point> mines = HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
                 comparing(byIncreasing(Mine.kind),
-                    byIncreasing((Mine mine) => mine.status.ordinal),
+                    comparingOn(Mine.status, byIncreasing(TownStatus.ordinal)),
                     byIncreasing(Mine.id)));
         MutableHeadedMap<Meadow, Point> meadows = HeadedMapImpl<Meadow, Point>(
                 "<h5>Meadows and Fields</h5>", comparing(byIncreasing(Meadow.kind),
-                    byIncreasing((Meadow meadow) => meadow.status.ordinal),
+                    comparingOn(Meadow.status, byIncreasing(FieldStatus.ordinal)),
                     byIncreasing(Meadow.id)));
         MutableHeadedMap<Grove, Point> groves = HeadedMapImpl<Grove, Point>("<h5>Groves and Orchards</h5>",
                     comparing(byIncreasing(Grove.kind), byIncreasing(Grove.id)));
