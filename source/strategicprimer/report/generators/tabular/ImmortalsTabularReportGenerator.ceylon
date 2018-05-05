@@ -26,7 +26,7 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Immortal item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
         fixtures.remove(key);
-        return [{distanceString(loc, hq, dimensions), loc.string, item.string}];
+        return [[distanceString(loc, hq, dimensions), loc.string, item.string]];
     }
     "Compare two Point-fixture pairs."
     // TODO: There were two identical hash-based comparators in sequence; I'd guess an earlier refactoring lost a desired comparator. Recover it.
