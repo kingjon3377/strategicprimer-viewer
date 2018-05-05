@@ -144,6 +144,19 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             Integer number,
             """The number to "underflow" to"""
             Integer max) => if (number <= 0) then max else number - 1;
+    "The intersection of two sets; here so it can be passed as a method reference rather than
+     a lambda in [[playerChoices]]."
+    static Set<T> intersection<T>(Set<T> one, Set<T> two) given T satisfies Object =>
+            one.intersection(two);
+    "If [[fixture]] is a [[Fortress]], return it; otherwise, return a Singleton containing it.
+     This is intended to be used in [[Iterable.flatMap]]."
+    static {IFixture*} unflattenNonFortresses(TileFixture fixture) {
+        if (is Fortress fixture) {
+            return fixture;
+        } else {
+            return Singleton(fixture);
+        }
+    }
     MutableList<MovementCostListener> mcListeners = ArrayList<MovementCostListener>();
     MutableList<SelectionChangeListener> scListeners =
             ArrayList<SelectionChangeListener>();
@@ -155,17 +168,11 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             extends SimpleMultiMapModel.copyConstructor(model) {}
     "All the players shared by all the maps."
     shared actual {Player*} playerChoices => allMaps.map(Tuple.first).map(IMapNG.players).map(set)
-                .fold(set(map.players))((one, two) => one.intersection(two));
+                .fold(set(map.players))(intersection);
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) {
-        return map.locations.flatMap(map.fixtures.get)
-            .flatMap((element) {
-                if (is Fortress element) {
-                    return element;
-                } else {
-                    return Singleton(element);
-                }
-            }).narrow<IUnit>().filter(matchingValue(player, HasOwner.owner));
+        return map.locations.flatMap(map.fixtures.get).flatMap(unflattenNonFortresses)
+                .narrow<IUnit>().filter(matchingValue(player, HasOwner.owner));
     }
     "Tell listeners that the selected point changed."
     void fireSelectionChange(Point old, Point newSelection) {
