@@ -5,6 +5,9 @@ import ceylon.collection {
     HashMap,
     MutableSet
 }
+import lovelace.util.common {
+	inversePredicate=inverse
+}
 
 "A MutableMap that actually executes the removal of elements only when the coalesce()
  method is called."
@@ -40,7 +43,7 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
     }
 
     shared actual Iterator<Integer->Item> iterator() =>
-            backing.filterKeys((key) => !backing.contains(key)).iterator();
+            backing.filterKeys(inversePredicate(backing.contains)).iterator();
 
     shared actual Item? put(Integer key, Item item) {
         toRemove.remove(key);
