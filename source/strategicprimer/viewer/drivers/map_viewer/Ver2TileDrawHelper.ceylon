@@ -34,7 +34,8 @@ import strategicprimer.drivers.common {
 	FixtureMatcher
 }
 import lovelace.util.common {
-	matchingValue
+	matchingValue,
+	inverse
 }
 
 "A [[TileDrawHelper]] for version-2 maps."
@@ -213,9 +214,8 @@ class Ver2TileDrawHelper(
     "The drawable fixtures at the given location."
     {TileFixture*} getDrawableFixtures(IMapNG map, Point location) {
 //        return map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
-        return map.fixtures.get(location)
-            .filter((fixture) => !fixture is TileTypeFixture).filter(filter)
-            .sort(compareFixtures);
+        return map.fixtures.get(location).filter(inverse(`TileTypeFixture`.typeOf))
+            .filter(filter).sort(compareFixtures);
     }
     "Get the image representing the given configuration of rivers."
     Image getRiverImage({River*} rivers) {
