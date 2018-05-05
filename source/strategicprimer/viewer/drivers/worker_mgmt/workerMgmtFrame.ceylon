@@ -92,7 +92,7 @@ import strategicprimer.viewer.drivers {
     IOHandler { filteredFileChooser }
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    newUnitDialog,
+    NewUnitDialog,
     ViewerFrame,
     ViewerModel,
     IViewerModel,
@@ -108,8 +108,7 @@ import lovelace.util.common {
 	silentListener
 }
 import strategicprimer.drivers.gui.common {
-    SPFrame,
-    SPDialog
+    SPFrame
 }
 "A window to let the player manage units."
 class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
@@ -201,8 +200,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	}
 	IMapNG mainMap = model.map;
 	IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
-	SPDialog&NewUnitSource&PlayerChangeListener newUnitFrame =
-			newUnitDialog(model.currentPlayer,
+	NewUnitDialog newUnitFrame =
+			NewUnitDialog(model.currentPlayer, // TODO: reformat
 		idf);
 	IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
 	value tree = workerTree(treeModel, model.players, () => mainMap.currentTurn,
