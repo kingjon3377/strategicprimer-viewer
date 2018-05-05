@@ -4,7 +4,9 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+	matchingValue,
+	matchingPredicate
 }
 import lovelace.util.jvm {
     singletonRandom
@@ -145,7 +147,7 @@ shared object simpleMovementModel {
 	        ability = 0;
 	    }
 	    Integer ranks = worker.flatMap(identity)
-	        .filter((skill) => "perception" == skill.name.lowercased)
+	        .filter(matchingPredicate(matchingValue("perception", String.lowercased), ISkill.name))
 	        .map(ISkill.level).reduce(plus) else 0;
 	    return ability + (ranks * 2);
 	}
