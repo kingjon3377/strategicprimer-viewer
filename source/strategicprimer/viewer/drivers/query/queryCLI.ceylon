@@ -170,7 +170,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				model.map.addFixture(point, addend);
 				if (is IMultiMapModel model) {
 					for ([map, file] in model.subordinateMaps) {
-						if (exists found = map.fixtures.get(point).find((item) => fixture.isSubset(item, noop))) {
+						if (exists found = map.fixtures.get(point).find((item) => fixture.isSubset(item, noop))) { // TODO: Make isSubset's second parameter default to noop so we can use a method reference instead of a lambda here, below, and perhaps elsewhere
 							map.removeFixture(point, found);
 						}
 						map.addFixture(point, addend.copy(zero));
