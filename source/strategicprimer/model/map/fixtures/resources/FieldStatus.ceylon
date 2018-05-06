@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    todo
+    todo,
+	matchingValue
 }
 import ceylon.random {
     DefaultRandom
@@ -37,11 +38,9 @@ shared class FieldStatus of fallow|seeding|growing|bearing
     shared actual Comparison compare(FieldStatus other) => ordinal.compare(other.ordinal);
 }
 FieldStatus|ParseException parseFieldStatus(String status) {
-    for (item in `FieldStatus`.caseValues) {
-        if (item.string == status) {
-            return item;
-        }
-    }
+	if (exists item = `FieldStatus`.caseValues.find(matchingValue(status, FieldStatus.string))) {
+		return item;
+	}
     return ParseException("Failed to parse FieldStatus from '``status``'");
 }
 FieldStatus randomStatus(Integer seed) {
