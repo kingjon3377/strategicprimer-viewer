@@ -83,7 +83,7 @@ import lovelace.util.common {
 }
 "An app to copy selected contents from one map to another."
 service(`interface ISPDriver`)
-shared class MapTradeCLI() satisfies SimpleCLIDriver {
+shared class MapTradeCLI() satisfies SimpleCLIDriver { // TODO: convert to class-with-constructor and make helpers static
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
 		"Trade maps", "Copy contents from one map to another.", true, false);
 	FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
@@ -99,8 +99,8 @@ shared class MapTradeCLI() satisfies SimpleCLIDriver {
 	}
 	{FixtureMatcher*} complements<out T>(Boolean(T) method,
 		String firstDescription, String secondDescription)
-			given T satisfies TileFixture => {simpleMatcher<T>(method, firstDescription), // TODO: [] instead of {}
-			simpleMatcher<T>(inverse(method), secondDescription)};
+			given T satisfies TileFixture => [simpleMatcher<T>(method, firstDescription),
+			simpleMatcher<T>(inverse(method), secondDescription)];
 	{FixtureMatcher*} initializeMatchers() {
 		return [
 			complements<IUnit>(inverse(matchingPredicate(Player.independent, IUnit.owner)), "Units",
