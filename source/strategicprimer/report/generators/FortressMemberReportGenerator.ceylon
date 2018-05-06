@@ -196,9 +196,7 @@ shared class FortressMemberReportGenerator(
             }
         }
         IReportNode resources = ListReportNode("Resources:");
-        for (node in resourceKinds.items) {
-            resources.addIfNonEmpty(node);
-        }
+        resources.addIfNonEmpty(*resourceKinds.items);
         IReportNode retval = SectionListReportNode(4, "Resources and Equipment:");
         retval.addIfNonEmpty(resources, equipment);
         if (retval.childCount == 0) {
