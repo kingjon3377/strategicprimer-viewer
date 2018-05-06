@@ -67,6 +67,16 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
 			return Singleton(fixture);
 		}
 	}
+	"Add the given unit at the given location in the given map."
+	static void addUnitAtLocationImpl(IUnit unit, Point location, IMutableMapNG map) {
+		//if (exists fortress = map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
+		if (exists fortress = map.fixtures.get(location)
+				.narrow<Fortress>().find(matchingValue(unit.owner, Fortress.owner))) {
+			fortress.addMember(unit.copy(false));
+		} else {
+			map.addFixture(location, unit.copy(false));
+		}
+	}
     variable Player? currentPlayerImpl = null;
     shared new (IMutableMapNG map, JPath? file)
             extends SimpleMultiMapModel(map, file) {}
@@ -136,19 +146,12 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 .sort(comparingOn(String.lowercased, increasing<String>));
     "Add the given unit at the given location in all maps."
     void addUnitAtLocation(IUnit unit, Point location) {
-        void impl(IMutableMapNG map) { // TODO: Convert to class method instead of method-in-method
-            //if (exists fortress = map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
-            if (exists fortress = map.fixtures.get(location)
-	                .narrow<Fortress>().find(matchingValue(unit.owner, Fortress.owner))) {
-                fortress.addMember(unit.copy(false));
-            } else {
-                map.addFixture(location, unit.copy(false));
-            }
-        }
         if (subordinateMaps.empty) {
-            impl(map);
+            addUnitAtLocationImpl(unit, location, map);
         } else {
-            allMaps.map(Tuple.first).each(impl);
+            for (eachMap in allMaps.map(Tuple.first)) {
+                addUnitAtLocationImpl(unit, location, eachMap);
+            }
         }
     }
     "Add a unit to all the maps, at the location of its owner's HQ in the main map."
