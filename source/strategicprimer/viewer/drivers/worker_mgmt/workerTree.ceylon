@@ -169,9 +169,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                             Transferable trans = support.transferable;
                             assert (is  [UnitMember, IUnit][] list =
                                     trans.getTransferData(UnitMemberTransferable.flavor));
-                            for (pair in list) { // TODO: destructuring
-                                wtModel.moveMember(pair.first, pair.rest.first,
-                                    tempTarget);
+                            for ([member, unit] in list) {
+                                wtModel.moveMember(member, unit, tempTarget);
                             }
                             return true;
                         } catch (UnsupportedFlavorException except) {
