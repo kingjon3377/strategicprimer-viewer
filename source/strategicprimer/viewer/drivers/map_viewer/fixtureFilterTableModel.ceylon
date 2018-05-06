@@ -6,8 +6,7 @@ import ceylon.language.meta {
     type
 }
 import ceylon.language.meta.model {
-    ClassModel,
-	ClassOrInterface
+    ClassModel
 }
 
 import java.lang {
@@ -86,43 +85,37 @@ import strategicprimer.drivers.common {
 }
 "A class to allow the Z-order of fixtures to be represented as a table."
 shared class FixtureFilterTableModel extends AbstractTableModel satisfies Reorderable&ZOrderFilter&{FixtureMatcher*}&Comparator<TileFixture> {
-	static FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type, // TODO: Use FixtureMatcher static method instead once defined
-		String description = type.declaration.name + "s") =>
-			FixtureMatcher(type.typeOf, description);
-	static {FixtureMatcher*} complements<out T>(Boolean(T) method, String firstDescription, // TODO: Use FixtureMatcher static method instead once defined
-		String secondDescription) given T satisfies TileFixture =>
-			[FixtureMatcher.simpleMatcher<T>(method, firstDescription), FixtureMatcher.simpleMatcher<T>(inverse(method), secondDescription)];
 	MutableList<FixtureMatcher> matchers;
 	shared new () extends AbstractTableModel() {
 		matchers = ArrayList<FixtureMatcher>();
 		// Can't use our preferred initialization form because an Iterable can only be spread
 		// as the *last* argument.
 		for (arg in [
-				complements<IUnit>(matchingPredicate(inverse(Player.independent), IUnit.owner), "Units",
+				FixtureMatcher.complements<IUnit>(matchingPredicate(inverse(Player.independent), IUnit.owner), "Units",
 					"Independent Units"),
-				trivialMatcher(`Fortress`, "Fortresses"),
+				FixtureMatcher.trivialMatcher(`Fortress`, "Fortresses"),
 				// TODO: Towns should be broken up by kind or size, and maybe by status or owner
-				trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
+				FixtureMatcher.trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
 				// TODO: break up by owner beyond owned/independent
-				complements<Village>(matchingPredicate(Player.independent, Village.owner),
+				FixtureMatcher.complements<Village>(matchingPredicate(Player.independent, Village.owner),
 					"Independent Villages", "Villages With Suzerain"),
-				trivialMatcher(`Mine`), trivialMatcher(`Troll`),
-				trivialMatcher(`Simurgh`), trivialMatcher(`Ogre`), trivialMatcher(`Minotaur`),
-				trivialMatcher(`Griffin`), trivialMatcher(`Sphinx`, "Sphinxes"),
-				trivialMatcher(`Phoenix`, "Phoenixes"), trivialMatcher(`Djinn`, "Djinni"),
-				trivialMatcher(`Centaur`), trivialMatcher(`Fairy`, "Fairies"),
-				trivialMatcher(`Giant`), trivialMatcher(`Dragon`), trivialMatcher(`Cave`),
-				trivialMatcher(`Battlefield`),
-				trivialMatcher(`Animal`), trivialMatcher(`AnimalTracks`),
-				trivialMatcher(`StoneDeposit`, "Stone Deposits"),
-				trivialMatcher(`MineralVein`, "Mineral Veins"),
-				complements<Grove>(Grove.orchard, "Orchards", "Groves"),
-				trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"), trivialMatcher(`Portal`),
-				trivialMatcher(`AdventureFixture`, "Adventures"),
-				trivialMatcher(`CacheFixture`, "Caches"), trivialMatcher(`Oasis`, "Oases"),
-				trivialMatcher(`Forest`), complements<Meadow>(Meadow.field, "Fields", "Meadows"),
-				trivialMatcher(`Shrub`), trivialMatcher(`Hill`), trivialMatcher(`Sandbar`),
-				complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
+				FixtureMatcher.trivialMatcher(`Mine`), FixtureMatcher.trivialMatcher(`Troll`),
+				FixtureMatcher.trivialMatcher(`Simurgh`), FixtureMatcher.trivialMatcher(`Ogre`), FixtureMatcher.trivialMatcher(`Minotaur`),
+				FixtureMatcher.trivialMatcher(`Griffin`), FixtureMatcher.trivialMatcher(`Sphinx`, "Sphinxes"),
+				FixtureMatcher.trivialMatcher(`Phoenix`, "Phoenixes"), FixtureMatcher.trivialMatcher(`Djinn`, "Djinni"),
+				FixtureMatcher.trivialMatcher(`Centaur`), FixtureMatcher.trivialMatcher(`Fairy`, "Fairies"),
+				FixtureMatcher.trivialMatcher(`Giant`), FixtureMatcher.trivialMatcher(`Dragon`), FixtureMatcher.trivialMatcher(`Cave`),
+				FixtureMatcher.trivialMatcher(`Battlefield`),
+				FixtureMatcher.trivialMatcher(`Animal`), FixtureMatcher.trivialMatcher(`AnimalTracks`),
+				FixtureMatcher.trivialMatcher(`StoneDeposit`, "Stone Deposits"),
+				FixtureMatcher.trivialMatcher(`MineralVein`, "Mineral Veins"),
+				FixtureMatcher.complements<Grove>(Grove.orchard, "Orchards", "Groves"),
+				FixtureMatcher.trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"), FixtureMatcher.trivialMatcher(`Portal`),
+				FixtureMatcher.trivialMatcher(`AdventureFixture`, "Adventures"),
+				FixtureMatcher.trivialMatcher(`CacheFixture`, "Caches"), FixtureMatcher.trivialMatcher(`Oasis`, "Oases"),
+				FixtureMatcher.trivialMatcher(`Forest`), FixtureMatcher.complements<Meadow>(Meadow.field, "Fields", "Meadows"),
+				FixtureMatcher.trivialMatcher(`Shrub`), FixtureMatcher.trivialMatcher(`Hill`), FixtureMatcher.trivialMatcher(`Sandbar`),
+				FixtureMatcher.complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
 			]) {
 			if (is {FixtureMatcher*} arg) {
 				matchers.addAll(arg);
@@ -182,7 +175,7 @@ shared class FixtureFilterTableModel extends AbstractTableModel satisfies Reorde
 			}
 		}
 		ClassModel<TileFixture> cls = type(fixture);
-		matchers.add(trivialMatcher(cls, fixture.plural));
+		matchers.add(FixtureMatcher.trivialMatcher(cls, fixture.plural));
 		Integer size = matchers.size;
 		fireTableRowsInserted(size - 1, size - 1);
 		return true;

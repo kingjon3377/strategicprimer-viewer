@@ -69,8 +69,7 @@ import strategicprimer.model.map.fixtures.explorable {
 	Battlefield
 }
 import ceylon.language.meta.model {
-	ClassModel,
-	ClassOrInterface
+	ClassModel
 }
 import ceylon.language.meta {
 	type
@@ -83,9 +82,6 @@ import lovelace.util.common {
 "An app to copy selected contents from one map to another."
 service(`interface ISPDriver`)
 shared class MapTradeCLI satisfies SimpleCLIDriver {
-	static FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
-		String description = "``type.declaration.name``s") =>
-			FixtureMatcher(type.typeOf, description); // TODO: Make this and complements() static methods on FixtureMatcher.
 	static {FixtureMatcher*} flatten(FixtureMatcher|{FixtureMatcher*} item) {
 		if (is {FixtureMatcher*} item) {
 			return item;
@@ -93,39 +89,35 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 			return Singleton(item);
 		}
 	}
-	static {FixtureMatcher*} complements<out T>(Boolean(T) method,
-		String firstDescription, String secondDescription)
-			given T satisfies TileFixture => [FixtureMatcher.simpleMatcher<T>(method, firstDescription),
-			FixtureMatcher.simpleMatcher<T>(inverse(method), secondDescription)];
 	static {FixtureMatcher*} initializeMatchers() => [
-			complements<IUnit>(inverse(matchingPredicate(Player.independent, IUnit.owner)), "Units",
-				"Independent Units"),
-			trivialMatcher(`Fortress`, "Fortresses"),
-			trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"),
-			trivialMatcher(`Portal`), trivialMatcher(`Oasis`, "Oases"),
-			trivialMatcher(`AdventureFixture`, "Adventures"),
-			trivialMatcher(`CacheFixture`, "Caches"), trivialMatcher(`Forest`),
-			trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
-			trivialMatcher(`Village`),
-			trivialMatcher(`Animal`), trivialMatcher(`AnimalTracks`),
-			trivialMatcher(`Troll`),
-			trivialMatcher(`Simurgh`),
-			trivialMatcher(`Ogre`),
-			trivialMatcher(`Minotaur`),
-			trivialMatcher(`Mine`),
-			trivialMatcher(`Griffin`),
-			trivialMatcher(`Sphinx`, "Sphinxes"),
-			trivialMatcher(`Phoenix`, "Phoenixes"),
-			trivialMatcher(`Djinn`, "Djinni"),
-			trivialMatcher(`Centaur`),
-			trivialMatcher(`StoneDeposit`, "Stone Deposits"),
-			trivialMatcher(`MineralVein`, "Mineral Veins"),
-			trivialMatcher(`Fairy`, "Fairies"), trivialMatcher(`Giant`),
-			trivialMatcher(`Dragon`), trivialMatcher(`Cave`), trivialMatcher(`Battlefield`),
-			complements<Grove>(Grove.orchard, "Orchards", "Groves"),
-			trivialMatcher(`Shrub`), complements<Meadow>(Meadow.field, "Fields", "Meadows"),
-			trivialMatcher(`Sandbar`), trivialMatcher(`Hill`),
-			complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
+			FixtureMatcher.complements<IUnit>(inverse(matchingPredicate(Player.independent, IUnit.owner)),
+				"Units", "Independent Units"),
+			FixtureMatcher.trivialMatcher(`Fortress`, "Fortresses"),
+			FixtureMatcher.trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"),
+			FixtureMatcher.trivialMatcher(`Portal`), FixtureMatcher.trivialMatcher(`Oasis`, "Oases"),
+			FixtureMatcher.trivialMatcher(`AdventureFixture`, "Adventures"),
+			FixtureMatcher.trivialMatcher(`CacheFixture`, "Caches"), FixtureMatcher.trivialMatcher(`Forest`),
+			FixtureMatcher.trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
+			FixtureMatcher.trivialMatcher(`Village`),
+			FixtureMatcher.trivialMatcher(`Animal`), FixtureMatcher.trivialMatcher(`AnimalTracks`),
+			FixtureMatcher.trivialMatcher(`Troll`),
+			FixtureMatcher.trivialMatcher(`Simurgh`),
+			FixtureMatcher.trivialMatcher(`Ogre`),
+			FixtureMatcher.trivialMatcher(`Minotaur`),
+			FixtureMatcher.trivialMatcher(`Mine`),
+			FixtureMatcher.trivialMatcher(`Griffin`),
+			FixtureMatcher.trivialMatcher(`Sphinx`, "Sphinxes"),
+			FixtureMatcher.trivialMatcher(`Phoenix`, "Phoenixes"),
+			FixtureMatcher.trivialMatcher(`Djinn`, "Djinni"),
+			FixtureMatcher.trivialMatcher(`Centaur`),
+			FixtureMatcher.trivialMatcher(`StoneDeposit`, "Stone Deposits"),
+			FixtureMatcher.trivialMatcher(`MineralVein`, "Mineral Veins"),
+			FixtureMatcher.trivialMatcher(`Fairy`, "Fairies"), FixtureMatcher.trivialMatcher(`Giant`),
+			FixtureMatcher.trivialMatcher(`Dragon`), FixtureMatcher.trivialMatcher(`Cave`), FixtureMatcher.trivialMatcher(`Battlefield`),
+			FixtureMatcher.complements<Grove>(Grove.orchard, "Orchards", "Groves"),
+			FixtureMatcher.trivialMatcher(`Shrub`), FixtureMatcher.complements<Meadow>(Meadow.field, "Fields", "Meadows"),
+			FixtureMatcher.trivialMatcher(`Sandbar`), FixtureMatcher.trivialMatcher(`Hill`),
+			FixtureMatcher.complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
 		].flatMap(flatten);
 	shared new () {}
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
@@ -148,7 +140,7 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 				}
 			}
 			ClassModel<TileFixture> cls = type(fixture);
-			FixtureMatcher newMatcher = trivialMatcher(cls, fixture.plural);
+			FixtureMatcher newMatcher = FixtureMatcher.trivialMatcher(cls, fixture.plural);
 			askAbout(newMatcher, "new");
 			matchers.add(newMatcher);
 			return newMatcher.displayed;
