@@ -11,7 +11,6 @@ import java.nio.file {
 import strategicprimer.model.map {
     IMutableMapNG
 }
-JPath emptyPath = JPaths.get(""); // TODO: remove unused item
 "A superclass for implementations of interfaces inheriting from [[IMultiMapModel]]."
 shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapModel {
     "The collection of subordinate maps."
