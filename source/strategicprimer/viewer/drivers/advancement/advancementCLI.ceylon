@@ -187,7 +187,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
 	void advanceWorkersInJob(String jobName, ICLIHelper cli, IWorker* workers) {
 		{IJob*} jobs = getWorkerJobs(jobName, *workers);
 		MutableList<ISkill> skills = ArrayList {
-			for (skill in ProxyJob(jobName, false, *workers)) skill
+			elements = ProxyJob(jobName, false, *workers);
 		};
 		while (true) {
 			value chosen = cli.chooseFromList(skills,
