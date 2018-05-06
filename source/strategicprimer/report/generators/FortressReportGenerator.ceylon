@@ -278,9 +278,7 @@ shared class FortressReportGenerator(
                     member, loc));
             }
         }
-        for (node in resourceKinds.items) {
-            resources.addIfNonEmpty(node);
-        }
+        resources.addIfNonEmpty(*resourceKinds.items);
         retval.addIfNonEmpty(units, resources, equipment, contents);
         fixtures.remove(item.id);
         return retval;
