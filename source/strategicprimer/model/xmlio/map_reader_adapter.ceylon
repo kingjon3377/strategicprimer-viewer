@@ -46,7 +46,7 @@ shared object mapIOHelper {
 	IMapReader dbReader = spDatabaseReader;
 	"Turn a series of Strings into a series of equvalent Paths."
 	shared {JPath+} namesToFiles(String+ names) =>
-	        { for (name in names) JPaths.get(name) };
+	        [ for (name in names) JPaths.get(name) ]; // Can't use Iterable.map() instead of a comprehension because JPaths.get() is overloaded
 	"Read a map from a file or a stream.."
 	todo("Port to use ceylon.file, ceylon.io, or ceylon.buffer")
 	shared IMutableMapNG readMap(JPath|JReader file, Warning warner = warningLevels.warn) {
