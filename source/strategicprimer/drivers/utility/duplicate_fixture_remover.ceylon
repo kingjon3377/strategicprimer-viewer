@@ -222,14 +222,10 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
                 assert (nonempty list);
                 cli.print(context);
                 cli.println("The following ``helper.plural.lowercased`` could be combined:");
-                for (item in list) {
-                    cli.println(item.string);
-                }
+                list.map(Object.string).each(cli.println);
                 if (cli.inputBoolean("Combine them? ")) {
                     IFixture combined = helper.combineRaw(list);
-                    for (item in list) {
-                        remove(item);
-                    }
+                    list.each(remove);
                     add(combined);
                 }
             }

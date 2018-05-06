@@ -137,17 +137,13 @@ shared class MapTradeCLI() satisfies SimpleCLIDriver {
 		IMapNG first = model.map;
 		assert (is IMultiMapModel model, exists second = model.subordinateMaps.first?.first);
 		if (cli.inputBoolean("Copy players?")) {
-			for (player in first.players) {
-				second.addPlayer(player);
-			}
+			first.players.each(second.addPlayer);
 		}
 		Boolean copyRivers = cli.inputBoolean("Include rivers?");
 		MutableList<FixtureMatcher> matchers = ArrayList { elements = initializeMatchers(); };
 		void askAbout(FixtureMatcher matcher, String key = "include") => matcher.displayed =
 					cli.inputBooleanInSeries("Include \"``matcher.description``\" items?", key);
-		for (matcher in matchers) {
-			askAbout(matcher);
-		}
+		matchers.each(askAbout);
 		Boolean testFixture(TileFixture fixture) {
 			for (matcher in matchers) {
 				if (matcher.matches(fixture)) {

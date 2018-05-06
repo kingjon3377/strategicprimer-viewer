@@ -295,7 +295,7 @@ shared class HotKeyModifier {
 "Create a key-stroke representing a hot-key accelerator."
 shared KeyStroke createAccelerator(Integer key, HotKeyModifier* modifiers) {
     variable Integer mask = Toolkit.defaultToolkit.menuShortcutKeyMask;
-    for (modifier in modifiers) {
+    for (modifier in modifiers) { // TODO: Can we use reduce() or fold() for this?
         mask = mask.or(modifier.mask);
     }
     return KeyStroke.getKeyStroke(key, mask);

@@ -87,9 +87,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
                 }
                 if (is String temp) {
                     ProxyUnit proxyUnit = ProxyUnit.forKind(temp);
-                    for (unit in playerUnits(currentPlayer, temp)) {
-                        proxyUnit.addProxied(unit);
-                    }
+                    playerUnits(currentPlayer, temp).each(proxyUnit.addProxied);
                     selection = proxyUnit;
                 } else {
                     selection = temp;

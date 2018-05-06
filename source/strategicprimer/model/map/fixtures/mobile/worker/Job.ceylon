@@ -33,9 +33,7 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
             skillSet[skill.name] = skill;
         }
     }
-    for (skill in skills) {
-        addSkill(skill);
-    }
+    skills.each(addSkill);
     ISkill copySkill(ISkill skill) => skill.copy();
     "Clone the Job."
     shared actual IJob copy() =>

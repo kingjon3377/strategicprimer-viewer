@@ -425,9 +425,7 @@ shared class FileChooser {
      given consumer. If the operation is canceled, do nothing."
     shared void call(Anything(JPath) consumer) {
         try {
-            for (file in files) {
-                consumer(file);
-            }
+            files.each(consumer);
         } catch (ChoiceInterruptedException exception) {
             log.info("Choice interrupted or user failed to choose", exception);
         }

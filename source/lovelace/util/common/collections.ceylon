@@ -26,9 +26,7 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
         return retval;
     }
     shared actual void coalesce() {
-        for (number in toRemove) {
-            backing.remove(number);
-        }
+        toRemove.each(backing.remove);
         toRemove.clear();
     }
     shared actual Boolean defines(Object key) =>

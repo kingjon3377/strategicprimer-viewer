@@ -368,15 +368,11 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		Forest[] forests = map.fixtures.get(location).narrow<Forest>().sequence();
 		if (nonempty ground) {
 			cli.println("Kind(s) of ground (rock) on the tile:");
-			for (item in ground) {
-				cli.println(item.string);
-			}
+			ground.map(Object.string).each(cli.println);
 		}
 		if (nonempty forests) {
 			cli.println("Kind(s) of forests on the tile:");
-			for (forest in forests) {
-				cli.println(forest.string);
-			}
+			forests.map(Object.string).each(cli.println);
 		}
 	}
 	"Find the nearest obviously-reachable unexplored location."

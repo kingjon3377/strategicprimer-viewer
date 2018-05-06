@@ -169,7 +169,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                             Transferable trans = support.transferable;
                             assert (is  [UnitMember, IUnit][] list =
                                     trans.getTransferData(UnitMemberTransferable.flavor));
-                            for (pair in list) {
+                            for (pair in list) { // TODO: destructuring
                                 wtModel.moveMember(pair.first, pair.rest.first,
                                     tempTarget);
                             }

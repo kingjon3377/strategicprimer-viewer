@@ -147,9 +147,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                 IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     masterPath, subordinatePath);
                 log.trace("Read maps from the two arguments");
-                for (pair in mapModel.allMaps) {
-                    turnFixer(pair.first);
-                }
+                mapModel.allMaps.map(Tuple.first).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
             }
             case (ParamCount.atLeastTwo) {
@@ -172,9 +170,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                 IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     masterPath, *secondSelectedPaths);
                 log.trace("Read maps from the arguments");
-                for (pair in mapModel.allMaps) {
-                    turnFixer(pair.first);
-                }
+                mapModel.allMaps.map(Tuple.first).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
             }
             case (ParamCount.one) {
@@ -196,9 +192,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                     IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                         chosenFile, *chosenFiles.rest);
                     log.trace("Parsed map(s) from file(s)");
-                    for (pair in mapModel.allMaps) {
-                        turnFixer(pair.first);
-                    }
+                    mapModel.allMaps.map(Tuple.first).each(turnFixer);
                     startDriverOnModel(cli, options, mapModel);
                 } else {
                     log.error("No file chosen");
@@ -223,9 +217,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                 IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     JPaths.get(firstArg), *chosenFiles);
                 log.trace("Parsed maps from the two files");
-                for (pair in mapModel.allMaps) {
-                    turnFixer(pair.first);
-                }
+                mapModel.allMaps.map(Tuple.first).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
             }
         } else if (args.size == 1, ParamCount.atLeastTwo == desiderata) {
@@ -239,9 +231,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                 IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                     JPaths.get(firstArg), *chosenFiles);
                 log.trace("Parsed maps from the files");
-                for (pair in mapModel.allMaps) {
-                    turnFixer(pair.first);
-                }
+                mapModel.allMaps.map(Tuple.first).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
             }
         } else if (args.size == 1) {
@@ -258,9 +248,7 @@ shared interface SimpleDriver satisfies ISPDriver {
             IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
                 JPaths.get(firstArg), *mapIOHelper.namesToFiles(*others));
             log.trace("Parsed paths from arguments");
-            for (pair in mapModel.allMaps) {
-                turnFixer(pair.first);
-            }
+            mapModel.allMaps.map(Tuple.first).each(turnFixer);
             startDriverOnModel(cli, options, mapModel);
         }
     }

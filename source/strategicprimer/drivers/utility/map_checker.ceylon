@@ -255,7 +255,7 @@ shared class MapCheckerGUI() satisfies UtilityDriver {
         window.jMenuBar = UtilityMenu(window);
         window.setVisible(true);
         for (arg in args.coalesced) {
-            window.check(JPaths.get(arg));
+            window.check(JPaths.get(arg)); // can't condense this using Iterable.each() because JPaths.get() is overloaded
         }
     }
 }

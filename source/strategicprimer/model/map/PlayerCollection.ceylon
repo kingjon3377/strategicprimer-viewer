@@ -94,9 +94,7 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
     "Clone the collection."
     shared actual IMutablePlayerCollection copy() {
         IMutablePlayerCollection retval = PlayerCollection();
-        for (player in this) {
-            retval.add(player);
-        }
+        each(retval.add);
         return retval;
     }
     "Get the current player, or a new player with an empty name and number -1."

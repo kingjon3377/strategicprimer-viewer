@@ -77,7 +77,7 @@ shared class SubsetGUI() satisfies ISPDriver {
             throw DriverFailedException(except, "Invalid SP XML in main  map ``first``");
         }
         for (arg in args.rest) {
-            frame.testFile(JPaths.get(arg));
+            frame.testFile(JPaths.get(arg)); // can't condense using Iterable.each because JPaths.get() is overloaded
         }
     }
 }

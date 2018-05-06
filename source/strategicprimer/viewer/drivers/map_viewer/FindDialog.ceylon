@@ -186,9 +186,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         if (is TileFixture fixture) {
             filterList.shouldDisplay(fixture);
         } else if (is {Anything*} fixture) {
-            for (item in fixture) {
-                populate(item);
-            }
+            fixture.each(populate);
         }
     }
     void populateAll() {

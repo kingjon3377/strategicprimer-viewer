@@ -43,9 +43,7 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
 		if (exists top = stream.first) {
 			accept(top);
 		}
-		for (fixture in stream.narrow<TerrainFixture>()) {
-			accept(fixture);
-		}
+		stream.narrow<TerrainFixture>().each(accept);
 		return builder.string;
 	}
 	shared actual String? getToolTipText(MouseEvent event) {

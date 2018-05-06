@@ -68,9 +68,7 @@ shared class ExplorationRunner() {
             builder.append(before);
             builder.append(recursiveConsultTable(middle, location, terrain, mountainous,
                 fixtures, mapDimensions));
-            for (part in broken.skip(2)) {
-                builder.append(part);
-            }
+            broken.skip(2).each(builder.append);
             return builder.string;
         } else {
             return result;
@@ -88,7 +86,7 @@ shared class ExplorationRunner() {
         if (tables.defines(table)) {
             try {
                 for (string in getTable(table).allEvents) {
-                    if (string.contains("#"), recursiveCheck(
+                    if (string.contains("#"), recursiveCheck( // TODO: Use '#', not "#"
                             string.split('#'.equals, true,
                                 false, 3).rest.first else "",
                             state)) {

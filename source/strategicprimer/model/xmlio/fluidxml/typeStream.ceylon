@@ -29,9 +29,7 @@ class TypeStream(Object obj) satisfies {ClassOrInterface<Anything>*} {
 					if (exists superclass = item.extendedType) {
 						queue.offer(superclass);
 					}
-					for (superclass in item.satisfiedTypes) {
-						queue.offer(superclass);
-					}
+					item.satisfiedTypes.each(queue.offer);
 					cache.add(item);
 					return item;
 				}

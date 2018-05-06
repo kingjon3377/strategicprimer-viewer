@@ -18,11 +18,7 @@ shared class EnumCounter<Type>() given Type satisfies Object {
         }
     }
     "Count the items in a sequence."
-    shared void countMany(Type* values) {
-        for (item in values) {
-            count(item);
-        }
-    }
+    shared void countMany(Type* values) => values.each(count);
     "Get the count for a given value."
     shared Integer getCount(Type item) => counts[item]?.sum else 0;
 }

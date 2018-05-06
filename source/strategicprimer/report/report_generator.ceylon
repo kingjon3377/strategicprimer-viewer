@@ -24,7 +24,8 @@ import strategicprimer.model.map {
     IMapNG,
     TileFixture,
     invalidPoint,
-    MapDimensions
+    MapDimensions,
+	HasOwner
 }
 import strategicprimer.model.map.fixtures {
     TerrainFixture,
@@ -198,11 +199,8 @@ shared object reportGenerator {
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
 	    Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
 	        DistanceComparator(hq, dimensions).compare, byIncreasing(IFixture.hash));
-	    for ([loc, fixture] in fixtures.items) {
-	        if (is IUnit|Fortress fixture, fixture.owner == player) {
-	            fixtures.remove(fixture.id);
-	        }
-	    }
+	    fixtures.items.map(Tuple.rest).map(Tuple.first).narrow<IUnit|Fortress>()
+	            .filter(matchingValue(player, HasOwner.owner)).map(IFixture.id).each(fixtures.remove);
 	    fixtures.coalesce();
 	    createSubReports(builder, fixtures, map, player,
 	        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
@@ -272,11 +270,8 @@ shared object reportGenerator {
 	    Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
 	        DistanceComparator(hq, dimensions).compare,
 	        byIncreasing(IFixture.hash));
-	    for ([loc, fixture] in fixtures.items) {
-	        if (is IUnit|Fortress fixture, fixture.owner == player) {
-	            fixtures.remove(fixture.id);
-	        }
-	    }
+	    fixtures.items.map(Tuple.rest).map(Tuple.first).narrow<IUnit|Fortress>()
+	            .filter(matchingValue(player, HasOwner.owner)).map(IFixture.id).each(fixtures.remove);
 	    fixtures.coalesce();
 	    IReportNode retval = RootReportNode(
 	        "Strategic Primer map summary abbreviated report");

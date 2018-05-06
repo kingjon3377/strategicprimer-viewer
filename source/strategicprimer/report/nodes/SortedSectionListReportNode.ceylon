@@ -25,9 +25,7 @@ shared class SortedSectionListReportNode
             extends SectionListReportNode(level, text) {}
     variable Boolean sorting = true;
     shared void appendNodes(MutableTreeNode* newChildren) {
-        for (child in newChildren) {
-            super.appendNode(child);
-        }
+        newChildren.each(super.appendNode);
         if (sorting) {
             // We use List<> rather than Vector<> because the latter fails at runtime
             // in the metamodel with "Class has more than one overloaded constructor"

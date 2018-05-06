@@ -137,9 +137,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
         } else {
             IReportNode retval = SectionListReportNode(4,
                 "Animal sightings or encounters");
-            for (node in items.items) {
-                retval.appendNode(node);
-            }
+            items.items.each(retval.appendNode);
             return retval;
         }
     }

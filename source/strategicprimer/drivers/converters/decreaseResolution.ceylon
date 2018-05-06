@@ -50,9 +50,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
 	"Can only convert maps with even numbers of rows and columns"
 	assert (old.dimensions.rows % 2 == 0, old.dimensions.columns % 2 == 0);
     PlayerCollection players = PlayerCollection();
-    for (player in old.players) {
-        players.add(player);
-    }
+    old.players.each(players.add);
     Integer newColumns = old.dimensions.columns / 2;
     Integer newRows = old.dimensions.rows / 2;
     IMutableMapNG retval = SPMapNG(MapDimensionsImpl(newRows, newColumns, 2), players,

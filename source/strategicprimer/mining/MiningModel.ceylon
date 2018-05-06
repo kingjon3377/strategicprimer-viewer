@@ -99,27 +99,21 @@ class MiningModel(initial, seed, kind) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
-        for (point in points) {
-            unnormalized.remove(point);
-        }
+        points.each(unnormalized.remove);
     }
     for (column->points in unnormalized.keys.group(getColumn).
                 sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, increasing<Integer>))) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
-        for (point in points) {
-            unnormalized.remove(point);
-        }
+        points.each(unnormalized.remove);
     }
     for (column->points in unnormalized.keys.group(getColumn).
                 sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, decreasing<Integer>))) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
-        for (point in points) {
-            unnormalized.remove(point);
-        }
+        points.each(unnormalized.remove);
     }
     Integer minimumColumn = min(unnormalized.keys.map(getColumn)) else 0;
     "A mapping from positions (normalized so they could be spit out into a spreadsheet)

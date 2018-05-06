@@ -215,9 +215,7 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
                                 Anything(String) formatter) => produceSingle(fixtures, map,
                                 formatter, entry.key, entry.item));
             }
-            for (list in all) {
-                ostream(list.string);
-            }
+            all.map(Object.string).each(ostream);
         }
     }
     """Produce a sub-report dealing with a "harvestable" fixture. All fixtures

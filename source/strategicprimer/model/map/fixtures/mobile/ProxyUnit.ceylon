@@ -282,9 +282,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
                         }
                     }
                 } else {
-                    for (item in member.proxied) {
-                        addMember(item);
-                    }
+                    member.proxied.each(addMember);
                 }
             } else {
 	            for (unit in proxiedList) {

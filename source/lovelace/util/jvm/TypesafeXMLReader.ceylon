@@ -33,9 +33,7 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent>&Destroyable {
             wrapped = XMLInputFactory.newInstance().createXMLEventReader(reader);
             closeHandles.offer(reader.close);
         }
-        for (method in closeMethods) {
-            closeHandles.offer(method);
-        }
+        closeMethods.each(closeHandles.offer);
     }
     "Close the wrapped stream and prevent reading any further data."
     shared actual void destroy(Throwable? error) {

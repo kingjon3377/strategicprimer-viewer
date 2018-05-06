@@ -158,9 +158,7 @@ SPFrame explorationFrame(IExplorationModel model,
             satisfies PlayerChangeListener {
         shared actual void playerChanged(Player? old, Player newPlayer) {
             clear();
-            for (unit in model.getUnits(newPlayer)) {
-                addElement(unit);
-            }
+            model.getUnits(newPlayer).each(addElement);
         }
     }
     SwingList<IUnit> unitList = SwingList<IUnit>(unitListModel);
@@ -379,11 +377,9 @@ SPFrame explorationFrame(IExplorationModel model,
             {[String, Anything()]*} explorerActions = [[
                 "Should the explorer swear any villages on this tile?", () {
                 model.swearVillages();
-//                        for (fixture in model.map.fixtures[model.selectedUnitLocation] // TODO: syntax sugar once compiler bug fixed
-                for (fixture in model.map.fixtures.get(model.selectedUnitLocation)
-                    .narrow<Village>()) {
-                    selectedValuesList.add(fixture);
-                }
+                //model.map.fixtures[model.selectedUnitLocation].narrow<Village>() // TODO: syntax sugar once compiler bug fixed
+                model.map.fixtures.get(model.selectedUnitLocation).narrow<Village>()
+                        .each(selectedValuesList.add);
             }], ["Should the explorer dig to find what kind of ground is here?", model.dig]];
             shared actual void actionPerformed(ActionEvent event) =>
                     SwingUtilities.invokeLater(() {

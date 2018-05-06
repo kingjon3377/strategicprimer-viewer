@@ -303,7 +303,7 @@ shared class SPMenu extends JMenuBar {
             }
         }
         viewMenu.add(currentPlayerItem);
-        for (item in treeItems) {
+        for (item in treeItems) { // can't use Iterable.each() because JMenu.add() is overloaded
             viewMenu.add(item);
         }
         return viewMenu;
@@ -313,9 +313,5 @@ shared class SPMenu extends JMenuBar {
         menu.enabled = false;
         return menu;
     }
-    shared new (JMenu* menus) extends JMenuBar() {
-        for (menu in menus) {
-            add(menu);
-        }
-    }
+    shared new (JMenu* menus) extends JMenuBar() { menus.each(add); }
 }

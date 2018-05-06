@@ -139,9 +139,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
                     } else if (flavor == CurriedFixtureTransferable.flavor) {
                         assert (is Transferable[] curried =
                                 trans.getTransferData(flavor));
-                        for (item in curried) {
-                            handleDrop(item);
-                        }
+                        curried.each(handleDrop);
                     } else {
                         throw UnsupportedFlavorException(
                             trans.transferDataFlavors.array.first);

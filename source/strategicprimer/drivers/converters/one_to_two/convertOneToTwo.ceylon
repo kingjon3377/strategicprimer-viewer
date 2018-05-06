@@ -82,9 +82,7 @@ shared IMapNG convertOneToTwo(
 	    oneToTwoConfig.nextTurn);
     Player independent = old.players.independent;
     retval.addPlayer(independent);
-    for (player in old.players) {
-        retval.addPlayer(player);
-    }
+    old.players.each(retval.addPlayer);
     MutableList<Point> converted = LinkedList<Point>();
     IDRegistrar idFactory = createIDFactory(old);
     IMapNG oldCopy = old.copy(false, null);
@@ -125,7 +123,7 @@ shared IMapNG convertOneToTwo(
         }
     }
     "Convert a single version-1 tile to the equivalent version-2 tiles."
-    {Point*} convertTile(Point point) {
+    {Point*} convertTile(Point point) { // TODO: fix indentation here
         Point[] initial = [ for (i in 0:oneToTwoConfig.expansionFactor)
         for (j in 0:oneToTwoConfig.expansionFactor)
         pointFactory(point.row * oneToTwoConfig.expansionFactor + i,
