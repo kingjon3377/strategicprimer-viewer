@@ -21,7 +21,8 @@ import ceylon.logging {
     Logger
 }
 import lovelace.util.common {
-	anythingEqual
+	anythingEqual,
+	matchingValue
 }
 Logger log = logger(`module strategicprimer.model`);
 "An IWorker implementation to make the UI able to operate on all of a unit's workers at
@@ -173,10 +174,8 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
     shared actual String race => getConsensus(IWorker.race) else "proxied";
     shared actual String name => getConsensus(IWorker.name) else "proxied";
     shared actual IJob getJob(String jobName) {
-        for (job in proxyJobs) {
-            if (job.name == jobName) {
-                return job;
-            }
+        if (exists retval = proxyJobs.find(matchingValue(jobName, IJob.name))) {
+            return retval;
         }
         value retval = ProxyJob(jobName, parallel, *workers);
         jobNames.add(jobName);
