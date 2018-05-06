@@ -48,7 +48,7 @@ class Ver2TileDrawHelper(
         Boolean(TileFixture) filter,
         "A series of matchers to use to determine what's on top."
         {FixtureMatcher*} matchers) satisfies TileDrawHelper {
-    "A comparator to put fixtures in order by the order of the first fixture that matches
+    "A comparator to put fixtures in order by the order of the first matcher that matches
      them."
     Comparison compareFixtures(TileFixture one, TileFixture two) {
         for (matcher in matchers) {
