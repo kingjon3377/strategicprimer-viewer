@@ -123,11 +123,11 @@ shared IMapNG convertOneToTwo(
         }
     }
     "Convert a single version-1 tile to the equivalent version-2 tiles."
-    {Point*} convertTile(Point point) { // TODO: fix indentation here
+    {Point*} convertTile(Point point) {
         Point[] initial = [ for (i in 0:oneToTwoConfig.expansionFactor)
-        for (j in 0:oneToTwoConfig.expansionFactor)
-        pointFactory(point.row * oneToTwoConfig.expansionFactor + i,
-            point.column * oneToTwoConfig.expansionFactor + j) ];
+	        for (j in 0:oneToTwoConfig.expansionFactor)
+		        pointFactory(point.row * oneToTwoConfig.expansionFactor + i,
+		            point.column * oneToTwoConfig.expansionFactor + j) ];
         for (subtile in initial) {
 //            retval.baseTerrain[subtile] = oldCopy.baseTerrain[point]; // TODO: syntax sugar once compiler bug fixed
             retval.baseTerrain[subtile] = oldCopy.baseTerrain.get(point);
