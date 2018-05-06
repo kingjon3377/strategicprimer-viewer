@@ -40,7 +40,7 @@ import lovelace.util.common {
 	inverse
 }
 "A list to let the user select which fixtures ought to be searched."
-SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
+SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() { // TODO: convert back to class if possible
     DefaultListModel<FixtureMatcher> matcherListModel =
             ReorderableListModel<FixtureMatcher>();
     [FixtureMatcher.simpleMatcher<Ground>(Ground.exposed, "Ground (exposed)"),
