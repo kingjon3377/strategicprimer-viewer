@@ -87,9 +87,8 @@ shared class MapTradeCLI() satisfies SimpleCLIDriver { // TODO: convert to class
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
 		"Trade maps", "Copy contents from one map to another.", true, false);
 	FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
-			String description = "``type.declaration.name``s") { // TODO: =>
-		return FixtureMatcher(type.typeOf, description);
-	}
+		String description = "``type.declaration.name``s") =>
+			FixtureMatcher(type.typeOf, description);
 	{FixtureMatcher*} flatten(FixtureMatcher|{FixtureMatcher*} item) {
 		if (is {FixtureMatcher*} item) {
 			return item;
