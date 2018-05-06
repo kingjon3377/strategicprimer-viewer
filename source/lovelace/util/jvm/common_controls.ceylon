@@ -293,13 +293,9 @@ shared class HotKeyModifier {
     shared new meta { mask = InputEvent.metaDownMask; }
 }
 "Create a key-stroke representing a hot-key accelerator."
-shared KeyStroke createAccelerator(Integer key, HotKeyModifier* modifiers) {
-    variable Integer mask = Toolkit.defaultToolkit.menuShortcutKeyMask;
-    for (modifier in modifiers) { // TODO: Can we use reduce() or fold() for this?
-        mask = mask.or(modifier.mask);
-    }
-    return KeyStroke.getKeyStroke(key, mask);
-}
+shared KeyStroke createAccelerator(Integer key, HotKeyModifier* modifiers) =>
+		KeyStroke.getKeyStroke(key, modifiers.map(HotKeyModifier.mask)
+			.fold(Toolkit.defaultToolkit.menuShortcutKeyMask)(uncurry(Integer.or)));
 "Create a menu item."
 shared JMenuItem createMenuItem(
         "The text of the item"
