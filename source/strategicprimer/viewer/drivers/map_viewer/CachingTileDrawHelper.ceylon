@@ -115,18 +115,18 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
                 if (exists shape = rivers[river]) {
                     pen.fill(shape);
                 }
-                if (hasAnyForts(map, location)) {
-                    pen.color = fortColor;
-                    pen.fill(fortress);
-                }
-                if (hasAnyUnits(map, location)) {
-                    pen.color = unitColor;
-                    pen.fill(unit);
-                }
-                if (hasEvent(map, location)) {
-                    pen.color = eventColor;
-                    pen.fill(event);
-                }
+            }
+            if (hasAnyForts(map, location)) {
+                pen.color = fortColor;
+                pen.fill(fortress);
+            }
+            if (hasAnyUnits(map, location)) {
+                pen.color = unitColor;
+                pen.fill(unit);
+            }
+            if (hasEvent(map, location)) {
+                pen.color = eventColor;
+                pen.fill(event);
             }
         }
     }
