@@ -136,13 +136,11 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 .sort(comparingOn(String.lowercased, increasing<String>));
     "Add the given unit at the given location in all maps."
     void addUnitAtLocation(IUnit unit, Point location) {
-        void impl(IMutableMapNG map) {
-//            for (fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
-            for (fixture in map.fixtures.get(location)) { // TODO: Can this be condensed using Iterable.narrow().any() and matchingValue()?
-                if (is Fortress fixture, fixture.owner == unit.owner) {
-                    fixture.addMember(unit.copy(false));
-                    return;
-                }
+        void impl(IMutableMapNG map) { // TODO: Convert to class method instead of method-in-method
+            //if (exists fortress = map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
+            if (exists fortress = map.fixtures.get(location)
+	                .narrow<Fortress>().find(matchingValue(unit.owner, Fortress.owner))) {
+                fortress.addMember(unit.copy(false));
             } else {
                 map.addFixture(location, unit.copy(false));
             }
