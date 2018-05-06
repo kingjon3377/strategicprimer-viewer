@@ -57,7 +57,7 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 				fixtureCount++;
 			}
 			count++;
-			if (count % 25 == 0) {
+			if (25.divides(count)) {
 				log.trace("Finished writing ``count`` points, with ``fixtureCount`` fixtures so far");
 			}
 		}
