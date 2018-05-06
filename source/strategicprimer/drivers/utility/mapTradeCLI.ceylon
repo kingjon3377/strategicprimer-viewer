@@ -83,24 +83,22 @@ import lovelace.util.common {
 }
 "An app to copy selected contents from one map to another."
 service(`interface ISPDriver`)
-shared class MapTradeCLI() satisfies SimpleCLIDriver { // TODO: convert to class-with-constructor and make helpers static
-	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
-		"Trade maps", "Copy contents from one map to another.", true, false);
-	FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
+shared class MapTradeCLI satisfies SimpleCLIDriver {
+	static FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
 		String description = "``type.declaration.name``s") =>
-			FixtureMatcher(type.typeOf, description);
-	{FixtureMatcher*} flatten(FixtureMatcher|{FixtureMatcher*} item) {
+			FixtureMatcher(type.typeOf, description); // TODO: Make this and complements() static methods on FixtureMatcher.
+	static {FixtureMatcher*} flatten(FixtureMatcher|{FixtureMatcher*} item) {
 		if (is {FixtureMatcher*} item) {
 			return item;
 		} else {
 			return Singleton(item);
 		}
 	}
-	{FixtureMatcher*} complements<out T>(Boolean(T) method,
+	static {FixtureMatcher*} complements<out T>(Boolean(T) method,
 		String firstDescription, String secondDescription)
 			given T satisfies TileFixture => [simpleMatcher<T>(method, firstDescription),
 			simpleMatcher<T>(inverse(method), secondDescription)];
-	{FixtureMatcher*} initializeMatchers() {
+	static {FixtureMatcher*} initializeMatchers() { // TODO: =>
 		return [
 			complements<IUnit>(inverse(matchingPredicate(Player.independent, IUnit.owner)), "Units",
 				"Independent Units"),
@@ -132,6 +130,9 @@ shared class MapTradeCLI() satisfies SimpleCLIDriver { // TODO: convert to class
 			complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
 		].flatMap(flatten);
 	}
+	shared new () {}
+	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
+		"Trade maps", "Copy contents from one map to another.", true, false);
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
 		IMapNG first = model.map;
 		assert (is IMultiMapModel model, exists second = model.subordinateMaps.first?.first);
