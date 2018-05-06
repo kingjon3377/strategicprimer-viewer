@@ -45,6 +45,6 @@ shared class River of north|east|south|west|lake satisfies Comparable<River> {
     shared actual Comparison compare(River other) => ordinal <=> other.ordinal;
 
 }
-River|ParseException parseRiver(String description) => // TODO: Make one generic parseEnum method to replace all the type-specific parseX methods
+River|ParseException parseRiver(String description) =>
         `River`.caseValues.find(matchingValue(description, River.description)) else
             ParseException("Failed to parse River from '``description``'");
