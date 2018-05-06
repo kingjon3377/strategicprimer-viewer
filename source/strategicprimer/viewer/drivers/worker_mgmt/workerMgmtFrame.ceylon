@@ -200,9 +200,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	}
 	IMapNG mainMap = model.map;
 	IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
-	NewUnitDialog newUnitFrame =
-			NewUnitDialog(model.currentPlayer, // TODO: reformat
-		idf);
+	NewUnitDialog newUnitFrame = NewUnitDialog(model.currentPlayer, idf);
 	IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
 	value tree = workerTree(treeModel, model.players, () => mainMap.currentTurn,
 		true, idf);
