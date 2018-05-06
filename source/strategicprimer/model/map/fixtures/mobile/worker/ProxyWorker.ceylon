@@ -55,9 +55,7 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
                 statsCache = null;
             }
             workers.add(member);
-            for (job in member) {
-                jobNames.add(job.name);
-            }
+            jobNames.addAll(member.map(IJob.name));
         }
         for (job in jobNames) {
             proxyJobs.add(ProxyJob(job, false, *workers));
@@ -75,9 +73,7 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
                 statsCache = null;
             }
             workers.add(worker);
-            for (job in worker) {
-                jobNames.add(job.name);
-            }
+            jobNames.addAll(worker.map(IJob.name));
         }
         for (job in jobNames) {
             proxyJobs.add(ProxyJob(job, true, *proxiedWorkers));
