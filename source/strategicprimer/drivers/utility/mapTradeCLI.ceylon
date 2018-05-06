@@ -98,8 +98,7 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 		String firstDescription, String secondDescription)
 			given T satisfies TileFixture => [simpleMatcher<T>(method, firstDescription),
 			simpleMatcher<T>(inverse(method), secondDescription)];
-	static {FixtureMatcher*} initializeMatchers() { // TODO: =>
-		return [
+	static {FixtureMatcher*} initializeMatchers() => [
 			complements<IUnit>(inverse(matchingPredicate(Player.independent, IUnit.owner)), "Units",
 				"Independent Units"),
 			trivialMatcher(`Fortress`, "Fortresses"),
@@ -129,7 +128,6 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 			trivialMatcher(`Sandbar`), trivialMatcher(`Hill`),
 			complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
 		].flatMap(flatten);
-	}
 	shared new () {}
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
 		"Trade maps", "Copy contents from one map to another.", true, false);
