@@ -82,17 +82,16 @@ import strategicprimer.model.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.drivers.common {
-	FixtureMatcher,
-	simpleMatcher
+	FixtureMatcher
 }
 "A class to allow the Z-order of fixtures to be represented as a table."
 shared class FixtureFilterTableModel extends AbstractTableModel satisfies Reorderable&ZOrderFilter&{FixtureMatcher*}&Comparator<TileFixture> {
-	static FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type,
+	static FixtureMatcher trivialMatcher(ClassOrInterface<TileFixture> type, // TODO: Use FixtureMatcher static method instead once defined
 		String description = type.declaration.name + "s") =>
 			FixtureMatcher(type.typeOf, description);
-	static {FixtureMatcher*} complements<out T>(Boolean(T) method, String firstDescription,
+	static {FixtureMatcher*} complements<out T>(Boolean(T) method, String firstDescription, // TODO: Use FixtureMatcher static method instead once defined
 		String secondDescription) given T satisfies TileFixture =>
-			[simpleMatcher<T>(method, firstDescription), simpleMatcher<T>(inverse(method), secondDescription)];
+			[FixtureMatcher.simpleMatcher<T>(method, firstDescription), FixtureMatcher.simpleMatcher<T>(inverse(method), secondDescription)];
 	MutableList<FixtureMatcher> matchers;
 	shared new () extends AbstractTableModel() {
 		matchers = ArrayList<FixtureMatcher>();

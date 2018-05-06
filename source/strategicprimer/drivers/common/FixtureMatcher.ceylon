@@ -3,6 +3,16 @@ import strategicprimer.model.map {
 }
 "A wrapper around `Boolean(TileFixture)`, used to determine Z-order of fixtures."
 shared class FixtureMatcher {
+	shared static FixtureMatcher simpleMatcher<T>(Boolean(T) method, String description) {
+		Boolean predicate(TileFixture fixture) {
+			if (is T fixture, method(fixture)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return FixtureMatcher(predicate, description);
+	}
     shared Boolean matches(TileFixture fixture);
     shared variable Boolean displayed = true;
     shared String description;
@@ -11,15 +21,4 @@ shared class FixtureMatcher {
         description = desc;
     }
     shared actual String string = "Matcher for ``description``";
-}
-// We'd like this to be a named constructor of FixtureMatcher, but that wouldn't compile.
-shared FixtureMatcher simpleMatcher<T>(Boolean(T) method, String description) {
-    Boolean predicate(TileFixture fixture) {
-        if (is T fixture, method(fixture)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    return FixtureMatcher(predicate, description);
 }

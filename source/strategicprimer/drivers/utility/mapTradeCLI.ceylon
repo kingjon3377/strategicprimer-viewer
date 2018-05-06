@@ -7,7 +7,6 @@ import strategicprimer.drivers.common {
 	IDriverModel,
 	IMultiMapModel,
 	FixtureMatcher,
-	simpleMatcher,
 	ISPDriver
 }
 import strategicprimer.drivers.common.cli {
@@ -96,8 +95,8 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 	}
 	static {FixtureMatcher*} complements<out T>(Boolean(T) method,
 		String firstDescription, String secondDescription)
-			given T satisfies TileFixture => [simpleMatcher<T>(method, firstDescription),
-			simpleMatcher<T>(inverse(method), secondDescription)];
+			given T satisfies TileFixture => [FixtureMatcher.simpleMatcher<T>(method, firstDescription),
+			FixtureMatcher.simpleMatcher<T>(inverse(method), secondDescription)];
 	static {FixtureMatcher*} initializeMatchers() => [
 			complements<IUnit>(inverse(matchingPredicate(Player.independent, IUnit.owner)), "Units",
 				"Independent Units"),

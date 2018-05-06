@@ -34,8 +34,7 @@ import strategicprimer.model.map.fixtures.resources {
     Meadow
 }
 import strategicprimer.drivers.common {
-	FixtureMatcher,
-	simpleMatcher
+	FixtureMatcher
 }
 import lovelace.util.common {
 	inverse
@@ -44,12 +43,13 @@ import lovelace.util.common {
 SwingList<FixtureMatcher>&ZOrderFilter fixtureFilterList() {
     DefaultListModel<FixtureMatcher> matcherListModel =
             ReorderableListModel<FixtureMatcher>();
-    [simpleMatcher<Ground>(Ground.exposed, "Ground (exposed)"),
-        simpleMatcher<Ground>(inverse(Ground.exposed), "Ground"),
-        simpleMatcher<Grove>(Grove.orchard, "Orchards"),
-        simpleMatcher<Grove>(inverse(Grove.orchard), "Groves"),
-        simpleMatcher<Meadow>(Meadow.field, "Fields"),
-        simpleMatcher<Meadow>(inverse(Meadow.field), "Meadows")].each(matcherListModel.addElement);
+    [FixtureMatcher.simpleMatcher<Ground>(Ground.exposed, "Ground (exposed)"),
+	    FixtureMatcher.simpleMatcher<Ground>(inverse(Ground.exposed), "Ground"),
+	    FixtureMatcher.simpleMatcher<Grove>(Grove.orchard, "Orchards"),
+	    FixtureMatcher.simpleMatcher<Grove>(inverse(Grove.orchard), "Groves"),
+	    FixtureMatcher.simpleMatcher<Meadow>(Meadow.field, "Fields"),
+	    FixtureMatcher.simpleMatcher<Meadow>(inverse(Meadow.field), "Meadows")]
+	            .each(matcherListModel.addElement);
     object retval extends SwingList<FixtureMatcher>(matcherListModel)
             satisfies ZOrderFilter {
         shared actual Boolean shouldDisplay(TileFixture fixture) {
