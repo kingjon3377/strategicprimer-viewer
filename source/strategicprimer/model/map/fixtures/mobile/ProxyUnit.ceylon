@@ -52,15 +52,13 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) {
         MutableMap<Integer,String>&SortedMap<Integer, String> retval =
                 TreeMap<Integer, String>(increasing, []);
-        for (map in proxiedList.map(method)) {
-            for (key-> item in map) {
-                if (exists existing = retval[key]) {
-                    if (item != existing) {
-                        retval[key] = "";
-                    }
-                } else {
-                    retval[key] = item;
+        for (key->item in proxiedList.map(method).flatMap(identity)) {
+            if (exists existing = retval[key]) {
+                if (item != existing) {
+                    retval[key] = "";
                 }
+            } else {
+                retval[key] = item;
             }
         }
         return retval;
@@ -178,38 +176,36 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
 	                    IWorker&ProxyFor<IWorker>> map =
 	                naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|
 	                    Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker>>([]);
-	        for (unit in proxiedList) {
-	            for (member in unit) {
-	                UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker> proxy;
-	                Integer memberID = member.id;
-	                if (exists temp = map[memberID]) {
-	                    proxy = temp;
-	                    if (is IWorker&ProxyFor<IWorker> proxy) {
-	                        if (is IWorker member) {
-	                            proxy.addProxied(member);
-	                        } else {
-	                            log.warn("ProxyWorker matched non-worker");
-	                        }
-	                    } else if (is Animal&ProxyFor<Animal> proxy) {
-	                        if (is Animal member) {
-	                            proxy.addProxied(member);
-	                        } else {
-	                            log.warn("ProxyAnimal matched non-animal");
-	                        }
-	                    } else {
-	                        proxy.addProxied(member);
-	                    }
-	                } else {
-	                    if (is IWorker member) {
-	                        proxy = ProxyWorker.fromWorkers(member);
-	                    } else if (is Animal member) {
-	                        proxy = ProxyAnimal(member);
-	                    } else {
-	                        proxy = ProxyMember(member);
-	                    }
-	                    map[memberID] = proxy;
-	                }
-	            }
+	        for (member in proxiedList.flatMap(identity)) {
+                UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker> proxy;
+                Integer memberID = member.id;
+                if (exists temp = map[memberID]) {
+                    proxy = temp;
+                    if (is IWorker&ProxyFor<IWorker> proxy) {
+                        if (is IWorker member) {
+                            proxy.addProxied(member);
+                        } else {
+                            log.warn("ProxyWorker matched non-worker");
+                        }
+                    } else if (is Animal&ProxyFor<Animal> proxy) {
+                        if (is Animal member) {
+                            proxy.addProxied(member);
+                        } else {
+                            log.warn("ProxyAnimal matched non-animal");
+                        }
+                    } else {
+                        proxy.addProxied(member);
+                    }
+                } else {
+                    if (is IWorker member) {
+                        proxy = ProxyWorker.fromWorkers(member);
+                    } else if (is Animal member) {
+                        proxy = ProxyAnimal(member);
+                    } else {
+                        proxy = ProxyMember(member);
+                    }
+                    map[memberID] = proxy;
+                }
 	        }
 	        cachedIterable = map.items;
 	        return map.items.iterator();
