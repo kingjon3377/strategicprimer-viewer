@@ -85,8 +85,8 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
     shared actual Integer->Element? chooseFromList<out Element>(
             Element[]|List<Element> list, String description, String none,
             String prompt, Boolean auto) given Element satisfies HasName&Object =>
-            chooseFromListImpl<Element>(list, description, none, prompt, auto,
-                HasName.name);
+        chooseFromListImpl<Element>(list, description, none, prompt, auto,
+            HasName.name);
     "Read input from the input stream repeatedly until a non-negative integer is entered,
      then return it."
     todo("Return null instead of throwing on null input?")
@@ -168,8 +168,8 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
     "Have the user choose an item from a list."
     shared actual Integer->String? chooseStringFromList(String[] items,
             String description, String none, String prompt, Boolean auto) =>
-            chooseFromListImpl<String>(items, description, none, prompt, auto,
-                    identity);
+        chooseFromListImpl<String>(items, description, none, prompt, auto,
+                identity);
     "Print the specified string."
     shared actual void print(String text) => ostream(text);
 }
