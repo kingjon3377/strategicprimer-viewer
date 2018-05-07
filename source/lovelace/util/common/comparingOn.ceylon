@@ -5,5 +5,5 @@ shared Comparison(BaseType, BaseType) comparingOn<BaseType, FieldType>(
         "How to compare the corresponding field instances"
         Comparison(FieldType, FieldType) comparator) {
     return (BaseType first, BaseType second) =>
-    comparator(extractor(first), extractor(second));
+	    comparator(extractor(first), extractor(second));
 }
