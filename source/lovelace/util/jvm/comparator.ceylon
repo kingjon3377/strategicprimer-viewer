@@ -2,12 +2,12 @@ import java.util {
     JComparator = Comparator
 }
 "Convert a Java Comparator to a Ceylon comparator. For the other way round, see
- [[ceylon.interop.java::JavaComparator]]"
+ [[ceylon.interop.java::JavaComparator]]" // TODO: tests: did I do the currying right?
 shared Comparison(Type, Type) ceylonComparator<Type>(
         Integer(Type?, Type?)|Integer(Type, Type)|JComparator<Type> comparator) {
 	if (is Integer(Type?, Type?)|Integer(Type, Type) comparator) {
-		return (Type x, Type y) => comparator(x, y) <=> 0;
+		return compose(curry(increasing<Integer>)(0), comparator);
 	} else {
-		return (Type x, Type y) => comparator.compare(x, y) <=> 0;
+		return compose(curry(increasing<Integer>)(0), comparator.compare);
 	}
 }
