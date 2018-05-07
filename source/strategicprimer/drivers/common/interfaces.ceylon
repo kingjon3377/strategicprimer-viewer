@@ -61,7 +61,7 @@ shared class SPOptionsImpl({<String->String>*} existing = []) satisfies SPOption
         StringBuilder builder = StringBuilder();
         for (key->val in options) {
             if (val == "true") {
-                builder.append((key));
+                builder.append(key);
             } else {
                 builder.append("``key``=``val``");
             }
