@@ -215,9 +215,9 @@ shared IMapNG convertOneToTwo(
     for (point in randomize(converted, rng)) {
         {Point*} neighbors = {
             for (row in ((point.row - 1)..(point.row + 1))
-                .map((num) => num.modulo(retval.dimensions.rows)))
+                .map(shuffle(Integer.modulo)(retval.dimensions.rows)))
             for (column in ((point.column - 1)..(point.column + 1))
-                .map((num) => num.modulo(retval.dimensions.columns)))
+                .map(shuffle(Integer.modulo)(retval.dimensions.columns)))
             pointFactory(row, column)
         }.select(matchingValue(false, point.equals));
         Boolean adjacentToTown() => !neighbors.flatMap(retval.fixtures.get).narrow<ITownFixture>().empty;
