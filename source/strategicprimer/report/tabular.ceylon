@@ -3,7 +3,8 @@ import ceylon.collection {
     ArrayList
 }
 import ceylon.interop.java {
-    createJavaStringArray
+    createJavaStringArray,
+	JavaComparator
 }
 
 import java.awt {
@@ -26,8 +27,7 @@ import lovelace.util.common {
 }
 import lovelace.util.jvm {
     platform,
-    BorderedPanel,
-    javaComparator
+    BorderedPanel
 }
 
 import strategicprimer.model.map {
@@ -139,7 +139,7 @@ shared object tabularReportGenerator {
 	            return actualOne <=> actualTwo;
 	        }
 	    }
-	    JComparator<out Object> wrapped = javaComparator(sorter);
+	    JComparator<out Object> wrapped = JavaComparator(sorter);
 	    for (generator in generators) {
 	        value tableModel = generator.produceTableModel(fixtures, parentMap);
 	        value table = JTable(tableModel);

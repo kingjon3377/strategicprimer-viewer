@@ -18,7 +18,7 @@ import ceylon.logging {
     logger
 }
 NumberFormat intParser = NumberFormat.integerInstance;
-"Whether the given string contains numeric data"
+"Whether the given string contains numeric data" // TODO: When we combine lovelace.util.jvm with lovelace.util.common, make this the native("jvm") specialization of the pure-Ceylon version in .common
 shared Boolean isNumeric(String string) {
     try {
         intParser.parse(string);
