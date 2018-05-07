@@ -113,7 +113,7 @@ object cliTests {
 	        "test prompt four test prompt four ", 9,
 	        "inputNumber asks again on non-numeric input",
 	        "inputNumber asks again on non-numeric input");
-	    // https://github.com/ceylon/ceylon/issues/5448
+	    // https://github.com/eclipse/ceylon/issues/5448
 	//    try (cli = CLIHelper(LinkedList(Singleton("")).accept, noop)) {
 	//       assertThatException(() => cli.inputNumber("test prompt")).hasType(`IOException`);
 	//    }
@@ -202,7 +202,7 @@ object cliTests {
 	    assertEquals(ostream.string, """prompt four prompt four yes
 	                                    """,
 	        "inputBooleanInSeries shows automatic yes");
-	    //  https://github.com/ceylon/ceylon/issues/5448
+	    //  https://github.com/eclipse/ceylon/issues/5448
 	//        assertThatException(() => cli.inputBooleanInSeries("other prompt"))
 	//            .hasType(`IOException`);
 	    ostream.clear();
@@ -213,7 +213,7 @@ object cliTests {
 	        "inputBooleanInSeries honors no-to-all when prompt is the same");
 	    assertEquals(ostream.string, "prompt five prompt five no``operatingSystem.newline``",
 	        "inputBooleanInSeries shows automatic no");
-	    // https://github.com/ceylon/ceylon/issues/5448 // TODO: uncomment once that fixed
+	    // https://github.com/eclipse/ceylon/issues/5448 // TODO: uncomment once that fixed
 	//      assertThatException(() => cli.inputBooleanInSeries("other prompt"))
 	//            .hasType(`IOException`);
 	    ostream.clear();

@@ -2,7 +2,7 @@
  [Strategic Primer](https://shinecycle.wordpress.com/archives/strategic-primer) assistive
  programs suite, and possibly even CLI versions Any class extending a Swing class should
  go elsewhere, at least until [the Ceylon tooling
- bug](https://github.com/ceylon/ceylon/issues/6986) is fixed."
+ bug](https://github.com/eclipse/ceylon/issues/6986) is fixed."
 license("GPL-3")
 native("jvm")
 module strategicprimer.drivers.worker.common "0.4.9016" {
