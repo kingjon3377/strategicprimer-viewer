@@ -4,8 +4,7 @@ import ceylon.collection {
 }
 
 import java.nio.file {
-    JPath=Path,
-    JPaths=Paths
+    JPath=Path
 }
 
 import strategicprimer.model.map {
