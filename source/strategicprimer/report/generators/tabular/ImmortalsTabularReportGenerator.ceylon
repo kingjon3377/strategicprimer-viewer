@@ -14,6 +14,12 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.mobile {
     Immortal
 }
+import ceylon.language.meta {
+	type
+}
+import ceylon.language.meta.model {
+	ClassModel
+}
 """A tabular report generator for "immortals.""""
 shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
         satisfies ITableGenerator<Immortal> {
@@ -29,12 +35,13 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
         return [[distanceString(loc, hq, dimensions), loc.string, item.string]];
     }
     "Compare two Point-fixture pairs."
-    // TODO: There were two identical hash-based comparators in sequence; I'd guess an earlier refactoring lost a desired comparator. Recover it.
     shared actual Comparison comparePairs([Point, Immortal] one,
             [Point, Immortal] two) =>
             comparing(comparingOn<[Point, Immortal], Point>(
 	                Tuple.first, DistanceComparator(hq, dimensions).compare),
 	            comparingOn(Tuple<Point|Immortal, Point, [Immortal]>.rest,
 	                comparingOn(Tuple<Immortal, Immortal, []>.first,
-	                    comparingOn(Object.hash, increasing<Integer>))))(one, two);
+	                    comparing(comparingOn<Immortal, ClassModel<Immortal>>(type,
+	                        comparingOn(Object.hash, increasing<Integer>)),
+	                    comparingOn(Object.hash, increasing<Integer>)))))(one, two);
 }
