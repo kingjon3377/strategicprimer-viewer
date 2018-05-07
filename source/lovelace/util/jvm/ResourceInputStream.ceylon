@@ -42,35 +42,33 @@ shared class ResourceInputStream(String filename,
             } else if (exists temp = sourceClass.getResourceAsStream(
                 "``sourceModule.name.replace(".", "/")``/``filename``")) {
                 return temp;
-            } else {
-//                if (exists uri = mod.resourceByPath(filename)?.uri, exists temp =
-//                        javaClass<ResourceInputStream>()
-//                            .getResourceAsStream(uri.string)) {
-                if (exists uri = sourceModule.resourceByPath(filename)?.uri) {
-                    if (first) {
-                        process.writeLine("URI is '``uri``'");
-                        first = false;
-                    }
-                    if (exists temp = sourceClass
-                            .getResourceAsStream(uri)) {
-                        return temp;
-                    } else if (exists temp = sourceClass
-                            .getResourceAsStream(uri.replaceFirst("classpath:/", "/"))) {
-                        return temp;
-                    }
+            //} else if (exists uri = sourceModule.resourceByPath(filename)?.uri,
+	           //     exists temp = Types.classForType<ResourceInputStream>().getResourceAsStream(uri.string)) {
+	           // return temp;
+            } else if (exists uri = sourceModule.resourceByPath(filename)?.uri) {
+                if (first) {
+                    process.writeLine("URI is '``uri``'");
+                    first = false;
                 }
-                for (mod in modules.list) {
-                    if (exists temp = Types.classForInstance(mod).getResourceAsStream(
-                            "/``mod.name.replace(".", "/")``/``filename``")) {
-                        return temp;
-                    } else if (exists temp =
-                                Types.classForInstance(mod).getResourceAsStream(
-                            "``mod.name.replace(".", "/")``/``filename``")) {
-                        return temp;
-                    }
+                if (exists temp = sourceClass
+                        .getResourceAsStream(uri)) {
+                    return temp;
+                } else if (exists temp = sourceClass
+                        .getResourceAsStream(uri.replaceFirst("classpath:/", "/"))) {
+                    return temp;
                 }
-                throw except;
             }
+            for (mod in modules.list) {
+                if (exists temp = Types.classForInstance(mod).getResourceAsStream(
+                        "/``mod.name.replace(".", "/")``/``filename``")) {
+                    return temp;
+                } else if (exists temp =
+                            Types.classForInstance(mod).getResourceAsStream(
+                        "``mod.name.replace(".", "/")``/``filename``")) {
+                    return temp;
+                }
+            }
+            throw except;
         }
     }
     InputStream wrapped = factory();
