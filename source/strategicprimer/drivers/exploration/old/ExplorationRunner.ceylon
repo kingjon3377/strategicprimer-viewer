@@ -60,7 +60,7 @@ shared class ExplorationRunner() {
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
         String result = consultTable(table, location, terrain, mountainous, fixtures,
             mapDimensions);
-        if (result.contains("#")) {
+        if (result.contains('#')) {
             {String+} broken = result.split('#'.equals, true, false, 3);
             String before = broken.first;
             assert (exists middle = broken.rest.first);
@@ -86,7 +86,7 @@ shared class ExplorationRunner() {
         if (tables.defines(table)) {
             try {
                 for (string in getTable(table).allEvents) {
-                    if (string.contains("#"), recursiveCheck( // TODO: Use '#', not "#"
+                    if (string.contains('#'), recursiveCheck(
                             string.split('#'.equals, true,
                                 false, 3).rest.first else "",
                             state)) {
@@ -120,7 +120,7 @@ shared class ExplorationRunner() {
             if (tables.defines(table)) {
                 try {
                     for (string in getTable(table).allEvents) {
-                        if (string.contains("#")) {
+                        if (string.contains('#')) {
                             verboseRecursiveCheck(
                                 string.split('#'.equals, true,
                                     false, 3).rest.first else "",
