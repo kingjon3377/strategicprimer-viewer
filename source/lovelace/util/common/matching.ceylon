@@ -2,7 +2,7 @@
  to each object and returns the result of the given predicate applied to that result. This
  is intended to be used with [[Iterable.filter]] and the like."
 shared Boolean(Type) matchingPredicate<Type, Field>(Boolean(Field) predicate, Field(Type) field)
-		given Type satisfies Object => (Type other) => predicate(field(other));
+		given Type satisfies Object => compose(predicate, field);
 "Given a function and an expected value, produces a predicate that applies that function
  to each object and returns true iff it produces the expected value. This is intended to
  be used with [[Iterable.filter]] and the like."
