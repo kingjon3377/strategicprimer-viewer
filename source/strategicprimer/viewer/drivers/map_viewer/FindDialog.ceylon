@@ -45,7 +45,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     JCheckBox backwards = JCheckBox("Search backwards");
     JCheckBox vertically = JCheckBox("Search vertically then horizontally");
     JCheckBox caseSensitive = JCheckBox("Case-sensitive search");
-    Component&ZOrderFilter filterList = fixtureFilterList();
+    Component&ZOrderFilter filterList = FixtureFilterList();
     "Whether the fixture has a name matching the given pattern."
     Boolean matchesName(String pattern, IFixture fixture, Boolean caseSensitivity) {
         if (is HasName fixture) {
