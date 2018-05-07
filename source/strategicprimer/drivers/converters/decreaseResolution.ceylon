@@ -60,9 +60,8 @@ shared IMapNG decreaseResolution(IMapNG old) {
     TileType? consensus([TileType?+] types) {
         value counted = types.frequencies().map(reverse).map(Entry.pair).sort(
             comparing(comparingOn(Tuple<Integer|TileType, Integer, [TileType]>.first, increasing<Integer>),
-                comparingOn(Tuple<Integer|TileType, Integer, [TileType]>.rest,
-                    comparingOn(Tuple<TileType, TileType, []>.first,
-                        comparingOn(TileType.xml, increasing<String>))))).reversed;
+                comparingOn(compose(compose(TileType.xml, Tuple<TileType, TileType, []>.first),
+                    Tuple<Integer|TileType, Integer, [TileType]>.rest), increasing<String>))).reversed;
         assert (exists largestCount = counted.first?.first);
         value matchingCount = counted.filter(matchingValue(largestCount,
             Tuple<Integer|TileType, Integer, TileType[]>.first));
