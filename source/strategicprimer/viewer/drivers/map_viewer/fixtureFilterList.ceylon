@@ -15,9 +15,6 @@ import javax.swing {
     ListCellRenderer,
     DropMode
 }
-import javax.swing.event {
-    ListSelectionEvent
-}
 
 import lovelace.util.jvm {
     ReorderableListModel
@@ -37,7 +34,8 @@ import strategicprimer.drivers.common {
 	FixtureMatcher
 }
 import lovelace.util.common {
-	inverse
+	inverse,
+	silentListener
 }
 "A list to let the user select which fixtures ought to be searched."
 class FixtureFilterList() extends SwingList<FixtureMatcher>() satisfies ZOrderFilter {
@@ -65,12 +63,13 @@ class FixtureFilterList() extends SwingList<FixtureMatcher>() satisfies ZOrderFi
 	}
 	model = matcherListModel;
 	selectionModel.selectionMode = ListSelectionModel.multipleIntervalSelection;
-	selectionModel.addListSelectionListener((ListSelectionEvent event) {
+	void selectionChanged() {
 		for (i in 0:matcherListModel.size) {
 			matcherListModel.getElementAt(i).displayed =
 					selectionModel.isSelectedIndex(i);
 		}
-	});
+	}
+	selectionModel.addListSelectionListener(silentListener(selectionChanged));
 	DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
 	cellRenderer = object satisfies ListCellRenderer<FixtureMatcher> {
 		shared actual Component getListCellRendererComponent(
