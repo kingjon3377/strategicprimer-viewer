@@ -177,7 +177,7 @@ shared JPanel&BoxPanel centeredHorizontalBox(Component* items) {
     if (exists first = items.first) {
         retval.add(first);
     }
-    for (component in items) {
+    for (component in items.rest) {
         retval.addRigidArea(2);
         retval.add(component);
     }
