@@ -42,14 +42,13 @@ import lovelace.util.common {
 "A list to let the user select which fixtures ought to be searched."
 class FixtureFilterList() extends SwingList<FixtureMatcher>() satisfies ZOrderFilter {
 	DefaultListModel<FixtureMatcher> matcherListModel =
-			ReorderableListModel<FixtureMatcher>();
-	[FixtureMatcher.simpleMatcher<Ground>(Ground.exposed, "Ground (exposed)"),
-		FixtureMatcher.simpleMatcher<Ground>(inverse(Ground.exposed), "Ground"),
-		FixtureMatcher.simpleMatcher<Grove>(Grove.orchard, "Orchards"),
-		FixtureMatcher.simpleMatcher<Grove>(inverse(Grove.orchard), "Groves"),
-		FixtureMatcher.simpleMatcher<Meadow>(Meadow.field, "Fields"),
-		FixtureMatcher.simpleMatcher<Meadow>(inverse(Meadow.field), "Meadows")]
-				.each(matcherListModel.addElement); // TODO: Add a ReorderableListModel constructor taking initial state
+			ReorderableListModel<FixtureMatcher>(
+				FixtureMatcher.simpleMatcher<Ground>(Ground.exposed, "Ground (exposed)"),
+				FixtureMatcher.simpleMatcher<Ground>(inverse(Ground.exposed), "Ground"),
+				FixtureMatcher.simpleMatcher<Grove>(Grove.orchard, "Orchards"),
+				FixtureMatcher.simpleMatcher<Grove>(inverse(Grove.orchard), "Groves"),
+				FixtureMatcher.simpleMatcher<Meadow>(Meadow.field, "Fields"),
+				FixtureMatcher.simpleMatcher<Meadow>(inverse(Meadow.field), "Meadows"));
 	shared actual Boolean shouldDisplay(TileFixture fixture) {
 		for (i in 0:matcherListModel.size) {
 			FixtureMatcher matcher = matcherListModel.getElementAt(i);

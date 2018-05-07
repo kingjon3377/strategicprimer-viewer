@@ -363,7 +363,7 @@ shared class ActionWrapper(Anything(ActionEvent)|ActionListener wrappedListener)
 }
 "Adds an implementation of the [[Reorderable]] interface to the [[DefaultListModel]]
  class."
-shared class ReorderableListModel<T>() extends DefaultListModel<T>()
+shared class ReorderableListModel<T>(T* initialElements) extends DefaultListModel<T>()
         satisfies Reorderable {
     shared actual void reorder(Integer fromIndex, Integer toIndex) {
         if (fromIndex != toIndex) {
@@ -374,4 +374,5 @@ shared class ReorderableListModel<T>() extends DefaultListModel<T>()
             }
         }
     }
+    initialElements.each(addElement);
 }
