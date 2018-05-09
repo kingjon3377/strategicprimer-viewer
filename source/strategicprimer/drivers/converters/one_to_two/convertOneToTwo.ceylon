@@ -212,13 +212,13 @@ shared IMapNG convertOneToTwo(
     }
     Random rng = DefaultRandom(oneToTwoConfig.maxIterations);
     for (point in randomize(converted, rng)) {
-        {Point*} neighbors = {
+        {Point*} neighbors = [
             for (row in ((point.row - 1)..(point.row + 1))
                 .map(shuffle(Integer.modulo)(retval.dimensions.rows)))
             for (column in ((point.column - 1)..(point.column + 1))
                 .map(shuffle(Integer.modulo)(retval.dimensions.columns)))
             pointFactory(row, column)
-        }.select(matchingValue(false, point.equals));
+        ].select(matchingValue(false, point.equals));
         Boolean adjacentToTown() => !neighbors.flatMap(retval.fixtures.get).narrow<ITownFixture>().empty;
         Boolean adjacentWater() {
             for (neighbor in neighbors) {
