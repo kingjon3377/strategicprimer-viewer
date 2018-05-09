@@ -261,7 +261,7 @@ shared class StatGeneratingCLI() satisfies SimpleCLIDriver {
             String race = raceFactory.randomRace();
             String name = cli.inputString("Worker is a ``race``. Worker name: ");
             Worker worker = Worker(name, race, idf.createID());
-            Integer levels = {0, 1, 2}.count((int) => singletonRandom.nextInteger(20) == 0 );
+            Integer levels = singletonRandom.integers(20).take(3).count(0.equals);
             if (levels == 1) {
                 cli.println("Worker has 1 Job level.");
             } else if (levels > 1) {
@@ -304,7 +304,7 @@ shared class StatGeneratingCLI() satisfies SimpleCLIDriver {
             String race = raceFactory.randomRace();
             cli.println("Worker ``name`` is a ``race``");
             Worker worker = Worker(name, race, idf.createID());
-            Integer levels = {0, 1, 2}.count((int) => singletonRandom.nextInteger(20) == 0 );
+            Integer levels = singletonRandom.integers(20).take(3).count(0.equals);
             if (levels == 1) {
                 cli.println("Worker has 1 Job level.");
             } else if (levels > 1) {
