@@ -63,7 +63,7 @@ import lovelace.util.common {
 }
 Logger log = logger(`module strategicprimer.model`);
 "Convert a version-1 map to a higher-resolution version-2 map."
-suppressWarnings("deprecation")
+suppressWarnings("deprecation") // TODO: convert to an object or class to reduce number of generated classes
 shared IMapNG convertOneToTwo(
         "The version-1 map to convert"
         IMapNG old,
@@ -178,9 +178,8 @@ shared IMapNG convertOneToTwo(
                 } else if (exists currentSubtile = shuffledInitial.accept()) {
 //                    if (retval.fixtures[point].every( // TODO: syntax sugar once compiler bug fixed
                     if (retval.fixtures.get(point).every(
-                                (fixture) =>
-                        fixture is Forest|Ground|Sandbar|Shrub|Meadow|Hill),
-                        exists fixture = shuffledFixtures.accept()) {
+								`Forest|Ground|Sandbar|Shrub|Meadow|Hill`.typeOf),
+	                        exists fixture = shuffledFixtures.accept()) {
                         if (is ITownFixture fixture) {
 //                            {TileFixture*} toRemove = retval.fixtures[point]
                             {TileFixture*} toRemove = retval.fixtures.get(point)
