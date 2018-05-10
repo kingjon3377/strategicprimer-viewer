@@ -28,12 +28,12 @@ class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 	shared actual Integer population => getConsensus(Animal.population) else -1;
 	shared actual {Animal*} proxied => animals;
 	shared actual Animal reduced(Integer newPopulation, Integer newId) => // TODO: Is this right?
-			ProxyAnimal(*animals.map((item) => item.reduced(newPopulation, newId)));
+			ProxyAnimal(*animals.map(shuffle(Animal.reduced)(newPopulation, newId)));
 	shared actual Animal combined(Animal addend) {
 		if (is ProxyFor<Animal> addend, addend.parallel, addend.proxied.size == animals.size) {
 			return ProxyAnimal(*zipPairs(animals, addend.proxied).map(([first, second]) => first.combined(second)));
 		} else {
-			return ProxyAnimal(*animals.map((item) => item.combined(addend)));
+			return ProxyAnimal(*animals.map(shuffle(Animal.combined)(addend)));
 		}
 	}
 	shared actual String status => getConsensus(Animal.status) else "proxied";
