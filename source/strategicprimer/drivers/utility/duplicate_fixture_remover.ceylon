@@ -215,7 +215,7 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
             }
         }
         for (helper in mapping.items) {
-            for (list in helper.map((it) => it.sequence())) {
+            for (list in helper.map(shuffle(List<IFixture>.sequence)())) {
                 if (list.size <= 1) {
                     continue;
                 }
