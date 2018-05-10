@@ -177,11 +177,11 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
     LazyInit<Map<String,{[Quantity, String, String]*}>> consumption = LazyInit(initConsumption);
     LazyInit<ExplorationRunner> runner = LazyInit(initProduction);
     "The (for now active) towns in the given map that don't have 'stats' yet."
-    {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) => {
+    {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) => [
         for (loc in map.locations)
 //            for (fixture in map.fixtures[loc].narrow<ModifiableTown>().filter(matchingValue(TownStatus.active, ITownFixture.status))) // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(loc).narrow<ModifiableTown>().filter(matchingValue(TownStatus.active, ITownFixture.status)))
-                    loc->fixture };
+                    loc->fixture ];
     void assignStatsToTown(ModifiableTown town, CommunityStats stats) {
         if (is AbstractTown town) {
             town.population = stats;
