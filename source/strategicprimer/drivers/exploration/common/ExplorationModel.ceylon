@@ -169,10 +169,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     shared actual {Player*} playerChoices => allMaps.map(Tuple.first).map(IMapNG.players).map(set)
                 .fold(set(map.players))(intersection);
     "Collect all the units in the main map belonging to the specified player."
-    shared actual {IUnit*} getUnits(Player player) {
-        return map.locations.flatMap(map.fixtures.get).flatMap(unflattenNonFortresses)
+    shared actual {IUnit*} getUnits(Player player) =>
+            map.locations.flatMap(map.fixtures.get).flatMap(unflattenNonFortresses)
                 .narrow<IUnit>().filter(matchingValue(player, HasOwner.owner));
-    }
     "Tell listeners that the selected point changed."
     void fireSelectionChange(Point old, Point newSelection) {
         for (listener in scListeners) {
