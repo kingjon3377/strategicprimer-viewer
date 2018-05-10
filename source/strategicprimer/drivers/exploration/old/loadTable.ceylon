@@ -90,12 +90,9 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                         }
                     } else {
                         String left = splitted.first;
-                        assert (exists right = splitted.rest.reduce(
-                                    (String partial, element) =>
-                                    "``partial`` ``element``"));
                         value leftNum = Integer.parse(left);
                         if (is Integer leftNum) {
-                            list.add([leftNum, right]);
+                            list.add([leftNum, " ".join(splitted.rest)]);
                         } else {
                             throw IOException("Non-numeric data", leftNum);
                         }
@@ -129,13 +126,10 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                         }
                     } else {
                         String left = splitted.first;
-                        assert (exists right = splitted.rest.reduce(
-                                    (String partial, element) =>
-                                    "``partial`` ``element``"));
                         value leftVal = TileType.parse(left);
                         "Terrain tables must only contain recognized tile types"
                         assert (is TileType leftVal);
-                        list.add(leftVal->right);
+                        list.add(leftVal->(" ".join(splitted.rest)));
                     }
                     first = false;
                 }
