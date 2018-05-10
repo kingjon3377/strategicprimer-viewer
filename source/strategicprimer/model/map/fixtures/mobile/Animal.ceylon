@@ -184,12 +184,10 @@ shared class AnimalImpl(kind, talking, status, id, born = -1, population = 1)
 shared object maturityModel {
     assert (exists textContent = readFileContents(`module strategicprimer.model`,
         "maturity.txt"));
-    shared Map<String, Integer> maturityAges = map {
-        *textContent.split('\n'.equals)
+    shared Map<String, Integer> maturityAges = map(textContent.split('\n'.equals)
             .map((String line) => line.split('\t'.equals, true, true, 1))
             .map(({String+} line) => line.first->Integer.parse(line.rest.first else ""))
-            .narrow<String->Integer>()
-    };
+            .narrow<String->Integer>());
     variable Integer currentTurnLocal = -1;
     shared Integer currentTurn => currentTurnLocal;
     assign currentTurn {
