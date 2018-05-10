@@ -30,6 +30,7 @@ shared class Worker satisfies IWorker&HasPortrait {
 	static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
 			set(first.filter(matchingValue(false, IJob.emptyJob))) ==
 			set(second.filter(matchingValue(false, IJob.emptyJob)));
+	static String->IJob entryByName(IJob job) => job.name->job; // TODO: Make a more generic Entry factory in lovelace.util.common?
     "The set of Jobs the worker is trained or experienced in."
     MutableSet<IJob> jobSet;
     "The worker's ID number."
@@ -99,7 +100,7 @@ shared class Worker satisfies IWorker&HasPortrait {
                     localReport("Stats differ");
                     return false;
                 }
-                Map<String, IJob> ours = createMap(map((job) => job.name->job));
+                Map<String, IJob> ours = createMap(map(entryByName));
                 variable Boolean retval = true;
                 for (job in obj) {
                     if (exists corresponding = ours[job.name]) {
