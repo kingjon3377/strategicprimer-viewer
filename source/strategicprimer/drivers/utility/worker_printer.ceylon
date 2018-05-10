@@ -41,6 +41,7 @@ shared class WorkerPrintCLI() satisfies SimpleDriver {
         includeInGUIList = false;
     };
     String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
+    String jobString(IJob job) => job.name + " " + job.level.string;
     void printWorkers(IUnit unit, ICLIHelper cli) {
         for (worker in unit.narrow<IWorker>()) {
             cli.print("- ");
@@ -51,7 +52,7 @@ shared class WorkerPrintCLI() satisfies SimpleDriver {
             {IJob*} jobs = worker.filter(matchingPredicate(Integer.positive, IJob.level));
             if (!jobs.empty) {
                 cli.print(" (");
-                cli.print(", ".join(jobs.map((job) => job.name + " " + job.level.string)));
+                cli.print(", ".join(jobs.map(jobString)));
                 cli.print(")");
             }
             if (exists stats = worker.stats) {
