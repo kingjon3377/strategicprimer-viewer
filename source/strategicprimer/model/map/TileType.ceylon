@@ -65,7 +65,7 @@ shared class TileType
     shared Boolean isSupportedByVersion(Integer version) => versions.contains(version);
 }
 {TileType*} getTypesForVersion(Integer version) =>
-        `TileType`.caseValues.filter((type) => type.isSupportedByVersion(version));
+        `TileType`.caseValues.filter(shuffle(TileType.isSupportedByVersion)(version));
 TileType|ParseException parseTileType(String xml) =>
         `TileType`.caseValues.find(matchingValue(xml, TileType.xml)) else
             ParseException("Failed to parse TileType from '``xml``'");
