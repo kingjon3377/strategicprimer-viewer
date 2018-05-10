@@ -54,7 +54,8 @@ import ceylon.random {
 }
 import lovelace.util.common {
 	matchingPredicate,
-	matchingValue
+	matchingValue,
+	NonNullCorrespondence
 }
 "A model for exploration drivers."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
@@ -359,8 +360,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         if (exists unit = localSelection.rest.first) {
             Player owner = unit.owner;
             {Village*} villages = allMaps.map(Tuple.first)
-//                .flatMap((world) => world.fixtures[currentPoint]) // TODO: syntax sugar once compiler bug fixed
-                .flatMap((world) => world.fixtures.get(currentPoint))
+                .flatMap(shuffle(compose(NonNullCorrespondence<Point, {TileFixture*}>.get,
+	                IMutableMapNG.fixtures))(currentPoint))
                 .narrow<Village>().filter(matchingPredicate(Player.independent, Village.owner));
             if (!villages.empty) {
                 variable Boolean subordinate = false;
@@ -387,7 +388,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 }
                 {[Point, TileFixture]*} surroundingFixtures = surroundingPoints
 //                            .flatMap((point) => mainMap.fixtures[point] // TODO: syntax sugar once compiler bug fixed
-                            .flatMap((point) => mainMap.fixtures.get(point)
+                            .flatMap((point) => mainMap.fixtures.get(point) // TODO: Provide a way to get point->fixture Entries in IMapNG API
                                 .map((fixture) => [point, fixture]));
                 [Point, TileFixture]? vegetation = surroundingFixtures
                         .narrow<[Point, Meadow|Grove]>().first;
