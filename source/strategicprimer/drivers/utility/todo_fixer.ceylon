@@ -136,7 +136,7 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
                 .flatMap((loc) => map.fixtures.get(loc).narrow<ITownFixture>().map((item) => [loc, item.population]))
                 .narrow<[Point, CommunityStats]>()
                 .filter(([loc, pop]) => pop.yearlyProduction.map(ResourcePile.contents)
-                    .any((str) => str.contains('#')));
+                    .any(shuffle(String.contains)('#')));
         if (!brokenTownContents.empty) {
             value runner = ExplorationRunner();
             "TODO fixer requires a tables directory"
