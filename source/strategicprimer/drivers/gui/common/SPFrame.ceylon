@@ -65,6 +65,7 @@ shared class SPFrame(String windowTitle, JPath? file, Dimension? minSize = null,
     }
     "Handle a dropped file."
     shared default void acceptDroppedFile(JPath file) => droppedFileHandler(file);
+    shared void showWindow() => setVisible(true);
     defaultCloseOperation = WindowConstants.disposeOnClose;
     if (exists minSize) {
         setMinimumSize(minSize);

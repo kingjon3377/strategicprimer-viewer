@@ -271,7 +271,7 @@ shared class TabularReportGUI() satisfies SimpleDriver {
         menuHandler.registerWindowShower(aboutDialog(frame, window.windowName), "about");
         menuHandler.register((event) => process.exit(0), "quit");
         window.jMenuBar = UtilityMenu(window);
-        window.setVisible(true);
+        window.showWindow();
     }
     "Ask the user to choose a file."
     shared actual {JPath*} askUserForFiles() {

@@ -90,10 +90,10 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 	// TODO: Keep track of whether the map has been modified and if not replace it
 	// instead of opening a new window
 	shared actual void acceptDroppedFile(JPath file) =>
-			SwingUtilities.invokeLater(() =>
+			SwingUtilities.invokeLater(() => // TODO: do the reading in a separate thread somehow; TODO: somehow avoid lambda here
 				ViewerFrame(ViewerModel.copyConstructor(
 					mapReaderAdapter.readMapModel(file, warningLevels.default)),
-						menuHandler).setVisible(true));
+						menuHandler).showWindow());
 	shared actual Boolean supportsDroppedFiles = true;
 	JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
 		mapPanel = mapComponent(mapModel, tableModel.shouldDisplay, tableModel);

@@ -297,7 +297,7 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 			if (gui) {
 				try {
 					SwingUtilities.invokeLater(() => appChooserFrame(cli,
-						currentOptionsTyped, others).setVisible(true));
+						currentOptionsTyped, others).showWindow());
 				} catch (DriverFailedException except) {
 					log.fatal(except.message, except);
 					SwingUtilities.invokeLater(() => showErrorDialog(null,
@@ -342,7 +342,7 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 			}
 		} else {
 			SwingUtilities.invokeLater( // TODO: catch errors (combine with the above)
-				() => appChooserFrame(cli, options, driverModel).setVisible(true));
+				() => appChooserFrame(cli, options, driverModel).showWindow());
 		}
 	}
 }

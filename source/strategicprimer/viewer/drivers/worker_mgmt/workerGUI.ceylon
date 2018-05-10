@@ -83,7 +83,7 @@ shared class WorkerGUI() satisfies SimpleDriver {
                     pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst, "change current player"));
                 }
                 log.trace("About to show window");
-                frame.setVisible(true);
+                frame.showWindow();
                 log.trace("Window should now be visible");
             });
             log.trace("Worker GUI window should appear any time now");

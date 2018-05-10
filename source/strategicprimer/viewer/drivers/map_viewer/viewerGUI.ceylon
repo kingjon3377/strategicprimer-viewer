@@ -116,7 +116,7 @@ shared class ViewerGUI() satisfies SimpleDriver {
                 menuHandler.registerWindowShower(getFindDialog, "find a fixture");
                 menuHandler.register((event) => getFindDialog().search(), "find next");
                 menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName), "about");
-                frame.setVisible(true);
+                frame.showWindow();
             });
         } else if (is IMultiMapModel model) {
             for (map in model.allMaps) {

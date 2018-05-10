@@ -49,7 +49,7 @@ shared class SubsetGUI() satisfies ISPDriver {
             IDriverModel model) {
         if (is IMultiMapModel model) {
             SubsetFrame frame = subsetFrame();
-            SwingUtilities.invokeLater(() => frame.setVisible(true));
+            SwingUtilities.invokeLater(frame.showWindow);
             frame.loadMain(model.map);
             for ([map, file] in model.subordinateMaps) {
                 frame.testMap(map, file);
@@ -65,7 +65,7 @@ shared class SubsetGUI() satisfies ISPDriver {
             throw IncorrectUsageException(usage);
         }
         SubsetFrame frame = subsetFrame();
-        SwingUtilities.invokeLater(() => frame.setVisible(true));
+        SwingUtilities.invokeLater(frame.showWindow);
         assert (exists first = args.first);
         try {
             frame.loadMain(JPaths.get(first));

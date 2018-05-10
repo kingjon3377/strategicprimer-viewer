@@ -487,7 +487,7 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
                 menuHandler.registerWindowShower(
                     aboutDialog(frame, frame.windowName), "about");
                 pcml.addPlayerChangeListener(frame);
-                frame.setVisible(true);
+                frame.showWindow();
             });
         } else {
             startDriverOnModel(cli, options,

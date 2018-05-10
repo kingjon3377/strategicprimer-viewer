@@ -144,7 +144,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		} else {
 			SPFrame&MapGUI frame = ViewerFrame(ViewerModel(model.map,
 				model.mapFile), menuHandler.actionPerformed);
-			SwingUtilities.invokeLater(() => frame.setVisible(true));
+			SwingUtilities.invokeLater(frame.showWindow);
 			return frame.mapModel;
 		}
 	}
@@ -229,14 +229,14 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	}
 	Thread(reportGeneratorThread).start();
 	value resultsPanel = ordersPanel(mainMap.currentTurn, model.currentPlayer,
-		(Player player, String kind) => model.getUnits(player, kind),
-		(IUnit unit, Integer turn) => unit.getResults(turn), null);
+		(Player player, String kind) => model.getUnits(player, kind), // TODO: Can a method reference replace this lambda?
+		(IUnit unit, Integer turn) => unit.getResults(turn), null); // TODO: Can uncurry() get rid of lambda here?
 	tree.addTreeSelectionListener(resultsPanel);
 	JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel);
 	tree.addUnitMemberListener(mdp);
 	StrategyExporter strategyExporter = StrategyExporter(model, options);
 	BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
-		listenedButton("Add New Unit", (event) => newUnitFrame.setVisible(true)),
+		listenedButton("Add New Unit", silentListener(newUnitFrame.showWindow)),
 		ordersPanelObj, listenedButton("Export a proto-strategy",
 			(ActionEvent event) => FileChooser.save(null,
 				filteredFileChooser(false, ".", null))

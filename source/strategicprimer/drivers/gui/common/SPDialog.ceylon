@@ -27,4 +27,5 @@ shared class SPDialog(Frame? parentFrame, String title)
     createHotKey(rootPane, "close", silentListener<ActionEvent>(dispose),
         JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkW,
             platform.shortcutMask), KeyStroke.getKeyStroke(KeyEvent.vkEscape, 0));
+    shared void showWindow() => setVisible(true);
 }

@@ -79,7 +79,7 @@ shared class AdvancementGUI() satisfies SimpleDriver {
                 "reload tree");
             menuHandler.register(silentListener(frame.dispose), "close");
             menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName), "about");
-            frame.setVisible(true);
+            frame.showWindow();
         });
     }
     "Ask the user to choose a file or files."
