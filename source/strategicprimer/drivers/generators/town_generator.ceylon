@@ -199,11 +199,9 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
         .flatMap(map.fixtures.get).find(matchingValue(id, IFixture.id));
     Point? findLocById(IMapNG map, Integer id) {
         for (location in map.locations) {
-//            for (fixture in map.fixtures[location]) {
-            for (fixture in map.fixtures.get(location)) {
-                if (fixture.id == id) {
-                    return location;
-                }
+            //if (map.fixtures[location].any(matchingValue(id, IFixture.id))) {
+            if (map.fixtures.get(location).any(matchingValue(id, IFixture.id))) {
+                return location;
             }
         }
         return null;
