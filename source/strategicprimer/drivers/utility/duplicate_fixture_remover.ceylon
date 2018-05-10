@@ -135,8 +135,8 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
                 map.removeFixture(location, fixture);
             }
             coalesceResources(context, map.fixtures.get(location), cli,
-                ifApplicable<TileFixture, IFixture>((fix) => map.addFixture(location, fix)),
-                ifApplicable<TileFixture, IFixture>((fix) => map.removeFixture(location, fix)));
+                ifApplicable<TileFixture, IFixture>(shuffle(curry(map.addFixture))),
+                ifApplicable<TileFixture, IFixture>(shuffle(curry(map.removeFixture))));
         }
     }
     class CoalescedHolder<Type,Key>(Key(Type) extractor, shared Type({Type+}) combiner)
