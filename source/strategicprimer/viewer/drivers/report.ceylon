@@ -349,7 +349,7 @@ shared class TabularReportCLI() satisfies SimpleDriver {
                 response.writeString(builder.string);
             }
         });
-        {Endpoint*} tocs = mapping.keys.map((path) => suffixHelper.shortestSuffix(mapping.keys, path))
+        {Endpoint*} tocs = mapping.keys.map(curry(suffixHelper.shortestSuffix)(mapping.keys))
                 .map((path) => Endpoint {
             path = matchEquals("/``path``").or(matchEquals("/``path``/"));
             void service(Request request, Response response) {
@@ -385,7 +385,7 @@ shared class TabularReportCLI() satisfies SimpleDriver {
                             "Strategic Primer Taublar Reports";
                         },
                         Ul {
-                            mapping.keys.map((path) => suffixHelper.shortestSuffix(mapping.keys, path))
+                            mapping.keys.map(curry(suffixHelper.shortestSuffix)(mapping.keys))
                                     .map((file) => Li {
                                 A { href="/``file``/"; children = [file]; }
                             })
