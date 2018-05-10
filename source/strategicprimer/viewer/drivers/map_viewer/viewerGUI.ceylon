@@ -114,7 +114,8 @@ shared class ViewerGUI() satisfies SimpleDriver {
                     }
                 }
                 menuHandler.registerWindowShower(getFindDialog, "find a fixture");
-                menuHandler.register((event) => getFindDialog().search(), "find next");
+                menuHandler.register(silentListener(compose(FindDialog.search, getFindDialog)()),
+                    "find next");
                 menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName), "about");
                 frame.showWindow();
             });
