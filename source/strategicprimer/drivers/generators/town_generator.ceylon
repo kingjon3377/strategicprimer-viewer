@@ -80,7 +80,8 @@ import java.lang {
 }
 import lovelace.util.common {
 	matchingValue,
-	matchingPredicate
+	matchingPredicate,
+	anythingEqual
 }
 class LazyInit<Wrapped>(Wrapped() generator) {
     variable Wrapped? inner = null;
@@ -214,11 +215,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             !isClaimedField(map, id) && findByID(map, id) is HarvestableFixture;
     Boolean bothOrNeitherOcean(TileType? one, TileType? two) {
         if (exists one, one == TileType.ocean) {
-            if (exists two, two == TileType.ocean) {
-                return true;
-            } else {
-                return false;
-            }
+            return anythingEqual(two, TileType.ocean);
         } else if (exists two, two == TileType.ocean) {
             return false;
         } else {
