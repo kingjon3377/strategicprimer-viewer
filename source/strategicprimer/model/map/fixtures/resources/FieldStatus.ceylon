@@ -37,12 +37,9 @@ shared class FieldStatus of fallow|seeding|growing|bearing
     }
     shared actual Comparison compare(FieldStatus other) => ordinal.compare(other.ordinal);
 }
-FieldStatus|ParseException parseFieldStatus(String status) {
-	if (exists item = `FieldStatus`.caseValues.find(matchingValue(status, FieldStatus.string))) {
-		return item;
-	}
-    return ParseException("Failed to parse FieldStatus from '``status``'");
-}
+FieldStatus|ParseException parseFieldStatus(String status) =>
+		`FieldStatus`.caseValues.find(matchingValue(status, FieldStatus.string))
+			else ParseException("Failed to parse FieldStatus from '``status``'");
 FieldStatus randomStatus(Integer seed) {
     assert (exists retval = DefaultRandom(seed).nextElement(
         sort<FieldStatus>(`FieldStatus`.caseValues)));
