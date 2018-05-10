@@ -235,9 +235,9 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         return super.isSubset(obj, (String str) => report("In proxy unit:\t``str``"));
     }
     shared actual String getOrders(Integer turn) =>
-            getConsensus((unit) => unit.getOrders(turn)) else "";
+            getConsensus(shuffle(IUnit.getOrders)(turn)) else "";
     shared actual String getResults(Integer turn) =>
-            getConsensus((unit) => unit.getResults(turn)) else "";
+            getConsensus(shuffle(IUnit.getResults)(turn)) else "";
     shared actual void setOrders(Integer turn, String newOrders) {
         for (unit in proxiedList) {
             unit.setOrders(turn, newOrders);
