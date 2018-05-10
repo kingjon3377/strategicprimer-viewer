@@ -492,7 +492,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			if ("quit".startsWith(command)) {
 				break;
 			}
-			{<String->Anything()>*} matches = commands.filterKeys((str) => str.startsWith(command));
+			{<String->Anything()>*} matches = commands.filterKeys(shuffle(String.startsWith)(command));
 			if (matches.size == 1) {
 				assert (exists first = matches.first);
 				first.item();
