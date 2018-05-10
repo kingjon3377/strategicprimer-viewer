@@ -246,15 +246,13 @@ shared class SPMapNG satisfies IMutableMapNG {
             // AbstractTown is Subsettable<AbstractTown>
             MutableMultimap<Integer, [AbstractTown, Point]> ourTowns =
                     HashMultimap<Integer, [AbstractTown, Point]>();
-            for (point in locations) {
-                for (fixture in fixtures.get(point)) {
-                    if (is IUnit fixture) {
-                        ourUnits.put(fixture.id, [fixture, point]);
-                    } else if (is AbstractTown fixture) {
-                        ourTowns.put(fixture.id, [fixture, point]);
-                    } else if (is Subsettable<IFixture> fixture) {
-                        ourSubsettables.put(fixture.id, [fixture, point]);
-                    }
+            for (point->fixture in fixturesMap) {
+                if (is IUnit fixture) {
+                    ourUnits.put(fixture.id, [fixture, point]);
+                } else if (is AbstractTown fixture) {
+                    ourTowns.put(fixture.id, [fixture, point]);
+                } else if (is Subsettable<IFixture> fixture) {
+                    ourSubsettables.put(fixture.id, [fixture, point]);
                 }
             }
             Boolean movedFrom(Point location, TileFixture fixture) {
