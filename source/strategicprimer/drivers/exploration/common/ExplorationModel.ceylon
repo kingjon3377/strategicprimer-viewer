@@ -438,7 +438,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             void addToMap(IMutableMapNG map, Boolean condition) {
 //                if (map.fixtures[currentPoint] // TODO: syntax sugar once compiler bug fixed
                 if (map.fixtures.get(currentPoint)
-                        .any((fixture) => areDiggablesEqual(fixture, oldFixture))) {
+                        .any(curry(areDiggablesEqual)(oldFixture))) {
                     map.removeFixture(currentPoint, oldFixture);
                 }
                 map.addFixture(currentPoint, newFixture.copy(condition));
