@@ -21,7 +21,7 @@ class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 		animals.add(item);
 	}
 	shared actual Integer born => getConsensus(Animal.born) else -1;
-	shared actual Animal copy(Boolean zero) => ProxyAnimal(*animals.map((item) => item.copy(zero)));
+	shared actual Animal copy(Boolean zero) => ProxyAnimal(*animals.map(shuffle(Animal.copy)(zero)));
 	shared actual Integer id => getConsensus(Animal.id) else -1;
 	shared actual String image => getConsensus(Animal.image) else "";
 	shared actual String kind => getConsensus(Animal.kind) else "proxied";
