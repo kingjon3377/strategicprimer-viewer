@@ -147,8 +147,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             retval.loadTable(table, loadedTable);
             for (reference in loadedTable.allEvents) {
                 if (reference.contains('#')) {
-                    value temp = reference.split('#'.equals, true, false, 2).rest.first;
-                    assert (exists temp);
+                    assert (exists temp = reference.split('#'.equals, true, false, 2).rest.first);
                     if (!retval.hasTable(temp)) {
                         firstTables.push(temp.trimmed);
                     }
@@ -164,8 +163,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             retval.loadTable(table, loadedTable);
             for (reference in loadedTable.allEvents) {
                 if (reference.contains('#')) {
-                    value temp = reference.split('#'.equals, true, false, 2).rest.first;
-                    assert (exists temp);
+                    assert (exists temp = reference.split('#'.equals, true, false, 2).rest.first);
                     if (!retval.hasTable(temp)) {
                         secondTables.push(temp.trimmed);
                     }
