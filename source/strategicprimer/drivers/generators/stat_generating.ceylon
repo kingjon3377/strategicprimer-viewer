@@ -198,9 +198,9 @@ shared class StatGeneratingCLI() satisfies SimpleCLIDriver {
         }
     }
     variable Boolean alwaysLowest = false;
+    Integer die(Integer max) => singletonRandom.nextInteger(max) + 1; // TODO: Convert to class-with-constructor and make static
     "Create randomly-generated stats for a worker, with racial adjustments applied."
     WorkerStats createWorkerStats(String race, Integer levels, ICLIHelper cli) {
-        Integer die(Integer max) => singletonRandom.nextInteger(max) + 1;
         WorkerStats base = WorkerStats.random(() => die(6) + die(6) + die(6));
         Integer lowestScore = getMinIndex(base.array);
         WorkerStats racialBonus;
