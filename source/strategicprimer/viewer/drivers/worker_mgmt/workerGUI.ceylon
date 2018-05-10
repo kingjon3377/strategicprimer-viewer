@@ -40,6 +40,12 @@ import java.awt.event {
 import lovelace.util.common {
 	silentListener
 }
+import strategicprimer.model.map {
+	IMapNG
+}
+import strategicprimer.model.map.fixtures.mobile {
+	IUnit
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to start the worker management GUI."
@@ -79,7 +85,8 @@ shared class WorkerGUI() satisfies SimpleDriver {
                 menuHandler.register(silentListener(frame.dispose), "close");
                 menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName), "about");
                 log.trace("Registered menu handlers");
-                if (model.allMaps.every(([map, _]) => model.getUnits(map.currentPlayer).empty)) {
+                if (model.allMaps.every(compose(compose(compose(Iterable<IUnit>.empty, model.getUnits),
+	                    IMapNG.currentPlayer), Tuple<IMapNG|JPath?, IMapNG, [JPath?]>.first))) {
                     pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst, "change current player"));
                 }
                 log.trace("About to show window");
