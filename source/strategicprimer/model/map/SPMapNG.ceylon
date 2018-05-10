@@ -48,6 +48,8 @@ shared class SPMapNG satisfies IMutableMapNG {
             return false;
         }
     }
+    static Item->Key reverseEntry<Key, Item>(Key->Item entry)
+            given Key satisfies Object given Item satisfies Object => entry.item->entry.key;
     "The set of mountainous places."
     MutableSet<Point> mountains = HashSet<Point>();
     "The base terrain at points in the map."
@@ -238,7 +240,7 @@ shared class SPMapNG satisfies IMutableMapNG {
             MutableList<TileFixture> ourFixtures = ArrayList<TileFixture>();
             MutableMultimap<Integer, [Subsettable<IFixture>, Point]> ourSubsettables =
                     ArrayListMultimap<Integer, [Subsettable<IFixture>, Point]>();
-            Map<TileFixture, Point> ourLocations = map(fixturesMap.map((key->item) => item->key));
+            Map<TileFixture, Point> ourLocations = map(fixturesMap.map(reverseEntry));
             // IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
             MutableMultimap<Integer, [IUnit, Point]> ourUnits = HashMultimap<Integer, [IUnit, Point]>();
             // AbstractTown is Subsettable<AbstractTown>
