@@ -44,10 +44,11 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
             proxiedJobs.add(worker.find(matchingValue(name, IJob.name)) else job);
         }
     }
+    ProxySkill proxyForSkill(String skill) => ProxySkill(skill, parallel, *proxiedJobs);
     "Proxy-skills."
     MutableList<ISkill&ProxyFor<IJob>> proxiedSkills =
             ArrayList<ISkill&ProxyFor<IJob>> { elements = skillNames
-                .map((skill) => ProxySkill(skill, parallel, *proxiedJobs)); };
+                .map(proxyForSkill); };
     shared actual IJob copy() {
         ProxyJob retval = ProxyJob(name, parallel);
         for (job in proxiedJobs) {
