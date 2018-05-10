@@ -39,6 +39,15 @@ shared class SPMapNG satisfies IMutableMapNG {
             return true;
         }
     }
+    static Boolean subsetCheck(TileFixture one, TileFixture two) {
+        if (is Subsettable<IFixture> one, one.isSubset(two, noop)) {
+            return true;
+        } else if (is Subsettable<IFixture> two, two.isSubset(one, noop)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     "The set of mountainous places."
     MutableSet<Point> mountains = HashSet<Point>();
     "The base terrain at points in the map."
@@ -126,15 +135,6 @@ shared class SPMapNG satisfies IMutableMapNG {
         {TileFixture*} local = fixturesMap.get(location);
         if (fixture.id >= 0,
 	            exists existing = local.find(matchingValue(fixture.id, TileFixture.id))) {
-            Boolean subsetCheck(TileFixture one, TileFixture two) {
-                if (is Subsettable<IFixture> one, one.isSubset(two, noop)) {
-                    return true;
-                } else if (is Subsettable<IFixture> two, two.isSubset(one, noop)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
             if (existing == fixture || subsetCheck(existing, fixture)) {
                 fixturesMap.remove(location, existing);
                 fixturesMap.put(location, fixture);
