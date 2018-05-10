@@ -246,8 +246,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
     {HarvestableFixture*} findNearestFields(IMapNG map, Point location) {
         if (exists base = map.baseTerrain[location]) {
             return surroundingPointIterable(location, map.dimensions, 10).distinct
-//            .filter((point) => bothOrNeitherOcean(base, map.baseTerrain[point])) // TODO: syntax sugar once compiler bug fixed
-                .filter((point) => bothOrNeitherOcean(base, map.baseTerrain.get(point)))
+                .filter(compose(curry(bothOrNeitherOcean)(base), map.baseTerrain.get))
                 .flatMap(map.fixtures.get).narrow<HarvestableFixture>().filter(isReallyClaimable);
         } else {
             return [];
