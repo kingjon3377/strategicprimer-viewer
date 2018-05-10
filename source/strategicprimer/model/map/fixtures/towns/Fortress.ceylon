@@ -125,9 +125,8 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
             return false;
         }
         if ([name, "unknown"].contains(obj.name), obj.owner.playerId == owner.playerId) {
-            Map<Integer, FortressMember> ours = createMap {
-                *members.map((member) => member.id->member)
-            };
+            Map<Integer, FortressMember> ours =
+                    createMap(members.map((member) => member.id->member));
             variable Boolean retval = true;
             void localFormat(String string) =>
                     report("In fortress ``name`` (ID #``id``):\t``string``");
