@@ -264,7 +264,7 @@ shared class TabularReportGUI() satisfies SimpleDriver {
         SPFrame window = SPFrame("Tabular Report", model.mapFile, Dimension(640, 480));
         JTabbedPane frame = JTabbedPane(JTabbedPane.top, JTabbedPane.scrollTabLayout);
         tabularReportGenerator.createGUITabularReports(
-            (String str, Component comp) => frame.addTab(str, comp), model.map);
+            (String str, Component comp) => frame.addTab(str, comp), model.map); // can't use a method reference because JTabbedPane.addTab is overloaded
         window.add(frame);
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(silentListener(window.dispose), "close");
