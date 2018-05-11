@@ -167,7 +167,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                            </li>
                            """);
             }
-            produceInner<UnitMember>("Others", others, (obj) => ostream(obj.string));
+            produceInner<UnitMember>("Others", others, compose(ostream, Object.string));
             ostream("""</ul>
                        """);
         }
