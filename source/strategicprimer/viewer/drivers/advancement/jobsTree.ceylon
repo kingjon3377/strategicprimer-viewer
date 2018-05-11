@@ -1,6 +1,7 @@
 import javax.swing.event {
     TreeModelListener,
-    TreeModelEvent
+    TreeModelEvent,
+	TreeSelectionEvent
 }
 import javax.swing {
     JTree
@@ -28,7 +29,7 @@ class JobsTree(JobTreeModel jtModel) extends JTree(jtModel) satisfies SkillSelec
 		expandRow(i);
 	}
 	showsRootHandles = true;
-	selectionModel.addTreeSelectionListener((event) { // TODO: If this becomes a class again, make a class method and use silentListener().
+	void handleTreeSelectionChange(TreeSelectionEvent event) {
 		ISkill? retval;
 		if (exists selectionPath = event.newLeadSelectionPath,
 			is ISkill component = selectionPath.lastPathComponent) {
@@ -39,7 +40,8 @@ class JobsTree(JobTreeModel jtModel) extends JTree(jtModel) satisfies SkillSelec
 		for (listener in listeners) {
 			listener.selectSkill(retval);
 		}
-	});
+	}
+	selectionModel.addTreeSelectionListener(handleTreeSelectionChange);
 	object treeModelListener satisfies TreeModelListener {
 		shared actual void treeStructureChanged(TreeModelEvent event) {
 			expandPath(event.treePath.parentPath);
