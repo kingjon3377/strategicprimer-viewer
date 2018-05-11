@@ -30,9 +30,9 @@ import ceylon.random {
     randomize
 }
 object townComparators {
-"A comparator for town-sizes, to put larger towns before smaller ones."
-todo("Reverse the semantics here and use Comparator-reversing methods, so we don't
-      have to say that 'large' is the smallest to get it first in lists")
+	"A comparator for town-sizes, to put larger towns before smaller ones."
+	todo("Reverse the semantics here and use Comparator-reversing methods, so we don't
+	      have to say that 'large' is the smallest to get it first in lists")
 	shared Comparison compareTownSize(TownSize one, TownSize two) {
 	    if (one == two) {
 	        return equal;
