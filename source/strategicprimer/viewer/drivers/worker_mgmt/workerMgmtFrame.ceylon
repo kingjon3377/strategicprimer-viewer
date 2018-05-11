@@ -213,10 +213,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	FormattedLabel playerLabel = FormattedLabel("Units belonging to %s: (%sU)",
 		model.currentPlayer.name, platform.shortcutDescription);
 	value ordersPanelObj = ordersPanel(mainMap.currentTurn, model.currentPlayer,
-		(Player player, String kind) => model.getUnits(player, kind),
-		(IUnit unit, Integer turn) => unit.getLatestOrders(turn),
-		(IUnit unit, Integer turn, String orders) => unit
-				.setOrders(turn, orders));
+		model.getUnits, uncurry(IUnit.getLatestOrders), uncurry(IUnit.setOrders));
 	tree.addTreeSelectionListener(ordersPanelObj);
 	DefaultTreeModel reportModel = DefaultTreeModel(simpleReportNode(
 		"Please wait, loading report ..."));
@@ -229,8 +226,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	}
 	Thread(reportGeneratorThread).start();
 	value resultsPanel = ordersPanel(mainMap.currentTurn, model.currentPlayer,
-		(Player player, String kind) => model.getUnits(player, kind), // TODO: Can a method reference replace this lambda?
-		(IUnit unit, Integer turn) => unit.getResults(turn), null); // TODO: Can uncurry() get rid of lambda here?
+		model.getUnits, uncurry(IUnit.getResults), null);
 	tree.addTreeSelectionListener(resultsPanel);
 	JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel);
 	tree.addUnitMemberListener(mdp);
