@@ -109,11 +109,9 @@ todo("Reverse the semantics here and use Comparator-reversing methods, so we don
 	}
 
 	"A total ordering for towns."
-	shared Comparison compareTowns(ITownFixture one, ITownFixture two) {
-	    return comparing(comparingOn<ITownFixture, TownStatus>(
-	                (fix) => fix.status, compareTownStatus),
-	        comparingOn<ITownFixture, TownSize>(
-	                    (fix) => fix.townSize, compareTownSize), compareTownKind,
+	shared Comparison compareTowns(ITownFixture one, ITownFixture two) { // TODO: =>
+	    return comparing(comparingOn(ITownFixture.status, compareTownStatus),
+	        comparingOn(ITownFixture.townSize, compareTownSize), compareTownKind,
 	        byIncreasing(ITownFixture.name))(one, two);
 	}
 }
