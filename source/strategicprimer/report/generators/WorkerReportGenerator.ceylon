@@ -42,12 +42,13 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
 	            .intelligence)``, Wisdom ``modifierString(stats.wisdom)``, Charisma ``
 	        modifierString(stats.charisma)``";
     }
+    String skillString(ISkill skill) => skill.name + " " + skill.level.string;
     "Produce text describing the given Skills."
     String skills(ISkill* job) {
         if (job.empty) {
             return "";
         } else {
-            return "(``", ".join(job.map((skill) => skill.name + " " + skill.level.string))``)";
+            return "(``", ".join(job.map(skillString))``)";
         }
     }
     "Produce the report-intermediate-representation sub-sub-report on a Job."
