@@ -71,7 +71,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     JPanel&AddRemoveSource skillAdditionPanel = itemAdditionPanel("skill");
     skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
     tree.addUnitMemberListener(levelListener);
-    value jobsTreeObject = jobsTree(jobsTreeModel);
+    value jobsTreeObject = JobsTree(jobsTreeModel);
     jobsTreeObject.addSkillSelectionListener(levelListener);
     value hoursAdditionPanel = skillAdvancementPanel();
     jobsTreeObject.addSkillSelectionListener(hoursAdditionPanel);
