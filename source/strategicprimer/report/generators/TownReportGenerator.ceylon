@@ -99,9 +99,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         // separateByStatus() sorts using pairComparator, which should be by distance
         // from HQ
         separateByStatus(separated, fixtures.items,
-                    (MutableMap<ITownFixture, Point> mapping, pair) {
-                mapping[pair.rest.first] = pair.first;
-            });
+                    (MutableMap<ITownFixture, Point> mapping, pair) =>
+                            mapping[pair.rest.first] = pair.first);
         if (separated.items.any(inverse(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
             ostream("""<h4>Cities, towns, and/or fortifications you know about:</h4>
                    """);
