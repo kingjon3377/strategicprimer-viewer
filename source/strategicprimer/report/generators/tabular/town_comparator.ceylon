@@ -109,11 +109,10 @@ object townComparators {
 	}
 
 	"A total ordering for towns."
-	shared Comparison compareTowns(ITownFixture one, ITownFixture two) { // TODO: =>
-	    return comparing(comparingOn(ITownFixture.status, compareTownStatus),
-	        comparingOn(ITownFixture.townSize, compareTownSize), compareTownKind,
-	        byIncreasing(ITownFixture.name))(one, two);
-	}
+	shared Comparison compareTowns(ITownFixture one, ITownFixture two) =>
+			comparing(comparingOn(ITownFixture.status, compareTownStatus),
+		        comparingOn(ITownFixture.townSize, compareTownSize), compareTownKind,
+		        byIncreasing(ITownFixture.name))(one, two);
 }
 "Test that the town-comparison algorithms work as expected."
 test
