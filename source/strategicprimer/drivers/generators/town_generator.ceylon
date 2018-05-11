@@ -461,6 +461,13 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             Quantity(4 * 14 * population, "pounds")));
         return retval;
     }
+    Boolean? nullIfQuit(String string) {
+        if ("quit" == string) {
+            return null;
+        } else {
+            return false;
+        }
+    }
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         IDRegistrar idf;
@@ -510,13 +517,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                 cli.println("Next town is ``town.shortDescription``, at ``location``. ");
                 CommunityStats stats;
                 Boolean? resp = cli.inputBooleanInSeries<Null>("Enter stats rather than generating them?",
-                    "enter stats", (str) {
-                        if ("quit" == str) {
-                            return null;
-                        } else {
-                            return false;
-                        }
-                    });
+                    "enter stats", nullIfQuit);
                 if (exists resp) {
                     if (resp) {
                         stats = enterStats(cli, idf, model.map, location, town);
