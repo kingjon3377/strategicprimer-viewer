@@ -137,7 +137,7 @@ shared class CropTabularReportGenerator
                 one.first, two.first);
             if (cmp == equal) {
                 return comparing(byIncreasing<TileFixture, Integer>(
-                            (fix) => typeOf(fix).hash), byIncreasing(TileFixture.hash))(
+	                    compose(Object.hash, typeOf<TileFixture>)), byIncreasing(TileFixture.hash))(
                     first, second);
             } else {
                 return cmp;
