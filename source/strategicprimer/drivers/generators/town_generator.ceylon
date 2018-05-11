@@ -509,7 +509,6 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             for (location->town in randomize(unstattedTowns(model.map))) {
                 cli.println("Next town is ``town.shortDescription``, at ``location``. ");
                 CommunityStats stats;
-//                // We effectively duplicate inputBooleanInSeries() here to allow "quit."
                 Boolean? resp = cli.inputBooleanInSeries<Null>("Enter stats rather than generating them?",
                     "enter stats", (str) {
                         if ("quit" == str) {
