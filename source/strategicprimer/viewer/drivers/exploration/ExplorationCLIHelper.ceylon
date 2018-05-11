@@ -5,7 +5,8 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+	matchingValue
 }
 
 import strategicprimer.model.map {
@@ -153,7 +154,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 Direction direction;
                 if (exists proposedDestination = proposedPath.accept()) {
                     direction = `Direction`.caseValues.find(
-                        (dir) => model.getDestination(point, dir) == proposedDestination) else Direction.nowhere;
+                        matchingValue(proposedDestination, curry(model.getDestination)(point))) else Direction.nowhere;
                     if (proposedDestination == point) {
                         continue;
                     } else if (direction == Direction.nowhere) {
