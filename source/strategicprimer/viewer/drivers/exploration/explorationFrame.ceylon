@@ -493,8 +493,8 @@ SPFrame explorationFrame(IExplorationModel model,
                                 }
                             }
                             constants.addAll(simpleMovementModel.selectNoticed(randomize(possibles),
-                                ([Integer, TileFixture] tuple) => tuple.rest
-                                        .first,
+                                compose(Tuple<TileFixture, TileFixture, []>.first,
+                                    Tuple<Integer|TileFixture, Integer, [TileFixture]>.rest),
                                 selectedUnit, speedSource()));
                             IntArray indices = IntArray.with(
                                 constants.map(Tuple.first));
