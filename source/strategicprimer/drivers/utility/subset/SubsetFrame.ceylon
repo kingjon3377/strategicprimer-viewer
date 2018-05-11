@@ -133,7 +133,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
         printParagraph("Testing ``filename`` ...");
         try (formatter = Formatter(htmlWriter)) {
             if (mainMap.isSubset(map,
-                        (String string) => formatter.format("%s: %s", filename,
+                        (String string) => formatter.format("%s: %s", filename, // can't use curry() directly because Formatter.format() is overloaded
                             string))) {
                 printParagraph("OK", LabelTextColor.green);
             } else {

@@ -181,13 +181,20 @@ shared class AnimalImpl(kind, talking, status, id, born = -1, population = 1)
     shared actual Animal combined(Animal addend) => AnimalImpl(kind, talking, status, id, born,
             Integer.largest(0, population) + Integer.largest(0, addend.population));
 }
+object fileSplitter {
+	{String+} splitOnFirstTab(String line) => line.split('\t'.equals, true, true, 1);
+	String->Type lineToEntry<Type>({String+} line, Type(String) factory) =>
+			line.first->factory(line.rest.first else "");
+	shared Map<String, Type> getFileContents<Type, BroaderType=Type>(String filename,
+			BroaderType(String) factory) given Type satisfies BroaderType {
+		assert (exists textContent = readFileContents(`module strategicprimer.model`, filename));
+		return map(textContent.split('\n'.equals).map(splitOnFirstTab)
+			.map(shuffle(curry(lineToEntry<BroaderType>))(factory)).narrow<String->Type>());
+	}
+}
 shared object maturityModel {
-    assert (exists textContent = readFileContents(`module strategicprimer.model`,
-        "maturity.txt"));
-    shared Map<String, Integer> maturityAges = map(textContent.split('\n'.equals)
-            .map((String line) => line.split('\t'.equals, true, true, 1))
-            .map(({String+} line) => line.first->Integer.parse(line.rest.first else ""))
-            .narrow<String->Integer>());
+    shared Map<String, Integer> maturityAges =
+            fileSplitter.getFileContents("maturity.txt", Integer.parse);
     variable Integer currentTurnLocal = -1;
     shared Integer currentTurn => currentTurnLocal;
     assign currentTurn {
@@ -199,11 +206,7 @@ shared object maturityModel {
     restricted shared void resetCurrentTurn() => currentTurnLocal = -1;
 }
 shared object animalPlurals satisfies Correspondence<String, String> {
-    assert (exists textContent = readFileContents(`module strategicprimer.model`,
-        "animal_plurals.txt"));
-    Map<String, String> plurals = map(textContent.split('\n'.equals)
-        .map((String line) => line.split('\t'.equals, true, true, 1))
-        .map(({String+} line) => line.first->(line.rest.first else line.first)));
+    Map<String, String> plurals = fileSplitter.getFileContents("animal_plurals.txt", identity);
     shared actual String get(String key) => plurals[key] else key;
     shared actual Boolean defines(String key) => plurals.defines(key);
 
