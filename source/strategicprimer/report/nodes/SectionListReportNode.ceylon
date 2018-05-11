@@ -22,8 +22,8 @@ shared class SectionListReportNode(Integer level, variable String header,
     Integer minimumBoilerPlate = "<h1></h1><p></p><ul></ul>".size + 4;
     Integer perChildBoilerPlate = "<li></li>".size + 1;
     shared actual Integer htmlSize =>
-            minimumBoilerPlate + header.size + Integer.sum(map(
-                        (node) => node.htmlSize + perChildBoilerPlate));
+            minimumBoilerPlate + header.size +
+            Integer.sum(map(IReportNode.htmlSize).map(perChildBoilerPlate.plus));
     shared actual default Boolean equals(Object that) {
         if (is SectionListReportNode that, that.level == level, that.header == header,
 	            that.children() == children()) {

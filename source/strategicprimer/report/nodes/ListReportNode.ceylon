@@ -38,8 +38,8 @@ shared class ListReportNode extends DefaultMutableTreeNode satisfies IReportNode
         initialText = text;
     }
     shared actual Integer htmlSize =>
-            boilerPlateLength + text.size + Integer.sum(
-                map((node) => node.htmlSize + perChildBoilerPlate));
+            boilerPlateLength + text.size +
+            Integer.sum(map(IReportNode.htmlSize).map(perChildBoilerPlate.plus));
     shared actual void produce(Anything(String) stream) {
         stream(text);
         stream("""
