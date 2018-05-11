@@ -73,7 +73,8 @@ shared class HuntingModel {
             "Filter/provider to use to find the animals."
             {Type|NothingFound*}(Point) chosenMap) given Type satisfies Object {
         variable {<Point->Type|NothingFound>*} choices = surroundingPointIterable(point, dimensions)
-            .map((loc) => chosenMap(loc).map((item) => loc->item)).coalesced.flatMap(identity);
+            .map((loc) => chosenMap(loc).map(curry(Entry<Point, Type|NothingFound>)(loc)))
+                .coalesced.flatMap(identity);
         choices = choices.chain(Singleton(point->NothingFound.nothingFound).repeat(choices.size));
         return singletonRandom.elements(choices);
     }
@@ -94,7 +95,8 @@ shared class HuntingModel {
             "Whereabouts to search"
             Point point) {
         {<Point->Grove|Meadow|Shrub|NothingFound>*} retval = surroundingPointIterable(point, dimensions)
-                .map((loc) => plants(loc).map((item) => loc->item)).flatMap(identity);
+                .map((loc) => plants(loc).map(curry(Entry<Point, Grove|Meadow|Shrub|NothingFound>)(loc)))
+                .flatMap(identity);
         return singletonRandom.elements(retval);
     }
 }
