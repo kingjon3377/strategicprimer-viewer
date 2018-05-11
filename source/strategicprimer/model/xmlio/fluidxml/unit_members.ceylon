@@ -196,19 +196,19 @@ object unitMemberHandler extends FluidBase() {
 	    Integer id;
 	    if (traces) {
 	        if (hasAttribute(element, "id")) {
-	            warner.handle(UnsupportedPropertyException(element, "id")); // TODO: Need some way to make clear that it's _when tracks=true_
+	            warner.handle(UnsupportedPropertyException.inContext(element, "id", """when tracks="true""""));
 	        }
 	        if (talking) {
-	            warner.handle(UnsupportedPropertyException(element, "talking")); // TODO: Need some way to make clear that it's _when tracks=true_
+	            warner.handle(UnsupportedPropertyException.inContext(element, "talking", """when tracks="true""""));
 	        }
 	        if (status != "wild") {
-	            warner.handle(UnsupportedPropertyException(element, "status")); // TODO: Need some way to make clear that it's _when tracks=true_
+	            warner.handle(UnsupportedPropertyException.inContext(element, "status", """when tracks="true""""));
 	        }
 	        if (born != -1) {
-	            warner.handle(UnsupportedPropertyException(element, "born")); // TODO: Need some way to make clear that it's _when tracks=true_
+	            warner.handle(UnsupportedPropertyException.inContext(element, "born", """when tracks="true""""));
 	        }
 	        if (count != 1) {
-	            warner.handle(UnsupportedPropertyException(element, "count")); // TODO: Need some way to make clear that it's _when tracks=true_
+	            warner.handle(UnsupportedPropertyException.inContext(element, "count", """when tracks="true""""));
 	        }
 	        return setImage(AnimalTracks(getAttribute(element, "kind")), element, warner);
 	    } else {
