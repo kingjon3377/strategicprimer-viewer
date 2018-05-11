@@ -105,7 +105,7 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 			detailPanel(mapModel.mapDimensions.version, mapModel);
 	mapModel.addVersionChangeListener(detailPane);
 	mapModel.addSelectionChangeListener(detailPane);
-	JComponent createFilterPanel() { // TODO: This probably creates a separate class ...
+	JComponent createFilterPanel() {
 		JTable table = JTable(tableModel);
 		table.dragEnabled = true;
 		table.dropMode = DropMode.insertRows;
