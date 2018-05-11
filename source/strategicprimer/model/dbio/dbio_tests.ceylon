@@ -146,7 +146,7 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 		parameters(`function threeRandomNumbers`) Integer column) =>
 			assertFixtureSerialization(Portal("portal dest", pointFactory(row, column), id));
 	test
-	shared void testAnimalSerialization(parameters(`function threeRandomNumbers`) Integer id, // TODO: animals inside units
+	shared void testAnimalSerialization(parameters(`function threeRandomNumbers`) Integer id,
 		enumeratedParameter(`class Boolean`) Boolean talking) =>
 			assertFixtureSerialization(AnimalImpl("animal kind", talking, "status", id, -1, 1));
 	test
@@ -311,6 +311,7 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 		unit.addMember(Worker("worker name", "elf", id + 1, Job("job name", 2,
 			Skill("first skill", 1, 2), Skill("second skill", 3, 4)), Job("second job", 4)));
 		unit.addMember(Centaur("horse", id + 5));
+		unit.addMember(AnimalImpl("elephant", false, "domesticated", id + 6, -1, 4));
 		assertFixtureSerialization(unit);
 	}
 	test
