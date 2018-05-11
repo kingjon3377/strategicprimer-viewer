@@ -30,11 +30,16 @@ import strategicprimer.drivers.worker.common {
     IWorkerModel,
     IWorkerTreeModel
 }
-// TODO: Make WorkerTreeModel a class-with-constructor so this can be static in it
-Boolean(IUnit) containingItem(UnitMember item) => (IUnit unit) => unit.contains(item);
 "A TreeModel implementation for a player's units and workers."
-class WorkerTreeModel(variable Player player, IWorkerModel model)
-        satisfies IWorkerTreeModel {
+class WorkerTreeModel satisfies IWorkerTreeModel {
+	static Boolean(IUnit) containingItem(UnitMember item) => (IUnit unit) => unit.contains(item);
+	variable Player player;
+	IWorkerModel model;
+	shared new (Player player, IWorkerModel model) {
+		this.player = player;
+		this.model = model;
+	}
+
     MutableList<UnitMember> dismissedMembers = ArrayList<UnitMember>();
     MutableList<TreeModelListener> listeners = ArrayList<TreeModelListener>();
     shared actual Player root => player;
