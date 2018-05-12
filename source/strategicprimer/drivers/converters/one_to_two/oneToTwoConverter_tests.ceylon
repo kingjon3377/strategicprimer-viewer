@@ -78,7 +78,7 @@ import strategicprimer.model.xmlio {
     SPWriter,
     testReaderFactory
 }
-object oneToTwoConverterTests {
+object oneToTwoConverterTests { // TODO: Combine with oneToTwoConverter?
 	void assertModuloID(IMapNG map, String serialized, Anything(String) err) {
 	    Regex matcher = regex("id=\"[0-9]*\"", true);
 	    try (inStream = StringReader(matcher.replace(serialized, "id=\"-1\""))) {
@@ -217,28 +217,28 @@ object oneToTwoConverterTests {
 	    StringBuilder outTwo = StringBuilder();
 	    Regex matcher = regex("id=\"[0-9]*\"", true);
 	    newWriter.write(outOne.append, converted);
-	    newWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+	    newWriter.write(outTwo.append, oneToTwoConverter.convertOneToTwo(original, runner, true));
 	    assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
 	        "Produces expected result");
 	    outOne.clear();
 	    outTwo.clear();
 	    oldWriter.write(outOne.append, converted);
-	    oldWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+	    oldWriter.write(outTwo.append, oneToTwoConverter.convertOneToTwo(original, runner, true));
 	    assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
 	        "Deprecated I/O produces expected result");
 	    outOne.clear();
 	    outTwo.clear();
 	    assertEquals(
-	        converted.isSubset(convertOneToTwo(original, runner, true),
+	        converted.isSubset(oneToTwoConverter.convertOneToTwo(original, runner, true),
 	                    inlineWriter(outTwo)),
-	        converted.isSubset(convertOneToTwo(original, runner, true),
+	        converted.isSubset(oneToTwoConverter.convertOneToTwo(original, runner, true),
 	                    inlineWriter(outOne)),
 	        "Products of two runs are both or neither subsets of expected");
 	    assertEquals(outTwo.string, outOne.string,
 	        "Two runs produce identical results");
 	    outOne.clear();
 	    outTwo.clear();
-	    newWriter.writeSPObject(outOne.append, convertOneToTwo(original, runner, true));
+	    newWriter.writeSPObject(outOne.append, oneToTwoConverter.convertOneToTwo(original, runner, true));
 	    assertModuloID(converted, outOne.string, noop);
 	}
 	test
@@ -340,27 +340,27 @@ object oneToTwoConverterTests {
 	    StringBuilder outOne = StringBuilder();
 	    StringBuilder outTwo = StringBuilder();
 	    newWriter.write(outOne.append, converted);
-	    newWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+	    newWriter.write(outTwo.append, oneToTwoConverter.convertOneToTwo(original, runner, true));
 	    assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
 	        "Produces expected result");
 	    outOne.clear();
 	    outTwo.clear();
 	    oldWriter.write(outOne.append, converted);
-	    oldWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+	    oldWriter.write(outTwo.append, oneToTwoConverter.convertOneToTwo(original, runner, true));
 	    assertEquals(matcher.replace(outTwo.string, "id=\"-1\""), outOne.string,
 	        "Deprecated I/O produces expected result");
 	    outOne.clear();
 	    outTwo.clear();
 	    assertEquals(
-	        converted.isSubset(convertOneToTwo(original, runner, true),
+	        converted.isSubset(oneToTwoConverter.convertOneToTwo(original, runner, true),
 	                    inlineWriter(outTwo)),
-	        converted.isSubset(convertOneToTwo(original, runner, true),
+	        converted.isSubset(oneToTwoConverter.convertOneToTwo(original, runner, true),
 	                    inlineWriter(outOne)),
 	        "Products of two runs are both or neither subsets of expected");
 	    assertEquals(outTwo.string, outOne.string,
 	        "Two runs produce identical results");
 	    outOne.clear();
-	    newWriter.writeSPObject(outOne.append, convertOneToTwo(original, runner, true));
+	    newWriter.writeSPObject(outOne.append, oneToTwoConverter.convertOneToTwo(original, runner, true));
 	    assertModuloID(converted, outOne.string, noop);
 	}
 
@@ -512,7 +512,7 @@ object oneToTwoConverterTests {
 	    newWriter.write(outOne.append, converted);
 	    // The conversion process generates a second Ground, which with our ID-replacing we
 	    // can only match by removing it.
-	    assert (is IMutableMapNG actual = convertOneToTwo(original, runner, true));
+	    assert (is IMutableMapNG actual = oneToTwoConverter.convertOneToTwo(original, runner, true));
 	    for (fixture in actual.fixtures.get(pointFactory(3, 1)).narrow<Ground>().rest) {
             actual.removeFixture(pointFactory(3, 1), fixture);
 	    }
@@ -528,16 +528,16 @@ object oneToTwoConverterTests {
 	    outOne.clear();
 	    outTwo.clear();
 	    assertEquals(
-	        converted.isSubset(convertOneToTwo(original, runner, true),
+	        converted.isSubset(oneToTwoConverter.convertOneToTwo(original, runner, true),
 	                    inlineWriter(outTwo)),
-	        converted.isSubset(convertOneToTwo(original, runner, true),
+	        converted.isSubset(oneToTwoConverter.convertOneToTwo(original, runner, true),
 	                    inlineWriter(outOne)),
 	        "Products of two runs are both or neither subsets of expected");
 	    assertEquals(outTwo.string, outOne.string,
 	        "Two runs produce identical results");
 	    outOne.clear();
 	    outTwo.clear();
-	    newWriter.writeSPObject(outOne.append, convertOneToTwo(original, runner, true));
+	    newWriter.writeSPObject(outOne.append, oneToTwoConverter.convertOneToTwo(original, runner, true));
 	    assertModuloID(converted, outOne.string, noop);
 	}
 	Anything(String) inlineWriter(StringBuilder ostream) {
@@ -560,7 +560,7 @@ object oneToTwoConverterTests {
 	    original.addPlayer(independent);
 
 	    ExplorationRunner runner = initializeRunner();
-	    IMapNG actualConverted = convertOneToTwo(original, runner, true);
+	    IMapNG actualConverted = oneToTwoConverter.convertOneToTwo(original, runner, true);
 
 	    IMutableMapNG converted = SPMapNG(MapDimensionsImpl(8, 8, 2), PlayerCollection(), 15);
 	    converted.addPlayer(player);
@@ -651,7 +651,7 @@ object oneToTwoConverterTests {
 	    StringBuilder outOne = StringBuilder();
 	    StringBuilder outTwo = StringBuilder();
 	    newWriter.write(outOne.append, converted);
-	    newWriter.write(outTwo.append, convertOneToTwo(original, runner, true));
+	    newWriter.write(outTwo.append, oneToTwoConverter.convertOneToTwo(original, runner, true));
 	    assertEquals(outTwo.string, outOne.string, "Produces expected result");
 	    outOne.clear();
 	    outTwo.clear();
@@ -661,15 +661,15 @@ object oneToTwoConverterTests {
 	    outOne.clear();
 	    outTwo.clear();
 	    assertEquals(
-	        converted.isSubset(convertOneToTwo(original, runner, true),
+	        converted.isSubset(oneToTwoConverter.convertOneToTwo(original, runner, true),
 	                    inlineWriter(outTwo)),
-	        converted.isSubset(convertOneToTwo(original, runner, true),
+	        converted.isSubset(oneToTwoConverter.convertOneToTwo(original, runner, true),
 	                    inlineWriter(outOne)),
 	        "Products of two runs are both or neither subsets of expected");
 	    assertEquals(outTwo.string, outOne.string,
 	        "Two runs produce identical results");
 	    assertTrue(
-	        converted.isSubset(convertOneToTwo(original, runner, true), noop),
+	        converted.isSubset(oneToTwoConverter.convertOneToTwo(original, runner, true), noop),
 	        "Actual is at least subset of expected converted");
 	}
 }

@@ -11,7 +11,7 @@ import java.nio.file {
 }
 
 import strategicprimer.drivers.converters.one_to_two {
-    convertOneToTwo
+    oneToTwoConverter
 }
 import strategicprimer.model.map {
     IMapNG
@@ -75,7 +75,7 @@ shared class OneToTwoConverter() satisfies SimpleDriver {
         } else {
             throw DriverFailedException.illegalState("No path for main map");
         }
-        IMapNG newMain = convertOneToTwo(oldMain, runner, true);
+        IMapNG newMain = oneToTwoConverter.convertOneToTwo(oldMain, runner, true);
         writeConvertedMap(oldMainPath, newMain);
         if (is IMultiMapModel model) {
             for ([map, path] in model.subordinateMaps) {
@@ -84,7 +84,7 @@ shared class OneToTwoConverter() satisfies SimpleDriver {
                     continue;
                 }
                 assert (exists path);
-                IMapNG newMap = convertOneToTwo(map, runner, false);
+                IMapNG newMap = oneToTwoConverter.convertOneToTwo(map, runner, false);
                 writeConvertedMap(path, newMap);
             }
         }
