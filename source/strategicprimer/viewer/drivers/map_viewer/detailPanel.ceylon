@@ -24,7 +24,8 @@ import strategicprimer.model.map {
     TileFixture,
     HasPortrait,
     TileType,
-    Point
+    Point,
+	HasOwner
 }
 import javax.swing.event {
     ListSelectionListener,
@@ -118,6 +119,15 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                             portrait = imageLoader.loadImage(portraitName);
                         } catch (IOException except) {
                             log.warn("I/O error loading portrait", except);
+                        }
+                    } else if (is HasOwner selectedValue){
+                        String playerPortraitName = selectedValue.owner.portrait;
+                        if (!playerPortraitName.empty) {
+                            try {
+                                portrait = imageLoader.loadImage(playerPortraitName);
+                            } catch (IOException except) {
+                                log.warn("I/O error loading player portrait", except);
+                            }
                         }
                     }
                 }
