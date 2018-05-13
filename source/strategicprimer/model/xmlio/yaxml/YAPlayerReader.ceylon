@@ -28,8 +28,10 @@ class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
         // so as to not require players to upgrade to even read their maps once we start doing
         // so, we *now* only *warn* instead of *dying* if the XML contains that idiom.
         spinUntilEnd(element.name, stream, ["orders", "results", "science"]);
-        return PlayerImpl(getIntegerParameter(element, "number"),
+        value retval = PlayerImpl(getIntegerParameter(element, "number"),
             getParameter(element, "code_name"));
+        retval.portrait = getParameter(element, "portrait", "");
+        return retval;
     }
     shared actual Boolean isSupportedTag(String tag) => "player" == tag.lowercased;
     shared actual void write(Anything(String) ostream, Player obj, Integer indent) {
@@ -37,6 +39,7 @@ class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
             writeTag(ostream, "player", indent);
             writeProperty(ostream, "number", obj.playerId);
             writeProperty(ostream, "code_name", obj.name);
+            writeNonemptyProperty(ostream, "portrait", obj.portrait);
             closeLeafTag(ostream);
         }
     }

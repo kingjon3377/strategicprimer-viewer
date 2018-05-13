@@ -54,14 +54,14 @@ shared object imageLoader {
 	"A cache of loaded images."
 	MutableMap<String, Image> imageCache = HashMap<String, Image>();
 	"Load an image from the cache, or if not in it, from file (and add it to the cache)"
-	shared Image loadImage(String file) {
+	shared Image loadImage(String file) { // TODO: Add support for SVG (presumably using Batik)
 	    if (exists cached = imageCache[file]) {
 	        return cached;
 	    } else {
 	        try (res = ResourceInputStream("images/``file``",
 	                `module strategicprimer.viewer`,
 	                    Types.classForDeclaration(`class SPMenu`))) {
-	            if (exists image = ImageIO.read(res)) {
+	            if (exists image = ImageIO.read(res)) { // FIXME: ImageIO.read() is documented to leave the stream open!
 	                imageCache[file] = image;
 	                return image;
 	            } else {

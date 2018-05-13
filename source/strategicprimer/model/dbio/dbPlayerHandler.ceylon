@@ -1,5 +1,6 @@
 import ceylon.dbc {
-	Sql
+	Sql,
+	SqlNull
 }
 
 import strategicprimer.model.map {
@@ -16,21 +17,26 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>() satisfie
 		"""CREATE TABLE IF NOT EXISTS players (
 			   id INTEGER NOT NULL,
 			   codename VARCHAR(64) NOT NULL,
-			   current BOOLEAN NOT NULL
+			   current BOOLEAN NOT NULL,
+			   portrait VARCHAR(256)
 		   );"""
 	];
 	shared actual void write(Sql db, Player obj, IMapNG context) {
-		db.Insert("""INSERT INTO players (id, codename, current) VALUES(?, ?, ?);""")
-				.execute(obj.playerId, obj.name, obj.current);
+		db.Insert("""INSERT INTO players (id, codename, current, portrait) VALUES(?, ?, ?, ?);""")
+				.execute(obj.playerId, obj.name, obj.current, obj.portrait);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		log.trace("About to read players");
 		variable Integer count = 0;
 		for (row in db.Select("""SELECT * FROM PLAYERS""").Results()) {
 			assert (is Integer id = row["id"], is String name = row["codename"],
-				is Boolean current = dbMapReader.databaseBoolean(row["current"]));
+				is Boolean current = dbMapReader.databaseBoolean(row["current"]),
+				is String|SqlNull portrait = row["portrait"]);
 			value player = PlayerImpl(id, name);
 			player.current = current;
+			if (is String portrait) {
+				player.portrait = portrait;
+			}
 			map.addPlayer(player);
 			count++;
 			if (50.divides(count)) {

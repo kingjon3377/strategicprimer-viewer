@@ -174,6 +174,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         if (!obj.name.empty) {
             writeTag(ostream, "player", indentation, true);
             writeAttributes(ostream, "number"->obj.playerId, "code_name"->obj.name);
+            writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
         }
     }
     Entry<ClassOrInterface<Anything>, LocalXMLWriter> simpleFixtureWriter(

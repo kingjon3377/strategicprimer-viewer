@@ -321,8 +321,10 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
                 break;
             }
         }
-        return PlayerImpl(getIntegerAttribute(element, "number"),
+        value retval = PlayerImpl(getIntegerAttribute(element, "number"),
             getAttribute(element, "code_name"));
+        retval.portrait = getAttribute(element, "portrait", "");
+        return retval;
     }
     void parseOrders(StartElement element, IUnit unit, {XMLEvent*} stream,
             Warning warner) {

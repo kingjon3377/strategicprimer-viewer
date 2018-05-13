@@ -28,4 +28,5 @@ shared class PlayerImpl(playerId, name) satisfies MutablePlayer {
     shared actual Comparison compare(Player player) => playerId <=> player.playerId;
     """If the player name is non-empty, use it; otherwise, use "player #NN"."""
     shared actual String string => (name.empty) then "player #``playerId``" else name;
+    shared actual variable String portrait = "";
 }
