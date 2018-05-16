@@ -17,7 +17,8 @@ import strategicprimer.model.map {
 "An abstract superclass for classes that generate reports for particular kinds of SP
  objects. It's mostly interface and helper methods, but contains a couple of bits of
  shared state."
-// We'd like to make methods and member types static, but a sealed class can't have constructors.
+// We'd like to make methods and member types static, but a sealed class can't have
+// constructors.
 shared sealed abstract class AbstractReportGenerator<T>(
         shared Comparison([Point, IFixture], [Point, IFixture]) pairComparator,
         MapDimensions? mapDimensions, Point referencePoint = invalidPoint)
@@ -48,7 +49,8 @@ shared sealed abstract class AbstractReportGenerator<T>(
             }
         }
     }
-    "Turn a series of items into a comma-separated list of their string representations." // Should be static, but can't
+    "Turn a series of items into a comma-separated list of their string representations."
+    // Should be static, but can't
     shared String commaSeparatedList(Object* list) {
         if (exists first = list.first) {
             StringBuilder builder = StringBuilder();

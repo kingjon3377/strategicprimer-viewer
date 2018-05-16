@@ -38,10 +38,11 @@ import com.vasileff.ceylon.structures {
 "A report generator for sightings of animals."
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
-        extends AbstractReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks>(comp, dimensions, hq) {
+        extends AbstractReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks>(comp,
+			dimensions, hq) {
 	"Produce the sub-report about an individual Animal. We assume that individual Animals are
-	 members of the player's units, or that for some other reason the player is allowed to see
-	 the precise count of the population."
+	 members of the player's units, or that for some other reason the player is allowed to
+	 see the precise count of the population."
 	shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
 				IMapNG map, Anything(String) ostream, /*Animal|AnimalTracks*/AnimalOrTracks item, Point loc) {
 			ostream("At ``loc``:");

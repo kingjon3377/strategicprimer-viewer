@@ -31,11 +31,13 @@ shared class AdventureReportGenerator(
 			Anything(String) ostream) {
 		MutableHeadedMap<AdventureFixture, Point> adventures =
 				HeadedMapImpl<AdventureFixture, Point>("<h4>Possible Adventures</h4>");
-		for ([loc, item] in fixtures.items.narrow<[Point, AdventureFixture]>().sort(pairComparator)) {
+		for ([loc, item] in fixtures.items.narrow<[Point, AdventureFixture]>()
+				.sort(pairComparator)) {
 			adventures[item] = loc;
 		}
-		writeMap(ostream, adventures, (AdventureFixture key->Point val, formatter) => produceSingle(
-				fixtures, map, formatter, key, val));
+		writeMap(ostream, adventures,
+					(AdventureFixture key->Point val, formatter) => produceSingle(
+						fixtures, map, formatter, key, val));
 	}
 	"Produce a more verbose sub-report on an adventure hook."
 	shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
@@ -54,9 +56,11 @@ shared class AdventureReportGenerator(
 		}
 	}
 	"Produce the report on all adventure hooks in the map."
-	shared actual IReportNode produceRIR(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
+	shared actual IReportNode produceRIR(
+			DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
 		IReportNode adventures = SectionListReportNode(4, "Possible Adventures");
-		for ([loc, item] in fixtures.items.narrow<[Point, AdventureFixture]>().sort(pairComparator)) {
+		for ([loc, item] in fixtures.items.narrow<[Point, AdventureFixture]>()
+				.sort(pairComparator)) {
 			adventures.appendNode(produceRIRSingle(fixtures, map, item, loc));
 		}
 		if (adventures.childCount == 0) {
@@ -66,8 +70,9 @@ shared class AdventureReportGenerator(
 		}
 	}
 	"Produce a more verbose sub-report on an adventure hook."
-	shared actual IReportNode produceRIRSingle(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
-		AdventureFixture item, Point loc) {
+	shared actual IReportNode produceRIRSingle(
+			DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
+			AdventureFixture item, Point loc) {
 		fixtures.remove(item.id);
 		if (item.owner.independent) {
 			return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item

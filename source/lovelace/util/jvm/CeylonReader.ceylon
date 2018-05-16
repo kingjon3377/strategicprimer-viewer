@@ -20,7 +20,8 @@ shared class CeylonReader(Reader wrapped) extends JReader() {
         }
     }
     shared actual void close() {}
-    shared actual overloaded Integer read(CharArray cbuf, Integer offset, Integer length) {
+    shared actual overloaded Integer read(CharArray cbuf, Integer offset,
+            Integer length) {
         for (i in 0:offset) {
             if (!wrapped.readByte() exists) {
                 return -1;

@@ -14,11 +14,14 @@ import strategicprimer.model.map.fixtures {
 import lovelace.util.jvm {
     readFileContents
 }
-"An interface to cover animals and animal tracks, to try to work around eclipse/ceylon#7372."
+"An interface to cover animals and animal tracks, to try to work around
+ eclipse/ceylon#7372."
 todo("Remove once that fixed and the fix released")
 shared interface AnimalOrTracks of Animal|AnimalTracks satisfies IFixture&UnitMember {}
 "Animal tracks or other traces."
-shared class AnimalTracks(kind) satisfies HasMutableImage&HasKind&MobileFixture&AnimalOrTracks { // TODO: We'd prefer this to not be MobileFixture, but changing that would require serious refactoring of XML I/O code.
+// TODO: We'd prefer this to not be MobileFixture, but changing that would require serious refactoring of XML I/O code.
+shared class AnimalTracks(kind)
+		satisfies HasMutableImage&HasKind&MobileFixture&AnimalOrTracks {
 	"The kind of animal of which this is tracks or traces."
 	shared actual String kind;
 	shared actual String shortDescription = "traces of ``kind``";
@@ -45,7 +48,8 @@ shared class AnimalTracks(kind) satisfies HasMutableImage&HasKind&MobileFixture&
 			if (fixture.kind == kind) {
 				return true;
 			} else {
-				report("Comparing tracks from different kinds of animals: ``fixture.kind`` and ``kind``");
+				report("Comparing tracks from different kinds of animals: ``
+					fixture.kind`` and ``kind``");
 				return false;
 			}
 		} else if (is Animal fixture, fixture.kind == kind) {
@@ -59,7 +63,8 @@ shared class AnimalTracks(kind) satisfies HasMutableImage&HasKind&MobileFixture&
 }
 "An animal or group of animals."
 shared interface Animal
-		satisfies AnimalOrTracks&Identifiable&MobileFixture&HasImage&HasKind&UnitMember&HasPopulation<Animal> {
+		satisfies AnimalOrTracks&Identifiable&MobileFixture&HasImage&HasKind&UnitMember
+			&HasPopulation<Animal> {
 	"Whether this is a talking animal."
 	shared formal Boolean talking;
 	"The domestication status of the animal."
@@ -178,8 +183,9 @@ shared class AnimalImpl(kind, talking, status, id, born = -1, population = 1)
     }
     shared actual Animal reduced(Integer newPopulation, Integer newId) =>
             AnimalImpl(kind, talking, status, newId, born, newPopulation);
-    shared actual Animal combined(Animal addend) => AnimalImpl(kind, talking, status, id, born,
-            Integer.largest(0, population) + Integer.largest(0, addend.population));
+    shared actual Animal combined(Animal addend) =>
+			AnimalImpl(kind, talking, status, id, born,
+				Integer.largest(0, population) + Integer.largest(0, addend.population));
 }
 object fileSplitter {
 	{String+} splitOnFirstTab(String line) => line.split('\t'.equals, true, true, 1);
@@ -187,7 +193,8 @@ object fileSplitter {
 			line.first->factory(line.rest.first else "");
 	shared Map<String, Type> getFileContents<Type, BroaderType=Type>(String filename,
 			BroaderType(String) factory) given Type satisfies BroaderType {
-		assert (exists textContent = readFileContents(`module strategicprimer.model`, filename));
+		assert (exists textContent =
+				readFileContents(`module strategicprimer.model`, filename));
 		return map(textContent.split('\n'.equals).map(splitOnFirstTab)
 			.map(shuffle(curry(lineToEntry<BroaderType>))(factory)).narrow<String->Type>());
 	}
@@ -206,7 +213,8 @@ shared object maturityModel {
     restricted shared void resetCurrentTurn() => currentTurnLocal = -1;
 }
 shared object animalPlurals satisfies Correspondence<String, String> {
-    Map<String, String> plurals = fileSplitter.getFileContents("animal_plurals.txt", identity);
+    Map<String, String> plurals =
+			fileSplitter.getFileContents("animal_plurals.txt", identity);
     shared actual String get(String key) => plurals[key] else key;
     shared actual Boolean defines(String key) => plurals.defines(key);
 

@@ -49,7 +49,8 @@ shared class SPMapNG satisfies IMutableMapNG {
         }
     }
     static Item->Key reverseEntry<Key, Item>(Key->Item entry)
-            given Key satisfies Object given Item satisfies Object => entry.item->entry.key;
+            given Key satisfies Object
+            given Item satisfies Object => entry.item->entry.key;
     "The set of mountainous places."
     MutableSet<Point> mountains = HashSet<Point>();
     "The base terrain at points in the map."
@@ -123,7 +124,8 @@ shared class SPMapNG satisfies IMutableMapNG {
     "Add a player."
     shared actual void addPlayer(Player player) => playerCollection.add(player);
     "Add rivers at a location."
-    shared actual void addRivers(Point location, River* addedRivers) => riversMap.putMultiple(location, addedRivers);
+    shared actual void addRivers(Point location, River* addedRivers) =>
+            riversMap.putMultiple(location, addedRivers);
     "Remove rivers from the given location."
     shared actual void removeRivers(Point location, River* removedRivers) {
         for (river in removedRivers) {
@@ -160,7 +162,8 @@ shared class SPMapNG satisfies IMutableMapNG {
         }
     }
     "Remove a fixture from a location."
-    shared actual void removeFixture(Point location, TileFixture fixture) => fixturesMap.remove(location, fixture);
+    shared actual void removeFixture(Point location, TileFixture fixture) =>
+            fixturesMap.remove(location, fixture);
     shared actual Integer hash =>
             dimensions.hash + (currentTurn.leftLogicalShift(3)) +
             currentPlayer.hash.leftLogicalShift(5);
@@ -242,7 +245,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                     ArrayListMultimap<Integer, [Subsettable<IFixture>, Point]>();
             Map<TileFixture, Point> ourLocations = map(fixturesMap.map(reverseEntry));
             // IUnit is Subsettable<IUnit> and thus incompatible with SubsettableFixture
-            MutableMultimap<Integer, [IUnit, Point]> ourUnits = HashMultimap<Integer, [IUnit, Point]>();
+            MutableMultimap<Integer, [IUnit, Point]> ourUnits =
+                    HashMultimap<Integer, [IUnit, Point]>();
             // AbstractTown is Subsettable<AbstractTown>
             MutableMultimap<Integer, [AbstractTown, Point]> ourTowns =
                     HashMultimap<Integer, [AbstractTown, Point]>();
@@ -263,8 +267,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                     return false;
                 }
             }
-            Boolean testAgainstList<Target, SubsetType>(Target desideratum, Point location,
-                    {[SubsetType, Point]*} list, Anything(String) ostream)
+            Boolean testAgainstList<Target, SubsetType>(Target desideratum,
+                    Point location, {[SubsetType, Point]*} list, Anything(String) ostream)
                     given Target satisfies Object&IFixture
                     given SubsetType satisfies Subsettable<Target> {
                 variable Integer count = 0;
@@ -272,10 +276,11 @@ shared class SPMapNG satisfies IMutableMapNG {
                 variable Subsettable<Target>? match = null;
                 variable Point? matchPoint = null;
                 variable Boolean exactly = false;
-                for ([item, ourLocation] in list.follow(list
-	                    .find(matchingPredicate(matchingValue(location, Tuple<Point, Point, []>.first),
-		                    Tuple<SubsetType|Point, SubsetType, [Point]>.rest)))
-	                    .coalesced.distinct) {
+                for ([item, ourLocation] in list.follow(list.find(
+                        matchingPredicate(matchingValue(location,
+                                    Tuple<Point, Point, []>.first),
+                                Tuple<SubsetType|Point, SubsetType, [Point]>.rest)))
+                            .coalesced.distinct) {
                     count++;
                     match = item;
                     matchPoint = ourLocation;
@@ -299,7 +304,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                         } else {
                             idStr = "";
                         }
-                        report("``temp````idStr`` apparently moved from our ``tempLoc`` to ``location``");
+                        report("``temp````idStr`` apparently moved from our ``
+                                tempLoc`` to ``location``");
                         retval = false;
                     }
                     retval = temp.isSubset(desideratum, ostream) && retval;
@@ -324,7 +330,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                             retval = false;
                             continue;
                         //} else if (rivers[point] != obj.rivers[point]) { // TODO: syntax sugar
-                        } else if (!rivers.get(point).empty, obj.rivers.get(point).empty) {
+                        } else if (!rivers.get(point).empty,
+                                obj.rivers.get(point).empty) {
                             localReport("Has terrain but not our rivers");
                         }
                     } else {
@@ -344,7 +351,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                     Integer idNum = fixture.id;
                     if (is IUnit fixture, ourUnits.defines(idNum)) {
                         continue;
-                    } else if (is AbstractTown fixture, ourTowns.get(idNum).contains(fixture)) {
+                    } else if (is AbstractTown fixture,
+                            ourTowns.get(idNum).contains(fixture)) { // TODO: syntax sugar
                         continue;
                     } else {
                         ourFixtures.add(fixture);
@@ -356,14 +364,15 @@ shared class SPMapNG satisfies IMutableMapNG {
                     if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
                         continue;
                     } else if (is IUnit fixture, ourUnits.defines(fixture.id)) {
-                        retval = testAgainstList<IFixture, IUnit>(fixture, point, ourUnits.get(fixture.id),
-                            localReport) && retval;
+                        retval = testAgainstList<IFixture, IUnit>(fixture, point,
+                            ourUnits.get(fixture.id), localReport) && retval; // TODO: syntax sugar
                     } else if (is AbstractTown fixture, ourTowns.defines(fixture.id)) {
                         retval = testAgainstList<AbstractTown, AbstractTown>(fixture, point,
                             ourTowns.get(fixture.id), localReport) && retval;
-                    } else if (is Subsettable<IFixture> fixture, ourSubsettables.defines(fixture.id)) {
-                        retval = testAgainstList(fixture, point, ourSubsettables.get(fixture.id),
-                            localReport) && retval;
+                    } else if (is Subsettable<IFixture> fixture,
+                            ourSubsettables.defines(fixture.id)) {
+                        retval = testAgainstList(fixture, point,
+                            ourSubsettables.get(fixture.id), localReport) && retval; // TODO: syntax sugar
                     } else if (movedFrom(point, fixture)) {
                         retval = false; // return false;
                     } else {

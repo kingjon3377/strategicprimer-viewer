@@ -44,7 +44,8 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc)
             report("In ``name``, ID #``id``:        Town kind differs");
             return false;
         }
-        void localReport(String str) => report("In ``kind`` ``name``, ID #``id``:    ``str``");
+        void localReport(String str) =>
+                report("In ``kind`` ``name``, ID #``id``:    ``str``");
         variable Boolean retval = true;
         if (status != other.status) {
             localReport("Town status differs");

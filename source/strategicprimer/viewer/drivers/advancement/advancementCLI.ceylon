@@ -52,8 +52,8 @@ import lovelace.util.jvm {
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "The worker-advancement CLI driver."
-todo("Move most implementation stuff out into a class that takes the CLI as a class parameter, then
-      *doesn't* pass it around in callback style.")
+todo("Move most implementation stuff out into a class that takes the CLI as a class
+      parameter, then *doesn't* pass it around in callback style.")
 service(`interface ISPDriver`)
 shared class AdvancementCLI() satisfies SimpleCLIDriver {
 	"Let the user add hours to a Skill or Skills in a Job."
@@ -85,7 +85,8 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
 				Integer hoursPerHour = cli.inputNumber("'Hours' between hourly checks: ");
 				variable Integer remaining = hours;
 				while (remaining > 0) {
-					skill.addHours(Integer.largest(remaining, hoursPerHour), singletonRandom.nextInteger(100));
+					skill.addHours(Integer.largest(remaining, hoursPerHour),
+						singletonRandom.nextInteger(100));
 					if (skill.level != oldLevel) {
 						cli.println("Worker(s) gained a level in ``skill.name``");
 					}
@@ -264,11 +265,13 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
 		}
 	}
 	"Let the user add experience to a player's workers."
-	void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli, Boolean allowExpertMentoring) {
+	void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli,
+			Boolean allowExpertMentoring) {
 		MutableList<IUnit> units = ArrayList {
 			elements = model.getUnits(player).filter((unit) => !unit.narrow<IWorker>().empty); };
-		while (!units.empty, exists chosen = cli.chooseFromList(units, "``player.name``'s units:",
-				"No unadvanced units remain.", "Chosen unit:", false).item) {
+		while (!units.empty, exists chosen = cli.chooseFromList(units,
+				"``player.name``'s units:", "No unadvanced units remain.", "Chosen unit:",
+				false).item) {
 			units.remove(chosen);
 			advanceWorkersInUnit(chosen, cli, allowExpertMentoring);
 			if (!cli.inputBoolean("Choose another unit?")) {
@@ -288,7 +291,8 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
         MutableList<Player> playerList = ArrayList { elements = workerModel.players; };
         try {
             while (!playerList.empty, exists chosen = cli.chooseFromList(playerList,
-	                "Available players:", "No players found.", "Chosen player:", false).item) {
+	                "Available players:", "No players found.", "Chosen player:",
+					false).item) {
                 playerList.remove(chosen);
                 advanceWorkers(workerModel, chosen, cli,
                     options.hasOption("--allow-expert-mentoring"));

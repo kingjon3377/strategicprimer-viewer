@@ -82,10 +82,10 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     menuHandler.register((event) => expander.expandSome(2), "expand unit kinds");
     expander.expandAll();
     FormattedLabel playerLabel = FormattedLabel("%s's Units:", "");
-    object retval
-            extends SPFrame("Worker Advancement", model.mapFile, Dimension(640, 480), true,
+    object retval extends SPFrame("Worker Advancement", model.mapFile,
+				Dimension(640, 480), true,
                 (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
-            satisfies PlayerChangeListener{
+            satisfies PlayerChangeListener {
         shared actual void playerChanged(Player? old, Player newPlayer) {
             playerLabel.setArgs(newPlayer.name);
             treeModel.playerChanged(old, newPlayer);
