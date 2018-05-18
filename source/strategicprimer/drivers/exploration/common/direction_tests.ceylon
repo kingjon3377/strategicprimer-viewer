@@ -10,7 +10,8 @@ import strategicprimer.model.map {
     SPMapNG,
     pointFactory
 }
-"Tests that the movement code gets its most basic functionality, namely finding adjacent tiles, right."
+"Tests that the movement code gets its most basic functionality, namely finding adjacent
+ tiles, right."
 object directionTests {
 	void directionAssert(IExplorationModel model, Direction direction,
 	        Point source, Point destination, String extraMessage = "") {

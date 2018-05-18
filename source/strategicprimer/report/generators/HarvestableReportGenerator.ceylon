@@ -61,7 +61,8 @@ import strategicprimer.model.map.fixtures.towns {
 Logger log = logger(`module strategicprimer.report`);
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
-shared class HarvestableReportGenerator extends AbstractReportGenerator<HarvestableFixture> {
+shared class HarvestableReportGenerator
+		extends AbstractReportGenerator<HarvestableFixture> {
 	static String populationCountString(HasPopulation<out Anything> item, String singular,
 			String plural = singular + "s") {
 		if (item.population <= 0) {
@@ -85,7 +86,8 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
 				return " (``Float.format(acres.float, 0, 2)`` acres)";
 			}
 			else {
-				log.warn("Unhandled Number type ``type(acres)`` in HarvestableReportGenerator.acreageString");
+				log.warn(
+					"Unhandled Number type ``type(acres)`` in HarvestableReportGenerator.acreageString");
 				return " (``acres`` acres)";
 			}
 		} else {
@@ -96,15 +98,18 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         MapDimensions dimensions, Point hq = invalidPoint)
 			extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) { }
     "Convert a Map from kinds to Points to a HtmlList."
-	// Can't be static because HtmlList isn't and can't be ("Class without parameter list may not be annotated sealed")
+	// Can't be static because HtmlList isn't and can't be
+	// ("Class without parameter list may not be annotated sealed")
     HeadedList<String> mapToList(Multimap<String, Point> map, String heading) =>
-            HtmlList(heading, map.asMap.filter(inverse(matchingPredicate(Iterable<Point>.empty,
-			        Entry<String, {Point*}>.item)))
-		        .map((key->list) => "``key``: at ``commaSeparatedList(list)``").sort(increasing));
+            HtmlList(heading, map.asMap.filter(inverse(matchingPredicate(
+					Iterable<Point>.empty, Entry<String, {Point*}>.item)))
+		        .map((key->list) => "``key``: at ``commaSeparatedList(list)``")
+				.sort(increasing));
     """Produce a sub-report(s) dealing with a single "harvestable" fixture(s). It is to be
        removed from the collection. Caves and battlefields, though HarvestableFixtures, are *not*
        handled here.""""
-    shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual void produceSingle(
+			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, HarvestableFixture item, Point loc) {
         assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
         switch (item)
@@ -160,16 +165,18 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
                 "<h5>Meadows and Fields</h5>", comparing(byIncreasing(Meadow.kind),
                     comparingOn(Meadow.status, byIncreasing(FieldStatus.ordinal)),
                     byIncreasing(Meadow.id)));
-        MutableHeadedMap<Grove, Point> groves = HeadedMapImpl<Grove, Point>("<h5>Groves and Orchards</h5>",
+        MutableHeadedMap<Grove, Point> groves =
+				HeadedMapImpl<Grove, Point>("<h5>Groves and Orchards</h5>",
                     comparing(byIncreasing(Grove.kind), byIncreasing(Grove.id)));
         MutableHeadedMap<CacheFixture, Point> caches = HeadedMapImpl<CacheFixture, Point>(
                 "<h5>Caches collected by your explorers and workers:</h5>",
                 comparing(byIncreasing(CacheFixture.kind),
                     byIncreasing(CacheFixture.contents),
                     byIncreasing(CacheFixture.id)));
-        for ([point, item] in fixtures.items.narrow<[Point, HarvestableFixture]>().sort(pairComparator)) {
-            // TODO: Use a Map by type; with reified generics we can even handle differently
-            // based on whether a List or Map is in the Map!
+        for ([point, item] in fixtures.items.narrow<[Point, HarvestableFixture]>()
+				.sort(pairComparator)) {
+            // TODO: Use a Map by type; with reified generics we can even handle
+			// differently based on whether a List or Map is in the Map!
             switch (item)
             case (is CacheFixture) {
                 caches[item] = point;
@@ -208,6 +215,7 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
                 !all.every(HeadedList.empty)) {
             ostream("""<h4>Resource Sources</h4>
                    """);
+			// TODO: Define a default Anything(Type->Point, Anything(String)) consumer delegating to produceSingle()
             for (HeadedMap<HarvestableFixture, Point> mapping in [caches, groves,
                     meadows, mines]) {
                 writeMap(ostream, mapping,
@@ -220,7 +228,8 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
     }
     """Produce a sub-report dealing with a "harvestable" fixture. All fixtures
        referred to in this report are to be removed from the collection."""
-    shared actual IReportNode produceRIRSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIRSingle(
+			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, HarvestableFixture item, Point loc) {
         SimpleReportNode retval;
         assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
@@ -264,8 +273,8 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
     }
     """Produce the sub-reports dealing with "harvestable" fixture(s). All fixtures
        referred to in this report are to be removed from the collection."""
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-	        IMapNG map) {
+    shared actual IReportNode produceRIR(
+			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
         MutableMap<String, IReportNode> stone = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> shrubs = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> minerals = HashMap<String, IReportNode>();
@@ -280,7 +289,8 @@ shared class HarvestableReportGenerator extends AbstractReportGenerator<Harvesta
         meadows.suspend();
         groves.suspend();
         caches.suspend();
-        for ([loc, item] in fixtures.items.narrow<[Point, HarvestableFixture]>().sort(pairComparator)) {
+        for ([loc, item] in fixtures.items.narrow<[Point, HarvestableFixture]>()
+				.sort(pairComparator)) {
             if (is CacheFixture item) {
                 caches.appendNode(produceRIRSingle(fixtures, map, item, loc));
             } else if (is Grove item) {

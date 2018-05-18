@@ -41,7 +41,8 @@ shared class MiningCLI() satisfies UtilityDriver {
     };
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
-        if (exists filename = args.first, exists second = args.rest.first, args.size == 2) {
+        if (exists filename = args.first, exists second = args.rest.first,
+                args.size == 2) {
             Integer seed;
             if (options.hasOption("--seed")) {
                 value temp = Integer.parse(options.getArgument("--seed"));

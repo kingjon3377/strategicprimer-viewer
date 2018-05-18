@@ -13,7 +13,8 @@ import lovelace.util.common {
     comparingOn,
 	Comparator
 }
-shared object numberComparator satisfies Comparator<Number<out Anything>> { // TODO: Move to lovelace.util
+// TODO: Move to lovelace.util
+shared object numberComparator satisfies Comparator<Number<out Anything>> {
 	"Convert an arbitrary Number to a Float."
 	shared Float floatValue(Number<out Anything> number) {
 		"We only know how to handle Integers, Floats, Decimals, and Wholes."

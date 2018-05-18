@@ -9,8 +9,8 @@ import ceylon.dbc {
 variable Integer currentTurn = -1;
 object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 	Boolean[5] riverFlags(River* rivers) {
-		return [rivers.contains(River.north), rivers.contains(River.south), rivers.contains(River.east),
-			rivers.contains(River.west), rivers.contains(River.lake)];
+		return [rivers.contains(River.north), rivers.contains(River.south),
+			rivers.contains(River.east), rivers.contains(River.west), rivers.contains(River.lake)];
 	}
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS metadata (
@@ -35,7 +35,8 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 	];
 	shared actual void write(Sql db, IMutableMapNG obj, IMapNG context) {
 		db.Insert("""INSERT INTO metadata (version, rows, columns, current_turn)
-		             VALUES(?, ?, ?, ?);""").execute(obj.dimensions.version, obj.dimensions.rows,
+		             VALUES(?, ?, ?, ?);""")
+			.execute(obj.dimensions.version, obj.dimensions.rows,
 						obj.dimensions.columns, obj.currentTurn);
 		currentTurn = obj.currentTurn;
 		dbPlayerHandler.initialize(db);
@@ -48,7 +49,8 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
 		variable Integer count = 0;
 		variable Integer fixtureCount = 0;
 		for (location in obj.locations) {
-			terrainInsertion.execute(location.row, location.column, obj.baseTerrain[location]?.xml else "",
+			terrainInsertion.execute(location.row, location.column,
+				obj.baseTerrain[location]?.xml else "",
 				//obj.mountainous[location], *riverFlags(obj.rivers[location])); // TODO: syntax sugar
 				obj.mountainous.get(location), *riverFlags(*obj.rivers.get(location)));
 			//for (fixture in obj.fixtures[location]) { // TODO: syntax sugar

@@ -108,7 +108,8 @@ import lovelace.util.common {
 {Integer*} threeRandomNumbers() => singletonRandom.integers(1200000).take(3);
 {Immortal(Integer)*} simpleImmortalConstructors =
 		[`Sphinx`, `Djinn`, `Griffin`, `Minotaur`, `Ogre`, `Phoenix`, `Simurgh`, `Troll`];
-{Immortal(String, Integer)*} kindedImmortalConstructors = [`Centaur`, `Dragon`, `Fairy`, `Giant`];
+{Immortal(String, Integer)*} kindedImmortalConstructors = [`Centaur`, `Dragon`, `Fairy`,
+	`Giant`];
 {TileFixture(Integer)*} simpleTerrainConstructors = [`Hill`, `Sandbar`, `Oasis`];
 {String*} races = raceFactory.races.distinct;
 object dbio_tests { // TODO: All tests should be more robust, as if developed test-first
@@ -153,29 +154,37 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 	shared void testTracksSerialization() =>
 			assertFixtureSerialization(AnimalTracks("kind"));
 	test
-	shared void testCacheSerialization(parameters(`function threeRandomNumbers`) Integer id) =>
+	shared void testCacheSerialization(
+			parameters(`function threeRandomNumbers`) Integer id) =>
 			assertFixtureSerialization(CacheFixture("kind", "contents", id));
 	test
 	shared void testCaveSerialization(parameters(`function threeRandomNumbers`) Integer id,
-		parameters(`function threeRandomNumbers`) Integer dc) => assertFixtureSerialization(Cave(dc, id));
+		parameters(`function threeRandomNumbers`) Integer dc) =>
+			assertFixtureSerialization(Cave(dc, id));
 	test
-	shared void testBattlefieldSerialization(parameters(`function threeRandomNumbers`) Integer id,
-		parameters(`function threeRandomNumbers`) Integer dc) => assertFixtureSerialization(Battlefield(dc, id));
+	shared void testBattlefieldSerialization(
+			parameters(`function threeRandomNumbers`) Integer id,
+		parameters(`function threeRandomNumbers`) Integer dc) =>
+			assertFixtureSerialization(Battlefield(dc, id));
 	test
-	shared void testFortificationSerialization(parameters(`function threeRandomNumbers`) Integer id,
+	shared void testFortificationSerialization(
+			parameters(`function threeRandomNumbers`) Integer id,
 			enumeratedParameter(`class TownStatus`) TownStatus status,
 			enumeratedParameter(`class TownSize`) TownSize size,
-			parameters(`function threeRandomNumbers`) Integer dc) { // TODO: We want more of the state to be random
+			parameters(`function threeRandomNumbers`) Integer dc) {
+		// TODO: We want more of the state to be random
 		value town = Fortification(status, size, dc, "name", id, PlayerImpl(0, ""));
 		CommunityStats stats = CommunityStats(5);
 		stats.addWorkedField(8);
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
-		stats.yearlyProduction.add(ResourcePile(1, "first", "first detail", Quantity(5, "pounds")));
+		stats.yearlyProduction.add(ResourcePile(1, "first", "first detail",
+			Quantity(5, "pounds")));
 		stats.yearlyProduction.add(ResourcePile(2, "second", "second detail",
 			Quantity(decimalNumber(1) / decimalNumber(2), "quarts")));
-		stats.yearlyConsumption.add(ResourcePile(3, "third", "third detail", Quantity(8, "pecks")));
+		stats.yearlyConsumption.add(ResourcePile(3, "third", "third detail",
+			Quantity(8, "pecks")));
 		stats.yearlyConsumption.add(ResourcePile(4, "fourth", "fourth detail",
 			Quantity(decimalNumber(5) / decimalNumber(4), "square feet")));
 		town.population = stats;
@@ -185,17 +194,20 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 	shared void testCitySerialization(parameters(`function threeRandomNumbers`) Integer id,
 		enumeratedParameter(`class TownStatus`) TownStatus status,
 		enumeratedParameter(`class TownSize`) TownSize size,
-		parameters(`function threeRandomNumbers`) Integer dc) { // TODO: We want more of the state to be random
+		parameters(`function threeRandomNumbers`) Integer dc) {
+		// TODO: We want more of the state to be random
 		value town = City(status, size, dc, "name", id, PlayerImpl(0, ""));
 		CommunityStats stats = CommunityStats(5);
 		stats.addWorkedField(8);
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
-		stats.yearlyProduction.add(ResourcePile(1, "first", "first detail", Quantity(5, "pounds")));
+		stats.yearlyProduction.add(ResourcePile(1, "first", "first detail",
+			Quantity(5, "pounds")));
 		stats.yearlyProduction.add(ResourcePile(2, "second", "second detail",
 			Quantity(decimalNumber(1) / decimalNumber(2), "quarts")));
-		stats.yearlyConsumption.add(ResourcePile(3, "third", "third detail", Quantity(8, "pecks")));
+		stats.yearlyConsumption.add(ResourcePile(3, "third", "third detail",
+			Quantity(8, "pecks")));
 		stats.yearlyConsumption.add(ResourcePile(4, "fourth", "fourth detail",
 			Quantity(decimalNumber(5) / decimalNumber(4), "square feet")));
 		town.population = stats;
@@ -203,18 +215,22 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 	}
 	test
 	shared void testTownSerialization(parameters(`function threeRandomNumbers`) Integer id,
-		enumeratedParameter(`class TownStatus`) TownStatus status, enumeratedParameter(`class TownSize`) TownSize size,
-		parameters(`function threeRandomNumbers`) Integer dc) { // TODO: We want more of the state to be random
+		enumeratedParameter(`class TownStatus`) TownStatus status,
+			enumeratedParameter(`class TownSize`) TownSize size,
+		parameters(`function threeRandomNumbers`) Integer dc) {
+		// TODO: We want more of the state to be random
 		value town = Town(status, size, dc, "name", id, PlayerImpl(0, ""));
 		CommunityStats stats = CommunityStats(5);
 		stats.addWorkedField(8);
 		stats.addWorkedField(13);
 		stats.setSkillLevel("skillOne", 2);
 		stats.setSkillLevel("skillTwo", 5);
-		stats.yearlyProduction.add(ResourcePile(1, "first", "first detail", Quantity(5, "pounds")));
+		stats.yearlyProduction.add(ResourcePile(1, "first", "first detail",
+			Quantity(5, "pounds")));
 		stats.yearlyProduction.add(ResourcePile(2, "second", "second detail",
 			Quantity(decimalNumber(1) / decimalNumber(2), "quarts")));
-		stats.yearlyConsumption.add(ResourcePile(3, "third", "third detail", Quantity(8, "pecks")));
+		stats.yearlyConsumption.add(ResourcePile(3, "third", "third detail",
+			Quantity(8, "pecks")));
 		stats.yearlyConsumption.add(ResourcePile(4, "fourth", "fourth detail",
 			Quantity(decimalNumber(5) / decimalNumber(4), "square feet")));
 		town.population = stats;
@@ -228,7 +244,8 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 		parameters(`function threeRandomNumbers`) Integer acres) =>
 			assertFixtureSerialization(Meadow("kind", field, cultivated, id, status, acres));
 	test
-	shared void testFractionalMeadowSerialization(enumeratedParameter(`class Boolean`) Boolean field,
+	shared void testFractionalMeadowSerialization(
+		enumeratedParameter(`class Boolean`) Boolean field,
 		enumeratedParameter(`class Boolean`) Boolean cultivated,
 		parameters(`function threeRandomNumbers`) Integer id,
 		enumeratedParameter(`class FieldStatus`) FieldStatus status,
@@ -241,20 +258,23 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 		parameters(`function threeRandomNumbers`) Integer acres) =>
 			assertFixtureSerialization(Forest("kind", rows, id, acres));
 	test
-	shared void testFractionalForestSerialization(enumeratedParameter(`class Boolean`) Boolean rows,
+	shared void testFractionalForestSerialization(
+		enumeratedParameter(`class Boolean`) Boolean rows,
 		parameters(`function threeRandomNumbers`) Integer id,
 		parameters(`function threeRandomNumbers`) Integer acres) =>
 			assertFixtureSerialization(Forest("kind", rows, id,
 				decimalNumber(acres) + decimalNumber(1) / decimalNumber(4)));
 	test
-	shared void testFortressSerialization(parameters(`function threeRandomNumbers`) Integer id,
+	shared void testFortressSerialization(
+			parameters(`function threeRandomNumbers`) Integer id,
 			enumeratedParameter(`class TownSize`) TownSize size) {
 		Player owner = PlayerImpl(1, "owner");
 		value fortress = Fortress(owner, "fortress", id, size);
 		value unit = Unit(owner, "unitKind", "unitName", id + 2);
 		unit.addMember(Worker("workerName", "human", id + 3, Job("jobName", 2)));
 		unit.addMember(Sphinx(id + 5));
-		unit.addMember(ResourcePile(id + 6, "resource kind", "resource contents", Quantity(8, "counts")));
+		unit.addMember(ResourcePile(id + 6, "resource kind", "resource contents",
+			Quantity(8, "counts")));
 		fortress.addMember(unit);
 		fortress.addMember(Implement("equipment", id + 4, 2));
 		fortress.addMember(ResourcePile(id + 7, "second resource", "second contents",
@@ -274,17 +294,21 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 	test
 	shared void testSimpleImmortalSerialization(
 		parameters(`value simpleImmortalConstructors`) Immortal(Integer) constructor,
-		parameters(`function threeRandomNumbers`) Integer id) => assertFixtureSerialization(constructor(id));
+		parameters(`function threeRandomNumbers`) Integer id) =>
+			assertFixtureSerialization(constructor(id));
 	test
 	shared void testKindedImmortalSerialization(
 		parameters(`value kindedImmortalConstructors`) Immortal(String, Integer) constructor,
-		parameters(`function threeRandomNumbers`) Integer id) => assertFixtureSerialization(constructor("kind", id));
+		parameters(`function threeRandomNumbers`) Integer id) =>
+			assertFixtureSerialization(constructor("kind", id));
 	test
-	shared void testMineSerialization(enumeratedParameter(`class TownStatus`) TownStatus status,
+	shared void testMineSerialization(
+		enumeratedParameter(`class TownStatus`) TownStatus status,
 		parameters(`function threeRandomNumbers`) Integer id) =>
 			assertFixtureSerialization(Mine("mine kind", status, id));
 	test
-	shared void testMineralSerialization(enumeratedParameter(`class Boolean`) Boolean exposed,
+	shared void testMineralSerialization(
+		enumeratedParameter(`class Boolean`) Boolean exposed,
 		parameters(`function threeRandomNumbers`) Integer dc,
 		parameters(`function threeRandomNumbers`) Integer id) =>
 			assertFixtureSerialization(MineralVein("mineral kind", exposed, dc, id));
@@ -300,10 +324,11 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 	test
 	shared void testSimpleTerrainSerialization(
 		parameters(`value simpleTerrainConstructors`) TileFixture(Integer) constructor,
-		parameters(`function threeRandomNumbers`) Integer id) => assertFixtureSerialization(constructor(id));
+		parameters(`function threeRandomNumbers`) Integer id) =>
+			assertFixtureSerialization(constructor(id));
 	test
-	shared void testTextSerialization(parameters(`function threeRandomNumbers`) Integer turn) =>
-			assertFixtureSerialization(TextFixture("test text", turn - 1));
+	shared void testTextSerialization(parameters(`function threeRandomNumbers`) Integer turn)
+			=> assertFixtureSerialization(TextFixture("test text", turn - 1));
 	test
 	shared void testUnitSerialization(parameters(`function threeRandomNumbers`) Integer id) {
 		Player owner = PlayerImpl(1, "owner");
@@ -315,7 +340,10 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 		assertFixtureSerialization(unit);
 	}
 	test
-	shared void testVillageSerialization(enumeratedParameter(`class TownStatus`) TownStatus status,
-		parameters(`function threeRandomNumbers`) Integer id, parameters(`value races`) String race) =>
-			assertFixtureSerialization(Village(status, "village name", id, PlayerImpl(1, "player name"), race));
+	shared void testVillageSerialization(
+		enumeratedParameter(`class TownStatus`) TownStatus status,
+		parameters(`function threeRandomNumbers`) Integer id,
+		parameters(`value races`) String race) =>
+			assertFixtureSerialization(Village(status, "village name", id,
+				PlayerImpl(1, "player name"), race));
 }

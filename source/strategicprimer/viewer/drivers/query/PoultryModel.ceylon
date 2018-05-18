@@ -13,8 +13,9 @@ class PoultryModel satisfies HerdModel {
 	shared Integer extraChoresInterval;
 	"""How much time, in minutes, must be spent per head on "extra chores" days."""
 	shared Integer extraTimePerHead = 30;
-	new ("The number of eggs produced per head per turn." Float production, Float poundsCoefficient,
-			Integer dailyTimePerHead, Integer extraChoresInterval) {
+	new ("The number of eggs produced per head per turn." Float production,
+			Float poundsCoefficient, Integer dailyTimePerHead,
+			Integer extraChoresInterval) {
 		this.poundsCoefficient = poundsCoefficient;
 		this.dailyTimePerHead = dailyTimePerHead;
 		this.extraChoresInterval = extraChoresInterval;

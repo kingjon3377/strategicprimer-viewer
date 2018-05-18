@@ -21,9 +21,10 @@ shared class UnsupportedPropertyException extends SPFormatException {
 		tag = context.name;
 	}
 	"A variation for when a property is *conditionally* supported."
-	shared new inContext(StartElement tag, String param, String context) extends SPFormatException(
-			"Unsupported property ``param`` in tag ``tag.name.localPart`` ``context``",
-			tag.location.lineNumber, tag.location.columnNumber) {
+	shared new inContext(StartElement tag, String param, String context)
+			extends SPFormatException(
+				"Unsupported property ``param`` in tag ``tag.name.localPart`` ``context``",
+				tag.location.lineNumber, tag.location.columnNumber) {
 		this.param = param;
 		this.tag = tag.name;
 	}

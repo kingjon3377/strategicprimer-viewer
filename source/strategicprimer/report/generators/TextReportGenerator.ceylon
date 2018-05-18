@@ -28,7 +28,8 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Produce the part of the report dealing with an arbitrary-text note. This does *not*
      remove it from the collection, because this method doesn't know the synthetic ID #
      that was assigned to it."
-    shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual void produceSingle(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, TextFixture item, Point loc) {
         ostream("At ``loc`` ``distCalculator.distanceString(loc)``");
         if (item.turn>=0) {
@@ -39,9 +40,12 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Produce the part of the report dealing with arbitrary-text notes."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map, Anything(String) ostream) {
-        {<Integer->[Point, TextFixture]>*} items = fixtures.narrow<Integer->[Point, TextFixture]>().sort(
-            comparingOn(Entry<Integer, [Point, TextFixture]>.item, comparingOn(Tuple<Point|TextFixture, Point, TextFixture[1]>.rest,
-                comparingOn(Tuple<TextFixture, TextFixture, []>.first, comparingOn(TextFixture.turn, increasing<Integer>)))));
+        {<Integer->[Point, TextFixture]>*} items =
+                fixtures.narrow<Integer->[Point, TextFixture]>().sort( // TODO: Use compose() instead of comparingOn() to get to member-of-member
+                    comparingOn(Entry<Integer, [Point, TextFixture]>.item,
+                        comparingOn(Tuple<Point|TextFixture, Point, TextFixture[1]>.rest,
+                            comparingOn(Tuple<TextFixture, TextFixture, []>.first,
+                                comparingOn(TextFixture.turn, increasing<Integer>)))));
         if (!items.empty) {
             ostream("""<h4>Miscellaneous Notes</h4>
                        <ul>
@@ -60,7 +64,8 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Produce the part of the report dealing with an arbitrary-text note, in report
      intermediate representation. This does *not* remove it from the collection, because
      this method doesn't know the synthetic ID # that was assigned to it."
-    shared actual IReportNode produceRIRSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIRSingle(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, TextFixture item, Point loc) {
         if (item.turn>=0) {
             return SimpleReportNode("At ``loc`` ``distCalculator
@@ -73,7 +78,8 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     }
     "Produce the part of the report dealing with arbitrary-text note(s), in
      report intermediate representation."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map) {
         IReportNode retval = SectionListReportNode(4, "Miscellaneous Notes");
         for (key->[loc, item] in fixtures) {

@@ -58,8 +58,8 @@ shared class TileType
      mountainous."
     shared new steppe extends delegate("steppe", "steppe", 2) {}
     "Swamp. Not currently used in any known map, and not marked for either existing map
-     version to ensure that it won't get put into a map that will then be opened by an older
-     viewer."
+     version to ensure that it won't get put into a map that will then be opened by an
+     older viewer."
     shared new swamp extends delegate("swamp", "swamp") {}
     "Whether this the given map version supports this tile type."
     shared Boolean isSupportedByVersion(Integer version) => versions.contains(version);

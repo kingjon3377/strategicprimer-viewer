@@ -40,9 +40,11 @@ void testProxyDismissal() {
 	proxyUnit.addProxied(secondUnit);
 	assertEquals(firstUnit, secondUnit, "Two units in proxy are initially equal");
 	assertEquals(firstUnit, thirdUnit, "Units in and not in proxy are initially equal");
-	assert (is ProxyFor<out IWorker> proxiedWorker = proxyUnit.find(matchingValue(4, IFixture.id)));
+	assert (is ProxyFor<out IWorker> proxiedWorker =
+			proxyUnit.find(matchingValue(4, IFixture.id)));
 	proxyUnit.removeMember(proxiedWorker);
-	assertEquals(firstUnit, secondUnit, "Two units in proxy are still equal after removing via proxy-worker");
+	assertEquals(firstUnit, secondUnit,
+		"Two units in proxy are still equal after removing via proxy-worker");
 	assertNotEquals(firstUnit, thirdUnit,
 		"Units in and not in proxy not equal after removing via proxy but not directly");
 	thirdUnit.removeMember(thirdWorkerTwo);

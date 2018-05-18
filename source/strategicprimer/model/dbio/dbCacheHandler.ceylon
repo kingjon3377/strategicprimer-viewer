@@ -14,7 +14,8 @@ import strategicprimer.model.map.fixtures.resources {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>() satisfies MapContentsReader {
+object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers =
 			["""CREATE TABLE IF NOT EXISTS caches (
 				    row INTEGER NOT NULL,

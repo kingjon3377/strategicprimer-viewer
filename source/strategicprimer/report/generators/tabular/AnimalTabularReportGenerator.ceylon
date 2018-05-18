@@ -26,7 +26,8 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
     "Create a GUI table row representing the given animal."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Animal|AnimalTracks item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
+            Animal|AnimalTracks item, Integer key, Point loc,
+            Map<Integer, Integer> parentMap) {
         String kind;
         String age;
         String population;
@@ -73,7 +74,8 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
         }
     }
     "Compare two pairs of Animals and locations."
-    shared actual Comparison comparePairs([Point, Animal|AnimalTracks] one, [Point, Animal|AnimalTracks] two) {
+    shared actual Comparison comparePairs([Point, Animal|AnimalTracks] one,
+            [Point, Animal|AnimalTracks] two) {
         Comparison cmp = DistanceComparator(hq, dimensions).compare(one.first, two.first);
         if (cmp == equal) {
             if (is Animal first = one.rest.first) {

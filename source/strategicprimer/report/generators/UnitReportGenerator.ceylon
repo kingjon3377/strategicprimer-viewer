@@ -86,7 +86,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     }
     "Produce a sub-sub-report on a unit (we assume we're already in the middle of a
      paragraph or bullet point)."
-    shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual void produceSingle(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map, Anything(String) ostream, IUnit item, Point loc) {
         ostream("Unit of type ``item.kind``, named ``item.name``, ");
         if (item.owner.independent) {
@@ -99,7 +100,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         if (!item.empty) {
             MutableList<IWorker> workers = ArrayList<IWorker>();
             MutableList<Implement> equipment = ArrayList<Implement>();
-            MutableMultimap<String, ResourcePile> resources = HashMultimap<String, ResourcePile>();
+            MutableMultimap<String, ResourcePile> resources =
+                    HashMultimap<String, ResourcePile>();
             MutableList<Animal> animals = ArrayList<Animal>();
             MutableList<UnitMember> others = ArrayList<UnitMember>();
             for (member in item) {
@@ -111,9 +113,10 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     resources.put(member.kind, member);
                 } else if (is Animal member) {
                     if (exists existing = animals.findAndRemoveFirst(
-                        member.equalExceptPopulation)) {
-                        animals.add(AnimalImpl(member.kind, member.talking,
-                            member.status, -1, member.born, member.population + existing.population));
+                            member.equalExceptPopulation)) {
+                        animals.add(AnimalImpl(member.kind, member.talking, // TODO: Use Animal.combined
+                            member.status, -1, member.born,
+                            member.population + existing.population));
                     } else {
                         animals.add(member);
                     }
@@ -150,8 +153,9 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             }
             produceInner<IWorker>("Workers", workers, (worker) =>
                 workerReportGenerator.produceSingle(fixtures, map, ostream, worker, loc));
-            produceInner</*Animal|AnimalTracks*/AnimalOrTracks>("Animals", animals, (animal) => animalReportGenerator
-                .produceSingle(fixtures, map, ostream, animal, loc));
+            produceInner</*Animal|AnimalTracks*/AnimalOrTracks>("Animals", animals,
+                        (animal) => animalReportGenerator
+                            .produceSingle(fixtures, map, ostream, animal, loc));
             produceInner<Implement>("Equipment", equipment, (member) =>
                 memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc));
             if (!resources.empty) {
@@ -181,7 +185,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 HeadedMapImpl<IUnit, Point>("<h5>Foreign Units</h5>");
         MutableHeadedMap<IUnit, Point> ours =
                 HeadedMapImpl<IUnit, Point>("<h5>Your units</h5>");
-        for ([loc, unit] in fixtures.items.narrow<[Point, IUnit]>().sort(pairComparator)) {
+        for ([loc, unit] in fixtures.items.narrow<[Point, IUnit]>()
+                .sort(pairComparator)) {
             if (currentPlayer == unit.owner) {
                 ours[unit] = loc;
             } else {
@@ -239,8 +244,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 animals.add(animalReportGenerator
                     .produceRIRSingle(fixtures, map, member, loc));
             } else if (is Implement member) {
-                equipment.add(memberReportGenerator.produceRIRSingle(fixtures, map, member,
-                    loc));
+                equipment.add(memberReportGenerator.produceRIRSingle(fixtures, map,
+                    member, loc));
             } else if (is ResourcePile member) {
                 IReportNode resourceNode;
                 if (exists temp = resourcesMap.get(member.kind)) {
@@ -279,7 +284,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         }
     }
     "Produce the part of the report dealing with all units not already covered."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 		    IMapNG map) {
         IReportNode theirs = SectionListReportNode(5, "Foreign Units");
         IReportNode ours = SectionListReportNode(5, "Your Units");

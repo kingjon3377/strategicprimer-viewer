@@ -125,7 +125,8 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     todo("Implement") // FIXME
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         log.warn("ProxyUnit.equalsIgnoringID called");
-        throw UnsupportedOperationException("FIXME: Implement ProxyUnit.equalsIgnoringID");
+        throw UnsupportedOperationException(
+            "FIXME: Implement ProxyUnit.equalsIgnoringID");
     }
     shared actual Comparison compare(TileFixture fixture) {
         log.warn("ProxyUnit.compare called");
@@ -313,7 +314,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
                 }
             }
             if (!anyFound) {
-                log.warn("In ProxyUnit.removeMember(), no units contained a matching member");
+                log.warn("ProxyUnit.removeMember: no units contained a matching member");
             }
         } else {
             log.error("RemoveMember() called on proxy for all units of one kind");

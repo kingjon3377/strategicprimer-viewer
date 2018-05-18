@@ -53,7 +53,8 @@ object fluidTownHandler extends FluidBase() {
 	shared Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "town");
-	    expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait", "image", "owner");
+	    expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait",
+			"image", "owner");
 	    requireNonEmptyAttribute(element, "name", false, warner);
 	    value size = TownSize.parse(getAttribute(element, "size"));
 	    if (is TownSize size) {
@@ -85,10 +86,12 @@ object fluidTownHandler extends FluidBase() {
 	    }
 	}
 
-	shared Fortification readFortification(StartElement element, QName parent, {XMLEvent*} stream,
-	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
+	shared Fortification readFortification(StartElement element, QName parent,
+			{XMLEvent*} stream, IPlayerCollection players, Warning warner,
+			IDRegistrar idFactory) {
 	    requireTag(element, parent, "fortification");
-	    expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait", "image", "owner");
+	    expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait",
+			"image", "owner");
 	    requireNonEmptyAttribute(element, "name", false, warner);
 	    value size = TownSize.parse(getAttribute(element, "size"));
 	    if (is TownSize size) {
@@ -124,7 +127,8 @@ object fluidTownHandler extends FluidBase() {
 	shared City readCity(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "city");
-	    expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait", "image", "owner");
+	    expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait",
+			"image", "owner");
 	    requireNonEmptyAttribute(element, "name", false, warner);
 	    value size = TownSize.parse(getAttribute(element, "size"));
 	    if (is TownSize size) {
@@ -159,7 +163,8 @@ object fluidTownHandler extends FluidBase() {
 	shared Village readVillage(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "village");
-	    expectAttributes(element, warner, "status", "race", "owner", "id", "image", "portrait", "name");
+	    expectAttributes(element, warner, "status", "race", "owner", "id", "image",
+			"portrait", "name");
 	    requireNonEmptyAttribute(element, "name", false, warner);
 	    Integer idNum = getOrGenerateID(element, warner, idFactory);
 	    value status = TownStatus.parse(getAttribute(element, "status"));
@@ -186,8 +191,9 @@ object fluidTownHandler extends FluidBase() {
 	    }
 	}
 
-	shared CommunityStats readCommunityStats(StartElement element, QName parent, {XMLEvent*} stream,
-	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
+	shared CommunityStats readCommunityStats(StartElement element, QName parent,
+			{XMLEvent*} stream, IPlayerCollection players, Warning warner,
+			IDRegistrar idFactory) {
 	    requireTag(element, parent, "population");
 	    expectAttributes(element, warner, "size");
 	    CommunityStats retval = CommunityStats(getIntegerAttribute(element, "size"));
@@ -234,7 +240,8 @@ object fluidTownHandler extends FluidBase() {
 	                    throw UnwantedChildException.listingExpectedTags(top.name, event,
 	                        ["production", "consumption"]);
 	                }
-	                lambda(fluidResourceHandler.readResource(event, top.name, stream, players, warner, idFactory));
+	                lambda(fluidResourceHandler.readResource(event, top.name, stream,
+						players, warner, idFactory));
 	            }
 	            else {
 	                throw UnwantedChildException.listingExpectedTags(event.name, element,
@@ -280,10 +287,12 @@ object fluidTownHandler extends FluidBase() {
 	    }
 	}
 
-	shared void writeCommunityStats(XMLStreamWriter ostream, CommunityStats obj, Integer indent) {
+	shared void writeCommunityStats(XMLStreamWriter ostream, CommunityStats obj,
+			Integer indent) {
 	    writeTag(ostream, "population", indent, false);
 	    writeAttributes(ostream, "size"->obj.population);
-	    for (skill->level in obj.highestSkillLevels.sort(comparingOn(Entry<String, Integer>.key, increasing<String>))) {
+	    for (skill->level in obj.highestSkillLevels.sort(comparingOn(
+			Entry<String, Integer>.key, increasing<String>))) {
 	        writeTag(ostream, "expertise", indent + 1, true);
 	        writeAttributes(ostream, "skill"->skill, "level"->level);
 	    }

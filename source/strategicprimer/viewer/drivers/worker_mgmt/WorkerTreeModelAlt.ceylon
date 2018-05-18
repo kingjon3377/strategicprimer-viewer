@@ -40,7 +40,8 @@ import lovelace.util.common {
 }
 "An alternative implementation of the worker tree model."
 shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
-	static class EnumerationWrapper<T>(Enumeration<out Object> enumeration) satisfies Iterator<T> {
+	static class EnumerationWrapper<T>(Enumeration<out Object> enumeration)
+            satisfies Iterator<T> {
 		shared actual T|Finished next() {
 			if (enumeration.hasMoreElements()) {
 				assert (is T item = enumeration.nextElement());
@@ -53,7 +54,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     shared static class WorkerTreeNode<T>(T userObj, Boolean permitsChildren = true)
             extends DefaultMutableTreeNode(userObj, permitsChildren)
             satisfies {TreeNode*} given T satisfies Object {
-        shared actual Iterator<TreeNode> iterator() => EnumerationWrapper<TreeNode>(children());
+        shared actual Iterator<TreeNode> iterator() =>
+                EnumerationWrapper<TreeNode>(children());
         // Can't refine userObject to narrow its type because that would narrow the type
         // of the setter as well, which Ceylon's type system doesn't allow.
         shared T userObjectNarrowed {
@@ -135,7 +137,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     IWorkerModel model;
     MutableList<UnitMember> dismissedMembers = ArrayList<UnitMember>();
     shared new (IWorkerModel driverModel)
-            extends DefaultTreeModel(PlayerNode(driverModel.currentPlayer, driverModel), true) {
+            extends DefaultTreeModel(PlayerNode(driverModel.currentPlayer, driverModel),
+                true) {
         model = driverModel;
     }
     void moveProxied(UnitMember&ProxyFor<out UnitMember> member, ProxyUnit old,
@@ -288,14 +291,16 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     assert (exists lastParentParent =
                             pathOne.array.exceptLast.exceptLast.last);
                     Integer parentIndex = lastParentParent.getIndex(lastParent);
-                    pathSubset = ObjectArray<Object>.with(pathOne.array.exceptLast.exceptLast);
+                    pathSubset = ObjectArray<Object>
+                        .with(pathOne.array.exceptLast.exceptLast);
                     lastParent.removeFromParent();
                     fireTreeNodesRemoved(this, pathSubset,
                         IntArray.with(Singleton(parentIndex)),
                         ObjectArray.with(Singleton(lastParent)));
                 } else {
                     pathSubset = ObjectArray<Object>.with(pathOne.array.exceptLast);
-                    fireTreeNodesRemoved(this, pathSubset, IntArray.with(Singleton(indexOne)),
+                    fireTreeNodesRemoved(this, pathSubset,
+                        IntArray.with(Singleton(indexOne)),
                         ObjectArray.with(Singleton(node)));
                 }
                 if (is MutableTreeNode nodeTwo) {
@@ -308,7 +313,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 } else {
                     MutableTreeNode kindNode = KindNode(item.kind, item);
                     temp.add(kindNode);
-                    fireTreeNodesInserted(this, ObjectArray<TreeNode>.with(Singleton(temp)),
+                    fireTreeNodesInserted(this,
+                        ObjectArray<TreeNode>.with(Singleton(temp)),
                         IntArray.with(Singleton(getIndexOfChild(temp, kindNode))),
                         ObjectArray<Object>.with(Singleton(kindNode)));
                 }
@@ -318,7 +324,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     shared actual void dismissUnitMember(UnitMember member) {
         if (is TreeNode temp = root, exists node = getNode(temp, member)) {
             assert (is UnitNode parentNode = node.parent);
-            // Note that getPathToRoot() returns a path that does *not* include the node itself
+            // Note that getPathToRoot() returns a path that does *not* include the node
+            // itself
             value path = getPathToRoot(node);
             Integer index = getIndexOfChild(path.array.last, node);
             parentNode.remove(node);
@@ -334,7 +341,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             UnitMemberNode childNode = UnitMemberNode(sibling);
             parentNode.add(childNode);
             Integer index = getIndexOfChild(parentNode, childNode);
-            fireTreeNodesInserted(this, getPathToRoot(parentNode), IntArray.with(Singleton(index)),
+            fireTreeNodesInserted(this, getPathToRoot(parentNode),
+                IntArray.with(Singleton(index)),
                 ObjectArray<Object>.with(Singleton(childNode)));
         }
     }

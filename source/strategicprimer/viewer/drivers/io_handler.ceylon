@@ -154,7 +154,8 @@ shared class IOHandler
         case ("load") {
             FileChooser.open(null).call((path) {
                 try {
-                    mapModel.setMap(mapIOHelper.readMap(path, warningLevels.default), path);
+                    mapModel.setMap(mapIOHelper
+                        .readMap(path, warningLevels.default), path);
                 } catch (IOException|SPFormatException|XMLStreamException except) {
                     handleError(except, path.string);
                 }
@@ -194,8 +195,8 @@ shared class IOHandler
             if (is IMultiMapModel mapModel) {
                 FileChooser.open(null).call((path) {
                     try {
-                        mapModel.addSubordinateMap(mapIOHelper.readMap(path, warningLevels.default),
-                            path);
+                        mapModel.addSubordinateMap(mapIOHelper
+                            .readMap(path, warningLevels.default), path);
                     } catch (IOException|SPFormatException|XMLStreamException except) {
                         handleError(except, path.string);
                     }
@@ -234,7 +235,8 @@ shared class IOHandler
         case ("open secondary map in map viewer") {
             if (is IMultiMapModel mapModel,
                     exists mapPair = mapModel.subordinateMaps.first) {
-                ViewerGUI().startDriverOnModel(cli, options, ViewerModel.fromPair(mapPair));
+                ViewerGUI().startDriverOnModel(cli, options,
+                    ViewerModel.fromPair(mapPair));
             }
         }
         else {
@@ -360,7 +362,8 @@ shared class FileChooser {
             log.trace("FileChooser: The AWT or Swing chooser returned");
             if (is JFileChooser chooser) {
                 if (status == JFileChooser.approveOption) {
-                    value retval = chooser.selectedFiles.iterable.coalesced.collect(fileToPath);
+                    value retval = chooser.selectedFiles.iterable.coalesced
+                        .collect(fileToPath);
                     if (nonempty retval) {
                         log.trace("About to return the file(s) the user chose via Swing");
                         return retval;
@@ -381,7 +384,7 @@ shared class FileChooser {
                 }
             }
         } else {
-            log.trace("FileChooser.files: Have to ask the user; not on EDT, so putting our logic on it");
+            log.trace("FileChooser.files: Have to ask the user; not yet on EDT");
             invoke(() {
                 log.trace("Inside lambda on EDT");
                 Integer status = chooserFunction(null);
@@ -391,7 +394,8 @@ shared class FileChooser {
                         value retval = chooser.selectedFiles.iterable.coalesced
                             .collect(fileToPath);
                         if (nonempty retval) {
-                            log.trace("Saving the user's choice(s) from Swing to storedFile");
+                            log.trace(
+                                "Saving the user's choice(s) from Swing to storedFile");
                             storedFile = retval;
                         } else {
                             log.info("User pressed approve but selected no files");

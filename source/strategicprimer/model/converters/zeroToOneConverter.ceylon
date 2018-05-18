@@ -218,9 +218,11 @@ object zeroToOneConverter {
         for (event in stream) {
             if (is StartElement event) {
                 if (isSpecifiedTag(event.name, "tile")) {
-                    convertTile(ostream, event, ConvertingIterable<Attribute>(event.attributes));
+                    convertTile(ostream, event,
+						ConvertingIterable<Attribute>(event.attributes));
                 } else if (isSpecifiedTag(event.name, "map")) {
-                    convertMap(ostream, event, ConvertingIterable<Attribute>(event.attributes));
+                    convertMap(ostream, event,
+						ConvertingIterable<Attribute>(event.attributes));
                 } else {
                     printStartElement(ostream, event);
                 }
@@ -257,9 +259,10 @@ object zeroToOneConversionTests {
 	            """<map xmlns:sp="spNamespaceXYZZY" version="0" rows="2" columns="2">
 	                       <player number="0" code_name="Test Player" />
 	                       <row index="0">
-	                           <tile row="0" column="0" type="tundra" event="0">Random event here
+	                           <tile row="0" column="0" type="tundra" event="0">
+	                           Random event here</tile>
+	                           <tile row="0" column="1" type="boreal_forest" event="183">
 	                           </tile>
-	                           <tile row="0" column="1" type="boreal_forest" event="183"></tile>
 	                       </row>
 	                       <row index="1">
 	                           <sp:tile row="1" column="0" type="mountain" event="229">

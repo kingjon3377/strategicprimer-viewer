@@ -114,9 +114,10 @@ abstract class YAAbstractReader<Element>
     }
     "Replace XML meta-characters in a string with their equivalents."
     shared static String simpleQuote(String text,
-        "The character that will mark the end of the string as far as XML is concerned. If a single or
-         double quote, that character will be encoded every time it occurs in the string; if a greater-than
-         sign or an equal sign, both types of quotes will be; if a less-than sign, neither will be."
+        "The character that will mark the end of the string as far as XML is concerned.
+         If a single or double quote, that character will be encoded every time it occurs
+         in the string; if a greater-than sign or an equal sign, both types of quotes will
+         be; if a less-than sign, neither will be."
         Character? delimiter = null) {
         variable String retval = text;
         for ([pattern, replacement] in quoting) {
@@ -184,8 +185,8 @@ abstract class YAAbstractReader<Element>
         }
     }
     "Read a parameter from XML whose value can be an Integer or a Decimal."
-    shared static Integer|Decimal getNumericParameter(StartElement element, String parameter,
-		    Integer|Decimal? defaultValue = null) {
+    shared static Integer|Decimal getNumericParameter(StartElement element,
+            String parameter, Integer|Decimal? defaultValue = null) {
         if (hasParameter(element, parameter)) {
             String paramString = getParameter(element, parameter);
             if (paramString.contains(".")) {
@@ -249,7 +250,8 @@ abstract class YAAbstractReader<Element>
     shared void spinUntilEnd(QName tag, {XMLEvent*} reader, {String*} futureTags = []) {
         for (event in reader) {
             if (is StartElement event, isSupportedNamespace(event.name)) {
-                if (futureTags.map(String.lowercased).contains(event.name.localPart.lowercased)) {
+                if (futureTags.map(String.lowercased)
+                        .contains(event.name.localPart.lowercased)) {
                     warner.handle(UnwantedChildException(tag, event));
                 } else {
                     throw UnwantedChildException(tag, event);
@@ -325,8 +327,8 @@ abstract class YAAbstractReader<Element>
     "Warn if any unsupported attribute is on this tag."
     shared void expectAttributes(StartElement element, String* attributes) {
         {String*} local = attributes.map(String.lowercased);
-        for (attribute in ConvertingIterable<Attribute>(element.attributes).map(Attribute.name)
-                .filter(isSupportedNamespace).map(QName.localPart)) {
+        for (attribute in ConvertingIterable<Attribute>(element.attributes)
+                .map(Attribute.name).filter(isSupportedNamespace).map(QName.localPart)) {
             if (!local.contains(attribute.lowercased)) {
                 warner.handle(UnsupportedPropertyException(element, attribute));
             }

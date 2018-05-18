@@ -69,7 +69,8 @@ shared class ExplorationGUI() satisfies SimpleDriver {
             SPFrame frame = explorationFrame(explorationModel,
                 menuHandler.actionPerformed);
             menuHandler.register(silentListener(frame.dispose), "close");
-            menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName), "about");
+            menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
+                "about");
             frame.showWindow();
         });
     }

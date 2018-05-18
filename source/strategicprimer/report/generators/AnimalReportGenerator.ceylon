@@ -44,7 +44,8 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
 	 members of the player's units, or that for some other reason the player is allowed to
 	 see the precise count of the population."
 	shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
-				IMapNG map, Anything(String) ostream, /*Animal|AnimalTracks*/AnimalOrTracks item, Point loc) {
+				IMapNG map, Anything(String) ostream,
+				/*Animal|AnimalTracks*/AnimalOrTracks item, Point loc) {
 			ostream("At ``loc``:");
 			if (is AnimalTracks item) {
 				ostream(" tracks or traces of ``item.kind``");
@@ -77,7 +78,8 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
         		Anything(String) ostream) {
         MutableMultimap<String, Point> items = ArrayListMultimap<String, Point>();
-        for (key->[loc, animal] in fixtures.narrow<Integer->[Point, Animal|AnimalTracks]>()
+        for (key->[loc, animal] in fixtures
+				.narrow<Integer->[Point, Animal|AnimalTracks]>()
 	            .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item, pairComparator))) {
             String desc;
             if (is AnimalTracks animal) {
@@ -119,9 +121,11 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
         }
     }
     "Produce the sub-report about animals."
-    shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures, IMapNG map) {
+    shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures,
+			IMapNG map) {
         MutableMap<String, IReportNode> items = HashMap<String, IReportNode>();
-        for (key->[loc, animal] in fixtures.narrow<Integer->[Point, Animal|AnimalTracks]>()
+        for (key->[loc, animal] in fixtures
+				.narrow<Integer->[Point, Animal|AnimalTracks]>()
 	            .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item, pairComparator))) {
             IReportNode node;
             if (exists temp = items[animal.kind]) {

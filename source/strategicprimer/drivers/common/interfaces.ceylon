@@ -144,8 +144,9 @@ shared interface SimpleDriver satisfies ISPDriver {
                 }
                 log.trace("Got the second from the user");
                 value subordinatePath = secondSelectedPaths.first;
-                IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
-                    masterPath, subordinatePath);
+                IMultiMapModel mapModel =
+                        mapReaderAdapter.readMultiMapModel(warningLevels.default,
+                            masterPath, subordinatePath);
                 log.trace("Read maps from the two arguments");
                 mapModel.allMaps.map(Tuple.first).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
@@ -167,15 +168,17 @@ shared interface SimpleDriver satisfies ISPDriver {
                     throw IncorrectUsageException(usage);
                 }
                 log.trace("Got second and following from the user");
-                IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
-                    masterPath, *secondSelectedPaths);
+                IMultiMapModel mapModel =
+                        mapReaderAdapter.readMultiMapModel(warningLevels.default,
+                            masterPath, *secondSelectedPaths);
                 log.trace("Read maps from the arguments");
                 mapModel.allMaps.map(Tuple.first).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
             }
             case (ParamCount.one) {
                 value chosenFiles = askUserForFiles();
-                if (exists chosenFile = chosenFiles.first, !chosenFiles.rest.first exists) {
+                if (exists chosenFile = chosenFiles.first,
+                        !chosenFiles.rest.first exists) {
                     IDriverModel mapModel = mapReaderAdapter.readMapModel(chosenFile,
                         warningLevels.default);
                     turnFixer(mapModel.map);
@@ -189,8 +192,9 @@ shared interface SimpleDriver satisfies ISPDriver {
                 value chosenFiles = askUserForFiles();
                 log.trace("Asked the user to choose a file");
                 if (exists chosenFile = chosenFiles.first) {
-                    IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
-                        chosenFile, *chosenFiles.rest);
+                    IMultiMapModel mapModel =
+                            mapReaderAdapter.readMultiMapModel(warningLevels.default,
+                                chosenFile, *chosenFiles.rest);
                     log.trace("Parsed map(s) from file(s)");
                     mapModel.allMaps.map(Tuple.first).each(turnFixer);
                     startDriverOnModel(cli, options, mapModel);
@@ -214,8 +218,9 @@ shared interface SimpleDriver satisfies ISPDriver {
             if (chosenFiles.empty || chosenFiles.rest.first exists) {
                 throw IncorrectUsageException(usage);
             } else {
-                IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
-                    JPaths.get(firstArg), *chosenFiles);
+                IMultiMapModel mapModel =
+                        mapReaderAdapter.readMultiMapModel(warningLevels.default,
+                            JPaths.get(firstArg), *chosenFiles);
                 log.trace("Parsed maps from the two files");
                 mapModel.allMaps.map(Tuple.first).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
@@ -228,8 +233,9 @@ shared interface SimpleDriver satisfies ISPDriver {
             if (chosenFiles.empty) {
                 throw IncorrectUsageException(usage);
             } else {
-                IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
-                    JPaths.get(firstArg), *chosenFiles);
+                IMultiMapModel mapModel =
+                        mapReaderAdapter.readMultiMapModel(warningLevels.default,
+                            JPaths.get(firstArg), *chosenFiles);
                 log.trace("Parsed maps from the files");
                 mapModel.allMaps.map(Tuple.first).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
@@ -237,7 +243,8 @@ shared interface SimpleDriver satisfies ISPDriver {
         } else if (args.size == 1) {
             log.trace("Got one argument, don't need more");
             assert (exists arg = args.first);
-            IDriverModel mapModel = mapReaderAdapter.readMapModel(JPaths.get(arg), warningLevels.default);
+            IDriverModel mapModel =
+                    mapReaderAdapter.readMapModel(JPaths.get(arg), warningLevels.default);
             log.trace("Parsed map from file");
             turnFixer(mapModel.map);
             startDriverOnModel(cli, options, mapModel);
@@ -245,8 +252,9 @@ shared interface SimpleDriver satisfies ISPDriver {
             log.trace("Got enough arguments");
             assert (exists firstArg = args.first);
             assert (nonempty others = args.rest);
-            IMultiMapModel mapModel = mapReaderAdapter.readMultiMapModel(warningLevels.default,
-                JPaths.get(firstArg), *mapIOHelper.namesToFiles(*others));
+            IMultiMapModel mapModel =
+                    mapReaderAdapter.readMultiMapModel(warningLevels.default,
+                        JPaths.get(firstArg), *mapIOHelper.namesToFiles(*others));
             log.trace("Parsed paths from arguments");
             mapModel.allMaps.map(Tuple.first).each(turnFixer);
             startDriverOnModel(cli, options, mapModel);
@@ -377,7 +385,8 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
 	        model = mapReaderAdapter.readMapModel(JPaths.get(firstArg), warningLevels.ignore);
 	        log.trace("Finished reading map from file");
 	        if (options.hasOption("--currentTurn")) {
-	            if (is Integer currentTurn = Integer.parse(options.getArgument("--current-turn"))) {
+	            if (is Integer currentTurn =
+                        Integer.parse(options.getArgument("--current-turn"))) {
 	                model.map.currentTurn = currentTurn;
 		        } else {
 		            cli.println("--current-turn must be an integer");
@@ -401,7 +410,8 @@ shared class DriverFailedException
  }
 "An exception to throw when a driver fails because the user tried to use it improperly."
 shared class IncorrectUsageException(correctUsage)
-        extends DriverFailedException(AssertionError("Incorrect usage"), "Incorrect usage") {
+        extends DriverFailedException(AssertionError("Incorrect usage"),
+            "Incorrect usage") {
     """The "usage object" for the driver, describing its correct usage."""
     shared IDriverUsage correctUsage;
 }
@@ -440,14 +450,17 @@ shared interface IDriverUsage {
     """Options this driver supports. (To show the user, so "=NN" to mean a numeric option
        is reasonable."""
     shared formal {String*} supportedOptions;
-    "Whether this driver should be included in the list presented for the user to choose from."
-    shared formal Boolean includeInList("If true, this is a GUI list; if false, a CLI list" Boolean gui);
+    "Whether this driver should be included in the list presented for the user to choose
+     from."
+    shared formal Boolean includeInList(
+            "If true, this is a GUI list; if false, a CLI list" Boolean gui);
 }
 shared class DriverUsage(
     "Whether this driver is graphical or not."
     shared actual Boolean graphical,
-    "Options with which one can invoke this driver. Usually there's a short (if possible one-character)
-     option and a longer (and probably more memorable and descriptive) option."
+    "Options with which one can invoke this driver. Usually there's a short (if possible
+     one-character) option and a longer (and probably more memorable and descriptive)
+     option."
     shared actual {String+} invocations,
     "How many parameters this driver wants."
     shared actual ParamCount paramsWanted,
@@ -469,5 +482,6 @@ shared class DriverUsage(
 ) satisfies IDriverUsage {
     shared actual {String*} supportedOptions =
             supportedOptionsTemp;
-    shared actual Boolean includeInList(Boolean gui) => (gui) then includeInGUIList else includeInCLIList;
+    shared actual Boolean includeInList(Boolean gui) =>
+            (gui) then includeInGUIList else includeInCLIList;
 }

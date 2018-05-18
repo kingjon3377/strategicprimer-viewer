@@ -13,7 +13,8 @@ todo("Measure that",
         "The Java version used ConcurrentHashMap, while this isn't thread-safe")
 MutableMap<Integer, MutableMap<Integer, Point>> pointCache =
         HashMap<Integer, MutableMap<Integer, Point>>();
-MutableMap<[Integer, Integer], Point> pointTupleCache = HashMap<[Integer, Integer], Point>();
+MutableMap<[Integer, Integer], Point> pointTupleCache =
+		HashMap<[Integer, Integer], Point>();
 "Clear the Point cache. Should only be called by performance-testing code."
 shared void clearPointCache() {
 	pointCache.clear();

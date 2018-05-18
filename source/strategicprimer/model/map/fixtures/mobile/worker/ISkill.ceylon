@@ -39,7 +39,7 @@ shared interface ISkill satisfies HasName&Subsettable<ISkill> {
                 return true;
             }
         } else {
-            report("Called with non-corresponding skill, ``obj.name`` ( this is ``name``");
+            report("Called with non-corresponding skill, ``obj.name`` (this is ``name``");
             return false;
         }
     }

@@ -123,7 +123,8 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
             } else {
                 for (resource in other.yearlyProduction) {
                     if (yearlyProduction.contains(resource) || yearlyProduction.any(
-	                        shuffle(curry(shuffle(ResourcePile.isSubset)))(noop)(resource))) {
+	                        shuffle(curry(shuffle(
+								ResourcePile.isSubset)))(noop)(resource))) {
                         continue;
                     } else {
                         report("Produces a resource we don't, or more than we do: ``
@@ -133,7 +134,8 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
                 }
                 for (resource in other.yearlyConsumption) {
                     if (yearlyConsumption.contains(resource) || yearlyConsumption.any(
-	                        shuffle(curry(shuffle(ResourcePile.isSubset)))(noop)(resource))) {
+	                        shuffle(curry(shuffle(
+								ResourcePile.isSubset)))(noop)(resource))) {
                         continue;
                     } else {
                         report("Consumes a resource we don't, or more than we do: ``

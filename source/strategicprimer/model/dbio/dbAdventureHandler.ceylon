@@ -14,7 +14,8 @@ import strategicprimer.model.map.fixtures.explorable {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point>() satisfies MapContentsReader {
+object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers =
 			["""CREATE TABLE IF NOT EXISTS adventures (
 				    row INTEGER NOT NULL,
@@ -35,9 +36,10 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
 		log.trace("About to read adventures");
 		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM adventures""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
-				is String brief = dbRow["brief"], is String full = dbRow["full"],
-				is Integer ownerId = dbRow["owner"], is String|SqlNull image = dbRow["image"]);
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is Integer id = dbRow["id"], is String brief = dbRow["brief"],
+				is String full = dbRow["full"], is Integer ownerId = dbRow["owner"],
+				is String|SqlNull image = dbRow["image"]);
 			value adventure = AdventureFixture(map.players.getPlayer(ownerId), brief, full, id);
 			if (is String image) {
 				adventure.image = image;

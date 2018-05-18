@@ -33,7 +33,8 @@ shared class UtilityMenu(SPFrame parent) extends JMenuBar() {
     void aboutHandler(ActionEvent event) => // TODO: Make these static methods?
             aboutDialog(parent, parent.windowName).setVisible(true);
     void macAboutHandler(AppEvent.AboutEvent event) {
-        Object source = WindowList.getWindows(true, false).iterable.coalesced.last else event;
+        Object source =
+                WindowList.getWindows(true, false).iterable.coalesced.last else event;
         aboutHandler(ActionEvent(source, ActionEvent.actionFirst,
             "About"));
     }

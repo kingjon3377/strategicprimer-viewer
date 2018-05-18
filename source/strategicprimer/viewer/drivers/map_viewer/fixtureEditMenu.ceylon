@@ -117,10 +117,12 @@ shared JPopupMenu fixtureEditMenu(IFixture fixture, {Player*} players,
         addDisabledMenuItem(JMenuItem("Dismiss", KeyEvent.vkD));
     }
     if (is Animal fixture, fixture.population > 1) { // TODO: Generalize to HasPopulation more generally
-        addMenuItem(JMenuItem("Split animal population", KeyEvent.vkS), (ActionEvent event) {
+        addMenuItem(JMenuItem("Split animal population", KeyEvent.vkS),
+                    (ActionEvent event) {
             if (exists result = JOptionPane.showInputDialog(retval,
-                        "Number of animals to split to new population:", "Split Animal Population",
-                        JOptionPane.plainMessage, null, null, Types.nativeString("0")),
+                        "Number of animals to split to new population:",
+                        "Split Animal Population", JOptionPane.plainMessage, null, null,
+                        Types.nativeString("0")),
                         is Integer num = Integer.parse(result.string.trimmed), num > 0,
                         num < fixture.population) {
                 Integer orig = fixture.population;

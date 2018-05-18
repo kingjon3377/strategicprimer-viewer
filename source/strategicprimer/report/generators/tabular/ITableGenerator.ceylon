@@ -34,7 +34,8 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
       all fixtures covered in the table from the collection."
     shared default void produceTable(Anything(String) ostream, DelayedRemovalMap<Integer,
 		    [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
-        {[Integer, [Point, T]]*} values = fixtures.map(Entry.pair).narrow<[Integer, [Point, T]]>()
+        {[Integer, [Point, T]]*} values = fixtures.map(Entry.pair)
+			.narrow<[Integer, [Point, T]]>()
             .sort(comparingOn(Tuple<Integer|[Point, T], Integer, [[Point, T]]>.rest,
 	            comparingOn(Tuple<[Point, T], [Point, T], []>.first, comparePairs)));
         writeRow(ostream, headerRow.first, *headerRow.rest);
@@ -49,8 +50,10 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
      format of a model for a Swing JTable, and remove all fixtures covered in the table
      from the collection."
     shared default TableModel produceTableModel(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
-        {[Integer, [Point, T]]*} values = fixtures.map(Entry.pair).narrow<[Integer, [Point, T]]>()
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+			Map<Integer, Integer> parentMap) {
+        {[Integer, [Point, T]]*} values = fixtures.map(Entry.pair)
+			.narrow<[Integer, [Point, T]]>()
                 .sort(comparingOn(Tuple<Integer|[Point, T], Integer, [[Point, T]]>.rest,
 		            comparingOn(Tuple<[Point, T], [Point, T], []>.first, comparePairs)));
         DefaultTableModel retval = DefaultTableModel(

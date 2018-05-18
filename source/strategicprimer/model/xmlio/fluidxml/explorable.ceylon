@@ -96,7 +96,8 @@ object fluidExplorableHandler extends FluidBase() {
 	        element, warner);
 	}
 
-	shared void writeAdventure(XMLStreamWriter ostream, AdventureFixture obj, Integer indent) {
+	shared void writeAdventure(XMLStreamWriter ostream, AdventureFixture obj,
+			Integer indent) {
 	    writeTag(ostream, "adventure", indent, true);
 	    writeAttributes(ostream, "id"->obj.id);
 	    if (!obj.owner.independent) {

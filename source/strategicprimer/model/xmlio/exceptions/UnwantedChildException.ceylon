@@ -85,7 +85,8 @@ shared class UnwantedChildException extends SPFormatException {
 	        StartElement child,
 	        "The additional message"
 	        String message) extends SPFormatException(
-	            "Unexpected child ``child.name.localPart`` in tag ``parent.localPart``: ``message``",
+	            "Unexpected child ``child.name.localPart`` in tag ``parent.localPart``: ``
+					message``",
 	            child.location.lineNumber, child.location.columnNumber) {
         tag = parent;
         this.child = child.name;

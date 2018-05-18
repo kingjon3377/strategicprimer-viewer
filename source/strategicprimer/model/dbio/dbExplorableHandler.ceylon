@@ -15,7 +15,8 @@ import strategicprimer.model.map.fixtures.explorable {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Point>() satisfies MapContentsReader {
+object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS caves (
 			   row INTEGER NOT NULL,
@@ -36,10 +37,12 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 		Sql.Insert insertion;
 		switch (obj)
 		case (is Cave) {
-			insertion = db.Insert("""INSERT INTO caves (row, column, id, dc, image) VALUES(?, ?, ?, ?, ?);""");
+			insertion = db.Insert("""INSERT INTO caves (row, column, id, dc, image)
+			                         VALUES(?, ?, ?, ?, ?);""");
 		}
 		case (is Battlefield) {
-			insertion = db.Insert("""INSERT INTO battlefields (row, column, id, dc, image) VALUES(?, ?, ?, ?, ?);""");
+			insertion = db.Insert("""INSERT INTO battlefields (row, column, id, dc, image)
+			                         VALUES(?, ?, ?, ?, ?);""");
 		}
 		insertion.execute(context.row, context.column, obj.id, obj.dc, obj.image);
 	}
@@ -47,8 +50,9 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 		log.trace("About to start reading caves");
 		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM caves""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
-				is Integer dc = dbRow["dc"], is String|SqlNull image = dbRow["image"]);
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is Integer id = dbRow["id"], is Integer dc = dbRow["dc"],
+				is String|SqlNull image = dbRow["image"]);
 			value cave = Cave(dc, id);
 			if (is String image) {
 				cave.image = image;
@@ -62,8 +66,9 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 		count = 0;
 		log.trace("Finished reading caves; about to start on battlefields");
 		for (dbRow in db.Select("""SELECT * FROM battlefields""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
-				is Integer dc = dbRow["dc"], is String|SqlNull image = dbRow["image"]);
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is Integer id = dbRow["id"], is Integer dc = dbRow["dc"],
+				is String|SqlNull image = dbRow["image"]);
 			value battlefield = Battlefield(dc, id);
 			if (is String image) {
 				battlefield.image = image;

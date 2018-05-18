@@ -92,6 +92,7 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
             return skill;
         }
     }
-    "Remove a Skill from the JOb."
-    shared actual void removeSkill(ISkill skill) => skillSet.removeEntry(skill.name, skill);
+    "Remove a Skill from the Job."
+    shared actual void removeSkill(ISkill skill) =>
+            skillSet.removeEntry(skill.name, skill);
 }

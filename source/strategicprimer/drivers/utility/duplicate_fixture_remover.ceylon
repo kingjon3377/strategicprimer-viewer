@@ -90,17 +90,19 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
             func(item);
         }
     }
-    """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests, of the same
-       kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile in a
-       map."""
+    """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests of the
+       same kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile
+       in a map."""
     void removeDuplicateFixtures(IMutableMapNG map, ICLIHelper cli) {
-        Boolean approveRemoval(Point location, TileFixture fixture, TileFixture matching) {
+        Boolean approveRemoval(Point location, TileFixture fixture,
+				TileFixture matching) {
             String fCls = classDeclaration(fixture).name;
             String mCls = classDeclaration(matching).name;
             return cli.inputBooleanInSeries(
-                "At ``location``: Remove '``fixture.shortDescription``', of class '``fCls``', ID #``
-		            fixture.id``, which matches '``matching.shortDescription``', of class '``mCls
-		            ``', ID #``matching.id``?", "duplicate``fCls````mCls``");
+                "At ``location``: Remove '``fixture.shortDescription``', of class '``
+					fCls``', ID #``fixture.id``, which matches '``
+					matching.shortDescription``', of class '``mCls``', ID #``
+					matching.id``?", "duplicate``fCls````mCls``");
         }
         for (location in map.locations) {
             MutableList<TileFixture> fixtures = ArrayList<TileFixture>();
@@ -112,7 +114,8 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
                     continue;
                 } else if (is CacheFixture fixture) {
                     continue;
-                } else if (is HasPopulation<out Anything> fixture, fixture.population.positive) {
+                } else if (is HasPopulation<out Anything> fixture,
+						fixture.population.positive) {
                     continue;
                 } else if (is HasExtent fixture, fixture.acres.positive) {
                     continue;
@@ -123,10 +126,12 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
                 } else {
                     fixtures.add(fixture);
                     if (is IUnit fixture) {
-                        coalesceResources(context, fixture, cli, ifApplicable(fixture.addMember),
+                        coalesceResources(context, fixture, cli,
+							ifApplicable(fixture.addMember),
                             ifApplicable(fixture.removeMember));
                     } else if (is Fortress fixture) {
-                        coalesceResources(context, fixture, cli, ifApplicable(fixture.addMember),
+                        coalesceResources(context, fixture, cli,
+							ifApplicable(fixture.addMember),
 	                        ifApplicable(fixture.removeMember));
                     }
                 }
@@ -168,20 +173,27 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
         }
     }
     "Offer to combine like resources in a unit or fortress."
-    void coalesceResources(String context, {IFixture*} stream, ICLIHelper cli, Anything(IFixture) add,
-	        Anything(IFixture) remove) {
-        Map<ClassOrInterface<IFixture>, CoalescedHolder<out IFixture, out Object>> mapping = map {
+    void coalesceResources(String context, {IFixture*} stream, ICLIHelper cli,
+			Anything(IFixture) add, Anything(IFixture) remove) {
+        Map<ClassOrInterface<IFixture>, CoalescedHolder<out IFixture, out Object>> mapping
+				= map {
             `ResourcePile`->CoalescedHolder<ResourcePile, [String, String, String, Integer]>(
-                (pile) => [pile.kind, pile.contents, pile.quantity.units, pile.created], combineResources),
+                (pile) => [pile.kind, pile.contents, pile.quantity.units, pile.created],
+				combineResources),
             `Animal`->CoalescedHolder<Animal, [String, String, Integer]>(
-                (animal) => [animal.kind, animal.status, animal.born], combinePopulations<Animal>),
-            `Implement`->CoalescedHolder<Implement, String>(Implement.kind, combinePopulations<Implement>),
-            `Forest`->CoalescedHolder<Forest, [String, Boolean]>((forest) => [forest.kind, forest.rows],
+                (animal) => [animal.kind, animal.status, animal.born],
+				combinePopulations<Animal>),
+            `Implement`->CoalescedHolder<Implement, String>(Implement.kind,
+				combinePopulations<Implement>),
+            `Forest`->CoalescedHolder<Forest, [String, Boolean]>(
+						(forest) => [forest.kind, forest.rows],
                 combineForests),
             `Grove`->CoalescedHolder<Grove, [Boolean, Boolean, String]>(
-                (grove) => [grove.orchard, grove.cultivated, grove.kind], combinePopulations<Grove>),
+                (grove) => [grove.orchard, grove.cultivated, grove.kind],
+				combinePopulations<Grove>),
             `Meadow`->CoalescedHolder<Meadow, [String, Boolean, Boolean, FieldStatus]>(
-                (meadow) => [meadow.kind, meadow.field, meadow.cultivated, meadow.status], combineMeadows),
+                (meadow) => [meadow.kind, meadow.field, meadow.cultivated, meadow.status],
+				combineMeadows),
             `Shrub`->CoalescedHolder<Shrub, String>(Shrub.kind, combinePopulations<Shrub>)
         };
         for (fixture in stream) {
@@ -194,10 +206,12 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
                 }
                 if (is IUnit fixture) {
                     coalesceResources(context + "In ``shortDesc``: ", fixture, cli,
-                        ifApplicable(fixture.addMember),ifApplicable(fixture.removeMember));
+                        ifApplicable(fixture.addMember),
+						ifApplicable(fixture.removeMember));
                 } else if (is Fortress fixture) {
                     coalesceResources(context + "In ``shortDesc``: ", fixture, cli,
-                        ifApplicable(fixture.addMember),ifApplicable(fixture.removeMember));
+                        ifApplicable(fixture.addMember),
+						ifApplicable(fixture.removeMember));
                 }
             } else if (is Animal fixture) {
                 if (fixture.talking) {
@@ -221,7 +235,7 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
                 }
                 assert (nonempty list);
                 cli.print(context);
-                cli.println("The following ``helper.plural.lowercased`` could be combined:");
+                cli.println("The following ``helper.plural.lowercased`` can be combined:");
                 list.map(Object.string).each(cli.println);
                 if (cli.inputBoolean("Combine them? ")) {
                     IFixture combined = helper.combineRaw(list);
@@ -248,18 +262,22 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
         return Forest(top.kind, top.rows, top.id,
             list.map(Forest.acres).map(decimalize).fold(decimalNumber(0))(plus));
     }
-    "Combine like [[Meadow]]s into a single object. We assume all Meadows are identical except for acreage and ID."
+    "Combine like [[Meadow]]s into a single object. We assume all Meadows are identical
+     except for acreage and ID."
     Meadow combineMeadows({Meadow*} list) {
         assert (exists top = list.first);
         return Meadow(top.kind, top.field, top.cultivated, top.id, top.status,
             list.map(Meadow.acres).map(decimalize).fold(decimalNumber(0))(plus));
     }
     "A two-parameter wrapper around [[HasPopulation.combined]]."
-    Type combine<Type>(Type one, Type two) given Type satisfies HasPopulation<Type> => one.combined(two);
-    "Combine like populations into a single object. We assume all are identical (i.e. of the same kind, and
-     in the case of animals have the same domestication status and turn of birth) except for population."
-    Type combinePopulations<Type>({Type+} list) given Type satisfies HasPopulation<Type> =>
-            list.rest.fold(list.first)(combine);
+    Type combine<Type>(Type one, Type two) given Type satisfies HasPopulation<Type> =>
+			one.combined(two);
+    "Combine like populations into a single object. We assume all are identical (i.e. of
+     the same kind, and in the case of animals have the same domestication status and
+     turn of birth) except for population."
+    Type combinePopulations<Type>({Type+} list)
+			given Type satisfies HasPopulation<Type> =>
+				list.rest.fold(list.first)(combine);
     "Combine like resources into a single resource pile. We assume that all resources have
      the same kind, contents, units, and created date."
     ResourcePile combineResources({ResourcePile*} list) {

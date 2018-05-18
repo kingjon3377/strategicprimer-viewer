@@ -2,7 +2,8 @@ import java.awt {
 	Component
 }
 shared class ComponentParentStream satisfies {Component*} {
-	static class ComponentParentIterator(variable Component widget) satisfies Iterator<Component> {
+	static class ComponentParentIterator(variable Component widget)
+			satisfies Iterator<Component> {
 		shared actual Component|Finished next() {
 			if (exists retval = widget.parent) {
 				widget = retval;

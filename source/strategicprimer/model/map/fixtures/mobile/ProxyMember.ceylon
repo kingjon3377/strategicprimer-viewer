@@ -51,5 +51,6 @@ class ProxyMember satisfies UnitMember&ProxyFor<UnitMember> {
     "Returns the ID number shared by all the proxied members, or -1 if either there are no
      proxied members or some have a different ID."
     shared actual Integer id => getConsensus(UnitMember.id) else -1;
-    shared actual String plural => getConsensus(UnitMember.plural) else "Various Unit Members";
+    shared actual String plural =>
+			getConsensus(UnitMember.plural) else "Various Unit Members";
 }

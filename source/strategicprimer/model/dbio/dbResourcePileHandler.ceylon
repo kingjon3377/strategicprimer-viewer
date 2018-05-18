@@ -22,7 +22,9 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|Fortress>() satisfies MapContentsReader {
+object dbResourcePileHandler
+		extends AbstractDatabaseWriter<ResourcePile, IUnit|Fortress>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS resource_piles (
 			   parent INTEGER NOT NULL,
@@ -38,7 +40,8 @@ object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|
 	];
 	shared actual void write(Sql db, ResourcePile obj, IUnit|Fortress context) {
 		db.Insert("""INSERT INTO resource_piles (parent, id, kind, contents, quantity, units, created, image)
-		             VALUES(?, ?, ?, ?, ?, ?, ?, ?);""").execute(context.id, obj.id, obj.kind, obj.contents,
+		             VALUES(?, ?, ?, ?, ?, ?, ?, ?);""")
+			.execute(context.id, obj.id, obj.kind, obj.contents,
 						obj.quantity.number.string, obj.quantity.units, obj.created, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
@@ -46,8 +49,10 @@ object dbResourcePileHandler extends AbstractDatabaseWriter<ResourcePile, IUnit|
 		log.trace("About to read resource piles");
 		variable Integer count = 0;
 		for (row in db.Select("""SELECT * FROM resource_piles""").Results()) {
-			assert (is Integer parentId = row["parent"], is IUnit|Fortress parent = findById(map, parentId, warner),
-				is Integer id = row["id"], is String kind = row["kind"], is String contents = row["contents"],
+			assert (is Integer parentId = row["parent"],
+				is IUnit|Fortress parent = findById(map, parentId, warner),
+				is Integer id = row["id"], is String kind = row["kind"],
+				is String contents = row["contents"],
 				is String qtyString = row["quantity"], is String units = row ["units"],
 				is Integer|SqlNull created = row["created"], is String|SqlNull image = row["image"]);
 			Number<out Anything> quantity;

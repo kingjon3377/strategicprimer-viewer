@@ -191,11 +191,14 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 	Boolean dummyFilter(TileFixture? fix) => true;
 	{[TileDrawHelper, String]*} createHelpers() => [ [CachingTileDrawHelper(), "Caching:"],
 		[directTileDrawHelper, "Direct:"],
-		[Ver2TileDrawHelper(dummyObserver, dummyFilter, Singleton(FixtureMatcher(dummyFilter, "test"))), "Ver 2:"]
+		[Ver2TileDrawHelper(dummyObserver, dummyFilter, Singleton(FixtureMatcher(dummyFilter,
+			"test"))), "Ver 2:"]
 	];
-	MutableMap<[CachingStrategy, String, String, String], Accumulator> results = HashMap<[CachingStrategy, String, String, String], Accumulator>();
+	MutableMap<[CachingStrategy, String, String, String], Accumulator> results =
+			HashMap<[CachingStrategy, String, String, String], Accumulator>();
 	Accumulator getResultsAccumulator(String file, String testee, String test) {
-		[CachingStrategy, String, String, String] tuple = [pointCachingStrategy, file, testee, test];
+		[CachingStrategy, String, String, String] tuple = [pointCachingStrategy, file,
+			testee, test];
 		if (exists retval = results[tuple]) {
 			return retval;
 		} else {
@@ -223,7 +226,9 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 		cli.println("----------------------------------------");
 		cli.print("Total:");
 		for ([testCase, caseDesc] in helpers) {
-			printStats(caseDesc, results.filterKeys((tuple) => tuple.startsWith([pointCachingStrategy, fileName, caseDesc]))
+			printStats(caseDesc, results
+				.filterKeys((tuple) =>
+					tuple.startsWith([pointCachingStrategy, fileName, caseDesc]))
 				.items.map(Accumulator.storedValue).fold(0)(plus), repetitions);
 		}
 		cli.println("");
@@ -234,8 +239,9 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 	        paramsWanted = ParamCount.atLeastOne;
 	        shortDescription = "Test drawing performance.";
 	        longDescription =
-	            """Test the performance of the TileDrawHelper classes---which do the heavy lifting
-	               of rendering the map in the viewer---using a variety of automated tests.""";
+	            """Test the performance of the TileDrawHelper classes---which do the heavy
+	               lifting of rendering the map in the viewer---using a variety of automated
+	               tests.""";
 	        includeInCLIList = true;
 	        includeInGUIList = false;
 	        supportedOptionsTemp = ["--report=out.csv"];
@@ -278,7 +284,8 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
                 outFile = resource;
             }
             else {
-                cli.println("Specified file to write details to is present but not a regular file");
+                cli.println(
+					"Specified file to write details to is present but not a regular file");
                 return;
             }
             try (writer = outFile.Overwriter()) {

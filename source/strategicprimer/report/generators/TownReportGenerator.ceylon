@@ -37,7 +37,8 @@ import strategicprimer.report.nodes {
 "A report generator for towns."
 todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        Player currentPlayer, MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
+        Player currentPlayer, MapDimensions dimensions, Integer currentTurn,
+        Point hq = invalidPoint)
         extends AbstractReportGenerator<ITownFixture>(comp, dimensions, hq) {
     {TownStatus+} statuses = [TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
         TownStatus.burned];
@@ -45,7 +46,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     void separateByStatus<T>(Map<TownStatus, T> mapping,
             Collection<[Point, IFixture]> collection,
             Anything(T, [Point, ITownFixture]) func) {
-        for ([loc, item] in collection.narrow<[Point, AbstractTown]>().sort(pairComparator)) {
+        for ([loc, item] in collection.narrow<[Point, AbstractTown]>()
+                .sort(pairComparator)) {
             if (exists result = mapping[item.status]) {
                 func(result, [loc, item]);
             }
@@ -54,7 +56,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Produce a report for a town. If a single fortress or village is passed in, handling
      it is delegated to its dedicated report-generating class. We remove the town from
      the set of fixtures."
-    shared actual void produceSingle(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
+    shared actual void produceSingle(
+            DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, ITownFixture item, Point loc) {
         assert (is Village|Fortress|AbstractTown item);
         switch (item)
@@ -94,8 +97,9 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         MutableHeadedMap<ITownFixture, Point> ruined =
                 HeadedMapImpl<ITownFixture, Point>("<h5>Ruined Communities</h5>");
         Map<TownStatus, MutableMap<ITownFixture, Point>> separated =
-                createMap<TownStatus, MutableMap<ITownFixture, Point>>([TownStatus.abandoned->abandoned,
-			            TownStatus.active->active, TownStatus.burned->burned, TownStatus.ruined->ruined]);
+                createMap<TownStatus, MutableMap<ITownFixture, Point>>(
+                    [TownStatus.abandoned->abandoned, TownStatus.active->active,
+                        TownStatus.burned->burned, TownStatus.ruined->ruined]);
         // separateByStatus() sorts using pairComparator, which should be by distance
         // from HQ
         separateByStatus(separated, fixtures.items,
@@ -112,7 +116,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         }
     }
     "Produce a report for a town. Handling of fortresses and villages is delegated
-     to their dedicated report-generating classes. We remove the town from the set of fixtures."
+     to their dedicated report-generating classes. We remove the town from the set of
+     fixtures."
     shared actual IReportNode produceRIRSingle(
             DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
             IMapNG map, ITownFixture item, Point loc) {
@@ -143,12 +148,13 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             }
         }
     }
-    "Produce a report for all towns. (Fortresses and villages are not included in this report.)
-     We remove the towns from the set of fixtures."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
+    "Produce a report for all towns. (Fortresses and villages are not included in this
+     report.) We remove the towns from the set of fixtures."
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
 	        IMapNG map) {
-        Map<TownStatus, IReportNode> separated = createMap([TownStatus.abandoned -> SectionListReportNode(5,
-                "Abandoned Communities"),
+        Map<TownStatus, IReportNode> separated = createMap(
+            [TownStatus.abandoned->SectionListReportNode(5, "Abandoned Communities"),
                 TownStatus.active->SectionListReportNode(5, "Active Communities"),
                 TownStatus.burned->SectionListReportNode(5,
                     "Burned-Out Communities"),
@@ -156,7 +162,8 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     "Ruined Communities")]);
         separateByStatus(separated, fixtures.items,
                     (IReportNode node, pair) {
-                node.appendNode(produceRIRSingle(fixtures, map, pair.rest.first, pair.first));
+                node.appendNode(produceRIRSingle(fixtures, map, pair.rest.first,
+                    pair.first));
             });
         IReportNode retval = SectionListReportNode(4,
             "Cities, towns, and/or fortifications you know about:");

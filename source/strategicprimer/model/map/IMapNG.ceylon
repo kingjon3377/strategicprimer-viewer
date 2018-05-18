@@ -14,16 +14,17 @@ import lovelace.util.common {
 
    This is the third-generation interface:
 
-   - The first map implementation modeled a map as a collection of Tile objects, and exposed
-     this in the interface that was extracted from it. That approach proved expensive from a
-     performance perspective, but changing it required redesigning the interface.
+   - The first map implementation modeled a map as a collection of Tile objects, and
+     exposed this in the interface that was extracted from it. That approach proved
+     expensive from a performance perspective, but changing it required redesigning the
+     interface.
    - The second-generation interface was designed so that an implementer *could* use Tile
      objects, but callers whould be oblivious to that detail. Instead, callers askeded for
      the tile type, rivers, forest, mountain, fixtures, etc., mapped to a given Point. The
-     interface also included several of the features that, in the first implementation, were
-     in a MapView class that wrapped the SPMap class.
-   - This third generation is built using the same principles as the second, but is adapted
-     to use interfaces for which Ceylon provides "syntax sugar".
+     interface also included several of the features that, in the first implementation,
+     were in a MapView class that wrapped the SPMap class.
+   - This third generation is built using the same principles as the second, but is
+     adapted to use interfaces for which Ceylon provides "syntax sugar".
 
    Mutator methods, including those used in constructing the map object, are out of the
    scope of this interface."""

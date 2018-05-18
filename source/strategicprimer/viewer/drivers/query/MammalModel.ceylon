@@ -13,7 +13,8 @@ class MammalModel satisfies HerdModel {
 	"How much time, in minutes, must be spent on the entire herd or flock each turn,
 	 regardless of its size, in addition to each herder's time with individual animals."
 	shared Integer dailyTimeFloor = 60;
-	new ("The amount produced per head per turn, in gallons" Float production, Integer dailyTimePerHead) {
+	new ("The amount produced per head per turn, in gallons" Float production,
+			Integer dailyTimePerHead) {
 		this.dailyTimePerHead = dailyTimePerHead;
 		productionPerHead = Quantity(production, "gallons");
 	}

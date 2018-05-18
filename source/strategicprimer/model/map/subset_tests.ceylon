@@ -219,7 +219,8 @@ object subsetTests {
 	    firstMap.baseTerrain[pointFactory(0, 0)] = TileType.jungle;
 	    IMapNG zero = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), -1);
 	    assertIsSubset(firstMap, zero, "zero is a subset of one before copy");
-	    IMutableMapNG secondMap = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), -1);
+	    IMutableMapNG secondMap =
+				SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), -1);
 	    secondMap.baseTerrain[pointFactory(0, 0)] = TileType.jungle;
 	    firstMap.baseTerrain[pointFactory(1, 1)] = TileType.plains;
 	    secondMap.baseTerrain[pointFactory(1, 1)] = TileType.plains;
@@ -375,7 +376,8 @@ object subsetTests {
 		assertNotSubset(first, second, "Having non-subset population details breaks subset");
 	}
 
-	"Test [[AbstractTown]] subset calculations, specifically in the [[Fortification]] instantiation."
+	"Test [[AbstractTown]] subset calculations, specifically in the [[Fortification]]
+	 instantiation."
 	test
 	shared void testFortificationSubsets(enumeratedParameter(`class TownSize`) TownSize size,
 			enumeratedParameter(`class TownStatus`) TownStatus status) {

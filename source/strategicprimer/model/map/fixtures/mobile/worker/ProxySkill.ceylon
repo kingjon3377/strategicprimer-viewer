@@ -34,8 +34,9 @@ class ProxySkill(name, parallel, IJob* proxiedJobsStream)
     shared actual ISkill copy() =>
             ProxySkill(name, parallel, *proxiedJobs.map(copyJob));
     "The lowest level that any proxied Job has in the skill."
-    shared actual Integer level => Integer.min(proxiedJobs.flatMap(identity).filter(notThis)
-            .filter(matchingValue(name, ISkill.name)).map(ISkill.level)) else 0;
+    shared actual Integer level =>
+            Integer.min(proxiedJobs.flatMap(identity).filter(notThis)
+                .filter(matchingValue(name, ISkill.name)).map(ISkill.level)) else 0;
     Boolean notThis(Anything obj) {
         if (is Identifiable obj) {
             return !(obj === this);

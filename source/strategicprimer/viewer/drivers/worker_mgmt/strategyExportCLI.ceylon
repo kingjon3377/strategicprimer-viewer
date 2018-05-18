@@ -33,7 +33,8 @@ shared class StrategyExportCLI() satisfies SimpleDriver {
         includeInCLIList = true;
         includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN", "--print-empty",
-            "--export=filename.txt", "--include-unleveled-jobs", "--summarize-large-units" ];
+            "--export=filename.txt", "--include-unleveled-jobs",
+            "--summarize-large-units" ];
     };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {

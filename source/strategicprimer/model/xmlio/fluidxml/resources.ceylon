@@ -48,13 +48,15 @@ object fluidResourceHandler extends FluidBase() {
 	shared ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "resource");
-	    expectAttributes(element, warner, "quantity", "kind", "contents", "unit", "created", "id", "image");
+	    expectAttributes(element, warner, "quantity", "kind", "contents", "unit", "created",
+			"id", "image");
 	    spinUntilEnd(element.name, stream);
 	    ResourcePile retval = ResourcePile(
 	        getOrGenerateID(element, warner, idFactory),
 	        getAttribute(element, "kind"),
 	        getAttribute(element, "contents"),
-	        Quantity(getNumericAttribute(element, "quantity"), getAttribute(element, "unit", "")));
+	        Quantity(getNumericAttribute(element, "quantity"), getAttribute(element,
+				"unit", "")));
 	    if (hasAttribute(element, "created")) {
 	        retval.created = getIntegerAttribute(element, "created");
 	    }
@@ -100,7 +102,8 @@ object fluidResourceHandler extends FluidBase() {
 	shared Grove readGrove(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "grove");
-	    expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id", "image", "count");
+	    expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
+			"image", "count");
 	    spinUntilEnd(element.name, stream);
 	    Boolean cultivated;
 	    if (hasAttribute(element, "cultivated")) {
@@ -114,14 +117,16 @@ object fluidResourceHandler extends FluidBase() {
 	    return setImage(
 	        Grove(false, cultivated,
 	            getAttrWithDeprecatedForm(element, "kind", "tree", warner),
-	            getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element, "count", -1)),
+	            getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element,
+					"count", -1)),
 	        element, warner);
 	}
 
 	shared Grove readOrchard(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "orchard");
-	    expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id", "image", "count");
+	    expectAttributes(element, warner, "cultivated", "wild", "kind", "tree", "id",
+			"image", "count");
 	    spinUntilEnd(element.name, stream);
 	    Boolean cultivated;
 	    if (hasAttribute(element, "cultivated")) {
@@ -135,14 +140,16 @@ object fluidResourceHandler extends FluidBase() {
 	    return setImage(
 	        Grove(true, cultivated,
 	            getAttrWithDeprecatedForm(element, "kind", "tree", warner),
-	            getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element, "count", -1)),
+	            getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element,
+					"count", -1)),
 	        element, warner);
 	}
 
 	shared Meadow readMeadow(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "meadow");
-	    expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image", "acres");
+	    expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
+			"acres");
 	    spinUntilEnd(element.name, stream);
 	    Integer id = getOrGenerateID(element, warner, idFactory);
 	    if (!hasAttribute(element, "status")) {
@@ -162,7 +169,8 @@ object fluidResourceHandler extends FluidBase() {
 	shared Meadow readField(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "field");
-	    expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image", "acres");
+	    expectAttributes(element, warner, "status", "kind", "cultivated", "id", "image",
+			"acres");
 	    spinUntilEnd(element.name, stream);
 	    Integer id = getOrGenerateID(element, warner, idFactory);
 	    if (!hasAttribute(element, "status")) {
@@ -213,7 +221,8 @@ object fluidResourceHandler extends FluidBase() {
 	    spinUntilEnd(element.name, stream);
 	    return setImage(Shrub(
 	        getAttrWithDeprecatedForm(element, "kind", "shrub", warner),
-	        getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element, "count", -1)),
+	        getOrGenerateID(element, warner, idFactory), getIntegerAttribute(element,
+				"count", -1)),
 	        element, warner);
 	}
 
@@ -238,7 +247,8 @@ object fluidResourceHandler extends FluidBase() {
 	shared void writeResource(XMLStreamWriter ostream, ResourcePile obj, Integer indent) {
 	    writeTag(ostream, "resource", indent, true);
 	    writeAttributes(ostream, "id"->obj.id, "kind"->obj.kind,
-	        "contents"->obj.contents, "quantity"->obj.quantity.number, "unit"->obj.quantity.units);
+	        "contents"->obj.contents, "quantity"->obj.quantity.number,
+			"unit"->obj.quantity.units);
 	    if (obj.created >= 0) {
 	        writeAttributes(ostream, "created"->obj.created);
 	    }

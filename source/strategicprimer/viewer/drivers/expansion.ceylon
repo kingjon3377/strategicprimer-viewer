@@ -120,10 +120,11 @@ shared class ExpansionDriver() satisfies SimpleCLIDriver {
                                     map.fixtures.get(neighbor)
                                         .contains(fixture)) {
                                 continue;
-                            } else if (simpleMovementModel.shouldAlwaysNotice(mock, fixture)) {
+                            } else if (simpleMovementModel
+									.shouldAlwaysNotice(mock, fixture)) {
                                 safeAdd(neighbor, fixture);
-                            } else if (simpleMovementModel.shouldSometimesNotice(mock, Speed.careful,
-                                    fixture)) {
+                            } else if (simpleMovementModel.shouldSometimesNotice(mock,
+									Speed.careful, fixture)) {
                                 possibilities.add(fixture);
                             }
                         }

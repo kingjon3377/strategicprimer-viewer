@@ -333,9 +333,11 @@ shared class SPFluidWriter() satisfies SPWriter {
     }
     writers = map<ClassOrInterface<Anything>, LocalXMLWriter> {
         `River`->castingWriter<River>(fluidTerrainHandler.writeRivers),
-        `AdventureFixture`->castingWriter<AdventureFixture>(fluidExplorableHandler.writeAdventure),
+        `AdventureFixture`->castingWriter<AdventureFixture>(
+            fluidExplorableHandler.writeAdventure),
         `Portal`->castingWriter<Portal>(fluidExplorableHandler.writePortal),
-        `Battlefield`->castingWriter<Battlefield>(fluidExplorableHandler.writeBattlefield),
+        `Battlefield`->castingWriter<Battlefield>(
+            fluidExplorableHandler.writeBattlefield),
         `Cave`->castingWriter<Cave>(fluidExplorableHandler.writeCave),
         `Ground`->castingWriter<Ground>(fluidTerrainHandler.writeGround),
         `Forest`->castingWriter<Forest>(fluidTerrainHandler.writeForest),
@@ -348,8 +350,10 @@ shared class SPFluidWriter() satisfies SPWriter {
         simpleFixtureWriter(`Dragon`, "dragon"),
         simpleFixtureWriter(`Fairy`, "fairy"),
         simpleFixtureWriter(`Giant`, "giant"),
-        `SimpleImmortal`->castingWriter<SimpleImmortal>(unitMemberHandler.writeSimpleImmortal),
-        `TextFixture`->castingWriter<TextFixture>(fluidExplorableHandler.writeTextFixture),
+        `SimpleImmortal`->castingWriter<SimpleImmortal>(
+            unitMemberHandler.writeSimpleImmortal),
+        `TextFixture`->castingWriter<TextFixture>(
+            fluidExplorableHandler.writeTextFixture),
         `Implement`->castingWriter<Implement>(fluidResourceHandler.writeImplement),
         `ResourcePile`->castingWriter<ResourcePile>(fluidResourceHandler.writeResource),
         `CacheFixture`->castingWriter<CacheFixture>(fluidResourceHandler.writeCache),
@@ -369,6 +373,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         `AbstractTown`->castingWriter<AbstractTown>(fluidTownHandler.writeTown),
         `IMapNG`->castingWriter<IMapNG>(writeMap),
         `Player`->castingWriter<Player>(writePlayer),
-        `CommunityStats`->castingWriter<CommunityStats>(fluidTownHandler.writeCommunityStats)
+        `CommunityStats`->castingWriter<CommunityStats>(
+            fluidTownHandler.writeCommunityStats)
     };
 }

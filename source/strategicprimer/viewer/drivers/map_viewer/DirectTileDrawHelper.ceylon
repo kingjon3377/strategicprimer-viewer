@@ -48,7 +48,8 @@ object directTileDrawHelper satisfies TileDrawHelper {
         case (River.south) {
             pen.fillRect(
                 multiply(width, drawingNumericConstants.riverShortStart) + xCoordinate,
-                multiply(height, drawingNumericConstants.riverLongDimension) + yCoordinate,
+                multiply(height, drawingNumericConstants.riverLongDimension)
+                    + yCoordinate,
                 multiply(width, drawingNumericConstants.riverShortDimension),
                 multiply(height, drawingNumericConstants.riverLongDimension));
         }
@@ -81,16 +82,20 @@ object directTileDrawHelper satisfies TileDrawHelper {
             if (hasAnyForts(map, location)) {
                 context.color = fortColor;
                 context.fillRect(
-                    multiply(dimensions.x, drawingNumericConstants.fortStart) - 1 + coordinates.x,
-                    multiply(dimensions.y, drawingNumericConstants.fortStart) - 1 + coordinates.y,
+                    multiply(dimensions.x, drawingNumericConstants.fortStart) - 1
+                        + coordinates.x,
+                    multiply(dimensions.y, drawingNumericConstants.fortStart) - 1
+                        + coordinates.y,
                     multiply(dimensions.x, drawingNumericConstants.fortSize),
                     multiply(dimensions.y, drawingNumericConstants.fortSize));
             }
             if (hasAnyUnits(map, location)) {
                 context.color = unitColor;
                 context.fillOval(
-                    multiply(dimensions.x, drawingNumericConstants.unitSize) + coordinates.x,
-                    multiply(dimensions.y, drawingNumericConstants.unitSize) + coordinates.y,
+                    multiply(dimensions.x, drawingNumericConstants.unitSize)
+                        + coordinates.x,
+                    multiply(dimensions.y, drawingNumericConstants.unitSize)
+                        + coordinates.y,
                     multiply(dimensions.x, drawingNumericConstants.unitSize),
                     multiply(dimensions.y, drawingNumericConstants.unitSize));
             } // Java version had else-if here, not just if

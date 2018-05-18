@@ -24,10 +24,11 @@ shared interface IJob satisfies HasName&{ISkill*}&Subsettable<IJob> {
      Returns whether this changed the collection of skills."
     todo("Remove that limitation")
     shared formal void addSkill(ISkill skill);
-    """Remove a skill. Note that if the provided skill was not present (by its equals()), this is a no-op.
+    """Remove a skill. Note that if the provided skill was not present (by its equals()),
+       this is a no-op.
 
-       This is expected to be used only for replacing "miscellaneous" levels, which had previously only been done by
-       hand-editing the XML."""
+       This is expected to be used only for replacing "miscellaneous" levels, which had
+       previously only been done by hand-editing the XML."""
     shared formal void removeSkill(ISkill skill);
     "The worker's Job level in this Job. Cannot be negative."
     todo("Move variability, and addSkill(), to a mutator interface?")

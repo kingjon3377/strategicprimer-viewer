@@ -17,8 +17,9 @@ import ceylon.collection {
 }
 "A wrapper around [[XMLEventReader]] that makes the Iterator declaration take a type
  argument. Also contains factory methods so callers don't need to deal *at all* with the
- object this wraps. If the provided reader is [[Closeable|JCloseable]], we call its `close`
- method before returning [[finished]], to help mitigate the resource leak in IncludingIterator."
+ object this wraps. If the provided reader is [[Closeable|JCloseable]], we call its
+ `close` method before returning [[finished]], to help mitigate the resource leak in
+ IncludingIterator."
 shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent>&Destroyable {
     XMLEventReader wrapped;
     Queue<Anything()> closeHandles = LinkedList<Anything()>();

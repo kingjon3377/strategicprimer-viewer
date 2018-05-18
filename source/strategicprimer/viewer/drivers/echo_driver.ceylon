@@ -53,8 +53,9 @@ import ceylon.file {
    syntax. (Because of that usage, warnings are disabled.)"""
 service(`interface ISPDriver`)
 shared class EchoDriver() satisfies UtilityDriver {
-    shared actual IDriverUsage usage = DriverUsage(false, ["-e", "--echo"], ParamCount.two,
-        "Read, then write a map.", "Read and write a map, correcting deprecated syntax.",
+    shared actual IDriverUsage usage = DriverUsage(false, ["-e", "--echo"],
+        ParamCount.two, "Read, then write a map.",
+        "Read and write a map, correcting deprecated syntax.",
         true, false, "input.xml", "output.xml", "--current-turn=NN");
     """Run the driver: read the map, then write it, correcting deprecated syntax and
        forest and Ground IDs."""

@@ -122,7 +122,8 @@ shared class FortressReportGenerator(
     }
     "Produces a sub-report on a fortress. All fixtures referred to in this report are
      removed from the collection."
-    shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual void produceSingle(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Fortress item, Point loc) {
         ostream("<h5>Fortress ``item.name`` belonging to ``
             (item.owner == currentPlayer) then "you" else item.owner.string``</h5>
@@ -134,7 +135,8 @@ shared class FortressReportGenerator(
         riversToString(ostream, *map.rivers.get(loc));
         MutableList<IUnit> units = ArrayList<IUnit>();
         MutableList<Implement> equipment = ArrayList<Implement>();
-        MutableMultimap<String, ResourcePile> resources = ArrayListMultimap<String, ResourcePile>();
+        MutableMultimap<String, ResourcePile> resources =
+                ArrayListMultimap<String, ResourcePile>();
         MutableList<FortressMember> contents = ArrayList<FortressMember>();
         for (member in item) {
             if (is IUnit member) {
@@ -218,7 +220,8 @@ shared class FortressReportGenerator(
             IMapNG map, Anything(String) ostream) {
         MutableMap<Fortress, Point> ours = HashMap<Fortress, Point>();
         MutableMap<Fortress, Point> others = HashMap<Fortress, Point>();
-        for ([loc, fort] in fixtures.items.narrow<[Point, Fortress]>().sort(pairComparator)) {
+        for ([loc, fort] in fixtures.items.narrow<[Point, Fortress]>()
+                .sort(pairComparator)) {
             if (currentPlayer == fort.owner) {
                 ours[fort] = loc;
             } else {
@@ -240,9 +243,10 @@ shared class FortressReportGenerator(
             }
         }
     }
-    "Produces a sub-report on a fortresss. All fixtures referred to in this report are removed
-     from the collection."
-    shared actual IReportNode produceRIRSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    "Produces a sub-report on a fortresss. All fixtures referred to in this report are
+     removed from the collection."
+    shared actual IReportNode produceRIRSingle(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Fortress item, Point loc) {
         IReportNode retval = SectionListReportNode(5,
             "Fortress ``item.name`` belonging to ``
@@ -285,11 +289,12 @@ shared class FortressReportGenerator(
     }
     "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
      this report are removed from the collection."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-	        IMapNG map) {
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
         IReportNode foreign = SectionReportNode(4, "Foreign fortresses in the map:");
         IReportNode ours = SectionReportNode(4, "Your fortresses in the map:");
-        for ([loc, fort] in fixtures.items.narrow<[Point, Fortress]>().sort(pairComparator)) {
+        for ([loc, fort] in fixtures.items.narrow<[Point, Fortress]>()
+                .sort(pairComparator)) {
             if (currentPlayer == fort.owner) {
                 ours.appendNode(produceRIRSingle(fixtures, map, fort,
                     loc));

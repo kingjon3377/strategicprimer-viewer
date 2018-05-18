@@ -18,7 +18,8 @@ import strategicprimer.model.map.fixtures.terrain {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>() satisfies MapContentsReader {
+object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS forests (
 			   row INTEGER NOT NULL,
@@ -32,8 +33,10 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>() satisfies
 		   );"""
 	];
 	shared actual void write(Sql db, Forest obj, Point context) {
-		db.Insert("""INSERT INTO forests(row, column, id, kind, rows, acres, image) VALUES(?, ?, ?, ?, ?, ?, ?);""")
-				.execute(context.row, context.column, obj.id, obj.kind, obj.rows, obj.acres.string, obj.image);
+		db.Insert("""INSERT INTO forests(row, column, id, kind, rows, acres, image)
+		             VALUES(?, ?, ?, ?, ?, ?, ?);""")
+				.execute(context.row, context.column, obj.id, obj.kind, obj.rows,
+					obj.acres.string, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		log.trace("About to start reading forests");

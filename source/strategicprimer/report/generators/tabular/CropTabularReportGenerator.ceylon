@@ -48,7 +48,8 @@ shared class CropTabularReportGenerator
 			return truncatedNumberString(number.float);
 		}
 		else {
-			log.warn("Unhandled Number type ``typeOf(number)`` in CropTabularReportGenerator.truncatedNumberString");
+			log.warn("Unhandled Number type ``
+				typeOf(number)`` in CropTabularReportGenerator.truncatedNumberString");
 			return number.string;
 		}
 	}
@@ -60,13 +61,15 @@ shared class CropTabularReportGenerator
 	}
 
     "The header row for the table."
-    shared actual [String+] headerRow = ["Distance", "Location", "Kind", "Size", "Size Unit",
-	    "Cultivation", "Status", "Crop"];
+    shared actual [String+] headerRow = ["Distance", "Location", "Kind", "Size",
+		"Size Unit", "Cultivation", "Status", "Crop"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "crops";
     "Create a GUI table row representing the crop."
-    shared actual [{String+}+] produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Forest|Shrub|Meadow|Grove item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
+    shared actual [{String+}+] produce(
+			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            Forest|Shrub|Meadow|Grove item, Integer key, Point loc,
+			Map<Integer, Integer> parentMap) {
         String kind;
         String cultivation;
         String status;
@@ -137,7 +140,8 @@ shared class CropTabularReportGenerator
                 one.first, two.first);
             if (cmp == equal) {
                 return comparing(byIncreasing<TileFixture, Integer>(
-	                    compose(Object.hash, typeOf<TileFixture>)), byIncreasing(TileFixture.hash))(
+							compose(Object.hash, typeOf<TileFixture>)),
+						byIncreasing(TileFixture.hash))(
                     first, second);
             } else {
                 return cmp;

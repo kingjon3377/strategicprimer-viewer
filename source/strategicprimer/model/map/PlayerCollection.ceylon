@@ -79,7 +79,8 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
         }
         if (exists removed) {
             if (independentPlayer == removed) {
-                independentPlayer = find(Player.independent) else PlayerImpl(-1, "Independent");
+                independentPlayer = find(Player.independent)
+                    else PlayerImpl(-1, "Independent");
             }
             if (current == removed) {
                 current = PlayerImpl(-1, "");
@@ -108,7 +109,8 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
         }
         if (contains(currentPlayer)) {
             current = currentPlayer;
-        } else if (exists temp = find(matchingValue(currentPlayer.playerId, Player.playerId))) {
+        } else if (exists temp = find(matchingValue(currentPlayer.playerId,
+                Player.playerId))) {
             current = temp;
         } else {
             current = currentPlayer;

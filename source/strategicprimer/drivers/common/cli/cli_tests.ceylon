@@ -36,7 +36,8 @@ object cliTests {
 	        "The assertion message for the assertion that the result is as expected."
 	        String resultMessage = "CLIHelper method result was as expected",
 	        "The assertion message for the assertion that the output is as expected."
-	        String outputMessage = "CLIHelper output was as expected") given Arguments satisfies Anything[] {
+	        String outputMessage = "CLIHelper output was as expected")
+			given Arguments satisfies Anything[] {
 	    String expectedOutputReal;
 	    if (is String expectedOutput) {
 	        expectedOutputReal = expectedOutput;
@@ -55,13 +56,15 @@ object cliTests {
 	test
 	shared void testChooseFromList() {
 	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
-	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", false], Singleton("0"),
-	        ["test desc", "0: one", "1: two", "prompt "], 0->PlayerImpl(1, "one"),
+	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", false],
+			Singleton("0"), ["test desc", "0: one", "1: two", "prompt "],
+			0->PlayerImpl(1, "one"),
 	        "chooseFromList chooses the one specified by the user",
 	        "chooseFromList prompted the user");
 	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
-	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", true], Singleton("1"),
-	        ["test desc", "0: one", "1: two", "prompt "], 1->PlayerImpl(2, "two"),
+	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", true],
+			Singleton("1"), ["test desc", "0: one", "1: two", "prompt "],
+			1->PlayerImpl(2, "two"),
 	        "chooseFromList chooses the one specified by the user",
 	        "chooseFromList prompted the user");
 	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one")],

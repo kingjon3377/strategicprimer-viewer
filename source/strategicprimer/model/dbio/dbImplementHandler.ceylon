@@ -18,7 +18,8 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortress>() satisfies MapContentsReader {
+object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortress>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS implements (
 			   parent INTEGER NOT NULL,
@@ -38,9 +39,10 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 		log.trace("About to read equipment");
 		variable Integer runningTotal = 0;
 		for (row in db.Select("""SELECT * FROM implements""").Results()) {
-			assert (is Integer parentId = row["parent"], is IUnit|Fortress parent = findById(map, parentId, warner),
-				is Integer id = row["id"], is String kind = row["kind"], is Integer count = row["count"],
-				is String|SqlNull image = row["image"]);
+			assert (is Integer parentId = row["parent"],
+				is IUnit|Fortress parent = findById(map, parentId, warner),
+				is Integer id = row["id"], is String kind = row["kind"],
+				is Integer count = row["count"], is String|SqlNull image = row["image"]);
 			value implement = Implement(kind, id, count);
 			if (is String image) {
 				implement.image = image;

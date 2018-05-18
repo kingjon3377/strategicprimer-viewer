@@ -65,7 +65,8 @@ import javax.swing.table {
 shared object tabularReportGenerator {
 	"A method to produce tabular reports based on a map for a player."
 	shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
-	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper.getFixtures(map);
+	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
+				reportGeneratorHelper.getFixtures(map);
 	    Map<Integer, Integer> parentMap = reportGeneratorHelper.getParentMap(map);
 	    Player player = map.currentPlayer;
 	    MapDimensions dimensions = map.dimensions;
@@ -101,7 +102,8 @@ shared object tabularReportGenerator {
 	        Anything(String, Component) consumer,
 	        "The map to base the reports on"
 	        IMapNG map) {
-	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper.getFixtures(map);
+	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
+				reportGeneratorHelper.getFixtures(map);
 	    Map<Integer, Integer> parentMap = reportGeneratorHelper.getParentMap(map);
 	    Player player = map.currentPlayer;
 	    MapDimensions dimensions = map.dimensions;
@@ -133,7 +135,8 @@ shared object tabularReportGenerator {
 	        } else {
 	            actualTwo = two.string;
 	        }
-	        if (is Float floatOne = Float.parse(actualOne), is Float floatTwo = Float.parse(actualTwo)) {
+	        if (is Float floatOne = Float.parse(actualOne),
+					is Float floatTwo = Float.parse(actualTwo)) {
 	            return floatOne <=> floatTwo;
 	        } else {
 	            return actualOne <=> actualTwo;
@@ -144,7 +147,8 @@ shared object tabularReportGenerator {
 	        value tableModel = generator.produceTableModel(fixtures, parentMap);
 	        value table = JTable(tableModel);
 	        value modelSorter = TableRowSorter<TableModel>(tableModel);
-	        value distanceFields = generator.headerRow.locations("distance".equalsIgnoringCase);
+	        value distanceFields = generator.headerRow
+				.locations("distance".equalsIgnoringCase);
 	        for (index->field in distanceFields) {
 	            modelSorter.setComparator(index, wrapped);
 	        }

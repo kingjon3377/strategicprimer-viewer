@@ -45,8 +45,9 @@ shared interface MapGUI {
  worse, instantiating a GUITile object for every visible tile every time the map was
  scrolled (or, yet worse again, a GUITile for every tile in the map, and removing them all
  and adding the visible tiles back in every time the map was scrolled)."
+// TODO: Try to convert back to class
 JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
-mapComponent(IViewerModel model, Boolean(TileFixture) zof, // TODO: Try to convert back to class
+mapComponent(IViewerModel model, Boolean(TileFixture) zof,
         {FixtureMatcher*}&Comparator<TileFixture> matchers) {
     ComponentMouseListener cml = ComponentMouseListener(model, zof, matchers.compare);
     DirectionSelectionChanger dsl = DirectionSelectionChanger(model);

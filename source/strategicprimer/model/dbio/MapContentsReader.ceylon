@@ -19,7 +19,8 @@ interface MapContentsReader {
 	shared default void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 	"Find a tile fixture or unit or fortress member within a given stream of such objects
 	 by its ID, if present."
-	shared default IFixture? findByIdImpl({IFixture*} stream, Integer id) { // TODO: Allow callers to narrow by type?
+	// TODO: Allow callers to narrow by type?
+	shared default IFixture? findByIdImpl({IFixture*} stream, Integer id) {
 		for (fixture in stream) {
 			if (fixture.id == id) {
 				return fixture;

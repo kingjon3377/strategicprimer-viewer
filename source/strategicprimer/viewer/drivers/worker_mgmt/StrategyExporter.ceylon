@@ -122,7 +122,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             String playerName = currentPlayer.name;
             Integer turn = model.map.currentTurn;
             {IUnit*} units = model.getUnits(currentPlayer);
-            MutableMultimap<String, IUnit> unitsByKind = ArrayListMultimap<String, IUnit>();
+            MutableMultimap<String, IUnit> unitsByKind =
+					ArrayListMultimap<String, IUnit>();
             for (unit in units) {
                 if (unit.empty, "false" == options.getArgument("--print-empty")) {
                     continue;
@@ -164,7 +165,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                     writer.write("  - ``unit.name``");
                     if (!unit.empty) {
                         writer.write(" [");
-                        if (unit.size > 4, "true" == options.getArgument("--summarize-large-units")) {
+                        if (unit.size > 4,
+								"true" == options.getArgument("--summarize-large-units")) {
                             summarizeUnitMembers(writer, unit);
                         } else {
 	                        writeMember(writer, unit.first);

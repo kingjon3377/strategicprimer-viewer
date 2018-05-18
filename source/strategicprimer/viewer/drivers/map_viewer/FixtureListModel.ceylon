@@ -55,19 +55,22 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
 		}
 	}
 	void fireContentsChanged(Range<Integer> range) {
-		ListDataEvent event = ListDataEvent(this, ListDataEvent.contentsChanged, range.first, range.lastIndex);
+		ListDataEvent event = ListDataEvent(this, ListDataEvent.contentsChanged, range.first,
+			range.lastIndex);
 		for (listener in listDataListeners) {
 			listener.contentsChanged(event);
 		}
 	}
 	void fireIntervalAdded(Range<Integer> range) {
-		ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalAdded, range.first, range.lastIndex);
+		ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalAdded, range.first,
+			range.lastIndex);
 		for (listener in listDataListeners) {
 			listener.intervalAdded(event);
 		}
 	}
 	void fireIntervalRemoved(Range<Integer> range) {
-		ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalRemoved, range.first, range.lastIndex);
+		ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalRemoved, range.first,
+			range.lastIndex);
 		for (listener in listDataListeners) {
 			listener.intervalRemoved(event);
 		}
@@ -147,7 +150,8 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
 	shared void removeAll(TileFixture* fixtures) {
 		for (fixture in fixtures) {
 			if (is TileTypeFixture fixture) {
-				if (exists currentTerrain = map.baseTerrain[point], currentTerrain == fixture.tileType) {
+				if (exists currentTerrain = map.baseTerrain[point],
+						currentTerrain == fixture.tileType) {
 					map.baseTerrain[point] = null;
 					fireIntervalRemoved(0..0);
 				}

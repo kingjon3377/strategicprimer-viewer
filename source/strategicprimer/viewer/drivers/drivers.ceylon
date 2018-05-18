@@ -117,10 +117,11 @@ object appChooserState {
 				}
 				for (option in driver.usage.invocations) {
 					if (reserved.contains(option)) {
-						log.error("A driver wants to register for a reserved option '``option``': claims to be ``
-							driver.usage.shortDescription``");
+						log.error("A driver wants to register for a reserved option '``
+							option``': claims to be ``driver.usage.shortDescription``");
 					} else if (conflicts.defines(option)) {
-						log.warn("Additional conflict for '``option``': '``driver.usage.shortDescription``'");
+						log.warn("Additional conflict for '``option``': '``
+							driver.usage.shortDescription``'");
 						conflicts.put(option, driver);
 					} else if (exists existing = cache[option]) {
 						log.warn("Invocation option conflict for '``option``' between '``
@@ -142,7 +143,8 @@ object appChooserState {
 	    StringBuilder builder = StringBuilder();
 	    builder.append("Usage: ");
 	    String mainInvocation;
-	    if (exists invocationResource = `module strategicprimer.viewer`.resourceByPath("invocation")) {
+	    if (exists invocationResource = `module strategicprimer.viewer`
+				.resourceByPath("invocation")) {
 	        mainInvocation = invocationResource.textContent().trimmed;
 	    } else {
 	        mainInvocation = "ceylon --cwd=. run `` `module strategicprimer.viewer`.name```";
@@ -197,8 +199,10 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 	shared actual IDriverUsage usage = DriverUsage(true, ["-p", "--app-starter"],
 		ParamCount.anyNumber, "App Chooser",
 		"Let the user choose an app to start, or handle options.", false, false);
-	[Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache = appChooserState.createCache();
-	void startCatchingErrors(ISPDriver driver, ICLIHelper cli, SPOptions options, String* args) {
+	[Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache =
+			appChooserState.createCache(); // TODO: Can we inline that into here?
+	void startCatchingErrors(ISPDriver driver, ICLIHelper cli, SPOptions options,
+			String* args) {
 		try {
 			driver.startDriverOnArguments(cli, options, *args);
 		} catch (IncorrectUsageException except) {
@@ -346,7 +350,8 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 		}
 	}
 }
-todo("Try to combine/rearrange things so we have as few top-level and inner classes and `object`s as possible")
+todo("Try to combine/rearrange things so we have as few top-level and inner classes and
+      `object`s as possible")
 suppressWarnings("expressionTypeNothing")
 shared void run() {
     addLogWriter(appChooserState.logWriter);
@@ -371,7 +376,8 @@ shared void run() {
         appStarter.startDriverOnArgumentsNoCLI(options, *process.arguments);
     } catch (IncorrectUsageException except) {
         IDriverUsage usage = except.correctUsage;
-        process.writeErrorLine(appChooserState.usageMessage(usage, options.hasOption("--verbose")));
+        process.writeErrorLine(appChooserState.usageMessage(usage,
+			options.hasOption("--verbose")));
         process.exit(1);
     } catch (IOException|DriverFailedException except) {
         log.error(except.message, except.cause);
@@ -383,12 +389,14 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
 	value tempComponent = JEditorPane();
 	value font = tempComponent.font;
-	assert (is Graphics2D pen = BufferedImage(1, 1, BufferedImage.typeIntRgb).createGraphics());
+	assert (is Graphics2D pen = BufferedImage(1, 1, BufferedImage.typeIntRgb)
+		.createGraphics());
 	value context = pen.fontRenderContext;
 	variable Integer width = 0;
 	variable Integer height = 10;
 	Boolean includeInGUIList(ISPDriver driver) => driver.usage.includeInList(true);
-	value drivers = `module strategicprimer.viewer`.findServiceProviders(`ISPDriver`).filter(includeInGUIList).sequence();
+	value drivers = `module strategicprimer.viewer`.findServiceProviders(`ISPDriver`)
+		.filter(includeInGUIList).sequence();
 	for (driver in drivers) {
 		value dimensions = font.getStringBounds(driver.usage.shortDescription, context);
 		width = Integer.largest(width, dimensions.width.integer);
@@ -427,7 +435,8 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
 	}
     JPanel buttonPanel = JPanel(GridLayout(0, 1));
     for (driver in drivers) {
-        buttonPanel.add(listenedButton(driver.usage.shortDescription, (evt) => buttonHandler(driver)));
+        buttonPanel.add(listenedButton(driver.usage.shortDescription,
+					(evt) => buttonHandler(driver)));
     }
     frame.contentPane = BorderedPanel.verticalPanel(
         JLabel("Please choose one of the applications below"),

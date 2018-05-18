@@ -65,7 +65,8 @@ shared class TrappingCLI() satisfies SimpleDriver {
 	Integer minutesPerHour = 60;
 	TrapperCommand[] commands = sort(`TrapperCommand`.caseValues);
 	shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"], ParamCount.one,
-		"Run a player's trapping", "Determine the results a player's trapper finds.", true, false);
+		"Run a player's trapping", "Determine the results a player's trapper finds.", true,
+		false);
 	String inHours(Integer minutes) {
 		if (minutes < minutesPerHour) {
 			return "``minutes`` minutes";
@@ -78,7 +79,8 @@ shared class TrappingCLI() satisfies SimpleDriver {
 	Integer handleCommand(
 		"The main map."
 		IMutableMapNG map,
-		"The animals generated from the tile and the surrounding tiles, with their home locations."
+		"The animals generated from the tile and the surrounding tiles, with their home
+		 locations."
 		Queue<Point->Animal|AnimalTracks|HuntingModel.NothingFound> fixtures, ICLIHelper cli,
 		"The command to handle"
 		TrapperCommand command,
@@ -111,7 +113,8 @@ shared class TrappingCLI() satisfies SimpleDriver {
 				} else {
 					retval = num;
 				}
-				if (cli.inputBooleanInSeries("Reduce animal group population of ``item.population``?")) {
+				if (cli.inputBooleanInSeries(
+						"Reduce animal group population of ``item.population``?")) {
 					Integer count = Integer.smallest(cli.inputNumber("How many animals to remove?"),
 						item.population);
 					if (count > 0) {

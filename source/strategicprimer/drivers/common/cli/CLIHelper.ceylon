@@ -132,8 +132,8 @@ shared sealed class CLIHelper(istream = process.readLine, ostream = process.writ
     }
     "Ask the user a yes-or-no question, allowing yes-to-all or no-to-all to skip further
      questions."
-    shared actual Boolean|Absent inputBooleanInSeries<Absent=Nothing>(String prompt, String key,
-            <Absent|Boolean?>(String) quitResultFactory) {
+    shared actual Boolean|Absent inputBooleanInSeries<Absent=Nothing>(String prompt,
+            String key, <Absent|Boolean?>(String) quitResultFactory) {
         if (exists retval = seriesState[key]) {
             writePrompt(prompt);
             println((retval) then "yes" else "no");

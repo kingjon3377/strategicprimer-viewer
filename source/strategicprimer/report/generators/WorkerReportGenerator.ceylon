@@ -58,7 +58,8 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     }
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
      paragraph or bullet point)."
-    shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual void produceSingle(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, IWorker worker, Point loc) {
         ostream("``worker.name``, a ``worker.race``.");
         if (details, exists stats = worker.stats) {
@@ -81,7 +82,8 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
                    """);
         }
     }
-    [Second, First] reversePair<First, Second>([First, Second] pair) => [pair.rest.first, pair.first];
+    [Second, First] reversePair<First, Second>([First, Second] pair) => // TODO: move to lovelace.util and use elsewhere
+            [pair.rest.first, pair.first];
     "Produce a sub-sub-report on all workers. This should never be called, but we'll
      implement it properly anyway."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
@@ -104,7 +106,8 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     }
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
      paragraph or bullet point)."
-    shared actual IReportNode produceRIRSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIRSingle(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, IWorker worker, Point loc) {
         if (details) {
             IReportNode retval =
@@ -128,10 +131,11 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     }
     "Produce a sub-sub-report on all workers. This should never be called, but we'll
      implement it properly anyway)."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-	        IMapNG map) {
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
         IReportNode retval = SectionListReportNode(5, "Workers");
-        for ([loc, worker] in fixtures.items.narrow<[Point, IWorker]>().sort(pairComparator)) {
+        for ([loc, worker] in fixtures.items.narrow<[Point, IWorker]>()
+                .sort(pairComparator)) {
             retval.appendNode(produceRIRSingle(fixtures, map, worker, loc));
         }
         if (retval.childCount == 0) {

@@ -19,7 +19,8 @@ import lovelace.util.common {
 	as
 }
 
-object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>() satisfies MapContentsReader {
+object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS shrubs (
 			   row INTEGER NOT NULL,
@@ -40,8 +41,9 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>() satisfies M
 		log.trace("About to read shrubs");
 		variable Integer runningTotal = 0;
 		for (dbRow in db.Select("""SELECT * FROM shrubs""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
-				is String kind = dbRow["kind"], is Integer|SqlNull count = dbRow["count"],
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
+				is Integer|SqlNull count = dbRow["count"],
 				is String|SqlNull image = dbRow["image"]);
 			value shrub = Shrub(kind, id, as<Integer>(count) else -1);
 			if (is String image) {

@@ -36,7 +36,8 @@ class FileDropHandler() extends TransferHandler() {
         }
         JList<JFile> payload;
         try {
-            value temp = support.transferable.getTransferData(DataFlavor.javaFileListFlavor);
+            value temp = support.transferable.getTransferData(
+                DataFlavor.javaFileListFlavor);
             assert (is JList<JFile> temp);
             payload = temp;
         } catch (Exception except) {

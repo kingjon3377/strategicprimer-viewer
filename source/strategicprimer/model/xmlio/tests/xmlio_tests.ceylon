@@ -163,8 +163,10 @@ object xmlTests {
 	                "assertFormatIssue() given a Callable as desideratum; you probably need to put 'null' first"));
 	        }
 	        try (stringReader = StringReader(xml)) {
-	            Type returned = reader.readXML<Type>(fakeFilename, stringReader, warningLevels.ignore);
-	            assertEquals(returned, desideratum, "Parsed value should be as expected with warnings ignored.");
+	            Type returned = reader.readXML<Type>(fakeFilename, stringReader,
+					warningLevels.ignore);
+	            assertEquals(returned, desideratum,
+					"Parsed value should be as expected with warnings ignored.");
 	        }
 	        try (stringReader = StringReader(xml)) {
 	            reader.readXML<Type>(fakeFilename, stringReader, warningLevels.die);
@@ -188,7 +190,7 @@ object xmlTests {
 	        given Type satisfies Object {
 	    for (reader in readers) {
 	        assertFormatIssue<Type, UnsupportedTagException>(reader, xml, desideratum,
-	                    (UnsupportedTagException except) => assertEquals(except.tag.localPart,
+				(UnsupportedTagException except) => assertEquals(except.tag.localPart,
 	                tag, "Unsupported tag was the tag we expected"));
 	    }
 	}
@@ -267,8 +269,8 @@ object xmlTests {
 	        }
 	    }
 	}
-	"Assert that the serialized form of the given object, using both writers, will contain the
-	 given string."
+	"Assert that the serialized form of the given object, using both writers, will contain
+	 the given string."
 	void assertSerializedFormContains(Object obj, String expected, String message) {
 	    for (deprecated in `Boolean`.caseValues) {
 	        assertTrue(createSerializedForm(obj, deprecated).contains(expected), message);
@@ -299,8 +301,8 @@ object xmlTests {
 	}
 
 	"Assert that the given object, if serialized and deserialized, will have its portrait
-	 property preserved. We modify that property, but set it back to the original value before
-	 exiting this method."
+	 property preserved. We modify that property, but set it back to the original value
+	 before exiting this method."
 	void assertPortraitSerialization(String message, HasPortrait obj) {
 	    String oldPortrait = obj.portrait;
 	    for (reader in readers) {
@@ -349,8 +351,10 @@ object xmlTests {
 	    for (reader in readers) {
 	        try (firstReader = StringReader(firstForm),
 	                secondReader = StringReader(secondForm)) {
-	            assertEquals(reader.readXML<Object>(fakeFilename, secondReader, warningLevel),
-	                reader.readXML<Object>(fakeFilename, firstReader, warningLevel), message);
+	            assertEquals(reader.readXML<Object>(fakeFilename, secondReader,
+						warningLevel),
+	                reader.readXML<Object>(fakeFilename, firstReader, warningLevel),
+					message);
 	        }
 	    }
 	}
@@ -378,10 +382,12 @@ object xmlTests {
 	void assertInvalid(String xml) {
 	    for (reader in readers) {
 	        assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
-	                XMLStreamException|FileNotFoundException|MissingPropertyException>(reader,
+	                XMLStreamException|FileNotFoundException|MissingPropertyException>(
+				reader,
 	            xml, null, (Exception exception) {
 	                if (is MissingPropertyException exception) {
-	                    assert (exception.tag.localPart == "include", exception.param == "file");
+	                    assert (exception.tag.localPart == "include",
+							exception.param == "file");
 	                }
 	            });
 	    }
@@ -393,7 +399,8 @@ object xmlTests {
 	            <tile row=\"1\" column=\"1\" kind=\"plains\">``str``</tile></map>";
 	}
 	test
-	shared void testVillageWantsName(enumeratedParameter(`class TownStatus`) TownStatus status,
+	shared void testVillageWantsName(
+			enumeratedParameter(`class TownStatus`) TownStatus status,
 			parameters(`function threeRandomNumbers`) Integer id,
 			parameters(`value races`) String race,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
@@ -401,7 +408,8 @@ object xmlTests {
 		assertMissingProperty(createSerializedForm(village, deprecatedWriter), "name", village);
 	}
 	test
-	shared void testVillageSerialization(enumeratedParameter(`class TownStatus`) TownStatus status,
+	shared void testVillageSerialization(
+			enumeratedParameter(`class TownStatus`) TownStatus status,
 			parameters(`value races`) String race) { // TODO: split this test, and others
 	    Player owner = PlayerImpl(-1, "");
 	    assertSerialization("First Village serialization test, ``status``",
@@ -445,7 +453,8 @@ object xmlTests {
 	shared void testCitySerialization(enumeratedParameter(`class TownSize`) TownSize size,
 			enumeratedParameter(`class TownStatus`) TownStatus status) {
 	    Player owner = PlayerImpl(-1, "");
-	    assertSerialization("First City serialization test, status ``status``, size ``size``",
+	    assertSerialization("First City serialization test, status ``status``, size ``
+				size``",
 	        City(status, size, 10, "oneCity", 0, owner));
 	    assertSerialization(
 	        "Second City serialization test, status ``status``, size ``size``", City(status,
@@ -472,7 +481,8 @@ object xmlTests {
 	}
 
 	test
-	shared void testFortificationWantsName(enumeratedParameter(`class TownSize`) TownSize size,
+	shared void testFortificationWantsName(
+			enumeratedParameter(`class TownSize`) TownSize size,
 			enumeratedParameter(`class TownStatus`) TownStatus status,
 			parameters(`function threeRandomNumbers`) Integer id,
 			parameters(`function threeRandomNumbers`) Integer dc,
@@ -481,7 +491,8 @@ object xmlTests {
 		assertMissingProperty(createSerializedForm(fort, deprecatedWriter), "name", fort);
 	}
 	test
-	shared void testFortificationSerialization(enumeratedParameter(`class TownSize`) TownSize size,
+	shared void testFortificationSerialization(
+			enumeratedParameter(`class TownSize`) TownSize size,
 			enumeratedParameter(`class TownStatus`) TownStatus status) {
 	    Player owner = PlayerImpl(-1, "");
 	    assertSerialization("First Fortification serialization test, status ``status
@@ -495,7 +506,8 @@ object xmlTests {
 	         <troll /></fortification>", null);
 	    assertMissingProperty<Fortification>(
 	        "<fortification status=\"``status``\" size=\"``size``\"
-	         name=\"name\" dc=\"0\" id=\"0\" />", "owner", Fortification(status, size, 0, "name", 0,
+	         name=\"name\" dc=\"0\" id=\"0\" />", "owner",
+			Fortification(status, size, 0, "name", 0,
 	            PlayerImpl(-1, "Independent")));
 	    assertImageSerialization("Fortification image property is preserved", thirdFort);
 	    assertPortraitSerialization("Fortification portrait property is preserved",
@@ -524,8 +536,8 @@ object xmlTests {
 	shared void testTownSerialization(enumeratedParameter(`class TownSize`) TownSize size,
 			enumeratedParameter(`class TownStatus`) TownStatus status) {
 	    Player owner = PlayerImpl(-1, "");
-	    assertSerialization("First Town serialization test, status ``status``, size ``size``",
-	        Town(status, size, 10, "one", 0, owner));
+	    assertSerialization("First Town serialization test, status ``status``, size ``
+			size``", Town(status, size, 10, "one", 0, owner));
 	    assertSerialization(
 	        "Second Town serialization test, status ``status``, size ``size``", Town(status,
 	            size, 40, "two", 1, owner));
@@ -568,8 +580,9 @@ object xmlTests {
 	shared void testOldStoneIdiom(enumeratedParameter(`class StoneKind`) StoneKind kind,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
 	    StoneDeposit thirdDeposit = StoneDeposit(kind, 10, 3);
-        assertDeprecatedProperty<StoneDeposit>(createSerializedForm(thirdDeposit, deprecatedWriter)
-            .replace("kind", "stone"), "stone", "kind", "stone", thirdDeposit);
+        assertDeprecatedProperty<StoneDeposit>(createSerializedForm(thirdDeposit,
+			deprecatedWriter).replace("kind", "stone"), "stone", "kind", "stone",
+				thirdDeposit);
 	}
 
 	test
@@ -684,11 +697,12 @@ object xmlTests {
 	    assertSerialization("More complex tile", thirdMap);
 	}
 	test
-	shared void testTileDeprecatedIdiom(enumeratedParameter(`class TileType`) TileType terrain,
+	shared void testTileDeprecatedIdiom(
+			enumeratedParameter(`class TileType`) TileType terrain,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
 		IMapNG map = createSimpleMap(pointFactory(5, 5), pointFactory(4, 4)->terrain);
-		assertDeprecatedProperty(createSerializedForm(map, deprecatedWriter).replace("kind", "type"),
-			"type", "kind", "tile", map);
+		assertDeprecatedProperty(createSerializedForm(map, deprecatedWriter)
+			.replace("kind", "type"), "type", "kind", "tile", map);
 	}
 
 	test
@@ -742,8 +756,8 @@ object xmlTests {
 	         \t</map>
 	         </view>
 	         ", "Shouldn't print empty not-visible tiles");
-	    String emptySerializedForm = createSerializedForm(createSimpleMap(pointFactory(1, 1)),
-	        false);
+	    String emptySerializedForm = createSerializedForm(
+			createSimpleMap(pointFactory(1, 1)), false);
 	    String firstPossibility =
 	            "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
 	             \t<map version=\"2\" rows=\"1\" columns=\"1\">
@@ -882,7 +896,8 @@ object xmlTests {
 		                    }
 		                    case (is XMLStreamException) {
 		                        assertThatException(except)
-		                                .hasMessage("XML stream didn't contain a start element");
+		                                .hasMessage(
+											"XML stream didn't contain a start element");
 		                    }
 		            });
 	            assertFormatIssue<AdventureFixture,UnwantedChildException|XMLStreamException>(reader,
@@ -963,7 +978,8 @@ object xmlTests {
 	        """<grove cultivated="false" kind="tree" id="0" />""", warningLevels.ignore);
 	    assertImageSerialization("Grove image property is preserved", Grove(false, false,
 	        trees, id));
-	    assertSerialization("Groves can have 'count' property", Grove(true, true, trees, id, 4));
+	    assertSerialization("Groves can have 'count' property",
+			Grove(true, true, trees, id, 4));
 	}
 
 	test
@@ -984,10 +1000,12 @@ object xmlTests {
 	        "status", Meadow("kind", true, true, 0, FieldStatus.random(0)));
 	    assertImageSerialization("Meadow image property is preserved",
 	        Meadow(kind, field, cultivated, id, status));
-	    assertSerialization("Meadows can have acreage numbers", Meadow(kind, field, cultivated, id,
-	        status, decimalNumber(5).divided(decimalNumber(4))));
-	    assertSerialization("Meadows can have acreage numbers", Meadow(kind, field, cultivated, id,
-	        status, decimalNumber(3).divided(decimalNumber(4))));
+	    assertSerialization("Meadows can have acreage numbers",
+			Meadow(kind, field, cultivated, id, status,
+				decimalNumber(5).divided(decimalNumber(4))));
+	    assertSerialization("Meadows can have acreage numbers",
+			Meadow(kind, field, cultivated, id, status,
+				decimalNumber(3).divided(decimalNumber(4))));
 	}
 
 	test
@@ -1046,7 +1064,8 @@ object xmlTests {
 
 	test
 	shared void testUnitHasRequiredProperties() {
-	    assertMissingProperty<IUnit>("""<unit name="name" />""", "owner", Unit(PlayerImpl(-1, ""), "", "name", 0));
+	    assertMissingProperty<IUnit>("""<unit name="name" />""", "owner",
+			Unit(PlayerImpl(-1, ""), "", "name", 0));
 	    assertMissingProperty<IUnit>("""<unit owner="1" name="name" id="0" />""", "kind",
 	        Unit(PlayerImpl(1, ""), "", "name", 0));
 	    assertMissingProperty<IUnit>("""<unit owner="1" kind="" name="name" id="0" />""",
@@ -1054,7 +1073,8 @@ object xmlTests {
 	}
 
 	test
-	shared void testUnitWarnings(enumeratedParameter(`class Boolean`) Boolean deprecatedWriter,
+	shared void testUnitWarnings(
+			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter,
 			parameters(`function threeRandomNumbers`) Integer id,
 			parameters(`value races`) String name, parameters(`value races`) String kind) {
 	    assertUnwantedChild<IUnit>("<unit><unit /></unit>", null);
@@ -1070,9 +1090,11 @@ object xmlTests {
 	    IUnit fourthUnit = Unit(PlayerImpl(4, ""), kind, "", id);
         assertMissingProperty(createSerializedForm(fourthUnit, deprecatedWriter), "name",
             fourthUnit);
-	    assertMissingProperty("<unit owner=\"4\" kind=\"``kind``\" name=\"\" id=\"``id``\" />", "name",
+	    assertMissingProperty(
+			"<unit owner=\"4\" kind=\"``kind``\" name=\"\" id=\"``id``\" />", "name",
 	        fourthUnit);
-	    assertMissingProperty<IUnit>("<unit owner=\"1\" kind=\"``kind``\" name=\"``name``\" />", "id",
+	    assertMissingProperty<IUnit>(
+			"<unit owner=\"1\" kind=\"``kind``\" name=\"``name``\" />", "id",
 	        Unit(PlayerImpl(1, ""), kind, name, 0));
 	}
 
@@ -1159,7 +1181,8 @@ object xmlTests {
 	}
 
 	test
-	shared void testAdventureSerialization(parameters(`function threeRandomNumbers`) Integer idOne,
+	shared void testAdventureSerialization(
+			parameters(`function threeRandomNumbers`) Integer idOne,
 			parameters(`function threeRandomNumbers`) Integer idTwo) {
 	    Player independent = PlayerImpl(1, "independent");
 	    AdventureFixture first = AdventureFixture(independent, "first hook brief",
@@ -1209,7 +1232,8 @@ object xmlTests {
 		assertUnwantedChild<AnimalTracks>(
 			"""<animal kind="tracks" traces="true"><troll /></animal>""", null);
 		assertMissingProperty<AnimalTracks>("""<animal traces="true" />""", "kind", null);
-		assertImageSerialization("Animal-track image property is preserved", AnimalTracks(kind));
+		assertImageSerialization("Animal-track image property is preserved",
+			AnimalTracks(kind));
 		assertEquivalentForms("""Former idiom still works""",
 			"<animal kind=\"kind\" status=\"wild\" traces=\"\" />",
 			"<animal kind=\"kind\" status=\"wild\" traces=\"true\" />",
@@ -1283,7 +1307,8 @@ object xmlTests {
 	    assertUnwantedChild<Centaur>("""<centaur kind="forest"><troll /></centaur>""",
 	        null);
 	    assertMissingProperty<Centaur>("<centaur />", "kind", null);
-	    assertMissingProperty<Centaur>("""<centaur kind="kind" />""", "id", Centaur("kind", 0));
+	    assertMissingProperty<Centaur>("""<centaur kind="kind" />""", "id",
+			Centaur("kind", 0));
 	    assertImageSerialization("Centaur image property is preserved",
 	        Centaur("thirdCentaur", id));
 	}
@@ -1292,7 +1317,8 @@ object xmlTests {
 	parameters(`function threeRandomNumbers`)
 	shared void testDragonSerialization(Integer id) {
 	    assertSerialization("First test of Dragon serialization", Dragon("", id));
-	    assertSerialization("Second test of Dragon serialization", Dragon("secondDragon", id));
+	    assertSerialization("Second test of Dragon serialization",
+			Dragon("secondDragon", id));
 	    assertUnwantedChild<Dragon>("""<dragon kind="ice"><hill /></dragon>""", null);
 	    assertMissingProperty<Dragon>("<dragon />", "kind", null);
 	    assertMissingProperty<Dragon>("""<dragon kind="kind" />""", "id", Dragon("kind", 0));
@@ -1342,12 +1368,13 @@ object xmlTests {
 	        encapsulateTileString("<forest kind=\"trees\" id=\"``id``\" />"),
 	        encapsulateTileString("<forest kind=\"trees\" rows=\"false\" id=\"``id``\" />"),
 	        warningLevels.ignore);
-	    assertSerialization("Forests can have acreage numbers", Forest("thirdForest", false, 6,
-	        decimalNumber(3).divided(decimalNumber(2))));
+	    assertSerialization("Forests can have acreage numbers", Forest("thirdForest",
+			false, 6, decimalNumber(3).divided(decimalNumber(2))));
 	}
 
 	test
-	shared void testFortressSerialization(parameters(`function threeRandomNumbers`) Integer id,
+	shared void testFortressSerialization(
+			parameters(`function threeRandomNumbers`) Integer id,
 			enumeratedParameter(`class TownSize`) TownSize size) {
 	    // Can't give player names because our test environment doesn't let us
 	    // pass a set of players in
@@ -1478,7 +1505,8 @@ object xmlTests {
 	}
 
 	test
-	shared void testMineralSerialization(parameters(`function threeRandomNumbers`) Integer dc,
+	shared void testMineralSerialization(
+			parameters(`function threeRandomNumbers`) Integer dc,
 			parameters(`function threeRandomNumbers`) Integer id,
 			parameters(`value races`) String kind,
 			enumeratedParameter(`class Boolean`) Boolean exposed,
@@ -1502,7 +1530,8 @@ object xmlTests {
 	}
 
 	test
-	shared void testBattlefieldSerialization(parameters(`function threeRandomNumbers`) Integer dc,
+	shared void testBattlefieldSerialization(
+			parameters(`function threeRandomNumbers`) Integer dc,
 			parameters(`function threeRandomNumbers`) Integer id) {
 	    assertSerialization("Battlefield serialization test", Battlefield(dc, id));
 	    assertUnwantedChild<Battlefield>("<battlefield dc=\"``dc``\"><hill /></battlefield>",

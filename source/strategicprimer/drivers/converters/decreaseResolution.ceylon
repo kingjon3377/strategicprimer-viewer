@@ -55,18 +55,22 @@ shared IMapNG decreaseResolution(IMapNG old) {
     Integer newRows = old.dimensions.rows / 2;
     IMutableMapNG retval = SPMapNG(MapDimensionsImpl(newRows, newColumns, 2), players,
         old.currentTurn);
-	Item->Key reverse<Key, Item>(Key->Item entry) given Key satisfies Object given Item satisfies Object
-			=> entry.item->entry.key;
+	Item->Key reverse<Key, Item>(Key->Item entry) given Key satisfies Object
+			given Item satisfies Object => entry.item->entry.key;
     TileType? consensus([TileType?+] types) {
         value counted = types.frequencies().map(reverse).map(Entry.pair).sort(
-            comparing(comparingOn(Tuple<Integer|TileType, Integer, [TileType]>.first, increasing<Integer>),
-                comparingOn(compose(compose(TileType.xml, Tuple<TileType, TileType, []>.first),
-                    Tuple<Integer|TileType, Integer, [TileType]>.rest), increasing<String>))).reversed;
+            comparing(
+				comparingOn(Tuple<Integer|TileType, Integer, [TileType]>.first, increasing<Integer>),
+                comparingOn(compose(
+					compose(TileType.xml, Tuple<TileType, TileType, []>.first),
+                    Tuple<Integer|TileType, Integer, [TileType]>.rest),
+					increasing<String>))).reversed;
         assert (exists largestCount = counted.first?.first);
         value matchingCount = counted.filter(matchingValue(largestCount,
             Tuple<Integer|TileType, Integer, TileType[]>.first));
         if (matchingCount.size > 1) {
-            assert (exists retval = randomize(matchingCount.map(Tuple.rest).map(Tuple.first)).first);
+            assert (exists retval = randomize(matchingCount.map(Tuple.rest)
+				.map(Tuple.first)).first);
             return retval;
         } else {
             assert (exists [count, retval] = counted.first);

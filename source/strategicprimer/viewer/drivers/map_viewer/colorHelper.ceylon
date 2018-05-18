@@ -81,7 +81,8 @@ object colorHelper {
                 if (exists color = map[type]) {
                     return color;
                 } else {
-                    log.error("Asked for unsupported type ``type`` in version ``version``");
+                    log.error("Asked for unsupported type ``type`` in version ``
+                        version``");
                     return null;
                 }
             } else {

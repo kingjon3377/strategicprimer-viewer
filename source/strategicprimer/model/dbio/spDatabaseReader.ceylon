@@ -51,9 +51,11 @@ shared object spDatabaseReader satisfies IMapReader {
 		return dbMapReader.readMap(sql, warner);
 	}
 
-	shared actual IMutableMapNG readMapFromStream(Path file, Reader istream, Warning warner) {
+	shared actual IMutableMapNG readMapFromStream(Path file, Reader istream,
+			Warning warner) {
 		throw AssertionError("Can't read a database from a stream");
 	}
 
-	shared IMutableMapNG readMapFromDatabase(Sql db, Warning warner) => dbMapReader.readMap(db, warner);
+	shared IMutableMapNG readMapFromDatabase(Sql db, Warning warner) =>
+			dbMapReader.readMap(db, warner);
 }

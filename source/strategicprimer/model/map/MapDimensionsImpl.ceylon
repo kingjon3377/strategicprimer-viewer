@@ -18,5 +18,6 @@ shared class MapDimensionsImpl(rows, columns, version) satisfies MapDimensions {
     }
     shared actual Integer hash = rows + columns.leftLogicalShift(2);
     shared actual String string =>
-            "Map dimensions: ``rows`` rows x ``columns`` columns; map version ``version``";
+            "Map dimensions: ``rows`` rows x ``columns`` columns; map version ``
+                version``";
 }

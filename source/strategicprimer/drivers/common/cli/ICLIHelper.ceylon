@@ -61,7 +61,8 @@ shared interface ICLIHelper {
             """The prompt (or other key) to compare to others to define "similar"
                questions."""
             String key = prompt,
-            "A function to produce an [[Absent]] value to return if an input should short-circuit the loop."
+            "A function to produce an [[Absent]] value to return if an input should
+             short-circuit the loop."
             <Absent|Boolean?>(String) quitResultFactory = (String str) => null);
     "Print the specified string, then a newline."
     shared formal void println(

@@ -23,7 +23,8 @@ import lovelace.util.common {
 	as
 }
 
-object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>() satisfies MapContentsReader {
+object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS text_notes (
 			   row INTEGER NOT NULL,
@@ -40,7 +41,8 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>() satisf
 		} else {
 			turn = SqlNull(Types.integer);
 		}
-		db.Insert("""INSERT INTO text_notes (row, column, turn, text, image) VALUES(?, ?, ?, ?, ?);""")
+		db.Insert("""INSERT INTO text_notes (row, column, turn, text, image)
+		             VALUES(?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, turn, obj.text, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {

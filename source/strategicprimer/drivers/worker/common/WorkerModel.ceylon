@@ -105,9 +105,11 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
      given player."
     {IUnit*} getUnitsImpl({Anything*} iter, Player player) =>
             iter.flatMap(flatten).narrow<IUnit>()
-	            .filter(matchingPredicate(matchingValue(player.playerId, Player.playerId), IUnit.owner));
+	            .filter(matchingPredicate(matchingValue(player.playerId, Player.playerId),
+					IUnit.owner));
     "All the players in all the maps."
-    shared actual {Player*} players => allMaps.map(Tuple.first).flatMap(IMutableMapNG.players).distinct;
+    shared actual {Player*} players =>
+			allMaps.map(Tuple.first).flatMap(IMutableMapNG.players).distinct;
     "Get all the given player's units, or only those of a specified kind."
     shared actual {IUnit*} getUnits(Player player, String? kind) {
         if (exists kind) {
@@ -116,7 +118,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.
             return getUnitsImpl(map.locations.flatMap(map.fixtures.get), player)
-                .sort(comparingOn(IUnit.name, comparingOn(String.lowercased, increasing<String>)));
+                .sort(comparingOn(IUnit.name, comparingOn(String.lowercased,
+					increasing<String>)));
         } else {
             value temp = allMaps.map(Tuple.first)
                     .flatMap((indivMap) => indivMap.locations.flatMap(
@@ -158,8 +161,10 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     shared actual void addUnit(IUnit unit) {
         variable [Fortress, Point]? temp = null;
         for (point in map.locations) {
-            //            for (fixture in map.fixtures[point].narrow<Fortress>().filter(matchingPredicate(matchingValue(unit.owner.playerId, Player.playerId), Fortress.owner))) { // TODO: syntax sugar once compiler bug fixed
-            for (fixture in map.fixtures.get(point).narrow<Fortress>().filter(matchingPredicate(matchingValue(unit.owner.playerId, Player.playerId), Fortress.owner))) {
+            //            for (fixture in map.fixtures[point].narrow<Fortress>() // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(point).narrow<Fortress>()
+					.filter(matchingPredicate(matchingValue(unit.owner.playerId,
+						Player.playerId), Fortress.owner))) {
                 if ("HQ" == fixture.name) {
                     addUnitAtLocation(unit, point);
                     return;
@@ -173,7 +178,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 addUnitAtLocation(unit, loc);
                 return;
             } else if (!unit.owner.independent) {
-                log.warn("No suitable location found for unit ``unit.name``, owned by ``unit.owner``");
+                log.warn("No suitable location found for unit ``unit.name``, owned by ``
+					unit.owner``");
             }
         }
     }

@@ -20,7 +20,8 @@ shared class Giant(kind, id) satisfies Immortal&HasMutableImage&HasKind {
         retval.image = image;
         return retval;
     }
-    shared actual String shortDescription => (kind.empty) then "giant" else "``kind`` giant";
+    shared actual String shortDescription =>
+            (kind.empty) then "giant" else "``kind`` giant";
     shared actual String string => shortDescription;
     shared actual String defaultImage => "giant.png";
     shared actual Boolean equals(Object obj) {

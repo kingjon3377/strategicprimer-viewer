@@ -20,7 +20,8 @@ todo("Measure that", "Java version used ConcurrentHashMap, while this isn't thre
     "Consider replacing Coordinate with Tuple entirely")
 MutableMap<Integer, MutableMap<Integer, Coordinate>> coordinateCache =
         HashMap<Integer, MutableMap<Integer, Coordinate>>();
-MutableMap<[Integer, Integer], Coordinate> coordinateTupleCache = HashMap<[Integer, Integer], Coordinate>();
+MutableMap<[Integer, Integer], Coordinate> coordinateTupleCache =
+        HashMap<[Integer, Integer], Coordinate>();
 "Factory method for [[Coordinate]]s."
 shared Coordinate coordinateFactory(Integer x, Integer y) {
 	switch (coordinateCachingStrategy)

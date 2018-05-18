@@ -6,7 +6,8 @@ import strategicprimer.model.map {
 	IFixture
 }
 class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
-	"This class can only be used to represent the corresponding animals in corresponding units in different maps."
+	"This class can only be used to represent the corresponding animals in corresponding
+	 units in different maps."
 	shared actual Boolean parallel = true;
 	"The animals being proxied."
 	MutableList<Animal> animals = ArrayList<Animal>{ elements = proxiedAnimals; };
@@ -21,7 +22,8 @@ class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 		animals.add(item);
 	}
 	shared actual Integer born => getConsensus(Animal.born) else -1;
-	shared actual Animal copy(Boolean zero) => ProxyAnimal(*animals.map(shuffle(Animal.copy)(zero)));
+	shared actual Animal copy(Boolean zero) =>
+			ProxyAnimal(*animals.map(shuffle(Animal.copy)(zero)));
 	shared actual Integer id => getConsensus(Animal.id) else -1;
 	shared actual String image => getConsensus(Animal.image) else "";
 	shared actual String kind => getConsensus(Animal.kind) else "proxied";
@@ -31,7 +33,8 @@ class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 			ProxyAnimal(*animals.map(shuffle(Animal.reduced)(newPopulation, newId)));
 	shared actual Animal combined(Animal addend) {
 		if (is ProxyFor<Animal> addend, addend.parallel, addend.proxied.size == animals.size) {
-			return ProxyAnimal(*zipPairs(animals, addend.proxied).map(unflatten(uncurry(Animal.combined))));
+			return ProxyAnimal(*zipPairs(animals, addend.proxied)
+				.map(unflatten(uncurry(Animal.combined))));
 		} else {
 			return ProxyAnimal(*animals.map(shuffle(Animal.combined)(addend)));
 		}

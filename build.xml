@@ -70,19 +70,21 @@
     </copy>
   </target>
   <target name="init-ceylon">
-      <ceylon-import-jar jar="${pump.common.path}" module="com.pump.common/1.0.00" failOnError="true" />
+      <ceylon-import-jar jar="${pump.common.path}" module="com.pump.common/1.0.00"
+          failOnError="true" />
       <ceylon-import-jar jar="${pump.awt.path}" module="com.pump.awt/1.0.00"
           descriptor="lib/com.pump.awt.module.properties" failOnError="true" />
       <ceylon-import-jar jar="${pump.image.path}" module="com.pump.image/1.0.00"
           descriptor="lib/com.pump.image.module.properties" failOnError="true" />
       <ceylon-import-jar jar="${pump.button.path}" module="com.pump.button/1.0.00"
           descriptor="lib/com.pump.button.module.properties" failOnError="true" />
-      <ceylon-import-jar jar="${windowmenu.jar.path}" descriptor="lib/com.pump.swing.module.properties"
-          module="com.pump.swing/1.0.00" failOnError="true" />
+      <ceylon-import-jar jar="${windowmenu.jar.path}" module="com.pump.swing/1.0.00"
+          descriptor="lib/com.pump.swing.module.properties" failOnError="true" />
   </target>
   <macrodef name="x-rebuild" description="Rebuild the Ceylon code if anything's changed">
     <sequential>
-      <ceylon-compile src="${ceylon.source.dir}" resource="${ceylon.resource.dir}" encoding="UTF-8">
+      <ceylon-compile src="${ceylon.source.dir}" resource="${ceylon.resource.dir}"
+                      encoding="UTF-8">
           <moduleset>
               <sourcemodules dir="${ceylon.source.dir}" />
           </moduleset>
@@ -90,9 +92,10 @@
     </sequential>
   </macrodef>
   <target name="build" depends="init-ceylon">
-      <!-- TODO: make a generated-resources folder instead of storing this in the same hierarchy as
-           non-generated resource files -->
-      <concat destfile="${invocation.path}" overwrite="true">ceylon run ${main-module}</concat>
+      <!-- TODO: make a generated-resources folder instead of storing this in the same
+           hierarchy as non-generated resource files -->
+      <concat destfile="${invocation.path}"
+              overwrite="true">ceylon run ${main-module}</concat>
       <x-rebuild />
   </target>
   <target name="doc" depends="build">
@@ -132,11 +135,14 @@
   <taskdef name="jarbundler"
     classname="com.ultramixer.jarbundler.JarBundler" />
 
-  <macrodef name="x-ceylon-fat-jar" description='Create a Ceylon "fat JAR" of the project'>
-      <attribute name="out" default="${release}/${basename}.jar" description="Where to place the JAR" />
+  <macrodef name="x-ceylon-fat-jar"
+            description='Create a Ceylon "fat JAR" of the project'>
+      <attribute name="out" default="${release}/${basename}.jar"
+                 description="Where to place the JAR" />
       <attribute name="run" default="${ceylon-main-run}"
           description="The method that should run by default when the JAR is invoked" />
-      <attribute name="module" default="${main-module}" description="Which module to package into the JAR" />
+      <attribute name="module" default="${main-module}"
+                 description="Which module to package into the JAR" />
       <sequential>
           <!-- there isn't a ceylon-fat-jar Ant task (yet) -->
           <exec executable="${ceylon.executable}" failOnError="true">
@@ -153,9 +159,11 @@
   </macrodef>
   <!-- Release targets -->
   <target name="jar" depends="test,get-builder,build">
-    <concat destfile="${invocation.path}" overwrite="true">java -jar /path/to/${basename}.jar</concat>
+    <concat destfile="${invocation.path}"
+            overwrite="true">java -jar /path/to/${basename}.jar</concat>
     <x-rebuild />
-    <x-ceylon-fat-jar out="${release}/${basename}.jar" run="${ceylon-main-run}" module="${main-module}" />
+    <x-ceylon-fat-jar out="${release}/${basename}.jar" run="${ceylon-main-run}"
+                      module="${main-module}" />
   </target>
   <target name="icon">
     <for list="512,256,128,64,48,32,16" param="resolution">
@@ -178,9 +186,11 @@
       <arg value="icon_32px.png" />
       <arg value="icon_16px.png" />
     </exec>
-    <concat destfile="${invocation.path}" overwrite="true">/path/to/${basename}.exe</concat>
+    <concat destfile="${invocation.path}"
+            overwrite="true">/path/to/${basename}.exe</concat>
     <x-rebuild />
-    <x-ceylon-fat-jar out="${release}/${basename}-for-exe.jar" run="${ceylon-main-run}" module="${main-module}" />
+    <x-ceylon-fat-jar out="${release}/${basename}-for-exe.jar" run="${ceylon-main-run}"
+                      module="${main-module}" />
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
       outfile="${release}/${basename}.exe" jar="${release}/${basename}-for-exe.jar" />
     <delete file="${release}/${basename}-for-exe.jar" />

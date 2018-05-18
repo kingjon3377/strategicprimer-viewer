@@ -66,8 +66,9 @@ object reportGeneratorHelper {
 	shared Point findHQ(IMapNG map, Player player) {
 		variable Point? retval = null;
 		for (location in map.locations) {
-			//        for (fixture in map.fixtures[location].narrow<Fortress>().filter(matchingValue(player, Fortress.owner))) { // TODO: syntax sugar once compiler bug fixed
-			for (fixture in map.fixtures.get(location).narrow<Fortress>().filter(matchingValue(player, Fortress.owner))) {
+//        for (fixture in map.fixtures[location].narrow<Fortress>() // TODO: syntax sugar once compiler bug fixed
+			for (fixture in map.fixtures.get(location).narrow<Fortress>()
+					.filter(matchingValue(player, Fortress.owner))) {
 				if ("hq" == fixture.name) {
 					return location;
 				} else if (location.valid, !retval exists) {
@@ -78,8 +79,8 @@ object reportGeneratorHelper {
 			return retval else invalidPoint;
 		}
 	}
-	"Create a mapping from ID numbers to Pairs of fixtures and their location for all fixtures
-	 in the map."
+	"Create a mapping from ID numbers to Pairs of fixtures and their location for all
+	 fixtures in the map."
 	shared DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
 		DelayedRemovalMap<Integer, [Point, IFixture]> retval = IntMap<[Point, IFixture]>();
 		IDRegistrar idf = createIDFactory(map);
@@ -114,7 +115,8 @@ object reportGeneratorHelper {
 		}
 		return retval;
 	}
-	void parentMapImpl(MutableMap<Integer, Integer> retval, IFixture parent, {IFixture*} stream) {
+	void parentMapImpl(MutableMap<Integer, Integer> retval, IFixture parent,
+			{IFixture*} stream) {
 		for (fixture in stream) {
 			retval.put(fixture.id, parent.id);
 			if (is {IFixture*} fixture) {
@@ -134,19 +136,19 @@ object reportGeneratorHelper {
 	}
 }
 shared object reportGenerator {
-	"Produces sub-reports, appending them to the buffer and calling coalesce() on the fixtures
-	 collection after each."
+	"Produces sub-reports, appending them to the buffer and calling coalesce() on the
+	 fixtures collection after each."
 	void createSubReports(StringBuilder builder,
-	        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Player player,
-	        IReportGenerator<out Object>* generators) {
+	        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
+			Player player, IReportGenerator<out Object>* generators) {
 	    for (generator in generators) {
 	        generator.produce(fixtures, map, builder.append);
 	        fixtures.coalesce();
 	    }
 	}
 	"Create the report for the given player based on the given map."
-	todo("Consider generating Markdown instead of HTML. OTOH, we'd have to keep a list nesting
-	      level parameter or something.")
+	todo("Consider generating Markdown instead of HTML. OTOH, we'd have to keep a list
+	      nesting level parameter or something.")
 	shared String createReport(IMapNG map, Player player = map.currentPlayer) {
 	    MapDimensions dimensions = map.dimensions;
 	    StringBuilder builder = StringBuilder();
@@ -155,7 +157,8 @@ shared object reportGenerator {
 	                      <head><title>Strategic Primer map summary report</title></head>
 	                      <body>
 	                      """);
-	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper.getFixtures(map);
+	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
+				reportGeneratorHelper.getFixtures(map);
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
 	    Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
 	        DistanceComparator(hq, dimensions).compare, byIncreasing(IFixture.hash));
@@ -164,7 +167,8 @@ shared object reportGenerator {
 	        UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
 	        TextReportGenerator(comparator, dimensions, hq),
 	        TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-	        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+	        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn,
+				hq),
 	        AdventureReportGenerator(comparator, player, dimensions, hq),
 	        ExplorableReportGenerator(comparator, player, dimensions, hq),
 	        HarvestableReportGenerator(comparator, dimensions, hq),
@@ -195,15 +199,18 @@ shared object reportGenerator {
 	            <head><title>Strategic Primer map summary abridged report</title></head>
 	            <body>
 	            """);
-	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper.getFixtures(map);
+	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
+				reportGeneratorHelper.getFixtures(map);
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
 	    Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
 	        DistanceComparator(hq, dimensions).compare, byIncreasing(IFixture.hash));
 	    fixtures.items.map(Tuple.rest).map(Tuple.first).narrow<IUnit|Fortress>()
-	            .filter(matchingValue(player, HasOwner.owner)).map(IFixture.id).each(fixtures.remove);
+	            .filter(matchingValue(player, HasOwner.owner)).map(IFixture.id)
+			.each(fixtures.remove);
 	    fixtures.coalesce();
 	    createSubReports(builder, fixtures, map, player,
-	        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+	        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn,
+				hq),
 	        FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
 	        UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
 	        TextReportGenerator(comparator, dimensions, hq),
@@ -241,7 +248,8 @@ shared object reportGenerator {
 	"Create the report, in report-intermediate-representation, based on the given map."
 	shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer) {
 	    IReportNode retval = RootReportNode("Strategic Primer map summary report");
-	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper.getFixtures(map);
+	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
+				reportGeneratorHelper.getFixtures(map);
 	    MapDimensions dimensions = map.dimensions;
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
 	    Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
@@ -254,7 +262,8 @@ shared object reportGenerator {
 	        AdventureReportGenerator(comparator, player, dimensions, hq),
 	        ExplorableReportGenerator(comparator, player, dimensions, hq),
 	        HarvestableReportGenerator(comparator, dimensions, hq),
-	        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+	        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn,
+				hq),
 	        AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
 	        VillageReportGenerator(comparator, player, dimensions, hq),
 	        ImmortalsReportGenerator(comparator, dimensions, hq));
@@ -264,19 +273,22 @@ shared object reportGenerator {
 	 intermediate representation."
 	shared IReportNode createAbbreviatedReportIR(IMapNG map,
 	        Player player = map.currentPlayer) {
-	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper.getFixtures(map);
+	    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper
+			.getFixtures(map);
 	    MapDimensions dimensions = map.dimensions;
 	    Point hq = reportGeneratorHelper.findHQ(map, player);
 	    Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
 	        DistanceComparator(hq, dimensions).compare,
 	        byIncreasing(IFixture.hash));
 	    fixtures.items.map(Tuple.rest).map(Tuple.first).narrow<IUnit|Fortress>()
-	            .filter(matchingValue(player, HasOwner.owner)).map(IFixture.id).each(fixtures.remove);
+	            .filter(matchingValue(player, HasOwner.owner)).map(IFixture.id)
+			.each(fixtures.remove);
 	    fixtures.coalesce();
 	    IReportNode retval = RootReportNode(
 	        "Strategic Primer map summary abbreviated report");
 	    createSubReportsIR(retval, fixtures, map, player,
-	        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
+	        FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn,
+				hq),
 	        FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
 	        UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
 	        TextReportGenerator(comparator, dimensions, hq),

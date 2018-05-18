@@ -77,7 +77,8 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             }
             return AnimalTracks(getParameter(element, "kind"));
         } else {
-	        expectAttributes(element, "traces", "id", "count", "talking", "kind", "status", "wild", "born", "image");
+	        expectAttributes(element, "traces", "id", "count", "talking", "kind",
+                "status", "wild", "born", "image");
 	        // TODO: We'd like default to be 1 inside a unit and -1 outside
 	        Integer count = getIntegerParameter(element, "count", 1);
 	        return AnimalImpl(getParameter(element, "kind"),

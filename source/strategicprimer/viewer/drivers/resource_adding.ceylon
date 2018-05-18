@@ -317,8 +317,8 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
             }
         }
     }
-    "A window to let the user enter resources etc. Note that this is not a dialog to enter one
-     resource and close."
+    "A window to let the user enter resources etc. Note that this is not a dialog to enter
+     one resource and close."
     SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
 	        Anything(ActionEvent) menuHandler) {
         IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
@@ -327,7 +327,7 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         FormattedLabel resourceLabel = FormattedLabel("Add resource for %s:",
             currentPlayer.name);
         mainPanel.add(resourceLabel);
-        JPanel pairPanel(Component first, Component second) { // TODO: Use a better layout than BoxLayout
+        JPanel pairPanel(Component first, Component second) { // TODO: Use a better layout than BoxLayout // TODO: move to top level of class
             JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
             panel.addGlue();
             panel.add(first);
@@ -343,8 +343,8 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
             "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``");
         UpdatedComboBox resourceKindBox = UpdatedComboBox(logLabel.append);
         resourcePanel.add(pairPanel(JLabel("General Category"), resourceKindBox));
-        // If we set the maximum high at this point, the fields would try to be unneccessarily
-        // large. I'm not sure that setting it low at first helps, though.
+        // If we set the maximum high at this point, the fields would try to be
+		// unneccessarily large. I'm not sure that setting it low at first helps, though.
         SpinnerNumberModel resourceCreatedModel = SpinnerNumberModel(-1, -1, 2000, 1);
         JSpinner creationSpinner = JSpinner(resourceCreatedModel);
         resourcePanel.add(pairPanel(JLabel("Turn created"), creationSpinner));
@@ -441,7 +441,8 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         if (is JTextField editor = implementQuantityField.editor) {
             editor.addActionListener(implementListener);
         } else {
-            logLabel.append("Implement quantity spinner's editor wasn't a text field, but a ``
+            logLabel.append(
+				"Implement quantity spinner's editor wasn't a text field, but a ``
 				                classDeclaration(implementQuantityField.editor)``
                              ");
         }

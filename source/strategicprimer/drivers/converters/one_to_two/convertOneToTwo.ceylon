@@ -94,7 +94,7 @@ shared object oneToTwoConverter {
 		IDRegistrar idFactory = createIDFactory(old);
 		IMapNG oldCopy = old.copy(false, null);
 		"Add a fixture to a tile if this is the main map."
-		void addFixture(Point point, TileFixture fixture) { // TODO: tke 'map' and 'main' as parameters and move to top level
+		void addFixture(Point point, TileFixture fixture) { // TODO: take 'map' and 'main' as parameters and move to top level
 			if (main) {
 				retval.addFixture(point, fixture);
 			}
@@ -149,7 +149,8 @@ shared object oneToTwoConverter {
 				}
 //            for (river in oldCopy.rivers[point]) {
 				for (river in oldCopy.rivers.get(point)) {
-					assert (oneToTwoConfig.expansionFactor == 4); // the river-dispersion algorithm is tuned
+					"The river-dispersion algorithm is tuned for an expansion factor of 4."
+					assert (oneToTwoConfig.expansionFactor == 4);
 					switch (river)
 					case (River.east) {
 						riversAt(initial[10], River.east);
@@ -221,7 +222,8 @@ shared object oneToTwoConverter {
 							.map(shuffle(Integer.modulo)(retval.dimensions.columns)))
 						pointFactory(row, column)
 				].select(matchingValue(false, point.equals));
-			Boolean adjacentToTown() => !neighbors.flatMap(retval.fixtures.get).narrow<ITownFixture>().empty; // TODO: take parameters and move to top level
+			Boolean adjacentToTown() => !neighbors.flatMap(retval.fixtures.get)
+				.narrow<ITownFixture>().empty; // TODO: take parameters and move to top level
 			Boolean adjacentWater() { // TODO: take parameters and move to top level
 				for (neighbor in neighbors) {
 					if (exists terrain = retval.baseTerrain[neighbor],
@@ -268,8 +270,9 @@ shared object oneToTwoConverter {
 //                        retval.mountainous[point], retval.fixtures[point],
 							retval.mountainous.get(point), retval.fixtures.get(point),
 							retval.dimensions);
-//                    if (retval.fixtures[point].narrow<Forest>().map(Forest.kind).any(forestType.equals)) {
-						if (retval.fixtures.get(point).narrow<Forest>().map(Forest.kind).any(forestType.equals)) {
+//                    if (retval.fixtures[point].narrow<Forest>().map(Forest.kind) // TODO: syntax sugar
+						if (retval.fixtures.get(point).narrow<Forest>().map(Forest.kind)
+								.any(forestType.equals)) {
 							// do nothing
 						} else {
 							addFixture(point, Forest(forestType, false,

@@ -34,7 +34,8 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>() satisfies MapContentsReader {
+object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS simple_immortals (
 			   row INTEGER,
@@ -70,8 +71,8 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			value insertion = db.Insert("""INSERT INTO simple_immortals (row, column, parent, type, id, image)
 			                               VALUES(?, ?, ?, ?, ?, ?);""");
 			if (is Point context) {
-				insertion.execute(context.row, context.column, SqlNull(Types.integer), obj.kind, obj.id,
-					obj.image);
+				insertion.execute(context.row, context.column, SqlNull(Types.integer), obj.kind,
+					obj.id, obj.image);
 			} else {
 				insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer), context.id,
 					obj.kind, obj.id, obj.image);
@@ -108,9 +109,11 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) { // TODO: Reduce code duplication (and in other readers)
 		log.trace("About to read simple immortals");
 		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE row IS NOT NULL""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is String type = dbRow["type"],
-				is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
+		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE row IS NOT NULL""")
+				.Results()) {
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is String type = dbRow["type"], is Integer id = dbRow["id"],
+				is String|SqlNull image = dbRow["image"]);
 			SimpleImmortal immortal;
 			switch (type)
 			case ("sphinx") {
@@ -151,10 +154,11 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 		}
 		log.trace("Finished reading simple immortals; about to start on immortals with kinds");
 		count = 0;
-		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE row IS NOT NULL""").Results()) {
+		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE row IS NOT NULL""")
+				.Results()) {
 			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is String type = dbRow["type"], is String kind = dbRow["kind"], is Integer id = dbRow["id"],
-				is String|SqlNull image = dbRow["image"]);
+				is String type = dbRow["type"], is String kind = dbRow["kind"],
+				is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
 			Immortal&HasMutableImage immortal;
 			switch (type)
 			case ("centaur") {
@@ -186,9 +190,11 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		log.trace("About to read simple immortals in units");
 		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE parent IS NOT NULL""").Results()) {
-			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
-				is String type = dbRow["type"], is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
+		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE parent IS NOT NULL""")
+				.Results()) {
+			assert (is Integer parentId = dbRow["parent"],
+				is IUnit parent = findById(map, parentId, warner), is String type = dbRow["type"],
+				is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
 			SimpleImmortal immortal;
 			switch (type)
 			case ("sphinx") {
@@ -229,9 +235,11 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 		}
 		log.trace("Finished reading simple immortals in units; about to read immortals with kinds in units");
 		count = 0;
-		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE parent IS NOT NULL""").Results()) {
-			assert (is Integer parentId = dbRow["parent"], is IUnit parent = findById(map, parentId, warner),
-				is String type = dbRow["type"], is String kind = dbRow["kind"], is Integer id = dbRow["id"],
+		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE parent IS NOT NULL""")
+				.Results()) {
+			assert (is Integer parentId = dbRow["parent"],
+				is IUnit parent = findById(map, parentId, warner), is String type = dbRow["type"],
+				is String kind = dbRow["kind"], is Integer id = dbRow["id"],
 				is String|SqlNull image = dbRow["image"]);
 			Immortal&HasMutableImage immortal;
 			switch (type)

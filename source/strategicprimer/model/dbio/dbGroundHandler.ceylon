@@ -14,7 +14,8 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>() satisfies MapContentsReader {
+object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS ground (
 			   row INTEGER NOT NULL,

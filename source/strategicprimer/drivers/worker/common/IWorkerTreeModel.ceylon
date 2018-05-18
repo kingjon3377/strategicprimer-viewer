@@ -49,8 +49,9 @@ shared interface IWorkerTreeModel
     shared formal void dismissUnitMember(UnitMember member);
     "The unit members that have been dismissed during this session."
     shared formal {UnitMember*} dismissed;
-    "Add a unit member to the unit that contains the given member. If the base is not in the tree,
-     the caller is likely to simply ignore the call, but the behavior is undefined."
+    "Add a unit member to the unit that contains the given member. If the base is not in
+     the tree, the model is likely to simply ignore the call, but the behavior is
+     undefined."
     shared formal void addSibling(
         "The member that is already in the tree."
         UnitMember base,

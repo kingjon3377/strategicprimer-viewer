@@ -22,7 +22,8 @@ shared class FortressTabularReportGenerator(Player player, Point hq,
     "The file-name to (by default) write this table to."
     shared actual String tableName = "fortresses";
     "Create a GUI table row representing the fortress."
-    shared actual [{String+}+] produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual [{String+}+] produce(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Fortress item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
         {String+} retval = [distanceString(loc, hq, dimensions), loc.string,
             ownerString(player, item.owner), item.name];

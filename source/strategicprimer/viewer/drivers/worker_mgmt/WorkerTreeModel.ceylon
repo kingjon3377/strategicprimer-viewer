@@ -32,7 +32,8 @@ import strategicprimer.drivers.worker.common {
 }
 "A TreeModel implementation for a player's units and workers."
 class WorkerTreeModel satisfies IWorkerTreeModel {
-	static Boolean(IUnit) containingItem(UnitMember item) => (IUnit unit) => unit.contains(item);
+	static Boolean(IUnit) containingItem(UnitMember item) =>
+                    (IUnit unit) => unit.contains(item); // TODO: Replace with method-reference logic
 	variable Player player;
 	IWorkerModel model;
 	shared new (Player player, IWorkerModel model) {
@@ -187,8 +188,10 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             // ignore
             return;
         } else {
-            log.warn("In WorkerTreeModel.renameItem(), item was neither unit nor unit member");
-            // Ignore, as it's something we don't know how to handle. If we see log messages, revisit.
+            log.warn(
+                "In WorkerTreeModel.renameItem(), item was neither unit nor unit member");
+            // Ignore, as it's something we don't know how to handle.
+            // If we see log messages, revisit.
             return;
         }
         TreeModelEvent event = TreeModelEvent(this, path, indices, children);
@@ -202,7 +205,8 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         ObjectArray<Object> children;
         if (is IUnit item) {
             path = TreePath(ObjectArray.with(Singleton(root)));
-            indices = IntArray.with([getIndexOfChild(root, priorKind), getIndexOfChild(root, item.kind)]);
+            indices = IntArray.with([getIndexOfChild(root, priorKind),
+                getIndexOfChild(root, item.kind)]);
             children = ObjectArray<Object>.with([priorKind, item.kind]);
         } else if (is UnitMember item,
             exists parent = model.getUnits(player).find(containingItem(item))) {

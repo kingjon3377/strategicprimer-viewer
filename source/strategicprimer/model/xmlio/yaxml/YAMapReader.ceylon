@@ -167,7 +167,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
             expectAttributes(mapTag, "version", "rows", "columns", "current_player");
         }
         else {
-            throw UnwantedChildException.listingExpectedTags(QName("xml"), element, ["map", "view"]);
+            throw UnwantedChildException.listingExpectedTags(QName("xml"), element,
+                ["map", "view"]);
         }
         MapDimensions dimensions = MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
             getIntegerParameter(mapTag, "columns"),
@@ -215,7 +216,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 } else if (invalidPoint == point) {
                     // fixture outside tile
                     assert (exists top = tagStack.top);
-                    throw UnwantedChildException.listingExpectedTags(top, event, Singleton("tile"));
+                    throw UnwantedChildException.listingExpectedTags(top, event,
+                        Singleton("tile"));
                 } else if ("lake" == type || "river" == type) {
                     assert (exists top = tagStack.top);
                     retval.addRivers(point, parseRiver(event, top));

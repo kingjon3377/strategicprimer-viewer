@@ -310,10 +310,11 @@ SPFrame explorationFrame(IExplorationModel model,
         headerPanel.add(mpField);
         headerPanel.add(speedLabel);
         headerPanel.add(speedBox);
-        headerLayout.setHorizontalGroup(headerLayout.sequentialGroupOf(explorerChangeButton, locLabel,
-            remainingMPLabel, mpField, speedLabel, speedBox));
-        headerLayout.setVerticalGroup(headerLayout.parallelGroupOf(explorerChangeButton, locLabel,
-            remainingMPLabel, mpField, speedLabel, speedBox));
+        headerLayout.setHorizontalGroup(headerLayout
+			.sequentialGroupOf(explorerChangeButton, locLabel,
+				remainingMPLabel, mpField, speedLabel, speedBox));
+        headerLayout.setVerticalGroup(headerLayout.parallelGroupOf(explorerChangeButton,
+			locLabel, remainingMPLabel, mpField, speedLabel, speedBox));
         IMutableMapNG secondMap;
         if (exists pair = model.subordinateMaps.first) {
             secondMap = pair.first;
@@ -342,7 +343,8 @@ SPFrame explorationFrame(IExplorationModel model,
                 return null;
             }
         }
-        class ExplorationClickListener(Direction direction, SwingList<TileFixture>&SelectionChangeListener mainList)
+        class ExplorationClickListener(Direction direction,
+				SwingList<TileFixture>&SelectionChangeListener mainList)
                 satisfies MovementCostSource&SelectionChangeSource&ActionListener {
             MutableList<MovementCostListener> movementListeners =
                     ArrayList<MovementCostListener>();
@@ -354,8 +356,8 @@ SPFrame explorationFrame(IExplorationModel model,
                 SelectionChangeListener listener) => selectionListeners.remove(listener);
             shared actual void addMovementCostListener(MovementCostListener listener) =>
                     movementListeners.add(listener);
-            shared actual void removeMovementCostListener(MovementCostListener listener) =>
-                    movementListeners.remove(listener);
+            shared actual void removeMovementCostListener(MovementCostListener listener)
+					=> movementListeners.remove(listener);
             MutableList<TileFixture> selectedValuesList {
                 IntArray selections = mainList.selectedIndices;
                 ListModel<TileFixture> listModel = mainList.model;
@@ -380,7 +382,8 @@ SPFrame explorationFrame(IExplorationModel model,
                 //model.map.fixtures[model.selectedUnitLocation].narrow<Village>() // TODO: syntax sugar once compiler bug fixed
                 model.map.fixtures.get(model.selectedUnitLocation).narrow<Village>()
                         .each(selectedValuesList.add);
-            }], ["Should the explorer dig to find what kind of ground is here?", model.dig]];
+            }], ["Should the explorer dig to find what kind of ground is here?",
+				model.dig]];
             shared actual void actionPerformed(ActionEvent event) =>
                     SwingUtilities.invokeLater(() {
                 try {

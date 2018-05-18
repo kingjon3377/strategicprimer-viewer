@@ -59,8 +59,8 @@ shared class WorkerGUI() satisfies SimpleDriver {
         longDescription = "Organize the members of a player's units.";
         includeInCLIList = false;
         includeInGUIList = true;
-        supportedOptionsTemp = [ "--current-turn=NN", "--print-empty", "--include-unleveled-jobs",
-	        "--summarize-large-units" ];
+        supportedOptionsTemp = [ "--current-turn=NN", "--print-empty",
+            "--include-unleveled-jobs", "--summarize-large-units" ];
     };
     suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
@@ -83,11 +83,14 @@ shared class WorkerGUI() satisfies SimpleDriver {
                     model.currentPlayer, model.currentPlayer),
                     "reload tree");
                 menuHandler.register(silentListener(frame.dispose), "close");
-                menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName), "about");
+                menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
+                    "about");
                 log.trace("Registered menu handlers");
-                if (model.allMaps.every(compose(compose(compose(Iterable<IUnit>.empty, model.getUnits),
-	                    IMapNG.currentPlayer), Tuple<IMapNG|JPath?, IMapNG, [JPath?]>.first))) {
-                    pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst, "change current player"));
+                if (model.allMaps.every(compose(compose(compose(Iterable<IUnit>.empty,
+                        model.getUnits), IMapNG.currentPlayer),
+                        Tuple<IMapNG|JPath?, IMapNG, [JPath?]>.first))) {
+                    pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
+                        "change current player"));
                 }
                 log.trace("About to show window");
                 frame.showWindow();

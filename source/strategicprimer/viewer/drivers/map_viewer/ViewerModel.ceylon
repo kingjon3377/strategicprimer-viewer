@@ -132,7 +132,8 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         } else if ((0:currDims.height).contains(row)) {
             minRow = 0;
             maxRow = currDims.height - 1;
-        } else if (((map.dimensions.rows - currDims.height)..(map.dimensions.rows - 1)).contains(row)) {
+        } else if (((map.dimensions.rows - currDims.height)..(map.dimensions.rows - 1))
+                .contains(row)) {
             minRow = map.dimensions.rows - currDims.height;
             maxRow = map.dimensions.rows - 1;
         } else {
@@ -153,7 +154,9 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         } else if ((0:currDims.width).contains(column)) {
             minColumn = 0;
             maxColumn = currDims.width - 1;
-        } else if (((map.dimensions.columns - currDims.width)..(map.dimensions.columns - 1)).contains(column)) {
+        } else if (
+                ((map.dimensions.columns - currDims.width)..(map.dimensions.columns - 1))
+                    .contains(column)) {
             minColumn = map.dimensions.columns - currDims.width;
             maxColumn = map.dimensions.columns - 1;
         } else {

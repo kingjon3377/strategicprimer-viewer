@@ -122,7 +122,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     lambda(resourceReader.read(event, top.name, stream));
                 }
                 else {
-                    throw UnwantedChildException.listingExpectedTags(stack.top?.name else element.name, event,
+                    throw UnwantedChildException.listingExpectedTags(
+                        stack.top?.name else element.name, event,
                         ["expertise", "claim", "production", "consumption"]); // TODO: Make sure this is accurate whenever it occurs
                 }
             } else if (is EndElement event, exists top = stack.top,
@@ -138,7 +139,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         return retval;
     }
     ITownFixture parseVillage(StartElement element, {XMLEvent*} stream) {
-        expectAttributes(element, "status", "name", "race", "image", "portrait", "id", "owner");
+        expectAttributes(element, "status", "name", "race", "image", "portrait",
+            "id", "owner");
         requireNonEmptyParameter(element, "name", false);
         Integer idNum = getOrGenerateID(element);
         value status = TownStatus.parse(getParameter(element, "status"));
@@ -166,7 +168,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
     }
     ITownFixture parseTown(StartElement element, {XMLEvent*} stream) {
-        expectAttributes(element, "name", "status", "size", "dc", "id", "image", "owner", "portrait");
+        expectAttributes(element, "name", "status", "size", "dc", "id", "image", "owner",
+            "portrait");
         requireNonEmptyParameter(element, "name", false);
         String name = getParameter(element, "name", "");
         value status = TownStatus.parse(getParameter(element, "status"));
@@ -209,7 +212,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
     }
     ITownFixture parseFortress(StartElement element, {XMLEvent*} stream) {
-        expectAttributes(element, "owner", "name", "size", "status", "id", "portrait", "image");
+        expectAttributes(element, "owner", "name", "size", "status", "id", "portrait",
+            "image");
         requireNonEmptyParameter(element, "owner", false);
         requireNonEmptyParameter(element, "name", false);
         Fortress retval;
@@ -229,10 +233,11 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     retval.addMember(reader.read(event, element.name, stream));
                 } else if (memberTag == "orders" || memberTag == "results" ||
                         memberTag == "science") {
-                    // We're thinking about storing per-fortress "standing orders" or general regulations,
-                    // building-progress results, and possibly scientific research progress within fortresses.
-                    // To ease the transition, we *now* warn, instead of aborting, if the tags we expect to use
-                    // for this appear in this position in the XML.
+                    // We're thinking about storing per-fortress "standing orders" or
+                    // general regulations, building-progress results, and possibly
+                    // scientific research progress within fortresses. To ease the
+                    // transition, we *now* warn, instead of aborting, if the tags we
+                    // expect to use for this appear in this position in the XML.
                     warner.handle(UnwantedChildException(element.name, event));
                     continue;
                 } else {
@@ -269,7 +274,8 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         writeTag(ostream, "population", tabs);
         writeProperty(ostream, "size", obj.population);
         finishParentTag(ostream);
-        for (skill->level in obj.highestSkillLevels.sort(comparingOn(Entry<String, Integer>.key, increasing<String>))) {
+        for (skill->level in obj.highestSkillLevels.sort(
+                comparingOn(Entry<String, Integer>.key, increasing<String>))) {
             writeTag(ostream, "expertise", tabs + 1);
             writeProperty(ostream, "skill", skill);
             writeProperty(ostream, "level", level);

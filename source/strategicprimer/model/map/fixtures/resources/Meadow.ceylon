@@ -30,7 +30,8 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
     "The size of the field or meadow, in acres. (Or a negative number if unknown.)"
     shared actual Number<out Anything> acres;
     shared actual Meadow copy(Boolean zero) {
-        Meadow retval = Meadow(kind, field, cultivated, id, status, (zero) then -1 else acres);
+        Meadow retval = Meadow(kind, field, cultivated, id, status,
+            (zero) then -1 else acres);
         retval.image = image;
         return retval;
     }
@@ -82,7 +83,7 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
                 return false;
             }
             Anything(String) localReport;
-            if (field) {
+            if (field) { // TODO: These can be made method-reference logic
                 localReport = (String str) => report("In ``kind`` field (ID #``id``):\t``str``");
             } else {
                 localReport = (String str) => report("In ``kind`` meadow (ID #``id``):\t``str``");

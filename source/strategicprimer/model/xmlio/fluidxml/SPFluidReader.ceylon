@@ -239,7 +239,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         case ("map") {
             currentTurn = 0;
             mapTag = element;
-            expectAttributes(mapTag, warner, "version", "rows", "columns", "current_player");
+            expectAttributes(mapTag, warner, "version", "rows", "columns",
+                "current_player");
         }
         else {
             throw UnwantedChildException(parent, element);
@@ -303,11 +304,11 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "player");
         requireNonEmptyAttribute(element, "number", true, warner);
         requireNonEmptyAttribute(element, "code_name", true, warner);
-        expectAttributes(element, warner, "number", "code_name");
-        // We're thinking about storing "standing orders" in the XML under the <player> tag, and
-        // also possibly scientific progress; so as to not require players to upgrade to even read
-        // their maps once we start doing so, we *now* only *warn* instead of *dying* if the XML
-        // contains that idiom.
+        expectAttributes(element, warner, "number", "code_name"); // FIXME: Should expect 'portrait' // TODO: add test of that functionality
+        // We're thinking about storing "standing orders" in the XML under the <player>
+        // tag, and also possibly scientific progress; so as to not require players to
+        // upgrade to even read their maps once we start doing so, we *now* only *warn*
+        // instead of *dying* if the XML contains that idiom.
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
                 if (event.name.localPart.lowercased == "orders" ||
@@ -343,7 +344,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "unit");
         requireNonEmptyAttribute(element, "name", false, warner);
         requireNonEmptyAttribute(element, "owner", false, warner);
-        expectAttributes(element, warner, "name", "owner", "id", "kind", "image", "portrait", "type");
+        expectAttributes(element, warner, "name", "owner", "id", "kind", "image",
+            "portrait", "type");
         variable String? temp = null;
         try {
             temp = getAttrWithDeprecatedForm(element, "kind", "type", warner);
@@ -392,7 +394,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "fortress");
         requireNonEmptyAttribute(element, "owner", false, warner);
         requireNonEmptyAttribute(element, "name", false, warner);
-        expectAttributes(element, warner, "owner", "name", "id", "size", "status", "image", "portrait");
+        expectAttributes(element, warner, "owner", "name", "id", "size", "status", "image",
+            "portrait");
         Fortress retval;
         value size = TownSize.parse(getAttribute(element, "size", "small"));
         if (is TownSize size) {
@@ -405,12 +408,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
-                // We're thinking about storing per-fortress "standing orders" or general regulations,
-                // building-progress results, and possibly scientific research progress within fortresses.
-                // To ease the transition, we *now* warn, instead of aborting, if the tags we expect to use
-                // for this appear in this position in the XML.
-                if (event.name.localPart == "orders" || event.name.localPart == "results" ||
-                    event.name.localPart == "science") {
+                // We're thinking about storing per-fortress "standing orders" or general
+                // regulations, building-progress results, and possibly scientific
+                // research progress within fortresses. To ease the transition, we *now*
+                // warn, instead of aborting, if the tags we expect to use for this
+                // appear in this position in the XML.
+                if (event.name.localPart == "orders" ||
+                        event.name.localPart == "results" ||
+                        event.name.localPart == "science") {
                     warner.handle(UnwantedChildException(element.name, event));
                     continue;
                 }
@@ -427,8 +432,9 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         retval.portrait = getAttribute(element, "portrait", "");
         return setImage(retval, element, warner);
     }
-    IMutableMapNG mapOrViewTagHandler(StartElement element, QName parent, {XMLEvent*} stream,
-        IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) =>
+    IMutableMapNG mapOrViewTagHandler(StartElement element, QName parent,
+        {XMLEvent*} stream, IMutablePlayerCollection players, Warning warner,
+        IDRegistrar idFactory) =>
             readMapOrViewTag(element, parent, stream, players, warner, idFactory);
     readers = map([ "adventure"->fluidExplorableHandler.readAdventure,
         "portal"->fluidExplorableHandler.readPortal,

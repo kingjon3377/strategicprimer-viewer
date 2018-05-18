@@ -15,7 +15,8 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>() satisfies MapContentsReader {
+object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS fortresses (
 			   row INTEGER NOT NULL,
@@ -32,8 +33,8 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>() satis
 	shared actual void write(Sql db, Fortress obj, Point context) {
 		db.Insert("""INSERT INTO fortresses (row, column, owner, name, size, id, image, portrait)
 		             VALUES(?, ?, ?, ?, ?, ?, ?, ?);""")
-				.execute(context.row, context.column, obj.owner.playerId, obj.name, obj.townSize.string,
-					obj.id, obj.image, obj.portrait);
+				.execute(context.row, context.column, obj.owner.playerId, obj.name,
+					obj.townSize.string, obj.id, obj.image, obj.portrait);
 		for (member in obj) {
 			spDatabaseWriter.writeSPObjectInContext(db, member, obj);
 		}

@@ -274,7 +274,8 @@ shared class SPMenu extends JMenuBar {
         return retval;
     }
     """Create the "view" menu."""
-    shared static JMenu createViewMenu(Anything(ActionEvent) handler, IDriverModel model) {
+    shared static JMenu createViewMenu(Anything(ActionEvent) handler,
+			IDriverModel model) {
         JMenu viewMenu = JMenu("View");
         viewMenu.mnemonic = KeyEvent.vkE;
 

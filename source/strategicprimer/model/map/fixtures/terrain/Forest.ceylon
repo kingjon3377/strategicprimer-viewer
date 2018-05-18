@@ -35,7 +35,8 @@ shared class Forest(kind, rows, id, acres = -1)
     shared actual String defaultImage = "trees.png";
     shared actual Boolean equals(Object obj) {
         if (is Forest obj) {
-            return obj.id == id && kind == obj.kind && rows == obj.rows && acres == obj.acres;
+            return obj.id == id && kind == obj.kind && rows == obj.rows &&
+                acres == obj.acres;
         } else {
             return false;
         }
@@ -75,7 +76,8 @@ shared class Forest(kind, rows, id, acres = -1)
                 return false;
             }
             variable Boolean retval = true;
-            void localReport(String str) => report("In ``kind`` forest (ID #``id``):\t``str``");
+            void localReport(String str) =>
+                    report("In ``kind`` forest (ID #``id``):\t``str``");
             if (other.rows, !rows) {
                 localReport("In rows when we aren't");
                 retval = false;

@@ -86,7 +86,8 @@ shared class ExplorableReportGenerator(
         if (!caves.empty || !battles.empty || !portals.empty) {
             ostream("<h4>Caves, Battlefields, and Portals</h4>
                      <ul>");
-            for (list in [ caves, battles, portals ].filter(inverse(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
+            for (list in [ caves, battles, portals ]
+					.filter(inverse(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
                 ostream("<li>``list``</li>");
             }
             ostream("</ul>``operatingSystem.newline``");
@@ -114,7 +115,8 @@ shared class ExplorableReportGenerator(
         }
     }
     "Produces the report section on all caves, battlefields, and portals."
-    shared actual IReportNode produceRIR(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
+    shared actual IReportNode produceRIR(
+			DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
         IReportNode portals = ListReportNode("Portals");
         IReportNode battles = ListReportNode("Battlefields");
         IReportNode caves = ListReportNode("Caves");
@@ -123,7 +125,7 @@ shared class ExplorableReportGenerator(
             `Cave`->caves };
         };
         for ([loc, item] in fixtures.items.sort(pairComparator)) {
-            if (is Battlefield|Cave|Portal item, // Using Iterable.narrow() instead of an if here causes a compiler backend error
+            if (is Battlefield|Cave|Portal item, // Using Iterable.narrow() instead of an if here causes a compiler backend error // TODO: distill MWE and report it
 	                exists node = nodes[type(item)]) {
                 node.appendNode(produceRIRSingle(fixtures, map, item, loc));
             }

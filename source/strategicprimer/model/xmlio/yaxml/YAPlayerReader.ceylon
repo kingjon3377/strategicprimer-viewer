@@ -24,9 +24,10 @@ class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
         expectAttributes(element, "number", "code_name");
         requireNonEmptyParameter(element, "number", true);
         requireNonEmptyParameter(element, "code_name", true);
-        // We're thinking about storing "standing orders" in the XML under the <player> tag;
-        // so as to not require players to upgrade to even read their maps once we start doing
-        // so, we *now* only *warn* instead of *dying* if the XML contains that idiom.
+        // We're thinking about storing "standing orders" in the XML under the <player>
+        // tag; so as to not require players to upgrade to even read their maps once we
+        // start doing so, we *now* only *warn* instead of *dying* if the XML contains
+        // that idiom.
         spinUntilEnd(element.name, stream, ["orders", "results", "science"]);
         value retval = PlayerImpl(getIntegerParameter(element, "number"),
             getParameter(element, "code_name"));

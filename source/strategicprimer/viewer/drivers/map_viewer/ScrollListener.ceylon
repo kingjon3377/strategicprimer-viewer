@@ -150,7 +150,8 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             mutex = true;
         }
     }
-    "Ignored; other listeners will adjust the dimensions, causing [[dimensionsChanged]] to be called."
+    "Ignored; other listeners will adjust the dimensions, causing [[dimensionsChanged]] to
+     be called."
     shared actual void tileSizeChanged(Integer oldSize, Integer newSize) { }
     "Handle a change to the selected location in the map. The property-change based
      version this replaced went to the model for the selected point rather than looking

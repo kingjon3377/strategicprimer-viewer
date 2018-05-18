@@ -84,7 +84,8 @@ object unitMemberHandler extends FluidBase() {
 	                retval.addSkill(readSkill(event, element.name, stream, players, warner,
 	                    idFactory));
 	            } else {
-	                throw UnwantedChildException.listingExpectedTags(element.name, event, Singleton("skill"));
+	                throw UnwantedChildException.listingExpectedTags(element.name, event,
+						Singleton("skill"));
 	            }
 	        } else if (is EndElement event, element.name == event.name) {
 	            break;
@@ -107,7 +108,8 @@ object unitMemberHandler extends FluidBase() {
 	shared WorkerStats readStats(StartElement element, QName parent, {XMLEvent*} stream,
 	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
 	    requireTag(element, parent, "stats");
-	    expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int", "wis", "cha");
+	    expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int",
+			"wis", "cha");
 	    spinUntilEnd(element.name, stream);
 	    return WorkerStats(getIntegerAttribute(element, "hp"),
 	        getIntegerAttribute(element, "max"),
@@ -176,10 +178,12 @@ object unitMemberHandler extends FluidBase() {
 	    }
 	}
 
-	shared Animal|AnimalTracks readAnimal(StartElement element, QName parent, {XMLEvent*} stream,
-	        IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
+	shared Animal|AnimalTracks readAnimal(StartElement element, QName parent,
+			{XMLEvent*} stream, IPlayerCollection players, Warning warner,
+			IDRegistrar idFactory) {
 	    requireTag(element, parent, "animal");
-	    expectAttributes(element, warner, "traces", "id", "count", "kind", "talking", "status", "wild", "born", "image");
+	    expectAttributes(element, warner, "traces", "id", "count", "kind", "talking",
+			"status", "wild", "born", "image");
 	    spinUntilEnd(element.name, stream);
 	    // To get the intended meaning of existing maps, we have to parse
 	    // traces="" as traces="true". If compatibility with existing maps
@@ -196,19 +200,24 @@ object unitMemberHandler extends FluidBase() {
 	    Integer id;
 	    if (traces) {
 	        if (hasAttribute(element, "id")) {
-	            warner.handle(UnsupportedPropertyException.inContext(element, "id", """when tracks="true""""));
+	            warner.handle(UnsupportedPropertyException.inContext(element, "id",
+					"""when tracks="true""""));
 	        }
 	        if (talking) {
-	            warner.handle(UnsupportedPropertyException.inContext(element, "talking", """when tracks="true""""));
+	            warner.handle(UnsupportedPropertyException.inContext(element, "talking",
+					"""when tracks="true""""));
 	        }
 	        if (status != "wild") {
-	            warner.handle(UnsupportedPropertyException.inContext(element, "status", """when tracks="true""""));
+	            warner.handle(UnsupportedPropertyException.inContext(element, "status",
+					"""when tracks="true""""));
 	        }
 	        if (born != -1) {
-	            warner.handle(UnsupportedPropertyException.inContext(element, "born", """when tracks="true""""));
+	            warner.handle(UnsupportedPropertyException.inContext(element, "born",
+					"""when tracks="true""""));
 	        }
 	        if (count != 1) {
-	            warner.handle(UnsupportedPropertyException.inContext(element, "count", """when tracks="true""""));
+	            warner.handle(UnsupportedPropertyException.inContext(element, "count",
+					"""when tracks="true""""));
 	        }
 	        return setImage(AnimalTracks(getAttribute(element, "kind")), element, warner);
 	    } else {
@@ -218,7 +227,8 @@ object unitMemberHandler extends FluidBase() {
 	                id, born, count), element, warner);
 	    }
 	}
-	shared void writeAnimalTracks(XMLStreamWriter ostream, AnimalTracks obj, Integer indentation) {
+	shared void writeAnimalTracks(XMLStreamWriter ostream, AnimalTracks obj,
+			Integer indentation) {
 		writeTag(ostream, "animal", indentation, true);
 		writeAttributes(ostream, "kind"->obj.kind, "traces"->true);
 		writeImage(ostream, obj);
@@ -236,7 +246,8 @@ object unitMemberHandler extends FluidBase() {
         if (obj.born >= 0) {
             // Write turn-of-birth if and only if it is fewer turns before the current
             // turn than this kind of animal's age of maturity.
-            if (currentTurn >= 0, exists maturityAge = maturityModel.maturityAges[obj.kind],
+            if (currentTurn >= 0, exists maturityAge =
+					maturityModel.maturityAges[obj.kind],
                     maturityAge <= (currentTurn - obj.born)) {
                 // do nothing
             } else {
@@ -249,7 +260,8 @@ object unitMemberHandler extends FluidBase() {
 	    writeImage(ostream, obj);
 	}
 
-	shared void writeSimpleImmortal(XMLStreamWriter ostream, SimpleImmortal obj, Integer indentation) {
+	shared void writeSimpleImmortal(XMLStreamWriter ostream, SimpleImmortal obj,
+			Integer indentation) {
 	    writeTag(ostream, obj.kind, indentation, true);
 	    writeAttributes(ostream, "id"->obj.id);
 	    writeImage(ostream, obj);

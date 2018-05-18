@@ -367,8 +367,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                         retval = testAgainstList<IFixture, IUnit>(fixture, point,
                             ourUnits.get(fixture.id), localReport) && retval; // TODO: syntax sugar
                     } else if (is AbstractTown fixture, ourTowns.defines(fixture.id)) {
-                        retval = testAgainstList<AbstractTown, AbstractTown>(fixture, point,
-                            ourTowns.get(fixture.id), localReport) && retval;
+                        retval = testAgainstList<AbstractTown, AbstractTown>(fixture,
+                            point, ourTowns.get(fixture.id), localReport) && retval;
                     } else if (is Subsettable<IFixture> fixture,
                             ourSubsettables.defines(fixture.id)) {
                         retval = testAgainstList(fixture, point,
@@ -382,7 +382,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                 }
                 //if (!set(obj.rivers[point]) // TODO: syntax sugar
                         //.complement(set(rivers[point])).empty) { // TODO: syntax sugar
-                if (!set(obj.rivers.get(point)).complement(set(rivers.get(point))).empty) {
+                if (!set(obj.rivers.get(point))
+                        .complement(set(rivers.get(point))).empty) {
                     localReport("Extra river(s)");
                     retval = false; // return false;
                     break;

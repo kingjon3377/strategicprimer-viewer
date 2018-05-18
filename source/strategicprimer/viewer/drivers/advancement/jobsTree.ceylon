@@ -14,7 +14,8 @@ import strategicprimer.model.map.fixtures.mobile.worker {
     ISkill
 }
 "A tree representing a worker's Jobs and Skills."
-class JobsTree(JobTreeModel jtModel) extends JTree(jtModel) satisfies SkillSelectionSource {
+class JobsTree(JobTreeModel jtModel) extends JTree(jtModel)
+		satisfies SkillSelectionSource {
 	MutableList<SkillSelectionListener> listeners =
 			ArrayList<SkillSelectionListener>();
 	shared actual void addSkillSelectionListener(SkillSelectionListener listener) =>

@@ -129,7 +129,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
 	                            is UnitMember selection = wtModel.getModelObject(last)) {
                             toTransfer.add([selection, parent]);
                         } else {
-                            log.info("Selection included non-UnitMember: ``type(wtModel.getModelObject(last))``");
+                            log.info("Selection included non-UnitMember: ``
+                                type(wtModel.getModelObject(last))``");
                         }
                     }
                 }
@@ -304,7 +305,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     }
                 } else if (orderCheck,
 	                    is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
-                    for (child in item.narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()) {
+                    for (child in item
+                            .narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()) {
                         IUnit unit = child.userObjectNarrowed;
                         if (!unit.empty) {
                             String orders = unit.getLatestOrders(turnSource())
@@ -349,7 +351,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
             if (exists pathLast =
                     getPathForLocation(event.x, event.y)?.lastPathComponent,
-		            is IWorker localNode = wtModel.getModelObject(pathLast), exists stats = localNode.stats) {
+		            is IWorker localNode = wtModel.getModelObject(pathLast),
+                    exists stats = localNode.stats) {
                 return "<html><p>``", ".join(statReferencesList
                                 .map(([desc, func]) => "``desc`` ``WorkerStats.getModifierString(func(stats))``"))``</p></html>";
             } else {

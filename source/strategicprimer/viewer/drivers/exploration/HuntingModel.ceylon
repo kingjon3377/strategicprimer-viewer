@@ -32,11 +32,11 @@ shared class HuntingModel {
 	}
     """The "nothing" value we insert."""
     shared static String noResults = "Nothing ...";
-    "How long it should take, in man-hours, to process a carcass of the specified mass, in pounds.
-     Calculated using quadratic regression on a set of nine data-points drawn from what I could find
-     in online research, plus the origin twice. The quadratic trend curve fit better than the linear
-     trendline for all but three of the points, and better than a cubic trend curve for all but the
-     origin."
+    "How long it should take, in man-hours, to process a carcass of the specified mass,
+     in pounds. Calculated using quadratic regression on a set of nine data-points drawn
+     from what I could find in online research, plus the origin twice. The quadratic
+     trend curve fit better than the linear trendline for all but three of the points,
+     and better than a cubic trend curve for all but the origin."
     shared static Float processingTime(Integer weight) =>
             0.855 + 0.0239 * weight - 0.000000872 * weight * weight;
     "The map to hunt in" IMapNG map;
@@ -44,18 +44,22 @@ shared class HuntingModel {
         this.map = map;
     }
     MapDimensions dimensions = map.dimensions;
-    {String*} fishKinds = map.locations.filter(matchingValue(TileType.ocean, map.baseTerrain.get))
+    {String*} fishKinds = map.locations
+        .filter(matchingValue(TileType.ocean, map.baseTerrain.get))
             .flatMap(map.fixtures.get).narrow<Animal>().map(Animal.kind).distinct;
-    "Animals (outside fortresses and units), both aquatic and non-aquatic, at the given location in the map."
+    "Animals (outside fortresses and units), both aquatic and non-aquatic, at the given
+     location in the map."
     {Animal*} baseAnimals(Point point) =>
             //map.fixtures[point].narrow<Animal>().filter(inverse(animal.talking)); // TODO: syntax sugar once compiler bug fixed
             map.fixtures.get(point).narrow<Animal>().filter(inverse(Animal.talking));
     "Non-aquatic animals (outside fortresses and units) at the given location in the map."
-    {Animal*} animals(Point point) => baseAnimals(point).filter(inverse(matchingPredicate(fishKinds.contains, Animal.kind)));
+    {Animal*} animals(Point point) => baseAnimals(point)
+        .filter(inverse(matchingPredicate(fishKinds.contains, Animal.kind)));
     "Aquatic animals (outside fortresses and units) at the given location in the map."
-    {Animal*} waterAnimals(Point point) => baseAnimals(point).filter(matchingPredicate(fishKinds.contains, Animal.kind));
-    """Plant-type harvestable fixtures in the map, followed by a number of "nothing found" sufficient to give the
-       proportion we want for that tile type."""
+    {Animal*} waterAnimals(Point point) =>
+            baseAnimals(point).filter(matchingPredicate(fishKinds.contains, Animal.kind));
+    """Plant-type harvestable fixtures in the map, followed by a number of "nothing found"
+       sufficient to give the proportion we want for that tile type."""
     {Grove|Meadow|Shrub|NothingFound*} plants(Point point) {
         value retval = map.fixtures.get(point).narrow<Grove|Meadow|Shrub>();
         Integer length = retval.size - 1;
@@ -72,14 +76,18 @@ shared class HuntingModel {
             Point point,
             "Filter/provider to use to find the animals."
             {Type|NothingFound*}(Point) chosenMap) given Type satisfies Object {
-        variable {<Point->Type|NothingFound>*} choices = surroundingPointIterable(point, dimensions)
-            .map((loc) => chosenMap(loc).map(curry(Entry<Point, Type|NothingFound>)(loc)))
-                .coalesced.flatMap(identity);
-        choices = choices.chain(Singleton(point->NothingFound.nothingFound).repeat(choices.size));
+        variable {<Point->Type|NothingFound>*} choices =
+                surroundingPointIterable(point, dimensions)
+                    .map((loc) => chosenMap(loc).map(
+                        curry(Entry<Point, Type|NothingFound>)(loc)))
+                    .coalesced.flatMap(identity);
+        choices = choices.chain(Singleton(point->NothingFound.nothingFound)
+            .repeat(choices.size));
         return singletonRandom.elements(choices);
     }
     """Get a stream of hunting results from the area surrounding the given tile. About half
         will be "nothing". May be an infinite stream."""
+    // TODO: We'd like to allow callers(?) to specify a proportion that *should* be tracks, perhaps replacing some of the NothingFound
     shared {<Point->Animal|AnimalTracks|NothingFound>*} hunt(
             "Whereabouts to search"
             Point point) => chooseFromMap(point, animals);

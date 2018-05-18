@@ -25,7 +25,8 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>() satisfies MapContentsReader {
+object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS towns (
 			   row INTEGER NOT NULL,
@@ -48,9 +49,9 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>() satis
 	shared actual void write(Sql db, AbstractTown obj, Point context) {
 		db.Insert("""INSERT INTO towns (row, column, id, kind, status, size, dc, name, owner, image, portrait, population)
 		             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""")
-				.execute(context.row, context.column, obj.id, obj.kind, obj.status.string, obj.townSize.string,
-					obj.dc, obj.name, obj.owner.playerId, obj.image, obj.portrait,
-					obj.population?.population else SqlNull(Types.integer));
+				.execute(context.row, context.column, obj.id, obj.kind, obj.status.string,
+					obj.townSize.string, obj.dc, obj.name, obj.owner.playerId, obj.image,
+					obj.portrait, obj.population?.population else SqlNull(Types.integer));
 		if (exists stats = obj.population) {
 			dbCommunityStatsHandler.initialize(db);
 			dbCommunityStatsHandler.write(db, stats, obj);
@@ -60,12 +61,14 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>() satis
 		log.trace("About to read towns");
 		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM towns""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
-				is String kind = dbRow["kind"], is String statusString = dbRow["status"],
-				is TownStatus status = TownStatus.parse(statusString), is String sizeString = dbRow["size"],
-				is TownSize size = TownSize.parse(sizeString), is Integer dc = dbRow["dc"],
-				is String name = dbRow["name"], is Integer ownerNum = dbRow["owner"],
-				is String|SqlNull image = dbRow["image"], is String|SqlNull portrait = dbRow["portrait"],
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
+				is String statusString = dbRow["status"],
+				is TownStatus status = TownStatus.parse(statusString),
+				is String sizeString = dbRow["size"], is TownSize size = TownSize.parse(sizeString),
+				is Integer dc = dbRow["dc"], is String name = dbRow["name"],
+				is Integer ownerNum = dbRow["owner"], is String|SqlNull image = dbRow["image"],
+				is String|SqlNull portrait = dbRow["portrait"],
 				is Integer|SqlNull population = dbRow["population"]);
 			AbstractTown town;
 			Player owner = map.players.getPlayer(ownerNum);

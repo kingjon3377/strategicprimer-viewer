@@ -38,8 +38,8 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&
             text.compare(node.text);
     "Add children iff they have children of their own."
     shared default void addIfNonEmpty(MutableTreeNode* children) =>
-            children.filter(matchingPredicate(Integer.positive, MutableTreeNode.childCount))
-                .each(appendNode);
+            children.filter(matchingPredicate(Integer.positive,
+                MutableTreeNode.childCount)).each(appendNode);
     "Add a node as a child."
     todo("Allow null instead of having
           [[strategicprimer.report.nodes::emptyReportNode]]?")

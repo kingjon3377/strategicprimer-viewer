@@ -29,8 +29,10 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
                     DistanceComparator(hq, dimensions).compare),
                 comparingOn(Tuple<Point|AbstractTown, Point, [AbstractTown]>.rest,
                     comparingOn(Tuple<AbstractTown, AbstractTown, []>.first,
-                        comparing(comparingOn(AbstractTown.townSize, townComparators.compareTownSize),
-                            comparingOn(AbstractTown.status, townComparators.compareTownStatus),
+                        comparing(comparingOn(AbstractTown.townSize,
+                                townComparators.compareTownSize),
+                            comparingOn(AbstractTown.status,
+                                townComparators.compareTownStatus),
                             comparingOn(AbstractTown.name, increasing<String>)))));
     "The header row for this table."
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Kind", "Size",

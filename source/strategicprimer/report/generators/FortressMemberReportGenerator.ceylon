@@ -69,10 +69,10 @@ shared class FortressMemberReportGenerator(
 			}
 		}
 	}
-    "Produces a sub-report on all fortress members. All fixtures referred to in this report
-     are removed from the collection. This method should probably never actually be called,
-     since nearly all resources will be in fortresses and should be reported as such, but
-     we'll handle this properly anyway."
+    "Produces a sub-report on all fortress members. All fixtures referred to in this
+     report are removed from the collection. This method should probably never actually
+     be called, since nearly all resources will be in fortresses and should be reported
+     as such, but we'll handle this properly anyway."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
         MutableHeadedMap<Implement, Point> equipment =
@@ -132,7 +132,8 @@ shared class FortressMemberReportGenerator(
     }
     "Produces a sub-report on a resource or piece of equipment. All fixtures referred
      to in this report are removed from the collection."
-    shared actual IReportNode produceRIRSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIRSingle(
+			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map, FortressMember item, Point loc) {
         assert (is IUnit|ResourcePile|Implement item);
         if (is IUnit item) {
@@ -168,12 +169,12 @@ shared class FortressMemberReportGenerator(
 	        }
 	    }
     }
-    "Produces a sub-report on all fortress members. All fixtures referred to in this report are
-     removed from the collection. This method should probably never actually be called, since
-     nearly all resources will be in fortresses and should be reported as such, but we'll handle
-     this properly anyway."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map) {
+    "Produces a sub-report on all fortress members. All fixtures referred to in this
+     report are removed from the collection. This method should probably never actually
+     be called, since nearly all resources will be in fortresses and should be reported
+     as such, but we'll handle this properly anyway."
+    shared actual IReportNode produceRIR(
+			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
         MutableMap<String, IReportNode> resourceKinds =
                 HashMap<String, IReportNode>();
         IReportNode equipment = ListReportNode("Equipment:");

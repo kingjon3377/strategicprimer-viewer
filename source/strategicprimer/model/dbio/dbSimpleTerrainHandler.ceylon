@@ -18,7 +18,8 @@ import strategicprimer.model.map.fixtures.terrain {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar, Point>() satisfies MapContentsReader {
+object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS simple_terrain (
 			   row INTEGER NOT NULL,
@@ -41,7 +42,8 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar,
 		case (is Sandbar) {
 			type = "sandbar";
 		}
-		db.Insert("""INSERT INTO simple_terrain (row, column, type, id, image) VALUES(?, ?, ?, ?, ?);""")
+		db.Insert("""INSERT INTO simple_terrain (row, column, type, id, image)
+		             VALUES(?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, type, obj.id, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {

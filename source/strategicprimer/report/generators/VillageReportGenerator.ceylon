@@ -93,8 +93,8 @@ shared class VillageReportGenerator(
 		ostream(" ``distCalculator.distanceString(loc)``");
 	}
 	"Produce the report on all known villages."
-	shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-			IMapNG map) {
+	shared actual IReportNode produceRIR(
+			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
 		IReportNode own = SectionListReportNode(5,
 			"Villages pledged to your service:");
 		IReportNode independents =
@@ -127,7 +127,8 @@ shared class VillageReportGenerator(
 		}
 	}
 	"Produce the (very brief) report for a particular village."
-	shared actual IReportNode produceRIRSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+	shared actual IReportNode produceRIRSingle(
+			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 			IMapNG map, Village item, Point loc) {
 		fixtures.remove(item.id);
 		if (item.owner.independent) {

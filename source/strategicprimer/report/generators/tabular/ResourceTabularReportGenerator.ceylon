@@ -30,7 +30,8 @@ shared class ResourceTabularReportGenerator()
     "Create a GUI table row representing the given fixture."
     shared actual [{String+}+] produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            Implement|CacheFixture|ResourcePile item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
+            Implement|CacheFixture|ResourcePile item, Integer key, Point loc,
+            Map<Integer, Integer> parentMap) {
         String kind;
         String quantity;
         String specifics;
@@ -90,11 +91,13 @@ shared class ResourceTabularReportGenerator()
     }
     "Write rows for equipment, counting multiple identical Implements in one line."
     shared actual void produceTable(Anything(String) ostream,
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            Map<Integer, Integer> parentMap) {
         {[Integer, [Point, CacheFixture|Implement|ResourcePile]]*} values =
                 fixtures.narrow<Integer->[Point, CacheFixture|Implement|ResourcePile]>()
-                    .sort(comparingOn(Entry<Integer, [Point, CacheFixture|Implement|ResourcePile]>.item, comparePairs))
-                .map(Entry.pair);
+                    .sort(comparingOn(
+                        Entry<Integer, [Point, CacheFixture|Implement|ResourcePile]>.item,
+                        comparePairs)).map(Entry.pair);
         writeRow(ostream, headerRow.first, *headerRow.rest);
         MutableMap<String, Integer> implementCounts = HashMap<String, Integer>();
         for ([key, [loc, fixture]] in values) {

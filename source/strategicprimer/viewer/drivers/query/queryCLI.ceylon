@@ -111,7 +111,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			"Owner of workers to count: ", true);
 		if (exists player = choice.item) {
 			Integer count = sum { 0, for (location in map.locations)
-				//                countWorkersInIterable(player, map.fixtures[location]) }; // TODO: syntax sugar once compiler bug fixed
+//                countWorkersInIterable(player, map.fixtures[location]) }; // TODO: syntax sugar once compiler bug fixed
 			countWorkersInIterable(player, map.fixtures.get(location)) };
 			cli.println("``player.name`` has ``count`` workers");
 		}
@@ -146,8 +146,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				.format(distance(start, end, map.dimensions), 0, 0)``");
 		}
 	}
-	"If the given driver model *has* subordinate maps, add a copy of the given fixture to them at the
-	 given location iff no fixture with the same ID is already there."
+	"If the given driver model *has* subordinate maps, add a copy of the given fixture to
+	 them at the given location iff no fixture with the same ID is already there."
 	void addToSubMaps(IDriverModel model, Point point, TileFixture fixture, Boolean zero) {
 		if (is IMultiMapModel model) {
 			for ([map, file] in model.subordinateMaps) {
@@ -157,11 +157,12 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			}
 		}
 	}
-	"Reduce the population of a group of plants, animals, etc., and copy the reduced form into all
-	 subordinate maps."
+	"Reduce the population of a group of plants, animals, etc., and copy the reduced form
+	 into all subordinate maps."
 	void reducePopulation(IDriverModel model, ICLIHelper cli, Point point,
 			HasPopulation<out TileFixture>&TileFixture fixture, String plural, Boolean zero) {
-		Integer count = Integer.smallest(cli.inputNumber("How many ``plural`` to remove: "), fixture.population);
+		Integer count = Integer.smallest(cli.inputNumber("How many ``plural`` to remove: "),
+			fixture.population);
 		if (count > 0) {
 			model.map.removeFixture(point, fixture);
 			Integer remaining = fixture.population - count;
@@ -170,7 +171,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				model.map.addFixture(point, addend);
 				if (is IMultiMapModel model) {
 					for ([map, file] in model.subordinateMaps) {
-						if (exists found = map.fixtures.get(point).find(shuffle(curry(fixture.isSubset))(noop))) {
+						if (exists found = map.fixtures.get(point)
+								.find(shuffle(curry(fixture.isSubset))(noop))) {
 							map.removeFixture(point, found);
 						}
 						map.addFixture(point, addend.copy(zero));
@@ -178,7 +180,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				}
 			} else if (is IMultiMapModel model) {
 				for ([map, file] in model.subordinateMaps) {
-					if (exists found = map.fixtures.get(point).find(shuffle(curry(fixture.isSubset))(noop))) {
+					if (exists found = map.fixtures.get(point)
+							.find(shuffle(curry(fixture.isSubset))(noop))) {
 						map.removeFixture(point, found);
 					}
 				}
@@ -194,7 +197,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			variable Integer time,
 			"How much time is deducted when nothing is found."
 			Integer noResultCost,
-			"""What verb to use to ask how long an encounter took: "gather", "fight", "process", e.g."""
+			"""What verb to use to ask how long an encounter took: "gather", "fight",
+			   "process", e.g."""
 			String verb,
 			"The CLI helper."
 			ICLIHelper cli,
@@ -207,7 +211,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				time -= noResultCost;
 			} else if (is AnimalTracks encounter) { // TODO: Is this case actually possible?
 				addToSubMaps(model, loc, encounter, true);
-				cli.println("Found only tracks or traces from ``encounter.kind`` for the next ``noResultCost`` minutes.");
+				cli.println("Found only tracks or traces from ``
+					encounter.kind`` for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
 			} else if (cli.inputBooleanInSeries("Found ``(encounter.population > 1) then
 					"a group of perhaps ``encounter.population`` ``encounter.kind``" else encounter.kind
@@ -222,7 +227,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 						time -= round(HuntingModel.processingTime(mass) / hands).integer;
 					}
 				}
-				if (cli.inputBooleanInSeries("Reduce animal group population of ``encounter.population``?")) {
+				if (cli.inputBooleanInSeries("Reduce animal group population of ``
+						encounter.population``?")) {
 					reducePopulation(model, cli, loc, encounter, "animals", true);
 				} else {
 					addToSubMaps(model, loc, encounter, true);
@@ -239,15 +245,19 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 	void hunt(IDriverModel model, HuntingModel huntModel, Point point, ICLIHelper cli,
 		"How long to spend hunting."
 		Integer time) =>
-			huntGeneral(model, time, 60 / hourlyEncounters, "fight and process", cli, huntModel.hunt(point));
+			huntGeneral(model, time, 60 / hourlyEncounters,
+				"fight and process", cli, huntModel.hunt(point));
 	"""Run fishing---that is, produce a list of "encounters"."""
 	void fish(IDriverModel model, HuntingModel huntModel, Point point, ICLIHelper cli,
 		"How long to spend hunting."
 		Integer time) =>
-			huntGeneral(model, time, 60 / hourlyEncounters, "try to catch and process", cli, huntModel.fish(point));
+			huntGeneral(model, time, 60 / hourlyEncounters,
+				"try to catch and process", cli, huntModel.fish(point));
 	"""Run food-gathering---that is, produce a list of "encounters"."""
-	void gather(IDriverModel model, HuntingModel huntModel, Point point, ICLIHelper cli, variable Integer time) {
-		variable {<Point->Grove|Shrub|Meadow|HuntingModel.NothingFound>*} encounters = huntModel.gather(point);
+	void gather(IDriverModel model, HuntingModel huntModel, Point point, ICLIHelper cli,
+			variable Integer time) {
+		variable {<Point->Grove|Shrub|Meadow|HuntingModel.NothingFound>*} encounters =
+				huntModel.gather(point);
 		Integer noResultCost = 60 / hourlyEncounters;
 		while (time > 0, exists loc->encounter = encounters.first) {
 			encounters = encounters.rest;
@@ -402,11 +412,12 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		}
 		return retval.sort(DistanceComparator(base, dimensions).compare).first;
 	}
-	"Print a list of active towns within the given distance of the given base that produce any resources,
-	 and what resources they produce."
+	"Print a list of active towns within the given distance of the given base that produce
+	 any resources, and what resources they produce."
 	void suggestTrade(IMapNG map, Point base, Integer distance, ICLIHelper cli) {
 		value comparator = DistanceComparator(base, map.dimensions);
-		for (location in surroundingPointIterable(base, map.dimensions, distance).distinct.sort(comparator.compare)) {
+		for (location in surroundingPointIterable(base, map.dimensions, distance).distinct
+				.sort(comparator.compare)) {
 			for (town in map.fixtures.get(location).narrow<ITownFixture>()) {
 				//for (town in map.fixtures[location].narrow<ITownFixture>()) { // TODO: syntax sugar once compiler bug fixed
 				if (town.status == TownStatus.active, exists population = town.population,
@@ -447,7 +458,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		cli.println(
 			"fortress: Show what a player automatically knows about a fortress's tile.");
 		cli.println("hunt, fish: Generate encounters with animals.`");
-		cli.println("gather: Generate encounters with fields, meadows, groves, orchards, or shrubs.");
+		cli.println(
+			"gather: Generate encounters with fields, meadows, groves, orchards, or shrubs.");
 		cli.println(
 			"herd: Determine the output from and time required for maintaining a herd.");
 		cli.println(
@@ -466,10 +478,14 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		Map<String, Anything()> commands = map {
 			"?"->usageLambda,
 			"help"->usageLambda,
-			"fortress"->(() => fortressInfo(model.map, cli.inputPoint("Location of fortress? "), cli)),
-			"hunt"->(()=>hunt(model, huntModel, cli.inputPoint("Location to hunt? "), cli, hunterHours * 60)),
-			"fish"->(()=>fish(model, huntModel, cli.inputPoint("Location to fish? "), cli, hunterHours * 60)),
-			"gather"->(()=>gather(model, huntModel, cli.inputPoint("Location to gather? "), cli, hunterHours * 60)),
+			"fortress"->(
+					() => fortressInfo(model.map, cli.inputPoint("Location of fortress? "), cli)),
+			"hunt"->(()=>hunt(model, huntModel, cli.inputPoint("Location to hunt? "), cli,
+				hunterHours * 60)),
+			"fish"->(()=>fish(model, huntModel, cli.inputPoint("Location to fish? "), cli,
+				hunterHours * 60)),
+			"gather"->(()=>gather(model, huntModel, cli.inputPoint("Location to gather? "), cli,
+				hunterHours * 60)),
 			"herd"->(()=>herd(model, cli, huntModel)),
 			"trap"->(()=>TrappingCLI().startDriverOnModel(cli, options, model)),
 			"distance"->(()=>printDistance(model.map, cli)),
@@ -492,7 +508,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			if ("quit".startsWith(command)) {
 				break;
 			}
-			{<String->Anything()>*} matches = commands.filterKeys(shuffle(String.startsWith)(command));
+			{<String->Anything()>*} matches =
+					commands.filterKeys(shuffle(String.startsWith)(command));
 			if (matches.size == 1) {
 				assert (exists first = matches.first);
 				first.item();

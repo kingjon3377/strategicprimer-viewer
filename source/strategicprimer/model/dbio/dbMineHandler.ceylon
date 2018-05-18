@@ -17,7 +17,8 @@ import strategicprimer.model.map.fixtures.towns {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>() satisfies MapContentsReader {
+object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS mines (
 			   row INTEGER NOT NULL,
@@ -30,16 +31,19 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>() satisfies Map
 		   );"""
 	];
 	shared actual void write(Sql db, Mine obj, Point context) {
-		db.Insert("""INSERT INTO mines (row, column, id, kind, status, image) VALUES(?, ?, ?, ?, ?, ?);""")
+		db.Insert("""INSERT INTO mines (row, column, id, kind, status, image)
+		             VALUES(?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id, obj.kind, obj.status.string, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		log.trace("About to read mines");
 		variable Integer count = 0;
 		for (dbRow in db.Select("""SELECT * FROM mines""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
-				is String kind = dbRow["kind"], is String statusString = dbRow["status"],
-				is TownStatus status = TownStatus.parse(statusString), is String|SqlNull image = dbRow["image"]);
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
+				is String statusString = dbRow["status"],
+				is TownStatus status = TownStatus.parse(statusString),
+				is String|SqlNull image = dbRow["image"]);
 			value mine = Mine(kind, status, id);
 			if (is String image) {
 				mine.image = image;

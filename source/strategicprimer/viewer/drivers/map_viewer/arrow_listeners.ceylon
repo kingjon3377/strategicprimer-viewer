@@ -98,7 +98,8 @@ object arrowListenerInitializer {
 	        inputMap.put(KeyStroke.getKeyStroke(stroke, 0), action);
 	    }
 	    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk3, InputEvent.shiftDownMask), "end");
-	    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk6, InputEvent.shiftDownMask), "caret");
+	    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk6, InputEvent.shiftDownMask),
+			"caret");
 	    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk4, InputEvent.shiftDownMask),
 	        "dollar");
 	    actionMap.put("ctrl-home", DirectionListener(join(selListener.jumpUp,

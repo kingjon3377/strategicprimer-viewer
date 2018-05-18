@@ -56,7 +56,8 @@ shared class ImmortalsReportGenerator(
         Point hq = invalidPoint)
         extends AbstractReportGenerator<Immortal>(comp, dimensions, hq) {
     "Produce a report on an individual immortal."
-    shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual void produceSingle(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Immortal item, Point loc) {
         fixtures.remove(item.id);
         ostream("At ``loc``: A(n) ``item`` ``distCalculator.distanceString(loc)``");
@@ -87,7 +88,8 @@ shared class ImmortalsReportGenerator(
         MutableMultimap<String, Point> giants = handleComplex(`Giant`);
         MutableMultimap<String, Point> fairies = handleComplex(`Fairy`, "");
         MutableMultimap<String, Point> dragons = handleComplex(`Dragon`);
-        for ([point, immortal] in fixtures.items.narrow<[Point, Immortal]>().sort(pairComparator)) {
+        for ([point, immortal] in fixtures.items.narrow<[Point, Immortal]>()
+                .sort(pairComparator)) {
             if (exists func = meta[type(immortal)]) {
                 func(immortal.string, point);
                 fixtures.remove(immortal.id);
@@ -97,7 +99,8 @@ shared class ImmortalsReportGenerator(
         !simples.empty) {
             ostream("""<h4>Immortals</h4>
                        <ul>""");
-            for (key->list in [centaurs, giants, fairies, dragons, simples].flatMap(Multimap.asMap)) {
+            for (key->list in [centaurs, giants, fairies, dragons, simples]
+                    .flatMap(Multimap.asMap)) {
                 if (!list.empty) {
                     ostream("<li>");
                     ostream(key);
@@ -110,7 +113,8 @@ shared class ImmortalsReportGenerator(
         }
     }
     "Produce a report node on an individual immortal."
-    shared actual IReportNode produceRIRSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual IReportNode produceRIRSingle(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Immortal item, Point loc) {
         fixtures.remove(item.id);
         return SimpleReportNode("At ``loc``: A(n) ``item`` ``distCalculator
@@ -118,8 +122,8 @@ shared class ImmortalsReportGenerator(
     }
     "Produce a report node on an individual immortal, or the intermediate-representation
      report on all immortals."
-    shared actual IReportNode produceRIR(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-	        IMapNG map) {
+    shared actual IReportNode produceRIR(
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
         MutableMap<String, IReportNode> simples = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> centaurs = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> giants = HashMap<String, IReportNode>();
@@ -138,7 +142,8 @@ shared class ImmortalsReportGenerator(
                 return node;
             }
         }
-        for ([point, item] in fixtures.items.narrow<[Point, Immortal]>().sort(pairComparator)) {
+        for ([point, item] in fixtures.items.narrow<[Point, Immortal]>()
+                .sort(pairComparator)) {
             IFixture immortal = item;
             if (is Dragon immortal) {
                 separateByKind(dragons, immortal)

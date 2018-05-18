@@ -144,20 +144,25 @@ shared class ReportCLI() satisfies SimpleDriver {
         if (is IMultiMapModel model) {
             for ([map, file] in model.allMaps) {
                 if (exists file, !cache.defines(file)) {
-                    cache[file] = reportGenerator.createReport(map, currentPlayer else map.currentPlayer);
+                    cache[file] = reportGenerator.createReport(map,
+						currentPlayer else map.currentPlayer);
                 }
             }
         } else if (exists file = model.mapFile) {
-            cache[file] = reportGenerator.createReport(model.map, currentPlayer else model.map.currentPlayer);
+            cache[file] = reportGenerator.createReport(model.map,
+				currentPlayer else model.map.currentPlayer);
         }
         if (cache.empty) {
             return;
         } else {
-            value localCache = cache.map((file->report) => suffixHelper.shortestSuffix(cache.keys, file.toAbsolutePath())->report);
+            value localCache = cache.map(
+						(file->report) => suffixHelper.shortestSuffix(cache.keys,
+							file.toAbsolutePath())->report);
             {Endpoint*} endpoints = localCache.map((file->report) =>
                 Endpoint {
 	                path = startsWith("/``file``");
-	                service(Request request, Response response) => response.writeString(report);
+	                service(Request request, Response response) =>
+							response.writeString(report);
 	            });
             Endpoint rootHandler = Endpoint {
                 path = isRoot();
@@ -309,7 +314,8 @@ shared class TabularReportCLI() satisfies SimpleDriver {
         } else {
             mapping = map { JPaths.get("unknown.xml")->model.map };
         }
-        MutableMap<[String, String], StringBuilder> builders = HashMap<[String, String], StringBuilder>();
+        MutableMap<[String, String], StringBuilder> builders =
+				HashMap<[String, String], StringBuilder>();
         Anything(String)(String) filenameFunction(JPath base) {
             String baseName = suffixHelper.shortestSuffix(mapping.keys, base);
             return (String tableName) {
@@ -345,12 +351,13 @@ shared class TabularReportCLI() satisfies SimpleDriver {
             Endpoint {
             path = matchEquals("/``file``.``table``.csv");
             void service(Request request, Response response) {
-                response.addHeader(Header("Content-Disposition", "attachment; filename=\"``table``.csv\""));
+                response.addHeader(Header("Content-Disposition",
+					"attachment; filename=\"``table``.csv\""));
                 response.writeString(builder.string);
             }
         });
-        {Endpoint*} tocs = mapping.keys.map(curry(suffixHelper.shortestSuffix)(mapping.keys))
-                .map((path) => Endpoint {
+        {Endpoint*} tocs = mapping.keys
+			.map(curry(suffixHelper.shortestSuffix)(mapping.keys)).map((path) => Endpoint {
             path = matchEquals("/``path``").or(matchEquals("/``path``/"));
             void service(Request request, Response response) {
                 renderTemplate(Html {
@@ -362,9 +369,11 @@ shared class TabularReportCLI() satisfies SimpleDriver {
                         H1 {
                             "Tabular Reports for ``path``";
                         }, Ul {
-                            builders.keys.filter(matchingValue(path, Tuple<String, String, String[]>.first))
+                            builders.keys.filter(matchingValue(path,
+								Tuple<String, String, String[]>.first))
                                     .map(([mapFile, table]) => Li {
-                                A { href="/``mapFile``.``table``.csv"; children = ["``table``.csv"]; }
+                                A { href="/``mapFile``.``table``.csv";
+									children = ["``table``.csv"]; }
                             })
                         }
                     }
@@ -385,7 +394,8 @@ shared class TabularReportCLI() satisfies SimpleDriver {
                             "Strategic Primer Taublar Reports";
                         },
                         Ul {
-                            mapping.keys.map(curry(suffixHelper.shortestSuffix)(mapping.keys))
+                            mapping.keys
+								.map(curry(suffixHelper.shortestSuffix)(mapping.keys))
                                     .map((file) => Li {
                                 A { href="/``file``/"; children = [file]; }
                             })
@@ -418,7 +428,8 @@ shared class TabularReportCLI() satisfies SimpleDriver {
 	                    return writer.write;
 	                } else {
 	                    File file;
-	                    switch (temp = base.siblingPath("``baseName``.``tableName``.csv").resource)
+	                    switch (temp = base.siblingPath("``baseName``.``tableName``.csv")
+							.resource)
 	                    case (is File) {
 	                        file = temp;
 	                    }
@@ -426,7 +437,8 @@ shared class TabularReportCLI() satisfies SimpleDriver {
 	                        file = temp.createFile();
 	                    }
 	                    else {
-	                        throw IOException("``base``.``tableName``.csv exists but is not a file");
+	                        throw IOException(
+								"``base``.``tableName``.csv exists but is not a file");
 	                    }
 	                    value writer = file.Overwriter();
 	                    writers["``baseName``.``tableName``.csv"] = writer;

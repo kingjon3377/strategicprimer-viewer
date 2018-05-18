@@ -28,7 +28,8 @@ object proxyWorkerTests {
 	        return;
 	    }
 	    StringBuilder message = StringBuilder();
-	    message.append("Worker should contain job ``jobName``, but contained the following:");
+	    message.append(
+			"Worker should contain job ``jobName``, but contained the following:");
 	    message.appendNewline();
 	    for (job in worker) {
 	        message.append(job.name);
@@ -123,8 +124,8 @@ object proxyWorkerTests {
 	        "But second worker original should be a subset of second worker now");
 	}
 
-	"Test that the complex case, of a proxy for the workers in a unit, which is itself a proxy
-	 for parallel units in multiple maps, works properly."
+	"Test that the complex case, of a proxy for the workers in a unit, which is itself a
+	 proxy for parallel units in multiple maps, works properly."
 	test
 	shared void testProxyUnitProxy() {
 	    Worker firstWorker = Worker("one", "human", 1,
@@ -184,17 +185,24 @@ object proxyWorkerTests {
 	    ISkill skillOne = Skill("skillOne", 0, 10);
 	    ISkill skillTwo = Skill("skillOne", 0, 10);
 	    IJob jobOne = Job("jobOne", 0, skillOne, Skill("skillTwo", 2, 5));
-	    IJob jobTwo = Job("jobOne", 0, skillTwo, Skill("skillThree", 1, 8), Skill("skillFour", 5, 0));
-	    assertTrue(jobTwo.map(ISkill.name).any("skillFour".equals), "Extra skill is present at first");
+	    IJob jobTwo = Job("jobOne", 0, skillTwo, Skill("skillThree", 1, 8),
+			Skill("skillFour", 5, 0));
+	    assertTrue(jobTwo.map(ISkill.name).any("skillFour".equals),
+			"Extra skill is present at first");
 	    jobTwo.removeSkill(Skill("skillFour", 5, 0));
-	    assertFalse(jobTwo.filter(nonemptySkill).map(ISkill.name).any("skillFour".equals), "Extra skill isn't present after being removed");
+	    assertFalse(jobTwo.filter(nonemptySkill).map(ISkill.name).any("skillFour".equals),
+			"Extra skill isn't present after being removed");
 	    IWorker workerOne = Worker("workerName", "workerRace", 1, jobOne);
 	    IWorker workerTwo = Worker("workerName", "workerRace", 1, jobTwo);
-	    assertTrue(jobOne.map(ISkill.name).any("skillOne".equals), "Common skill is present at first");
-	    assertTrue(jobTwo.map(ISkill.name).any("skillOne".equals), "Common skill is present at first");
+	    assertTrue(jobOne.map(ISkill.name).any("skillOne".equals),
+			"Common skill is present at first");
+	    assertTrue(jobTwo.map(ISkill.name).any("skillOne".equals),
+			"Common skill is present at first");
 	    IJob proxyJob = ProxyJob("jobOne", true, workerOne, workerTwo);
 	    proxyJob.removeSkill(Skill("skillOne", 0, 10));
-	    assertFalse(jobOne.map(ISkill.name).any("skillOne".equals), "Common skill isn't there after being removed");
-	    assertFalse(jobTwo.map(ISkill.name).any("skillOne".equals), "Common skill isn't there after being removed");
+	    assertFalse(jobOne.map(ISkill.name).any("skillOne".equals),
+			"Common skill isn't there after being removed");
+	    assertFalse(jobTwo.map(ISkill.name).any("skillOne".equals),
+			"Common skill isn't there after being removed");
 	}
 }

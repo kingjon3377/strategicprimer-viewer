@@ -12,7 +12,8 @@ import strategicprimer.model.map {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>() satisfies MapContentsReader {
+object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS players (
 			   id INTEGER NOT NULL,
@@ -22,7 +23,8 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>() satisfie
 		   );"""
 	];
 	shared actual void write(Sql db, Player obj, IMapNG context) {
-		db.Insert("""INSERT INTO players (id, codename, current, portrait) VALUES(?, ?, ?, ?);""")
+		db.Insert("""INSERT INTO players (id, codename, current, portrait)
+		             VALUES(?, ?, ?, ?);""")
 				.execute(obj.playerId, obj.name, obj.current, obj.portrait);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {

@@ -148,8 +148,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			return frame.mapModel;
 		}
 	}
-	static class ReportMouseHandler(JTree reportTree, IDriverModel model, MenuBroker menuHandler)
-			extends MouseAdapter() {
+	static class ReportMouseHandler(JTree reportTree, IDriverModel model,
+			MenuBroker menuHandler) extends MouseAdapter() {
 		shared actual void mousePressed(MouseEvent event) {
 			if (exists selPath = reportTree.getPathForLocation(event.x, event.y),
 				platform.hotKeyPressed(event),
@@ -177,8 +177,10 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	Point findHQ() {
 		variable Point retval = invalidPoint;
 		for (location in model.map.locations) {
-			//            for (fixture in model.map.fixtures[location].narrow<Fortress>().filter(matchingPredicate(matchingValue(model.currentPlayer.playerId, Player.playerId), Fortress.owner))) { // TODO: syntax sugar once compiler bug fixed
-			for (fixture in model.map.fixtures.get(location).narrow<Fortress>().filter(matchingPredicate(matchingValue(model.currentPlayer.playerId, Player.playerId), Fortress.owner))) { // TODO: syntax sugar once compiler bug fixed
+//            for (fixture in model.map.fixtures[location].narrow<Fortress>() // TODO: syntax sugar once compiler bug fixed
+			for (fixture in model.map.fixtures.get(location).narrow<Fortress>()
+					.filter(matchingPredicate(matchingValue(model.currentPlayer.playerId,
+						Player.playerId), Fortress.owner))) {
 				if ("HQ" == fixture.name) {
 					return location;
 				} else if (location.valid, !retval.valid) {
@@ -193,7 +195,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		report.rootVisible = true;
 		assert (is DefaultMutableTreeNode root = reportModel.root);
 		report.expandPath(TreePath(root.path));
-		report.cellRenderer = ReportTreeRenderer(DistanceComparator(findHQ(), model.mapDimensions));
+		report.cellRenderer = ReportTreeRenderer(DistanceComparator(findHQ(),
+			model.mapDimensions));
 		ToolTipManager.sharedInstance().registerComponent(report);
 		report.addMouseListener(ReportMouseHandler(report, model, menuHandler));
 		return report;
@@ -267,7 +270,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		}
 		playerLabel.setArgs(newPlayer.name, platform.shortcutDescription);
 	}
-	assert (exists thisReference = ComponentParentStream(contentPane).narrow<JFrame>().first);
+	assert (exists thisReference =
+			ComponentParentStream(contentPane).narrow<JFrame>().first);
 	jMenuBar = workerMenu(menuHandler.actionPerformed,
 		thisReference, model);
 	pack();

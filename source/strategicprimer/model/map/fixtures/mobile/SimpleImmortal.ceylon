@@ -64,7 +64,8 @@ shared class Djinn(Integer id) extends SimpleImmortal("djinn", "Djinni", 30, id)
 shared class Griffin(Integer id) extends SimpleImmortal("griffin", "Griffins", 28, id) {
 	shared actual Griffin copy(Boolean zero) => Griffin(id);
 }
-shared class Minotaur(Integer id) extends SimpleImmortal("minotaur", "Minotaurs", 30, id) {
+shared class Minotaur(Integer id)
+        extends SimpleImmortal("minotaur", "Minotaurs", 30, id) {
 	shared actual Minotaur copy(Boolean zero) => Minotaur(id);
 }
 shared class Ogre(Integer id) extends SimpleImmortal("ogre", "Ogres", 28, id) {

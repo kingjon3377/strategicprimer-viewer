@@ -22,16 +22,19 @@ shared annotation TodoAnnotation todo(
 
 "The annotation class for the [[enumeratedParameter]] annotation."
 by("Jonathan Lovelace")
-shared final annotation class EnumSingleParameterAnnotation(ClassOrInterfaceDeclaration type)
-		satisfies OptionalAnnotation<EnumSingleParameterAnnotation,FunctionOrValueDeclaration> & ArgumentListProvider & ArgumentProvider {
+shared final annotation class EnumSingleParameterAnnotation(
+			ClassOrInterfaceDeclaration type)
+		satisfies OptionalAnnotation<EnumSingleParameterAnnotation,
+			FunctionOrValueDeclaration> & ArgumentListProvider & ArgumentProvider {
 	[Object] entuple(Object item) => [item];
 	shared actual {Anything[]*} argumentLists(ArgumentProviderContext context) =>
 			type.apply<Anything>().caseValues.coalesced.map(entuple);
-	shared actual {Anything*} arguments(ArgumentProviderContext context) => type.apply<Anything>().caseValues.coalesced;
+	shared actual {Anything*} arguments(ArgumentProviderContext context) =>
+			type.apply<Anything>().caseValues.coalesced;
 
 }
-"Annotation to replace [[ceylon.test::parameters]], providing each case value of an enumerated type as an
- argument for the test method in turn."
+"Annotation to replace [[ceylon.test::parameters]], providing each case value of an
+ enumerated type as an argument for the test method in turn."
 by("Jonathan Lovelace")
-shared annotation EnumSingleParameterAnnotation enumeratedParameter(ClassOrInterfaceDeclaration type) =>
-		EnumSingleParameterAnnotation(type);
+shared annotation EnumSingleParameterAnnotation enumeratedParameter(
+		ClassOrInterfaceDeclaration type) => EnumSingleParameterAnnotation(type);

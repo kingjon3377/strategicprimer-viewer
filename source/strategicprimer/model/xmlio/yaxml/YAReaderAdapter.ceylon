@@ -78,7 +78,8 @@ class YAReaderAdapter(
         YAResourceReader(warning, idFactory), YATerrainReader(warning, idFactory),
         YATextReader(warning, idFactory), townReader,
         YAUnitReader(warning, idFactory, players), YAWorkerReader(warning, idFactory) ];
-    MutableMap<String, YAAbstractReader<out Object>> readerCache = HashMap<String, YAAbstractReader<out Object>>();
+    MutableMap<String, YAAbstractReader<out Object>> readerCache =
+			HashMap<String, YAAbstractReader<out Object>>();
     MutableMap<ClassOrInterface<Object>, YAAbstractReader<out Object>> writerCache =
             HashMap<ClassOrInterface<Object>, YAAbstractReader<out Object>>();
     "Parse an object from XML."

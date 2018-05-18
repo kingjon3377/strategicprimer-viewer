@@ -16,7 +16,8 @@ import strategicprimer.model.map.fixtures.resources {
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit, Point>() satisfies MapContentsReader {
+object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit, Point>()
+		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS minerals (
 			   row INTEGER NOT NULL,
@@ -49,10 +50,13 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
 		log.trace("About to read mineral veins");
 		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
-				is String kindString = dbRow["kind"], is StoneKind kind = StoneKind.parse(kindString),
-				is Integer dc = dbRow["dc"], is String|SqlNull image = dbRow["image"]);
+		for (dbRow in db.Select(
+				"""SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'""")
+				.Results()) {
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is Integer id = dbRow["id"], is String kindString = dbRow["kind"],
+				is StoneKind kind = StoneKind.parse(kindString), is Integer dc = dbRow["dc"],
+				is String|SqlNull image = dbRow["image"]);
 			value stone = StoneDeposit(kind, dc, id);
 			if (is String image) {
 				stone.image = image;
@@ -65,9 +69,12 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 		}
 		log.trace("Finished reading mineral veins, about to read stone deposits");
 		count = 0;
-		for (dbRow in db.Select("""SELECT row, column, id, kind, exposed, dc, image FROM minerals WHERE type = 'mineral'""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"], is Integer id = dbRow["id"],
-				is String kind = dbRow["kind"], is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
+		for (dbRow in db.Select(
+				"""SELECT row, column, id, kind, exposed, dc, image FROM minerals
+				   WHERE type = 'mineral'""").Results()) {
+			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
+				is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
 				is Integer dc = dbRow["dc"], is String|SqlNull image = dbRow["image"]);
 			value mineral = MineralVein(kind, exposed, dc, id);
 			if (is String image) {

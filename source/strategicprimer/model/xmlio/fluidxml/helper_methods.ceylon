@@ -219,8 +219,8 @@ abstract class FluidBase {
 		"The parameter we want"
 		String param) => getAttributeByName(element, param) exists;
 
-	"If the specified tag has an ID as a property, return it; otherwise warn about its absence
-	 and generate one."
+	"If the specified tag has an ID as a property, return it; otherwise warn about its
+	 absence and generate one."
 	throws(`class SPFormatException`, "on SP format problems reading the property")
 	static shared Integer getOrGenerateID(
 	        "The tag we're working with"
@@ -430,15 +430,16 @@ abstract class FluidBase {
 	        } else if (is Integer|Boolean item) {
 	            ostream.writeAttribute(spNamespace, name, item.string);
 	        } else {
-	            log.warn("Unhandled Number type ``type(item)`` in FluidBase.writeAttributes");
+	            log.warn(
+					"Unhandled Number type ``type(item)`` in FluidBase.writeAttributes");
 	            ostream.writeAttribute(spNamespace, name, item.string);
 	        }
 	    }
 	}
 
-	"""If the specified tag has an "owner" property, return the player it indicates; otherwise
-	   warn about its absence and return the "independent" player from the player
-	   collection."""
+	"""If the specified tag has an "owner" property, return the player it indicates;
+	   otherwise warn about its absence and return the "independent" player from the
+	   player collection."""
 	throws(`class SPFormatException`, "on SP format problems reading the attribute")
 	static shared Player getPlayerOrIndependent(
 	        "The tag we're working with"
@@ -504,10 +505,11 @@ abstract class FluidBase {
 	static Boolean isSupportedNamespace(QName name) =>
 			{spNamespace, XMLConstants.nullNsUri}.contains(name.namespaceURI);
 	"Warn if any unsupported attribute is on this tag."
-	static shared void expectAttributes(StartElement element, Warning warner, String* attributes) {
+	static shared void expectAttributes(StartElement element, Warning warner,
+			String* attributes) {
 		{String*} local = attributes.map(String.lowercased);
-	    for (attribute in ConvertingIterable<Attribute>(element.attributes).map(Attribute.name)
-	            .filter(isSupportedNamespace)) {
+	    for (attribute in ConvertingIterable<Attribute>(element.attributes)
+				.map(Attribute.name).filter(isSupportedNamespace)) {
 	        if (!local.contains(attribute.localPart.lowercased)) {
 	            warner.handle(UnsupportedPropertyException(element, attribute.localPart));
 	        }

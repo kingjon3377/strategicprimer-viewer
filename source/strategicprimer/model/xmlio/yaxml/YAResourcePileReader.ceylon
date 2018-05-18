@@ -23,7 +23,8 @@ class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
     shared actual ResourcePile read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "resource");
-        expectAttributes(element, "quantity", "kind", "contents", "unit", "created", "id", "image");
+        expectAttributes(element, "quantity", "kind", "contents", "unit", "created",
+            "id", "image");
         ResourcePile retval = ResourcePile(getOrGenerateID(element),
             getParameter(element, "kind"), getParameter(element, "contents"),
             Quantity(getNumericParameter(element, "quantity"),

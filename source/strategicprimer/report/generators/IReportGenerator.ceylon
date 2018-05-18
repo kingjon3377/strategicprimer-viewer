@@ -29,7 +29,8 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
     }
     "A [[HeadedMap]] that is also mutable."
     shared /* static */ interface MutableHeadedMap<Key, Value>
-            satisfies HeadedMap<Key, Value>&MutableMap<Key, Value> given Key satisfies Object {}
+            satisfies HeadedMap<Key, Value>&MutableMap<Key, Value>
+            given Key satisfies Object {}
     "Write a (sub-)report to a stream. All fixtures that this report references should
      be removed from the set before returning."
     shared formal void produce(
@@ -61,7 +62,8 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
             "The map. (Needed to get terrain type for some reports.)"
             IMapNG map);
     "Produce an intermediate-representation form of the report representing an item. All
-     fixtures that this report references should be removed from the set before returning."
+     fixtures that this report references should be removed from the set before
+     returning."
     todo("Move back into [[produceRIR]] once eclipse/ceylon#2147 fixed")
     shared formal IReportNode produceRIRSingle(
         "The set of fixtures in the map."

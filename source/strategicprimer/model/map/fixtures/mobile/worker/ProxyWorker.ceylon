@@ -134,7 +134,7 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
             statsCache = null;
         }
         workers.add(item);
-        MutableList<IJob> proxyJobsTemp = ArrayList<IJob> { elements = proxyJobs; }; // TODO: SHouldn't something be done with this list?
+        MutableList<IJob> proxyJobsTemp = ArrayList<IJob> { elements = proxyJobs; }; // TODO: Shouldn't something be done with this list?
         for (job in item) {
             String name = job.name;
             if (jobNames.contains(name)) {
