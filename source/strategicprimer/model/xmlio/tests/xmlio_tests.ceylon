@@ -623,6 +623,8 @@ object xmlTests {
 	        """<player code_name="one" number="1"><troll /></player>""", null);
 	    assertMissingProperty<Player>("""<player code_name="one" />""", "number", null);
 	    assertMissingProperty<Player>("""<player number="1" />""", "code_name", null);
+	    assertPortraitSerialization("Players can have associated portraits",
+	        PlayerImpl(3, "three"));
 	}
 
 	test

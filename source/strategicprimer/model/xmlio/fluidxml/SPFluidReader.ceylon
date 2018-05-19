@@ -304,7 +304,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "player");
         requireNonEmptyAttribute(element, "number", true, warner);
         requireNonEmptyAttribute(element, "code_name", true, warner);
-        expectAttributes(element, warner, "number", "code_name", "portrait");// TODO: add test of player-portrait functionality
+        expectAttributes(element, warner, "number", "code_name", "portrait");
         // We're thinking about storing "standing orders" in the XML under the <player>
         // tag, and also possibly scientific progress; so as to not require players to
         // upgrade to even read their maps once we start doing so, we *now* only *warn*
