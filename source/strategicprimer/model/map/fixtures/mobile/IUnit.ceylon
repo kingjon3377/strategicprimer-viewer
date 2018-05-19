@@ -88,9 +88,8 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
                 Map<Integer, UnitMember> ours =
                         createMap(map((member) => member.id->member));
                 variable Boolean retval = true;
-                void localReport(String string) => // TODO: Could become method reference to "``interpolation``".plus
-                        report(
-                            "In unit of kind ``kind`` named ``name`` (ID #``id``):\t``string``");
+                Anything(String) localReport =
+                        compose(report, "In unit of kind ``kind`` named ``name`` (ID # ``id``):\t".plus);
                 for (member in obj) {
                     if (exists ourMember = ours[member.id]) {
                         if (!ourMember.isSubset(member, localReport)) {
