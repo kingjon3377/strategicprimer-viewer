@@ -33,7 +33,7 @@ import strategicprimer.drivers.worker.common {
 "A TreeModel implementation for a player's units and workers."
 class WorkerTreeModel satisfies IWorkerTreeModel {
 	static Boolean(IUnit) containingItem(UnitMember item) =>
-                    (IUnit unit) => unit.contains(item); // TODO: Replace with method-reference logic
+                    shuffle(IUnit.contains)(item);
 	variable Player player;
 	IWorkerModel model;
 	shared new (Player player, IWorkerModel model) {
