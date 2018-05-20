@@ -120,6 +120,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                             log.warn("I/O error loading portrait", except);
                         }
                     }
+                    repaint();
                 }
             }
         }
