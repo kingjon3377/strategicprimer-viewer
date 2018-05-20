@@ -67,6 +67,9 @@ import strategicprimer.model.xmlio {
 import strategicprimer.drivers.gui.common {
     SPFrame
 }
+import java.lang {
+	JThread=Thread
+}
 "The main window for the map viewer app."
 shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 	static JFrame containingWindow(Component component) {
@@ -87,13 +90,15 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 		mapModel = model;
 		menuHandler = menuListener;
 	}
+	void acceptDroppedFileImpl(JPath file) {
+		value map = mapReaderAdapter.readMapModel(file, warningLevels.default);
+		SwingUtilities.invokeLater(() =>
+			ViewerFrame(ViewerModel.copyConstructor(map), menuHandler).showWindow());
+	}
 	// TODO: Keep track of whether the map has been modified and if not replace it
 	// instead of opening a new window
 	shared actual void acceptDroppedFile(JPath file) =>
-			SwingUtilities.invokeLater(() => // TODO: do the reading in a separate thread somehow; TODO: somehow avoid lambda here
-				ViewerFrame(ViewerModel.copyConstructor(
-					mapReaderAdapter.readMapModel(file, warningLevels.default)),
-						menuHandler).showWindow());
+			JThread(curry(acceptDroppedFileImpl)(file)).start();
 	shared actual Boolean supportsDroppedFiles = true;
 	JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
 		mapPanel = mapComponent(mapModel, tableModel.shouldDisplay, tableModel);
