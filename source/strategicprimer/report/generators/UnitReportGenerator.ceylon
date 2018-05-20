@@ -197,7 +197,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             ostream("""<h4>Units in the map</h4>
                        <p>(Any units listed above are not described again.)</p>
                        """);
-            Anything(IUnit->Point, Anything(String)) unitFormatter =
+            Anything(IUnit->Point, Anything(String)) unitFormatter = // TODO: Use method-in-method syntax, not Type(Type) var = lambda.
                             (IUnit key->Point val, Anything(String) formatter) {
                         formatter("At ``val````distCalculator
                             .distanceString(val)``");

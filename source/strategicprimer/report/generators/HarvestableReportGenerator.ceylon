@@ -215,13 +215,9 @@ shared class HarvestableReportGenerator
                 !all.every(HeadedList.empty)) {
             ostream("""<h4>Resource Sources</h4>
                    """);
-			// TODO: Define a default Anything(Type->Point, Anything(String)) consumer delegating to produceSingle()
             for (HeadedMap<HarvestableFixture, Point> mapping in [caches, groves,
                     meadows, mines]) {
-                writeMap(ostream, mapping,
-                            (HarvestableFixture->Point entry,
-                                Anything(String) formatter) => produceSingle(fixtures, map,
-                                formatter, entry.key, entry.item));
+                writeMap(ostream, mapping, defaultFormatter(fixtures, map));
             }
             all.map(Object.string).each(ostream);
         }

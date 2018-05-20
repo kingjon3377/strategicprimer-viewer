@@ -35,9 +35,7 @@ shared class AdventureReportGenerator(
 				.sort(pairComparator)) {
 			adventures[item] = loc;
 		}
-		writeMap(ostream, adventures,
-					(AdventureFixture key->Point val, formatter) => produceSingle(
-						fixtures, map, formatter, key, val));
+		writeMap(ostream, adventures, defaultFormatter(fixtures, map));
 	}
 	"Produce a more verbose sub-report on an adventure hook."
 	shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,

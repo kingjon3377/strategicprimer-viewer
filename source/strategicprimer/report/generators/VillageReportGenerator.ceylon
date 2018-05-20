@@ -65,8 +65,7 @@ shared class VillageReportGenerator(
 		Comparison byDistance(Village->Point first, Village->Point second) =>
 				distCalculator.compare(first.item, second.item);
 		Anything(Village->Point, Anything(String)) writer =
-				(Village key->Point val, Anything(String) formatter) =>
-				produceSingle(fixtures, map, formatter, key, val);
+				defaultFormatter(fixtures, map);
 		writeMap(ostream, own, writer, byDistance);
 		writeMap(ostream, independents, writer, byDistance);
 		if (!others.empty) {

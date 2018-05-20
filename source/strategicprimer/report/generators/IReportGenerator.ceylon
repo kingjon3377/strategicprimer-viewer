@@ -74,6 +74,11 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
         T item,
         "Its location"
         Point loc);
+    "A factory for a default formatter for [[writeMap]]."
+    shared default Anything(T->Point, Anything(String)) defaultFormatter(
+        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) =>
+            (T key->Point val, Anything(String) formatter) =>
+	            produceSingle(fixtures, map, formatter, key, val);
     "Write the contents of a Map to a stream as a list, but don't write anything
      if it is empty."
     shared default void writeMap<out Key>(

@@ -109,9 +109,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             ostream("""<h4>Cities, towns, and/or fortifications you know about:</h4>
                    """);
             for (mapping in [abandoned, active, burned, ruined]) {
-                writeMap(ostream, mapping,
-                            (ITownFixture key->Point val, formatter) =>
-                    produceSingle(fixtures, map, formatter, key, val));
+                writeMap(ostream, mapping, defaultFormatter(fixtures, map));
             }
         }
     }
