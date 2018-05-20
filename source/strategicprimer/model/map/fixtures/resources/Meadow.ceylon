@@ -83,10 +83,10 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
                 return false;
             }
             Anything(String) localReport;
-            if (field) { // TODO: These can be made method-reference logic
-                localReport = (String str) => report("In ``kind`` field (ID #``id``):\t``str``");
+            if (field) {
+                localReport = compose(report, "In ``kind`` field (ID #``id``):\t".plus);
             } else {
-                localReport = (String str) => report("In ``kind`` meadow (ID #``id``):\t``str``");
+                localReport = compose(report, "In ``kind`` meadow (ID #``id``):\t".plus);
             }
             variable Boolean retval = true;
             if (status != other.status) {
