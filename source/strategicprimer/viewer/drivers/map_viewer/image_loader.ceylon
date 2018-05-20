@@ -61,7 +61,7 @@ shared object imageLoader {
 	        try (res = ResourceInputStream("images/``file``",
 	                `module strategicprimer.viewer`,
 	                    Types.classForDeclaration(`class SPMenu`))) {
-	            if (exists image = ImageIO.read(res)) { // FIXME: ImageIO.read() is documented to leave the stream open!
+	            if (exists image = ImageIO.read(res)) {
 	                imageCache[file] = image;
 	                return image;
 	            } else {
