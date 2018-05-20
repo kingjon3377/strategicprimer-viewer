@@ -131,6 +131,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                             }
                         }
                     }
+                    repaint();
                 }
             }
         }
