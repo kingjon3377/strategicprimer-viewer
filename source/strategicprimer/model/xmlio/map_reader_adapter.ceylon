@@ -6,8 +6,7 @@ import ceylon.logging {
 	logger
 }
 import ceylon.test {
-	test,
-	assertEquals
+	test
 }
 
 import java.io {
