@@ -384,8 +384,7 @@ SPFrame explorationFrame(IExplorationModel model,
                         .each(selectedValuesList.add);
             }], ["Should the explorer dig to find what kind of ground is here?",
 				model.dig]];
-            shared actual void actionPerformed(ActionEvent event) =>
-                    SwingUtilities.invokeLater(() {
+            void actionPerformedImpl() {
                 try {
                     value fixtures = selectedValuesList;
                     if (Direction.nowhere == direction) {
@@ -441,7 +440,9 @@ SPFrame explorationFrame(IExplorationModel model,
                         listener.deduct(1);
                     }
                 }
-            });
+            }
+            shared actual void actionPerformed(ActionEvent event) =>
+                    SwingUtilities.invokeLater(actionPerformedImpl);
         }
         for (direction in [Direction.northwest,
 	            Direction.north,
