@@ -114,9 +114,10 @@ shared class FortressMemberReportGenerator(
                 ostream("""<li>Resources:<ul>
                             """);
                 for (kind->mapping in resources) {
+                    ostream("""<li>""");
                     writeMap(ostream, mapping, defaultFormatter(fixtures, map));
                     ostream("""</li>
-                           """); // FIXME: Need matching open-<li> before! (Or else remove this close-<li> if provided by writeMap().)
+                           """);
                 }
                 ostream("""</ul>
                            </li>
