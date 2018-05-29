@@ -37,7 +37,8 @@ import javax.swing.table {
 }
 
 import lovelace.util.common {
-    Comparator
+    Comparator,
+	silentListener
 }
 import lovelace.util.jvm {
     centeredHorizontalBox,
@@ -110,6 +111,18 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 			detailPanel(mapModel.mapDimensions.version, mapModel);
 	mapModel.addVersionChangeListener(detailPane);
 	mapModel.addSelectionChangeListener(detailPane);
+	void displayAllListener() {
+		for (matcher in tableModel) {
+			matcher.displayed = true;
+		}
+		tableModel.fireTableRowsUpdated(0, tableModel.rowCount);
+	}
+	void displayNoneListener() {
+		for (matcher in tableModel) {
+			matcher.displayed = false;
+		}
+		tableModel.fireTableRowsUpdated(0, tableModel.rowCount);
+	}
 	JComponent createFilterPanel() {
 		JTable table = JTable(tableModel);
 		table.dragEnabled = true;
@@ -122,18 +135,8 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 		table.preferredScrollableViewportSize = table.preferredSize;
 		table.fillsViewportHeight = true;
 		table.autoResizeMode = JTable.autoResizeLastColumn;
-		JButton allButton = listenedButton("Display All", (ActionEvent event) {
-			for (matcher in tableModel) {
-				matcher.displayed = true;
-			}
-			tableModel.fireTableRowsUpdated(0, tableModel.rowCount);
-		});
-		JButton noneButton = listenedButton("Display None", (ActionEvent event) {
-			for (matcher in tableModel) {
-				matcher.displayed = false;
-			}
-			tableModel.fireTableRowsUpdated(0, tableModel.rowCount);
-		});
+		JButton allButton = listenedButton("Display All", silentListener(displayAllListener));
+		JButton noneButton = listenedButton("Display None", silentListener(displayNoneListener));
 		platform.makeButtonsSegmented(allButton, noneButton);
 		JPanel buttonPanel = (platform.systemIsMac) then
 		centeredHorizontalBox(allButton, noneButton)
