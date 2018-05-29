@@ -245,24 +245,24 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 	        includeInGUIList = false;
 	        supportedOptionsTemp = ["--report=out.csv"];
     };
+    Integer reps = 50;
+    {CachingStrategy*} cachingStrategies = `CachingStrategy`.caseValues;
+    void runTestProcedure(ICLIHelper cli, IMapNG map, String filename) {
+        cli.println("Testing using ``filename``");
+        clearPointCache();
+        clearCoordinateCache();
+        for (strategy in randomize(cachingStrategies, singletonRandom)) {
+            pointCachingStrategy = strategy;
+            coordinateCachingStrategy = strategy;
+            cli.println("Using ``strategy`` caching strategy");
+            runAllTests(cli, map, filename, reps);
+        }
+    }
     "Run the tests."
     shared actual void startDriverOnArguments(ICLIHelper cli,
             SPOptions options, String* args) {
         if (args.size == 0) {
             throw IncorrectUsageException(usage);
-        }
-        Integer reps = 50;
-        {CachingStrategy*} cachingStrategies = `CachingStrategy`.caseValues;
-        void runTestProcedure(ICLIHelper cli, IMapNG map, String filename) {
-            cli.println("Testing using ``filename``");
-            clearPointCache();
-            clearCoordinateCache();
-            for (strategy in randomize(cachingStrategies, singletonRandom)) {
-                pointCachingStrategy = strategy;
-                coordinateCachingStrategy = strategy;
-                cli.println("Using ``strategy`` caching strategy");
-                runAllTests(cli, map, filename, reps);
-            }
         }
         MutableMap<String, Integer> mapSizes = HashMap<String, Integer>();
         for (arg in args) {
