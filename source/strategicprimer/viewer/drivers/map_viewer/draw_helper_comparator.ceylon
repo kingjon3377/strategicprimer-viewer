@@ -188,7 +188,7 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 			false;
 
 	Boolean dummyFilter(TileFixture? fix) => true;
-	{[TileDrawHelper, String]*} createHelpers() => [ [CachingTileDrawHelper(), "Caching:"],
+	{[TileDrawHelper, String]*} helpers = [ [CachingTileDrawHelper(), "Caching:"],
 		[directTileDrawHelper, "Direct:"],
 		[Ver2TileDrawHelper(dummyObserver, dummyFilter, Singleton(FixtureMatcher(dummyFilter,
 			"test"))), "Ver 2:"]
@@ -206,7 +206,6 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 			return retval;
 		}
 	}
-	{[TileDrawHelper, String]*} helpers = createHelpers();
 	"Run all the tests on the specified map."
 	void runAllTests(ICLIHelper cli, IMapNG map, String fileName, Integer repetitions) {
 		Integer printStats(String prefix, Integer total, Integer reps) {
