@@ -227,8 +227,8 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 		cli.print("Total:");
 		for ([testCase, caseDesc] in helpers) {
 			printStats(caseDesc, results
-				.filterKeys((tuple) =>
-					tuple.startsWith([pointCachingStrategy, fileName, caseDesc]))
+				.filterKeys(shuffle(Tuple<CachingStrategy|String, CachingStrategy, String[3]>
+					.startsWith)([pointCachingStrategy, fileName, caseDesc]))
 				.items.map(Accumulator.storedValue).fold(0)(plus), repetitions);
 		}
 		cli.println("");
