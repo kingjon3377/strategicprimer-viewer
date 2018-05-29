@@ -37,7 +37,6 @@ import strategicprimer.model.map {
 	pointCachingStrategy
 }
 import ceylon.random {
-	Random,
 	randomize
 }
 import strategicprimer.model.xmlio {
@@ -252,14 +251,13 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
         if (args.size == 0) {
             throw IncorrectUsageException(usage);
         }
-        Random random = singletonRandom;
         Integer reps = 50;
         {CachingStrategy*} cachingStrategies = `CachingStrategy`.caseValues;
         void runTestProcedure(ICLIHelper cli, IMapNG map, String filename) {
             cli.println("Testing using ``filename``");
             clearPointCache();
             clearCoordinateCache();
-            for (strategy in randomize(cachingStrategies, random)) {
+            for (strategy in randomize(cachingStrategies, singletonRandom)) {
                 pointCachingStrategy = strategy;
                 coordinateCachingStrategy = strategy;
                 cli.println("Using ``strategy`` caching strategy");
