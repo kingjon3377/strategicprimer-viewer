@@ -32,24 +32,16 @@ object arrowListenerInitializer {
 	    }
 	    return retval;
 	}
-	{<Integer->String>*} maybe(Boolean condition, {<Integer->String>*} ifTrue) {
-	    if (condition) {
-	        return ifTrue;
-	    } else {
-	        return [];
-	    }
-	}
 	"""Key-codes that are used, when modified with a platgform-specific modifier,
 	   for "jumping," and the Strings we'll use to represent them."""
-	{<Integer->String>*} jumpInputs = [
-	    KeyEvent.vkHome->"ctrl-home", KeyEvent.vkEnd->"ctrl-end",
-	    *maybe(platform.systemIsMac, [
-	        KeyEvent.vkUp->"home", KeyEvent.vkKpUp->"home", KeyEvent.vkNumpad8->"home",
-	        KeyEvent.vkDown->"end", KeyEvent.vkKpDown->"end", KeyEvent.vkNumpad2->"end",
-	        KeyEvent.vkLeft->"caret",KeyEvent.vkKpLeft->"caret", KeyEvent.vkNumpad4->"caret",
-	        KeyEvent.vkRight->"dollar", KeyEvent.vkKpRight->"dollar",
-	        KeyEvent.vkNumpad6->"dollar"])
-	];
+	{<Integer->String>*} jumpInputs = [ KeyEvent.vkHome->"ctrl-home", KeyEvent.vkEnd->"ctrl-end" ];
+	"""Key-codes that are used, when modified with the appropriate modifier, for "jumping" only
+	   on the Mac platform, and the Strings we'll use to represent them."""
+	{<Integer->String>*} macJumpInputs = [ KeyEvent.vkUp->"home", KeyEvent.vkKpUp->"home",
+		KeyEvent.vkNumpad8->"home", KeyEvent.vkDown->"end", KeyEvent.vkKpDown->"end",
+		KeyEvent.vkNumpad2->"end", KeyEvent.vkLeft->"caret",KeyEvent.vkKpLeft->"caret",
+		KeyEvent.vkNumpad4->"caret", KeyEvent.vkRight->"dollar", KeyEvent.vkKpRight->"dollar",
+		KeyEvent.vkNumpad6->"dollar" ];
 	"Other key-codes and the Strings we'll use to represent them"
 	{<Integer->String>*} otherInputs = [
 	    KeyEvent.vkHome->"home", KeyEvent.vk0->"home", KeyEvent.vkNumpad0->"home",
@@ -93,6 +85,11 @@ object arrowListenerInitializer {
 	    Integer jumpModifier = platform.shortcutMask;
 	    for (stroke->action in jumpInputs) {
 	        inputMap.put(KeyStroke.getKeyStroke(stroke, jumpModifier), action);
+	    }
+	    if (platform.systemIsMac) {
+	        for (stroke->action in macJumpInputs) {
+	            inputMap.put(KeyStroke.getKeyStroke(stroke, jumpModifier), action);
+	        }
 	    }
 	    for (stroke->action in otherInputs) {
 	        inputMap.put(KeyStroke.getKeyStroke(stroke, 0), action);
