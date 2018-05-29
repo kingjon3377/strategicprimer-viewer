@@ -15,16 +15,16 @@ import lovelace.util.jvm {
     platform
 }
 object arrowListenerInitializer {
-	"A map from key-codes for arrow keys and the numeric keypad to Strings we will use to
+	"Key-codes for arrow keys and the numeric keypad to Strings we will use to
 	 represent them."
-	Map<Integer, String> arrowInputs = map {
+	{<Integer->String>*} arrowInputs = [
 	    KeyEvent.vkUp->"up", KeyEvent.vkDown->"down", KeyEvent.vkRight->"right",
 	    KeyEvent.vkLeft->"left", KeyEvent.vkKpDown->"down", KeyEvent.vkNumpad2->"down",
 	    KeyEvent.vkKpRight->"right", KeyEvent.vkNumpad6->"right", KeyEvent.vkKpUp->"up",
 	    KeyEvent.vkNumpad8->"up", KeyEvent.vkKpLeft->"left", KeyEvent.vkNumpad4->"left",
 	    KeyEvent.vkNumpad9->"up-right", KeyEvent.vkNumpad7->"up-left",
 	    KeyEvent.vkNumpad3->"down-right", KeyEvent.vkNumpad1->"down-left"
-	};
+	];
 	Anything() join(Anything() first, Anything() second) {
 	    void retval() {
 	        first();
@@ -39,9 +39,9 @@ object arrowListenerInitializer {
 	        return [];
 	    }
 	}
-	"""A map from key-codes that are used, when modified with a platgform-specific modifier,
-	   for "jumping," to the Strings we'll use to represent them."""
-	Map<Integer, String> jumpInputs = map {
+	"""Key-codes that are used, when modified with a platgform-specific modifier,
+	   for "jumping," and the Strings we'll use to represent them."""
+	{<Integer->String>*} jumpInputs = [
 	    KeyEvent.vkHome->"ctrl-home", KeyEvent.vkEnd->"ctrl-end",
 	    *maybe(platform.systemIsMac, [
 	        KeyEvent.vkUp->"home", KeyEvent.vkKpUp->"home", KeyEvent.vkNumpad8->"home",
@@ -49,13 +49,13 @@ object arrowListenerInitializer {
 	        KeyEvent.vkLeft->"caret",KeyEvent.vkKpLeft->"caret", KeyEvent.vkNumpad4->"caret",
 	        KeyEvent.vkRight->"dollar", KeyEvent.vkKpRight->"dollar",
 	        KeyEvent.vkNumpad6->"dollar"])
-	};
-	"A map from other key-codes to the Strings we'll use to represent them"
-	Map<Integer, String> otherInputs = map {
+	];
+	"Other key-codes and the Strings we'll use to represent them"
+	{<Integer->String>*} otherInputs = [
 	    KeyEvent.vkHome->"home", KeyEvent.vk0->"home", KeyEvent.vkNumpad0->"home",
 	    KeyEvent.vkEnd->"end", KeyEvent.vkNumberSign->"end", KeyEvent.vkDollar->"dollar",
 	    KeyEvent.vkCircumflex->"caret", '#'.integer->"end",'^'.integer->"caret"
-	};
+	];
 	void repeatVoid(Anything() func, Integer times) {
 	    for (i in 0:times) {
 	        func();
@@ -73,10 +73,10 @@ object arrowListenerInitializer {
 	        inputMap.put(KeyStroke.getKeyStroke(stroke, 0), action);
 	        inputMap.put(KeyStroke.getKeyStroke(stroke, fiveMask), "ctrl-``action``");
 	    }
-	    "A map from Strings representing arrow-key key codes to the actions that should be
+	    "Strings representing arrow-key key codes and the actions that should be
 	     mapped to them."
-	    Map<String, Anything()> arrowActions =
-	            map {
+	    {<String->Anything()>*} arrowActions =
+	            [
 	                "up"->selListener.up,
 	                "down"->selListener.down,
 	                "left"->selListener.left,
@@ -85,7 +85,7 @@ object arrowListenerInitializer {
 	                "up-left"->join(selListener.up, selListener.left),
 	                "down-right"->join(selListener.down, selListener.right),
 	                "down-left"->join(selListener.down, selListener.left)
-	            };
+	            ];
 	    for (action->consumer in arrowActions) {
 	        actionMap.put(action, DirectionListener(consumer));
 	        actionMap.put("ctrl-``action``", DirectionListener(consumer, 5));
