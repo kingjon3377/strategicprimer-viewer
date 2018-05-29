@@ -68,7 +68,7 @@ object arrowListenerInitializer {
 	shared void setUpArrowListeners(DirectionSelectionChanger selListener, InputMap inputMap,
 	        ActionMap actionMap) {
 	    Integer fiveMask = (platform.systemIsMac) then InputEvent.altDownMask
-	    else InputEvent.ctrlDownMask;
+		    else InputEvent.ctrlDownMask;
 	    for (stroke->action in arrowInputs) {
 	        inputMap.put(KeyStroke.getKeyStroke(stroke, 0), action);
 	        inputMap.put(KeyStroke.getKeyStroke(stroke, fiveMask), "ctrl-``action``");
