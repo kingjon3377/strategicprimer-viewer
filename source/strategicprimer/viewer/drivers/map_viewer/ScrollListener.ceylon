@@ -38,13 +38,13 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         Integer() visibleDimension;
         shared new horizontal(MapDimensions() mapDimsSource,
                 VisibleDimensions() visibleDimsSource) extends InputVerifier() {
-            mapDimension = () => mapDimsSource().columns;
-            visibleDimension = () => visibleDimsSource().width;
+            mapDimension = compose(MapDimensions.columns, mapDimsSource);
+            visibleDimension = compose(VisibleDimensions.height, visibleDimsSource);
         }
         shared new vertical(MapDimensions() mapDimsSource,
                 VisibleDimensions() visibleDimsSource) extends InputVerifier() {
-            mapDimension = () => mapDimsSource().rows;
-            visibleDimension = () => visibleDimsSource().height;
+            mapDimension = compose(MapDimensions.rows, mapDimsSource);
+            visibleDimension = compose(VisibleDimensions.height, visibleDimsSource);
         }
         "A scrollbar is valid if its value is between 0 and the size of the map minus the
          visible size of the map (that subtraction is to prevent scrolling so far that
