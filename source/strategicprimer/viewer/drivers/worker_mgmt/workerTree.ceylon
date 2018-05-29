@@ -48,7 +48,7 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import strategicprimer.viewer.drivers.map_viewer {
     imageLoader,
-    fixtureEditMenu
+    FixtureEditMenu
 }
 import javax.swing.tree {
     TreePath,
@@ -443,7 +443,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 exists pathEnd = retval
                     .getClosestPathForLocation(event.x, event.y)?.lastPathComponent,
                 is IFixture obj = wtModel.getModelObject(pathEnd)) {
-                fixtureEditMenu(obj, players, idf, wtModel).show(event.component, event.x,
+                FixtureEditMenu(obj, players, idf, wtModel).show(event.component, event.x,
                     event.y);
             }
         }
