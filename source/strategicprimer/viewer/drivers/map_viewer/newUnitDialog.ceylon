@@ -51,6 +51,9 @@ import strategicprimer.drivers.gui.common {
 import strategicprimer.viewer.drivers.worker_mgmt {
     NewUnitSource
 }
+import lovelace.util.common {
+	silentListener
+}
 "A dialog to let the user add a new unit."
 shared class NewUnitDialog(variable Player player, IDRegistrar idf)
 		extends SPDialog(null, "Add a New Unit") satisfies NewUnitSource&PlayerChangeListener {
@@ -105,12 +108,13 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
 	setupField(idField);
 	JButton okButton = listenedButton("OK", okListener);
 	add(okButton);
-	JButton cancelButton = listenedButton("Cancel", (ActionEvent event) {
+	void cancelListener() {
 		nameField.text = "";
 		kindField.text = "";
 		setVisible(false);
 		dispose();
-	});
+	}
+	JButton cancelButton = listenedButton("Cancel", silentListener(cancelListener));
 	platform.makeButtonsSegmented(okButton, cancelButton);
 	add(cancelButton);
 	setMinimumSize(Dimension(200, 100));
