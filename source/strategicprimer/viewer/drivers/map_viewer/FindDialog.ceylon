@@ -97,8 +97,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         } else if (exists idNum, idNum == fixture.id) {
             return true;
         } else if (matchesName(pattern, fixture, caseSensitivity) ||
-        matchesKind(pattern, fixture, caseSensitivity) ||
-        matchesOwner(pattern, idNum, fixture, caseSensitivity)) {
+		        matchesKind(pattern, fixture, caseSensitivity) ||
+		        matchesOwner(pattern, idNum, fixture, caseSensitivity)) {
             return true;
         } else {
             return false;
