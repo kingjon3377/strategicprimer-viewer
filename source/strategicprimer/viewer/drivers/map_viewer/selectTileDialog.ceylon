@@ -32,6 +32,9 @@ import strategicprimer.model.map {
     MapDimensions,
     pointFactory
 }
+import lovelace.util.common {
+	silentListener
+}
 class NumberState of valid|nonNumeric|negative|overflow {
     shared new valid { }
     shared new nonNumeric { }
@@ -124,12 +127,13 @@ class SelectTileDialog(Frame? parentFrame, IViewerModel model)
 	JPanel&BoxPanel buttonPanel = boxPanel(BoxAxis.lineAxis);
 	buttonPanel.addGlue();
 	JButton okButton = listenedButton("OK", handleOK);
-	JButton cancelButton = listenedButton("Cancel", (ActionEvent event) {
+	void cancelHandler() {
 		setVisible(false);
 		rowField.text = "-1";
 		columnField.text = "-1";
 		dispose();
-	});
+	}
+	JButton cancelButton = listenedButton("Cancel", silentListener(cancelHandler));
 	platform.makeButtonsSegmented(okButton, cancelButton);
 	buttonPanel.add(okButton);
 	if (!platform.systemIsMac) {
