@@ -47,10 +47,10 @@ shared object imageLoader {
 	    return ImageIcon(retval);
 	}
 	"An icon cache."
-	MutableMap<String, Icon> iconCache = HashMap<String, Icon> {
-	    for (tileType in `TileType`.caseValues)
-	    "``tileType.xml``.png"->createTerrainIcon(tileType)
-	};
+	MutableMap<String, Icon> iconCache = HashMap<String, Icon>();
+	for (tileType in `TileType`.caseValues) {
+		iconCache.put("``tileType.xml``.png", createTerrainIcon(tileType));
+	}
 	"A cache of loaded images."
 	MutableMap<String, Image> imageCache = HashMap<String, Image>();
 	"Load an image from the cache, or if not in it, from file (and add it to the cache)"
