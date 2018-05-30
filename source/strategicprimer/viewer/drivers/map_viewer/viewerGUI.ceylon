@@ -100,7 +100,7 @@ shared class ViewerGUI() satisfies SimpleDriver {
                 SPFrame&MapGUI frame = ViewerFrame(model,
                     menuHandler.actionPerformed);
                 menuHandler.register(silentListener(frame.dispose), "close");
-                value selectTileDialogInstance = selectTileDialog(frame, model);
+                value selectTileDialogInstance = SelectTileDialog(frame, model);
                 menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");
                 selectTileDialogInstance.dispose();
                 variable FindDialog? finder = null;
