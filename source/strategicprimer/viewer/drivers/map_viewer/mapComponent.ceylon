@@ -138,8 +138,9 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                 return false;
             }
         }
+        void requestFocusNarrowly() => requestFocusInWindow(); // Can't take method reference to requestFocusInWindow() because it's overloaded
         shared actual void selectedPointChanged(Point? old, Point newPoint) {
-            SwingUtilities.invokeLater(() => requestFocusInWindow()); // Can't use silentListener() because requestFocusInWindow is overloaded
+            SwingUtilities.invokeLater(requestFocusNarrowly);
             if (!selectionVisible) {
                 fixVisibility();
             }
