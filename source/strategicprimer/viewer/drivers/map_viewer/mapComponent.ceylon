@@ -131,12 +131,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             Integer selectedRow = largest(selectedPoint.row, 0);
             Integer selectedColumn = largest(selectedPoint.column, 0);
             VisibleDimensions visibleDimensions = model.visibleDimensions;
-            if (visibleDimensions.rows.contains(selectedRow),
-                visibleDimensions.columns.contains(selectedColumn)) {
-                return true;
-            } else {
-                return false;
-            }
+            return visibleDimensions.rows.contains(selectedRow) &&
+                    visibleDimensions.columns.contains(selectedColumn);
         }
         void requestFocusNarrowly() => requestFocusInWindow(); // Can't take method reference to requestFocusInWindow() because it's overloaded
         shared actual void selectedPointChanged(Point? old, Point newPoint) {
