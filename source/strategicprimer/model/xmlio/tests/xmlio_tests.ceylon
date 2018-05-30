@@ -37,7 +37,8 @@ import javax.xml.stream {
 import lovelace.util.common {
     todo,
     assertAny,
-	enumeratedParameter
+	enumeratedParameter,
+	defer
 }
 
 import strategicprimer.model.idreg {
@@ -748,10 +749,10 @@ object xmlTests {
 	              </view>
 	              ";
 	    String serializedForm = createSerializedForm(five, false);
-	    assertAny([() => assertEquals(serializedForm, xmlTwoLogical),
-	                () => assertEquals(serializedForm, xmlTwoAlphabetical),
-	                () => assertEquals(serializedForm,
-	            xmlTwoLogical.replace("\" />", "\"/>"))], "Multiple units");
+	    assertAny([defer(assertEquals, [serializedForm, xmlTwoLogical]),
+	                defer(assertEquals, [serializedForm, xmlTwoAlphabetical]),
+	                defer(assertEquals, [serializedForm,
+			            xmlTwoLogical.replace("\" />", "\"/>")])], "Multiple units");
 	    assertEquals(createSerializedForm(createSimpleMap(pointFactory(1, 1)), true),
 	        "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
 	         \t<map version=\"2\" rows=\"1\" columns=\"1\">
@@ -771,8 +772,8 @@ object xmlTests {
 	             \t<map columns=\"1\" rows=\"1\" version=\"2\"/>
 	             </view>
 	             ";
-	    assertAny([() => assertEquals(emptySerializedForm, firstPossibility),
-	                () => assertEquals(emptySerializedForm, secondPossibility)],
+	    assertAny([defer(assertEquals, [emptySerializedForm, firstPossibility]),
+	                defer(assertEquals, [emptySerializedForm, secondPossibility])],
 	        "Shouldn't print empty not-visible tiles");
 	}
 

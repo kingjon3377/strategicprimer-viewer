@@ -118,7 +118,7 @@ object cliTests {
 	        "inputNumber asks again on non-numeric input");
 	    // https://github.com/eclipse/ceylon/issues/5448
 	//    try (cli = CLIHelper(LinkedList(Singleton("")).accept, noop)) {
-	//       assertThatException(() => cli.inputNumber("test prompt")).hasType(`IOException`);
+	//       assertThatException(defer(cli.inputNumber, ["test prompt"])).hasType(`IOException`);
 	//    }
 	}
 	"Test inputDecimal"
@@ -206,7 +206,7 @@ object cliTests {
 	                                    """,
 	        "inputBooleanInSeries shows automatic yes");
 	    //  https://github.com/eclipse/ceylon/issues/5448
-	//        assertThatException(() => cli.inputBooleanInSeries("other prompt"))
+	//        assertThatException(defer(cli.inputBooleanInSeries, ["other prompt"]))
 	//            .hasType(`IOException`);
 	    ostream.clear();
 	    cli = CLIHelper(LinkedList(Singleton("""none""")).accept, ostream.append);
@@ -217,7 +217,7 @@ object cliTests {
 	    assertEquals(ostream.string, "prompt five prompt five no``operatingSystem.newline``",
 	        "inputBooleanInSeries shows automatic no");
 	    // https://github.com/eclipse/ceylon/issues/5448 // TODO: uncomment once that fixed
-	//      assertThatException(() => cli.inputBooleanInSeries("other prompt"))
+	//      assertThatException(defer(cli.inputBooleanInSeries, ["other prompt"]))
 	//            .hasType(`IOException`);
 	    ostream.clear();
 	    cli = CLIHelper(LinkedList(Singleton("always")).accept, ostream.append);

@@ -81,7 +81,8 @@ import java.lang {
 import lovelace.util.common {
 	matchingValue,
 	matchingPredicate,
-	anythingEqual
+	anythingEqual,
+	defer
 }
 class LazyInit<Wrapped>(Wrapped() generator) {
     variable Wrapped? inner = null;
@@ -376,26 +377,26 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             assert (town.townSize == TownSize.small);
             population = repeatedlyRoll(3, 8, 3);
             skillCount = repeatedlyRoll(2, 4);
-            skillLevelSource = () => repeatedlyRoll(4, 3, -3);
+            skillLevelSource = defer(repeatedlyRoll, [4, 3, -3]);
             resourceCount = repeatedlyRoll(2, 3);
         } else {
             switch (town.townSize)
             case (TownSize.small) {
                 population = repeatedlyRoll(4, 10, 5);
                 skillCount = repeatedlyRoll(3, 4);
-                skillLevelSource = () => repeatedlyRoll(2, 6);
+                skillLevelSource = defer(repeatedlyRoll, [2, 6]);
                 resourceCount = repeatedlyRoll(2, 3);
             }
             case (TownSize.medium) {
                 population = repeatedlyRoll(20, 20, 50);
                 skillCount = repeatedlyRoll(4, 6);
-                skillLevelSource = () => repeatedlyRoll(3, 6);
+                skillLevelSource = defer(repeatedlyRoll, [3, 6]);
                 resourceCount = repeatedlyRoll(2, 6);
             }
             case (TownSize.large) {
                 population = repeatedlyRoll(23, 100, 200);
                 skillCount = repeatedlyRoll(6, 8);
-                skillLevelSource = () => repeatedlyRoll(3, 8);
+                skillLevelSource = defer(repeatedlyRoll, [3, 8]);
                 resourceCount = repeatedlyRoll(4, 6);
             }
         }

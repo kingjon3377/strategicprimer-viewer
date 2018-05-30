@@ -35,6 +35,9 @@ import ceylon.logging {
 import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
+import lovelace.util.common {
+	defer
+}
 
 Logger log = logger(`module strategicprimer.drivers.exploration.old`);
 // Made shared so the oneToTwoConverter tests can get tables as classpath resources and
@@ -176,7 +179,8 @@ object loadTableTests {
 	    assertEquals(result.generateEvent(pointTwo, TileType.tundra, false,
 	        [], MapDimensionsImpl(35, 32, 2)), "six",
 	        "quadrant table can use alternate dimensions");
-	    assertThatException(() => loadTable(LinkedList{"quadrant"}.accept, "testLoadQuadrantTable().illegal"));
+	    assertThatException(defer(loadTable,
+	        [LinkedList{"quadrant"}.accept, "testLoadQuadrantTable().illegal"]));
 	}
 	suppressWarnings("expressionTypeNothing")
 	object mockDimensions satisfies MapDimensions {
@@ -223,9 +227,10 @@ object loadTableTests {
 	test
 	shared void testTableLoadingInvalidInput() {
 	    // no data
-	    assertThatException(() => loadTable(LinkedList{""}.accept, "testTableLoadingInvalidInput().noData"));
+	    assertThatException(defer(loadTable,
+	        [LinkedList{""}.accept, "testTableLoadingInvalidInput().noData"]));
 	    // invalid header
-	    assertThatException(() => loadTable(LinkedList{"2", "invalidData",
-	        "invalidData"}.accept, "testTableLoadingInvalidInput().invalidHeader"));
+	    assertThatException(defer(loadTable, [LinkedList{"2", "invalidData",
+	        "invalidData"}.accept, "testTableLoadingInvalidInput().invalidHeader"]));
 	}
 }

@@ -80,7 +80,8 @@ import strategicprimer.model.xmlio {
 }
 import lovelace.util.common {
 	todo,
-	silentListener
+	silentListener,
+	defer
 }
 import com.vasileff.ceylon.structures {
 	MutableMultimap,
@@ -232,8 +233,8 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 		MutableList<String> others = ArrayList<String>();
 		void startChosenDriver(ISPDriver driver, SPOptions currentOptionsTyped) {
 			if (driver.usage.graphical) {
-				SwingUtilities.invokeLater(() =>
-					startCatchingErrors(driver, cli, currentOptionsTyped, *others));
+				SwingUtilities.invokeLater(defer(startCatchingErrors,
+					[driver, cli, currentOptionsTyped, *others]));
 			} else {
 				startCatchingErrors(driver, cli, currentOptionsTyped, *others);
 			}
@@ -300,12 +301,12 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 			SPOptions currentOptionsTyped = currentOptions.copy();
 			if (gui) {
 				try {
-					SwingUtilities.invokeLater(() => appChooserFrame(cli,
-						currentOptionsTyped, others).showWindow());
+					SwingUtilities.invokeLater(defer(shuffle(compose(SPFrame.showWindow, appChooserFrame))(), [cli,
+						currentOptionsTyped, others]));
 				} catch (DriverFailedException except) {
 					log.fatal(except.message, except);
-					SwingUtilities.invokeLater(() => showErrorDialog(null,
-						"Strategic Primer Assistive Programs", except.message));
+					SwingUtilities.invokeLater(defer(showErrorDialog, [null,
+						"Strategic Primer Assistive Programs", except.message]));
 				}
 			} else {
 				if (exists chosenDriver = cli.chooseFromList(
@@ -346,7 +347,8 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 			}
 		} else {
 			SwingUtilities.invokeLater( // TODO: catch errors (combine with the above)
-				() => appChooserFrame(cli, options, driverModel).showWindow());
+				defer(shuffle(compose(SPFrame.showWindow, appChooserFrame))(),
+					[cli, options, driverModel]));
 		}
 	}
 }

@@ -39,7 +39,8 @@ import strategicprimer.drivers.common.cli {
 }
 import lovelace.util.common {
 	todo,
-	matchingValue
+	matchingValue,
+	defer
 }
 import strategicprimer.model.map.fixtures.terrain {
 	Forest
@@ -473,12 +474,12 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 	}
 	"Handle a series of user commands."
 	void handleCommands(SPOptions options, IDriverModel model, HuntingModel huntModel,
-		ICLIHelper cli) {
-		void usageLambda() => replUsage(cli);
+			ICLIHelper cli) {
+		Anything() usageLambda = defer(replUsage, [cli]);
 		Map<String, Anything()> commands = map {
 			"?"->usageLambda,
 			"help"->usageLambda,
-			"fortress"->(
+			"fortress"->( // TODO: refactor lambdas including inputPoint() to make defer()ing them easier
 					() => fortressInfo(model.map, cli.inputPoint("Location of fortress? "), cli)),
 			"hunt"->(()=>hunt(model, huntModel, cli.inputPoint("Location to hunt? "), cli,
 				hunterHours * 60)),
@@ -486,11 +487,12 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				hunterHours * 60)),
 			"gather"->(()=>gather(model, huntModel, cli.inputPoint("Location to gather? "), cli,
 				hunterHours * 60)),
-			"herd"->(()=>herd(model, cli, huntModel)),
-			"trap"->(()=>TrappingCLI().startDriverOnModel(cli, options, model)),
-			"distance"->(()=>printDistance(model.map, cli)),
-			"count"->(()=>countWorkers(model.map, cli, *model.map.players)),
-			"unexplored"->(() {
+			"herd"->(defer(herd, [model, cli, huntModel])),
+			"trap"->(defer(shuffle(compose(TrappingCLI.startDriverOnModel, TrappingCLI)),
+				[cli, options, model])),
+			"distance"->(defer(printDistance, [model.map, cli])),
+			"count"->(defer(countWorkers, [model.map, cli, *model.map.players])),
+			"unexplored"->(() { // TODO: extract class method
 				Point base = cli.inputPoint("Starting point? ");
 				if (exists unexplored = findUnexplored(model.map, base)) {
 					Float distanceTo = distance(base, unexplored, model.map.dimensions);

@@ -38,7 +38,8 @@ import javax.swing.table {
 
 import lovelace.util.common {
     Comparator,
-	silentListener
+	silentListener,
+	defer
 }
 import lovelace.util.jvm {
     centeredHorizontalBox,
@@ -93,8 +94,8 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 	}
 	void acceptDroppedFileImpl(JPath file) {
 		value map = mapReaderAdapter.readMapModel(file, warningLevels.default);
-		SwingUtilities.invokeLater(() =>
-			ViewerFrame(ViewerModel.copyConstructor(map), menuHandler).showWindow());
+		SwingUtilities.invokeLater(defer(compose(ViewerFrame.showWindow, ViewerFrame),
+			[ViewerModel.copyConstructor(map), menuHandler]));
 	}
 	// TODO: Keep track of whether the map has been modified and if not replace it
 	// instead of opening a new window

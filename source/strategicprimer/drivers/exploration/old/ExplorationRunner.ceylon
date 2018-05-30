@@ -19,7 +19,8 @@ import java.lang {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+	defer
 }
 
 import strategicprimer.model.map {
@@ -290,8 +291,8 @@ object explorationRunnerTests {
 	    // TODO: Uncomment hasType() call once Ceylon tooling bug fixed
 	    Point point = pointFactory(0, 0);
 	    assertThatException(
-	                () => ExplorationRunner().getPrimaryTree(point,
-	                    TileType.tundra, false, [], MapDimensionsImpl(69, 88, 2)))
+	                defer(ExplorationRunner().getPrimaryTree, [point,
+	                    TileType.tundra, false, [], MapDimensionsImpl(69, 88, 2)]))
 	        /*.hasType(`IllegalArgumentException`)*/;
 	}
 

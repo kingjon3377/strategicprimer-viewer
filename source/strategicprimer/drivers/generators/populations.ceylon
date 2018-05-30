@@ -269,6 +269,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 				for (forest in otherForests) {
 					map.removeFixture(location, forest);
 					map.addFixture(location, Forest(forest.kind, forest.rows, forest.id,
+						// TODO: figure out how to use defer() to avoid a lambda here
 						implicitlyRounded(() => decimalNumber(160 - reserved) / decimalNumber(otherForests.size),
 							round(12, halfEven))));
 				}

@@ -105,10 +105,14 @@ import lovelace.util.common {
     anythingEqual,
 	matchingPredicate,
 	matchingValue,
-	silentListener
+	silentListener,
+	defer
 }
 import strategicprimer.drivers.gui.common {
     SPFrame
+}
+import ceylon.interop.java {
+	JavaRunnable
 }
 "A window to let the player manage units."
 class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
@@ -157,7 +161,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 				Point point = node.point;
 				if (point.valid) {
 					IViewerModel viewerModel = getViewerModel(model, menuHandler);
-					SwingUtilities.invokeLater(() => viewerModel.selection = point);
+					SwingUtilities.invokeLater(() => viewerModel.selection = point); // TODO: Figure out a way to defer() an assignment
 				}
 			}
 		}
@@ -205,7 +209,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
 	NewUnitDialog newUnitFrame = NewUnitDialog(model.currentPlayer, idf);
 	IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
-	value tree = workerTree(treeModel, model.players, () => mainMap.currentTurn,
+	value tree = workerTree(treeModel, model.players, defer(IMapNG.currentTurn, [mainMap]),
 		true, idf);
 	newUnitFrame.addNewUnitListener(treeModel);
 	Integer keyMask = platform.shortcutMask;
@@ -225,7 +229,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		IReportNode report = reportGenerator.createAbbreviatedReportIR(
 			model.subordinateMaps.first?.first else mainMap, model.currentPlayer);
 		log.info("Finished generating report");
-		SwingUtilities.invokeLater(() => reportModel.setRoot(report));
+		SwingUtilities.invokeLater(JavaRunnable(defer(reportModel.setRoot, [report]))); // JavaRunnable because of https://github.com/eclipse/ceylon/issues/7379
 	}
 	Thread(reportGeneratorThread).start();
 	value resultsPanel = ordersPanel(mainMap.currentTurn, model.currentPlayer,

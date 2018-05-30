@@ -43,7 +43,8 @@ import ceylon.random {
 }
 import lovelace.util.common {
 	matchingValue,
-	comparingOn
+	comparingOn,
+	defer
 }
 "A utility to convert a map to an equivalent half-resolution one."
 shared IMapNG decreaseResolution(IMapNG old) {
@@ -190,8 +191,8 @@ object resolutionDecreaseTests {
 	shared void testResolutionDecreaseRequirement() {
 	    // TODO: Uncomment hasType() once Ceylon compiler bug #5448 fixed
 	    assertThatException(
-	                () => decreaseResolution(SPMapNG(MapDimensionsImpl(3, 3, 2),
-	            PlayerCollection(), -1)))
+	                defer(decreaseResolution, [SPMapNG(MapDimensionsImpl(3, 3, 2),
+	            PlayerCollection(), -1)]))
 	        /*.hasType(`IllegalArgumentException`)*/;
 	}
 }

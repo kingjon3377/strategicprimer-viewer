@@ -58,7 +58,8 @@ import strategicprimer.drivers.worker.common {
     IWorkerModel
 }
 import lovelace.util.common {
-	as
+	as,
+	defer
 }
 import java.lang {
 	ObjectArray
@@ -140,7 +141,7 @@ shared class MenuBroker() satisfies ActionListener {
     shared actual void actionPerformed(ActionEvent event) {
         String action = event.actionCommand;
         if (exists listener = mapping[action.lowercased]) {
-            SwingUtilities.invokeLater(() => listener(event));
+            SwingUtilities.invokeLater(defer(listener, [event]));
         } else {
             log.warn("Unhandled action: ``action``");
         }

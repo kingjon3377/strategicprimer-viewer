@@ -11,7 +11,8 @@ import strategicprimer.model.map {
     Point
 }
 import lovelace.util.common {
-    todo
+    todo,
+	defer
 }
 import lovelace.util.jvm {
     BorderedPanel
@@ -77,21 +78,19 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         mapDimensions = mapModel.mapDimensions;
         Point selectedPoint = mapModel.selection;
         horizontalBar = horizontal;
-        // Moving these out to the class level causes compiler backend error
-        // TODO: distill MWE and report (harder than it looks)
-        MapDimensions dimensionsAccessor() => mapDimensions;
-        VisibleDimensions visibleAccessor() => visibleDimensions;
         horizontal.model.setRangeProperties(constrainToRange(selectedPoint.column,
             0, mapDimensions.columns - 1), 1, 0,
             mapDimensions.columns - visibleDimensions.width, false);
-        horizontal.inputVerifier = LocalInputVerifier.horizontal(dimensionsAccessor,
-                    visibleAccessor);
+        horizontal.inputVerifier = LocalInputVerifier.horizontal(
+            defer(IViewerModel.mapDimensions, [mapModel]),
+                    defer(IViewerModel.visibleDimensions, [mapModel]));
         verticalBar = vertical;
         vertical.model.setRangeProperties(constrainToRange(selectedPoint.row, 0,
             mapDimensions.rows - 1), 1, 0,
             mapDimensions.rows - visibleDimensions.height, false);
-        vertical.inputVerifier = LocalInputVerifier.vertical(dimensionsAccessor,
-                    visibleAccessor);
+        vertical.inputVerifier = LocalInputVerifier.vertical(
+            defer(IViewerModel.mapDimensions, [mapModel]),
+                    defer(IViewerModel.visibleDimensions, [mapModel]));
         object adjustmentListener satisfies AdjustmentListener {
             shared actual void adjustmentValueChanged(AdjustmentEvent event) {
                 VisibleDimensions oldDimensions = model.visibleDimensions;
