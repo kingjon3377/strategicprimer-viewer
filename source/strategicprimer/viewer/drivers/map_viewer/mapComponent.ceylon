@@ -206,8 +206,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             variable Integer minimumRow = model.visibleDimensions.minimumRow;
             variable Integer maximumRow = model.visibleDimensions.maximumRow;
             MapDimensions mapDimensions = model.mapDimensions;
-            if (visibleColumns != (maximumColumn - minimumColumn) ||
-            visibleRows != (maximumRow - minimumRow)) {
+            if (visibleColumns != model.visibleDimensions.width ||
+		            visibleRows != model.visibleDimensions.height) {
                 Integer totalColumns = mapDimensions.columns;
                 if (visibleColumns >= totalColumns) {
                     minimumColumn = 0;
