@@ -146,6 +146,26 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             helper = tileDrawHelperFactory(model.mapDimensions.version,
                 imageUpdate, zof, matchers);
         }
+        void drawMapPortion(Graphics context, Integer tileSize, Integer minX, Integer minY,
+	            Integer maxX, Integer maxY) {
+            Integer minRow = model.visibleDimensions.minimumRow;
+            Integer maxRow = model.visibleDimensions.maximumRow;
+            Integer minCol = model.visibleDimensions.minimumColumn;
+            Integer maxCol = model.visibleDimensions.maximumColumn;
+            for (i in minY .. maxY) {
+                if ((i + minRow)>=(maxRow + 1)) {
+                    break;
+                }
+                for (j in minX..maxX) {
+                    if ((j + minCol) >= (maxCol + 1)) {
+                        break;
+                    }
+                    Point location = pointFactory(i + minRow, j + minCol);
+                    paintTile(context, tileSize, location, i, j,
+                        model.selection == location);
+                }
+            }
+        }
         shared actual void paint(Graphics pen) {
             Graphics context = pen.create();
             try {
@@ -154,27 +174,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                 Rectangle bounds = boundsCheck(context.clipBounds);
                 MapDimensions mapDimensions = model.mapDimensions;
                 Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
-                void drawMapPortion(Integer minX, Integer minY, Integer maxX,
-                        Integer maxY) {
-                    Integer minRow = model.visibleDimensions.minimumRow;
-                    Integer maxRow = model.visibleDimensions.maximumRow;
-                    Integer minCol = model.visibleDimensions.minimumColumn;
-                    Integer maxCol = model.visibleDimensions.maximumColumn;
-                    for (i in minY .. maxY) {
-                        if ((i + minRow)>=(maxRow + 1)) {
-                            break;
-                        }
-                        for (j in minX..maxX) {
-                            if ((j + minCol) >= (maxCol + 1)) {
-                                break;
-                            }
-                            Point location = pointFactory(i + minRow, j + minCol);
-                            paintTile(context, tileSize, location, i, j,
-                                model.selection == location);
-                        }
-                    }
-                }
-                drawMapPortion(halfEven(bounds.minX / tileSize).plus(0.1).integer,
+                drawMapPortion(context, tileSize, halfEven(bounds.minX / tileSize).plus(0.1).integer,
                     halfEven(bounds.minY / tileSize).plus(0.1).integer,
                     smallest(halfEven(bounds.maxX / tileSize).plus(1.1).integer,
                         mapDimensions.columns),
