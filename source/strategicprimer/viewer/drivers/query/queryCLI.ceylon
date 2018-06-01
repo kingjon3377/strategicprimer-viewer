@@ -472,6 +472,16 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		cli.println("quit: Exit the program.");
 		cli.println("Any string that is the beginning of only one command is also accepted for that command.");
 	}
+	void findUnexploredCommand(ICLIHelper cli, IMapNG map) { // TODO: extract class method
+		Point base = cli.inputPoint("Starting point? ");
+		if (exists unexplored = findUnexplored(map, base)) {
+			Float distanceTo = distance(base, unexplored, map.dimensions);
+			cli.println("Nearest unexplored tile is ``unexplored``, ``Float
+				.format(distanceTo, 0, 1, '.', ',')`` tiles away");
+		} else {
+			cli.println("No unexplored tiles found.");
+		}
+	}
 	"Handle a series of user commands."
 	void handleCommands(SPOptions options, IDriverModel model, HuntingModel huntModel,
 			ICLIHelper cli) {
@@ -493,16 +503,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			"distance"->curry(printDistance)(model.map),
 			"count"->((ICLIHelper clh)=>countWorkers(model.map, clh, *model.map.players)),
 			//"count"->(defer(countWorkers, [model.map, cli, *model.map.players])),
-			"unexplored"->((ICLIHelper clh) { // TODO: extract class method
-				Point base = clh.inputPoint("Starting point? ");
-				if (exists unexplored = findUnexplored(model.map, base)) {
-					Float distanceTo = distance(base, unexplored, model.map.dimensions);
-					clh.println("Nearest unexplored tile is ``unexplored``, ``Float
-						.format(distanceTo, 0, 1, '.', ',')`` tiles away");
-				} else {
-					clh.println("No unexplored tiles found.");
-				}
-			}),
+			"unexplored"->shuffle(curry(findUnexploredCommand))(model.map),
 			"trade"->((ICLIHelper clh)=>suggestTrade(model.map, clh.inputPoint("Base location? "),
 				clh.inputNumber("Within how many tiles? "), clh))
 		};
