@@ -472,7 +472,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		cli.println("quit: Exit the program.");
 		cli.println("Any string that is the beginning of only one command is also accepted for that command.");
 	}
-	void findUnexploredCommand(ICLIHelper cli, IMapNG map) { // TODO: extract class method
+	void findUnexploredCommand(IMapNG map, ICLIHelper cli) { // TODO: extract class method
 		Point base = cli.inputPoint("Starting point? ");
 		if (exists unexplored = findUnexplored(map, base)) {
 			Float distanceTo = distance(base, unexplored, map.dimensions);
@@ -505,7 +505,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			"distance"->curry(printDistance)(model.map),
 			"count"->((ICLIHelper clh)=>countWorkers(model.map, clh, *model.map.players)),
 			//"count"->(defer(countWorkers, [model.map, cli, *model.map.players])),
-			"unexplored"->shuffle(curry(findUnexploredCommand))(model.map),
+			"unexplored"->curry(findUnexploredCommand)(model.map),
 			"trade"->curry(tradeCommand)(model.map)
 		};
 		while (true) {
