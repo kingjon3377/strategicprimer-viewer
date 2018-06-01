@@ -105,7 +105,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		return retval;
 	}
 	"Count the workers belonging to a player."
-	void countWorkers(IMapNG map, ICLIHelper cli, Player* players) {
+	void countWorkers(ICLIHelper cli, IMapNG map, Player* players) {
 		Player[] playerList = players.sequence();
 		value choice = cli.chooseFromList(playerList,
 			"Players in the map:", "Map contains no players",
@@ -327,7 +327,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		return (ceiling((flockPerHerder * cost) / 60.0) + 0.1).integer;
 	}
 	"Run herding."
-	void herd(IDriverModel model, ICLIHelper cli, HuntingModel huntModel) {
+	void herd(ICLIHelper cli, IDriverModel model, HuntingModel huntModel) {
 		HerdModel herdModel;
 		if (cli.inputBooleanInSeries("Are these small animals, like sheep?\t")) {
 			herdModel = MammalModel.smallMammals;
@@ -498,13 +498,11 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				hunterHours * 60)),
 			"gather"->((ICLIHelper clh)=>gather(model, huntModel, clh.inputPoint("Location to gather? "), clh,
 				hunterHours * 60)),
-			"herd"->((ICLIHelper clh) => herd(model, clh, huntModel)),
-			//"herd"->(defer(herd, [model, cli, huntModel])),
+			"herd"->shuffle(curry(herd))(model, huntModel),
 			"trap"->uncurry(shuffle(curry(shuffle(compose(TrappingCLI.startDriverOnModel,
 				TrappingCLI))))(options, model)),
 			"distance"->curry(printDistance)(model.map),
-			"count"->((ICLIHelper clh)=>countWorkers(model.map, clh, *model.map.players)),
-			//"count"->(defer(countWorkers, [model.map, cli, *model.map.players])),
+			"count"->shuffle(curry(countWorkers))(model.map, *model.map.players),
 			"unexplored"->curry(findUnexploredCommand)(model.map),
 			"trade"->curry(tradeCommand)(model.map)
 		};
