@@ -482,6 +482,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			cli.println("No unexplored tiles found.");
 		}
 	}
+	void tradeCommand(IMapNG map, ICLIHelper cli) => suggestTrade(map, cli.inputPoint("Base location? "),
+				cli.inputNumber("Within how many tiles? "), cli);
 	"Handle a series of user commands."
 	void handleCommands(SPOptions options, IDriverModel model, HuntingModel huntModel,
 			ICLIHelper cli) {
@@ -504,8 +506,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			"count"->((ICLIHelper clh)=>countWorkers(model.map, clh, *model.map.players)),
 			//"count"->(defer(countWorkers, [model.map, cli, *model.map.players])),
 			"unexplored"->shuffle(curry(findUnexploredCommand))(model.map),
-			"trade"->((ICLIHelper clh)=>suggestTrade(model.map, clh.inputPoint("Base location? "),
-				clh.inputNumber("Within how many tiles? "), clh))
+			"trade"->curry(tradeCommand)(model.map)
 		};
 		while (true) {
 			String command = cli.inputString("Command:").lowercased;
