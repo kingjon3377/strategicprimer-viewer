@@ -475,49 +475,51 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 	"Handle a series of user commands."
 	void handleCommands(SPOptions options, IDriverModel model, HuntingModel huntModel,
 			ICLIHelper cli) {
-		Anything() usageLambda = defer(replUsage, [cli]);
-		Map<String, Anything()> commands = map {
-			"?"->usageLambda,
-			"help"->usageLambda,
+		Map<String, Anything(ICLIHelper)> commands = map {
+			"?"->replUsage,
+			"help"->replUsage,
 			"fortress"->( // TODO: refactor lambdas including inputPoint() to make defer()ing them easier
-					() => fortressInfo(model.map, cli.inputPoint("Location of fortress? "), cli)),
-			"hunt"->(()=>hunt(model, huntModel, cli.inputPoint("Location to hunt? "), cli,
+					(ICLIHelper clh) => fortressInfo(model.map, clh.inputPoint("Location of fortress? "), clh)),
+			"hunt"->((ICLIHelper clh)=>hunt(model, huntModel, clh.inputPoint("Location to hunt? "), clh,
 				hunterHours * 60)),
-			"fish"->(()=>fish(model, huntModel, cli.inputPoint("Location to fish? "), cli,
+			"fish"->((ICLIHelper clh)=>fish(model, huntModel, clh.inputPoint("Location to fish? "), clh,
 				hunterHours * 60)),
-			"gather"->(()=>gather(model, huntModel, cli.inputPoint("Location to gather? "), cli,
+			"gather"->((ICLIHelper clh)=>gather(model, huntModel, clh.inputPoint("Location to gather? "), clh,
 				hunterHours * 60)),
-			"herd"->(defer(herd, [model, cli, huntModel])),
-			"trap"->(defer(shuffle(compose(TrappingCLI.startDriverOnModel, TrappingCLI)),
-				[cli, options, model])),
-			"distance"->(defer(printDistance, [model.map, cli])),
-			"count"->(defer(countWorkers, [model.map, cli, *model.map.players])),
-			"unexplored"->(() { // TODO: extract class method
-				Point base = cli.inputPoint("Starting point? ");
+			"herd"->((ICLIHelper clh) => herd(model, clh, huntModel)),
+			//"herd"->(defer(herd, [model, cli, huntModel])),
+			"trap"->((ICLIHelper clh) => TrappingCLI().startDriverOnModel(clh, options, model)),
+			//"trap"->(defer(shuffle(compose(TrappingCLI.startDriverOnModel, TrappingCLI)),
+			//	[cli, options, model])),
+			"distance"->curry(printDistance)(model.map),
+			"count"->((ICLIHelper clh)=>countWorkers(model.map, clh, *model.map.players)),
+			//"count"->(defer(countWorkers, [model.map, cli, *model.map.players])),
+			"unexplored"->((ICLIHelper clh) { // TODO: extract class method
+				Point base = clh.inputPoint("Starting point? ");
 				if (exists unexplored = findUnexplored(model.map, base)) {
 					Float distanceTo = distance(base, unexplored, model.map.dimensions);
-					cli.println("Nearest unexplored tile is ``unexplored``, ``Float
+					clh.println("Nearest unexplored tile is ``unexplored``, ``Float
 						.format(distanceTo, 0, 1, '.', ',')`` tiles away");
 				} else {
-					cli.println("No unexplored tiles found.");
+					clh.println("No unexplored tiles found.");
 				}
 			}),
-			"trade"->(()=>suggestTrade(model.map, cli.inputPoint("Base location? "),
-				cli.inputNumber("Within how many tiles? "), cli))
+			"trade"->((ICLIHelper clh)=>suggestTrade(model.map, clh.inputPoint("Base location? "),
+				clh.inputNumber("Within how many tiles? "), clh))
 		};
 		while (true) {
 			String command = cli.inputString("Command:").lowercased;
 			if ("quit".startsWith(command)) {
 				break;
 			}
-			{<String->Anything()>*} matches =
+			{<String->Anything(ICLIHelper)>*} matches =
 					commands.filterKeys(shuffle(String.startsWith)(command));
 			if (matches.size == 1) {
 				assert (exists first = matches.first);
-				first.item();
+				first.item(cli);
 			} else if (matches.empty) {
 				cli.println("Unknown command.");
-				usageLambda();
+				replUsage(cli);
 			} else {
 				cli.println("That command was ambiguous between the following: ");
 				assert (exists first = matches.first);
@@ -526,7 +528,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 					cli.print(", ``key``");
 				}
 				cli.println("");
-				usageLambda();
+				replUsage(cli);
 			}
 		}
 	}
