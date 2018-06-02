@@ -471,7 +471,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		cli.println("quit: Exit the program.");
 		cli.println("Any string that is the beginning of only one command is also accepted for that command.");
 	}
-	void findUnexploredCommand(IMapNG map, ICLIHelper cli) { // TODO: extract class method
+	void findUnexploredCommand(IMapNG map, ICLIHelper cli) {
 		Point base = cli.inputPoint("Starting point? ");
 		if (exists unexplored = findUnexplored(map, base)) {
 			Float distanceTo = distance(base, unexplored, map.dimensions);
