@@ -55,7 +55,7 @@ shared class WorkerGUI() satisfies SimpleDriver {
         graphical = true;
         invocations = ["-w", "--worker"];
         paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "Manage a player's workers in units";
+        shortDescription = "Unit Orders and Worker Management";
         longDescription = "Organize the members of a player's units.";
         includeInCLIList = false;
         includeInGUIList = true;
