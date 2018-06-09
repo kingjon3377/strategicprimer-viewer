@@ -30,6 +30,9 @@ import ceylon.logging {
 	logger,
 	Logger
 }
+import ceylon.whole {
+	Whole
+}
 "A logger."
 Logger log = logger(`module strategicprimer.report`);
 "A tabular report generator for crops---forests, groves, orchards, fields, meadows, and
@@ -48,8 +51,12 @@ shared class CropTabularReportGenerator
 			return truncatedNumberString(number.float);
 		}
 		else {
-			log.warn("Unhandled Number type ``
-				typeOf(number)`` in CropTabularReportGenerator.truncatedNumberString");
+			if (is Integer|Whole number) {
+				log.debug("Ran into eclipse/ceylon#7382");
+			} else {
+				log.warn("Unhandled Number type ``
+					typeOf(number)`` in CropTabularReportGenerator.truncatedNumberString");
+			}
 			return number.string;
 		}
 	}
