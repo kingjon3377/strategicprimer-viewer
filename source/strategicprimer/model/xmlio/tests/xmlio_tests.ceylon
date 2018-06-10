@@ -149,6 +149,9 @@ import lovelace.util.jvm {
 {Integer*} twoRandomNumbers() => singletonRandom.integers(1200000).take(2);
 {String*} races = raceFactory.races.distinct;
 String[] animalStatuses = ["wild", "semi-domesticated", "domesticated", "tame"];
+String[] treeTypes = ["oak", "larch", "terebinth"]; // TODO: for these, maybe have longer lists and randomly select 3?
+String[] fieldTypes = ["wheat", "amaranth", "bluegrass"];
+String[] minerals = ["coal", "platinum", "oil"];
 object xmlTests {
 	JPath fakeFilename = JPaths.get("");
 	[ISPReader+] readers = [testReaderFactory.oldReader, testReaderFactory.newReader];
@@ -960,7 +963,7 @@ object xmlTests {
 	test
 	shared void testGroveSerialization(enumeratedParameter(`class Boolean`) Boolean fruit,
 			enumeratedParameter(`class Boolean`) Boolean cultivated,
-			parameters(`value races`) String trees, // TODO: replace `races` with less-numerous array
+			parameters(`value treeTypes`) String trees,
 			parameters(`function twoRandomNumbers`) Integer id) {
 		// Using [[races]] for tree kinds because I don't want to loop over multiples within one
 		// test, I don't want to define yet another top-level object for [[parameters]], and
@@ -989,7 +992,7 @@ object xmlTests {
 	test
 	shared void testMeadowSerialization(parameters(`function twoRandomNumbers`) Integer id,
 			enumeratedParameter(`class FieldStatus`) FieldStatus status,
-			parameters(`value races`) String kind, // TODO: Replace `races` with less-numerous array
+			parameters(`value fieldTypes`) String kind,
 			enumeratedParameter(`class Boolean`) Boolean field,
 			enumeratedParameter(`class Boolean`) Boolean cultivated) {
         assertSerialization("Test of [[Meadow]] serialization",
@@ -1014,7 +1017,7 @@ object xmlTests {
 
 	test
 	shared void testMineSerialization(parameters(`function twoRandomNumbers`) Integer id,
-			parameters(`value races`) String kind, // TODO: replace `races` with less-numerous array
+			parameters(`value minerals`) String kind,
 			enumeratedParameter(`class TownStatus`) TownStatus status,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
         Mine mine = Mine(kind, status, id);
@@ -1033,7 +1036,7 @@ object xmlTests {
 
 	test
 	shared void testShrubSerialization(parameters(`function twoRandomNumbers`) Integer id,
-			parameters(`value races`) String kind, // TODO: replace `races` with less-numerous array
+			parameters(`value fieldTypes`) String kind,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
 		Shrub shrub = Shrub(kind, id);
 	    assertSerialization("First test of Shrub serialization", shrub);
@@ -1080,7 +1083,7 @@ object xmlTests {
 	shared void testUnitWarnings(
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter,
 			parameters(`function twoRandomNumbers`) Integer id,
-			parameters(`value races`) String name, parameters(`value races`) String kind) { // TODO: replace each reference to `races` with a less numerous array
+			parameters(`value treeTypes`) String name, parameters(`value fieldTypes`) String kind) { // TODO: should probably test spaces in name and kind
 	    assertUnwantedChild<IUnit>("<unit><unit /></unit>", null);
 	    IUnit firstUnit = Unit(PlayerImpl(1, ""), kind, name, id);
         assertDeprecatedProperty(createSerializedForm(firstUnit, deprecatedWriter)
@@ -1231,7 +1234,7 @@ object xmlTests {
 	}
 
 	test
-	shared void testAnimalTracksSerialization(parameters(`value races`) String kind) {
+	shared void testAnimalTracksSerialization(parameters(`value treeTypes`) String kind) {
 		assertSerialization("Test of animal-track serialization", AnimalTracks(kind));
 		assertUnwantedChild<AnimalTracks>(
 			"""<animal kind="tracks" traces="true"><troll /></animal>""", null);
@@ -1512,7 +1515,7 @@ object xmlTests {
 	shared void testMineralSerialization(
 			parameters(`function twoRandomNumbers`) Integer dc,
 			parameters(`function twoRandomNumbers`) Integer id,
-			parameters(`value races`) String kind, // TODO: Replace `races` with a less-numerous array
+			parameters(`value minerals`) String kind,
 			enumeratedParameter(`class Boolean`) Boolean exposed,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
 	    MineralVein secondVein = MineralVein(kind, exposed, dc, id);
