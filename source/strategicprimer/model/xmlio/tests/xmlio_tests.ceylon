@@ -146,6 +146,7 @@ import lovelace.util.jvm {
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"
 {Integer*} threeRandomNumbers() => singletonRandom.integers(1200000).take(3);
+{Integer*} twoRandomNumbers() => singletonRandom.integers(1200000).take(2);
 {String*} races = raceFactory.races.distinct;
 String[] animalStatuses = ["wild", "semi-domesticated", "domesticated", "tame"];
 object xmlTests {
@@ -402,7 +403,7 @@ object xmlTests {
 	test
 	shared void testVillageWantsName(
 			enumeratedParameter(`class TownStatus`) TownStatus status,
-			parameters(`function threeRandomNumbers`) Integer id,
+			parameters(`function twoRandomNumbers`) Integer id,
 			parameters(`value races`) String race,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
 		Village village = Village(status, "", id, PlayerImpl(-1, ""), race);
@@ -444,8 +445,8 @@ object xmlTests {
 	test
 	shared void testCityWantsName(enumeratedParameter(`class TownSize`) TownSize size,
 			enumeratedParameter(`class TownStatus`) TownStatus status,
-			parameters(`function threeRandomNumbers`) Integer id,
-			parameters(`function threeRandomNumbers`) Integer dc,
+			parameters(`function twoRandomNumbers`) Integer id,
+			parameters(`function twoRandomNumbers`) Integer dc,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
 		City city = City(status, size, dc, "", id, PlayerImpl(-1, ""));
 		assertMissingProperty(createSerializedForm(city, deprecatedWriter), "name", city);
@@ -485,8 +486,8 @@ object xmlTests {
 	shared void testFortificationWantsName(
 			enumeratedParameter(`class TownSize`) TownSize size,
 			enumeratedParameter(`class TownStatus`) TownStatus status,
-			parameters(`function threeRandomNumbers`) Integer id,
-			parameters(`function threeRandomNumbers`) Integer dc,
+			parameters(`function twoRandomNumbers`) Integer id,
+			parameters(`function twoRandomNumbers`) Integer dc,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
 		Fortification fort = Fortification(status, size, dc, "", id, PlayerImpl(-1, ""));
 		assertMissingProperty(createSerializedForm(fort, deprecatedWriter), "name", fort);
@@ -527,8 +528,8 @@ object xmlTests {
 	test
 	shared void testTownWantsName(enumeratedParameter(`class TownSize`) TownSize size,
 			enumeratedParameter(`class TownStatus`) TownStatus status,
-			parameters(`function threeRandomNumbers`) Integer id,
-			parameters(`function threeRandomNumbers`) Integer dc,
+			parameters(`function twoRandomNumbers`) Integer id,
+			parameters(`function twoRandomNumbers`) Integer dc,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
 		Town town = Town(status, size, dc, "", id, PlayerImpl(-1, ""));
 		assertMissingProperty(createSerializedForm(town, deprecatedWriter), "name", town);
@@ -959,8 +960,8 @@ object xmlTests {
 	test
 	shared void testGroveSerialization(enumeratedParameter(`class Boolean`) Boolean fruit,
 			enumeratedParameter(`class Boolean`) Boolean cultivated,
-			parameters(`value races`) String trees,
-			parameters(`function threeRandomNumbers`) Integer id) {
+			parameters(`value races`) String trees, // TODO: replace `races` with less-numerous array
+			parameters(`function twoRandomNumbers`) Integer id) {
 		// Using [[races]] for tree kinds because I don't want to loop over multiples within one
 		// test, I don't want to define yet another top-level object for [[parameters]], and
 		// so long as they're a series of different Strings it doesn't matter anyway.
@@ -986,9 +987,9 @@ object xmlTests {
 	}
 
 	test
-	shared void testMeadowSerialization(parameters(`function threeRandomNumbers`) Integer id,
+	shared void testMeadowSerialization(parameters(`function twoRandomNumbers`) Integer id,
 			enumeratedParameter(`class FieldStatus`) FieldStatus status,
-			parameters(`value races`) String kind,
+			parameters(`value races`) String kind, // TODO: Replace `races` with less-numerous array
 			enumeratedParameter(`class Boolean`) Boolean field,
 			enumeratedParameter(`class Boolean`) Boolean cultivated) {
         assertSerialization("Test of [[Meadow]] serialization",
@@ -1012,8 +1013,8 @@ object xmlTests {
 	}
 
 	test
-	shared void testMineSerialization(parameters(`function threeRandomNumbers`) Integer id,
-			parameters(`value races`) String kind,
+	shared void testMineSerialization(parameters(`function twoRandomNumbers`) Integer id,
+			parameters(`value races`) String kind, // TODO: replace `races` with less-numerous array
 			enumeratedParameter(`class TownStatus`) TownStatus status,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
         Mine mine = Mine(kind, status, id);
@@ -1031,8 +1032,8 @@ object xmlTests {
 	}
 
 	test
-	shared void testShrubSerialization(parameters(`function threeRandomNumbers`) Integer id,
-			parameters(`value races`) String kind,
+	shared void testShrubSerialization(parameters(`function twoRandomNumbers`) Integer id,
+			parameters(`value races`) String kind, // TODO: replace `races` with less-numerous array
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
 		Shrub shrub = Shrub(kind, id);
 	    assertSerialization("First test of Shrub serialization", shrub);
@@ -1078,8 +1079,8 @@ object xmlTests {
 	test
 	shared void testUnitWarnings(
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter,
-			parameters(`function threeRandomNumbers`) Integer id,
-			parameters(`value races`) String name, parameters(`value races`) String kind) {
+			parameters(`function twoRandomNumbers`) Integer id,
+			parameters(`value races`) String name, parameters(`value races`) String kind) { // TODO: replace each reference to `races` with a less numerous array
 	    assertUnwantedChild<IUnit>("<unit><unit /></unit>", null);
 	    IUnit firstUnit = Unit(PlayerImpl(1, ""), kind, name, id);
         assertDeprecatedProperty(createSerializedForm(firstUnit, deprecatedWriter)
@@ -1185,8 +1186,8 @@ object xmlTests {
 
 	test
 	shared void testAdventureSerialization(
-			parameters(`function threeRandomNumbers`) Integer idOne,
-			parameters(`function threeRandomNumbers`) Integer idTwo) {
+			parameters(`function twoRandomNumbers`) Integer idOne,
+			parameters(`function twoRandomNumbers`) Integer idTwo) {
 	    Player independent = PlayerImpl(1, "independent");
 	    AdventureFixture first = AdventureFixture(independent, "first hook brief",
 	        "first hook full", idOne);
@@ -1243,7 +1244,7 @@ object xmlTests {
 			warningLevels.die);
 	}
 	test
-	shared void testAnimalSerialization(parameters(`function threeRandomNumbers`) Integer id,
+	shared void testAnimalSerialization(parameters(`function twoRandomNumbers`) Integer id,
 			parameters(`value animalStatuses`) String status,
 			enumeratedParameter(`class Boolean`) Boolean talking) {
         assertSerialization("Test of [[Animal]] serialization",
@@ -1280,7 +1281,7 @@ object xmlTests {
 	    assertNotEquals(AnimalImpl("animal", talking, status, id, -1, 1),
 	        AnimalImpl("animal", talking, status, id, -1, 2),
 	        "Animal population count is checked in equals()");
-	}
+	} // TODO: add test of immortal-animal future-tag deserialization
 
 	test
 	parameters(`function threeRandomNumbers`)
@@ -1377,7 +1378,7 @@ object xmlTests {
 
 	test
 	shared void testFortressSerialization(
-			parameters(`function threeRandomNumbers`) Integer id,
+			parameters(`function twoRandomNumbers`) Integer id,
 			enumeratedParameter(`class TownSize`) TownSize size) {
 	    // Can't give player names because our test environment doesn't let us
 	    // pass a set of players in
@@ -1498,8 +1499,8 @@ object xmlTests {
 
 
 	test
-	shared void testCaveSerialization(parameters(`function threeRandomNumbers`) Integer dc,
-			parameters(`function threeRandomNumbers`) Integer id) {
+	shared void testCaveSerialization(parameters(`function twoRandomNumbers`) Integer dc,
+			parameters(`function twoRandomNumbers`) Integer id) {
 	    assertSerialization("Cave serialization test", Cave(dc, id));
 	    assertUnwantedChild<Cave>("<cave dc=\"``dc``\"><troll /></cave>", null);
 	    assertMissingProperty<Cave>("<cave />", "dc", null);
@@ -1509,9 +1510,9 @@ object xmlTests {
 
 	test
 	shared void testMineralSerialization(
-			parameters(`function threeRandomNumbers`) Integer dc,
-			parameters(`function threeRandomNumbers`) Integer id,
-			parameters(`value races`) String kind,
+			parameters(`function twoRandomNumbers`) Integer dc,
+			parameters(`function twoRandomNumbers`) Integer id,
+			parameters(`value races`) String kind, // TODO: Replace `races` with a less-numerous array
 			enumeratedParameter(`class Boolean`) Boolean exposed,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
 	    MineralVein secondVein = MineralVein(kind, exposed, dc, id);
@@ -1534,8 +1535,8 @@ object xmlTests {
 
 	test
 	shared void testBattlefieldSerialization(
-			parameters(`function threeRandomNumbers`) Integer dc,
-			parameters(`function threeRandomNumbers`) Integer id) {
+			parameters(`function twoRandomNumbers`) Integer dc,
+			parameters(`function twoRandomNumbers`) Integer id) {
 	    assertSerialization("Battlefield serialization test", Battlefield(dc, id));
 	    assertUnwantedChild<Battlefield>("<battlefield dc=\"``dc``\"><hill /></battlefield>",
 	        null);
