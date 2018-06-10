@@ -24,7 +24,8 @@ import strategicprimer.model.map.fixtures.mobile {
     Animal,
     maturityModel,
 	AnimalImpl,
-	AnimalTracks
+	AnimalTracks,
+	immortalAnimals
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
@@ -38,7 +39,8 @@ import strategicprimer.model.xmlio {
 }
 import strategicprimer.model.xmlio.exceptions {
     UnwantedChildException,
-	UnsupportedPropertyException
+	UnsupportedPropertyException,
+	UnsupportedTagException
 }
 import lovelace.util.common {
 	matchingValue
@@ -181,9 +183,18 @@ object unitMemberHandler extends FluidBase() {
 	shared Animal|AnimalTracks readAnimal(StartElement element, QName parent,
 			{XMLEvent*} stream, IPlayerCollection players, Warning warner,
 			IDRegistrar idFactory) {
-	    requireTag(element, parent, "animal");
-	    expectAttributes(element, warner, "traces", "id", "count", "kind", "talking",
-			"status", "wild", "born", "image");
+	    requireTag(element, parent, "animal", *immortalAnimals);
+	    String tag = element.name.localPart.lowercased;
+	    String kind;
+	    if (tag == "animal") {
+	        expectAttributes(element, warner, "traces", "id", "count", "kind", "talking",
+	            "status", "wild", "born", "image");
+	        kind = getAttribute(element, "kind");
+	    } else {
+	        warner.handle(UnsupportedTagException(element));
+	        expectAttributes(element, warner, "id", "count", "image");
+	        kind = tag;
+	    }
 	    spinUntilEnd(element.name, stream);
 	    // To get the intended meaning of existing maps, we have to parse
 	    // traces="" as traces="true". If compatibility with existing maps
@@ -219,12 +230,11 @@ object unitMemberHandler extends FluidBase() {
 	            warner.handle(UnsupportedPropertyException.inContext(element, "count",
 					"""when tracks="true""""));
 	        }
-	        return setImage(AnimalTracks(getAttribute(element, "kind")), element, warner);
+	        return setImage(AnimalTracks(kind), element, warner);
 	    } else {
 	        id = getOrGenerateID(element, warner, idFactory);
 	        return setImage(
-	            AnimalImpl(getAttribute(element, "kind"), talking, status,
-	                id, born, count), element, warner);
+	            AnimalImpl(kind, talking, status, id, born, count), element, warner);
 	    }
 	}
 	shared void writeAnimalTracks(XMLStreamWriter ostream, AnimalTracks obj,

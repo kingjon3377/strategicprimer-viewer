@@ -55,7 +55,8 @@ import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.model.map.fixtures.mobile {
-    maturityModel
+    maturityModel,
+	immortalAnimals
 }
 import strategicprimer.model.map.fixtures.towns {
     Fortress
@@ -142,6 +143,17 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 return reader.read(element, parent, stream);
             }
         } else {
+            if (immortalAnimals.contains(name.lowercased)) {
+                if (exists reader = readerCache["animal"]) {
+                    return reader.read(element, parent, stream);
+                } else {
+                    for (reader in readers) {
+                        if (reader.isSupportedTag("animal")) {
+                            return reader.read(element, parent, stream);
+                        }
+                    }
+                }
+            }
             throw UnwantedChildException(QName(element.name.namespaceURI, "tile"),
                 element);
         }

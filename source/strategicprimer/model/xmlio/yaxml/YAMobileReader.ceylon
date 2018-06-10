@@ -41,7 +41,8 @@ import strategicprimer.model.map.fixtures.mobile {
 	Simurgh,
 	Troll,
 	AnimalImpl,
-	AnimalTracks
+	AnimalTracks,
+	immortalAnimals
 }
 import strategicprimer.model.xmlio {
     Warning
@@ -63,25 +64,38 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         "ogre"->`Ogre`, "phoenix"->`Phoenix`, "simurgh"->`Simurgh`,
         "troll"->`Troll` };
     MobileFixture createAnimal(StartElement element) {
-        // To get the intended meaning of existing maps, we have to parse
-        // traces="" as traces="true". If compatibility with existing maps
-        // ever becomes unnecessary, I will change the default-value here to
-        // simply `false`.
-        Boolean tracks = getBooleanParameter(element, "traces",
-            hasParameter(element, "traces") && getParameter(element, "traces", "").empty);
+        String tag = element.name.localPart.lowercased;
+        String kind;
+        Boolean tracks;
+        if (tag == "animal") {
+            kind = getParameter(element, "kind");
+            // To get the intended meaning of existing maps, we have to parse
+            // traces="" as traces="true". If compatibility with existing maps
+            // ever becomes unnecessary, I will change the default-value here to
+            // simply `false`.
+            tracks = getBooleanParameter(element, "traces",
+                hasParameter(element, "traces") && getParameter(element, "traces", "").empty);
+            if (!tracks) {
+                expectAttributes(element, "traces", "id", "count", "talking", "kind",
+                    "status", "wild", "born", "image");
+            }
+        } else {
+            warnFutureTag(element);
+            expectAttributes(element, "id", "count", "image");
+            kind = tag;
+            tracks = false;
+        }
         if (tracks) {
             if (getParameter(element, "status", "wild") == "wild") {
                 expectAttributes(element, "traces", "status", "image", "kind");
             } else {
                 expectAttributes(element, "traces", "image", "kind");
             }
-            return AnimalTracks(getParameter(element, "kind"));
+            return AnimalTracks(kind);
         } else {
-	        expectAttributes(element, "traces", "id", "count", "talking", "kind",
-                "status", "wild", "born", "image");
 	        // TODO: We'd like default to be 1 inside a unit and -1 outside
 	        Integer count = getIntegerParameter(element, "count", 1);
-	        return AnimalImpl(getParameter(element, "kind"),
+	        return AnimalImpl(kind,
 	            getBooleanParameter(element, "talking", false),
 	            getParameter(element, "status", "wild"), getOrGenerateID(element),
 	            getIntegerParameter(element, "born", -1), count);
@@ -96,7 +110,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             supportedTags.contains(tag.lowercased);
     shared actual MobileFixture read(StartElement element, QName parent,
             {XMLEvent*} stream) {
-        requireTag(element, parent, *supportedTags);
+        requireTag(element, parent, *supportedTags.chain(immortalAnimals));
         MobileFixture twoParam(MobileFixture(String, Integer) constr) {
             expectAttributes(element, "id", "kind", "image");
                 return constr(getParameter(element, "kind"), getOrGenerateID(element));
@@ -109,8 +123,12 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         case ("fairy") { retval = twoParam(Fairy); }
         case ("giant") { retval = twoParam(Giant); }
         else {
-            expectAttributes(element, "image", "id");
-            retval = readSimple(type, getOrGenerateID(element));
+            if (supportedTags.contains(type)) {
+	            expectAttributes(element, "image", "id");
+	            retval = readSimple(type, getOrGenerateID(element));
+	        } else /*if (immortalAnimals.contains(type))*/ {
+	            retval = createAnimal(element);
+	        }
         }
         spinUntilEnd(element.name, stream);
         if (is HasMutableImage retval) {

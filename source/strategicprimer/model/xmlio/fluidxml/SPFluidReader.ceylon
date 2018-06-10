@@ -75,7 +75,8 @@ import strategicprimer.model.map.fixtures.mobile {
 	Griffin,
 	Djinn,
 	Simurgh,
-	Minotaur
+	Minotaur,
+	immortalAnimals
 }
 import strategicprimer.model.map.fixtures.terrain {
     Hill,
@@ -119,6 +120,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
                 namespace == XMLConstants.nullNsUri) {
             if (exists reader = readers[tag]) {
                 return reader(element, parent, stream, players, warner, idFactory);
+            } else if (immortalAnimals.contains(tag)) {
+                return unitMemberHandler.readAnimal(element, parent, stream, players, warner, idFactory);
             }
         }
         throw UnsupportedTagException(element);
