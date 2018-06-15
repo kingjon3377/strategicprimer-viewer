@@ -86,7 +86,8 @@ import strategicprimer.model.map.fixtures.mobile {
     Griffin,
     Ogre,
 	AnimalImpl,
-	AnimalTracks
+	AnimalTracks,
+	immortalAnimals
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     Job,
@@ -1284,7 +1285,15 @@ object xmlTests {
 	    assertNotEquals(AnimalImpl("animal", talking, status, id, -1, 1),
 	        AnimalImpl("animal", talking, status, id, -1, 2),
 	        "Animal population count is checked in equals()");
-	} // TODO: add test of immortal-animal future-tag deserialization
+	}
+
+	test
+	shared void testImmortalAnimalDeserialization(
+			parameters(`value immortalAnimals`) String animal,
+			parameters(`function twoRandomNumbers`) Integer id,
+			parameters(`function twoRandomNumbers`) Integer count) =>
+		assertUnsupportedTag("<``animal`` id=\"``id``\" count=\"``count``\" />",
+			animal, AnimalImpl(animal, false, "wild", id, -1, count));
 
 	test
 	parameters(`function threeRandomNumbers`)
