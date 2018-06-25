@@ -31,7 +31,8 @@ import strategicprimer.model.map.fixtures {
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
-    Animal
+    Animal,
+	AnimalImpl
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture,
@@ -172,6 +173,21 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
             return combiner(list);
         }
     }
+    String memberKind(IFixture? member) {
+        switch (member)
+        case (is AnimalImpl|Implement|Forest|Grove|Meadow) {
+            return member.kind;
+        }
+        case (is ResourcePile) {
+            return member.contents;
+        }
+        case (null) {
+            return "null";
+        }
+        else {
+            return member.string;
+        }
+    }
     "Offer to combine like resources in a unit or fortress."
     void coalesceResources(String context, {IFixture*} stream, ICLIHelper cli,
 			Anything(IFixture) add, Anything(IFixture) remove) {
@@ -237,7 +253,7 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
                 cli.print(context);
                 cli.println("The following ``helper.plural.lowercased`` can be combined:");
                 list.map(Object.string).each(cli.println);
-                if (cli.inputBoolean("Combine them? ")) {
+                if (cli.inputBooleanInSeries("Combine them? ", memberKind(list.first))) {
                     IFixture combined = helper.combineRaw(list);
                     list.each(remove);
                     add(combined);
