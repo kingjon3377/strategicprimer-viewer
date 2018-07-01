@@ -27,7 +27,9 @@ import strategicprimer.model.map.fixtures {
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
-    IWorker
+    IWorker,
+	Animal,
+	animalPlurals
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     IJob
@@ -61,6 +63,22 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                     writer.write(", ``job.name`` ``job.level``");
                 }
                 writer.write(")");
+            }
+        } else if (is Animal member) {
+            if (member.population > 1) {
+                writer.write("``member.population`` ");
+            }
+            if (member.status != "domesticated") {
+                writer.write("``member.status`` ");
+            }
+            if (member.population > 1) {
+                //writer.write(animalPlurals[member.kind]); // TODO: syntax sugar once compiler bug fixed
+                writer.write(animalPlurals.get(member.kind));
+            } else {
+                writer.write(member.kind);
+            }
+            if (member.born >= 0) {
+               writer.write(" (born turn ``member.born``)");
             }
         } else if (exists member) {
             writer.write(member.string);
