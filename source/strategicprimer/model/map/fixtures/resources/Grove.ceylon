@@ -29,10 +29,25 @@ shared class Grove(orchard, cultivated, kind, id, population = -1)
 	        Grove(orchard, cultivated, kind, id,
 	            Integer.largest(population, 0) + Integer.largest(addend.population, 0));
     shared actual String defaultImage = (orchard) then "orchard.png" else "tree.png";
-    shared actual String shortDescription => // TODO: Convert back to procedural code
-            "``(cultivated) then "Cultivated" else "Wild"`` ``kind`` ``(orchard) then
-                "orchard" else "grove"````(population < 0) then "" else " of ``
-				population`` trees"``";
+    shared actual String shortDescription {
+        String retval;
+        if (cultivated) {
+            if (orchard) {
+                retval = "Cultivated ``kind`` orchard";
+            } else {
+                retval = "Cultivated ``kind`` grove";
+            }
+        } else if (orchard) {
+            retval = "Wild ``kind`` orchard";
+        } else {
+            retval = "Wild ``kind`` grove";
+        }
+        if (population < 0) {
+            return retval;
+        } else {
+            return retval + " of ``population`` trees";
+        }
+    }
     shared actual String string = shortDescription;
     shared actual Boolean equals(Object obj) {
         if (is Grove obj) {
