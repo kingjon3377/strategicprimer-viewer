@@ -8,6 +8,7 @@ import lovelace.util.common {
 	anythingEqual
 }
 "A village in the map."
+// TODO: We'd like to be able to have Worker members (directly or in CommunityStats) to represent villagers that players have been informed about by name
 shared class Village(status, name, id, owner, race)
         satisfies ITownFixture&HasMutableImage&IFixture&Subsettable<IFixture> {
     "The status of the village."
