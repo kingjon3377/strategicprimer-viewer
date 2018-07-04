@@ -8,7 +8,8 @@ import strategicprimer.drivers.common {
 	ParamCount,
 	IDriverModel,
 	IDriverUsage,
-	ISPDriver
+	ISPDriver,
+	IMultiMapModel
 }
 import strategicprimer.model.map {
 	HasName,
@@ -85,7 +86,9 @@ shared class TrappingCLI() satisfies SimpleDriver {
 			"The command to handle"
 			TrapperCommand command,
 			"If true, we're dealing with *fish* traps, which have different costs"
-			Boolean fishing) {
+			Boolean fishing,
+			"Method to add animal traces to player maps"
+			Anything(AnimalTracks) tracksHandler) {
 		switch (command)
 		case (TrapperCommand.check){
 			<Point->Animal|AnimalTracks|HuntingModel.NothingFound>? top = fixtures.accept();
@@ -101,6 +104,7 @@ shared class TrappingCLI() satisfies SimpleDriver {
 				return (fishing) then 5 else 10;
 			} else if (is AnimalTracks item) { // TODO: Is this really possible now?
 				cli.println("Found evidence of ``item.kind`` escaping");
+				tracksHandler(item.copy(true));
 				return (fishing) then 5 else 10;
 			} else {
 				cli.println("Found either ``item.kind`` or evidence of it escaping.");
@@ -122,8 +126,13 @@ shared class TrappingCLI() satisfies SimpleDriver {
 						Integer remaining = item.population - count;
 						if (remaining > 0) {
 							map.addFixture(loc, item.reduced(remaining));
+							tracksHandler(AnimalTracks(item.kind));
 						}
+					} else {
+						tracksHandler(AnimalTracks(item.kind));
 					}
+				} else {
+					tracksHandler(AnimalTracks(item.kind));
 				}
 				return retval;
 			}
@@ -134,7 +143,7 @@ shared class TrappingCLI() satisfies SimpleDriver {
 		case (TrapperCommand.setTrap) { return (fishing) then 30 else 45; }
 	}
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-		IDriverModel model) {
+		IDriverModel model) { // TODO: fix indentation in this method
 		Boolean fishing = cli.inputBooleanInSeries(
 			"Is this a fisherman trapping fish rather than a trapper? ");
 		String name = (fishing) then "fisherman" else "trapper";
@@ -148,10 +157,17 @@ shared class TrappingCLI() satisfies SimpleDriver {
 		} else {
 			fixtures = QueueWrapper(huntModel.hunt(point));
 		}
+		void addTracksToMaps(AnimalTracks tracks) {
+			if (is IMultiMapModel model) {
+				for ([subMap, _] in model.subordinateMaps) {
+					subMap.addFixture(point, tracks);
+				}
+			}
+		}
 		while (minutes > 0, exists command = cli.chooseFromList(commands,
 			"What should the ``name`` do next?", "Oops! No commands",
 			"Next action: ", false).item) {
-			minutes -= handleCommand(model.map, fixtures, cli, command, fishing);
+			minutes -= handleCommand(model.map, fixtures, cli, command, fishing, addTracksToMaps);
 			cli.println("``inHours(minutes)`` remaining");
 			if (command == TrapperCommand.quit) {
 				break;
