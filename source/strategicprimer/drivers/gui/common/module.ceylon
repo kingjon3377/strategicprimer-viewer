@@ -3,7 +3,7 @@
 // TODO: add tagged() annotations throughout
 license("GPL-3")
 native("jvm")
-module strategicprimer.drivers.gui.common "0.4.9016" {
+module strategicprimer.drivers.gui.common "0.4.9017" {
     value ceylonVersion = "1.3.3";
     value javaVersion = "8";
     shared import java.desktop javaVersion;

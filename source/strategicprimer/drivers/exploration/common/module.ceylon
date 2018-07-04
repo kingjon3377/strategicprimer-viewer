@@ -1,9 +1,9 @@
 "Common functionality shared between the exploration CLI and the exploration GUI."
 license("GPL-3")
 native("jvm")
-module strategicprimer.drivers.exploration.common "0.4.9016" {
+module strategicprimer.drivers.exploration.common "0.4.9017" {
     value ceylonVersion = "1.3.3";
-    value spVersion = "0.4.9016";
+    value spVersion = "0.4.9017";
     shared import strategicprimer.drivers.common spVersion;
     import strategicprimer.model spVersion;
     import ceylon.collection ceylonVersion;

@@ -2,7 +2,7 @@
  Primer](https://shinecycle.wordpress.com/archives/strategic-primer) maps."
 license("GPL-3")
 native("jvm")
-module strategicprimer.report "0.4.9016" {
+module strategicprimer.report "0.4.9017" {
     value ceylonVersion = "1.3.3";
     value javaVersion = "8";
     value lovelaceUtilsVersion = "0.1.0";
@@ -13,7 +13,7 @@ module strategicprimer.report "0.4.9016" {
     shared import java.desktop javaVersion;
     import ceylon.collection ceylonVersion;
     import ceylon.logging ceylonVersion;
-    shared import strategicprimer.model "0.4.9016";
+    shared import strategicprimer.model "0.4.9017";
     shared import lovelace.util.common lovelaceUtilsVersion;
     import ceylon.test ceylonVersion;
     shared import ceylon.file ceylonVersion;
