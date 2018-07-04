@@ -77,15 +77,15 @@ shared class TrappingCLI() satisfies SimpleDriver {
 	}
 	"Handle a command. Returns how long it took to execute the command."
 	Integer handleCommand(
-		"The main map."
-		IMutableMapNG map,
-		"The animals generated from the tile and the surrounding tiles, with their home
-		 locations."
-		Queue<Point->Animal|AnimalTracks|HuntingModel.NothingFound> fixtures, ICLIHelper cli,
-		"The command to handle"
-		TrapperCommand command,
-		"If true, we're dealing with *fish* traps, which have different costs"
-		Boolean fishing) {
+			"The main map."
+			IMutableMapNG map,
+			"The animals generated from the tile and the surrounding tiles, with their home
+			 locations."
+			Queue<Point->Animal|AnimalTracks|HuntingModel.NothingFound> fixtures, ICLIHelper cli,
+			"The command to handle"
+			TrapperCommand command,
+			"If true, we're dealing with *fish* traps, which have different costs"
+			Boolean fishing) {
 		switch (command)
 		case (TrapperCommand.check){
 			<Point->Animal|AnimalTracks|HuntingModel.NothingFound>? top = fixtures.accept();
