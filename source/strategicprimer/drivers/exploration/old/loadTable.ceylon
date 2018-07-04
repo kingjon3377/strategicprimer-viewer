@@ -111,7 +111,6 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                     throw IOException("constant value not present");
                 }
             }
-            case ('l'|'L') { return LegacyTable(); }
             case ('t'|'T') {
                 MutableList<TileType->String> list =
                         ArrayList<TileType->String>();
