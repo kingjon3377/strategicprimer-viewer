@@ -380,10 +380,8 @@ shared class SPMapNG satisfies IMutableMapNG {
                         retval = false; // return false;
                     }
                 }
-                //if (!set(obj.rivers[point]) // TODO: syntax sugar
-                        //.complement(set(rivers[point])).empty) { // TODO: syntax sugar
-                if (!set(obj.rivers.get(point))
-                        .complement(set(rivers.get(point))).empty) {
+                //if (!set(obj.rivers[point]).superset(set(rivers[point]))) { // TODO: syntax sugar
+                if (!set(obj.rivers.get(point)).superset(set(rivers.get(point)))) {
                     localReport("Extra river(s)");
                     retval = false; // return false;
                     break;
