@@ -1,5 +1,6 @@
 import java.util {
-    JIterator=Iterator
+    JIterator=Iterator,
+	Enumeration
 }
 import java.lang {
     JIterable=Iterable,
@@ -47,4 +48,19 @@ shared class ListModelWrapper<Element>(ListModel<Element> wrapped)
     shared actual Boolean equals(Object that) =>
             if (is ListModelWrapper<out Anything> that) then wrapped==that.wrapped
             else false;
+}
+
+"A wrapper around [[Enumeration]] where callers want a Ceylon [[Iterable]]. In practice the APIs
+ that use Enumeration rather than [[java.lang::Iterable]] don't parameterize it, so we assert that
+ each item returned is of the desired type instead of requiring callers to coerce the type of the
+ enumeration to be parameterized properly."
+shared class EnumerationWrapper<T>(Enumeration<out Object> enumeration) satisfies Iterator<T> {
+	shared actual T|Finished next() {
+		if (enumeration.hasMoreElements()) {
+			assert (is T item = enumeration.nextElement());
+			return item;
+		} else {
+			return finished;
+		}
+	}
 }

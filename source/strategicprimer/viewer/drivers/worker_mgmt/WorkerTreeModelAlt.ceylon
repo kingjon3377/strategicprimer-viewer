@@ -31,26 +31,15 @@ import strategicprimer.drivers.worker.common {
     IWorkerModel,
     IWorkerTreeModel
 }
-import java.util {
-	Enumeration
-}
 import lovelace.util.common {
 	matchingValue,
 	as
 }
+import lovelace.util.jvm {
+	EnumerationWrapper
+}
 "An alternative implementation of the worker tree model."
 shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
-	static class EnumerationWrapper<T>(Enumeration<out Object> enumeration)
-            satisfies Iterator<T> {
-		shared actual T|Finished next() {
-			if (enumeration.hasMoreElements()) {
-				assert (is T item = enumeration.nextElement());
-				return item;
-			} else {
-				return finished;
-			}
-		}
-	}
     shared static class WorkerTreeNode<T>(T userObj, Boolean permitsChildren = true)
             extends DefaultMutableTreeNode(userObj, permitsChildren)
             satisfies {TreeNode*} given T satisfies Object {

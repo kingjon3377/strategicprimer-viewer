@@ -1,7 +1,3 @@
-import java.util {
-    Enumeration
-}
-
 import javax.swing.tree {
     MutableTreeNode
 }
@@ -9,6 +5,10 @@ import javax.swing.tree {
 import lovelace.util.common {
     todo,
 	matchingPredicate
+}
+
+import lovelace.util.jvm {
+	EnumerationWrapper
 }
 
 import strategicprimer.model.map {
@@ -79,20 +79,8 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&
         return builder.string;
     }
     "An iterator over the node's children."
-    shared default actual Iterator<IReportNode> iterator() {
-        Enumeration<out Object> wrapped = children();
-        object retval satisfies Iterator<IReportNode> {
-            shared actual IReportNode|Finished next() {
-                if (wrapped.hasMoreElements()) {
-                    assert (is IReportNode node = wrapped.nextElement());
-                    return node;
-                } else {
-                    return finished;
-                }
-            }
-        }
-        return retval;
-    }
+    shared default actual Iterator<IReportNode> iterator() =>
+            EnumerationWrapper<IReportNode>(children());
 }
 "Create a report node holding just a single string, such as for a placeholder while the
  report generator generates the report."
