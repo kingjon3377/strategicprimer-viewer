@@ -36,7 +36,8 @@ import strategicprimer.drivers.common {
 import lovelace.util.common {
 	matchingValue,
 	inverse,
-	simpleSet
+	simpleSet,
+	simpleMap
 }
 
 "A [[TileDrawHelper]] for version-2 maps."
@@ -68,7 +69,7 @@ class Ver2TileDrawHelper(
     "Images we've already determined aren't there."
     MutableSet<String> missingFiles = HashSet<String>();
     "A mapping from river-sets to filenames."
-    Map<Set<River>, String> riverFiles = map {
+    Map<Set<River>, String> riverFiles = simpleMap(
         emptySet->"riv00.png", simpleSet(River.north)->"riv01.png",
         simpleSet(River.east)->"riv02.png", simpleSet(River.south)->"riv03.png",
         simpleSet(River.west)->"riv04.png", simpleSet(River.lake)->"riv05.png",
@@ -98,7 +99,7 @@ class Ver2TileDrawHelper(
         simpleSet(River.north,River.east,River.south,River.lake)->"riv29.png",
         simpleSet(River.east,River.south,River.west,River.lake)->"riv30.png",
         simpleSet(River.north,River.east,River.south,River.west,River.lake)->"riv31.png"
-    };
+    );
     for (file in ["trees.png", "mountain.png"]) {
         try {
             imageLoader.loadImage(file);

@@ -62,7 +62,8 @@ import java.io {
     IOException
 }
 import lovelace.util.common {
-	NonNullCorrespondence
+	NonNullCorrespondence,
+	simpleMap
 }
 import ceylon.language.meta.model {
 	ClassOrInterface
@@ -192,7 +193,7 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
     void coalesceResources(String context, {IFixture*} stream, ICLIHelper cli,
 			Anything(IFixture) add, Anything(IFixture) remove) {
         Map<ClassOrInterface<IFixture>, CoalescedHolder<out IFixture, out Object>> mapping
-				= map {
+				= simpleMap(
             `ResourcePile`->CoalescedHolder<ResourcePile, [String, String, String, Integer]>(
                 (pile) => [pile.kind, pile.contents, pile.quantity.units, pile.created],
 				combineResources),
@@ -211,7 +212,7 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
                 (meadow) => [meadow.kind, meadow.field, meadow.cultivated, meadow.status],
 				combineMeadows),
             `Shrub`->CoalescedHolder<Shrub, String>(Shrub.kind, combinePopulations<Shrub>)
-        };
+        );
         for (fixture in stream) {
             if (is {IFixture*} fixture) {
                 String shortDesc;

@@ -17,12 +17,15 @@ import strategicprimer.model.map {
 import ceylon.language.meta.model {
     ClassOrInterface
 }
+import lovelace.util.common {
+	simpleMap
+}
 "An object encapsulating the mapping from tile-types to colors."
 object colorHelper {
     String wrap(String wrapped) => "<html><p>``wrapped``</p></html>";
     "Descriptions of the types."
     suppressWarnings("deprecation")
-    Map<TileType, String> descriptions = map {
+    Map<TileType, String> descriptions = simpleMap(
         TileType.borealForest->wrap("Boreal Forest"),
         TileType.desert->wrap("Desert"),
         TileType.jungle->wrap("Jungle"),
@@ -33,20 +36,20 @@ object colorHelper {
         TileType.tundra->wrap("Tundra"),
         TileType.steppe->wrap("Steppe"),
         TileType.swamp->wrap("Swamp")
-    };
+    );
     "A map from types of features to the colors they can make the tile be. Used to
       show that a tile is forested, e.g., even when that is normally represented by
        an icon and there's a higher icon on the tile."
-    Map<ClassOrInterface<TileFixture>, Color> featureColors = map {
+    Map<ClassOrInterface<TileFixture>, Color> featureColors = simpleMap(
         `Forest`->Color(0, 117, 0),
         `Oasis`->Color(72, 218, 164),
         `Sandbar`->Color(249, 233, 28),
         `Hill`->Color(141, 182, 0)
-    };
+    );
     "A map from map versions to maps from tile-types to colors."
     suppressWarnings("deprecation")
-    Map<Integer, Map<TileType, Color>> colors = map {
-        1->map {
+    Map<Integer, Map<TileType, Color>> colors = simpleMap(
+        1->simpleMap(
             TileType.borealForest->Color(72, 218, 164),
             TileType.desert->Color(249, 233, 28),
             TileType.jungle->Color(229, 46, 46),
@@ -55,16 +58,16 @@ object colorHelper {
             TileType.plains->Color(0, 117, 0),
             TileType.temperateForest->Color(72, 250, 72),
             TileType.tundra->Color(153, 153, 153)
-        },
-        2->map {
+        ),
+        2->simpleMap(
             TileType.desert->Color(249, 233, 28),
             TileType.jungle->Color(229, 46, 46),
             TileType.ocean->Color.\iBLUE,
             TileType.plains->Color(72, 218, 164),
             TileType.tundra->Color(153, 153, 153),
             TileType.steppe->Color(72, 100, 72)
-        }
-    };
+        )
+    );
     "Whether the given map version supports the given tile type."
     shared Boolean supportsType(Integer version, TileType type) {
         if (exists map = colors[version], exists color = map[type]) {

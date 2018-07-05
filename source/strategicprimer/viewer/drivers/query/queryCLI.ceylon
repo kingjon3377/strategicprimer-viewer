@@ -40,7 +40,8 @@ import strategicprimer.drivers.common.cli {
 import lovelace.util.common {
 	todo,
 	matchingValue,
-	defer
+	defer,
+	simpleMap
 }
 import strategicprimer.model.map.fixtures.terrain {
 	Forest
@@ -486,7 +487,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 	"Handle a series of user commands."
 	void handleCommands(SPOptions options, IDriverModel model, HuntingModel huntModel,
 			ICLIHelper cli) {
-		Map<String, Anything(ICLIHelper)> commands = map {
+		Map<String, Anything(ICLIHelper)> commands = simpleMap(
 			"?"->replUsage,
 			"help"->replUsage,
 			"fortress"->( // TODO: refactor lambdas including inputPoint() to make defer()ing them easier
@@ -504,7 +505,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			"count"->shuffle(curry(countWorkers))(model.map, *model.map.players),
 			"unexplored"->curry(findUnexploredCommand)(model.map),
 			"trade"->curry(tradeCommand)(model.map)
-		};
+		);
 		while (true) {
 			String command = cli.inputString("Command:").lowercased;
 			if ("quit".startsWith(command)) {

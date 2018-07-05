@@ -29,7 +29,8 @@ import javax.xml.stream.events {
 
 import lovelace.util.common {
     IteratorWrapper,
-	matchingValue
+	matchingValue,
+	simpleMap
 }
 import lovelace.util.jvm {
     TypesafeXMLEventReader
@@ -439,7 +440,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         {XMLEvent*} stream, IMutablePlayerCollection players, Warning warner,
         IDRegistrar idFactory) =>
             readMapOrViewTag(element, parent, stream, players, warner, idFactory);
-    readers = map([ "adventure"->fluidExplorableHandler.readAdventure,
+    readers = simpleMap("adventure"->fluidExplorableHandler.readAdventure,
         "portal"->fluidExplorableHandler.readPortal,
         "cave"->fluidExplorableHandler.readCave,
         "battlefield"->fluidExplorableHandler.readBattlefield,
@@ -488,7 +489,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         SimpleFixtureReader("ogre", `Ogre`).entry,
         SimpleFixtureReader("phoenix", `Phoenix`).entry,
         SimpleFixtureReader("simurgh", `Simurgh`).entry,
-        SimpleFixtureReader("troll", `Troll`).entry ]);
+        SimpleFixtureReader("troll", `Troll`).entry);
     shared actual Type readXML<Type>(JPath file, JReader istream, Warning warner)
             given Type satisfies Object {
         // TODO: Pass in Closeables so we can pass it to the TypesafeMLEventReader to make sure the file descriptor gets closed

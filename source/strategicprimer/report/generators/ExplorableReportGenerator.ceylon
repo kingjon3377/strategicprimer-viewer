@@ -10,7 +10,8 @@ import ceylon.language.meta.model {
 
 import lovelace.util.common {
     DRMap=DelayedRemovalMap,
-	inverse
+	inverse,
+	simpleMap
 }
 
 import strategicprimer.model.map {
@@ -34,9 +35,6 @@ import strategicprimer.report.nodes {
     ListReportNode,
     SectionListReportNode,
     emptyReportNode
-}
-import ceylon.language {
-    createMap=map
 }
 "A report generator for caves, battlefields, and portals."
 shared class ExplorableReportGenerator(
@@ -121,9 +119,8 @@ shared class ExplorableReportGenerator(
         IReportNode battles = ListReportNode("Battlefields");
         IReportNode caves = ListReportNode("Caves");
         Map<Type<IFixture>, IReportNode> nodes =
-                createMap { { `Portal`->portals, `Battlefield`->battles,
-            `Cave`->caves };
-        };
+                simpleMap(`Portal`->portals, `Battlefield`->battles,
+            `Cave`->caves);
         for ([loc, item] in fixtures.items.sort(pairComparator)) {
             if (is Battlefield|Cave|Portal item, // Using Iterable.narrow() instead of an if here causes a compiler backend error // TODO: distill MWE and report it
 	                exists node = nodes[type(item)]) {

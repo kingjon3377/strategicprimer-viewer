@@ -90,7 +90,8 @@ import ceylon.file {
     Nil
 }
 import lovelace.util.common {
-    todo
+    todo,
+	simpleMap
 }
 import strategicprimer.model.xmlio.fluidxml {
 	FluidBase { ... }
@@ -331,7 +332,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         indent(ostream, indentation);
         ostream.writeEndElement();
     }
-    writers = map<ClassOrInterface<Anything>, LocalXMLWriter> {
+    writers = simpleMap<ClassOrInterface<Anything>, LocalXMLWriter>(
         `River`->castingWriter<River>(fluidTerrainHandler.writeRivers),
         `AdventureFixture`->castingWriter<AdventureFixture>(
             fluidExplorableHandler.writeAdventure),
@@ -375,5 +376,5 @@ shared class SPFluidWriter() satisfies SPWriter {
         `Player`->castingWriter<Player>(writePlayer),
         `CommunityStats`->castingWriter<CommunityStats>(
             fluidTownHandler.writeCommunityStats)
-    };
+    );
 }

@@ -47,22 +47,25 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.xmlio {
     Warning
 }
+import lovelace.util.common {
+	simpleMap
+}
 "A reader for 'mobile fixtures'"
 class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<MobileFixture>(warning, idRegistrar) {
-    Map<ClassOrInterface<MobileFixture>, String> tagMap = map {
+    Map<ClassOrInterface<MobileFixture>, String> tagMap = simpleMap(
         `Animal`->"animal", `Centaur`->"centaur", `Dragon`->"dragon",
         `Fairy`->"fairy", `Giant`->"giant", `Sphinx`->"sphinx",
         `Djinn`->"djinn", `Griffin`->"griffin", `Minotaur`->"minotaur",
         `Ogre`->"ogre", `Phoenix`->"phoenix", `Simurgh`->"simurgh",
         `Troll`->"troll"
-    };
+    );
     Set<String> supportedTags = set(tagMap.items);
-    Map<String, Class<SimpleImmortal, [Integer]>> simples = map {
+    Map<String, Class<SimpleImmortal, [Integer]>> simples = simpleMap(
         "sphinx"->`Sphinx`,
         "djinn"->`Djinn`, "griffin"->`Griffin`, "minotaur"->`Minotaur`,
         "ogre"->`Ogre`, "phoenix"->`Phoenix`, "simurgh"->`Simurgh`,
-        "troll"->`Troll` };
+        "troll"->`Troll`);
     MobileFixture createAnimal(StartElement element) {
         String tag = element.name.localPart.lowercased;
         String kind;
