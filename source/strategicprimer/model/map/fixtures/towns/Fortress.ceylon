@@ -68,7 +68,7 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
     }
     "An iterator over the members of the fortress."
     shared actual Iterator<FortressMember> iterator() => members.iterator();
-    shared actual Boolean equals(Object obj) {
+    shared actual Boolean equals(Object obj) { // TODO: delegate to equalsIgnoringID()?
         if (is Fortress obj) {
             return name == obj.name && owner.playerId == obj.owner.playerId &&
                 set(members) == set(obj.members) && id == obj.id;
