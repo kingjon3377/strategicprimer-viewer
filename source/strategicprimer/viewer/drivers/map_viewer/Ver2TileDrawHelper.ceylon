@@ -35,7 +35,8 @@ import strategicprimer.drivers.common {
 }
 import lovelace.util.common {
 	matchingValue,
-	inverse
+	inverse,
+	simpleSet
 }
 
 "A [[TileDrawHelper]] for version-2 maps."
@@ -68,35 +69,35 @@ class Ver2TileDrawHelper(
     MutableSet<String> missingFiles = HashSet<String>();
     "A mapping from river-sets to filenames."
     Map<Set<River>, String> riverFiles = map {
-        emptySet->"riv00.png", set { River.north }->"riv01.png",
-        set { River.east }->"riv02.png", set {River.south}->"riv03.png",
-        set {River.west}->"riv04.png", set {River.lake}->"riv05.png",
-        set {River.north, River.east}->"riv06.png",
-        set {River.north,River.south}->"riv07.png",
-        set {River.north,River.west}->"riv08.png",
-        set {River.north,River.lake}->"riv09.png",
-        set {River.east,River.south}->"riv10.png",
-        set {River.east,River.west}->"riv11.png",
-        set {River.east,River.lake}->"riv12.png",
-        set {River.south,River.west}->"riv13.png",
-        set {River.south,River.lake}->"riv14.png",
-        set {River.west,River.lake}->"riv15.png",
-        set {River.north,River.east,River.south}->"riv16.png",
-        set {River.north,River.east,River.west}->"riv17.png",
-        set {River.north,River.east,River.lake}->"riv18.png",
-        set {River.north,River.south,River.west}->"riv19.png",
-        set {River.north,River.south,River.lake}->"riv20.png",
-        set {River.north,River.west,River.lake}->"riv21.png",
-        set {River.east,River.south,River.west}->"riv22.png",
-        set {River.east,River.south,River.lake}->"riv23.png",
-        set {River.east,River.west,River.lake}->"riv24.png",
-        set {River.south,River.west,River.lake}->"riv25.png",
-        set {River.north,River.east,River.south,River.west}->"riv26.png",
-        set {River.north,River.south,River.west,River.lake}->"riv27.png",
-        set {River.north,River.east,River.west,River.lake}->"riv28.png",
-        set {River.north,River.east,River.south,River.lake}->"riv29.png",
-        set {River.east,River.south,River.west,River.lake}->"riv30.png",
-        set {River.north,River.east,River.south,River.west,River.lake}->"riv31.png"
+        emptySet->"riv00.png", simpleSet(River.north)->"riv01.png",
+        simpleSet(River.east)->"riv02.png", simpleSet(River.south)->"riv03.png",
+        simpleSet(River.west)->"riv04.png", simpleSet(River.lake)->"riv05.png",
+        simpleSet(River.north, River.east)->"riv06.png",
+        simpleSet(River.north,River.south)->"riv07.png",
+        simpleSet(River.north,River.west)->"riv08.png",
+        simpleSet(River.north,River.lake)->"riv09.png",
+        simpleSet(River.east,River.south)->"riv10.png",
+        simpleSet(River.east,River.west)->"riv11.png",
+        simpleSet(River.east,River.lake)->"riv12.png",
+        simpleSet(River.south,River.west)->"riv13.png",
+        simpleSet(River.south,River.lake)->"riv14.png",
+        simpleSet(River.west,River.lake)->"riv15.png",
+        simpleSet(River.north,River.east,River.south)->"riv16.png",
+        simpleSet(River.north,River.east,River.west)->"riv17.png",
+        simpleSet(River.north,River.east,River.lake)->"riv18.png",
+        simpleSet(River.north,River.south,River.west)->"riv19.png",
+        simpleSet(River.north,River.south,River.lake)->"riv20.png",
+        simpleSet(River.north,River.west,River.lake)->"riv21.png",
+        simpleSet(River.east,River.south,River.west)->"riv22.png",
+        simpleSet(River.east,River.south,River.lake)->"riv23.png",
+        simpleSet(River.east,River.west,River.lake)->"riv24.png",
+        simpleSet(River.south,River.west,River.lake)->"riv25.png",
+        simpleSet(River.north,River.east,River.south,River.west)->"riv26.png",
+        simpleSet(River.north,River.south,River.west,River.lake)->"riv27.png",
+        simpleSet(River.north,River.east,River.west,River.lake)->"riv28.png",
+        simpleSet(River.north,River.east,River.south,River.lake)->"riv29.png",
+        simpleSet(River.east,River.south,River.west,River.lake)->"riv30.png",
+        simpleSet(River.north,River.east,River.south,River.west,River.lake)->"riv31.png"
     };
     for (file in ["trees.png", "mountain.png"]) {
         try {

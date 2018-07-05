@@ -38,7 +38,8 @@ import lovelace.util.common {
     todo,
     assertAny,
 	enumeratedParameter,
-	defer
+	defer,
+	simpleSet
 }
 
 import strategicprimer.model.idreg {
@@ -645,8 +646,8 @@ object xmlTests {
 	shared void testRiverSerializationOne() {
 	    assertUnwantedChild<IMapNG>(encapsulateTileString("<lake><troll /></lake>"), null);
 	    assertMissingProperty<IMapNG>(encapsulateTileString("<river />"), "direction", null);
-	    Set<River> setOne = set { River.north, River.south };
-	    Set<River> setTwo = set { River.south, River.north };
+	    Set<River> setOne = simpleSet(River.north, River.south);
+	    Set<River> setTwo = simpleSet(River.south, River.north);
 	    assertEquals(setOne, setTwo, "Rivers added in different order to set");
 	    assertEquals(
 	        encapsulateRivers(pointFactory(1, 1), River.north, River.south),
