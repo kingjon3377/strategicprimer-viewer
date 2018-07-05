@@ -302,13 +302,14 @@ shared class TabularReportCLI() satisfies SimpleDriver {
 	        supportedOptionsTemp = ["--serve[=8080]"];
     };
     MutableMap<String,Writer> writers = HashMap<String,Writer>();
+    Item->Key reverseEntry<Key, Item>(Key->Item entry)
+            given Key satisfies Object given Item satisfies Object => entry.item->entry.key;
+    Key->Item asEntry<Key, Item>([Key, Item] tuple) given Key satisfies Object =>
+            tuple.first->tuple.rest.first;
     void serveReports(IDriverModel model, Integer port) {
         Map<JPath, IMapNG> mapping;
-        if (is IMultiMapModel model) {
-            mapping = map {
-                for ([map, path] in model.allMaps)
-                if (exists path) path->map
-            };
+        if (is IMultiMapModel model) { // TODO: Provide a way to get maps and paths as Entries instead of Tuples
+            mapping = map(model.allMaps.map(asEntry).map(Entry.coalesced).coalesced.map(reverseEntry));
         } else if (exists path = model.mapFile) {
             mapping = map { path->model.map };
         } else {
