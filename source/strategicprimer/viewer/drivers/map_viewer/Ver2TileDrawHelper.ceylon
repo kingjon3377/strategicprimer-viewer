@@ -68,7 +68,7 @@ class Ver2TileDrawHelper(
     MutableSet<String> missingFiles = HashSet<String>();
     "A mapping from river-sets to filenames."
     Map<Set<River>, String> riverFiles = map {
-        set<River> { }->"riv00.png", set { River.north }->"riv01.png",
+        emptySet->"riv00.png", set { River.north }->"riv01.png",
         set { River.east }->"riv02.png", set {River.south}->"riv03.png",
         set {River.west}->"riv04.png", set {River.lake}->"riv05.png",
         set {River.north, River.east}->"riv06.png",
