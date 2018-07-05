@@ -42,8 +42,5 @@ shared object emptyReportNode extends DefaultMutableTreeNode() satisfies IReport
     }
     shared actual String string => "";
     shared actual Boolean emptyNode = true;
-    object iter satisfies Iterator<IReportNode> {
-        shared actual IReportNode|Finished next() => finished;
-    }
-    shared actual Iterator<IReportNode> iterator() => iter;
+    shared actual Iterator<IReportNode> iterator() => emptyIterator;
 }
