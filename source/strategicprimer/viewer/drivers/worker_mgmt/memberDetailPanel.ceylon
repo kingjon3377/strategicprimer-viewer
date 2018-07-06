@@ -33,7 +33,9 @@ import strategicprimer.model.map {
     HasPortrait
 }
 import strategicprimer.model.map.fixtures {
-    UnitMember
+    UnitMember,
+	Implement,
+	ResourcePile
 }
 import strategicprimer.model.map.fixtures.mobile {
     ProxyFor,
@@ -186,6 +188,26 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
                 }
             }
             nameLabel.text = "";
+            for (label in statLabels) {
+                label.recache(null);
+            }
+            jobsPanel.removeAll();
+        } else if (is Implement local) {
+            typeLabel.text = "Equipment";
+            nameLabel.text = "";
+            if (local.count > 1) {
+                kindLabel.text = "``local.count`` x ``local.kind``";
+            } else {
+            	kindLabel.text = local.kind;
+            }
+            for (label in statLabels) {
+                label.recache(null);
+            }
+            jobsPanel.removeAll();
+        } else if (is ResourcePile local) {
+            typeLabel.text = "Resource";
+            nameLabel.text = "";
+            kindLabel.text = "``local.quantity`` ``local.contents`` (``local.kind``)";
             for (label in statLabels) {
                 label.recache(null);
             }
