@@ -108,8 +108,10 @@ shared IMapNG decreaseResolution(IMapNG old) {
             Set<River> lowerRightRivers = set(
 //                old.rivers[subPoints[3]]).complement(set([River.west, River.north]));
                 old.rivers.get(subPoints[3])).complement(set([River.west, River.north]));
-            retval.addRivers(point, *upperLeftRivers.union(upperRightRivers) // TODO: just add them each in turn instead of union()ing
-                .union(lowerLeftRivers).union(lowerRightRivers));
+            retval.addRivers(point, *upperLeftRivers);
+            retval.addRivers(point, *upperRightRivers);
+            retval.addRivers(point, *lowerLeftRivers);
+            retval.addRivers(point, *lowerRightRivers);
         }
     }
     return retval;
