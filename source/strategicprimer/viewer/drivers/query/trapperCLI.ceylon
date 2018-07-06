@@ -143,7 +143,7 @@ shared class TrappingCLI() satisfies SimpleDriver {
 		case (TrapperCommand.setTrap) { return (fishing) then 30 else 45; }
 	}
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-		IDriverModel model) { // TODO: fix indentation in this method
+			IDriverModel model) {
 		Boolean fishing = cli.inputBooleanInSeries(
 			"Is this a fisherman trapping fish rather than a trapper? ");
 		String name = (fishing) then "fisherman" else "trapper";
@@ -165,8 +165,8 @@ shared class TrappingCLI() satisfies SimpleDriver {
 			}
 		}
 		while (minutes > 0, exists command = cli.chooseFromList(commands,
-			"What should the ``name`` do next?", "Oops! No commands",
-			"Next action: ", false).item) {
+				"What should the ``name`` do next?", "Oops! No commands",
+				"Next action: ", false).item) {
 			minutes -= handleCommand(model.map, fixtures, cli, command, fishing, addTracksToMaps);
 			cli.println("``inHours(minutes)`` remaining");
 			if (command == TrapperCommand.quit) {
