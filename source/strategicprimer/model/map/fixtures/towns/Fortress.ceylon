@@ -68,10 +68,17 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
     }
     "An iterator over the members of the fortress."
     shared actual Iterator<FortressMember> iterator() => members.iterator();
-    shared actual Boolean equals(Object obj) { // TODO: delegate to equalsIgnoringID()?
+    shared actual Boolean equalsIgnoringID(IFixture fixture) {
+        if (is Fortress fixture) {
+            return name == fixture.name && owner.playerId == fixture.owner.playerId &&
+                    set(members) == set(fixture.members);
+        } else {
+            return false;
+        }
+    }
+    shared actual Boolean equals(Object obj) {
         if (is Fortress obj) {
-            return name == obj.name && owner.playerId == obj.owner.playerId &&
-                set(members) == set(obj.members) && id == obj.id;
+            return equalsIgnoringID(obj) && id == obj.id;
         } else {
             return false;
         }
@@ -143,14 +150,6 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
             return retval;
         } else {
             report("In fortress (ID #``id``): Names don't match");
-            return false;
-        }
-    }
-    shared actual Boolean equalsIgnoringID(IFixture fixture) {
-        if (is Fortress fixture) {
-            return name == fixture.name && owner.playerId == fixture.owner.playerId &&
-                set(members) == set(fixture.members);
-        } else {
             return false;
         }
     }
