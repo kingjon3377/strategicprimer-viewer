@@ -86,9 +86,9 @@ shared class WorkerGUI() satisfies SimpleDriver {
                 menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
                     "about");
                 log.trace("Registered menu handlers");
-                if (model.allMaps.every(compose(compose(compose(Iterable<IUnit>.empty,
-                        model.getUnits), IMapNG.currentPlayer),
-                        Tuple<IMapNG|JPath?, IMapNG, [JPath?]>.first))) {
+                if (model.allMaps.map(Entry.key)
+	                    .every(compose(compose(Iterable<IUnit>.empty,
+                        model.getUnits), IMapNG.currentPlayer))) {
                     pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
                         "change current player"));
                 }

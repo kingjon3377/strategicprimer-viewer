@@ -130,7 +130,7 @@ shared class ForestFixerDriver() satisfies SimpleCLIDriver {
             IDriverModel model) {
         assert (is IMultiMapModel model);
         IMutableMapNG mainMap = model.map;
-        for ([map, file] in model.subordinateMaps) {
+        for (map->file in model.subordinateMaps) {
             cli.println("Starting ``file?.string
                 else "a map with no associated path"``");
             for (location in map.locations) {

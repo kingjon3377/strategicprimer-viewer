@@ -159,7 +159,7 @@ shared class TrappingCLI() satisfies SimpleDriver {
 		}
 		void addTracksToMaps(AnimalTracks tracks) {
 			if (is IMultiMapModel model) {
-				for ([subMap, _] in model.subordinateMaps) {
+				for (subMap->_ in model.subordinateMaps) {
 					subMap.addFixture(point, tracks);
 				}
 			}

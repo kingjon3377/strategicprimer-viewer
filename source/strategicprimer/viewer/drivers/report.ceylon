@@ -142,7 +142,7 @@ shared class ReportCLI() satisfies SimpleDriver {
     void serveReports(IDriverModel model, Integer port, Player? currentPlayer) {
         MutableMap<JPath, String> cache = HashMap<JPath, String>();
         if (is IMultiMapModel model) {
-            for ([map, file] in model.allMaps) {
+            for (map->file in model.allMaps) {
                 if (exists file, !cache.defines(file)) {
                     cache[file] = reportGenerator.createReport(map,
 						currentPlayer else map.currentPlayer);
@@ -165,6 +165,7 @@ shared class ReportCLI() satisfies SimpleDriver {
 							response.writeString(report);
 	            });
             Endpoint rootHandler = Endpoint {
+                // TODO: If only one report, redirect to it instead of making user choose it.
                 path = isRoot();
                 void service(Request request, Response response) {
 	                    renderTemplate(Html {
@@ -246,7 +247,7 @@ shared class ReportCLI() satisfies SimpleDriver {
             serveReports(model, port, player);
         } else {
 	        if (is IMultiMapModel model) {
-	            for ([map, file] in model.allMaps) {
+	            for (map->file in model.allMaps) {
 	                writeReport(file, map, options);
 	            }
 	        } else {
@@ -304,12 +305,10 @@ shared class TabularReportCLI() satisfies SimpleDriver {
     MutableMap<String,Writer> writers = HashMap<String,Writer>();
     Item->Key reverseEntry<Key, Item>(Key->Item entry)
             given Key satisfies Object given Item satisfies Object => entry.item->entry.key;
-    Key->Item asEntry<Key, Item>([Key, Item] tuple) given Key satisfies Object =>
-            tuple.first->tuple.rest.first;
     void serveReports(IDriverModel model, Integer port) {
         Map<JPath, IMapNG> mapping;
-        if (is IMultiMapModel model) { // TODO: Provide a way to get maps and paths as Entries instead of Tuples
-            mapping = map(model.allMaps.map(asEntry).map(Entry.coalesced).coalesced.map(reverseEntry));
+        if (is IMultiMapModel model) {
+            mapping = map(model.allMaps.map(Entry.coalesced).coalesced.map(reverseEntry));
         } else if (exists path = model.mapFile) {
             mapping = map { path->model.map };
         } else {
@@ -342,7 +341,7 @@ shared class TabularReportCLI() satisfies SimpleDriver {
             }
         }
         if (is IMultiMapModel model) {
-            for ([map, file] in model.allMaps) {
+            for (map->file in model.allMaps) {
                 createReports(map, file);
             }
         } else {
@@ -461,7 +460,7 @@ shared class TabularReportCLI() satisfies SimpleDriver {
 	            }
 	        }
 	        if (is IMultiMapModel model) {
-	            for ([map, file] in model.allMaps) {
+	            for (map->file in model.allMaps) {
 	                createReports(map, file);
 	            }
 	        } else {

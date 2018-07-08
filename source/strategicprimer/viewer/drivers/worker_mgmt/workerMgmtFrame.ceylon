@@ -206,7 +206,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		return report;
 	}
 	IMapNG mainMap = model.map;
-	IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
+	IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
 	NewUnitDialog newUnitFrame = NewUnitDialog(model.currentPlayer, idf);
 	IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
 	value tree = workerTree(treeModel, model.players, defer(IMapNG.currentTurn, [mainMap]),
@@ -227,7 +227,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	void reportGeneratorThread() {
 		log.info("About to generate report");
 		IReportNode report = reportGenerator.createAbbreviatedReportIR(
-			model.subordinateMaps.first?.first else mainMap, model.currentPlayer);
+			model.subordinateMaps.first?.key else mainMap, model.currentPlayer);
 		log.info("Finished generating report");
 		SwingUtilities.invokeLater(JavaRunnable(defer(reportModel.setRoot, [report]))); // JavaRunnable because of https://github.com/eclipse/ceylon/issues/7379
 	}

@@ -215,11 +215,11 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
-            for ([map, path] in model.allMaps) {
+            for (map->path in model.allMaps) {
                 fixAllUnits(map, cli);
                 fixAllVillages(map, cli);
             }
-            for ([map, path] in model.subordinateMaps) {
+            for (map->path in model.subordinateMaps) {
                 fixMissingRivers(model.map, map);
             }
         } else {

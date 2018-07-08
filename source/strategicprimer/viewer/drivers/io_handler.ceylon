@@ -205,7 +205,7 @@ shared class IOHandler
         }
         case ("save all") {
             if (is IMultiMapModel mapModel) {
-                for ([map, file] in mapModel.allMaps) {
+                for (map->file in mapModel.allMaps) {
                     if (exists file) {
                         try {
                             mapIOHelper.writeMap(parsePath(file.string), map);
@@ -234,9 +234,9 @@ shared class IOHandler
         }
         case ("open secondary map in map viewer") {
             if (is IMultiMapModel mapModel,
-                    exists mapPair = mapModel.subordinateMaps.first) {
+                    exists mapEntry = mapModel.subordinateMaps.first) {
                 ViewerGUI().startDriverOnModel(cli, options,
-                    ViewerModel.fromPair(mapPair));
+                    ViewerModel.fromEntry(mapEntry));
             }
         }
         else {

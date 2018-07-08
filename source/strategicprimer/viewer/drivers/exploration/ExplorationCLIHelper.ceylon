@@ -101,7 +101,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             } else {
                 zero = false;
             }
-            for ([map, file] in model.subordinateMaps) {
+            for (map->file in model.subordinateMaps) {
                 map.addFixture(destPoint, fixture.copy(zero));
             }
             if (is CacheFixture fixture) {
@@ -193,7 +193,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
 	                case (9) { direction = Direction.northeast; }
 	                case (10) {
 	                    value [cost, path] = pathfinder.getTravelDistance(model
-								.subordinateMaps.first?.first else model.map,
+								.subordinateMaps.first?.key else model.map,
 	                        point, cli.inputPoint("Location to move toward: "));
 	                    if (path.empty) {
 	                        cli.println(
@@ -255,8 +255,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 //        if (map.mountainous[destPoint]) { // TODO: syntax sugar once compiler bug fixed
                 if (map.mountainous.get(destPoint)) {
                     mtn = "mountainous ";
-                    for (pair in model.subordinateMaps) {
-                        pair.first.mountainous[destPoint] = true;
+                    for (subMap->file in model.subordinateMaps) {
+                        subMap.mountainous[destPoint] = true;
                     }
                 } else {
                     mtn = "";
@@ -282,7 +282,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
 	                }
 	            }
                 if (!proposedPath.empty, automationConfig.config.stopAtPoint(cli,
-	                    model.subordinateMaps.first?.first else model.map, destPoint)) {
+	                    model.subordinateMaps.first?.key else model.map, destPoint)) {
                     proposedPath.clear();
                 }
             }

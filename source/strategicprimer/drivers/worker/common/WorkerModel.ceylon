@@ -86,7 +86,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         if (exists temp = currentPlayerImpl) {
             return temp;
         } else {
-            for ([localMap, _] in allMaps) {
+            for (localMap->_ in allMaps) {
                 Player temp = localMap.currentPlayer;
                 if (!getUnits(temp).empty) {
                     currentPlayerImpl = temp;
@@ -109,7 +109,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
 					IUnit.owner));
     "All the players in all the maps."
     shared actual {Player*} players =>
-			allMaps.map(Tuple.first).flatMap(IMutableMapNG.players).distinct;
+			allMaps.map(Entry.key).flatMap(IMutableMapNG.players).distinct;
     "Get all the given player's units, or only those of a specified kind."
     shared actual {IUnit*} getUnits(Player player, String? kind) {
         if (exists kind) {
@@ -121,7 +121,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 .sort(comparingOn(IUnit.name, comparingOn(String.lowercased,
 					increasing<String>)));
         } else {
-            value temp = allMaps.map(Tuple.first)
+            value temp = allMaps.map(Entry.key)
                     .flatMap((indivMap) => indivMap.locations.flatMap(
 //                        (point) => getUnitsImpl(indivMap.fixtures[point], player)));
                         (point) => getUnitsImpl(indivMap.fixtures.get(point), player)));
@@ -152,7 +152,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         if (subordinateMaps.empty) {
             addUnitAtLocationImpl(unit, location, map);
         } else {
-            for (eachMap in allMaps.map(Tuple.first)) {
+            for (eachMap->_ in allMaps) {
                 addUnitAtLocationImpl(unit, location, eachMap);
             }
         }

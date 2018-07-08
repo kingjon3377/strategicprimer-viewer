@@ -124,7 +124,7 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 		"Trade maps", "Copy contents from one map to another.", true, false);
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
 		IMapNG first = model.map;
-		assert (is IMultiMapModel model, exists second = model.subordinateMaps.first?.first);
+		assert (is IMultiMapModel model, exists second = model.subordinateMaps.first?.key);
 		if (cli.inputBoolean("Copy players?")) {
 			first.players.each(second.addPlayer);
 		}

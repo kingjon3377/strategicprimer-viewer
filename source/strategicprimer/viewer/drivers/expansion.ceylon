@@ -73,8 +73,7 @@ shared class ExpansionDriver() satisfies SimpleCLIDriver {
             IDriverModel model) {
         if (is IMultiMapModel model) {
             IMapNG master = model.map;
-            for (pair in model.subordinateMaps) {
-                IMutableMapNG map = pair.first;
+            for (map->path in model.subordinateMaps) {
                 Player currentPlayer = map.currentPlayer; // TODO: move these inner methods to the top level of the object
                 Boolean containsSwornVillage(Point point) { // TODO: fat arrow once syntax sugar in place
 //                    return map.fixtures[point].narrow<ITownFixture>() // TODO: syntax sugar once compiler bug fixed

@@ -106,7 +106,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 	"Let the user enter stats for one worker in particular."
 	static void enterStatsForWorker(IMultiMapModel model, Integer id, ICLIHelper cli) {
 		WorkerStats stats = enterStatsCollection(cli);
-		for (map in model.allMaps.map(Tuple.first)) {
+		for (map in model.allMaps.map(Entry.key)) {
 			if (is Worker fixture = find(map, id), !fixture.stats exists) {
 				fixture.stats = stats;
 			}
@@ -172,10 +172,10 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 	static Integer threeDeeSix() => die(6) + die(6) + die(6);
 	"Add a worker to a unit in all maps."
 	static void addWorkerToUnit(IMultiMapModel model, IFixture unit, IWorker worker) {
-		for (pair in model.allMaps) {
-			if (is IUnit fixture = find(pair.first, unit.id)) {
+		for (map->file in model.allMaps) {
+			if (is IUnit fixture = find(map, unit.id)) {
 				fixture.addMember(worker.copy(false));
-				Integer turn = pair.first.currentTurn;
+				Integer turn = map.currentTurn;
 				if (fixture.getOrders(turn).empty) {
 					fixture.setOrders(turn, "TODO: assign");
 				}
@@ -339,8 +339,8 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 				Point point = cli.inputPoint("Where to put new unit? ");
 				IUnit temp = Unit(player, cli.inputString("Kind of unit: "),
 					cli.inputString("Unit name: "), idf.createID());
-				for (pair in model.allMaps) {
-					pair.first.addFixture(point, temp);
+				for (indivMap->file in model.allMaps) {
+					indivMap.addFixture(point, temp);
 				}
 				units.add(temp);
 				item = temp;
@@ -384,7 +384,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
                 enterStats(model, cli);
             } else {
                 createWorkers(model, createIDFactory(model.allMaps
-                    .map(Tuple.first)), cli);
+                    .map(Entry.key)), cli);
             }
         } else {
             startDriverOnModel(cli, options, ExplorationModel.copyConstructor(model));

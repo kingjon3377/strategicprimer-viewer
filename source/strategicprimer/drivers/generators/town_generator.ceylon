@@ -473,7 +473,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             IDriverModel model) {
         IDRegistrar idf;
         if (is IMultiMapModel model) {
-            idf = createIDFactory(model.allMaps.map(Tuple.first));
+            idf = createIDFactory(model.allMaps.map(Entry.key));
         } else {
             idf = createIDFactory(model.map);
         }
@@ -505,7 +505,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                     }
                     assignStatsToTown(town, stats);
                     if (is IMultiMapModel model) {
-                        for ([subMap, file] in model.subordinateMaps) {
+                        for (subMap->file in model.subordinateMaps) {
                             assignStatsInMap(subMap, location, town.id, stats);
                         }
                     }
@@ -530,7 +530,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                 }
                 assignStatsToTown(town, stats);
                 if (is IMultiMapModel model) {
-                    for ([subMap, file] in model.subordinateMaps) {
+                    for (subMap->file in model.subordinateMaps) {
                         assignStatsInMap(subMap, location, town.id, stats);
                     }
                 }

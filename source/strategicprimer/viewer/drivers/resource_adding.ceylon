@@ -116,10 +116,10 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
         SimpleMultiMapModel.copyConstructor(driverModel) { }
     "All the players in all the maps."
     shared {Player*} players =>
-            allMaps.map(Tuple.first).flatMap(IMapNG.players).distinct;
+            allMaps.map(Entry.key).flatMap(IMapNG.players).distinct;
     "Add a resource to a player's HQ."
     shared void addResource(FortressMember resource, Player player) {
-        for ([map, _] in allMaps) {
+        for (map->_ in allMaps) {
             Player mapPlayer = map.currentPlayer;
             if (mapPlayer.independent || mapPlayer.playerId < 0 ||
                     mapPlayer.playerId == player.playerId) {
@@ -226,7 +226,7 @@ shared class ResourceAddingCLI() satisfies SimpleCLIDriver {
             IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
             MutableList<Player> players = ArrayList { elements = model.players; };
-            IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
+            IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
             try {
                 while (!players.empty, exists chosen = cli.chooseFromList(players,
 	                    "Players in the maps:", "No players found.",
@@ -321,7 +321,7 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
      one resource and close."
     SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
 	        Anything(ActionEvent) menuHandler) {
-        IDRegistrar idf = createIDFactory(model.allMaps.map(Tuple.first));
+        IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
         variable Player currentPlayer = PlayerImpl(-1, "");
         JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
         FormattedLabel resourceLabel = FormattedLabel("Add resource for %s:",

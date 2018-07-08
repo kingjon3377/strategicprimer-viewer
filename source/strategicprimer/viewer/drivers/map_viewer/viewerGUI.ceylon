@@ -122,7 +122,7 @@ shared class ViewerGUI() satisfies SimpleDriver {
             });
         } else if (is IMultiMapModel model) {
             for (map in model.allMaps) {
-                startDriverOnModel(cli, options.copy(), ViewerModel.fromPair(map));
+                startDriverOnModel(cli, options.copy(), ViewerModel.fromEntry(map));
             }
         } else {
             startDriverOnModel(cli, options, ViewerModel(model.map,

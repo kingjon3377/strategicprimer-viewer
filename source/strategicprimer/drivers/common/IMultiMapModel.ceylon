@@ -14,9 +14,10 @@ shared interface IMultiMapModel satisfies IDriverModel {
             IMutableMapNG map,
             "The file it was loaded from"
             JPath? file);
-    "Subordinate maps with their filenames."
-    shared formal {[IMutableMapNG, JPath?]*} subordinateMaps;
-    "All maps with their filenames, including the main map and the subordinate maps."
-    shared default {[IMutableMapNG, JPath?]*} allMaps =>
-            subordinateMaps.follow([map, mapFile]);
+    "Subordinate maps with their filenames, as [[Entries|Entry]]"
+    shared formal {<IMutableMapNG->JPath?>*} subordinateMaps;
+    "All maps with their filenames, including the main map and the subordinate maps,
+     as [[Entries|Entry]]"
+    shared default {<IMutableMapNG->JPath?>*} allMaps =>
+            subordinateMaps.follow(map->mapFile);
 }

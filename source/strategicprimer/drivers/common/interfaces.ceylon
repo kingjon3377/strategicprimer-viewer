@@ -148,7 +148,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                         mapReaderAdapter.readMultiMapModel(warningLevels.default,
                             masterPath, subordinatePath);
                 log.trace("Read maps from the two arguments");
-                mapModel.allMaps.map(Tuple.first).each(turnFixer);
+                mapModel.allMaps.map(Entry.key).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
             }
             case (ParamCount.atLeastTwo) {
@@ -172,7 +172,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                         mapReaderAdapter.readMultiMapModel(warningLevels.default,
                             masterPath, *secondSelectedPaths);
                 log.trace("Read maps from the arguments");
-                mapModel.allMaps.map(Tuple.first).each(turnFixer);
+                mapModel.allMaps.map(Entry.key).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
             }
             case (ParamCount.one) {
@@ -196,7 +196,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                             mapReaderAdapter.readMultiMapModel(warningLevels.default,
                                 chosenFile, *chosenFiles.rest);
                     log.trace("Parsed map(s) from file(s)");
-                    mapModel.allMaps.map(Tuple.first).each(turnFixer);
+                    mapModel.allMaps.map(Entry.key).each(turnFixer);
                     startDriverOnModel(cli, options, mapModel);
                 } else {
                     log.error("No file chosen");
@@ -222,7 +222,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                         mapReaderAdapter.readMultiMapModel(warningLevels.default,
                             JPaths.get(firstArg), *chosenFiles);
                 log.trace("Parsed maps from the two files");
-                mapModel.allMaps.map(Tuple.first).each(turnFixer);
+                mapModel.allMaps.map(Entry.key).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
             }
         } else if (args.size == 1, ParamCount.atLeastTwo == desiderata) {
@@ -237,7 +237,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                         mapReaderAdapter.readMultiMapModel(warningLevels.default,
                             JPaths.get(firstArg), *chosenFiles);
                 log.trace("Parsed maps from the files");
-                mapModel.allMaps.map(Tuple.first).each(turnFixer);
+                mapModel.allMaps.map(Entry.key).each(turnFixer);
                 startDriverOnModel(cli, options, mapModel);
             }
         } else if (args.size == 1) {
@@ -256,7 +256,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                     mapReaderAdapter.readMultiMapModel(warningLevels.default,
                         JPaths.get(firstArg), *mapIOHelper.namesToFiles(*others));
             log.trace("Parsed paths from arguments");
-            mapModel.allMaps.map(Tuple.first).each(turnFixer);
+            mapModel.allMaps.map(Entry.key).each(turnFixer);
             startDriverOnModel(cli, options, mapModel);
         }
     }
@@ -373,8 +373,8 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
 	        if (options.hasOption("--current-turn")) {
 	            if (is Integer currentTurn =
 	                    Integer.parse(options.getArgument("--current-turn"))) {
-	                for (pair in model.allMaps) {
-	                    pair.first.currentTurn = currentTurn;
+	                for (map->path in model.allMaps) {
+	                    map.currentTurn = currentTurn;
 	                }
 	            } else {
 	                cli.println("--current-turn must be an integer");

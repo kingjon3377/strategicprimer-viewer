@@ -167,7 +167,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
     "All the players shared by all the maps."
-    shared actual {Player*} playerChoices => allMaps.map(Tuple.first).map(IMapNG.players).map(set)
+    shared actual {Player*} playerChoices => allMaps.map(Entry.key).map(IMapNG.players).map(set)
                 .fold(set(map.players))(intersection);
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) =>
@@ -219,7 +219,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 			];
         // TODO: Unit vision range
         {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
-        for ([submap, file] in subordinateMaps) {
+        for (submap->file in subordinateMaps) {
             for (point in points) {
                 for (fixture in submap.fixtures.get(point).narrow<MobileFixture>()) { // TODO: syntax sugar once bug fixed
                     for (innerPoint->match in localFind(submap, fixture)) {
@@ -269,7 +269,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             Integer retval = (ceiling(base * speed.mpMultiplier) + 0.1).integer;
             removeImpl(map, point, unit);
             map.addFixture(dest, unit);
-            for ([subMap, subFile] in subordinateMaps) {
+            for (subMap->subFile in subordinateMaps) {
                 if (doesLocationHaveFixture(subMap, point, unit)) {
                     ensureTerrain(map, subMap, dest);
                     removeImpl(subMap, point, unit);
@@ -299,8 +299,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     log.trace("Unknown reason for movement-impossible condition");
                 }
             }
-            for (pair in subordinateMaps) {
-                ensureTerrain(map, pair.first, dest);
+            for (subMap->path in subordinateMaps) {
+                ensureTerrain(map, subMap, dest);
             }
             fireMovementCost(1);
             throw TraversalImpossibleException();
@@ -359,7 +359,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Point currentPoint = localSelection.first;
         if (exists unit = localSelection.rest.first) {
             Player owner = unit.owner;
-            {Village*} villages = allMaps.map(Tuple.first)
+            {Village*} villages = allMaps.map(Entry.key)
                 .flatMap(shuffle(compose(NonNullCorrespondence<Point, {TileFixture*}>.get,
 	                IMutableMapNG.fixtures))(currentPoint))
                 .narrow<Village>().filter(matchingPredicate(Player.independent, Village.owner));
@@ -367,8 +367,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 variable Boolean subordinate = false;
                 for (village in villages) {
                     village.owner = owner;
-                    for (pair in allMaps) {
-                        pair.first.addFixture(currentPoint, village.copy(subordinate));
+                    for (subMap->file in allMaps) {
+                        subMap.addFixture(currentPoint, village.copy(subordinate));
                         subordinate = true;
                     }
                 }
@@ -376,13 +376,13 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 {Point*} surroundingPoints =
                         surroundingPointIterable(currentPoint, mapDimensions, 1);
                 for (point in surroundingPoints) {
-                    for (pair in subordinateMaps) {
-                        ensureTerrain(mainMap, pair.first, point);
+                    for (subMap->path in subordinateMaps) {
+                        ensureTerrain(mainMap, subMap, point);
                         Forest? subForest =
-                                pair.first.fixtures[point]?.narrow<Forest>()?.first;
+                                subMap.fixtures[point]?.narrow<Forest>()?.first;
                         if (exists forest = map.fixtures[point]?.narrow<Forest>()?.first,
                                 !subForest exists) {
-                            pair.first.addFixture(point, forest);
+                            subMap.addFixture(point, forest);
                         }
                     }
                 }
@@ -394,13 +394,13 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                         .narrow<[Point, Meadow|Grove]>().first;
                 [Point, TileFixture]? animal = surroundingFixtures
                         .narrow<[Point, Animal]>().first;
-                for (pair in subordinateMaps) {
+                for (subMap->path in subordinateMaps) {
                     if (exists vegetation) {
-                        pair.first.addFixture(vegetation.first,
+                        subMap.addFixture(vegetation.first,
                             vegetation.rest.first.copy(true));
                     }
                     if (exists animal) {
-                        pair.first.addFixture(animal.first, animal.rest.first.copy(true));
+                        subMap.addFixture(animal.first, animal.rest.first.copy(true));
                     }
                 }
             }
@@ -444,8 +444,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 map.addFixture(currentPoint, newFixture.copy(condition));
             }
             variable Boolean subsequent = false;
-            for (pair in allMaps) {
-                addToMap(pair.first, subsequent);
+            for (subMap->file in allMaps) {
+                addToMap(subMap, subsequent);
                 subsequent = true;
             }
             fireMovementCost(4);

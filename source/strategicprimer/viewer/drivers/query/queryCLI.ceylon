@@ -151,7 +151,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 	 them at the given location iff no fixture with the same ID is already there."
 	void addToSubMaps(IDriverModel model, Point point, TileFixture fixture, Boolean zero) {
 		if (is IMultiMapModel model) {
-			for ([map, file] in model.subordinateMaps) {
+			for (map->file in model.subordinateMaps) {
 				if (!map.fixtures.get(point).any(matchingValue(fixture.id, TileFixture.id))) {
 					map.addFixture(point, fixture.copy(zero));
 				}
@@ -171,7 +171,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				value addend = fixture.reduced(remaining);
 				model.map.addFixture(point, addend);
 				if (is IMultiMapModel model) {
-					for ([map, file] in model.subordinateMaps) {
+					for (map->file in model.subordinateMaps) {
 						if (exists found = map.fixtures.get(point)
 								.find(shuffle(curry(fixture.isSubset))(noop))) {
 							map.removeFixture(point, found);
@@ -180,7 +180,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 					}
 				}
 			} else if (is IMultiMapModel model) {
-				for ([map, file] in model.subordinateMaps) {
+				for (map->file in model.subordinateMaps) {
 					if (exists found = map.fixtures.get(point)
 							.find(shuffle(curry(fixture.isSubset))(noop))) {
 						map.removeFixture(point, found);

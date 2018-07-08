@@ -51,7 +51,7 @@ shared class SubsetGUI() satisfies ISPDriver {
             SubsetFrame frame = subsetFrame();
             SwingUtilities.invokeLater(frame.showWindow);
             frame.loadMain(model.map);
-            for ([map, file] in model.subordinateMaps) {
+            for (map->file in model.subordinateMaps) {
                 frame.testMap(map, file);
             }
         } else {

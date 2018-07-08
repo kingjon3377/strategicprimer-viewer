@@ -312,8 +312,8 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
             IDriverModel model) {
         try {
             if (is IMultiMapModel model) {
-                for (pair in model.allMaps) {
-                    removeDuplicateFixtures(pair.first, cli);
+                for (map->file in model.allMaps) {
+                    removeDuplicateFixtures(map, cli);
                 }
             } else {
                 removeDuplicateFixtures(model.map, cli);

@@ -84,7 +84,7 @@ shared object mapReaderAdapter {
 	        log.error("Model didn't contain filename for main map, so didn't write it");
 	    }
 	    if (is IMultiMapModel model) {
-	        for ([map, filename] in model.subordinateMaps) {
+	        for (map->filename in model.subordinateMaps) {
 	            if (exists filename) {
 	                try {
 	                    mapIOHelper.writeMap(parsePath(filename.string), map);
