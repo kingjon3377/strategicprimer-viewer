@@ -73,7 +73,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	shared Boolean positiveNumber(Number<out Anything> number) => number.positive;
 	void generateAnimalPopulations(IMutableMapNG map, Boolean talking, String kind, ICLIHelper cli) {
 		// We assume there is at most one population of each kind of animal per tile.
-		{Point*} locations = randomize(map.locations.filter(
+		{Point*} locations = randomize(map.locations.filter( // TODO: If narrow() works properly on a stream of Entries, use fixtureEntries here and in similar methods below.
 			//(loc) => map.fixtures[loc].narrow<Animal>() // TODO: syntax sugar once compiler bug fixed
 			(loc) => map.fixtures.get(loc).narrow<Animal>()
 					.filter(matchingValue(talking, Animal.talking))
@@ -277,17 +277,17 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 		}
 	}
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
-		for (kind in model.map.locations.flatMap(model.map.fixtures.get).narrow<Animal>()
+		for (kind in model.map.fixtureEntries.map(Entry.item).narrow<Animal>()
 					.filter(inverse(matchingPredicate(Integer.positive, Animal.population)))
 				.map(Animal.kind).distinct) {
 			generateAnimalPopulations(model.map, true, kind, cli);
 			generateAnimalPopulations(model.map, false, kind, cli);
 		}
-		for (kind in model.map.locations.flatMap(model.map.fixtures.get).narrow<Grove>()
+		for (kind in model.map.fixtureEntries.map(Entry.item).narrow<Grove>()
 				.map(Grove.kind).distinct) {
 			generateGroveCounts(model.map, kind, cli);
 		}
-		for (kind in model.map.locations.flatMap(model.map.fixtures.get).narrow<Shrub>()
+		for (kind in model.map.fixtureEntries.map(Entry.item).narrow<Shrub>()
 				.map(Shrub.kind).distinct) {
 			generateShrubCounts(model.map, kind, cli);
 		}

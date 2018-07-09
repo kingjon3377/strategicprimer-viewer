@@ -129,7 +129,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
     }
     "Add a resource to a player's HQ in a particular map."
     shared void addResourceToMap(FortressMember resource, IMapNG map, Player player) {
-        for (fixture in map.locations.flatMap(map.fixtures.get).narrow<Fortress>()) {
+        for (fixture in map.fixtureEntries.map(Entry.item).narrow<Fortress>()) {
             if ("HQ" == fixture.name, player.playerId == fixture.owner.playerId) {
                 fixture.addMember(resource);
             }

@@ -112,8 +112,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			"Players in the map:", "Map contains no players",
 			"Owner of workers to count: ", true);
 		if (exists player = choice.item) {
-			Integer count = sum(map.locations.map(map.fixtures.get)
-				.map(curry(countWorkersInIterable)(player)).follow(0));
+			Integer count = countWorkersInIterable(player,
+				map.fixtureEntries.map(Entry.item));
 			cli.println("``player.name`` has ``count`` workers");
 		}
 	}

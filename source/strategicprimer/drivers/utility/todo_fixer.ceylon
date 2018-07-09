@@ -131,7 +131,7 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
                 }
             }
         }
-        {[Point, CommunityStats]*} brokenTownContents = map.locations
+        {[Point, CommunityStats]*} brokenTownContents = map.locations // TODO: Use fixtureEntries if narrow() works properly
         //            .flatMap((loc) => [loc, map.fixtures[loc]]).narrow<ITownFixture>()
                 .flatMap((loc) => map.fixtures.get(loc).narrow<ITownFixture>().map((item) => [loc, item.population]))
                 .narrow<[Point, CommunityStats]>()

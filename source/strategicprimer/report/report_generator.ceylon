@@ -63,7 +63,7 @@ Logger log = logger(`module strategicprimer.report`);
 object reportGeneratorHelper {
 	"Find the location of the given player's HQ in the given map."
 	todo("""Return null instead of an "invalid" Point when not found?""")
-	shared Point findHQ(IMapNG map, Player player) {
+	shared Point findHQ(IMapNG map, Player player) { // TODO: Use fixtureEntries if narrow() works properly
 		variable Point? retval = null;
 		for (location in map.locations) {
 //        for (fixture in map.fixtures[location].narrow<Fortress>() // TODO: syntax sugar once compiler bug fixed
@@ -107,11 +107,8 @@ object reportGeneratorHelper {
 				}
 			}
 		}
-		for (location in map.locations) {
-			//        for (IFixture fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
-			for (IFixture fixture in map.fixtures.get(location)) {
-				addToMap(location, fixture);
-			}
+		for (location->fixture in map.fixtureEntries) {
+			addToMap(location, fixture);
 		}
 		return retval;
 	}
@@ -127,10 +124,8 @@ object reportGeneratorHelper {
 	"Create a mapping from child ID numbers to parent ID numbers."
 	shared Map<Integer, Integer> getParentMap(IMapNG map) {
 		MutableMap<Integer, Integer> retval = HashMap<Integer, Integer>();
-		for (fixture in map.locations.flatMap(map.fixtures.get)) {
-			if (is {IFixture*} fixture) {
-				parentMapImpl(retval, fixture, fixture);
-			}
+		for (fixture in map.fixtureEntries.map(Entry.item).narrow<{IFixture*}>()) {
+			parentMapImpl(retval, fixture, fixture);
 		}
 		return retval;
 	}

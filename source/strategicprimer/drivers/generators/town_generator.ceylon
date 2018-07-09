@@ -178,7 +178,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
     LazyInit<ExplorationRunner> runner = LazyInit(initProduction);
     "The (for now active) towns in the given map that don't have 'stats' yet."
     {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) => [
-        for (loc in map.locations)
+        for (loc in map.locations) // TODO: try using fixtureEntries; ISTR narrow()ing a stream of Entries doesn't work properly.
 //            for (fixture in map.fixtures[loc].narrow<ModifiableTown>().filter(matchingValue(TownStatus.active, ITownFixture.status))) // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(loc).narrow<ModifiableTown>().filter(matchingValue(TownStatus.active, ITownFixture.status)))
                     loc->fixture ];
@@ -197,9 +197,9 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             assignStatsToTown(item, stats);
         }
     }
-    IFixture? findByID(IMapNG map, Integer id) => map.locations
-        .flatMap(map.fixtures.get).find(matchingValue(id, IFixture.id));
-    Point? findLocById(IMapNG map, Integer id) {
+    IFixture? findByID(IMapNG map, Integer id) => map.fixtureEntries
+        .map(Entry.item).find(matchingValue(id, IFixture.id));
+    Point? findLocById(IMapNG map, Integer id) { // TODO: use fixtureEntries here
         for (location in map.locations) {
             //if (map.fixtures[location].any(matchingValue(id, IFixture.id))) {
             if (map.fixtures.get(location).any(matchingValue(id, IFixture.id))) {
@@ -208,8 +208,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
         }
         return null;
     }
-    Boolean isClaimedField(IMapNG map, Integer id) => map.locations
-        .flatMap(map.fixtures.get).narrow<ITownFixture>()
+    Boolean isClaimedField(IMapNG map, Integer id) => map.fixtureEntries
+        .map(Entry.item).narrow<ITownFixture>()
         .map(ITownFixture.population).coalesced
         .flatMap(CommunityStats.workedFields).contains(id);
     Boolean isUnclaimedField(IMapNG map, Integer id) =>

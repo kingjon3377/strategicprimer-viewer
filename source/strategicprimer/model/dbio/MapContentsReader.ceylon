@@ -32,11 +32,8 @@ interface MapContentsReader {
 	}
 	"Find a tile fixture or unit or fortress member by ID."
 	shared default IFixture findById(IMapNG map, Integer id, Warning warner) {
-		for (location in map.locations) {
-//			if (exists retval = findByIdImpl(map.fixtures[location], id)) { // TODO: syntax sugar
-			if (exists retval = findByIdImpl(map.fixtures.get(location), id)) {
-				return retval;
-			}
+		if (exists retval = findByIdImpl(map.fixtureEntries.map(Entry.item), id)) {
+			return retval;
 		} else {
 			throw AssertionError("ID ``id`` not found");
 		}

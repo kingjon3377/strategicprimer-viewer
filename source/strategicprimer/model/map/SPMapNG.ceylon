@@ -118,6 +118,8 @@ shared class SPMapNG satisfies IMutableMapNG {
         //shared actual {TileFixture*} get(Point key) => fixturesMap[key]; // TODO: syntax sugar
         shared actual {TileFixture*} get(Point key) => fixturesMap.get(key);
     }
+    "All the tile fixtures (other than rivers and mountains) in the map, with their locations."
+    shared actual {<Point->TileFixture>*} fixtureEntries => fixturesMap;
     "The current player."
     shared actual Player currentPlayer => playerCollection.currentPlayer;
     assign currentPlayer => playerCollection.currentPlayer = currentPlayer;

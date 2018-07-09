@@ -171,7 +171,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 .fold(set(map.players))(intersection);
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) =>
-            map.locations.flatMap(map.fixtures.get).flatMap(unflattenNonFortresses)
+            map.fixtureEntries.map(Entry.item).flatMap(unflattenNonFortresses)
                 .narrow<IUnit>().filter(matchingValue(player, HasOwner.owner));
     "Tell listeners that the selected point changed."
     void fireSelectionChange(Point old, Point newSelection) {
@@ -212,11 +212,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         case (Direction.nowhere) { return point; }
     }
     void fixMovedUnits(Point base) {
-		{<Point->TileFixture>*} localFind(IMapNG mapParam, TileFixture target) => [
-				for (point in mapParam.locations)
-					for (fixture in mapParam.fixtures.get(point).filter(target.equals)) // TODO: syntax sugar once bug fixed
-						point->target
-			];
+		{<Point->TileFixture>*} localFind(IMapNG mapParam, TileFixture target) =>
+				mapParam.fixtureEntries.filter(matchingValue(target, Entry<Point, TileFixture>.item));
         // TODO: Unit vision range
         {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
         for (submap->file in subordinateMaps) {
@@ -388,7 +385,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 }
                 {[Point, TileFixture]*} surroundingFixtures = surroundingPoints
 //                            .flatMap((point) => mainMap.fixtures[point] // TODO: syntax sugar once compiler bug fixed
-                            .flatMap((point) => mainMap.fixtures.get(point) // TODO: Provide a way to get point->fixture Entries in IMapNG API
+                            .flatMap((point) => mainMap.fixtures.get(point)
                                 .map((fixture) => [point, fixture]));
                 [Point, TileFixture]? vegetation = surroundingFixtures
                         .narrow<[Point, Meadow|Grove]>().first;

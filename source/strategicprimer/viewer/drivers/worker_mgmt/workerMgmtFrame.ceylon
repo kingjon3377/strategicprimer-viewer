@@ -178,7 +178,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		this.menuHandler = menuHandler;
 	}
 
-	Point findHQ() {
+	Point findHQ() { // TODO: Use fixtureEntries if narrow() works properly
 		variable Point retval = invalidPoint;
 		for (location in model.map.locations) {
 //            for (fixture in model.map.fixtures[location].narrow<Fortress>() // TODO: syntax sugar once compiler bug fixed
