@@ -58,6 +58,9 @@ import ceylon.logging {
 import strategicprimer.model.map.fixtures.towns {
 	TownStatus
 }
+import ceylon.whole {
+    Whole
+}
 Logger log = logger(`module strategicprimer.report`);
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
@@ -86,8 +89,12 @@ shared class HarvestableReportGenerator
 				return " (``Float.format(acres.float, 0, 2)`` acres)";
 			}
 			else {
-				log.warn(
-					"Unhandled Number type ``type(acres)`` in HarvestableReportGenerator.acreageString");
+				if (is Integer|Whole acres) {
+					log.debug("Ran into eclipse/ceylon#7382");
+				} else {
+					log.warn(
+						"Unhandled Number type ``type(acres)`` in HarvestableReportGenerator.acreageString");
+				}
 				return " (``acres`` acres)";
 			}
 		} else {
