@@ -50,11 +50,12 @@ shared class ListModelWrapper<Element>(ListModel<Element> wrapped)
             else false;
 }
 
-"A wrapper around [[Enumeration]] where callers want a Ceylon [[Iterable]]. In practice the APIs
- that use Enumeration rather than [[java.lang::Iterable]] don't parameterize it, so we assert that
- each item returned is of the desired type instead of requiring callers to coerce the type of the
- enumeration to be parameterized properly."
-shared class EnumerationWrapper<T>(Enumeration<out Object> enumeration) satisfies Iterator<T> {
+"A wrapper around [[Enumeration]] where callers want a Ceylon [[Iterable]]. In practice
+ the APIs that use Enumeration rather than [[java.lang::Iterable]] don't parameterize it,
+ so we assert that each item returned is of the desired type instead of requiring callers
+ to coerce the type of the enumeration to be parameterized properly."
+shared class EnumerationWrapper<T>(Enumeration<out Object> enumeration)
+		satisfies Iterator<T> {
 	shared actual T|Finished next() {
 		if (enumeration.hasMoreElements()) {
 			assert (is T item = enumeration.nextElement());

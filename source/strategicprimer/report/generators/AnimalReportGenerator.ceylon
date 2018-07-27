@@ -68,7 +68,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
 				if (item.population == 1) {
 					ostream(" ``item.kind``");
 				} else {
-					//                ostream(" ``item.population`` ``animalPlurals[item.kind]``"); // TODO: syntax sugar once compiler bug fixed
+//					ostream(" ``item.population`` ``animalPlurals[item.kind]``"); // TODO: syntax sugar once compiler bug fixed
 					ostream(" ``item.population`` ``animalPlurals.get(item.kind)``");
 				}
 			}

@@ -57,7 +57,8 @@ import lovelace.util.jvm {
 	singletonRandom
 }
 
-"A driver to let the user generate animal and shrub populations, meadow and grove sizes, and forest acreages."
+"A driver to let the user generate animal and shrub populations, meadow and grove sizes,
+ and forest acreages."
 service(`interface ISPDriver`)
 shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	shared actual IDriverUsage usage = DriverUsage {
@@ -71,7 +72,8 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	};
 	"Whether the given number is positive."
 	shared Boolean positiveNumber(Number<out Anything> number) => number.positive;
-	void generateAnimalPopulations(IMutableMapNG map, Boolean talking, String kind, ICLIHelper cli) {
+	void generateAnimalPopulations(IMutableMapNG map, Boolean talking, String kind,
+			ICLIHelper cli) {
 		// We assume there is at most one population of each kind of animal per tile.
 		{Point*} locations = randomize(map.locations.filter( // TODO: If narrow() works properly on a stream of Entries, use fixtureEntries here and in similar methods below.
 			//(loc) => map.fixtures[loc].narrow<Animal>() // TODO: syntax sugar once compiler bug fixed
@@ -104,9 +106,10 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 			} else {
 				nextPopulation = rng.nextInteger(remainingTotal - (remainingCount * 2) - 2) + 2;
 			}
-			//if (exists animal = map.fixtures[location].narrow<Animal>().filter(matching(false, Animal.traces)) // TODO: syntax sugar
+			//if (exists animal = map.fixtures[location].narrow<Animal>() // TODO: syntax sugar
 			if (exists animal = map.fixtures.get(location).narrow<Animal>()
-					.filter(matchingValue(talking, Animal.talking)).find(matchingValue(kind, Animal.kind))) {
+					.filter(matchingValue(talking, Animal.talking))
+					.find(matchingValue(kind, Animal.kind))) {
 				Animal replacement = animal.reduced(nextPopulation);
 				map.removeFixture(location, animal);
 				map.addFixture(location, replacement);
@@ -118,8 +121,9 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	void generateGroveCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
 		// We assume there is at most one grove or orchard of each kind per tile.
 		{Point*} locations = randomize(map.locations.filter(
-			//(loc) => map.fixtures[loc].narrow<Grove>().filter(matchingPredicate(Integer.negative, Grove.population)) // TODO: syntax sugar
-			(loc) => map.fixtures.get(loc).narrow<Grove>().filter(matchingPredicate(Integer.negative, Grove.population))
+			//(loc) => map.fixtures[loc].narrow<Grove>() // TODO: syntax sugar
+			(loc) => map.fixtures.get(loc).narrow<Grove>()
+					.filter(matchingPredicate(Integer.negative, Grove.population))
 					.map(Grove.kind).any(kind.equals)));
 		Integer count = locations.size;
 		if (count == 0) {
@@ -135,10 +139,13 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 				cli.println("With ``remainingCount`` groups left, there is only ``remainingTotal`` left");
 				return;
 			}
-			Integer nextPopulation = if (remainingCount == 1) then remainingTotal else rng.nextInteger(remainingTotal-remainingCount - 1) + 1;
-			//if (exists grove = map.fixtures[location].narrow<Grove>().find(matchingValue(kind, Grove.kind))) { // TODO: syntax sugar
-			if (exists grove = map.fixtures.get(location).narrow<Grove>().find(matchingValue(kind, Grove.kind))) {
-				Grove replacement = Grove(grove.orchard, grove.cultivated, grove.kind, grove.id, nextPopulation);
+			Integer nextPopulation = if (remainingCount == 1) then remainingTotal else
+				rng.nextInteger(remainingTotal-remainingCount - 1) + 1;
+			//if (exists grove = map.fixtures[location].narrow<Grove>() // TODO: syntax sugar
+			if (exists grove = map.fixtures.get(location).narrow<Grove>()
+					.find(matchingValue(kind, Grove.kind))) {
+				Grove replacement = Grove(grove.orchard, grove.cultivated, grove.kind, grove.id,
+					nextPopulation);
 				map.removeFixture(location, grove);
 				map.addFixture(location, replacement);
 				remainingCount--;
@@ -149,8 +156,9 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	void generateShrubCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
 		// We assume there is at most one population of each kind of shrub per tile.
 		{Point*} locations = randomize(map.locations.filter(
-			//(loc) => map.fixtures[loc].narrow<Shrub>().filter(matchingPredicate(Integer.negative, Shrub.population)) // TODO: syntax sugar
-			(loc) => map.fixtures.get(loc).narrow<Shrub>().filter(matchingPredicate(Integer.negative, Shrub.population))
+			//(loc) => map.fixtures[loc].narrow<Shrub>() // TODO: syntax sugar
+			(loc) => map.fixtures.get(loc).narrow<Shrub>()
+				.filter(matchingPredicate(Integer.negative, Shrub.population))
 				.map(Shrub.kind).any(kind.equals)));
 		Integer count = locations.size;
 		if (count == 0) {
@@ -166,9 +174,11 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 				cli.println("With ``remainingCount`` groups left, there is only ``remainingTotal`` left");
 				return;
 			}
-			Integer nextPopulation = if (remainingCount == 1) then remainingTotal else rng.nextInteger(remainingTotal-remainingCount - 1) + 1;
-			//if (exists grove = map.fixtures[location].narrow<Shrub>().find(matchingValue(kind, Shrub.kind))) { // TODO: syntax sugar
-			if (exists shrub = map.fixtures.get(location).narrow<Shrub>().find(matchingValue(kind, Shrub.kind))) {
+			Integer nextPopulation = if (remainingCount == 1) then remainingTotal else
+				rng.nextInteger(remainingTotal-remainingCount - 1) + 1;
+			//if (exists grove = map.fixtures[location].narrow<Shrub>() // TODO: syntax sugar
+			if (exists shrub = map.fixtures.get(location).narrow<Shrub>()
+					.find(matchingValue(kind, Shrub.kind))) {
 				Shrub replacement = Shrub(kind, shrub.id, nextPopulation);
 				map.removeFixture(location, shrub);
 				map.addFixture(location, replacement);
@@ -180,20 +190,23 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	Boolean negativeNumber(Number<out Anything> number) => number.negative;
 	void generateFieldExtents(IMutableMapNG map, ICLIHelper cli) {
 		{<Point->Meadow>*} entries = randomize([for (loc in map.locations)
-			//for (item in map.fixtures[loc].narrow<Meadow>().filter(matchingPredicate(negativeNumber, Meadow.acres))) // TODO: syntax sugar
-			for (item in map.fixtures.get(loc).narrow<Meadow>().filter(matchingPredicate(negativeNumber, Meadow.acres)))
+			//for (item in map.fixtures[loc].narrow<Meadow>() // TODO: syntax sugar
+			for (item in map.fixtures.get(loc).narrow<Meadow>()
+					.filter(matchingPredicate(negativeNumber, Meadow.acres)))
 				loc->item]);
 		Random rng = singletonRandom;
 		for (loc->field in entries) {
 			Float acres = rng.nextFloat() * 5.5 + 0.5;
 			map.removeFixture(loc, field);
-			map.addFixture(loc, Meadow(field.kind, field.field, field.cultivated, field.id, field.status, acres));
+			map.addFixture(loc, Meadow(field.kind, field.field, field.cultivated, field.id,
+				field.status, acres));
 		}
 	}
 	Boolean hasAdjacentForests(IMapNG map, String kind)(Point point) =>
 			map.fixtures.get(point).narrow<Forest>().any(matchingValue(kind, Forest.kind));
 	Integer countAdjacentForests(IMapNG map, Point center, String kind) =>
-			surroundingPointIterable(center, map.dimensions, 1).count(hasAdjacentForests(map, kind));
+			surroundingPointIterable(center, map.dimensions, 1)
+				.count(hasAdjacentForests(map, kind));
 	Decimal decimalize(Number<out Anything> number) {
 		assert (is Decimal|Whole|Integer|Float number);
 		switch (number)
@@ -242,17 +255,21 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 					.map(HasExtent.acres).filter(positiveNumber).map(decimalize)
 					.fold(decimalNumber(0))(plus).integer;
 			if (reserved >= 160) {
-				process.writeLine("The whole tile or more was reserved, despite forests, at ``location``");
+				process.writeLine(
+					"The whole tile or more was reserved, despite forests, at ``location``");
 				continue;
 			}
 			if (otherForests.empty) {
 				Forest replacement;
 				if (adjacentCount > 7) {
-					replacement = Forest(primaryForest.kind, primaryForest.rows, primaryForest.id, 160 - reserved);
+					replacement = Forest(primaryForest.kind, primaryForest.rows, primaryForest.id,
+						160 - reserved);
 				} else if (adjacentCount > 4) {
-					replacement = Forest(primaryForest.kind, primaryForest.rows, primaryForest.id, (160 - reserved) * 4 / 5);
+					replacement = Forest(primaryForest.kind, primaryForest.rows, primaryForest.id,
+						(160 - reserved) * 4 / 5);
 				} else {
-					replacement = Forest(primaryForest.kind, primaryForest.rows, primaryForest.id, (160 - reserved) * 2 / 5);
+					replacement = Forest(primaryForest.kind, primaryForest.rows, primaryForest.id,
+						(160 - reserved) * 2 / 5);
 				}
 				map.removeFixture(location, primaryForest);
 				map.addFixture(location, replacement);
@@ -264,19 +281,21 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 					acreage = (160 - reserved) * 2 / 5;
 				}
 				map.removeFixture(location, primaryForest);
-				map.addFixture(location, Forest(primaryForest.kind, primaryForest.rows, primaryForest.id, acreage));
+				map.addFixture(location, Forest(primaryForest.kind, primaryForest.rows,
+					primaryForest.id, acreage));
 				reserved += acreage;
 				for (forest in otherForests) {
 					map.removeFixture(location, forest);
 					map.addFixture(location, Forest(forest.kind, forest.rows, forest.id,
 						// TODO: figure out how to use defer() to avoid a lambda here
-						implicitlyRounded(() => decimalNumber(160 - reserved) / decimalNumber(otherForests.size),
-							round(12, halfEven))));
+						implicitlyRounded(() => decimalNumber(160 - reserved) /
+							decimalNumber(otherForests.size), round(12, halfEven))));
 				}
 			}
 		}
 	}
-	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+			IDriverModel model) {
 		for (kind in model.map.fixtureEntries.map(Entry.item).narrow<Animal>()
 					.filter(inverse(matchingPredicate(Integer.positive, Animal.population)))
 				.map(Animal.kind).distinct) {

@@ -305,7 +305,8 @@ shared class SPMenu extends JMenuBar {
             }
         }
         viewMenu.add(currentPlayerItem);
-        for (item in treeItems) { // can't use Iterable.each() because JMenu.add() is overloaded
+		// can't use Iterable.each() instead of a loop because JMenu.add() is overloaded
+		for (item in treeItems) {
             viewMenu.add(item);
         }
         return viewMenu;

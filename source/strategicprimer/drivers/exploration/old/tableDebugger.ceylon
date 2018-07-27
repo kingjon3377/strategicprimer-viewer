@@ -37,7 +37,8 @@ shared class TableDebugger() satisfies SimpleCLIDriver {
 	}
     shared actual IDriverUsage usage = DriverUsage(false, ["-T", "--table-debug"],
         ParamCount.none, "Debug old-model encounter tables",
-        "See whether old-model encounter tables refer to a nonexistent table", false, false);
+        "See whether old-model encounter tables refer to a nonexistent table", false,
+		false);
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         log.warn("tableDebugger doesn't need a driver model");

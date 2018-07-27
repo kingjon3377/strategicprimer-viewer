@@ -413,7 +413,8 @@ SPFrame explorationFrame(IExplorationModel model,
                             //} else if (!map.fixtures[destPoint].any(fixture.equals)) { // TODO: syntax sugar once compiler bug fixed
                             } else if (!map.fixtures.get(destPoint).any(fixture.equals)) {
                                 Boolean zero;
-                                if (is HasOwner fixture, fixture.owner != player || fixture is Village) {
+                                if (is HasOwner fixture, fixture.owner != player ||
+                                        fixture is Village) {
                                     zero = true;
                                 } else if (is HasPopulation<Anything>|HasExtent fixture) {
                                     zero = true;
@@ -489,16 +490,20 @@ SPFrame explorationFrame(IExplorationModel model,
                                     ArrayList<[Integer, TileFixture]>();
                             for (index->fixture in ListModelWrapper(mainList.model)
 	                                .indexed) {
-                                if (simpleMovementModel.shouldAlwaysNotice(selectedUnit, fixture)) {
+                                if (simpleMovementModel.shouldAlwaysNotice(selectedUnit,
+                                        fixture)) {
                                     constants.add([index, fixture]);
-                                } else if (simpleMovementModel.shouldSometimesNotice(selectedUnit,
-                                    speedSource(), fixture)) {
+                                } else if (simpleMovementModel
+                                        .shouldSometimesNotice(selectedUnit,
+                                            speedSource(), fixture)) {
                                     possibles.add([index, fixture]);
                                 }
                             }
-                            constants.addAll(simpleMovementModel.selectNoticed(randomize(possibles),
+                            constants.addAll(simpleMovementModel.selectNoticed(
+                                randomize(possibles),
                                 compose(Tuple<TileFixture, TileFixture, []>.first,
-                                    Tuple<Integer|TileFixture, Integer, [TileFixture]>.rest),
+                                    Tuple<Integer|TileFixture, Integer,
+									[TileFixture]>.rest),
                                 selectedUnit, speedSource()));
                             IntArray indices = IntArray.with(
                                 constants.map(Tuple.first));

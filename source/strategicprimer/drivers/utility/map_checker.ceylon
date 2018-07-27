@@ -158,8 +158,8 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
             }
         }
     }
-    {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker, suspiciousSkillCheck,
-        resourcePlaceholderChecker ];
+    {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker,
+		suspiciousSkillCheck, resourcePlaceholderChecker ];
     void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
             IFixture* list) {
         for (fixture in list) {
@@ -255,7 +255,8 @@ shared class MapCheckerGUI() satisfies UtilityDriver {
         window.jMenuBar = UtilityMenu(window);
         window.showWindow();
         for (arg in args.coalesced) {
-            window.check(JPaths.get(arg)); // can't condense this using Iterable.each() because JPaths.get() is overloaded
+			// can't condense this using Iterable.each() because JPaths.get() is overloaded
+            window.check(JPaths.get(arg));
         }
     }
 }

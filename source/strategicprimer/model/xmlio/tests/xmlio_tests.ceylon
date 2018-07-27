@@ -285,8 +285,8 @@ object xmlTests {
 	}
 
 	"Assert that the given object, if serialized and deserialized, will have its image
-	 property preserved. We modify that property, but set it back to the original value before
-	 exiting this method."
+	 property preserved. We modify that property, but set it back to the original value
+	 before exiting this method."
 	void assertImageSerialization(String message, HasMutableImage obj) {
 	    String oldImage = obj.image;
 	    for (reader in readers) {
@@ -1085,8 +1085,10 @@ object xmlTests {
 	shared void testUnitWarnings(
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter,
 			parameters(`function twoRandomNumbers`) Integer id,
-			parameters(`value treeTypes`) String name, parameters(`value fieldTypes`) String kind) { // TODO: should probably test spaces in name and kind
-	    assertUnwantedChild<IUnit>("<unit><unit /></unit>", null);
+			parameters(`value treeTypes`) String name,
+			parameters(`value fieldTypes`) String kind) {
+		// TODO: should probably test spaces in name and kind
+		assertUnwantedChild<IUnit>("<unit><unit /></unit>", null);
 	    IUnit firstUnit = Unit(PlayerImpl(1, ""), kind, name, id);
         assertDeprecatedProperty(createSerializedForm(firstUnit, deprecatedWriter)
             .replace("kind", "type"), "type", "kind", "unit", firstUnit);

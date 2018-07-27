@@ -85,25 +85,27 @@ shared class HuntingModel {
             .repeat(choices.size));
         return singletonRandom.elements(choices);
     }
-    """Get a stream of hunting results from the area surrounding the given tile. About half
-        will be "nothing". May be an infinite stream."""
+    """Get a stream of hunting results from the area surrounding the given tile. About
+       half will be "nothing". May be an infinite stream."""
     // TODO: We'd like to allow callers(?) to specify a proportion that *should* be tracks, perhaps replacing some of the NothingFound
     shared {<Point->Animal|AnimalTracks|NothingFound>*} hunt(
             "Whereabouts to search"
             Point point) => chooseFromMap(point, animals);
-    """Get a stream of fishing results from the area surrounding the given tile. About half
-        will be "nothing". May be an infinite stream."""
+    """Get a stream of fishing results from the area surrounding the given tile. About
+       half will be "nothing". May be an infinite stream."""
     shared {<Point->Animal|AnimalTracks|NothingFound>*} fish(
             "Whereabouts to search"
             Point point) => chooseFromMap(point, waterAnimals);
-    """Get a stream of gathering results from the area surrounding the given tile. Many will
-        be "nothing," especially from desert and tundra tiles and less from jungle
-        tiles. This may be an infinite stream."""
+    """Get a stream of gathering results from the area surrounding the given tile. Many
+       will be "nothing," especially from desert and tundra tiles and less from jungle
+       tiles. This may be an infinite stream."""
     shared {<Point->Grove|Meadow|Shrub|NothingFound>*} gather(
             "Whereabouts to search"
             Point point) {
-        {<Point->Grove|Meadow|Shrub|NothingFound>*} retval = surroundingPointIterable(point, dimensions)
-                .map((loc) => plants(loc).map(curry(Entry<Point, Grove|Meadow|Shrub|NothingFound>)(loc)))
+        {<Point->Grove|Meadow|Shrub|NothingFound>*} retval =
+                surroundingPointIterable(point, dimensions)
+                    .map((loc) => plants(loc)
+                        .map(curry(Entry<Point, Grove|Meadow|Shrub|NothingFound>)(loc)))
                 .flatMap(identity);
         return singletonRandom.elements(retval);
     }

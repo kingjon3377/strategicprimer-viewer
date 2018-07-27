@@ -233,8 +233,8 @@ shared object reportGenerator {
 	"Produce sub-reports in report-intermediate-representation, adding them to the root node
 	 and calling coalesce() on the fixtures collection after each."
 	void createSubReportsIR(IReportNode root,
-	        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map, Player player,
-	        IReportGenerator<out Object>* generators) {
+	        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
+			Player player, IReportGenerator<out Object>* generators) {
 	    for (generator in generators) {
 	        root.appendNode(generator.produceRIR(fixtures, map));
 	        fixtures.coalesce();

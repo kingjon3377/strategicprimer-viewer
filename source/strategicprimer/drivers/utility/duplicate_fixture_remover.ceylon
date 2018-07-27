@@ -252,7 +252,8 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
                 }
                 assert (nonempty list);
                 cli.print(context);
-                cli.println("The following ``helper.plural.lowercased`` can be combined:");
+                cli.println(
+					"The following ``helper.plural.lowercased`` can be combined:");
                 list.map(Object.string).each(cli.println);
                 if (cli.inputBooleanInSeries("Combine them? ", memberKind(list.first))) {
                     IFixture combined = helper.combineRaw(list);

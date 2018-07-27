@@ -100,7 +100,8 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
 		}
 	}
 	if (is HasMutableOwner fixture) {
-		addMenuItem(JMenuItem("Change owner", KeyEvent.vkO), silentListener(changeOwnerHandler));
+		addMenuItem(JMenuItem("Change owner", KeyEvent.vkO),
+			silentListener(changeOwnerHandler));
 	} else {
 		addDisabledMenuItem(JMenuItem("Change owner", KeyEvent.vkO));
 	}
@@ -145,7 +146,8 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
 			}
 		}
 	}
-	if (is Animal fixture, fixture.population > 1) { // TODO: Generalize to HasPopulation more generally
+	// TODO: Generalize splitting to HasPopulation more generally
+	if (is Animal fixture, fixture.population > 1) {
 		addMenuItem(JMenuItem("Split animal population", KeyEvent.vkS),
 			silentListener(splitAnimalHandler));
 	} else {

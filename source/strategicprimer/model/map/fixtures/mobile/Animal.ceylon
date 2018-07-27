@@ -201,7 +201,8 @@ object fileSplitter {
 }
 shared object maturityModel {
     shared Map<String, Integer> maturityAges =
-            fileSplitter.getFileContents<Integer, Integer|ParseException>("maturity.txt", Integer.parse);
+            fileSplitter.getFileContents<Integer, Integer|ParseException>("maturity.txt",
+				Integer.parse);
     variable Integer currentTurnLocal = -1;
     shared Integer currentTurn => currentTurnLocal;
     assign currentTurn {

@@ -482,7 +482,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			cli.println("No unexplored tiles found.");
 		}
 	}
-	void tradeCommand(IMapNG map, ICLIHelper cli) => suggestTrade(map, cli.inputPoint("Base location? "),
+	void tradeCommand(IMapNG map, ICLIHelper cli) =>
+			suggestTrade(map, cli.inputPoint("Base location? "),
 				cli.inputNumber("Within how many tiles? "), cli);
 	"Handle a series of user commands."
 	void handleCommands(SPOptions options, IDriverModel model, HuntingModel huntModel,
@@ -491,13 +492,14 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			"?"->replUsage,
 			"help"->replUsage,
 			"fortress"->( // TODO: refactor lambdas including inputPoint() to make defer()ing them easier
-					(ICLIHelper clh) => fortressInfo(model.map, clh.inputPoint("Location of fortress? "), clh)),
-			"hunt"->((ICLIHelper clh)=>hunt(model, huntModel, clh.inputPoint("Location to hunt? "), clh,
-				hunterHours * 60)),
-			"fish"->((ICLIHelper clh)=>fish(model, huntModel, clh.inputPoint("Location to fish? "), clh,
-				hunterHours * 60)),
-			"gather"->((ICLIHelper clh)=>gather(model, huntModel, clh.inputPoint("Location to gather? "), clh,
-				hunterHours * 60)),
+					(ICLIHelper clh) => fortressInfo(model.map, clh.inputPoint("Location of fortress? "),
+						clh)),
+			"hunt"->((ICLIHelper clh)=>hunt(model, huntModel, clh.inputPoint("Location to hunt? "),
+				clh, hunterHours * 60)),
+			"fish"->((ICLIHelper clh)=>fish(model, huntModel, clh.inputPoint("Location to fish? "),
+				clh, hunterHours * 60)),
+			"gather"->((ICLIHelper clh)=>gather(model, huntModel,
+				clh.inputPoint("Location to gather? "), clh, hunterHours * 60)),
 			"herd"->shuffle(curry(herd))(model, huntModel),
 			"trap"->uncurry(shuffle(curry(shuffle(compose(TrappingCLI.startDriverOnModel,
 				TrappingCLI))))(options, model)),

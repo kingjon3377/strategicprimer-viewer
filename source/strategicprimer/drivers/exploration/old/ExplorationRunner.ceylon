@@ -238,7 +238,8 @@ shared class ExplorationRunner() {
      that."
     todo("Consider whether non-test uses are reasonable",
         "Move tests *into* this class instead")
-    shared restricted(`module strategicprimer.drivers.exploration.old`, `module strategicprimer.drivers.converters`,
+    shared restricted(`module strategicprimer.drivers.exploration.old`,
+				`module strategicprimer.drivers.converters`,
                 `module strategicprimer.drivers.generators`)
         void loadTable(String name, EncounterTable table) => tables[name] = table;
 }
@@ -377,7 +378,8 @@ object explorationRunnerTests {
 	    assertFalse(runner.recursiveCheck("referent_three"),
 	        "recursive case to exercise cache-hits");
 	    runner.loadTable("false_referent", ConstantTable("#nonexistent#"));
-	    assertTrue(runner.recursiveCheck("false_referent"), "reference to nonexistent table");
+	    assertTrue(runner.recursiveCheck("false_referent"),
+			"reference to nonexistent table");
 	}
 
 	"Test global-recursive checking. Note that the method returns *true* if any table

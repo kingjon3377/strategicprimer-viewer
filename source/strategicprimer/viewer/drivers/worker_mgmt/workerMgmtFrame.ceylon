@@ -214,7 +214,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	newUnitFrame.addNewUnitListener(treeModel);
 	Integer keyMask = platform.shortcutMask;
 	createHotKey(tree, "openUnits",
-		(ActionEvent event) => tree.requestFocusInWindow(), // can't use silentListener() because requestFocusInWindow() is overloaded
+		// can't use silentListener() because requestFocusInWindow() is overloaded
+		(ActionEvent event) => tree.requestFocusInWindow(),
 		JComponent.whenInFocusedWindow,
 		KeyStroke.getKeyStroke(KeyEvent.vkU, keyMask));
 	FormattedLabel playerLabel = FormattedLabel("Units belonging to %s: (%sU)",
@@ -229,7 +230,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		IReportNode report = reportGenerator.createAbbreviatedReportIR(
 			model.subordinateMaps.first?.key else mainMap, model.currentPlayer);
 		log.info("Finished generating report");
-		SwingUtilities.invokeLater(JavaRunnable(defer(reportModel.setRoot, [report]))); // JavaRunnable because of https://github.com/eclipse/ceylon/issues/7379
+		// JavaRunnable because of https://github.com/eclipse/ceylon/issues/7379
+		SwingUtilities.invokeLater(JavaRunnable(defer(reportModel.setRoot, [report])));
 	}
 	Thread(reportGeneratorThread).start();
 	value resultsPanel = ordersPanel(mainMap.currentTurn, model.currentPlayer,

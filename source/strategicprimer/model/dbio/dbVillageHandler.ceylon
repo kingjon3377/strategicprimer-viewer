@@ -38,7 +38,8 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()
 		   );"""
 	];
 	shared actual void write(Sql db, Village obj, Point context) {
-		db.Insert("""INSERT INTO villages (row, column, status, name, id, owner, race, image, portrait, population)
+		db.Insert("""INSERT INTO villages (row, column, status, name, id, owner, race, image,
+		                 portrait, population)
 		             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.status.string, obj.name, obj.id,
 					obj.owner.playerId, obj.race, obj.image, obj.portrait,

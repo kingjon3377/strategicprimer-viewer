@@ -81,13 +81,16 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
     variable Integer count = -1;
     shared actual IDriverUsage usage = DriverUsage(false, ["-o", "--fix-todos"],
         ParamCount.atLeastOne, "Fix TODOs in maps",
-        "Fix TODOs in unit kinds and aquatic villages with non-aquatic races", false, false);
+        "Fix TODOs in unit kinds and aquatic villages with non-aquatic races", false,
+        false);
     "Get the simplified-terrain-model instance covering the map's terrain at the given
-     location." // We don't just use TileType because we need mountains and forests in ver-2 maps.
+     location."
+    // We don't just use TileType because we need mountains and forests in ver-2 maps.
     suppressWarnings("deprecation")
     SimpleTerrain getTerrain(IMapNG map, Point location) {
         switch (map.baseTerrain[location])
-        case (TileType.jungle|TileType.borealForest|TileType.temperateForest|TileType.swamp) {
+        case (TileType.jungle|TileType.borealForest|TileType.temperateForest|
+                TileType.swamp) {
             return SimpleTerrain.forested;
         }
         case (TileType.desert|TileType.mountain|TileType.tundra|null) {
@@ -132,8 +135,9 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
             }
         }
         {[Point, CommunityStats]*} brokenTownContents = map.locations // TODO: Use fixtureEntries if narrow() works properly
-        //            .flatMap((loc) => [loc, map.fixtures[loc]]).narrow<ITownFixture>()
-                .flatMap((loc) => map.fixtures.get(loc).narrow<ITownFixture>().map((item) => [loc, item.population]))
+        //            .flatMap((loc) => [loc, map.fixtures[loc]]) // TODO: syntax sugar
+                .flatMap((loc) => map.fixtures.get(loc)
+                    .narrow<ITownFixture>().map((item) => [loc, item.population]))
                 .narrow<[Point, CommunityStats]>()
                 .filter(([loc, pop]) => pop.yearlyProduction.map(ResourcePile.contents)
                     .any(shuffle(String.contains)('#')));
@@ -146,11 +150,13 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
 	            value production = population.yearlyProduction;
 	            for (resource in production.sequence()) {
 	                if (resource.contents.contains('#')) {
-	                    assert (exists table = resource.contents.split('#'.equals, true, true).sequence()[1]);
+	                    assert (exists table = resource.contents
+                            .split('#'.equals, true, true).sequence()[1]);
 	                    value replacement = ResourcePile(resource.id, resource.kind,
 	                        runner.recursiveConsultTable(table, loc, map.baseTerrain[loc],
-	                            //map.mountainous[loc],  map.fixtures[loc], map.dimensions), resource.quantity);
-	                            map.mountainous.get(loc),  map.fixtures.get(loc), map.dimensions), resource.quantity);
+	                            //map.mountainous[loc],  map.fixtures[loc], // TODO: syntax sugar once compiler bug fixed
+	                            map.mountainous.get(loc),  map.fixtures.get(loc),
+                                map.dimensions), resource.quantity);
 	                    production.remove(resource);
 	                    production.add(replacement);
 	                }
@@ -194,8 +200,9 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
     void fixAllUnits(IMapNG map, ICLIHelper cli) {
         for (point in map.locations) {
             SimpleTerrain terrain = getTerrain(map, point);
-//            for (fixture in map.fixtures[point].narrow<Unit>().filter(matchingValue("TODO", Unit.kind))) { // TODO: syntax sugar once compiler bug fixed
-            for (fixture in map.fixtures.get(point).narrow<Unit>().filter(matchingValue("TODO", Unit.kind))) {
+//            for (fixture in map.fixtures[point].narrow<Unit>() // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(point).narrow<Unit>()
+                    .filter(matchingValue("TODO", Unit.kind))) {
                 fixUnit(fixture, terrain, cli);
             }
         }
@@ -204,9 +211,11 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
     void fixMissingRivers(IMapNG mainMap, IMutableMapNG subordinateMap) {
         for (location in mainMap.locations) {
             if (exists mainTerrain = mainMap.baseTerrain[location],
-	                exists subTerrain = subordinateMap.baseTerrain[location], mainTerrain == subTerrain,
+	                exists subTerrain = subordinateMap.baseTerrain[location],
+                    mainTerrain == subTerrain,
 	                //!mainMap.rivers[location].empty, subordinateMap.rivers[location].empty) { // TODO: syntax sugar
-	                !mainMap.rivers.get(location).empty, subordinateMap.rivers.get(location).empty) {
+	                !mainMap.rivers.get(location).empty,
+                    subordinateMap.rivers.get(location).empty) {
                 //subordinateMap.addRivers(location, *mainMap.rivers[location]); // TODO: syntax sugar
                 subordinateMap.addRivers(location, *mainMap.rivers.get(location));
             }

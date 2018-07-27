@@ -292,7 +292,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     }
                 } else if (is Animal internal, internal.population > 1,
                         is JLabel component) {
-//                    component.text = "``internal.population`` ``animalPlurals[internal.kind]``";
+//                    component.text = "``internal.population`` ``animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed
                     component.text = "``internal.population`` ``animalPlurals.get(internal
                         .kind)``";
                 } else if (is IUnit internal, is DefaultTreeCellRenderer component) {

@@ -85,16 +85,17 @@ object cliTests {
 	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
 	        PlayerImpl(2, "two")], "test desc", "none present", "prompt ", false],
 	        ["-1", "0"], ["test desc", "0: one", "1: two", "prompt prompt "],
-	        0->PlayerImpl(1, "one"), "chooseFromList prompts again when negative index given",
+	        0->PlayerImpl(1, "one"),
+			"chooseFromList prompts again when negative index given",
 	        "chooseFromList prompts again when negative index given");
 	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
-	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", false], Singleton("3"),
-	        ["test desc", "0: one", "1: two", "prompt "], 3->null,
+	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", false],
+			Singleton("3"), ["test desc", "0: one", "1: two", "prompt "], 3->null,
 	        "chooseFromList allows too-large choice",
 	        "chooseFromList allows too-large choice");
 	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
-	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", true], Singleton("0"),
-	        ["test desc", "0: one", "1: two", "prompt "], 0->PlayerImpl(1, "one"),
+	        PlayerImpl(2, "two")], "test desc", "none present", "prompt", true],
+			Singleton("0"), ["test desc", "0: one", "1: two", "prompt "], 0->PlayerImpl(1, "one"),
 	        "chooseFromList asks even if 'auto' when multiple items",
 	        "chooseFromList prompted the user");
 	    assertCLI(`ICLIHelper.chooseFromList<Player>`, [[], "test desc", "none present",
@@ -104,10 +105,10 @@ object cliTests {
 	"Test inputNumber"
 	test
 	shared void testInputNumber() {
-	    assertCLI(`ICLIHelper.inputNumber`, ["test prompt"], Singleton("2"), "test prompt ", 2,
-	        "inputNumber works", "inputNumber uses given prompt");
-	    assertCLI(`ICLIHelper.inputNumber`, ["test prompt two"], Singleton("8"), "test prompt two ", 8,
-	        "inputNumber works", "inputNumber uses given prompt");
+	    assertCLI(`ICLIHelper.inputNumber`, ["test prompt"], Singleton("2"), "test prompt ",
+			2, "inputNumber works", "inputNumber uses given prompt");
+	    assertCLI(`ICLIHelper.inputNumber`, ["test prompt two"], Singleton("8"),
+			"test prompt two ", 8, "inputNumber works", "inputNumber uses given prompt");
 	    assertCLI(`ICLIHelper.inputNumber`, ["test prompt three "], ["-1", "0"],
 	        "test prompt three test prompt three ", 0,
 	        "inputNumber asks again on negative input",
@@ -117,19 +118,20 @@ object cliTests {
 	        "inputNumber asks again on non-numeric input",
 	        "inputNumber asks again on non-numeric input");
 	    // https://github.com/eclipse/ceylon/issues/5448
-	//    try (cli = CLIHelper(LinkedList(Singleton("")).accept, noop)) {
-	//       assertThatException(defer(cli.inputNumber, ["test prompt"])).hasType(`IOException`);
-	//    }
+//	    try (cli = CLIHelper(LinkedList(Singleton("")).accept, noop)) {
+//	       assertThatException(defer(cli.inputNumber, ["test prompt"]))
+//			   .hasType(`IOException`);
+//	    }
 	}
 	"Test inputDecimal"
 	test
 	shared void testInputDecimal() {
-	    assertCLI(`ICLIHelper.inputDecimal`, ["test prompt"], Singleton("10"), "test prompt ",
-	        decimalNumber(10), "inputDecimal works with integers",
+	    assertCLI(`ICLIHelper.inputDecimal`, ["test prompt"], Singleton("10"),
+			"test prompt ", decimalNumber(10), "inputDecimal works with integers",
 	        "inputDecimal uses given prompt");
-	    assertCLI(`ICLIHelper.inputDecimal`, ["test prompt two"], Singleton("2.5"), "test prompt two ",
-	        decimalNumber(5) / decimalNumber(2), "inputDecimal works with decimals",
-	        "inputDecimal uses given prompt");
+	    assertCLI(`ICLIHelper.inputDecimal`, ["test prompt two"], Singleton("2.5"),
+			"test prompt two ", decimalNumber(5) / decimalNumber(2),
+			"inputDecimal works with decimals", "inputDecimal uses given prompt");
 	    assertCLI(`ICLIHelper.inputDecimal`, ["test prompt three "], ["-2.5", "0.5"],
 	        "test prompt three test prompt three ", decimalNumber(1) / decimalNumber(2),
 	        "inputDecimal asks again on negative input",
@@ -143,10 +145,11 @@ object cliTests {
 	"Test for inputString()"
 	test
 	shared void testInputString() {
-	    assertCLI(`ICLIHelper.inputString`, ["string prompt"], Singleton("first"), "string prompt ",
-	        "first", "inputString returns the entered string", "inputString displays prompt");
-	    assertCLI(`ICLIHelper.inputString`, ["second prompt"], Singleton("second"), "second prompt ",
-	        "second", "inputString returns the entered string",
+	    assertCLI(`ICLIHelper.inputString`, ["string prompt"], Singleton("first"),
+			"string prompt ", "first", "inputString returns the entered string",
+			"inputString displays prompt");
+	    assertCLI(`ICLIHelper.inputString`, ["second prompt"], Singleton("second"),
+			"second prompt ", "second", "inputString returns the entered string",
 	        "inputString displays prompt");
 	    assertCLI(`ICLIHelper.inputString`, ["third prompt"], [], "third prompt ", "",
 	        "inputString returns empty on EOF", "inputString displays prompt");
@@ -160,8 +163,9 @@ object cliTests {
 	parameters(`value falsePossibilities`)
 	test
 	shared void testInputBooleanSimpleFalse(String arg) {
-		assertCLI(`ICLIHelper.inputBoolean`, ["prompt two"], Singleton(arg), "prompt two ", false,
-			"inputBoolean returns false on ``arg``", "inputBoolean displays prompt");
+		assertCLI(`ICLIHelper.inputBoolean`, ["prompt two"], Singleton(arg), "prompt two ",
+			false, "inputBoolean returns false on ``arg``",
+			"inputBoolean displays prompt");
 	}
 	"Test for inputBoolean()"
 	test
@@ -175,21 +179,22 @@ object cliTests {
 	parameters(`value truePossibilities`)
 	test
 	shared void testInputBooleanInSeriesSimpleTrue(String arg) {
-		assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["bool prompt"], {arg}, "bool prompt ",
-			true, "inputBooleanInSeries returns true on '``arg``",
+		assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["bool prompt"], {arg},
+			"bool prompt ", true, "inputBooleanInSeries returns true on '``arg``",
 			"inputBooleanInSeries displays prompt");
 	}
 	parameters(`value falsePossibilities`)
 	test
 	shared void testInputBooleanInSeriesSimpleFalse(String arg) {
-		assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["prompt two"], {arg}, "prompt two ",
-			false, "inputBooleanInSeries returns false on ``arg``",
+		assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["prompt two"], {arg},
+			"prompt two ", false, "inputBooleanInSeries returns false on ``arg``",
 			"inputBooleanInSeries displays prompt");
 	}
 	"Test the input-boolean-with-skipping functionality."
 	test
 	shared void testInputBooleanInSeries() {
-	    assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["prompt three "], ["nothing", "true"],
+	    assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["prompt three "],
+			["nothing", "true"],
 	        ["""prompt three Please enter "yes", "no", "true", or "false", the first""",
 	            """character of any of those, or "all", "none", "always", or""",
 	            """"never" to use the same answer for all further questions""",
@@ -197,7 +202,8 @@ object cliTests {
 	        "inputBoolean rejects other input",
 	        "inputBoolean gives message on invalid input");
 	    StringBuilder ostream = StringBuilder();
-	    variable ICLIHelper cli = CLIHelper(LinkedList(Singleton("all")).accept, ostream.append);
+	    variable ICLIHelper cli = CLIHelper(LinkedList(Singleton("all")).accept,
+			ostream.append);
 	    assertEquals(cli.inputBooleanInSeries("prompt four "), true,
 	        "inputBooleanInSeries allows yes-to-all");
 	    assertEquals(cli.inputBooleanInSeries("prompt four "), true,
@@ -225,7 +231,8 @@ object cliTests {
 	        "inputBooleanInSeries allows yes-to-all");
 	    assertEquals(cli.inputBooleanInSeries("prompt seven ", "key"), true,
 	        "inputBooleanInSeries honors yes-to-all if prompt differs, same key");
-	    assertEquals(ostream.string, "prompt six prompt seven yes``operatingSystem.newline``",
+	    assertEquals(ostream.string,
+			"prompt six prompt seven yes``operatingSystem.newline``",
 	        "inputBooleanInSeries shows automatic yes");
 	    ostream.clear();
 	    cli = CLIHelper(LinkedList(Singleton("""never""")).accept, ostream.append);
@@ -233,7 +240,8 @@ object cliTests {
 	        "inputBooleanInSeries allows no-to-all");
 	    assertEquals(cli.inputBooleanInSeries("prompt nine ", "secondKey"), false,
 	        "inputBooleanInSeries honors no-to-all if prompt differs, same key");
-	    assertEquals(ostream.string, "prompt eight prompt nine no``operatingSystem.newline``",
+	    assertEquals(ostream.string,
+			"prompt eight prompt nine no``operatingSystem.newline``",
 	        "inputBooleanInSeries shows automatic no");
 	    ostream.clear();
 	    cli = CLIHelper(LinkedList(["all", "none"]).accept, ostream.append);
@@ -295,8 +303,8 @@ object cliTests {
 	        "chooseStringFromList handles empty list",
 	        "chooseStringFromList handles empty list");
 	}
-	void assertPrintingOutput(Method<ICLIHelper, Anything, String[1]> method, String argument,
-			String expected, String message) {
+	void assertPrintingOutput(Method<ICLIHelper, Anything, String[1]> method,
+			String argument, String expected, String message) {
 		StringBuilder ostream = StringBuilder();
 		method(CLIHelper(LinkedList<String>().accept, ostream.append))(argument);
 		assertEquals(ostream.string, expected, message);
@@ -306,8 +314,8 @@ object cliTests {
 	shared void testPrinting() {
 	    assertPrintingOutput(`ICLIHelper.print`, "test string", "test string",
 	        "print() prints string");
-	    assertPrintingOutput(`ICLIHelper.println`, "test two", "test two``operatingSystem.newline``",
-	        "println() adds newline");
+	    assertPrintingOutput(`ICLIHelper.println`, "test two",
+			"test two``operatingSystem.newline``", "println() adds newline");
 	}
 
 	"Test inputPoint()"

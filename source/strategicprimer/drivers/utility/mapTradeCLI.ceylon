@@ -90,13 +90,16 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 		}
 	}
 	static {FixtureMatcher*} initializeMatchers() => [
-			FixtureMatcher.complements<IUnit>(inverse(matchingPredicate(Player.independent, IUnit.owner)),
+			FixtureMatcher.complements<IUnit>(inverse(
+					matchingPredicate(Player.independent, IUnit.owner)),
 				"Units", "Independent Units"),
 			FixtureMatcher.trivialMatcher(`Fortress`, "Fortresses"),
 			FixtureMatcher.trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"),
-			FixtureMatcher.trivialMatcher(`Portal`), FixtureMatcher.trivialMatcher(`Oasis`, "Oases"),
+			FixtureMatcher.trivialMatcher(`Portal`),
+			FixtureMatcher.trivialMatcher(`Oasis`, "Oases"),
 			FixtureMatcher.trivialMatcher(`AdventureFixture`, "Adventures"),
-			FixtureMatcher.trivialMatcher(`CacheFixture`, "Caches"), FixtureMatcher.trivialMatcher(`Forest`),
+			FixtureMatcher.trivialMatcher(`CacheFixture`, "Caches"),
+			FixtureMatcher.trivialMatcher(`Forest`),
 			FixtureMatcher.trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
 			FixtureMatcher.trivialMatcher(`Village`),
 			FixtureMatcher.trivialMatcher(`Animal`), FixtureMatcher.trivialMatcher(`AnimalTracks`),
@@ -112,17 +115,21 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 			FixtureMatcher.trivialMatcher(`Centaur`),
 			FixtureMatcher.trivialMatcher(`StoneDeposit`, "Stone Deposits"),
 			FixtureMatcher.trivialMatcher(`MineralVein`, "Mineral Veins"),
-			FixtureMatcher.trivialMatcher(`Fairy`, "Fairies"), FixtureMatcher.trivialMatcher(`Giant`),
-			FixtureMatcher.trivialMatcher(`Dragon`), FixtureMatcher.trivialMatcher(`Cave`), FixtureMatcher.trivialMatcher(`Battlefield`),
+			FixtureMatcher.trivialMatcher(`Fairy`, "Fairies"),
+			FixtureMatcher.trivialMatcher(`Giant`),
+			FixtureMatcher.trivialMatcher(`Dragon`), FixtureMatcher.trivialMatcher(`Cave`),
+			FixtureMatcher.trivialMatcher(`Battlefield`),
 			FixtureMatcher.complements<Grove>(Grove.orchard, "Orchards", "Groves"),
-			FixtureMatcher.trivialMatcher(`Shrub`), FixtureMatcher.complements<Meadow>(Meadow.field, "Fields", "Meadows"),
+			FixtureMatcher.trivialMatcher(`Shrub`),
+			FixtureMatcher.complements<Meadow>(Meadow.field, "Fields", "Meadows"),
 			FixtureMatcher.trivialMatcher(`Sandbar`), FixtureMatcher.trivialMatcher(`Hill`),
 			FixtureMatcher.complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
 		].flatMap(flatten);
 	shared new () {}
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
 		"Trade maps", "Copy contents from one map to another.", true, false);
-	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options, IDriverModel model) {
+	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+			IDriverModel model) {
 		IMapNG first = model.map;
 		assert (is IMultiMapModel model, exists second = model.subordinateMaps.first?.key);
 		if (cli.inputBoolean("Copy players?")) {
@@ -146,13 +153,15 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 			return newMatcher.displayed;
 		}
 		for (location in first.locations) {
-			if (!second.baseTerrain[location] exists, exists terrain = first.baseTerrain[location]) {
+			if (!second.baseTerrain[location] exists, exists terrain =
+					first.baseTerrain[location]) {
 				second.baseTerrain[location] = terrain;
 			}
 			//for (fixture in first.fixtures[location].filter(testFixture)) { // TODO: syntax sugar
 			for (fixture in first.fixtures.get(location).filter(testFixture)) {
 				//if (!second.fixtures[location].any(matchingValue(fixture.id, TileFixture.id))) {
-				if (fixture.id >= 0, !second.fixtures.get(location).any(matchingValue(fixture.id, TileFixture.id))) {
+				if (fixture.id >= 0, !second.fixtures.get(location)
+						.any(matchingValue(fixture.id, TileFixture.id))) {
 					second.addFixture(location, fixture.copy(true));
 				}
 			}

@@ -42,7 +42,8 @@ import lovelace.util.common {
 Logger log = logger(`module strategicprimer.drivers.exploration.old`);
 // Made shared so the oneToTwoConverter tests can get tables as classpath resources and
 // load them from there. Also used by the 'town contents' generator.
-shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource argument, String name) {
+shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource argument,
+		String name) {
     if (is File argument) {
         try (reader = argument.Reader()) {
             return loadTable(reader.readLine, argument.name);
@@ -137,7 +138,9 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                 }
                 return TerrainTable(*list);
             }
-            else { throw AssertionError("unknown table type '``line`` in file ``name``"); }
+            else {
+				throw AssertionError("unknown table type '``line`` in file ``name``");
+			}
         } else {
             throw IOException("File ``name`` doesn't specify a table type");
         }
@@ -194,14 +197,16 @@ object loadTableTests {
 	}
 	test
 	shared void testLoadRandomTable() {
-	    EncounterTable result = loadTable(LinkedList{"random", "0 one", "99 two"}.accept, "testLoadRandomTable()");
+	    EncounterTable result = loadTable(LinkedList{"random", "0 one", "99 two"}.accept,
+			"testLoadRandomTable()");
 	    assertEquals(result.generateEvent(mockPoint, TileType.tundra, false, [],
 	        mockDimensions), "one", "loading random table");
 	}
 	test
 	shared void testLoadTerrainTable() {
 	    EncounterTable result = loadTable(LinkedList{"terrain", "tundra one",
-	        "plains two", "ocean three", "mountain four", "temperate_forest five"}.accept, "testLoadTerrainTable()");
+	        "plains two", "ocean three", "mountain four", "temperate_forest five"}.accept,
+			"testLoadTerrainTable()");
 	    assertEquals(result.generateEvent(mockPoint, TileType.tundra, false,
 	        [], mockDimensions), "one",
 	        "loading terrain table: tundra");
@@ -219,7 +224,8 @@ object loadTableTests {
 	}
 	test
 	shared void testLoadConstantTable() {
-	    EncounterTable result = loadTable(LinkedList{"constant", "one"}.accept, "testLoadConstantTable()");
+	    EncounterTable result = loadTable(LinkedList{"constant", "one"}.accept,
+			"testLoadConstantTable()");
 	    assertEquals(result.generateEvent(mockPoint, TileType.plains, false,
 	        [], mockDimensions), "one");
 	}

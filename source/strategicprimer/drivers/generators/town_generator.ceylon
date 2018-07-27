@@ -115,9 +115,10 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                 HashMap<String, {[Quantity, String, String]*}>();
         for (terrain in ["mountain", "forest", "plains", "ocean"]) {
             String file = "``terrain``_consumption";
-             assert (exists tableContents = readFileContents(`module strategicprimer.drivers.generators`,
-                 "tables/``file``"));
-             MutableList<[Quantity, String, String]> inner = ArrayList<[Quantity, String, String]>();
+             assert (exists tableContents =
+					 readFileContents(`module strategicprimer.drivers.generators`, "tables/``file``"));
+             MutableList<[Quantity, String, String]> inner =
+					 ArrayList<[Quantity, String, String]>();
              for (line in tableContents.lines) {
                  if (line.empty) {
                      continue;
@@ -125,8 +126,9 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                  value split = line.split('\t'.equals, true, false);
                  value quantity = Integer.parse(split.first);
                  if (is Integer quantity) {
-                     assert (exists units = split.rest.first, exists kind = split.rest.rest.first,
-                        exists resource = split.rest.rest.rest.first);
+                     assert (exists units = split.rest.first,
+						 exists kind = split.rest.rest.first,
+						 exists resource = split.rest.rest.rest.first);
                      inner.add([Quantity(quantity, units), kind, resource]);
                  } else {
                      throw quantity;
@@ -149,7 +151,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             retval.loadTable(table, loadedTable);
             for (reference in loadedTable.allEvents) {
                 if (reference.contains('#')) {
-                    assert (exists temp = reference.split('#'.equals, true, false, 2).rest.first);
+                    assert (exists temp = reference.split('#'.equals, true, false, 2)
+						.rest.first);
                     if (!retval.hasTable(temp)) {
                         firstTables.push(temp.trimmed);
                     }
@@ -165,7 +168,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             retval.loadTable(table, loadedTable);
             for (reference in loadedTable.allEvents) {
                 if (reference.contains('#')) {
-                    assert (exists temp = reference.split('#'.equals, true, false, 2).rest.first);
+                    assert (exists temp = reference.split('#'.equals, true, false, 2)
+						.rest.first);
                     if (!retval.hasTable(temp)) {
                         secondTables.push(temp.trimmed);
                     }
@@ -174,13 +178,15 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
         }
         return retval;
     }
-    LazyInit<Map<String,{[Quantity, String, String]*}>> consumption = LazyInit(initConsumption);
+    LazyInit<Map<String,{[Quantity, String, String]*}>> consumption =
+			LazyInit(initConsumption);
     LazyInit<ExplorationRunner> runner = LazyInit(initProduction);
     "The (for now active) towns in the given map that don't have 'stats' yet."
     {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) => [
         for (loc in map.locations) // TODO: try using fixtureEntries; ISTR narrow()ing a stream of Entries doesn't work properly.
-//            for (fixture in map.fixtures[loc].narrow<ModifiableTown>().filter(matchingValue(TownStatus.active, ITownFixture.status))) // TODO: syntax sugar once compiler bug fixed
-            for (fixture in map.fixtures.get(loc).narrow<ModifiableTown>().filter(matchingValue(TownStatus.active, ITownFixture.status)))
+//            for (fixture in map.fixtures[loc].narrow<ModifiableTown>() // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(loc).narrow<ModifiableTown>()
+				.filter(matchingValue(TownStatus.active, ITownFixture.status)))
                     loc->fixture ];
     void assignStatsToTown(ModifiableTown town, CommunityStats stats) {
         if (is AbstractTown town) {
@@ -193,7 +199,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             CommunityStats stats) {
 //        for (item in map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
         for (item in map.fixtures.get(location)
-                .narrow<ModifiableTown>().filter(matchingValue(townId, ModifiableTown.id))) {
+                .narrow<ModifiableTown>().filter(matchingValue(townId,
+				ModifiableTown.id))) {
             assignStatsToTown(item, stats);
         }
     }
@@ -248,12 +255,14 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
         if (exists base = map.baseTerrain[location]) {
             return surroundingPointIterable(location, map.dimensions, 10).distinct
                 .filter(compose(curry(bothOrNeitherOcean)(base), map.baseTerrain.get))
-                .flatMap(map.fixtures.get).narrow<HarvestableFixture>().filter(isReallyClaimable);
+                .flatMap(map.fixtures.get).narrow<HarvestableFixture>()
+                .filter(isReallyClaimable);
         } else {
             return [];
         }
     }
-    CommunityStats enterStats(ICLIHelper cli, IDRegistrar idf, IMapNG map, Point location, ModifiableTown town) {
+    CommunityStats enterStats(ICLIHelper cli, IDRegistrar idf, IMapNG map, Point location,
+            ModifiableTown town) {
         CommunityStats retval = CommunityStats(cli.inputNumber("Population: "));
         cli.println("Now enter Skill levels, the highest in the community for each Job.");
         cli.println("(Empty to end.)");
@@ -357,7 +366,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
         }
     }
     String getHarvestedProduct(HarvestableFixture fixture) => fixture.kind;
-    CommunityStats generateStats(IDRegistrar idf, Point location, ModifiableTown town, IMapNG map) {
+    CommunityStats generateStats(IDRegistrar idf, Point location, ModifiableTown town,
+            IMapNG map) {
         Random rng = DefaultRandom(town.id);
         Integer roll(Integer die) => rng.nextInteger(die) + 1;
 
@@ -447,7 +457,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             if (runner.wrapped.hasTable(tableName)) {
                 retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
                     runner.wrapped.consultTable(tableName, location, map.baseTerrain.get(location), // TODO: syntax sugar
-                        map.mountainous.get(location), map.fixtures.get(location), map.dimensions),
+                        map.mountainous.get(location), map.fixtures.get(location),
+                        map.dimensions),
                 Quantity(2.power(level - 1), (level == 1) then "unit" else "units")));
             } else {
                 retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
@@ -456,7 +467,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
         }
         assert (exists consumptionTable = consumption.wrapped[consumptionTableName]);
         for ([quantity, kind, resource] in consumptionTable) {
-            retval.yearlyConsumption.add(ResourcePile(idf.createID(), kind, resource, quantity));
+            retval.yearlyConsumption.add(ResourcePile(idf.createID(), kind, resource,
+                quantity));
         }
         retval.yearlyConsumption.add(ResourcePile(idf.createID(), "food", "various",
             Quantity(4 * 14 * population, "pounds")));
@@ -487,18 +499,21 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                     break;
                 } else if (isNumeric(input), exists id = parseInt(input)) {
                     value temp = unstattedTowns(model.map)
-                            .find(matchingPredicate(matchingValue(id, IFixture.id), Entry<Point, ITownFixture>.item));
+                            .find(matchingPredicate(matchingValue(id, IFixture.id),
+                                Entry<Point, ITownFixture>.item));
                     location = temp?.key;
                     town = temp?.item;
                 } else {
                     value temp = unstattedTowns(model.map)
-                            .find(matchingPredicate(matchingValue(input, HasName.name), Entry<Point, ITownFixture>.item));
+                            .find(matchingPredicate(matchingValue(input, HasName.name),
+                                Entry<Point, ITownFixture>.item));
                     location = temp?.key;
                     town = temp?.item;
                 }
                 if (exists town, exists location) {
                     CommunityStats stats;
-                    if (cli.inputBooleanInSeries("Enter stats rather than generating them? ")) {
+                    if (cli.inputBooleanInSeries(
+                            "Enter stats rather than generating them? ")) {
                         stats = enterStats(cli, idf, model.map, location, town);
                     } else {
                         stats = generateStats(idf, location, town, model.map);
@@ -517,8 +532,9 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             for (location->town in randomize(unstattedTowns(model.map))) {
                 cli.println("Next town is ``town.shortDescription``, at ``location``. ");
                 CommunityStats stats;
-                Boolean? resp = cli.inputBooleanInSeries<Null>("Enter stats rather than generating them?",
-                    "enter stats", nullIfQuit);
+                Boolean? resp = cli.inputBooleanInSeries<Null>(
+                    "Enter stats rather than generating them?", "enter stats",
+                    nullIfQuit);
                 if (exists resp) {
                     if (resp) {
                         stats = enterStats(cli, idf, model.map, location, town);

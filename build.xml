@@ -207,13 +207,15 @@
     </exec>
     <concat destfile="${invocation.path}" overwrite="true">open /path/to/${basename}.app --args</concat>
     <x-rebuild />
-    <x-ceylon-fat-jar out="${release}/${shortname}.jar" run="${ceylon-main-run}" module="${main-module}" />
+    <x-ceylon-fat-jar out="${release}/${shortname}.jar" run="${ceylon-main-run}"
+                      module="${main-module}" />
     <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
       jar="${release}/${shortname}.jar" version="${version-number}"
       shortname="SPHelpers" stubfile="${stub-script-path}"
       icon="icon.icns" useJavaXKey="true">
       <javaproperty name="apple.eawt.quitStrategy" value="CLOSE_ALL_WINDOWS" />
-      <documenttype name="Strategic Primer map files" extensions="map xml" role="Editor" />
+      <documenttype name="Strategic Primer map files" extensions="map xml"
+                    role="Editor" />
     </jarbundler>
     <tar destfile="${release}/${basename}.app.tbz2" compression="bzip2">
       <tarfileset dir="${release}">
@@ -296,7 +298,9 @@
       <jacoco:report>
           <executiondata><file file="jacoco.exec" /></executiondata>
           <structure name="Strategic Primer Assistive Programs">
-              <classfiles><fileset dir="bin"><include name="**/*.class" /></fileset></classfiles>
+              <classfiles><fileset dir="bin">
+                  <include name="**/*.class" />
+              </fileset></classfiles>
               <sourcefiles encoding="UTF-8"><fileset dir="src" /></sourcefiles>
           </structure>
           <xml destfile="jacoco.xml" />

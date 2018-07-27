@@ -127,7 +127,7 @@ object dbCommunityStatsHandler
 				log.trace("Finished reading ``count`` worked resource sources");
 			}
 		}
-		log.trace("Finished reading worked resource sources, about to start on produced resources");
+		log.trace("Finished reading worked rsr sources, about to start produced resources");
 		count = 0;
 		for (row in db.Select("""SELECT * FROM town_production""").Results()) {
 			assert (is Integer townId = row["town"],

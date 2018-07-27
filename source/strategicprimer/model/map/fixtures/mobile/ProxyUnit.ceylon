@@ -178,7 +178,8 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
 	                naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|
 	                    Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker>>([]);
 	        for (member in proxiedList.flatMap(identity)) {
-                UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker> proxy;
+                UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|
+                    IWorker&ProxyFor<IWorker> proxy;
                 Integer memberID = member.id;
                 if (exists temp = map[memberID]) {
                     proxy = temp;

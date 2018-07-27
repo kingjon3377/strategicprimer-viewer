@@ -77,7 +77,8 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             // ever becomes unnecessary, I will change the default-value here to
             // simply `false`.
             tracks = getBooleanParameter(element, "traces",
-                hasParameter(element, "traces") && getParameter(element, "traces", "").empty);
+                hasParameter(element, "traces") &&
+				getParameter(element, "traces", "").empty);
             if (!tracks) {
                 expectAttributes(element, "traces", "id", "count", "talking", "kind",
                     "status", "wild", "born", "image");

@@ -47,7 +47,8 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>()
 			destinationCoordinates = [SqlNull(Types.integer), SqlNull(Types.integer)];
 		}
 		db.Insert(
-			"""INSERT INTO portals (row, column, id, image, destination_world, destination_row, destination_column)
+			"""INSERT INTO portals (row, column, id, image, destination_world,
+				   destination_row, destination_column)
 			   VALUES(?, ?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id, obj.image, obj.destinationWorld,
 					*destinationCoordinates);

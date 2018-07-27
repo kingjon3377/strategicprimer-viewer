@@ -23,11 +23,13 @@ import ceylon.logging {
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.exploration.common`);
 shared object pathfinder {
-	"The shortest-path distance, avoiding obstacles, in MP, between two points, using Dijkstra's algorithm."
+	"The shortest-path distance, avoiding obstacles, in MP, between two points, using
+	 Dijkstra's algorithm."
 	shared [Integer, {Point*}] getTravelDistance(IMapNG map, Point start, Point end) {
 		MutableSet<Point> unvisited = HashSet { elements = map.locations; };
 		MutableMap<Point, Integer> tentativeDistances = HashMap<Point, Integer> {
-			entries = map.locations.map(shuffle(curry(Entry<Point, Integer>))(runtime.maxArraySize)); };
+			entries = map.locations
+				.map(shuffle(curry(Entry<Point, Integer>))(runtime.maxArraySize)); };
 		tentativeDistances[start] = 0;
 		variable Point current = start;
 		variable Integer iterations = 0;
@@ -53,9 +55,11 @@ shared object pathfinder {
 					continue;
 				}
 				assert (exists estimate = tentativeDistances[neighbor]);
-				Integer tentativeDistance = currentDistance + simpleMovementModel.movementCost(map.baseTerrain[neighbor],
-					!map.fixtures.get(neighbor).narrow<Forest>().empty, map.mountainous.get(neighbor),
-					!map.rivers.get(neighbor).empty || !map.rivers.get(current).empty, map.fixtures.get(neighbor));
+				Integer tentativeDistance = currentDistance +
+					simpleMovementModel.movementCost(map.baseTerrain[neighbor],
+						!map.fixtures.get(neighbor).narrow<Forest>().empty, map.mountainous.get(neighbor),
+						!map.rivers.get(neighbor).empty || !map.rivers.get(current).empty,
+						map.fixtures.get(neighbor));
 				if (tentativeDistance < estimate) {
 					retval[neighbor] = current;
 					tentativeDistances[neighbor] = tentativeDistance;
@@ -69,8 +73,8 @@ shared object pathfinder {
 				}
 			}
 			unvisited.remove(current);
-			if (exists next = tentativeDistances.sort(comparingOn(Entry<Point, Integer>.item, increasing<Integer>)).
-				map(Entry.key).filter(unvisited.contains).first) {
+			if (exists next = tentativeDistances.sort(comparingOn(Entry<Point, Integer>.item,
+					increasing<Integer>)).map(Entry.key).filter(unvisited.contains).first) {
 				current = next;
 			} else {
 				log.debug("Couldn't find a smallest-estimate unchecked tile after ``iterations`` iterations");

@@ -38,7 +38,8 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>()
 		   );"""
 	];
 	shared actual void write(Sql db, Meadow obj, Point context) {
-		db.Insert("""INSERT INTO fields (row, column, id, type, kind, cultivated, status, acres, image)
+		db.Insert("""INSERT INTO fields (row, column, id, type, kind, cultivated, status, acres,
+		                 image)
 		             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id,
 					(obj.field) then "field" else "meadow", obj.kind, obj.cultivated,

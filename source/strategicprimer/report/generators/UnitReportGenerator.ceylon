@@ -195,7 +195,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                        <p>(Any units listed above are not described again.)</p>
                        """);
             void unitFormatter(IUnit->Point entry, Anything(String) formatter) {
-                formatter("At ``entry.item````distCalculator.distanceString(entry.item)``");
+                formatter(
+                    "At ``entry.item````distCalculator.distanceString(entry.item)``");
                 produceSingle(fixtures, map, formatter, entry.key, entry.item);
             }
             writeMap(ostream, ours, unitFormatter);
@@ -250,8 +251,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                     resourcesMap.put(member.kind, resourceNode);
                     resources.add(resourceNode);
                 }
-                resourceNode.appendNode(memberReportGenerator.produceRIRSingle(fixtures, map,
-                    member, loc));
+                resourceNode.appendNode(memberReportGenerator.produceRIRSingle(fixtures,
+                    map, member, loc));
             } else {
                 others.add(SimpleReportNode(member.string, loc));
             }
@@ -284,7 +285,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
 		    IMapNG map) {
         IReportNode theirs = SectionListReportNode(5, "Foreign Units");
         IReportNode ours = SectionListReportNode(5, "Your Units");
-        for ([loc, unit] in fixtures.items.narrow<[Point, IUnit]>().sort(pairComparator)) {
+        for ([loc, unit] in fixtures.items.narrow<[Point, IUnit]>()
+                .sort(pairComparator)) {
             IReportNode unitNode = produceRIRSingle(fixtures, map, unit,
                 loc);
             unitNode.text = "At ``loc``: ``unitNode.text`` ``distCalculator

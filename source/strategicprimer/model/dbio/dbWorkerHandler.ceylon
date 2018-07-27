@@ -72,7 +72,8 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
 	];
 	shared actual void write(Sql db, IWorker obj, IUnit context) {
 		value worker = db.Insert(
-			"""INSERT INTO workers (unit, id, name, race, image, portrait, hp, max_hp, str, dex, con, int, wis, cha)
+			"""INSERT INTO workers (unit, id, name, race, image, portrait, hp, max_hp, str, dex,
+				   con, int, wis, cha)
 			   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""");
 		value jobRow = db.Insert(
 			"""INSERT INTO worker_job_levels (worker, job, level) VALUES(?, ?, ?);""");

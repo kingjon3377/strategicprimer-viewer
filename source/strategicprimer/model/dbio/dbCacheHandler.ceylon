@@ -27,7 +27,8 @@ object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>()
 			    );"""];
 	shared actual void write(Sql db, CacheFixture obj, Point context) {
 		db.Insert(
-			"""INSERT INTO caches (row, column, id, kind, contents, image) VALUES(?, ?, ?, ?, ?, ?);""")
+			"""INSERT INTO caches (row, column, id, kind, contents, image)
+			   VALUES(?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id, obj.kind, obj.contents, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {

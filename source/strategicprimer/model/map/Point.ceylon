@@ -1,5 +1,5 @@
 "A structure encapsulating two coordinates: a row and column in the map."
-// TODO: Convert back to a class, as caching them seems either detrimental or inconclusively-beneficial
+// TODO: Convert back to a class: caching them seems either harmful or of dubious benefit
 shared interface Point satisfies Comparable<Point> {
     "The first coordinate, the point's row."
     shared formal Integer row;

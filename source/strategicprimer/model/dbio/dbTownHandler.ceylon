@@ -47,7 +47,8 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
 		   );"""
 	];
 	shared actual void write(Sql db, AbstractTown obj, Point context) {
-		db.Insert("""INSERT INTO towns (row, column, id, kind, status, size, dc, name, owner, image, portrait, population)
+		db.Insert("""INSERT INTO towns (row, column, id, kind, status, size, dc, name, owner,
+		                image, portrait, population)
 		             VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id, obj.kind, obj.status.string,
 					obj.townSize.string, obj.dc, obj.name, obj.owner.playerId, obj.image,

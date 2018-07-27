@@ -270,7 +270,8 @@ shared class TabularReportGUI() satisfies SimpleDriver {
         SPFrame window = SPFrame("Tabular Report", model.mapFile, Dimension(640, 480));
         JTabbedPane frame = JTabbedPane(JTabbedPane.top, JTabbedPane.scrollTabLayout);
         tabularReportGenerator.createGUITabularReports(
-            (String str, Component comp) => frame.addTab(str, comp), model.map); // can't use a method reference because JTabbedPane.addTab is overloaded
+			// can't use a method reference here because JTabbedPane.addTab is overloaded
+            (String str, Component comp) => frame.addTab(str, comp), model.map);
         window.add(frame);
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(silentListener(window.dispose), "close");
@@ -304,7 +305,8 @@ shared class TabularReportCLI() satisfies SimpleDriver {
     };
     MutableMap<String,Writer> writers = HashMap<String,Writer>();
     Item->Key reverseEntry<Key, Item>(Key->Item entry)
-            given Key satisfies Object given Item satisfies Object => entry.item->entry.key;
+            given Key satisfies Object given Item satisfies Object =>
+				entry.item->entry.key;
     void serveReports(IDriverModel model, Integer port) {
         Map<JPath, IMapNG> mapping;
         if (is IMultiMapModel model) {

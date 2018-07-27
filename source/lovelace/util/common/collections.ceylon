@@ -122,12 +122,12 @@ shared interface NonNullCorrespondence<in Key, out Item=Anything>
     shared actual formal Item get(Key key);
 }
 
-"A wrapper around [[ceylon.language::set]] that won't cause the compiler to make an inner class in
- each and every caller."
+"A wrapper around [[ceylon.language::set]] that won't cause the compiler to make an inner
+ class in each and every caller."
 shared Set<Element> simpleSet<Element>(Element* elements) given Element satisfies Object
 		=> set(elements);
 
-"A wrapper around [[ceylon.language::map]] that won't cause the compiler to make an inner class in
- each and every caller."
+"A wrapper around [[ceylon.language::map]] that won't cause the compiler to make an inner
+ class in each and every caller."
 shared Map<Key, Item> simpleMap<Key, Item>(<Key->Item>* stream) given Key satisfies Object
 		=> map(stream);

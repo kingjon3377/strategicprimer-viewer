@@ -72,7 +72,8 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
 					.execute(context.row, context.column, obj.kind, obj.image);
 		} else {
 			value insertion = db.Insert(
-				"""INSERT INTO animals (row, column, parent, kind, talking, status, born, count, id, image)
+				"""INSERT INTO animals (row, column, parent, kind, talking, status, born, count, id,
+					   image)
 				   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""");
 			if (is Point context) {
 				insertion.execute(context.row, context.column, SqlNull(Types.integer),

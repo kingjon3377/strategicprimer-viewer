@@ -122,7 +122,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             if (exists reader = readers[tag]) {
                 return reader(element, parent, stream, players, warner, idFactory);
             } else if (immortalAnimals.contains(tag)) {
-                return unitMemberHandler.readAnimal(element, parent, stream, players, warner, idFactory);
+                return unitMemberHandler.readAnimal(element, parent, stream, players,
+					warner, idFactory);
             }
         }
         throw UnsupportedTagException(element);
@@ -398,8 +399,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "fortress");
         requireNonEmptyAttribute(element, "owner", false, warner);
         requireNonEmptyAttribute(element, "name", false, warner);
-        expectAttributes(element, warner, "owner", "name", "id", "size", "status", "image",
-            "portrait");
+        expectAttributes(element, warner, "owner", "name", "id", "size", "status",
+			"image", "portrait");
         Fortress retval;
         value size = TownSize.parse(getAttribute(element, "size", "small"));
         if (is TownSize size) {

@@ -147,7 +147,8 @@ shared object simpleMovementModel {
 	        ability = 0;
 	    }
 	    Integer ranks = worker.flatMap(identity)
-	        .filter(matchingPredicate(matchingValue("perception", String.lowercased), ISkill.name))
+	        .filter(matchingPredicate(matchingValue("perception", String.lowercased),
+				ISkill.name))
 	        .map(ISkill.level).reduce(plus) else 0;
 	    return ability + (ranks * 2);
 	}

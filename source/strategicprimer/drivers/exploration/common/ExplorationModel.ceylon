@@ -130,8 +130,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         return false;
     }
     "Whether the given fixture is at the given location in the given map."
-    static Boolean doesLocationHaveFixture(IMapNG map, Point point, TileFixture fixture) =>
-            doesStreamContainFixture(map.fixtures.get(point), fixture); // TODO: syntax sugar
+    static Boolean doesLocationHaveFixture(IMapNG map, Point point, TileFixture fixture)
+			=> doesStreamContainFixture(map.fixtures.get(point), fixture); // TODO: syntax sugar
     """A "plus one" method with a configurable, low "overflow"."""
     static Integer increment(
             "The number to increment"
@@ -144,12 +144,12 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             Integer number,
             """The number to "underflow" to"""
             Integer max) => if (number <= 0) then max else number - 1;
-    "The intersection of two sets; here so it can be passed as a method reference rather than
-     a lambda in [[playerChoices]]."
+    "The intersection of two sets; here so it can be passed as a method reference rather
+     than a lambda in [[playerChoices]]."
     static Set<T> intersection<T>(Set<T> one, Set<T> two) given T satisfies Object =>
             one.intersection(two);
-    "If [[fixture]] is a [[Fortress]], return it; otherwise, return a Singleton containing it.
-     This is intended to be used in [[Iterable.flatMap]]."
+    "If [[fixture]] is a [[Fortress]], return it; otherwise, return a Singleton
+     containing it. This is intended to be used in [[Iterable.flatMap]]."
     static {IFixture*} unflattenNonFortresses(TileFixture fixture) {
         if (is Fortress fixture) {
             return fixture;
@@ -167,8 +167,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
     "All the players shared by all the maps."
-    shared actual {Player*} playerChoices => allMaps.map(Entry.key).map(IMapNG.players).map(set)
-                .fold(set(map.players))(intersection);
+    shared actual {Player*} playerChoices => allMaps.map(Entry.key).map(IMapNG.players)
+		.map(set).fold(set(map.players))(intersection);
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) =>
             map.fixtureEntries.map(Entry.item).flatMap(unflattenNonFortresses)
@@ -258,8 +258,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 //                base = movementCost(map.baseTerrain[dest],
                 base = simpleMovementModel.movementCost(map.baseTerrain.get(dest),
                     map.fixtures[dest]?.narrow<Forest>()?.first exists,
-//                    map.mountainous[dest], riversSpeedTravel(direction, map.rivers[point],
-                    map.mountainous.get(dest), simpleMovementModel.riversSpeedTravel(direction, map.rivers.get(point),
+//                    map.mountainous[dest],
+//					riversSpeedTravel(direction, map.rivers[point],
+                    map.mountainous.get(dest),
+						simpleMovementModel.riversSpeedTravel(direction, map.rivers.get(point),
 //                        map.rivers[dest]), fixtures);
                         map.rivers.get(dest)), fixtures);
             }
@@ -285,8 +287,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             } else if (!map.baseTerrain[dest] exists) {
                 log.trace("Main map doesn't have terrain for destination");
             } else {
-                assert (exists terrain = map.baseTerrain[dest], exists startingTerrain = map.baseTerrain[point]);
-                if ((simpleMovementModel.landMovementPossible(terrain) && startingTerrain == TileType.ocean)) {
+                assert (exists terrain = map.baseTerrain[dest],
+					exists startingTerrain = map.baseTerrain[point]);
+                if (simpleMovementModel.landMovementPossible(terrain) &&
+						startingTerrain == TileType.ocean) {
                     log.trace("Starting in ocean, trying to get to ``terrain``");
                 } else if (startingTerrain == TileType.ocean, terrain != TileType.ocean) {
                     log.trace("Land movement not possible, starting in ocean, trying to get to ``terrain``");
@@ -359,7 +363,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             {Village*} villages = allMaps.map(Entry.key)
                 .flatMap(shuffle(compose(NonNullCorrespondence<Point, {TileFixture*}>.get,
 	                IMutableMapNG.fixtures))(currentPoint))
-                .narrow<Village>().filter(matchingPredicate(Player.independent, Village.owner));
+                .narrow<Village>().filter(matchingPredicate(Player.independent,
+					Village.owner));
             if (!villages.empty) {
                 variable Boolean subordinate = false;
                 for (village in villages) {

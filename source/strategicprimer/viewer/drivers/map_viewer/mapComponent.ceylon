@@ -134,7 +134,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             return visibleDimensions.rows.contains(selectedRow) &&
                     visibleDimensions.columns.contains(selectedColumn);
         }
-        void requestFocusNarrowly() => requestFocusInWindow(); // Can't take method reference to requestFocusInWindow() because it's overloaded
+		// Can't take method reference to requestFocusInWindow() because it's overloaded
+		void requestFocusNarrowly() => requestFocusInWindow();
         shared actual void selectedPointChanged(Point? old, Point newPoint) {
             SwingUtilities.invokeLater(requestFocusNarrowly);
             if (!selectionVisible) {
@@ -146,8 +147,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
             helper = tileDrawHelperFactory(model.mapDimensions.version,
                 imageUpdate, zof, matchers);
         }
-        void drawMapPortion(Graphics context, Integer tileSize, Integer minX, Integer minY,
-	            Integer maxX, Integer maxY) {
+        void drawMapPortion(Graphics context, Integer tileSize, Integer minX,
+                Integer minY, Integer maxX, Integer maxY) {
             Integer minRow = model.visibleDimensions.minimumRow;
             Integer maxRow = model.visibleDimensions.maximumRow;
             Integer minCol = model.visibleDimensions.minimumColumn;
@@ -174,7 +175,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                 Rectangle bounds = boundsCheck(context.clipBounds);
                 MapDimensions mapDimensions = model.mapDimensions;
                 Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
-                drawMapPortion(context, tileSize, halfEven(bounds.minX / tileSize).plus(0.1).integer,
+                drawMapPortion(context, tileSize, halfEven(bounds.minX / tileSize)
+						.plus(0.1).integer,
                     halfEven(bounds.minY / tileSize).plus(0.1).integer,
                     smallest(halfEven(bounds.maxX / tileSize).plus(1.1).integer,
                         mapDimensions.columns),

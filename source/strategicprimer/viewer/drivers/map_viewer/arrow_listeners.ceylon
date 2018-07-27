@@ -34,9 +34,10 @@ object arrowListenerInitializer {
 	}
 	"""Key-codes that are used, when modified with a platgform-specific modifier,
 	   for "jumping," and the Strings we'll use to represent them."""
-	{<Integer->String>*} jumpInputs = [ KeyEvent.vkHome->"ctrl-home", KeyEvent.vkEnd->"ctrl-end" ];
-	"""Key-codes that are used, when modified with the appropriate modifier, for "jumping" only
-	   on the Mac platform, and the Strings we'll use to represent them."""
+	{<Integer->String>*} jumpInputs = [ KeyEvent.vkHome->"ctrl-home",
+		KeyEvent.vkEnd->"ctrl-end" ];
+	"""Key-codes that are used, when modified with the appropriate modifier, for "jumping"
+	   only on the Mac platform, and the Strings we'll use to represent them."""
 	{<Integer->String>*} macJumpInputs = [ KeyEvent.vkUp->"home", KeyEvent.vkKpUp->"home",
 		KeyEvent.vkNumpad8->"home", KeyEvent.vkDown->"end", KeyEvent.vkKpDown->"end",
 		KeyEvent.vkNumpad2->"end", KeyEvent.vkLeft->"caret",KeyEvent.vkKpLeft->"caret",

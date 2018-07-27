@@ -105,7 +105,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         }
     }
     "Whether the given fixture matches the given pattern in any way we recognize."
-    Boolean matches(IFixture fixture, String pattern, Integer? idNum, Boolean caseSensitivity) {
+    Boolean matches(IFixture fixture, String pattern, Integer? idNum,
+            Boolean caseSensitivity) {
         if (matchesSimple(pattern, idNum, fixture, caseSensitivity)) {
             return true;
         } else if (is {IFixture*} fixture) {

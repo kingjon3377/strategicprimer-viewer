@@ -301,8 +301,9 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 			SPOptions currentOptionsTyped = currentOptions.copy();
 			if (gui) {
 				try {
-					SwingUtilities.invokeLater(defer(shuffle(compose(SPFrame.showWindow, appChooserFrame))(), [cli,
-						currentOptionsTyped, others]));
+					SwingUtilities.invokeLater(
+						defer(shuffle(compose(SPFrame.showWindow, appChooserFrame))(), [cli,
+							currentOptionsTyped, others]));
 				} catch (DriverFailedException except) {
 					log.fatal(except.message, except);
 					SwingUtilities.invokeLater(defer(showErrorDialog, [null,

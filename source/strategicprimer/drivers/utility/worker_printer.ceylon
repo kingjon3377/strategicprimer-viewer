@@ -28,7 +28,8 @@ import strategicprimer.drivers.exploration.common {
 import lovelace.util.common {
 	matchingPredicate
 }
-"A driver to print a mini-report on workers, suitable for inclusion in a player's results."
+"A driver to print a mini-report on workers, suitable for inclusion in a player's
+ results."
 service(`interface ISPDriver`)
 shared class WorkerPrintCLI() satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
@@ -66,11 +67,11 @@ shared class WorkerPrintCLI() satisfies SimpleDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
         IDriverModel model) {
         if (is IExplorationModel model) {
-            value playerChoice = cli.chooseFromList(model.playerChoices.sequence(), "Players in the map:",
-                "No players", "Player owning the unit:", false);
+            value playerChoice = cli.chooseFromList(model.playerChoices.sequence(),
+				"Players in the map:", "No players", "Player owning the unit:", false);
             if (exists player = playerChoice.item) {
-                value unitChoice = cli.chooseFromList(model.getUnits(player).sequence(), "Units of that player:",
-                    "No units", "Unit to print:", false);
+                value unitChoice = cli.chooseFromList(model.getUnits(player).sequence(),
+					"Units of that player:", "No units", "Unit to print:", false);
                 if (exists unit = unitChoice.item) {
                     printWorkers(unit, cli);
                 }

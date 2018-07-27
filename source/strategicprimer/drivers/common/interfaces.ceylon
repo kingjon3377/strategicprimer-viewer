@@ -382,7 +382,8 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
 	        }
 	    } else {
 	        log.trace("About to read map from file");
-	        model = mapReaderAdapter.readMapModel(JPaths.get(firstArg), warningLevels.ignore);
+	        model = mapReaderAdapter.readMapModel(JPaths.get(firstArg),
+				warningLevels.ignore);
 	        log.trace("Finished reading map from file");
 	        if (options.hasOption("--currentTurn")) {
 	            if (is Integer currentTurn =

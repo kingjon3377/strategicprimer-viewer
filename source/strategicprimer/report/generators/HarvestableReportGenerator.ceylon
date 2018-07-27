@@ -106,8 +106,8 @@ shared class HarvestableReportGenerator
 		        .map((key->list) => "``key``: at ``commaSeparatedList(list)``")
 				.sort(increasing));
     """Produce a sub-report(s) dealing with a single "harvestable" fixture(s). It is to be
-       removed from the collection. Caves and battlefields, though HarvestableFixtures, are *not*
-       handled here.""""
+       removed from the collection. Caves and battlefields, though HarvestableFixtures,
+       are *not* handled here.""""
     shared actual void produceSingle(
 			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, HarvestableFixture item, Point loc) {

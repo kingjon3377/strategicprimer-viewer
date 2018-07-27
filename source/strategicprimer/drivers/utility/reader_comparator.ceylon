@@ -40,7 +40,8 @@ service(`interface ISPDriver`)
 shared class ReaderComparator() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["--test", "--compare-readers"],
         ParamCount.atLeastOne, "Test map readers",
-        "Test map-reading implementations by comparing their results on the same file.", true, false);
+        "Test map-reading implementations by comparing their results on the same file.",
+        true, false);
     String readAll(File file) {
         Reader reader = file.Reader();
         StringBuilder builder = StringBuilder();
@@ -92,7 +93,7 @@ shared class ReaderComparator() satisfies UtilityDriver {
                 if (outOne.string == outTwo.string) {
                     print("Writers produce identical results");
                 } else if (outOne.string.trimmed == outTwo.string.trimmed) {
-                    print("Writers produce identical results except for leading or trailing whitespace");
+                    print("Writers produce identical results except for whitespace");
                 } else {
                     print("Writers differ on ``arg``");
                 }

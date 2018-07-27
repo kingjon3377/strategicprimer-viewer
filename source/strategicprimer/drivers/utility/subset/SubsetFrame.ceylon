@@ -66,8 +66,8 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
             lineStart = false;
             return this;
         }
-        shared actual overloaded JWriter append(CharSequence csq, Integer start, Integer end) =>
-                append(csq.subSequence(start, end));
+        shared actual overloaded JWriter append(CharSequence csq, Integer start,
+                Integer end) => append(csq.subSequence(start, end));
         shared actual overloaded JWriter append(Character c) => append(c.string);
         shared actual void close() {}
         shared actual void flush() {}
@@ -133,7 +133,8 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
         printParagraph("Testing ``filename`` ...");
         try (formatter = Formatter(htmlWriter)) {
             if (mainMap.isSubset(map,
-                        (String string) => formatter.format("%s: %s", filename, // can't use curry() directly because Formatter.format() is overloaded
+                        // can't use curry() directly: Formatter.format() is overloaded
+                        (String string) => formatter.format("%s: %s", filename,
                             string))) {
                 printParagraph("OK", LabelTextColor.green);
             } else {

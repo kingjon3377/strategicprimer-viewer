@@ -68,7 +68,8 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 	];
 	shared actual void write(Sql db, Immortal obj, Point|IUnit context) {
 		if (is SimpleImmortal obj) {
-			value insertion = db.Insert("""INSERT INTO simple_immortals (row, column, parent, type, id, image)
+			value insertion = db.Insert("""INSERT INTO simple_immortals (row, column, parent, type,
+			                                  id, image)
 			                               VALUES(?, ?, ?, ?, ?, ?);""");
 			if (is Point context) {
 				insertion.execute(context.row, context.column, SqlNull(Types.integer), obj.kind,
@@ -233,7 +234,8 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 				log.trace("Finished reading ``count`` simple immortals in units");
 			}
 		}
-		log.trace("Finished reading simple immortals in units; about to read immortals with kinds in units");
+		log.trace(
+			"Finished reading simple immortals in units; about to read kinded immortals in units");
 		count = 0;
 		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE parent IS NOT NULL""")
 				.Results()) {

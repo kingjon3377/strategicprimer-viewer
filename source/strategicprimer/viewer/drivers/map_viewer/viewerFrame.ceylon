@@ -104,7 +104,8 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 	shared actual Boolean supportsDroppedFiles = true;
 	JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
 		mapPanel = mapComponent(mapModel, tableModel.shouldDisplay, tableModel);
-	tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint()); // can't use silentListener because repaint() is overloaded
+	// can't use silentListener because repaint() is overloaded
+	tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint());
 	mapModel.addGraphicalParamsListener(mapPanel);
 	mapModel.addMapChangeListener(mapPanel);
 	mapModel.addSelectionChangeListener(mapPanel);
@@ -137,7 +138,8 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 		table.fillsViewportHeight = true;
 		table.autoResizeMode = JTable.autoResizeLastColumn;
 		JButton allButton = listenedButton("Display All", silentListener(displayAllListener));
-		JButton noneButton = listenedButton("Display None", silentListener(displayNoneListener));
+		JButton noneButton = listenedButton("Display None",
+			silentListener(displayNoneListener));
 		platform.makeButtonsSegmented(allButton, noneButton);
 		JPanel buttonPanel = (platform.systemIsMac) then
 		centeredHorizontalBox(allButton, noneButton)

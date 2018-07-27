@@ -122,7 +122,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
 					increasing<String>)));
         } else {
             value temp = allMaps.map(Entry.key)
-                    .flatMap((indivMap) => getUnitsImpl(indivMap.fixtureEntries.map(Entry.item), player));
+                    .flatMap((indivMap) =>
+						getUnitsImpl(indivMap.fixtureEntries.map(Entry.item), player));
             MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
                     naturalOrderTreeMap<Integer, IUnit&ProxyFor<IUnit>>([]);
             for (unit in temp) {

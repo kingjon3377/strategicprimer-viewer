@@ -88,9 +88,10 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 	}
 	"Find a fixture in a map by ID number."
 	static IFixture? find(IMapNG map, Integer id) {
-		// We don't want to use fixtureEntries here because we'd have to spread it, which is probably an eager operation on that *huge* stream.
+		// We don't want to use fixtureEntries here because we'd have to spread it, which is
+		// probably an eager operation on that *huge* stream.
 		for (location in map.locations) {
-			//            if (exists result = findInIterable(id, *map.fixtures[location])) { // TODO: syntax sugar once compiler bug fixed
+//            if (exists result = findInIterable(id, *map.fixtures[location])) { // TODO: syntax sugar once compiler bug fixed
 			if (exists result = findInIterable(id, *map.fixtures.get(location))) {
 				return result;
 			}
@@ -132,7 +133,9 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 	"Let the user enter stats for workers already in the maps that belong to one
 	 particular player."
 	static void enterStatsForPlayer(IExplorationModel model, Player player, ICLIHelper cli) {
-		MutableList<IUnit> units = ArrayList { elements = removeStattedUnits(*model.getUnits(player)); };
+		// TODO: can we avoid either the spread or the named-argument invocation?
+		MutableList<IUnit> units = ArrayList { elements =
+			removeStattedUnits(*model.getUnits(player)); };
 		while (!units.empty, exists chosen = cli.chooseFromList(units,
 			"Which unit contains the worker in question?",
 			"All that player's units already have stats.", "Unit selection: ",
@@ -168,7 +171,8 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 	}
 	"Get the index of the lowest value in an array."
 	static Integer getMinIndex(Integer[] array) =>
-			array.indexed.max(comparingOn(Entry<Integer, Integer>.item, decreasing<Integer>))?.key else 0;
+			array.indexed.max(comparingOn(Entry<Integer, Integer>.item,
+				decreasing<Integer>))?.key else 0;
 	static Integer die(Integer max) => singletonRandom.nextInteger(max) + 1;
 	static Integer threeDeeSix() => die(6) + die(6) + die(6);
 	"Add a worker to a unit in all maps."
