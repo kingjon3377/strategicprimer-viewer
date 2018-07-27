@@ -1,6 +1,7 @@
 import lovelace.util.common {
     DelayedRemovalMap,
-	comparingOn
+	comparingOn,
+    narrowedStream
 }
 
 import strategicprimer.model.map {
@@ -41,7 +42,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map, Anything(String) ostream) {
         {<Integer->[Point, TextFixture]>*} items =
-                fixtures.narrow<Integer->[Point, TextFixture]>().sort( // TODO: Use compose() instead of comparingOn() to get to member-of-member
+                narrowedStream<Integer, [Point, TextFixture]>(fixtures).sort( // TODO: Use compose() instead of comparingOn() to get to member-of-member
                     comparingOn(Entry<Integer, [Point, TextFixture]>.item,
                         comparingOn(Tuple<Point|TextFixture, Point, TextFixture[1]>.rest,
                             comparingOn(Tuple<TextFixture, TextFixture, []>.first,

@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    todo
+    todo,
+    narrowedStream
 }
 import strategicprimer.model.map {
     HasMutableImage,
@@ -195,8 +196,8 @@ object fileSplitter {
 			BroaderType(String) factory) given Type satisfies BroaderType {
 		assert (exists textContent =
 				readFileContents(`module strategicprimer.model`, filename));
-		return map(textContent.split('\n'.equals).map(splitOnFirstTab)
-			.map(shuffle(curry(lineToEntry<BroaderType>))(factory)).narrow<String->Type>());
+		return map(narrowedStream<String, Type>(textContent.split('\n'.equals)
+			.map(splitOnFirstTab).map(shuffle(curry(lineToEntry<BroaderType>))(factory))));
 	}
 }
 shared object maturityModel {

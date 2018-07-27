@@ -5,7 +5,8 @@ import ceylon.collection {
 
 import lovelace.util.common {
     DRMap=DelayedRemovalMap,
-	comparingOn
+	comparingOn,
+    narrowedStream
 }
 
 import strategicprimer.model.map {
@@ -78,8 +79,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
         		Anything(String) ostream) {
         MutableMultimap<String, Point> items = ArrayListMultimap<String, Point>();
-        for (key->[loc, animal] in fixtures
-				.narrow<Integer->[Point, Animal|AnimalTracks]>()
+        for (key->[loc, animal] in narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
 	            .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item, pairComparator))) {
             String desc;
             if (is AnimalTracks animal) {
@@ -124,8 +124,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures,
 			IMapNG map) {
         MutableMap<String, IReportNode> items = HashMap<String, IReportNode>();
-        for (key->[loc, animal] in fixtures
-				.narrow<Integer->[Point, Animal|AnimalTracks]>()
+        for (key->[loc, animal] in narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
 	            .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item, pairComparator))) {
             IReportNode node;
             if (exists temp = items[animal.kind]) {

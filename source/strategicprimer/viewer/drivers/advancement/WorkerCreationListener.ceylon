@@ -44,7 +44,8 @@ import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
 import lovelace.util.common {
-	silentListener
+	silentListener,
+    narrowedStream
 }
 "A listener to keep track of the currently selected unit and listen for new-worker
  notifications, then pass this information on to the tree model."
@@ -115,11 +116,11 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                             builder.append("Worker needs a race.");
                             builder.appendNewline();
                         }
-                        for (stat->val in ["HP"->hpValue,
-	                            "Max HP"->maxHPValue, "Strength"->strValue,
+                        for (stat->val in narrowedStream<String, ParseException>(
+								["HP"->hpValue, "Max HP"->maxHPValue, "Strength"->strValue,
 	                            "Dexterity"->dexValue, "Constitution"->conValue,
 	                            "Intelligence"->intValue, "Wisdom"->wisValue,
-	                            "Charisma"->chaValue].narrow<String->ParseException>()) {
+	                            "Charisma"->chaValue])) {
                             builder.append("``stat`` must be a number.");
                             builder.appendNewline();
                         }

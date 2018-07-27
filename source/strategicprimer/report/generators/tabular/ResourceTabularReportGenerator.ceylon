@@ -5,7 +5,8 @@ import ceylon.collection {
 
 import lovelace.util.common {
     DelayedRemovalMap,
-    comparingOn
+    comparingOn,
+    narrowedStream
 }
 
 import strategicprimer.model.map {
@@ -94,7 +95,7 @@ shared class ResourceTabularReportGenerator()
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Map<Integer, Integer> parentMap) {
         {[Integer, [Point, CacheFixture|Implement|ResourcePile]]*} values =
-                fixtures.narrow<Integer->[Point, CacheFixture|Implement|ResourcePile]>()
+                narrowedStream<Integer, [Point, CacheFixture|Implement|ResourcePile]>(fixtures)
                     .sort(comparingOn(
                         Entry<Integer, [Point, CacheFixture|Implement|ResourcePile]>.item,
                         comparePairs)).map(Entry.pair);
