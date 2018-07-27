@@ -24,7 +24,8 @@ import strategicprimer.model.map {
     IMapNG,
     IFixture,
     TileType,
-	HasName
+	HasName,
+    TileFixture
 }
 import lovelace.util.jvm {
     isNumeric,
@@ -206,15 +207,9 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
     }
     IFixture? findByID(IMapNG map, Integer id) => map.fixtureEntries
         .map(Entry.item).find(matchingValue(id, IFixture.id));
-    Point? findLocById(IMapNG map, Integer id) { // TODO: use fixtureEntries here
-        for (location in map.locations) {
-            //if (map.fixtures[location].any(matchingValue(id, IFixture.id))) {
-            if (map.fixtures.get(location).any(matchingValue(id, IFixture.id))) {
-                return location;
-            }
-        }
-        return null;
-    }
+    Point? findLocById(IMapNG map, Integer id) =>
+            map.fixtureEntries.find(matchingPredicate(matchingValue(id, IFixture.id),
+                Entry<Point, TileFixture>.item))?.key;
     Boolean isClaimedField(IMapNG map, Integer id) => map.fixtureEntries
         .map(Entry.item).narrow<ITownFixture>()
         .map(ITownFixture.population).coalesced
