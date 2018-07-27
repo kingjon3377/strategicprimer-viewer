@@ -32,7 +32,6 @@ import strategicprimer.model.map {
     IMapNG,
     TileType,
     invalidPoint,
-    pointFactory,
     MapDimensions,
     MapDimensionsImpl,
     SPMapNG
@@ -312,7 +311,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         for (i in 0:(dimensions.rows)) {
             variable Boolean rowEmpty = true;
             for (j in 0:(dimensions.columns)) {
-                Point loc = pointFactory(i, j);
+                Point loc = Point(i, j);
                 TileType? terrain = obj.baseTerrain[loc];
                 if (!obj.locationEmpty(loc)) {
                     if (rowEmpty) {

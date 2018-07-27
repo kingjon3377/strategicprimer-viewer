@@ -31,10 +31,7 @@ import strategicprimer.model.map {
     MapDimensions,
     TileFixture,
     IMapNG,
-    pointFactory,
-    clearPointCache,
-	CachingStrategy,
-	pointCachingStrategy
+    Point
 }
 import ceylon.random {
 	randomize
@@ -144,7 +141,7 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 			Coordinate dimensions = coordinateFactory(tileSize, tileSize);
 			for (row in testRowSpan) {
 				for (col in testColSpan) {
-					helper.drawTile(pen, map, pointFactory(row, col),
+					helper.drawTile(pen, map, Point(row, col),
 						coordinateFactory(row * tileSize, col * tileSize),
 						dimensions);
 				}
@@ -193,11 +190,10 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 		[Ver2TileDrawHelper(dummyObserver, dummyFilter, Singleton(FixtureMatcher(dummyFilter,
 			"test"))), "Ver 2:"]
 	];
-	MutableMap<[CachingStrategy, String, String, String], Accumulator> results =
-			HashMap<[CachingStrategy, String, String, String], Accumulator>();
+	MutableMap<[String, String, String], Accumulator> results =
+			HashMap<[String, String, String], Accumulator>();
 	Accumulator getResultsAccumulator(String file, String testee, String test) {
-		[CachingStrategy, String, String, String] tuple = [pointCachingStrategy, file,
-			testee, test];
+		[String, String, String] tuple = [file, testee, test];
 		if (exists retval = results[tuple]) {
 			return retval;
 		} else {
@@ -225,8 +221,8 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 		cli.print("Total:");
 		for ([testCase, caseDesc] in helpers) {
 			printStats(caseDesc, results
-				.filterKeys(shuffle(Tuple<CachingStrategy|String, CachingStrategy, String[3]>
-					.startsWith)([pointCachingStrategy, fileName, caseDesc]))
+				.filterKeys(shuffle(Tuple<String, String, String[2]>
+					.startsWith)([fileName, caseDesc]))
 				.items.map(Accumulator.storedValue).fold(0)(plus), repetitions);
 		}
 		cli.println("");
@@ -248,10 +244,8 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
     {CachingStrategy*} cachingStrategies = `CachingStrategy`.caseValues;
     void runTestProcedure(ICLIHelper cli, IMapNG map, String filename) {
         cli.println("Testing using ``filename``");
-        clearPointCache();
         clearCoordinateCache();
         for (strategy in randomize(cachingStrategies, singletonRandom)) {
-            pointCachingStrategy = strategy;
             coordinateCachingStrategy = strategy;
             cli.println("Using ``strategy`` caching strategy");
             runAllTests(cli, map, filename, reps);
@@ -287,9 +281,9 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
             }
             try (writer = outFile.Overwriter()) {
                 writer.writeLine(
-                    "Filename,Tile Count,Caching,DrawHelper Tested,Test Case,Repetitions,Time (ns)");
-                for ([cachingStrategy, file, helper, test]->total in results) {
-                    writer.write("\"``file``\",``mapSizes[file] else ""``,``cachingStrategy``");
+                    "Filename,Tile Count,DrawHelper Tested,Test Case,Repetitions,Time (ns)");
+                for ([file, helper, test]->total in results) {
+                    writer.write("\"``file``\",``mapSizes[file] else ""``");
                     writer.writeLine(",\"``helper``\",\"``test``\",``reps``,``total.storedValue``");
                 }
             }

@@ -11,7 +11,6 @@ import strategicprimer.model.map {
     River,
     TileType,
     IMutableMapNG,
-    pointFactory,
     IMapNG,
     PlayerCollection,
     SPMapNG,
@@ -80,11 +79,11 @@ shared IMapNG decreaseResolution(IMapNG old) {
     }
     for (row in 0:newRows) {
         for (column in 0:newColumns) {
-            Point point = pointFactory(row, column);
-            Point[4] subPoints = [pointFactory(row * 2, column * 2),
-                pointFactory(row * 2, (column * 2) + 1),
-                pointFactory((row * 2) + 1, column * 2),
-                pointFactory((row * 2) + 1, (column * 2) + 1) ];
+            Point point = Point(row, column);
+            Point[4] subPoints = [Point(row * 2, column * 2),
+                Point(row * 2, (column * 2) + 1),
+                Point((row * 2) + 1, column * 2),
+                Point((row * 2) + 1, (column * 2) + 1) ];
             retval.baseTerrain[point] =
                 consensus(subPoints.collect(old.baseTerrain.get));
             for (oldPoint in subPoints) {
@@ -130,16 +129,16 @@ object resolutionDecreaseTests {
 	shared void testResolutionReduction() {
 	    IMutableMapNG start = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
 	    Animal fixture = AnimalImpl("animal", true, "domesticated", 1);
-	    initialize(start, pointFactory(0, 0), TileType.desert, fixture);
+	    initialize(start, Point(0, 0), TileType.desert, fixture);
 	    CacheFixture fixtureTwo = CacheFixture("gemstones", "small", 2);
-	    initialize(start, pointFactory(0, 1), TileType.desert, fixtureTwo);
+	    initialize(start, Point(0, 1), TileType.desert, fixtureTwo);
 	    IUnit fixtureThree = Unit(PlayerImpl(0, "A. Player"), "legion", "eagles", 3);
-	    initialize(start, pointFactory(1, 0), TileType.desert, fixtureThree);
+	    initialize(start, Point(1, 0), TileType.desert, fixtureThree);
 	    Fortress fixtureFour = Fortress(PlayerImpl(1, "B. Player"), "HQ", 4, TownSize.small);
-	    initialize(start, pointFactory(1, 1), TileType.plains, fixtureFour);
+	    initialize(start, Point(1, 1), TileType.plains, fixtureFour);
 
 	    IMapNG converted = decreaseResolution(start);
-	    Point zeroPoint = pointFactory(0, 0);
+	    Point zeroPoint = Point(0, 0);
 	//    assertTrue(converted.fixtures[zeroPoint] // TODO: syntax sugar once compiler bug fixed
 	    assertTrue(converted.fixtures.get(zeroPoint)
 	        .containsEvery([fixture, fixtureTwo, fixtureThree, fixtureFour]),
@@ -150,24 +149,24 @@ object resolutionDecreaseTests {
 	test
 	shared void testMoreReduction() {
 	    IMutableMapNG start = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
-	    Point pointOne = pointFactory(0, 0);
+	    Point pointOne = Point(0, 0);
 	    start.mountainous[pointOne] = true;
 	    start.addRivers(pointOne, River.east, River.south);
 	    Ground groundOne = Ground(-1, "groundOne", false);
 	    initialize(start, pointOne, TileType.steppe, groundOne);
-	    Point pointTwo = pointFactory(0, 1);
+	    Point pointTwo = Point(0, 1);
 	    start.addRivers(pointTwo, River.north, River.lake);
 	    Ground groundTwo = Ground(-1, "groundTwo", false);
 	    initialize(start, pointTwo, TileType.steppe, groundTwo);
-	    Point pointThree = pointFactory(1, 0);
+	    Point pointThree = Point(1, 0);
 	    Forest forestOne = Forest("forestOne", false, 1);
 	    initialize(start, pointThree, TileType.plains, forestOne);
-	    Point pointFour = pointFactory(1, 1);
+	    Point pointFour = Point(1, 1);
 	    Forest forestTwo = Forest("forestTwo", false, 2);
 	    initialize(start, pointFour, TileType.desert, forestTwo);
 
 	    IMapNG converted = decreaseResolution(start);
-	    Point zeroPoint = pointFactory(0, 0);
+	    Point zeroPoint = Point(0, 0);
 	//    assertTrue(converted.mountainous[zeroPoint], // TODO: syntax sugar once compiler bug fixed
 	    assertTrue(converted.mountainous.get(zeroPoint),
 	        "One mountainous point makes the reduced point mountainous");

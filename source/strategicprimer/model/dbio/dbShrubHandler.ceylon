@@ -5,8 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.resources {
 	Shrub
@@ -49,7 +48,7 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>()
 			if (is String image) {
 				shrub.image = image;
 			}
-			map.addFixture(pointFactory(row, column), shrub);
+			map.addFixture(Point(row, column), shrub);
 			runningTotal++;
 			if (50.divides(runningTotal)) {
 				log.trace("Read ``runningTotal`` shrubs");

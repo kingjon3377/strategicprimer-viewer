@@ -8,8 +8,7 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.model.map {
-    Point,
-    pointFactory
+    Point
 }
 "A class for moving the cursor around the single-component map UI, including scrolling
  using a mouse wheel."
@@ -18,56 +17,56 @@ class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener
     shared void up() {
         Point old = model.selection;
         if (old.row > 0) {
-            model.selection = pointFactory(old.row - 1, old.column);
+            model.selection = Point(old.row - 1, old.column);
         }
     }
     "Move the cursor left a column."
     shared void left() {
         Point old = model.selection;
         if (old.column > 0) {
-            model.selection = pointFactory(old.row, old.column - 1);
+            model.selection = Point(old.row, old.column - 1);
         }
     }
     "Move the cursor down a row."
     shared void down() {
         Point old = model.selection;
         if (old.row < model.mapDimensions.rows - 1) {
-            model.selection = pointFactory(old.row + 1, old.column);
+            model.selection = Point(old.row + 1, old.column);
         }
     }
     "Move the cursor right a column."
     shared void right() {
         Point old = model.selection;
         if (old.column<model.mapDimensions.columns - 1) {
-            model.selection = pointFactory(old.row, old.column + 1);
+            model.selection = Point(old.row, old.column + 1);
         }
     }
     "Move the cursor all the way to the top."
     shared void jumpUp() {
         Point old = model.selection;
         if (old.row > 0) {
-            model.selection = pointFactory(0, old.column);
+            model.selection = Point(0, old.column);
         }
     }
     "Move the cursor all the way to the bottom."
     shared void jumpDown() {
         Point old = model.selection;
         if (old.row < model.mapDimensions.rows) {
-            model.selection = pointFactory(model.mapDimensions.rows - 1, old.column);
+            model.selection = Point(model.mapDimensions.rows - 1, old.column);
         }
     }
     "Move the cursor all the way to the left."
     shared void jumpLeft() {
         Point old = model.selection;
         if (old.column > 0) {
-            model.selection = pointFactory(old.row, 0);
+            model.selection = Point(old.row, 0);
         }
     }
     "Move the cursor all the way to the right."
     shared void jumpRight() {
         Point old = model.selection;
         if (old.column<model.mapDimensions.columns) {
-            model.selection = pointFactory(old.row, model.mapDimensions.columns - 1);
+            model.selection = Point(old.row, model.mapDimensions.columns - 1);
         }
     }
     "Scroll."

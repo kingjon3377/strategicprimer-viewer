@@ -5,8 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.explorable {
 	AdventureFixture
@@ -44,7 +43,7 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
 			if (is String image) {
 				adventure.image = image;
 			}
-			map.addFixture(pointFactory(row, column), adventure);
+			map.addFixture(Point(row, column), adventure);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` adventures");

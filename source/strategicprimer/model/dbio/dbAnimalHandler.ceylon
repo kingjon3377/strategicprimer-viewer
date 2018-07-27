@@ -9,8 +9,7 @@ import java.sql {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.mobile {
 	Animal,
@@ -98,7 +97,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
 			if (is String image) {
 				animal.image = image;
 			}
-			map.addFixture(pointFactory(row, column), animal);
+			map.addFixture(Point(row, column), animal);
 			runningTotal++;
 			if (50.divides(runningTotal)) {
 				log.trace("Finished reading ``runningTotal`` animal populations");
@@ -113,7 +112,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
 			if (is String image) {
 				track.image = image;
 			}
-			map.addFixture(pointFactory(row, column), track);
+			map.addFixture(Point(row, column), track);
 			runningTotal++;
 			if (50.divides(runningTotal)) {
 				log.trace("Finished reading ``runningTotal`` tracks");

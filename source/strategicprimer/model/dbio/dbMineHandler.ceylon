@@ -5,8 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.resources {
 	Mine
@@ -48,7 +47,7 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>()
 			if (is String image) {
 				mine.image = image;
 			}
-			map.addFixture(pointFactory(row, column), mine);
+			map.addFixture(Point(row, column), mine);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` mines");

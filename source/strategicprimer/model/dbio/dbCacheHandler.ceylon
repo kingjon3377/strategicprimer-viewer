@@ -5,8 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.resources {
 	CacheFixture
@@ -42,7 +41,7 @@ object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>()
 			if (is String image) {
 				cache.image = image;
 			}
-			map.addFixture(pointFactory(row, column), cache);
+			map.addFixture(Point(row, column), cache);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` caches");

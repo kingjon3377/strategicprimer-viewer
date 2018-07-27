@@ -15,8 +15,7 @@ import strategicprimer.model.idreg {
 import strategicprimer.model.map {
     Point,
     Player,
-    IPlayerCollection,
-    pointFactory
+    IPlayerCollection
 }
 import strategicprimer.model.map.fixtures {
     TextFixture
@@ -55,7 +54,7 @@ object fluidExplorableHandler extends FluidBase() {
 	        IDRegistrar idFactory) {
 	    requireTag(element, parent, "portal");
 	    expectAttributes(element, warner, "row", "column", "world", "id", "image");
-	    Point location = pointFactory(getIntegerAttribute(element, "row"),
+	    Point location = Point(getIntegerAttribute(element, "row"),
 	        getIntegerAttribute(element, "column"));
 	    Portal retval = setImage(Portal(
 	        getAttribute(element, "world"), location,

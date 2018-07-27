@@ -49,7 +49,6 @@ import strategicprimer.model.map {
     TileType,
     IMutableMapNG,
     TileFixture,
-    pointFactory,
     River,
     MapDimensionsImpl,
     SPMapNG,
@@ -197,7 +196,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     void parseTile(IMutableMapNG map, StartElement element, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         expectAttributes(element, warner, "row", "column", "kind", "type");
-        Point loc = pointFactory(getIntegerAttribute(element, "row"),
+        Point loc = Point(getIntegerAttribute(element, "row"),
             getIntegerAttribute(element, "column"));
         // Tiles have been known to be *written* without "kind" and then fail to load, so
         // let's be liberal in what we accept here, since we can.

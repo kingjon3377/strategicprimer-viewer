@@ -54,7 +54,6 @@ import strategicprimer.model.map {
     IMutableMapNG,
     IMapNG,
     HasMutableImage,
-    pointFactory,
     MutablePlayer,
     PlayerImpl,
     SPMapNG,
@@ -638,7 +637,7 @@ object xmlTests {
 	enumeratedParameter(`class River`)
 	shared void testSimpleRiverSerialization(River river) {
 	    assertSerialization("River alone", river);
-	    Point loc = pointFactory(0, 0);
+	    Point loc = Point(0, 0);
 	    assertSerialization("River in tile", encapsulateRivers(loc, river));
 	}
 
@@ -650,14 +649,14 @@ object xmlTests {
 	    Set<River> setTwo = simpleSet(River.south, River.north);
 	    assertEquals(setOne, setTwo, "Rivers added in different order to set");
 	    assertEquals(
-	        encapsulateRivers(pointFactory(1, 1), River.north, River.south),
-	        encapsulateRivers(pointFactory(1, 1), River.north, River.south),
+	        encapsulateRivers(Point(1, 1), River.north, River.south),
+	        encapsulateRivers(Point(1, 1), River.north, River.south),
 	        "Tile equality with rivers");
 	    assertEquals(
-	        encapsulateRivers(pointFactory(1, 1), River.east, River.west),
-	        encapsulateRivers(pointFactory(1, 1), River.west, River.east),
+	        encapsulateRivers(Point(1, 1), River.east, River.west),
+	        encapsulateRivers(Point(1, 1), River.west, River.east),
 	        "Tile equality with different order of rivers");
-	    assertSerialization("Two rivers", encapsulateRivers(pointFactory(1, 2),
+	    assertSerialization("Two rivers", encapsulateRivers(Point(1, 2),
 	        River.north, River.south));
 	    assertMissingProperty<IMapNG>(
 	        encapsulateTileString("""<river direction="invalid" />"""), "direction", null);
@@ -665,17 +664,17 @@ object xmlTests {
 
 	test
 	shared void testSimpleTileSerializtion() {
-	    assertSerialization("Simple Tile", createSimpleMap(pointFactory(1, 1),
-	        pointFactory(0, 0)->TileType.desert));
-	    IMutableMapNG firstMap = createSimpleMap(pointFactory(2, 2),
-	        pointFactory(1, 1)->TileType.plains);
-	    firstMap.addFixture(pointFactory(1, 1), Griffin(1));
+	    assertSerialization("Simple Tile", createSimpleMap(Point(1, 1),
+	        Point(0, 0)->TileType.desert));
+	    IMutableMapNG firstMap = createSimpleMap(Point(2, 2),
+	        Point(1, 1)->TileType.plains);
+	    firstMap.addFixture(Point(1, 1), Griffin(1));
 	    assertSerialization("Tile with one fixture", firstMap);
-	    IMutableMapNG secondMap = createSimpleMap(pointFactory(3, 3),
-	        pointFactory(2, 2)->TileType.steppe);
-	    secondMap.addFixture(pointFactory(2, 2),
+	    IMutableMapNG secondMap = createSimpleMap(Point(3, 3),
+	        Point(2, 2)->TileType.steppe);
+	    secondMap.addFixture(Point(2, 2),
 	        Unit(PlayerImpl(-1, ""), "unitOne", "firstUnit", 1));
-	    secondMap.addFixture(pointFactory(2, 2), Forest("forestKind", true, 8));
+	    secondMap.addFixture(Point(2, 2), Forest("forestKind", true, 8));
 	    assertSerialization("Tile with two fixtures", secondMap);
 	    assertMissingProperty<IMapNG>(
 	        """<map version="2" rows="1" columns="1">
@@ -692,16 +691,16 @@ object xmlTests {
 
 	test
 	shared void testTileSerialization() {
-	    IMutableMapNG thirdMap = createSimpleMap(pointFactory(4, 4),
-	        pointFactory(3, 3)->TileType.jungle);
+	    IMutableMapNG thirdMap = createSimpleMap(Point(4, 4),
+	        Point(3, 3)->TileType.jungle);
 	    Player playerOne = PlayerImpl(2, "");
 	    Fortress fort = Fortress(playerOne, "fortOne", 1,
 	        TownSize.small);
 	    fort.addMember(Unit(playerOne, "unitTwo", "secondUnit", 2));
-	    thirdMap.addFixture(pointFactory(3, 3), fort);
-	    thirdMap.addFixture(pointFactory(3, 3),
+	    thirdMap.addFixture(Point(3, 3), fort);
+	    thirdMap.addFixture(Point(3, 3),
 	        TextFixture("Random text here", 5));
-	    thirdMap.addRivers(pointFactory(3, 3), River.lake);
+	    thirdMap.addRivers(Point(3, 3), River.lake);
 	    thirdMap.addPlayer(playerOne);
 	    assertSerialization("More complex tile", thirdMap);
 	}
@@ -709,22 +708,22 @@ object xmlTests {
 	shared void testTileDeprecatedIdiom(
 			enumeratedParameter(`class TileType`) TileType terrain,
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
-		IMapNG map = createSimpleMap(pointFactory(5, 5), pointFactory(4, 4)->terrain);
+		IMapNG map = createSimpleMap(Point(5, 5), Point(4, 4)->terrain);
 		assertDeprecatedProperty(createSerializedForm(map, deprecatedWriter)
 			.replace("kind", "type"), "type", "kind", "tile", map);
 	}
 
 	test
 	shared void testTileSerializationTwo() {
-	    IMutableMapNG five = createSimpleMap(pointFactory(3, 4),
-	        pointFactory(2, 3)->TileType.jungle);
+	    IMutableMapNG five = createSimpleMap(Point(3, 4),
+	        Point(2, 3)->TileType.jungle);
 	    Player player = PlayerImpl(2, "playerName");
-	    five.addFixture(pointFactory(2, 3),
+	    five.addFixture(Point(2, 3),
 	        Unit(player, "explorer", "name one", 1));
-	    five.addFixture(pointFactory(2, 3),
+	    five.addFixture(Point(2, 3),
 	        Unit(player, "explorer", "name two", 2));
 	    five.addPlayer(player);
-	    assertEquals(five.fixtures[pointFactory(2, 3)]?.size, 2,
+	    assertEquals(five.fixtures[Point(2, 3)]?.size, 2,
 	        "Just checking ...");
 	    assertSerialization("Multiple units should come through", five);
 	    String xmlTwoLogical =
@@ -759,14 +758,14 @@ object xmlTests {
 	                defer(assertEquals, [serializedForm, xmlTwoAlphabetical]),
 	                defer(assertEquals, [serializedForm,
 			            xmlTwoLogical.replace("\" />", "\"/>")])], "Multiple units");
-	    assertEquals(createSerializedForm(createSimpleMap(pointFactory(1, 1)), true),
+	    assertEquals(createSerializedForm(createSimpleMap(Point(1, 1)), true),
 	        "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
 	         \t<map version=\"2\" rows=\"1\" columns=\"1\">
 	         \t</map>
 	         </view>
 	         ", "Shouldn't print empty not-visible tiles");
 	    String emptySerializedForm = createSerializedForm(
-			createSimpleMap(pointFactory(1, 1)), false);
+			createSimpleMap(Point(1, 1)), false);
 	    String firstPossibility =
 	            "<view xmlns=\"``spNamespace``\" current_player=\"-1\" current_turn=\"-1\">
 	             \t<map version=\"2\" rows=\"1\" columns=\"1\">
@@ -794,10 +793,10 @@ object xmlTests {
 	shared void testTileSerializationThree(
 			enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
 	    IMutableMapNG six = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 5);
-	    six.mountainous[pointFactory(0, 0)] = true;
-	    six.addFixture(pointFactory(0, 1), Ground(22, "basalt", false));
-	    six.addFixture(pointFactory(1, 0), Forest("pine", false, 19));
-	    six.addFixture(pointFactory(1, 1), AnimalImpl("beaver", false, "wild", 18));
+	    six.mountainous[Point(0, 0)] = true;
+	    six.addFixture(Point(0, 1), Ground(22, "basalt", false));
+	    six.addFixture(Point(1, 0), Forest("pine", false, 19));
+	    six.addFixture(Point(1, 1), AnimalImpl("beaver", false, "wild", 18));
         assertMissingProperty(createSerializedForm(six, deprecatedWriter), "kind", six);
 	}
 
@@ -815,7 +814,7 @@ object xmlTests {
 	        """<map rows="1" columns="1" version="2" current_player="-1"><future /></map>""",
 	        "future", SPMapNG(MapDimensionsImpl(1, 1, 2), PlayerCollection(), 0));
 	    IMutableMapNG expected = SPMapNG(MapDimensionsImpl(1, 1, 2), PlayerCollection(), 0);
-	    expected.baseTerrain[pointFactory(0, 0)] = TileType.steppe;
+	    expected.baseTerrain[Point(0, 0)] = TileType.steppe;
 	    assertUnsupportedTag<IMapNG>(
 	        """<map rows="1" columns="1" version="2" current_player="-1">
 	           <tile row="0" column="0" kind="steppe"><futureTag /></tile></map>""",
@@ -831,14 +830,14 @@ object xmlTests {
 	    IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(1, 1, 2),
 	        PlayerCollection(), 0);
 	    firstMap.addPlayer(player);
-	    Point loc = pointFactory(0, 0);
+	    Point loc = Point(0, 0);
 	    firstMap.baseTerrain[loc] = TileType.plains;
 	    assertSerialization("Simple Map serialization", firstMap);
 	    assertMissingProperty<IMapNG>("""<map version="2" columns="1" />""", "rows", null);
 	    assertMissingProperty<IMapNG>("""<map version="2" rows="1" />""", "columns", null);
 	    String originalFormOne = createSerializedForm(firstMap, false);
 	    String originalFormTwo = createSerializedForm(firstMap, true);
-	    firstMap.baseTerrain[pointFactory(1, 1)] = null;
+	    firstMap.baseTerrain[Point(1, 1)] = null;
 	    assertEquals(createSerializedForm(firstMap, false), originalFormOne,
 	        "Explicitly not visible tile is not serialized");
 	    assertEquals(createSerializedForm(firstMap, true), originalFormTwo,
@@ -872,7 +871,7 @@ object xmlTests {
 	    player.current = true;
 	    IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(1, 1, 2), PlayerCollection(), 0);
 	    firstMap.addPlayer(player);
-	    Point loc = pointFactory(0, 0);
+	    Point loc = Point(0, 0);
 	    firstMap.baseTerrain[loc] = TileType.steppe;
 	    assertMapDeserialization("Proper deserialization of namespaced map", firstMap,
 	        "<map xmlns=\"``spNamespace``\" version=\"2\" rows=\"1\" columns=\"1\"
@@ -933,7 +932,7 @@ object xmlTests {
 	test
 	shared void testDuplicateID() {
 		IMutableMapNG expected = SPMapNG(MapDimensionsImpl(1, 1, 2), PlayerCollection(), 0);
-		Point point = pointFactory(0, 0);
+		Point point = Point(0, 0);
 		expected.baseTerrain[point] = TileType.steppe;
 		value player = PlayerImpl(1, "playerOne");
 		player.current = true;
@@ -1061,9 +1060,9 @@ object xmlTests {
 	    assertSerialization("Third test of [[TextFixture]] serialization", third);
 	    assertUnwantedChild<TextFixture>("""<text turn="1"><troll /></text>""", null);
 	    assertImageSerialization("Text image property is preserved", third);
-	    IMutableMapNG wrapper = createSimpleMap(pointFactory(1, 1),
-	        pointFactory(0, 0)->TileType.plains);
-	    wrapper.addFixture(pointFactory(0, 0), TextFixture("one", -1));
+	    IMutableMapNG wrapper = createSimpleMap(Point(1, 1),
+	        Point(0, 0)->TileType.plains);
+	    wrapper.addFixture(Point(0, 0), TextFixture("one", -1));
 	    wrapper.currentTurn = 0;
 	    assertForwardDeserialization("Deprecated text-in-map still works",
 	        """<map version="2" rows="1" columns="1" current_player="-1">
@@ -1201,18 +1200,18 @@ object xmlTests {
 	    AdventureFixture second = AdventureFixture(PlayerImpl(2, "player"),
 	        "second hook brief", "second hook full", idTwo);
 	    assertNotEquals(first, second, "Two different hooks are not equal");
-	    IMutableMapNG wrapper = createSimpleMap(pointFactory(1, 1),
-	        pointFactory(0, 0)->TileType.plains);
+	    IMutableMapNG wrapper = createSimpleMap(Point(1, 1),
+	        Point(0, 0)->TileType.plains);
 	    wrapper.addPlayer(independent);
-	    wrapper.addFixture(pointFactory(0, 0), first);
+	    wrapper.addFixture(Point(0, 0), first);
 	    assertSerialization("First [[AdventureFixture]] serialization test", wrapper);
 	    assertSerialization("Second [[AdventureFixture]] serialization test", second);
 	    assertSerialization("[[AdventureFixture]] with empty descriptions",
 	        AdventureFixture(PlayerImpl(3, "third"), "", "", idOne));
-	    Portal third = Portal("portal dest", pointFactory(1, 2), idOne);
-	    Portal fourth = Portal("portal dest two", pointFactory(2, 1), idTwo);
+	    Portal third = Portal("portal dest", Point(1, 2), idOne);
+	    Portal fourth = Portal("portal dest two", Point(2, 1), idTwo);
 	    assertNotEquals(third, fourth, "Two different portals are not equal");
-	    wrapper.addFixture(pointFactory(0, 0), fourth);
+	    wrapper.addFixture(Point(0, 0), fourth);
 	    assertSerialization("First [[Portal]] serialization test", wrapper);
 	    assertSerialization("Second [[Portal]] serialization test", fourth);
 	}
@@ -1368,8 +1367,8 @@ object xmlTests {
 	    assertMissingProperty<Forest>("<forest />", "kind", null);
 	    assertImageSerialization("Forest image property is preserved",
 	        Forest("thirdForest", true, id));
-	    Point loc = pointFactory(0, 0);
-	    IMutableMapNG map = createSimpleMap(pointFactory(1, 1),
+	    Point loc = Point(0, 0);
+	    IMutableMapNG map = createSimpleMap(Point(1, 1),
 	        loc->TileType.plains);
 	    map.addFixture(loc, Forest("trees", false, 4));
 	    map.addFixture(loc, Forest("secondForest", true, 5));
@@ -1431,8 +1430,8 @@ object xmlTests {
 	parameters(`function threeRandomNumbers`)
 	shared void testGroundSerialization(Integer id) {
 	    assertSerialization("First test of Ground serialization", Ground(id, "one", true));
-	    Point loc = pointFactory(0, 0);
-	    IMutableMapNG map = createSimpleMap(pointFactory(1, 1),
+	    Point loc = Point(0, 0);
+	    IMutableMapNG map = createSimpleMap(Point(1, 1),
 	        loc->TileType.plains);
 	    map.addFixture(loc, Ground(-1, "four", true));
 	    assertSerialization("Test that reader handles ground as a fixture", map);

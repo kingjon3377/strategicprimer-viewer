@@ -9,8 +9,7 @@ import java.sql {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.explorable {
 	Portal
@@ -64,12 +63,12 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>()
 				is Integer|SqlNull destinationColumn = dbRow["destination_column"],
 				is String|SqlNull image = dbRow["image"]);
 			value portal = Portal(as<String>(destinationWorld) else "unknown",
-				pointFactory(as<Integer>(destinationRow) else -1,
+				Point(as<Integer>(destinationRow) else -1,
 					as<Integer>(destinationColumn) else -1), id);
 			if (is String image) {
 				portal.image = image;
 			}
-			map.addFixture(pointFactory(row, column), portal);
+			map.addFixture(Point(row, column), portal);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Read ``count`` portals");

@@ -30,7 +30,7 @@ import strategicprimer.drivers.gui.common {
 }
 import strategicprimer.model.map {
     MapDimensions,
-    pointFactory
+    Point
 }
 import lovelace.util.common {
 	silentListener
@@ -94,7 +94,7 @@ class SelectTileDialog(Frame? parentFrame, IViewerModel model)
 		}
 		if (rowState == NumberState.valid, columnState == NumberState.valid) {
 			try {
-				model.selection = pointFactory(numParser.parse(rowText).intValue(),
+				model.selection = Point(numParser.parse(rowText).intValue(),
 					numParser.parse(columnText).intValue());
 			} catch (ParseException except) {
 				log.error("Parse failure after we checked input was numeric", except);

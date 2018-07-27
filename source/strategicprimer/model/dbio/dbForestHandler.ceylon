@@ -9,8 +9,7 @@ import ceylon.decimal {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.terrain {
 	Forest
@@ -57,7 +56,7 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
 			if (is String image) {
 				forest.image = image;
 			}
-			map.addFixture(pointFactory(row, column), forest);
+			map.addFixture(Point(row, column), forest);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` forests");

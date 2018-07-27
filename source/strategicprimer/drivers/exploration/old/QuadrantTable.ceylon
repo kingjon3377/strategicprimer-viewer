@@ -8,7 +8,6 @@ import strategicprimer.model.map {
     MapDimensions,
     TileType,
     TileFixture,
-    pointFactory,
     invalidPoint,
     MapDimensionsImpl
 }
@@ -36,7 +35,7 @@ class QuadrantTable satisfies EncounterTable {
             for (row in (0:(mapRows - rowRemainder)).by(rowStep)) {
                 for (column in (0:(mapColumns - columnRemainder)).by(columnStep)) {
                     assert (exists temp = possResults[i]);
-                    retval[pointFactory(row, column)] = temp;
+                    retval[Point(row, column)] = temp;
                     i++;
                 }
             }

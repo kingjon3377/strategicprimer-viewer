@@ -5,8 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.resources {
 	Grove
@@ -60,7 +59,7 @@ object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>()
 			if (is String image) {
 				grove.image = image;
 			}
-			map.addFixture(pointFactory(row, column), grove);
+			map.addFixture(Point(row, column), grove);
 			runningTotal++;
 			if (50.divides(runningTotal)) {
 				log.trace("Finished reading ``runningTotal`` groves");

@@ -10,8 +10,7 @@ import java.sql {
 import strategicprimer.model.map {
 	Point,
 	IMutableMapNG,
-	Player,
-	pointFactory
+	Player
 }
 import strategicprimer.model.map.fixtures.towns {
 	AbstractTown,
@@ -95,7 +94,7 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
 			if (is Integer population) {
 				town.population = CommunityStats(population);
 			}
-			map.addFixture(pointFactory(row, column), town);
+			map.addFixture(Point(row, column), town);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Read ``count`` towns");

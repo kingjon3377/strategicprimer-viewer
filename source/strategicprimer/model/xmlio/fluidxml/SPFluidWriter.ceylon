@@ -27,8 +27,7 @@ import strategicprimer.model.map {
     IFixture,
     River,
     IMapNG,
-    TileType,
-    pointFactory
+    TileType
 }
 import strategicprimer.model.map.fixtures {
     Implement,
@@ -269,7 +268,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         for (i in 0:(dimensions.rows)) {
             variable Boolean rowEmpty = true;
             for (j in 0:(dimensions.columns)) {
-                Point loc = pointFactory(i, j);
+                Point loc = Point(i, j);
                 TileType? terrain = obj.baseTerrain[loc];
                 if (!obj.locationEmpty(loc)) {
                     if (rowEmpty) {

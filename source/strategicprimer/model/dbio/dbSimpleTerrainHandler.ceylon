@@ -7,7 +7,6 @@ import strategicprimer.model.map {
 	Point,
 	IMutableMapNG,
 	TileFixture,
-	pointFactory,
 	HasMutableImage
 }
 import strategicprimer.model.map.fixtures.terrain {
@@ -70,7 +69,7 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar,
 			if (is String image) {
 				fixture.image = image;
 			}
-			map.addFixture(pointFactory(row, column), fixture);
+			map.addFixture(Point(row, column), fixture);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Read ``count`` simple terrain fixtures");

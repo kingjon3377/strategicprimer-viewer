@@ -5,8 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures {
 	Ground
@@ -43,7 +42,7 @@ object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>()
 			if (is String image) {
 				ground.image = image;
 			}
-			map.addFixture(pointFactory(row, column), ground);
+			map.addFixture(Point(row, column), ground);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` ground");

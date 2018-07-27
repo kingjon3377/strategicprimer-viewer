@@ -9,8 +9,7 @@ import java.sql {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures {
 	TextFixture
@@ -56,7 +55,7 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>()
 			if (is String image) {
 				fixture.image = image;
 			}
-			map.addFixture(pointFactory(row, column), fixture);
+			map.addFixture(Point(row, column), fixture);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Read ``count`` text notes");

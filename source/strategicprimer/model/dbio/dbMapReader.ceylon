@@ -15,7 +15,6 @@ import strategicprimer.model.map {
 	PlayerImpl,
 	MutablePlayer,
 	Point,
-	pointFactory,
 	TileType,
 	River
 }
@@ -78,7 +77,7 @@ object dbMapReader {
 				is Boolean eastR = databaseBoolean(dbRow["east_river"]),
 				is Boolean westR = databaseBoolean(dbRow["west_river"]),
 				is Boolean lake = databaseBoolean(dbRow["lake"]));
-			Point location = pointFactory(row, column);
+			Point location = Point(row, column);
 			if (!terrainString.empty) {
 				assert (is TileType terrain = TileType.parse(terrainString));
 				retval.baseTerrain[location] = terrain;

@@ -5,9 +5,6 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import strategicprimer.model.map {
-	CachingStrategy
-}
 shared variable CachingStrategy coordinateCachingStrategy = CachingStrategy.multilevel;
 "Clear the [[Coordinate]] cache. This should only be called from test code."
 shared void clearCoordinateCache() {
@@ -54,4 +51,14 @@ shared Coordinate coordinateFactory(Integer x, Integer y) {
     case (CachingStrategy.constructor) {
         return Coordinate(x, y);
     }
+}
+"How to acquire Coordinates and similar objects."
+shared class CachingStrategy of constructor|multilevel|tuple {
+    shared actual String string;
+    "Delegate to the constructor instead of caching."
+    shared new constructor { string = "no-cache"; }
+    "Use a Map of Maps, with Integers as keys in both cases, as a cache."
+    shared new multilevel { string = "multi-level"; }
+    "Use a Map with Tuples as keys as a cache."
+    shared new tuple { string = "tuple-based"; }
 }

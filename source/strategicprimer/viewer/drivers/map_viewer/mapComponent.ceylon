@@ -32,8 +32,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.map {
     Point,
     MapDimensions,
-    TileFixture,
-    pointFactory
+    TileFixture
 }
 "An interface for a UI representing a map."
 shared interface MapGUI {
@@ -161,7 +160,7 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
                     if ((j + minCol) >= (maxCol + 1)) {
                         break;
                     }
-                    Point location = pointFactory(i + minRow, j + minCol);
+                    Point location = Point(i + minRow, j + minCol);
                     paintTile(context, tileSize, location, i, j,
                         model.selection == location);
                 }

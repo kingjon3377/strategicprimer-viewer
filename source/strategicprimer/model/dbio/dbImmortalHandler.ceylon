@@ -11,7 +11,6 @@ import strategicprimer.model.map {
 	Point,
 	HasKind,
 	IMutableMapNG,
-	pointFactory,
 	HasMutableImage
 }
 import strategicprimer.model.map.fixtures.mobile {
@@ -147,7 +146,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			if (is String image) {
 				immortal.image = image;
 			}
-			map.addFixture(pointFactory(row, column), immortal);
+			map.addFixture(Point(row, column), immortal);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` simple immortals");
@@ -180,7 +179,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			if (is String image) {
 				immortal.image = image;
 			}
-			map.addFixture(pointFactory(row, column), immortal);
+			map.addFixture(Point(row, column), immortal);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` immortals with kinds");

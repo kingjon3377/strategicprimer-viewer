@@ -28,8 +28,7 @@ import strategicprimer.model.idreg {
 }
 import strategicprimer.model.map {
     Point,
-    HasImage,
-    pointFactory
+    HasImage
 }
 import strategicprimer.model.xmlio {
     spNamespace,
@@ -236,7 +235,7 @@ abstract class YAAbstractReader<Element>
     }
     "Parse a Point from a tag's properties."
     shared static Point parsePoint(StartElement element) =>
-            pointFactory(getIntegerParameter(element, "row"),
+            Point(getIntegerParameter(element, "row"),
                 getIntegerParameter(element, "column"));
     "The Warning instance to use."
     Warning warner;

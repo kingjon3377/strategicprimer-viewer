@@ -28,10 +28,10 @@ import strategicprimer.model.map {
 	MapDimensions,
 	MapDimensionsImpl,
 	PlayerCollection,
-	pointFactory,
 	PlayerImpl,
 	HasOwner,
-	Player
+	Player,
+    Point
 }
 import strategicprimer.model.map.fixtures {
 	ResourcePile,
@@ -125,9 +125,9 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 	void assertFixtureSerialization(TileFixture fixture) {
 		MapDimensions dimensions = MapDimensionsImpl(2, 2, 2);
 		IMutableMapNG firstMap = SPMapNG(dimensions, PlayerCollection(), -1);
-		firstMap.addFixture(pointFactory(0, 0), fixture);
+		firstMap.addFixture(Point(0, 0), fixture);
 		IMutableMapNG secondMap = SPMapNG(dimensions, PlayerCollection(), -1);
-		secondMap.addFixture(pointFactory(1, 1), fixture);
+		secondMap.addFixture(Point(1, 1), fixture);
 		if (is HasOwner fixture) {
 			firstMap.addPlayer(fixture.owner);
 			secondMap.addPlayer(fixture.owner);
@@ -145,7 +145,7 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
 	shared void testPortalSerialization(parameters(`function threeRandomNumbers`) Integer id,
 		parameters(`function threeRandomNumbers`) Integer row,
 		parameters(`function threeRandomNumbers`) Integer column) =>
-			assertFixtureSerialization(Portal("portal dest", pointFactory(row, column), id));
+			assertFixtureSerialization(Portal("portal dest", Point(row, column), id));
 	test
 	shared void testAnimalSerialization(parameters(`function threeRandomNumbers`) Integer id,
 		enumeratedParameter(`class Boolean`) Boolean talking) =>

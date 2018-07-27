@@ -5,8 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.towns {
 	Fortress,
@@ -56,7 +55,7 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
 			if (is String portrait) {
 				fortress.portrait = portrait;
 			}
-			map.addFixture(pointFactory(row, column), fortress);
+			map.addFixture(Point(row, column), fortress);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` fortresses");

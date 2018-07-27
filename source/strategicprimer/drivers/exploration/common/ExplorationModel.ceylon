@@ -21,7 +21,6 @@ import strategicprimer.model.map {
     IMapNG,
     TileFixture,
     invalidPoint,
-    pointFactory,
     IFixture,
     HasOwner,
     MapDimensions,
@@ -193,22 +192,22 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Integer row = point.row;
         Integer column = point.column;
         switch (direction)
-        case (Direction.east) { return pointFactory(row, increment(column, maxColumn)); }
-        case (Direction.north) { return pointFactory(decrement(row, maxRow), column); }
+        case (Direction.east) { return Point(row, increment(column, maxColumn)); }
+        case (Direction.north) { return Point(decrement(row, maxRow), column); }
         case (Direction.northeast) {
-            return pointFactory(decrement(row, maxRow), increment(column, maxColumn));
+            return Point(decrement(row, maxRow), increment(column, maxColumn));
         }
         case (Direction.northwest) {
-            return pointFactory(decrement(row, maxRow), decrement(column, maxColumn));
+            return Point(decrement(row, maxRow), decrement(column, maxColumn));
         }
-        case (Direction.south) { return pointFactory(increment(row, maxRow), column); }
+        case (Direction.south) { return Point(increment(row, maxRow), column); }
         case (Direction.southeast) {
-            return pointFactory(increment(row, maxRow), increment(column, maxColumn));
+            return Point(increment(row, maxRow), increment(column, maxColumn));
         }
         case (Direction.southwest) {
-            return pointFactory(increment(row, maxRow), decrement(column, maxColumn));
+            return Point(increment(row, maxRow), decrement(column, maxColumn));
         }
-        case (Direction.west) { return pointFactory(row, decrement(column, maxColumn)); }
+        case (Direction.west) { return Point(row, decrement(column, maxColumn)); }
         case (Direction.nowhere) { return point; }
     }
     void fixMovedUnits(Point base) {

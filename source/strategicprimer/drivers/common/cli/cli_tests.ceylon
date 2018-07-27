@@ -8,8 +8,8 @@ import ceylon.collection {
 }
 import strategicprimer.model.map {
     PlayerImpl,
-    pointFactory,
-	Player
+	Player,
+    Point
 }
 import ceylon.decimal {
     decimalNumber
@@ -322,10 +322,10 @@ object cliTests {
 	test
 	shared void testInputPoint() {
 	    assertCLI(`ICLIHelper.inputPoint`, ["point prompt one "], ["2", "3"],
-	        "point prompt one Row: Column: ", pointFactory(2, 3),
+	        "point prompt one Row: Column: ", Point(2, 3),
 	        "reads row then column", "prompts as expected");
 	    assertCLI(`ICLIHelper.inputPoint`, ["point prompt two "], ["-1", "0", "-2", "4"],
-	        "point prompt two Row: Row: Column: Column: ", pointFactory(0, 4),
+	        "point prompt two Row: Row: Column: Column: ", Point(0, 4),
 	        "doesn't accept negative row or column", "prompts as expected");
 	}
 }

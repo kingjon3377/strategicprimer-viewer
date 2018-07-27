@@ -11,8 +11,7 @@ import strategicprimer.model.map {
     Point,
     MapDimensions,
     TileFixture,
-    IMapNG,
-    pointFactory
+    IMapNG
 }
 import strategicprimer.model.map.fixtures {
     TerrainFixture
@@ -51,7 +50,7 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
 		MapDimensions mapDimensions = model.mapDimensions;
 		Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
 		VisibleDimensions visibleDimensions = model.visibleDimensions;
-		Point point = pointFactory(
+		Point point = Point(
 			((eventPoint.y / tileSize) + visibleDimensions.minimumRow).integer,
 			((eventPoint.x / tileSize) + visibleDimensions.minimumColumn).integer);
 		if (point.valid, point.row < mapDimensions.rows,
@@ -72,7 +71,7 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
 		VisibleDimensions visibleDimensions = model.visibleDimensions;
 		MapDimensions mapDimensions = model.mapDimensions;
 		Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
-		Point point = pointFactory(
+		Point point = Point(
 			((eventPoint.y / tileSize) + visibleDimensions.minimumRow).integer,
 			((eventPoint.x / tileSize) + visibleDimensions.minimumColumn).integer);
 		log.trace("Generated point was ``point``");

@@ -5,8 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.resources {
 	MineralVein,
@@ -61,7 +60,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 			if (is String image) {
 				stone.image = image;
 			}
-			map.addFixture(pointFactory(row, column), stone);
+			map.addFixture(Point(row, column), stone);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Read ``count`` mineral veins");
@@ -80,7 +79,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 			if (is String image) {
 				mineral.image = image;
 			}
-			map.addFixture(pointFactory(row, column), mineral);
+			map.addFixture(Point(row, column), mineral);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Read ``count`` stone deposits");

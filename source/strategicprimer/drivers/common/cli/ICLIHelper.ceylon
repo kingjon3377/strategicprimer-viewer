@@ -1,6 +1,5 @@
 import strategicprimer.model.map {
     Point,
-    pointFactory,
     HasName
 }
 import ceylon.decimal {
@@ -77,6 +76,6 @@ shared interface ICLIHelper {
             "The prompt to use to prompt the user."
             String prompt) {
         print(prompt);
-        return pointFactory(inputNumber("Row: "), inputNumber("Column: "));
+        return Point(inputNumber("Row: "), inputNumber("Column: "));
     }
 }

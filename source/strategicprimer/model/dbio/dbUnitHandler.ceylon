@@ -10,8 +10,7 @@ import java.sql {
 import strategicprimer.model.map {
 	Point,
 	HasPortrait,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.mobile {
 	IUnit,
@@ -114,7 +113,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>()
 					is String results = resultsRow["results"]);
 				unit.setResults(as<Integer>(turn) else -1, results);
 			}
-			map.addFixture(pointFactory(row, column), unit);
+			map.addFixture(Point(row, column), unit);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Read ``count`` units outside fortresses");

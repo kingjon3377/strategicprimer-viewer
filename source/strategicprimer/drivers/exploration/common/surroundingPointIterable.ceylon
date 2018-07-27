@@ -5,8 +5,7 @@ import ceylon.collection {
 
 import strategicprimer.model.map {
     Point,
-    MapDimensions,
-    pointFactory
+    MapDimensions
 }
 "A stream of the points in a square surrounding a point, with points that are closer
  appearing multiple times."
@@ -32,7 +31,7 @@ shared {Point*} surroundingPointIterable(Point startingPoint, MapDimensions dime
         Integer upperBound = inner;
         for (row in lowerBound..upperBound) {
             for (column in lowerBound..upperBound) {
-                points.add(pointFactory(roundRow(startingPoint.row + row),
+                points.add(Point(roundRow(startingPoint.row + row),
                     roundColumn(startingPoint.column + column)));
             }
         }

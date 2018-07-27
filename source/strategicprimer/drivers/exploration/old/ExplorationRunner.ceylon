@@ -27,7 +27,6 @@ import strategicprimer.model.map {
     Point,
     TileFixture,
     TileType,
-    pointFactory,
     MapDimensionsImpl,
     MapDimensions
 }
@@ -261,7 +260,7 @@ object explorationRunnerTests {
 	shared void testGetPrimaryRock() {
 	    ExplorationRunner runner = ExplorationRunner();
 	    runner.loadTable("major_rock", MockTable("primary_rock_test"));
-	    assertEquals(runner.getPrimaryRock(pointFactory(0, 0),
+	    assertEquals(runner.getPrimaryRock(Point(0, 0),
 	            TileType.tundra, false, [], MapDimensionsImpl(69, 88, 2)),
 	        "primary_rock_test", "primary rock test");
 	}
@@ -273,7 +272,7 @@ object explorationRunnerTests {
 	        "boreal_second_test"));
 	    runner.loadTable("temperate_major_tree", MockTable("temperate_major_test",
 	        "temperate_second_test"));
-	    Point point = pointFactory(0, 0);
+	    Point point = Point(0, 0);
 	    MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
 	    assertEquals(runner.getPrimaryTree(point, TileType.borealForest, false, [],
 	        dimensions), "boreal_major_test", "primary tree test for boreal forest");
@@ -290,7 +289,7 @@ object explorationRunnerTests {
 	test
 	shared void testIllegalGetPrimaryTree() {
 	    // TODO: Uncomment hasType() call once Ceylon tooling bug fixed
-	    Point point = pointFactory(0, 0);
+	    Point point = Point(0, 0);
 	    assertThatException(
 	                defer(ExplorationRunner().getPrimaryTree, [point,
 	                    TileType.tundra, false, [], MapDimensionsImpl(69, 88, 2)]))
@@ -303,7 +302,7 @@ object explorationRunnerTests {
 	    runner.loadTable("test_table_one", MockTable("test_one"));
 	    runner.loadTable("test_table_two", MockTable("test_two"));
 	    runner.loadTable("test_table_three", MockTable("test_three"));
-	    Point point = pointFactory(0, 0);
+	    Point point = Point(0, 0);
 	    MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
 	    assertEquals(runner.consultTable("test_table_one", point,
 	            TileType.tundra, false, [], dimensions), "test_one", "first table");
@@ -322,7 +321,7 @@ object explorationRunnerTests {
 	    runner.loadTable("test_table_two", ConstantTable("( #test_table_three# )"));
 	    runner.loadTable("test_table_three", ConstantTable("test_three"));
 	    runner.loadTable("test_table_four", ConstantTable("_ #test_table_one"));
-	    Point point = pointFactory(0, 0);
+	    Point point = Point(0, 0);
 	    MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
 	    assertEquals(runner.recursiveConsultTable("test_table_one", point,
 	            TileType.tundra, false, [], dimensions),
@@ -344,7 +343,7 @@ object explorationRunnerTests {
 	    runner.loadTable("major_rock", ConstantTable("test_rock"));
 	    runner.loadTable("boreal_major_tree", ConstantTable("boreal_tree"));
 	    runner.loadTable("temperate_major_tree", ConstantTable("temperate_tree"));
-	    Point point = pointFactory(0, 0);
+	    Point point = Point(0, 0);
 	    MapDimensions dimensions = MapDimensionsImpl(69, 88, 0);
 	    assertEquals(runner.defaultResults(point, TileType.tundra,
 	        false, [], dimensions), """The primary rock type here is test_rock.

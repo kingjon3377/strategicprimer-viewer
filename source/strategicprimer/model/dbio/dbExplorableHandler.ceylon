@@ -5,8 +5,7 @@ import ceylon.dbc {
 
 import strategicprimer.model.map {
 	Point,
-	IMutableMapNG,
-	pointFactory
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.explorable {
 	Battlefield,
@@ -57,7 +56,7 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 			if (is String image) {
 				cave.image = image;
 			}
-			map.addFixture(pointFactory(row, column), cave);
+			map.addFixture(Point(row, column), cave);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` caves");
@@ -73,7 +72,7 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 			if (is String image) {
 				battlefield.image = image;
 			}
-			map.addFixture(pointFactory(row, column), battlefield);
+			map.addFixture(Point(row, column), battlefield);
 			count++;
 			if (50.divides(count)) {
 				log.trace("Finished reading ``count`` battlefields");
