@@ -28,12 +28,6 @@
 	<natures>
 		<nature>com.redhat.ceylon.eclipse.ui.ceylonNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>net.sourceforge.pmd.runtime.pmdNature</nature>
-		<nature>com.jutils.lint4j.core.Nature</nature>
 		<nature>edu.umd.cs.findbugs.plugin.eclipse.findbugsNature</nature>
-		<nature>com.atlassw.tools.eclipse.checkstyle.CheckstyleNature</nature>
-		<nature>InCode.inCodeNature</nature>
-		<nature>net.sourceforge.pmd.eclipse.plugin.pmdNature</nature>
-		<nature>ch.acanda.eclipse.pmd.builder.PMDNature</nature>
 	</natures>
 </projectDescription>
