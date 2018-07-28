@@ -106,6 +106,7 @@ import lovelace.util.common {
 	matchingPredicate,
 	matchingValue,
 	silentListener,
+    narrowedStream,
 	defer
 }
 import strategicprimer.drivers.gui.common {
@@ -178,18 +179,15 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		this.menuHandler = menuHandler;
 	}
 
-	Point findHQ() { // TODO: Use fixtureEntries if narrow() works properly
+	Point findHQ() {
 		variable Point retval = invalidPoint;
-		for (location in model.map.locations) {
-//            for (fixture in model.map.fixtures[location].narrow<Fortress>() // TODO: syntax sugar once compiler bug fixed
-			for (fixture in model.map.fixtures.get(location).narrow<Fortress>()
-					.filter(matchingPredicate(matchingValue(model.currentPlayer.playerId,
-						Player.playerId), Fortress.owner))) {
-				if ("HQ" == fixture.name) {
-					return location;
-				} else if (location.valid, !retval.valid) {
-					retval = location;
-				}
+		for (location->fixture in narrowedStream<Point, Fortress>(model.map.fixtureEntries)
+				.filter(matchingPredicate(matchingValue(model.currentPlayer.playerId,
+					Player.playerId), compose(Fortress.owner, Entry<Point, Fortress>.item)))) {
+			if ("HQ" == fixture.name) {
+				return location;
+			} else if (location.valid, !retval.valid) {
+				retval = location;
 			}
 		}
 		return retval;

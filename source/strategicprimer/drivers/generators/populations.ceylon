@@ -51,7 +51,8 @@ import ceylon.whole {
 import lovelace.util.common {
 	matchingValue,
 	matchingPredicate,
-	inverse
+	inverse,
+    narrowedStream
 }
 import lovelace.util.jvm {
 	singletonRandom
@@ -75,12 +76,13 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	void generateAnimalPopulations(IMutableMapNG map, Boolean talking, String kind,
 			ICLIHelper cli) {
 		// We assume there is at most one population of each kind of animal per tile.
-		{Point*} locations = randomize(map.locations.filter( // TODO: If narrow() works properly on a stream of Entries, use fixtureEntries here and in similar methods below.
-			//(loc) => map.fixtures[loc].narrow<Animal>() // TODO: syntax sugar once compiler bug fixed
-			(loc) => map.fixtures.get(loc).narrow<Animal>()
-					.filter(matchingValue(talking, Animal.talking))
-					.filter(inverse(matchingPredicate(Integer.positive, Animal.population)))
-					.map(Animal.kind).any(kind.equals)));
+		{Point*} locations = randomize(narrowedStream<Point, Animal>(map.fixtureEntries)
+			.filter(matchingPredicate(matchingValue(talking, Animal.talking),
+				Entry<Point, Animal>.item))
+			.filter(matchingPredicate(matchingValue(kind, Animal.kind),
+				Entry<Point, Animal>.item))
+			.filter(inverse(matchingPredicate(matchingPredicate(Integer.positive,
+				Animal.population), Entry<Point, Animal>.item))).map(Entry.key).distinct);
 		Integer count = locations.size;
 		if (count == 0) {
 			return;
@@ -120,11 +122,10 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	}
 	void generateGroveCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
 		// We assume there is at most one grove or orchard of each kind per tile.
-		{Point*} locations = randomize(map.locations.filter(
-			//(loc) => map.fixtures[loc].narrow<Grove>() // TODO: syntax sugar
-			(loc) => map.fixtures.get(loc).narrow<Grove>()
-					.filter(matchingPredicate(Integer.negative, Grove.population))
-					.map(Grove.kind).any(kind.equals)));
+		{Point*} locations = randomize(narrowedStream<Point, Grove>(map.fixtureEntries)
+			.filter(matchingPredicate(matchingValue(kind, Grove.kind), Entry<Point, Grove>.item))
+			.filter(matchingPredicate(matchingPredicate(Integer.negative,
+				Grove.population), Entry<Point, Grove>.item)).map(Entry.key).distinct);
 		Integer count = locations.size;
 		if (count == 0) {
 			return;
@@ -155,11 +156,10 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	}
 	void generateShrubCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
 		// We assume there is at most one population of each kind of shrub per tile.
-		{Point*} locations = randomize(map.locations.filter(
-			//(loc) => map.fixtures[loc].narrow<Shrub>() // TODO: syntax sugar
-			(loc) => map.fixtures.get(loc).narrow<Shrub>()
-				.filter(matchingPredicate(Integer.negative, Shrub.population))
-				.map(Shrub.kind).any(kind.equals)));
+		{Point*} locations = randomize(narrowedStream<Point, Shrub>(map.fixtureEntries)
+			.filter(matchingPredicate(matchingValue(kind, Shrub.kind), Entry<Point, Shrub>.item))
+			.filter(matchingPredicate(matchingPredicate(Integer.negative,
+				Shrub.population), Entry<Point, Shrub>.item)).map(Entry.key).distinct);
 		Integer count = locations.size;
 		if (count == 0) {
 			return;
@@ -189,11 +189,9 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	}
 	Boolean negativeNumber(Number<out Anything> number) => number.negative;
 	void generateFieldExtents(IMutableMapNG map, ICLIHelper cli) {
-		{<Point->Meadow>*} entries = randomize([for (loc in map.locations)
-			//for (item in map.fixtures[loc].narrow<Meadow>() // TODO: syntax sugar
-			for (item in map.fixtures.get(loc).narrow<Meadow>()
-					.filter(matchingPredicate(negativeNumber, Meadow.acres)))
-				loc->item]);
+		{<Point->Meadow>*} entries = randomize(narrowedStream<Point, Meadow>(map.fixtureEntries)
+			.filter(matchingPredicate(negativeNumber, compose(Meadow.acres,
+				Entry<Point, Meadow>.item))));
 		Random rng = singletonRandom;
 		for (loc->field in entries) {
 			Float acres = rng.nextFloat() * 5.5 + 0.5;
@@ -218,15 +216,14 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 		}
 	}
 	void generateForestExtents(IMutableMapNG map, ICLIHelper cli) {
-		{Point*} locations = randomize(map.locations.filter(
-			//(loc) => !map.fixtures[loc].narrow<Forest>() // TODO: syntax sugar
-			(loc) => map.fixtures.get(loc).narrow<Forest>()
-					.map(Forest.acres).any(positiveNumber)));
+		{Point*} locations = randomize(narrowedStream<Point, Forest>(map.fixtureEntries)
+			.filter(matchingPredicate(inverse(positiveNumber),
+				compose(Forest.acres, Entry<Point, Forest>.item))).map(Entry.key).distinct);
 		for (location in locations) {
 			//assert (exists primaryForest = map.fixtures[location].narrow<Forest>().first); // TODO: syntax sugar
 			assert (exists primaryForest = map.fixtures.get(location).narrow<Forest>().first);
 			variable Integer reserved = 0;
-			if (primaryForest.acres.positive) {
+			if (primaryForest.acres.positive) { // TODO: maybe just warn and add its acreage to reserved acreage?
 				cli.println("First forest at ``location`` had acreage set already, skipping that tile.");
 				continue;
 			}

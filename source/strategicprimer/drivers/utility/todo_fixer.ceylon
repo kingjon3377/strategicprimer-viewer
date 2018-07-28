@@ -1,7 +1,8 @@
 import lovelace.util.common {
     todo,
 	matchingPredicate,
-	matchingValue
+	matchingValue,
+    narrowedStream
 }
 import strategicprimer.model.map.fixtures.towns {
     Village,
@@ -134,13 +135,12 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
                 }
             }
         }
-        {[Point, CommunityStats]*} brokenTownContents = map.locations // TODO: Use fixtureEntries if narrow() works properly
-        //            .flatMap((loc) => [loc, map.fixtures[loc]]) // TODO: syntax sugar
-                .flatMap((loc) => map.fixtures.get(loc)
-                    .narrow<ITownFixture>().map((item) => [loc, item.population]))
-                .narrow<[Point, CommunityStats]>()
-                .filter(([loc, pop]) => pop.yearlyProduction.map(ResourcePile.contents)
-                    .any(shuffle(String.contains)('#')));
+        {[Point, CommunityStats]*} brokenTownContents =
+                narrowedStream<Point, ITownFixture>(map.fixtureEntries)
+                    .map((key->item) => [key, item.population]) // TODO: Make entryMap(keyCollector, itemCollector) function in lovelace.util
+                    .narrow<[Point, CommunityStats]>()
+                    .filter(([loc, pop]) => pop.yearlyProduction.map(ResourcePile.contents)
+                        .any(shuffle(String.contains)('#')));
         if (!brokenTownContents.empty) {
             value runner = ExplorationRunner();
             "TODO fixer requires a tables directory"

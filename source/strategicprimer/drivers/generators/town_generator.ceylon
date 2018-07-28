@@ -83,7 +83,8 @@ import lovelace.util.common {
 	matchingValue,
 	matchingPredicate,
 	anythingEqual,
-	defer
+	defer,
+    narrowedStream
 }
 class LazyInit<Wrapped>(Wrapped() generator) {
     variable Wrapped? inner = null;
@@ -183,12 +184,10 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
 			LazyInit(initConsumption);
     LazyInit<ExplorationRunner> runner = LazyInit(initProduction);
     "The (for now active) towns in the given map that don't have 'stats' yet."
-    {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) => [
-        for (loc in map.locations) // TODO: try using fixtureEntries; ISTR narrow()ing a stream of Entries doesn't work properly.
-//            for (fixture in map.fixtures[loc].narrow<ModifiableTown>() // TODO: syntax sugar once compiler bug fixed
-            for (fixture in map.fixtures.get(loc).narrow<ModifiableTown>()
-				.filter(matchingValue(TownStatus.active, ITownFixture.status)))
-                    loc->fixture ];
+    {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) =>
+            narrowedStream<Point, ModifiableTown>(map.fixtureEntries)
+                .filter(matchingPredicate(matchingValue(TownStatus.active,
+                    ITownFixture.status), Entry<Point, ITownFixture>.item)).sequence();
     void assignStatsToTown(ModifiableTown town, CommunityStats stats) {
         if (is AbstractTown town) {
             town.population = stats;

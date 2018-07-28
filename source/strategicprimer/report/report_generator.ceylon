@@ -7,7 +7,9 @@ import lovelace.util.common {
     todo,
     DelayedRemovalMap,
     IntMap,
-	matchingValue
+	matchingValue,
+    narrowedStream,
+    matchingPredicate
 }
 
 import strategicprimer.model {
@@ -63,17 +65,14 @@ Logger log = logger(`module strategicprimer.report`);
 object reportGeneratorHelper {
 	"Find the location of the given player's HQ in the given map."
 	todo("""Return null instead of an "invalid" Point when not found?""")
-	shared Point findHQ(IMapNG map, Player player) { // TODO: Use fixtureEntries if narrow() works properly
+	shared Point findHQ(IMapNG map, Player player) {
 		variable Point? retval = null;
-		for (location in map.locations) {
-//        for (fixture in map.fixtures[location].narrow<Fortress>() // TODO: syntax sugar once compiler bug fixed
-			for (fixture in map.fixtures.get(location).narrow<Fortress>()
-					.filter(matchingValue(player, Fortress.owner))) {
-				if ("hq" == fixture.name) {
-					return location;
-				} else if (location.valid, !retval exists) {
-					retval = location;
-				}
+		for (location->fixture in narrowedStream<Point, Fortress>(map.fixtureEntries)
+				.filter(matchingPredicate(matchingValue(player, Fortress.owner), Entry<Point, Fortress>.item))) {
+			if ("hq" == fixture.name) {
+				return location;
+			} else if (location.valid, !retval exists) {
+				retval = location;
 			}
 		} else {
 			return retval else invalidPoint;
@@ -180,7 +179,7 @@ shared object reportGenerator {
 	            fixtures.remove(fixture.id);
 	            continue;
 	        }
-	        process.writeLine("Unhandled fixture:\t``fixture``");
+	        process.writeLine("Unhandled fixture:\t``fixture`` (ID # ``fixture.id``)");
 	    }
 	    return builder.string;
 	}

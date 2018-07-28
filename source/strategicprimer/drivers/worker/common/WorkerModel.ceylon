@@ -55,6 +55,7 @@ import lovelace.util.common {
 	anythingEqual,
 	matchingValue,
 	matchingPredicate,
+	narrowedStream,
 	comparingOn
 }
 Logger log = logger(`module strategicprimer.drivers.worker.common`);
@@ -157,20 +158,17 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         }
     }
     "Add a unit to all the maps, at the location of its owner's HQ in the main map."
-    shared actual void addUnit(IUnit unit) { // TODO: Use fixtureEntries if narrow() works properly
+    shared actual void addUnit(IUnit unit) {
         variable [Fortress, Point]? temp = null;
-        for (point in map.locations) {
-            //            for (fixture in map.fixtures[point].narrow<Fortress>() // TODO: syntax sugar once compiler bug fixed
-            for (fixture in map.fixtures.get(point).narrow<Fortress>()
-					.filter(matchingPredicate(matchingValue(unit.owner.playerId,
-						Player.playerId), Fortress.owner))) {
-                if ("HQ" == fixture.name) {
-                    addUnitAtLocation(unit, point);
-                    return;
-                } else if (!temp exists) {
-                    temp = [fixture, point];
-                }
-            }
+		for (point->fixture in narrowedStream<Point, Fortress>(map.fixtureEntries)
+				.filter(matchingPredicate(matchingValue(unit.owner.playerId,
+					Player.playerId), compose(Fortress.owner, Entry<Point, Fortress>.item)))) {
+			if ("HQ" == fixture.name) {
+				addUnitAtLocation(unit, point);
+				return;
+			} else if (!temp exists) {
+				temp = [fixture, point];
+			}
         } else {
             if (exists [fortress, loc] = temp) {
                 log.info("Added unit at fortress ``fortress.name``, not HQ");

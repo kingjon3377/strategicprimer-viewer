@@ -72,6 +72,9 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
 //					ostream(" ``item.population`` ``animalPlurals[item.kind]``"); // TODO: syntax sugar once compiler bug fixed
 					ostream(" ``item.population`` ``animalPlurals.get(item.kind)``");
 				}
+				if (item.status == "wild") {
+					ostream(" (ID # ``item.id``)");
+				}
 			}
 			ostream(" ``distCalculator.distanceString(loc)``");
 	}
