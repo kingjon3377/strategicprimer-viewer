@@ -62,12 +62,16 @@ import ceylon.io {
 }
 import ceylon.http.server {
 	newServer,
+	AsynchronousEndpoint,
 	Endpoint,
 	Request,
 	Response,
 	startsWith,
 	matchEquals=equals,
 	isRoot
+}
+import ceylon.http.server.endpoints {
+	redirect
 }
 import ceylon.html {
 	renderTemplate,
@@ -81,6 +85,7 @@ import ceylon.html {
 	A
 }
 import ceylon.http.common {
+	get,
 	Header
 }
 import lovelace.util.common {
@@ -164,29 +169,38 @@ shared class ReportCLI() satisfies SimpleDriver {
 	                service(Request request, Response response) =>
 							response.writeString(report);
 	            });
-            Endpoint rootHandler = Endpoint {
-                // TODO: If only one report, redirect to it instead of making user choose it.
-                path = isRoot();
-                void service(Request request, Response response) {
-	                    renderTemplate(Html {
-	                    Head {
-	                        Title {
-	                            "Strategic Primer Reports";
-	                        }
-	                    },
-	                    Body {
-	                        H1 {
-	                            "Strategic Primer Reports"
-	                        },
-	                        Ul {
-	                            localCache.map((file->report) => Li {
-	                                A { href="/``file``"; children = [file]; }
-		                        })
-	                        }
-	                    }
-	                }, response.writeString);
-                }
-            };
+			Endpoint|AsynchronousEndpoint rootHandler;
+			if (localCache.size == 1) {
+				assert (exists soleFile = localCache.first?.key);
+				rootHandler = AsynchronousEndpoint {
+					path = isRoot();
+					acceptMethod = [ get ];
+					service = redirect("/" + soleFile);
+				};
+			} else {
+				rootHandler = Endpoint {
+					path = isRoot();
+					void service(Request request, Response response) {
+							renderTemplate(Html {
+							Head {
+								Title {
+									"Strategic Primer Reports";
+								}
+							},
+							Body {
+								H1 {
+									"Strategic Primer Reports"
+								},
+								Ul {
+									localCache.map((file->report) => Li {
+										A { href="/``file``"; children = [file]; }
+									})
+								}
+							}
+						}, response.writeString);
+					}
+				};
+			}
             log.info("About to start serving on port ``port``");
             newServer {
                 rootHandler, *endpoints
