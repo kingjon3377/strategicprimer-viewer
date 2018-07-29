@@ -24,6 +24,10 @@ import lovelace.util.jvm {
     LabelTextColor
 }
 
+import lovelace.util.common {
+    matchingPredicate
+}
+
 import strategicprimer.drivers.common {
     UtilityDriver,
     IDriverUsage,
@@ -39,7 +43,8 @@ import strategicprimer.model.map {
     Point,
     IFixture,
     IMapNG,
-    TileType
+    TileType,
+    HasExtent
 }
 import strategicprimer.model.map.fixtures.mobile {
     IWorker
@@ -51,11 +56,13 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 }
 import strategicprimer.model.map.fixtures.resources {
     StoneDeposit,
-    StoneKind
+    StoneKind,
+    Grove
 }
 import strategicprimer.model.map.fixtures.towns {
     Village,
-    ITownFixture
+    ITownFixture,
+    TownSize
 }
 import strategicprimer.model.xmlio {
     Warning,
@@ -73,6 +80,12 @@ import strategicprimer.drivers.gui.common {
 import ceylon.logging {
     Logger,
     logger
+}
+import ceylon.decimal {
+    Decimal
+}
+import ceylon.whole {
+    Whole
 }
 
 Logger log = logger(`module strategicprimer.drivers.utility`);
@@ -158,6 +171,50 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
             }
         }
     }
+    Boolean positiveNumber(Number<out Anything> num) => num.positive;
+    void acreageChecker(Point context, Warning warner, {IFixture*} fixtures) {
+        variable Float total = 0.0;
+        for (fixture in fixtures.narrow<HasExtent>()
+                .filter(matchingPredicate(positiveNumber, HasExtent.acres))) {
+            switch (acres = fixture.acres)
+            case (is Integer) {
+                total += acres;
+            }
+            case (is Whole) {
+                total += acres.float;
+            }
+            case (is Float) {
+                total += acres;
+            }
+            case (is Decimal) {
+                total += acres.float;
+            }
+            else {
+                warner.handle(AssertionError("Unexpected acreage type at ``context`` in ID #``fixture.id``"));
+            }
+            if (total > 160.0) {
+                warner.handle(AssertionError("More explicit acres (``Float.format(total, 0, 1)``) than tile should allow at ``context``"));
+                return;
+            }
+        }
+        for (fixture in fixtures.narrow<ITownFixture>()) {
+            switch (fixture.townSize)
+            case (TownSize.small) {
+                total += 15;
+            }
+            case (TownSize.medium) {
+                total += 40;
+            }
+            case (TownSize.large) {
+                total += 80;
+            }
+        }
+        total += fixtures.narrow<Grove>().map(Grove.population)
+            .filter(Integer.positive).fold(0)(plus) / 500;
+        if (total > 160.0) {
+            warner.handle(AssertionError("Counting towns and groves, more acres (``Float.format(total, 0, 1)``) used than tile should allow at ``context``"));
+        }
+    }
     {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker,
 		suspiciousSkillCheck, resourcePlaceholderChecker ];
     void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
@@ -203,6 +260,11 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
 //                      *map.fixtures[location]);
                         *map.fixtures.get(location));
                 }
+            }
+        }
+        for (location in map.locations) {
+            if (exists terrain = map.baseTerrain[location]) {
+                acreageChecker(location, warner, map.fixtures.get(location));
             }
         }
     }
