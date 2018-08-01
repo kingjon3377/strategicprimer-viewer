@@ -152,6 +152,13 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 			matchers.add(newMatcher);
 			return newMatcher.displayed;
 		}
+		Boolean zeroFixtures;
+		if (first.currentPlayer.independent || second.currentPlayer.independent ||
+				first.currentPlayer.playerId != second.currentPlayer.playerId) {
+			zeroFixtures = true;
+		} else {
+			zeroFixtures = false;
+		}
 		for (location in first.locations) {
 			if (!second.baseTerrain[location] exists, exists terrain =
 					first.baseTerrain[location]) {
@@ -162,7 +169,7 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 				//if (!second.fixtures[location].any(matchingValue(fixture.id, TileFixture.id))) {
 				if (fixture.id >= 0, !second.fixtures.get(location)
 						.any(matchingValue(fixture.id, TileFixture.id))) {
-					second.addFixture(location, fixture.copy(true));
+					second.addFixture(location, fixture.copy(zeroFixtures));
 				}
 			}
 			if (copyRivers) {
