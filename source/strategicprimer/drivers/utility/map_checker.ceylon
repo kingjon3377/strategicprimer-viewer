@@ -44,7 +44,9 @@ import strategicprimer.model.map {
     IFixture,
     IMapNG,
     TileType,
-    HasExtent
+    HasExtent,
+    Player,
+    HasOwner
 }
 import strategicprimer.model.map.fixtures.mobile {
     IWorker
@@ -101,7 +103,19 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
        code to do."""
     alias Checker=>Anything(TileType, Point, IFixture, Warning);
     class SPContentWarning(Point context, String message)
-            extends Exception("At ``context``: ``message``") { }
+            extends Exception("At ``context``: ``message``") { } // TODO: Use where we have AssertionErrors below
+    class OwnerChecker(IMapNG map) {
+        shared void check(TileType terrain, Point context, IFixture fixture, Warning warner) {
+            if (is HasOwner fixture) {
+                if (fixture.owner.name.trimmed.empty) {
+                    warner.handle(SPContentWarning(context, "Fixture owned by ``fixture.owner``, who has no name"));
+                }
+                if (!map.players.map(Player.playerId).any(fixture.owner.playerId.equals)) {
+                    warner.handle(SPContentWarning(context, "Fixture owned by ``fixture.owner``, who is not known by the map"));
+                }
+            }
+        }
+    }
     void lateriteChecker(TileType terrain, Point context, IFixture fixture,
 	        Warning warner) {
         if (is StoneDeposit fixture, StoneKind.laterite == fixture.stone,
@@ -253,7 +267,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
 	    log.debug("Full stack trace of SP map format error:", except);
             return;
         }
-        for (checker in extraChecks) {
+        for (checker in extraChecks.follow(OwnerChecker(map).check)) {
             for (location in map.locations) {
                 if (exists  terrain = map.baseTerrain[location]) {
                     contentCheck(checker, terrain, location, warner,
