@@ -43,7 +43,11 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
         for (player in obj) {
             if (!players.items.contains(player)) {
                 if (exists matching = players[player.playerId]) {
-                    report("Matching players differ: our ``matching``, their ``player``");
+                    if (player.name.empty) {
+                        continue;
+                    } else {
+                        report("Matching players differ: our ``matching``, their ``player``");
+                    }
                 } else {
 	                report("Extra player ``player.name``");
 	            }
