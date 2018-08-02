@@ -121,8 +121,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	static class ReportTreeRenderer(DistanceComparator calculator)
 			extends DefaultTreeCellRenderer() {
 		shared actual Component getTreeCellRendererComponent(JTree tree, Object val,
-			Boolean selected, Boolean expanded, Boolean leaf, Integer row,
-			Boolean hasFocus) {
+				Boolean selected, Boolean expanded, Boolean leaf, Integer row,
+				Boolean hasFocus) {
 			assert (is JComponent retval =
 				super.getTreeCellRendererComponent(tree, val, selected, expanded,
 				leaf, row, hasFocus));
