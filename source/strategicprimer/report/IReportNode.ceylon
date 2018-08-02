@@ -12,8 +12,7 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.model.map {
-    Point,
-    invalidPoint
+    Point
 }
 import strategicprimer.report.nodes {
     SimpleReportNode,

@@ -103,7 +103,6 @@ import strategicprimer.model.xmlio {
     mapIOHelper
 }
 import lovelace.util.common {
-    anythingEqual,
 	matchingPredicate,
 	matchingValue,
 	silentListener,

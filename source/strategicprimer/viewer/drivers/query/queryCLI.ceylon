@@ -40,7 +40,6 @@ import strategicprimer.drivers.common.cli {
 import lovelace.util.common {
 	todo,
 	matchingValue,
-	defer,
 	simpleMap
 }
 import strategicprimer.model.map.fixtures.terrain {
