@@ -155,8 +155,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			MenuBroker menuHandler) extends MouseAdapter() {
 		shared actual void mousePressed(MouseEvent event) {
 			if (exists selPath = reportTree.getPathForLocation(event.x, event.y),
-				platform.hotKeyPressed(event),
-				is IReportNode node = selPath.lastPathComponent) {
+					platform.hotKeyPressed(event),
+					is IReportNode node = selPath.lastPathComponent) {
 				if (exists point = node.point) {
 					IViewerModel viewerModel = getViewerModel(model, menuHandler);
 					SwingUtilities.invokeLater(() => viewerModel.selection = point); // TODO: Figure out a way to defer() an assignment
