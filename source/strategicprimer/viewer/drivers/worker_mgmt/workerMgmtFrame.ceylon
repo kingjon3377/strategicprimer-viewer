@@ -168,8 +168,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		assert (is IWorkerTreeModel treeModel = tree.model);
 		value selectionModel = tree.selectionModel;
 		TreePath? currentSelection = selectionModel.selectionPath;
-		TreePath? nextPath = treeModel.nextProblem(currentSelection, turn);
-		if (exists nextPath) {
+		if (exists nextPath = treeModel.nextProblem(currentSelection, turn)) {
 			tree.expandPath(nextPath);
 			tree.setSelectionRow(tree.getRowForPath(nextPath));
 			// TODO: Should select the "TODO" or "FIXME" in the orders window.
