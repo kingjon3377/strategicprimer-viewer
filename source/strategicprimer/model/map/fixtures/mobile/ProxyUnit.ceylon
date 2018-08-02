@@ -345,7 +345,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             assert (identifier is Integer, identifier == item.id);
         } else {
             "Unit must have kind ``identifier``"
-            assert (identifier is String, identifier != item.kind);
+            assert (identifier is String, identifier == item.kind);
         }
         cachedIterable = [];
         proxiedList.add(item);
