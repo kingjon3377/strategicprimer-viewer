@@ -166,8 +166,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	}
 	static void jumpNext(JTree tree, Integer turn) {
 		assert (is IWorkerTreeModel treeModel = tree.model);
-		value selectionModel = tree.selectionModel;
-		TreePath? currentSelection = selectionModel.selectionPath;
+		TreePath? currentSelection = tree.selectionModel.selectionPath;
 		if (exists nextPath = treeModel.nextProblem(currentSelection, turn)) {
 			tree.expandPath(nextPath);
 			tree.setSelectionRow(tree.getRowForPath(nextPath));
