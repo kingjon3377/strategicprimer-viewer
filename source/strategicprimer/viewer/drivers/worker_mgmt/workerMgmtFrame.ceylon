@@ -164,17 +164,6 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			}
 		}
 	}
-	static void jumpNext(JTree tree, Integer turn) {
-		assert (is IWorkerTreeModel treeModel = tree.model);
-		TreePath? currentSelection = tree.selectionModel.selectionPath;
-		if (exists nextPath = treeModel.nextProblem(currentSelection, turn)) {
-			tree.expandPath(nextPath);
-			tree.setSelectionRow(tree.getRowForPath(nextPath));
-			// TODO: Should select the "TODO" or "FIXME" in the orders window.
-		} else {
-			// TODO: beep? visual beep?
-		}
-	}
 	SPOptions options;
 	IWorkerModel model;
 	MenuBroker menuHandler;
@@ -245,8 +234,18 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	tree.addTreeSelectionListener(resultsPanel);
 	JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel);
 	tree.addUnitMemberListener(mdp);
-	void jumpButtonHandler(ActionEvent _) => jumpNext(tree, mainMap.currentTurn);
-	value jumpButton = listenedButton("Jump to Next Blank (``platform.shortcutDescription``J)", jumpButtonHandler);
+	void jumpNext(ActionEvent _) {
+		assert (is IWorkerTreeModel treeModel = tree.model);
+		TreePath? currentSelection = tree.selectionModel.selectionPath;
+		if (exists nextPath = treeModel.nextProblem(currentSelection, mainMap.currentTurn)) {
+			tree.expandPath(nextPath);
+			tree.setSelectionRow(tree.getRowForPath(nextPath));
+			// TODO: Should select the "TODO" or "FIXME" in the orders window.
+		} else {
+			// TODO: beep? visual beep?
+		}
+	}
+	value jumpButton = listenedButton("Jump to Next Blank (``platform.shortcutDescription``J)", jumpNext);
 	StrategyExporter strategyExporter = StrategyExporter(model, options);
 	BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
 		listenedButton("Add New Unit", silentListener(newUnitFrame.showWindow)),
@@ -262,7 +261,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			JLabel("The contents of the world you know about, for reference:"),
 			JScrollPane(createReportTree(reportModel)), null),
 		mdp));
-	createHotKey(jumpButton, "jumpToNext", jumpButtonHandler, JComponent.whenInFocusedWindow, createAccelerator(KeyEvent.vkJ));
+	createHotKey(jumpButton, "jumpToNext", jumpNext, JComponent.whenInFocusedWindow, createAccelerator(KeyEvent.vkJ));
 	TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
 	menuHandler.register(silentListener(expander.expandAll), "expand all");
 	menuHandler.register(silentListener(expander.collapseAll), "collapse all");
