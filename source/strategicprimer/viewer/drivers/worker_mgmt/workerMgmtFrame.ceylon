@@ -259,8 +259,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			JScrollPane(tree), null), lowerLeft, 2.0 / 3.0),
 		verticalSplit(BorderedPanel.verticalPanel(
 			JLabel("Contents of the world you know about, for reference:"),
-			JScrollPane(createReportTree(reportModel)), null),
-		mdp, 0.6));
+			JScrollPane(createReportTree(reportModel)), null), mdp, 0.6));
 	createHotKey(jumpButton, "jumpToNext", jumpNext, JComponent.whenInFocusedWindow, createAccelerator(KeyEvent.vkJ));
 	TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
 	menuHandler.register(silentListener(expander.expandAll), "expand all");
