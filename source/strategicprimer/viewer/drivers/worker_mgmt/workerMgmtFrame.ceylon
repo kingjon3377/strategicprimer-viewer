@@ -258,7 +258,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	contentPane = horizontalSplit(verticalSplit(BorderedPanel.verticalPanel(playerLabelPanel,
 			JScrollPane(tree), null), lowerLeft, 2.0 / 3.0),
 		verticalSplit(BorderedPanel.verticalPanel(
-			JLabel("The contents of the world you know about, for reference:"),
+			JLabel("Contents of the world you know about, for reference:"),
 			JScrollPane(createReportTree(reportModel)), null),
 		mdp, 0.6));
 	createHotKey(jumpButton, "jumpToNext", jumpNext, JComponent.whenInFocusedWindow, createAccelerator(KeyEvent.vkJ));
