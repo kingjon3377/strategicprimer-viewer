@@ -255,12 +255,12 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 					.call((file) => strategyExporter.writeStrategy(
 					parsePath(file.string).resource, treeModel.dismissed))));
 	value playerLabelPanel = BorderedPanel.horizontalPanel(playerLabel, null, jumpButton);
-	contentPane = horizontalSplit(0.5, 0.5, verticalSplit(2.0 / 3.0, 2.0 / 3.0,
-			BorderedPanel.verticalPanel(playerLabelPanel, JScrollPane(tree), null), lowerLeft),
-		verticalSplit(0.6, 0.6, BorderedPanel.verticalPanel(
+	contentPane = horizontalSplit(verticalSplit(BorderedPanel.verticalPanel(playerLabelPanel,
+			JScrollPane(tree), null), lowerLeft, 2.0 / 3.0),
+		verticalSplit(BorderedPanel.verticalPanel(
 			JLabel("The contents of the world you know about, for reference:"),
 			JScrollPane(createReportTree(reportModel)), null),
-		mdp));
+		mdp, 0.6));
 	createHotKey(jumpButton, "jumpToNext", jumpNext, JComponent.whenInFocusedWindow, createAccelerator(KeyEvent.vkJ));
 	TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
 	menuHandler.register(silentListener(expander.expandAll), "expand all");

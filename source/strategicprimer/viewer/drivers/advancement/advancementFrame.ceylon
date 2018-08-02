@@ -95,18 +95,17 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
         shared actual String windowName = "Worker Advancement";
     }
     JLabel html(String string) => JLabel("<html><p align=\"left\">``string``</p></html>");
-    retval.contentPane = horizontalSplit(0.5, 0.5,
-        BorderedPanel.verticalPanel(playerLabel,
+    retval.contentPane = horizontalSplit(BorderedPanel.verticalPanel(playerLabel,
             JScrollPane(tree), listenedButton("Add worker to selected unit ...",
                 newWorkerListener)),
-        verticalSplit(0.5, 0.3, BorderedPanel.verticalPanel(
+        verticalSplit(BorderedPanel.verticalPanel(
             html("Worker's Jobs and Skills:"), JScrollPane(jobsTreeObject), null),
             BorderedPanel.verticalPanel(null,
                 BorderedPanel.verticalPanel(
                     BorderedPanel.verticalPanel(html("Add a job to the worker:"), null,
                         jobAdditionPanel), null,
                     BorderedPanel.verticalPanel(html("Add a Skill to the selected Job:"),
-                        null, skillAdditionPanel)), hoursAdditionPanel)));
+                        null, skillAdditionPanel)), hoursAdditionPanel), 0.5, 0.3));
     retval.playerChanged(null, model.currentPlayer);
     retval.jMenuBar = workerMenu(menuHandler.actionPerformed, retval, model);
     retval.pack();

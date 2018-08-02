@@ -200,8 +200,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             ScrollPaneConstants.verticalScrollbarAsNeeded,
             ScrollPaneConstants.horizontalScrollbarAsNeeded);
     }
-    contentPane = horizontalSplit(0.6, 0.6, contentPanel,
+    contentPane = horizontalSplit(contentPanel,
         BorderedPanel.verticalPanel(JLabel("Find only ..."),
-            scrollPane, null));
+            scrollPane, null), 0.6);
     pack();
 }

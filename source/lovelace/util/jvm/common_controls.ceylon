@@ -246,16 +246,16 @@ shared class BorderedPanel extends JPanel {
 "Versions of [[JSplitPane]] that take the divider location and resize weight, as well as
  other parameters, in the same operation, and don't require the caller to remember
  whether 'true' means a horizontal or vertical split.."
-shared JSplitPane verticalSplit(Float dividerLocation, Float resizeWeight, Component top,
-        Component bottom) {
+shared JSplitPane verticalSplit(Component top, Component bottom,
+        Float dividerLocation = 0.5, Float resizeWeight = dividerLocation) {
     JSplitPane retval = JSplitPane(JSplitPane.verticalSplit, true, top, bottom);
     retval.setDividerLocation(dividerLocation);
     retval.resizeWeight = resizeWeight;
     return retval;
 }
 see(`function verticalSplit`)
-shared JSplitPane horizontalSplit(Float dividerLocation, Float resizeWeight,
-        Component left, Component right) {
+shared JSplitPane horizontalSplit(Component left, Component right,
+        Float dividerLocation = 0.5, Float resizeWeight = dividerLocation) {
     JSplitPane retval = JSplitPane(JSplitPane.horizontalSplit, true, left, right);
     retval.setDividerLocation(dividerLocation);
     retval.resizeWeight = resizeWeight;

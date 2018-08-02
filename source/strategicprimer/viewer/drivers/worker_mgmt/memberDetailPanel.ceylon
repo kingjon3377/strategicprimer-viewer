@@ -129,13 +129,13 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             }
         }
     }
-    JScrollPane statPanelWrapped = JScrollPane(horizontalSplit(0.6, 0.6, statPanel,
-        portraitComponent),
+    JScrollPane statPanelWrapped = JScrollPane(horizontalSplit(statPanel,
+            portraitComponent, 0.6),
         (platform.systemIsMac) then ScrollPaneConstants.verticalScrollbarAlways
         else ScrollPaneConstants.verticalScrollbarAsNeeded,
         (platform.systemIsMac) then ScrollPaneConstants.horizontalScrollbarAlways
         else ScrollPaneConstants.horizontalScrollbarAsNeeded);
-    JComponent split = verticalSplit(0.5, 0.5, statPanelWrapped, resultsPanel);
+    JComponent split = verticalSplit(statPanelWrapped, resultsPanel);
     split.border = BorderFactory.createEmptyBorder();
     variable UnitMember? current = null;
     void recache() {

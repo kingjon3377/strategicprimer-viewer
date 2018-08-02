@@ -147,8 +147,8 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 		return BorderedPanel.verticalPanel(JLabel("Display ..."), JScrollPane(table),
 			buttonPanel);
 	}
-	contentPane = verticalSplit(0.9, 0.9, horizontalSplit(0.95, 0.95,
-		mapScrollPanel(mapModel, mapPanel), createFilterPanel()), detailPane);
+	contentPane = verticalSplit(horizontalSplit(mapScrollPanel(mapModel, mapPanel),
+		createFilterPanel(), 0.95), detailPane, 0.9);
 	(super of Container).preferredSize = Dimension(800, 600);
 	setSize(800, 600);
 	setMinimumSize(Dimension(800, 600));

@@ -139,7 +139,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
     fixtureListObject.addListSelectionListener(portrait);
     JPanel listPanel = BorderedPanel.verticalPanel(header, JScrollPane(fixtureListObject),
         null);
-    retval.leftComponent = horizontalSplit(0.5, 0.5, listPanel, portrait);
+    retval.leftComponent = horizontalSplit(listPanel, portrait);
     retval.rightComponent = keyPanel;
     retval.resizeWeight = 0.9;
     retval.setDividerLocation(0.9);

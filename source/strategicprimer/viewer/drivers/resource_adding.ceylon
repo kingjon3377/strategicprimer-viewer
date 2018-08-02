@@ -461,7 +461,7 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
                 implementLabel.setArgs(currentPlayer.name);
             }
         }
-        retval.add(verticalSplit(0.2, 0.1, mainPanel, scrolledLog));
+        retval.add(verticalSplit(mainPanel, scrolledLog, 0.2, 0.1));
         retval.jMenuBar = workerMenu(menuHandler, retval, model);
         retval.pack();
         logLabel.minimumSize = Dimension(retval.width - 20, 50);

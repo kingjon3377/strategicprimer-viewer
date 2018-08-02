@@ -217,7 +217,7 @@ SPFrame explorationFrame(IExplorationModel model,
         mpField.addActionListener(buttonListener);
         speedModel.selectedItem = Speed.normal;
     }
-    explorerSelectingPanel.center = horizontalSplit(0.5, 0.5,
+    explorerSelectingPanel.center = horizontalSplit(
         BorderedPanel.verticalPanel(JLabel("Players in all maps:"), playerList,
             null),
         BorderedPanel.verticalPanel(JLabel(
@@ -528,7 +528,7 @@ SPFrame explorationFrame(IExplorationModel model,
             ell.selectedPointChanged(null, model.selectedUnitLocation);
         }
     }
-    explorationPanel.center = verticalSplit(0.5, 0.5, headerPanel, tilesPanel);
+    explorationPanel.center = verticalSplit(headerPanel, tilesPanel);
     model.addMovementCostListener(explorationPanel);
     model.addSelectionChangeListener(explorationPanel);
     object swapper satisfies CompletionListener {
