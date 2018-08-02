@@ -272,16 +272,13 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	model.addMapChangeListener(object satisfies MapChangeListener {
 		shared actual void mapChanged() => Thread(reportGeneratorThread).start();
 	});
-	object reportUpdater satisfies PlayerChangeListener {
-		shared actual void playerChanged(Player? old, Player newPlayer) =>
-				Thread(reportGeneratorThread).start();
-	}
 	{PlayerChangeListener+} pcListeners = [ newUnitFrame, treeModel, ordersPanelObj,
-		reportUpdater, resultsPanel ];
+		resultsPanel ];
 	shared actual void playerChanged(Player? old, Player newPlayer) {
 		for (listener in pcListeners) {
 			listener.playerChanged(old, newPlayer);
 		}
+		Thread(reportGeneratorThread).start();
 		playerLabel.setArgs(newPlayer.name, platform.shortcutDescription);
 	}
 	assert (exists thisReference =
