@@ -127,8 +127,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 				super.getTreeCellRendererComponent(tree, val, selected, expanded,
 				leaf, row, hasFocus));
 			if (is IReportNode val) {
-				Point point = val.point;
-				if (point.valid) {
+				if (exists point = val.point) {
 					retval.toolTipText = calculator.distanceString(point);
 				} else {
 					retval.toolTipText = null;
@@ -160,8 +159,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			if (exists selPath = reportTree.getPathForLocation(event.x, event.y),
 				platform.hotKeyPressed(event),
 				is IReportNode node = selPath.lastPathComponent) {
-				Point point = node.point;
-				if (point.valid) {
+				if (exists point = node.point) {
 					IViewerModel viewerModel = getViewerModel(model, menuHandler);
 					SwingUtilities.invokeLater(() => viewerModel.selection = point); // TODO: Figure out a way to defer() an assignment
 				}

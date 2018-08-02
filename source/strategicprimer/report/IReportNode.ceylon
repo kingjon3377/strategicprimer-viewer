@@ -54,22 +54,25 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&
      represents anything on."
     shared formal variable Point? localPoint;
     "The point, if any, that this and its children represent something on."
-    todo("Return null rather than [[strategicprimer.model.map::invalidPoint]]?")
-    shared default Point point {
+    shared default Point? point {
         if (exists retval = localPoint) {
             return retval;
         } else {
             variable Point? retval = null;
             for (child in this) {
                 if (exists temp = retval) {
-                    if (temp != child.point) {
-                        return invalidPoint;
+                    if (exists childPoint = child.point) {
+                        if (temp != childPoint) {
+                            return null;
+                        }
+                    } else {
+                        return null;
                     }
                 } else {
                     retval = child.point;
                 }
             }
-            return retval else invalidPoint;
+            return retval;
         }
     }
     "The HTML representation of the subtree based on this node."
