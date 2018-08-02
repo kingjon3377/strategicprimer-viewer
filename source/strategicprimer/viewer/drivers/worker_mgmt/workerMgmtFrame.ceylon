@@ -49,7 +49,8 @@ import lovelace.util.jvm {
     horizontalSplit,
     BorderedPanel,
     verticalSplit,
-	ComponentParentStream
+	ComponentParentStream,
+    createAccelerator
 }
 
 import strategicprimer.drivers.common {
@@ -167,6 +168,19 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			}
 		}
 	}
+	static void jumpNext(JTree tree, Integer turn) {
+		assert (is IWorkerTreeModel treeModel = tree.model);
+		value selectionModel = tree.selectionModel;
+		TreePath? currentSelection = selectionModel.selectionPath;
+		TreePath? nextPath = treeModel.nextProblem(currentSelection, turn);
+		if (exists nextPath) {
+			tree.expandPath(nextPath);
+			tree.setSelectionRow(tree.getRowForPath(nextPath));
+			// TODO: Should select the "TODO" or "FIXME" in the orders window.
+		} else {
+			// TODO: beep? visual beep?
+		}
+	}
 	SPOptions options;
 	IWorkerModel model;
 	MenuBroker menuHandler;
@@ -237,6 +251,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	tree.addTreeSelectionListener(resultsPanel);
 	JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel);
 	tree.addUnitMemberListener(mdp);
+	void jumpButtonHandler(ActionEvent _) => jumpNext(tree, mainMap.currentTurn);
+	value jumpButton = listenedButton("Jump to Next Blank (``platform.shortcutDescription``J)", jumpButtonHandler);
 	StrategyExporter strategyExporter = StrategyExporter(model, options);
 	BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
 		listenedButton("Add New Unit", silentListener(newUnitFrame.showWindow)),
@@ -245,12 +261,14 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 				filteredFileChooser(false, ".", null))
 					.call((file) => strategyExporter.writeStrategy(
 					parsePath(file.string).resource, treeModel.dismissed))));
+	value playerLabelPanel = BorderedPanel.horizontalPanel(playerLabel, null, jumpButton);
 	contentPane = horizontalSplit(0.5, 0.5, verticalSplit(2.0 / 3.0, 2.0 / 3.0,
-			BorderedPanel.verticalPanel(playerLabel, JScrollPane(tree), null), lowerLeft),
+			BorderedPanel.verticalPanel(playerLabelPanel, JScrollPane(tree), null), lowerLeft),
 		verticalSplit(0.6, 0.6, BorderedPanel.verticalPanel(
 			JLabel("The contents of the world you know about, for reference:"),
 			JScrollPane(createReportTree(reportModel)), null),
 		mdp));
+	createHotKey(jumpButton, "jumpToNext", jumpButtonHandler, JComponent.whenInFocusedWindow, createAccelerator(KeyEvent.vkJ));
 	TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
 	menuHandler.register(silentListener(expander.expandAll), "expand all");
 	menuHandler.register(silentListener(expander.collapseAll), "collapse all");

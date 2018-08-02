@@ -30,6 +30,10 @@ import strategicprimer.drivers.worker.common {
     IWorkerModel,
     IWorkerTreeModel
 }
+import lovelace.util.common {
+    inverse,
+    matchingPredicate
+}
 "A TreeModel implementation for a player's units and workers."
 class WorkerTreeModel satisfies IWorkerTreeModel {
 	static Boolean(IUnit) containingItem(UnitMember item) =>
@@ -262,5 +266,25 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
                 }
             }
         }
+    }
+    """Get the path to the "next" unit whose orders for the given turn either contain
+       "TODO", contain "FIXME", or are empty. Returns null if no unit matches those
+       criteria."""
+    shared actual TreePath? nextProblem(TreePath? starting, Integer turn) {
+        {IUnit*} sequence;
+        if (exists starting, exists startingUnit = starting.path.array.narrow<IUnit>().first) {
+            sequence = model.getUnits(root).repeat(2).sequence().trimLeading(inverse(startingUnit.equals)).rest;
+        } else if (exists starting, exists startingKind = starting.path.array.narrow<String>().first) {
+            sequence = model.getUnits(root).repeat(2).sequence().trimLeading(inverse(matchingPredicate(startingKind.equals, IUnit.kind)));
+        } else {
+            sequence = model.getUnits(root);
+        }
+        for (unit in sequence) {
+            String orders = unit.getOrders(turn).lowercased;
+            if (orders.empty || orders.contains("todo") || orders.contains("fixme")) {
+                return TreePath(ObjectArray<Object>.with([root, unit.kind, unit]));
+            }
+        }
+        return null;
     }
 }

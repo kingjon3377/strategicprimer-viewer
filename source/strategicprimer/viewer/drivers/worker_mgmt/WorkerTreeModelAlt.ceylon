@@ -9,7 +9,8 @@ import javax.swing.tree {
     DefaultTreeModel,
     MutableTreeNode,
     DefaultMutableTreeNode,
-    TreeNode
+    TreeNode,
+    TreePath
 }
 import ceylon.collection {
     LinkedList,
@@ -33,7 +34,8 @@ import strategicprimer.drivers.worker.common {
 }
 import lovelace.util.common {
 	matchingValue,
-	as
+	as,
+    inverse
 }
 import lovelace.util.jvm {
 	EnumerationWrapper
@@ -334,5 +336,29 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 IntArray.with(Singleton(index)),
                 ObjectArray<Object>.with(Singleton(childNode)));
         }
+    }
+    """Get the path to the "next" unit whose orders for the given turn either contain
+       "TODO", contain "FIXME", or are empty. Returns null if no unit matches those
+       criteria."""
+    shared actual TreePath? nextProblem(TreePath? starting, Integer turn) {
+        assert (is PlayerNode rootNode = root);
+        value enumeration = rootNode.preorderEnumeration();
+        object wrapped satisfies Iterable<WorkerTreeNode<out Anything>> {
+            iterator() => EnumerationWrapper<WorkerTreeNode<out Anything>>(enumeration);
+        }
+        {UnitNode*} sequence;
+        if (exists starting) {
+            assert (is WorkerTreeNode<out Anything> last = starting.lastPathComponent);
+            sequence = wrapped.repeat(2).sequence().trimLeading(inverse(last.equals)).rest.narrow<UnitNode>();
+        } else {
+            sequence = wrapped.narrow<UnitNode>().sequence();
+        }
+        for (node in sequence) {
+            String orders = node.userObjectNarrowed.getOrders(turn).lowercased;
+            if (orders.empty || orders.contains("todo") || orders.contains("fixme")) {
+                return TreePath(node.path);
+            }
+        }
+        return null;
     }
 }

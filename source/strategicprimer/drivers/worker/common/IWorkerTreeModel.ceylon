@@ -1,5 +1,6 @@
 import javax.swing.tree {
-    TreeModel
+    TreeModel,
+    TreePath
 }
 import strategicprimer.model.map.fixtures {
     UnitMember
@@ -57,4 +58,8 @@ shared interface IWorkerTreeModel
         UnitMember base,
         "The member to add as its sibling."
         UnitMember sibling);
+    """Get the path to the "next" unit whose orders for the given turn either contain
+       "TODO", contain "FIXME", or are empty. Returns null if no unit matches those
+       criteria."""
+    shared formal TreePath? nextProblem(TreePath? starting, Integer turn);
 }
