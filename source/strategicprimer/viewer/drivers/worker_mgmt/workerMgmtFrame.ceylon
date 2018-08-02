@@ -137,15 +137,13 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		}
 	}
 	static IViewerModel getViewerModel(IDriverModel model, MenuBroker menuHandler) {
-		for (frame in WindowList.getFrames(false, true, true)) {
-			if (is MapGUI frame,
-				anythingEqual(frame.mapModel.mapFile, model.mapFile)) {
-				frame.toFront();
-				if (frame.extendedState == Frame.iconified) {
-					frame.extendedState = Frame.normal;
-				}
-				return frame.mapModel;
+		if (exists frame = WindowList.getFrames(false, true, true).array.narrow<MapGUI>()
+				.find(matchingValue(model.mapFile, compose(IViewerModel.mapFile, MapGUI.mapModel)))) {
+			frame.toFront();
+			if (frame.extendedState == Frame.iconified) {
+				frame.extendedState = Frame.normal;
 			}
+			return frame.mapModel;
 		} else {
 			SPFrame&MapGUI frame = ViewerFrame(ViewerModel(model.map,
 				model.mapFile), menuHandler.actionPerformed);
