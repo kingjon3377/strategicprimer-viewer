@@ -107,7 +107,6 @@ import strategicprimer.model.map.fixtures.resources {
     Meadow
 }
 import strategicprimer.model.map.fixtures.terrain {
-    Sandbar,
     Oasis,
     Hill,
     Forest
@@ -1474,7 +1473,6 @@ object xmlTests {
 	    assertUnwantedChild<Oasis>("<oasis><troll /></oasis>", null);
 	    assertUnwantedChild<SimpleImmortal>("<ogre><troll /></ogre>", null);
 	    assertUnwantedChild<SimpleImmortal>("<phoenix><troll /></phoenix>", null);
-	    assertUnwantedChild<Sandbar>("<sandbar><troll /></sandbar>", null);
 	    assertUnwantedChild<SimpleImmortal>("<simurgh><troll /></simurgh>", null);
 	    assertUnwantedChild<SimpleImmortal>("<sphinx><troll /></sphinx>", null);
 	    assertUnwantedChild<SimpleImmortal>("<troll><troll /></troll>", null);
@@ -1491,7 +1489,6 @@ object xmlTests {
 	    }
 	    assertImageSerialization("Hill image property is preserved", Hill(id));
 	    assertImageSerialization("Oasis image property is preserved", Oasis(id));
-	    assertImageSerialization("Sandbar image property is preserved", Sandbar(id));
 	}
 
 	test
@@ -1507,8 +1504,6 @@ object xmlTests {
 	    assertMissingProperty<Hill>("<hill />", "id", Hill(0));
 	    assertSerialization("Oasis serialization", Oasis(id));
 	    assertMissingProperty<Oasis>("<oasis />", "id", Oasis(0));
-	    assertSerialization("Sandbar serialization", Sandbar(id));
-	    assertMissingProperty<Sandbar>("<sandbar />", "id", Sandbar(0));
 	}
 
 
@@ -1566,4 +1561,12 @@ object xmlTests {
 	    assertEquivalentForms("ID numbers can contain commas", """<hill id="1,002" />""",
 	        """<hill id="1002" />""", warningLevels.die);
 	}
+
+	test
+	shared void testOldSandbars() =>
+		assertUnsupportedTag("""<view current_player="-1" current_turn="-1">
+		                        <map version="2" rows="1" columns="1">
+		                        <tile row="0" column="0" kind="plains">
+		                        <sandbar id="0" /></tile></map></view>""", "sandbar",
+			createSimpleMap(Point(1, 1), Point(0, 0)->TileType.plains));
 }

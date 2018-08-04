@@ -6,7 +6,6 @@ import java.awt {
 }
 import strategicprimer.model.map.fixtures.terrain {
     Oasis,
-    Sandbar,
     Hill,
     Forest
 }
@@ -43,7 +42,6 @@ object colorHelper {
     Map<ClassOrInterface<TileFixture>, Color> featureColors = simpleMap(
         `Forest`->Color(0, 117, 0),
         `Oasis`->Color(72, 218, 164),
-        `Sandbar`->Color(249, 233, 28),
         `Hill`->Color(141, 182, 0)
     );
     "A map from map versions to maps from tile-types to colors."

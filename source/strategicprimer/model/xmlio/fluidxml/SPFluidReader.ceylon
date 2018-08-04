@@ -80,8 +80,7 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import strategicprimer.model.map.fixtures.terrain {
     Hill,
-    Oasis,
-    Sandbar
+    Oasis
 }
 import strategicprimer.model.map.fixtures.towns {
     Fortress,
@@ -169,6 +168,9 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             IDRegistrar idFactory, Point currentTile, StartElement element) {
         String type = element.name.localPart.lowercased;
         if (isFutureTag(element, warner)) {
+            return;
+        } else if ("sandbar" == type) {
+            warner.handle(UnsupportedTagException(element)); // FIXME: Alter UnsupportedTagException for the *no-longer*-supported case.
             return;
         } else if ("tile" == type) {
             throw UnwantedChildException(parent.name, element);
@@ -448,7 +450,6 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         "forest"->fluidTerrainHandler.readForest,
         SimpleFixtureReader("hill", Hill).entry,
         SimpleFixtureReader("oasis", Oasis).entry,
-        SimpleFixtureReader("sandbar", Sandbar).entry,
         "animal"->unitMemberHandler.readAnimal,
         SimpleHasKindReader("centaur", Centaur).entry,
         SimpleHasKindReader("dragon", Dragon).entry,

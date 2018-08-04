@@ -59,8 +59,7 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.terrain {
 	Hill,
 	Forest,
-	Oasis,
-	Sandbar
+	Oasis
 }
 import strategicprimer.model.map.fixtures.explorable {
 	Cave,
@@ -122,7 +121,7 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 			FixtureMatcher.complements<Grove>(Grove.orchard, "Orchards", "Groves"),
 			FixtureMatcher.trivialMatcher(`Shrub`),
 			FixtureMatcher.complements<Meadow>(Meadow.field, "Fields", "Meadows"),
-			FixtureMatcher.trivialMatcher(`Sandbar`), FixtureMatcher.trivialMatcher(`Hill`),
+			FixtureMatcher.trivialMatcher(`Hill`),
 			FixtureMatcher.complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
 		].flatMap(flatten);
 	shared new () {}

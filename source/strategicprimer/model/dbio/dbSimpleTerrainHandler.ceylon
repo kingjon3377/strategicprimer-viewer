@@ -11,13 +11,12 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures.terrain {
 	Hill,
-	Oasis,
-	Sandbar
+	Oasis
 }
 import strategicprimer.model.xmlio {
 	Warning
 }
-object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar, Point>()
+object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>()
 		satisfies MapContentsReader {
 	shared actual {String+} initializers = [
 		"""CREATE TABLE IF NOT EXISTS simple_terrain (
@@ -29,7 +28,7 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar,
 			   image VARCHAR(255)
 		   );"""
 	];
-	shared actual void write(Sql db, Hill|Oasis|Sandbar obj, Point context) {
+	shared actual void write(Sql db, Hill|Oasis obj, Point context) {
 		String type;
 		switch (obj)
 		case (is Hill) {
@@ -37,9 +36,6 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar,
 		}
 		case (is Oasis) {
 			type = "oasis";
-		}
-		case (is Sandbar) {
-			type = "sandbar";
 		}
 		db.Insert("""INSERT INTO simple_terrain (row, column, type, id, image)
 		             VALUES(?, ?, ?, ?, ?);""")
@@ -58,7 +54,8 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis|Sandbar,
 				fixture = Hill(id);
 			}
 			case ("sandbar") {
-				fixture = Sandbar(id);
+				log.info("Ignoring 'sandbar' with ID ``id```");
+				continue;
 			}
 			case ("oasis") {
 				fixture = Oasis(id);

@@ -16,7 +16,6 @@ import strategicprimer.model.map.fixtures {
     TerrainFixture
 }
 import strategicprimer.model.map.fixtures.terrain {
-    Sandbar,
     Oasis,
     Hill,
     Forest
@@ -27,7 +26,7 @@ import strategicprimer.model.xmlio {
 "A reader for [[TerrainFixture]]s."
 class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<TerrainFixture>(warning, idRegistrar) {
-    Set<String> supportedTags = set { "forest", "hill", "oasis", "sandbar" };
+    Set<String> supportedTags = set { "forest", "hill", "oasis" };
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
     shared actual TerrainFixture read(StartElement element, QName parent,
@@ -53,10 +52,6 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
             expectAttributes(element, "id", "image");
             retval = Oasis(getOrGenerateID(element));
         }
-        case ("sandbar") {
-            expectAttributes(element, "id", "image");
-            retval = Sandbar(getOrGenerateID(element));
-        }
         else {
             throw AssertionError("Unhandled terrain fixture tag ``element.name
                 .localPart``");
@@ -69,7 +64,7 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
     }
     shared actual void write(Anything(String) ostream, TerrainFixture obj,
             Integer indent) {
-        assert (is Forest|Hill|Oasis|Sandbar obj);
+        assert (is Forest|Hill|Oasis obj);
         switch (obj)
         case (is Forest) {
             writeTag(ostream, "forest", indent);
@@ -86,9 +81,6 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         }
         case (is Oasis) {
             writeTag(ostream, "oasis", indent);
-        }
-        case (is Sandbar) {
-            writeTag(ostream, "sandbar", indent);
         }
         writeImageXML(ostream, obj);
         writeProperty(ostream, "id", obj.id);

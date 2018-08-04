@@ -84,7 +84,6 @@ import strategicprimer.model.map.fixtures.resources {
 import strategicprimer.model.map.fixtures.terrain {
 	Forest,
 	Hill,
-	Sandbar,
 	Oasis
 }
 import strategicprimer.model.map.fixtures.towns {
@@ -110,7 +109,7 @@ import lovelace.util.common {
 		[`Sphinx`, `Djinn`, `Griffin`, `Minotaur`, `Ogre`, `Phoenix`, `Simurgh`, `Troll`];
 {Immortal(String, Integer)*} kindedImmortalConstructors = [`Centaur`, `Dragon`, `Fairy`,
 	`Giant`];
-{TileFixture(Integer)*} simpleTerrainConstructors = [`Hill`, `Sandbar`, `Oasis`];
+{TileFixture(Integer)*} simpleTerrainConstructors = [`Hill`, `Oasis`];
 {String*} races = raceFactory.races.distinct;
 object dbio_tests { // TODO: All tests should be more robust, as if developed test-first
 	SQLiteDataSource source = SQLiteDataSource();

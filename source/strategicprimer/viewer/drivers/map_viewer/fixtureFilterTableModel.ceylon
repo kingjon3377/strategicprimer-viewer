@@ -70,7 +70,6 @@ import strategicprimer.model.map.fixtures.resources {
     Shrub
 }
 import strategicprimer.model.map.fixtures.terrain {
-    Sandbar,
     Oasis,
     Hill,
     Forest
@@ -123,7 +122,6 @@ shared class FixtureFilterTableModel extends AbstractTableModel
 				FixtureMatcher.trivialMatcher(`Forest`),
 				FixtureMatcher.complements<Meadow>(Meadow.field, "Fields", "Meadows"),
 				FixtureMatcher.trivialMatcher(`Shrub`), FixtureMatcher.trivialMatcher(`Hill`),
-				FixtureMatcher.trivialMatcher(`Sandbar`),
 				FixtureMatcher.complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
 			]) {
 			if (is {FixtureMatcher*} arg) {

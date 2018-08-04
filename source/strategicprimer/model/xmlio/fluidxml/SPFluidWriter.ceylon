@@ -67,7 +67,6 @@ import strategicprimer.model.map.fixtures.resources {
     MineralVein
 }
 import strategicprimer.model.map.fixtures.terrain {
-    Sandbar,
     Oasis,
     Hill,
     Forest
@@ -343,7 +342,6 @@ shared class SPFluidWriter() satisfies SPWriter {
         `Forest`->castingWriter<Forest>(fluidTerrainHandler.writeForest),
         simpleFixtureWriter(`Hill`, "hill"),
         simpleFixtureWriter(`Oasis`, "oasis"),
-        simpleFixtureWriter(`Sandbar`, "sandbar"),
         `Animal`->castingWriter<Animal>(unitMemberHandler.writeAnimal),
         `AnimalTracks`->castingWriter<AnimalTracks>(unitMemberHandler.writeAnimalTracks),
         simpleFixtureWriter(`Centaur`, "centaur"),

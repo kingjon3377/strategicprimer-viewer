@@ -224,6 +224,9 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 } else if (futureTags.contains(type)) {
                     tagStack.push(event.name);
                     warner.handle(UnsupportedTagException(event));
+                } else if ("sandbar" == type) {
+                    tagStack.push(event.name);
+                    warner.handle(UnsupportedTagException(event)); // FIXME: Adapt UnsupportedTagException to properly report the *no-longer*-supported case
                 } else if (invalidPoint == point) {
                     // fixture outside tile
                     assert (exists top = tagStack.top);
