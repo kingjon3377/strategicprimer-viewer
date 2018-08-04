@@ -264,7 +264,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
         } catch (SPFormatException except) {
             err("SP map format error in ``file``");
             log.error("SP map format error in ``file``: ``except.message``");
-	    log.debug("Full stack trace of SP map format error:", except);
+            log.debug("Full stack trace of SP map format error:", except);
             return;
         }
         for (checker in extraChecks.follow(OwnerChecker(map).check)) {
