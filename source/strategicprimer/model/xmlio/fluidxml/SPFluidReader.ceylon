@@ -124,7 +124,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
 					warner, idFactory);
             }
         }
-        throw UnsupportedTagException(element);
+        throw UnsupportedTagException.future(element);
     }
     class SimpleFixtureReader(String tag, Object(Integer) factory) {
         shared Object reader(StartElement element, QName parent, {XMLEvent*} stream,
@@ -157,7 +157,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     }
     Boolean isFutureTag(StartElement tag, Warning warner) {
         if (futureTags.contains(tag.name.localPart.lowercased)) {
-            warner.handle(UnsupportedTagException(tag));
+            warner.handle(UnsupportedTagException.future(tag));
             return true;
         } else {
             return false;
@@ -170,7 +170,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         if (isFutureTag(element, warner)) {
             return;
         } else if ("sandbar" == type) {
-            warner.handle(UnsupportedTagException(element)); // FIXME: Alter UnsupportedTagException for the *no-longer*-supported case.
+            warner.handle(UnsupportedTagException.obsolete(element));
             return;
         } else if ("tile" == type) {
             throw UnwantedChildException(parent.name, element);

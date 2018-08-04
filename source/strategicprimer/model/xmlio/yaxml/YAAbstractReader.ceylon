@@ -247,7 +247,7 @@ abstract class YAAbstractReader<Element>
     }
     "Warn about a not-yet-(fully-)supported tag."
     shared void warnFutureTag(StartElement tag) =>
-			warner.handle(UnsupportedTagException(tag));
+			warner.handle(UnsupportedTagException.future(tag));
     "Advance the stream until we hit an end element matching the given name, but object to
      any start elements."
     shared void spinUntilEnd(QName tag, {XMLEvent*} reader, {String*} futureTags = []) {

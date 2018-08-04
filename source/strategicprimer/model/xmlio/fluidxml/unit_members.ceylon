@@ -191,7 +191,7 @@ object unitMemberHandler extends FluidBase() {
 	            "status", "wild", "born", "image");
 	        kind = getAttribute(element, "kind");
 	    } else {
-	        warner.handle(UnsupportedTagException(element));
+	        warner.handle(UnsupportedTagException.future(element));
 	        expectAttributes(element, warner, "id", "count", "image");
 	        kind = tag;
 	    }

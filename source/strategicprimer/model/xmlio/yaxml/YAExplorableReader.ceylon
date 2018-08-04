@@ -35,7 +35,7 @@ class YAExplorableReader(Warning warning, IDRegistrar idRegistrar)
             retval = Battlefield(getIntegerParameter(element, "dc"), idNum);
         }
         case ("cave") { retval = Cave(getIntegerParameter(element, "dc"), idNum); }
-        else { throw UnsupportedTagException(element); }
+        else { throw UnsupportedTagException.future(element); }
         spinUntilEnd(element.name, stream);
         retval.image = getParameter(element, "image", "");
         return retval;
