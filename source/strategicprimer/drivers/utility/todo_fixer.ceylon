@@ -80,7 +80,7 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
     MutableList<String> raceList = ArrayList<String>();
     "How many units we've fixed."
     variable Integer count = -1;
-    shared actual IDriverUsage usage = DriverUsage(false, ["-o", "--fix-todos"],
+    shared actual IDriverUsage usage = DriverUsage(false, ["--fix-todos"],
         ParamCount.atLeastOne, "Fix TODOs in maps",
         "Fix TODOs in unit kinds and aquatic villages with non-aquatic races", false,
         false);

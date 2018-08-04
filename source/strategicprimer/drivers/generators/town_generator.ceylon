@@ -104,7 +104,7 @@ service(`interface ISPDriver`)
 shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["-o", "--town"];
+        invocations = ["--town"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Enter or generate stats and contents for towns and villages";
         longDescription = "Enter or generate stats and contents for towns and villages";
