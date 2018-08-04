@@ -21,7 +21,7 @@ class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Player>(warning, idRegistrar) {
     shared actual Player read(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, "player");
-        expectAttributes(element, "number", "code_name");
+        expectAttributes(element, "number", "code_name", "portrait");
         requireNonEmptyParameter(element, "number", true);
         requireNonEmptyParameter(element, "code_name", true);
         // We're thinking about storing "standing orders" in the XML under the <player>
