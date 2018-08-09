@@ -121,8 +121,10 @@ shared class ExplorableReportGenerator(
         Map<Type<IFixture>, IReportNode> nodes =
                 simpleMap(`Portal`->portals, `Battlefield`->battles,
             `Cave`->caves);
+//        for ([loc, item] in fixtures.items.narrow<[Point, Battlefield|Cave|Portal]>().sort(pairComparator)) { // TODO: switch to this form once eclipse/ceylon#7372 fixed
+//            if (exists node = nodes[type(item)]) {
         for ([loc, item] in fixtures.items.sort(pairComparator)) {
-            if (is Battlefield|Cave|Portal item, // Using Iterable.narrow() instead of an if here causes a compiler backend error // TODO: distill MWE and report it
+            if (is Battlefield|Cave|Portal item,
 	                exists node = nodes[type(item)]) {
                 node.appendNode(produceRIRSingle(fixtures, map, item, loc));
             }
