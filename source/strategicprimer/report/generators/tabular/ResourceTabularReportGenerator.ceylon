@@ -113,8 +113,7 @@ shared class ResourceTabularReportGenerator()
                 implementCounts[fixture.kind] = num + fixture.count;
                 fixtures.remove(key);
             } case (is CacheFixture) {
-                // FIXME: combine with ResourcePile case once compiler accepts it
-                // TODO: Distill MWE and report/find bug
+                // FIXME: combine with ResourcePile case once compiler bug eclipse/ceylon#7372 fixed
                 value [row, *_] = produce(fixtures, fixture, key, loc, parentMap);
                 writeRow(ostream, row.first, *row.rest);
                 fixtures.remove(key);
