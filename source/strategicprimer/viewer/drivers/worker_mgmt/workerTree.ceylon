@@ -113,6 +113,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         showsRootHandles = true;
         dropMode = DropMode.on;
         object workerTreeTransferHandler extends TransferHandler() {
+            // TODO: We want to be able to change units' kinds by dragging them
             "Unit members can only be moved, not copied or linked."
             shared actual Integer getSourceActions(JComponent component) =>
                     TransferHandler.move;
