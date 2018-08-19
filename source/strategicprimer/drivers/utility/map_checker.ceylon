@@ -103,7 +103,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
        code to do."""
     alias Checker=>Anything(TileType, Point, IFixture, Warning);
     class SPContentWarning(Point context, String message)
-            extends Exception("At ``context``: ``message``") { } // TODO: Use where we have AssertionErrors below
+            extends Exception("At ``context``: ``message``") { }
     class OwnerChecker(IMapNG map) {
         shared void check(TileType terrain, Point context, IFixture fixture, Warning warner) {
             if (is HasOwner fixture) {
@@ -204,10 +204,12 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
                 total += acres.float;
             }
             else {
-                warner.handle(AssertionError("Unexpected acreage type at ``context`` in ID #``fixture.id``"));
+                warner.handle(SPContentWarning(context,
+                    "Unexpected acreage type in ID #``fixture.id``"));
             }
             if (total > 160.0) {
-                warner.handle(AssertionError("More explicit acres (``Float.format(total, 0, 1)``) than tile should allow at ``context``"));
+                warner.handle(SPContentWarning(context,
+                    "More explicit acres (``Float.format(total, 0, 1)``) than tile should allow"));
                 return;
             }
         }
@@ -226,7 +228,8 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
         total += fixtures.narrow<Grove>().map(Grove.population)
             .filter(Integer.positive).fold(0)(plus) / 500;
         if (total > 160.0) {
-            warner.handle(AssertionError("Counting towns and groves, more acres (``Float.format(total, 0, 1)``) used than tile should allow at ``context``"));
+            warner.handle(SPContentWarning(context,
+                "Counting towns and groves, more acres (``Float.format(total, 0, 1)``) used than tile should allow"));
         }
     }
     {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker,
