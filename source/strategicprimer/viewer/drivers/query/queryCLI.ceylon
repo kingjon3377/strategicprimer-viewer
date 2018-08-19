@@ -528,20 +528,20 @@ class QueryHelper {
 			}
 			{<String->Anything()>*} matches =
 					commands.filterKeys(shuffle(String.startsWith)(command));
-			if (matches.size == 1) { // TODO: Test 'first' and 'rest' instead of asserting
-				assert (exists first = matches.first);
-				first.item();
-			} else if (matches.empty) {
-				cli.println("Unknown command.");
-				replUsage();
-			} else {
-				cli.println("That command was ambiguous between the following: ");
-				assert (exists first = matches.first);
-				cli.print(first.key);
-				for (key->val in matches.rest) {
-					cli.print(", ``key``");
+			if (exists first = matches.first) {
+				if (matches.rest.empty) {
+					first.item();
+				} else {
+					cli.println("That command was ambiguous between the following: ");
+					cli.print(first.key);
+					for (key->val in matches.rest) {
+						cli.print(", ``key``");
+					}
+					cli.println("");
+					replUsage();
 				}
-				cli.println("");
+			} else {
+				cli.println("Unknown command.");
 				replUsage();
 			}
 		}
