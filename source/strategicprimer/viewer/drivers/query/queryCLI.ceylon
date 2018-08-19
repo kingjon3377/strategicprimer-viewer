@@ -510,7 +510,6 @@ class QueryHelper {
 		"hunt"->deferAction(hunt, "hunt"),
 		"fish"->deferAction(fish, "fish"),
 		"gather"->deferAction(gather, "gather"),
-		// TODO: use defer() to avoid lambdas
 		"herd"->herd,
 		"trap"->shuffle(compose(TrappingCLI.startDriverOnModel,
 			TrappingCLI))(cli, options, model),
