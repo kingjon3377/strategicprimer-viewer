@@ -223,9 +223,11 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 			//assert (exists primaryForest = map.fixtures[location].narrow<Forest>().first); // TODO: syntax sugar
 			assert (exists primaryForest = map.fixtures.get(location).narrow<Forest>().first);
 			variable Integer reserved = 0;
-			if (primaryForest.acres.positive) { // TODO: maybe just warn and add its acreage to reserved acreage?
-				cli.println("First forest at ``location`` had acreage set already, skipping that tile.");
-				continue;
+			if (primaryForest.acres.positive) {
+				cli.println("First forest at ``location`` had acreage set already.");
+//				reserved += map.fixtures[location].narrow<Forest>().map(Forest.acres) // TODO: syntax sugar
+				reserved += map.fixtures.get(location).narrow<Forest>().map(Forest.acres)
+					.filter(positiveNumber).map(decimalize).fold(decimalNumber(0))(plus).integer;
 			}
 			//{Forest*} otherForests = map.fixtures[location].narrow<Forest>() // TODO: syntax sugar
 			{Forest*} otherForests = map.fixtures.get(location).narrow<Forest>()
