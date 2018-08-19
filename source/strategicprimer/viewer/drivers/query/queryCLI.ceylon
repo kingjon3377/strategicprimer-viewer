@@ -519,32 +519,32 @@ class QueryHelper {
 		"unexplored"->findUnexploredCommand,
 		"trade"->tradeCommand
 	);
-	"Handle a series of user commands." // TODO: Move loop back to caller
-	shared void handleCommands() {
-		while (true) {
-			String command = cli.inputString("Command:").lowercased;
-			if ("quit".startsWith(command)) {
-				break;
-			}
-			{<String->Anything()>*} matches =
-					commands.filterKeys(shuffle(String.startsWith)(command));
-			if (exists first = matches.first) {
-				if (matches.rest.empty) {
-					first.item();
-				} else {
-					cli.println("That command was ambiguous between the following: ");
-					cli.print(first.key);
-					for (key->val in matches.rest) {
-						cli.print(", ``key``");
-					}
-					cli.println("");
-					replUsage();
-				}
+	"""Ask the user for a command; if "quit", return false, otherwise handle it
+	   and return true."""
+	shared Boolean handleCommand() {
+		String command = cli.inputString("Command:").lowercased;
+		if ("quit".startsWith(command)) {
+			return false;
+		}
+		{<String->Anything()>*} matches =
+				commands.filterKeys(shuffle(String.startsWith)(command));
+		if (exists first = matches.first) {
+			if (matches.rest.empty) {
+				first.item();
 			} else {
-				cli.println("Unknown command.");
+				cli.println("That command was ambiguous between the following: ");
+				cli.print(first.key);
+				for (key->val in matches.rest) {
+					cli.print(", ``key``");
+				}
+				cli.println("");
 				replUsage();
 			}
+		} else {
+			cli.println("Unknown command.");
+			replUsage();
 		}
+		return true;
 	}
 }
 "A driver for 'querying' the driver model about various things."
@@ -559,7 +559,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			IDriverModel model) {
 		QueryHelper helper = QueryHelper(model, cli, HuntingModel(model.map), options);
 		try {
-			helper.handleCommands();
+			while (helper.handleCommand()) {}
 		} catch (IOException except) {
 			log.error("I/O error", except);
 		}
