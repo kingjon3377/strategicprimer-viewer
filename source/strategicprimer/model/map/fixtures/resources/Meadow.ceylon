@@ -1,12 +1,10 @@
 import lovelace.util.common {
-    todo
+    todo,
+    numberComparator
 }
 import strategicprimer.model.map {
     IFixture,
 	HasExtent
-}
-import strategicprimer.model.map.fixtures {
-	numberComparator
 }
 "A field or meadow. If in forest, should increase a unit's vision slightly when the unit
  is on it."

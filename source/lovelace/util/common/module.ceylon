@@ -7,4 +7,7 @@ module lovelace.util.common "0.1.0" {
     value ceylonVersion = "1.3.3";
     shared import ceylon.collection ceylonVersion;
     shared import ceylon.test ceylonVersion;
+    import ceylon.whole "1.3.3";
+    native("jvm")
+    import ceylon.decimal "1.3.3";
 }

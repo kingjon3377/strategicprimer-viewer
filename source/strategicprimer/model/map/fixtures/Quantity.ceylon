@@ -1,45 +1,10 @@
-import ceylon.decimal {
-    Decimal
-}
-import ceylon.whole {
-    Whole
-}
-
 import strategicprimer.model.map {
     Subsettable
 }
 
 import lovelace.util.common {
     comparingOn,
-	Comparator
-}
-// TODO: Move to lovelace.util
-shared object numberComparator satisfies Comparator<Number<out Anything>> {
-	"Convert an arbitrary Number to a Float."
-	shared Float floatValue(Number<out Anything> number) {
-		"We only know how to handle Integers, Floats, Decimals, and Wholes."
-		assert (is Integer|Float|Decimal|Whole number);
-		switch (number)
-		case (is Integer) { return number.float; }
-		case (is Float) { return number; }
-		case (is Decimal) { return number.float; }
-		case (is Whole) { return number.float; }
-	}
-	shared actual Comparison compare(Number<out Anything> one, Number<out Anything> two) {
-		if (is Integer one, is Integer two) {
-			return one <=> two;
-		} else if (is Float one, is Float two) {
-			return one <=> two;
-		} else if (is Decimal one, is Decimal two) {
-			return one <=> two;
-		} else if (is Whole one, is Whole two) {
-			return one <=> two;
-		} else {
-			Float oneValue = floatValue(one);
-			Float twoValue = floatValue(two);
-			return oneValue <=> twoValue;
-		}
-	}
+    numberComparator
 }
 "A number paired with its units. This class is immutable."
 shared class Quantity

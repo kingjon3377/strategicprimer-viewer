@@ -1,9 +1,9 @@
 import lovelace.util.common {
-    todo
+    todo,
+    numberComparator
 }
 import strategicprimer.model.map.fixtures {
-    TerrainFixture,
-	numberComparator
+    TerrainFixture
 }
 import strategicprimer.model.map {
     HasMutableImage,
