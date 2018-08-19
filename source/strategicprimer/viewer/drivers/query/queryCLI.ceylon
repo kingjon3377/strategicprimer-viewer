@@ -504,8 +504,8 @@ class QueryHelper {
 	Map<String, Anything()> commands = simpleMap(
 		"?"->replUsage,
 		"help"->replUsage,
-		"fortress"->( // TODO: use defer() to avoid lambdas
-				() => fortressInfo(cli.inputPoint("Location of fortress? "))),
+		"fortress"->defer(compose(fortressInfo, cli.inputPoint), ["Location of fortress?"]),
+		// TODO: use defer() to avoid lambdas
 		"hunt"->(()=>hunt(cli.inputPoint("Location to hunt? "), hunterHours * 60)),
 		"fish"->(()=>fish(cli.inputPoint("Location to fish? "), hunterHours * 60)),
 		"gather"->(()=>gather(cli.inputPoint("Location to gather? "), hunterHours * 60)),
