@@ -40,7 +40,8 @@ import strategicprimer.drivers.common.cli {
 import lovelace.util.common {
 	todo,
 	matchingValue,
-	simpleMap
+	simpleMap,
+	defer
 }
 import strategicprimer.model.map.fixtures.terrain {
 	Forest
@@ -84,16 +85,14 @@ import strategicprimer.model.map.fixtures.resources {
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
-"A driver for 'querying' the driver model about various things."
-service(`interface ISPDriver`)
-// FIXME: Write GUI equivalent of query CLI
-shared class QueryCLI() satisfies SimpleCLIDriver {
+"A helper object for the query driver."
+class QueryHelper {
 	"How many hours we assume a working day is for a hunter or such."
-	Integer hunterHours = 10;
+	static Integer hunterHours = 10;
 	"How many encounters per hour for a hunter or such."
-	Integer hourlyEncounters = 4;
+	static Integer hourlyEncounters = 4;
 	"Count the workers in an Iterable belonging to a player."
-	Integer countWorkersInIterable(Player player, {IFixture*} fixtures) {
+	static Integer countWorkersInIterable(Player player, {IFixture*} fixtures) {
 		variable Integer retval = 0;
 		for (fixture in fixtures) {
 			if (is IWorker fixture, is HasOwner fixtures, player == fixtures.owner) {
@@ -104,20 +103,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		}
 		return retval;
 	}
-	"Count the workers belonging to a player."
-	void countWorkers(ICLIHelper cli, IMapNG map, Player* players) {
-		Player[] playerList = players.sequence();
-		value choice = cli.chooseFromList(playerList,
-			"Players in the map:", "Map contains no players",
-			"Owner of workers to count: ", true);
-		if (exists player = choice.item) {
-			Integer count = countWorkersInIterable(player,
-				map.fixtureEntries.map(Entry.item));
-			cli.println("``player.name`` has ``count`` workers");
-		}
-	}
 	"The distance between two points in a map with the given dimensions."
-	Float distance(Point base, Point destination, MapDimensions dimensions) {
+	static Float distance(Point base, Point destination, MapDimensions dimensions) {
 		Integer rawXDiff = base.row - destination.row;
 		Integer rawYDiff = base.column - destination.column;
 		Integer xDiff;
@@ -134,13 +121,57 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		}
 		return sqrt((xDiff * xDiff + yDiff * yDiff).float);
 	}
+	"A description of what could be a single animal or a population of animals."
+	static String populationDescription(Animal animal) {
+		if (animal.population > 1) { // TODO: Use proper plural
+			return "a group of perhaps ``animal.population`` ``animal.kind``";
+		} else {
+			return animal.kind;
+		}
+	}
+	"If argument is a meadow, its status in the format used below; otherwise the empty
+	 string."
+	static String meadowStatus(Anything argument) {
+		if (is Meadow argument) {
+			return " (``argument.status``)";
+		} else {
+			return "";
+		}
+	}
+	"Print the String representation of a Float to one decimal place."
+	static String formatFloat(Float num) => Float.format(num, 0, 1);
+	IDriverModel model;
+	IMapNG map;
+	ICLIHelper cli;
+	HuntingModel huntModel;
+	SPOptions options;
+	shared new (IDriverModel theModel, ICLIHelper theCLI, HuntingModel theHuntModel,
+			SPOptions theOptions) {
+		model = theModel;
+		map = theModel.map;
+		cli = theCLI;
+		huntModel = theHuntModel;
+		options = theOptions;
+	}
+	"Count the workers belonging to a player."
+	void countWorkers({Player*} players) {
+		Player[] playerList = players.sequence();
+		value choice = cli.chooseFromList(playerList,
+			"Players in the map:", "Map contains no players",
+			"Owner of workers to count: ", true);
+		if (exists player = choice.item) {
+			Integer count = countWorkersInIterable(player,
+				map.fixtureEntries.map(Entry.item));
+			cli.println("``player.name`` has ``count`` workers");
+		}
+	}
 	"Report the distance between two points."
-	void printDistance(IMapNG map, ICLIHelper cli) {
+	void printDistance() {
 		Point start = cli.inputPoint("Starting point:\t");
 		Point end = cli.inputPoint("Destination:\t");
 		if (cli.inputBoolean("Compute ground travel distance?")) {
 			cli.println("Distance (on the ground, in MP cost):\t``pathfinder.
-				getTravelDistance(map, start, end).first``");
+			getTravelDistance(map, start, end).first``");
 		} else {
 			cli.println("Distance (as the crow flies, in tiles):\t``Float
 				.format(distance(start, end, map.dimensions), 0, 0)``");
@@ -148,7 +179,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 	}
 	"If the given driver model *has* subordinate maps, add a copy of the given fixture to
 	 them at the given location iff no fixture with the same ID is already there."
-	void addToSubMaps(IDriverModel model, Point point, TileFixture fixture, Boolean zero) {
+	void addToSubMaps(Point point, TileFixture fixture, Boolean zero) {
 		if (is IMultiMapModel model) {
 			for (map->file in model.subordinateMaps) {
 				if (!map.fixtures.get(point).any(matchingValue(fixture.id, TileFixture.id))) {
@@ -159,8 +190,8 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 	}
 	"Reduce the population of a group of plants, animals, etc., and copy the reduced form
 	 into all subordinate maps."
-	void reducePopulation(IDriverModel model, ICLIHelper cli, Point point,
-			HasPopulation<out TileFixture>&TileFixture fixture, String plural, Boolean zero) {
+	void reducePopulation(Point point, HasPopulation<out TileFixture>&TileFixture fixture,
+			String plural, Boolean zero) {
 		Integer count = Integer.smallest(cli.inputNumber("How many ``plural`` to remove: "),
 			fixture.population);
 		if (count > 0) {
@@ -172,7 +203,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				if (is IMultiMapModel model) {
 					for (map->file in model.subordinateMaps) {
 						if (exists found = map.fixtures.get(point)
-								.find(shuffle(curry(fixture.isSubset))(noop))) {
+							.find(shuffle(curry(fixture.isSubset))(noop))) {
 							map.removeFixture(point, found);
 						}
 						map.addFixture(point, addend.copy(zero));
@@ -181,18 +212,16 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			} else if (is IMultiMapModel model) {
 				for (map->file in model.subordinateMaps) {
 					if (exists found = map.fixtures.get(point)
-							.find(shuffle(curry(fixture.isSubset))(noop))) {
+						.find(shuffle(curry(fixture.isSubset))(noop))) {
 						map.removeFixture(point, found);
 					}
 				}
 			}
 		} else {
-			addToSubMaps(model, point, fixture, zero);
+			addToSubMaps(point, fixture, zero);
 		}
 	}
 	void huntGeneral(
-			"The map model."
-			IDriverModel model,
 			"How much time is left in the day."
 			variable Integer time,
 			"How much time is deducted when nothing is found."
@@ -200,8 +229,6 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			"""What verb to use to ask how long an encounter took: "gather", "fight",
 			   "process", e.g."""
 			String verb,
-			"The CLI helper."
-			ICLIHelper cli,
 			"The source of encounters."
 			variable {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*} encounters) {
 		while (time > 0, exists loc->encounter = encounters.first) {
@@ -210,13 +237,12 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				cli.println("Found nothing for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
 			} else if (is AnimalTracks encounter) { // TODO: Is this case actually possible?
-				addToSubMaps(model, loc, encounter, true);
+				addToSubMaps(loc, encounter, true);
 				cli.println("Found only tracks or traces from ``
-					encounter.kind`` for the next ``noResultCost`` minutes.");
+				encounter.kind`` for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
-			} else if (cli.inputBooleanInSeries("Found ``(encounter.population > 1) then
-					"a group of perhaps ``encounter.population`` ``encounter.kind``" else encounter.kind
-						``. Should they ``verb``?", encounter.kind)) {
+			} else if (cli.inputBooleanInSeries("Found ``populationDescription(encounter)
+					``. Should they ``verb``?", encounter.kind)) {
 				Integer cost = cli.inputNumber("Time to ``verb``: ");
 				time -= cost;
 				if (cli.inputBooleanInSeries("Handle processing now?")) {
@@ -229,33 +255,30 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				}
 				if (cli.inputBooleanInSeries("Reduce animal group population of ``
 						encounter.population``?")) {
-					reducePopulation(model, cli, loc, encounter, "animals", true);
+					reducePopulation(loc, encounter, "animals", true);
 				} else {
-					addToSubMaps(model, loc, encounter, true);
+					addToSubMaps(loc, encounter, true);
 				}
 				cli.println("``time`` minutes remaining.");
 			} else {
-				addToSubMaps(model, loc, encounter, true);
+				addToSubMaps(loc, encounter, true);
 				time -= noResultCost;
 			}
 		}
 	}
 	"""Run hunting---that is, produce a list of "encounters"."""
 	todo("Distinguish hunting from fishing in no-result time cost?")
-	void hunt(IDriverModel model, HuntingModel huntModel, Point point, ICLIHelper cli,
-		"How long to spend hunting."
-		Integer time) =>
-			huntGeneral(model, time, 60 / hourlyEncounters,
-				"fight and process", cli, huntModel.hunt(point));
+	void hunt(Point point,
+			"How long to spend hunting."
+			Integer time) => huntGeneral(time, 60 / hourlyEncounters,
+				"fight and process", huntModel.hunt(point));
 	"""Run fishing---that is, produce a list of "encounters"."""
-	void fish(IDriverModel model, HuntingModel huntModel, Point point, ICLIHelper cli,
-		"How long to spend hunting."
-		Integer time) =>
-			huntGeneral(model, time, 60 / hourlyEncounters,
-				"try to catch and process", cli, huntModel.fish(point));
+	void fish(Point point,
+			"How long to spend hunting."
+			Integer time) => huntGeneral(time, 60 / hourlyEncounters,
+				"try to catch and process", huntModel.fish(point));
 	"""Run food-gathering---that is, produce a list of "encounters"."""
-	void gather(IDriverModel model, HuntingModel huntModel, Point point, ICLIHelper cli,
-			variable Integer time) {
+	void gather(Point point, variable Integer time) {
 		variable {<Point->Grove|Shrub|Meadow|HuntingModel.NothingFound>*} encounters =
 				huntModel.gather(point);
 		Integer noResultCost = 60 / hourlyEncounters;
@@ -266,14 +289,13 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 				time -= noResultCost;
 				continue;
 			} else if (cli.inputBooleanInSeries("Found ``encounter.shortDescription````
-					if (is Meadow encounter) then " (``encounter.status``)" else ""``. Should they gather?",
-					encounter.kind)) {
+					meadowStatus(encounter)``. Should they gather?", encounter.kind)) {
 				Integer cost = cli.inputNumber("Time to gather: ");
 				time -= cost;
 				// TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
 				if (is Shrub encounter, encounter.population > 0,
-						cli.inputBooleanInSeries("Reduce shrub population here?")) {
-					reducePopulation(model, cli, loc, encounter, "plants", true);
+					cli.inputBooleanInSeries("Reduce shrub population here?")) {
+					reducePopulation(loc, encounter, "plants", true);
 					cli.println("``time`` minutes remaining.");
 					continue;
 				}
@@ -281,21 +303,19 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			} else {
 				time -= noResultCost;
 			}
-			addToSubMaps(model, loc, encounter, true);
+			addToSubMaps(loc, encounter, true);
 		}
 	}
 	"""Handle herding mammals. Returns how many hours each herder spends "herding." """
-	Integer herdMammals(ICLIHelper cli, MammalModel animal, Integer count,
-		Integer flockPerHerder) {
+	Integer herdMammals(MammalModel animal, Integer count, Integer flockPerHerder) {
 		cli.println("Taking the day's two milkings together, tending the animals takes ``
 			flockPerHerder * animal.dailyTimePerHead`` minutes, or ``flockPerHerder *
-				(animal.dailyTimePerHead - 10)`` with expert herders, plus ``
-				animal.dailyTimeFloor`` minutes to gather them");
+			(animal.dailyTimePerHead - 10)`` with expert herders, plus ``
+			animal.dailyTimeFloor`` minutes to gather them");
 		Quantity base = animal.scaledProduction(count);
 		Float production = base.floatNumber;
-		cli.println("This produces ``Float.format(production, 0,
-			1)`` ``base.units``, ``Float.format(animal.scaledPoundsProduction(count),
-			0, 1)`` lbs, of milk per day.`");
+		cli.println("This produces ``formatFloat(production)`` ``base.units``, ``
+			formatFloat(animal.scaledPoundsProduction(count))`` lbs, of milk per day.`");
 		Integer cost;
 		if (cli.inputBooleanInSeries("Are the herders experts? ")) {
 			cost = animal.dailyExpertTime(flockPerHerder);
@@ -305,18 +325,16 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		return (ceiling(cost / 60.0) + 0.1).integer;
 	}
 	"""Handle herding mammals. Returns how many hours each herder spends "herding." """
-	Integer herdPoultry(ICLIHelper cli, PoultryModel bird, Integer count,
-		Integer flockPerHerder) {
+	Integer herdPoultry(PoultryModel bird, Integer count, Integer flockPerHerder) {
 		cli.println("Gathering eggs takes ``bird
 			.dailyTime(flockPerHerder)`` minutes; cleaning up after them,");
 		cli.println("which should be done at least every ``bird.extraChoresInterval
-			+ 1`` turns, takes ``Float.format(bird
-			.dailyExtraTime(flockPerHerder) / 60.0, 0, 1)`` hours.");
+			+ 1`` turns, takes ``formatFloat(bird
+				.dailyExtraTime(flockPerHerder) / 60.0)`` hours.");
 		Quantity base = bird.scaledProduction(count);
 		Float production = base.floatNumber;
 		cli.println("This produces ``Float.format(production, 0, 0)`` ``
-			base.units``, totaling ``Float.format(bird.scaledPoundsProduction(count),
-			0, 1)`` lbs.");
+			base.units``, totaling ``formatFloat(bird.scaledPoundsProduction(count))`` lbs.");
 		Integer cost;
 		if (cli.inputBooleanInSeries("Do they do the cleaning this turn? ")) {
 			cost = bird.dailyTimePerHead + bird.extraTimePerHead;
@@ -326,7 +344,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		return (ceiling((flockPerHerder * cost) / 60.0) + 0.1).integer;
 	}
 	"Run herding."
-	void herd(ICLIHelper cli, IDriverModel model, HuntingModel huntModel) {
+	void herd() {
 		HerdModel herdModel;
 		if (cli.inputBooleanInSeries("Are these small animals, like sheep?\t")) {
 			herdModel = MammalModel.smallMammals;
@@ -357,20 +375,19 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			Integer flockPerHerder = ((count + herders) - 1) / herders;
 			Integer hours;
 			if (is PoultryModel herdModel) {
-				hours = herdPoultry(cli, herdModel, count, flockPerHerder);
+				hours = herdPoultry(herdModel, count, flockPerHerder);
 			} else {
-				hours = herdMammals(cli, herdModel, count, flockPerHerder);
+				hours = herdMammals(herdModel, count, flockPerHerder);
 			}
 			if (hours < hunterHours,
 				cli.inputBooleanInSeries("Spend remaining time as Food Gatherers? ")) {
-				gather(model, huntModel, cli.inputPoint("Gathering location? "), cli,
-					hunterHours - hours);
+				gather(cli.inputPoint("Gathering location? "), hunterHours - hours);
 			}
 		}
 	}
 	"Give the data about a tile that the player is supposed to automatically know if he
 	 has a fortress on it."
-	void fortressInfo(IMapNG map, Point location, ICLIHelper cli) {
+	void fortressInfo(Point location) {
 		cli.println("Terrain is ``map.baseTerrain[location] else "unknown"``");
 		//        Ground[] ground = map.fixtures[location].narrow<Ground>().sequence();
 		Ground[] ground = map.fixtures.get(location).narrow<Ground>().sequence();
@@ -386,7 +403,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		}
 	}
 	"Find the nearest obviously-reachable unexplored location."
-	Point? findUnexplored(IMapNG map, Point base) {
+	Point? findUnexplored(Point base) {
 		Queue<Point> queue = LinkedList<Point>();
 		queue.offer(base);
 		MapDimensions dimensions = map.dimensions;
@@ -414,7 +431,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 	}
 	"Print a list of active towns within the given distance of the given base that produce
 	 any resources, and what resources they produce."
-	void suggestTrade(IMapNG map, Point base, Integer distance, ICLIHelper cli) {
+	void suggestTrade(Point base, Integer distance) {
 		value comparator = DistanceComparator(base, map.dimensions);
 		for (location in surroundingPointIterable(base, map.dimensions, distance).distinct
 				.sort(comparator.compare)) {
@@ -440,7 +457,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 							unitsString = "``resource.quantity.units`` of ";
 						}
 						cli.println("- ``resource.kind``: ``resource.quantity.number`` ``
-							unitsString````resource.contents``");
+						unitsString````resource.contents``");
 						if (resource.contents == "milk") {
 							cli.println("- Corresponding livestock");
 						} else if (resource.contents == "eggs") {
@@ -452,7 +469,7 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		}
 	}
 	"Print a usage message for the REPL"
-	void replUsage(ICLIHelper cli) {
+	void replUsage() {
 		cli.println("The following commands are supported:");
 		cli.println("help, ?: Print this list of commands.");
 		cli.println(
@@ -471,9 +488,9 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 		cli.println("quit: Exit the program.");
 		cli.println("Any string that is the beginning of only one command is also accepted for that command.");
 	}
-	void findUnexploredCommand(IMapNG map, ICLIHelper cli) {
+	void findUnexploredCommand() {
 		Point base = cli.inputPoint("Starting point? ");
-		if (exists unexplored = findUnexplored(map, base)) {
+		if (exists unexplored = findUnexplored(base)) {
 			Float distanceTo = distance(base, unexplored, map.dimensions);
 			cli.println("Nearest unexplored tile is ``unexplored``, ``Float
 				.format(distanceTo, 0, 1, '.', ',')`` tiles away");
@@ -481,45 +498,40 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 			cli.println("No unexplored tiles found.");
 		}
 	}
-	void tradeCommand(IMapNG map, ICLIHelper cli) =>
-			suggestTrade(map, cli.inputPoint("Base location? "),
-				cli.inputNumber("Within how many tiles? "), cli);
-	"Handle a series of user commands."
-	void handleCommands(SPOptions options, IDriverModel model, HuntingModel huntModel,
-			ICLIHelper cli) {
-		Map<String, Anything(ICLIHelper)> commands = simpleMap(
-			"?"->replUsage,
-			"help"->replUsage,
-			"fortress"->( // TODO: refactor lambdas including inputPoint() to make defer()ing them easier
-					(ICLIHelper clh) => fortressInfo(model.map, clh.inputPoint("Location of fortress? "),
-						clh)),
-			"hunt"->((ICLIHelper clh)=>hunt(model, huntModel, clh.inputPoint("Location to hunt? "),
-				clh, hunterHours * 60)),
-			"fish"->((ICLIHelper clh)=>fish(model, huntModel, clh.inputPoint("Location to fish? "),
-				clh, hunterHours * 60)),
-			"gather"->((ICLIHelper clh)=>gather(model, huntModel,
-				clh.inputPoint("Location to gather? "), clh, hunterHours * 60)),
-			"herd"->shuffle(curry(herd))(model, huntModel),
-			"trap"->uncurry(shuffle(curry(shuffle(compose(TrappingCLI.startDriverOnModel,
-				TrappingCLI))))(options, model)),
-			"distance"->curry(printDistance)(model.map),
-			"count"->shuffle(curry(countWorkers))(model.map, *model.map.players),
-			"unexplored"->curry(findUnexploredCommand)(model.map),
-			"trade"->curry(tradeCommand)(model.map)
-		);
+	void tradeCommand() =>
+			suggestTrade(cli.inputPoint("Base location? "),
+				cli.inputNumber("Within how many tiles? "));
+	Map<String, Anything()> commands = simpleMap(
+		"?"->replUsage,
+		"help"->replUsage,
+		"fortress"->( // TODO: use defer() to avoid lambdas
+				() => fortressInfo(cli.inputPoint("Location of fortress? "))),
+		"hunt"->(()=>hunt(cli.inputPoint("Location to hunt? "), hunterHours * 60)),
+		"fish"->(()=>fish(cli.inputPoint("Location to fish? "), hunterHours * 60)),
+		"gather"->(()=>gather(cli.inputPoint("Location to gather? "), hunterHours * 60)),
+		"herd"->herd,
+		"trap"->shuffle(compose(TrappingCLI.startDriverOnModel,
+			TrappingCLI))(cli, options, model),
+		"distance"->printDistance,
+		"count"->defer(countWorkers, [model.map.players]),
+		"unexplored"->findUnexploredCommand,
+		"trade"->tradeCommand
+	);
+	"Handle a series of user commands." // TODO: Move loop back to caller
+	shared void handleCommands() {
 		while (true) {
 			String command = cli.inputString("Command:").lowercased;
 			if ("quit".startsWith(command)) {
 				break;
 			}
-			{<String->Anything(ICLIHelper)>*} matches =
+			{<String->Anything()>*} matches =
 					commands.filterKeys(shuffle(String.startsWith)(command));
-			if (matches.size == 1) {
+			if (matches.size == 1) { // TODO: Test 'first' and 'rest' instead of asserting
 				assert (exists first = matches.first);
-				first.item(cli);
+				first.item();
 			} else if (matches.empty) {
 				cli.println("Unknown command.");
-				replUsage(cli);
+				replUsage();
 			} else {
 				cli.println("That command was ambiguous between the following: ");
 				assert (exists first = matches.first);
@@ -528,19 +540,24 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
 					cli.print(", ``key``");
 				}
 				cli.println("");
-				replUsage(cli);
+				replUsage();
 			}
 		}
 	}
+}
+"A driver for 'querying' the driver model about various things."
+service(`interface ISPDriver`)
+// FIXME: Write GUI equivalent of query CLI
+shared class QueryCLI() satisfies SimpleCLIDriver {
 	shared actual IDriverUsage usage = DriverUsage(false, ["-q", "--query"], ParamCount.one,
 		"Answer questions about a map.",
 		"Look a tiles on a map. Or run hunting, gathering, or fishing.", true, false);
 	"Accept and respond to commands."
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-		IDriverModel model) {
-		HuntingModel huntModel = HuntingModel(model.map);
+			IDriverModel model) {
+		QueryHelper helper = QueryHelper(model, cli, HuntingModel(model.map), options);
 		try {
-			handleCommands(options, model, huntModel, cli);
+			helper.handleCommands();
 		} catch (IOException except) {
 			log.error("I/O error", except);
 		}
