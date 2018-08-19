@@ -501,14 +501,16 @@ class QueryHelper {
 	void tradeCommand() =>
 			suggestTrade(cli.inputPoint("Base location? "),
 				cli.inputNumber("Within how many tiles? "));
+	Anything() deferAction(Anything(Point, Integer) method, String verb) => // TODO: Replace with method-reference logic using defer()
+					() => method(cli.inputPoint("Location to ``verb``? "), hunterHours * 60);
 	Map<String, Anything()> commands = simpleMap(
 		"?"->replUsage,
 		"help"->replUsage,
 		"fortress"->defer(compose(fortressInfo, cli.inputPoint), ["Location of fortress?"]),
+		"hunt"->deferAction(hunt, "hunt"),
+		"fish"->deferAction(fish, "fish"),
+		"gather"->deferAction(gather, "gather"),
 		// TODO: use defer() to avoid lambdas
-		"hunt"->(()=>hunt(cli.inputPoint("Location to hunt? "), hunterHours * 60)),
-		"fish"->(()=>fish(cli.inputPoint("Location to fish? "), hunterHours * 60)),
-		"gather"->(()=>gather(cli.inputPoint("Location to gather? "), hunterHours * 60)),
 		"herd"->herd,
 		"trap"->shuffle(compose(TrappingCLI.startDriverOnModel,
 			TrappingCLI))(cli, options, model),
