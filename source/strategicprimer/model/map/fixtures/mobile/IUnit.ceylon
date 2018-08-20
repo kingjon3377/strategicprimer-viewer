@@ -90,7 +90,7 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
                 variable Boolean retval = true;
                 Anything(String) localReport =
                         compose(report,
-                            "In unit of kind ``kind`` named ``name`` (ID # ``id``):\t".plus); // TODO: abbreviate to "name (kind)"
+                            "In unit of ``name`` (``kind``) (ID # ``id``):\t".plus);
                 for (member in obj) {
                     if (exists ourMember = ours[member.id]) {
                         if (!ourMember.isSubset(member, localReport)) {
