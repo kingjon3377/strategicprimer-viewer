@@ -5,6 +5,10 @@ import ceylon.collection {
 import strategicprimer.model.map {
 	IFixture
 }
+import ceylon.test {
+	test
+}
+
 class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 	"This class can only be used to represent the corresponding animals in corresponding
 	 units in different maps."
@@ -29,7 +33,7 @@ class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 	shared actual String kind => getConsensus(Animal.kind) else "proxied";
 	shared actual Integer population => getConsensus(Animal.population) else -1;
 	shared actual {Animal*} proxied => animals;
-	shared actual Animal reduced(Integer newPopulation, Integer newId) => // TODO: Is this right?
+	shared actual Animal reduced(Integer newPopulation, Integer newId) =>
 			ProxyAnimal(*animals.map(shuffle(Animal.reduced)(newPopulation, newId)));
 	shared actual Animal combined(Animal addend) {
 		if (is ProxyFor<Animal> addend, addend.parallel, addend.proxied.size == animals.size) {
@@ -41,4 +45,16 @@ class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 	}
 	shared actual String status => getConsensus(Animal.status) else "proxied";
 	shared actual Boolean talking => getConsensus(Animal.talking) else false;
+}
+
+test
+void testProxyAnimalReduction() {
+	Animal base = AnimalImpl("test", false, "status", 5, -1, 12); // TODO: randomize ID
+	"The basic [[Animal.reduced]] works the way we expect."
+	ProxyAnimal proxy = ProxyAnimal(base, base.copy(false), base.copy(false));
+	assert (base.reduced(3, 8).population == 3);
+	assert (is ProxyAnimal reduced = proxy.reduced(3, 8));
+	for (proxied in reduced.proxied) {
+		assert (proxied.id == 8, proxied.population == 3);
+	}
 }
