@@ -52,9 +52,7 @@ import lovelace.util.common {
 	matchingValue,
 	matchingPredicate,
 	inverse,
-    narrowedStream
-}
-import lovelace.util.jvm {
+    narrowedStream,
 	singletonRandom
 }
 

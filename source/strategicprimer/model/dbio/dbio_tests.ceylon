@@ -12,10 +12,6 @@ import ceylon.test {
 	test
 }
 
-import lovelace.util.jvm {
-	singletonRandom
-}
-
 import org.sqlite {
 	SQLiteDataSource
 }
@@ -100,7 +96,8 @@ import strategicprimer.model.xmlio {
 	warningLevels
 }
 import lovelace.util.common {
-	enumeratedParameter
+	enumeratedParameter,
+	singletonRandom
 }
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"

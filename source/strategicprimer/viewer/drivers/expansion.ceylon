@@ -50,7 +50,7 @@ import ceylon.random {
 import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
-import lovelace.util.jvm {
+import lovelace.util.common {
 	singletonRandom
 }
 """A driver to update a player's map to include a certain minimum distance around allied

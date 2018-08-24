@@ -25,7 +25,10 @@ import lovelace.util.jvm {
     platform,
     centeredHorizontalBox,
     BoxAxis,
-    listenedButton,
+    listenedButton
+}
+
+import lovelace.util.common {
     singletonRandom
 }
 

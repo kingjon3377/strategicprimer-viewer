@@ -39,7 +39,8 @@ import lovelace.util.common {
     assertAny,
 	enumeratedParameter,
 	defer,
-	simpleSet
+	simpleSet,
+	singletonRandom
 }
 
 import strategicprimer.model.idreg {
@@ -138,9 +139,6 @@ import strategicprimer.model.xmlio.exceptions {
 }
 import ceylon.language.meta.declaration {
     OpenClassType
-}
-import lovelace.util.jvm {
-	singletonRandom
 }
 
 // Unfortunately, encapsulating anything referred to by parameters()

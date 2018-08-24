@@ -44,9 +44,7 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 import lovelace.util.common {
 	todo,
 	matchingValue,
-	inverse
-}
-import lovelace.util.jvm {
+	inverse,
 	singletonRandom
 }
 "A logger."

@@ -1,4 +1,5 @@
-"A collection of pure-Ceylon utility functions"
+"A collection of utility functions that don't require any Java-only types in their
+ signatures or (eclipse/ceylon#6986) Java AWT or Swing in their implementation."
 by("Jonathan Lovelace")
 license("GPL-3")
 todo("Once Ceylon bug #6986 is fixed, combine with `lovelace.util.jvm` in one module,
@@ -10,4 +11,5 @@ module lovelace.util.common "0.1.0" {
     import ceylon.whole ceylonVersion;
     native("jvm")
     import ceylon.decimal ceylonVersion;
+    shared import ceylon.random ceylonVersion;
 }

@@ -8,6 +8,9 @@ import java.lang {
 import ceylon.interop.java {
     JavaComparator
 }
+import lovelace.util.common {
+	singletonRandom
+}
 "Convert a Java Comparator to a Ceylon comparator. For the other way round, see
  [[ceylon.interop.java::JavaComparator]]"
 shared Comparison(Type, Type) ceylonComparator<Type>(

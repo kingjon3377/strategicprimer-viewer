@@ -1,4 +1,4 @@
-import lovelace.util.jvm {
+import lovelace.util.common {
     singletonRandom
 }
 import ceylon.random {

@@ -49,7 +49,7 @@ import ceylon.file {
 	parsePath,
 	Nil
 }
-import lovelace.util.jvm {
+import lovelace.util.common {
 	singletonRandom
 }
 

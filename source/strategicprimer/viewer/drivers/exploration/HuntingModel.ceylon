@@ -19,9 +19,7 @@ import strategicprimer.model.map.fixtures.resources {
 import lovelace.util.common {
 	matchingPredicate,
 	inverse,
-	matchingValue
-}
-import lovelace.util.jvm {
+	matchingValue,
 	singletonRandom
 }
 "A class to facilitate a better hunting/fishing driver."

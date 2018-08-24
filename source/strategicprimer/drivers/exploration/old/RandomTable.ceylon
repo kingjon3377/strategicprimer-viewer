@@ -1,6 +1,3 @@
-import lovelace.util.jvm {
-    singletonRandom
-}
 import strategicprimer.model.map {
     TileFixture,
     TileType,
@@ -8,7 +5,8 @@ import strategicprimer.model.map {
     Point
 }
 import lovelace.util.common {
-	comparingOn
+	comparingOn,
+    singletonRandom
 }
 
 "An [[EncounterTable]] where the event is selected at random."

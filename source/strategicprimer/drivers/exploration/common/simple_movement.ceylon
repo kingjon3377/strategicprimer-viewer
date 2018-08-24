@@ -6,9 +6,7 @@ import ceylon.collection {
 import lovelace.util.common {
     todo,
 	matchingValue,
-	matchingPredicate
-}
-import lovelace.util.jvm {
+	matchingPredicate,
     singletonRandom
 }
 import strategicprimer.model.map {

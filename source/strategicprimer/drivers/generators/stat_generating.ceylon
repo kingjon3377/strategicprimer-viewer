@@ -51,8 +51,7 @@ import strategicprimer.drivers.exploration.common {
     ExplorationModel
 }
 import lovelace.util.jvm {
-    readFileContents,
-	singletonRandom
+    readFileContents
 }
 import ceylon.logging {
     logger,
@@ -60,7 +59,8 @@ import ceylon.logging {
 }
 import lovelace.util.common {
 	matchingValue,
-	comparingOn
+	comparingOn,
+	singletonRandom
 }
 
 "A logger."

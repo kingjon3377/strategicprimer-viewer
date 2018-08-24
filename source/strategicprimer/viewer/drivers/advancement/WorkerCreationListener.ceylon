@@ -21,8 +21,7 @@ import lovelace.util.jvm {
     showErrorDialog,
     platform,
     listenedButton,
-    BorderedPanel,
-    singletonRandom
+    BorderedPanel
 }
 
 import strategicprimer.model.idreg {
@@ -45,7 +44,8 @@ import strategicprimer.drivers.worker.common {
 }
 import lovelace.util.common {
 	silentListener,
-    narrowedStream
+    narrowedStream,
+	singletonRandom
 }
 "A listener to keep track of the currently selected unit and listen for new-worker
  notifications, then pass this information on to the tree model."

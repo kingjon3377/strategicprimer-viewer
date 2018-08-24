@@ -12,7 +12,6 @@ module lovelace.util.jvm "0.1.0" {
     // TODO: Uncomment tests once Ceylon bug #6986 is fixed
 //    import ceylon.test ceylonVersion;
     shared import javax.xml javaVersion;
-    shared import ceylon.random ceylonVersion;
     import ceylon.logging ceylonVersion;
     import ceylon.file ceylonVersion;
     import ceylon.io ceylonVersion;
