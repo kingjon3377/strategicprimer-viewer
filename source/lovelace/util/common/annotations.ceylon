@@ -38,3 +38,15 @@ shared final annotation class EnumSingleParameterAnnotation(
 by("Jonathan Lovelace")
 shared annotation EnumSingleParameterAnnotation enumeratedParameter(
 		ClassOrInterfaceDeclaration type) => EnumSingleParameterAnnotation(type);
+
+"An annotation to make a parameterized test randomly generate numbers."
+shared annotation RandomGenerationAnnotation randomlyGenerated(Integer count,
+		Integer max = 1200000) => RandomGenerationAnnotation(count, max); // TODO: increase default 'max' as far as is reasonable
+
+shared final annotation class RandomGenerationAnnotation(Integer count, Integer max)
+		satisfies OptionalAnnotation<RandomGenerationAnnotation, FunctionOrValueDeclaration>
+		& ArgumentProvider {
+	shared actual {Anything*} arguments(ArgumentProviderContext context) =>
+			// TODO: If context provides information, return appropriate types if applied to non-Integer arguments
+			singletonRandom.integers(max).take(count);
+}
