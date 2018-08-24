@@ -123,14 +123,16 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 value paths = selectionModel.selectionPaths;
                 MutableList<[UnitMember, IUnit]> membersToTransfer =
                         ArrayList<[UnitMember, IUnit]>();
-                MutableList<IUnit> unitsToTransfer = ArrayList<IUnit>();
+                MutableList<IUnit&HasMutableKind> unitsToTransfer =
+                        ArrayList<IUnit&HasMutableKind>();
                 for (path in paths) {
                     if (exists last = path.lastPathComponent,
                             exists parentObj = path.parentPath?.lastPathComponent) {
                         if (is IUnit parent = wtModel.getModelObject(parentObj),
 	                            is UnitMember selection = wtModel.getModelObject(last)) {
                             membersToTransfer.add([selection, parent]);
-                        } else if (is IUnit selection = wtModel.getModelObject(last)) {
+                        } else if (is IUnit&HasMutableKind selection =
+                                wtModel.getModelObject(last)) {
                             unitsToTransfer.add(selection);
                         } else {
                             log.info("Selection included non-UnitMember: ``
@@ -190,18 +192,12 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                             return true;
                         } else if (is String tempTarget,
                                 trans.isDataFlavorSupported(UnitTransferable.flavor)) {
-                            assert (is IUnit[] list =
+                            assert (is <IUnit&HasMutableKind>[] list =
                                     trans.getTransferData(UnitTransferable.flavor));
                             for (unit in list) {
-                                if (is HasMutableKind unit) {
-                                    // TODO: Make UnitTransferable specify IUnit&HasMutableKind?
-                                    String priorKind = unit.kind;
-                                    unit.kind = tempTarget;
-                                    wtModel.moveItem(unit, priorKind);
-                                } else {
-                                    log.error("Kind of ``unit.shortDescription`` isn't mutable");
-                                    // TODO: Should we return false in this case?
-                                }
+                                String priorKind = unit.kind;
+                                unit.kind = tempTarget;
+                                wtModel.moveItem(unit, priorKind);
                             }
                             return true;
                         } else {

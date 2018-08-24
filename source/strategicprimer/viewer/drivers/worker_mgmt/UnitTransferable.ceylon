@@ -9,16 +9,19 @@ import java.awt.datatransfer {
 import strategicprimer.model.map.fixtures.mobile {
 	IUnit
 }
+import strategicprimer.model.map {
+	HasMutableKind
+}
 "A class to transfer a Unit (to change its kind) by drag-and-drop."
 class UnitTransferable satisfies Transferable {
 	shared static DataFlavor flavor = DataFlavor(`{IUnit*}`, "List<IUnit>");
-	IUnit[] payload;
-	shared new (IUnit* data) { payload = data.sequence(); }
+	<IUnit&HasMutableKind>[] payload;
+	shared new (<IUnit&HasMutableKind>* data) { payload = data.sequence(); }
 	shared actual ObjectArray<DataFlavor> transferDataFlavors =>
 			ObjectArray.with(Singleton(flavor));
 	shared actual Boolean isDataFlavorSupported(DataFlavor candidate) =>
 			flavor == candidate;
-	shared actual {IUnit*} getTransferData(DataFlavor candidate) {
+	shared actual {<IUnit&HasMutableKind>*} getTransferData(DataFlavor candidate) {
 		if (flavor == candidate) {
 			return payload;
 		} else {
