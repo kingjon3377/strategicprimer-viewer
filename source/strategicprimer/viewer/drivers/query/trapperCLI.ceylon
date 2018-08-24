@@ -102,7 +102,7 @@ shared class TrappingCLI() satisfies SimpleDriver {
 			if (is HuntingModel.NothingFound item) {
 				cli.println("Nothing in the trap");
 				return (fishing) then 5 else 10;
-			} else if (is AnimalTracks item) { // TODO: Is this really possible now?
+			} else if (is AnimalTracks item) {
 				cli.println("Found evidence of ``item.kind`` escaping");
 				tracksHandler(item.copy(true));
 				return (fishing) then 5 else 10;

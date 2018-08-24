@@ -236,7 +236,7 @@ class QueryHelper {
 			if (is HuntingModel.NothingFound encounter) {
 				cli.println("Found nothing for the next ``noResultCost`` minutes.");
 				time -= noResultCost;
-			} else if (is AnimalTracks encounter) { // TODO: Is this case actually possible?
+			} else if (is AnimalTracks encounter) {
 				addToSubMaps(loc, encounter, true);
 				cli.println("Found only tracks or traces from ``
 				encounter.kind`` for the next ``noResultCost`` minutes.");
