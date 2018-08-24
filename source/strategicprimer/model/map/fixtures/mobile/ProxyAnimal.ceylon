@@ -8,6 +8,9 @@ import strategicprimer.model.map {
 import ceylon.test {
 	test
 }
+import lovelace.util.common {
+    randomlyGenerated
+}
 
 class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 	"This class can only be used to represent the corresponding animals in corresponding
@@ -48,13 +51,14 @@ class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
 }
 
 test
-void testProxyAnimalReduction() {
-	Animal base = AnimalImpl("test", false, "status", 5, -1, 12); // TODO: randomize ID
+void testProxyAnimalReduction(randomlyGenerated(3) Integer id,
+		randomlyGenerated(1) Integer newId) {
+	Animal base = AnimalImpl("test", false, "status", id, -1, 12);
 	"The basic [[Animal.reduced]] works the way we expect."
 	ProxyAnimal proxy = ProxyAnimal(base, base.copy(false), base.copy(false));
-	assert (base.reduced(3, 8).population == 3);
-	assert (is ProxyAnimal reduced = proxy.reduced(3, 8));
+	assert (base.reduced(3, newId).population == 3);
+	assert (is ProxyAnimal reduced = proxy.reduced(3, newId));
 	for (proxied in reduced.proxied) {
-		assert (proxied.id == 8, proxied.population == 3);
+		assert (proxied.id == newId, proxied.population == 3);
 	}
 }
