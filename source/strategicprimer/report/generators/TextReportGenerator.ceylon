@@ -42,11 +42,12 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
 	        IMapNG map, Anything(String) ostream) {
         {<Integer->[Point, TextFixture]>*} items =
-                narrowedStream<Integer, [Point, TextFixture]>(fixtures).sort( // TODO: Use compose() instead of comparingOn() to get to member-of-member
-                    comparingOn(Entry<Integer, [Point, TextFixture]>.item,
-                        comparingOn(Tuple<Point|TextFixture, Point, TextFixture[1]>.rest,
-                            comparingOn(Tuple<TextFixture, TextFixture, []>.first,
-                                comparingOn(TextFixture.turn, increasing<Integer>)))));
+                narrowedStream<Integer, [Point, TextFixture]>(fixtures).sort(
+                    comparingOn(compose(TextFixture.turn,
+                        compose(Tuple<TextFixture, TextFixture, []>.first,
+                            compose(Tuple<Point|TextFixture, Point, TextFixture[1]>.rest,
+                                Entry<Integer, [Point, TextFixture]>.item))),
+                        increasing<Integer>));
         if (!items.empty) {
             ostream("""<h4>Miscellaneous Notes</h4>
                        <ul>
