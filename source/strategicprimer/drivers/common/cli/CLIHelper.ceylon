@@ -20,7 +20,7 @@ import lovelace.util.common {
 }
 "A helper class to let help CLIs interact with the user, encapsulating input and output
  streams."
-shared sealed class CLIHelper(istream = process.readLine, ostream = process.write)
+shared final class CLIHelper(istream = process.readLine, ostream = process.write)
         satisfies ICLIHelper {
     "A way to read a line at a time, presumably from the user."
     String?() istream;
