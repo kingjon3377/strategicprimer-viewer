@@ -59,7 +59,8 @@ import strategicprimer.drivers.common {
     SPOptionsImpl
 }
 import strategicprimer.drivers.common.cli {
-    ICLIHelper
+    ICLIHelper,
+    CLIHelper
 }
 import com.apple.eawt {
     AppEvent,
@@ -196,8 +197,8 @@ object appChooserState {
 	    }
 	}
 }
-class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDriver implementation for this?
-	shared actual IDriverUsage usage = DriverUsage(true, ["-p", "--app-starter"],
+class AppStarter() {
+	IDriverUsage usage = DriverUsage(true, ["-p", "--app-starter"],
 		ParamCount.anyNumber, "App Chooser",
 		"Let the user choose an app to start, or handle options.", false, false);
 	[Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache =
@@ -222,8 +223,7 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 		}
 	}
 	Boolean includeInCLIList(ISPDriver driver) => driver.usage.includeInList(false);
-	shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
-		String* args) {
+	shared void startDriverOnArguments(ICLIHelper cli, SPOptions options, String* args) {
 		//            log.info("Inside appStarter.startDriver()");
 		variable Boolean gui = !GraphicsEnvironment.headless;
 		variable SPOptionsImpl currentOptions = SPOptionsImpl(options);
@@ -292,7 +292,7 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 			}
 		}
 		if (options.hasOption("--help")) {
-			IDriverUsage tempUsage = currentDriver?.usage else usage;
+			IDriverUsage tempUsage = currentDriver?.usage else usage; // FIXME: Following the 'default' usage will cause errors!
 			process.writeLine(appChooserState.usageMessage(tempUsage,
 				options.getArgument("--verbose") == "true"));
 		} else if (exists driver = currentDriver) {
@@ -319,39 +319,6 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 			}
 		}
 	}
-
-	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-		IDriverModel driverModel) {
-		if (GraphicsEnvironment.headless || options.getArgument("--gui") == "false") {
-			ISPDriver[] cliDrivers = driverCache.first.items.distinct.sequence();
-			try {
-				if (exists driver = cli.chooseFromList(
-					cliDrivers, "CLI apps available:",
-					"No applications available", "App to start: ", true).item) {
-					driver.startDriverOnModel(cli, options, driverModel);
-				}
-			} catch (IOException except) {
-				log.error("I/O error prompting user for app to start", except);
-			} catch (IncorrectUsageException except) {
-				cli.println(appChooserState.usageMessage(except.correctUsage,
-					options.getArgument("--verbose") == "true"));
-			} catch (DriverFailedException except) {
-				if (is SPFormatException cause = except.cause) {
-					log.error(cause.message);
-				} else if (exists cause = except.cause) {
-					log.error("Driver failed:", cause);
-				} else {
-					log.error("Driver failed:", except);
-				}
-			} catch (Exception except) {
-				log.error(except.message, except);
-			}
-		} else {
-			SwingUtilities.invokeLater( // TODO: catch errors (combine with the above)
-				defer(shuffle(compose(SPFrame.showWindow, appChooserFrame))(),
-					[cli, options, driverModel]));
-		}
-	}
 }
 todo("Try to combine/rearrange things so we have as few top-level and inner classes and
       `object`s as possible")
@@ -376,7 +343,7 @@ shared void run() {
     }
     AppStarter appStarter = AppStarter();
     try {
-        appStarter.startDriverOnArgumentsNoCLI(options, *process.arguments);
+        appStarter.startDriverOnArguments(CLIHelper(), options, *process.arguments);
     } catch (IncorrectUsageException except) {
         IDriverUsage usage = except.correctUsage;
         process.writeErrorLine(appChooserState.usageMessage(usage,
