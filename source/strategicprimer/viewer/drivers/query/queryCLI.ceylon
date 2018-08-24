@@ -54,7 +54,8 @@ import ceylon.numeric.float {
 import strategicprimer.model.map.fixtures.mobile {
 	IWorker,
 	Animal,
-	AnimalTracks
+	AnimalTracks,
+    animalPlurals
 }
 import strategicprimer.drivers.exploration.common {
 	surroundingPointIterable,
@@ -123,8 +124,9 @@ class QueryHelper {
 	}
 	"A description of what could be a single animal or a population of animals."
 	static String populationDescription(Animal animal) {
-		if (animal.population > 1) { // TODO: Use proper plural
-			return "a group of perhaps ``animal.population`` ``animal.kind``";
+		if (animal.population > 1) {
+//			return "a group of perhaps ``animal.population`` ``animalPlurals[animal.kind]``"; // TODO: syntax sugar
+			return "a group of perhaps ``animal.population`` ``animalPlurals.get(animal.kind)``";
 		} else {
 			return animal.kind;
 		}
