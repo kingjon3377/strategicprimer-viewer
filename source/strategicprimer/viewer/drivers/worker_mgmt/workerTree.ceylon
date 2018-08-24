@@ -17,7 +17,8 @@ import strategicprimer.model.map.fixtures.mobile.worker {
 import strategicprimer.model.map {
     HasImage,
     IFixture,
-    Player
+    Player,
+    HasMutableKind
 }
 import javax.swing.event {
     TreeSelectionEvent,
@@ -113,32 +114,38 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         showsRootHandles = true;
         dropMode = DropMode.on;
         object workerTreeTransferHandler extends TransferHandler() {
-            // TODO: We want to be able to change units' kinds by dragging them
             "Unit members can only be moved, not copied or linked."
             shared actual Integer getSourceActions(JComponent component) =>
                     TransferHandler.move;
             "Create a transferable representing the selected node(s)."
-            shared actual UnitMemberTransferable? createTransferable(
+            shared actual UnitMemberTransferable|UnitTransferable? createTransferable(
                     JComponent component) {
                 value paths = selectionModel.selectionPaths;
-                MutableList<[UnitMember, IUnit]> toTransfer =
+                MutableList<[UnitMember, IUnit]> membersToTransfer =
                         ArrayList<[UnitMember, IUnit]>();
+                MutableList<IUnit> unitsToTransfer = ArrayList<IUnit>();
                 for (path in paths) {
                     if (exists last = path.lastPathComponent,
                             exists parentObj = path.parentPath?.lastPathComponent) {
                         if (is IUnit parent = wtModel.getModelObject(parentObj),
 	                            is UnitMember selection = wtModel.getModelObject(last)) {
-                            toTransfer.add([selection, parent]);
+                            membersToTransfer.add([selection, parent]);
+                        } else if (is IUnit selection = wtModel.getModelObject(last)) {
+                            unitsToTransfer.add(selection);
                         } else {
                             log.info("Selection included non-UnitMember: ``
                                 type(wtModel.getModelObject(last))``");
                         }
                     }
                 }
-                if (toTransfer.empty) {
-                    return null;
+                if (membersToTransfer.empty) {
+                    if (unitsToTransfer.empty) {
+                        return null;
+                    } else {
+                        return UnitTransferable(*unitsToTransfer);
+                    }
                 } else {
-                    return UnitMemberTransferable(*toTransfer);
+                    return UnitMemberTransferable(*membersToTransfer);
                 }
             }
             "Whether a drag here is possible."
@@ -148,6 +155,11 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         exists last = dropLocation.path?.lastPathComponent,
                         is IUnit|UnitMember lastObj = wtModel.getModelObject(last)) {
                     return true;
+                } else if (support.isDataFlavorSupported(UnitTransferable.flavor),
+                        is JTree.DropLocation dropLocation = support.dropLocation,
+                        exists last = dropLocation.path?.lastPathComponent,
+                        is String lastObj = wtModel.getModelObject(last)) {
+                    return true;
                 } else {
                     return false;
                 }
@@ -155,9 +167,9 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             "Handle a drop."
             shared actual Boolean importData(TransferSupport support) {
                 if (canImport(support),
-                    is JTree.DropLocation dropLocation = support.dropLocation,
-                    exists path = dropLocation.path,
-                    exists pathLast = path.lastPathComponent) {
+                        is JTree.DropLocation dropLocation = support.dropLocation,
+                        exists path = dropLocation.path,
+                        exists pathLast = path.lastPathComponent) {
                     Object tempTarget;
                     Object local = wtModel.getModelObject(pathLast);
                     if (is UnitMember local) {
@@ -166,23 +178,40 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     } else {
                         tempTarget = local;
                     }
-                    if (is IUnit tempTarget) {
-                        try {
-                            Transferable trans = support.transferable;
-                            assert (is  [UnitMember, IUnit][] list =
+                    Transferable trans = support.transferable;
+                    try {
+                        if (is IUnit tempTarget,
+                                trans.isDataFlavorSupported(UnitMemberTransferable.flavor)) {
+                            assert (is [UnitMember, IUnit][] list =
                                     trans.getTransferData(UnitMemberTransferable.flavor));
                             for ([member, unit] in list) {
                                 wtModel.moveMember(member, unit, tempTarget);
                             }
                             return true;
-                        } catch (UnsupportedFlavorException except) {
-                            log.error("Impossible unsupported data flavor", except);
-                            return false;
-                        } catch (IOException except) {
-                            log.error("I/O error in transfer after we checked", except);
+                        } else if (is String tempTarget,
+                                trans.isDataFlavorSupported(UnitTransferable.flavor)) {
+                            assert (is IUnit[] list =
+                                    trans.getTransferData(UnitTransferable.flavor));
+                            for (unit in list) {
+                                if (is HasMutableKind unit) {
+                                    // TODO: Make UnitTransferable specify IUnit&HasMutableKind?
+                                    String priorKind = unit.kind;
+                                    unit.kind = tempTarget;
+                                    wtModel.moveItem(unit, priorKind);
+                                } else {
+                                    log.error("Kind of ``unit.shortDescription`` isn't mutable");
+                                    // TODO: Should we return false in this case?
+                                }
+                            }
+                            return true;
+                        } else {
                             return false;
                         }
-                    } else {
+                    } catch (UnsupportedFlavorException except) {
+                        log.error("Impossible unsupported data flavor", except);
+                        return false;
+                    } catch (IOException except) {
+                        log.error("I/O error in transfer after we checked", except);
                         return false;
                     }
                 } else {
