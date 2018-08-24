@@ -24,9 +24,7 @@ import javax.swing {
 
 import lovelace.util.jvm {
     platform,
-    listenedButton,
-    isNumeric,
-    parseInt
+    listenedButton
 }
 
 import strategicprimer.drivers.common {
@@ -52,7 +50,9 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     NewUnitSource
 }
 import lovelace.util.common {
-	silentListener
+	silentListener,
+	isNumeric,
+	parseInt
 }
 "A dialog to let the user add a new unit."
 shared class NewUnitDialog(variable Player player, IDRegistrar idf)

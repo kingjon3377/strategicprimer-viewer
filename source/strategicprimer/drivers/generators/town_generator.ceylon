@@ -28,8 +28,6 @@ import strategicprimer.model.map {
     TileFixture
 }
 import lovelace.util.jvm {
-    isNumeric,
-    parseInt,
     readFileContents
 }
 import strategicprimer.model.map.fixtures {
@@ -80,6 +78,8 @@ import java.lang {
     synchronized
 }
 import lovelace.util.common {
+    isNumeric,
+    parseInt,
 	matchingValue,
 	matchingPredicate,
 	anythingEqual,

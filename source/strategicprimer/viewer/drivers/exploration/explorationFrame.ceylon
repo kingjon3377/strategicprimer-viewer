@@ -63,9 +63,12 @@ import lovelace.util.jvm {
     FormattedLabel,
     verticalSplit,
     ImprovedComboBox,
-    parseInt,
-    isNumeric,
 	FunctionalGroupLayout
+}
+
+import lovelace.util.common {
+	parseInt,
+	isNumeric
 }
 
 import strategicprimer.model.map {

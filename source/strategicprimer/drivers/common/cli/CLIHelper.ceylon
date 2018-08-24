@@ -7,10 +7,6 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import lovelace.util.jvm {
-    isNumeric,
-    parseInt
-}
 import java.io {
     IOException
 }
@@ -18,7 +14,9 @@ import strategicprimer.model.map {
     HasName
 }
 import lovelace.util.common {
-    todo
+    todo,
+    isNumeric,
+    parseInt
 }
 "A helper class to let help CLIs interact with the user, encapsulating input and output
  streams."
