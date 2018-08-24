@@ -267,13 +267,6 @@ shared interface ISPDriver satisfies HasName {
     // In the Java implementation, these were overloads; Ceylon doesn't allow that,
     // which is in general better but a pain here.
     "Run the driver. If the driver is a GUI driver, this should use
-     SwingUtilities.invokeLater(); if it's a CLI driver, that's not necessary.
-     This form should only be used if the caller doesn't have an ICLIHelper to pass in."
-    // We'd like to combine with [[startDriverOnModelNoCLI]], but we can't take a union of
-    // a variadic and a non-variadic parameter.
-    shared default void startDriverOnArgumentsNoCLI(SPOptions options, String* args) =>
-            startDriverOnArguments(CLIHelper(), options, *args);
-    "Run the driver. If the driver is a GUI driver, this should use
      SwingUtilities.invokeLater(); if it's a CLI driver, that's not necessary."
     shared formal void startDriverOnArguments(
         "The interface to interact with the user, either on the console or in a window
@@ -284,10 +277,6 @@ shared interface ISPDriver satisfies HasName {
         "Any command-line arguments that should be passed to the driver"
         String* args
     );
-    "Run the driver on a driver model.
-     This form should only be used if the caller doesn't have an ICLIHelper to pass in."
-    shared default void startDriverOnModelNoCLI(SPOptions options, IDriverModel model) =>
-            startDriverOnModel(CLIHelper(), options, model);
     "Run the driver on a driver model."
     // We'd like to combine with [[startDriverOnArguments]] (and rename back to just
     // `startDriver`), but `String*|IDriverModel` isn't a possible type.
