@@ -8,9 +8,7 @@ import ceylon.decimal {
 }
 
 import strategicprimer.model.map {
-	IMutableMapNG,
-	IFixture,
-	IMapNG
+	IMutableMapNG
 }
 import strategicprimer.model.map.fixtures {
 	ResourcePile,
@@ -22,10 +20,6 @@ import strategicprimer.model.map.fixtures.towns {
 }
 import strategicprimer.model.xmlio {
 	Warning
-}
-import ceylon.collection {
-	MutableMap,
-	HashMap
 }
 object dbCommunityStatsHandler
 		extends AbstractDatabaseWriter<CommunityStats, ITownFixture>()
