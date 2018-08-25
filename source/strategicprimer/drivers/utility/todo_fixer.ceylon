@@ -2,7 +2,8 @@ import lovelace.util.common {
     todo,
 	matchingPredicate,
 	matchingValue,
-    narrowedStream
+    narrowedStream,
+    entryMap
 }
 import strategicprimer.model.map.fixtures.towns {
     Village,
@@ -137,7 +138,8 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
         }
         {[Point, CommunityStats]*} brokenTownContents =
                 narrowedStream<Point, ITownFixture>(map.fixtureEntries)
-                    .map((key->item) => [key, item.population]) // TODO: Make entryMap(keyCollector, itemCollector) function in lovelace.util
+                    .map(entryMap(identity<Point>, ITownFixture.population))
+                    .map(Entry.pair)
                     .narrow<[Point, CommunityStats]>()
                     .filter(([loc, pop]) => pop.yearlyProduction.map(ResourcePile.contents)
                         .any(shuffle(String.contains)('#')));
