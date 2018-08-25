@@ -35,28 +35,22 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 				.execute(context.id, obj.id, obj.kind, obj.count, obj.image);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
-	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read equipment");
-		variable Integer runningTotal = 0;
-		for (row in db.Select("""SELECT * FROM implements""").Results()) {
-			assert (is Integer parentId = row["parent"],
-				is IUnit|Fortress parent = findById(map, parentId, warner),
-				is Integer id = row["id"], is String kind = row["kind"],
-				is Integer count = row["count"], is String|SqlNull image = row["image"]);
-			value implement = Implement(kind, id, count);
-			if (is String image) {
-				implement.image = image;
-			}
-			if (is IUnit parent) {
-				parent.addMember(implement);
-			} else {
-				parent.addMember(implement);
-			}
-			runningTotal++;
-			if (50.divides(runningTotal)) {
-				log.trace("Finished reading ``runningTotal`` pieces of equipment");
-			}
+	void readImplement(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+		assert (is Integer parentId = row["parent"],
+			is IUnit|Fortress parent = findById(map, parentId, warner),
+			is Integer id = row["id"], is String kind = row["kind"],
+			is Integer count = row["count"], is String|SqlNull image = row["image"]);
+		value implement = Implement(kind, id, count);
+		if (is String image) {
+			implement.image = image;
 		}
-		log.trace("Finished reading equipment");
+		if (is IUnit parent) {
+			parent.addMember(implement);
+		} else {
+			parent.addMember(implement);
+		}
 	}
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "pieces of equipment", curry(readImplement)(map),
+				"""SELECT * FROM implements""");
 }

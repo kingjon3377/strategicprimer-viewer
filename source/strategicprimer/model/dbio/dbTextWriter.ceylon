@@ -44,23 +44,17 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>()
 		             VALUES(?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, turn, obj.text, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read text notes");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM text_notes""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer|SqlNull turn = dbRow["turn"], is String text = dbRow["text"],
-				is String|SqlNull image = dbRow["image"]);
-			value fixture = TextFixture(text, as<Integer>(turn) else -1);
-			if (is String image) {
-				fixture.image = image;
-			}
-			map.addFixture(Point(row, column), fixture);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` text notes");
-			}
+	void readTextNote(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer|SqlNull turn = dbRow["turn"], is String text = dbRow["text"],
+			is String|SqlNull image = dbRow["image"]);
+		value fixture = TextFixture(text, as<Integer>(turn) else -1);
+		if (is String image) {
+			fixture.image = image;
 		}
-		log.trace("Finished reading text notes");
+		map.addFixture(Point(row, column), fixture);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "text notes", curry(readTextNote)(map),
+				"""SELECT * FROM text_notes""");
 }

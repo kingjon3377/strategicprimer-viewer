@@ -57,49 +57,43 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
 			dbCommunityStatsHandler.write(db, stats, obj);
 		}
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read towns");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM towns""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
-				is String statusString = dbRow["status"],
-				is TownStatus status = TownStatus.parse(statusString),
-				is String sizeString = dbRow["size"], is TownSize size = TownSize.parse(sizeString),
-				is Integer dc = dbRow["dc"], is String name = dbRow["name"],
-				is Integer ownerNum = dbRow["owner"], is String|SqlNull image = dbRow["image"],
-				is String|SqlNull portrait = dbRow["portrait"],
-				is Integer|SqlNull population = dbRow["population"]);
-			AbstractTown town;
-			Player owner = map.players.getPlayer(ownerNum);
-			switch (kind)
-			case ("fortification") {
-				town = Fortification(status, size, dc, name, id, owner);
-			}
-			case ("city") {
-				town = City(status, size, dc, name, id, owner);
-			}
-			case ("town") {
-				town = Town(status, size, dc, name, id, owner);
-			}
-			else {
-				throw AssertionError("Unhandled kind of town");
-			}
-			if (is String image) {
-				town.image = image;
-			}
-			if (is String portrait) {
-				town.portrait = portrait;
-			}
-			if (is Integer population) {
-				town.population = CommunityStats(population);
-			}
-			map.addFixture(Point(row, column), town);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` towns");
-			}
+	void readTown(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is String kind = dbRow["kind"],
+			is String statusString = dbRow["status"],
+			is TownStatus status = TownStatus.parse(statusString),
+			is String sizeString = dbRow["size"], is TownSize size = TownSize.parse(sizeString),
+			is Integer dc = dbRow["dc"], is String name = dbRow["name"],
+			is Integer ownerNum = dbRow["owner"], is String|SqlNull image = dbRow["image"],
+			is String|SqlNull portrait = dbRow["portrait"],
+			is Integer|SqlNull population = dbRow["population"]);
+		AbstractTown town;
+		Player owner = map.players.getPlayer(ownerNum);
+		switch (kind)
+		case ("fortification") {
+			town = Fortification(status, size, dc, name, id, owner);
 		}
-		log.trace("Finished reading towns");
+		case ("city") {
+			town = City(status, size, dc, name, id, owner);
+		}
+		case ("town") {
+			town = Town(status, size, dc, name, id, owner);
+		}
+		else {
+			throw AssertionError("Unhandled kind of town");
+		}
+		if (is String image) {
+			town.image = image;
+		}
+		if (is String portrait) {
+			town.portrait = portrait;
+		}
+		if (is Integer population) {
+			town.population = CommunityStats(population);
+		}
+		map.addFixture(Point(row, column), town);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "towns", curry(readTown)(map),
+				"""SELECT * FROM towns""");
 }

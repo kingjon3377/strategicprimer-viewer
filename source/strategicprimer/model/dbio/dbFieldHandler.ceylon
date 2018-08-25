@@ -44,45 +44,39 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>()
 					(obj.field) then "field" else "meadow", obj.kind, obj.cultivated,
 					obj.status.string, obj.acres.string, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to start reading meadows");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM fields""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String type = dbRow["type"],
-				is String kind = dbRow["kind"],
-				is Boolean cultivated = dbMapReader.databaseBoolean(dbRow["cultivated"]),
-				is String statusString = dbRow["status"],
-				is FieldStatus status = FieldStatus.parse(statusString),
-				is String acresString = dbRow["acres"], is String|SqlNull image = dbRow["image"]);
-			Number<out Anything> acres;
-			if (is Integer num = Integer.parse(acresString)) {
-				acres = num;
-			} else {
-				assert (is Decimal num = parseDecimal(acresString));
-				acres = num;
-			}
-			Boolean field;
-			switch (type)
-			case ("meadow") {
-				field = false;
-			}
-			case ("field") {
-				field = true;
-			}
-			else {
-				throw AssertionError("Unhandled field type");
-			}
-			value meadow = Meadow(kind, field, cultivated, id, status, acres);
-			if (is String image) {
-				meadow.image = image;
-			}
-			map.addFixture(Point(row, column), meadow);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` meadows");
-			}
+	void readMeadow(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is String type = dbRow["type"],
+			is String kind = dbRow["kind"],
+			is Boolean cultivated = dbMapReader.databaseBoolean(dbRow["cultivated"]),
+			is String statusString = dbRow["status"],
+			is FieldStatus status = FieldStatus.parse(statusString),
+			is String acresString = dbRow["acres"], is String|SqlNull image = dbRow["image"]);
+		Number<out Anything> acres;
+		if (is Integer num = Integer.parse(acresString)) {
+			acres = num;
+		} else {
+			assert (is Decimal num = parseDecimal(acresString));
+			acres = num;
 		}
-		log.trace("Finished reading meadows");
+		Boolean field;
+		switch (type)
+		case ("meadow") {
+			field = false;
+		}
+		case ("field") {
+			field = true;
+		}
+		else {
+			throw AssertionError("Unhandled field type");
+		}
+		value meadow = Meadow(kind, field, cultivated, id, status, acres);
+		if (is String image) {
+			meadow.image = image;
+		}
+		map.addFixture(Point(row, column), meadow);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "meadows", curry(readMeadow)(map),
+				"""SELECT * FROM fields""");
 }

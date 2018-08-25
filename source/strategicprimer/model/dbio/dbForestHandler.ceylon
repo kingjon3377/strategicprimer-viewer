@@ -37,31 +37,25 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
 				.execute(context.row, context.column, obj.id, obj.kind, obj.rows,
 					obj.acres.string, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to start reading forests");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM forests""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
-				is Boolean rows = dbMapReader.databaseBoolean(dbRow["rows"]),
-				is String acresString = dbRow["acres"], is String|SqlNull image = dbRow["image"]);
-			Number<out Anything> acres;
-			if (is Integer num = Integer.parse(acresString)) {
-				acres = num;
-			} else {
-				assert (is Decimal num = parseDecimal(acresString));
-				acres = num;
-			}
-			value forest = Forest(kind, rows, id, acres);
-			if (is String image) {
-				forest.image = image;
-			}
-			map.addFixture(Point(row, column), forest);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` forests");
-			}
+	void readForest(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is String kind = dbRow["kind"],
+			is Boolean rows = dbMapReader.databaseBoolean(dbRow["rows"]),
+			is String acresString = dbRow["acres"], is String|SqlNull image = dbRow["image"]);
+		Number<out Anything> acres;
+		if (is Integer num = Integer.parse(acresString)) {
+			acres = num;
+		} else {
+			assert (is Decimal num = parseDecimal(acresString));
+			acres = num;
 		}
-		log.trace("Finished reading forests");
+		value forest = Forest(kind, rows, id, acres);
+		if (is String image) {
+			forest.image = image;
+		}
+		map.addFixture(Point(row, column), forest);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "forests", curry(readForest)(map),
+				"""SELECT * FROM forests""");
 }

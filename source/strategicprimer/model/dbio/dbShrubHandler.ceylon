@@ -36,24 +36,18 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>()
 				.execute(context.row, context.column, obj.id, obj.kind,
 					obj.population, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read shrubs");
-		variable Integer runningTotal = 0;
-		for (dbRow in db.Select("""SELECT * FROM shrubs""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
-				is Integer|SqlNull count = dbRow["count"],
-				is String|SqlNull image = dbRow["image"]);
-			value shrub = Shrub(kind, id, as<Integer>(count) else -1);
-			if (is String image) {
-				shrub.image = image;
-			}
-			map.addFixture(Point(row, column), shrub);
-			runningTotal++;
-			if (50.divides(runningTotal)) {
-				log.trace("Read ``runningTotal`` shrubs");
-			}
+	void readShrub(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is String kind = dbRow["kind"],
+			is Integer|SqlNull count = dbRow["count"],
+			is String|SqlNull image = dbRow["image"]);
+		value shrub = Shrub(kind, id, as<Integer>(count) else -1);
+		if (is String image) {
+			shrub.image = image;
 		}
-		log.trace("Finished reading shrubs");
+		map.addFixture(Point(row, column), shrub);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "shrubs", curry(readShrub)(map),
+				"""SELECT * FROM shrubs""");
 }

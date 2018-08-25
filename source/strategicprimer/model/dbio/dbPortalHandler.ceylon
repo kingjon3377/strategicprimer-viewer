@@ -52,28 +52,22 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>()
 				.execute(context.row, context.column, obj.id, obj.image, obj.destinationWorld,
 					*destinationCoordinates);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read portals");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM portals""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"],
-				is String|SqlNull destinationWorld = dbRow["destination_world"],
-				is Integer|SqlNull destinationRow = dbRow["destination_row"],
-				is Integer|SqlNull destinationColumn = dbRow["destination_column"],
-				is String|SqlNull image = dbRow["image"]);
-			value portal = Portal(as<String>(destinationWorld) else "unknown",
-				Point(as<Integer>(destinationRow) else -1,
-					as<Integer>(destinationColumn) else -1), id);
-			if (is String image) {
-				portal.image = image;
-			}
-			map.addFixture(Point(row, column), portal);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` portals");
-			}
+	void readPortal(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"],
+			is String|SqlNull destinationWorld = dbRow["destination_world"],
+			is Integer|SqlNull destinationRow = dbRow["destination_row"],
+			is Integer|SqlNull destinationColumn = dbRow["destination_column"],
+			is String|SqlNull image = dbRow["image"]);
+		value portal = Portal(as<String>(destinationWorld) else "unknown",
+			Point(as<Integer>(destinationRow) else -1,
+				as<Integer>(destinationColumn) else -1), id);
+		if (is String image) {
+			portal.image = image;
 		}
-		log.trace("Finished reading portals");
+		map.addFixture(Point(row, column), portal);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "portals", curry(readPortal)(map),
+				"""SELECT * FROM portals""");
 }

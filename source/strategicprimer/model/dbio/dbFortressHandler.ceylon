@@ -39,28 +39,22 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
 			spDatabaseWriter.writeSPObjectInContext(db, member, obj);
 		}
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read fortresses");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM fortresses""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer ownerId = dbRow["owner"], is String name = dbRow["name"],
-				is String sizeString = dbRow["size"], is TownSize size = TownSize.parse(sizeString),
-				is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"],
-				is String|SqlNull portrait = dbRow["portrait"]);
-			value fortress = Fortress(map.players.getPlayer(ownerId), name, id, size);
-			if (is String image) {
-				fortress.image = image;
-			}
-			if (is String portrait) {
-				fortress.portrait = portrait;
-			}
-			map.addFixture(Point(row, column), fortress);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` fortresses");
-			}
+	void readFortress(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer ownerId = dbRow["owner"], is String name = dbRow["name"],
+			is String sizeString = dbRow["size"], is TownSize size = TownSize.parse(sizeString),
+			is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"],
+			is String|SqlNull portrait = dbRow["portrait"]);
+		value fortress = Fortress(map.players.getPlayer(ownerId), name, id, size);
+		if (is String image) {
+			fortress.image = image;
 		}
-		log.trace("Finished reading fortresses");
+		if (is String portrait) {
+			fortress.portrait = portrait;
+		}
+		map.addFixture(Point(row, column), fortress);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "fortresses", curry(readFortress)(map),
+				"""SELECT * FROM fortresses""");
 }

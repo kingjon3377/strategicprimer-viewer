@@ -91,84 +91,67 @@ object dbCommunityStatsHandler
 		});
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
+	void readTownExpertise(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+		assert (is Integer townId = row["town"],
+			is ITownFixture town = findById(map, townId, warner),
+			exists population = town.population, is String skill = row["skill"],
+			is Integer level = row["level"]);
+		population.setSkillLevel(skill, level);
+	}
+	void readWorkedResource(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+		assert (is Integer townId = row["town"],
+			is ITownFixture town = findById(map, townId, warner),
+			exists population = town.population, is Integer resource = row["resource"]);
+		population.addWorkedField(resource);
+	}
+	void readProducedResource(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+		assert (is Integer townId = row["town"],
+			is ITownFixture town = findById(map, townId, warner),
+			exists population = town.population, is Integer id = row["id"],
+			is String kind = row["kind"], is String contents = row["contents"],
+			is String qtyString = row["quantity"], is String units = row["units"],
+			is Integer|SqlNull created = row["created"]);
+		Number<out Anything> quantity;
+		if (is Integer num = Integer.parse(qtyString)) {
+			quantity = num;
+		} else {
+			assert (is Decimal num = parseDecimal(qtyString));
+			quantity = num;
+		}
+		value pile = ResourcePile(id, kind, contents, Quantity(quantity, units));
+		if (is Integer created) {
+			pile.created = created;
+		}
+		population.yearlyProduction.add(pile);
+	}
+	void readConsumedResource(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+		assert (is Integer townId = row["town"],
+			is ITownFixture town = findById(map, townId, warner),
+			exists population = town.population, is Integer id = row["id"],
+			is String kind = row["kind"], is String contents = row["contents"],
+			is String qtyString = row["quantity"], is String units = row["units"],
+			is Integer|SqlNull created = row["created"]);
+		Number<out Anything> quantity;
+		if (is Integer num = Integer.parse(qtyString)) {
+			quantity = num;
+		} else {
+			assert (is Decimal num = parseDecimal(qtyString));
+			quantity = num;
+		}
+		value pile = ResourcePile(id, kind, contents, Quantity(quantity, units));
+		if (is Integer created) {
+			pile.created = created;
+		}
+		population.yearlyConsumption.add(pile);
+	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("Starting to read town population data");
-		variable Integer count = 0;
-		for (row in db.Select("""SELECT * FROM town_expertise""").Results()) {
-			assert (is Integer townId = row["town"],
-				is ITownFixture town = findById(map, townId, warner),
-				exists population = town.population, is String skill = row["skill"],
-				is Integer level = row["level"]);
-			population.setSkillLevel(skill, level);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` expertise levels");
-			}
-		}
-		log.trace("Finished reading expertise levels, about to start worked resource sources");
-		count = 0;
-		for (row in db.Select("""SELECT * FROM town_worked_resources""").Results()) {
-			assert (is Integer townId = row["town"],
-				is ITownFixture town = findById(map, townId, warner),
-				exists population = town.population, is Integer resource = row["resource"]);
-			population.addWorkedField(resource);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` worked resource sources");
-			}
-		}
-		log.trace("Finished reading worked rsr sources, about to start produced resources");
-		count = 0;
-		for (row in db.Select("""SELECT * FROM town_production""").Results()) {
-			assert (is Integer townId = row["town"],
-				is ITownFixture town = findById(map, townId, warner),
-				exists population = town.population, is Integer id = row["id"],
-				is String kind = row["kind"], is String contents = row["contents"],
-				is String qtyString = row["quantity"], is String units = row["units"],
-				is Integer|SqlNull created = row["created"]);
-			Number<out Anything> quantity;
-			if (is Integer num = Integer.parse(qtyString)) {
-				quantity = num;
-			} else {
-				assert (is Decimal num = parseDecimal(qtyString));
-				quantity = num;
-			}
-			value pile = ResourcePile(id, kind, contents, Quantity(quantity, units));
-			if (is Integer created) {
-				pile.created = created;
-			}
-			population.yearlyProduction.add(pile);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` produced resources");
-			}
-		}
-		log.trace("Finished reading produced resources, about to start on consumed resources");
-		count = 0;
-		for (row in db.Select("""SELECT * FROM town_consumption""").Results()) {
-			assert (is Integer townId = row["town"],
-				is ITownFixture town = findById(map, townId, warner),
-				exists population = town.population, is Integer id = row["id"],
-				is String kind = row["kind"], is String contents = row["contents"],
-				is String qtyString = row["quantity"], is String units = row["units"],
-				is Integer|SqlNull created = row["created"]);
-			Number<out Anything> quantity;
-			if (is Integer num = Integer.parse(qtyString)) {
-				quantity = num;
-			} else {
-				assert (is Decimal num = parseDecimal(qtyString));
-				quantity = num;
-			}
-			value pile = ResourcePile(id, kind, contents, Quantity(quantity, units));
-			if (is Integer created) {
-				pile.created = created;
-			}
-			population.yearlyConsumption.add(pile);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` consumed resources");
-			}
-		}
-		log.trace("Finished reading consumed resources, and with town and village contents");
+		handleQueryResults(db, warner, "town expertise levels", curry(readTownExpertise)(map),
+			"""SELECT * FROM town_expertise""");
+		handleQueryResults(db, warner, "town worked resources", curry(readWorkedResource)(map),
+			"""SELECT * FROM town_worked_resources""");
+		handleQueryResults(db, warner, "town produced resources", curry(readProducedResource)(map),
+			"""SELECT * FROM town_production""");
+		handleQueryResults(db, warner, "town consumed resources", curry(readConsumedResource)(map),
+			"""SELECT * FROM town_consumption""");
 	}
 }

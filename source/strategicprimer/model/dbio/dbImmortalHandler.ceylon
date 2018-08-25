@@ -106,168 +106,90 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			}
 		}
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) { // TODO: Reduce code duplication (and in other readers)
-		log.trace("About to read simple immortals");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE row IS NOT NULL""")
-				.Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is String type = dbRow["type"], is Integer id = dbRow["id"],
-				is String|SqlNull image = dbRow["image"]);
-			SimpleImmortal immortal;
-			switch (type)
-			case ("sphinx") {
-				immortal = Sphinx(id);
-			}
-			case ("djinn") {
-				immortal = Djinn(id);
-			}
-			case ("griffin") {
-				immortal = Griffin(id);
-			}
-			case ("minotaur") {
-				immortal = Minotaur(id);
-			}
-			case ("ogre") {
-				immortal = Ogre(id);
-			}
-			case ("phoenix") {
-				immortal = Phoenix(id);
-			}
-			case ("simurgh") {
-				immortal = Simurgh(id);
-			}
-			case ("troll") {
-				immortal = Troll(id);
-			}
-			else {
-				throw AssertionError("Unhandled 'simple immortal' type");
-			}
-			if (is String image) {
-				immortal.image = image;
-			}
-			map.addFixture(Point(row, column), immortal);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` simple immortals");
-			}
+	void readSimpleImmortal(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is String type = dbRow["type"], is Integer id = dbRow["id"],
+			is String|SqlNull image = dbRow["image"]);
+		SimpleImmortal immortal;
+		switch (type)
+		case ("sphinx") {
+			immortal = Sphinx(id);
 		}
-		log.trace("Finished reading simple immortals; about to start on immortals with kinds");
-		count = 0;
-		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE row IS NOT NULL""")
-				.Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is String type = dbRow["type"], is String kind = dbRow["kind"],
-				is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
-			Immortal&HasMutableImage immortal;
-			switch (type)
-			case ("centaur") {
-				immortal = Centaur(kind, id);
-			}
-			case ("dragon") {
-				immortal = Dragon(kind, id);
-			}
-			case ("fairy") {
-				immortal = Fairy(kind, id);
-			}
-			case ("giant") {
-				immortal = Giant(kind, id);
-			}
-			else {
-				throw AssertionError("Unexpected immortal kind");
-			}
-			if (is String image) {
-				immortal.image = image;
-			}
-			map.addFixture(Point(row, column), immortal);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` immortals with kinds");
-			}
+		case ("djinn") {
+			immortal = Djinn(id);
 		}
-		log.trace("Finished reading immortals with kinds");
+		case ("griffin") {
+			immortal = Griffin(id);
+		}
+		case ("minotaur") {
+			immortal = Minotaur(id);
+		}
+		case ("ogre") {
+			immortal = Ogre(id);
+		}
+		case ("phoenix") {
+			immortal = Phoenix(id);
+		}
+		case ("simurgh") {
+			immortal = Simurgh(id);
+		}
+		case ("troll") {
+			immortal = Troll(id);
+		}
+		else {
+			throw AssertionError("Unhandled 'simple immortal' type");
+		}
+		if (is String image) {
+			immortal.image = image;
+		}
+		if (is Integer row = dbRow["row"], is Integer column = dbRow["column"]) {
+			map.addFixture(Point(row, column), immortal);
+		} else {
+			assert (is Integer parentId = dbRow["parent"],
+				is IUnit parent = findById(map, parentId, warner));
+			parent.addMember(immortal);
+		}
+	}
+	void readKindedImmortal(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is String type = dbRow["type"], is String kind = dbRow["kind"],
+			is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
+		Immortal&HasMutableImage immortal;
+		switch (type)
+		case ("centaur") {
+			immortal = Centaur(kind, id);
+		}
+		case ("dragon") {
+			immortal = Dragon(kind, id);
+		}
+		case ("fairy") {
+			immortal = Fairy(kind, id);
+		}
+		case ("giant") {
+			immortal = Giant(kind, id);
+		}
+		else {
+			throw AssertionError("Unexpected immortal kind");
+		}
+		if (is String image) {
+			immortal.image = image;
+		}
+		if (is Integer row = dbRow["row"], is Integer column = dbRow["column"]) {
+			map.addFixture(Point(row, column), immortal);
+		} else {
+			assert (is Integer parentId = dbRow["parent"],
+				is IUnit parent = findById(map, parentId, warner));
+			parent.addMember(immortal);
+		}
+	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		handleQueryResults(db, warner, "simple immortals", curry(readSimpleImmortal)(map),
+			"""SELECT * FROM simple_immortals WHERE row IS NOT NULL""");
+		handleQueryResults(db, warner, "immortals with kinds", curry(readKindedImmortal)(map),
+			"""SELECT * FROM kinded_immortals WHERE row IS NOT NULL""");
 	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read simple immortals in units");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM simple_immortals WHERE parent IS NOT NULL""")
-				.Results()) {
-			assert (is Integer parentId = dbRow["parent"],
-				is IUnit parent = findById(map, parentId, warner), is String type = dbRow["type"],
-				is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
-			SimpleImmortal immortal;
-			switch (type)
-			case ("sphinx") {
-				immortal = Sphinx(id);
-			}
-			case ("djinn") {
-				immortal = Djinn(id);
-			}
-			case ("griffin") {
-				immortal = Griffin(id);
-			}
-			case ("minotaur") {
-				immortal = Minotaur(id);
-			}
-			case ("ogre") {
-				immortal = Ogre(id);
-			}
-			case ("phoenix") {
-				immortal = Phoenix(id);
-			}
-			case ("simurgh") {
-				immortal = Simurgh(id);
-			}
-			case ("troll") {
-				immortal = Troll(id);
-			}
-			else {
-				throw AssertionError("Unhandled 'simple immortal' type");
-			}
-			if (is String image) {
-				immortal.image = image;
-			}
-			parent.addMember(immortal);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` simple immortals in units");
-			}
-		}
-		log.trace(
-			"Finished reading simple immortals in units; about to read kinded immortals in units");
-		count = 0;
-		for (dbRow in db.Select("""SELECT * FROM kinded_immortals WHERE parent IS NOT NULL""")
-				.Results()) {
-			assert (is Integer parentId = dbRow["parent"],
-				is IUnit parent = findById(map, parentId, warner), is String type = dbRow["type"],
-				is String kind = dbRow["kind"], is Integer id = dbRow["id"],
-				is String|SqlNull image = dbRow["image"]);
-			Immortal&HasMutableImage immortal;
-			switch (type)
-			case ("centaur") {
-				immortal = Centaur(kind, id);
-			}
-			case ("dragon") {
-				immortal = Dragon(kind, id);
-			}
-			case ("fairy") {
-				immortal = Fairy(kind, id);
-			}
-			case ("giant") {
-				immortal = Giant(kind, id);
-			}
-			else {
-				throw AssertionError("Unexpected immortal kind");
-			}
-			if (is String image) {
-				immortal.image = image;
-			}
-			parent.addMember(immortal);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` immortals with kinds in units");
-			}
-		}
-		log.trace("Finished reading immortals with kinds in units");
+		handleQueryResults(db, warner, "simple immortals in units", curry(readSimpleImmortal)(map),
+			"""SELECT * FROM simple_immortals WHERE parent IS NOT NULL""");
+		handleQueryResults(db, warner, "immortals with kinds in units", curry(readKindedImmortal)(map),
+			"""SELECT * FROM kinded_immortals WHERE parent IS NOT NULL""");
 	}
 }

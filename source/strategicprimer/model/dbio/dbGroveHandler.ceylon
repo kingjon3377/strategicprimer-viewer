@@ -35,36 +35,30 @@ object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>()
 					(obj.orchard) then "orchard" else "grove",
 					obj.kind, obj.cultivated, obj.population, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read groves");
-		variable Integer runningTotal = 0;
-		for (dbRow in db.Select("""SELECT * FROM groves""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String type = dbRow["type"],
-				is String kind = dbRow["kind"],
-				is Boolean cultivated = dbMapReader.databaseBoolean(dbRow["cultivated"]),
-				is Integer count = dbRow["count"], is String|SqlNull image = dbRow["image"]);
-			Boolean orchard;
-			switch (type)
-			case ("grove") {
-				orchard = false;
-			}
-			case ("orchard") {
-				orchard = true;
-			}
-			else {
-				throw AssertionError("Unexpected grove type");
-			}
-			value grove = Grove(orchard, cultivated, kind, id, count);
-			if (is String image) {
-				grove.image = image;
-			}
-			map.addFixture(Point(row, column), grove);
-			runningTotal++;
-			if (50.divides(runningTotal)) {
-				log.trace("Finished reading ``runningTotal`` groves");
-			}
+	void readGrove(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is String type = dbRow["type"],
+			is String kind = dbRow["kind"],
+			is Boolean cultivated = dbMapReader.databaseBoolean(dbRow["cultivated"]),
+			is Integer count = dbRow["count"], is String|SqlNull image = dbRow["image"]);
+		Boolean orchard;
+		switch (type)
+		case ("grove") {
+			orchard = false;
 		}
-		log.trace("Finished reading groves");
+		case ("orchard") {
+			orchard = true;
+		}
+		else {
+			throw AssertionError("Unexpected grove type");
+		}
+		value grove = Grove(orchard, cultivated, kind, id, count);
+		if (is String image) {
+			grove.image = image;
+		}
+		map.addFixture(Point(row, column), grove);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "groves", curry(readGrove)(map),
+				"""SELECT * FROM groves""");
 }

@@ -27,24 +27,18 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
 		             VALUES(?, ?, ?, ?);""")
 				.execute(obj.playerId, obj.name, obj.current, obj.portrait);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read players");
-		variable Integer count = 0;
-		for (row in db.Select("""SELECT * FROM PLAYERS""").Results()) {
-			assert (is Integer id = row["id"], is String name = row["codename"],
-				is Boolean current = dbMapReader.databaseBoolean(row["current"]),
-				is String|SqlNull portrait = row["portrait"]);
-			value player = PlayerImpl(id, name);
-			player.current = current;
-			if (is String portrait) {
-				player.portrait = portrait;
-			}
-			map.addPlayer(player);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` players");
-			}
+	void readPlayer(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+		assert (is Integer id = row["id"], is String name = row["codename"],
+			is Boolean current = dbMapReader.databaseBoolean(row["current"]),
+			is String|SqlNull portrait = row["portrait"]);
+		value player = PlayerImpl(id, name);
+		player.current = current;
+		if (is String portrait) {
+			player.portrait = portrait;
 		}
-		log.trace("Finished reading players");
+		map.addPlayer(player);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "players", curry(readPlayer)(map),
+				"""SELECT * FROM players""");
 }

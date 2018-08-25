@@ -46,45 +46,33 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
 			   VALUES(?, ?, ?, ?, ?, ?, ?, ?);""").execute(context.row, context.column, type,
 					obj.id, obj.kind, exposed, obj.dc, obj.image);
 	}
+	void readMineralVein(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is String kind = dbRow["kind"],
+			is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
+			is Integer dc = dbRow["dc"], is String|SqlNull image = dbRow["image"]);
+		value mineral = MineralVein(kind, exposed, dc, id);
+		if (is String image) {
+			mineral.image = image;
+		}
+		map.addFixture(Point(row, column), mineral);
+	}
+	void readStoneDeposit(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is String kindString = dbRow["kind"],
+			is StoneKind kind = StoneKind.parse(kindString), is Integer dc = dbRow["dc"],
+			is String|SqlNull image = dbRow["image"]);
+		value stone = StoneDeposit(kind, dc, id);
+		if (is String image) {
+			stone.image = image;
+		}
+		map.addFixture(Point(row, column), stone);
+	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read mineral veins");
-		variable Integer count = 0;
-		for (dbRow in db.Select(
-				"""SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'""")
-				.Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String kindString = dbRow["kind"],
-				is StoneKind kind = StoneKind.parse(kindString), is Integer dc = dbRow["dc"],
-				is String|SqlNull image = dbRow["image"]);
-			value stone = StoneDeposit(kind, dc, id);
-			if (is String image) {
-				stone.image = image;
-			}
-			map.addFixture(Point(row, column), stone);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` mineral veins");
-			}
-		}
-		log.trace("Finished reading mineral veins, about to read stone deposits");
-		count = 0;
-		for (dbRow in db.Select(
-				"""SELECT row, column, id, kind, exposed, dc, image FROM minerals
-				   WHERE type = 'mineral'""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
-				is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
-				is Integer dc = dbRow["dc"], is String|SqlNull image = dbRow["image"]);
-			value mineral = MineralVein(kind, exposed, dc, id);
-			if (is String image) {
-				mineral.image = image;
-			}
-			map.addFixture(Point(row, column), mineral);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` stone deposits");
-			}
-		}
-		log.trace("Finished reading stone deposits");
+		handleQueryResults(db, warner, "stone deposits", curry(readStoneDeposit)(map),
+			"""SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'""");
+		handleQueryResults(db, warner, "mineral veins", curry(readMineralVein)(map),
+			"""SELECT row, column, id, kind, exposed, dc, image FROM minerals
+			   WHERE type = 'mineral'""");
 	}
 }

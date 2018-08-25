@@ -45,39 +45,30 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
 		}
 		insertion.execute(context.row, context.column, obj.id, obj.dc, obj.image);
 	}
+	void readCave(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is Integer dc = dbRow["dc"],
+			is String|SqlNull image = dbRow["image"]);
+		value cave = Cave(dc, id);
+		if (is String image) {
+			cave.image = image;
+		}
+		map.addFixture(Point(row, column), cave);
+	}
+	void readBattlefield(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is Integer dc = dbRow["dc"],
+			is String|SqlNull image = dbRow["image"]);
+		value battlefield = Battlefield(dc, id);
+		if (is String image) {
+			battlefield.image = image;
+		}
+		map.addFixture(Point(row, column), battlefield);
+	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to start reading caves");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM caves""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is Integer dc = dbRow["dc"],
-				is String|SqlNull image = dbRow["image"]);
-			value cave = Cave(dc, id);
-			if (is String image) {
-				cave.image = image;
-			}
-			map.addFixture(Point(row, column), cave);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` caves");
-			}
-		}
-		count = 0;
-		log.trace("Finished reading caves; about to start on battlefields");
-		for (dbRow in db.Select("""SELECT * FROM battlefields""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is Integer dc = dbRow["dc"],
-				is String|SqlNull image = dbRow["image"]);
-			value battlefield = Battlefield(dc, id);
-			if (is String image) {
-				battlefield.image = image;
-			}
-			map.addFixture(Point(row, column), battlefield);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` battlefields");
-			}
-		}
-		log.trace("Finished reading battlefields");
+		handleQueryResults(db, warner, "caves", curry(readCave)(map),
+			"""SELECT * FROM caves""");
+		handleQueryResults(db, warner, "battlefields", curry(readBattlefield)(map),
+			"""SELECT * FROM battlefields""");
 	}
 }

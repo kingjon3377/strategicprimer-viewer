@@ -48,34 +48,28 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()
 			dbCommunityStatsHandler.write(db, stats, obj);
 		}
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read villages");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * from villages""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is String statusString = dbRow["status"],
-				is TownStatus status = TownStatus.parse(statusString),
-				is String name = dbRow["name"], is Integer id = dbRow["id"],
-				is Integer ownerId = dbRow["owner"],
-				is String race = dbRow["race"], is String|SqlNull image = dbRow["image"],
-				is String|SqlNull portrait = dbRow["portrait"],
-				is Integer|SqlNull population = dbRow["population"]);
-			value village = Village(status, name, id, map.players.getPlayer(ownerId), race);
-			if (is String image) {
-				village.image = image;
-			}
-			if (is String portrait) {
-				village.portrait = portrait;
-			}
-			if (is Integer population) {
-				village.population = CommunityStats(population);
-			}
-			map.addFixture(Point(row, column), village);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` villages");
-			}
+	void readVillage(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is String statusString = dbRow["status"],
+			is TownStatus status = TownStatus.parse(statusString),
+			is String name = dbRow["name"], is Integer id = dbRow["id"],
+			is Integer ownerId = dbRow["owner"],
+			is String race = dbRow["race"], is String|SqlNull image = dbRow["image"],
+			is String|SqlNull portrait = dbRow["portrait"],
+			is Integer|SqlNull population = dbRow["population"]);
+		value village = Village(status, name, id, map.players.getPlayer(ownerId), race);
+		if (is String image) {
+			village.image = image;
 		}
-		log.trace("Finished reading villages");
+		if (is String portrait) {
+			village.portrait = portrait;
+		}
+		if (is Integer population) {
+			village.population = CommunityStats(population);
+		}
+		map.addFixture(Point(row, column), village);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "villages", curry(readVillage)(map),
+				"""SELECT * from villages""");
 }

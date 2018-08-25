@@ -105,64 +105,57 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
 		});
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
+	void readWorkerStats(IMutableMapNG map, MutableMap<Integer, Worker> workers,
+			Map<String, Object> row, Warning warner) {
+		assert (is Integer unitId = row["unit"],
+			is IUnit unit = super.findById(map, unitId, warner), is Integer id = row["id"],
+			is String name = row["name"], is String race = row["race"],
+			is String|SqlNull image = row["image"], is String|SqlNull portrait = row["portrait"],
+			is Integer|SqlNull hp = row["hp"], is Integer|SqlNull maxHp = row["max_hp"],
+			is Integer|SqlNull str = row["str"], is Integer|SqlNull dex = row["dex"],
+			is Integer|SqlNull con = row["con"], is Integer|SqlNull int = row["int"],
+			is Integer|SqlNull wis = row["wis"], is Integer|SqlNull cha = row["cha"]);
+		Worker worker = Worker(name, race, id);
+		if (is Integer hp) {
+			assert (is Integer maxHp, is Integer str, is Integer dex, is Integer con,
+				is Integer int, is Integer wis, is Integer cha);
+			worker.stats = WorkerStats(hp, maxHp, str, dex, con, int, wis, cha);
+		}
+		if (is String image) {
+			worker.image = image;
+		}
+		if (is String portrait) {
+			worker.portrait = portrait;
+		}
+		if (exists existing = workers[id]) {
+			warner.handle(DuplicateIDException(id));
+		}
+		workers[id] = worker;
+		unit.addMember(worker);
+	}
+	void readJobLevel(IMutableMapNG map, Map<Integer, Worker> workers,
+			Map<String, Object> row, Warning warner) {
+		assert (is Integer id = row["worker"], exists worker = workers[id],
+			is String job = row["job"], is Integer level = row["level"]);
+		worker.addJob(Job(job, level));
+	}
+	void readSkillLevel(IMutableMapNG map, Map<Integer, Worker> workers,
+			Map<String, Object> row, Warning warner) {
+		assert (is Integer id = row["worker"], exists worker = workers[id],
+			is String job = row["associated_job"], is String skill = row["skill"],
+			is Integer level = row["level"], is Integer hours = row["hours"]);
+		worker.getJob(job).addSkill(Skill(skill, level, hours));
+	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read worker stats");
-		variable Integer count = 0;
 		MutableMap<Integer, Worker> workers = HashMap<Integer, Worker>();
-		for (row in db.Select("""SELECT * FROM workers""").Results()) {
-			assert (is Integer unitId = row["unit"],
-				is IUnit unit = super.findById(map, unitId, warner), is Integer id = row["id"],
-				is String name = row["name"], is String race = row["race"],
-				is String|SqlNull image = row["image"], is String|SqlNull portrait = row["portrait"],
-				is Integer|SqlNull hp = row["hp"], is Integer|SqlNull maxHp = row["max_hp"],
-				is Integer|SqlNull str = row["str"], is Integer|SqlNull dex = row["dex"],
-				is Integer|SqlNull con = row["con"], is Integer|SqlNull int = row["int"],
-				is Integer|SqlNull wis = row["wis"], is Integer|SqlNull cha = row["cha"]);
-			Worker worker = Worker(name, race, id);
-			if (is Integer hp) {
-				assert (is Integer maxHp, is Integer str, is Integer dex, is Integer con,
-					is Integer int, is Integer wis, is Integer cha);
-				worker.stats = WorkerStats(hp, maxHp, str, dex, con, int, wis, cha);
-			}
-			if (is String image) {
-				worker.image = image;
-			}
-			if (is String portrait) {
-				worker.portrait = portrait;
-			}
-			if (exists existing = workers[id]) {
-				warner.handle(DuplicateIDException(id));
-			}
-			workers[id] = worker;
-			unit.addMember(worker);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` workers' stats");
-			}
-		}
-		log.trace("Finished reading workers' stats, about to start Job levels");
-		count = 0;
-		for (row in db.Select("""SELECT * FROM worker_job_levels""").Results()) {
-			assert (is Integer id = row["worker"], exists worker = workers[id],
-				is String job = row["job"], is Integer level = row["level"]);
-			worker.addJob(Job(job, level));
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` Job levels");
-			}
-		}
-		log.trace("Finished reading Job levels, about to start Skill levels");
-		count = 0;
-		for (row in db.Select("""SELECT * FROM worker_skill_levels""").Results()) {
-			assert (is Integer id = row["worker"], exists worker = workers[id],
-				is String job = row["associated_job"], is String skill = row["skill"],
-				is Integer level = row["level"], is Integer hours = row["hours"]);
-			worker.getJob(job).addSkill(Skill(skill, level, hours));
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` Skill levels");
-			}
-		}
-		log.trace("Finished reading Skill levels, and everything having to do with workers");
+		handleQueryResults(db, warner, "worker stats",
+			curry(curry(readWorkerStats)(map))(workers),
+			"""SELECT * FROM workers""");
+		handleQueryResults(db, warner, "Job levels",
+			curry(curry(readJobLevel)(map))(workers),
+			"""SELECT * FROM worker_job_levels""");
+		handleQueryResults(db, warner, "Skill levels",
+			curry(curry(readSkillLevel)(map))(workers),
+			"""SELECT * FROM worker_skill_levels""");
 	}
 }

@@ -30,24 +30,18 @@ object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>()
 		             VALUES(?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id, obj.kind, obj.exposed, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read ground");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM ground""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
-				is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
-				is String|SqlNull image = dbRow["image"]);
-			value ground = Ground(id, kind, exposed);
-			if (is String image) {
-				ground.image = image;
-			}
-			map.addFixture(Point(row, column), ground);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` ground");
-			}
+	void readGround(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is String kind = dbRow["kind"],
+			is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
+			is String|SqlNull image = dbRow["image"]);
+		value ground = Ground(id, kind, exposed);
+		if (is String image) {
+			ground.image = image;
 		}
-		log.trace("Finished reading ground");
+		map.addFixture(Point(row, column), ground);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "ground", curry(readGround)(map),
+				"""SELECT * FROM ground""");
 }

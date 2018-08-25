@@ -41,37 +41,31 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>(
 		             VALUES(?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, type, obj.id, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read simple terrain fixtures");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM simple_terrain""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is String type = dbRow["type"], is Integer id = dbRow["id"],
-				is String|SqlNull image = dbRow["image"]);
-			TileFixture&HasMutableImage fixture;
-			switch (type)
-			case ("hill") {
-				fixture = Hill(id);
-			}
-			case ("sandbar") {
-				log.info("Ignoring 'sandbar' with ID ``id```");
-				continue;
-			}
-			case ("oasis") {
-				fixture = Oasis(id);
-			}
-			else {
-				throw AssertionError("Unhandled simple terrain-fixture type");
-			}
-			if (is String image) {
-				fixture.image = image;
-			}
-			map.addFixture(Point(row, column), fixture);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` simple terrain fixtures");
-			}
+	void readSimpleTerrain(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is String type = dbRow["type"], is Integer id = dbRow["id"],
+			is String|SqlNull image = dbRow["image"]);
+		TileFixture&HasMutableImage fixture;
+		switch (type)
+		case ("hill") {
+			fixture = Hill(id);
 		}
-		log.trace("Finished reading simple terrain fixtures");
+		case ("sandbar") {
+			log.info("Ignoring 'sandbar' with ID ``id```");
+			return;
+		}
+		case ("oasis") {
+			fixture = Oasis(id);
+		}
+		else {
+			throw AssertionError("Unhandled simple terrain-fixture type");
+		}
+		if (is String image) {
+			fixture.image = image;
+		}
+		map.addFixture(Point(row, column), fixture);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "simple terrain fixtures", curry(readSimpleTerrain)(map),
+				"""SELECT * FROM simple_terrain""");
 }

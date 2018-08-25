@@ -34,25 +34,19 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>()
 		             VALUES(?, ?, ?, ?, ?, ?);""")
 				.execute(context.row, context.column, obj.id, obj.kind, obj.status.string, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read mines");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM mines""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String kind = dbRow["kind"],
-				is String statusString = dbRow["status"],
-				is TownStatus status = TownStatus.parse(statusString),
-				is String|SqlNull image = dbRow["image"]);
-			value mine = Mine(kind, status, id);
-			if (is String image) {
-				mine.image = image;
-			}
-			map.addFixture(Point(row, column), mine);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` mines");
-			}
+	void readMine(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is String kind = dbRow["kind"],
+			is String statusString = dbRow["status"],
+			is TownStatus status = TownStatus.parse(statusString),
+			is String|SqlNull image = dbRow["image"]);
+		value mine = Mine(kind, status, id);
+		if (is String image) {
+			mine.image = image;
 		}
-		log.trace("Finished reading mines");
+		map.addFixture(Point(row, column), mine);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "mines", curry(readMine)(map),
+				"""SELECT * FROM mines""");
 }

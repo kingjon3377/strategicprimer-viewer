@@ -33,4 +33,18 @@ interface MapContentsReader {
 	"Find a tile fixture or unit or fortress member by ID."
 	shared default IFixture findById(IMapNG map, Integer id, Warning warner) =>
 			dbMemoizer.findById(map, id, this, warner);
+	"Run the given method on each row returned by the given query."
+	shared default void handleQueryResults(Sql db, Warning warner, String description,
+			Anything(Map<String, Object>, Warning) handler, String query, Object* args) {
+		log.trace("About to read ``description``");
+		variable Integer count = 0;
+		for (row in db.Select(query).Results(*args)) {
+			handler(row, warner);
+			count++;
+			if (50.divides(count)) {
+				log.trace("Finished reading 50 ``description``");
+			}
+		}
+		log.trace("Finished reading ``description``");
+	}
 }

@@ -83,65 +83,40 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
 			}
 		}
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read directly-in-map animals");
-		variable Integer runningTotal = 0;
-		for (dbRow in db.Select("""SELECT * FROM animals WHERE row IS NOT NULL""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is String kind = dbRow["kind"],
-				is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
-				is String status = dbRow["status"], is Integer|SqlNull born = dbRow["born"],
-				is Integer count = dbRow["count"], is Integer id = dbRow["id"],
-				is String|SqlNull image = dbRow["image"]);
-			value animal = AnimalImpl(kind, talking, status, id, as<Integer>(born) else -1, count);
-			if (is String image) {
-				animal.image = image;
-			}
+	void readAnimal(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is String kind = dbRow["kind"],
+			is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
+			is String status = dbRow["status"], is Integer|SqlNull born = dbRow["born"],
+			is Integer count = dbRow["count"], is Integer id = dbRow["id"],
+			is String|SqlNull image = dbRow["image"]);
+		value animal = AnimalImpl(kind, talking, status, id, as<Integer>(born) else -1, count);
+		if (is String image) {
+			animal.image = image;
+		}
+		if (is Integer row = dbRow["row"], is Integer column = dbRow["column"]) {
 			map.addFixture(Point(row, column), animal);
-			runningTotal++;
-			if (50.divides(runningTotal)) {
-				log.trace("Finished reading ``runningTotal`` animal populations");
-			}
-		}
-		log.trace("Finished reading directly-in-map animals; about to read tracks");
-		runningTotal = 0;
-		for (dbRow in db.Select("""SELECT * FROM tracks""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is String kind = dbRow["kind"], is String|SqlNull image = dbRow["image"]);
-			value track = AnimalTracks(kind);
-			if (is String image) {
-				track.image = image;
-			}
-			map.addFixture(Point(row, column), track);
-			runningTotal++;
-			if (50.divides(runningTotal)) {
-				log.trace("Finished reading ``runningTotal`` tracks");
-			}
-		}
-		log.trace("Finished reading animal tracks");
-	}
-	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read animals in units");
-		variable Integer runningTotal = 0;
-		for (dbRow in db.Select("""SELECT * FROM animals WHERE parent IS NOT NULL""")
-				.Results()) {
+		} else {
 			assert (is Integer parentId = dbRow["parent"],
-				is IUnit parent = findById(map, parentId, warner),
-				is String kind = dbRow["kind"],
-				is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
-				is String status = dbRow["status"], is Integer|SqlNull born = dbRow["born"],
-				is Integer count = dbRow["count"], is Integer id = dbRow["id"],
-				is String|SqlNull image = dbRow["image"]);
-			value animal = AnimalImpl(kind, talking, status, id, as<Integer>(born) else -1, count);
-			if (is String image) {
-				animal.image = image;
-			}
+				is IUnit parent = findById(map, parentId, warner));
 			parent.addMember(animal);
-			runningTotal++;
-			if (50.divides(runningTotal)) {
-				log.trace("Finished reading ``runningTotal`` in-unit animal populations");
-			}
 		}
-		log.trace("Finished reading animals in units");
 	}
+	void readTracks(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is String kind = dbRow["kind"], is String|SqlNull image = dbRow["image"]);
+		value track = AnimalTracks(kind);
+		if (is String image) {
+			track.image = image;
+		}
+		map.addFixture(Point(row, column), track);
+	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+		handleQueryResults(db, warner, "animal populations", curry(readAnimal)(map),
+			"""SELECT * FROM animals WHERE row IS NOT NULL""");
+		handleQueryResults(db, warner, "animal tracks", curry(readTracks)(map),
+			"""SELECT * FROM tracks""");
+	}
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "animals in units", curry(readAnimal)(map),
+				"""SELECT * FROM animals WHERE parent IS NOT NULL""");
 }

@@ -31,24 +31,18 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
 					.execute(context.row, context.column, obj.id, obj.briefDescription,
 						obj.fullDescription, obj.owner.playerId, obj.image);
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read adventures");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM adventures""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer id = dbRow["id"], is String brief = dbRow["brief"],
-				is String full = dbRow["full"], is Integer ownerId = dbRow["owner"],
-				is String|SqlNull image = dbRow["image"]);
-			value adventure = AdventureFixture(map.players.getPlayer(ownerId), brief, full, id);
-			if (is String image) {
-				adventure.image = image;
-			}
-			map.addFixture(Point(row, column), adventure);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Finished reading ``count`` adventures");
-			}
+	void readAdventure(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+			is Integer id = dbRow["id"], is String brief = dbRow["brief"],
+			is String full = dbRow["full"], is Integer ownerId = dbRow["owner"],
+			is String|SqlNull image = dbRow["image"]);
+		value adventure = AdventureFixture(map.players.getPlayer(ownerId), brief, full, id);
+		if (is String image) {
+			adventure.image = image;
 		}
-		log.trace("Finished reading adventures");
+		map.addFixture(Point(row, column), adventure);
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "adventures", curry(readAdventure)(map),
+				"""SELECT * FROM adventures""");
 }

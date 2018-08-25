@@ -87,73 +87,46 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>()
 			spDatabaseWriter.writeSPObjectInContext(db, member, obj);
 		}
 	}
-	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read units outside fortresses");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM units WHERE row IS NOT NULL""").Results()) {
-			assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
-				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
-				is String name = dbRow["name"], is Integer id = dbRow["id"],
-				is String|SqlNull image = dbRow["image"],
-				is String|SqlNull portrait = dbRow["portrait"]);
-			value unit = Unit(map.players.getPlayer(ownerNum), kind, name, id);
-			if (is String image) {
-				unit.image = image;
-			}
-			if (is String portrait) {
-				unit.portrait = portrait;
-			}
-			for (ordersRow in db.Select("""SELECT * from orders WHERE unit = ?""").Results(id)) {
-				assert (is Integer|SqlNull turn = ordersRow["turn"],
-					is String orders = ordersRow["orders"]);
-				unit.setOrders(as<Integer>(turn) else -1, orders);
-			}
-			for (resultsRow in db.Select("""SELECT * from results WHERE unit = ?""").Results(id)) {
-				assert (is Integer|SqlNull turn = resultsRow["turn"],
-					is String results = resultsRow["results"]);
-				unit.setResults(as<Integer>(turn) else -1, results);
-			}
+	void readOrders(IUnit unit, Map<String, Object> ordersRow, Warning warner) {
+		assert (is Integer|SqlNull turn = ordersRow["turn"],
+			is String orders = ordersRow["orders"]);
+		unit.setOrders(as<Integer>(turn) else -1, orders);
+	}
+	void readResults(IUnit unit, Map<String, Object> resultsRow, Warning warner) {
+		assert (is Integer|SqlNull turn = resultsRow["turn"],
+			is String results = resultsRow["results"]);
+		unit.setResults(as<Integer>(turn) else -1, results);
+	}
+	void readUnit(IMutableMapNG map, Sql db, Map<String, Object> dbRow, Warning warner) {
+		assert (is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
+			is String name = dbRow["name"], is Integer id = dbRow["id"],
+			is String|SqlNull image = dbRow["image"],
+			is String|SqlNull portrait = dbRow["portrait"]);
+		value unit = Unit(map.players.getPlayer(ownerNum), kind, name, id);
+		if (is String image) {
+			unit.image = image;
+		}
+		if (is String portrait) {
+			unit.portrait = portrait;
+		}
+		handleQueryResults(db, warner, "turns' orders", curry(readOrders)(unit),
+			"""SELECT * from orders WHERE unit = ?""", id);
+		handleQueryResults(db, warner, "turns' results", curry(readResults)(unit),
+			"""SELECT * from results WHERE unit = ?""", id);
+		if (is Integer row = dbRow["row"], is Integer column = dbRow["column"]) {
 			map.addFixture(Point(row, column), unit);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` units outside fortresses");
-			}
-		}
-		log.trace("Finished reading units outside fortresses");
-	}
-	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		log.trace("About to read units in fortresses");
-		variable Integer count = 0;
-		for (dbRow in db.Select("""SELECT * FROM units WHERE parent IS NOT NULL""").Results()) {
+		} else {
 			assert (is Integer parentNum = dbRow["parent"],
-				is Fortress parent = super.findById(map, parentNum, warner),
-				is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
-				is String name = dbRow["name"], is Integer id = dbRow["id"],
-				is String|SqlNull image = dbRow["image"],
-				is String|SqlNull portrait = dbRow["portrait"]);
-			value unit = Unit(map.players.getPlayer(ownerNum), kind, name, id);
-			if (is String image) {
-				unit.image = image;
-			}
-			if (is String portrait) {
-				unit.portrait = portrait;
-			}
-			for (ordersRow in db.Select("""SELECT * from orders WHERE unit = ?""").Results(id)) {
-				assert (is Integer|SqlNull turn = ordersRow["turn"],
-					is String orders = ordersRow["orders"]);
-				unit.setOrders(as<Integer>(turn) else -1, orders);
-			}
-			for (resultsRow in db.Select("""SELECT * from results WHERE unit = ?""").Results(id)) {
-				assert (is Integer|SqlNull turn = resultsRow["turn"],
-					is String results = resultsRow["results"]);
-				unit.setResults(as<Integer>(turn) else -1, results);
-			}
+				is Fortress parent = super.findById(map, parentNum, warner));
 			parent.addMember(unit);
-			count++;
-			if (50.divides(count)) {
-				log.trace("Read ``count`` units in fortresses");
-			}
 		}
-		log.trace("Finished reading units in fortresses");
 	}
+	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "units outside fortresses",
+				curry(curry(readUnit)(map))(db),
+				"""SELECT * FROM units WHERE row IS NOT NULL""");
+	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
+			handleQueryResults(db, warner, "units in fortresses",
+				curry(curry(readUnit)(map))(db),
+				"""SELECT * FROM units WHERE parent IS NOT NULL""");
 }
