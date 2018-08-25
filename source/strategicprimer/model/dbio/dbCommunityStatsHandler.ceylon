@@ -61,16 +61,6 @@ object dbCommunityStatsHandler
 			   created INTEGER
 		   );"""
 	];
-	MutableMap<[IMapNG, Integer], IFixture> cache = HashMap<[IMapNG, Integer], IFixture>();
-	shared actual IFixture findById(IMapNG map, Integer id, Warning warner) { // TODO: Extract this from here and the superclass to a helper object, so other readers can make use of this memoization
-		if (exists retval = cache[[map, id]]) {
-			return retval;
-		} else {
-			value retval = super.findById(map, id, warner);
-			cache[[map, id]] = retval;
-			return retval;
-		}
-	}
 	shared actual void write(Sql db, CommunityStats obj, ITownFixture context) {
 		value expertise = db.Insert("""INSERT INTO town_expertise (town, skill, level)
 		                               VALUES(?, ?, ?);""");

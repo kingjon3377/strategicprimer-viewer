@@ -31,11 +31,6 @@ interface MapContentsReader {
 		return null;
 	}
 	"Find a tile fixture or unit or fortress member by ID."
-	shared default IFixture findById(IMapNG map, Integer id, Warning warner) {
-		if (exists retval = findByIdImpl(map.fixtureEntries.map(Entry.item), id)) {
-			return retval;
-		} else {
-			throw AssertionError("ID ``id`` not found");
-		}
-	}
+	shared default IFixture findById(IMapNG map, Integer id, Warning warner) =>
+			dbMemoizer.findById(map, id, this, warner);
 }
