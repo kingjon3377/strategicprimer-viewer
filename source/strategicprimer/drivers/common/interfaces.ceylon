@@ -362,7 +362,7 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
 	        if (options.hasOption("--current-turn")) {
 	            if (is Integer currentTurn =
 	                    Integer.parse(options.getArgument("--current-turn"))) {
-	                for (map->path in model.allMaps) {
+	                for (map->[path, _] in model.allMaps) {
 	                    map.currentTurn = currentTurn;
 	                }
 	            } else {

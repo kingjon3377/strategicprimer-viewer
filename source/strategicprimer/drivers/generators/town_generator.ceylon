@@ -514,7 +514,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                     }
                     assignStatsToTown(town, stats);
                     if (is IMultiMapModel model) {
-                        for (subMap->file in model.subordinateMaps) {
+                        for (subMap->[file, _] in model.subordinateMaps) {
                             assignStatsInMap(subMap, location, town.id, stats);
                         }
                     }
@@ -540,7 +540,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                 }
                 assignStatsToTown(town, stats);
                 if (is IMultiMapModel model) {
-                    for (subMap->file in model.subordinateMaps) {
+                    for (subMap->[file, _] in model.subordinateMaps) {
                         assignStatsInMap(subMap, location, town.id, stats);
                     }
                 }

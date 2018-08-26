@@ -31,7 +31,7 @@ shared class SubsetCLI() satisfies SimpleDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
-            for (map->file in model.subordinateMaps) {
+            for (map->[file, _] in model.subordinateMaps) {
                 String filename = file?.string else "map without a filename";
                 cli.print("``filename``\t...\t\t");
                 if (model.map.isSubset(map,

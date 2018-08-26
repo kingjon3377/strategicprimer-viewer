@@ -13,11 +13,17 @@ shared interface IMultiMapModel satisfies IDriverModel {
             "The map to add"
             IMutableMapNG map,
             "The file it was loaded from"
-            JPath? file);
-    "Subordinate maps with their filenames, as [[Entries|Entry]]"
-    shared formal {<IMutableMapNG->JPath?>*} subordinateMaps;
-    "All maps with their filenames, including the main map and the subordinate maps,
-     as [[Entries|Entry]]"
-    shared default {<IMutableMapNG->JPath?>*} allMaps =>
-            subordinateMaps.follow(map->mapFile);
+            JPath? file,
+            "Whether it has been modified since being loaded or last saved"
+            Boolean modified = false);
+    "Subordinate maps with their filenames (and the flag of whether the map has been
+     modified since loaded or last saved), as [[Entries|Entry]]"
+    shared formal {<IMutableMapNG->[JPath?, Boolean]>*} subordinateMaps;
+    "All maps with their filenames (and the flag of whether the map has been
+     modified since loaded or last saved), including the main map and the subordinate
+     maps, as [[Entries|Entry]]"
+    shared default {<IMutableMapNG->[JPath?, Boolean]>*} allMaps =>
+            subordinateMaps.follow(map->[mapFile, mapModified]);
+    "Set the 'modified' flag for the given map."
+    shared formal void setModifiedFlag(IMutableMapNG map, Boolean modified);
 }

@@ -161,8 +161,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             ArrayList<SelectionChangeListener>();
     "The currently selected unit and its location."
     variable [Point, IUnit?] selection = [invalidPoint, null];
-    shared new (IMutableMapNG map, JPath? file)
-            extends SimpleMultiMapModel(map, file) {}
+    shared new (IMutableMapNG map, JPath? file, Boolean modified = false)
+            extends SimpleMultiMapModel(map, file, modified) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
     "All the players shared by all the maps."
@@ -215,7 +215,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 				mapParam.fixtureEntries.filter(matchingValue(target, Entry<Point, TileFixture>.item));
         // TODO: Unit vision range
         {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
-        for (submap->file in subordinateMaps) {
+        for (submap->[file, _] in subordinateMaps) {
             for (point in points) {
                 for (fixture in submap.fixtures.get(point).narrow<MobileFixture>()) { // TODO: syntax sugar once bug fixed
                     for (innerPoint->match in localFind(submap, fixture)) {
@@ -267,7 +267,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             Integer retval = (ceiling(base * speed.mpMultiplier) + 0.1).integer;
             removeImpl(map, point, unit);
             map.addFixture(dest, unit);
-            for (subMap->subFile in subordinateMaps) {
+            for (subMap->[subFile, _] in subordinateMaps) {
                 if (doesLocationHaveFixture(subMap, point, unit)) {
                     ensureTerrain(map, subMap, dest);
                     removeImpl(subMap, point, unit);
@@ -299,7 +299,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     log.trace("Unknown reason for movement-impossible condition");
                 }
             }
-            for (subMap->path in subordinateMaps) {
+            for (subMap->[path, _] in subordinateMaps) {
                 ensureTerrain(map, subMap, dest);
             }
             fireMovementCost(1);
@@ -368,7 +368,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 variable Boolean subordinate = false;
                 for (village in villages) {
                     village.owner = owner;
-                    for (subMap->file in allMaps) {
+                    for (subMap->[file, _] in allMaps) {
                         subMap.addFixture(currentPoint, village.copy(subordinate));
                         subordinate = true;
                     }
@@ -377,7 +377,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 {Point*} surroundingPoints =
                         surroundingPointIterable(currentPoint, mapDimensions, 1);
                 for (point in surroundingPoints) {
-                    for (subMap->path in subordinateMaps) {
+                    for (subMap->[path, _] in subordinateMaps) {
                         ensureTerrain(mainMap, subMap, point);
                         Forest? subForest =
                                 subMap.fixtures[point]?.narrow<Forest>()?.first;
@@ -395,7 +395,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                         .narrow<[Point, Meadow|Grove]>().first;
                 [Point, TileFixture]? animal = surroundingFixtures
                         .narrow<[Point, Animal]>().first;
-                for (subMap->path in subordinateMaps) {
+                for (subMap->[path, _] in subordinateMaps) {
                     if (exists vegetation) {
                         subMap.addFixture(vegetation.first,
                             vegetation.rest.first.copy(true));
@@ -445,7 +445,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 map.addFixture(currentPoint, newFixture.copy(condition));
             }
             variable Boolean subsequent = false;
-            for (subMap->file in allMaps) {
+            for (subMap->[file, _] in allMaps) {
                 addToMap(subMap, subsequent);
                 subsequent = true;
             }

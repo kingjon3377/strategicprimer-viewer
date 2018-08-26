@@ -405,7 +405,7 @@ SPFrame explorationFrame(IExplorationModel model,
                     Player player = model.selectedUnit ?. owner else
                     PlayerImpl(- 1, "no-one");
                     MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
-                    for (map->file in model.subordinateMaps) {
+                    for (map->[file, _] in model.subordinateMaps) {
                         map.baseTerrain[destPoint] = model.map
 //                                            .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
                                 .baseTerrain.get(destPoint);

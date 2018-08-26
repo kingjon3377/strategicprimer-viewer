@@ -77,6 +77,7 @@ shared object mapReaderAdapter {
 	    if (exists mainFile = model.mapFile) {
 	        try {
 	            mapIOHelper.writeMap(parsePath(mainFile.string), model.map);
+				model.mapModified = false;
 	        } catch (IOException except) {
 	            throw DriverFailedException(except, "I/O error writing to ``mainFile``");
 	        }
@@ -84,10 +85,11 @@ shared object mapReaderAdapter {
 	        log.error("Model didn't contain filename for main map, so didn't write it");
 	    }
 	    if (is IMultiMapModel model) {
-	        for (map->filename in model.subordinateMaps) {
+	        for (map->[filename, _] in model.subordinateMaps) {
 	            if (exists filename) {
 	                try {
 	                    mapIOHelper.writeMap(parsePath(filename.string), map);
+						model.setModifiedFlag(map, false);
 	                } catch (IOException except) {
 	                    throw DriverFailedException(except,
 	                        "I/O error writing to ``filename``");

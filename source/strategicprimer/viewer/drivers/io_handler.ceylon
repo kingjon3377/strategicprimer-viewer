@@ -165,6 +165,7 @@ shared class IOHandler
             if (exists givenFile = mapModel.mapFile) {
                 try {
                     mapIOHelper.writeMap(parsePath(givenFile.string), mapModel.map);
+					mapModel.mapModified = false;
                 } catch (IOException except) {
                     showErrorDialog(source, "Strategic Primer Assistive Programs",
                         "I/O error writing to ``givenFile``");
@@ -179,6 +180,7 @@ shared class IOHandler
             FileChooser.save(null, filteredFileChooser(false)).call((path) {
                 try {
                     mapIOHelper.writeMap(parsePath(path.string), mapModel.map);
+					// TODO: Set the model's filename for the map to this file, and clear modified flag
                 } catch (IOException except) {
                     showErrorDialog(source, "Strategic Primer Assistive Programs",
                         "I/O error writing to ``path``");
@@ -205,10 +207,11 @@ shared class IOHandler
         }
         case ("save all") {
             if (is IMultiMapModel mapModel) {
-                for (map->file in mapModel.allMaps) {
+                for (map->[file, _] in mapModel.allMaps) {
                     if (exists file) {
                         try {
                             mapIOHelper.writeMap(parsePath(file.string), map);
+							mapModel.setModifiedFlag(map, false);
                         } catch (IOException except) {
                             showErrorDialog(source, "Strategic Primer Assistive Programs",
                                 "I/O error writing to ``file``");
@@ -220,6 +223,7 @@ shared class IOHandler
                 FileChooser.save(null, filteredFileChooser(false)).call((path) {
                     try {
                         mapIOHelper.writeMap(parsePath(path.string), mapModel.map);
+						mapModel.mapModified = false;
                     } catch (IOException except) {
                         showErrorDialog(source, "Strategic Primer Assistive Programs",
                             "I/O error writing to ``path``");

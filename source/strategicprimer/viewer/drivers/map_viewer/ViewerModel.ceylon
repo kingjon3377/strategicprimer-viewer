@@ -68,7 +68,8 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     }
     shared new fromEntry(
         "An [[Entry]] of the initial map and its filename"
-        IMutableMapNG->JPath? entry) extends SimpleDriverModel(entry.key, entry.item) {
+        IMutableMapNG->[JPath?, Boolean] entry)
+			extends SimpleDriverModel(entry.key, *entry.item) {
         visDimensions = VisibleDimensions(0, entry.key.dimensions.rows - 1, 0,
             entry.key.dimensions.columns - 1);
     }
@@ -213,8 +214,8 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     }
     "Set the map and its filename, and also clear the selection and reset the visible
      dimensions and the zoom level."
-    shared actual void setMap(IMutableMapNG newMap, JPath? origin) {
-        super.setMap(newMap, origin);
+    shared actual void setMap(IMutableMapNG newMap, JPath? origin, Boolean modified) {
+        super.setMap(newMap, origin, modified);
         postSetMap(newMap);
     }
 }

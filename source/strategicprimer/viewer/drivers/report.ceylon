@@ -31,7 +31,8 @@ import strategicprimer.drivers.common.cli {
 }
 import strategicprimer.model.map {
     IMapNG,
-    Player
+    Player,
+    IMutableMapNG
 }
 import strategicprimer.report {
     reportGenerator,
@@ -90,7 +91,8 @@ import ceylon.http.common {
 }
 import lovelace.util.common {
 	matchingValue,
-	silentListener
+	silentListener,
+    entryMap
 }
 object suffixHelper {
 	String suffix(JPath file, Integer count) {
@@ -147,7 +149,7 @@ shared class ReportCLI() satisfies SimpleDriver {
     void serveReports(IDriverModel model, Integer port, Player? currentPlayer) {
         MutableMap<JPath, String> cache = HashMap<JPath, String>();
         if (is IMultiMapModel model) {
-            for (map->file in model.allMaps) {
+            for (map->[file, _] in model.allMaps) {
                 if (exists file, !cache.defines(file)) {
                     cache[file] = reportGenerator.createReport(map,
 						currentPlayer else map.currentPlayer);
@@ -261,7 +263,7 @@ shared class ReportCLI() satisfies SimpleDriver {
             serveReports(model, port, player);
         } else {
 	        if (is IMultiMapModel model) {
-	            for (map->file in model.allMaps) {
+	            for (map->[file, _] in model.allMaps) {
 	                writeReport(file, map, options);
 	            }
 	        } else {
@@ -324,7 +326,9 @@ shared class TabularReportCLI() satisfies SimpleDriver {
     void serveReports(IDriverModel model, Integer port) {
         Map<JPath, IMapNG> mapping;
         if (is IMultiMapModel model) {
-            mapping = map(model.allMaps.map(Entry.coalesced).coalesced.map(reverseEntry));
+            mapping = map(model.allMaps.coalesced
+				.map(entryMap(identity<IMutableMapNG>, Tuple<JPath?|Boolean, JPath?,
+					[Boolean]>.first)).map(Entry.coalesced).coalesced.map(reverseEntry));
         } else if (exists path = model.mapFile) {
             mapping = map { path->model.map };
         } else {
@@ -357,7 +361,7 @@ shared class TabularReportCLI() satisfies SimpleDriver {
             }
         }
         if (is IMultiMapModel model) {
-            for (map->file in model.allMaps) {
+            for (map->[file, _] in model.allMaps) {
                 createReports(map, file);
             }
         } else {
@@ -476,7 +480,7 @@ shared class TabularReportCLI() satisfies SimpleDriver {
 	            }
 	        }
 	        if (is IMultiMapModel model) {
-	            for (map->file in model.allMaps) {
+	            for (map->[file, _] in model.allMaps) {
 	                createReports(map, file);
 	            }
 	        } else {

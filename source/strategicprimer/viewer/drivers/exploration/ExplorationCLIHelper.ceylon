@@ -101,7 +101,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             } else {
                 zero = false;
             }
-            for (map->file in model.subordinateMaps) {
+            for (map->[file, _] in model.subordinateMaps) {
                 map.addFixture(destPoint, fixture.copy(zero));
             }
             if (is CacheFixture fixture) {
@@ -255,7 +255,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 //        if (map.mountainous[destPoint]) { // TODO: syntax sugar once compiler bug fixed
                 if (map.mountainous.get(destPoint)) {
                     mtn = "mountainous ";
-                    for (subMap->file in model.subordinateMaps) {
+                    for (subMap->[file, _] in model.subordinateMaps) {
                         subMap.mountainous[destPoint] = true;
                     }
                 } else {

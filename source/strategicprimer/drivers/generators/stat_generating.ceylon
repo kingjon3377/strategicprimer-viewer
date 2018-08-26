@@ -177,7 +177,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 	static Integer threeDeeSix() => die(6) + die(6) + die(6);
 	"Add a worker to a unit in all maps."
 	static void addWorkerToUnit(IMultiMapModel model, IFixture unit, IWorker worker) {
-		for (map->file in model.allMaps) {
+		for (map->[file, _] in model.allMaps) {
 			if (is IUnit fixture = find(map, unit.id)) {
 				fixture.addMember(worker.copy(false));
 				Integer turn = map.currentTurn;
@@ -344,7 +344,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 				Point point = cli.inputPoint("Where to put new unit? ");
 				IUnit temp = Unit(player, cli.inputString("Kind of unit: "),
 					cli.inputString("Unit name: "), idf.createID());
-				for (indivMap->file in model.allMaps) {
+				for (indivMap->[file, _] in model.allMaps) {
 					indivMap.addFixture(point, temp);
 				}
 				units.add(temp);
