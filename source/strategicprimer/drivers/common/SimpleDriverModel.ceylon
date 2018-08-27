@@ -57,6 +57,9 @@ shared class SimpleDriverModel satisfies IDriverModel {
     shared actual MapDimensions mapDimensions => mapDim;
     "The filename from which the map was loaded, if known."
     shared actual JPath? mapFile => mainMapFile;
+    assign mapFile {
+        mainMapFile = mapFile;
+    }
     "Add a map-change listener."
     shared actual void addMapChangeListener(MapChangeListener listener) =>
             mcListeners.add(listener);

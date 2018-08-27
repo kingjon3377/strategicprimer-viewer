@@ -19,7 +19,7 @@ shared interface IDriverModel satisfies MapChangeSource&VersionChangeSource {
     "Its dimensions."
     shared default MapDimensions mapDimensions => map.dimensions;
     "The filename from which the map was loaded or to which it should be written."
-    shared formal JPath? mapFile;
+    shared formal variable JPath? mapFile;
     "Whether the map has been changed since it was loaded or last saved."
     shared formal variable Boolean mapModified;
 }

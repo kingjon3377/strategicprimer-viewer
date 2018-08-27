@@ -217,7 +217,8 @@ shared class IOHandler
             FileChooser.save(null, filteredFileChooser(false)).call((path) {
                 try {
                     mapIOHelper.writeMap(parsePath(path.string), mapModel.map);
-					// TODO: Set the model's filename for the map to this file, and clear modified flag
+                    mapModel.mapFile = path;
+                    mapModel.mapModified = false;
                 } catch (IOException except) {
                     showErrorDialog(source, "Strategic Primer Assistive Programs",
                         "I/O error writing to ``path``");
