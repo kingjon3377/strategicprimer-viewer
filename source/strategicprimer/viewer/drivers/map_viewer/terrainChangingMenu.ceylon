@@ -38,6 +38,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 	nuDialog.addNewUnitListener(object satisfies NewUnitListener {
 		shared actual void addNewUnit(IUnit unit) {
 			model.map.addFixture(point, unit);
+			model.mapModified = true;
 			model.selection = point;
 			scs.fireChanges(null, point);
 		}
@@ -49,6 +50,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 			add(item);
 			item.addActionListener((ActionEvent event) {
 				model.map.baseTerrain[point] = type;
+				model.mapModified = true;
 				scs.fireChanges(null, point);
 			});
 		}

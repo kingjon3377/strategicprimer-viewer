@@ -151,9 +151,11 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     void addUnitAtLocation(IUnit unit, Point location) {
         if (subordinateMaps.empty) {
             addUnitAtLocationImpl(unit, location, map);
+			mapModified = true;
         } else {
             for (eachMap->_ in allMaps) {
                 addUnitAtLocationImpl(unit, location, eachMap);
+				setModifiedFlag(eachMap, true);
             }
         }
     }

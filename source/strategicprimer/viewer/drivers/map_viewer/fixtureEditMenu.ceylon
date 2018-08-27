@@ -38,7 +38,8 @@ import lovelace.util.common {
 }
 "A pop-up menu to let the user edit a fixture."
 shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar idf,
-		IWorkerTreeModel* changeListeners) extends JPopupMenu() {
+		Anything() mutationListener, IWorkerTreeModel* changeListeners)
+		extends JPopupMenu() {
 	void addMenuItem(JMenuItem item, Anything(ActionEvent) listener) {
 		add(item);
 		item.addActionListener(listener);
@@ -60,6 +61,7 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
 				for (listener in changeListeners) {
 					listener.renameItem(fixture);
 				}
+				mutationListener();
 			}
 		}
 	}
@@ -81,6 +83,7 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
 				for (listener in changeListeners) {
 					listener.moveItem(fixture, originalKind);
 				}
+				mutationListener();
 			}
 		}
 	}
@@ -91,12 +94,13 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
 	}
 	void changeOwnerHandler() {
 		assert (is HasMutableOwner fixture);
-		if (is Player player = JOptionPane.showInputDialog(parent,
+		if (is Player player = JOptionPane.showInputDialog(parent, // FIXME: Reformat
 			"Fixture's new owner:", "Change Fixture Owner",
 			JOptionPane.plainMessage, null, ObjectArray.with(players),
 			fixture.owner)) {
 			HasMutableOwner temp = fixture;
 			temp.owner = player;
+			mutationListener();
 		}
 	}
 	if (is HasMutableOwner fixture) {
@@ -120,6 +124,7 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
 			for (listener in changeListeners) {
 				listener.dismissUnitMember(fixture);
 			}
+			mutationListener();
 		}
 	}
 	if (is UnitMember fixture) {
@@ -144,6 +149,7 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
 				listener.dismissUnitMember(fixture);
 				listener.addSibling(split, remainder);
 			}
+			mutationListener();
 		}
 	}
 	// TODO: Generalize splitting to HasPopulation more generally

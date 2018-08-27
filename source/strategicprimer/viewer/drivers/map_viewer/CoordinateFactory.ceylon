@@ -19,7 +19,7 @@ MutableMap<Integer, MutableMap<Integer, Coordinate>> coordinateCache =
         HashMap<Integer, MutableMap<Integer, Coordinate>>();
 MutableMap<[Integer, Integer], Coordinate> coordinateTupleCache =
         HashMap<[Integer, Integer], Coordinate>();
-"Factory method for [[Coordinate]]s."
+"Factory method for [[Coordinate]]s." // TODO: Remove in favor of the constructor
 shared Coordinate coordinateFactory(Integer x, Integer y) {
 	switch (coordinateCachingStrategy)
     case (CachingStrategy.multilevel) {

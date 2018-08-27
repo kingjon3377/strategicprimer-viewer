@@ -134,14 +134,14 @@ import strategicprimer.model.idreg {
 }
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,
-        Anything(ActionEvent) menuHandler) {
-    Map<Direction, KeyStroke> arrowKeys = HashMap {
+        Anything(ActionEvent) menuHandler) { // TODO: Do what we can to convert nested objects/classes to top-level, etc.
+    Map<Direction, KeyStroke> arrowKeys = HashMap { // TODO: Use simpleMap() instead of a HashMap
         Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkUp, 0),
         Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkDown, 0),
         Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkLeft, 0),
         Direction.east->KeyStroke.getKeyStroke(KeyEvent.vkRight, 0)
     };
-    Map<Direction, KeyStroke> numKeys = HashMap {
+    Map<Direction, KeyStroke> numKeys = HashMap { // TODO: Use simpleMap() instead of a HashMap
         Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkNumpad8, 0),
         Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkNumpad2, 0),
         Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkNumpad4, 0),
@@ -194,7 +194,7 @@ SPFrame explorationFrame(IExplorationModel model,
         shared actual void removeCompletionListener(CompletionListener listener) =>
                 completionListeners.remove(listener);
         model.addMapChangeListener(playerListModel);
-        playerList.addListSelectionListener((ListSelectionEvent event) {
+        playerList.addListSelectionListener((ListSelectionEvent event) { // TODO: convert lambda to named method
             if (!playerList.selectionEmpty,
 	                exists newPlayer = playerList.selectedValue) {
                 for (listener in listeners) {
@@ -211,7 +211,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 Component retval = defaultRenderer.getListCellRendererComponent(list,
                     val, index, isSelected, cellHasFocus);
                 if (exists val, is JLabel retval) {
-                    retval.text = "Unit of type ``val.kind``, named ``val.name``";
+                    retval.text = "Unit of type ``val.kind``, named ``val.name``"; // TODO: Shorten to "Unit: ``name`` (``kind``)"---or omit the "Unit" part?
                 }
                 return retval;
             }
@@ -380,7 +380,7 @@ SPFrame explorationFrame(IExplorationModel model,
              form of questions to ask the user to see if the explorer does them)
              and references to methods for doing them."
             {[String, Anything()]*} explorerActions = [[
-                "Should the explorer swear any villages on this tile?", () {
+                "Should the explorer swear any villages on this tile?", () { // TODO: convert lambda to class method
                 model.swearVillages();
                 //model.map.fixtures[model.selectedUnitLocation].narrow<Village>() // TODO: syntax sugar once compiler bug fixed
                 model.map.fixtures.get(model.selectedUnitLocation).narrow<Village>()
@@ -430,6 +430,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                 }
                             }
                         }
+						model.setModifiedFlag(map, true);
                     }
                     for (cache in caches) {
                         model.map.removeFixture(destPoint, cache);
@@ -448,6 +449,11 @@ SPFrame explorationFrame(IExplorationModel model,
             shared actual void actionPerformed(ActionEvent event) =>
                     SwingUtilities.invokeLater(actionPerformedImpl);
         }
+		void markModified() {
+			for (map->_ in model.allMaps) {
+				model.setModifiedFlag(map, true);
+			}
+		}
         for (direction in [Direction.northwest,
 	            Direction.north,
 	            Direction.northeast,
@@ -459,7 +465,7 @@ SPFrame explorationFrame(IExplorationModel model,
             SelectionChangeSupport mainPCS = SelectionChangeSupport();
             SwingList<TileFixture>&SelectionChangeListener mainList =
                     fixtureList(tilesPanel, FixtureListModel(model.map, tracksCreator),
-                idf, model.map.players);
+                idf, markModified, model.map.players);
             mainPCS.addSelectionChangeListener(mainList);
             tilesPanel.add(JScrollPane(mainList));
             DualTileButton dtb = DualTileButton(model.map, secondMap,
@@ -474,7 +480,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 shared actual void selectedPointChanged(Point? old, Point newSel) =>
                         outer.selectedPointChanged(old, newSel);
             });
-            ecl.addMovementCostListener(object satisfies MovementCostListener {
+            ecl.addMovementCostListener(object satisfies MovementCostListener { // TODO: This object should be a less-nested class
                 shared actual void deduct(Integer cost) => outer.deduct(cost);
             });
             """A list-data-listener to select a random but suitable set of fixtures to
@@ -521,7 +527,7 @@ SPFrame explorationFrame(IExplorationModel model,
             ecl.addSelectionChangeListener(ell);
             SwingList<TileFixture>&SelectionChangeListener secList =
                     fixtureList(tilesPanel, FixtureListModel(secondMap, (point) => null),
-                idf, secondMap.players);
+                idf, markModified, secondMap.players);
             SelectionChangeSupport secPCS = SelectionChangeSupport();
             secPCS.addSelectionChangeListener(secList);
             tilesPanel.add(JScrollPane(secList));

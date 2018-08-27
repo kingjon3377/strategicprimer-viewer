@@ -309,5 +309,6 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 		}
 		generateFieldExtents(model.map, cli);
 		generateForestExtents(model.map, cli);
+		model.mapModified = true;
 	}
 }

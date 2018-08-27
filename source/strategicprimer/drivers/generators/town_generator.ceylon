@@ -513,9 +513,11 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                         stats = generateStats(idf, location, town, model.map);
                     }
                     assignStatsToTown(town, stats);
+                    model.mapModified = true;
                     if (is IMultiMapModel model) {
                         for (subMap->[file, _] in model.subordinateMaps) {
                             assignStatsInMap(subMap, location, town.id, stats);
+                            model.setModifiedFlag(subMap, true);
                         }
                     }
                 } else {
@@ -535,6 +537,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                     } else {
                         stats = generateStats(idf, location, town, model.map);
                     }
+                    model.mapModified = true;
                 } else {
                     break;
                 }
@@ -542,6 +545,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                 if (is IMultiMapModel model) {
                     for (subMap->[file, _] in model.subordinateMaps) {
                         assignStatsInMap(subMap, location, town.id, stats);
+                        model.setModifiedFlag(subMap, true);
                     }
                 }
             }

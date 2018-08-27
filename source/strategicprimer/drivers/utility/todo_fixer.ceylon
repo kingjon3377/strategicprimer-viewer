@@ -229,13 +229,16 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
             for (map->[path, _] in model.allMaps) {
                 fixAllUnits(map, cli);
                 fixAllVillages(map, cli);
+                model.setModifiedFlag(map, true);
             }
             for (map->[path, _] in model.subordinateMaps) {
                 fixMissingRivers(model.map, map);
+                model.setModifiedFlag(map, true);
             }
         } else {
             fixAllUnits(model.map, cli);
             fixAllVillages(model.map, cli);
+            model.mapModified = true;
         }
     }
 }

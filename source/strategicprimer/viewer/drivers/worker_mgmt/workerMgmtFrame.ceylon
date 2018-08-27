@@ -203,8 +203,13 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
 	NewUnitDialog newUnitFrame = NewUnitDialog(model.currentPlayer, idf);
 	IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
+	void markModified() {
+		for (subMap->_ in model.allMaps) {
+			model.setModifiedFlag(subMap, true);
+		}
+	}
 	value tree = workerTree(treeModel, model.players, defer(IMapNG.currentTurn, [mainMap]),
-		true, idf);
+		true, idf, markModified);
 	newUnitFrame.addNewUnitListener(treeModel);
 	Integer keyMask = platform.shortcutMask;
 	createHotKey(tree, "openUnits",
@@ -215,7 +220,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	FormattedLabel playerLabel = FormattedLabel("Units belonging to %s: (%sU)",
 		model.currentPlayer.name, platform.shortcutDescription);
 	value ordersPanelObj = ordersPanel(mainMap.currentTurn, model.currentPlayer,
-		model.getUnits, uncurry(IUnit.getLatestOrders), uncurry(IUnit.setOrders));
+		model.getUnits, uncurry(IUnit.getLatestOrders), uncurry(IUnit.setOrders),
+		markModified);
 	tree.addTreeSelectionListener(ordersPanelObj);
 	DefaultTreeModel reportModel = DefaultTreeModel(simpleReportNode(
 		"Please wait, loading report ..."));
@@ -229,7 +235,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	}
 	Thread(reportGeneratorThread).start();
 	value resultsPanel = ordersPanel(mainMap.currentTurn, model.currentPlayer,
-		model.getUnits, uncurry(IUnit.getResults), null);
+		model.getUnits, uncurry(IUnit.getResults), null, noop);
 	tree.addTreeSelectionListener(resultsPanel);
 	JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel);
 	tree.addUnitMemberListener(mdp);

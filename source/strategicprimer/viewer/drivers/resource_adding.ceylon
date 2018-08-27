@@ -124,6 +124,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
             if (mapPlayer.independent || mapPlayer.playerId < 0 ||
                     mapPlayer.playerId == player.playerId) {
                 addResourceToMap(resource.copy(false), map, player);
+				setModifiedFlag(map, true);
             }
         }
     }

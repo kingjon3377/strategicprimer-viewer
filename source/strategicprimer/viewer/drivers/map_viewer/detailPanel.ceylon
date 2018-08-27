@@ -95,9 +95,10 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
             header.setArgs(newPoint.row, newPoint.column);
         }
     }
+    void markModified() => model.mapModified = true;
     SwingList<TileFixture>&SelectionChangeListener fixtureListObject =
             fixtureList(retval, FixtureListModel(model.map, (point) => null),
-                createIDFactory(model.map),
+                createIDFactory(model.map), markModified,
                     model.map.players);
     retval.delegate = fixtureListObject;
     object portrait extends JComponent() satisfies ListSelectionListener {

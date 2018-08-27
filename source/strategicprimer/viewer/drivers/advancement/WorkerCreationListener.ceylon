@@ -64,7 +64,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
     }
     shared actual void actionPerformed(ActionEvent event) {
         if (event.actionCommand.lowercased.startsWith("add worker")) {
-            object frame extends JFrame("Create Worker") {
+            object frame extends JFrame("Create Worker") { // FIXME: This should be cached and cleared instead of recreated each time this method is called
                 defaultCloseOperation = WindowConstants.disposeOnClose;
                 JTextField name = JTextField();
                 JTextField race = JTextField(raceFactory.randomRace());

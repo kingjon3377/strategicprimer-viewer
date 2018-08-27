@@ -174,6 +174,13 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             }
         }
     }
+    void markModified() {
+        for (map->[file, modified] in model.allMaps) {
+            if (!modified) {
+                model.setModifiedFlag(map, true);
+            }
+        }
+    }
     shared actual void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
         assert (is TreeNode playerNode = root);
         MutableTreeNode? oldNode = getNode(playerNode, old);
@@ -199,6 +206,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     IntArray.with(Singleton(newNode.getIndex(node))),
                     ObjectArray<Object>.with(Singleton(node)));
             }
+            markModified();
         }
     }
     shared actual void addUnit(IUnit unit) {
@@ -222,6 +230,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                     IntArray.with(Singleton(temp.childCount - 1)),
                     ObjectArray<Object>.with(Singleton(kindNode)));
             }
+            markModified();
         }
     }
     shared actual void addNewUnit(IUnit unit) => addUnit(unit);
@@ -245,6 +254,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             fireTreeNodesInserted(this, ObjectArray<Object>.with([root, unitNode]),
                 IntArray.with(Singleton(unitNode.childCount - 1)),
                 ObjectArray<Object>.with(Singleton(newNode)));
+            markModified();
         }
     }
     shared actual void renameItem(HasMutableName item) {
@@ -255,6 +265,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 ObjectArray<Object>.with(path.array.exceptLast),
                 IntArray.with(Singleton(index)),
                 ObjectArray.with(Singleton(node)));
+            markModified();
         }
     }
     shared actual void moveItem(HasKind item, String priorKind) {
@@ -267,6 +278,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 // does *not* mean any node should move.
                 fireTreeNodesChanged(this, path, IntArray.with(Singleton(index)),
                     ObjectArray.with(Singleton(node)));
+                markModified();
             }
         } else if (is IUnit item) {
             if (is TreeNode node = getNode(temp, item)) {
@@ -309,6 +321,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                         IntArray.with(Singleton(getIndexOfChild(temp, kindNode))),
                         ObjectArray<Object>.with(Singleton(kindNode)));
                 }
+                markModified();
             }
         }
     }
@@ -323,6 +336,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             fireTreeNodesRemoved(this, path, IntArray.with(Singleton(index)),
                 ObjectArray<Object>.with(Singleton(node)));
             dismissedMembers.add(member);
+            markModified();
         }
     }
     shared actual {UnitMember*} dismissed => dismissedMembers;
@@ -335,6 +349,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             fireTreeNodesInserted(this, getPathToRoot(parentNode),
                 IntArray.with(Singleton(index)),
                 ObjectArray<Object>.with(Singleton(childNode)));
+            markModified();
         }
     }
     """Get the path to the "next" unit whose orders for the given turn either contain
@@ -343,13 +358,13 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     shared actual TreePath? nextProblem(TreePath? starting, Integer turn) {
         assert (is PlayerNode rootNode = root);
         value enumeration = rootNode.preorderEnumeration();
-        object wrapped satisfies Iterable<WorkerTreeNode<out Anything>> {
+        object wrapped satisfies Iterable<WorkerTreeNode<out Anything>> { // TODO: Just use IteratorWrapper
             iterator() => EnumerationWrapper<WorkerTreeNode<out Anything>>(enumeration);
         }
         {UnitNode*} sequence;
         if (exists starting) {
             assert (is WorkerTreeNode<out Anything> last = starting.lastPathComponent);
-            sequence = wrapped.repeat(2).sequence().trimLeading(inverse(last.equals)).rest.narrow<UnitNode>();
+            sequence = wrapped.repeat(2).sequence().trimLeading(inverse(last.equals)).rest.narrow<UnitNode>(); // TODO: reformat
         } else {
             sequence = wrapped.narrow<UnitNode>().sequence();
         }

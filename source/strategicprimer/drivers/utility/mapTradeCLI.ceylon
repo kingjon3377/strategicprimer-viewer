@@ -162,6 +162,7 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 			if (!second.baseTerrain[location] exists, exists terrain =
 					first.baseTerrain[location]) {
 				second.baseTerrain[location] = terrain;
+				model.setModifiedFlag(second, true);
 			}
 			//for (fixture in first.fixtures[location].filter(testFixture)) { // TODO: syntax sugar
 			for (fixture in first.fixtures.get(location).filter(testFixture)) {
@@ -169,11 +170,13 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 				if (fixture.id >= 0, !second.fixtures.get(location)
 						.any(matchingValue(fixture.id, TileFixture.id))) {
 					second.addFixture(location, fixture.copy(zeroFixtures));
+					model.setModifiedFlag(second, true);
 				}
 			}
 			if (copyRivers) {
 				//second.addRivers(location, *first.rivers[location]); // TODO: syntax sugar
 				second.addRivers(location, *first.rivers.get(location));
+				model.setModifiedFlag(second, true);
 			}
 		}
 	}

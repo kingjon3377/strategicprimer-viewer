@@ -132,6 +132,7 @@ shared class ExpansionDriver() satisfies SimpleCLIDriver {
                         }
                     }
                 }
+                model.setModifiedFlag(map, true);
             }
         } else {
             log.warn("Expansion on a master map with no subordinate maps does nothing");
@@ -205,5 +206,8 @@ shared class MapPopulatorDriver() satisfies SimpleCLIDriver {
         populate(model.map);
         cli.println(
             "``changedCount`` out of ``suitableCount`` suitable locations were changed");
+        if (changedCount > 0) {
+            model.mapModified = true;
+        }
     }
 }

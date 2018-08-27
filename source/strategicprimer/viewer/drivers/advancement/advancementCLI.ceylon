@@ -276,6 +276,9 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
 				break;
 			}
 		}
+		for (map->_ in model.allMaps) {
+			model.setModifiedFlag(map, true);
+		}
 	}
     "Let the user choose a player to run worker advancement for."
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,

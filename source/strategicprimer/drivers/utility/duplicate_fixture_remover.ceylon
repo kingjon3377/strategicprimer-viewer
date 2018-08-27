@@ -315,9 +315,11 @@ shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
             if (is IMultiMapModel model) {
                 for (map->[file, _] in model.allMaps) {
                     removeDuplicateFixtures(map, cli);
+                    model.setModifiedFlag(map, true);
                 }
             } else {
                 removeDuplicateFixtures(model.map, cli);
+                model.mapModified = true;
             }
         } catch (IOException except) {
             throw DriverFailedException(except, "I/O error interacting with user");

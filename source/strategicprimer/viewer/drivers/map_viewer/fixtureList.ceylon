@@ -60,7 +60,7 @@ import strategicprimer.model.idreg {
 // have an unavoidable 'this' reference
 shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
         JComponent parentComponent, FixtureListModel listModel, IDRegistrar idf,
-        {Player*} players) {
+        Anything() mutationListener, {Player*} players) {
     object retval extends SwingList<TileFixture>(listModel)
             satisfies DragGestureListener&SelectionChangeListener {
         cellRenderer = FixtureCellRenderer();
@@ -93,8 +93,8 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
                 if (event.popupTrigger, event.clickCount == 1) {
                     Integer index = locationToIndex(event.point);
                     if ((0:listModel.size).contains(index)) {
-                        FixtureEditMenu(listModel.getElementAt(index), players, idf)
-                            .show(event.component, event.x, event.y);
+                        FixtureEditMenu(listModel.getElementAt(index), players, idf,
+                            mutationListener).show(event.component, event.x, event.y);
                     }
                 }
             }

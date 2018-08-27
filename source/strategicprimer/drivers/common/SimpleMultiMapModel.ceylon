@@ -35,7 +35,7 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
 		if (map == this.map) {
 			mapModified = modified;
 		} else if (exists index->entry = subordinateMapsList.locate(matchingValue(map,
-				Entry<IMutableMapNG, [JPath?, Boolean]>.key))) {
+				Entry<IMutableMapNG, [JPath?, Boolean]>.key))) { // TODO: Skip if already 'true'
 			subordinateMapsList[index] = entry.key->[entry.item.first, modified];
 		}
 	}

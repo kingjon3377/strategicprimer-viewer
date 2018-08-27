@@ -113,6 +113,13 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
     shared actual void removeTreeModelListener(TreeModelListener listener) =>
             listeners.remove(listener);
 
+	void markModified() {
+		for (map->[file, modified] in model.allMaps) {
+			if (!modified) {
+				model.setModifiedFlag(map, true);
+			}
+		}
+	}
     shared actual void moveMember(UnitMember member, IUnit old, IUnit newOwner) {
         Integer oldIndex = getIndexOfChild(old, member);
         TreeModelEvent removedEvent = TreeModelEvent(this,
@@ -136,6 +143,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             listener.treeNodesInserted(insertedEvent);
             listener.treeStructureChanged(insertedChangeEvent);
         }
+		markModified();
     }
     shared actual void addUnit(IUnit unit) {
         model.addUnit(unit);
@@ -146,6 +154,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         for (listener in listeners) {
             listener.treeNodesInserted(event);
         }
+		markModified();
     }
     shared actual void addNewUnit(IUnit unit) => addUnit(unit);
     shared actual void mapChanged() {
@@ -174,6 +183,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         for (listener in listeners) {
             listener.treeNodesInserted(event);
         }
+		markModified();
     }
     shared actual void renameItem(HasMutableName item) {
         TreePath path;
@@ -202,6 +212,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         for (listener in listeners) {
             listener.treeNodesChanged(event);
         }
+		markModified();
     }
     shared actual void moveItem(HasKind item, String priorKind) {
         TreePath path;
@@ -225,6 +236,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         for (listener in listeners) {
             listener.treeNodesChanged(event);
         }
+		markModified();
     }
     shared actual void dismissUnitMember(UnitMember member) {
         for (unit in model.getUnits(root)) {
@@ -239,6 +251,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
                 }
             }
         }
+		markModified();
     }
     shared actual {UnitMember*} dismissed => dismissedMembers;
     shared actual void addSibling(UnitMember base, UnitMember sibling) {
@@ -266,6 +279,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
                 }
             }
         }
+		markModified();
     }
     """Get the path to the "next" unit whose orders for the given turn either contain
        "TODO", contain "FIXME", or are empty. Returns null if no unit matches those

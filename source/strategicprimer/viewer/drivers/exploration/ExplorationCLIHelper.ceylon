@@ -112,6 +112,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     "Ask the user for directions the unit should move until it runs out of MP or the user
       decides to quit."
     todo("Inline back into [[ExplorationCLI]]?")
+	// No need to set the 'modified' flag anywhere in this method, as ExplorationModel.move()
+	// always sets it.
     shared void moveUntilDone() {
         if (exists mover = model.selectedUnit) {
             cli.println("Details of the unit:");

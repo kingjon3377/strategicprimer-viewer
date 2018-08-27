@@ -48,7 +48,8 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
         Integer currentTurn, variable Player currentPlayer,
         {IUnit*}(Player, String) playerUnits,
         String(IUnit, Integer) ordersSupplier,
-        Anything(IUnit, Integer, String)? ordersConsumer) {
+        Anything(IUnit, Integer, String)? ordersConsumer,
+        Anything() modificationListener) {
     JTextArea area = JTextArea();
     Integer minimumTurn = (currentTurn<0) then currentTurn else - 1;
     Integer maximumTurn = (currentTurn>100) then currentTurn else 100;
@@ -62,6 +63,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
             if (is IUnit sel = selection) {
                 if (exists ordersConsumer) {
                     ordersConsumer(sel, spinnerModel.number.intValue(), area.text);
+                    modificationListener();
                 }
                 parent.parent.repaint();
             }

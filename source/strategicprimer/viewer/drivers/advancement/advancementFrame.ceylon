@@ -56,28 +56,45 @@ import lovelace.util.common {
 }
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
-        MenuBroker menuHandler) {
+        MenuBroker menuHandler) { // TODO: Try to convert/partially convert back to a class
     IMapNG map = model.map;
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
     IDRegistrar idf = createIDFactory(map);
+	void markModified() {
+		for (subMap->_ in model.allMaps) {
+			model.setModifiedFlag(subMap, true);
+		}
+	}
     JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
         model.players, defer(compose(IMapNG.currentTurn, IWorkerModel.map), [model]),
-		false, idf);
+		false, idf, markModified);
     WorkerCreationListener newWorkerListener = WorkerCreationListener(treeModel,
         idf);
     tree.addUnitSelectionListener(newWorkerListener);
+    object flaggingListener satisfies LevelGainListener&AddRemoveListener {
+        void flag() {
+            for (map->_ in model.allMaps) {
+                model.setModifiedFlag(map, true);
+            }
+        }
+        shared actual void add(String category, String addendum) => flag();
+        shared actual void level() => flag();
+    }
     JobTreeModel jobsTreeModel = JobTreeModel();
     tree.addUnitMemberListener(jobsTreeModel);
     JPanel&AddRemoveSource jobAdditionPanel = itemAdditionPanel("job");
     jobAdditionPanel.addAddRemoveListener(jobsTreeModel);
+    jobAdditionPanel.addAddRemoveListener(flaggingListener);
     JPanel&AddRemoveSource skillAdditionPanel = itemAdditionPanel("skill");
     skillAdditionPanel.addAddRemoveListener(jobsTreeModel);
+    skillAdditionPanel.addAddRemoveListener(flaggingListener);
     tree.addUnitMemberListener(levelListener);
     value jobsTreeObject = JobsTree(jobsTreeModel);
     jobsTreeObject.addSkillSelectionListener(levelListener);
     value hoursAdditionPanel = skillAdvancementPanel();
     jobsTreeObject.addSkillSelectionListener(hoursAdditionPanel);
     hoursAdditionPanel.addLevelGainListener(levelListener);
+    hoursAdditionPanel.addLevelGainListener(flaggingListener);
     TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
     menuHandler.register(silentListener(expander.expandAll), "expand all");
     menuHandler.register(silentListener(expander.collapseAll), "collapse all");

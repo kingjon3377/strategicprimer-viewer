@@ -111,6 +111,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 		for (map in model.allMaps.map(Entry.key)) {
 			if (is Worker fixture = find(map, id), !fixture.stats exists) {
 				fixture.stats = stats;
+				model.setModifiedFlag(map, true);
 			}
 		}
 	}
@@ -184,6 +185,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 				if (fixture.getOrders(turn).empty) {
 					fixture.setOrders(turn, "TODO: assign");
 				}
+				model.setModifiedFlag(map, true);
 			}
 		}
 	}

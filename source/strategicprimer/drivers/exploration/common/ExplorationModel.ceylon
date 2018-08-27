@@ -215,12 +215,17 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 				mapParam.fixtureEntries.filter(matchingValue(target, Entry<Point, TileFixture>.item));
         // TODO: Unit vision range
         {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
-        for (submap->[file, _] in subordinateMaps) {
+        for (submap->[file, flag] in subordinateMaps) {
+            variable Boolean modifiedFlag = flag;
             for (point in points) {
                 for (fixture in submap.fixtures.get(point).narrow<MobileFixture>()) { // TODO: syntax sugar once bug fixed
                     for (innerPoint->match in localFind(submap, fixture)) {
                         if (innerPoint != point, !map.fixtures.get(innerPoint).contains(match)) {// TODO: syntax sugar
                             submap.removeFixture(innerPoint, match);
+                            if (!modifiedFlag) {
+                                setModifiedFlag(submap, true);
+                                modifiedFlag = true;
+                            }
                         }
                     }
                 }
@@ -267,11 +272,13 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             Integer retval = (ceiling(base * speed.mpMultiplier) + 0.1).integer;
             removeImpl(map, point, unit);
             map.addFixture(dest, unit);
+            mapModified = true;
             for (subMap->[subFile, _] in subordinateMaps) {
                 if (doesLocationHaveFixture(subMap, point, unit)) {
                     ensureTerrain(map, subMap, dest);
                     removeImpl(subMap, point, unit);
                     subMap.addFixture(dest, unit);
+                    setModifiedFlag(subMap, true);
                 }
             }
             selection = [dest, unit];
@@ -301,6 +308,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             }
             for (subMap->[path, _] in subordinateMaps) {
                 ensureTerrain(map, subMap, dest);
+                setModifiedFlag(subMap, true);
             }
             fireMovementCost(1);
             throw TraversalImpossibleException();
@@ -371,8 +379,14 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     for (subMap->[file, _] in allMaps) {
                         subMap.addFixture(currentPoint, village.copy(subordinate));
                         subordinate = true;
+                        setModifiedFlag(subMap, true);
                     }
                 }
+                // Note that we never need to call setModifiedFlag() again in this method;
+                // unless something else resets it in the middle of this (in which case
+                // we need to add the overhead of locking, or better yet put the flag
+                // directly in IMapNG and make every mutating method in IMutableMapNG set
+                // it), it's guaranteed to be 'true' for each map in allMaps already.
                 IMapNG mainMap = map;
                 {Point*} surroundingPoints =
                         surroundingPointIterable(currentPoint, mapDimensions, 1);
@@ -448,6 +462,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             for (subMap->[file, _] in allMaps) {
                 addToMap(subMap, subsequent);
                 subsequent = true;
+                setModifiedFlag(subMap, true);
             }
             fireMovementCost(4);
         }
