@@ -69,9 +69,6 @@ import com.apple.eawt {
 import com.pump.window {
     WindowList
 }
-import strategicprimer.drivers.gui.common.about {
-    aboutDialog
-}
 import strategicprimer.drivers.gui.common {
     SPFrame,
     UtilityMenu
@@ -81,7 +78,6 @@ import strategicprimer.model.xmlio {
 }
 import lovelace.util.common {
 	todo,
-	silentListener,
 	defer
 }
 import com.vasileff.ceylon.structures {
@@ -354,7 +350,6 @@ shared void run() {
         process.exit(2);
     }
 }
-suppressWarnings("expressionTypeNothing")
 SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         {String*}|IDriverModel finalArg) {
 	value tempComponent = JEditorPane();
