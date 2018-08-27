@@ -97,8 +97,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         """Whether we should visually warn if orders contain substrings indicating
            remaining work or if a unit named "unassigned" is nonempty"""
         Boolean orderCheck,
-            "The factory to use to generate ID numbers." // TODO: Indentation
-            IDRegistrar idf,
+        "The factory to use to generate ID numbers."
+        IDRegistrar idf,
         "A method to call if the user does something to modify the maps."
         Anything() mutationListener) {
     DefaultTreeCellRenderer defaultStorer = DefaultTreeCellRenderer();
@@ -467,10 +467,10 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
     ToolTipManager.sharedInstance().registerComponent(retval);
     object treeMouseListener extends MouseAdapter() {
         void handleMouseEvent(MouseEvent event) {
-            if (event.popupTrigger, event.clickCount == 1, // FIXME: Indentation/formatting
-                exists pathEnd = retval
-                    .getClosestPathForLocation(event.x, event.y)?.lastPathComponent,
-                is IFixture obj = wtModel.getModelObject(pathEnd)) {
+            if (event.popupTrigger, event.clickCount == 1,
+                    exists pathEnd = retval
+                        .getClosestPathForLocation(event.x, event.y)?.lastPathComponent,
+                    is IFixture obj = wtModel.getModelObject(pathEnd)) {
                 FixtureEditMenu(obj, players, idf, mutationListener, wtModel).show(event.component, event.x,
                     event.y);
             }
