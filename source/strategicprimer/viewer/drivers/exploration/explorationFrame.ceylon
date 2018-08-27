@@ -195,14 +195,15 @@ SPFrame explorationFrame(IExplorationModel model,
         shared actual void removeCompletionListener(CompletionListener listener) =>
                 completionListeners.remove(listener);
         model.addMapChangeListener(playerListModel);
-        playerList.addListSelectionListener((ListSelectionEvent event) { // TODO: convert lambda to named method
+        void handlePlayerChanged(ListSelectionEvent event) {
             if (!playerList.selectionEmpty,
-	                exists newPlayer = playerList.selectedValue) {
+                exists newPlayer = playerList.selectedValue) {
                 for (listener in listeners) {
                     listener.playerChanged(null, newPlayer);
                 }
             }
-        });
+        }
+        playerList.addListSelectionListener(handlePlayerChanged);
         addPlayerChangeListener(unitListModel);
         DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
         object renderer satisfies ListCellRenderer<IUnit> {
@@ -377,16 +378,19 @@ SPFrame explorationFrame(IExplorationModel model,
                 }
                 return retval;
             }
+            void villageSwearingAction() {
+                model.swearVillages();
+                //model.map.fixtures[model.selectedUnitLocation].narrow<Village>() // TODO: syntax sugar once compiler bug fixed
+                model.map.fixtures.get(model.selectedUnitLocation).narrow<Village>()
+                    .each(selectedValuesList.add);
+            }
             "A list of things the explorer can do: pairs of explanations (in the
              form of questions to ask the user to see if the explorer does them)
              and references to methods for doing them."
             {[String, Anything()]*} explorerActions = [[
-                "Should the explorer swear any villages on this tile?", () { // TODO: convert lambda to class method
-                model.swearVillages();
-                //model.map.fixtures[model.selectedUnitLocation].narrow<Village>() // TODO: syntax sugar once compiler bug fixed
-                model.map.fixtures.get(model.selectedUnitLocation).narrow<Village>()
-                        .each(selectedValuesList.add);
-            }], ["Should the explorer dig to find what kind of ground is here?",
+                "Should the explorer swear any villages on this tile?",
+                villageSwearingAction],
+                ["Should the explorer dig to find what kind of ground is here?",
 				model.dig]];
             void actionPerformedImpl() {
                 try {
