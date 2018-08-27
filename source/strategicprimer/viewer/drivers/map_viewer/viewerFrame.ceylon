@@ -58,7 +58,8 @@ import strategicprimer.drivers.common {
 	FixtureMatcher
 }
 import strategicprimer.model.map {
-    TileFixture
+    TileFixture,
+    IMutableMapNG
 }
 import strategicprimer.viewer.drivers {
     SPMenu
@@ -97,10 +98,19 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 		SwingUtilities.invokeLater(defer(compose(ViewerFrame.showWindow, ViewerFrame),
 			[ViewerModel.copyConstructor(map), menuHandler]));
 	}
-	// TODO: Keep track of whether the map has been modified and if not replace it
-	// instead of opening a new window
-	shared actual void acceptDroppedFile(JPath file) =>
+	void setMapWrapper(IMutableMapNG map, JPath file, Boolean modified) =>
+			mapModel.setMap(map, file, modified);
+	void alternateAcceptDroppedFile(JPath file) {
+		value newModel = mapReaderAdapter.readMapModel(file, warningLevels.default);
+		SwingUtilities.invokeLater(defer(setMapWrapper, [newModel.map, file, false]));
+	}
+	shared actual void acceptDroppedFile(JPath file) {
+		if (mapModel.mapModified) {
 			JThread(curry(acceptDroppedFileImpl)(file)).start();
+		} else {
+			JThread(curry(alternateAcceptDroppedFile)(file)).start();
+		}
+	}
 	shared actual Boolean supportsDroppedFiles = true;
 	JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
 		mapPanel = mapComponent(mapModel, tableModel.shouldDisplay, tableModel);
