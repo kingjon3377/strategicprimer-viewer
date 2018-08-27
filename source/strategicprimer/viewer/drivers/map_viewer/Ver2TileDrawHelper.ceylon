@@ -211,8 +211,8 @@ class Ver2TileDrawHelper(
     "Draw a tile at the upper left corner of the drawing surface."
     shared actual void drawTileTranslated(Graphics pen, IMapNG map, Point location,
             Integer width, Integer height) =>
-            drawTile(pen, map, location, coordinateFactory(0, 0),
-                coordinateFactory(width, height));
+            drawTile(pen, map, location, Coordinate(0, 0), // TODO: Cache the origin here
+                Coordinate(width, height));
     "The drawable fixtures at the given location."
     {TileFixture*} getDrawableFixtures(IMapNG map, Point location) {
 //        return map.fixtures[location] // TODO: syntax sugar once compiler bug fixed

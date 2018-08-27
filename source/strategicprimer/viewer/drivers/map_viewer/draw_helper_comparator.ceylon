@@ -33,9 +33,6 @@ import strategicprimer.model.map {
     IMapNG,
     Point
 }
-import ceylon.random {
-	randomize
-}
 import strategicprimer.model.xmlio {
 	mapIOHelper,
 	warningLevels
@@ -48,9 +45,6 @@ import ceylon.file {
 	File,
 	parsePath,
 	Nil
-}
-import lovelace.util.common {
-	singletonRandom
 }
 
 class Accumulator() {
@@ -81,12 +75,12 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 		BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
 			tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
 		Integer start = system.milliseconds;
-		Coordinate dimensions = coordinateFactory(tileSize, tileSize);
+		Coordinate dimensions = Coordinate(tileSize, tileSize);
 		for (rep in 0:reps) {
 			image.flush();
 			for (point in map.locations) {
 				helper.drawTile(image.createGraphics(), map, point,
-					coordinateFactory(point.row * tileSize, point.column * tileSize),
+					Coordinate(point.row * tileSize, point.column * tileSize),
 					dimensions);
 			}
 		}
@@ -117,9 +111,9 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 		for (rep in 0:reps) {
 			image.flush();
 			Graphics pen = image.createGraphics();
-			Coordinate dimensions = coordinateFactory(tileSize, tileSize);
+			Coordinate dimensions = Coordinate(tileSize, tileSize);
 			for (point in map.locations) {
-				helper.drawTile(pen, map, point, coordinateFactory(point.row * tileSize,
+				helper.drawTile(pen, map, point, Coordinate(point.row * tileSize,
 					point.column * tileSize), dimensions);
 			}
 			pen.dispose();
@@ -138,11 +132,11 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 		for (rep in 0:reps) {
 			image.flush();
 			Graphics pen = image.createGraphics();
-			Coordinate dimensions = coordinateFactory(tileSize, tileSize);
+			Coordinate dimensions = Coordinate(tileSize, tileSize);
 			for (row in testRowSpan) {
 				for (col in testColSpan) {
 					helper.drawTile(pen, map, Point(row, col),
-						coordinateFactory(row * tileSize, col * tileSize),
+						Coordinate(row * tileSize, col * tileSize),
 						dimensions);
 				}
 			}
@@ -159,11 +153,11 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 		for (rep in 0:reps) {
 			image.flush();
 			Graphics pen = image.createGraphics();
-			Coordinate dimensions = coordinateFactory(tileSize, tileSize);
+			Coordinate dimensions = Coordinate(tileSize, tileSize);
 			for (point in map.locations) {
 				if (testRowSpan.contains(point.row) && testColSpan.contains(point.column)) {
 					helper.drawTile(pen, map, point,
-						coordinateFactory(point.row * tileSize, point.column * tileSize),
+						Coordinate(point.row * tileSize, point.column * tileSize),
 						dimensions);
 				}
 			}
@@ -241,15 +235,9 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 	        supportedOptionsTemp = ["--report=out.csv"];
     };
     Integer reps = 50;
-    {CachingStrategy*} cachingStrategies = `CachingStrategy`.caseValues;
-    void runTestProcedure(ICLIHelper cli, IMapNG map, String filename) {
+    void runTestProcedure(ICLIHelper cli, IMapNG map, String filename) { // TODO: inline into caller
         cli.println("Testing using ``filename``");
-        clearCoordinateCache();
-        for (strategy in randomize(cachingStrategies, singletonRandom)) {
-            coordinateCachingStrategy = strategy;
-            cli.println("Using ``strategy`` caching strategy");
-            runAllTests(cli, map, filename, reps);
-        }
+		runAllTests(cli, map, filename, reps);
     }
     "Run the tests."
     shared actual void startDriverOnArguments(ICLIHelper cli,

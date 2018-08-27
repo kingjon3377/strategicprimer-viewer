@@ -121,6 +121,6 @@ object directTileDrawHelper satisfies TileDrawHelper {
     }
     shared actual void drawTileTranslated(Graphics pen, IMapNG map,
             Point location, Integer width, Integer height) =>
-            drawTile(pen, map, location, coordinateFactory(0, 0),
-                coordinateFactory(width, height));
+            drawTile(pen, map, location, Coordinate(0, 0), // TODO: Cache the origin
+                Coordinate(width, height));
 }

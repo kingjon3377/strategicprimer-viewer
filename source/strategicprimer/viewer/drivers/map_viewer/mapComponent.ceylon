@@ -105,8 +105,8 @@ mapComponent(IViewerModel model, Boolean(TileFixture) zof,
         void paintTile(Graphics pen, Integer tileSize, Point point, Integer row,
                 Integer column, Boolean selected) {
             helper.drawTile(pen, model.map, point,
-                coordinateFactory(column * tileSize, row * tileSize),
-                coordinateFactory(tileSize, tileSize));
+                Coordinate(column * tileSize, row * tileSize),
+                Coordinate(tileSize, tileSize));
             if (selected) {
                 Graphics context = pen.create();
                 try {
