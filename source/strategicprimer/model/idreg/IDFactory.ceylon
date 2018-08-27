@@ -48,7 +48,7 @@ shared class IDFactory() satisfies IDRegistrar {
     shared actual Integer createID() {
         variable Integer retval = -1;
         synchronize(usedIDs, () {
-            assert (usedIDs.cardinality() < runtime.maxIntegerValue); // TODO: Reduce the upper bound somewhat?
+            assert (usedIDs.cardinality() < runtime.maxArraySize);
             retval = register(usedIDs.nextClearBit(0));
         });
         assert (retval >= 0);
