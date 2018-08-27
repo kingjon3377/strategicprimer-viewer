@@ -459,6 +459,13 @@ SPFrame explorationFrame(IExplorationModel model,
 				model.setModifiedFlag(map, true);
 			}
 		}
+        object selectionChangeListenerObject satisfies SelectionChangeListener {
+            shared actual void selectedPointChanged(Point? old, Point newSel) =>
+                    outer.selectedPointChanged(old, newSel);
+        }
+        object movementCostProxy satisfies MovementCostListener {
+            shared actual void deduct(Integer cost) => outer.deduct(cost);
+        }
         for (direction in [Direction.northwest,
 	            Direction.north,
 	            Direction.northeast,
@@ -481,13 +488,8 @@ SPFrame explorationFrame(IExplorationModel model,
             createHotKey(dtb, direction.string, ecl, JComponent.whenInFocusedWindow,
                 *[arrowKeys[direction], numKeys[direction]].coalesced);
             dtb.addActionListener(ecl);
-            ecl.addSelectionChangeListener(object satisfies SelectionChangeListener {
-                shared actual void selectedPointChanged(Point? old, Point newSel) =>
-                        outer.selectedPointChanged(old, newSel);
-            });
-            ecl.addMovementCostListener(object satisfies MovementCostListener { // TODO: This object should be a less-nested class
-                shared actual void deduct(Integer cost) => outer.deduct(cost);
-            });
+            ecl.addSelectionChangeListener(selectionChangeListenerObject);
+            ecl.addMovementCostListener(movementCostProxy);
             """A list-data-listener to select a random but suitable set of fixtures to
                 be "discovered" if the tile is explored."""
             object ell satisfies SelectionChangeListener {
