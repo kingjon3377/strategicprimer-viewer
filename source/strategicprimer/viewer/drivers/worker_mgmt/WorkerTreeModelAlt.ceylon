@@ -35,7 +35,8 @@ import strategicprimer.drivers.worker.common {
 import lovelace.util.common {
 	matchingValue,
 	as,
-    inverse
+    inverse,
+    IteratorWrapper
 }
 import lovelace.util.jvm {
 	EnumerationWrapper
@@ -358,9 +359,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     shared actual TreePath? nextProblem(TreePath? starting, Integer turn) {
         assert (is PlayerNode rootNode = root);
         value enumeration = rootNode.preorderEnumeration();
-        object wrapped satisfies Iterable<WorkerTreeNode<out Anything>> { // TODO: Just use IteratorWrapper
-            iterator() => EnumerationWrapper<WorkerTreeNode<out Anything>>(enumeration);
-        }
+        value wrapped = IteratorWrapper(EnumerationWrapper<WorkerTreeNode<out Anything>>(
+            enumeration)).sequence();
         {UnitNode*} sequence;
         if (exists starting) {
             assert (is WorkerTreeNode<out Anything> last = starting.lastPathComponent);
