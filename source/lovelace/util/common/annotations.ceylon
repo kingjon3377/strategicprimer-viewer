@@ -41,7 +41,8 @@ shared annotation EnumSingleParameterAnnotation enumeratedParameter(
 
 "An annotation to make a parameterized test randomly generate numbers."
 shared annotation RandomGenerationAnnotation randomlyGenerated(Integer count,
-		Integer max = 1200000) => RandomGenerationAnnotation(count, max); // TODO: increase default 'max' as far as is reasonable
+		Integer max = /*runtime.maxArraySize*/ 2147483639)
+			=> RandomGenerationAnnotation(count, max);
 
 shared final annotation class RandomGenerationAnnotation(Integer count, Integer max)
 		satisfies OptionalAnnotation<RandomGenerationAnnotation, FunctionOrValueDeclaration>
