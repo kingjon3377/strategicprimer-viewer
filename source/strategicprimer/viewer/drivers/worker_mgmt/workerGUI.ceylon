@@ -8,7 +8,8 @@ import strategicprimer.viewer.drivers {
     PlayerChangeMenuListener,
     IOHandler,
     MenuBroker,
-    FileChooser
+    FileChooser,
+    WindowCloseListener
 }
 import ceylon.logging {
     logger,
@@ -74,6 +75,7 @@ shared class WorkerGUI() satisfies SimpleDriver {
                 log.trace("Created worker mgmt frame");
                 pcml.addPlayerChangeListener(frame);
                 log.trace("Added it as a listener on the PCML");
+                frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
                 menuHandler.register((event) => frame.playerChanged(
                     model.currentPlayer, model.currentPlayer),
                     "reload tree");

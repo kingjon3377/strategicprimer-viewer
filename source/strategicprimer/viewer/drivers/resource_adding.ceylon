@@ -482,6 +482,7 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
             menuHandler.register(pcml, "change current player");
             SwingUtilities.invokeLater(() {
                 value frame = resourceAddingFrame(model, menuHandler.actionPerformed);
+                frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
                 menuHandler.registerWindowShower(
                     aboutDialog(frame, frame.windowName), "about");
                 pcml.addPlayerChangeListener(frame);

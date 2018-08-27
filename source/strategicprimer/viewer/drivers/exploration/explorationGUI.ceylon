@@ -25,7 +25,8 @@ import strategicprimer.drivers.gui.common.about {
 import strategicprimer.viewer.drivers {
     IOHandler,
     MenuBroker,
-    FileChooser
+    FileChooser,
+    WindowCloseListener
 }
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
@@ -63,6 +64,7 @@ shared class ExplorationGUI() satisfies SimpleDriver {
         SwingUtilities.invokeLater(() {
             SPFrame frame = explorationFrame(explorationModel,
                 menuHandler.actionPerformed);
+            frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
             menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
                 "about");
             frame.showWindow();

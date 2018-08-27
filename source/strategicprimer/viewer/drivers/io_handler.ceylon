@@ -247,7 +247,7 @@ shared class IOHandler
                     ViewerModel.fromEntry(mapEntry));
             }
         }
-		case ("close") { // TODO: Need to also catch window closure by mouse
+		case ("close") {
 			if (is Frame local = iter) {
 				if (mapModel.mapModified) {
 					String prompt;

@@ -35,7 +35,8 @@ import strategicprimer.drivers.gui.common.about {
 import strategicprimer.viewer.drivers {
     IOHandler,
     MenuBroker,
-    FileChooser
+    FileChooser,
+    WindowCloseListener
 }
 import strategicprimer.drivers.gui.common {
     SPFrame
@@ -97,6 +98,7 @@ shared class ViewerGUI() satisfies SimpleDriver {
             SwingUtilities.invokeLater(() {
                 SPFrame&MapGUI frame = ViewerFrame(model,
                     menuHandler.actionPerformed);
+                frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
                 value selectTileDialogInstance = SelectTileDialog(frame, model);
                 menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");
                 selectTileDialogInstance.dispose();

@@ -31,7 +31,8 @@ import strategicprimer.viewer.drivers {
     PlayerChangeMenuListener,
     IOHandler,
     MenuBroker,
-    FileChooser
+    FileChooser,
+    WindowCloseListener
 }
 import strategicprimer.drivers.gui.common {
     SPFrame
@@ -68,8 +69,9 @@ shared class AdvancementGUI() satisfies SimpleDriver {
         SwingUtilities.invokeLater(() {
             SPFrame&PlayerChangeListener frame = advancementFrame(workerModel,
                 menuHandler);
+            frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
             pcml.addPlayerChangeListener(frame);
-            menuHandler.register((event) =>
+            menuHandler.register((event) => // FIXME: indentation
             frame.playerChanged(workerModel.currentPlayer, workerModel.currentPlayer),
                 "reload tree");
             menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
