@@ -125,7 +125,40 @@ shared class IOHandler
 		this.options = options;
 		this.cli = cli;
 	}
-
+	"If any files are marked as modified, ask the user whether to save them before
+	 closing/quitting."
+	void maybeSave(String verb, Frame? window, Component? source,
+			Anything() ifNotCanceled) {
+		if (mapModel.mapModified) {
+			String prompt;
+			if (is IMultiMapModel mapModel, !mapModel.subordinateMaps.empty) {
+				prompt = "Save changes to main map before ``verb``?";
+			} else {
+				prompt = "Save changes to map before ``verb``?";
+			}
+			Integer answer = JOptionPane.showConfirmDialog(window, prompt,
+				"Save Changes?", JOptionPane.yesNoCancelOption,
+				JOptionPane.questionMessage);
+			if (answer == JOptionPane.cancelOption) {
+				return;
+			} else if (answer == JOptionPane.yesOption) {
+				actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save"));
+			}
+		}
+		if (is IMultiMapModel mapModel, mapModel.allMaps.map(Entry.item)
+			.map(Tuple.last).coalesced.any(true.equals)) {
+			Integer answer = JOptionPane.showConfirmDialog(window,
+				"Subordinate map(s) have unsaved changes. Save all before ``verb``?",
+				"Save Changes?", JOptionPane.yesNoCancelOption,
+				JOptionPane.questionMessage);
+			if (answer == JOptionPane.cancelOption) {
+				return;
+			} else if (answer == JOptionPane.yesOption) {
+				actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save all"));
+			}
+		}
+		ifNotCanceled();
+	}
     shared actual void actionPerformed(ActionEvent event) {
         Component? source = as<Component>(event.source);
         variable String errorTitle = "Strategic Primer Assistive Programs";
@@ -249,68 +282,12 @@ shared class IOHandler
         }
 		case ("close") {
 			if (is Frame local = iter) {
-				if (mapModel.mapModified) {
-					String prompt;
-					if (is IMultiMapModel mapModel, !mapModel.subordinateMaps.empty) {
-						prompt = "Save changes to main map before closing?";
-					} else {
-						prompt = "Save changes to map before closing?";
-					}
-					Integer answer = JOptionPane.showConfirmDialog(local, prompt,
-						"Save Changes?", JOptionPane.yesNoCancelOption,
-						JOptionPane.questionMessage);
-					if (answer == JOptionPane.cancelOption) {
-						return;
-					} else if (answer == JOptionPane.yesOption) {
-						actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save"));
-					}
-				}
-				if (is IMultiMapModel mapModel, mapModel.allMaps.map(Entry.item)
-						.map(Tuple.last).coalesced.any(true.equals)) {
-					Integer answer = JOptionPane.showConfirmDialog(local,
-						"Subordinate map(s) have unsaved changes. Save all before closing?",
-						"Save Changes?", JOptionPane.yesNoCancelOption,
-						JOptionPane.questionMessage);
-					if (answer == JOptionPane.cancelOption) {
-						return;
-					} else if (answer == JOptionPane.yesOption) {
-						actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save all"));
-					}
-				}
-				local.dispose();
+				maybeSave("closing", local, source, local.dispose);
 			}
 		}
-		case ("quit") { // TODO: extract helper method to eliminate duplication between this and "close"
-			if (mapModel.mapModified) {
-				String prompt;
-				if (is IMultiMapModel mapModel, !mapModel.subordinateMaps.empty) {
-					prompt = "Save changes to main map before quitting?";
-				} else {
-					prompt = "Save changes to map before quitting?";
-				}
-				Integer answer = JOptionPane.showConfirmDialog(source, prompt,
-					"Save Changes?", JOptionPane.yesNoCancelOption,
-					JOptionPane.questionMessage);
-				if (answer == JOptionPane.cancelOption) {
-					return;
-				} else if (answer == JOptionPane.yesOption) {
-					actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save"));
-				}
-			}
-			if (is IMultiMapModel mapModel, mapModel.allMaps.map(Entry.item)
-				.map(Tuple.last).coalesced.any(true.equals)) {
-				Integer answer = JOptionPane.showConfirmDialog(source,
-					"Subordinate map(s) have unsaved changes. Save all before quitting?",
-					"Save Changes?", JOptionPane.yesNoCancelOption,
-					JOptionPane.questionMessage);
-				if (answer == JOptionPane.cancelOption) {
-					return;
-				} else if (answer == JOptionPane.yesOption) {
-					actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save all"));
-				}
-			}
-//			SPMenu.defaultQuit(); // TODO: switch to this once eclipse/ceylon#7396 fixed
-			quitHandler();
+		case ("quit") {
+			maybeSave("quitting", as<Frame>(iter), source, quitHandler);
+//			maybeSave("quitting", as<Frame>(iter), source, SPMenu.defaultQuit()); // TODO: switch to this once eclipse/ceylon#7396 fixed
 		}
         else {
             log.info("Unhandled command ``event.actionCommand`` in IOHandler");
