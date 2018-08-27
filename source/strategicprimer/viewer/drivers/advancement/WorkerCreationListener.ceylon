@@ -62,95 +62,104 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                 "As no unit was selected, the new worker wasn't added to a unit.");
         }
     }
+    object workerCreationFrame extends JFrame("Create Worker") {
+        defaultCloseOperation = WindowConstants.disposeOnClose;
+        JTextField name = JTextField();
+        JTextField race = JTextField(raceFactory.randomRace());
+        JTextField hpBox = JTextField();
+        JTextField maxHP = JTextField();
+        JTextField strength = JTextField();
+        JTextField dexterity = JTextField();
+        JTextField constitution = JTextField();
+        JTextField intelligence = JTextField();
+        JTextField wisdom = JTextField();
+        JTextField charisma = JTextField();
+        JPanel textPanel = JPanel(GridLayout(0, 2));
+        void addLabeledField(JPanel panel, String text, JComponent field) {
+            panel.add(JLabel(text));
+            panel.add(field);
+        }
+        addLabeledField(textPanel, "Worker Name:", name);
+        addLabeledField(textPanel, "Worker Race", race);
+        JPanel buttonPanel = JPanel(GridLayout(0, 2));
+        JButton addButton = listenedButton("Add Worker", (ActionEvent event) { // TODO: Convert to class method on this object
+            String nameText = name.text.trimmed;
+            String raceText = race.text.trimmed;
+            value hpValue = Integer.parse(hpBox.text.trimmed);
+            value maxHPValue = Integer.parse(maxHP.text.trimmed);
+            value strValue = Integer.parse(strength.text.trimmed);
+            value dexValue = Integer.parse(dexterity.text.trimmed);
+            value conValue = Integer.parse(constitution.text.trimmed);
+            value intValue = Integer.parse(intelligence.text.trimmed);
+            value wisValue = Integer.parse(wisdom.text.trimmed);
+            value chaValue = Integer.parse(charisma.text.trimmed);
+            if (!nameText.empty, raceText.empty, is Integer hpValue,
+                is Integer maxHPValue, is Integer strValue,
+                is Integer dexValue, is Integer conValue,
+                is Integer intValue, is Integer wisValue,
+                is Integer chaValue) {
+                Worker retval = Worker(nameText, raceText, factory.createID());
+                retval.stats = WorkerStats(hpValue, maxHPValue, strValue,
+                    dexValue, conValue, intValue, wisValue, chaValue);
+                addNewWorker(retval);
+                setVisible(false);
+                dispose();
+            } else {
+                StringBuilder builder = StringBuilder();
+                if (nameText.empty) {
+                    builder.append("Worker needs a name.");
+                    builder.appendNewline();
+                }
+                if (raceText.empty) {
+                    builder.append("Worker needs a race.");
+                    builder.appendNewline();
+                }
+                for (stat->val in narrowedStream<String, ParseException>(
+                    ["HP"->hpValue, "Max HP"->maxHPValue, "Strength"->strValue,
+                        "Dexterity"->dexValue, "Constitution"->conValue,
+                        "Intelligence"->intValue, "Wisdom"->wisValue,
+                        "Charisma"->chaValue])) {
+                    builder.append("``stat`` must be a number.");
+                    builder.appendNewline();
+                }
+                showErrorDialog(null, "Strategic Primer Worker Advancement",
+                    builder.string);
+            }
+        });
+        buttonPanel.add(addButton);
+        shared void revert() {
+            for (field in [name, hpBox, maxHP, strength, dexterity, constitution,
+                    intelligence, wisdom, charisma]) {
+                field.text = "";
+            }
+            race.text = raceFactory.randomRace();
+            dispose();
+        }
+        JButton cancelButton = listenedButton("Cancel", silentListener(revert));
+        buttonPanel.add(cancelButton);
+        platform.makeButtonsSegmented(addButton, cancelButton);
+        JPanel statsPanel = JPanel(GridLayout(0, 4));
+        hpBox.text = "8";
+        addLabeledField(statsPanel, "HP:", hpBox);
+        maxHP.text = "8";
+        addLabeledField(statsPanel, "Max HP:", maxHP);
+        for ([stat, box] in [["Strength:", strength],
+            ["Intelligence:", intelligence], ["Dexterity:", dexterity],
+            ["Wisdom:", wisdom], ["Constitution:", constitution],
+            ["Charisma:", charisma]]) {
+            box.text = singletonRandom.elements(1..6).take(3)
+                .reduce(plus)?.string else "0";
+            addLabeledField(statsPanel, stat, box);
+        }
+        contentPane = BorderedPanel.verticalPanel(textPanel, statsPanel,
+            buttonPanel);
+        setMinimumSize(Dimension(320, 240));
+        pack();
+    }
     shared actual void actionPerformed(ActionEvent event) {
         if (event.actionCommand.lowercased.startsWith("add worker")) {
-            object frame extends JFrame("Create Worker") { // FIXME: This should be cached and cleared instead of recreated each time this method is called
-                defaultCloseOperation = WindowConstants.disposeOnClose;
-                JTextField name = JTextField();
-                JTextField race = JTextField(raceFactory.randomRace());
-                JTextField hpBox = JTextField();
-                JTextField maxHP = JTextField();
-                JTextField strength = JTextField();
-                JTextField dexterity = JTextField();
-                JTextField constitution = JTextField();
-                JTextField intelligence = JTextField();
-                JTextField wisdom = JTextField();
-                JTextField charisma = JTextField();
-                JPanel textPanel = JPanel(GridLayout(0, 2));
-                void addLabeledField(JPanel panel, String text, JComponent field) {
-                    panel.add(JLabel(text));
-                    panel.add(field);
-                }
-                addLabeledField(textPanel, "Worker Name:", name);
-                addLabeledField(textPanel, "Worker Race", race);
-                JPanel buttonPanel = JPanel(GridLayout(0, 2));
-                JButton addButton = listenedButton("Add Worker", (ActionEvent event) {
-                    String nameText = name.text.trimmed;
-                    String raceText = race.text.trimmed;
-                    value hpValue = Integer.parse(hpBox.text.trimmed);
-                    value maxHPValue = Integer.parse(maxHP.text.trimmed);
-                    value strValue = Integer.parse(strength.text.trimmed);
-                    value dexValue = Integer.parse(dexterity.text.trimmed);
-                    value conValue = Integer.parse(constitution.text.trimmed);
-                    value intValue = Integer.parse(intelligence.text.trimmed);
-                    value wisValue = Integer.parse(wisdom.text.trimmed);
-                    value chaValue = Integer.parse(charisma.text.trimmed);
-                    if (!nameText.empty, raceText.empty, is Integer hpValue,
-                        is Integer maxHPValue, is Integer strValue,
-                        is Integer dexValue, is Integer conValue,
-                        is Integer intValue, is Integer wisValue,
-                        is Integer chaValue) {
-                        Worker retval = Worker(nameText, raceText, factory.createID());
-                        retval.stats = WorkerStats(hpValue, maxHPValue, strValue,
-                            dexValue, conValue, intValue, wisValue, chaValue);
-                        addNewWorker(retval);
-                        setVisible(false);
-                        dispose();
-                    } else {
-                        StringBuilder builder = StringBuilder();
-                        if (nameText.empty) {
-                            builder.append("Worker needs a name.");
-                            builder.appendNewline();
-                        }
-                        if (raceText.empty) {
-                            builder.append("Worker needs a race.");
-                            builder.appendNewline();
-                        }
-                        for (stat->val in narrowedStream<String, ParseException>(
-								["HP"->hpValue, "Max HP"->maxHPValue, "Strength"->strValue,
-	                            "Dexterity"->dexValue, "Constitution"->conValue,
-	                            "Intelligence"->intValue, "Wisdom"->wisValue,
-	                            "Charisma"->chaValue])) {
-                            builder.append("``stat`` must be a number.");
-                            builder.appendNewline();
-                        }
-                        showErrorDialog(null, "Strategic Primer Worker Advancement",
-                            builder.string);
-                    }
-                });
-                buttonPanel.add(addButton);
-                JButton cancelButton = listenedButton("Cancel", silentListener(dispose));
-                buttonPanel.add(cancelButton);
-                platform.makeButtonsSegmented(addButton, cancelButton);
-                JPanel statsPanel = JPanel(GridLayout(0, 4));
-                hpBox.text = "8";
-                addLabeledField(statsPanel, "HP:", hpBox);
-                maxHP.text = "8";
-                addLabeledField(statsPanel, "Max HP:", maxHP);
-                for ([stat, box] in [["Strength:", strength],
-	                    ["Intelligence:", intelligence], ["Dexterity:", dexterity],
-	                    ["Wisdom:", wisdom], ["Constitution:", constitution],
-	                    ["Charisma:", charisma]]) {
-                    box.text = singletonRandom.elements(1..6).take(3)
-                        .reduce(plus)?.string else "0";
-                    addLabeledField(statsPanel, stat, box);
-                }
-                contentPane = BorderedPanel.verticalPanel(textPanel, statsPanel,
-                    buttonPanel);
-                setMinimumSize(Dimension(320, 240));
-                pack();
-            }
-            frame.setVisible(true);
+            workerCreationFrame.revert();
+            workerCreationFrame.setVisible(true);
         }
     }
     "Update our currently-selected-unit reference."
