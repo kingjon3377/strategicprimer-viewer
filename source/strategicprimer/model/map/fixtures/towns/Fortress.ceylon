@@ -5,7 +5,8 @@ import ceylon.collection {
 
 
 import lovelace.util.common {
-    todo
+    todo,
+    entryBy
 }
 import ceylon.language {
     createMap=map
@@ -114,7 +115,6 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
      specified."
     todo("Should perhaps be more granular")
     shared actual String defaultImage => "fortress.png";
-    Integer->FortressMember memberById(FortressMember member) => member.id->member; // TODO: Convert to class-with-constructor and make static
     """A fixture is a subset if it is a Fortress with the same ID, owner, and name (or it
        has the name "unknown") and every member it has is equal to, or a subset of, one of
        our members."""
@@ -133,7 +133,9 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
             return false;
         }
         if ([name, "unknown"].contains(obj.name), obj.owner.playerId == owner.playerId) {
-            Map<Integer, FortressMember> ours = createMap(members.map(memberById));
+            Map<Integer, FortressMember> ours =
+                    createMap(members.map(entryBy(FortressMember.id,
+                        identity<FortressMember>)));
             variable Boolean retval = true;
             void localFormat(String string) =>
                     report("In fortress ``name`` (ID #``id``):\t``string``");

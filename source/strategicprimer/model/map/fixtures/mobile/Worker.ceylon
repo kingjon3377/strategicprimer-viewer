@@ -6,7 +6,8 @@ import lovelace.util.common {
     todo,
     ArraySet,
 	anythingEqual,
-	matchingValue
+	matchingValue,
+    entryBy
 }
 import strategicprimer.model.map {
     IFixture,
@@ -30,7 +31,6 @@ shared class Worker satisfies IWorker&HasPortrait {
 	static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
 			set(first.filter(matchingValue(false, IJob.emptyJob))) ==
 			set(second.filter(matchingValue(false, IJob.emptyJob)));
-	static String->IJob entryByName(IJob job) => job.name->job; // TODO: Make a more generic Entry factory in lovelace.util.common?
     "The set of Jobs the worker is trained or experienced in."
     MutableSet<IJob> jobSet;
     "The worker's ID number."
@@ -100,7 +100,8 @@ shared class Worker satisfies IWorker&HasPortrait {
                     localReport("Stats differ");
                     return false;
                 }
-                Map<String, IJob> ours = createMap(map(entryByName));
+                Map<String, IJob> ours =
+                        createMap(map(entryBy(IJob.name, identity<IJob>)));
                 variable Boolean retval = true;
                 for (job in obj) {
                     if (exists corresponding = ours[job.name]) {
