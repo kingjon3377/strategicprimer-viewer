@@ -71,9 +71,9 @@ shared class AdvancementGUI() satisfies SimpleDriver {
                 menuHandler);
             frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
             pcml.addPlayerChangeListener(frame);
-            menuHandler.register((event) => // FIXME: indentation
-            frame.playerChanged(workerModel.currentPlayer, workerModel.currentPlayer),
-                "reload tree");
+            menuHandler.register((event) =>
+                frame.playerChanged(workerModel.currentPlayer, workerModel.currentPlayer),
+                    "reload tree");
             menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
                 "about");
             frame.showWindow();
