@@ -412,10 +412,6 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         JLabel("Please choose one of the applications below"),
         JScrollPane(buttonPanel), null);
     frame.pack();
-    MenuBroker menuHandler = MenuBroker(); // FIXME: This is never actually used
-    menuHandler.register(silentListener(frame.dispose), "close");
-    menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName), "about");
-    menuHandler.register((event) => process.exit(0), "quit");
     frame.jMenuBar = UtilityMenu(frame);
     return frame;
 }
