@@ -59,17 +59,15 @@ shared class WorkerGUI() satisfies SimpleDriver {
         supportedOptionsTemp = [ "--current-turn=NN", "--print-empty",
             "--include-unleveled-jobs", "--summarize-large-units" ];
     };
-    suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IWorkerModel model) {
             MenuBroker menuHandler = MenuBroker();
             menuHandler.register(IOHandler(model, options, cli), "load", "save",
                 "save as", "new", "load secondary", "save all", "open in map viewer",
-                "open secondary map in map viewer", "close");
+                "open secondary map in map viewer", "close", "quit");
             PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
             menuHandler.register(pcml, "change current player");
-            menuHandler.register((event) => process.exit(0), "quit");
             SwingUtilities.invokeLater(() {
                 log.trace("Inside GUI creation lambda");
                 value frame = WorkerMgmtFrame(options, model, menuHandler);

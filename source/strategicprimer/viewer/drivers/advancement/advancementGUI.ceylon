@@ -51,7 +51,6 @@ shared class AdvancementGUI() satisfies SimpleDriver {
         includeInGUIList = true;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
-    suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         IWorkerModel workerModel;
@@ -63,10 +62,9 @@ shared class AdvancementGUI() satisfies SimpleDriver {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(workerModel, options, cli), "load", "save",
             "save as", "new", "load secondary", "save all", "open in map viewer",
-            "open secondary map in map viewer", "close");
+            "open secondary map in map viewer", "close", "quit");
         PlayerChangeMenuListener pcml = PlayerChangeMenuListener(workerModel);
         menuHandler.register(pcml, "change current player");
-        menuHandler.register((event) => process.exit(0), "quit");
         SwingUtilities.invokeLater(() {
             SPFrame&PlayerChangeListener frame = advancementFrame(workerModel,
                 menuHandler);

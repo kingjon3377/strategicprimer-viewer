@@ -85,6 +85,9 @@ import strategicprimer.drivers.gui.common {
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
 shared class IOHandler
         satisfies ActionListener {
+	suppressWarnings("expressionTypeNothing")
+	static void defaultQuitHandler() => process.exit(0); // TODO: remove these once eclipse/ceylon#7396 fixed
+	shared static variable Anything() quitHandler = defaultQuitHandler;
 	static FileFilter mapExtensionsFilter = FileNameExtensionFilter(
 		"Strategic Primer world map files", "map", "xml", "db");
 	"A factory method for [[JFileChooser]] (or AWT [[FileDialog|JFileDialog]] taking a
@@ -244,7 +247,7 @@ shared class IOHandler
                     ViewerModel.fromEntry(mapEntry));
             }
         }
-		case ("close") {
+		case ("close") { // TODO: Need to also catch window closure by mouse
 			if (is Frame local = iter) {
 				if (mapModel.mapModified) {
 					String prompt;
@@ -276,6 +279,38 @@ shared class IOHandler
 				}
 				local.dispose();
 			}
+		}
+		case ("quit") { // TODO: extract helper method to eliminate duplication between this and "close"
+			if (mapModel.mapModified) {
+				String prompt;
+				if (is IMultiMapModel mapModel, !mapModel.subordinateMaps.empty) {
+					prompt = "Save changes to main map before quitting?";
+				} else {
+					prompt = "Save changes to map before quitting?";
+				}
+				Integer answer = JOptionPane.showConfirmDialog(source, prompt,
+					"Save Changes?", JOptionPane.yesNoCancelOption,
+					JOptionPane.questionMessage);
+				if (answer == JOptionPane.cancelOption) {
+					return;
+				} else if (answer == JOptionPane.yesOption) {
+					actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save"));
+				}
+			}
+			if (is IMultiMapModel mapModel, mapModel.allMaps.map(Entry.item)
+				.map(Tuple.last).coalesced.any(true.equals)) {
+				Integer answer = JOptionPane.showConfirmDialog(source,
+					"Subordinate map(s) have unsaved changes. Save all before quitting?",
+					"Save Changes?", JOptionPane.yesNoCancelOption,
+					JOptionPane.questionMessage);
+				if (answer == JOptionPane.cancelOption) {
+					return;
+				} else if (answer == JOptionPane.yesOption) {
+					actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save all"));
+				}
+			}
+//			SPMenu.defaultQuit(); // TODO: switch to this once eclipse/ceylon#7396 fixed
+			quitHandler();
 		}
         else {
             log.info("Unhandled command ``event.actionCommand`` in IOHandler");

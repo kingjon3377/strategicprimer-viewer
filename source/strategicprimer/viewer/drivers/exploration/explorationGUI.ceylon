@@ -48,7 +48,6 @@ shared class ExplorationGUI() satisfies SimpleDriver {
         includeInGUIList = true;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
-    suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         IExplorationModel explorationModel;
@@ -60,8 +59,7 @@ shared class ExplorationGUI() satisfies SimpleDriver {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(explorationModel, options, cli), "load", "save",
             "save as", "new", "load secondary", "save all", "open in map viewer",
-            "open secondary map in map viewer", "close");
-        menuHandler.register((event) => process.exit(0), "quit");
+            "open secondary map in map viewer", "close", "quit");
         SwingUtilities.invokeLater(() {
             SPFrame frame = explorationFrame(explorationModel,
                 menuHandler.actionPerformed);

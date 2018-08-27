@@ -58,15 +58,13 @@ shared class ViewerGUI() satisfies SimpleDriver {
         includeInGUIList = true;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
-    suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IViewerModel model) {
             MenuBroker menuHandler = MenuBroker();
             menuHandler.register(IOHandler(model, options, cli), "load", "save",
                 "save as", "new", "load secondary", "save all", "open in map viewer",
-                "open secondary map in map viewer", "close");
-            menuHandler.register((event) => process.exit(0), "quit");
+                "open secondary map in map viewer", "close", "quit");
             menuHandler.register(silentListener(model.zoomIn), "zoom in");
             menuHandler.register(silentListener(model.zoomOut), "zoom out");
             menuHandler.register(silentListener(model.resetZoom), "reset zoom");

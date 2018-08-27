@@ -6,7 +6,8 @@ import ceylon.collection {
 }
 import com.apple.eawt {
     Application,
-    AppEvent
+    AppEvent,
+    QuitResponse
 }
 import com.pump.window {
     WindowList
@@ -149,6 +150,10 @@ shared class MenuBroker() satisfies ActionListener {
 }
 "A class to hold the logic for building our menus."
 shared class SPMenu extends JMenuBar {
+//    suppressWarnings("expressionTypeNothing")
+//    static void simpleQuit() => process.exit(0); // TODO: uncomment these once eclipse/ceylon#7396 fixed
+//    static variable Anything() localDefaultQuit = simpleQuit;
+//    shared static Anything() defaultQuit => localDefaultQuit;
     "Create the file menu."
     shared static JMenu createFileMenu(/*ActionListener|*/Anything(ActionEvent) handler,
             IDriverModel model) {
@@ -214,6 +219,13 @@ shared class SPMenu extends JMenuBar {
                 handler(ActionEvent(WindowList.getWindows(true, false).iterable.coalesced
                     .last else event, ActionEvent.actionFirst,
                     "About")));
+            Application.application.setQuitHandler((AppEvent.QuitEvent event, QuitResponse quitResponse) {
+                IOHandler.quitHandler = quitResponse.performQuit;
+//                localDefaultQuit = quitResponse.performQuit; // TODO: switch to this once eclipse/ceylon#7396 fixed
+                handler(ActionEvent(
+                    WindowList.getWindows(true, false).iterable.coalesced.last else event,
+                    ActionEvent.actionFirst, "Quit"));
+            });
         } else {
             fileMenu.add(createMenuItem("About", KeyEvent.vkB, "Show development credits",
                 handler, createAccelerator(KeyEvent.vkB)));
