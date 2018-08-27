@@ -68,7 +68,8 @@ import lovelace.util.jvm {
 
 import lovelace.util.common {
 	parseInt,
-	isNumeric
+	isNumeric,
+    simpleMap
 }
 
 import strategicprimer.model.map {
@@ -135,13 +136,13 @@ import strategicprimer.model.idreg {
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,
         Anything(ActionEvent) menuHandler) { // TODO: Do what we can to convert nested objects/classes to top-level, etc.
-    Map<Direction, KeyStroke> arrowKeys = HashMap { // TODO: Use simpleMap() instead of a HashMap
+    Map<Direction, KeyStroke> arrowKeys = simpleMap(
         Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkUp, 0),
         Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkDown, 0),
         Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkLeft, 0),
         Direction.east->KeyStroke.getKeyStroke(KeyEvent.vkRight, 0)
-    };
-    Map<Direction, KeyStroke> numKeys = HashMap { // TODO: Use simpleMap() instead of a HashMap
+    );
+    Map<Direction, KeyStroke> numKeys = simpleMap(
         Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkNumpad8, 0),
         Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkNumpad2, 0),
         Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkNumpad4, 0),
@@ -151,7 +152,7 @@ SPFrame explorationFrame(IExplorationModel model,
         Direction.southeast->KeyStroke.getKeyStroke(KeyEvent.vkNumpad3, 0),
         Direction.southwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad1, 0),
         Direction.nowhere->KeyStroke.getKeyStroke(KeyEvent.vkNumpad5, 0)
-    };
+    );
     SPFrame retval = SPFrame("Exploration", model.mapFile, Dimension(768, 48), true,
         (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file));
     CardLayout layoutObj = CardLayout();
