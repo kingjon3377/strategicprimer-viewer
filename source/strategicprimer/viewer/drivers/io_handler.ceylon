@@ -30,7 +30,8 @@ import java.nio.file {
 
 import javax.swing {
     JFileChooser,
-    SwingUtilities
+    SwingUtilities,
+    JOptionPane
 }
 import javax.swing.filechooser {
     FileNameExtensionFilter,
@@ -243,6 +244,39 @@ shared class IOHandler
                     ViewerModel.fromEntry(mapEntry));
             }
         }
+		case ("close") {
+			if (is Frame local = iter) {
+				if (mapModel.mapModified) {
+					String prompt;
+					if (is IMultiMapModel mapModel, !mapModel.subordinateMaps.empty) {
+						prompt = "Save changes to main map before closing?";
+					} else {
+						prompt = "Save changes to map before closing?";
+					}
+					Integer answer = JOptionPane.showConfirmDialog(local, prompt,
+						"Save Changes?", JOptionPane.yesNoCancelOption,
+						JOptionPane.questionMessage);
+					if (answer == JOptionPane.cancelOption) {
+						return;
+					} else if (answer == JOptionPane.yesOption) {
+						actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save"));
+					}
+				}
+				if (is IMultiMapModel mapModel, mapModel.allMaps.map(Entry.item)
+						.map(Tuple.last).coalesced.any(true.equals)) {
+					Integer answer = JOptionPane.showConfirmDialog(local,
+						"Subordinate map(s) have unsaved changes. Save all before closing?",
+						"Save Changes?", JOptionPane.yesNoCancelOption,
+						JOptionPane.questionMessage);
+					if (answer == JOptionPane.cancelOption) {
+						return;
+					} else if (answer == JOptionPane.yesOption) {
+						actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save all"));
+					}
+				}
+				local.dispose();
+			}
+		}
         else {
             log.info("Unhandled command ``event.actionCommand`` in IOHandler");
         }

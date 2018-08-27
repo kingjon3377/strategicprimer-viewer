@@ -34,9 +34,6 @@ import strategicprimer.drivers.exploration.common {
 import strategicprimer.drivers.gui.common {
     SPFrame
 }
-import lovelace.util.common {
-	silentListener
-}
 "An object to start the exploration GUI."
 service(`interface ISPDriver`)
 shared class ExplorationGUI() satisfies SimpleDriver {
@@ -63,12 +60,11 @@ shared class ExplorationGUI() satisfies SimpleDriver {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(explorationModel, options, cli), "load", "save",
             "save as", "new", "load secondary", "save all", "open in map viewer",
-            "open secondary map in map viewer");
+            "open secondary map in map viewer", "close");
         menuHandler.register((event) => process.exit(0), "quit");
         SwingUtilities.invokeLater(() {
             SPFrame frame = explorationFrame(explorationModel,
                 menuHandler.actionPerformed);
-            menuHandler.register(silentListener(frame.dispose), "close");
             menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
                 "about");
             frame.showWindow();

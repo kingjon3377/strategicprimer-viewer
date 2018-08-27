@@ -65,7 +65,7 @@ shared class ViewerGUI() satisfies SimpleDriver {
             MenuBroker menuHandler = MenuBroker();
             menuHandler.register(IOHandler(model, options, cli), "load", "save",
                 "save as", "new", "load secondary", "save all", "open in map viewer",
-                "open secondary map in map viewer");
+                "open secondary map in map viewer", "close");
             menuHandler.register((event) => process.exit(0), "quit");
             menuHandler.register(silentListener(model.zoomIn), "zoom in");
             menuHandler.register(silentListener(model.zoomOut), "zoom out");
@@ -99,7 +99,6 @@ shared class ViewerGUI() satisfies SimpleDriver {
             SwingUtilities.invokeLater(() {
                 SPFrame&MapGUI frame = ViewerFrame(model,
                     menuHandler.actionPerformed);
-                menuHandler.register(silentListener(frame.dispose), "close");
                 value selectTileDialogInstance = SelectTileDialog(frame, model);
                 menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");
                 selectTileDialogInstance.dispose();

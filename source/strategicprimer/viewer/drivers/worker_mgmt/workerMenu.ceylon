@@ -18,7 +18,7 @@ import strategicprimer.drivers.common {
 shared JMenuBar workerMenu(
         "The broker that handles menu items, or arranges for them to be handled"
         Anything(ActionEvent) handler,
-        """The window this is to be attached to, whic should close on "Close"."""
+        """The window this is to be attached to, which should close on "Close"."""
         JFrame parentFrame,
         "The current driver model."
         IDriverModel model) => SPMenu(SPMenu.createFileMenu(handler, model),

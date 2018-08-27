@@ -36,9 +36,6 @@ import strategicprimer.viewer.drivers {
 import strategicprimer.drivers.gui.common {
     SPFrame
 }
-import lovelace.util.common {
-	silentListener
-}
 "The worker-advancement GUI driver."
 service(`interface ISPDriver`)
 shared class AdvancementGUI() satisfies SimpleDriver {
@@ -66,7 +63,7 @@ shared class AdvancementGUI() satisfies SimpleDriver {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(workerModel, options, cli), "load", "save",
             "save as", "new", "load secondary", "save all", "open in map viewer",
-            "open secondary map in map viewer");
+            "open secondary map in map viewer", "close");
         PlayerChangeMenuListener pcml = PlayerChangeMenuListener(workerModel);
         menuHandler.register(pcml, "change current player");
         menuHandler.register((event) => process.exit(0), "quit");
@@ -77,7 +74,6 @@ shared class AdvancementGUI() satisfies SimpleDriver {
             menuHandler.register((event) =>
             frame.playerChanged(workerModel.currentPlayer, workerModel.currentPlayer),
                 "reload tree");
-            menuHandler.register(silentListener(frame.dispose), "close");
             menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
                 "about");
             frame.showWindow();

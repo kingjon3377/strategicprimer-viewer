@@ -37,9 +37,6 @@ import strategicprimer.drivers.worker.common {
 import java.awt.event {
     ActionEvent
 }
-import lovelace.util.common {
-	silentListener
-}
 import strategicprimer.model.map {
 	IMapNG
 }
@@ -69,7 +66,7 @@ shared class WorkerGUI() satisfies SimpleDriver {
             MenuBroker menuHandler = MenuBroker();
             menuHandler.register(IOHandler(model, options, cli), "load", "save",
                 "save as", "new", "load secondary", "save all", "open in map viewer",
-                "open secondary map in map viewer");
+                "open secondary map in map viewer", "close");
             PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
             menuHandler.register(pcml, "change current player");
             menuHandler.register((event) => process.exit(0), "quit");
@@ -82,7 +79,6 @@ shared class WorkerGUI() satisfies SimpleDriver {
                 menuHandler.register((event) => frame.playerChanged(
                     model.currentPlayer, model.currentPlayer),
                     "reload tree");
-                menuHandler.register(silentListener(frame.dispose), "close");
                 menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
                     "about");
                 log.trace("Registered menu handlers");
