@@ -82,7 +82,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         addLabeledField(textPanel, "Worker Name:", name);
         addLabeledField(textPanel, "Worker Race", race);
         JPanel buttonPanel = JPanel(GridLayout(0, 2));
-        JButton addButton = listenedButton("Add Worker", (ActionEvent event) { // TODO: Convert to class method on this object
+        void accept() {
             String nameText = name.text.trimmed;
             String raceText = race.text.trimmed;
             value hpValue = Integer.parse(hpBox.text.trimmed);
@@ -125,7 +125,8 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                 showErrorDialog(null, "Strategic Primer Worker Advancement",
                     builder.string);
             }
-        });
+        }
+        JButton addButton = listenedButton("Add Worker", silentListener(accept));
         buttonPanel.add(addButton);
         shared void revert() {
             for (field in [name, hpBox, maxHP, strength, dexterity, constitution,
