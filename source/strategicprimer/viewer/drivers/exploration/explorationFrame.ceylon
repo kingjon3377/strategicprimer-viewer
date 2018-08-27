@@ -212,7 +212,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 Component retval = defaultRenderer.getListCellRendererComponent(list,
                     val, index, isSelected, cellHasFocus);
                 if (exists val, is JLabel retval) {
-                    retval.text = "Unit of type ``val.kind``, named ``val.name``"; // TODO: Shorten to "Unit: ``name`` (``kind``)"---or omit the "Unit" part?
+                    retval.text = "``val.name`` (``val.kind``)";
                 }
                 return retval;
             }
