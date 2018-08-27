@@ -94,10 +94,9 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
 	}
 	void changeOwnerHandler() {
 		assert (is HasMutableOwner fixture);
-		if (is Player player = JOptionPane.showInputDialog(parent, // FIXME: Reformat
-			"Fixture's new owner:", "Change Fixture Owner",
-			JOptionPane.plainMessage, null, ObjectArray.with(players),
-			fixture.owner)) {
+		if (is Player player = JOptionPane.showInputDialog(parent, "Fixture's new owner:",
+				"Change Fixture Owner", JOptionPane.plainMessage, null,
+				ObjectArray.with(players), fixture.owner)) {
 			HasMutableOwner temp = fixture;
 			temp.owner = player;
 			mutationListener();
