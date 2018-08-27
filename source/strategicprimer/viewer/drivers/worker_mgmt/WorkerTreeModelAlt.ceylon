@@ -364,7 +364,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         {UnitNode*} sequence;
         if (exists starting) {
             assert (is WorkerTreeNode<out Anything> last = starting.lastPathComponent);
-            sequence = wrapped.repeat(2).sequence().trimLeading(inverse(last.equals)).rest.narrow<UnitNode>(); // TODO: reformat
+            sequence = wrapped.repeat(2).sequence().trimLeading(inverse(last.equals))
+                .rest.narrow<UnitNode>();
         } else {
             sequence = wrapped.narrow<UnitNode>().sequence();
         }
