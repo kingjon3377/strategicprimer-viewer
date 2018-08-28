@@ -324,7 +324,12 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     component.text = "``internal.population`` ``animalPlurals.get(internal
                         .kind)``";
                 } else if (is IUnit internal, is DefaultTreeCellRenderer component) {
-                    component.text = internal.name;
+                    if (expanded || internal.empty) {
+                        component.text = internal.name;
+                    } else {
+                        component.text =
+                            "``internal.name`` (``internal.narrow<IWorker>().size`` workers)";
+                    }
                     String orders = internal.getLatestOrders(turnSource()).lowercased;
                     if (orderCheck, orders.contains("fixme"), !internal.empty) {
                         shouldError = true;

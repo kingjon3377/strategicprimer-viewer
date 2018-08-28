@@ -158,4 +158,5 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
 	} else {
 		addDisabledMenuItem(JMenuItem("Split animal population", KeyEvent.vkS));
 	}
+	// TODO: Add "Sort" for units and fortresses
 }
