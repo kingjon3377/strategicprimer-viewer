@@ -32,6 +32,8 @@ import java.lang {
     Types
 }
 shared object imageLoader {
+	log.trace("Expect to be able to load the following image file formats: " +
+		", ".join(ImageIO.readerFileSuffixes.array.coalesced));
 	"The size of fixture icons."
 	Integer fixtureIconSize = 28;
 	"Create a very simple background icon for a terrain type"
