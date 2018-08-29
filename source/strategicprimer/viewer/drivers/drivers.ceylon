@@ -302,7 +302,7 @@ class AppStarter() {
 			}
 		}
 		log.trace("Reached the end of options");
-		if (currentOptions.hasOption("--help")) {
+		if (currentOptions.hasOption("--help")) { // TODO: Handle --help in startChosenDriver() instead, so it works for drivers other than the last (TODO: figure out how to ma
 			log.trace("Giving usage information.");
 			IDriverUsage tempUsage = currentDriver?.usage else usage; // FIXME: Following the 'default' usage will cause errors!
 			process.writeLine(appChooserState.usageMessage(tempUsage,
