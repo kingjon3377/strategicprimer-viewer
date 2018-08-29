@@ -72,8 +72,10 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
           or the empty string, if one is not."
         shared actual void revert() {
             if (is IUnit sel = selection) {
+                area.enabled = true;
                 area.text = ordersSupplier(sel, spinnerModel.number.intValue());
             } else {
+                area.enabled = false;
                 area.text = "";
             }
         }
