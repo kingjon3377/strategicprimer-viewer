@@ -26,7 +26,7 @@ service(`interface ISPDriver`)
 shared class StrategyExportCLI() satisfies SimpleDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["-w", "--worker"];
+        invocations = ["-w", "--worker", "--export-strategy"];
         paramsWanted = ParamCount.one;
         shortDescription = "Export a proto-strategy";
         longDescription = "Create a proto-strategy using orders stored in the map";
