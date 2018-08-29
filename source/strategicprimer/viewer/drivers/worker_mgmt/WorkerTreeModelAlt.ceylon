@@ -97,6 +97,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             insert(UnitNode(unit), index);
         }
     }
+    // TODO: We want to add a 'Fortress' level to the tree
     static class PlayerNode(Player player, IWorkerModel model)
             extends WorkerTreeNode<Player>(player) {
         for (index->kind in model.getUnitKinds(player).indexed) {

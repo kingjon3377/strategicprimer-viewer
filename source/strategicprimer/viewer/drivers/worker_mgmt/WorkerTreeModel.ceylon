@@ -49,6 +49,8 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
     MutableList<TreeModelListener> listeners = ArrayList<TreeModelListener>();
     shared actual Player root => player;
 
+    // TODO: We want to add a 'Fortress' level to the tree
+
     shared actual Object getChild(Object parent, Integer index) {
         if (is Player parent) {
             if (exists child = model.getUnitKinds(parent).getFromFirst(index)) {
