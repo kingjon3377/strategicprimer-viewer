@@ -302,7 +302,7 @@ class AppStarter() {
 			}
 		}
 		log.trace("Reached the end of options");
-		if (options.hasOption("--help")) {
+		if (currentOptions.hasOption("--help")) {
 			log.trace("Giving usage information.");
 			IDriverUsage tempUsage = currentDriver?.usage else usage; // FIXME: Following the 'default' usage will cause errors!
 			process.writeLine(appChooserState.usageMessage(tempUsage,
