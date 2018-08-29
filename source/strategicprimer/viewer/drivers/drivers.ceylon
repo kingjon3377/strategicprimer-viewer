@@ -291,8 +291,8 @@ class AppStarter() satisfies ISPDriver { // TODO: Do we really want a full ISPDr
 				others.add(arg);
 			}
 		}
-		if (options.hasOption("--help")) {
-			IDriverUsage tempUsage = currentDriver?.usage else usage;
+		if (currentOptions.hasOption("--help")) {
+			IDriverUsage tempUsage = currentDriver?.usage else usage; // FIXME: Following the 'default' usage will cause errors!
 			process.writeLine(appChooserState.usageMessage(tempUsage,
 				options.getArgument("--verbose") == "true"));
 		} else if (exists driver = currentDriver) {
