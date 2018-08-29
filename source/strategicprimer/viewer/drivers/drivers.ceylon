@@ -239,13 +239,16 @@ class AppStarter() {
 		variable ISPDriver? currentDriver = null;
 		for (arg in args.coalesced) {
 			if (arg == "-g" || arg == "--gui") {
+				log.trace("User specified either -g or --gui");
 				currentOptions.addOption("--gui");
 				gui = true;
 			} else if (arg == "-c" || arg == "--cli") {
+				log.trace("User specified either -c or --cli");
 				currentOptions.addOption("--gui", "false");
 				gui = false;
 			} else if (arg.startsWith("--gui=")) {
 				String tempString = arg.substring(6);
+				log.trace("User specified --gui=``tempString``");
 				value tempBool = Boolean.parse(tempString);
 				if (is Boolean tempBool) {
 					currentOptions.addOption("--gui", tempString);
@@ -259,41 +262,56 @@ class AppStarter() {
 					(String partial, String element) =>
 							if (partial.empty) then element else "``partial``=``element``")
 				else "");
+				log.trace("User specified ``broken.first``=``broken.rest.first else ""``");
 			} else if (!gui, driverCache[0].defines(arg.lowercased)) {
+				log.trace("User specified app-choosing option ``arg`` while in CLI mode");
 				if (exists temp = currentDriver) {
+					log.trace("Starting previously chosen CLI app.");
 					startChosenDriver(temp, currentOptions.copy());
 				}
 				currentDriver = driverCache[0][arg.lowercased];
 			} else if (gui, driverCache[1].defines(arg.lowercased)) {
+				log.trace("User specified app-choosing option ``arg`` while in GUI mode");
 				if (exists temp = currentDriver) {
+					log.trace("Starting previously chosen GUI app.");
 					startChosenDriver(temp, currentOptions.copy());
 				}
 				currentDriver = driverCache[1][arg.lowercased];
 			} else if (driverCache[0].defines(arg.lowercased)) {
 				log.warn("We're in GUI mode, but CLI-only app specified");
+				log.trace("User specified CLI-app-choosing option ``arg`` while in GUI mode");
 				if (exists temp = currentDriver) {
+					log.trace("Starting previously chosen GUI app.");
 					startChosenDriver(temp, currentOptions.copy());
 				}
 				currentDriver = driverCache[0][arg.lowercased];
 			} else if (driverCache[1].defines(arg.lowercased)) {
 				log.warn("We're in CLI mode, but GUI-only app specified");
+				log.trace("User specified GUI-app-choosing option ``arg`` while in CLI mode.");
 				if (exists temp = currentDriver) {
+					log.trace("Starting previously chosen CLI app.");
 					startChosenDriver(temp, currentOptions.copy());
 				}
 				currentDriver = driverCache[1][arg.lowercased];
 			} else if (arg.startsWith("-")) {
+				log.trace("User specified non-app-choosing option ``arg``");
 				currentOptions.addOption(arg);
 			} else {
+				log.trace("User specified non-option argument ``arg``");
 				others.add(arg);
 			}
 		}
+		log.trace("Reached the end of options");
 		if (options.hasOption("--help")) {
+			log.trace("Giving usage information.");
 			IDriverUsage tempUsage = currentDriver?.usage else usage; // FIXME: Following the 'default' usage will cause errors!
 			process.writeLine(appChooserState.usageMessage(tempUsage,
 				options.getArgument("--verbose") == "true"));
 		} else if (exists driver = currentDriver) {
+			log.trace("Starting chosen app.");
 			startChosenDriver(driver, currentOptions.copy());
 		} else {
+			log.trace("Starting app-chooser.");
 			SPOptions currentOptionsTyped = currentOptions.copy();
 			if (gui) {
 				try {
