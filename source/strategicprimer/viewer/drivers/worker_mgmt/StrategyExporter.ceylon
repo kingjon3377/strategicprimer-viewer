@@ -1,8 +1,8 @@
 import ceylon.collection {
     MutableMap,
     HashMap,
-	MutableList,
-	ArrayList
+    MutableList,
+    ArrayList
 }
 import ceylon.file {
     Resource,
@@ -28,19 +28,19 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     IWorker,
-	Animal,
-	animalPlurals
+    Animal,
+    animalPlurals
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     IJob
 }
 import com.vasileff.ceylon.structures {
-	MutableMultimap,
-	ArrayListMultimap
+    MutableMultimap,
+    ArrayListMultimap
 }
 import lovelace.util.common {
-	matchingValue,
-	matchingPredicate
+    matchingValue,
+    matchingPredicate
 }
 "A class to write a proto-strategy to file."
 class StrategyExporter(IWorkerModel model, SPOptions options)
@@ -55,8 +55,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             if (options.hasOption("--include-unleveled-jobs")) {
                 jobs = member.filter(matchingValue(false, IJob.emptyJob));
             } else {
-	            jobs = member.filter(matchingPredicate(Integer.positive, IJob.level));
-	        }
+                jobs = member.filter(matchingPredicate(Integer.positive, IJob.level));
+            }
             if (exists first = jobs.first) {
                 writer.write(" (``first.name`` ``first.level``");
                 for (job in jobs.rest) {
@@ -104,12 +104,12 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             if (unleveledWorkers.empty) {
                 needComma = false;
             } else {
-	            writeMember(writer, unleveledWorkers.first);
-	            if (!unleveledWorkers.rest.empty) {
-		            writer.write(", ``unleveledWorkers.rest.size`` other unleveled workers");
-		        }
-	            needComma = true;
-	        }
+                writeMember(writer, unleveledWorkers.first);
+                if (!unleveledWorkers.rest.empty) {
+                    writer.write(", ``unleveledWorkers.rest.size`` other unleveled workers");
+                }
+                needComma = true;
+            }
         } else {
             needComma = true;
             writeMember(writer, leveledWorkers.first);
@@ -143,7 +143,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             Integer turn = model.map.currentTurn;
             {IUnit*} units = model.getUnits(currentPlayer);
             MutableMultimap<String, IUnit> unitsByKind =
-					ArrayListMultimap<String, IUnit>();
+                    ArrayListMultimap<String, IUnit>();
             for (unit in units) {
                 if (unit.empty, "false" == options.getArgument("--print-empty")) {
                     continue;
@@ -186,16 +186,16 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                     if (!unit.empty) {
                         writer.write(" [");
                         if (unit.size > 4,
-								"true" == options.getArgument("--summarize-large-units")) {
+                                "true" == options.getArgument("--summarize-large-units")) {
                             summarizeUnitMembers(writer, unit);
                         } else {
-	                        writeMember(writer, unit.first);
-	                        for (member in unit.rest) {
-	                            writer.write(", ");
-	                            writeMember(writer, member);
-	                        }
-	                        writer.write("]");
-	                    }
+                            writeMember(writer, unit.first);
+                            for (member in unit.rest) {
+                                writer.write(", ");
+                                writeMember(writer, member);
+                            }
+                            writer.write("]");
+                        }
                     }
                     writer.writeLine(":");
                     writer.writeLine();
