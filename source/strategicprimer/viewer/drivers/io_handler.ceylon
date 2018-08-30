@@ -188,7 +188,7 @@ shared class IOHandler
             showErrorDialog(source, errorTitle, message);
         }
         switch (event.actionCommand.lowercased)
-        case ("load") {
+        case ("load") { // TODO: If 'modified' flag set, should either prompt to save first or load in separate window
             FileChooser.open(null).call((path) {
                 try {
                     mapModel.setMap(mapIOHelper
@@ -231,7 +231,7 @@ shared class IOHandler
                     mapModel.mapDimensions, PlayerCollection(), mapModel.map.currentTurn),
                 null));
         }
-        case ("load secondary") {
+        case ("load secondary") { // TODO: Investigate how various apps handle transitioning between no secondaries and one secondary map.
             if (is IMultiMapModel mapModel) {
                 FileChooser.open(null).call((path) {
                     try {
