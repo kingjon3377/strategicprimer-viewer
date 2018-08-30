@@ -199,7 +199,7 @@ shared interface SimpleDriver satisfies ISPDriver {
                     mapModel.allMaps.map(Entry.key).each(turnFixer);
                     startDriverOnModel(cli, options, mapModel);
                 } else {
-                    log.error("No file chosen");
+                    log.debug("No file chosen");
                     throw IncorrectUsageException(usage);
                 }
             }

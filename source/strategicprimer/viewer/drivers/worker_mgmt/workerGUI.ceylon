@@ -25,7 +25,6 @@ import strategicprimer.drivers.common {
     SPOptions,
     IDriverModel,
     SimpleDriver,
-    DriverFailedException,
 	ISPDriver
 }
 import java.nio.file {
@@ -98,12 +97,12 @@ shared class WorkerGUI() satisfies SimpleDriver {
         }
     }
     "Ask the user to choose a file or files."
-    shared actual {JPath+} askUserForFiles() {
+    shared actual {JPath*} askUserForFiles() {
         try {
             return FileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {
-            throw DriverFailedException(except,
-                "Choice interrupted or user didn't choose");
+            log.debug("Choice interrupted or user didn't choose", except);
+            return [];
         }
     }
 }

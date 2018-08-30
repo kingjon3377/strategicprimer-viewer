@@ -430,8 +430,8 @@ shared class FileChooser {
                     log.trace("About to return the file(s) the user chose via AWT");
                     return retval;
                 } else {
-                    log.info("User failed to choose?");
-                    log.info("Returned iterable was ``retval`` (``type(retval)``");
+                    log.debug("User failed to choose?");
+                    log.debug("Returned iterable was ``retval`` (``type(retval)``");
                 }
             }
         } else {
@@ -461,8 +461,8 @@ shared class FileChooser {
                         log.trace("Saving the user's choice(s) from AWT to storedFile");
                         storedFile = retval;
                     } else {
-                        log.info("User failed to choose?");
-                        log.info("Returned iterable was ``retval`` (``type(retval)``");
+                        log.debug("User failed to choose?");
+                        log.debug("Returned iterable was ``retval`` (``type(retval)``");
                     }
                 }
             });
