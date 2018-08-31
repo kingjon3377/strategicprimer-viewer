@@ -534,11 +534,7 @@ class QueryHelper {
 				first.item();
 			} else {
 				cli.println("That command was ambiguous between the following: ");
-				cli.print(first.key);
-				for (key->val in matches.rest) {
-					cli.print(", ``key``");
-				}
-				cli.println("");
+				cli.println(", ".join(matches.map(Entry.key)));
 				replUsage();
 			}
 		} else {
