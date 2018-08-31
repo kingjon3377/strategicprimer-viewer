@@ -235,10 +235,6 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
 	        supportedOptionsTemp = ["--report=out.csv"];
     };
     Integer reps = 50;
-    void runTestProcedure(ICLIHelper cli, IMapNG map, String filename) { // TODO: inline into caller
-        cli.println("Testing using ``filename``");
-		runAllTests(cli, map, filename, reps);
-    }
     "Run the tests."
     shared actual void startDriverOnArguments(ICLIHelper cli,
             SPOptions options, String* args) {
@@ -250,7 +246,9 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
             Path path = Paths.get(arg);
             IMapNG map = mapIOHelper.readMap(path, warningLevels.ignore);
             mapSizes[arg] = map.locations.size;
-            runTestProcedure(cli, map, path.string else "an unsaved map");
+			String filename = path.string else "an unsaved map";
+			cli.println("Testing using ``filename``");
+			runAllTests(cli, map, filename, reps);
         }
         String reportFilename = options.getArgument("--report");
         if (reportFilename != "false") {
