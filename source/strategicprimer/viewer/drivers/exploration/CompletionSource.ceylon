@@ -1,7 +1,7 @@
 "An interface for objects that can tell others when they've finished something."
 interface CompletionSource {
-    "Notify the given listener when we finish something in future."
-    shared formal void addCompletionListener(CompletionListener listener);
-    "Stop notifying the given listener."
-    shared formal void removeCompletionListener(CompletionListener listener);
+    "Call the given function when we finish something in future."
+    shared formal void addCompletionListener(Anything() listener);
+    "Stop calling the given function on completion."
+    shared formal void removeCompletionListener(Anything() listener);
 }

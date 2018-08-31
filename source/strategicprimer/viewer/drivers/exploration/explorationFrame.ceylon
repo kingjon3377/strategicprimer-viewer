@@ -168,14 +168,14 @@ SPFrame explorationFrame(IExplorationModel model,
     SwingList<IUnit> unitList = SwingList<IUnit>(unitListModel);
     PlayerListModel playerListModel = PlayerListModel(model);
     SwingList<Player> playerList = SwingList<Player>(playerListModel);
-    MutableList<CompletionListener> completionListeners =
-            ArrayList<CompletionListener>();
+    MutableList<Anything()> completionListeners =
+            ArrayList<Anything()>();
     void buttonListener(ActionEvent event) {
         if (exists selectedValue = unitList.selectedValue,
 	            !unitList.selectionEmpty) {
             model.selectedUnit = selectedValue;
             for (listener in completionListeners) {
-                listener.finished();
+                listener();
             }
         }
     }
@@ -190,9 +190,9 @@ SPFrame explorationFrame(IExplorationModel model,
                 listeners.add(listener);
         shared actual void removePlayerChangeListener(PlayerChangeListener listener)
                 => listeners.remove(listener);
-        shared actual void addCompletionListener(CompletionListener listener) =>
+        shared actual void addCompletionListener(Anything() listener) =>
                 completionListeners.add(listener);
-        shared actual void removeCompletionListener(CompletionListener listener) =>
+        shared actual void removeCompletionListener(Anything() listener) =>
                 completionListeners.remove(listener);
         model.addMapChangeListener(playerListModel);
         void handlePlayerChanged(ListSelectionEvent event) {
@@ -287,16 +287,16 @@ SPFrame explorationFrame(IExplorationModel model,
             }
             locLabel.setArgs(newPoint.row, newPoint.column);
         }
-        MutableList<CompletionListener> completionListeners =
-                ArrayList<CompletionListener>();
-        shared actual void addCompletionListener(CompletionListener listener) =>
+        MutableList<Anything()> completionListeners =
+                ArrayList<Anything()>();
+        shared actual void addCompletionListener(Anything() listener) =>
                 completionListeners.add(listener);
-        shared actual void removeCompletionListener(CompletionListener listener) =>
+        shared actual void removeCompletionListener(Anything() listener) =>
                 completionListeners.remove(listener);
         JButton explorerChangeButton = listenedButton("Select a different explorer",
             (ActionEvent event) {
                 for (listener in completionListeners) {
-                    listener.finished();
+                    listener();
                 }
             });
         JLabel remainingMPLabel = JLabel("Remaining Movement Points:");
@@ -547,23 +547,20 @@ SPFrame explorationFrame(IExplorationModel model,
     explorationPanel.center = verticalSplit(headerPanel, tilesPanel);
     model.addMovementCostListener(explorationPanel);
     model.addSelectionChangeListener(explorationPanel);
-    object swapper satisfies CompletionListener {
-        "Whether we're *on* the first panel. If so, go 'next'; if not, go 'first'."
-        variable Boolean first = true;
-        shared actual void finished() {
-            explorationPanel.validate();
-            explorerSelectingPanel.validate();
-            if (first) {
-                layoutObj.next(retval.contentPane);
-                first = false;
-            } else {
-                layoutObj.first(retval.contentPane);
-                first = true;
-            }
+    variable Boolean onFirstPanel = true;
+    void swapPanels() {
+        explorationPanel.validate();
+        explorerSelectingPanel.validate();
+        if (onFirstPanel) {
+            layoutObj.next(retval.contentPane);
+            onFirstPanel = false;
+        } else {
+            layoutObj.first(retval.contentPane);
+            onFirstPanel = true;
         }
     }
-    explorerSelectingPanel.addCompletionListener(swapper);
-    explorationPanel.addCompletionListener(swapper);
+    explorerSelectingPanel.addCompletionListener(swapPanels);
+    explorationPanel.addCompletionListener(swapPanels);
     retval.add(explorerSelectingPanel);
     retval.add(explorationPanel);
     (retval of Component).preferredSize = Dimension(1024, 640);
