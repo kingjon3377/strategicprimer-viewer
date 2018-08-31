@@ -21,7 +21,7 @@ module strategicprimer.model "0.4.9017" {
     import ceylon.regex ceylonVersion;
     shared import ceylon.random ceylonVersion;
     shared import ceylon.file ceylonVersion;
-    import com.vasileff.ceylon.structures "1.1.3";
+    shared import com.vasileff.ceylon.structures "1.1.3";
     import ceylon.decimal ceylonVersion;
     import ceylon.whole ceylonVersion;
     import ceylon.dbc ceylonVersion;

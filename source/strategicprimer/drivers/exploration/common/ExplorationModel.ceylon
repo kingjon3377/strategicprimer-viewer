@@ -53,8 +53,10 @@ import ceylon.random {
 }
 import lovelace.util.common {
 	matchingPredicate,
-	matchingValue,
-	NonNullCorrespondence
+	matchingValue
+}
+import com.vasileff.ceylon.structures {
+    Multimap
 }
 "A model for exploration drivers."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
@@ -368,7 +370,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         if (exists unit = localSelection.rest.first) {
             Player owner = unit.owner;
             {Village*} villages = allMaps.map(Entry.key)
-                .flatMap(shuffle(compose(NonNullCorrespondence<Point, {TileFixture*}>.get,
+                .flatMap(shuffle(compose(Multimap<Point, TileFixture>.get,
 	                IMutableMapNG.fixtures))(currentPoint))
                 .narrow<Village>().filter(matchingPredicate(Player.independent,
 					Village.owner));

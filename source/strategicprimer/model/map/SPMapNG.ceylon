@@ -25,7 +25,8 @@ import strategicprimer.model.map.fixtures.towns {
 import com.vasileff.ceylon.structures {
 	MutableMultimap,
 	HashMultimap,
-	ArrayListMultimap
+	ArrayListMultimap,
+    Multimap
 }
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
@@ -107,17 +108,9 @@ shared class SPMapNG satisfies IMutableMapNG {
         }
     }
     "The rivers, if any, at the given location."
-    shared actual object rivers satisfies NonNullCorrespondence<Point, {River*}> {
-        shared actual Boolean defines(Point key) => contained(key);
-        //shared actual {River*} get(Point key) => riversMap[key]; // TODO: syntax sugar
-        shared actual {River*} get(Point key) => riversMap.get(key);
-    }
+    shared actual Multimap<Point, River> rivers => riversMap;
     "The tile fixtures (other than rivers and mountains) at the given location."
-    shared actual object fixtures satisfies NonNullCorrespondence<Point, {TileFixture*}> {
-        shared actual Boolean defines(Point key) => contained(key);
-        //shared actual {TileFixture*} get(Point key) => fixturesMap[key]; // TODO: syntax sugar
-        shared actual {TileFixture*} get(Point key) => fixturesMap.get(key);
-    }
+    shared actual Multimap<Point, TileFixture> fixtures => fixturesMap;
     "All the tile fixtures (other than rivers and mountains) in the map, with their
      locations."
     shared actual {<Point->TileFixture>*} fixtureEntries => fixturesMap;

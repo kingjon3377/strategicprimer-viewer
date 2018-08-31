@@ -10,6 +10,9 @@ import strategicprimer.model.map.fixtures {
 import lovelace.util.common {
     NonNullCorrespondence
 }
+import com.vasileff.ceylon.structures {
+    Multimap
+}
 """An interface for game-world maps.
 
    This is the third-generation interface:
@@ -42,11 +45,9 @@ shared interface IMapNG satisfies Subsettable<IMapNG> {
     "Whether any given point is mountainous."
     shared formal NonNullCorrespondence<Point, Boolean> mountainous;
     "The rivers in the map."
-    // TODO: define as Multimap instead // TODO: Define item in each entry as a Set?
-    shared formal NonNullCorrespondence<Point, {River*}> rivers;
+    shared formal Multimap<Point, River> rivers;
     "The tile-fixtures at the various locations."
-    // TODO: define as Multimap instead
-    shared formal NonNullCorrespondence<Point, {TileFixture*}> fixtures;
+    shared formal Multimap<Point, TileFixture> fixtures;
     "All the tile-fixtures in the map with their locations."
     shared formal {<Point->TileFixture>*} fixtureEntries;
     "The current turn."
