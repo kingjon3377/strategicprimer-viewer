@@ -37,6 +37,15 @@ import strategicprimer.viewer.drivers {
 import strategicprimer.drivers.gui.common {
     SPFrame
 }
+import strategicprimer.model.map.fixtures.mobile {
+    IUnit
+}
+import java.awt.event {
+    ActionEvent
+}
+import strategicprimer.model.map {
+    IMapNG
+}
 "The worker-advancement GUI driver."
 service(`interface ISPDriver`)
 shared class AdvancementGUI() satisfies SimpleDriver {
@@ -76,6 +85,12 @@ shared class AdvancementGUI() satisfies SimpleDriver {
                     "reload tree");
             menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
                 "about");
+            if (workerModel.allMaps.map(Entry.key)
+                    .every(compose(compose(Iterable<IUnit>.empty,
+                    workerModel.getUnits), IMapNG.currentPlayer))) {
+                pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
+                    "change current player"));
+            }
             frame.showWindow();
         });
     }
