@@ -65,9 +65,9 @@ service(`interface ISPDriver`)
 shared class TrappingCLI() satisfies SimpleDriver {
 	Integer minutesPerHour = 60;
 	TrapperCommand[] commands = sort(`TrapperCommand`.caseValues);
-	shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"], ParamCount.one,
-		"Run a player's trapping", "Determine the results a player's trapper finds.", true,
-		false);
+	shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"],
+		ParamCount.atLeastOne, "Run a player's trapping",
+		"Determine the results a player's trapper finds.", true, false);
 	String inHours(Integer minutes) {
 		if (minutes < minutesPerHour) {
 			return "``minutes`` minutes";
@@ -122,6 +122,7 @@ shared class TrappingCLI() satisfies SimpleDriver {
 					Integer count = Integer.smallest(cli.inputNumber("How many animals to remove?"),
 						item.population);
 					if (count > 0) {
+						// TODO: Need to remove from or split in subordinate maps as well
 						map.removeFixture(loc, item);
 						Integer remaining = item.population - count;
 						if (remaining > 0) {
