@@ -50,6 +50,7 @@ class Ver2TileDrawHelper(
         Boolean(TileFixture) filter,
         "A series of matchers to use to determine what's on top."
         {FixtureMatcher*} matchers) satisfies TileDrawHelper {
+    Coordinate origin = Coordinate(0, 0);
     "A comparator to put fixtures in order by the order of the first matcher that matches
      them."
     Comparison compareFixtures(TileFixture one, TileFixture two) {
@@ -210,8 +211,7 @@ class Ver2TileDrawHelper(
     }
     "Draw a tile at the upper left corner of the drawing surface."
     shared actual void drawTileTranslated(Graphics pen, IMapNG map, Point location,
-            Integer width, Integer height) =>
-            drawTile(pen, map, location, Coordinate(0, 0), // TODO: Cache the origin here
+            Integer width, Integer height) => drawTile(pen, map, location, origin,
                 Coordinate(width, height));
     "The drawable fixtures at the given location."
     {TileFixture*} getDrawableFixtures(IMapNG map, Point location) {

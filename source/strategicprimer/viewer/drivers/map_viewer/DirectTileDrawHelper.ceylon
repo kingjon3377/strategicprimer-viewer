@@ -119,8 +119,8 @@ object directTileDrawHelper satisfies TileDrawHelper {
             context.dispose();
         }
     }
+    Coordinate origin = Coordinate(0, 0);
     shared actual void drawTileTranslated(Graphics pen, IMapNG map,
             Point location, Integer width, Integer height) =>
-            drawTile(pen, map, location, Coordinate(0, 0), // TODO: Cache the origin
-                Coordinate(width, height));
+                drawTile(pen, map, location, origin, Coordinate(width, height));
 }
