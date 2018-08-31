@@ -73,7 +73,7 @@ shared class TrappingCLI() satisfies SimpleDriver {
 			return "``minutes`` minutes";
 		} else {
 			return "``minutes / minutesPerHour`` hours, ``
-			minutes % minutesPerHour`` minutes";
+				minutes % minutesPerHour`` minutes";
 		}
 	}
 	"Handle a command. Returns how long it took to execute the command."
