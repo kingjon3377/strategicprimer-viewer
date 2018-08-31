@@ -52,7 +52,6 @@ import lovelace.util.jvm {
 
 import strategicprimer.drivers.common {
     VersionChangeListener,
-    MapChangeListener,
     SelectionChangeListener,
     mapReaderAdapter,
 	FixtureMatcher
@@ -112,8 +111,7 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
 		}
 	}
 	shared actual Boolean supportsDroppedFiles = true;
-	JComponent&MapGUI&MapChangeListener&SelectionChangeListener&GraphicalParamsListener
-		mapPanel = mapComponent(mapModel, tableModel.shouldDisplay, tableModel);
+	MapComponent mapPanel = MapComponent(mapModel, tableModel.shouldDisplay, tableModel);
 	// can't use silentListener because repaint() is overloaded
 	tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint());
 	mapModel.addGraphicalParamsListener(mapPanel);
