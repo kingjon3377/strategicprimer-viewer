@@ -142,6 +142,21 @@ class QueryHelper {
 	}
 	"Print the String representation of a Float to one decimal place."
 	static String formatFloat(Float num) => Float.format(num, 0, 1);
+	static String usageMessage =
+			"""The following commands are supported:
+			   help, ?: Print this list of commands.
+			   fortress: Show what a player automatically knows about a fortress's tile.
+			   hunt, fish: Generate encounters with animals.
+			   gather: Generate encounters with fields, meadows, groves, orchards, or shrubs.
+			   herd: Determine the output from and time required for maintaining a herd.
+			   trap: Switch to a trap-modeling program to run trapping or fish-trapping.
+			   distance: Report the distance between two points.
+			   count: Count how many workers belong to a player.
+			   unexplored: Find the nearest unexplored tile not behind water.
+			   trade: Suggest possible trading partners.
+			   quit: Exit the program.
+			   Any string that is the beginning of only one command is also accepted for that command.
+			   """;
 	IDriverModel model;
 	IMapNG map;
 	ICLIHelper cli;
@@ -471,25 +486,7 @@ class QueryHelper {
 		}
 	}
 	"Print a usage message for the REPL"
-	void replUsage() {
-		cli.println("The following commands are supported:");
-		cli.println("help, ?: Print this list of commands.");
-		cli.println(
-			"fortress: Show what a player automatically knows about a fortress's tile.");
-		cli.println("hunt, fish: Generate encounters with animals.`");
-		cli.println(
-			"gather: Generate encounters with fields, meadows, groves, orchards, or shrubs.");
-		cli.println(
-			"herd: Determine the output from and time required for maintaining a herd.");
-		cli.println(
-			"trap: Switch to a trap-modeling program to run trapping or fish-trapping.");
-		cli.println("distance: Report the distance between two points.");
-		cli.println("count: Count how many workers belong to a player.");
-		cli.println("unexplored: Find the nearest unexplored tile not behind water.");
-		cli.println("trade: Suggest possible trading partners.");
-		cli.println("quit: Exit the program.");
-		cli.println("Any string that is the beginning of only one command is also accepted for that command.");
-	}
+	void replUsage() => cli.print(usageMessage);
 	void findUnexploredCommand() {
 		Point base = cli.inputPoint("Starting point? ");
 		if (exists unexplored = findUnexplored(base)) {
