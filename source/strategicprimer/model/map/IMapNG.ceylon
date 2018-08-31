@@ -48,8 +48,6 @@ shared interface IMapNG satisfies Subsettable<IMapNG> {
     shared formal Multimap<Point, River> rivers;
     "The tile-fixtures at the various locations."
     shared formal Multimap<Point, TileFixture> fixtures;
-    "All the tile-fixtures in the map with their locations."
-    shared formal {<Point->TileFixture>*} fixtureEntries;
     "The current turn."
     shared formal Integer currentTurn;
     "The current player."

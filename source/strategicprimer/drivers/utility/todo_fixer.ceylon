@@ -137,7 +137,7 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
             }
         }
         {[Point, CommunityStats]*} brokenTownContents =
-                narrowedStream<Point, ITownFixture>(map.fixtureEntries)
+                narrowedStream<Point, ITownFixture>(map.fixtures)
                     .map(entryMap(identity<Point>, ITownFixture.population))
                     .map(Entry.pair)
                     .narrow<[Point, CommunityStats]>()

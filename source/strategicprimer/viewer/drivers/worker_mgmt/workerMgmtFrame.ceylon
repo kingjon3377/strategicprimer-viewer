@@ -177,7 +177,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 
 	Point findHQ() {
 		variable Point retval = invalidPoint;
-		for (location->fixture in narrowedStream<Point, Fortress>(model.map.fixtureEntries)
+		for (location->fixture in narrowedStream<Point, Fortress>(model.map.fixtures)
 				.filter(matchingPredicate(matchingValue(model.currentPlayer.playerId,
 					Player.playerId), compose(Fortress.owner, Entry<Point, Fortress>.item)))) {
 			if ("HQ" == fixture.name) {

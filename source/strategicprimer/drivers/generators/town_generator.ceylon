@@ -185,7 +185,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
     LazyInit<ExplorationRunner> runner = LazyInit(initProduction);
     "The (for now active) towns in the given map that don't have 'stats' yet."
     {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) =>
-            narrowedStream<Point, ModifiableTown>(map.fixtureEntries)
+            narrowedStream<Point, ModifiableTown>(map.fixtures)
                 .filter(matchingPredicate(matchingValue(TownStatus.active,
                     ITownFixture.status), Entry<Point, ITownFixture>.item)).sequence();
     void assignStatsToTown(ModifiableTown town, CommunityStats stats) {
@@ -204,12 +204,12 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             assignStatsToTown(item, stats);
         }
     }
-    IFixture? findByID(IMapNG map, Integer id) => map.fixtureEntries
+    IFixture? findByID(IMapNG map, Integer id) => map.fixtures
         .map(Entry.item).find(matchingValue(id, IFixture.id));
     Point? findLocById(IMapNG map, Integer id) =>
-            map.fixtureEntries.find(matchingPredicate(matchingValue(id, IFixture.id),
+            map.fixtures.find(matchingPredicate(matchingValue(id, IFixture.id),
                 Entry<Point, TileFixture>.item))?.key;
-    Boolean isClaimedField(IMapNG map, Integer id) => map.fixtureEntries
+    Boolean isClaimedField(IMapNG map, Integer id) => map.fixtures
         .map(Entry.item).narrow<ITownFixture>()
         .map(ITownFixture.population).coalesced
         .flatMap(CommunityStats.workedFields).contains(id);

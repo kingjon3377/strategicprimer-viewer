@@ -67,7 +67,7 @@ object reportGeneratorHelper {
 	todo("""Return null instead of an "invalid" Point when not found?""")
 	shared Point findHQ(IMapNG map, Player player) {
 		variable Point? retval = null;
-		for (location->fixture in narrowedStream<Point, Fortress>(map.fixtureEntries)
+		for (location->fixture in narrowedStream<Point, Fortress>(map.fixtures)
 				.filter(matchingPredicate(matchingValue(player, Fortress.owner), Entry<Point, Fortress>.item))) {
 			if ("hq" == fixture.name) {
 				return location;
@@ -106,7 +106,7 @@ object reportGeneratorHelper {
 				}
 			}
 		}
-		for (location->fixture in map.fixtureEntries) {
+		for (location->fixture in map.fixtures) {
 			addToMap(location, fixture);
 		}
 		return retval;
@@ -123,7 +123,7 @@ object reportGeneratorHelper {
 	"Create a mapping from child ID numbers to parent ID numbers."
 	shared Map<Integer, Integer> getParentMap(IMapNG map) {
 		MutableMap<Integer, Integer> retval = HashMap<Integer, Integer>();
-		for (fixture in map.fixtureEntries.map(Entry.item).narrow<{IFixture*}>()) {
+		for (fixture in map.fixtures.map(Entry.item).narrow<{IFixture*}>()) {
 			parentMapImpl(retval, fixture, fixture);
 		}
 		return retval;

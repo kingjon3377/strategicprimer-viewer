@@ -17,7 +17,7 @@ object dbMemoizer {
 		if (exists retval = cache[[map, id]]) {
 			return retval;
 		} else {
-			assert (exists retval = context.findByIdImpl(map.fixtureEntries.map(Entry.item), id));
+			assert (exists retval = context.findByIdImpl(map.fixtures.map(Entry.item), id));
 			cache[[map, id]] = retval;
 			return retval;
 		}

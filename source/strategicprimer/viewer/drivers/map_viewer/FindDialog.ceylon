@@ -188,7 +188,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             fixture.each(populate);
         }
     }
-    void populateAll() => populate(model.map.fixtureEntries.map(Entry.item));
+    void populateAll() => populate(model.map.fixtures.map(Entry.item));
     SwingUtilities.invokeLater(populateAll);
     JScrollPane scrollPane;
     if (platform.systemIsMac) {

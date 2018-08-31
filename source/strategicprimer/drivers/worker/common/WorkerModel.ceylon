@@ -118,13 +118,13 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         } else if (subordinateMaps.empty) {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.
-            return getUnitsImpl(map.fixtureEntries.map(Entry.item), player)
+            return getUnitsImpl(map.fixtures.map(Entry.item), player)
                 .sort(comparingOn(IUnit.name, comparingOn(String.lowercased,
 					increasing<String>)));
         } else {
             value temp = allMaps.map(Entry.key)
                     .flatMap((indivMap) =>
-						getUnitsImpl(indivMap.fixtureEntries.map(Entry.item), player));
+						getUnitsImpl(indivMap.fixtures.map(Entry.item), player));
             MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
                     naturalOrderTreeMap<Integer, IUnit&ProxyFor<IUnit>>([]);
             for (unit in temp) {
@@ -162,7 +162,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     "Add a unit to all the maps, at the location of its owner's HQ in the main map."
     shared actual void addUnit(IUnit unit) {
         variable [Fortress, Point]? temp = null;
-		for (point->fixture in narrowedStream<Point, Fortress>(map.fixtureEntries)
+		for (point->fixture in narrowedStream<Point, Fortress>(map.fixtures)
 				.filter(matchingPredicate(matchingValue(unit.owner.playerId,
 					Player.playerId), compose(Fortress.owner, Entry<Point, Fortress>.item)))) {
 			if ("HQ" == fixture.name) {

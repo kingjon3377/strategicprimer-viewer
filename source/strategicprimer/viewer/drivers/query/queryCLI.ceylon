@@ -178,7 +178,7 @@ class QueryHelper {
 			"Owner of workers to count: ", true);
 		if (exists player = choice.item) {
 			Integer count = countWorkersInIterable(player,
-				map.fixtureEntries.map(Entry.item));
+				map.fixtures.map(Entry.item));
 			cli.println("``player.name`` has ``count`` workers");
 		}
 	}

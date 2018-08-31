@@ -111,9 +111,6 @@ shared class SPMapNG satisfies IMutableMapNG {
     shared actual Multimap<Point, River> rivers => riversMap;
     "The tile fixtures (other than rivers and mountains) at the given location."
     shared actual Multimap<Point, TileFixture> fixtures => fixturesMap;
-    "All the tile fixtures (other than rivers and mountains) in the map, with their
-     locations."
-    shared actual {<Point->TileFixture>*} fixtureEntries => fixturesMap;
     "The current player."
     shared actual Player currentPlayer => playerCollection.currentPlayer;
     assign currentPlayer => playerCollection.currentPlayer = currentPlayer;

@@ -172,7 +172,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 		.map(set).fold(set(map.players))(intersection);
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) =>
-            map.fixtureEntries.map(Entry.item).flatMap(unflattenNonFortresses)
+            map.fixtures.map(Entry.item).flatMap(unflattenNonFortresses)
                 .narrow<IUnit>().filter(matchingValue(player, HasOwner.owner));
     "Tell listeners that the selected point changed."
     void fireSelectionChange(Point old, Point newSelection) {
@@ -214,7 +214,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     }
     void fixMovedUnits(Point base) {
 		{<Point->TileFixture>*} localFind(IMapNG mapParam, TileFixture target) =>
-				mapParam.fixtureEntries.filter(matchingValue(target, Entry<Point, TileFixture>.item));
+				mapParam.fixtures.filter(matchingValue(target, Entry<Point, TileFixture>.item));
         // TODO: Unit vision range
         {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
         for (submap->[file, flag] in subordinateMaps) {

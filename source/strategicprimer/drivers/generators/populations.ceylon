@@ -74,7 +74,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	void generateAnimalPopulations(IMutableMapNG map, Boolean talking, String kind,
 			ICLIHelper cli) {
 		// We assume there is at most one population of each kind of animal per tile.
-		{Point*} locations = randomize(narrowedStream<Point, Animal>(map.fixtureEntries)
+		{Point*} locations = randomize(narrowedStream<Point, Animal>(map.fixtures)
 			.filter(matchingPredicate(matchingValue(talking, Animal.talking),
 				Entry<Point, Animal>.item))
 			.filter(matchingPredicate(matchingValue(kind, Animal.kind),
@@ -120,7 +120,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	}
 	void generateGroveCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
 		// We assume there is at most one grove or orchard of each kind per tile.
-		{Point*} locations = randomize(narrowedStream<Point, Grove>(map.fixtureEntries)
+		{Point*} locations = randomize(narrowedStream<Point, Grove>(map.fixtures)
 			.filter(matchingPredicate(matchingValue(kind, Grove.kind), Entry<Point, Grove>.item))
 			.filter(matchingPredicate(matchingPredicate(Integer.negative,
 				Grove.population), Entry<Point, Grove>.item)).map(Entry.key).distinct);
@@ -154,7 +154,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	}
 	void generateShrubCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
 		// We assume there is at most one population of each kind of shrub per tile.
-		{Point*} locations = randomize(narrowedStream<Point, Shrub>(map.fixtureEntries)
+		{Point*} locations = randomize(narrowedStream<Point, Shrub>(map.fixtures)
 			.filter(matchingPredicate(matchingValue(kind, Shrub.kind), Entry<Point, Shrub>.item))
 			.filter(matchingPredicate(matchingPredicate(Integer.negative,
 				Shrub.population), Entry<Point, Shrub>.item)).map(Entry.key).distinct);
@@ -187,7 +187,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	}
 	Boolean negativeNumber(Number<out Anything> number) => number.negative;
 	void generateFieldExtents(IMutableMapNG map, ICLIHelper cli) {
-		{<Point->Meadow>*} entries = randomize(narrowedStream<Point, Meadow>(map.fixtureEntries)
+		{<Point->Meadow>*} entries = randomize(narrowedStream<Point, Meadow>(map.fixtures)
 			.filter(matchingPredicate(negativeNumber, compose(Meadow.acres,
 				Entry<Point, Meadow>.item))));
 		Random rng = singletonRandom;
@@ -214,7 +214,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 		}
 	}
 	void generateForestExtents(IMutableMapNG map, ICLIHelper cli) {
-		{Point*} locations = randomize(narrowedStream<Point, Forest>(map.fixtureEntries)
+		{Point*} locations = randomize(narrowedStream<Point, Forest>(map.fixtures)
 			.filter(matchingPredicate(inverse(positiveNumber),
 				compose(Forest.acres, Entry<Point, Forest>.item))).map(Entry.key).distinct);
 		for (location in locations) {
@@ -293,17 +293,17 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	}
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
 			IDriverModel model) {
-		for (kind in model.map.fixtureEntries.map(Entry.item).narrow<Animal>()
+		for (kind in model.map.fixtures.map(Entry.item).narrow<Animal>()
 					.filter(inverse(matchingPredicate(Integer.positive, Animal.population)))
 				.map(Animal.kind).distinct) {
 			generateAnimalPopulations(model.map, true, kind, cli);
 			generateAnimalPopulations(model.map, false, kind, cli);
 		}
-		for (kind in model.map.fixtureEntries.map(Entry.item).narrow<Grove>()
+		for (kind in model.map.fixtures.map(Entry.item).narrow<Grove>()
 				.map(Grove.kind).distinct) {
 			generateGroveCounts(model.map, kind, cli);
 		}
-		for (kind in model.map.fixtureEntries.map(Entry.item).narrow<Shrub>()
+		for (kind in model.map.fixtures.map(Entry.item).narrow<Shrub>()
 				.map(Shrub.kind).distinct) {
 			generateShrubCounts(model.map, kind, cli);
 		}
