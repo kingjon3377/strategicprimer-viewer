@@ -422,8 +422,8 @@ object xmlTests {
 		assertMissingProperty<Village>("<village name=\"``name``\" status=\"``status``\" />",
 			"id", Village(status, name, 0, PlayerImpl(-1, "Independent"), "human"));
 		assertMissingProperty<Village>(
-			"<village name=\"``name``\" status=\"``status``\" id=\"``id``\" />", "owner",
-			Village(status, name, id, PlayerImpl(-1, "Independent"), "human"));
+			"<village race=\"``race``\" name=\"``name``\" status=\"``status``\" id=\"``id``\" />", "owner",
+			Village(status, name, id, PlayerImpl(-1, "Independent"), race));
 		assertImageSerialization("Village image property is preserved", village);
 		assertPortraitSerialization("Village portrait property is preserved", village);
 	}
