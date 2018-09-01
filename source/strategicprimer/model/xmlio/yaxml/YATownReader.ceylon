@@ -71,6 +71,17 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             return players.independent;
         }
     }
+
+    {String*} expectedCommunityStatsTags(String parent) {
+        switch (parent)
+        case ("population") { return ["expertise", "claim", "production", "consumption"]; }
+        case ("claim"|"expertise") { return []; }
+        case ("production"|"consumption") { return ["resource"]; }
+        else {
+            throw AssertionError("Impossible CommunityStats parent tag");
+        }
+    }
+
     shared CommunityStats parseCommunityStats(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "population");
@@ -84,25 +95,26 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 break;
             } else if (is StartElement event, isSupportedNamespace(event.name)) {
                 switch (event.name.localPart.lowercased)
-                case ("expertise") {
+                case ("expertise") { // TODO: Make sure this can't come under production or consumption
                     expectAttributes(event, "skill", "level");
                     retval.setSkillLevel(getParameter(event, "skill"),
                         getIntegerParameter(event, "level"));
-                    stack.push(event);
+                    stack.push(event); // TODO: save as 'current'
                 }
-                case ("claim") {
+                case ("claim") {// TODO: Make sure this can't come under production or consumption
                     expectAttributes(event, "resource");
                     retval.addWorkedField(getIntegerParameter(event, "resource"));
-                    stack.push(event);
+                    stack.push(event); // TODO: save as 'current'
                 }
                 case ("production"|"consumption") {
-                    if (current is Null) {
+                    if (current is Null) { // TODO: Invert (to 'exists') to remove spurious 'else' in expected() below
                         expectAttributes(event);
                         current = event.name.localPart;
                         stack.push(event);
                     } else {
                         assert (exists top = stack.top);
-                        throw UnwantedChildException(top.name, event);
+                        throw UnwantedChildException.listingExpectedTags(top.name, event,
+                            expectedCommunityStatsTags(current else "population"));
                     }
                 }
                 case ("resource") {
@@ -117,14 +129,14 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     }
                     else {
                         throw UnwantedChildException.listingExpectedTags(top.name, event,
-                            ["production", "consumption"]); // FIXME: That's the expected *parents*, not the expected *children*!
+                            expectedCommunityStatsTags(current else "population"));
                     }
                     lambda(resourceReader.read(event, top.name, stream));
                 }
                 else {
                     throw UnwantedChildException.listingExpectedTags(
                         stack.top?.name else element.name, event,
-                        ["expertise", "claim", "production", "consumption"]); // TODO: Make sure this is accurate whenever it occurs
+                        expectedCommunityStatsTags(current else "population"));
                 }
             } else if (is EndElement event, exists top = stack.top,
                     event.name == top.name) {
@@ -132,7 +144,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 if (top == element) {
                     break;
                 } else if (exists temp = current, top.name.localPart == temp) {
-                    current = null;
+                    current = null; // TODO: Set to stack.top.name.localPart?
                 }
             }
         }
