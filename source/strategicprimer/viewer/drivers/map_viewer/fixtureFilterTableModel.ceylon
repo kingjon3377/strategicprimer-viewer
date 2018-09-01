@@ -25,7 +25,8 @@ import lovelace.util.common {
     Reorderable,
     Comparator,
 	inverse,
-	matchingPredicate
+	matchingPredicate,
+    matchingValue
 }
 
 import strategicprimer.model.map {
@@ -77,7 +78,8 @@ import strategicprimer.model.map.fixtures.terrain {
 import strategicprimer.model.map.fixtures.towns {
     Village,
     AbstractTown,
-    Fortress
+    Fortress,
+    TownStatus
 }
 import strategicprimer.drivers.common {
 	FixtureMatcher
@@ -94,8 +96,9 @@ shared class FixtureFilterTableModel extends AbstractTableModel
 				FixtureMatcher.complements<IUnit>(matchingPredicate(inverse(Player.independent),
 					IUnit.owner), "Units", "Independent Units"),
 				FixtureMatcher.trivialMatcher(`Fortress`, "Fortresses"),
-				// TODO: Towns should be broken up by kind or size, and maybe by status or owner
-				FixtureMatcher.trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
+				FixtureMatcher.complements<AbstractTown>(matchingValue(TownStatus.active,
+						AbstractTown.status),
+					"Active Cities, Towns, & Fortifications", "Ruined, Abandoned, & Burned Communities"),
 				// TODO: break up by owner beyond owned/independent
 				FixtureMatcher.complements<Village>(matchingPredicate(Player.independent,
 					Village.owner), "Independent Villages", "Villages With Suzerain"),
