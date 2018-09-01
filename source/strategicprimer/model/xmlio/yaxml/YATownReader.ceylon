@@ -107,14 +107,14 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     stack.push(event); // TODO: save as 'current'
                 }
                 case ("production"|"consumption") {
-                    if (current is Null) { // TODO: Invert (to 'exists') to remove spurious 'else' in expected() below
+                    if (exists temp = current) {
+                        assert (exists top = stack.top);
+                        throw UnwantedChildException.listingExpectedTags(top.name, event,
+                            expectedCommunityStatsTags(temp));
+                    } else {
                         expectAttributes(event);
                         current = event.name.localPart;
                         stack.push(event);
-                    } else {
-                        assert (exists top = stack.top);
-                        throw UnwantedChildException.listingExpectedTags(top.name, event,
-                            expectedCommunityStatsTags(current else "population"));
                     }
                 }
                 case ("resource") {
