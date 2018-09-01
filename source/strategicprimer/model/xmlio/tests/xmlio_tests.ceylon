@@ -409,37 +409,47 @@ object xmlTests {
 		assertMissingProperty(createSerializedForm(village, deprecatedWriter), "name", village);
 	}
 	test
-	shared void testVillageSerialization(
+	shared void testBasicVillageSerialization(parameters(`value treeTypes`) String name,
 			enumeratedParameter(`class TownStatus`) TownStatus status,
-			parameters(`value races`) String race) { // TODO: split this test, and others
-	    Player owner = PlayerImpl(-1, "");
-	    assertSerialization("First Village serialization test, ``status``",
-	        Village(status, "villageOne", 1, owner, race));
-	    assertSerialization("Second Village serialization test, ``status``",
-	        Village(status, "villageTwo", 2, owner, race));
-	    Village thirdVillage = Village(status, "", 3, owner, race);
-	    assertUnwantedChild<Village>("<village status=\"``status``\"><village /></village>",
-	        null);
-	    assertMissingProperty<Village>("<village />", "status", null);
-	    assertMissingProperty<Village>("<village name=\"name\" status=\"``status``\" />",
-	        "id", Village(status, "name", 0, PlayerImpl(-1, "Independent"), "human"));
-	    assertMissingProperty<Village>(
-	        "<village name=\"name\" status=\"``status``\" id=\"0\" />", "owner",
-	        Village(status, "name", 0, PlayerImpl(-1, "Independent"), "human"));
-	    assertImageSerialization("Village image property is preserved", thirdVillage);
-	    assertPortraitSerialization("Village portrait property is preserved", thirdVillage);
-	    Village fourthVillage = Village(status, "villageName", 4, owner, race);
-	    fourthVillage.population = CommunityStats(1);
-	    assertSerialization("Village can have community stats", fourthVillage);
-	    CommunityStats pop = CommunityStats(10);
-	    pop.addWorkedField(55);
-	    pop.yearlyProduction.add(ResourcePile(19, "prodKind", "production",
-	        Quantity(42, "single units")));
-	    pop.yearlyConsumption.add(ResourcePile(22, "consKind", "consumption", Quantity(21,
-	        "double units")));
-	    fourthVillage.population = pop;
+			parameters(`value races`) String race, randomlyGenerated(1) Integer id) {
+		Player owner = PlayerImpl(-1, "");
+		Village village = Village(status, name, id, owner, race);
+		assertSerialization("Basic Village serialization", Village(status, name, id,
+			owner, race));
+		assertUnwantedChild<Village>("<village status=\"``status``\"><village /></village>",
+			null);
+		assertMissingProperty<Village>("<village />", "status", null);
+		assertMissingProperty<Village>("<village name=\"``name``\" status=\"``status``\" />",
+			"id", Village(status, name, 0, PlayerImpl(-1, "Independent"), "human"));
+		assertMissingProperty<Village>(
+			"<village name=\"``name``\" status=\"``status``\" id=\"``id``\" />", "owner",
+			Village(status, name, id, PlayerImpl(-1, "Independent"), "human"));
+		assertImageSerialization("Village image property is preserved", village);
+		assertPortraitSerialization("Village portrait property is preserved", village);
+	}
+	test
+	shared void testVillagePopulationSerialization(
+			enumeratedParameter(`class TownStatus`) TownStatus status,
+			parameters(`value races`) String race, randomlyGenerated(1) Integer id,
+			randomlyGenerated(1) Integer populationSize,
+			randomlyGenerated(1) Integer workedField,
+			randomlyGenerated(1) Integer producedId,
+			randomlyGenerated(1) Integer producedQty,
+			randomlyGenerated(1) Integer consumedId,
+			randomlyGenerated(1) Integer consumedQty) {
+		Village village = Village(status, "villageName", id, PlayerImpl(-1, ""), race);
+		CommunityStats pop = CommunityStats(populationSize);
+	    village.population = pop;
+	    assertSerialization("Village can have community stats", village);
+	    pop.addWorkedField(workedField);
+		// TODO: Here and below, randomize strings in production and consumption (and skills)
+		// TODO: We'd like to randomize number of skills, number of worked fields, etc.
+	    pop.yearlyProduction.add(ResourcePile(producedId, "prodKind", "production",
+	        Quantity(producedQty, "single units")));
+	    pop.yearlyConsumption.add(ResourcePile(consumedId, "consKind", "consumption",
+			Quantity(consumedQty, "double units")));
 	    assertSerialization("Village stats can have both production and consumption",
-	        fourthVillage);
+	        village);
 	}
 	test
 	shared void testCityWantsName(enumeratedParameter(`class TownSize`) TownSize size,
@@ -452,33 +462,43 @@ object xmlTests {
 	}
 	test
 	shared void testCitySerialization(enumeratedParameter(`class TownSize`) TownSize size,
-			enumeratedParameter(`class TownStatus`) TownStatus status) {
+			enumeratedParameter(`class TownStatus`) TownStatus status,
+			randomlyGenerated(1) Integer id, randomlyGenerated(1) Integer dc,
+			parameters(`value treeTypes`) String name) {
 	    Player owner = PlayerImpl(-1, "");
-	    assertSerialization("First City serialization test, status ``status``, size ``
-				size``",
-	        City(status, size, 10, "oneCity", 0, owner));
-	    assertSerialization(
-	        "Second City serialization test, status ``status``, size ``size``", City(status,
-	            size, 40, "twoCity", 1, owner));
-	    City thirdCity = City(status, size, 30, "", 3, owner);
+	    assertSerialization("City serialization", City(status, size, dc, name, id, owner));
+	    City city = City(status, size, dc, "", id, owner);
 	    assertUnwantedChild<City>(
-	        "<city status=\"``status``\" size=\"``size``\" name=\"name\" dc=\"0\">
+	        "<city status=\"``status``\" size=\"``size``\" name=\"name\" dc=\"``dc``\">
 	         <troll /></city>", null);
 	    assertMissingProperty<City>(
 	        "<city status=\"``status``\" size=\"``size``\"
-	         name=\"name\" dc=\"0\" id=\"0\" />", "owner",
-	        City(status, size, 0, "name", 0, PlayerImpl(-1, "Independent")));
-	    assertImageSerialization("City image property is preserved", thirdCity);
-	    assertPortraitSerialization("City portrait property is preserved", thirdCity);
-	    City fourthCity = City(status, size, 30, "cityName", 4, owner);
-	    CommunityStats population = CommunityStats(2);
-	    population.addWorkedField(5);
-	    population.setSkillLevel("citySkill", 1);
-	    population.yearlyConsumption.add(ResourcePile(5, "cityResource", "citySpecific",
-	        Quantity(1, "cityUnit")));
-	    fourthCity.population = population;
+	         name=\"name\" dc=\"``dc``\" id=\"``id``\" />", "owner",
+	        City(status, size, dc, "name", id, PlayerImpl(-1, "Independent")));
+	    assertImageSerialization("City image property is preserved", city);
+	    assertPortraitSerialization("City portrait property is preserved", city);
+	}
+	test
+	shared void testCityPopulationSerialization(parameters(`value treeTypes`) String name,
+			enumeratedParameter(`class TownSize`) TownSize size,
+			enumeratedParameter(`class TownStatus`) TownStatus status,
+			parameters(`value races`) String race, randomlyGenerated(1) Integer id,
+			randomlyGenerated(1) Integer dc,
+			randomlyGenerated(1) Integer populationSize,
+			randomlyGenerated(1) Integer workedField,
+			randomlyGenerated(1) Integer skillLevel,
+			randomlyGenerated(1) Integer producedId,
+			randomlyGenerated(1) Integer producedQty) {
+		Player owner = PlayerImpl(-1, "");
+		City city = City(status, size, dc, name, id, owner);
+	    CommunityStats population = CommunityStats(populationSize);
+	    population.addWorkedField(workedField);
+	    population.setSkillLevel("citySkill", skillLevel);
+	    population.yearlyConsumption.add(ResourcePile(producedId, "cityResource", "citySpecific",
+	        Quantity(producedQty, "cityUnit")));
+	    city.population = population;
 	    assertSerialization("Community-stats can be serialized", population);
-	    assertSerialization("City can have community-stats", fourthCity);
+	    assertSerialization("City can have community-stats", city);
 	}
 
 	test
@@ -492,7 +512,7 @@ object xmlTests {
 		assertMissingProperty(createSerializedForm(fort, deprecatedWriter), "name", fort);
 	}
 	test
-	shared void testFortificationSerialization(
+	shared void testFortificationSerialization( // TODO: split and further randomize this and further tests
 			enumeratedParameter(`class TownSize`) TownSize size,
 			enumeratedParameter(`class TownStatus`) TownStatus status) {
 	    Player owner = PlayerImpl(-1, "");
