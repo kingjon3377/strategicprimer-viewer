@@ -260,16 +260,8 @@ shared class IOHandler
                     }
                 }
             } else {
-                FileChooser.save(null, filteredFileChooser(false)).call((path) {
-                    try {
-                        mapIOHelper.writeMap(parsePath(path.string), mapModel.map);
-						mapModel.mapModified = false;
-                    } catch (IOException except) {
-                        showErrorDialog(source, "Strategic Primer Assistive Programs",
-                            "I/O error writing to ``path``");
-                        log.error("I/O error writing XML", except);
-                    }
-                });
+                actionPerformed(ActionEvent(event.source, event.id, "save", event.when,
+                    event.modifiers));
             }
         }
         case ("open in map viewer") {
