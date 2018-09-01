@@ -99,12 +99,14 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                     expectAttributes(event, "skill", "level");
                     retval.setSkillLevel(getParameter(event, "skill"),
                         getIntegerParameter(event, "level"));
-                    stack.push(event); // TODO: save as 'current'
+                    stack.push(event);
+                    current = event.name.localPart;
                 }
                 case ("claim") {// TODO: Make sure this can't come under production or consumption
                     expectAttributes(event, "resource");
                     retval.addWorkedField(getIntegerParameter(event, "resource"));
-                    stack.push(event); // TODO: save as 'current'
+                    stack.push(event);
+                    current = event.name.localPart;
                 }
                 case ("production"|"consumption") {
                     if (exists temp = current) {
