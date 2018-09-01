@@ -52,7 +52,8 @@ import lovelace.util.jvm {
 
 import strategicprimer.model.map {
     SPMapNG,
-    PlayerCollection
+    PlayerCollection,
+    IMutableMapNG
 }
 import strategicprimer.model.xmlio {
     mapIOHelper,
@@ -176,6 +177,14 @@ shared class IOHandler
         log.error(message, except);
         showErrorDialog(source, errorTitle, message);
     }
+    void loadHandlerImpl(Anything(IMutableMapNG, JPath) handler, Component? source,
+            String errorTitle)(JPath path) {
+        try {
+            handler(mapIOHelper.readMap(path, warningLevels.default), path);
+        } catch (IOException|SPFormatException|XMLStreamException except) {
+            handleError(except, path.string, source, errorTitle);
+        }
+    }
     shared actual void actionPerformed(ActionEvent event) {
         Component? source = as<Component>(event.source);
         variable String errorTitle = "Strategic Primer Assistive Programs";
@@ -190,14 +199,8 @@ shared class IOHandler
         }
         switch (event.actionCommand.lowercased)
         case ("load") { // TODO: If 'modified' flag set, should either prompt to save first or load in separate window
-            FileChooser.open(null).call((path) {
-                try {
-                    mapModel.setMap(mapIOHelper
-                        .readMap(path, warningLevels.default), path);
-                } catch (IOException|SPFormatException|XMLStreamException except) {
-                    handleError(except, path.string, source, errorTitle);
-                }
-            });
+            FileChooser.open(null).call(loadHandlerImpl(mapModel.setMap, source,
+                errorTitle));
         }
         case ("save") {
             if (exists givenFile = mapModel.mapFile) {
@@ -234,14 +237,8 @@ shared class IOHandler
         }
         case ("load secondary") { // TODO: Investigate how various apps handle transitioning between no secondaries and one secondary map.
             if (is IMultiMapModel mapModel) {
-                FileChooser.open(null).call((path) {
-                    try {
-                        mapModel.addSubordinateMap(mapIOHelper
-                            .readMap(path, warningLevels.default), path);
-                    } catch (IOException|SPFormatException|XMLStreamException except) {
-                        handleError(except, path.string, source, errorTitle);
-                    }
-                });
+                FileChooser.open(null).call(loadHandlerImpl(mapModel.addSubordinateMap,
+                    source, errorTitle));
             }
         }
         case ("save all") {
