@@ -43,7 +43,8 @@ import javax.xml.stream {
 
 import lovelace.util.common {
     todo,
-    as
+    as,
+    defer
 }
 import lovelace.util.jvm {
     showErrorDialog,
@@ -185,6 +186,9 @@ shared class IOHandler
             handleError(except, path.string, source, errorTitle);
         }
     }
+    void loadHandler(Component? source, String errorTitle) =>
+            FileChooser.open(null).call(loadHandlerImpl(mapModel.setMap, source,
+                errorTitle));
     shared actual void actionPerformed(ActionEvent event) {
         Component? source = as<Component>(event.source);
         variable String errorTitle = "Strategic Primer Assistive Programs";
@@ -198,9 +202,9 @@ shared class IOHandler
             }
         }
         switch (event.actionCommand.lowercased)
-        case ("load") { // TODO: If 'modified' flag set, should either prompt to save first or load in separate window
-            FileChooser.open(null).call(loadHandlerImpl(mapModel.setMap, source,
-                errorTitle));
+        case ("load") { // TODO: We'd like to open in another window if modified flag set instead of prompting before overwriting
+            maybeSave("loading another map", as<Frame>(iter), source,
+                defer(loadHandler, [source, errorTitle]));
         }
         case ("save") {
             if (exists givenFile = mapModel.mapFile) {
