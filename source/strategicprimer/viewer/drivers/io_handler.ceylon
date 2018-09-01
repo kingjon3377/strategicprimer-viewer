@@ -162,14 +162,14 @@ shared class IOHandler
 		ifNotCanceled();
 	}
     void handleError(Exception except, String filename, Component? source,
-            String errorTitle) { // TODO: Use more often below
+            String errorTitle, String verb) {
         String message;
         if (is XMLStreamException except) {
             message = "Malformed XML in ``filename``";
         } else if (is FileNotFoundException|NoSuchFileException except) {
             message = "File ``filename`` not found";
         } else if (is IOException except) {
-            message = "I/O error reading file ``filename``";
+            message = "I/O error ``verb`` file ``filename``";
         } else if (is SPFormatException except) {
             message = "SP map format error in ``filename``";
         } else {
@@ -183,7 +183,7 @@ shared class IOHandler
         try {
             handler(mapIOHelper.readMap(path, warningLevels.default), path);
         } catch (IOException|SPFormatException|XMLStreamException except) {
-            handleError(except, path.string, source, errorTitle);
+            handleError(except, path.string, source, errorTitle, "reading");
         }
     }
     void loadHandler(Component? source, String errorTitle) =>
@@ -212,9 +212,7 @@ shared class IOHandler
                     mapIOHelper.writeMap(parsePath(givenFile.string), mapModel.map);
 					mapModel.mapModified = false;
                 } catch (IOException except) {
-                    showErrorDialog(source, "Strategic Primer Assistive Programs",
-                        "I/O error writing to ``givenFile``");
-                    log.error("I/O error writing XML", except);
+                    handleError(except, givenFile.string, source, errorTitle, "writing to");
                 }
             } else {
                 actionPerformed(ActionEvent(event.source, event.id, "save as", event.when,
@@ -228,9 +226,7 @@ shared class IOHandler
                     mapModel.mapFile = path;
                     mapModel.mapModified = false;
                 } catch (IOException except) {
-                    showErrorDialog(source, "Strategic Primer Assistive Programs",
-                        "I/O error writing to ``path``");
-                    log.error("I/O error writing XML", except);
+                    handleError(except, path.string, source, errorTitle, "writing to");
                 }
             });
         }
@@ -253,9 +249,7 @@ shared class IOHandler
                             mapIOHelper.writeMap(parsePath(file.string), map);
 							mapModel.setModifiedFlag(map, false);
                         } catch (IOException except) {
-                            showErrorDialog(source, "Strategic Primer Assistive Programs",
-                                "I/O error writing to ``file``");
-                            log.error("I/O error writing XML", except);
+                            handleError(except, file.string, source, errorTitle, "writing to");
                         }
                     }
                 }
