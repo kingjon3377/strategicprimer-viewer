@@ -315,6 +315,15 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
             }
         }
     }
+    JPanel pairPanel(Component first, Component second) { // TODO: Use a better layout than BoxLayout
+        JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
+        panel.addGlue();
+        panel.add(first);
+        panel.addGlue();
+        panel.add(second);
+        panel.addGlue();
+        return panel;
+    }
     "A window to let the user enter resources etc. Note that this is not a dialog to enter
      one resource and close."
     SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
@@ -325,15 +334,6 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         FormattedLabel resourceLabel = FormattedLabel("Add resource for %s:",
             currentPlayer.name);
         mainPanel.add(resourceLabel);
-        JPanel pairPanel(Component first, Component second) { // TODO: Use a better layout than BoxLayout // TODO: move to top level of class
-            JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
-            panel.addGlue();
-            panel.add(first);
-            panel.addGlue();
-            panel.add(second);
-            panel.addGlue();
-            return panel;
-        }
         JPanel resourcePanel = boxPanel(BoxAxis.lineAxis);
         StreamingLabel logLabel = StreamingLabel();
         String css = """color:white; margin-bottom: 0.5em; margin-top: 0.5em;""";
