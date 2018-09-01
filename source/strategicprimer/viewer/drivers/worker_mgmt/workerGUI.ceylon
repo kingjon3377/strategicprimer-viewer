@@ -8,7 +8,7 @@ import strategicprimer.viewer.drivers {
     PlayerChangeMenuListener,
     IOHandler,
     MenuBroker,
-    FileChooser,
+    SPFileChooser,
     WindowCloseListener
 }
 import ceylon.logging {
@@ -42,6 +42,9 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures.mobile {
 	IUnit
+}
+import lovelace.util.jvm {
+    FileChooser
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -99,7 +102,7 @@ shared class WorkerGUI() satisfies SimpleDriver {
     "Ask the user to choose a file or files."
     shared actual {JPath*} askUserForFiles() {
         try {
-            return FileChooser.open(null).files;
+            return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {
             log.debug("Choice interrupted or user didn't choose", except);
             return [];

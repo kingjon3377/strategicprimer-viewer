@@ -31,7 +31,7 @@ import strategicprimer.viewer.drivers {
     PlayerChangeMenuListener,
     IOHandler,
     MenuBroker,
-    FileChooser,
+    SPFileChooser,
     WindowCloseListener
 }
 import strategicprimer.drivers.gui.common {
@@ -45,6 +45,9 @@ import java.awt.event {
 }
 import strategicprimer.model.map {
     IMapNG
+}
+import lovelace.util.jvm {
+    FileChooser
 }
 "The worker-advancement GUI driver."
 service(`interface ISPDriver`)
@@ -97,7 +100,7 @@ shared class AdvancementGUI() satisfies SimpleDriver {
     "Ask the user to choose a file or files."
     shared actual {JPath*} askUserForFiles() {
         try {
-            return FileChooser.open(null).files;
+            return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {
             throw DriverFailedException(except,
                 "Choice interrupted or user didn't choose");

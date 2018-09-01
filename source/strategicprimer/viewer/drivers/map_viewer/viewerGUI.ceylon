@@ -35,7 +35,7 @@ import strategicprimer.drivers.gui.common.about {
 import strategicprimer.viewer.drivers {
     IOHandler,
     MenuBroker,
-    FileChooser,
+    SPFileChooser,
     WindowCloseListener
 }
 import strategicprimer.drivers.gui.common {
@@ -43,6 +43,9 @@ import strategicprimer.drivers.gui.common {
 }
 import lovelace.util.common {
 	silentListener
+}
+import lovelace.util.jvm {
+    FileChooser
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -131,7 +134,7 @@ shared class ViewerGUI() satisfies SimpleDriver {
     "Ask the user to choose a file or files."
     shared actual {JPath+} askUserForFiles() {
         try {
-            return FileChooser.open(null).files;
+            return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {
             throw DriverFailedException(except,
                 "Choice interrupted or user didn't choose");

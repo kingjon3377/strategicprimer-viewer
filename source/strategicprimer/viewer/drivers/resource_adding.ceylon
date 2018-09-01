@@ -51,7 +51,8 @@ import lovelace.util.jvm {
     BoxPanel,
     boxPanel,
     verticalSplit,
-    FormattedLabel
+    FormattedLabel,
+    FileChooser
 }
 
 import strategicprimer.drivers.common {
@@ -496,7 +497,7 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
     "Ask the user to choose a file or files."
     shared actual {JPath*} askUserForFiles() {
         try {
-            return FileChooser.open(null).files;
+            return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {
             throw DriverFailedException(except,
                 "Choice interrupted or user didn't choose");

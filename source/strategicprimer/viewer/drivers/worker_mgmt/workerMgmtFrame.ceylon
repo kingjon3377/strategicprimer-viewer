@@ -89,7 +89,7 @@ import strategicprimer.report {
 }
 import strategicprimer.viewer.drivers {
     MenuBroker,
-    FileChooser,
+    SPFileChooser,
     IOHandler { filteredFileChooser }
 }
 import strategicprimer.viewer.drivers.map_viewer {
@@ -255,7 +255,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 	BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
 		listenedButton("Add New Unit", silentListener(newUnitFrame.showWindow)),
 		ordersPanelObj, listenedButton("Export a proto-strategy",
-			(ActionEvent event) => FileChooser.save(null,
+			(ActionEvent event) => SPFileChooser.save(null,
 				filteredFileChooser(false, ".", null))
 					.call((file) => strategyExporter.writeStrategy(
 					parsePath(file.string).resource, treeModel.dismissed))));

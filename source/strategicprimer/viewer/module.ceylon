@@ -20,7 +20,7 @@ module strategicprimer.viewer "0.4.9017" {
 //    import maven:"com.pump:pump-swing" "1.0.00";
     import com.pump.swing "1.0.00";
     shared import java.desktop javaVersion;
-    import lovelace.util.jvm lovelaceUtilsVersion;
+    shared import lovelace.util.jvm lovelaceUtilsVersion;
     import ceylon.regex ceylonVersion;
     import maven:"com.massisframework:orange-extensions" "1.3.1";
     shared import strategicprimer.model spVersion;
