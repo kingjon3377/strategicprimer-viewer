@@ -159,6 +159,23 @@ shared class IOHandler
 		}
 		ifNotCanceled();
 	}
+    void handleError(Exception except, String filename, Component? source,
+            String errorTitle) { // TODO: Use more often below
+        String message;
+        if (is XMLStreamException except) {
+            message = "Malformed XML in ``filename``";
+        } else if (is FileNotFoundException|NoSuchFileException except) {
+            message = "File ``filename`` not found";
+        } else if (is IOException except) {
+            message = "I/O error reading file ``filename``";
+        } else if (is SPFormatException except) {
+            message = "SP map format error in ``filename``";
+        } else {
+            message = except.message;
+        }
+        log.error(message, except);
+        showErrorDialog(source, errorTitle, message);
+    }
     shared actual void actionPerformed(ActionEvent event) {
         Component? source = as<Component>(event.source);
         variable String errorTitle = "Strategic Primer Assistive Programs";
@@ -171,22 +188,6 @@ shared class IOHandler
                 iter = local.parent;
             }
         }
-        void handleError(Exception except, String filename) {
-            String message;
-            if (is XMLStreamException except) {
-                message = "Malformed XML in ``filename``";
-            } else if (is FileNotFoundException|NoSuchFileException except) {
-                message = "File ``filename`` not found";
-            } else if (is IOException except) {
-                message = "I/O error reading file ``filename``";
-            } else if (is SPFormatException except) {
-                message = "SP map format error in ``filename``";
-            } else {
-                message = except.message;
-            }
-            log.error(message, except);
-            showErrorDialog(source, errorTitle, message);
-        }
         switch (event.actionCommand.lowercased)
         case ("load") { // TODO: If 'modified' flag set, should either prompt to save first or load in separate window
             FileChooser.open(null).call((path) {
@@ -194,7 +195,7 @@ shared class IOHandler
                     mapModel.setMap(mapIOHelper
                         .readMap(path, warningLevels.default), path);
                 } catch (IOException|SPFormatException|XMLStreamException except) {
-                    handleError(except, path.string);
+                    handleError(except, path.string, source, errorTitle);
                 }
             });
         }
@@ -238,7 +239,7 @@ shared class IOHandler
                         mapModel.addSubordinateMap(mapIOHelper
                             .readMap(path, warningLevels.default), path);
                     } catch (IOException|SPFormatException|XMLStreamException except) {
-                        handleError(except, path.string);
+                        handleError(except, path.string, source, errorTitle);
                     }
                 });
             }
