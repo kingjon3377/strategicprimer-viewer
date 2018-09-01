@@ -158,7 +158,12 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 if (top == element) {
                     break;
                 } else if (exists temp = current, top.name.localPart == temp) {
-                    current = null; // TODO: Set to stack.top.name.localPart?
+                    assert (exists next = stack.top);
+                    if (next.name.localPart == "population") {
+                        current = null;
+                    } else {
+                        current = next.name.localPart;
+                    }
                 }
             }
         }
