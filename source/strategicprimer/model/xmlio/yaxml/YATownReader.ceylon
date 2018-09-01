@@ -95,18 +95,30 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 break;
             } else if (is StartElement event, isSupportedNamespace(event.name)) {
                 switch (event.name.localPart.lowercased)
-                case ("expertise") { // TODO: Make sure this can't come under production or consumption
-                    expectAttributes(event, "skill", "level");
-                    retval.setSkillLevel(getParameter(event, "skill"),
-                        getIntegerParameter(event, "level"));
-                    stack.push(event);
-                    current = event.name.localPart;
+                case ("expertise") {
+                    if (exists temp = current) {
+                        assert (exists top = stack.top);
+                        throw UnwantedChildException.listingExpectedTags(top.name, event,
+                            expectedCommunityStatsTags(temp));
+                    } else {
+                        expectAttributes(event, "skill", "level");
+                        retval.setSkillLevel(getParameter(event, "skill"),
+                            getIntegerParameter(event, "level"));
+                        stack.push(event);
+                        current = event.name.localPart;
+                    }
                 }
-                case ("claim") {// TODO: Make sure this can't come under production or consumption
-                    expectAttributes(event, "resource");
-                    retval.addWorkedField(getIntegerParameter(event, "resource"));
-                    stack.push(event);
-                    current = event.name.localPart;
+                case ("claim") {
+                    if (exists temp = current) {
+                        assert (exists top = stack.top);
+                        throw UnwantedChildException.listingExpectedTags(top.name, event,
+                            expectedCommunityStatsTags(temp));
+                    } else {
+                        expectAttributes(event, "resource");
+                        retval.addWorkedField(getIntegerParameter(event, "resource"));
+                        stack.push(event);
+                        current = event.name.localPart;
+                    }
                 }
                 case ("production"|"consumption") {
                     if (exists temp = current) {
