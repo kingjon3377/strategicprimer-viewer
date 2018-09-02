@@ -20,7 +20,9 @@ import strategicprimer.model.map {
     Point,
     Player,
     IFixture,
-    IMapNG
+    IMapNG,
+    TileFixture,
+    HasOwner
 }
 import strategicprimer.model.map.fixtures.mobile {
     Worker,
@@ -31,7 +33,8 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.mobile.worker {
     WorkerStats,
     IJob,
-    raceFactory
+    raceFactory,
+    Job
 }
 import strategicprimer.drivers.common {
     IMultiMapModel,
@@ -48,7 +51,8 @@ import strategicprimer.drivers.common.cli {
 }
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
-    ExplorationModel
+    ExplorationModel,
+    pathfinder
 }
 import lovelace.util.jvm {
     readFileContents
@@ -60,7 +64,12 @@ import ceylon.logging {
 import lovelace.util.common {
 	matchingValue,
 	comparingOn,
-	singletonRandom
+	singletonRandom,
+    narrowedStream,
+    entryMap
+}
+import strategicprimer.model.map.fixtures.towns {
+    Village
 }
 
 "A logger."
@@ -70,6 +79,7 @@ Logger log = logger(`module strategicprimer.drivers.generators`);
 service(`interface ISPDriver`)
 // FIXME: Write stat-generating/stat-entering GUI
 shared class StatGeneratingCLI satisfies SimpleCLIDriver {
+	static String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
 	static Boolean hasUnstattedWorker(IUnit unit) =>
 			unit.narrow<Worker>().any(matchingValue(null, Worker.stats));
 	"The units in the given collection that have workers without stats."
@@ -201,6 +211,17 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 		includeInGUIList = false;
 		supportedOptionsTemp = [ "--current-turn=NN" ];
 	};
+	MutableMap<Village, Boolean> excludedVillages = HashMap<Village, Boolean>();
+	Boolean hasLeviedRecently(Village village, ICLIHelper cli) {
+		if (exists retval = excludedVillages[village]) {
+			return retval;
+		} else {
+			Boolean retval = cli.inputBoolean(
+				"Has a newcomer come from ``village.name`` in the last 7 turns?");
+			excludedVillages[village] = retval;
+			return retval;
+		}
+	}
 	MutableMap<String, WorkerStats> racialBonuses = HashMap<String, WorkerStats>();
 	WorkerStats loadRacialBonus(String race) {
 		if (exists retval = racialBonuses[race]) {
@@ -262,6 +283,57 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 		}
 		return WorkerStats.adjusted(hp, base, racialBonus);
 	}
+	Worker generateWorkerFrom(Village village, String name, IDRegistrar idf,
+			ICLIHelper cli) {
+		Worker worker = Worker(name, village.race, idf.createID());
+		if (exists populationDetails = village.population) {
+			MutableList<IJob> candidates = ArrayList<IJob>();
+			for (job->level in populationDetails.highestSkillLevels) {
+				void addCandidate(Integer lvl) => candidates.add(Job(job, lvl));
+//				Anything(Integer) addCandidate = compose(candidates.add, curry(Job)(job)); // TODO: Switch to this form if it compiles without error under 1.3.4/1.4 (TODO: derive MWE and report)
+				if (level > 16) {
+					addCandidate(level - 3);
+					addCandidate(level - 4);
+					addCandidate(level - 6);
+					addCandidate(level - 7);
+					singletonRandom.integers(4).map(5.plus).take(16).each(addCandidate);
+					singletonRandom.integers(4).map(1.plus).take(32).each(addCandidate);
+				} else if (level > 12) {
+					addCandidate(level - 3);
+					singletonRandom.integers(4).map(5.plus).take(8).each(addCandidate);
+					singletonRandom.integers(4).map(1.plus).take(16).each(addCandidate);
+				} else if (level > 8) {
+					singletonRandom.integers(4).map(5.plus).take(3).each(addCandidate);
+					singletonRandom.integers(4).map(1.plus).take(6).each(addCandidate);
+				} else if (level > 4) {
+					singletonRandom.integers(4).map(1.plus).take(2).each(addCandidate);
+				}
+			}
+			if (candidates.empty) {
+				cli.println("No training available in that village.");
+				worker.stats = createWorkerStats(village.race, 0, cli);
+				return worker;
+			} else {
+				assert (exists training = singletonRandom.nextElement(candidates));
+				while (true) {
+					WorkerStats stats = createWorkerStats(village.race, training.level, cli);
+					cli.println(
+						"``name`` is a level-``training.level`` ``training.name``. Proposed stats:");
+					cli.println(", ".join(zipPairs(statLabelArray,
+						stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
+					if (cli.inputBoolean("Do those stats fit that profile?")) {
+						worker.stats = stats;
+						return worker;
+					}
+				}
+
+			}
+		} else {
+			cli.println("No population details, so no levels.");
+			worker.stats = createWorkerStats(village.race, 0, cli);
+			return worker;
+		}
+	}
 	"Let the user create randomly-generated workers in a specific unit."
 	void createWorkersForUnit(IMultiMapModel model, IDRegistrar idf, IFixture unit,
 		ICLIHelper cli) {
@@ -290,10 +362,17 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 			addWorkerToUnit(model, unit, worker);
 		}
 	}
+	Float villageChance(Integer days) {
+		variable Float retval = 1.0;
+		for (i in 0:days) {
+			retval *= 0.4;
+		}
+		return retval;
+	}
 	"Let the user create randomly-generated workers, with names read from file, in a
 	 unit."
-	void createWorkersFromFile(IMultiMapModel model, IDRegistrar idf, IFixture unit,
-		ICLIHelper cli) {
+	void createWorkersFromFile(IMultiMapModel model, IDRegistrar idf,
+			IFixture&HasOwner unit, ICLIHelper cli) {
 		Integer count = cli.inputNumber("How many workers to generate? ");
 		String filename = cli.inputString("Filename to load names from: ");
 		Queue<String> names;
@@ -303,6 +382,22 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 			names = LinkedList<String>();
 			cli.println("No such file.");
 		}
+		Point hqLoc;
+		if (exists found = model.map.fixtures.find(
+				matchingValue<Point->TileFixture, Integer>(unit.id,
+					compose(TileFixture.id, Entry<Point, TileFixture>.item)))?.key) {
+			hqLoc = found;
+		} else {
+			cli.println("That unit's location not found in main map.");
+			hqLoc = cli.inputPoint("Location to use for village distances:");
+		}
+		Integer travelDistance(Point dest) =>
+				pathfinder.getTravelDistance(model.map, hqLoc, dest).first;
+		value villages = narrowedStream<Point, Village>(model.map.fixtures)
+			.filter(matchingValue(unit.owner,
+				compose(Village.owner, Entry<Point, Village>.item)))
+			.map(entryMap(travelDistance, identity<Village>)).sort(increasingKey);
+		Integer mpPerDay = cli.inputNumber("MP per day for village volunteers:");
 		for (i in 0:count) {
 			String name;
 			if (exists temp = names.accept()) {
@@ -310,22 +405,39 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
 			} else {
 				name = cli.inputString("Next worker name: ");
 			}
-			String race = raceFactory.randomRace();
-			cli.println("Worker ``name`` is a ``race``");
-			Worker worker = Worker(name, race, idf.createID());
-			Integer levels = singletonRandom.integers(20).take(3).count(0.equals);
-			if (levels == 1) {
-				cli.println("Worker has 1 Job level.");
-			} else if (levels > 1) {
-				cli.println("Worker has ``levels`` Job levels.");
+			Village? home;
+			for (distance->village in villages) {
+				if (hasLeviedRecently(village, cli)) {
+					continue;
+				} else if (singletonRandom.nextFloat() < villageChance(distance / mpPerDay + 1)) {
+					excludedVillages[village] = true;
+					home = village;
+					break;
+				}
+			} else {
+				home = null;
 			}
-			WorkerStats stats = createWorkerStats(race, levels, cli);
-			worker.stats = stats;
-			if (levels > 0) {
-				cli.println("Generated stats:");
-				cli.print(stats.string);
+			Worker worker;
+			if (exists home) {
+				worker = generateWorkerFrom(home, name, idf, cli);
+			} else {
+				String race = raceFactory.randomRace();
+				cli.println("Worker ``name`` is a ``race``");
+				worker = Worker(name, race, idf.createID());
+				Integer levels = singletonRandom.integers(20).take(3).count(0.equals);
+				if (levels == 1) {
+					cli.println("Worker has 1 Job level.");
+				} else if (levels>1) {
+					cli.println("Worker has ``levels`` Job levels.");
+				}
+				WorkerStats stats = createWorkerStats(race, levels, cli);
+				worker.stats = stats;
+				if (levels>0) {
+					cli.println("Generated stats:");
+					cli.print(stats.string);
+				}
+				enterWorkerJobs(cli, worker, levels);
 			}
-			enterWorkerJobs(cli, worker, levels);
 			addWorkerToUnit(model, unit, worker);
 		}
 	}
