@@ -91,7 +91,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     Boolean matchesSimple(String pattern, Integer? idNum, IFixture fixture,
             Boolean caseSensitivity) {
         if (pattern.empty) {
-            return false;
+            return true;
         } else if (is TileFixture fixture, !filterList.shouldDisplay(fixture)) {
             return false;
         } else if (exists idNum, idNum == fixture.id) {
