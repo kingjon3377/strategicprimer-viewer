@@ -154,7 +154,7 @@ class QueryHelper {
 			   count: Count how many workers belong to a player.
 			   unexplored: Find the nearest unexplored tile not behind water.
 			   trade: Suggest possible trading partners.
-			   quit: Exit the program.
+			   quit, exit: Exit the program.
 			   Any string that is the beginning of only one command is also accepted for that command.
 			   """;
 	IDriverModel model;
@@ -521,11 +521,19 @@ class QueryHelper {
 	   and return true."""
 	shared Boolean handleCommand() {
 		String command = cli.inputString("Command:").lowercased;
-		if ("quit".startsWith(command)) {
-			return false;
-		}
 		{<String->Anything()>*} matches =
 				commands.filterKeys(shuffle(String.startsWith)(command));
+		if ("quit".startsWith(command) || "exit".startsWith(command)) {
+			if (matches.empty) {
+				return false;
+			} else {
+				cli.println("That command was ambiguous between the following: ");
+				cli.println(", ".join(["quit", "exit"]
+					.filter(shuffle(String.startsWith)(command))
+					.chain(matches.map(Entry.key))));
+				replUsage();
+			}
+		}
 		if (exists first = matches.first) {
 			if (matches.rest.empty) {
 				first.item();
