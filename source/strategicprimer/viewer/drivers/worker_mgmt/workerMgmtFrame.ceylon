@@ -9,7 +9,8 @@ import com.pump.window {
 import java.awt {
     Dimension,
     Component,
-    Frame
+    Frame,
+    Toolkit
 }
 import java.awt.event {
     WindowEvent,
@@ -247,7 +248,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			tree.setSelectionRow(tree.getRowForPath(nextPath));
 			// TODO: Should select the "TODO" or "FIXME" in the orders window.
 		} else {
-			// TODO: beep? visual beep?
+			log.trace("Nowhere to jump to, about to beep");
+			Toolkit.defaultToolkit.beep();
 		}
 	}
 	value jumpButton = listenedButton("Jump to Next Blank (``platform.shortcutDescription``J)", jumpNext);
