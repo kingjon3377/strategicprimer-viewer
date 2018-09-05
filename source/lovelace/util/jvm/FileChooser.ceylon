@@ -135,6 +135,34 @@ shared class FileChooser {
 			throw ChoiceInterruptedException(except);
 		}
 	}
+	void haveUserChooseFiles() {
+		log.trace("In FileChooser.haveUserChooseFiles");
+		Integer status = chooserFunction(null);
+		log.trace("FileChooser: The AWT or Swing chooser returned");
+		if (is JFileChooser chooser) {
+			if (status == JFileChooser.approveOption) {
+				value retval = chooser.selectedFiles.iterable.coalesced
+					.collect(fileToPath);
+				if (nonempty retval) {
+					log.trace("Saving the file(s) the user chose via Swing");
+					storedFile = retval;
+				} else {
+					log.info("User pressed approve but selected no files");
+				}
+			} else {
+				log.info("Chooser function returned ``status``");
+			}
+		} else {
+			value retval = chooser.files.iterable.coalesced.collect(fileToPath);
+			if (nonempty retval) {
+				log.trace("Saving the file(s) the user chose via AWT");
+				storedFile = retval;
+			} else {
+				log.debug("User failed to choose?");
+				log.debug("Returned iterable was ``retval`` (``type(retval)``");
+			}
+		}
+	}
 	"If a valid filename was, or multiple filenames were, passed in to the constructor,
 	 return an iterable containing it or them; otherwise, show a dialog for the user to
 	 select one or more filenames and return the filename(s) the user selected. Throws an
@@ -143,65 +171,12 @@ shared class FileChooser {
 		if (exists temp = storedFile) {
 			log.trace("FileChooser.files: A file was stored, so returning it");
 			return temp;
-		} else if (SwingUtilities.eventDispatchThread) { // FIXME: Duplicated code between EDT and non-EDT cases.
+		} else if (SwingUtilities.eventDispatchThread) {
 			log.trace("FileChooser.files: Have to ask the user; on EDT");
-			Integer status = chooserFunction(null);
-			log.trace("FileChooser: The AWT or Swing chooser returned");
-			if (is JFileChooser chooser) {
-				if (status == JFileChooser.approveOption) {
-					value retval = chooser.selectedFiles.iterable.coalesced
-						.collect(fileToPath);
-					if (nonempty retval) {
-						log.trace("About to return the file(s) the user chose via Swing");
-						return retval;
-					} else {
-						log.info("User pressed approve but selected no files");
-					}
-				} else {
-					log.info("Chooser function returned ``status``");
-				}
-			} else {
-				value retval = chooser.files.iterable.coalesced.collect(fileToPath);
-				if (nonempty retval) {
-					log.trace("About to return the file(s) the user chose via AWT");
-					return retval;
-				} else {
-					log.debug("User failed to choose?");
-					log.debug("Returned iterable was ``retval`` (``type(retval)``");
-				}
-			}
+			haveUserChooseFiles();
 		} else {
 			log.trace("FileChooser.files: Have to ask the user; not yet on EDT");
-			invoke(() {
-				log.trace("Inside lambda on EDT");
-				Integer status = chooserFunction(null);
-				log.trace("FileChooser: The Swing or AWT chooser returned");
-				if (is JFileChooser chooser) {
-					if (status == JFileChooser.approveOption) {
-						value retval = chooser.selectedFiles.iterable.coalesced
-							.collect(fileToPath);
-						if (nonempty retval) {
-							log.trace(
-								"Saving the user's choice(s) from Swing to storedFile");
-							storedFile = retval;
-						} else {
-							log.info("User pressed approve but selected no files");
-						}
-					} else {
-						log.info("Chooser function returned ``status``");
-					}
-				} else {
-					value retval = chooser.files.iterable.coalesced
-						.collect(fileToPath);
-					if (nonempty retval) {
-						log.trace("Saving the user's choice(s) from AWT to storedFile");
-						storedFile = retval;
-					} else {
-						log.debug("User failed to choose?");
-						log.debug("Returned iterable was ``retval`` (``type(retval)``");
-					}
-				}
-			});
+			invoke(haveUserChooseFiles);
 		}
 		if (exists temp = storedFile) {
 			return temp;
