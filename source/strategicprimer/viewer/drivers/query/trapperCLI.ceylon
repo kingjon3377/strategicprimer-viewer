@@ -26,7 +26,8 @@ import strategicprimer.drivers.common.cli {
 	ICLIHelper
 }
 import lovelace.util.common {
-	todo
+	todo,
+    matchingValue
 }
 import ceylon.numeric.float {
 	round=halfEven
@@ -78,8 +79,8 @@ shared class TrappingCLI() satisfies SimpleDriver {
 	}
 	"Handle a command. Returns how long it took to execute the command."
 	Integer handleCommand(
-			"The main map."
-			IMutableMapNG map,
+			"The model."
+			IDriverModel model,
 			"The animals generated from the tile and the surrounding tiles, with their home
 			 locations."
 			Queue<Point->Animal|AnimalTracks|HuntingModel.NothingFound> fixtures, ICLIHelper cli,
@@ -122,11 +123,25 @@ shared class TrappingCLI() satisfies SimpleDriver {
 					Integer count = Integer.smallest(cli.inputNumber("How many animals to remove?"),
 						item.population);
 					if (count > 0) {
-						// TODO: Need to remove from or split in subordinate maps as well
-						map.removeFixture(loc, item);
-						Integer remaining = item.population - count;
-						if (remaining > 0) {
-							map.addFixture(loc, item.reduced(remaining));
+						{IMutableMapNG*} allMaps;
+						if (is IMultiMapModel model) {
+							allMaps = model.allMaps.map(Entry.key);
+						} else {
+							allMaps = Singleton(model.map);
+						}
+						for (map in allMaps) {
+							if (exists population = map.fixtures.get(loc)
+										.narrow<Animal>().find(matchingValue(item.id, Animal.id)),
+									population.population > 0) {
+								map.removeFixture(loc, population);
+								Integer remaining = population.population - count;
+								if (remaining > 0) {
+									map.addFixture(loc, population.reduced(remaining));
+								}
+							}
+						}
+						if (model.map.fixtures.get(loc).narrow<Animal>()
+								.any(matchingValue(item.id, Animal.id))) {
 							tracksHandler(AnimalTracks(item.kind));
 						}
 					} else {
@@ -168,7 +183,7 @@ shared class TrappingCLI() satisfies SimpleDriver {
 		while (minutes > 0, exists command = cli.chooseFromList(commands,
 				"What should the ``name`` do next?", "Oops! No commands",
 				"Next action: ", false).item) {
-			minutes -= handleCommand(model.map, fixtures, cli, command, fishing, addTracksToMaps);
+			minutes -= handleCommand(model, fixtures, cli, command, fishing, addTracksToMaps);
 			cli.println("``inHours(minutes)`` remaining");
 			if (command == TrapperCommand.quit) {
 				break;
