@@ -36,8 +36,8 @@ shared class Quantity
         }
     }
     shared actual Boolean equals(Object obj) {
-        if (is Quantity obj) { // FIXME: Uses == to compare numbers that could be floats
-            return units == obj.units && number == obj.number;
+        if (is Quantity obj) {
+            return units == obj.units && numberComparator.compare(number, obj.number) == equal;
         } else {
             return false;
         }
