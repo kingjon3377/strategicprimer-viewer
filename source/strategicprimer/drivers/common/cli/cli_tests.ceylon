@@ -222,7 +222,7 @@ object cliTests {
 	        "inputBooleanInSeries honors no-to-all when prompt is the same");
 	    assertEquals(ostream.string, "prompt five prompt five no``operatingSystem.newline``",
 	        "inputBooleanInSeries shows automatic no");
-	    // https://github.com/eclipse/ceylon/issues/5448 // TODO: uncomment once that fixed
+	    // TODO: uncomment once eclipse/ceylon#5448 fixed
 	//      assertThatException(defer(cli.inputBooleanInSeries, ["other prompt"]))
 	//            .hasType(`IOException`);
 	    ostream.clear();
