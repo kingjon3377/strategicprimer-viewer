@@ -14,7 +14,6 @@ import strategicprimer.model.map {
     HasName
 }
 import lovelace.util.common {
-    todo,
     isNumeric,
     parseInt
 }
@@ -87,19 +86,16 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
             HasName.name);
     "Read input from the input stream repeatedly until a non-negative integer is entered,
      then return it."
-    todo("Return null instead of throwing on null input?")
     shared actual Integer inputNumber(String prompt) {
         variable Integer retval = -1;
         while (retval < 0) {
             writePrompt(prompt);
-            if (exists input = istream()) {
-                if (isNumeric(input)) {
-                    assert (exists temp = parseInt(input));
-                    retval = temp;
-                }
-            } else {
-                throw IOException("Null line of input");
-            }
+			"We haven't been given EOF"
+			assert (exists input = istream());
+			if (isNumeric(input)) {
+				assert (exists temp = parseInt(input));
+				retval = temp;
+			}
         }
         return retval;
     }
