@@ -51,16 +51,21 @@ shared object pathfinder {
 				return [currentDistance, path.reversed];
 			}
 			for (neighbor in surroundingPointIterable(current, map.dimensions, 1)) {
+				log.trace("At ``current``, considering ``neighbor``.");
 				if (!unvisited.contains(neighbor)) {
+					log.trace("Already checked, so skipping.");
 					continue;
 				}
 				assert (exists estimate = tentativeDistances[neighbor]);
+				log.trace("Previous estimate for it is ``estimate``.");
 				Integer tentativeDistance = currentDistance +
 					simpleMovementModel.movementCost(map.baseTerrain[neighbor],
 						!map.fixtures.get(neighbor).narrow<Forest>().empty, map.mountainous.get(neighbor),
 						!map.rivers.get(neighbor).empty || !map.rivers.get(current).empty,
 						map.fixtures.get(neighbor));
+				log.trace("New estimate for it is ``tentativeDistance``");
 				if (tentativeDistance < estimate) {
+					log.trace("Updating path");
 					retval[neighbor] = current;
 					tentativeDistances[neighbor] = tentativeDistance;
 				}
@@ -72,6 +77,7 @@ shared object pathfinder {
 					return [runtime.maxArraySize, []];
 				}
 			}
+			log.trace("Finished checking neighbors of ``current``");
 			unvisited.remove(current);
 			if (exists next = tentativeDistances.sort(comparingOn(Entry<Point, Integer>.item,
 					increasing<Integer>)).map(Entry.key).filter(unvisited.contains).first) {
