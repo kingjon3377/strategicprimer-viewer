@@ -11,7 +11,7 @@ import strategicprimer.model.map {
  show differences in workers, but without hard-coding
  [[strategicprimer.model.map.fixtures.mobile::Worker]] in the Unit implementation. Most
  implementations of this will essentially delegate [[isSubset]] to [[equals]]."
-todo("Change that now we have reified generics?", "Members?")
+todo("Members?")
 shared interface UnitMember satisfies IFixture&Subsettable<IFixture> {
     "Specialization."
     shared actual formal UnitMember copy(Boolean zero);
