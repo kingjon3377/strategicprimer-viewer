@@ -37,10 +37,7 @@ shared object pathfinder {
 		while (!unvisited.empty) {
 			iterations++;
 			assert (exists Integer currentDistance = tentativeDistances[current]);
-			if (currentDistance >= runtime.maxArraySize) {
-				log.debug("Considering a tile estimated as an infinite distance away after ``iterations`` iterations");
-				return [currentDistance, []];
-			} else if (current == end) {
+			if (current == end) {
 				log.debug("Reached the end after ``iterations`` iterations");
 				MutableList<Point> path = ArrayList<Point>();
 				path.add(current);
@@ -49,6 +46,9 @@ shared object pathfinder {
 					current = next;
 				}
 				return [currentDistance, path.reversed];
+			} else if (currentDistance >= runtime.maxArraySize) {
+				log.debug("Considering a tile estimated as an infinite distance away after ``iterations`` iterations");
+				return [currentDistance, []];
 			}
 			for (neighbor in surroundingPointIterable(current, map.dimensions, 1)) {
 				log.trace("At ``current``, considering ``neighbor``.");
