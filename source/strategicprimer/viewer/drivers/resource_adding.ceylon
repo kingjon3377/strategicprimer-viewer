@@ -51,8 +51,8 @@ import lovelace.util.jvm {
     BoxPanel,
     boxPanel,
     verticalSplit,
-    FormattedLabel,
-    FileChooser
+    FileChooser,
+    InterpolatedLabel
 }
 
 import strategicprimer.drivers.common {
@@ -325,6 +325,8 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         panel.addGlue();
         return panel;
     }
+	String resourceLabelText(Player player) => "Add resource for ``player.name``:";
+	String equipmentLabelText(Player player) => "Add equipment for ``player.name``:";
     "A window to let the user enter resources etc. Note that this is not a dialog to enter
      one resource and close."
     SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
@@ -332,27 +334,27 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
         variable Player currentPlayer = PlayerImpl(-1, "");
         JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
-        FormattedLabel resourceLabel = FormattedLabel("Add resource for %s:",
-            currentPlayer.name);
+		InterpolatedLabel<[Player]> resourceLabel =
+				InterpolatedLabel<[Player]>(resourceLabelText, [currentPlayer]);
         mainPanel.add(resourceLabel);
         JPanel resourcePanel = boxPanel(BoxAxis.lineAxis);
         StreamingLabel logLabel = StreamingLabel();
         String css = """color:white; margin-bottom: 0.5em; margin-top: 0.5em;""";
         void logAddition(String addend) => logLabel.append(
             "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``");
-        UpdatedComboBox resourceKindBox = UpdatedComboBox(logLabel.append);
+        UpdatedComboBox resourceKindBox = UpdatedComboBox(logLabel.append); // FIXME: Use logAddition instead?
         resourcePanel.add(pairPanel(JLabel("General Category"), resourceKindBox));
         // If we set the maximum high at this point, the fields would try to be
 		// unneccessarily large. I'm not sure that setting it low at first helps, though.
         SpinnerNumberModel resourceCreatedModel = SpinnerNumberModel(-1, -1, 2000, 1);
         JSpinner creationSpinner = JSpinner(resourceCreatedModel);
         resourcePanel.add(pairPanel(JLabel("Turn created"), creationSpinner));
-        UpdatedComboBox resourceBox = UpdatedComboBox(logLabel.append);
+        UpdatedComboBox resourceBox = UpdatedComboBox(logLabel.append); // FIXME: Use logAddition instead?
         resourcePanel.add(pairPanel(JLabel("Specific Resource"), resourceBox));
         SpinnerNumberModel resourceQuantityModel = SpinnerNumberModel(0, 0, 2000, 1);
         JSpinner resourceQuantitySpinner = JSpinner(resourceQuantityModel);
         resourcePanel.add(pairPanel(JLabel("Quantity"), resourceQuantitySpinner));
-        UpdatedComboBox resourceUnitsBox = UpdatedComboBox(logLabel.append);
+        UpdatedComboBox resourceUnitsBox = UpdatedComboBox(logLabel.append); // FIXME: Use logAddition instead?
         resourcePanel.add(pairPanel(JLabel("Units"), resourceUnitsBox));
         variable Boolean playerIsDefault = true;
         void confirmPlayer() {
@@ -414,8 +416,8 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         mainPanel.add(resourcePanel);
 
         mainPanel.addGlue();
-        FormattedLabel implementLabel = FormattedLabel("Add equipment for %s:",
-            currentPlayer.name);
+		InterpolatedLabel<[Player]>
+		implementLabel = InterpolatedLabel<[Player]>(equipmentLabelText, [currentPlayer]);
         mainPanel.add(implementLabel);
         SpinnerNumberModel implementQuantityModel = SpinnerNumberModel(1, 1, 2000, 1);
         JSpinner implementQuantityField = JSpinner(implementQuantityModel);
@@ -456,8 +458,8 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
                 satisfies PlayerChangeListener {
             shared actual void playerChanged(Player? old, Player newPlayer) {
                 currentPlayer = newPlayer;
-                resourceLabel.setArgs(currentPlayer.name);
-                implementLabel.setArgs(currentPlayer.name);
+                resourceLabel.arguments = [currentPlayer];
+                implementLabel.arguments = [currentPlayer];
             }
         }
         retval.add(verticalSplit(mainPanel, scrolledLog, 0.2, 0.1));

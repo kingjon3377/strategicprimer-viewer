@@ -32,14 +32,10 @@ import java.awt {
     Toolkit
 }
 import lovelace.util.common {
-    todo,
     Reorderable,
 	silentListener
 }
 import java.lang {
-    JDouble=Double,
-    JInteger=Integer,
-    JString=String,
     Types
 }
 "A factory method to construct a button and add listeners to it in one step."
@@ -326,27 +322,20 @@ shared JMenuItem createMenuItem(
     }
     return menuItem;
 }
-"Combines JLabel with [[JString.format()]]"
-todo("Find an equivalent text-formatting API in the Ceylon SDK, if there is one.")
-shared class FormattedLabel extends JLabel {
-	static Object mapper(Object arg) {
-		switch (arg)
-		case (is Integer) { return JInteger.valueOf(arg); }
-		case (is String) { return Types.nativeString(arg); }
-		case (is Float) { return JDouble.valueOf(arg); }
-		else { return arg; }
-	}
-	static String formatter(String format, Object* args) {
-		return JString.format(format, *args.map(mapper));
-	}
-	String format;
-	shared new (String format, Object* args)
-			extends JLabel(formatter(format, *args)) {
-		this.format = format;
-	}
-
-    shared void setArgs(Object* newArgs) {
-        text = formatter(format, *newArgs);
+"A JLabel that takes a String-interpolation function to produce its text."
+shared class InterpolatedLabel<Args> extends JLabel
+        given Args satisfies Anything[] {
+    Callable<String, Args> formatter;
+    variable Args args;
+    shared new (Callable<String, Args> formatter, Args defaultArguments)
+            extends JLabel(formatter(*defaultArguments)) {
+        this.formatter = formatter;
+        args = defaultArguments;
+    }
+    shared Args arguments => args;
+    assign arguments {
+        args = arguments;
+        text = formatter(*arguments);
     }
 }
 "A wrapper around an ActionListener (or equivalent lambda) that extends AbstractAction,

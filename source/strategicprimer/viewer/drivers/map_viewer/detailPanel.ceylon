@@ -14,18 +14,19 @@ import java.io {
 }
 import lovelace.util.jvm {
     BoxAxis,
-    FormattedLabel,
     boxPanel,
     BorderedPanel,
     BoxPanel,
-    horizontalSplit
+    horizontalSplit,
+    InterpolatedLabel
 }
 import strategicprimer.model.map {
     TileFixture,
     HasPortrait,
     TileType,
     Point,
-	HasOwner
+	HasOwner,
+    invalidPoint
 }
 import javax.swing.event {
     ListSelectionListener,
@@ -83,8 +84,10 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         }
     }
     keyPanel.changeVersion(-1, version);
-    FormattedLabel header = FormattedLabel(
-        "<html><body><p>Contents of the tile at (%d, %d):</p></body></html>", -1, -1);
+    String headerString(Point point) =>
+            "<html><body><p>Contents of the tile at ``point``:</p></body></html>";
+    InterpolatedLabel<[Point]> header =
+            InterpolatedLabel<[Point]>(headerString, [invalidPoint]);
     object retval extends JSplitPane(JSplitPane.horizontalSplit, true)
             satisfies VersionChangeListener&SelectionChangeListener {
         shared late SelectionChangeListener delegate;
@@ -92,7 +95,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                 keyPanel.changeVersion(old, newVersion);
         shared actual void selectedPointChanged(Point? old, Point newPoint) {
             delegate.selectedPointChanged(old, newPoint);
-            header.setArgs(newPoint.row, newPoint.column);
+            header.arguments = [newPoint];
         }
     }
     void markModified() => model.mapModified = true;

@@ -46,12 +46,12 @@ import lovelace.util.jvm {
     platform,
     listenedButton,
     createHotKey,
-    FormattedLabel,
     horizontalSplit,
     BorderedPanel,
     verticalSplit,
 	ComponentParentStream,
-    createAccelerator
+    createAccelerator,
+    InterpolatedLabel
 }
 
 import strategicprimer.drivers.common {
@@ -218,8 +218,10 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		(ActionEvent event) => tree.requestFocusInWindow(),
 		JComponent.whenInFocusedWindow,
 		KeyStroke.getKeyStroke(KeyEvent.vkU, keyMask));
-	FormattedLabel playerLabel = FormattedLabel("Units belonging to %s: (%sU)",
-		model.currentPlayer.name, platform.shortcutDescription);
+	String playerLabelText(Player player) =>
+			"Units belonging to ``player.name``: (``platform.shortcutDescription``U)";
+	InterpolatedLabel<[Player]> playerLabel =
+			InterpolatedLabel<[Player]>(playerLabelText, [model.currentPlayer]);
 	value ordersPanelObj = ordersPanel(mainMap.currentTurn, model.currentPlayer,
 		model.getUnits, uncurry(IUnit.getLatestOrders), uncurry(IUnit.setOrders),
 		markModified);
@@ -286,7 +288,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			listener.playerChanged(old, newPlayer);
 		}
 		Thread(reportGeneratorThread).start();
-		playerLabel.setArgs(newPlayer.name, platform.shortcutDescription);
+		playerLabel.arguments = [newPlayer];
 	}
 	assert (exists thisReference =
 			ComponentParentStream(contentPane).narrow<JFrame>().first);

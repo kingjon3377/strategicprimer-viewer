@@ -23,7 +23,6 @@ import java.awt.event {
     ActionListener
 }
 import java.lang {
-    JInteger=Integer,
     IntArray,
 	ObjectArray
 }
@@ -60,10 +59,10 @@ import lovelace.util.jvm {
     BorderedPanel,
     listenedButton,
     createHotKey,
-    FormattedLabel,
     verticalSplit,
     ImprovedComboBox,
-	FunctionalGroupLayout
+	FunctionalGroupLayout,
+    InterpolatedLabel
 }
 
 import lovelace.util.common {
@@ -81,7 +80,8 @@ import strategicprimer.model.map {
     PlayerImpl,
     HasOwner,
 	HasExtent,
-	HasPopulation
+	HasPopulation,
+    invalidPoint
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -261,10 +261,12 @@ SPFrame explorationFrame(IExplorationModel model,
                 }
             }
         }
-        FormattedLabel locLabel = FormattedLabel(
-            "<html><body>Currently exploring (%d, %d); click a tile to explore it.
-             Selected fixtures in its left-hand list will be 'discovered'.
-             </body></html>", JInteger.valueOf(-1), JInteger.valueOf(-1));
+        String locLabelText(Point point) =>
+                "<html><body>Currently exploring ``point``; click a tile to explore it.
+                 Selected fixtures in its left-hand list will be 'discovered'.
+                 </body></html>";
+        InterpolatedLabel<[Point]> locLabel = InterpolatedLabel<[Point]>(locLabelText,
+            [invalidPoint]);
         MutableMap<Direction, SelectionChangeSupport> mains =
                 HashMap<Direction, SelectionChangeSupport>();
         MutableMap<Direction, SelectionChangeSupport> seconds =
@@ -285,7 +287,7 @@ SPFrame explorationFrame(IExplorationModel model,
                     button.repaint();
                 }
             }
-            locLabel.setArgs(newPoint.row, newPoint.column);
+            locLabel.arguments = [newPoint];
         }
         MutableList<Anything()> completionListeners =
                 ArrayList<Anything()>();

@@ -11,10 +11,10 @@ import javax.swing {
 
 import lovelace.util.jvm {
     listenedButton,
-    FormattedLabel,
     BorderedPanel,
     verticalSplit,
-    horizontalSplit
+    horizontalSplit,
+    InterpolatedLabel
 }
 
 import strategicprimer.model.idreg {
@@ -100,13 +100,14 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     menuHandler.register(silentListener(expander.collapseAll), "collapse all");
     menuHandler.register((event) => expander.expandSome(2), "expand unit kinds");
     expander.expandAll();
-    FormattedLabel playerLabel = FormattedLabel("%s's Units:", "");
+    InterpolatedLabel<[String]> playerLabel =
+            InterpolatedLabel<[String]>(shuffle(curry("'s Units:".plus))(), [""]); // TODO: Take the player directly, using a player named "An Unknown Player" as the default
     object retval extends SPFrame("Worker Advancement", model.mapFile,
 				Dimension(640, 480), true,
                 (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
             satisfies PlayerChangeListener {
         shared actual void playerChanged(Player? old, Player newPlayer) {
-            playerLabel.setArgs(newPlayer.name);
+            playerLabel.arguments = [newPlayer.name];
             treeModel.playerChanged(old, newPlayer);
         }
         shared actual String windowName = "Worker Advancement";
