@@ -57,12 +57,10 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
         }
     }
     shared actual Integer getChildCount(Object parent) {
-        assert (is IWorker|IJob|ISkill parent);
-        switch (parent)
-        case (is IWorker|IJob) {
+        if (is IWorker|IJob parent) {
             return parent.size;
-        }
-        case (is ISkill) {
+        } else {
+            assert (is ISkill parent);
             return 0;
         }
     }
