@@ -89,7 +89,8 @@ import ceylon.file {
 }
 import lovelace.util.common {
     todo,
-	simpleMap
+	simpleMap,
+    TypeStream
 }
 import strategicprimer.model.xmlio.fluidxml {
 	FluidBase { ... }

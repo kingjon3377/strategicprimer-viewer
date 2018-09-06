@@ -12,7 +12,7 @@ import ceylon.language.meta.model {
     ClassOrInterface
 }
 "A stream of all the types that a given object satisfies."
-class TypeStream(Object obj) satisfies {ClassOrInterface<Anything>*} {
+shared class TypeStream(Object obj) satisfies {ClassOrInterface<Anything>*} {
 	MutableList<ClassOrInterface<Anything>> cache = LinkedList<ClassOrInterface<Anything>>();
 	class TypeIterator() satisfies Iterator<ClassOrInterface<Anything>> {
 		MutableList<ClassOrInterface<Anything>> ourCopy = cache.clone();
