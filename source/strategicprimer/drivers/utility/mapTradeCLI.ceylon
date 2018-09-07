@@ -126,7 +126,8 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 		].flatMap(flatten);
 	shared new () {}
 	shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
-		"Trade maps", "Copy contents from one map to another.", true, false);
+		"Trade maps", "Copy contents from one map to another.", true, false, "source.xml",
+		"destination.xml");
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
 			IDriverModel model) {
 		IMapNG first = model.map;
