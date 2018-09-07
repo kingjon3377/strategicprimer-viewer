@@ -25,7 +25,8 @@ import java.awt {
 	Graphics2D
 }
 import java.io {
-    IOException
+    IOException,
+    FileNotFoundException
 }
 import java.lang {
     System
@@ -86,6 +87,9 @@ import com.vasileff.ceylon.structures {
 }
 import java.awt.image {
 	BufferedImage
+}
+import java.nio.file {
+    NoSuchFileException
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -214,6 +218,12 @@ class AppStarter() {
 			} else {
 				log.error("Driver failed:", except);
 			}
+		} catch (NoSuchFileException except) {
+			log.error("File ``except.file`` not found");
+			log.trace("File-not-found stack trace:", except);
+		} catch (FileNotFoundException except) {
+			log.error("File not found: ``except.message``");
+			log.trace("File-not-found stack trace:", except);
 		} catch (Exception except) {
 			log.error(except.message, except);
 		}
