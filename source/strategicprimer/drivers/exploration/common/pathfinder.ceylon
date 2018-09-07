@@ -57,13 +57,12 @@ shared object pathfinder {
 					continue;
 				}
 				assert (exists estimate = tentativeDistances[neighbor]);
-				log.trace("Previous estimate for it is ``estimate``.");
 				Integer tentativeDistance = currentDistance +
 					simpleMovementModel.movementCost(map.baseTerrain[neighbor],
 						!map.fixtures.get(neighbor).narrow<Forest>().empty, map.mountainous.get(neighbor),
 						!map.rivers.get(neighbor).empty || !map.rivers.get(current).empty,
 						map.fixtures.get(neighbor));
-				log.trace("New estimate for it is ``tentativeDistance``");
+				log.trace("Previous estimate for it is ``estimate``, new estimate ``tentativeDistance``");
 				if (tentativeDistance < estimate) {
 					log.trace("Updating path");
 					retval[neighbor] = current;
