@@ -159,7 +159,10 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 		} else {
 			zeroFixtures = false;
 		}
-		for (location in first.locations) {
+		Integer totalCount = first.locations.filter(inverse(first.locationEmpty)).size;
+		variable Integer count = 1;
+		for (location in first.locations.filter(inverse(first.locationEmpty))) {
+			log.debug("Copying contents at ``location``, location ``count``/``totalCount``");
 			if (!second.baseTerrain[location] exists, exists terrain =
 					first.baseTerrain[location]) {
 				second.baseTerrain[location] = terrain;
@@ -179,6 +182,7 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 				second.addRivers(location, *first.rivers.get(location));
 				model.setModifiedFlag(second, true);
 			}
+			count++;
 		}
 	}
 }
