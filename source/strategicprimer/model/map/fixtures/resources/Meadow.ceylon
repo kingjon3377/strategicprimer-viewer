@@ -54,7 +54,8 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
     shared actual Boolean equals(Object obj) {
         if (is Meadow obj) {
             return kind == obj.kind && field == obj.field && status == obj.status &&
-                cultivated == obj.cultivated && id == obj.id && acres == obj.acres;
+//                cultivated == obj.cultivated && id == obj.id && acres == obj.acres; // TODO: Switch back once eclipse/ceylon-sdk#711 fixed
+                cultivated == obj.cultivated && id == obj.id && numberComparator.compare(acres, obj.acres) == equal;
         } else {
             return false;
         }
@@ -63,7 +64,8 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
         if (is Meadow fixture) {
             return kind == fixture.kind && field == fixture.field &&
                 status == fixture.status && cultivated == fixture.cultivated &&
-                acres == fixture.acres;
+//                acres == fixture.acres; // TODO: switch back once eclipse/ceylon-sdk#711 fixed
+                numberComparator.compare(acres, fixture.acres) == equal;
         } else {
             return false;
         }
