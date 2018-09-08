@@ -101,7 +101,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     menuHandler.register((event) => expander.expandSome(2), "expand unit kinds");
     expander.expandAll();
     InterpolatedLabel<[String]> playerLabel =
-            InterpolatedLabel<[String]>(shuffle(curry("'s Units:".plus))(), [""]); // TODO: Take the player directly, using a player named "An Unknown Player" as the default
+            InterpolatedLabel<[String]>(shuffle(curry(plus<String>))("'s Units:"), [""]); // TODO: Take the player directly, using a player named "An Unknown Player" as the default
     object retval extends SPFrame("Worker Advancement", model.mapFile,
 				Dimension(640, 480), true,
                 (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
