@@ -31,7 +31,6 @@ import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
 import lovelace.util.common {
-    inverse,
     matchingPredicate
 }
 "A TreeModel implementation for a player's units and workers."
@@ -289,9 +288,9 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
     shared actual TreePath? nextProblem(TreePath? starting, Integer turn) {
         {IUnit*} sequence;
         if (exists starting, exists startingUnit = starting.path.array.narrow<IUnit>().first) {
-            sequence = model.getUnits(root).repeat(2).sequence().trimLeading(inverse(startingUnit.equals)).rest;
+            sequence = model.getUnits(root).repeat(2).sequence().trimLeading(not(startingUnit.equals)).rest;
         } else if (exists starting, exists startingKind = starting.path.array.narrow<String>().first) {
-            sequence = model.getUnits(root).repeat(2).sequence().trimLeading(inverse(matchingPredicate(startingKind.equals, IUnit.kind)));
+            sequence = model.getUnits(root).repeat(2).sequence().trimLeading(not(matchingPredicate(startingKind.equals, IUnit.kind)));
         } else {
             sequence = model.getUnits(root);
         }

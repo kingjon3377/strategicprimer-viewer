@@ -8,10 +8,6 @@ shared Boolean(Type) matchingPredicate<Type, Field>(Boolean(Field) predicate,
  be used with [[Iterable.filter]] and the like."
 shared Boolean(Type) matchingValue<Type, Field>(Field expected, Field(Type) field)
 		given Type satisfies Object => matchingPredicate(curry(anythingEqual)(expected), field);
-"Given a predicate, produces a predicate that returns true iff the given predicate returns
- false."
-shared Boolean(Type) inverse<Type>(Boolean(Type) predicate) =>
-				(Type item) => !predicate(item);
 "Given an [[Entry]], return true iff its key and item are the given types.
 
  Using [[Iterable.narrow]] on a stream of [[tuples|Tuple]] works, but doing so on a stream

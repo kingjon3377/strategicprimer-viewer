@@ -6,8 +6,7 @@ import ceylon.language {
 }
 
 import lovelace.util.common {
-    todo,
-	inverse
+    todo
 }
 
 import strategicprimer.model.map {
@@ -41,11 +40,11 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     "The unit's latest orders as of the given turn."
     shared default String getLatestOrders(Integer turn) =>
             (turn..-1).map(allOrders.get).coalesced.map(String.trimmed)
-                .find(inverse(String.empty)) else "";
+                .find(not(String.empty)) else "";
     "The unit's latest results as of the given turn."
     shared default String getLatestResults(Integer turn) =>
             (turn..-1).map(allResults.get).coalesced.map(String.trimmed)
-                .find(inverse(String.empty)) else "";
+                .find(not(String.empty)) else "";
     "Get the latest turn that the given orders were the current orders."
     shared default Integer getOrdersTurn(String orders) {
         variable Integer retval = -1;

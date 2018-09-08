@@ -75,7 +75,6 @@ import ceylon.language.meta {
 }
 import lovelace.util.common {
 	matchingValue,
-	inverse,
 	matchingPredicate
 }
 "An app to copy selected contents from one map to another."
@@ -89,7 +88,7 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 		}
 	}
 	static {FixtureMatcher*} initializeMatchers() => [
-			FixtureMatcher.complements<IUnit>(inverse(
+			FixtureMatcher.complements<IUnit>(not(
 					matchingPredicate(Player.independent, IUnit.owner)),
 				"Units", "Independent Units"),
 			FixtureMatcher.trivialMatcher(`Fortress`, "Fortresses"),
@@ -159,9 +158,9 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
 		} else {
 			zeroFixtures = false;
 		}
-		Integer totalCount = first.locations.filter(inverse(first.locationEmpty)).size;
+		Integer totalCount = first.locations.filter(not(first.locationEmpty)).size;
 		variable Integer count = 1;
-		for (location in first.locations.filter(inverse(first.locationEmpty))) {
+		for (location in first.locations.filter(not(first.locationEmpty))) {
 			log.debug("Copying contents at ``location``, location ``count``/``totalCount``");
 			if (!second.baseTerrain[location] exists, exists terrain =
 					first.baseTerrain[location]) {

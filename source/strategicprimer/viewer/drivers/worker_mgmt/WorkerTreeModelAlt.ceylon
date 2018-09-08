@@ -35,7 +35,6 @@ import strategicprimer.drivers.worker.common {
 import lovelace.util.common {
 	matchingValue,
 	as,
-    inverse,
     IteratorWrapper
 }
 import lovelace.util.jvm {
@@ -365,7 +364,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         {UnitNode*} sequence;
         if (exists starting) {
             assert (is WorkerTreeNode<out Anything> last = starting.lastPathComponent);
-            sequence = wrapped.repeat(2).sequence().trimLeading(inverse(last.equals))
+            sequence = wrapped.repeat(2).sequence().trimLeading(not(last.equals))
                 .rest.narrow<UnitNode>();
         } else {
             sequence = wrapped.narrow<UnitNode>().sequence();

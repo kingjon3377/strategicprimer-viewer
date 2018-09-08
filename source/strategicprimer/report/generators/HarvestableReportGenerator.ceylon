@@ -6,7 +6,6 @@ import ceylon.collection {
 import lovelace.util.common {
     DelayedRemovalMap,
 	matchingPredicate,
-	inverse,
 	comparingOn
 }
 
@@ -108,7 +107,7 @@ shared class HarvestableReportGenerator
 	// Can't be static because HtmlList isn't and can't be
 	// ("Class without parameter list may not be annotated sealed")
     HeadedList<String> mapToList(Multimap<String, Point> map, String heading) =>
-            HtmlList(heading, map.asMap.filter(inverse(matchingPredicate(
+            HtmlList(heading, map.asMap.filter(not(matchingPredicate(
 					Iterable<Point>.empty, Entry<String, {Point*}>.item)))
 		        .map((key->list) => "``key``: at ``commaSeparatedList(list)``")
 				.sort(increasing));

@@ -10,7 +10,6 @@ import ceylon.language.meta.model {
 
 import lovelace.util.common {
     DRMap=DelayedRemovalMap,
-	inverse,
 	simpleMap
 }
 
@@ -85,7 +84,7 @@ shared class ExplorableReportGenerator(
             ostream("<h4>Caves, Battlefields, and Portals</h4>
                      <ul>");
             for (list in [ caves, battles, portals ]
-					.filter(inverse(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
+					.filter(not(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
                 ostream("<li>``list``</li>");
             }
             ostream("</ul>``operatingSystem.newline``");

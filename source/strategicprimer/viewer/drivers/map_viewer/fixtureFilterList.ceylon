@@ -34,7 +34,6 @@ import strategicprimer.drivers.common {
 	FixtureMatcher
 }
 import lovelace.util.common {
-	inverse,
 	silentListener
 }
 "A list to let the user select which fixtures ought to be searched."
@@ -42,11 +41,11 @@ class FixtureFilterList() extends SwingList<FixtureMatcher>() satisfies ZOrderFi
 	DefaultListModel<FixtureMatcher> matcherListModel =
 			ReorderableListModel<FixtureMatcher>(
 				FixtureMatcher.simpleMatcher<Ground>(Ground.exposed, "Ground (exposed)"),
-				FixtureMatcher.simpleMatcher<Ground>(inverse(Ground.exposed), "Ground"),
+				FixtureMatcher.simpleMatcher<Ground>(not(Ground.exposed), "Ground"),
 				FixtureMatcher.simpleMatcher<Grove>(Grove.orchard, "Orchards"),
-				FixtureMatcher.simpleMatcher<Grove>(inverse(Grove.orchard), "Groves"),
+				FixtureMatcher.simpleMatcher<Grove>(not(Grove.orchard), "Groves"),
 				FixtureMatcher.simpleMatcher<Meadow>(Meadow.field, "Fields"),
-				FixtureMatcher.simpleMatcher<Meadow>(inverse(Meadow.field), "Meadows"));
+				FixtureMatcher.simpleMatcher<Meadow>(not(Meadow.field), "Meadows"));
 	shared actual Boolean shouldDisplay(TileFixture fixture) {
 		for (i in 0:matcherListModel.size) {
 			FixtureMatcher matcher = matcherListModel.getElementAt(i);

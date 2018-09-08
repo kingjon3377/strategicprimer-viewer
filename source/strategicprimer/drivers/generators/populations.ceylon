@@ -51,7 +51,6 @@ import ceylon.whole {
 import lovelace.util.common {
 	matchingValue,
 	matchingPredicate,
-	inverse,
     narrowedStream,
 	singletonRandom
 }
@@ -79,7 +78,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 				Entry<Point, Animal>.item))
 			.filter(matchingPredicate(matchingValue(kind, Animal.kind),
 				Entry<Point, Animal>.item))
-			.filter(inverse(matchingPredicate(matchingPredicate(Integer.positive,
+			.filter(not(matchingPredicate(matchingPredicate(Integer.positive, // TODO: compose() instead of nested matchingPredicate()
 				Animal.population), Entry<Point, Animal>.item))).map(Entry.key).distinct);
 		Integer count = locations.size;
 		if (count == 0) {
@@ -215,7 +214,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	}
 	void generateForestExtents(IMutableMapNG map, ICLIHelper cli) {
 		{Point*} locations = randomize(narrowedStream<Point, Forest>(map.fixtures)
-			.filter(matchingPredicate(inverse(positiveNumber),
+			.filter(matchingPredicate(not(positiveNumber),
 				compose(Forest.acres, Entry<Point, Forest>.item))).map(Entry.key).distinct);
 		for (location in locations) {
 			//assert (exists primaryForest = map.fixtures[location].narrow<Forest>().first); // TODO: syntax sugar
@@ -229,7 +228,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 			}
 			//{Forest*} otherForests = map.fixtures[location].narrow<Forest>() // TODO: syntax sugar
 			{Forest*} otherForests = map.fixtures.get(location).narrow<Forest>()
-					.select(inverse(matchingPredicate(positiveNumber, Forest.acres))).rest;
+					.select(not(matchingPredicate(positiveNumber, Forest.acres))).rest;
 			Integer adjacentCount = countAdjacentForests(map, location, primaryForest.kind);
 			//for (town in map.fixtures[location].narrow<ITownFixture>()) { // TODO: syntax sugar
 			for (town in map.fixtures.get(location).narrow<ITownFixture>()) {
@@ -294,7 +293,7 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 	shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
 			IDriverModel model) {
 		for (kind in model.map.fixtures.map(Entry.item).narrow<Animal>()
-					.filter(inverse(matchingPredicate(Integer.positive, Animal.population)))
+					.filter(not(matchingPredicate(Integer.positive, Animal.population)))
 				.map(Animal.kind).distinct) {
 			generateAnimalPopulations(model.map, true, kind, cli);
 			generateAnimalPopulations(model.map, false, kind, cli);

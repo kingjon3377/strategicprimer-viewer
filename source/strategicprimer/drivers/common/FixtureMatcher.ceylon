@@ -1,9 +1,6 @@
 import strategicprimer.model.map {
     TileFixture
 }
-import lovelace.util.common {
-	inverse
-}
 import ceylon.language.meta.model {
 	ClassOrInterface
 }
@@ -25,7 +22,7 @@ shared class FixtureMatcher {
 	shared static {FixtureMatcher*} complements<out T>(Boolean(T) method,
 		String firstDescription, String secondDescription) given T satisfies TileFixture =>
 			[simpleMatcher<T>(method, firstDescription),
-				simpleMatcher<T>(inverse(method), secondDescription)];
+				simpleMatcher<T>(not(method), secondDescription)];
     shared Boolean matches(TileFixture fixture);
     shared variable Boolean displayed = true;
     shared String description;

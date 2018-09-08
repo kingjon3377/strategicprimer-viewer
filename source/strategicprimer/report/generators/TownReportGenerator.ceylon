@@ -5,7 +5,6 @@ import ceylon.collection {
 import lovelace.util.common {
     todo,
     DelayedRemovalMap,
-	inverse,
 	simpleMap
 }
 
@@ -103,7 +102,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         separateByStatus(separated, fixtures.items,
                     (MutableMap<ITownFixture, Point> mapping, pair) =>
                             mapping[pair.rest.first] = pair.first);
-        if (separated.items.any(inverse(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
+        if (separated.items.any(not(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
             ostream("""<h4>Cities, towns, and/or fortifications you know about:</h4>
                    """);
             for (mapping in [abandoned, active, burned, ruined]) {

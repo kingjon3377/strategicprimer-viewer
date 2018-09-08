@@ -18,7 +18,6 @@ import strategicprimer.model.map.fixtures.resources {
 }
 import lovelace.util.common {
 	matchingPredicate,
-	inverse,
 	matchingValue,
 	singletonRandom
 }
@@ -48,11 +47,11 @@ shared class HuntingModel {
     "Animals (outside fortresses and units), both aquatic and non-aquatic, at the given
      location in the map."
     {Animal*} baseAnimals(Point point) =>
-            //map.fixtures[point].narrow<Animal>().filter(inverse(animal.talking)); // TODO: syntax sugar once compiler bug fixed
-            map.fixtures.get(point).narrow<Animal>().filter(inverse(Animal.talking));
+            //map.fixtures[point].narrow<Animal>().filter(not(animal.talking)); // TODO: syntax sugar once compiler bug fixed
+            map.fixtures.get(point).narrow<Animal>().filter(not(Animal.talking));
     "Non-aquatic animals (outside fortresses and units) at the given location in the map."
     {Animal*} animals(Point point) => baseAnimals(point)
-        .filter(inverse(matchingPredicate(fishKinds.contains, Animal.kind)));
+        .filter(not(matchingPredicate(fishKinds.contains, Animal.kind)));
     "Aquatic animals (outside fortresses and units) at the given location in the map."
     {Animal*} waterAnimals(Point point) =>
             baseAnimals(point).filter(matchingPredicate(fishKinds.contains, Animal.kind));
