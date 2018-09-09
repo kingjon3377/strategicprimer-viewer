@@ -45,7 +45,10 @@ class JobsTree(JobTreeModel jtModel) extends JTree(jtModel)
 	selectionModel.addTreeSelectionListener(handleTreeSelectionChange);
 	object treeModelListener satisfies TreeModelListener {
 		shared actual void treeStructureChanged(TreeModelEvent event) {
-			expandPath(event.treePath.parentPath);
+			if (exists treePath = event.treePath,
+					exists parentPath = treePath.parentPath) {
+				expandPath(parentPath);
+			}
 			variable Integer i = 0;
 			while (i < rowCount) {
 				expandRow(i);
