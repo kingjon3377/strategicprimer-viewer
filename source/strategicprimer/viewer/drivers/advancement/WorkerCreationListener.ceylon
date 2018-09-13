@@ -127,7 +127,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                     builder.append("``stat`` must be a number.");
                     builder.appendNewline();
                 }
-                showErrorDialog(null, "Strategic Primer Worker Advancement",
+                showErrorDialog(parent, "Strategic Primer Worker Advancement",
                     builder.string);
             }
         }
