@@ -41,32 +41,32 @@ shared object simpleMovementModel {
 	"Whether land movement is possible on the given terrain."
 	shared Boolean landMovementPossible(TileType terrain) => TileType.ocean != terrain;
 	"Whether rivers in either the source or the destination will speed travel in the given
-	 direction."
+	 direction." // "X in Y" means "Y.contains(X)"
 	shared Boolean riversSpeedTravel(Direction direction,
 	        {River*} sourceRivers, {River*} destRivers) {
 	    Boolean recurse(Direction partial) =>
 	            riversSpeedTravel(partial, sourceRivers, destRivers);
 	    switch (direction)
 	    case (Direction.north) {
-	        return sourceRivers.contains(River.north) || destRivers.contains(River.south);
+			return River.north in sourceRivers || River.south in destRivers;
 	    }
 	    case (Direction.northeast) {
 	        return recurse(Direction.north) || recurse(Direction.east);
 	    }
 	    case (Direction.east) {
-	        return sourceRivers.contains(River.east) || destRivers.contains(River.west);
+			return River.east in sourceRivers || River.west in destRivers;
 	    }
 	    case (Direction.southeast) {
 	        return recurse(Direction.south) || recurse(Direction.east);
 	    }
 	    case (Direction.south) {
-	        return sourceRivers.contains(River.south) || destRivers.contains(River.north);
+			return River.south in sourceRivers || River.north in destRivers;
 	    }
 	    case (Direction.southwest) {
 	        return recurse(Direction.south) || recurse(Direction.west);
 	    }
 	    case (Direction.west) {
-	        return sourceRivers.contains(River.west) || destRivers.contains(River.east);
+			return River.west in sourceRivers || River.east in destRivers;
 	    }
 	    case (Direction.northwest) {
 	        return recurse(Direction.north) || recurse(Direction.west);
