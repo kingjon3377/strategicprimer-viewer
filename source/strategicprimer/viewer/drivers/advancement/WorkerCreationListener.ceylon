@@ -98,19 +98,23 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                     is Integer dexValue, is Integer conValue,
                     is Integer intValue, is Integer wisValue,
                     is Integer chaValue) {
+                log.debug("All worker-creation-dialog fields are acceptable");
                 Worker retval = Worker(nameText, raceText, factory.createID());
                 retval.stats = WorkerStats(hpValue, maxHPValue, strValue,
                     dexValue, conValue, intValue, wisValue, chaValue);
                 addNewWorker(retval);
+                log.debug("Created and added the worker; about to hide the window");
                 setVisible(false);
                 dispose();
             } else {
                 StringBuilder builder = StringBuilder();
                 if (nameText.empty) {
+                    log.debug("Worker not created because name field was empty.");
                     builder.append("Worker needs a name.");
                     builder.appendNewline();
                 }
                 if (raceText.empty) {
+                    log.debug("Worker not created because race field was empty.");
                     builder.append("Worker needs a race.");
                     builder.appendNewline();
                 }
@@ -119,6 +123,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                             "Dexterity"->dexValue, "Constitution"->conValue,
                             "Intelligence"->intValue, "Wisdom"->wisValue,
                             "Charisma"->chaValue])) {
+                    log.debug("Worker not created because ``stat`` provided was non-numeric");
                     builder.append("``stat`` must be a number.");
                     builder.appendNewline();
                 }
@@ -126,7 +131,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                     builder.string);
             }
         }
-        JButton addButton = listenedButton("Add Worker", silentListener(accept));
+        JButton addButton = listenedButton("Add Worker", silentListener(accept)); // FIXME: Add accept() as listener to all fields as well
         buttonPanel.add(addButton);
         shared void revert() {
             for (field in [name, hpBox, maxHP, strength, dexterity, constitution,
