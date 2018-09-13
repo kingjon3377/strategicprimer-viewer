@@ -175,7 +175,9 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
     }
     shared actual Object getModelObject(Object obj) => obj;
     shared actual void addUnitMember(IUnit unit, UnitMember member) {
+        log.trace("In WorkerTreeModel.addUnitMember");
         unit.addMember(member);
+        log.trace("Added member to unit");
         TreePath path = TreePath(ObjectArray<Object>.with([root, unit.kind, unit]));
         IntArray indices = IntArray.with(Singleton(getIndexOfChild(unit, member)));
         ObjectArray<Object> children = ObjectArray<Object>.with(Singleton(member));
@@ -184,6 +186,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         for (listener in listeners) {
             listener.treeNodesInserted(event);
         }
+        log.trace("Notified listeners of inserted nodes");
 		markModified();
     }
     shared actual void renameItem(HasMutableName item) {
