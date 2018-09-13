@@ -94,10 +94,10 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
             value wisValue = Integer.parse(wisdom.text.trimmed);
             value chaValue = Integer.parse(charisma.text.trimmed);
             if (!nameText.empty, raceText.empty, is Integer hpValue,
-                is Integer maxHPValue, is Integer strValue,
-                is Integer dexValue, is Integer conValue,
-                is Integer intValue, is Integer wisValue,
-                is Integer chaValue) {
+                    is Integer maxHPValue, is Integer strValue,
+                    is Integer dexValue, is Integer conValue,
+                    is Integer intValue, is Integer wisValue,
+                    is Integer chaValue) {
                 Worker retval = Worker(nameText, raceText, factory.createID());
                 retval.stats = WorkerStats(hpValue, maxHPValue, strValue,
                     dexValue, conValue, intValue, wisValue, chaValue);
@@ -115,10 +115,10 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                     builder.appendNewline();
                 }
                 for (stat->val in narrowedStream<String, ParseException>(
-                    ["HP"->hpValue, "Max HP"->maxHPValue, "Strength"->strValue,
-                        "Dexterity"->dexValue, "Constitution"->conValue,
-                        "Intelligence"->intValue, "Wisdom"->wisValue,
-                        "Charisma"->chaValue])) {
+                        ["HP"->hpValue, "Max HP"->maxHPValue, "Strength"->strValue,
+                            "Dexterity"->dexValue, "Constitution"->conValue,
+                            "Intelligence"->intValue, "Wisdom"->wisValue,
+                            "Charisma"->chaValue])) {
                     builder.append("``stat`` must be a number.");
                     builder.appendNewline();
                 }
@@ -145,9 +145,9 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         maxHP.text = "8";
         addLabeledField(statsPanel, "Max HP:", maxHP);
         for ([stat, box] in [["Strength:", strength],
-            ["Intelligence:", intelligence], ["Dexterity:", dexterity],
-            ["Wisdom:", wisdom], ["Constitution:", constitution],
-            ["Charisma:", charisma]]) {
+                ["Intelligence:", intelligence], ["Dexterity:", dexterity],
+                ["Wisdom:", wisdom], ["Constitution:", constitution],
+                ["Charisma:", charisma]]) {
             box.text = singletonRandom.elements(1..6).take(3)
                 .reduce(plus)?.string else "0";
             addLabeledField(statsPanel, stat, box);
