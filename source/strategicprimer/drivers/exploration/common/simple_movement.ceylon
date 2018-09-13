@@ -43,31 +43,23 @@ shared object simpleMovementModel {
 	"Whether rivers in either the source or the destination will speed travel in the given
 	 direction." // "X in Y" means "Y.contains(X)"
 	shared Boolean riversSpeedTravel(Direction direction,
-	        {River*} sourceRivers, {River*} destRivers) {
+	        {River*} source, {River*} destTile) {
 	    Boolean recurse(Direction partial) =>
-	            riversSpeedTravel(partial, sourceRivers, destRivers);
+	            riversSpeedTravel(partial, source, destTile);
 	    switch (direction)
-	    case (Direction.north) {
-			return River.north in sourceRivers || River.south in destRivers;
-	    }
+	    case (Direction.north) { return River.north in source || River.south in destTile; }
 	    case (Direction.northeast) {
 	        return recurse(Direction.north) || recurse(Direction.east);
 	    }
-	    case (Direction.east) {
-			return River.east in sourceRivers || River.west in destRivers;
-	    }
+	    case (Direction.east) { return River.east in source || River.west in destTile; }
 	    case (Direction.southeast) {
 	        return recurse(Direction.south) || recurse(Direction.east);
 	    }
-	    case (Direction.south) {
-			return River.south in sourceRivers || River.north in destRivers;
-	    }
+	    case (Direction.south) { return River.south in source || River.north in destTile; }
 	    case (Direction.southwest) {
 	        return recurse(Direction.south) || recurse(Direction.west);
 	    }
-	    case (Direction.west) {
-			return River.west in sourceRivers || River.east in destRivers;
-	    }
+	    case (Direction.west) { return River.west in source || River.east in destTile; }
 	    case (Direction.northwest) {
 	        return recurse(Direction.north) || recurse(Direction.west);
 	    }
