@@ -94,7 +94,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                     value intValue = Integer.parse(intelligence.text.trimmed);
                     value wisValue = Integer.parse(wisdom.text.trimmed);
                     value chaValue = Integer.parse(charisma.text.trimmed);
-                    if (!nameText.empty, raceText.empty, is Integer hpValue,
+                    if (!nameText.empty, !raceText.empty, is Integer hpValue,
                         is Integer maxHPValue, is Integer strValue,
                         is Integer dexValue, is Integer conValue,
                         is Integer intValue, is Integer wisValue,
