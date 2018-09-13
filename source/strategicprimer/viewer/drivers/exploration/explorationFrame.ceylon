@@ -45,9 +45,7 @@ import javax.swing {
     SwingUtilities,
 	JButton
 }
-import javax.swing.event {
-    ListSelectionEvent
-}
+
 import javax.swing.text {
     BadLocationException,
     Document
@@ -68,7 +66,8 @@ import lovelace.util.jvm {
 import lovelace.util.common {
 	parseInt,
 	isNumeric,
-    simpleMap
+    simpleMap,
+    silentListener
 }
 
 import strategicprimer.model.map {
@@ -93,7 +92,8 @@ import strategicprimer.model.map.fixtures.resources {
 }
 
 import strategicprimer.viewer.drivers {
-    SPMenu
+    SPMenu,
+    MenuBroker
 }
 import strategicprimer.drivers.gui.common {
     SPFrame
@@ -135,7 +135,7 @@ import strategicprimer.model.idreg {
 }
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,
-        Anything(ActionEvent) menuHandler) { // TODO: Do what we can to convert nested objects/classes to top-level, etc.
+        MenuBroker menuHandler) { // TODO: Do what we can to convert nested objects/classes to top-level, etc.
     Map<Direction, KeyStroke> arrowKeys = simpleMap(
         Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkUp, 0),
         Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkDown, 0),
@@ -195,7 +195,8 @@ SPFrame explorationFrame(IExplorationModel model,
         shared actual void removeCompletionListener(Anything() listener) =>
                 completionListeners.remove(listener);
         model.addMapChangeListener(playerListModel);
-        void handlePlayerChanged(ListSelectionEvent event) {
+        void handlePlayerChanged() {
+            layoutObj.first(retval.contentPane);
             if (!playerList.selectionEmpty,
                 exists newPlayer = playerList.selectedValue) {
                 for (listener in listeners) {
@@ -203,7 +204,8 @@ SPFrame explorationFrame(IExplorationModel model,
                 }
             }
         }
-        playerList.addListSelectionListener(handlePlayerChanged);
+        playerList.addListSelectionListener(silentListener(handlePlayerChanged));
+        menuHandler.register(silentListener(handlePlayerChanged), "change current player");
         addPlayerChangeListener(unitListModel);
         DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
         object renderer satisfies ListCellRenderer<IUnit> {
@@ -566,9 +568,9 @@ SPFrame explorationFrame(IExplorationModel model,
     retval.add(explorerSelectingPanel);
     retval.add(explorationPanel);
     (retval of Component).preferredSize = Dimension(1024, 640);
-    retval.jMenuBar = SPMenu(SPMenu.createFileMenu(menuHandler, model),
-        SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler, model)),
-        SPMenu.createViewMenu(menuHandler, model), WindowMenu(retval));
+    retval.jMenuBar = SPMenu(SPMenu.createFileMenu(menuHandler.actionPerformed, model),
+        SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler.actionPerformed, model)),
+        SPMenu.createViewMenu(menuHandler.actionPerformed, model), WindowMenu(retval));
     retval.pack();
     return retval;
 }

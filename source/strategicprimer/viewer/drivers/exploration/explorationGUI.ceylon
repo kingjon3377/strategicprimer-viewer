@@ -66,7 +66,7 @@ shared class ExplorationGUI() satisfies SimpleDriver {
             "open secondary map in map viewer", "close", "quit");
         SwingUtilities.invokeLater(() {
             SPFrame frame = explorationFrame(explorationModel,
-                menuHandler.actionPerformed);
+                menuHandler);
             frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
             menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
                 "about");
