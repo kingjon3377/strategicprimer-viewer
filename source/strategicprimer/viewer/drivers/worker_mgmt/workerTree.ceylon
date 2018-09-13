@@ -406,35 +406,46 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 => selectionListeners.remove(listener);
         object tsl satisfies TreeSelectionListener {
             shared actual void valueChanged(TreeSelectionEvent event) {
-                if (exists pathLast = event.newLeadSelectionPath?.lastPathComponent) {
-                    Object? sel = wtModel.getModelObject(pathLast);
-                    if (is UnitMember? sel) {
-                        log.debug("Selection in workerTree is a UnitMember or null");
-                        for (listener in memberListeners) {
-                            listener.memberSelected(null, sel);
-                        }
+                Anything pathLast = event.newLeadSelectionPath?.lastPathComponent;
+                Anything sel;
+                if (exists pathLast) {
+                    sel = wtModel.getModelObject(pathLast);
+                } else {
+                    sel = null;
+                }
+                if (is IUnit sel) {
+                    log.debug("Selection in workerTree is an IUnit");
+                    for (listener in selectionListeners) {
+                        listener.selectUnit(sel);
                     }
-                    if (is IUnit sel) {
-                        log.debug("Selection in workerTree is an IUnit");
-                        for (listener in selectionListeners) {
-                            listener.selectUnit(sel);
-                        }
-                        for (listener in memberListeners) {
-                            listener.memberSelected(null, ProxyWorker.fromUnit(sel));
-                        }
-                    } else if (!sel exists) {
-                        log.debug("Selection in workerTree is null");
-                        for (listener in selectionListeners) {
-                            listener.selectUnit(null);
-                        }
-                    } else {
-                        log.debug("Selection in workerTree is something other than a unit or null: ``type(sel)``");
-                        // FIXME: Listeners in selectionListeners now have the wrong data
+                    IWorker proxy = ProxyWorker.fromUnit(sel);
+                    for (listener in memberListeners) {
+                        listener.memberSelected(null, proxy);
+                    }
+                } else if (is UnitMember sel) {
+                    log.debug("Selection in workerTree is a UnitMember, but not an IUnit");
+                    for (listener in selectionListeners) {
+                        listener.selectUnit(null);
+                    }
+                    for (listener in memberListeners) {
+                        listener.memberSelected(null, sel);
                     }
                 } else {
-                    log.error("User selected something in the tree, but we couldn't get its path's last component.");
-                    log.debug("Full path was: ``event.newLeadSelectionPath else "null"``");
+                    if (is String sel) {
+                        log.debug("Selection in workerTree is a String, i.e. a unit-kind node");
+                    } else if (!sel exists) {
+                        log.debug("Selection in workerTree is null");
+                    } else {
+                        log.warn("Unexpected type of selection in workerTree: ``type(sel)``");
+                    }
+                    for (listener in selectionListeners) {
+                        listener.selectUnit(null);
+                    }
+                    for (listener in memberListeners) {
+                        listener.memberSelected(null, null);
+                    }
                 }
+
             }
         }
         addTreeSelectionListener(tsl);
