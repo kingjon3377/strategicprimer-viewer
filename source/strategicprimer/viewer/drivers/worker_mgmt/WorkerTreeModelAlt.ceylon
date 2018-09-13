@@ -246,14 +246,18 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         }
     }
     shared actual void addUnitMember(IUnit unit, UnitMember member) {
-        if (exists unitNode = as<{TreeNode*}>(root)?.narrow<UnitNode>()
-	            ?.find(matchingValue(unit, UnitNode.userObjectNarrowed))) {
+        if (exists kindNode = as<PlayerNode>(root)?.narrow<KindNode>()
+                    ?.find(matchingValue(unit.kind, KindNode.userObjectNarrowed)),
+                exists unitNode = kindNode.narrow<UnitNode>().find(matchingValue(unit,
+                    UnitNode.userObjectNarrowed))) {
             unit.addMember(member);
             MutableTreeNode newNode = UnitMemberNode(member);
             unitNode.add(newNode);
             fireTreeNodesInserted(this, ObjectArray<Object>.with([root, unitNode]),
                 IntArray.with(Singleton(unitNode.childCount - 1)),
                 ObjectArray<Object>.with(Singleton(newNode)));
+        } else {
+            log.error("Asked to add a unit member but couldn't find corresponding unit node");
         }
     }
     shared actual void renameItem(HasMutableName item) {
