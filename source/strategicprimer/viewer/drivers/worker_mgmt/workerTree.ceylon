@@ -409,11 +409,13 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 if (exists pathLast = event.newLeadSelectionPath?.lastPathComponent) {
                     Object? sel = wtModel.getModelObject(pathLast);
                     if (is UnitMember? sel) {
+                        log.debug("Selection in workerTree is a UnitMember or null");
                         for (listener in memberListeners) {
                             listener.memberSelected(null, sel);
                         }
                     }
                     if (is IUnit sel) {
+                        log.debug("Selection in workerTree is an IUnit");
                         for (listener in selectionListeners) {
                             listener.selectUnit(sel);
                         }
@@ -421,10 +423,17 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                             listener.memberSelected(null, ProxyWorker.fromUnit(sel));
                         }
                     } else if (!sel exists) {
+                        log.debug("Selection in workerTree is null");
                         for (listener in selectionListeners) {
                             listener.selectUnit(null);
                         }
+                    } else {
+                        log.debug("Selection in workerTree is something other than a unit or null: ``type(sel)``");
+                        // FIXME: Listeners in selectionListeners now have the wrong data
                     }
+                } else {
+                    log.error("User selected something in the tree, but we couldn't get its path's last component.");
+                    log.debug("Full path was: ``event.newLeadSelectionPath else "null"``");
                 }
             }
         }
