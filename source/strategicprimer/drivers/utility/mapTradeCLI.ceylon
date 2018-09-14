@@ -98,9 +98,11 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
             FixtureMatcher.trivialMatcher(`AdventureFixture`, "Adventures"),
             FixtureMatcher.trivialMatcher(`CacheFixture`, "Caches"),
             FixtureMatcher.trivialMatcher(`Forest`),
-            FixtureMatcher.trivialMatcher(`AbstractTown`, "Cities, Towns, and Fortifications"),
+            FixtureMatcher.trivialMatcher(`AbstractTown`,
+                "Cities, Towns, and Fortifications"),
             FixtureMatcher.trivialMatcher(`Village`),
-            FixtureMatcher.trivialMatcher(`Animal`), FixtureMatcher.trivialMatcher(`AnimalTracks`),
+            FixtureMatcher.trivialMatcher(`Animal`),
+            FixtureMatcher.trivialMatcher(`AnimalTracks`),
             FixtureMatcher.trivialMatcher(`Troll`),
             FixtureMatcher.trivialMatcher(`Simurgh`),
             FixtureMatcher.trivialMatcher(`Ogre`),
@@ -115,13 +117,15 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
             FixtureMatcher.trivialMatcher(`MineralVein`, "Mineral Veins"),
             FixtureMatcher.trivialMatcher(`Fairy`, "Fairies"),
             FixtureMatcher.trivialMatcher(`Giant`),
-            FixtureMatcher.trivialMatcher(`Dragon`), FixtureMatcher.trivialMatcher(`Cave`),
+            FixtureMatcher.trivialMatcher(`Dragon`),
+            FixtureMatcher.trivialMatcher(`Cave`),
             FixtureMatcher.trivialMatcher(`Battlefield`),
             FixtureMatcher.complements<Grove>(Grove.orchard, "Orchards", "Groves"),
             FixtureMatcher.trivialMatcher(`Shrub`),
             FixtureMatcher.complements<Meadow>(Meadow.field, "Fields", "Meadows"),
             FixtureMatcher.trivialMatcher(`Hill`),
-            FixtureMatcher.complements<Ground>(Ground.exposed, "Ground (exposed)", "Ground")
+            FixtureMatcher.complements<Ground>(Ground.exposed, "Ground (exposed)",
+                "Ground")
         ].flatMap(flatten);
     shared new () {}
     shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
@@ -130,14 +134,17 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         IMapNG first = model.map;
-        assert (is IMultiMapModel model, exists second = model.subordinateMaps.first?.key);
+        assert (is IMultiMapModel model,
+            exists second = model.subordinateMaps.first?.key);
         if (cli.inputBoolean("Copy players?")) {
             first.players.each(second.addPlayer);
         }
         Boolean copyRivers = cli.inputBoolean("Include rivers?");
-        MutableList<FixtureMatcher> matchers = ArrayList { elements = initializeMatchers(); };
-        void askAbout(FixtureMatcher matcher, String key = "include") => matcher.displayed =
-                    cli.inputBooleanInSeries("Include \"``matcher.description``\" items?", key);
+        MutableList<FixtureMatcher> matchers =
+                ArrayList { elements = initializeMatchers(); };
+        void askAbout(FixtureMatcher matcher, String key = "include") =>
+                matcher.displayed = cli.inputBooleanInSeries(
+                    "Include \"``matcher.description``\" items?", key);
         matchers.each(askAbout);
         Boolean testFixture(TileFixture fixture) {
             for (matcher in matchers) {
@@ -146,7 +153,8 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
                 }
             }
             ClassModel<TileFixture> cls = type(fixture);
-            FixtureMatcher newMatcher = FixtureMatcher.trivialMatcher(cls, fixture.plural);
+            FixtureMatcher newMatcher = FixtureMatcher.trivialMatcher(cls,
+                fixture.plural);
             askAbout(newMatcher, "new");
             matchers.add(newMatcher);
             return newMatcher.displayed;
@@ -161,7 +169,8 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
         Integer totalCount = first.locations.filter(not(first.locationEmpty)).size;
         variable Integer count = 1;
         for (location in first.locations.filter(not(first.locationEmpty))) {
-            log.debug("Copying contents at ``location``, location ``count``/``totalCount``");
+            log.debug(
+                "Copying contents at ``location``, location ``count``/``totalCount``");
             if (!second.baseTerrain[location] exists, exists terrain =
                     first.baseTerrain[location]) {
                 second.baseTerrain[location] = terrain;
@@ -169,7 +178,7 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
             }
             //for (fixture in first.fixtures[location].filter(testFixture)) { // TODO: syntax sugar
             for (fixture in first.fixtures.get(location).filter(testFixture)) {
-                //if (!second.fixtures[location].any(matchingValue(fixture.id, TileFixture.id))) {
+                //if (!second.fixtures[location] // TODO: syntax sugar
                 if (fixture.id >= 0, !second.fixtures.get(location)
                         .any(matchingValue(fixture.id, TileFixture.id))) {
                     second.addFixture(location, fixture.copy(zeroFixtures));

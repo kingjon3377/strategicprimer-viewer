@@ -380,29 +380,30 @@ shared class TabularReportCLI() satisfies SimpleDriver {
             }
         });
         {Endpoint*} tocs = mapping.keys
-            .map(curry(suffixHelper.shortestSuffix)(mapping.keys)).map((path) => Endpoint {
-            path = matchEquals("/``path``").or(matchEquals("/``path``/"));
-            void service(Request request, Response response) {
-                renderTemplate(Html {
-                    Head {
-                        Title {
-                            "Tabular Reports for ``path``";
-                        }
-                    }, Body {
-                        H1 {
-                            "Tabular Reports for ``path``";
-                        }, Ul {
-                            builders.keys.filter(matchingValue(path,
-                                Tuple<String, String, String[]>.first))
-                                    .map(([mapFile, table]) => Li {
-                                A { href="/``mapFile``.``table``.csv";
-                                    children = ["``table``.csv"]; }
-                            })
-                        }
-                    }
-                }, response.writeString);
-            }
-        });
+            .map(curry(suffixHelper.shortestSuffix)(mapping.keys)).map(
+			        (path) => Endpoint { // TODO: Drop ceylon.html usage and dependency
+			            path = matchEquals("/``path``").or(matchEquals("/``path``/"));
+			            void service(Request request, Response response) {
+			                renderTemplate(Html {
+			                    Head {
+			                        Title {
+			                            "Tabular Reports for ``path``";
+			                        }
+			                    }, Body {
+			                        H1 {
+			                            "Tabular Reports for ``path``";
+			                        }, Ul {
+			                            builders.keys.filter(matchingValue(path,
+			                                Tuple<String, String, String[]>.first))
+			                                    .map(([mapFile, table]) => Li {
+			                                A { href="/``mapFile``.``table``.csv";
+			                                    children = ["``table``.csv"]; }
+			                            })
+			                        }
+			                    }
+			                }, response.writeString);
+			            }
+			        });
         Endpoint rootHandler = Endpoint {
             path = isRoot();
             void service(Request request, Response response) {

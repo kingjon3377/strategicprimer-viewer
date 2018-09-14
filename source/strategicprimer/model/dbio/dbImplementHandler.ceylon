@@ -51,6 +51,6 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
         }
     }
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "pieces of equipment", curry(readImplement)(map),
-                """SELECT * FROM implements""");
+            handleQueryResults(db, warner, "pieces of equipment",
+	            curry(readImplement)(map), """SELECT * FROM implements""");
 }

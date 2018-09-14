@@ -82,7 +82,8 @@ object reportGeneratorHelper {
     "Create a mapping from ID numbers to Pairs of fixtures and their location for all
      fixtures in the map."
     shared DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
-        DelayedRemovalMap<Integer, [Point, IFixture]> retval = IntMap<[Point, IFixture]>();
+        DelayedRemovalMap<Integer, [Point, IFixture]> retval =
+		        IntMap<[Point, IFixture]>();
         IDRegistrar idf = createIDFactory(map);
         Integer checkID(IFixture fixture) {
             if (fixture.id < 0) {
@@ -95,7 +96,8 @@ object reportGeneratorHelper {
             if (fixture is TileFixture || fixture.id >= 0) {
                 Integer key = checkID(fixture);
                 value val = [location, fixture];
-                // We could use `retval[key] = val`, but that would be more confusing here.
+                // We could use `retval[key] = val`, but that would be more confusing
+	            // here.
                 if (exists existing = retval.put(key, val), existing != val) {
                     log.warn("Duplicate key, ``key``, for Pairs ``
                         existing`` and ``val``");
@@ -230,8 +232,8 @@ shared object reportGenerator {
         }
         return builder.string;
     }
-    "Produce sub-reports in report-intermediate-representation, adding them to the root node
-     and calling coalesce() on the fixtures collection after each."
+    "Produce sub-reports in report-intermediate-representation, adding them to the root
+     node and calling coalesce() on the fixtures collection after each."
     void createSubReportsIR(IReportNode root,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
             Player player, IReportGenerator<out Object>* generators) {

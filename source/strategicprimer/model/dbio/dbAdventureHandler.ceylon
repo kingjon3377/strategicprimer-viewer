@@ -26,7 +26,8 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
                     image VARCHAR(255)
                 );"""];
     shared actual void write(Sql db, AdventureFixture obj, Point context) {
-            db.Insert("""INSERT INTO adventures (row, column, id, brief, full, owner, image)
+            db.Insert("""INSERT INTO adventures (row, column, id, brief, full, owner,
+                             image)
                          VALUES(?, ?, ?, ?, ?, ?, ?);""")
                     .execute(context.row, context.column, obj.id, obj.briefDescription,
                         obj.fullDescription, obj.owner.playerId, obj.image);
@@ -36,7 +37,8 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
             is Integer id = dbRow["id"], is String brief = dbRow["brief"],
             is String full = dbRow["full"], is Integer ownerId = dbRow["owner"],
             is String|SqlNull image = dbRow["image"]);
-        value adventure = AdventureFixture(map.players.getPlayer(ownerId), brief, full, id);
+        value adventure =
+                AdventureFixture(map.players.getPlayer(ownerId), brief, full, id);
         if (is String image) {
             adventure.image = image;
         }

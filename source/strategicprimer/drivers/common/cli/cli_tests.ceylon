@@ -95,18 +95,20 @@ object cliTests {
             "chooseFromList allows too-large choice");
         assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
             PlayerImpl(2, "two")], "test desc", "none present", "prompt", true],
-            Singleton("0"), ["test desc", "0: one", "1: two", "prompt "], 0->PlayerImpl(1, "one"),
+            Singleton("0"), ["test desc", "0: one", "1: two", "prompt "],
+            0->PlayerImpl(1, "one"),
             "chooseFromList asks even if 'auto' when multiple items",
             "chooseFromList prompted the user");
         assertCLI(`ICLIHelper.chooseFromList<Player>`, [[], "test desc", "none present",
             "prompt", false], [], ["none present", ""], -1->null,
-            "chooseFromList handles no-item case", "chooseFromList didn't prompt the user");
+            "chooseFromList handles no-item case",
+            "chooseFromList didn't prompt the user");
     }
     "Test inputNumber"
     test
     shared void testInputNumber() {
-        assertCLI(`ICLIHelper.inputNumber`, ["test prompt"], Singleton("2"), "test prompt ",
-            2, "inputNumber works", "inputNumber uses given prompt");
+        assertCLI(`ICLIHelper.inputNumber`, ["test prompt"], Singleton("2"),
+            "test prompt ", 2, "inputNumber works", "inputNumber uses given prompt");
         assertCLI(`ICLIHelper.inputNumber`, ["test prompt two"], Singleton("8"),
             "test prompt two ", 8, "inputNumber works", "inputNumber uses given prompt");
         assertCLI(`ICLIHelper.inputNumber`, ["test prompt three "], ["-1", "0"],
@@ -157,14 +159,15 @@ object cliTests {
     parameters(`value truePossibilities`)
     test
     shared void testInputBooleanSimpleTrue(String arg) {
-        assertCLI(`ICLIHelper.inputBoolean`, ["bool prompt"], Singleton(arg), "bool prompt ",
-            true, "inputBoolean returns true on ``arg``", "inputBoolean displays prompt");
+        assertCLI(`ICLIHelper.inputBoolean`, ["bool prompt"], Singleton(arg),
+            "bool prompt ", true, "inputBoolean returns true on ``arg``",
+            "inputBoolean displays prompt");
     }
     parameters(`value falsePossibilities`)
     test
     shared void testInputBooleanSimpleFalse(String arg) {
-        assertCLI(`ICLIHelper.inputBoolean`, ["prompt two"], Singleton(arg), "prompt two ",
-            false, "inputBoolean returns false on ``arg``",
+        assertCLI(`ICLIHelper.inputBoolean`, ["prompt two"], Singleton(arg),
+            "prompt two ", false, "inputBoolean returns false on ``arg``",
             "inputBoolean displays prompt");
     }
     "Test for inputBoolean()"
@@ -220,7 +223,8 @@ object cliTests {
             "inputBooleanInSeries allows no-to-all");
         assertEquals(cli.inputBooleanInSeries("prompt five "), false,
             "inputBooleanInSeries honors no-to-all when prompt is the same");
-        assertEquals(ostream.string, "prompt five prompt five no``operatingSystem.newline``",
+        assertEquals(ostream.string,
+            "prompt five prompt five no``operatingSystem.newline``",
             "inputBooleanInSeries shows automatic no");
         // TODO: uncomment once eclipse/ceylon#5448 fixed
     //      assertThatException(defer(cli.inputBooleanInSeries, ["other prompt"]))
@@ -271,12 +275,14 @@ object cliTests {
             ["test desc", "0: one", "1: two", "2: three", "prompt two "], 1->"two",
             "chooseStringFromList chooses the one specified by the user",
             "chooseStringFromList prompts the user");
-        assertCLI(`ICLIHelper.chooseStringFromList`, [["one"], "test desc", "none present",
-            "prompt", true], [], ["test desc", "Automatically choosing only item, one.", ""],
-            0->"one", "chooseStringFromList automatically chooses only choice when told to",
+        assertCLI(`ICLIHelper.chooseStringFromList`, [["one"], "test desc",
+            "none present", "prompt", true], [], ["test desc",
+            "Automatically choosing only item, one.", ""], 0->"one",
+            "chooseStringFromList automatically chooses only choice when told to",
             "chooseStringFromList automatically chose only choice");
-        assertCLI(`ICLIHelper.chooseStringFromList`, [["one"], "test desc", "none present",
-            "prompt", false], Singleton("0"), ["test desc", "0: one", "prompt "], 0->"one",
+        assertCLI(`ICLIHelper.chooseStringFromList`, [["one"], "test desc",
+            "none present", "prompt", false], Singleton("0"),
+            ["test desc", "0: one", "prompt "], 0->"one",
             "chooseStringFromList doesn't always auto-choose",
             "chooseStringFromList didn't automatically choose only choice");
     }

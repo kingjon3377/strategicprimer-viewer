@@ -41,8 +41,8 @@ object arrowListenerInitializer {
     {<Integer->String>*} macJumpInputs = [ KeyEvent.vkUp->"home", KeyEvent.vkKpUp->"home",
         KeyEvent.vkNumpad8->"home", KeyEvent.vkDown->"end", KeyEvent.vkKpDown->"end",
         KeyEvent.vkNumpad2->"end", KeyEvent.vkLeft->"caret",KeyEvent.vkKpLeft->"caret",
-        KeyEvent.vkNumpad4->"caret", KeyEvent.vkRight->"dollar", KeyEvent.vkKpRight->"dollar",
-        KeyEvent.vkNumpad6->"dollar" ];
+        KeyEvent.vkNumpad4->"caret", KeyEvent.vkRight->"dollar",
+	    KeyEvent.vkKpRight->"dollar", KeyEvent.vkNumpad6->"dollar" ];
     "Other key-codes and the Strings we'll use to represent them"
     {<Integer->String>*} otherInputs = [
         KeyEvent.vkHome->"home", KeyEvent.vk0->"home", KeyEvent.vkNumpad0->"home",
@@ -58,8 +58,8 @@ object arrowListenerInitializer {
             extends AbstractAction() {
         shared actual void actionPerformed(ActionEvent event) => repeatVoid(action, num);
     }
-    shared void setUpArrowListeners(DirectionSelectionChanger selListener, InputMap inputMap,
-            ActionMap actionMap) {
+    shared void setUpArrowListeners(DirectionSelectionChanger selListener,
+		    InputMap inputMap, ActionMap actionMap) {
         Integer fiveMask = (platform.systemIsMac) then InputEvent.altDownMask
             else InputEvent.ctrlDownMask;
         for (stroke->action in arrowInputs) {
@@ -95,7 +95,8 @@ object arrowListenerInitializer {
         for (stroke->action in otherInputs) {
             inputMap.put(KeyStroke.getKeyStroke(stroke, 0), action);
         }
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk3, InputEvent.shiftDownMask), "end");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk3, InputEvent.shiftDownMask),
+	        "end");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk6, InputEvent.shiftDownMask),
             "caret");
         inputMap.put(KeyStroke.getKeyStroke(KeyEvent.vk4, InputEvent.shiftDownMask),

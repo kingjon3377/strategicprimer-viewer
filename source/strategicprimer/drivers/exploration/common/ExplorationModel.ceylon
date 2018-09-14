@@ -215,7 +215,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     }
     void fixMovedUnits(Point base) {
         {<Point->TileFixture>*} localFind(IMapNG mapParam, TileFixture target) =>
-                mapParam.fixtures.filter(matchingValue(target, Entry<Point, TileFixture>.item));
+                mapParam.fixtures
+	                .filter(matchingValue(target, Entry<Point, TileFixture>.item));
         // TODO: Unit vision range
         {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
         for (submap->[file, flag] in subordinateMaps) {
@@ -223,7 +224,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             for (point in points) {
                 for (fixture in submap.fixtures.get(point).narrow<MobileFixture>()) { // TODO: syntax sugar once bug fixed
                     for (innerPoint->match in localFind(submap, fixture)) {
-                        if (innerPoint != point, !map.fixtures.get(innerPoint).contains(match)) {// TODO: syntax sugar
+                        if (innerPoint != point,
+		                        !map.fixtures.get(innerPoint).contains(match)) {// TODO: syntax sugar
                             submap.removeFixture(innerPoint, match);
                             if (!modifiedFlag) {
                                 setModifiedFlag(submap, true);
@@ -269,9 +271,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 base = simpleMovementModel.movementCost(map.baseTerrain.get(dest),
                     map.fixtures[dest]?.narrow<Forest>()?.first exists,
 //                    map.mountainous[dest],
-//                    riversSpeedTravel(direction, map.rivers[point],
                     map.mountainous.get(dest),
-                        simpleMovementModel.riversSpeedTravel(direction, map.rivers.get(point),
+                        simpleMovementModel.riversSpeedTravel(direction,
+//                          map.rivers[point],
+	                        map.rivers.get(point),
 //                        map.rivers[dest]), fixtures);
                         map.rivers.get(dest)), fixtures);
             }

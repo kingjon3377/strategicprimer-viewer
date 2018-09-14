@@ -39,11 +39,12 @@ object dbResourcePileHandler
            );"""
     ];
     shared actual void write(Sql db, ResourcePile obj, IUnit|Fortress context) {
-        db.Insert("""INSERT INTO resource_piles (parent, id, kind, contents, quantity, units,
-                          created, image)
+        db.Insert("""INSERT INTO resource_piles (parent, id, kind, contents, quantity,
+	                     units, created, image)
                      VALUES(?, ?, ?, ?, ?, ?, ?, ?);""")
             .execute(context.id, obj.id, obj.kind, obj.contents,
-                        obj.quantity.number.string, obj.quantity.units, obj.created, obj.image);
+                        obj.quantity.number.string, obj.quantity.units, obj.created,
+				        obj.image);
     }
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
     void readResourcePile(IMutableMapNG map, Map<String, Object> row, Warning warner) {
@@ -52,7 +53,8 @@ object dbResourcePileHandler
             is Integer id = row["id"], is String kind = row["kind"],
             is String contents = row["contents"],
             is String qtyString = row["quantity"], is String units = row ["units"],
-            is Integer|SqlNull created = row["created"], is String|SqlNull image = row["image"]);
+            is Integer|SqlNull created = row["created"],
+	        is String|SqlNull image = row["image"]);
         Number<out Anything> quantity;
         if (is Integer num = Integer.parse(qtyString)) {
             quantity = num;

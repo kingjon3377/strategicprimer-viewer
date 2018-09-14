@@ -55,22 +55,22 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
         }
     }
     void fireContentsChanged(Range<Integer> range) {
-        ListDataEvent event = ListDataEvent(this, ListDataEvent.contentsChanged, range.first,
-            range.lastIndex);
+        ListDataEvent event = ListDataEvent(this, ListDataEvent.contentsChanged,
+            range.first, range.lastIndex);
         for (listener in listDataListeners) {
             listener.contentsChanged(event);
         }
     }
     void fireIntervalAdded(Range<Integer> range) {
-        ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalAdded, range.first,
-            range.lastIndex);
+        ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalAdded,
+            range.first, range.lastIndex);
         for (listener in listDataListeners) {
             listener.intervalAdded(event);
         }
     }
     void fireIntervalRemoved(Range<Integer> range) {
-        ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalRemoved, range.first,
-            range.lastIndex);
+        ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalRemoved,
+            range.first, range.lastIndex);
         for (listener in listDataListeners) {
             listener.intervalRemoved(event);
         }
@@ -102,7 +102,8 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
                  throw ArrayIndexOutOfBoundsException(index);
              } else if (exists retval = main.getFromFirst(index - 1)) {
                  return retval;
-             } else if (exists retval = currentTracks.getFromFirst(index - main.size - 1)) {
+             } else if (exists retval =
+                     currentTracks.getFromFirst(index - main.size - 1)) {
                  return retval;
              } else {
                  throw ArrayIndexOutOfBoundsException(index);

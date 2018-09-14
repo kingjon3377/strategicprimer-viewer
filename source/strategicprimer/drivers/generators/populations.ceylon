@@ -104,7 +104,8 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
                 cli.println("Ran out of locations while generating ``key``");
                 return;
             } else {
-                nextPopulation = rng.nextInteger(remainingTotal - (remainingCount * 2) - 2) + 2;
+                nextPopulation =
+		                rng.nextInteger(remainingTotal - (remainingCount * 2) - 2) + 2;
             }
             //if (exists animal = map.fixtures[location].narrow<Animal>() // TODO: syntax sugar
             if (exists animal = map.fixtures.get(location).narrow<Animal>()
@@ -121,7 +122,8 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
     void generateGroveCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
         // We assume there is at most one grove or orchard of each kind per tile.
         {Point*} locations = randomize(narrowedStream<Point, Grove>(map.fixtures)
-            .filter(matchingPredicate(matchingValue(kind, Grove.kind), Entry<Point, Grove>.item))
+            .filter(matchingPredicate(matchingValue(kind, Grove.kind),
+		        Entry<Point, Grove>.item))
             .filter(matchingPredicate(matchingPredicate(Integer.negative,
                 Grove.population), Entry<Point, Grove>.item)).map(Entry.key).distinct);
         Integer count = locations.size;
@@ -143,8 +145,8 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
             //if (exists grove = map.fixtures[location].narrow<Grove>() // TODO: syntax sugar
             if (exists grove = map.fixtures.get(location).narrow<Grove>()
                     .find(matchingValue(kind, Grove.kind))) {
-                Grove replacement = Grove(grove.orchard, grove.cultivated, grove.kind, grove.id,
-                    nextPopulation);
+                Grove replacement = Grove(grove.orchard, grove.cultivated, grove.kind,
+	                grove.id, nextPopulation);
                 map.removeFixture(location, grove);
                 map.addFixture(location, replacement);
                 remainingCount--;
@@ -155,7 +157,8 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
     void generateShrubCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
         // We assume there is at most one population of each kind of shrub per tile.
         {Point*} locations = randomize(narrowedStream<Point, Shrub>(map.fixtures)
-            .filter(matchingPredicate(matchingValue(kind, Shrub.kind), Entry<Point, Shrub>.item))
+            .filter(matchingPredicate(matchingValue(kind, Shrub.kind),
+		        Entry<Point, Shrub>.item))
             .filter(matchingPredicate(matchingPredicate(Integer.negative,
                 Shrub.population), Entry<Point, Shrub>.item)).map(Entry.key).distinct);
         Integer count = locations.size;
@@ -194,12 +197,13 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
         for (loc->field in entries) {
             Float acres = rng.nextFloat() * 5.5 + 0.5;
             map.removeFixture(loc, field);
-            map.addFixture(loc, Meadow(field.kind, field.field, field.cultivated, field.id,
-                field.status, acres));
+            map.addFixture(loc, Meadow(field.kind, field.field, field.cultivated,
+	            field.id, field.status, acres));
         }
     }
     Boolean hasAdjacentForests(IMapNG map, String kind)(Point point) =>
-            map.fixtures.get(point).narrow<Forest>().any(matchingValue(kind, Forest.kind));
+            map.fixtures.get(point).narrow<Forest>()
+	            .any(matchingValue(kind, Forest.kind));
     Integer countAdjacentForests(IMapNG map, Point center, String kind) =>
             surroundingPointIterable(center, map.dimensions, 1)
                 .count(hasAdjacentForests(map, kind));
@@ -216,21 +220,25 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
     void generateForestExtents(IMutableMapNG map, ICLIHelper cli) {
         {Point*} locations = randomize(narrowedStream<Point, Forest>(map.fixtures)
             .filter(matchingPredicate(not(positiveNumber),
-                compose(Forest.acres, Entry<Point, Forest>.item))).map(Entry.key).distinct);
+                compose(Forest.acres, Entry<Point, Forest>.item)))
+	        .map(Entry.key).distinct);
         for (location in locations) {
-            //assert (exists primaryForest = map.fixtures[location].narrow<Forest>().first); // TODO: syntax sugar
-            assert (exists primaryForest = map.fixtures.get(location).narrow<Forest>().first);
+            assert (exists primaryForest =
+		            //map.fixtures[location].narrow<Forest>().first); // TODO: syntax sugar
+		            map.fixtures.get(location).narrow<Forest>().first);
             variable Integer reserved = 0;
             if (primaryForest.acres.positive) {
                 cli.println("First forest at ``location`` had acreage set already.");
 //                reserved += map.fixtures[location].narrow<Forest>().map(Forest.acres) // TODO: syntax sugar
                 reserved += map.fixtures.get(location).narrow<Forest>().map(Forest.acres)
-                    .filter(positiveNumber).map(decimalize).fold(decimalNumber(0))(plus).integer;
+                    .filter(positiveNumber).map(decimalize)
+	                .fold(decimalNumber(0))(plus).integer;
             }
             //{Forest*} otherForests = map.fixtures[location].narrow<Forest>() // TODO: syntax sugar
             {Forest*} otherForests = map.fixtures.get(location).narrow<Forest>()
                     .select(not(matchingPredicate(positiveNumber, Forest.acres))).rest;
-            Integer adjacentCount = countAdjacentForests(map, location, primaryForest.kind);
+            Integer adjacentCount =
+		            countAdjacentForests(map, location, primaryForest.kind);
             //for (town in map.fixtures[location].narrow<ITownFixture>()) { // TODO: syntax sugar
             for (town in map.fixtures.get(location).narrow<ITownFixture>()) {
                 switch (town.townSize)
@@ -259,14 +267,14 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
             if (otherForests.empty) {
                 Forest replacement;
                 if (adjacentCount > 7) {
-                    replacement = Forest(primaryForest.kind, primaryForest.rows, primaryForest.id,
-                        160 - reserved);
+                    replacement = Forest(primaryForest.kind, primaryForest.rows,
+	                    primaryForest.id, 160 - reserved);
                 } else if (adjacentCount > 4) {
-                    replacement = Forest(primaryForest.kind, primaryForest.rows, primaryForest.id,
-                        (160 - reserved) * 4 / 5);
+                    replacement = Forest(primaryForest.kind, primaryForest.rows,
+	                    primaryForest.id, (160 - reserved) * 4 / 5);
                 } else {
-                    replacement = Forest(primaryForest.kind, primaryForest.rows, primaryForest.id,
-                        (160 - reserved) * 2 / 5);
+                    replacement = Forest(primaryForest.kind, primaryForest.rows,
+	                    primaryForest.id, (160 - reserved) * 2 / 5);
                 }
                 map.removeFixture(location, primaryForest);
                 map.addFixture(location, replacement);

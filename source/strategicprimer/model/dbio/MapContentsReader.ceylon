@@ -23,7 +23,8 @@ interface MapContentsReader {
         for (fixture in stream) {
             if (fixture.id == id) {
                 return fixture;
-            } else if (is {IFixture*} fixture, exists retval = findByIdImpl(fixture, id)) {
+            } else if (is {IFixture*} fixture,
+                    exists retval = findByIdImpl(fixture, id)) {
                 return retval;
             }
         }

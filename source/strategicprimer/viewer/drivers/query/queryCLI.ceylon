@@ -199,7 +199,8 @@ class QueryHelper {
     void addToSubMaps(Point point, TileFixture fixture, Boolean zero) {
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.subordinateMaps) {
-                if (!map.fixtures.get(point).any(matchingValue(fixture.id, TileFixture.id))) {
+                if (!map.fixtures.get(point)
+		                .any(matchingValue(fixture.id, TileFixture.id))) {
                     map.addFixture(point, fixture.copy(zero));
                 }
             }
@@ -209,8 +210,8 @@ class QueryHelper {
      into all subordinate maps."
     void reducePopulation(Point point, HasPopulation<out TileFixture>&TileFixture fixture,
             String plural, Boolean zero) {
-        Integer count = Integer.smallest(cli.inputNumber("How many ``plural`` to remove: "),
-            fixture.population);
+        Integer count = Integer.smallest(cli.inputNumber(
+	        "How many ``plural`` to remove: "), fixture.population);
         if (count > 0) {
             model.map.removeFixture(point, fixture);
             Integer remaining = fixture.population - count;
@@ -265,8 +266,10 @@ class QueryHelper {
                 if (cli.inputBooleanInSeries("Handle processing now?")) {
                     // TODO: somehow handle processing-in-parallel case
                     for (i in 0:(cli.inputNumber("How many animals?"))) {
-                        Integer mass = cli.inputNumber("Weight of this animal's meat in pounds: ");
-                        Integer hands = cli.inputNumber("# of workers processing this carcass: ");
+                        Integer mass =
+		                        cli.inputNumber("Weight of this animal's meat in pounds: ");
+                        Integer hands =
+		                        cli.inputNumber("# of workers processing this carcass: ");
                         time -= round(HuntingModel.processingTime(mass) / hands).integer;
                     }
                 }
@@ -456,8 +459,9 @@ class QueryHelper {
                 //for (town in map.fixtures[location].narrow<ITownFixture>()) { // TODO: syntax sugar once compiler bug fixed
                 if (town.status == TownStatus.active, exists population = town.population,
                     !population.yearlyProduction.empty) {
-                    cli.print("At ``location````comparator.distanceString(location, "base")``: ");
-                    cli.print("``town.name``, a ``town.townSize`` ");
+                    cli.print(
+	                    "At ``location````comparator.distanceString(location, "base")``");
+                    cli.print(": ``town.name``, a ``town.townSize`` ");
                     if (is Village town, town.race != "human") {
                         cli.print("``town.race`` village");
                     } else {
@@ -501,11 +505,13 @@ class QueryHelper {
             suggestTrade(cli.inputPoint("Base location? "),
                 cli.inputNumber("Within how many tiles? "));
     Anything() deferAction(Anything(Point, Integer) method, String verb) => // TODO: Replace with method-reference logic using defer()
-                    () => method(cli.inputPoint("Location to ``verb``? "), hunterHours * 60);
+                    () => method(cli.inputPoint("Location to ``verb``? "),
+	                    hunterHours * 60);
     Map<String, Anything()> commands = simpleMap(
         "?"->replUsage,
         "help"->replUsage,
-        "fortress"->defer(compose(fortressInfo, cli.inputPoint), ["Location of fortress?"]),
+        "fortress"->defer(compose(fortressInfo, cli.inputPoint),
+	        ["Location of fortress?"]),
         "hunt"->deferAction(hunt, "hunt"),
         "fish"->deferAction(fish, "fish"),
         "gather"->deferAction(gather, "gather"),

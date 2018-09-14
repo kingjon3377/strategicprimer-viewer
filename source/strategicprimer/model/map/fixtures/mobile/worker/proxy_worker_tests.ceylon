@@ -80,7 +80,8 @@ object proxyWorkerTests {
             "Initially-empty worker should have appropriate experience");
     }
 
-    "Test that the next-simplest case, of a proxy for the workers in a unit, works properly."
+    "Test that the next-simplest case, of a proxy for the workers in a unit, works
+     properly."
     test
     shared void testProxyUnit() {
         Worker firstWorker = Worker("one", "human", 1,
@@ -113,7 +114,8 @@ object proxyWorkerTests {
             }
         }
         assertEquals(oneCopy, firstWorker, "Two copies of first worker should be equal");
-        assertEquals(twoCopy, secondWorker, "Two copies of second worker should be equal");
+        assertEquals(twoCopy, secondWorker,
+	        "Two copies of second worker should be equal");
         assertNotEquals(firstWorker, oneOrig,
             "First worker should not still be as it was originally");
         assertTrue(firstWorker.isSubset(oneOrig, noop),

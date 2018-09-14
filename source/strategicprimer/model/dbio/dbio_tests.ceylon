@@ -133,8 +133,8 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
     }
     test
     shared void testAdventureSerialization(randomlyGenerated(3) Integer id) =>
-            assertFixtureSerialization(AdventureFixture(PlayerImpl(1, "independent"), "hook brief",
-                "hook full", id));
+            assertFixtureSerialization(AdventureFixture(PlayerImpl(1, "independent"),
+                "hook brief", "hook full", id));
     test
     shared void testPortalSerialization(randomlyGenerated(3) Integer id,
         randomlyGenerated(3) Integer row,
@@ -143,7 +143,8 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
     test
     shared void testAnimalSerialization(randomlyGenerated(3) Integer id,
         enumeratedParameter(`class Boolean`) Boolean talking) =>
-            assertFixtureSerialization(AnimalImpl("animal kind", talking, "status", id, -1, 1));
+            assertFixtureSerialization(AnimalImpl("animal kind", talking, "status", id,
+                -1, 1));
     test
     shared void testTracksSerialization() =>
             assertFixtureSerialization(AnimalTracks("kind"));
@@ -231,12 +232,14 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
         assertFixtureSerialization(town);
     }
     test
-    shared void testMeadowSerialization(enumeratedParameter(`class Boolean`) Boolean field,
-        enumeratedParameter(`class Boolean`) Boolean cultivated,
-        randomlyGenerated(3) Integer id,
-        enumeratedParameter(`class FieldStatus`) FieldStatus status,
-        randomlyGenerated(3) Integer acres) =>
-            assertFixtureSerialization(Meadow("kind", field, cultivated, id, status, acres));
+    shared void testMeadowSerialization(
+            enumeratedParameter(`class Boolean`) Boolean field,
+            enumeratedParameter(`class Boolean`) Boolean cultivated,
+            randomlyGenerated(3) Integer id,
+            enumeratedParameter(`class FieldStatus`) FieldStatus status,
+            randomlyGenerated(3) Integer acres) =>
+                assertFixtureSerialization(Meadow("kind", field, cultivated, id, status,
+                    acres));
     test
     shared void testFractionalMeadowSerialization(
         enumeratedParameter(`class Boolean`) Boolean field,
@@ -280,11 +283,12 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
         enumeratedParameter(`class Boolean`) Boolean exposed) =>
             assertFixtureSerialization(Ground(id, "ground kind", exposed));
     test
-    shared void testGroveSerialization(enumeratedParameter(`class Boolean`) Boolean orchard,
-        enumeratedParameter(`class Boolean`) Boolean cultivated,
-        randomlyGenerated(3) Integer id,
-        randomlyGenerated(3) Integer count) =>
-            assertFixtureSerialization(Grove(orchard, cultivated, "kind", id, count));
+    shared void testGroveSerialization(
+            enumeratedParameter(`class Boolean`) Boolean orchard,
+            enumeratedParameter(`class Boolean`) Boolean cultivated,
+            randomlyGenerated(3) Integer id,
+            randomlyGenerated(3) Integer count) =>
+                assertFixtureSerialization(Grove(orchard, cultivated, "kind", id, count));
     test
     shared void testSimpleImmortalSerialization(
         parameters(`value simpleImmortalConstructors`) Immortal(Integer) constructor,
@@ -307,10 +311,11 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
         randomlyGenerated(3) Integer id) =>
             assertFixtureSerialization(MineralVein("mineral kind", exposed, dc, id));
     test
-    shared void testStoneSerialization(enumeratedParameter(`class StoneKind`) StoneKind kind,
-        randomlyGenerated(3) Integer dc,
-        randomlyGenerated(3) Integer id) =>
-            assertFixtureSerialization(StoneDeposit(kind, dc, id));
+    shared void testStoneSerialization(
+            enumeratedParameter(`class StoneKind`) StoneKind kind,
+            randomlyGenerated(3) Integer dc,
+            randomlyGenerated(3) Integer id) =>
+                assertFixtureSerialization(StoneDeposit(kind, dc, id));
     test
     shared void testShrubSerialization(randomlyGenerated(3) Integer id,
         randomlyGenerated(3) Integer count) =>
@@ -328,7 +333,8 @@ object dbio_tests { // TODO: All tests should be more robust, as if developed te
         Player owner = PlayerImpl(1, "owner");
         value unit = Unit(owner, "unitKind", "unitName", id);
         unit.addMember(Worker("worker name", "elf", id + 1, Job("job name", 2,
-            Skill("first skill", 1, 2), Skill("second skill", 3, 4)), Job("second job", 4)));
+            Skill("first skill", 1, 2), Skill("second skill", 3, 4)),
+            Job("second job", 4)));
         unit.addMember(Centaur("horse", id + 5));
         unit.addMember(AnimalImpl("elephant", false, "domesticated", id + 6, -1, 4));
         assertFixtureSerialization(unit);

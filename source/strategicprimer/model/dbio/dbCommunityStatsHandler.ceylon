@@ -61,10 +61,12 @@ object dbCommunityStatsHandler
         value fields = db.Insert("""INSERT INTO town_worked_resources (town, resource)
                                     VALUES(?, ?);""");
         value production = db.Insert(
-            """INSERT INTO town_production(town, id, kind, contents, quantity, units, created)
+            """INSERT INTO town_production(town, id, kind, contents, quantity, units,
+	               created)
                VALUES(?, ?, ?, ?, ?, ?, ?);""");
         value consumption = db.Insert(
-            """INSERT INTO town_consumption(town, id, kind, contents, quantity, units, created)
+            """INSERT INTO town_consumption(town, id, kind, contents, quantity, units,
+	               created)
                VALUES(?, ?, ?, ?, ?, ?, ?);""");
         db.transaction(() {
             for (skill->level in obj.highestSkillLevels) {
@@ -74,12 +76,14 @@ object dbCommunityStatsHandler
                 fields.execute(context.id, field);
             }
             for (resource in obj.yearlyProduction) {
-                production.execute(context.id, resource.id, resource.kind, resource.contents,
-                    resource.quantity.number.string, resource.quantity.units, resource.created);
+                production.execute(context.id, resource.id, resource.kind,
+	                resource.contents, resource.quantity.number.string,
+	                resource.quantity.units, resource.created);
             }
             for (resource in obj.yearlyConsumption) {
-                consumption.execute(context.id, resource.id, resource.kind, resource.contents,
-                    resource.quantity.number.string, resource.quantity.units, resource.created);
+                consumption.execute(context.id, resource.id, resource.kind,
+	                resource.contents, resource.quantity.number.string,
+	                resource.quantity.units, resource.created);
             }
             return true;
         });
@@ -98,7 +102,8 @@ object dbCommunityStatsHandler
             exists population = town.population, is Integer resource = row["resource"]);
         population.addWorkedField(resource);
     }
-    void readProducedResource(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+    void readProducedResource(IMutableMapNG map, Map<String, Object> row,
+		    Warning warner) {
         assert (is Integer townId = row["town"],
             is ITownFixture town = findById(map, townId, warner),
             exists population = town.population, is Integer id = row["id"],
@@ -118,7 +123,8 @@ object dbCommunityStatsHandler
         }
         population.yearlyProduction.add(pile);
     }
-    void readConsumedResource(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+    void readConsumedResource(IMutableMapNG map, Map<String, Object> row,
+		    Warning warner) {
         assert (is Integer townId = row["town"],
             is ITownFixture town = findById(map, townId, warner),
             exists population = town.population, is Integer id = row["id"],
@@ -139,10 +145,10 @@ object dbCommunityStatsHandler
         population.yearlyConsumption.add(pile);
     }
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-        handleQueryResults(db, warner, "town expertise levels", curry(readTownExpertise)(map),
-            """SELECT * FROM town_expertise""");
-        handleQueryResults(db, warner, "town worked resources", curry(readWorkedResource)(map),
-            """SELECT * FROM town_worked_resources""");
+        handleQueryResults(db, warner, "town expertise levels",
+	        curry(readTownExpertise)(map), """SELECT * FROM town_expertise""");
+        handleQueryResults(db, warner, "town worked resources",
+	        curry(readWorkedResource)(map), """SELECT * FROM town_worked_resources""");
         handleQueryResults(db, warner, "town produced resources",
             curry(readProducedResource)(map), """SELECT * FROM town_production""");
         handleQueryResults(db, warner, "town consumed resources",

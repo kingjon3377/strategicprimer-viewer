@@ -10,7 +10,8 @@ variable Integer currentTurn = -1;
 object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
     Boolean[5] riverFlags(River* rivers) {
         return [rivers.contains(River.north), rivers.contains(River.south),
-            rivers.contains(River.east), rivers.contains(River.west), rivers.contains(River.lake)];
+            rivers.contains(River.east), rivers.contains(River.west),
+            rivers.contains(River.lake)];
     }
     shared actual {String+} initializers = [
         """CREATE TABLE IF NOT EXISTS metadata (
@@ -45,7 +46,8 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
         }
         value terrainInsertion = db.Insert(
             """INSERT INTO terrain (row, column, terrain, mountainous, north_river,
-                   south_river, east_river, west_river, lake) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""");
+                   south_river, east_river, west_river, lake)
+               VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""");
         variable Integer count = 0;
         variable Integer fixtureCount = 0;
         for (location in obj.locations) {
@@ -60,7 +62,7 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
             }
             count++;
             if (25.divides(count)) {
-                log.trace("Finished writing ``count`` points, with ``fixtureCount`` fixtures so far");
+                log.trace("Finished writing ``count`` points: ``fixtureCount`` fixtures so far");
             }
         }
     }

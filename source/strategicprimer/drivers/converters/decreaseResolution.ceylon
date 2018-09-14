@@ -60,7 +60,8 @@ shared IMapNG decreaseResolution(IMapNG old) {
     TileType? consensus([TileType?+] types) {
         value counted = types.frequencies().map(reverse).map(Entry.pair).sort(
             comparing(
-                comparingOn(Tuple<Integer|TileType, Integer, [TileType]>.first, increasing<Integer>),
+                comparingOn(Tuple<Integer|TileType, Integer, [TileType]>.first,
+                    increasing<Integer>),
                 comparingOn(compose(
                     compose(TileType.xml, Tuple<TileType, TileType, []>.first),
                     Tuple<Integer|TileType, Integer, [TileType]>.rest),
@@ -134,7 +135,8 @@ object resolutionDecreaseTests {
         initialize(start, Point(0, 1), TileType.desert, fixtureTwo);
         IUnit fixtureThree = Unit(PlayerImpl(0, "A. Player"), "legion", "eagles", 3);
         initialize(start, Point(1, 0), TileType.desert, fixtureThree);
-        Fortress fixtureFour = Fortress(PlayerImpl(1, "B. Player"), "HQ", 4, TownSize.small);
+        Fortress fixtureFour = Fortress(PlayerImpl(1, "B. Player"), "HQ", 4,
+            TownSize.small);
         initialize(start, Point(1, 1), TileType.plains, fixtureFour);
 
         IMapNG converted = decreaseResolution(start);
@@ -183,8 +185,8 @@ object resolutionDecreaseTests {
             .containsEvery([River.lake, River.north]),
             "Non-interior rivers carry over");
     //    assertFalse(converted.rivers[zeroPoint].containsAny([River.east, River.south]),
-        assertFalse(converted.rivers.get(zeroPoint).containsAny([River.east, River.south]),
-            "Interior rivers do not carry over");
+        assertFalse(converted.rivers.get(zeroPoint)
+            .containsAny([River.east, River.south]), "Interior rivers do not carry over");
         assertEquals(converted.baseTerrain[zeroPoint], TileType.steppe,
             "Combined tile has most common terrain type among inputs");
     }

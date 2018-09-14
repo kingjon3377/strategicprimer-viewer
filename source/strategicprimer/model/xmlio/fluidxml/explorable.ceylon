@@ -121,13 +121,15 @@ object fluidExplorableHandler extends FluidBase() {
         writeImage(ostream, obj);
     }
 
-    shared void writeBattlefield(XMLStreamWriter ostream, Battlefield obj, Integer indent) {
+    shared void writeBattlefield(XMLStreamWriter ostream, Battlefield obj,
+		    Integer indent) {
         writeTag(ostream, "battlefield", indent, true);
         writeAttributes(ostream, "dc"->obj.dc, "id"->obj.id);
         writeImage(ostream, obj);
     }
 
-    shared void writeTextFixture(XMLStreamWriter ostream, TextFixture obj, Integer indent) {
+    shared void writeTextFixture(XMLStreamWriter ostream, TextFixture obj,
+		    Integer indent) {
         writeTag(ostream, "text", indent, false);
         if (obj.turn != -1) {
             writeAttributes(ostream, "turn"->obj.turn);

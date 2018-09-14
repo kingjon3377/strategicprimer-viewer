@@ -20,9 +20,10 @@ shared class FixtureMatcher {
         return FixtureMatcher(predicate, description);
     }
     shared static {FixtureMatcher*} complements<out T>(Boolean(T) method,
-        String firstDescription, String secondDescription) given T satisfies TileFixture =>
-            [simpleMatcher<T>(method, firstDescription),
-                simpleMatcher<T>(not(method), secondDescription)];
+        String firstDescription, String secondDescription)
+            given T satisfies TileFixture =>
+                [simpleMatcher<T>(method, firstDescription),
+                    simpleMatcher<T>(not(method), secondDescription)];
     shared Boolean matches(TileFixture fixture);
     shared variable Boolean displayed = true;
     shared String description;

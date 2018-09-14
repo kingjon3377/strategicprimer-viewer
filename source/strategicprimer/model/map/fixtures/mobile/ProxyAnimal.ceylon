@@ -39,7 +39,8 @@ class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
     shared actual Animal reduced(Integer newPopulation, Integer newId) =>
             ProxyAnimal(*animals.map(shuffle(Animal.reduced)(newPopulation, newId)));
     shared actual Animal combined(Animal addend) {
-        if (is ProxyFor<Animal> addend, addend.parallel, addend.proxied.size == animals.size) {
+        if (is ProxyFor<Animal> addend, addend.parallel,
+                addend.proxied.size == animals.size) {
             return ProxyAnimal(*zipPairs(animals, addend.proxied)
                 .map(unflatten(uncurry(Animal.combined))));
         } else {

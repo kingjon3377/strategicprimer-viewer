@@ -32,7 +32,8 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>()
     shared actual void write(Sql db, Mine obj, Point context) {
         db.Insert("""INSERT INTO mines (row, column, id, kind, status, image)
                      VALUES(?, ?, ?, ?, ?, ?);""")
-                .execute(context.row, context.column, obj.id, obj.kind, obj.status.string, obj.image);
+                .execute(context.row, context.column, obj.id, obj.kind,
+                    obj.status.string, obj.image);
     }
     void readMine(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],

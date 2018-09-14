@@ -138,7 +138,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     }
     static IViewerModel getViewerModel(IDriverModel model, MenuBroker menuHandler) {
         if (exists frame = WindowList.getFrames(false, true, true).array.narrow<MapGUI>()
-                .find(matchingValue(model.mapFile, compose(IViewerModel.mapFile, MapGUI.mapModel)))) {
+                .find(matchingValue(model.mapFile, compose(IViewerModel.mapFile,
+                    MapGUI.mapModel)))) {
             frame.toFront();
             if (frame.extendedState == Frame.iconified) {
                 frame.extendedState = Frame.normal;
@@ -180,7 +181,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         variable Point retval = invalidPoint;
         for (location->fixture in narrowedStream<Point, Fortress>(model.map.fixtures)
                 .filter(matchingPredicate(matchingValue(model.currentPlayer.playerId,
-                    Player.playerId), compose(Fortress.owner, Entry<Point, Fortress>.item)))) {
+                    Player.playerId), compose(Fortress.owner, Entry<Point,
+                        Fortress>.item)))) {
             if ("HQ" == fixture.name) {
                 return location;
             } else if (location.valid, !retval.valid) {
@@ -209,8 +211,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
             model.setModifiedFlag(subMap, true);
         }
     }
-    value tree = workerTree(treeModel, model.players, defer(IMapNG.currentTurn, [mainMap]),
-        true, idf, markModified);
+    value tree = workerTree(treeModel, model.players,
+        defer(IMapNG.currentTurn, [mainMap]), true, idf, markModified);
     newUnitFrame.addNewUnitListener(treeModel);
     Integer keyMask = platform.shortcutMask;
     createHotKey(tree, "openUnits",
@@ -245,7 +247,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     void jumpNext(ActionEvent _) {
         assert (is IWorkerTreeModel treeModel = tree.model);
         TreePath? currentSelection = tree.selectionModel.selectionPath;
-        if (exists nextPath = treeModel.nextProblem(currentSelection, mainMap.currentTurn)) {
+        if (exists nextPath =
+                treeModel.nextProblem(currentSelection, mainMap.currentTurn)) {
             tree.expandPath(nextPath);
             tree.setSelectionRow(tree.getRowForPath(nextPath));
             // TODO: Should select the "TODO" or "FIXME" in the orders window.
@@ -265,8 +268,9 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
                     .call((file) => strategyExporter.writeStrategy(
                     parsePath(file.string).resource, treeModel.dismissed))));
     value playerLabelPanel = BorderedPanel.horizontalPanel(playerLabel, null, jumpButton);
-    contentPane = horizontalSplit(verticalSplit(BorderedPanel.verticalPanel(playerLabelPanel,
-            JScrollPane(tree), null), lowerLeft, 2.0 / 3.0),
+    contentPane = horizontalSplit(verticalSplit(
+        BorderedPanel.verticalPanel(playerLabelPanel, JScrollPane(tree), null),
+        lowerLeft, 2.0 / 3.0),
         verticalSplit(BorderedPanel.verticalPanel(
             JLabel("Contents of the world you know about, for reference:"),
             JScrollPane(createReportTree(reportModel)), null), mdp, 0.6));

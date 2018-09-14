@@ -43,23 +43,23 @@ shared object simpleMovementModel {
     "Whether rivers in either the source or the destination will speed travel in the given
      direction." // "X in Y" means "Y.contains(X)"
     shared Boolean riversSpeedTravel(Direction direction,
-            {River*} source, {River*} destTile) {
+            {River*} source, {River*} dest) {
         Boolean recurse(Direction partial) =>
-                riversSpeedTravel(partial, source, destTile);
+                riversSpeedTravel(partial, source, dest);
         switch (direction)
-        case (Direction.north) { return River.north in source || River.south in destTile; }
+        case (Direction.north) { return River.north in source || River.south in dest; }
         case (Direction.northeast) {
             return recurse(Direction.north) || recurse(Direction.east);
         }
-        case (Direction.east) { return River.east in source || River.west in destTile; }
+        case (Direction.east) { return River.east in source || River.west in dest; }
         case (Direction.southeast) {
             return recurse(Direction.south) || recurse(Direction.east);
         }
-        case (Direction.south) { return River.south in source || River.north in destTile; }
+        case (Direction.south) { return River.south in source || River.north in dest; }
         case (Direction.southwest) {
             return recurse(Direction.south) || recurse(Direction.west);
         }
-        case (Direction.west) { return River.west in source || River.east in destTile; }
+        case (Direction.west) { return River.west in source || River.east in dest; }
         case (Direction.northwest) {
             return recurse(Direction.north) || recurse(Direction.west);
         }
@@ -95,11 +95,10 @@ shared object simpleMovementModel {
         }
     }
 
-    "Check whether a unit moving at the given relative speed might notice the given fixture.
-     Units do not notice themselves, do not notice themselves, and do not notice null
-     fixtures."
-    todo("We now check DCs on Events, but ignore relevant skills other than Perception. And
-          now a lot more things have DCs for which those other skills are relevant.")
+    "Check whether a unit moving at the given relative speed might notice the given
+     fixture. Units do not notice themselves and do not notice null fixtures."
+    todo("We now check DCs on Events, but ignore relevant skills other than Perception.
+          And now a lot more things have DCs for which those other skills are relevant.")
     shared Boolean shouldSometimesNotice(
             "The moving unit"
             HasOwner unit,
@@ -155,9 +154,9 @@ shared object simpleMovementModel {
         }
     }
 
-    "Choose what the mover should in fact find from the list of things he or she might find.
-     Since some callers need to have a list of Pairs instead of TileFixtures, we take a
-     function for getting the fixtures out of the list."
+    "Choose what the mover should in fact find from the list of things he or she might
+     find. Since some callers need to have a list of Pairs instead of TileFixtures, we
+     take a function for getting the fixtures out of the list."
     shared {Element*} selectNoticed<Element>({Element*} possibilities,
             TileFixture(Element) getter, IUnit mover, Speed speed) {
         {Element*} local = randomize(possibilities);

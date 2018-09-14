@@ -56,7 +56,8 @@ import lovelace.util.common {
 }
 "A dialog to let the user add a new unit."
 shared class NewUnitDialog(variable Player player, IDRegistrar idf)
-        extends SPDialog(null, "Add a New Unit") satisfies NewUnitSource&PlayerChangeListener {
+        extends SPDialog(null, "Add a New Unit")
+		satisfies NewUnitSource&PlayerChangeListener {
     MutableList<NewUnitListener> listeners = ArrayList<NewUnitListener>();
     JTextField nameField = JTextField(10);
     JTextField kindField = JTextField(10);

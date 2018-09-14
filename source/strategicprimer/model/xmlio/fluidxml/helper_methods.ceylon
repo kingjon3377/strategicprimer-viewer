@@ -120,7 +120,8 @@ abstract class FluidBase {
             StartElement element,
             "The parameter we want to get."
             String param, String? defaultValue = null) {
-        if (exists attr = getAttributeByName(element, param), exists retval = attr.\ivalue) {
+        if (exists attr = getAttributeByName(element, param),
+		        exists retval = attr.\ivalue) {
             return retval;
         } else if (exists defaultValue) {
             return defaultValue;
@@ -137,11 +138,11 @@ abstract class FluidBase {
             StartElement element,
             "The parameter we want to get"
             String param,
-            "The value to return if the tag doesn't have that parameter; if null, we throw an
-             exception."
+            "The value to return if the tag doesn't have that parameter; if null, we
+             throw an exception."
             Boolean? defaultValue = null,
-            "The [[Warning]] instance to use if the attribute was present but non-Boolean but
-             a default was provided"
+            "The [[Warning]] instance to use if the attribute was present but
+             non-Boolean but a default was provided"
             Warning warner = warningLevels.warn) {
         if (exists attr = getAttributeByName(element, param), exists val = attr.\ivalue,
                 !val.empty) {
@@ -243,9 +244,9 @@ abstract class FluidBase {
         }
     }
 
-    "If the given XML tag has the preferred parameter, return its value; if not, but it has
-     the deprecated parameter, fire a warning but return its value; otherwise, throw an
-     exception."
+    "If the given XML tag has the preferred parameter, return its value; if not, but it
+     has the deprecated parameter, fire a warning but return its value; otherwise,
+     throw an exception."
     throws(`class SPFormatException`, "if the tag has neither parameter")
     todo("Accept a default-value parameter and/or a type-conversion parameter")
     static shared String getAttrWithDeprecatedForm(
@@ -392,8 +393,8 @@ abstract class FluidBase {
             XMLStreamWriter ostream,
             "The tag to write"
             String tag,
-            "The indentation level. If positive, write a newline before indenting; if zero,
-             write a default-namespace declaration."
+            "The indentation level. If positive, write a newline before indenting; if
+             zero, write a default-namespace declaration."
             Integer indentation,
             "Whether to automatically close the tag"
             Boolean leaf) {

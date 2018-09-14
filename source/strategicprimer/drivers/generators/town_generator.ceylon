@@ -118,7 +118,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
         for (terrain in ["mountain", "forest", "plains", "ocean"]) {
             String file = "``terrain``_consumption";
              assert (exists tableContents =
-                     readFileContents(`module strategicprimer.drivers.generators`, "tables/``file``"));
+                     readFileContents(`module strategicprimer.drivers.generators`,
+	                     "tables/``file``"));
              MutableList<[Quantity, String, String]> inner =
                      ArrayList<[Quantity, String, String]>();
              for (line in tableContents.lines) {

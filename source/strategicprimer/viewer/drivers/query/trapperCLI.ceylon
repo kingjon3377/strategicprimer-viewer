@@ -81,9 +81,10 @@ shared class TrappingCLI() satisfies SimpleDriver {
     Integer handleCommand(
             "The model."
             IDriverModel model,
-            "The animals generated from the tile and the surrounding tiles, with their home
-             locations."
-            Queue<Point->Animal|AnimalTracks|HuntingModel.NothingFound> fixtures, ICLIHelper cli,
+            "The animals generated from the tile and the surrounding tiles, with their
+             home locations."
+            Queue<Point->Animal|AnimalTracks|HuntingModel.NothingFound> fixtures,
+            ICLIHelper cli,
             "The command to handle"
             TrapperCommand command,
             "If true, we're dealing with *fish* traps, which have different costs"
@@ -91,8 +92,9 @@ shared class TrappingCLI() satisfies SimpleDriver {
             "Method to add animal traces to player maps"
             Anything(AnimalTracks) tracksHandler) {
         switch (command)
-        case (TrapperCommand.check){
-            <Point->Animal|AnimalTracks|HuntingModel.NothingFound>? top = fixtures.accept();
+        case (TrapperCommand.check) {
+            <Point->Animal|AnimalTracks|HuntingModel.NothingFound>? top =
+                    fixtures.accept();
             if (!top exists) {
                 cli.println("Ran out of results");
                 return runtime.maxArraySize;
@@ -109,19 +111,22 @@ shared class TrappingCLI() satisfies SimpleDriver {
                 return (fishing) then 5 else 10;
             } else {
                 cli.println("Found either ``item.kind`` or evidence of it escaping.");
-                Integer num = cli.inputNumber("How long to check and deal with the animal? ");
+                Integer num =
+                        cli.inputNumber("How long to check and deal with the animal? ");
                 Integer retval;
                 if (cli.inputBooleanInSeries("Handle processing now?")) {
                     Integer mass = cli.inputNumber("Weight of meat in pounds: ");
-                    Integer hands = cli.inputNumber("# of workers processing this carcass: ");
-                    retval = num + round(HuntingModel.processingTime(mass) / hands).integer;
+                    Integer hands =
+                            cli.inputNumber("# of workers processing this carcass: ");
+                    retval = num +
+                        round(HuntingModel.processingTime(mass) / hands).integer;
                 } else {
                     retval = num;
                 }
                 if (cli.inputBooleanInSeries(
                         "Reduce animal group population of ``item.population``?")) {
-                    Integer count = Integer.smallest(cli.inputNumber("How many animals to remove?"),
-                        item.population);
+                    Integer count = Integer.smallest(
+                        cli.inputNumber("How many animals to remove?"), item.population);
                     if (count > 0) {
                         {IMutableMapNG*} allMaps;
                         if (is IMultiMapModel model) {
@@ -131,7 +136,8 @@ shared class TrappingCLI() satisfies SimpleDriver {
                         }
                         for (map in allMaps) {
                             if (exists population = map.fixtures.get(loc)
-                                        .narrow<Animal>().find(matchingValue(item.id, Animal.id)),
+                                        .narrow<Animal>().find(matchingValue(item.id,
+                                            Animal.id)),
                                     population.population > 0) {
                                 map.removeFixture(loc, population);
                                 Integer remaining = population.population - count;
@@ -183,7 +189,8 @@ shared class TrappingCLI() satisfies SimpleDriver {
         while (minutes > 0, exists command = cli.chooseFromList(commands,
                 "What should the ``name`` do next?", "Oops! No commands",
                 "Next action: ", false).item) {
-            minutes -= handleCommand(model, fixtures, cli, command, fishing, addTracksToMaps);
+            minutes -= handleCommand(model, fixtures, cli, command, fishing,
+                addTracksToMaps);
             cli.println("``inHours(minutes)`` remaining");
             if (command == TrapperCommand.quit) {
                 break;

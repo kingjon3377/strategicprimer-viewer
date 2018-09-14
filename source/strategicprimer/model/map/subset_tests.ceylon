@@ -95,7 +95,8 @@ object subsetTests {
     test
     shared void testFortressSubset() {
         Integer fortId = 1;
-        Fortress firstFort = Fortress(PlayerImpl(1, "one"), "fOne", fortId, TownSize.small);
+        Fortress firstFort = Fortress(PlayerImpl(1, "one"), "fOne", fortId,
+            TownSize.small);
         requireMatching(firstFort,
             Fortress(PlayerImpl(2, "two"), "fOne", fortId, TownSize.small), "same owner");
         requireMatching(firstFort,
@@ -103,7 +104,8 @@ object subsetTests {
         requireMatching(firstFort,
             Fortress(PlayerImpl(1, "one"), "fOne", 3, TownSize.small),
             "identity or ID equality");
-        Fortress fifthFort = Fortress(PlayerImpl(1, "one"), "fOne", fortId, TownSize.small);
+        Fortress fifthFort = Fortress(PlayerImpl(1, "one"), "fOne", fortId,
+            TownSize.small);
         fifthFort.addMember(Unit(PlayerImpl(2, "two"), "unit_type", "unit_name", 4));
         assertIsSubset<Fortress, IFixture>(fifthFort, firstFort,
             "Fortress without is a subset of fortress with unit");
@@ -214,7 +216,8 @@ object subsetTests {
     "Test interaction between isSubset() and copy()."
     test
     shared void testSubsetsAndCopy() {
-        IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), -1);
+        IMutableMapNG firstMap = SPMapNG(MapDimensionsImpl(2, 2, 2),
+            PlayerCollection(), -1);
         firstMap.baseTerrain[Point(0, 0)] = TileType.jungle;
         IMapNG zero = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), -1);
         assertIsSubset(firstMap, zero, "zero is a subset of one before copy");
@@ -245,7 +248,8 @@ object subsetTests {
         assertIsSubset(uOne, uOne.copy(true), "zeroed clone is subset of original");
     }
 
-    "Test [[AbstractTown]] subset calculations, specifically in the [[Town]] instantiation."
+    "Test [[AbstractTown]] subset calculations, specifically in the [[Town]]
+     instantiation."
     test
     shared void testTownSubsets(enumeratedParameter(`class TownSize`) TownSize size,
             enumeratedParameter(`class TownStatus`) TownStatus status) {
@@ -307,10 +311,12 @@ object subsetTests {
         assertNotSubset(second, first,
             "Having population details when we don't does break subset");
         second.population = CommunityStats(10);
-        assertNotSubset(first, second, "Having non-subset population details breaks subset");
+        assertNotSubset(first, second,
+            "Having non-subset population details breaks subset");
     }
 
-    "Test [[AbstractTown]] subset calculations, specifically in the [[City]] instantiation."
+    "Test [[AbstractTown]] subset calculations, specifically in the [[City]]
+     instantiation."
     test
     shared void testCitySubsets(enumeratedParameter(`class TownSize`) TownSize size,
             enumeratedParameter(`class TownStatus`) TownStatus status) {
@@ -372,13 +378,15 @@ object subsetTests {
         assertNotSubset(second, first,
             "Having population details when we don't does break subset");
         second.population = CommunityStats(10);
-        assertNotSubset(first, second, "Having non-subset population details breaks subset");
+        assertNotSubset(first, second,
+            "Having non-subset population details breaks subset");
     }
 
     "Test [[AbstractTown]] subset calculations, specifically in the [[Fortification]]
      instantiation."
     test
-    shared void testFortificationSubsets(enumeratedParameter(`class TownSize`) TownSize size,
+    shared void testFortificationSubsets(
+            enumeratedParameter(`class TownSize`) TownSize size,
             enumeratedParameter(`class TownStatus`) TownStatus status) {
         TownSize differentSize;
         TownStatus differentStatus;
@@ -438,6 +446,7 @@ object subsetTests {
         assertNotSubset(second, first,
             "Having population details when we don't does break subset");
         second.population = CommunityStats(10);
-        assertNotSubset(first, second, "Having non-subset population details breaks subset");
+        assertNotSubset(first, second,
+            "Having non-subset population details breaks subset");
     }
 }

@@ -24,9 +24,9 @@ import strategicprimer.model.xmlio {
 object dbMapReader {
     {MapContentsReader*} readers = [dbPlayerHandler, dbCacheHandler, dbExplorableHandler,
         dbFieldHandler, dbFortressHandler, dbUnitHandler, dbGroundHandler, dbGroveHandler,
-        dbImmortalHandler, dbImplementHandler, dbMineralHandler, dbMineHandler, dbPortalHandler,
-        dbShrubHandler, dbSimpleTerrainHandler, dbTextHandler, dbTownHandler, dbVillageHandler,
-        dbResourcePileHandler, dbAnimalHandler,
+        dbImmortalHandler, dbImplementHandler, dbMineralHandler, dbMineHandler,
+	    dbPortalHandler, dbShrubHandler, dbSimpleTerrainHandler, dbTextHandler,
+	    dbTownHandler, dbVillageHandler, dbResourcePileHandler, dbAnimalHandler,
         dbCommunityStatsHandler, dbWorkerHandler, dbAdventureHandler, dbForestHandler];
     "If [[field]] is is an Integer and either 0 or 1, which is how SQLite stores Boolean
      values, convert to the equivalent Boolean and return that; otherwise, return the
@@ -51,11 +51,12 @@ object dbMapReader {
         assert (exists metadata = db.Select(
             """SELECT version, rows, columns, current_turn FROM metadata LIMIT 1""")
                 .execute().first, is Integer version = metadata["version"],
-            is Integer rows = metadata["rows"],
-            is Integer columns = metadata["columns"], is Integer turn = metadata["current_turn"]);
+            is Integer rows = metadata["rows"], is Integer columns = metadata["columns"],
+	        is Integer turn = metadata["current_turn"]);
         IMutablePlayerCollection players = PlayerCollection();
         log.trace("About to read players");
-        for (row in db.Select("""SELECT id, codename, current FROM players""").Results()) {
+        for (row in db.Select("""SELECT id, codename, current FROM players""")
+		        .Results()) {
             assert (is Integer id = row["id"], is String codename = row["codename"],
                 is Boolean current = databaseBoolean(row["current"]));
             MutablePlayer player = PlayerImpl(id, codename);

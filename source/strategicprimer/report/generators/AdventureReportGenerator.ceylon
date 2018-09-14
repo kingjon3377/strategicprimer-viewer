@@ -38,8 +38,8 @@ shared class AdventureReportGenerator(
         writeMap(ostream, adventures, defaultFormatter(fixtures, map));
     }
     "Produce a more verbose sub-report on an adventure hook."
-    shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
-        Anything(String) ostream, AdventureFixture item, Point loc) {
+    shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
+		    IMapNG map, Anything(String) ostream, AdventureFixture item, Point loc) {
         fixtures.remove(item.id);
         ostream("``item.briefDescription`` at ``loc``: ``item
             .fullDescription`` ``distCalculator.distanceString(loc)``");

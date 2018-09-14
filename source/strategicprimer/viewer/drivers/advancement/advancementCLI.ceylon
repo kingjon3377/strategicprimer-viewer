@@ -57,8 +57,8 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
     void advanceJob(IJob job, ICLIHelper cli, Boolean allowExpertMentoring) {
         MutableList<ISkill> skills = ArrayList{ elements = job; };
         while (true) {
-            value chosen = cli.chooseFromList(skills, "Skills in Job:", "No existing Skills.",
-                "Skill to advance: ", false);
+            value chosen = cli.chooseFromList(skills, "Skills in Job:",
+	            "No existing Skills.", "Skill to advance: ", false);
             ISkill skill;
             if (exists temp = chosen.item) {
                 skill = temp;
@@ -103,7 +103,8 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
         }
     }
     "Let the user add experience to a worker."
-    void advanceSingleWorker(IWorker worker, ICLIHelper cli, Boolean allowExpertMentoring) {
+    void advanceSingleWorker(IWorker worker, ICLIHelper cli,
+		    Boolean allowExpertMentoring) {
         MutableList<IJob> jobs = ArrayList { elements = worker; };
         while (true) {
             value chosen = cli.chooseFromList(jobs,
@@ -151,7 +152,8 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
                         String replacementName;
                         Integer->ISkill? choice = cli.chooseFromList(
                             job.select(not(matchingValue("miscellaneous", ISkill.name))),
-                            "Skill to gain level in:", "No other skill", "Chosen skill:", false);
+                            "Skill to gain level in:", "No other skill", "Chosen skill:",
+	                        false);
                         if (exists chosenSkill = choice.item) {
                             replacement = chosenSkill;
                             replacement.addHours(100, 0);
@@ -168,7 +170,8 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
                         if (count == 1) {
                             cli.println("``worker.name`` gained a level in ``name``");
                         } else {
-                            cli.println("``worker.name`` gained ``count`` levels in ``name``");
+                            cli.println(
+	                            "``worker.name`` gained ``count`` levels in ``name``");
                         }
                     }
                 } else {
@@ -177,8 +180,8 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
             }
         }
     }
-    "Ensure that there is a Job by the given name in each worker, and return a collection of
-     those Jobs."
+    "Ensure that there is a Job by the given name in each worker, and return a
+     collection of those Jobs."
     {IJob*} getWorkerJobs(String jobName, IWorker* workers) =>
             workers.map(shuffle(IWorker.getJob)(jobName)).distinct;
     "Let the user add experience in a given Job to all of a list of workers."
@@ -220,8 +223,8 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
         MutableList<IWorker> workers = ArrayList { elements = unit.narrow<IWorker>(); };
         if (cli.inputBooleanInSeries("Add experience to workers individually? ")) {
             while (!workers.empty, exists chosen = cli.chooseFromList(workers,
-                    "Workers in unit:", "No unadvanced workers remain.", "Chosen worker: ",
-                    false).item) {
+                    "Workers in unit:", "No unadvanced workers remain.",
+		            "Chosen worker: ", false).item) {
                 workers.remove(chosen);
                 advanceSingleWorker(chosen, cli, allowExpertMentoring);
                 if (!cli.inputBoolean("Choose another worker?")) {
@@ -233,8 +236,8 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
         } else {
             MutableList<IJob> jobs = ArrayList { elements = ProxyWorker.fromUnit(unit); };
             while (true) {
-                value chosen = cli.chooseFromList(jobs, "Jobs in workers:", "No existing jobs.",
-                    "Job to advance: ", false);
+                value chosen = cli.chooseFromList(jobs, "Jobs in workers:",
+	                "No existing jobs.", "Job to advance: ", false);
                 IJob job;
                 if (exists temp = chosen.item) {
                     job = temp;
@@ -265,7 +268,8 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
     void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli,
             Boolean allowExpertMentoring) {
         MutableList<IUnit> units = ArrayList {
-            elements = model.getUnits(player).filter((unit) => !unit.narrow<IWorker>().empty); };
+            elements = model.getUnits(player).filter(
+			            (unit) => !unit.narrow<IWorker>().empty); };
         while (!units.empty, exists chosen = cli.chooseFromList(units,
                 "``player.name``'s units:", "No unadvanced units remain.", "Chosen unit:",
                 false).item) {

@@ -164,7 +164,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         variable [Fortress, Point]? temp = null;
         for (point->fixture in narrowedStream<Point, Fortress>(map.fixtures)
                 .filter(matchingPredicate(matchingValue(unit.owner.playerId,
-                    Player.playerId), compose(Fortress.owner, Entry<Point, Fortress>.item)))) {
+                    Player.playerId),
+                compose(Fortress.owner, Entry<Point, Fortress>.item)))) {
             if ("HQ" == fixture.name) {
                 addUnitAtLocation(unit, point);
                 return;

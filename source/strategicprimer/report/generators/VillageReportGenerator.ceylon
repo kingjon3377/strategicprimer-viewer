@@ -44,7 +44,8 @@ shared class VillageReportGenerator(
             villageComparator);
         MutableMap<Player, MutableHeadedMap<Village, Point>> others =
                 HashMap<Player, MutableHeadedMap<Village, Point>>();
-        for ([loc, village] in fixtures.items.narrow<[Point, Village]>().sort(pairComparator)) {
+        for ([loc, village] in fixtures.items.narrow<[Point, Village]>()
+		        .sort(pairComparator)) {
             if (village.owner == currentPlayer) {
                 own[village] = loc;
             } else if (village.owner.independent) {
@@ -78,7 +79,8 @@ shared class VillageReportGenerator(
     }
     "Produce the (very brief) report for a particular village (we're probably in the
      middle of a bulleted list, but we don't assume that)."
-    shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual void produceSingle(
+		    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Village item, Point loc) {
         fixtures.remove(item.id);
         ostream("At ``loc``: ``item.name``, a(n) ``item.race`` village, ");
@@ -99,7 +101,8 @@ shared class VillageReportGenerator(
         IReportNode independents =
                 SectionListReportNode(5, "Villages you think are independent:");
         MutableMap<Player, IReportNode> othersMap = HashMap<Player, IReportNode>();
-        for ([loc, village] in fixtures.items.narrow<[Point, Village]>().sort(pairComparator)) {
+        for ([loc, village] in fixtures.items.narrow<[Point, Village]>()
+		        .sort(pairComparator)) {
             Player owner = village.owner;
             IReportNode parent;
             if (owner == currentPlayer) {

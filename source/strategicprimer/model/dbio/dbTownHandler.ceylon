@@ -46,8 +46,8 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
            );"""
     ];
     shared actual void write(Sql db, AbstractTown obj, Point context) {
-        db.Insert("""INSERT INTO towns (row, column, id, kind, status, size, dc, name, owner,
-                        image, portrait, population)
+        db.Insert("""INSERT INTO towns (row, column, id, kind, status, size, dc, name,
+	                     owner, image, portrait, population)
                      VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""")
                 .execute(context.row, context.column, obj.id, obj.kind, obj.status.string,
                     obj.townSize.string, obj.dc, obj.name, obj.owner.playerId, obj.image,
@@ -62,9 +62,10 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
             is String statusString = dbRow["status"],
             is TownStatus status = TownStatus.parse(statusString),
-            is String sizeString = dbRow["size"], is TownSize size = TownSize.parse(sizeString),
-            is Integer dc = dbRow["dc"], is String name = dbRow["name"],
-            is Integer ownerNum = dbRow["owner"], is String|SqlNull image = dbRow["image"],
+            is String sizeString = dbRow["size"],
+	        is TownSize size = TownSize.parse(sizeString), is Integer dc = dbRow["dc"],
+	        is String name = dbRow["name"], is Integer ownerNum = dbRow["owner"],
+	        is String|SqlNull image = dbRow["image"],
             is String|SqlNull portrait = dbRow["portrait"],
             is Integer|SqlNull population = dbRow["population"]);
         AbstractTown town;

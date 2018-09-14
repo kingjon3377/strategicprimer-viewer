@@ -83,8 +83,8 @@ object unitMemberHandler extends FluidBase() {
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
                 if ("skill" == event.name.localPart.lowercased) {
-                    retval.addSkill(readSkill(event, element.name, stream, players, warner,
-                        idFactory));
+                    retval.addSkill(readSkill(event, element.name, stream, players,
+	                    warner, idFactory));
                 } else {
                     throw UnwantedChildException.listingExpectedTags(element.name, event,
                         Singleton("skill"));
@@ -149,7 +149,8 @@ object unitMemberHandler extends FluidBase() {
         }
     }
 
-    shared void writeStats(XMLStreamWriter ostream, WorkerStats obj, Integer indentation) {
+    shared void writeStats(XMLStreamWriter ostream, WorkerStats obj,
+		    Integer indentation) {
         writeTag(ostream, "stats", indentation, true);
         writeAttributes(ostream, "hp"->obj.hitPoints, "max"->obj.maxHitPoints,
             "str"->obj.strength, "dex"->obj.dexterity, "con"->obj.constitution,

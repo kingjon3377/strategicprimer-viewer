@@ -155,7 +155,8 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
             Graphics pen = image.createGraphics();
             Coordinate dimensions = Coordinate(tileSize, tileSize);
             for (point in map.locations) {
-                if (testRowSpan.contains(point.row) && testColSpan.contains(point.column)) {
+                if (testRowSpan.contains(point.row) &&
+                        testColSpan.contains(point.column)) {
                     helper.drawTile(pen, map, point,
                         Coordinate(point.row * tileSize, point.column * tileSize),
                         dimensions);
@@ -181,8 +182,8 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
     Boolean dummyFilter(TileFixture? fix) => true;
     {[TileDrawHelper, String]*} helpers = [ [CachingTileDrawHelper(), "Caching:"],
         [directTileDrawHelper, "Direct:"],
-        [Ver2TileDrawHelper(dummyObserver, dummyFilter, Singleton(FixtureMatcher(dummyFilter,
-            "test"))), "Ver 2:"]
+        [Ver2TileDrawHelper(dummyObserver, dummyFilter,
+            Singleton(FixtureMatcher(dummyFilter, "test"))), "Ver 2:"]
     ];
     MutableMap<[String, String, String], Accumulator> results =
             HashMap<[String, String, String], Accumulator>();
@@ -205,7 +206,8 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
         for ([testDesc, test] in tests) {
             cli.println("``testDesc``:");
             for ([testCase, caseDesc] in helpers) {
-                Accumulator accumulator = getResultsAccumulator(fileName, caseDesc, testDesc);
+                Accumulator accumulator = getResultsAccumulator(fileName, caseDesc,
+                    testDesc);
                 accumulator.add(printStats(caseDesc, test(testCase, map, repetitions,
                     scaleZoom(ViewerModel.defaultZoomLevel, map.dimensions.version)),
                 repetitions));
@@ -228,8 +230,8 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
             shortDescription = "Test drawing performance.";
             longDescription =
                 """Test the performance of the TileDrawHelper classes---which do the heavy
-                   lifting of rendering the map in the viewer---using a variety of automated
-                   tests.""";
+                   lifting of rendering the map in the viewer---using a variety of
+                   automated tests.""";
             includeInCLIList = true;
             includeInGUIList = false;
             supportedOptionsTemp = ["--report=out.csv"];
@@ -262,7 +264,7 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
             }
             else {
                 cli.println(
-                    "Specified file to write details to is present but not a regular file");
+                    "Specified file to write to is present but not a regular file");
                 return;
             }
             try (writer = outFile.Overwriter()) {

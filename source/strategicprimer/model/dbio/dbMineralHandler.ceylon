@@ -43,7 +43,8 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
         }
         db.Insert(
             """INSERT INTO minerals (row, column, type, id, kind, exposed, dc, image)
-               VALUES(?, ?, ?, ?, ?, ?, ?, ?);""").execute(context.row, context.column, type,
+               VALUES(?, ?, ?, ?, ?, ?, ?, ?);""")
+	        .execute(context.row, context.column, type,
                     obj.id, obj.kind, exposed, obj.dc, obj.image);
     }
     void readMineralVein(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
@@ -70,7 +71,8 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
     }
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
         handleQueryResults(db, warner, "stone deposits", curry(readStoneDeposit)(map),
-            """SELECT row, column, id, kind, dc, image FROM minerals WHERE type = 'stone'""");
+            """SELECT row, column, id, kind, dc, image FROM minerals
+               WHERE type = 'stone'""");
         handleQueryResults(db, warner, "mineral veins", curry(readMineralVein)(map),
             """SELECT row, column, id, kind, exposed, dc, image FROM minerals
                WHERE type = 'mineral'""");

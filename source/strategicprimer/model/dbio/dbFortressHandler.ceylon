@@ -42,8 +42,9 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
     void readFortress(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer ownerId = dbRow["owner"], is String name = dbRow["name"],
-            is String sizeString = dbRow["size"], is TownSize size = TownSize.parse(sizeString),
-            is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"],
+            is String sizeString = dbRow["size"],
+            is TownSize size = TownSize.parse(sizeString), is Integer id = dbRow["id"],
+            is String|SqlNull image = dbRow["image"],
             is String|SqlNull portrait = dbRow["portrait"]);
         value fortress = Fortress(map.players.getPlayer(ownerId), name, id, size);
         if (is String image) {

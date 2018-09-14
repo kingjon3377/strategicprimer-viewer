@@ -88,7 +88,8 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
         }
     }
     if (is HasMutableKind fixture) {
-        addMenuItem(JMenuItem("Change kind", KeyEvent.vkK), silentListener(changeKindHandler));
+        addMenuItem(JMenuItem("Change kind", KeyEvent.vkK),
+	        silentListener(changeKindHandler));
     } else {
         addDisabledMenuItem(JMenuItem("Change kind", KeyEvent.vkK));
     }

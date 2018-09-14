@@ -57,7 +57,8 @@ shared class UnwantedChildException extends SPFormatException {
             "The current tag"
             QName parent,
             "The unwanted child"
-            StartElement child, "What could have appeared here without triggering the error"
+            StartElement child,
+		    "What could have appeared here without triggering the error"
             {String*} expected) extends SPFormatException(
                 "Unexpected child ``child.name.localPart`` in tag ``parent.localPart
                     ``, expecting one of the following: ``", ".join(expected)``",

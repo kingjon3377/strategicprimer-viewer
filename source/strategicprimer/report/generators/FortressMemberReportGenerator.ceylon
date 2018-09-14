@@ -39,7 +39,8 @@ shared class FortressMemberReportGenerator(
         extends AbstractReportGenerator<FortressMember>(comp, dimensions, hq) {
     "Produces a sub-report on a resource or piece of equipment. All fixtures referred
      to in this report are removed from the collection."
-    shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+    shared actual void produceSingle(
+		    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, FortressMember item, Point loc) {
         assert (is IUnit|ResourcePile|Implement item);
         if (is IUnit item) {

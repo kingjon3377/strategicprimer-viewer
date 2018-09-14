@@ -7,7 +7,8 @@ shared Boolean(Type) matchingPredicate<Type, Field>(Boolean(Field) predicate,
  to each object and returns true iff it produces the expected value. This is intended to
  be used with [[Iterable.filter]] and the like."
 shared Boolean(Type) matchingValue<Type, Field>(Field expected, Field(Type) field)
-        given Type satisfies Object => matchingPredicate(curry(anythingEqual)(expected), field);
+        given Type satisfies Object =>
+            matchingPredicate(curry(anythingEqual)(expected), field);
 "Given an [[Entry]], return true iff its key and item are the given types.
 
  Using [[Iterable.narrow]] on a stream of [[tuples|Tuple]] works, but doing so on a stream

@@ -107,7 +107,8 @@ object appChooserState {
         MutableMap<String, ISPDriver> cliCache = HashMap<String, ISPDriver>();
         MutableMap<String, ISPDriver> guiCache = HashMap<String, ISPDriver>();
         {String*} reserved = ["-g", "-c", "--gui", "--cli"];
-        MutableMultimap<String, ISPDriver> conflicts = ArrayListMultimap<String, ISPDriver>();
+        MutableMultimap<String, ISPDriver> conflicts =
+		        ArrayListMultimap<String, ISPDriver>();
         void addToCache(ISPDriver* drivers) {
             for (driver in drivers) {
                 MutableMap<String, ISPDriver> cache;
@@ -126,7 +127,8 @@ object appChooserState {
                         conflicts.put(option, driver);
                     } else if (exists existing = cache[option]) {
                         log.warn("Invocation option conflict for '``option``' between '``
-                            driver.usage.shortDescription``' and '``existing.usage.shortDescription``'");
+                            driver.usage.shortDescription``' and '``
+	                        existing.usage.shortDescription``'");
                         conflicts.put(option, driver);
                         conflicts.put(option, existing);
                         cache.remove(option);
@@ -148,7 +150,8 @@ object appChooserState {
                 .resourceByPath("invocation")) {
             mainInvocation = invocationResource.textContent().trimmed;
         } else {
-            mainInvocation = "ceylon --cwd=. run `` `module strategicprimer.viewer`.name```";
+            mainInvocation =
+		            "ceylon --cwd=. run `` `module strategicprimer.viewer`.name```";
         }
         builder.append(mainInvocation);
         if (usage.graphical) {
@@ -266,9 +269,11 @@ class AppStarter() {
                 {String+} broken = arg.split('='.equals, true, false);
                 currentOptions.addOption(broken.first, broken.rest.reduce<String>(
                     (String partial, String element) =>
-                            if (partial.empty) then element else "``partial``=``element``")
+                            if (partial.empty) then element
+	                            else "``partial``=``element``")
                 else "");
-                log.trace("User specified ``broken.first``=``broken.rest.first else ""``");
+                log.trace(
+	                "User specified ``broken.first``=``broken.rest.first else ""``");
             } else if (!gui, driverCache[0].defines(arg.lowercased)) {
                 log.trace("User specified app-choosing option ``arg`` while in CLI mode");
                 if (exists temp = currentDriver) {
@@ -285,7 +290,7 @@ class AppStarter() {
                 currentDriver = driverCache[1][arg.lowercased];
             } else if (driverCache[0].defines(arg.lowercased)) {
                 log.warn("We're in GUI mode, but CLI-only app specified");
-                log.trace("User specified CLI-app-choosing option ``arg`` while in GUI mode");
+                log.trace("User specified CLI app ``arg`` while in GUI mode");
                 if (exists temp = currentDriver) {
                     log.trace("Starting previously chosen GUI app.");
                     startChosenDriver(temp, currentOptions.copy());
@@ -293,7 +298,7 @@ class AppStarter() {
                 currentDriver = driverCache[0][arg.lowercased];
             } else if (driverCache[1].defines(arg.lowercased)) {
                 log.warn("We're in CLI mode, but GUI-only app specified");
-                log.trace("User specified GUI-app-choosing option ``arg`` while in CLI mode.");
+                log.trace("User specified GUI app ``arg`` while in CLI mode.");
                 if (exists temp = currentDriver) {
                     log.trace("Starting previously chosen CLI app.");
                     startChosenDriver(temp, currentOptions.copy());
@@ -316,9 +321,11 @@ class AppStarter() {
             } else {
                 log.trace("No driver selected, so giving choices.");
                 process.writeLine("Strategic Primer assistive programs suite");
-                process.writeLine("No app specified; use one of the following invocations:");
+                process.writeLine(
+	                "No app specified; use one of the following invocations:");
                 process.writeLine();
-                for (driver in driverCache[0].chain(driverCache[1]).map(Entry.item).distinct) {
+                for (driver in driverCache[0].chain(driverCache[1])
+		                .map(Entry.item).distinct) {
                     value lines = appChooserState.usageMessage(driver.usage,
                         options.getArgument("--verbose") == "true").lines;
                     String invocationExample = lines.first.replace("Usage: ", "");
@@ -336,8 +343,8 @@ class AppStarter() {
             if (gui) {
                 try {
                     SwingUtilities.invokeLater(
-                        defer(shuffle(compose(SPFrame.showWindow, appChooserFrame))(), [cli,
-                            currentOptionsTyped, others]));
+                        defer(shuffle(compose(SPFrame.showWindow, appChooserFrame))(),
+	                        [cli, currentOptionsTyped, others]));
                 } catch (DriverFailedException except) {
                     log.fatal(except.message, except);
                     SwingUtilities.invokeLater(defer(showErrorDialog, [null,
@@ -345,7 +352,8 @@ class AppStarter() {
                 }
             } else {
                 if (exists chosenDriver = cli.chooseFromList(
-                        driverCache.first.items.distinct.filter(includeInCLIList).sequence(),
+                        driverCache.first.items.distinct.filter(includeInCLIList)
+	                        .sequence(),
                         "CLI apps available:", "No applications available",
                         "App to start: ", true).item) {
                     startCatchingErrors(chosenDriver, cli, options, *others);

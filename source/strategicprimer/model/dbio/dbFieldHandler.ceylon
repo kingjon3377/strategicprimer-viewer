@@ -37,8 +37,8 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>()
            );"""
     ];
     shared actual void write(Sql db, Meadow obj, Point context) {
-        db.Insert("""INSERT INTO fields (row, column, id, type, kind, cultivated, status, acres,
-                         image)
+        db.Insert("""INSERT INTO fields (row, column, id, type, kind, cultivated, status,
+                         acres, image)
                      VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""")
                 .execute(context.row, context.column, obj.id,
                     (obj.field) then "field" else "meadow", obj.kind, obj.cultivated,
@@ -51,7 +51,8 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>()
             is Boolean cultivated = dbMapReader.databaseBoolean(dbRow["cultivated"]),
             is String statusString = dbRow["status"],
             is FieldStatus status = FieldStatus.parse(statusString),
-            is String acresString = dbRow["acres"], is String|SqlNull image = dbRow["image"]);
+            is String acresString = dbRow["acres"],
+            is String|SqlNull image = dbRow["image"]);
         Number<out Anything> acres;
         if (is Integer num = Integer.parse(acresString)) {
             acres = num;

@@ -112,8 +112,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     "Ask the user for directions the unit should move until it runs out of MP or the user
       decides to quit."
     todo("Inline back into [[ExplorationCLI]]?")
-    // No need to set the 'modified' flag anywhere in this method, as ExplorationModel.move()
-    // always sets it.
+    // No need to set the 'modified' flag anywhere in this method, as
+    // ExplorationModel.move() always sets it.
     shared void moveUntilDone() {
         if (exists mover = model.selectedUnit) {
             cli.println("Details of the unit:");
@@ -145,7 +145,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                             stopForIndieVillages = cli.inputBooleanInSeries(
                                 "Stop for instructions at independent villages?");
                             stopForOtherVillages = cli.inputBooleanInSeries(
-                                "Stop for instructions at villages sworn to other players?");
+                                "Stop for instructions at other players' villages?");
                             stopForYourVillages = cli.inputBooleanInSeries(
                                 "Stop for instructons at villages sworn to you?");
                             stopForPlayerUnits = cli.inputBooleanInSeries(
@@ -295,8 +295,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
 }
 
 class ExplorationAutomationConfig(Player player, Boolean stopForForts,
-        Boolean stopForActiveTowns, Boolean stopForInactiveTowns, Boolean stopForYourVillages,
-        Boolean stopForIndieVillages, Boolean stopForOtherVillages, Boolean stopForPlayerUnits,
+        Boolean stopForActiveTowns, Boolean stopForInactiveTowns,
+        Boolean stopForYourVillages, Boolean stopForIndieVillages,
+        Boolean stopForOtherVillages, Boolean stopForPlayerUnits,
         Boolean stopForIndieUnits, Boolean stopForImmortals) {
     shared Boolean stopAtPoint(ICLIHelper cli, IMapNG map, Point point) {
         //for (fixture in map.fixtures[point]) { // TODO: syntax sugar
@@ -317,27 +318,33 @@ class ExplorationAutomationConfig(Player player, Boolean stopForForts,
                 }
             } else if (is Village fixture) {
                 if (fixture.owner == player, stopForYourVillages) {
-                    cli.println("There is one of your villages here, so the explorer stops.");
+                    cli.println(
+                        "There is one of your villages here, so the explorer stops.");
                     return true;
                 } else if (fixture.owner.independent, stopForIndieVillages) {
-                    cli.println("There is an independent village here, so the explorer stops.");
+                    cli.println(
+                        "There is an independent village here, so the explorer stops.");
                     return true;
                 } else if (!fixture.owner.independent, fixture.owner != player,
                         stopForOtherVillages) {
-                    cli.println("There is another player's village here, so the explorer stops.");
+                    cli.println(
+                        "There is another player's village here, so the explorer stops.");
                     return true;
                 }
             } else if (is IUnit fixture) {
                 if (fixture.owner.independent, stopForIndieUnits) {
-                    cli.println("There is an independent unit here, so the explorer stops.");
+                    cli.println(
+                        "There is an independent unit here, so the explorer stops.");
                     return true;
-                } else if (!fixture.owner.independent, fixture.owner != player, stopForPlayerUnits) {
+                } else if (!fixture.owner.independent, fixture.owner != player,
+                        stopForPlayerUnits) {
                     cli.println("There is a unit belonging to ``
                         fixture.owner`` here, so the explorer stops.");
                     return true;
                 }
             } else if (is Immortal fixture, stopForImmortals) {
-                cli.print("There is a(n) ``fixture.shortDescription`` here, so the explorer stops.");
+                cli.print("There is a(n) ``fixture.shortDescription
+                        `` here, so the explorer stops.");
                 return true;
             }
         }

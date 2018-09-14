@@ -45,7 +45,7 @@ shared annotation RandomGenerationAnnotation randomlyGenerated(Integer count,
             => RandomGenerationAnnotation(count, max);
 
 shared final annotation class RandomGenerationAnnotation(Integer count, Integer max)
-        satisfies OptionalAnnotation<RandomGenerationAnnotation, FunctionOrValueDeclaration>
+        satisfies OptionalAnnotation<RandomGenerationAnnotation,FunctionOrValueDeclaration>
         & ArgumentProvider {
     shared actual {Anything*} arguments(ArgumentProviderContext context) =>
             // TODO: If context specifies types, return appropriate types for non-Integer args

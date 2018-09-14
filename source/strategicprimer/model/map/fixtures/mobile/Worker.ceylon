@@ -27,7 +27,8 @@ import ceylon.collection {
  unit, not as a top-level tag."
 todo("Convert some other [[MobileFixture]]s similarly?")
 shared class Worker satisfies IWorker&HasPortrait {
-    "Whether neither of two collections of Jobs contains a nonempty Job the other does not."
+    "Whether neither of two collections of Jobs contains a nonempty Job the other does
+     not."
     static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
             set(first.filter(matchingValue(false, IJob.emptyJob))) ==
             set(second.filter(matchingValue(false, IJob.emptyJob)));

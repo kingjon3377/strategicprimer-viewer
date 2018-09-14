@@ -140,7 +140,8 @@ object pointIterationTests {
         assertEquals(actual, expected, "Iterator produced points in expected order");
     }
 
-    """Test searching forwards, vertically, from the "selection" the viewer starts with."""
+    """Test searching forwards, vertically, from the "selection" the viewer starts
+       with."""
     test
     shared void testInitialSelection() {
         Point[] expected = [Point(0, 0), Point(1, 0),
@@ -160,7 +161,8 @@ object pointIterationTests {
             Point(1, 1), Point(1, 0),
             Point(0, 2), Point(0, 1),
             Point(0, 0)];
-        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, true).sequence();
+        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, true)
+            .sequence();
         assertEquals(actual, expected, "Iterator produced points in expected order");
     }
 
@@ -171,7 +173,8 @@ object pointIterationTests {
             Point(0, 2), Point(2, 1), Point(1, 1),
             Point(0, 1), Point(2, 0), Point(1, 0),
             Point(0, 0)];
-        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, false).sequence();
+        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, false)
+            .sequence();
         assertEquals(actual, expected, "Iterator produced points in expected order");
     }
 }

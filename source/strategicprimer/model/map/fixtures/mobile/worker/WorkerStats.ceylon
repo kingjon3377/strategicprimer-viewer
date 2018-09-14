@@ -51,9 +51,11 @@ shared class WorkerStats {
             WorkerStats base,
             "A set of adjustments to add to those stats."
             WorkerStats adjustment) extends WorkerStats(hp, hp,
-                base.strength + adjustment.strength, base.dexterity + adjustment.dexterity,
+                base.strength + adjustment.strength,
+                base.dexterity + adjustment.dexterity,
                 base.constitution + adjustment.constitution,
-                base.intelligence + adjustment.intelligence, base.wisdom + adjustment.wisdom,
+                base.intelligence + adjustment.intelligence,
+                base.wisdom + adjustment.wisdom,
                 base.charisma + adjustment.charisma) {}
     "Given an RNG, produce a random set of stats, with HP set to 0."
     shared new random(Integer() rng)

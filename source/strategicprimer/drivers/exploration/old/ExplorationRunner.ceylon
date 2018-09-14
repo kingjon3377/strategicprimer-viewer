@@ -277,7 +277,8 @@ object explorationRunnerTests {
         assertEquals(runner.getPrimaryTree(point, TileType.borealForest, false, [],
             dimensions), "boreal_major_test", "primary tree test for boreal forest");
         assertEquals(runner.getPrimaryTree(point, TileType.temperateForest, false, [],
-            dimensions), "temperate_major_test", "primary tree test for temperate forest");
+            dimensions), "temperate_major_test",
+            "primary tree test for temperate forest");
         assertEquals(runner.getPrimaryTree(point, TileType.steppe, false,
             {Forest("kind", false, 3)}, dimensions), "boreal_second_test",
             "primary tree test for forest in steppe");
@@ -361,15 +362,16 @@ object explorationRunnerTests {
                """, "defaultResults in temperate forest");
     }
 
-    "Test recursive checking. Note that the method returns true if the table in question, or
-     one it references, does *not* exist."
+    "Test recursive checking. Note that the method returns true if the table in
+     question, or one it references, does *not* exist."
     test
     shared void testRecursiveCheck() {
         ExplorationRunner runner = ExplorationRunner();
         runner.loadTable("existent_table", ConstantTable("exists"));
         assertTrue(runner.recursiveCheck("non-existent-table"),
             "base case of non-existent table");
-        assertFalse(runner.recursiveCheck("existent_table"), "base case of existing table");
+        assertFalse(runner.recursiveCheck("existent_table"),
+            "base case of existing table");
         runner.loadTable("referent_one", ConstantTable("#existent_table#"));
         runner.loadTable("referent_two", ConstantTable("( #existent_table# )"));
         runner.loadTable("referent_three", QuadrantTable(1, "#referent_one#",
@@ -388,8 +390,10 @@ object explorationRunnerTests {
         ExplorationRunner runner = ExplorationRunner();
         assertFalse(runner.globalRecursiveCheck(), "recursive check with no tables");
         runner.loadTable("existent", ConstantTable("true_table"));
-        assertFalse(runner.globalRecursiveCheck(), "recursive check with only valid tables");
+        assertFalse(runner.globalRecursiveCheck(),
+            "recursive check with only valid tables");
         runner.loadTable("false_ref", ConstantTable("#false#"));
-        assertTrue(runner.globalRecursiveCheck(), "recursive check with an invalid table");
+        assertTrue(runner.globalRecursiveCheck(),
+            "recursive check with an invalid table");
     }
 }

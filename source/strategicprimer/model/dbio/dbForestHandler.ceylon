@@ -41,7 +41,8 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
             is Boolean rows = dbMapReader.databaseBoolean(dbRow["rows"]),
-            is String acresString = dbRow["acres"], is String|SqlNull image = dbRow["image"]);
+            is String acresString = dbRow["acres"],
+	        is String|SqlNull image = dbRow["image"]);
         Number<out Anything> acres;
         if (is Integer num = Integer.parse(acresString)) {
             acres = num;

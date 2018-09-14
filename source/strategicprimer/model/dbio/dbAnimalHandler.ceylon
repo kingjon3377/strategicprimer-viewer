@@ -54,8 +54,8 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
                image VARCHAR(255)
            );""",
         // We assume that animal tracks can't occur inside a unit or fortress, and ignore
-        // their 'domestication status', 'talking', 'born', and 'count'. We also follow the
-        // XML I/O framework in discarding their IDs.
+        // their 'domestication status', 'talking', 'born', and 'count'. We also follow
+	    // the XML I/O framework in discarding their IDs.
         """CREATE TABLE IF NOT EXISTS tracks (
                row INTEGER NOT NULL,
                column INTEGER NOT NULL,
@@ -67,19 +67,22 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
         if (is AnimalTracks obj) {
             "We assume that animal tracks can't occur inside a unit."
             assert (is Point context);
-            db.Insert("""INSERT INTO tracks (row, column, kind, image) VALUES(?, ?, ?, ?);""")
+            db.Insert("""INSERT INTO tracks (row, column, kind, image)
+                         VALUES(?, ?, ?, ?);""")
                     .execute(context.row, context.column, obj.kind, obj.image);
         } else {
             value insertion = db.Insert(
-                """INSERT INTO animals (row, column, parent, kind, talking, status, born, count, id,
-                       image)
+                """INSERT INTO animals (row, column, parent, kind, talking, status,
+	                   born, count, id, image)
                    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""");
             if (is Point context) {
                 insertion.execute(context.row, context.column, SqlNull(Types.integer),
-                    obj.kind, obj.talking, obj.status, born(obj), obj.population, obj.id, obj.image);
+                    obj.kind, obj.talking, obj.status, born(obj), obj.population,
+	                obj.id, obj.image);
             } else {
-                insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer), context.id,
-                    obj.kind, obj.talking, obj.status, born(obj), obj.population, obj.id, obj.image);
+                insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer),
+	                context.id, obj.kind, obj.talking, obj.status, born(obj),
+	                obj.population, obj.id, obj.image);
             }
         }
     }
@@ -89,7 +92,8 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
             is String status = dbRow["status"], is Integer|SqlNull born = dbRow["born"],
             is Integer count = dbRow["count"], is Integer id = dbRow["id"],
             is String|SqlNull image = dbRow["image"]);
-        value animal = AnimalImpl(kind, talking, status, id, as<Integer>(born) else -1, count);
+        value animal = AnimalImpl(kind, talking, status, id, as<Integer>(born) else -1,
+	        count);
         if (is String image) {
             animal.image = image;
         }

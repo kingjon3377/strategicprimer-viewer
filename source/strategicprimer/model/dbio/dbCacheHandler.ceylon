@@ -28,12 +28,14 @@ object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>()
         db.Insert(
             """INSERT INTO caches (row, column, id, kind, contents, image)
                VALUES(?, ?, ?, ?, ?, ?);""")
-                .execute(context.row, context.column, obj.id, obj.kind, obj.contents, obj.image);
+                .execute(context.row, context.column, obj.id, obj.kind, obj.contents,
+                    obj.image);
     }
     void readCache(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
-            is String contents = dbRow["contents"], is String|SqlNull image = dbRow["image"]);
+            is String contents = dbRow["contents"],
+            is String|SqlNull image = dbRow["image"]);
         value cache = CacheFixture(kind, contents, id);
         if (is String image) {
             cache.image = image;

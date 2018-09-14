@@ -42,7 +42,8 @@ shared class ExplorableReportGenerator(
         extends AbstractReportGenerator<Battlefield|Cave|Portal>(comp, dimensions, hq) {
     "Produces a more verbose sub-report on a cave, battlefield, or portal."
     shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Anything(String) ostream, Battlefield|Cave|Portal item, Point loc) {
+            IMapNG map, Anything(String) ostream, Battlefield|Cave|Portal item,
+		    Point loc) {
         switch (item)
         case (is Cave) {
             fixtures.remove(item.id);

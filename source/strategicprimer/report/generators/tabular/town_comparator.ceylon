@@ -47,8 +47,8 @@ object townComparators {
         }
     }
 
-    "A comparator for town-statuses, to put active towns before abandoned ones before ruined
-     ones before burned-out ones."
+    "A comparator for town-statuses, to put active towns before abandoned ones before
+     ruined ones before burned-out ones."
     shared Comparison compareTownStatus(TownStatus one, TownStatus two) {
         if (one == two) {
             return equal;
@@ -67,8 +67,9 @@ object townComparators {
         }
     }
 
-    "A comparator for towns, sorting them *only* on the basis of what kind of town they are,
-      putting fortresses before cities before towns before fortifications before villages."
+    "A comparator for towns, sorting them *only* on the basis of what kind of town they
+     are, putting fortresses before cities before towns before fortifications before
+     villages."
     shared Comparison compareTownKind(ITownFixture one, ITownFixture two) {
         if (one is Fortress) {
             if (two is Fortress) {

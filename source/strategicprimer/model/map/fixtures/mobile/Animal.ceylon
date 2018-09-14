@@ -132,7 +132,8 @@ shared interface Animal
                     report("Different kinds of animal for ID #``id``");
                     return false;
                 } else if (!talking, obj.talking) {
-                    report("In animal ID #``id``:\tSubmap's is talking and master's isn't");
+                    report(
+                        "In animal ID #``id``:\tSubmap's is talking and master's isn't");
                     return false;
                 } else if (status != obj.status) {
                     report("Animal domestication status differs at ID #``id``");
@@ -197,7 +198,8 @@ object fileSplitter {
         assert (exists textContent =
                 readFileContents(`module strategicprimer.model`, filename));
         return map(narrowedStream<String, Type>(textContent.split('\n'.equals)
-            .map(splitOnFirstTab).map(shuffle(curry(lineToEntry<BroaderType>))(factory))));
+            .map(splitOnFirstTab)
+            .map(shuffle(curry(lineToEntry<BroaderType>))(factory))));
     }
 }
 shared object maturityModel {

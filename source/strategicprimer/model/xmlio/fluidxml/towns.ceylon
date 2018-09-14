@@ -53,8 +53,8 @@ object fluidTownHandler extends FluidBase() {
     shared Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
             IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "town");
-        expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait",
-            "image", "owner");
+        expectAttributes(element, warner, "name", "size", "status", "dc", "id",
+	        "portrait", "image", "owner");
         requireNonEmptyAttribute(element, "name", false, warner);
         value size = TownSize.parse(getAttribute(element, "size"));
         if (is TownSize size) {
@@ -68,8 +68,8 @@ object fluidTownHandler extends FluidBase() {
                 for (event in stream) {
                     if (is StartElement event, isSPStartElement(event)) {
                         if (!fix.population exists) {
-                            fix.population = readCommunityStats(event, element.name, stream,
-                                players, warner, idFactory);
+                            fix.population = readCommunityStats(event, element.name,
+	                            stream, players, warner, idFactory);
                         } else {
                             throw UnwantedChildException(element.name, event);
                         }
@@ -90,8 +90,8 @@ object fluidTownHandler extends FluidBase() {
             {XMLEvent*} stream, IPlayerCollection players, Warning warner,
             IDRegistrar idFactory) {
         requireTag(element, parent, "fortification");
-        expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait",
-            "image", "owner");
+        expectAttributes(element, warner, "name", "size", "status", "dc", "id",
+	        "portrait", "image", "owner");
         requireNonEmptyAttribute(element, "name", false, warner);
         value size = TownSize.parse(getAttribute(element, "size"));
         if (is TownSize size) {
@@ -106,8 +106,8 @@ object fluidTownHandler extends FluidBase() {
                 for (event in stream) {
                     if (is StartElement event, isSPStartElement(event)) {
                         if (!fix.population exists) {
-                            fix.population = readCommunityStats(event, element.name, stream,
-                                players, warner, idFactory);
+                            fix.population = readCommunityStats(event, element.name,
+	                            stream, players, warner, idFactory);
                         } else {
                             throw UnwantedChildException(element.name, event);
                         }
@@ -127,8 +127,8 @@ object fluidTownHandler extends FluidBase() {
     shared City readCity(StartElement element, QName parent, {XMLEvent*} stream,
             IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "city");
-        expectAttributes(element, warner, "name", "size", "status", "dc", "id", "portrait",
-            "image", "owner");
+        expectAttributes(element, warner, "name", "size", "status", "dc", "id",
+	        "portrait", "image", "owner");
         requireNonEmptyAttribute(element, "name", false, warner);
         value size = TownSize.parse(getAttribute(element, "size"));
         if (is TownSize size) {
@@ -142,8 +142,8 @@ object fluidTownHandler extends FluidBase() {
                 for (event in stream) {
                     if (is StartElement event, isSPStartElement(event)) {
                         if (!fix.population exists) {
-                            fix.population = readCommunityStats(event, element.name, stream,
-                                players, warner, idFactory);
+                            fix.population = readCommunityStats(event, element.name,
+	                            stream, players, warner, idFactory);
                         } else {
                             throw UnwantedChildException(element.name, event);
                         }
@@ -171,13 +171,14 @@ object fluidTownHandler extends FluidBase() {
         if (is TownStatus status) {
             Village retval = Village(status, getAttribute(element, "name", ""), idNum,
                 getPlayerOrIndependent(element, warner, players),
-                getAttribute(element, "race", raceFactory.randomRace(DefaultRandom(idNum))));
+                getAttribute(element, "race",
+	                raceFactory.randomRace(DefaultRandom(idNum))));
             retval.portrait = getAttribute(element, "portrait", "");
             for (event in stream) {
                 if (is StartElement event, isSPStartElement(event)) {
                     if (!retval.population exists) {
-                        retval.population = readCommunityStats(event, element.name, stream,
-                            players, warner, idFactory);
+                        retval.population = readCommunityStats(event, element.name,
+	                        stream, players, warner, idFactory);
                     } else {
                         throw UnwantedChildException(element.name, event);
                     }
@@ -247,7 +248,8 @@ object fluidTownHandler extends FluidBase() {
                     throw UnwantedChildException.listingExpectedTags(event.name, element,
                         ["expertise", "claim", "production", "consumption", "resource"]);
                 }
-            } else if (is EndElement event, exists top = stack.top, event.name == top.name) {
+            } else if (is EndElement event, exists top = stack.top,
+		            event.name == top.name) {
                 stack.pop();
                 if (top == element) {
                     break;

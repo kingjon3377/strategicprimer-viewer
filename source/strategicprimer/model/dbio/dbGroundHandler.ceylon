@@ -28,7 +28,8 @@ object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>()
     shared actual void write(Sql db, Ground obj, Point context) {
         db.Insert("""INSERT INTO ground (row, column, id, kind, exposed, image)
                      VALUES(?, ?, ?, ?, ?, ?);""")
-                .execute(context.row, context.column, obj.id, obj.kind, obj.exposed, obj.image);
+                .execute(context.row, context.column, obj.id, obj.kind, obj.exposed,
+			        obj.image);
     }
     void readGround(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],

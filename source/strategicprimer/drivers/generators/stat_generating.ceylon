@@ -98,8 +98,8 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Find a fixture in a map by ID number."
     static IFixture? find(IMapNG map, Integer id) {
-        // We don't want to use fixtureEntries here because we'd have to spread it, which is
-        // probably an eager operation on that *huge* stream.
+        // We don't want to use fixtureEntries here because we'd have to spread it,
+	    // which is probably an eager operation on that *huge* stream.
         for (location in map.locations) {
 //            if (exists result = findInIterable(id, *map.fixtures[location])) { // TODO: syntax sugar once compiler bug fixed
             if (exists result = findInIterable(id, *map.fixtures.get(location))) {
@@ -143,7 +143,8 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
     }
     "Let the user enter stats for workers already in the maps that belong to one
      particular player."
-    static void enterStatsForPlayer(IExplorationModel model, Player player, ICLIHelper cli) {
+    static void enterStatsForPlayer(IExplorationModel model, Player player,
+		    ICLIHelper cli) {
         // TODO: can we avoid either the spread or the named-argument invocation?
         MutableList<IUnit> units = ArrayList { elements =
             removeStattedUnits(*model.getUnits(player)); };
@@ -316,7 +317,8 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
             } else {
                 assert (exists training = singletonRandom.nextElement(candidates));
                 while (true) {
-                    WorkerStats stats = createWorkerStats(village.race, training.level, cli);
+                    WorkerStats stats = createWorkerStats(village.race, training.level,
+	                    cli);
                     cli.println(
                         "``name`` is a level-``training.level`` ``training.name``. Proposed stats:");
                     cli.println(", ".join(zipPairs(statLabelArray,
@@ -409,7 +411,8 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
             for (distance->village in villages) {
                 if (hasLeviedRecently(village, cli)) {
                     continue;
-                } else if (singletonRandom.nextFloat() < villageChance(distance / mpPerDay + 1)) {
+                } else if (singletonRandom.nextFloat() <
+		                villageChance(distance / mpPerDay + 1)) {
                     excludedVillages[village] = true;
                     home = village;
                     break;

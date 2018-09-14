@@ -45,11 +45,12 @@ import strategicprimer.model.xmlio.exceptions {
 }
 
 object fluidResourceHandler extends FluidBase() {
-    shared ResourcePile readResource(StartElement element, QName parent, {XMLEvent*} stream,
-            IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
+    shared ResourcePile readResource(StartElement element, QName parent,
+		    {XMLEvent*} stream, IPlayerCollection players, Warning warner,
+		    IDRegistrar idFactory) {
         requireTag(element, parent, "resource");
-        expectAttributes(element, warner, "quantity", "kind", "contents", "unit", "created",
-            "id", "image");
+        expectAttributes(element, warner, "quantity", "kind", "contents", "unit",
+	        "created", "id", "image");
         spinUntilEnd(element.name, stream);
         ResourcePile retval = ResourcePile(
             getOrGenerateID(element, warner, idFactory),
@@ -205,12 +206,14 @@ object fluidResourceHandler extends FluidBase() {
     shared MineralVein readMineral(StartElement element, QName parent, {XMLEvent*} stream,
             IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "mineral");
-        expectAttributes(element, warner, "kind", "mineral", "exposed", "dc", "id", "image");
+        expectAttributes(element, warner, "kind", "mineral", "exposed", "dc", "id",
+	        "image");
         spinUntilEnd(element.name, stream);
         return setImage(
             MineralVein(
                 getAttrWithDeprecatedForm(element, "kind", "mineral", warner),
-                getBooleanAttribute(element, "exposed"), getIntegerAttribute(element, "dc"),
+                getBooleanAttribute(element, "exposed"),
+	            getIntegerAttribute(element, "dc"),
                 getOrGenerateID(element, warner, idFactory)), element, warner);
     }
 

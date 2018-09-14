@@ -29,8 +29,8 @@ import ceylon.file {
 }
 Logger log = logger(`module strategicprimer.drivers.common`);
 shared object mapReaderAdapter {
-    "Read a map model from a file or a stream, wrapping any errors the process generates in a
-     [[DriverFailedException]] to simplify callers."
+    "Read a map model from a file or a stream, wrapping any errors the process generates
+     in a [[DriverFailedException]] to simplify callers."
     todo("Return exceptions instead of throwing them")
     shared IDriverModel readMapModel(JPath|JReader file, Warning warner) {
         try {
@@ -47,15 +47,15 @@ shared object mapReaderAdapter {
             throw DriverFailedException(except, "SP map format error");
         }
     }
-    "Read several maps into a driver model, wrapping any errors in a DriverFailedException to
-     simplify callers."
+    "Read several maps into a driver model, wrapping any errors in a
+     DriverFailedException to simplify callers."
     todo("Return exceptions instead of throwing them")
     shared IMultiMapModel readMultiMapModel(Warning warner, JPath master, JPath* files) {
         log.trace("In mapReaderAdapter.readMultiMapModel");
         variable String current = master.string;
         try {
-            IMultiMapModel retval = SimpleMultiMapModel(mapIOHelper.readMap(master, warner),
-                master);
+            IMultiMapModel retval = SimpleMultiMapModel(
+	            mapIOHelper.readMap(master, warner), master);
             for (file in files) {
                 current = file.string;
                 retval.addSubordinateMap(mapIOHelper.readMap(file, warner), file);
@@ -63,7 +63,8 @@ shared object mapReaderAdapter {
             log.trace("Finished with mapReaderAdapter.readMultiMapModel");
             return retval;
         } catch (IOException except) {
-            throw DriverFailedException(except, "I/O error reading from file ``current``");
+            throw DriverFailedException(except,
+	            "I/O error reading from file ``current``");
         } catch (XMLStreamException except) {
             throw DriverFailedException(except, "Malformed XML in ``current``");
         } catch (SPFormatException except) {

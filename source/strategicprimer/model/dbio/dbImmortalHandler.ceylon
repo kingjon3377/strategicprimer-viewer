@@ -67,15 +67,15 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
     ];
     shared actual void write(Sql db, Immortal obj, Point|IUnit context) {
         if (is SimpleImmortal obj) {
-            value insertion = db.Insert("""INSERT INTO simple_immortals (row, column, parent, type,
-                                              id, image)
+            value insertion = db.Insert("""INSERT INTO simple_immortals (row, column,
+                                               parent, type, id, image)
                                            VALUES(?, ?, ?, ?, ?, ?);""");
             if (is Point context) {
-                insertion.execute(context.row, context.column, SqlNull(Types.integer), obj.kind,
-                    obj.id, obj.image);
-            } else {
-                insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer), context.id,
+                insertion.execute(context.row, context.column, SqlNull(Types.integer),
                     obj.kind, obj.id, obj.image);
+            } else {
+                insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer),
+                    context.id, obj.kind, obj.id, obj.image);
             }
         } else {
             assert (is HasKind obj);
@@ -95,18 +95,20 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
                 type = "giant";
             }
             value insertion = db.Insert(
-                """INSERT INTO kinded_immortals (row, column, parent, type, kind, id, image)
+                """INSERT INTO kinded_immortals (row, column, parent, type, kind, id,
+                       image)
                    VALUES(?, ?, ?, ?, ?, ?, ?);""");
             if (is Point context) {
-                insertion.execute(context.row, context.column, SqlNull(Types.integer), type,
-                    obj.kind, obj.id, obj.image);
-            } else {
-                insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer), context.id,
+                insertion.execute(context.row, context.column, SqlNull(Types.integer),
                     type, obj.kind, obj.id, obj.image);
+            } else {
+                insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer),
+                    context.id, type, obj.kind, obj.id, obj.image);
             }
         }
     }
-    void readSimpleImmortal(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readSimpleImmortal(IMutableMapNG map, Map<String, Object> dbRow,
+            Warning warner) {
         assert (is String type = dbRow["type"], is Integer id = dbRow["id"],
             is String|SqlNull image = dbRow["image"]);
         SimpleImmortal immortal;
@@ -149,7 +151,8 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
             parent.addMember(immortal);
         }
     }
-    void readKindedImmortal(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readKindedImmortal(IMutableMapNG map, Map<String, Object> dbRow,
+            Warning warner) {
         assert (is String type = dbRow["type"], is String kind = dbRow["kind"],
             is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
         Immortal&HasMutableImage immortal;
@@ -183,7 +186,8 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
         handleQueryResults(db, warner, "simple immortals", curry(readSimpleImmortal)(map),
             """SELECT * FROM simple_immortals WHERE row IS NOT NULL""");
-        handleQueryResults(db, warner, "immortals with kinds", curry(readKindedImmortal)(map),
+        handleQueryResults(db, warner, "immortals with kinds",
+            curry(readKindedImmortal)(map),
             """SELECT * FROM kinded_immortals WHERE row IS NOT NULL""");
     }
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {

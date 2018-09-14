@@ -41,9 +41,9 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
         MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
         extends AbstractReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks>(comp,
             dimensions, hq) {
-    "Produce the sub-report about an individual Animal. We assume that individual Animals are
-     members of the player's units, or that for some other reason the player is allowed to
-     see the precise count of the population."
+    "Produce the sub-report about an individual Animal. We assume that individual
+     Animals are members of the player's units, or that for some other reason the player
+     is allowed to see the precise count of the population."
     shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
                 IMapNG map, Anything(String) ostream,
                 /*Animal|AnimalTracks*/AnimalOrTracks item, Point loc) {
@@ -82,7 +82,8 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
                 Anything(String) ostream) {
         MutableMultimap<String, Point> items = ArrayListMultimap<String, Point>();
-        for (key->[loc, animal] in narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
+        for (key->[loc, animal] in
+		        narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
                 .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item, pairComparator))) {
             String desc;
             if (is AnimalTracks animal) {
@@ -127,8 +128,10 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
     shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures,
             IMapNG map) {
         MutableMap<String, IReportNode> items = HashMap<String, IReportNode>();
-        for (key->[loc, animal] in narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
-                .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item, pairComparator))) {
+        for (key->[loc, animal] in
+		        narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
+                .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item,
+			        pairComparator))) {
             IReportNode node;
             if (exists temp = items[animal.kind]) {
                 node = temp;

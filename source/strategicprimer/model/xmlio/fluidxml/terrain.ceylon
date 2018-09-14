@@ -39,8 +39,8 @@ object fluidTerrainHandler extends FluidBase() {
         }
         String kind = getAttrWithDeprecatedForm(element, "kind", "ground", warner);
         spinUntilEnd(element.name, stream);
-        return setImage(Ground(id, kind, getBooleanAttribute(element, "exposed")), element,
-            warner);
+        return setImage(Ground(id, kind, getBooleanAttribute(element, "exposed")),
+            element, warner);
     }
 
     shared Forest readForest(StartElement element, QName parent, {XMLEvent*} stream,
