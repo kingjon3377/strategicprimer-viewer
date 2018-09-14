@@ -75,13 +75,6 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         JTextField wisdom = JTextField();
         JTextField charisma = JTextField();
         JPanel textPanel = JPanel(GridLayout(0, 2));
-        void addLabeledField(JPanel panel, String text, JComponent field) {
-            panel.add(JLabel(text));
-            panel.add(field);
-        }
-        addLabeledField(textPanel, "Worker Name:", name);
-        addLabeledField(textPanel, "Worker Race", race);
-        JPanel buttonPanel = JPanel(GridLayout(0, 2));
         void accept() {
             String nameText = name.text.trimmed;
             String raceText = race.text.trimmed;
@@ -131,7 +124,18 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                     builder.string);
             }
         }
-        JButton addButton = listenedButton("Add Worker", silentListener(accept)); // FIXME: Add accept() as listener to all fields as well
+        void addLabeledField(JPanel panel, String text, JComponent field) {
+            panel.add(JLabel(text));
+            panel.add(field);
+            if (is JTextField field) {
+                field.addActionListener(silentListener(accept));
+                field.setActionCommand("Add Worker");
+            }
+        }
+        addLabeledField(textPanel, "Worker Name:", name);
+        addLabeledField(textPanel, "Worker Race", race);
+        JPanel buttonPanel = JPanel(GridLayout(0, 2));
+        JButton addButton = listenedButton("Add Worker", silentListener(accept));
         buttonPanel.add(addButton);
         shared void revert() {
             for (field in [name, hpBox, maxHP, strength, dexterity, constitution,
