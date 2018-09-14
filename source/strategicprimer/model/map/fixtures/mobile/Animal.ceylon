@@ -122,9 +122,8 @@ shared interface Animal
     shared actual formal Animal copy(Boolean zero);
     shared actual formal Animal combined(Animal addend);
     "Required Perception check result to find the animal."
-    todo("Should be variable, either read from XML or computed from kind using some other
-          read-from-file data.") // FIXME
-    shared actual default Integer dc => 22;
+    todo("Should be based on population size as well as animal kind")
+    shared actual default Integer dc => animalDiscoveryDCs[kind] else 22;
     shared actual default Boolean isSubset(IFixture obj, Anything(String) report) {
         if (obj.id == id) {
             if (is Animal obj) {
@@ -215,6 +214,17 @@ shared object maturityModel {
     }
     "Clear the stored current turn"
     restricted shared void resetCurrentTurn() => currentTurnLocal = -1;
+}
+todo("While better than a per-*class* constant, this is still an inferior solution:
+      instead, load animals' *categories* (bird, fish, general), *size* categories, and
+      stealthiness modifiers, then use those and the number of animals in the population
+      to *calculate* the DC.")
+shared object animalDiscoveryDCs satisfies Correspondence<String, Integer> {
+    Map<String, Integer> dcs =
+            fileSplitter.getFileContents<Integer, Integer|ParseException>(
+                "animal_data/discovery_dc.txt", Integer.parse);
+    shared actual Integer get(String key) => dcs[key] else 22;
+    shared actual Boolean defines(String key) => dcs.defines(key);
 }
 shared object animalPlurals satisfies Correspondence<String, String> {
     Map<String, String> plurals =

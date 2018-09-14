@@ -1,0 +1,199 @@
+aardvark	25
+adeopapposaur dinosaur	12
+agilisaur dinosaur	28
+ahool	35
+albatross	23
+alligator	25
+alpaca	19
+ankylosaur dinosaur	17
+anteater	24
+antelope	20
+ape	23
+archaeopteryx	26
+armadillo	23
+badger	22
+bass	24
+bat	26
+bear	20
+beaver	20
+bison	12
+blackbird	15
+boar	13
+bobcat	22
+butterfly	24
+buzzard	20
+camel	18
+capybara	21
+caribou	17
+carp	25
+cat	24
+catfish	23
+cattle	10
+cheetah	28
+chicken	12
+chipmunk	18
+cod	22
+cormorant	18
+cow	10
+coypu	22
+crab	22
+crocodile	25
+crow	15
+deer	18
+dingo	15
+dodo	16
+dog	15
+dolphin	22
+donkey	13
+duck	18
+dugong	23
+eagle	24
+eel	22
+elephant	15
+elk	18
+eoraptor dinosaur	23
+europasaur dinosaur	12
+europasaurus dinosaur	12
+ferret	23
+finch	18
+flounder	25
+fox	23
+frog	26
+fruit bat	26
+game hen	14
+goat	16
+goose	18
+gopher	18
+grayling	27
+great auk	17
+grouper	25
+guaibasaur dinosaur	25
+guinea pig	20
+gull	18
+haddock	22
+halibut	22
+hare	20
+hedgehog	22
+herring	22
+hippo	18
+horse	15
+howler monkey	17
+hydra	20
+impala	19
+kangaroo	18
+kraken	30
+krill	28
+lark	20
+leopard	25
+lesothosaur dinosaur	25
+leyesaur dinosaur	15
+lion	18
+lizard	22
+llama	15
+lobster	24
+lungfish	25
+mackerel	24
+magpie	20
+magyarosaur dinosaur	13
+manatee	20
+manticore	18
+mastadon	12
+mesosaur	20
+mink	24
+mongoose	23
+moose	18
+mountain goat	18
+mountain lion	25
+mouse	25
+musk ox	12
+muskrat	20
+mussel	18
+octopus	28
+okapi	18
+opossum	22
+otter	20
+owl	26
+oyster	18
+parrot	22
+pegasus	29
+pelican	25
+penguin	23
+petrel	26
+pheasant	22
+pigeon	25
+platypus	22
+plesiousaur	20
+poison dart frog	28
+polar bear	22
+porpoise	25
+prairie dog	18
+psittacosaur dinosaur	24
+quail	18
+rabbit	18
+raccoon	20
+rat	22
+reindeer	18
+rhinoceros	15
+robin	18
+saber-tooth tiger	22
+salamander	26
+salmon	25
+saltopus dinosaur	23
+sardine	25
+sea cucumber	28
+sea hippo	20
+sea lion	24
+sea snake	30
+sea turtle	25
+sea urchin	28
+seal	23
+shad	25
+shark	27
+sheep	13
+shrimp	29
+silkworm	25
+silver fox	23
+skunk	19
+sloth	18
+snail	22
+snake	23
+snowbird	29
+spider monkey	24
+squid	28
+squirrel	18
+stegocerad dinosaur	19
+stegosaur dinosaur	13
+sturgeon	19
+swallow	19
+swan	18
+tapir	17
+tern	20
+thescelosaur dinosaur	21
+thrush	20
+thunderbird	29
+tiger	23
+toad	23
+trout	19
+tuna	18
+turkey	18
+turtle	18
+unaysaur dinosaur	20
+unicorn	29
+valdosaur dinosaur	23
+walrus	18
+warthog	16
+water buffalo	12
+weasel	19
+whale	20
+whiting	21
+wild dog	16
+wildebeest	13
+wolf	19
+wolverine	19
+wolves	19
+wren	21
+wyvern	22
+yak	14
+yandusaur dinosaur	16
+zebra	18
+zebu	12
