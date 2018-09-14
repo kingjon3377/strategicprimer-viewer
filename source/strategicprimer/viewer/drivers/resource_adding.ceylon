@@ -342,19 +342,22 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         String css = """color:white; margin-bottom: 0.5em; margin-top: 0.5em;""";
         void logAddition(String addend) => logLabel.append(
             "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``</p>");
-        UpdatedComboBox resourceKindBox = UpdatedComboBox(logLabel.append); // FIXME: Use logAddition instead?
+        String errorCSS = """color:red; margin-bottom: 0.5em; margin-top: 0.5em;""";
+        void logError(String message) =>
+                logLabel.append("<p style=\"``errorCSS``\">``message``</p>");
+        UpdatedComboBox resourceKindBox = UpdatedComboBox(logError);
         resourcePanel.add(pairPanel(JLabel("General Category"), resourceKindBox));
         // If we set the maximum high at this point, the fields would try to be
 		// unneccessarily large. I'm not sure that setting it low at first helps, though.
         SpinnerNumberModel resourceCreatedModel = SpinnerNumberModel(-1, -1, 2000, 1);
         JSpinner creationSpinner = JSpinner(resourceCreatedModel);
         resourcePanel.add(pairPanel(JLabel("Turn created"), creationSpinner));
-        UpdatedComboBox resourceBox = UpdatedComboBox(logLabel.append); // FIXME: Use logAddition instead?
+        UpdatedComboBox resourceBox = UpdatedComboBox(logError);
         resourcePanel.add(pairPanel(JLabel("Specific Resource"), resourceBox));
         SpinnerNumberModel resourceQuantityModel = SpinnerNumberModel(0, 0, 2000, 1);
         JSpinner resourceQuantitySpinner = JSpinner(resourceQuantityModel);
         resourcePanel.add(pairPanel(JLabel("Quantity"), resourceQuantitySpinner));
-        UpdatedComboBox resourceUnitsBox = UpdatedComboBox(logLabel.append); // FIXME: Use logAddition instead?
+        UpdatedComboBox resourceUnitsBox = UpdatedComboBox(logError);
         resourcePanel.add(pairPanel(JLabel("Units"), resourceUnitsBox));
         variable Boolean playerIsDefault = true;
         void confirmPlayer() {
