@@ -341,7 +341,7 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         StreamingLabel logLabel = StreamingLabel();
         String css = """color:white; margin-bottom: 0.5em; margin-top: 0.5em;""";
         void logAddition(String addend) => logLabel.append(
-            "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``");
+            "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``</p>");
         UpdatedComboBox resourceKindBox = UpdatedComboBox(logLabel.append); // FIXME: Use logAddition instead?
         resourcePanel.add(pairPanel(JLabel("General Category"), resourceKindBox));
         // If we set the maximum high at this point, the fields would try to be
