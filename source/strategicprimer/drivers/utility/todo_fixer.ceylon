@@ -81,6 +81,8 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
     MutableList<String> raceList = ArrayList<String>();
     "How many units we've fixed."
     variable Integer count = -1;
+    "The number of units needing to be fixed."
+    variable Integer totalCount = -1;
     shared actual IDriverUsage usage = DriverUsage(false, ["--fix-todos"],
         ParamCount.atLeastOne, "Fix TODOs in maps",
         "Fix TODOs in unit kinds and aquatic villages with non-aquatic races", false,
@@ -188,7 +190,8 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
         for (job in jobList) {
             if (rng.nextBoolean()) {
                 cli.println(
-                    "Setting unit with ID #``unit.id`` (``count`` / 5328) to kind ``job``"); // TODO: Remove magic number
+                    "Setting unit with ID #``unit.id`` (``count`` / ``
+                        totalCount``) to kind ``job``");
                 unit.kind = job;
                 return;
             }
@@ -200,6 +203,8 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
     }
     "Search for and fix units with kinds missing."
     void fixAllUnits(IMapNG map, ICLIHelper cli) {
+        totalCount = map.fixtures.map(Entry.item).narrow<Unit>()
+            .count(matchingValue("TODO", Unit.kind));
         for (point in map.locations) {
             SimpleTerrain terrain = getTerrain(map, point);
 //            for (fixture in map.fixtures[point].narrow<Unit>() // TODO: syntax sugar once compiler bug fixed
