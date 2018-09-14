@@ -74,17 +74,6 @@ import ceylon.http.server {
 import ceylon.http.server.endpoints {
     redirect
 }
-import ceylon.html {
-    renderTemplate,
-    Html,
-    Head,
-    Title,
-    Body,
-    H1,
-    Ul,
-    Li,
-    A
-}
 import ceylon.http.common {
     get,
     Header
@@ -186,23 +175,23 @@ shared class ReportCLI() satisfies SimpleDriver {
                 rootHandler = Endpoint {
                     path = isRoot();
                     void service(Request request, Response response) {
-                            renderTemplate(Html {
-                            Head {
-                                Title {
-                                    "Strategic Primer Reports";
-                                }
-                            },
-                            Body {
-                                H1 {
-                                    "Strategic Primer Reports"
-                                },
-                                Ul {
-                                    localCache.map((file->report) => Li {
-                                        A { href="/``file``"; children = [file]; }
-                                    })
-                                }
-                            }
-                        }, response.writeString);
+                        response.writeString(
+                            "<!DOCTYPE html>
+                             <html>
+                                 <head>
+                                     <title>Strategic Primer Reports</title>
+                                 </head>
+                                 <body>
+                                     <h1>Strategic Primer Reports</h1>
+                                     <ul>
+                             ");
+                        for (file->report in localCache) {
+                            response.writeString(
+                                "            <li><a href=\"/``file``\">``file``</a></li>");
+                        }
+                        response.writeString("        </ul>
+                                                  </body>
+                                              </html>");
                     }
                 };
             }
@@ -381,51 +370,52 @@ shared class TabularReportCLI() satisfies SimpleDriver {
         });
         {Endpoint*} tocs = mapping.keys
             .map(curry(suffixHelper.shortestSuffix)(mapping.keys)).map(
-			        (path) => Endpoint { // TODO: Drop ceylon.html usage and dependency
+			        (path) => Endpoint {
 			            path = matchEquals("/``path``").or(matchEquals("/``path``/"));
 			            void service(Request request, Response response) {
-			                renderTemplate(Html {
-			                    Head {
-			                        Title {
-			                            "Tabular Reports for ``path``";
-			                        }
-			                    }, Body {
-			                        H1 {
-			                            "Tabular Reports for ``path``";
-			                        }, Ul {
-			                            builders.keys.filter(matchingValue(path,
-			                                Tuple<String, String, String[]>.first))
-			                                    .map(([mapFile, table]) => Li {
-			                                A { href="/``mapFile``.``table``.csv";
-			                                    children = ["``table``.csv"]; }
-			                            })
-			                        }
-			                    }
-			                }, response.writeString);
+                            response.writeString(
+                                "<!DOCTYPE html>
+                                 <html>
+                                     <head>
+                                         <title>Tabular reports for ``path``</title>
+                                     </head>
+                                     <body>
+                                         <h1>Tabular reports for ``path``</h1>
+                                         <ul>
+                                 ");
+                            for ([mapFile, table] in builders.keys
+                                    .filter(matchingValue(path,
+                                        Tuple<String, String, String[]>.first))) {
+                                response.writeString("            <li><a href=\"/``mapFile
+                                        ``.``table``.csv\">``table``.csv</a></li>\n");
+                            }
+                            response.writeString("        </ul>
+                                                      </body>
+                                                  </html>");
 			            }
 			        });
         Endpoint rootHandler = Endpoint {
             path = isRoot();
             void service(Request request, Response response) {
-                renderTemplate(Html {
-                    Head {
-                        Title {
-                            "Strategic Primer Tabular Reports";
-                        }
-                    },
-                    Body {
-                        H1 {
-                            "Strategic Primer Taublar Reports";
-                        },
-                        Ul {
-                            mapping.keys
-                                .map(curry(suffixHelper.shortestSuffix)(mapping.keys))
-                                    .map((file) => Li {
-                                A { href="/``file``/"; children = [file]; }
-                            })
-                        }
-                    }
-                }, response.writeString);
+                response.writeString(
+                    "<!DOCTYPE html>
+                     <html>
+                         <head>
+                             <title>Strategic Primer Tabular Reports</title>
+                         </head>
+                         <body>
+                             <h1>Strategic Primer Tabular Reports</h1>
+                             <ul>
+                     ");
+                for (file in mapping.keys
+                        .map(curry(suffixHelper.shortestSuffix)(mapping.keys))) {
+                    response.writeString(
+                        "            <li><a href=\"/``file``\">``file``</a></li>");
+                }
+                response.writeString(
+                    "        </ul>
+                         </body>
+                     </html>");
             }
         };
         log.info("About to start serving on port ``port``");
