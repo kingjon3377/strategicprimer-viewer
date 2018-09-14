@@ -166,7 +166,7 @@ shared class MapTradeCLI satisfies SimpleCLIDriver {
         } else {
             zeroFixtures = false;
         }
-        Integer totalCount = first.locations.filter(not(first.locationEmpty)).size;
+        Integer totalCount = first.locations.count(not(first.locationEmpty));
         variable Integer count = 1;
         for (location in first.locations.filter(not(first.locationEmpty))) {
             log.debug(
