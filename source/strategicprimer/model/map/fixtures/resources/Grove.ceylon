@@ -74,10 +74,10 @@ shared class Grove(orchard, cultivated, kind, id, population = -1)
         } else if (is Grove other) {
             variable Boolean retval = true;
             Anything(String) localReport;
-            if (orchard) { // TODO: Use compose("str".plus, report)
-                localReport = (String str) => report("In orchard with ID #``id``:\t``str``");
+            if (orchard) {
+	            localReport = compose(report, "In orchard with ID #``id``:\t".plus);
             } else {
-                localReport = (String str) => report("In grove with ID #``id``:\t``str``");
+	            localReport = compose(report, "In grove with ID #``id``:\t".plus);
             }
             if (kind != other.kind) {
                 localReport("Kinds differ");
