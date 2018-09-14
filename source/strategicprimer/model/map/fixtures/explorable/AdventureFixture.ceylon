@@ -67,8 +67,8 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         if (obj.id == id) {
             if (is AdventureFixture obj) {
-                void localReport(String message) =>
-                        report("In adventure with ID #``id``: ``message``");
+	            Anything(String) localReport =
+			            compose(report, "In adventure with ID #``id``: ".plus);
                 if (briefDescription != obj.briefDescription) {
                     localReport("Brief descriptions differ");
                     return false;

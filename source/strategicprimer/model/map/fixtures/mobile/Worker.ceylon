@@ -89,8 +89,8 @@ shared class Worker satisfies IWorker&HasPortrait {
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         if (obj.id == id) {
             if (is IWorker obj) {
-                void localReport(String string) =>
-                        report("In worker ``name`` (ID #``id``):\t``string``)`");
+                Anything(String) localReport =
+                        compose(report, "In worker ``name`` (ID #``id``):\t".plus);
                 if (name != obj.name) {
                     localReport("Names differ");
                     return false;

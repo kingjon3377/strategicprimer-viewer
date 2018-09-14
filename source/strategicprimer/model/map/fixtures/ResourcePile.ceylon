@@ -54,8 +54,8 @@ shared class ResourcePile(id, kind, contents, quantity)
         if (obj.id == id) {
             if (is ResourcePile obj) {
                 variable Boolean retval = true;
-                void localReport(String str) =>
-                        report("In Resource Pile, ID #``id``: ``str``");
+                Anything(String) localReport = compose(report,
+                    "In Resource Pile, ID #``id``: ".plus);
                 if (kind != obj.kind) {
                     localReport("Kinds differ");
                     retval = false;

@@ -53,8 +53,8 @@ shared class Portal(destinationWorld, destinationCoordinates, id)
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         if (obj.id == id) {
             if (is Portal obj) {
-                void localReport(String str) =>
-                        report("In portal with ID #``id``: ``str``");
+                Anything(String) localReport =
+                        compose(report, "In portal with ID #``id``: ".plus);
                 if (!{destinationWorld, "unknown"}.contains(obj.destinationWorld)) {
                     localReport("Different destination world");
                     return false;

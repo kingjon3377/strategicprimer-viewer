@@ -315,7 +315,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                 return retval;
             }
             for (point in locations) {
-                void localReport(String string) => report("At ``point``:\t``string``");
+                Anything(String) localReport = compose(report, "At ``point``:\t".plus);
                 if (exists theirTerrain = obj.baseTerrain[point]) {
                     if (exists ourTerrain = baseTerrain[point]) {
                         if (ourTerrain != theirTerrain) {

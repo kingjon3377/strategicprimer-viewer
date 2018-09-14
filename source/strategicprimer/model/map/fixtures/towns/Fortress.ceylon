@@ -137,8 +137,8 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
                     createMap(members.map(entryBy(FortressMember.id,
                         identity<FortressMember>)));
             variable Boolean retval = true;
-            void localFormat(String string) =>
-                    report("In fortress ``name`` (ID #``id``):\t``string``");
+	        Anything(String) localFormat =
+			        compose(report, "In fortress ``name`` (ID #``id``):\t".plus);
             for (member in obj) {
                 if (exists corresponding = ours[member.id]) {
                     if (!corresponding.isSubset(member, localFormat)) {

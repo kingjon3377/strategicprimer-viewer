@@ -76,8 +76,8 @@ shared class Forest(kind, rows, id, acres = -1)
                 return false;
             }
             variable Boolean retval = true;
-            void localReport(String str) =>
-                    report("In ``kind`` forest (ID #``id``):\t``str``");
+	        Anything(String) localReport =
+			        compose(report, "In ``kind`` forest (ID #``id``):\t".plus);
             if (other.rows, !rows) {
                 localReport("In rows when we aren't");
                 retval = false;
