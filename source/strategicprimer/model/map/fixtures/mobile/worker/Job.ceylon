@@ -10,7 +10,7 @@ import lovelace.util.common {
 "A Job a worker can work at or have training or experience in."
 shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
     "The worker's level in various skills associated with the Job."
-    // TODO: switch back to HashMap once ceylon-sdk#690 fixed
+    // TODO: switch back to HashMap once eclipse/ceylon-sdk#690 fixed
 //    MutableMap<String, ISkill> skillSet = HashMap<String, ISkill>();
     MutableMap<String, ISkill> skillSet = TreeMap<String, ISkill>(increasing);
     "The name of the Job."
