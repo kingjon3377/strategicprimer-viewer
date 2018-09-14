@@ -74,12 +74,12 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
             ICLIHelper cli) {
         // We assume there is at most one population of each kind of animal per tile.
         {Point*} locations = randomize(narrowedStream<Point, Animal>(map.fixtures)
-            .filter(matchingPredicate(matchingValue(talking, Animal.talking),
-                Entry<Point, Animal>.item))
-            .filter(matchingPredicate(matchingValue(kind, Animal.kind),
-                Entry<Point, Animal>.item))
-            .filter(not(matchingPredicate(matchingPredicate(Integer.positive, // TODO: compose() instead of nested matchingPredicate()
-                Animal.population), Entry<Point, Animal>.item))).map(Entry.key).distinct);
+            .filter(matchingValue(talking, compose(Animal.talking,
+                Entry<Point, Animal>.item)))
+            .filter(matchingValue(kind, compose(Animal.kind, Entry<Point, Animal>.item)))
+            .filter(not(compose(Integer.positive,
+                compose(Animal.population, Entry<Point, Animal>.item))))
+            .map(Entry.key).distinct);
         Integer count = locations.size;
         if (count == 0) {
             return;
