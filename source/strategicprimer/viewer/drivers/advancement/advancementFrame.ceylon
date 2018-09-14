@@ -23,7 +23,8 @@ import strategicprimer.model.idreg {
 }
 import strategicprimer.model.map {
     Player,
-    IMapNG
+    IMapNG,
+    PlayerImpl
 }
 import strategicprimer.viewer.drivers {
     MenuBroker
@@ -100,14 +101,15 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     menuHandler.register(silentListener(expander.collapseAll), "collapse all");
     menuHandler.register((event) => expander.expandSome(2), "expand unit kinds");
     expander.expandAll();
-    InterpolatedLabel<[String]> playerLabel =
-            InterpolatedLabel<[String]>(shuffle(curry(plus<String>))("'s Units:"), [""]); // TODO: Take the player directly, using a player named "An Unknown Player" as the default
+    InterpolatedLabel<[Player]> playerLabel =
+            InterpolatedLabel<[Player]>(compose(shuffle(curry(plus<String>))("'s Units:"),
+                Player.name), [PlayerImpl(-1, "An Unknown Player")]);
     object retval extends SPFrame("Worker Advancement", model.mapFile,
 				Dimension(640, 480), true,
                 (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
             satisfies PlayerChangeListener {
         shared actual void playerChanged(Player? old, Player newPlayer) {
-            playerLabel.arguments = [newPlayer.name];
+            playerLabel.arguments = [newPlayer];
             treeModel.playerChanged(old, newPlayer);
         }
         shared actual String windowName = "Worker Advancement";
