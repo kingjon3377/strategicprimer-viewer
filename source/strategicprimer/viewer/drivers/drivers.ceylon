@@ -56,7 +56,6 @@ import strategicprimer.drivers.common {
     ParamCount,
     DriverFailedException,
     IncorrectUsageException,
-    DriverUsage,
     SPOptionsImpl
 }
 import strategicprimer.drivers.common.cli {
@@ -198,9 +197,6 @@ object appChooserState {
 	}
 }
 class AppStarter() {
-	IDriverUsage usage = DriverUsage(true, ["-p", "--app-starter"],
-		ParamCount.anyNumber, "App Chooser",
-		"Let the user choose an app to start, or handle options.", false, false);
 	[Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache =
 			appChooserState.createCache(); // TODO: Can we inline that into here?
 	void startCatchingErrors(ISPDriver driver, ICLIHelper cli, SPOptions options,
@@ -313,10 +309,24 @@ class AppStarter() {
 		}
 		log.trace("Reached the end of options");
 		if (currentOptions.hasOption("--help")) { // TODO: Handle --help in startChosenDriver() instead, so it works for drivers other than the last (TODO: figure out how to ma
-			log.trace("Giving usage information.");
-			IDriverUsage tempUsage = currentDriver?.usage else usage; // FIXME: Following the 'default' usage will cause errors!
-			process.writeLine(appChooserState.usageMessage(tempUsage,
-				options.getArgument("--verbose") == "true"));
+			if (exists currentUsage = currentDriver?.usage) {
+				log.trace("Giving usage information for selected driver");
+				process.writeLine(appChooserState.usageMessage(currentUsage,
+					options.getArgument("--verbose") == "true"));
+			} else {
+				log.trace("No driver selected, so giving choices.");
+				process.writeLine("Strategic Primer assistive programs suite");
+				process.writeLine("No app specified; use one of the following invocations:");
+				process.writeLine();
+				for (driver in driverCache[0].chain(driverCache[1]).map(Entry.item).distinct) {
+					value lines = appChooserState.usageMessage(driver.usage,
+						options.getArgument("--verbose") == "true").lines;
+					String invocationExample = lines.first.replace("Usage: ", "");
+					String description =
+							lines.rest.first?.replace(".", "") else "An unknown app";
+					process.writeLine("``description``: ``invocationExample``");
+				}
+			}
 		} else if (exists driver = currentDriver) {
 			log.trace("Starting chosen app.");
 			startChosenDriver(driver, currentOptions.copy());
