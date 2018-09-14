@@ -37,7 +37,8 @@ shared class Quantity
     }
     shared actual Boolean equals(Object obj) {
         if (is Quantity obj) {
-            return units == obj.units && numberComparator.compare(number, obj.number) == equal;
+            return units == obj.units &&
+                numberComparator.compare(number, obj.number) == equal;
         } else {
             return false;
         }

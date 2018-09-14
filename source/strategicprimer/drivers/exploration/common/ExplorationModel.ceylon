@@ -84,7 +84,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 //            for (fixture in map.fixtures[point].narrow<HasOwner>()) { // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(point).narrow<HasOwner>()) {
                 if (!fixture.owner.independent, fixture.owner != unit.owner) {
-                    process.writeLine("Motion of ``description`` to ``dest`` could be observed by ``
+                    process.writeLine(
+						"Motion of ``description`` to ``dest`` could be observed by ``
                             fixture.shortDescription`` at ``point``");
                 }
             }
@@ -252,9 +253,12 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         Point point = local.first;
         assert (exists unit = local.rest.first);
         Point dest = getDestination(point, direction);
-        if (exists terrain = map.baseTerrain[dest], exists startingTerrain = map.baseTerrain[point],
-                    ((simpleMovementModel.landMovementPossible(terrain) && startingTerrain != TileType.ocean) ||
-                        (startingTerrain == TileType.ocean && terrain == TileType.ocean))) {
+        if (exists terrain = map.baseTerrain[dest],
+				exists startingTerrain = map.baseTerrain[point],
+                    ((simpleMovementModel.landMovementPossible(terrain) &&
+							startingTerrain != TileType.ocean) ||
+                        (startingTerrain == TileType.ocean &&
+							terrain == TileType.ocean))) {
             Integer base;
             if (dest == point) {
                 base = 1;
@@ -301,7 +305,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 						startingTerrain == TileType.ocean) {
                     log.trace("Starting in ocean, trying to get to ``terrain``");
                 } else if (startingTerrain == TileType.ocean, terrain != TileType.ocean) {
-                    log.trace("Land movement not possible, starting in ocean, trying to get to ``terrain``");
+                    log.trace("Land movement not possible from ocean to ``terrain``");
                 } else if (startingTerrain != TileType.ocean, terrain == TileType.ocean) {
                     log.trace("Starting in ``startingTerrain``, trying to get to ocean");
                 } else {

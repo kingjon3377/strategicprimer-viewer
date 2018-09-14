@@ -101,8 +101,8 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
             minimumColumn += difference;
             maximumColumn += difference;
         }
-        mapModel.visibleDimensions = VisibleDimensions(minimumRow, maximumRow, minimumColumn,
-            maximumColumn);
+        mapModel.visibleDimensions = VisibleDimensions(minimumRow, maximumRow,
+            minimumColumn, maximumColumn);
     }
     shared actual String? getToolTipText(MouseEvent event) =>
             cml.getToolTipText(event);

@@ -189,7 +189,7 @@ shared class IOHandler
             }
         }
         switch (event.actionCommand.lowercased)
-        case ("load") { // TODO: We'd like to open in another window if modified flag set instead of prompting before overwriting
+        case ("load") { // TODO: Open in another window if modified flag set instead of prompting before overwriting
             maybeSave("loading another map", as<Frame>(iter), source,
                 defer(loadHandler, [source, errorTitle]));
         }
@@ -199,7 +199,8 @@ shared class IOHandler
                     mapIOHelper.writeMap(parsePath(givenFile.string), mapModel.map);
 					mapModel.mapModified = false;
                 } catch (IOException except) {
-                    handleError(except, givenFile.string, source, errorTitle, "writing to");
+                    handleError(except, givenFile.string, source, errorTitle,
+						"writing to");
                 }
             } else {
                 actionPerformed(ActionEvent(event.source, event.id, "save as", event.when,
@@ -236,7 +237,8 @@ shared class IOHandler
                             mapIOHelper.writeMap(parsePath(file.string), map);
 							mapModel.setModifiedFlag(map, false);
                         } catch (IOException except) {
-                            handleError(except, file.string, source, errorTitle, "writing to");
+                            handleError(except, file.string, source, errorTitle,
+								"writing to");
                         }
                     }
                 }

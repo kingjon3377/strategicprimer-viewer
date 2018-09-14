@@ -187,9 +187,11 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 			"""SELECT * FROM kinded_immortals WHERE row IS NOT NULL""");
 	}
 	shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
-		handleQueryResults(db, warner, "simple immortals in units", curry(readSimpleImmortal)(map),
+		handleQueryResults(db, warner, "simple immortals in units",
+			curry(readSimpleImmortal)(map),
 			"""SELECT * FROM simple_immortals WHERE parent IS NOT NULL""");
-		handleQueryResults(db, warner, "immortals with kinds in units", curry(readKindedImmortal)(map),
+		handleQueryResults(db, warner, "immortals with kinds in units",
+			curry(readKindedImmortal)(map),
 			"""SELECT * FROM kinded_immortals WHERE parent IS NOT NULL""");
 	}
 }

@@ -290,10 +290,14 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
        criteria."""
     shared actual TreePath? nextProblem(TreePath? starting, Integer turn) {
         {IUnit*} sequence;
-        if (exists starting, exists startingUnit = starting.path.array.narrow<IUnit>().first) {
-            sequence = model.getUnits(root).repeat(2).sequence().trimLeading(not(startingUnit.equals)).rest;
-        } else if (exists starting, exists startingKind = starting.path.array.narrow<String>().first) {
-            sequence = model.getUnits(root).repeat(2).sequence().trimLeading(not(matchingPredicate(startingKind.equals, IUnit.kind)));
+        if (exists starting, exists startingUnit =
+				starting.path.array.narrow<IUnit>().first) {
+            sequence = model.getUnits(root).repeat(2).sequence()
+				.trimLeading(not(startingUnit.equals)).rest;
+        } else if (exists starting, exists startingKind =
+				starting.path.array.narrow<String>().first) {
+            sequence = model.getUnits(root).repeat(2).sequence()
+				.trimLeading(not(matchingPredicate(startingKind.equals, IUnit.kind)));
         } else {
             sequence = model.getUnits(root);
         }

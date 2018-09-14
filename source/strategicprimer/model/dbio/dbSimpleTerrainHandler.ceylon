@@ -66,6 +66,6 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>(
 		map.addFixture(Point(row, column), fixture);
 	}
 	shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-			handleQueryResults(db, warner, "simple terrain fixtures", curry(readSimpleTerrain)(map),
-				"""SELECT * FROM simple_terrain""");
+			handleQueryResults(db, warner, "simple terrain fixtures",
+				curry(readSimpleTerrain)(map), """SELECT * FROM simple_terrain""");
 }

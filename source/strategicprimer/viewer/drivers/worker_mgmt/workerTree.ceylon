@@ -423,7 +423,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         listener.memberSelected(null, proxy);
                     }
                 } else if (is UnitMember sel) {
-                    log.debug("Selection in workerTree is a UnitMember, but not an IUnit");
+                    log.debug("workerTree selection is a UnitMember, but not an IUnit");
                     for (listener in selectionListeners) {
                         listener.selectUnit(null);
                     }
@@ -432,11 +432,13 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     }
                 } else {
                     if (is String sel) {
-                        log.debug("Selection in workerTree is a String, i.e. a unit-kind node");
+                        log.debug(
+							"workerTree selection is a String, i.e. a unit-kind node");
                     } else if (!sel exists) {
                         log.debug("Selection in workerTree is null");
                     } else {
-                        log.warn("Unexpected type of selection in workerTree: ``type(sel)``");
+                        log.warn(
+							"Unexpected type of selection in workerTree: ``type(sel)``");
                     }
                     for (listener in selectionListeners) {
                         listener.selectUnit(null);
@@ -496,8 +498,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     exists pathEnd = retval
                         .getClosestPathForLocation(event.x, event.y)?.lastPathComponent,
                     is IFixture obj = wtModel.getModelObject(pathEnd)) {
-                FixtureEditMenu(obj, players, idf, mutationListener, wtModel).show(event.component, event.x,
-                    event.y);
+                FixtureEditMenu(obj, players, idf, mutationListener, wtModel)
+					.show(event.component, event.x, event.y);
             }
         }
         shared actual void mouseClicked(MouseEvent event) => handleMouseEvent(event);

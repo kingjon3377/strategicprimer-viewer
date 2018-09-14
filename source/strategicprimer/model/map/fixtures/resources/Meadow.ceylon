@@ -54,8 +54,9 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
     shared actual Boolean equals(Object obj) {
         if (is Meadow obj) {
             return kind == obj.kind && field == obj.field && status == obj.status &&
-//                cultivated == obj.cultivated && id == obj.id && acres == obj.acres; // TODO: Switch back once eclipse/ceylon-sdk#711 fixed
-                cultivated == obj.cultivated && id == obj.id && numberComparator.compare(acres, obj.acres) == equal;
+//                cultivated == obj.cultivated && id == obj.id && // TODO: Switch back once eclipse/ceylon-sdk#711 fixed
+                cultivated == obj.cultivated && id == obj.id &&
+                numberComparator.compare(acres, obj.acres) == equal;
         } else {
             return false;
         }
@@ -79,7 +80,8 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
                 report("One field, one meadow for ID #``id``");
                 return false;
             } else if (kind != other.kind) {
-                report("In ``(field) then "field" else "meadow"`` with ID #``id``:\tKinds differ");
+                String fieldString = (field) then "field" else "meadow";
+                report("In ``fieldString`` with ID #``id``:\tKinds differ");
                 return false;
             }
             Anything(String) localReport;

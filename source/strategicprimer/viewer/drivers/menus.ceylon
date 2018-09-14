@@ -219,7 +219,8 @@ shared class SPMenu extends JMenuBar {
                 handler(ActionEvent(WindowList.getWindows(true, false).iterable.coalesced
                     .last else event, ActionEvent.actionFirst,
                     "About")));
-            Application.application.setQuitHandler((AppEvent.QuitEvent event, QuitResponse quitResponse) {
+            Application.application.setQuitHandler((AppEvent.QuitEvent event,
+					QuitResponse quitResponse) {
                 IOHandler.quitHandler = quitResponse.performQuit;
 //                localDefaultQuit = quitResponse.performQuit; // TODO: switch to this once eclipse/ceylon#7396 fixed
                 handler(ActionEvent(

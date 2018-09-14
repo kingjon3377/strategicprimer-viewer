@@ -205,7 +205,8 @@ SPFrame explorationFrame(IExplorationModel model,
             }
         }
         playerList.addListSelectionListener(silentListener(handlePlayerChanged));
-        menuHandler.register(silentListener(handlePlayerChanged), "change current player");
+        menuHandler.register(silentListener(handlePlayerChanged),
+			"change current player");
         addPlayerChangeListener(unitListModel);
         DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
         object renderer satisfies ListCellRenderer<IUnit> {

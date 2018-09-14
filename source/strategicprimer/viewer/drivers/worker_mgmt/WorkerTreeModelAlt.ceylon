@@ -259,7 +259,8 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
                 ObjectArray<Object>.with(Singleton(newNode)));
             markModified();
         } else {
-            log.error("Asked to add a unit member but couldn't find corresponding unit node");
+            log.error(
+                "Asked to add a unit member but couldn't find corresponding unit node");
         }
     }
     shared actual void renameItem(HasMutableName item) {

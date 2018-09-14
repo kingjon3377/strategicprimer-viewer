@@ -74,7 +74,9 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
 
     {String*} expectedCommunityStatsTags(String parent) {
         switch (parent)
-        case ("population") { return ["expertise", "claim", "production", "consumption"]; }
+        case ("population") {
+            return ["expertise", "claim", "production", "consumption"];
+        }
         case ("claim"|"expertise") { return []; }
         case ("production"|"consumption") { return ["resource"]; }
         else {

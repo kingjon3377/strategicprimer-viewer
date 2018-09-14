@@ -143,9 +143,9 @@ object dbCommunityStatsHandler
 			"""SELECT * FROM town_expertise""");
 		handleQueryResults(db, warner, "town worked resources", curry(readWorkedResource)(map),
 			"""SELECT * FROM town_worked_resources""");
-		handleQueryResults(db, warner, "town produced resources", curry(readProducedResource)(map),
-			"""SELECT * FROM town_production""");
-		handleQueryResults(db, warner, "town consumed resources", curry(readConsumedResource)(map),
-			"""SELECT * FROM town_consumption""");
+		handleQueryResults(db, warner, "town produced resources",
+			curry(readProducedResource)(map), """SELECT * FROM town_production""");
+		handleQueryResults(db, warner, "town consumed resources",
+			curry(readConsumedResource)(map), """SELECT * FROM town_consumption""");
 	}
 }

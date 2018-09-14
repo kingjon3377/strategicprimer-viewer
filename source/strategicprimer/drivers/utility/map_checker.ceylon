@@ -105,13 +105,16 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
     class SPContentWarning(Point context, String message)
             extends Exception("At ``context``: ``message``") { }
     class OwnerChecker(IMapNG map) {
-        shared void check(TileType terrain, Point context, IFixture fixture, Warning warner) {
+        shared void check(TileType terrain, Point context, IFixture fixture,
+                Warning warner) {
             if (is HasOwner fixture) {
                 if (fixture.owner.name.trimmed.empty) {
-                    warner.handle(SPContentWarning(context, "Fixture owned by ``fixture.owner``, who has no name"));
+                    warner.handle(SPContentWarning(context,
+                        "Fixture owned by ``fixture.owner``, who has no name"));
                 }
                 if (!map.players.map(Player.playerId).any(fixture.owner.playerId.equals)) {
-                    warner.handle(SPContentWarning(context, "Fixture owned by ``fixture.owner``, who is not known by the map"));
+                    warner.handle(SPContentWarning(context,
+                        "Fixture owned by ``fixture.owner``, who is not known by the map"));
                 }
             }
         }

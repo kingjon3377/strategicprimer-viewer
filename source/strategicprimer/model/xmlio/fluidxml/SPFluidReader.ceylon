@@ -493,7 +493,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         SimpleFixtureReader("troll", `Troll`).entry);
     shared actual Type readXML<Type>(JPath file, JReader istream, Warning warner)
             given Type satisfies Object {
-        // TODO: Pass in Closeables so we can pass it to the TypesafeMLEventReader to make sure the file descriptor gets closed
+        // TODO: Pass in Closeables, to pass to TypesafeMLEventReader, to close file descriptor
         Iterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
         {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
         IMutablePlayerCollection players = PlayerCollection();

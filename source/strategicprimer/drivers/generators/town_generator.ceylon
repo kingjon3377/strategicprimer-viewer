@@ -298,7 +298,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                             "That would be a land resource worked by an aquatic town.");
                     } else {
                         cli.println(
-                            "That would be an aquatic resource worked by a town on land.");
+                            "That would be an ocean resource worked by a town on land.");
                     }
                     if (!cli.inputBooleanInSeries("Are you sure? ", "aquatic")) {
                         continue;
@@ -450,7 +450,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             String tableName = "``skill``_production";
             if (runner.wrapped.hasTable(tableName)) {
                 retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
-                    runner.wrapped.consultTable(tableName, location, map.baseTerrain.get(location), // TODO: syntax sugar
+                    runner.wrapped.consultTable(tableName, location,
+						map.baseTerrain.get(location), // TODO: syntax sugar
                         map.mountainous.get(location), map.fixtures.get(location),
                         map.dimensions),
                 Quantity(2.power(level - 1), (level == 1) then "unit" else "units")));

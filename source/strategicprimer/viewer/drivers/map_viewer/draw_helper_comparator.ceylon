@@ -267,10 +267,10 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
             }
             try (writer = outFile.Overwriter()) {
                 writer.writeLine(
-                    "Filename,Tile Count,DrawHelper Tested,Test Case,Repetitions,Time (ns)");
+                    "Filename,# Tile,DrawHelper Tested,Test Case,Repetitions,Time (ns)");
                 for ([file, helper, test]->total in results) {
-                    writer.write("\"``file``\",``mapSizes[file] else ""``");
-                    writer.writeLine(",\"``helper``\",\"``test``\",``reps``,``total.storedValue``");
+					writer.writeLine(",".join([file, mapSizes[file] else "", helper, test,
+						reps, total.storedValue]));
                 }
             }
         }

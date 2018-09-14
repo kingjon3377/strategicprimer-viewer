@@ -85,7 +85,8 @@ shared class PopulationGeneratingCLI() satisfies SimpleCLIDriver {
 			return;
 		}
 		String key = (talking) then "talking ``kind``" else kind;
-		Integer total = cli.inputNumber("There are ``count`` groups of ``key`` in the world; what should their total population be?");
+		Integer total = cli.inputNumber(
+			"There are ``count`` groups of ``key`` in the world; what should their total population be?");
 		variable Integer remainingTotal = total;
 		variable Integer remainingCount = count;
 		Random rng = singletonRandom;

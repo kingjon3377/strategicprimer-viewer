@@ -141,8 +141,8 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
                     .map(entryMap(identity<Point>, ITownFixture.population))
                     .map(Entry.pair)
                     .narrow<[Point, CommunityStats]>()
-                    .filter(([loc, pop]) => pop.yearlyProduction.map(ResourcePile.contents)
-                        .any(shuffle(String.contains)('#')));
+                    .filter(([loc, pop]) => pop.yearlyProduction.map(
+                        ResourcePile.contents).any(shuffle(String.contains)('#')));
         if (!brokenTownContents.empty) {
             value runner = ExplorationRunner();
             "TODO fixer requires a tables directory"
@@ -188,7 +188,7 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
         for (job in jobList) {
             if (rng.nextBoolean()) {
                 cli.println(
-                    "Setting unit with ID #``unit.id`` (``count`` / 5328) to kind ``job``");
+                    "Setting unit with ID #``unit.id`` (``count`` / 5328) to kind ``job``"); // TODO: Remove magic number
                 unit.kind = job;
                 return;
             }

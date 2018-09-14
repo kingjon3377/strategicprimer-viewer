@@ -42,11 +42,12 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
         variable Boolean retval = true;
         for (player in obj) {
             if (!players.items.contains(player)) {
-                if (exists matching = players[player.playerId]) {
+                if (exists match = players[player.playerId]) {
                     if (player.name.empty || "unknown" == player.name.lowercased) {
                         continue;
                     } else {
-                        report("Matching players differ: our ``matching``, their ``player``");
+                        report(
+                            "Matching players differ: our ``match``, their ``player``");
                     }
                 } else {
 	                report("Extra player ``player.name``");

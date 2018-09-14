@@ -47,7 +47,7 @@ shared object pathfinder {
 				}
 				return [currentDistance, path.reversed];
 			} else if (currentDistance >= runtime.maxArraySize) {
-				log.debug("Considering a tile estimated as an infinite distance away after ``iterations`` iterations");
+				log.debug("Considering an 'infinite-distance' tile after ``iterations`` iterations");
 				return [currentDistance, []];
 			}
 			for (neighbor in surroundingPointIterable(current, map.dimensions, 1)) {
@@ -62,7 +62,7 @@ shared object pathfinder {
 						!map.fixtures.get(neighbor).narrow<Forest>().empty, map.mountainous.get(neighbor),
 						!map.rivers.get(neighbor).empty || !map.rivers.get(current).empty,
 						map.fixtures.get(neighbor));
-				log.trace("Previous estimate for it is ``estimate``, new estimate ``tentativeDistance``");
+				log.trace("Old estimate for it is ``estimate``, new estimate ``tentativeDistance``");
 				if (tentativeDistance < estimate) {
 					log.trace("Updating path");
 					retval[neighbor] = current;
@@ -82,7 +82,8 @@ shared object pathfinder {
 					increasing<Integer>)).map(Entry.key).filter(unvisited.contains).first) {
 				current = next;
 			} else {
-				log.debug("Couldn't find a smallest-estimate unchecked tile after ``iterations`` iterations");
+				log.debug(
+					"Couldn't find a smallest-estimate unchecked tile after ``iterations`` iterations");
 				return [runtime.maxArraySize, []];
 			}
 		}

@@ -116,7 +116,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                             "Dexterity"->dexValue, "Constitution"->conValue,
                             "Intelligence"->intValue, "Wisdom"->wisValue,
                             "Charisma"->chaValue])) {
-                    log.debug("Worker not created because ``stat`` provided was non-numeric");
+                    log.debug("Worker not created because non-numeric ``stat`` provided");
                     builder.append("``stat`` must be a number.");
                     builder.appendNewline();
                 }

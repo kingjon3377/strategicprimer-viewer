@@ -272,7 +272,8 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
                             unit.addMember(item);
                         }
                     } else {
-                        log.warn("Adding a proxying member with different number of proxied items");
+                        log.warn(
+                            "Adding a proxying member with different # of proxied items");
                         if (exists real = member.proxied.first) {
                             for (unit in proxiedList) {
                                 if (!unit.any(real.equals)) {

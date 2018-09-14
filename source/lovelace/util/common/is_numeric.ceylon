@@ -73,7 +73,8 @@ native("jvm") object numParsingHelper {
     }
     shared native("jvm") test
     void testJVMParseInt() {
-        assertEquals(parseInt("-5,127"), -5127, "parseInt() parses comma-containing numbers");
+        assertEquals(parseInt("-5,127"), -5127,
+            "parseInt() parses comma-containing numbers");
         assertEquals(parseInt("2345"), 2345, "parseInt() doesn't require commas");
         assertNull(parseInt("alphabetic"));
     }

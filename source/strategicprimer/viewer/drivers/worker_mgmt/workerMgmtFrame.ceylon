@@ -254,7 +254,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 			Toolkit.defaultToolkit.beep();
 		}
 	}
-	value jumpButton = listenedButton("Jump to Next Blank (``platform.shortcutDescription``J)", jumpNext);
+	value jumpButton = listenedButton(
+		"Jump to Next Blank (``platform.shortcutDescription``J)", jumpNext);
 	StrategyExporter strategyExporter = StrategyExporter(model, options);
 	BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
 		listenedButton("Add New Unit", silentListener(newUnitFrame.showWindow)),
@@ -269,7 +270,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
 		verticalSplit(BorderedPanel.verticalPanel(
 			JLabel("Contents of the world you know about, for reference:"),
 			JScrollPane(createReportTree(reportModel)), null), mdp, 0.6));
-	createHotKey(jumpButton, "jumpToNext", jumpNext, JComponent.whenInFocusedWindow, createAccelerator(KeyEvent.vkJ));
+	createHotKey(jumpButton, "jumpToNext", jumpNext, JComponent.whenInFocusedWindow,
+		createAccelerator(KeyEvent.vkJ));
 	TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
 	menuHandler.register(silentListener(expander.expandAll), "expand all");
 	menuHandler.register(silentListener(expander.collapseAll), "collapse all");

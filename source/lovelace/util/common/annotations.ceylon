@@ -48,6 +48,6 @@ shared final annotation class RandomGenerationAnnotation(Integer count, Integer 
 		satisfies OptionalAnnotation<RandomGenerationAnnotation, FunctionOrValueDeclaration>
 		& ArgumentProvider {
 	shared actual {Anything*} arguments(ArgumentProviderContext context) =>
-			// TODO: If context provides information, return appropriate types if applied to non-Integer arguments
+			// TODO: If context specifies types, return appropriate types for non-Integer args
 			singletonRandom.integers(max).take(count);
 }

@@ -106,7 +106,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             } else {
                 writeMember(writer, unleveledWorkers.first);
                 if (!unleveledWorkers.rest.empty) {
-                    writer.write(", ``unleveledWorkers.rest.size`` other unleveled workers");
+                    writer.write(
+						", ``unleveledWorkers.rest.size`` other unleveled workers");
                 }
                 needComma = true;
             }

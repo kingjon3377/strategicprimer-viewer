@@ -68,7 +68,8 @@ object reportGeneratorHelper {
 	shared Point findHQ(IMapNG map, Player player) {
 		variable Point? retval = null;
 		for (location->fixture in narrowedStream<Point, Fortress>(map.fixtures)
-				.filter(matchingPredicate(matchingValue(player, Fortress.owner), Entry<Point, Fortress>.item))) {
+				.filter(matchingPredicate(matchingValue(player, Fortress.owner),
+					Entry<Point, Fortress>.item))) {
 			if ("hq" == fixture.name) {
 				return location;
 			} else if (location.valid, !retval exists) {

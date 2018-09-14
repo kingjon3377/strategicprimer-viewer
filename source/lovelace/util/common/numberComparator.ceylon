@@ -14,7 +14,8 @@ shared native object numberComparator satisfies Comparator<Number<out Anything>>
 		case (is Float) { return number; }
 		case (is Whole) { return number.float; }
 	}
-	native shared actual Comparison compare(Number<out Anything> one, Number<out Anything> two) {
+	native shared actual Comparison compare(Number<out Anything> one,
+			Number<out Anything> two) {
 		if (is Integer one, is Integer two) {
 			return one <=> two;
 		} else if (is Float one, is Float two) {
@@ -40,7 +41,8 @@ shared object numberComparator satisfies Comparator<Number<out Anything>> {
 		case (is Decimal) { return number.float; }
 		case (is Whole) { return number.float; }
 	}
-	native("jvm") shared actual Comparison compare(Number<out Anything> one, Number<out Anything> two) {
+	native("jvm") shared actual Comparison compare(Number<out Anything> one,
+			Number<out Anything> two) {
 		if (is Integer one, is Integer two) {
 			return one <=> two;
 		} else if (is Float one, is Float two) {

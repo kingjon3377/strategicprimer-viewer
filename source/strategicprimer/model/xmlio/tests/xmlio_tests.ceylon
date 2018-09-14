@@ -161,7 +161,7 @@ object xmlTests {
 	    if (exists desideratum) {
 	        if (desideratum is Callable<Anything, Nothing>) {
 	            warningLevels.warn.handle(AssertionError(
-	                "assertFormatIssue() given a Callable as desideratum; you probably need to put 'null' first"));
+	                "assertFormatIssue() given Callable as desideratum: put 'null' first?"));
 	        }
 	        try (stringReader = StringReader(xml)) {
 	            Type returned = reader.readXML<Type>(fakeFilename, stringReader,
@@ -422,8 +422,8 @@ object xmlTests {
 		assertMissingProperty<Village>("<village name=\"``name``\" status=\"``status``\" />",
 			"id", Village(status, name, 0, PlayerImpl(-1, "Independent"), "human"));
 		assertMissingProperty<Village>(
-			"<village race=\"``race``\" name=\"``name``\" status=\"``status``\" id=\"``id``\" />", "owner",
-			Village(status, name, id, PlayerImpl(-1, "Independent"), race));
+			"<village race=\"``race``\" name=\"``name``\" status=\"``status``\" id=\"``id``\" />",
+			"owner", Village(status, name, id, PlayerImpl(-1, "Independent"), race));
 		assertImageSerialization("Village image property is preserved", village);
 		assertPortraitSerialization("Village portrait property is preserved", village);
 	}
@@ -494,8 +494,8 @@ object xmlTests {
 	    CommunityStats population = CommunityStats(populationSize);
 	    population.addWorkedField(workedField);
 	    population.setSkillLevel("citySkill", skillLevel);
-	    population.yearlyConsumption.add(ResourcePile(producedId, "cityResource", "citySpecific",
-	        Quantity(producedQty, "cityUnit")));
+	    population.yearlyConsumption.add(ResourcePile(producedId, "cityResource",
+			"citySpecific", Quantity(producedQty, "cityUnit")));
 	    city.population = population;
 	    assertSerialization("Community-stats can be serialized", population);
 	    assertSerialization("City can have community-stats", city);
@@ -923,8 +923,8 @@ object xmlTests {
 											"XML stream didn't contain a start element");
 		                    }
 		            });
-	            assertFormatIssue<AdventureFixture,UnwantedChildException|XMLStreamException>(reader,
-	                """<adventure xmlns="xyzzy" id="1" brief="one" full="two" />""", null);
+	            assertFormatIssue<AdventureFixture,UnwantedChildException|XMLStreamException>(
+					reader, """<adventure xmlns="xyzzy" id="1" brief="one" full="two" />""", null);
 	        }
 	}
 
@@ -933,14 +933,15 @@ object xmlTests {
 	    assertForwardDeserialization<SimpleImmortal>("Reading Ogre via <include>",
 	        """<include file="string:&lt;ogre id=&quot;1&quot; /&gt;" />""",
 	        Ogre(1).equals);
+		String exceptionMessage =
+				"""ParseError at [row,col]:[1,10]
+				   Message: XML document structures must start and end within the same entity.""";
 	    for (reader in readers) {
 	        assertFormatIssue<Object, FileNotFoundException>(reader,
 	            """<include file="nosuchfile" />""", null);
 	        assertFormatIssue<Object, XMLStreamException>(reader,
 	            """<include file="string:&lt;nonsense" />""", null,
-		        (except) => assertThatException(except).hasMessage(
-		                """ParseError at [row,col]:[1,10]
-		                   Message: XML document structures must start and end within the same entity."""));
+		        (except) => assertThatException(except).hasMessage(exceptionMessage));
 	    }
 	}
 
