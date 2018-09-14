@@ -204,8 +204,8 @@ object fileSplitter {
 }
 shared object maturityModel {
     shared Map<String, Integer> maturityAges =
-            fileSplitter.getFileContents<Integer, Integer|ParseException>("maturity.txt",
-                Integer.parse);
+            fileSplitter.getFileContents<Integer, Integer|ParseException>(
+                "animal_data/maturity.txt", Integer.parse);
     variable Integer currentTurnLocal = -1;
     shared Integer currentTurn => currentTurnLocal;
     assign currentTurn {
@@ -218,7 +218,8 @@ shared object maturityModel {
 }
 shared object animalPlurals satisfies Correspondence<String, String> {
     Map<String, String> plurals =
-            fileSplitter.getFileContents<String>("animal_plurals.txt", identity);
+            fileSplitter.getFileContents<String>(
+                "animal_data/plurals.txt", identity);
     shared actual String get(String key) => plurals[key] else key;
     shared actual Boolean defines(String key) => plurals.defines(key);
 
