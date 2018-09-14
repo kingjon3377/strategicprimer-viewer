@@ -50,7 +50,7 @@ import strategicprimer.model.map.fixtures.mobile {
     Centaur,
     Dragon,
     Animal,
-	AnimalTracks
+    AnimalTracks
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
@@ -89,14 +89,14 @@ import ceylon.file {
 }
 import lovelace.util.common {
     todo,
-	simpleMap,
+    simpleMap,
     TypeStream
 }
 import strategicprimer.model.xmlio.fluidxml {
-	FluidBase { ... }
+    FluidBase { ... }
 }
 import ceylon.language.meta {
-	classDeclaration
+    classDeclaration
 }
 Regex snugEndTag = regex("([^ ])/>", true);
 variable Integer currentTurn = -1;

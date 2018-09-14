@@ -9,11 +9,11 @@ import strategicprimer.model.map {
     HasMutableImage,
     IFixture,
     HasKind,
-	HasExtent
+    HasExtent
 }
 "A forest on a tile."
 shared class Forest(kind, rows, id, acres = -1)
-		satisfies TerrainFixture&HasMutableImage&HasKind&HasExtent {
+        satisfies TerrainFixture&HasMutableImage&HasKind&HasExtent {
     "What kind of trees dominate this forest."
     shared actual String kind;
     """Whether this is "rows of" trees."""

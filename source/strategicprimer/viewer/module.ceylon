@@ -35,6 +35,6 @@ module strategicprimer.viewer "0.4.9017" {
     import strategicprimer.drivers.utility spVersion;
     import ceylon.http.server ceylonVersion;
     import ceylon.html ceylonVersion;
-	import com.vasileff.ceylon.structures "1.1.3";
-	import strategicprimer.mining spVersion;
+    import com.vasileff.ceylon.structures "1.1.3";
+    import strategicprimer.mining spVersion;
 }

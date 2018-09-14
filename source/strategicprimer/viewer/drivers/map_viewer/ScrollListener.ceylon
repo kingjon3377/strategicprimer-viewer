@@ -12,7 +12,7 @@ import strategicprimer.model.map {
 }
 import lovelace.util.common {
     todo,
-	defer
+    defer
 }
 import lovelace.util.jvm {
     BorderedPanel

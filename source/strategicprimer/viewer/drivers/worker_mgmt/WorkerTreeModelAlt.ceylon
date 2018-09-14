@@ -1,6 +1,6 @@
 import java.lang {
     ObjectArray,
-	IntArray
+    IntArray
 }
 import strategicprimer.model.map.fixtures {
     UnitMember
@@ -33,12 +33,12 @@ import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
 import lovelace.util.common {
-	matchingValue,
-	as,
+    matchingValue,
+    as,
     IteratorWrapper
 }
 import lovelace.util.jvm {
-	EnumerationWrapper
+    EnumerationWrapper
 }
 "An alternative implementation of the worker tree model."
 shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
@@ -137,7 +137,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             ProxyUnit newOwner, UnitNode newNode, MutableTreeNode node) {
         assert (is PlayerNode playerNode = root);
         if (old.proxied.size == newOwner.proxied.size,
-	            old.proxied.size == member.proxied.size) {
+                old.proxied.size == member.proxied.size) {
             Queue<UnitMember>&{UnitMember*} members = LinkedList<UnitMember>();
             Queue<IUnit>&{IUnit*} newList = LinkedList<IUnit>();
             for ([item, innerOld, innerNew] in
@@ -186,7 +186,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         assert (is TreeNode playerNode = root);
         MutableTreeNode? oldNode = getNode(playerNode, old);
         if (is UnitNode newNode = getNode(playerNode, newOwner),
-	            exists node = getNode(playerNode, member)) {
+                exists node = getNode(playerNode, member)) {
             Integer oldIndex = oldNode?.getIndex(node) else -1;
             fireTreeNodesRemoved(this,
                 ObjectArray<Object>.with([playerNode, getNode(playerNode, old.kind),

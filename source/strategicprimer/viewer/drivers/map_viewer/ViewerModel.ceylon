@@ -69,7 +69,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     shared new fromEntry(
         "An [[Entry]] of the initial map and its filename"
         IMutableMapNG->[JPath?, Boolean] entry)
-			extends SimpleDriverModel(entry.key, *entry.item) {
+            extends SimpleDriverModel(entry.key, *entry.item) {
         visDimensions = VisibleDimensions(0, entry.key.dimensions.rows - 1, 0,
             entry.key.dimensions.columns - 1);
     }

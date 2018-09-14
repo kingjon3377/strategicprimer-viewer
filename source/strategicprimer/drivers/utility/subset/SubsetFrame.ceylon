@@ -83,7 +83,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
     }
     contentPane = JScrollPane(label);
     void printParagraph(String paragraph,
-	            LabelTextColor color = LabelTextColor.white) =>
+                LabelTextColor color = LabelTextColor.white) =>
             label.append("<p style=\"color:``color``\">``paragraph``</p>");
     variable IMapNG mainMap = SPMapNG(MapDimensionsImpl(0, 0, 2), PlayerCollection(), -1);
     shared void loadMain(IMapNG|JPath arg) {

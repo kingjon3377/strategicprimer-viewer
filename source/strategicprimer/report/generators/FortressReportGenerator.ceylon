@@ -7,7 +7,7 @@ import ceylon.collection {
 
 import lovelace.util.common {
     DelayedRemovalMap,
-	matchingValue
+    matchingValue
 }
 
 import strategicprimer.model.map {
@@ -47,8 +47,8 @@ import strategicprimer.report.nodes {
     ComplexReportNode
 }
 import com.vasileff.ceylon.structures {
-	MutableMultimap,
-	ArrayListMultimap
+    MutableMultimap,
+    ArrayListMultimap
 }
 "A report generator for fortresses."
 shared class FortressReportGenerator(

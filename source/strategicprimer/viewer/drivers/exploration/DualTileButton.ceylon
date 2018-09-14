@@ -8,8 +8,8 @@ import javax.swing {
 }
 
 import strategicprimer.viewer.drivers.map_viewer {
-	tileDrawHelperFactory,
-	TileDrawHelper
+    tileDrawHelperFactory,
+    TileDrawHelper
 }
 import strategicprimer.model.map {
     Point,
@@ -18,10 +18,10 @@ import strategicprimer.model.map {
     invalidPoint
 }
 import strategicprimer.drivers.common {
-	FixtureMatcher
+    FixtureMatcher
 }
 import java.lang {
-	IntArray
+    IntArray
 }
 
 "A button (visually) representing a tile in two maps."

@@ -39,7 +39,7 @@ shared Integer inputNumber(String prompt) {
     while (retval < 0) {
         writePrompt(prompt);
         if (exists input = process.readLine(),
-	            is Integer temp = Integer.parse(input.replace(",", ""))) {
+                is Integer temp = Integer.parse(input.replace(",", ""))) {
             retval = temp;
         } else {
             retval = -1;

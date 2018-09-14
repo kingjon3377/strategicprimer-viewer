@@ -1,6 +1,6 @@
 import lovelace.util.common {
     todo,
-	matchingValue
+    matchingValue
 }
 "Possible tile types."
 todo("Other additional types for use in other worlds' maps?")

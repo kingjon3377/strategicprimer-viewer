@@ -5,7 +5,7 @@ import javax.swing.tree {
 
 import lovelace.util.common {
     todo,
-	anythingEqual
+    anythingEqual
 }
 
 import strategicprimer.model.map {
@@ -41,7 +41,7 @@ shared class SectionReportNode(Integer level, variable String header,
     shared actual void setUserObject(Object obj) => super.userObject = obj;
     shared actual Boolean equals(Object that) {
         if (is SectionReportNode that, level == that.level, header == that.header,
-	            children() == that.children()) {
+                children() == that.children()) {
             return anythingEqual(localPoint, that.localPoint);
         } else {
             return false;

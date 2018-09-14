@@ -97,8 +97,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         } else if (exists idNum, idNum == fixture.id) {
             return true;
         } else if (matchesName(pattern, fixture, caseSensitivity) ||
-		        matchesKind(pattern, fixture, caseSensitivity) ||
-		        matchesOwner(pattern, idNum, fixture, caseSensitivity)) {
+                matchesKind(pattern, fixture, caseSensitivity) ||
+                matchesOwner(pattern, idNum, fixture, caseSensitivity)) {
             return true;
         } else {
             return false;
@@ -139,7 +139,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
                 !vertically.selected, model.selection).find(
 //                    (point) => model.map.fixtures[point].any( // TODO: syntax sugar once compiler bug fixed
                     (point) => model.map.fixtures.get(point).any(
-						shuffle(curry(matches))(pattern, idNum, caseSensitivity)))) {
+                        shuffle(curry(matches))(pattern, idNum, caseSensitivity)))) {
             log.debug("Found in point ``result``");
             model.selection = result;
         }

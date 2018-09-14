@@ -10,7 +10,7 @@ import strategicprimer.report {
     IReportNode
 }
 import lovelace.util.common {
-	anythingEqual
+    anythingEqual
 }
 "A simple node representing plain text. Any children are ignored!"
 shared class SimpleReportNode(variable String nodeText,

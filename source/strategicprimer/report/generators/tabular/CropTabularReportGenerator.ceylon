@@ -24,14 +24,14 @@ import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 import ceylon.decimal {
-	Decimal
+    Decimal
 }
 import ceylon.logging {
-	logger,
-	Logger
+    logger,
+    Logger
 }
 import ceylon.whole {
-	Whole
+    Whole
 }
 "A logger."
 Logger log = logger(`module strategicprimer.report`);
@@ -39,44 +39,44 @@ Logger log = logger(`module strategicprimer.report`);
  shrubs"
 shared class CropTabularReportGenerator
         satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
-	static String truncatedNumberString(Number<out Anything> number) {
-		switch (number)
-		case (is Integral<out Anything>) {
-			return number.string;
-		}
-		case (is Float) {
-			return Float.format(number, 0, 2);
-		}
-		case (is Decimal) {
-			return truncatedNumberString(number.float);
-		}
-		else {
-			if (is Integer|Whole number) {
-				log.debug("Ran into eclipse/ceylon#7382");
-			} else {
-				log.warn("Unhandled Number type ``
-					typeOf(number)`` in CropTabularReportGenerator.truncatedNumberString");
-			}
-			return number.string;
-		}
-	}
-	Point hq;
-	MapDimensions dimensions;
-	shared new (Point hq, MapDimensions dimensions) {
-		this.hq = hq;
-		this.dimensions = dimensions;
-	}
+    static String truncatedNumberString(Number<out Anything> number) {
+        switch (number)
+        case (is Integral<out Anything>) {
+            return number.string;
+        }
+        case (is Float) {
+            return Float.format(number, 0, 2);
+        }
+        case (is Decimal) {
+            return truncatedNumberString(number.float);
+        }
+        else {
+            if (is Integer|Whole number) {
+                log.debug("Ran into eclipse/ceylon#7382");
+            } else {
+                log.warn("Unhandled Number type ``
+                    typeOf(number)`` in CropTabularReportGenerator.truncatedNumberString");
+            }
+            return number.string;
+        }
+    }
+    Point hq;
+    MapDimensions dimensions;
+    shared new (Point hq, MapDimensions dimensions) {
+        this.hq = hq;
+        this.dimensions = dimensions;
+    }
 
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Kind", "Size",
-		"Size Unit", "Cultivation", "Status", "Crop"];
+        "Size Unit", "Cultivation", "Status", "Crop"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "crops";
     "Create a GUI table row representing the crop."
     shared actual [{String+}+] produce(
-			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Forest|Shrub|Meadow|Grove item, Integer key, Point loc,
-			Map<Integer, Integer> parentMap) {
+            Map<Integer, Integer> parentMap) {
         String kind;
         String cultivation;
         String status;
@@ -89,24 +89,24 @@ shared class CropTabularReportGenerator
             cultivation = "---";
             status = "---";
             if (item.acres.positive) {
-	            size = truncatedNumberString(item.acres);
-	            sizeUnit = "acres";
-	        } else {
-	            size = "unknown";
-	            sizeUnit = "---";
-	        }
+                size = truncatedNumberString(item.acres);
+                sizeUnit = "acres";
+            } else {
+                size = "unknown";
+                sizeUnit = "---";
+            }
         }
         case (is Shrub) {
             kind = "shrub";
             cultivation = "---";
             status = "---";
             if (item.population.positive) {
-	            size = item.population.string;
-	            sizeUnit = "plants";
-	        } else {
-	            size = "unknown";
-	            sizeUnit = "---";
-	        }
+                size = item.population.string;
+                sizeUnit = "plants";
+            } else {
+                size = "unknown";
+                sizeUnit = "---";
+            }
         }
         case (is Meadow) {
             kind = (item.field) then "field" else "meadow";
@@ -125,16 +125,16 @@ shared class CropTabularReportGenerator
             cultivation = (item.cultivated) then "cultivated" else "wild";
             status = "---";
             if (item.population.positive) {
-	            size = item.population.string;
-	            sizeUnit = "trees";
-	        } else {
-	            size = "unknown";
-	            sizeUnit = "---";
-	        }
+                size = item.population.string;
+                sizeUnit = "trees";
+            } else {
+                size = "unknown";
+                sizeUnit = "---";
+            }
         }
         fixtures.remove(key);
         return [[distanceString(loc, hq, dimensions), loc.string, kind, size, sizeUnit,
-	        cultivation, status, crop]];
+            cultivation, status, crop]];
     }
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, Forest|Shrub|Meadow|Grove] one,
@@ -147,8 +147,8 @@ shared class CropTabularReportGenerator
                 one.first, two.first);
             if (cmp == equal) {
                 return comparing(byIncreasing<TileFixture, Integer>(
-							compose(Object.hash, typeOf<TileFixture>)),
-						byIncreasing(TileFixture.hash))(
+                            compose(Object.hash, typeOf<TileFixture>)),
+                        byIncreasing(TileFixture.hash))(
                     first, second);
             } else {
                 return cmp;

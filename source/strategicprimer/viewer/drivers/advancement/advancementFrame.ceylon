@@ -52,8 +52,8 @@ import strategicprimer.drivers.gui.common {
     SPFrame
 }
 import lovelace.util.common {
-	silentListener,
-	defer
+    silentListener,
+    defer
 }
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
@@ -61,14 +61,14 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     IMapNG map = model.map;
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
     IDRegistrar idf = createIDFactory(map);
-	void markModified() {
-		for (subMap->_ in model.allMaps) {
-			model.setModifiedFlag(subMap, true);
-		}
-	}
+    void markModified() {
+        for (subMap->_ in model.allMaps) {
+            model.setModifiedFlag(subMap, true);
+        }
+    }
     JTree&UnitMemberSelectionSource&UnitSelectionSource tree = workerTree(treeModel,
         model.players, defer(compose(IMapNG.currentTurn, IWorkerModel.map), [model]),
-		false, idf, markModified);
+        false, idf, markModified);
     WorkerCreationListener newWorkerListener = WorkerCreationListener(treeModel,
         idf);
     tree.addUnitSelectionListener(newWorkerListener);
@@ -105,7 +105,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
             InterpolatedLabel<[Player]>(compose(shuffle(curry(plus<String>))("'s Units:"),
                 Player.name), [PlayerImpl(-1, "An Unknown Player")]);
     object retval extends SPFrame("Worker Advancement", model.mapFile,
-				Dimension(640, 480), true,
+                Dimension(640, 480), true,
                 (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
             satisfies PlayerChangeListener {
         shared actual void playerChanged(Player? old, Player newPlayer) {

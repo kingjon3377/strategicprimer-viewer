@@ -27,7 +27,7 @@ import strategicprimer.model.map.fixtures.mobile {
     Animal,
     IWorker,
     IUnit,
-	AnimalOrTracks
+    AnimalOrTracks
 }
 import strategicprimer.report {
     IReportNode
@@ -40,8 +40,8 @@ import strategicprimer.report.nodes {
     SectionReportNode
 }
 import com.vasileff.ceylon.structures {
-	MutableMultimap,
-	HashMultimap
+    MutableMultimap,
+    HashMultimap
 }
 "A report generator for units."
 shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
@@ -87,7 +87,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      paragraph or bullet point)."
     shared actual void produceSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-	        IMapNG map, Anything(String) ostream, IUnit item, Point loc) {
+            IMapNG map, Anything(String) ostream, IUnit item, Point loc) {
         ostream("Unit of type ``item.kind``, named ``item.name``, ");
         if (item.owner.independent) {
             ostream("independent");
@@ -282,7 +282,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Produce the part of the report dealing with all units not already covered."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-		    IMapNG map) {
+            IMapNG map) {
         IReportNode theirs = SectionListReportNode(5, "Foreign Units");
         IReportNode ours = SectionListReportNode(5, "Your Units");
         for ([loc, unit] in fixtures.items.narrow<[Point, IUnit]>()

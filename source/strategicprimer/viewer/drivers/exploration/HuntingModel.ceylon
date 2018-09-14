@@ -9,7 +9,7 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures.mobile {
     Animal,
-	AnimalTracks
+    AnimalTracks
 }
 import strategicprimer.model.map.fixtures.resources {
     Grove,
@@ -17,16 +17,16 @@ import strategicprimer.model.map.fixtures.resources {
     Meadow
 }
 import lovelace.util.common {
-	matchingPredicate,
-	matchingValue,
-	singletonRandom
+    matchingPredicate,
+    matchingValue,
+    singletonRandom
 }
 "A class to facilitate a better hunting/fishing driver."
 shared class HuntingModel {
-	"""A class and object for "nothing found"."""
-	shared static class NothingFound of nothingFound {
-		shared new nothingFound {}
-	}
+    """A class and object for "nothing found"."""
+    shared static class NothingFound of nothingFound {
+        shared new nothingFound {}
+    }
     """The "nothing" value we insert."""
     shared static String noResults = "Nothing ...";
     "How long it should take, in man-hours, to process a carcass of the specified mass,

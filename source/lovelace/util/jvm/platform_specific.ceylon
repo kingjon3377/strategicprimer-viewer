@@ -13,10 +13,10 @@ import java.lang {
 "An object encapsulating utility constants and functions that differ between Mac and
  non-Mac platforms."
 shared object platform {
-	"Set a String/String property pair in a way that won't blow up at runtime due to
-	 the difference between Ceylon and Java strings."
-	void setStringProperty(JComponent component, String key, String val) =>
-			component.putClientProperty(Types.nativeString(key), Types.nativeString(val));
+    "Set a String/String property pair in a way that won't blow up at runtime due to
+     the difference between Ceylon and Java strings."
+    void setStringProperty(JComponent component, String key, String val) =>
+            component.putClientProperty(Types.nativeString(key), Types.nativeString(val));
     "Whether this system is a Mac."
     shared Boolean systemIsMac = operatingSystem.name == "mac";
     "The usual shortcut-key modifier on this system."

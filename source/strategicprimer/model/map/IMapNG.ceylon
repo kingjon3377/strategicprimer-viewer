@@ -1,5 +1,5 @@
 import strategicprimer.model.map.fixtures.mobile {
-	AnimalTracks
+    AnimalTracks
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture

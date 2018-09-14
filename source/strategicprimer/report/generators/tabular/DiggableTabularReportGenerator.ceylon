@@ -1,6 +1,6 @@
 import lovelace.util.common {
     DelayedRemovalMap,
-	comparingOn
+    comparingOn
 }
 
 import strategicprimer.model {

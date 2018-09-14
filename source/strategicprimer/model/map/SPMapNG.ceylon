@@ -4,8 +4,8 @@ import strategicprimer.model.map.fixtures.mobile {
 import lovelace.util.common {
     anythingEqual,
     NonNullCorrespondence,
-	matchingValue,
-	matchingPredicate
+    matchingValue,
+    matchingPredicate
 }
 import ceylon.collection {
     MutableSet,
@@ -23,9 +23,9 @@ import strategicprimer.model.map.fixtures.towns {
     AbstractTown
 }
 import com.vasileff.ceylon.structures {
-	MutableMultimap,
-	HashMultimap,
-	ArrayListMultimap,
+    MutableMultimap,
+    HashMultimap,
+    ArrayListMultimap,
     Multimap
 }
 "A logger."
@@ -131,7 +131,7 @@ shared class SPMapNG satisfies IMutableMapNG {
         //{TileFixture*} local = fixturesMap[location]; // TODO: syntax sugar once compiler bug fixed
         {TileFixture*} local = fixturesMap.get(location);
         if (fixture.id >= 0,
-	            exists existing = local.find(matchingValue(fixture.id, TileFixture.id))) {
+                exists existing = local.find(matchingValue(fixture.id, TileFixture.id))) {
             if (existing == fixture || subsetCheck(existing, fixture)) {
                 fixturesMap.remove(location, existing);
                 fixturesMap.put(location, fixture);
@@ -163,11 +163,11 @@ shared class SPMapNG satisfies IMutableMapNG {
     shared actual Boolean equals(Object obj) {
         if (is IMapNG obj) {
             if (dimensions == obj.dimensions, players.containsEvery(obj.players),
-	                obj.players.containsEvery(players), currentTurn == obj.currentTurn,
-	                currentPlayer == obj.currentPlayer) {
+                    obj.players.containsEvery(players), currentTurn == obj.currentTurn,
+                    currentPlayer == obj.currentPlayer) {
                 for (point in locations) {
                     if (!anythingEqual(baseTerrain[point], obj.baseTerrain[point]) ||
-	                        //mountainous[point] != obj.mountainous[point] || // TODO: syntax sugar
+                            //mountainous[point] != obj.mountainous[point] || // TODO: syntax sugar
                             mountainous.get(point) != obj.mountainous.get(point) ||
                             //set(rivers[point]) != set (obj.rivers[point]) || // TODO: syntax sugar
                             set(rivers.get(point)) != set(obj.rivers.get(point)) ||
@@ -309,7 +309,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                     ostream("Extra fixture:\t``desideratum``");
                 } else if (unmatched) {
                     ostream("Fixture with ID #``desideratum.id
-	                    `` didn't match any of the subsettable fixtures sharing that ID");
+                        `` didn't match any of the subsettable fixtures sharing that ID");
                     retval = false;
                 }
                 return retval;

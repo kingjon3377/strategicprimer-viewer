@@ -1,6 +1,6 @@
 import lovelace.util.common {
     todo,
-	matchingValue
+    matchingValue
 }
 "If a tile has a river, it could be in any one of several directions. This class
  enumerates those directions. Tiles should have a *set* of these.

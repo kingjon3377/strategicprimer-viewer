@@ -5,7 +5,7 @@ import ceylon.collection {
 import lovelace.util.common {
     todo,
     DelayedRemovalMap,
-	simpleMap
+    simpleMap
 }
 
 import strategicprimer.model.map {
@@ -84,7 +84,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     "Produce a report on all towns. This report omits fortresses and villages, and is
      sorted in a way that I hope is helpful. We remove the town from the set of fixtures."
     shared actual void produce(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
-	        IMapNG map, Anything(String) ostream) {
+            IMapNG map, Anything(String) ostream) {
         MutableHeadedMap<ITownFixture, Point> abandoned =
                 HeadedMapImpl<ITownFixture, Point>("<h5>Abandoned Communities</h5>");
         MutableHeadedMap<ITownFixture, Point> active =
@@ -147,7 +147,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      report.) We remove the towns from the set of fixtures."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
-	        IMapNG map) {
+            IMapNG map) {
         Map<TownStatus, IReportNode> separated = simpleMap(
             TownStatus.abandoned->SectionListReportNode(5, "Abandoned Communities"),
                 TownStatus.active->SectionListReportNode(5, "Active Communities"),

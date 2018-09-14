@@ -1,6 +1,6 @@
 import lovelace.util.common {
     DelayedRemovalMap,
-	comparingOn
+    comparingOn
 }
 
 import strategicprimer.model {
@@ -14,7 +14,7 @@ import strategicprimer.model.map {
 import strategicprimer.model.map.fixtures.mobile {
     Animal,
     maturityModel,
-	AnimalTracks
+    AnimalTracks
 }
 "A report generator for sightings of animals."
 shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,

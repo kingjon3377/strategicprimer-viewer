@@ -1,12 +1,12 @@
 import ceylon.collection {
     ArrayList,
     MutableList,
-	Queue
+    Queue
 }
 
 import lovelace.util.common {
     todo,
-	matchingValue
+    matchingValue
 }
 
 import strategicprimer.model.map {
@@ -16,15 +16,15 @@ import strategicprimer.model.map {
     HasOwner,
     IMutableMapNG,
     Point,
-	IMapNG,
-	HasPopulation,
-	HasExtent
+    IMapNG,
+    HasPopulation,
+    HasExtent
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal,
-	Immortal,
-	AnimalTracks
+    Immortal,
+    AnimalTracks
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -41,13 +41,13 @@ import strategicprimer.drivers.exploration.common {
     TraversalImpossibleException,
     simpleMovementModel,
     MovementCostSource,
-	pathfinder
+    pathfinder
 }
 import strategicprimer.model.map.fixtures.towns {
     Village,
-	Fortress,
-	AbstractTown,
-	TownStatus
+    Fortress,
+    AbstractTown,
+    TownStatus
 }
 
 "The logic split out of [[ExplorationCLI]]"
@@ -112,8 +112,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     "Ask the user for directions the unit should move until it runs out of MP or the user
       decides to quit."
     todo("Inline back into [[ExplorationCLI]]?")
-	// No need to set the 'modified' flag anywhere in this method, as ExplorationModel.move()
-	// always sets it.
+    // No need to set the 'modified' flag anywhere in this method, as ExplorationModel.move()
+    // always sets it.
     shared void moveUntilDone() {
         if (exists mover = model.selectedUnit) {
             cli.println("Details of the unit:");
@@ -137,23 +137,23 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         value retval = ExplorationAutomationConfig {
                             player = mover.owner;
                             stopForForts = cli.inputBooleanInSeries(
-								"Stop for instructions at others' fortresses?");
+                                "Stop for instructions at others' fortresses?");
                             stopForActiveTowns = cli.inputBooleanInSeries(
-								"Stop for instructions at active towns?");
+                                "Stop for instructions at active towns?");
                             stopForInactiveTowns = cli.inputBooleanInSeries(
-								"Stop for instructions at inactive towns?");
+                                "Stop for instructions at inactive towns?");
                             stopForIndieVillages = cli.inputBooleanInSeries(
-								"Stop for instructions at independent villages?");
+                                "Stop for instructions at independent villages?");
                             stopForOtherVillages = cli.inputBooleanInSeries(
-								"Stop for instructions at villages sworn to other players?");
+                                "Stop for instructions at villages sworn to other players?");
                             stopForYourVillages = cli.inputBooleanInSeries(
-								"Stop for instructons at villages sworn to you?");
+                                "Stop for instructons at villages sworn to you?");
                             stopForPlayerUnits = cli.inputBooleanInSeries(
-								"Stop for instructions on meeting other players' units?");
+                                "Stop for instructions on meeting other players' units?");
                             stopForIndieUnits = cli.inputBooleanInSeries(
-								"Stop for instructions on meeting independent units?");
+                                "Stop for instructions on meeting independent units?");
                             stopForImmortals = cli.inputBooleanInSeries(
-								"Stop for instructions on meeting an immortal?");
+                                "Stop for instructions on meeting an immortal?");
                         };
                         wrapped = retval;
                         return retval;
@@ -166,48 +166,48 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 if (exists proposedDestination = proposedPath.accept()) {
                     direction = `Direction`.caseValues.find(
                         matchingValue(proposedDestination,
-							curry(model.getDestination)(point))) else Direction.nowhere;
+                            curry(model.getDestination)(point))) else Direction.nowhere;
                     if (proposedDestination == point) {
                         continue;
                     } else if (direction == Direction.nowhere) {
                         cli.println("Intended next destination ``
-							proposedDestination`` is not adjacent to current location ``point``");
+                            proposedDestination`` is not adjacent to current location ``point``");
                         continue;
                     }
                     cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``
-						speed.shortName``.");
+                        speed.shortName``.");
                 } else {
-	                cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``
-						speed.shortName``.");
-	                cli.println(
-						"""0: Set Speed, 1: SW, 2: S, 3: SE, 4: W, 5: Linger, 6: E, 7: NW, 8: N, 9: NE, 10: Toward Point, 11: Quit""");
-	                Integer directionNum = cli.inputNumber("Direction to move: ");
-	                switch (directionNum)
-	                case (0) { changeSpeed(); continue; }
-	                case (1) { direction = Direction.southwest; }
-	                case (2) { direction = Direction.south; }
-	                case (3) { direction = Direction.southeast; }
-	                case (4) { direction = Direction.west; }
-	                case (5) { direction = Direction.nowhere; }
-	                case (6) { direction = Direction.east; }
-	                case (7) { direction = Direction.northwest; }
-	                case (8) { direction = Direction.north; }
-	                case (9) { direction = Direction.northeast; }
-	                case (10) {
-	                    value [cost, path] = pathfinder.getTravelDistance(model
-								.subordinateMaps.first?.key else model.map,
-	                        point, cli.inputPoint("Location to move toward: "));
-	                    if (path.empty) {
-	                        cli.println(
-								"The explorer doesn't know how to get there from here.");
-	                    } else {
-	                        proposedPath.addAll(path);
-	                    }
-	                    continue;
-	                }
-	                else { fireMovementCost(runtime.maxArraySize); continue; }
-	            }
-	            Point destPoint = model.getDestination(point, direction);
+                    cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``
+                        speed.shortName``.");
+                    cli.println(
+                        """0: Set Speed, 1: SW, 2: S, 3: SE, 4: W, 5: Linger, 6: E, 7: NW, 8: N, 9: NE, 10: Toward Point, 11: Quit""");
+                    Integer directionNum = cli.inputNumber("Direction to move: ");
+                    switch (directionNum)
+                    case (0) { changeSpeed(); continue; }
+                    case (1) { direction = Direction.southwest; }
+                    case (2) { direction = Direction.south; }
+                    case (3) { direction = Direction.southeast; }
+                    case (4) { direction = Direction.west; }
+                    case (5) { direction = Direction.nowhere; }
+                    case (6) { direction = Direction.east; }
+                    case (7) { direction = Direction.northwest; }
+                    case (8) { direction = Direction.north; }
+                    case (9) { direction = Direction.northeast; }
+                    case (10) {
+                        value [cost, path] = pathfinder.getTravelDistance(model
+                                .subordinateMaps.first?.key else model.map,
+                            point, cli.inputPoint("Location to move toward: "));
+                        if (path.empty) {
+                            cli.println(
+                                "The explorer doesn't know how to get there from here.");
+                        } else {
+                            proposedPath.addAll(path);
+                        }
+                        continue;
+                    }
+                    else { fireMovementCost(runtime.maxArraySize); continue; }
+                }
+                Point destPoint = model.getDestination(point, direction);
                 try {
                     model.move(direction, speed);
                 } catch (TraversalImpossibleException except) {
@@ -224,7 +224,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                     if (simpleMovementModel.shouldAlwaysNotice(mover, fixture)) {
                         constants.add(fixture);
                     } else if (simpleMovementModel.shouldSometimesNotice(mover, speed,
-							fixture)) {
+                            fixture)) {
                         allFixtures.add(fixture);
                     }
                 }
@@ -234,10 +234,10 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 assert (exists terrain = model.map.baseTerrain[destPoint]);
                 if (TileType.ocean == terrain) {
                     tracksAnimal = huntingModel.fish(destPoint).map(Entry.item).first
-						else HuntingModel.NothingFound.nothingFound;
+                        else HuntingModel.NothingFound.nothingFound;
                 } else {
                     tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first
-						else HuntingModel.NothingFound.nothingFound;
+                        else HuntingModel.NothingFound.nothingFound;
                 }
                 if (is Animal tracksAnimal) {
                     allFixtures.add(AnimalTracks(tracksAnimal.kind));
@@ -266,25 +266,25 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 cli.println("The explorer comes to ``destPoint``, a ``mtn````
                     map.baseTerrain[destPoint] else "unknown-terrain"`` tile");
                 {TileFixture*} noticed = simpleMovementModel.selectNoticed(allFixtures,
-					identity<TileFixture>, mover, speed);
+                    identity<TileFixture>, mover, speed);
                 if (!constants.empty || !noticed.empty) {
-	                if (noticed.empty) {
-	                    cli.println("The following were automatically noticed:");
-	                } else if (noticed.size > 1) {
-	                    cli.println(
-	                        "The following were noticed, all but the last ``noticed
-	                                .size`` automatically:");
-	                } else {
-	                    cli.println(
-							"The following were noticed, all but the last automatically:");
-	                }
-	                constants.addAll(noticed);
-	                for (fixture in constants) {
-	                    printAndTransferFixture(destPoint, fixture, mover);
-	                }
-	            }
+                    if (noticed.empty) {
+                        cli.println("The following were automatically noticed:");
+                    } else if (noticed.size > 1) {
+                        cli.println(
+                            "The following were noticed, all but the last ``noticed
+                                    .size`` automatically:");
+                    } else {
+                        cli.println(
+                            "The following were noticed, all but the last automatically:");
+                    }
+                    constants.addAll(noticed);
+                    for (fixture in constants) {
+                        printAndTransferFixture(destPoint, fixture, mover);
+                    }
+                }
                 if (!proposedPath.empty, automationConfig.config.stopAtPoint(cli,
-	                    model.subordinateMaps.first?.key else model.map, destPoint)) {
+                        model.subordinateMaps.first?.key else model.map, destPoint)) {
                     proposedPath.clear();
                 }
             }
@@ -295,52 +295,52 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
 }
 
 class ExplorationAutomationConfig(Player player, Boolean stopForForts,
-		Boolean stopForActiveTowns, Boolean stopForInactiveTowns, Boolean stopForYourVillages,
-		Boolean stopForIndieVillages, Boolean stopForOtherVillages, Boolean stopForPlayerUnits,
-		Boolean stopForIndieUnits, Boolean stopForImmortals) {
-	shared Boolean stopAtPoint(ICLIHelper cli, IMapNG map, Point point) {
-		//for (fixture in map.fixtures[point]) { // TODO: syntax sugar
-		for (fixture in map.fixtures.get(point)) {
-			if (is Fortress fixture, fixture.owner != player, stopForForts) {
-				cli.println("There is a fortress belonging to ``
-					fixture.owner`` here, so the explorer stops.");
-				return true;
-			} else if (is AbstractTown fixture) {
-				if (fixture.status == TownStatus.active, stopForActiveTowns) {
-					cli.println("There is a ``fixture.townSize`` active ``
-						fixture.kind`` here, so the explorer stops.");
-					return true;
-				} else if (fixture.status != TownStatus.active, stopForInactiveTowns) {
-					cli.println("There is a ``fixture.townSize`` ``
-						fixture.status`` ``fixture.kind`` here, so the explorer stops.");
-					return true;
-				}
-			} else if (is Village fixture) {
-				if (fixture.owner == player, stopForYourVillages) {
-					cli.println("There is one of your villages here, so the explorer stops.");
-					return true;
-				} else if (fixture.owner.independent, stopForIndieVillages) {
-					cli.println("There is an independent village here, so the explorer stops.");
-					return true;
-				} else if (!fixture.owner.independent, fixture.owner != player,
-						stopForOtherVillages) {
-					cli.println("There is another player's village here, so the explorer stops.");
-					return true;
-				}
-			} else if (is IUnit fixture) {
-				if (fixture.owner.independent, stopForIndieUnits) {
-					cli.println("There is an independent unit here, so the explorer stops.");
-					return true;
-				} else if (!fixture.owner.independent, fixture.owner != player, stopForPlayerUnits) {
-					cli.println("There is a unit belonging to ``
-						fixture.owner`` here, so the explorer stops.");
-					return true;
-				}
-			} else if (is Immortal fixture, stopForImmortals) {
-				cli.print("There is a(n) ``fixture.shortDescription`` here, so the explorer stops.");
-				return true;
-			}
-		}
-		return false;
-	}
+        Boolean stopForActiveTowns, Boolean stopForInactiveTowns, Boolean stopForYourVillages,
+        Boolean stopForIndieVillages, Boolean stopForOtherVillages, Boolean stopForPlayerUnits,
+        Boolean stopForIndieUnits, Boolean stopForImmortals) {
+    shared Boolean stopAtPoint(ICLIHelper cli, IMapNG map, Point point) {
+        //for (fixture in map.fixtures[point]) { // TODO: syntax sugar
+        for (fixture in map.fixtures.get(point)) {
+            if (is Fortress fixture, fixture.owner != player, stopForForts) {
+                cli.println("There is a fortress belonging to ``
+                    fixture.owner`` here, so the explorer stops.");
+                return true;
+            } else if (is AbstractTown fixture) {
+                if (fixture.status == TownStatus.active, stopForActiveTowns) {
+                    cli.println("There is a ``fixture.townSize`` active ``
+                        fixture.kind`` here, so the explorer stops.");
+                    return true;
+                } else if (fixture.status != TownStatus.active, stopForInactiveTowns) {
+                    cli.println("There is a ``fixture.townSize`` ``
+                        fixture.status`` ``fixture.kind`` here, so the explorer stops.");
+                    return true;
+                }
+            } else if (is Village fixture) {
+                if (fixture.owner == player, stopForYourVillages) {
+                    cli.println("There is one of your villages here, so the explorer stops.");
+                    return true;
+                } else if (fixture.owner.independent, stopForIndieVillages) {
+                    cli.println("There is an independent village here, so the explorer stops.");
+                    return true;
+                } else if (!fixture.owner.independent, fixture.owner != player,
+                        stopForOtherVillages) {
+                    cli.println("There is another player's village here, so the explorer stops.");
+                    return true;
+                }
+            } else if (is IUnit fixture) {
+                if (fixture.owner.independent, stopForIndieUnits) {
+                    cli.println("There is an independent unit here, so the explorer stops.");
+                    return true;
+                } else if (!fixture.owner.independent, fixture.owner != player, stopForPlayerUnits) {
+                    cli.println("There is a unit belonging to ``
+                        fixture.owner`` here, so the explorer stops.");
+                    return true;
+                }
+            } else if (is Immortal fixture, stopForImmortals) {
+                cli.print("There is a(n) ``fixture.shortDescription`` here, so the explorer stops.");
+                return true;
+            }
+        }
+        return false;
+    }
 }

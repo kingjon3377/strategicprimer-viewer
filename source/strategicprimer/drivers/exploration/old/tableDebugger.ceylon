@@ -10,35 +10,35 @@ import strategicprimer.drivers.common {
     SPOptions,
     SimpleCLIDriver,
     ParamCount,
-	ISPDriver
+    ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import java.lang {
-	synchronized
+    synchronized
 }
 
 """A driver to help debug "exploration tables", which were the second "exploration
    results" framework I implemented."""
 service(`interface ISPDriver`)
 shared class TableDebugger() satisfies SimpleCLIDriver {
-	ExplorationRunner runner = ExplorationRunner();
-	variable Boolean initialized = false;
-	synchronized void init() {
-		if (initialized) {
-			return;
-		} else {
-			initialized = true;
-		}
-	    "Table debugger requires a tables directory"
-	    assert (is Directory directory = parsePath("tables").resource);
-	    loadAllTables(directory, runner);
-	}
+    ExplorationRunner runner = ExplorationRunner();
+    variable Boolean initialized = false;
+    synchronized void init() {
+        if (initialized) {
+            return;
+        } else {
+            initialized = true;
+        }
+        "Table debugger requires a tables directory"
+        assert (is Directory directory = parsePath("tables").resource);
+        loadAllTables(directory, runner);
+    }
     shared actual IDriverUsage usage = DriverUsage(false, ["-T", "--table-debug"],
         ParamCount.none, "Debug old-model encounter tables",
         "See whether old-model encounter tables refer to a nonexistent table", false,
-		false);
+        false);
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         log.warn("tableDebugger doesn't need a driver model");

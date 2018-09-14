@@ -17,7 +17,7 @@ import strategicprimer.model.map {
     Point
 }
 import strategicprimer.model.map.fixtures.mobile {
-	AnimalImpl
+    AnimalImpl
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -34,7 +34,7 @@ import strategicprimer.drivers.common {
     ParamCount,
     IDriverUsage,
     DriverUsage,
-	ISPDriver
+    ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -51,7 +51,7 @@ import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 import lovelace.util.common {
-	singletonRandom
+    singletonRandom
 }
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""
@@ -81,19 +81,19 @@ shared class ExpansionDriver() satisfies SimpleCLIDriver {
                         .map(HasOwner.owner).any(currentPlayer.equals);
                 }
                 void safeAdd(Point point, TileFixture fixture) {
-					if (map.fixtures.get(point).any(fixture.equals)) {
-		                return;
+                    if (map.fixtures.get(point).any(fixture.equals)) {
+                        return;
                     } else if (is HasOwner fixture, !fixture is ITownFixture) {
-			            value zeroed = fixture.copy(fixture.owner != currentPlayer);
-			            if (!map.fixtures.get(point).any(zeroed.equals)) {
-	                        map.addFixture(point, fixture.copy(
-	                                fixture.owner != currentPlayer));
-			            }
+                        value zeroed = fixture.copy(fixture.owner != currentPlayer);
+                        if (!map.fixtures.get(point).any(zeroed.equals)) {
+                            map.addFixture(point, fixture.copy(
+                                    fixture.owner != currentPlayer));
+                        }
                     } else {
-			            value zeroed = fixture.copy(true);
-			            if (!map.fixtures.get(point).any(zeroed.equals)) {
+                        value zeroed = fixture.copy(true);
+                        if (!map.fixtures.get(point).any(zeroed.equals)) {
                             map.addFixture(point, fixture.copy(true));
-			            }
+                        }
                     }
                 }
                 object mock satisfies HasOwner {
@@ -120,10 +120,10 @@ shared class ExpansionDriver() satisfies SimpleCLIDriver {
                                         .contains(fixture)) {
                                 continue;
                             } else if (simpleMovementModel
-									.shouldAlwaysNotice(mock, fixture)) {
+                                    .shouldAlwaysNotice(mock, fixture)) {
                                 safeAdd(neighbor, fixture);
                             } else if (simpleMovementModel.shouldSometimesNotice(mock,
-									Speed.careful, fixture)) {
+                                    Speed.careful, fixture)) {
                                 possibilities.add(fixture);
                             }
                         }

@@ -16,7 +16,7 @@ import com.pump.window {
 import java.awt {
     Component,
     Frame,
-	Window
+    Window
 }
 import java.awt.event {
     ActionListener,
@@ -59,11 +59,11 @@ import strategicprimer.drivers.worker.common {
     IWorkerModel
 }
 import lovelace.util.common {
-	as,
-	defer
+    as,
+    defer
 }
 import java.lang {
-	ObjectArray
+    ObjectArray
 }
 """A class to respond to "change current player" menu items."""
 shared class PlayerChangeMenuListener(IDriverModel model)
@@ -133,10 +133,10 @@ shared class MenuBroker() satisfies ActionListener {
     shared void registerWindowShower(Window()|Window window, String* actions) {
         if (is Window window) {
             register((event) => window.setVisible(true), *actions);
-	    } else {
-	        register((event) => window().setVisible(true), *actions);
-	    }
-	}
+        } else {
+            register((event) => window().setVisible(true), *actions);
+        }
+    }
     "Handle an event by passing it to the listener that's registered to handle its action
      command. If none is registered, log a warning."
     shared actual void actionPerformed(ActionEvent event) {
@@ -220,7 +220,7 @@ shared class SPMenu extends JMenuBar {
                     .last else event, ActionEvent.actionFirst,
                     "About")));
             Application.application.setQuitHandler((AppEvent.QuitEvent event,
-					QuitResponse quitResponse) {
+                    QuitResponse quitResponse) {
                 IOHandler.quitHandler = quitResponse.performQuit;
 //                localDefaultQuit = quitResponse.performQuit; // TODO: switch to this once eclipse/ceylon#7396 fixed
                 handler(ActionEvent(
@@ -289,7 +289,7 @@ shared class SPMenu extends JMenuBar {
     }
     """Create the "view" menu."""
     shared static JMenu createViewMenu(Anything(ActionEvent) handler,
-			IDriverModel model) {
+            IDriverModel model) {
         JMenu viewMenu = JMenu("View");
         viewMenu.mnemonic = KeyEvent.vkE;
 
@@ -318,8 +318,8 @@ shared class SPMenu extends JMenuBar {
             }
         }
         viewMenu.add(currentPlayerItem);
-		// can't use Iterable.each() instead of a loop because JMenu.add() is overloaded
-		for (item in treeItems) {
+        // can't use Iterable.each() instead of a loop because JMenu.add() is overloaded
+        for (item in treeItems) {
             viewMenu.add(item);
         }
         return viewMenu;

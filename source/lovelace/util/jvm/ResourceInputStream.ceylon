@@ -43,9 +43,9 @@ shared class ResourceInputStream(String filename,
                 "``sourceModule.name.replace(".", "/")``/``filename``")) {
                 return temp;
 //            } else if (exists uri = sourceModule.resourceByPath(filename)?.uri,
-//	                exists temp = Types.classForType<ResourceInputStream>()
+//                    exists temp = Types.classForType<ResourceInputStream>()
 //                        .getResourceAsStream(uri.string)) {
-//	            return temp;
+//                return temp;
             } else if (exists uri = sourceModule.resourceByPath(filename)?.uri) {
                 if (first) {
                     process.writeLine("URI is '``uri``'");

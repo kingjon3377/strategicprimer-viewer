@@ -10,7 +10,7 @@ import strategicprimer.model.map {
     TileFixture
 }
 import strategicprimer.drivers.common {
-	FixtureMatcher
+    FixtureMatcher
 }
 "A version-1 tile-draw-helper."
 TileDrawHelper verOneHelper = directTileDrawHelper; // CachingTileDrawHelper();

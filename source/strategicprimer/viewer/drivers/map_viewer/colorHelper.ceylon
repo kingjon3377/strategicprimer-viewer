@@ -17,7 +17,7 @@ import ceylon.language.meta.model {
     ClassOrInterface
 }
 import lovelace.util.common {
-	simpleMap
+    simpleMap
 }
 "An object encapsulating the mapping from tile-types to colors."
 object colorHelper {

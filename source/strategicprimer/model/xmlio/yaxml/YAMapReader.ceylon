@@ -1,12 +1,12 @@
 import ceylon.collection {
     Stack,
     LinkedList,
-	MutableMap,
-	HashMap
+    MutableMap,
+    HashMap
 }
 import ceylon.language.meta {
     classDeclaration,
-	type
+    type
 }
 
 import javax.xml.namespace {
@@ -55,16 +55,16 @@ import strategicprimer.model.map.fixtures.terrain {
 }
 import strategicprimer.model.map.fixtures.mobile {
     maturityModel,
-	immortalAnimals
+    immortalAnimals
 }
 import strategicprimer.model.map.fixtures.towns {
     Fortress
 }
 import ceylon.language.meta.model {
-	ClassOrInterface
+    ClassOrInterface
 }
 import lovelace.util.common {
-	matchingValue
+    matchingValue
 }
 variable Integer currentTurn = -1;
 "A reader for Strategic Primer maps."

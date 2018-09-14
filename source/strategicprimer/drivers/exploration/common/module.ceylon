@@ -11,5 +11,5 @@ module strategicprimer.drivers.exploration.common "0.4.9017" {
     import ceylon.test ceylonVersion;
     import lovelace.util.jvm "0.1.0";
     import ceylon.random ceylonVersion;
-	import ceylon.logging ceylonVersion;
+    import ceylon.logging ceylonVersion;
 }

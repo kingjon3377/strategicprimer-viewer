@@ -13,7 +13,7 @@ import strategicprimer.drivers.exploration.common {
 "A list model for players in the exploration GUI."
 class PlayerListModel(IExplorationModel model) extends DefaultListModel<Player>()
         satisfies MapChangeListener {
-	model.playerChoices.each(addElement);
+    model.playerChoices.each(addElement);
     shared actual void mapChanged() {
         clear();
         model.playerChoices.each(addElement);

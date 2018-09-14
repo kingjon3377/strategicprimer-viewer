@@ -1,6 +1,6 @@
 import lovelace.util.common {
     todo,
-	silentListener
+    silentListener
 }
 import com.apple.eawt {
     Application,

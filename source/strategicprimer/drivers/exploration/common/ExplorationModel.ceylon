@@ -33,7 +33,7 @@ import strategicprimer.model.map.fixtures {
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal,
-	MobileFixture
+    MobileFixture
 }
 import strategicprimer.model.map.fixtures.resources {
     Grove,
@@ -52,8 +52,8 @@ import ceylon.random {
     randomize
 }
 import lovelace.util.common {
-	matchingPredicate,
-	matchingValue
+    matchingPredicate,
+    matchingValue
 }
 import com.vasileff.ceylon.structures {
     Multimap
@@ -85,7 +85,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             for (fixture in map.fixtures.get(point).narrow<HasOwner>()) {
                 if (!fixture.owner.independent, fixture.owner != unit.owner) {
                     process.writeLine(
-						"Motion of ``description`` to ``dest`` could be observed by ``
+                        "Motion of ``description`` to ``dest`` could be observed by ``
                             fixture.shortDescription`` at ``point``");
                 }
             }
@@ -133,7 +133,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     }
     "Whether the given fixture is at the given location in the given map."
     static Boolean doesLocationHaveFixture(IMapNG map, Point point, TileFixture fixture)
-			=> doesStreamContainFixture(map.fixtures.get(point), fixture); // TODO: syntax sugar
+            => doesStreamContainFixture(map.fixtures.get(point), fixture); // TODO: syntax sugar
     """A "plus one" method with a configurable, low "overflow"."""
     static Integer increment(
             "The number to increment"
@@ -170,7 +170,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             extends SimpleMultiMapModel.copyConstructor(model) {}
     "All the players shared by all the maps."
     shared actual {Player*} playerChoices => allMaps.map(Entry.key).map(IMapNG.players)
-		.map(set).fold(set(map.players))(intersection);
+        .map(set).fold(set(map.players))(intersection);
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) =>
             map.fixtures.map(Entry.item).flatMap(unflattenNonFortresses)
@@ -214,8 +214,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         case (Direction.nowhere) { return point; }
     }
     void fixMovedUnits(Point base) {
-		{<Point->TileFixture>*} localFind(IMapNG mapParam, TileFixture target) =>
-				mapParam.fixtures.filter(matchingValue(target, Entry<Point, TileFixture>.item));
+        {<Point->TileFixture>*} localFind(IMapNG mapParam, TileFixture target) =>
+                mapParam.fixtures.filter(matchingValue(target, Entry<Point, TileFixture>.item));
         // TODO: Unit vision range
         {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
         for (submap->[file, flag] in subordinateMaps) {
@@ -254,11 +254,11 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         assert (exists unit = local.rest.first);
         Point dest = getDestination(point, direction);
         if (exists terrain = map.baseTerrain[dest],
-				exists startingTerrain = map.baseTerrain[point],
+                exists startingTerrain = map.baseTerrain[point],
                     ((simpleMovementModel.landMovementPossible(terrain) &&
-							startingTerrain != TileType.ocean) ||
+                            startingTerrain != TileType.ocean) ||
                         (startingTerrain == TileType.ocean &&
-							terrain == TileType.ocean))) {
+                            terrain == TileType.ocean))) {
             Integer base;
             if (dest == point) {
                 base = 1;
@@ -269,9 +269,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 base = simpleMovementModel.movementCost(map.baseTerrain.get(dest),
                     map.fixtures[dest]?.narrow<Forest>()?.first exists,
 //                    map.mountainous[dest],
-//					riversSpeedTravel(direction, map.rivers[point],
+//                    riversSpeedTravel(direction, map.rivers[point],
                     map.mountainous.get(dest),
-						simpleMovementModel.riversSpeedTravel(direction, map.rivers.get(point),
+                        simpleMovementModel.riversSpeedTravel(direction, map.rivers.get(point),
 //                        map.rivers[dest]), fixtures);
                         map.rivers.get(dest)), fixtures);
             }
@@ -300,9 +300,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 log.trace("Main map doesn't have terrain for destination");
             } else {
                 assert (exists terrain = map.baseTerrain[dest],
-					exists startingTerrain = map.baseTerrain[point]);
+                    exists startingTerrain = map.baseTerrain[point]);
                 if (simpleMovementModel.landMovementPossible(terrain) &&
-						startingTerrain == TileType.ocean) {
+                        startingTerrain == TileType.ocean) {
                     log.trace("Starting in ocean, trying to get to ``terrain``");
                 } else if (startingTerrain == TileType.ocean, terrain != TileType.ocean) {
                     log.trace("Land movement not possible from ocean to ``terrain``");
@@ -375,9 +375,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             Player owner = unit.owner;
             {Village*} villages = allMaps.map(Entry.key)
                 .flatMap(shuffle(compose(Multimap<Point, TileFixture>.get,
-	                IMutableMapNG.fixtures))(currentPoint))
+                    IMutableMapNG.fixtures))(currentPoint))
                 .narrow<Village>().filter(matchingPredicate(Player.independent,
-					Village.owner));
+                    Village.owner));
             if (!villages.empty) {
                 variable Boolean subordinate = false;
                 for (village in villages) {

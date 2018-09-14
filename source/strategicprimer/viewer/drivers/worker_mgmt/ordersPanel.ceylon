@@ -41,7 +41,7 @@ import strategicprimer.model.map.fixtures.mobile {
     ProxyUnit
 }
 import lovelace.util.common {
-	silentListener
+    silentListener
 }
 "A panel for the user to enter a unit's orders or read a unit's results."
 JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel(

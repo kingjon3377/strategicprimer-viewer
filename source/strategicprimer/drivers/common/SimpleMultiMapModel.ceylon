@@ -31,14 +31,14 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
     }
     shared actual void addSubordinateMap(IMutableMapNG map, JPath? file,
             Boolean modified) => subordinateMapsList.add(map->[file, modified]);
-	shared actual void setModifiedFlag(IMutableMapNG map, Boolean modified) {
-		if (map == this.map) {
-			mapModified = modified;
-		} else if (exists index->entry = subordinateMapsList.locate(matchingValue(map,
-				Entry<IMutableMapNG, [JPath?, Boolean]>.key))) {
-			if (entry.item.rest.first != modified) {
-				subordinateMapsList[index] = entry.key->[entry.item.first, modified];
-			}
-		}
-	}
+    shared actual void setModifiedFlag(IMutableMapNG map, Boolean modified) {
+        if (map == this.map) {
+            mapModified = modified;
+        } else if (exists index->entry = subordinateMapsList.locate(matchingValue(map,
+                Entry<IMutableMapNG, [JPath?, Boolean]>.key))) {
+            if (entry.item.rest.first != modified) {
+                subordinateMapsList[index] = entry.key->[entry.item.first, modified];
+            }
+        }
+    }
 }

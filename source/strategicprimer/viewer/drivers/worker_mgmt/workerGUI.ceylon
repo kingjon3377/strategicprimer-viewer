@@ -25,7 +25,7 @@ import strategicprimer.drivers.common {
     SPOptions,
     IDriverModel,
     SimpleDriver,
-	ISPDriver
+    ISPDriver
 }
 import java.nio.file {
     JPath=Path
@@ -38,10 +38,10 @@ import java.awt.event {
     ActionEvent
 }
 import strategicprimer.model.map {
-	IMapNG
+    IMapNG
 }
 import strategicprimer.model.map.fixtures.mobile {
-	IUnit
+    IUnit
 }
 import lovelace.util.jvm {
     FileChooser
@@ -85,7 +85,7 @@ shared class WorkerGUI() satisfies SimpleDriver {
                     "about");
                 log.trace("Registered menu handlers");
                 if (model.allMaps.map(Entry.key)
-	                    .every(compose(compose(Iterable<IUnit>.empty,
+                        .every(compose(compose(Iterable<IUnit>.empty,
                         model.getUnits), IMapNG.currentPlayer))) {
                     pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
                         "change current player"));

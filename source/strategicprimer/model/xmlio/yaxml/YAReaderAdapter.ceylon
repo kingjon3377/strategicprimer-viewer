@@ -1,6 +1,6 @@
 import ceylon.language.meta {
     classDeclaration,
-	type
+    type
 }
 import ceylon.logging {
     logger,
@@ -34,7 +34,7 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures.mobile {
     ProxyFor,
-	immortalAnimals
+    immortalAnimals
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
@@ -52,11 +52,11 @@ import strategicprimer.model.map.fixtures.towns {
     CommunityStats
 }
 import ceylon.collection {
-	HashMap,
-	MutableMap
+    HashMap,
+    MutableMap
 }
 import ceylon.language.meta.model {
-	ClassOrInterface
+    ClassOrInterface
 }
 "A logger."
 Logger log = logger(`module strategicprimer.model`);
@@ -80,7 +80,7 @@ class YAReaderAdapter(
         YATextReader(warning, idFactory), townReader,
         YAUnitReader(warning, idFactory, players), YAWorkerReader(warning, idFactory) ];
     MutableMap<String, YAAbstractReader<out Object>> readerCache =
-			HashMap<String, YAAbstractReader<out Object>>();
+            HashMap<String, YAAbstractReader<out Object>>();
     MutableMap<ClassOrInterface<Object>, YAAbstractReader<out Object>> writerCache =
             HashMap<ClassOrInterface<Object>, YAAbstractReader<out Object>>();
     "Parse an object from XML."

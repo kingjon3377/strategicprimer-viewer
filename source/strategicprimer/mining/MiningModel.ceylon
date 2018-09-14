@@ -10,7 +10,7 @@ import ceylon.random {
     Random
 }
 import lovelace.util.common {
-	comparingOn
+    comparingOn
 }
 "Kinds of mines we know how to create."
 class MineKind of normal | banded {
@@ -30,7 +30,7 @@ class MiningModel(initial, seed, kind) {
     "What kind of mine to model."
     MineKind kind;
     MutableMap<[Integer, Integer], LodeStatus> unnormalized =
-			HashMap<[Integer, Integer], LodeStatus>();
+            HashMap<[Integer, Integer], LodeStatus>();
     unnormalized[[0, 0]] = initial;
     Queue<[Integer, Integer]> queue = LinkedList<[Integer, Integer]>();
     queue.offer([0, 0]);
@@ -96,21 +96,21 @@ class MiningModel(initial, seed, kind) {
     process.writeLine();
     process.writeLine("Pruned ``pruneCounter`` branches beyond our boundaries");
     for (row->points in unnormalized.keys.group(Tuple.first).
-			sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, decreasing<Integer>))) {
+            sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, decreasing<Integer>))) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
         points.each(unnormalized.remove);
     }
     for (column->points in unnormalized.keys.group(getColumn).
-			sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, increasing<Integer>))) {
+            sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, increasing<Integer>))) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
         points.each(unnormalized.remove);
     }
     for (column->points in unnormalized.keys.group(getColumn).
-			sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, decreasing<Integer>))) {
+            sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, decreasing<Integer>))) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }

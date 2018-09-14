@@ -54,11 +54,11 @@ class FileDropHandler() extends TransferHandler() {
 "An intermediate subclass of JFrame to take care of some common setup things that can't be
  done in an interface."
 shared class SPFrame(String windowTitle, JPath? file, Dimension? minSize = null,
-		"Whether this app supports having files dropped on it."
-		shared default Boolean supportsDroppedFiles = false,
-		Anything(JPath) droppedFileHandler = noop,
-		"The name of the window, for use in customizing the About dialog"
-		shared actual default String windowName = windowTitle)
+        "Whether this app supports having files dropped on it."
+        shared default Boolean supportsDroppedFiles = false,
+        Anything(JPath) droppedFileHandler = noop,
+        "The name of the window, for use in customizing the About dialog"
+        shared actual default String windowName = windowTitle)
         extends JFrame(windowTitle) satisfies ISPWindow {
     if (exists file) {
         title = "``file`` | ``windowTitle``";

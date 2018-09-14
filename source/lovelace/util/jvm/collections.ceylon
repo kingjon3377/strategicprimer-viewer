@@ -1,6 +1,6 @@
 import java.util {
     JIterator=Iterator,
-	Enumeration
+    Enumeration
 }
 import java.lang {
     JIterable=Iterable,
@@ -55,13 +55,13 @@ shared class ListModelWrapper<Element>(ListModel<Element> wrapped)
  so we assert that each item returned is of the desired type instead of requiring callers
  to coerce the type of the enumeration to be parameterized properly."
 shared class EnumerationWrapper<T>(Enumeration<out Object> enumeration)
-		satisfies Iterator<T> {
-	shared actual T|Finished next() {
-		if (enumeration.hasMoreElements()) {
-			assert (is T item = enumeration.nextElement());
-			return item;
-		} else {
-			return finished;
-		}
-	}
+        satisfies Iterator<T> {
+    shared actual T|Finished next() {
+        if (enumeration.hasMoreElements()) {
+            assert (is T item = enumeration.nextElement());
+            return item;
+        } else {
+            return finished;
+        }
+    }
 }

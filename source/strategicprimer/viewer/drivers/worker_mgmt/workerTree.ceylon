@@ -38,7 +38,7 @@ import javax.swing {
     JLabel,
     ImageIcon,
     Icon,
-	DropMode
+    DropMode
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
@@ -84,7 +84,7 @@ import strategicprimer.model.idreg {
     IDRegistrar
 }
 import lovelace.util.common {
-	matchingValue
+    matchingValue
 }
 "A tree of a player's units."
 shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
@@ -103,11 +103,11 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         Anything() mutationListener) {
     DefaultTreeCellRenderer defaultStorer = DefaultTreeCellRenderer();
     value statReferencesList = [["Str", WorkerStats.strength],
-	                            ["Dex", WorkerStats.dexterity],
-	                            ["Con", WorkerStats.constitution],
-	                            ["Int", WorkerStats.intelligence],
-	                            ["Wis", WorkerStats.wisdom],
-	                            ["Cha", WorkerStats.charisma]];
+                                ["Dex", WorkerStats.dexterity],
+                                ["Con", WorkerStats.constitution],
+                                ["Int", WorkerStats.intelligence],
+                                ["Wis", WorkerStats.wisdom],
+                                ["Cha", WorkerStats.charisma]];
     object retval extends JTree()
             satisfies UnitMemberSelectionSource&UnitSelectionSource {
         model = wtModel;
@@ -131,7 +131,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     if (exists last = path.lastPathComponent,
                             exists parentObj = path.parentPath?.lastPathComponent) {
                         if (is IUnit parent = wtModel.getModelObject(parentObj),
-	                            is UnitMember selection = wtModel.getModelObject(last)) {
+                                is UnitMember selection = wtModel.getModelObject(last)) {
                             membersToTransfer.add([selection, parent]);
                         } else if (is IUnit&HasMutableKind selection =
                                 wtModel.getModelObject(last)) {
@@ -337,7 +337,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         shouldWarn = true;
                     }
                 } else if (orderCheck,
-	                    is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
+                        is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
                     for (child in item
                             .narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()) {
                         IUnit unit = child.userObjectNarrowed;
@@ -384,7 +384,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
             if (exists pathLast =
                     getPathForLocation(event.x, event.y)?.lastPathComponent,
-		            is IWorker localNode = wtModel.getModelObject(pathLast),
+                    is IWorker localNode = wtModel.getModelObject(pathLast),
                     exists stats = localNode.stats) {
                 return "<html><p>``", ".join(statReferencesList
                                 .map(([desc, func]) => "``desc`` ``WorkerStats.getModifierString(func(stats))``"))``</p></html>";
@@ -433,12 +433,12 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 } else {
                     if (is String sel) {
                         log.debug(
-							"workerTree selection is a String, i.e. a unit-kind node");
+                            "workerTree selection is a String, i.e. a unit-kind node");
                     } else if (!sel exists) {
                         log.debug("Selection in workerTree is null");
                     } else {
                         log.warn(
-							"Unexpected type of selection in workerTree: ``type(sel)``");
+                            "Unexpected type of selection in workerTree: ``type(sel)``");
                     }
                     for (listener in selectionListeners) {
                         listener.selectUnit(null);
@@ -499,7 +499,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         .getClosestPathForLocation(event.x, event.y)?.lastPathComponent,
                     is IFixture obj = wtModel.getModelObject(pathEnd)) {
                 FixtureEditMenu(obj, players, idf, mutationListener, wtModel)
-					.show(event.component, event.x, event.y);
+                    .show(event.component, event.x, event.y);
             }
         }
         shared actual void mouseClicked(MouseEvent event) => handleMouseEvent(event);

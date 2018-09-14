@@ -4,7 +4,7 @@ import ceylon.collection {
 }
 import lovelace.util.common {
     todo,
-	matchingValue
+    matchingValue
 }
 
 import strategicprimer.model.map.fixtures.mobile {

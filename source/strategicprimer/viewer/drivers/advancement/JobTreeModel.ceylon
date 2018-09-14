@@ -25,7 +25,7 @@ import javax.swing.tree {
 import java.lang {
     ArrayIndexOutOfBoundsException,
     IntArray,
-	ObjectArray
+    ObjectArray
 }
 import ceylon.collection {
     ArrayList,
@@ -47,10 +47,10 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     shared actual IWorker? root => localRoot;
     shared actual HasName getChild(Object parent, Integer index) {
         if (index >= 0, is IWorker parent,
-	            exists child = parent.getFromFirst(index)) {
+                exists child = parent.getFromFirst(index)) {
             return child;
         } else if (index >= 0, is IJob parent,
-	            exists child = parent.getFromFirst(index)) {
+                exists child = parent.getFromFirst(index)) {
             return child;
         } else {
             throw ArrayIndexOutOfBoundsException("Parent does not have that child");

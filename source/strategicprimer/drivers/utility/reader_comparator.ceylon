@@ -21,7 +21,7 @@ import strategicprimer.model.xmlio {
     Warning,
     warningLevels,
     testReaderFactory,
-	SPWriter
+    SPWriter
 }
 import strategicprimer.drivers.common {
     UtilityDriver,
@@ -29,7 +29,7 @@ import strategicprimer.drivers.common {
     DriverUsage,
     ParamCount,
     SPOptions,
-	ISPDriver
+    ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper

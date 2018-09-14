@@ -31,10 +31,10 @@ shared class UnwantedChildException extends SPFormatException {
         this.child = child;
     }
     shared new (
-	        "The current tag"
-	        QName parent,
-	        "The unwanted child"
-	        StartElement child,
+            "The current tag"
+            QName parent,
+            "The unwanted child"
+            StartElement child,
             "Another exception that caused this one"
             Throwable? cause = null)
             extends SPFormatException(
@@ -54,40 +54,40 @@ shared class UnwantedChildException extends SPFormatException {
     }
     "Where the caller asserted that a tag was one of a specified list."
     shared new listingExpectedTags(
-	        "The current tag"
-	        QName parent,
-	        "The unwanted child"
-	        StartElement child, "What could have appeared here without triggering the error"
-	        {String*} expected) extends SPFormatException(
-	            "Unexpected child ``child.name.localPart`` in tag ``parent.localPart
-		            ``, expecting one of the following: ``", ".join(expected)``",
-	            child.location.lineNumber, child.location.columnNumber){
+            "The current tag"
+            QName parent,
+            "The unwanted child"
+            StartElement child, "What could have appeared here without triggering the error"
+            {String*} expected) extends SPFormatException(
+                "Unexpected child ``child.name.localPart`` in tag ``parent.localPart
+                    ``, expecting one of the following: ``", ".join(expected)``",
+                child.location.lineNumber, child.location.columnNumber){
         tag = parent;
         this.child = child.name;
     }
     "When the problem is that the child is not of a recognized namespace."
     shared new unexpectedNamespace(
-	        "The current tag"
-	        QName parent,
-	        "The unwanted child"
-	        StartElement child) extends SPFormatException(
-	            "Unexpected child, from unknown namespace, ``child.name.prefix
-		            ``:``child.name.localPart`` in tag ``parent.localPart``",
-	            child.location.lineNumber, child.location.columnNumber) {
+            "The current tag"
+            QName parent,
+            "The unwanted child"
+            StartElement child) extends SPFormatException(
+                "Unexpected child, from unknown namespace, ``child.name.prefix
+                    ``:``child.name.localPart`` in tag ``parent.localPart``",
+                child.location.lineNumber, child.location.columnNumber) {
         tag = parent;
         this.child = child.name;
     }
     "When a child is unwanted for a reason that needs further explanation."
     shared new withMessage(
-	        "The current tag"
-	        QName parent,
-	        "The unwanted child"
-	        StartElement child,
-	        "The additional message"
-	        String message) extends SPFormatException(
-	            "Unexpected child ``child.name.localPart`` in tag ``parent.localPart``: ``
-					message``",
-	            child.location.lineNumber, child.location.columnNumber) {
+            "The current tag"
+            QName parent,
+            "The unwanted child"
+            StartElement child,
+            "The additional message"
+            String message) extends SPFormatException(
+                "Unexpected child ``child.name.localPart`` in tag ``parent.localPart``: ``
+                    message``",
+                child.location.lineNumber, child.location.columnNumber) {
         tag = parent;
         this.child = child.name;
     }

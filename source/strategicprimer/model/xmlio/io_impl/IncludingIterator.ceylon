@@ -42,7 +42,7 @@ import strategicprimer.model.xmlio.exceptions {
     MissingPropertyException
 }
 import java.lang {
-	AutoCloseable
+    AutoCloseable
 }
 "An extension to the [[Iterator]] of [[XMLEvent]] to automatically handle
  `include` tags."
@@ -71,28 +71,28 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
         variable Exception? first = null;
         while (exists [file, reader] = stack.pop()) {
             try {
-	            if (is Destroyable reader) {
-	                reader.destroy(cause);
-	            } else if (is JCloseable reader) {
-	                reader.close();
-	            } else if (is AutoCloseable reader) {
-	                reader.close();
-	            } else if (is Obtainable reader) {
-	                reader.release(cause);
-	            }
-	        } catch (Exception except) {
-	            if (exists cause) {
-	                if (cause === except) {
-	                    // This shouldn't be possible but in practice occurs.
-	                } else {
-	                	cause.addSuppressed(except);
-	                }
-	            } else if (exists previous = first) {
-	                previous.addSuppressed(except);
-	            } else {
-	                first = except;
-	            }
-	        }
+                if (is Destroyable reader) {
+                    reader.destroy(cause);
+                } else if (is JCloseable reader) {
+                    reader.close();
+                } else if (is AutoCloseable reader) {
+                    reader.close();
+                } else if (is Obtainable reader) {
+                    reader.release(cause);
+                }
+            } catch (Exception except) {
+                if (exists cause) {
+                    if (cause === except) {
+                        // This shouldn't be possible but in practice occurs.
+                    } else {
+                        cause.addSuppressed(except);
+                    }
+                } else if (exists previous = first) {
+                    previous.addSuppressed(except);
+                } else {
+                    first = except;
+                }
+            }
         }
         if (!cause exists, exists exception = first) {
             throw exception;
@@ -108,48 +108,48 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     todo("Ensure that any thrown exceptions make clear that there's inclusion involved")
     void handleInclude(StartElement tag) {
         try {
-	        String file = getFileAttribute(tag);
-	        // FIXME: Reader (and thus the file it opens!) gets leaked if not finished
-	        stack.push([file, TypesafeXMLEventReader(magicReader(file))]);
-	    } catch (Exception except) {
-	        exhaust(except);
-	        throw except;
-	    }
+            String file = getFileAttribute(tag);
+            // FIXME: Reader (and thus the file it opens!) gets leaked if not finished
+            stack.push([file, TypesafeXMLEventReader(magicReader(file))]);
+        } catch (Exception except) {
+            exhaust(except);
+            throw except;
+        }
     }
     """Get the next item in the topmost iterator. We always make sure that there *is* a
        next item in the topmost iterator. If the next item would be an "include" tag, we
         open the file it specifies and push an iterator of its elements onto the stack."""
     shared actual XMLEvent|Finished next() {
         try {
-	        while (exists top = stack.top) {
-	            XMLEvent|Finished retval = top.rest.first.next();
-	            if (is Finished retval) {
-	                if (exists [oldFile, oldStream] = stack.pop()) {
-	                    if (is JCloseable oldStream) {
-	                        oldStream.close();
-	                    } else if (is AutoCloseable oldStream) {
-	                        oldStream.close();
-	                    } else if (is Destroyable oldStream) {
-	                        oldStream.destroy(null);
-	                    } else if (is Obtainable oldStream) {
-	                        oldStream.release(null);
-	                    }
-	                }
-	                continue;
-	            } else if (is StartElement retval, [spNamespace, XMLConstants.nullNsUri]
-	                        .contains(retval.name.namespaceURI),
-	                    "include" == retval.name.localPart.lowercased) {
-	                handleInclude(retval);
-	                continue;
-	            } else {
-	                return retval;
-	            }
-	        }
-	        return finished;
-	    } catch (Exception exception) {
-	        exhaust(exception);
-	        throw exception;
-	    }
+            while (exists top = stack.top) {
+                XMLEvent|Finished retval = top.rest.first.next();
+                if (is Finished retval) {
+                    if (exists [oldFile, oldStream] = stack.pop()) {
+                        if (is JCloseable oldStream) {
+                            oldStream.close();
+                        } else if (is AutoCloseable oldStream) {
+                            oldStream.close();
+                        } else if (is Destroyable oldStream) {
+                            oldStream.destroy(null);
+                        } else if (is Obtainable oldStream) {
+                            oldStream.release(null);
+                        }
+                    }
+                    continue;
+                } else if (is StartElement retval, [spNamespace, XMLConstants.nullNsUri]
+                            .contains(retval.name.namespaceURI),
+                        "include" == retval.name.localPart.lowercased) {
+                    handleInclude(retval);
+                    continue;
+                } else {
+                    return retval;
+                }
+            }
+            return finished;
+        } catch (Exception exception) {
+            exhaust(exception);
+            throw exception;
+        }
     }
     "Get the file we're currently reading from."
     todo("Tests")

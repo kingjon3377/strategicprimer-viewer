@@ -22,7 +22,7 @@ import javax.swing.table {
     DefaultTableModel
 }
 import ceylon.interop.java {
-	createJavaStringArray
+    createJavaStringArray
 }
 
 "A regular expression to mtch quote characters."
@@ -33,11 +33,11 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
     "Produce a tabular report on a particular category of fixtures in the map, and remove
       all fixtures covered in the table from the collection."
     shared default void produceTable(Anything(String) ostream, DelayedRemovalMap<Integer,
-		    [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
+            [Point, IFixture]> fixtures, Map<Integer, Integer> parentMap) {
         {[Integer, [Point, T]]*} values = fixtures.map(Entry.pair)
-			.narrow<[Integer, [Point, T]]>()
+            .narrow<[Integer, [Point, T]]>()
             .sort(comparingOn(Tuple<Integer|[Point, T], Integer, [[Point, T]]>.rest,
-	            comparingOn(Tuple<[Point, T], [Point, T], []>.first, comparePairs)));
+                comparingOn(Tuple<[Point, T], [Point, T], []>.first, comparePairs)));
         writeRow(ostream, headerRow.first, *headerRow.rest);
         for ([num, [loc, item]] in values) {
             for (row in produce(fixtures, item, num, loc, parentMap)) {
@@ -51,11 +51,11 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
      from the collection."
     shared default TableModel produceTableModel(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-			Map<Integer, Integer> parentMap) {
+            Map<Integer, Integer> parentMap) {
         {[Integer, [Point, T]]*} values = fixtures.map(Entry.pair)
-			.narrow<[Integer, [Point, T]]>()
+            .narrow<[Integer, [Point, T]]>()
                 .sort(comparingOn(Tuple<Integer|[Point, T], Integer, [[Point, T]]>.rest,
-		            comparingOn(Tuple<[Point, T], [Point, T], []>.first, comparePairs)));
+                    comparingOn(Tuple<[Point, T], [Point, T], []>.first, comparePairs)));
         DefaultTableModel retval = DefaultTableModel(
             createJavaStringArray(headerRow), 0);
         variable Integer count = 0;
@@ -138,7 +138,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         void writeField(Anything(String) ostream, String field) {
             String quotesQuoted = quotePattern.replace(field, "\"\"");
             if (["\"", fieldDelimiter.string, rowDelimiter, " "]
-	                .any(quotesQuoted.contains)) {
+                    .any(quotesQuoted.contains)) {
                 ostream("\"``quotesQuoted``\"");
             } else {
                 ostream(quotesQuoted);

@@ -1,14 +1,14 @@
 import lovelace.util.common {
     todo,
-	matchingPredicate,
-	matchingValue,
+    matchingPredicate,
+    matchingValue,
     narrowedStream,
     entryMap
 }
 import strategicprimer.model.map.fixtures.towns {
     Village,
-	ITownFixture,
-	CommunityStats
+    ITownFixture,
+    CommunityStats
 }
 import ceylon.random {
     Random,
@@ -34,35 +34,35 @@ import strategicprimer.drivers.common {
     ParamCount,
     IDriverUsage,
     IDriverModel,
-	ISPDriver
+    ISPDriver
 }
 import strategicprimer.model.map {
     TileType,
     IMapNG,
     Point,
-	IMutableMapNG
+    IMutableMapNG
 }
 import strategicprimer.model.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.model.map.fixtures {
-	ResourcePile
+    ResourcePile
 }
 import strategicprimer.drivers.exploration.old {
-	ExplorationRunner,
-	loadAllTables
+    ExplorationRunner,
+    loadAllTables
 }
 import ceylon.file {
-	parsePath,
-	Directory
+    parsePath,
+    Directory
 }
 class SimpleTerrain of unforested | forested | ocean {
-	"Plains, desert, and mountains"
-	shared new unforested { }
-	"Temperate forest, boreal forest, and steppe"
-	shared new forested { }
-	"Ocean."
-	shared new ocean { }
+    "Plains, desert, and mountains"
+    shared new unforested { }
+    "Temperate forest, boreal forest, and steppe"
+    shared new forested { }
+    "Ocean."
+    shared new ocean { }
 }
 """A hackish driver to fix TODOs (missing content) in the map, namely units with "TODO"
    for their "kind" and aquatic villages with non-aquatic races."""
@@ -148,23 +148,23 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
             "TODO fixer requires a tables directory"
             assert (is Directory directory = parsePath("tables").resource);
             loadAllTables(directory, runner);
-	        for ([loc, population] in brokenTownContents) {
-	            value production = population.yearlyProduction;
-	            for (resource in production.sequence()) {
-	                if (resource.contents.contains('#')) {
-	                    assert (exists table = resource.contents
+            for ([loc, population] in brokenTownContents) {
+                value production = population.yearlyProduction;
+                for (resource in production.sequence()) {
+                    if (resource.contents.contains('#')) {
+                        assert (exists table = resource.contents
                             .split('#'.equals, true, true).sequence()[1]);
-	                    value replacement = ResourcePile(resource.id, resource.kind,
-	                        runner.recursiveConsultTable(table, loc, map.baseTerrain[loc],
-	                            //map.mountainous[loc],  map.fixtures[loc], // TODO: syntax sugar once compiler bug fixed
-	                            map.mountainous.get(loc),  map.fixtures.get(loc),
+                        value replacement = ResourcePile(resource.id, resource.kind,
+                            runner.recursiveConsultTable(table, loc, map.baseTerrain[loc],
+                                //map.mountainous[loc],  map.fixtures[loc], // TODO: syntax sugar once compiler bug fixed
+                                map.mountainous.get(loc),  map.fixtures.get(loc),
                                 map.dimensions), resource.quantity);
-	                    production.remove(resource);
-	                    production.add(replacement);
-	                }
-	            }
-	        }
-	    }
+                        production.remove(resource);
+                        production.add(replacement);
+                    }
+                }
+            }
+        }
     }
     "Fix a stubbed-out kind for a unit."
     void fixUnit(Unit unit, SimpleTerrain terrain, ICLIHelper cli) {
@@ -213,10 +213,10 @@ shared class TodoFixerCLI() satisfies SimpleCLIDriver {
     void fixMissingRivers(IMapNG mainMap, IMutableMapNG subordinateMap) {
         for (location in mainMap.locations) {
             if (exists mainTerrain = mainMap.baseTerrain[location],
-	                exists subTerrain = subordinateMap.baseTerrain[location],
+                    exists subTerrain = subordinateMap.baseTerrain[location],
                     mainTerrain == subTerrain,
-	                //!mainMap.rivers[location].empty, subordinateMap.rivers[location].empty) { // TODO: syntax sugar
-	                !mainMap.rivers.get(location).empty,
+                    //!mainMap.rivers[location].empty, subordinateMap.rivers[location].empty) { // TODO: syntax sugar
+                    !mainMap.rivers.get(location).empty,
                     subordinateMap.rivers.get(location).empty) {
                 //subordinateMap.addRivers(location, *mainMap.rivers[location]); // TODO: syntax sugar
                 subordinateMap.addRivers(location, *mainMap.rivers.get(location));

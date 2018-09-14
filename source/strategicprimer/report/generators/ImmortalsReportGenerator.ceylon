@@ -27,14 +27,14 @@ import strategicprimer.model.map.fixtures.mobile {
     SimpleImmortal,
     Dragon,
     Immortal,
-	Ogre,
-	Troll,
-	Sphinx,
-	Phoenix,
-	Griffin,
-	Djinn,
-	Simurgh,
-	Minotaur
+    Ogre,
+    Troll,
+    Sphinx,
+    Phoenix,
+    Griffin,
+    Djinn,
+    Simurgh,
+    Minotaur
 }
 import strategicprimer.report {
     IReportNode
@@ -46,9 +46,9 @@ import strategicprimer.report.nodes {
     emptyReportNode
 }
 import com.vasileff.ceylon.structures {
-	MutableMultimap,
-	HashMultimap,
-	Multimap
+    MutableMultimap,
+    HashMultimap,
+    Multimap
 }
 """A report generator for "immortals"---dragons, fairies, centaurs, and such."""
 shared class ImmortalsReportGenerator(

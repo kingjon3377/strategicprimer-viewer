@@ -24,7 +24,7 @@ import java.awt.event {
 }
 import java.lang {
     IntArray,
-	ObjectArray
+    ObjectArray
 }
 
 import javax.swing {
@@ -43,7 +43,7 @@ import javax.swing {
     JLabel,
     ListCellRenderer,
     SwingUtilities,
-	JButton
+    JButton
 }
 
 import javax.swing.text {
@@ -59,13 +59,13 @@ import lovelace.util.jvm {
     createHotKey,
     verticalSplit,
     ImprovedComboBox,
-	FunctionalGroupLayout,
+    FunctionalGroupLayout,
     InterpolatedLabel
 }
 
 import lovelace.util.common {
-	parseInt,
-	isNumeric,
+    parseInt,
+    isNumeric,
     simpleMap,
     silentListener
 }
@@ -78,14 +78,14 @@ import strategicprimer.model.map {
     IMutableMapNG,
     PlayerImpl,
     HasOwner,
-	HasExtent,
-	HasPopulation,
+    HasExtent,
+    HasPopulation,
     invalidPoint
 }
 import strategicprimer.model.map.fixtures.mobile {
     IUnit,
     Animal,
-	AnimalTracks
+    AnimalTracks
 }
 import strategicprimer.model.map.fixtures.resources {
     CacheFixture
@@ -99,11 +99,11 @@ import strategicprimer.drivers.gui.common {
     SPFrame
 }
 import strategicprimer.viewer.drivers.map_viewer {
-	SelectionChangeSupport,
-	FixtureFilterTableModel,
-	FixtureListModel,
-	fixtureList,
-	TileTypeFixture
+    SelectionChangeSupport,
+    FixtureFilterTableModel,
+    FixtureListModel,
+    fixtureList,
+    TileTypeFixture
 }
 import strategicprimer.model.map.fixtures.towns {
     Village
@@ -121,7 +121,7 @@ import strategicprimer.drivers.common {
     SelectionChangeListener,
     SelectionChangeSource,
     PlayerChangeListener,
-	FixtureMatcher
+    FixtureMatcher
 }
 import ceylon.random {
     randomize
@@ -172,7 +172,7 @@ SPFrame explorationFrame(IExplorationModel model,
             ArrayList<Anything()>();
     void buttonListener(ActionEvent event) {
         if (exists selectedValue = unitList.selectedValue,
-	            !unitList.selectionEmpty) {
+                !unitList.selectionEmpty) {
             model.selectedUnit = selectedValue;
             for (listener in completionListeners) {
                 listener();
@@ -206,13 +206,13 @@ SPFrame explorationFrame(IExplorationModel model,
         }
         playerList.addListSelectionListener(silentListener(handlePlayerChanged));
         menuHandler.register(silentListener(handlePlayerChanged),
-			"change current player");
+            "change current player");
         addPlayerChangeListener(unitListModel);
         DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
         object renderer satisfies ListCellRenderer<IUnit> {
             shared actual Component getListCellRendererComponent(
-	                SwingList<out IUnit>? list, IUnit? val, Integer index,
-	                Boolean isSelected, Boolean cellHasFocus) {
+                    SwingList<out IUnit>? list, IUnit? val, Integer index,
+                    Boolean isSelected, Boolean cellHasFocus) {
                 Component retval = defaultRenderer.getListCellRendererComponent(list,
                     val, index, isSelected, cellHasFocus);
                 if (exists val, is JLabel retval) {
@@ -321,10 +321,10 @@ SPFrame explorationFrame(IExplorationModel model,
         headerPanel.add(speedLabel);
         headerPanel.add(speedBox);
         headerLayout.setHorizontalGroup(headerLayout
-			.sequentialGroupOf(explorerChangeButton, locLabel,
-				remainingMPLabel, mpField, speedLabel, speedBox));
+            .sequentialGroupOf(explorerChangeButton, locLabel,
+                remainingMPLabel, mpField, speedLabel, speedBox));
         headerLayout.setVerticalGroup(headerLayout.parallelGroupOf(explorerChangeButton,
-			locLabel, remainingMPLabel, mpField, speedLabel, speedBox));
+            locLabel, remainingMPLabel, mpField, speedLabel, speedBox));
         IMutableMapNG secondMap;
         if (exists entry = model.subordinateMaps.first) {
             secondMap = entry.key;
@@ -354,7 +354,7 @@ SPFrame explorationFrame(IExplorationModel model,
             }
         }
         class ExplorationClickListener(Direction direction,
-				SwingList<TileFixture>&SelectionChangeListener mainList)
+                SwingList<TileFixture>&SelectionChangeListener mainList)
                 satisfies MovementCostSource&SelectionChangeSource&ActionListener {
             MutableList<MovementCostListener> movementListeners =
                     ArrayList<MovementCostListener>();
@@ -367,7 +367,7 @@ SPFrame explorationFrame(IExplorationModel model,
             shared actual void addMovementCostListener(MovementCostListener listener) =>
                     movementListeners.add(listener);
             shared actual void removeMovementCostListener(MovementCostListener listener)
-					=> movementListeners.remove(listener);
+                    => movementListeners.remove(listener);
             MutableList<TileFixture> selectedValuesList {
                 IntArray selections = mainList.selectedIndices;
                 ListModel<TileFixture> listModel = mainList.model;
@@ -396,7 +396,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 "Should the explorer swear any villages on this tile?",
                 villageSwearingAction],
                 ["Should the explorer dig to find what kind of ground is here?",
-				model.dig]];
+                model.dig]];
             void actionPerformedImpl() {
                 try {
                     value fixtures = selectedValuesList;
@@ -440,7 +440,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                 }
                             }
                         }
-						model.setModifiedFlag(map, true);
+                        model.setModifiedFlag(map, true);
                     }
                     for (cache in caches) {
                         model.map.removeFixture(destPoint, cache);
@@ -459,11 +459,11 @@ SPFrame explorationFrame(IExplorationModel model,
             shared actual void actionPerformed(ActionEvent event) =>
                     SwingUtilities.invokeLater(actionPerformedImpl);
         }
-		void markModified() {
-			for (map->_ in model.allMaps) {
-				model.setModifiedFlag(map, true);
-			}
-		}
+        void markModified() {
+            for (map->_ in model.allMaps) {
+                model.setModifiedFlag(map, true);
+            }
+        }
         object selectionChangeListenerObject satisfies SelectionChangeListener {
             shared actual void selectedPointChanged(Point? old, Point newSel) =>
                     outer.selectedPointChanged(old, newSel);
@@ -472,13 +472,13 @@ SPFrame explorationFrame(IExplorationModel model,
             shared actual void deduct(Integer cost) => outer.deduct(cost);
         }
         for (direction in [Direction.northwest,
-	            Direction.north,
-	            Direction.northeast,
-	            Direction.west, Direction.nowhere,
-	            Direction.east,
-	            Direction.southwest,
-	            Direction.south,
-	            Direction.southeast]) {
+                Direction.north,
+                Direction.northeast,
+                Direction.west, Direction.nowhere,
+                Direction.east,
+                Direction.southwest,
+                Direction.south,
+                Direction.southeast]) {
             SelectionChangeSupport mainPCS = SelectionChangeSupport();
             SwingList<TileFixture>&SelectionChangeListener mainList =
                     fixtureList(tilesPanel, FixtureListModel(model.map, tracksCreator),
@@ -510,7 +510,7 @@ SPFrame explorationFrame(IExplorationModel model,
                             MutableList<[Integer, TileFixture]> possibles =
                                     ArrayList<[Integer, TileFixture]>();
                             for (index->fixture in ListModelWrapper(mainList.model)
-	                                .indexed) {
+                                    .indexed) {
                                 if (simpleMovementModel.shouldAlwaysNotice(selectedUnit,
                                         fixture)) {
                                     constants.add([index, fixture]);
@@ -524,7 +524,7 @@ SPFrame explorationFrame(IExplorationModel model,
                                 randomize(possibles),
                                 compose(Tuple<TileFixture, TileFixture, []>.first,
                                     Tuple<Integer|TileFixture, Integer,
-									[TileFixture]>.rest),
+                                    [TileFixture]>.rest),
                                 selectedUnit, speedSource()));
                             IntArray indices = IntArray.with(
                                 constants.map(Tuple.first));

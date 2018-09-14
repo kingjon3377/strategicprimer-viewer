@@ -25,7 +25,7 @@ import strategicprimer.model.map {
     HasPortrait,
     TileType,
     Point,
-	HasOwner,
+    HasOwner,
     invalidPoint
 }
 import javax.swing.event {

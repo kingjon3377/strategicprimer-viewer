@@ -38,7 +38,7 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     showErrorDialog,
     platform,
-	FileChooser
+    FileChooser
 }
 
 import strategicprimer.model.map {
@@ -74,80 +74,80 @@ import strategicprimer.drivers.gui.common {
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
 shared class IOHandler
         satisfies ActionListener {
-	suppressWarnings("expressionTypeNothing")
-	static void defaultQuitHandler() => process.exit(0); // TODO: remove these once eclipse/ceylon#7396 fixed
-	shared static variable Anything() quitHandler = defaultQuitHandler;
-	static FileFilter mapExtensionsFilter = FileNameExtensionFilter(
-		"Strategic Primer world map files", "map", "xml", "db");
-	"A factory method for [[JFileChooser]] (or AWT [[FileDialog|JFileDialog]] taking a
-	 [[FileFilter]] to apply in the same operation."
-	todo("Move functionality into FileChooser somehow?")
-	shared static JFileChooser|JFileDialog filteredFileChooser(
-			"Whether to allow multi-selection."
-			Boolean allowMultiple,
-			"The current directory."
-			String current = ".",
-			"The filter to apply."
-			FileFilter? filter = mapExtensionsFilter) {
-		if (platform.systemIsMac) {
-			JFileDialog retval = JFileDialog(null of Frame?);
-			if (exists filter) {
-				retval.filenameFilter = object satisfies FilenameFilter {
-					shared actual Boolean accept(JFile dir, String name) =>
-							filter.accept(JFile(dir, name));
-				};
-			}
-			return retval;
-		} else {
-			JFileChooser retval = JFileChooser(current);
-			if (exists filter) {
-				retval.fileFilter = filter;
-			}
-			return retval;
-		}
-	}
-	IDriverModel mapModel;
-	SPOptions options;
-	ICLIHelper cli;
-	shared new (IDriverModel mapModel, SPOptions options, ICLIHelper cli) {
-		this.mapModel = mapModel;
-		this.options = options;
-		this.cli = cli;
-	}
-	"If any files are marked as modified, ask the user whether to save them before
-	 closing/quitting."
-	void maybeSave(String verb, Frame? window, Component? source,
-			Anything() ifNotCanceled) {
-		if (mapModel.mapModified) {
-			String prompt;
-			if (is IMultiMapModel mapModel, !mapModel.subordinateMaps.empty) {
-				prompt = "Save changes to main map before ``verb``?";
-			} else {
-				prompt = "Save changes to map before ``verb``?";
-			}
-			Integer answer = JOptionPane.showConfirmDialog(window, prompt,
-				"Save Changes?", JOptionPane.yesNoCancelOption,
-				JOptionPane.questionMessage);
-			if (answer == JOptionPane.cancelOption) {
-				return;
-			} else if (answer == JOptionPane.yesOption) {
-				actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save"));
-			}
-		}
-		if (is IMultiMapModel mapModel, mapModel.allMaps.map(Entry.item)
-			.map(Tuple.last).coalesced.any(true.equals)) {
-			Integer answer = JOptionPane.showConfirmDialog(window,
-				"Subordinate map(s) have unsaved changes. Save all before ``verb``?",
-				"Save Changes?", JOptionPane.yesNoCancelOption,
-				JOptionPane.questionMessage);
-			if (answer == JOptionPane.cancelOption) {
-				return;
-			} else if (answer == JOptionPane.yesOption) {
-				actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save all"));
-			}
-		}
-		ifNotCanceled();
-	}
+    suppressWarnings("expressionTypeNothing")
+    static void defaultQuitHandler() => process.exit(0); // TODO: remove these once eclipse/ceylon#7396 fixed
+    shared static variable Anything() quitHandler = defaultQuitHandler;
+    static FileFilter mapExtensionsFilter = FileNameExtensionFilter(
+        "Strategic Primer world map files", "map", "xml", "db");
+    "A factory method for [[JFileChooser]] (or AWT [[FileDialog|JFileDialog]] taking a
+     [[FileFilter]] to apply in the same operation."
+    todo("Move functionality into FileChooser somehow?")
+    shared static JFileChooser|JFileDialog filteredFileChooser(
+            "Whether to allow multi-selection."
+            Boolean allowMultiple,
+            "The current directory."
+            String current = ".",
+            "The filter to apply."
+            FileFilter? filter = mapExtensionsFilter) {
+        if (platform.systemIsMac) {
+            JFileDialog retval = JFileDialog(null of Frame?);
+            if (exists filter) {
+                retval.filenameFilter = object satisfies FilenameFilter {
+                    shared actual Boolean accept(JFile dir, String name) =>
+                            filter.accept(JFile(dir, name));
+                };
+            }
+            return retval;
+        } else {
+            JFileChooser retval = JFileChooser(current);
+            if (exists filter) {
+                retval.fileFilter = filter;
+            }
+            return retval;
+        }
+    }
+    IDriverModel mapModel;
+    SPOptions options;
+    ICLIHelper cli;
+    shared new (IDriverModel mapModel, SPOptions options, ICLIHelper cli) {
+        this.mapModel = mapModel;
+        this.options = options;
+        this.cli = cli;
+    }
+    "If any files are marked as modified, ask the user whether to save them before
+     closing/quitting."
+    void maybeSave(String verb, Frame? window, Component? source,
+            Anything() ifNotCanceled) {
+        if (mapModel.mapModified) {
+            String prompt;
+            if (is IMultiMapModel mapModel, !mapModel.subordinateMaps.empty) {
+                prompt = "Save changes to main map before ``verb``?";
+            } else {
+                prompt = "Save changes to map before ``verb``?";
+            }
+            Integer answer = JOptionPane.showConfirmDialog(window, prompt,
+                "Save Changes?", JOptionPane.yesNoCancelOption,
+                JOptionPane.questionMessage);
+            if (answer == JOptionPane.cancelOption) {
+                return;
+            } else if (answer == JOptionPane.yesOption) {
+                actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save"));
+            }
+        }
+        if (is IMultiMapModel mapModel, mapModel.allMaps.map(Entry.item)
+            .map(Tuple.last).coalesced.any(true.equals)) {
+            Integer answer = JOptionPane.showConfirmDialog(window,
+                "Subordinate map(s) have unsaved changes. Save all before ``verb``?",
+                "Save Changes?", JOptionPane.yesNoCancelOption,
+                JOptionPane.questionMessage);
+            if (answer == JOptionPane.cancelOption) {
+                return;
+            } else if (answer == JOptionPane.yesOption) {
+                actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save all"));
+            }
+        }
+        ifNotCanceled();
+    }
     void handleError(Exception except, String filename, Component? source,
             String errorTitle, String verb) {
         String message;
@@ -197,10 +197,10 @@ shared class IOHandler
             if (exists givenFile = mapModel.mapFile) {
                 try {
                     mapIOHelper.writeMap(parsePath(givenFile.string), mapModel.map);
-					mapModel.mapModified = false;
+                    mapModel.mapModified = false;
                 } catch (IOException except) {
                     handleError(except, givenFile.string, source, errorTitle,
-						"writing to");
+                        "writing to");
                 }
             } else {
                 actionPerformed(ActionEvent(event.source, event.id, "save as", event.when,
@@ -235,10 +235,10 @@ shared class IOHandler
                     if (exists file) {
                         try {
                             mapIOHelper.writeMap(parsePath(file.string), map);
-							mapModel.setModifiedFlag(map, false);
+                            mapModel.setModifiedFlag(map, false);
                         } catch (IOException except) {
                             handleError(except, file.string, source, errorTitle,
-								"writing to");
+                                "writing to");
                         }
                     }
                 }
@@ -258,28 +258,28 @@ shared class IOHandler
                     ViewerModel.fromEntry(mapEntry));
             }
         }
-		case ("close") {
-			if (is Frame local = iter) {
-				maybeSave("closing", local, source, local.dispose);
-			}
-		}
-		case ("quit") {
-			maybeSave("quitting", as<Frame>(iter), source, quitHandler);
-//			maybeSave("quitting", as<Frame>(iter), source, SPMenu.defaultQuit()); // TODO: switch to this once eclipse/ceylon#7396 fixed
-		}
+        case ("close") {
+            if (is Frame local = iter) {
+                maybeSave("closing", local, source, local.dispose);
+            }
+        }
+        case ("quit") {
+            maybeSave("quitting", as<Frame>(iter), source, quitHandler);
+//            maybeSave("quitting", as<Frame>(iter), source, SPMenu.defaultQuit()); // TODO: switch to this once eclipse/ceylon#7396 fixed
+        }
         else {
             log.info("Unhandled command ``event.actionCommand`` in IOHandler");
         }
     }
 }
 shared class SPFileChooser extends FileChooser {
-	shared new open(JPath? loc = null,
-			JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(true))
-			extends FileChooser.open(fileChooser, loc) {}
-	shared new save(JPath? loc,
-			JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false))
-			extends FileChooser.save(loc, fileChooser) {}
-	shared new custom(JPath? loc, String approveText,
-			JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false))
-			extends FileChooser.custom(loc, approveText, fileChooser) {}
+    shared new open(JPath? loc = null,
+            JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(true))
+            extends FileChooser.open(fileChooser, loc) {}
+    shared new save(JPath? loc,
+            JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false))
+            extends FileChooser.save(loc, fileChooser) {}
+    shared new custom(JPath? loc, String approveText,
+            JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false))
+            extends FileChooser.custom(loc, approveText, fileChooser) {}
 }

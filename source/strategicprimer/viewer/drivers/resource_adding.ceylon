@@ -3,8 +3,8 @@ import ceylon.collection {
     MutableSet,
     MutableMap,
     HashSet,
-	MutableList,
-	ArrayList
+    MutableList,
+    ArrayList
 }
 import ceylon.language.meta {
     classDeclaration
@@ -66,7 +66,7 @@ import strategicprimer.drivers.common {
     DriverUsage,
     SimpleCLIDriver,
     PlayerChangeListener,
-	ISPDriver
+    ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -100,11 +100,11 @@ import strategicprimer.drivers.gui.common {
     SPFrame
 }
 import com.vasileff.ceylon.structures {
-	MutableMultimap,
-	HashMultimap
+    MutableMultimap,
+    HashMultimap
 }
 import strategicprimer.drivers.gui.common.about {
-	aboutDialog
+    aboutDialog
 }
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
@@ -122,7 +122,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
             if (mapPlayer.independent || mapPlayer.playerId < 0 ||
                     mapPlayer.playerId == player.playerId) {
                 addResourceToMap(resource.copy(false), map, player);
-				setModifiedFlag(map, true);
+                setModifiedFlag(map, true);
             }
         }
     }
@@ -184,8 +184,8 @@ shared class ResourceAddingCLI() satisfies SimpleCLIDriver {
     "Ask the user to choose units for a type of resource."
     String getResourceUnits(String resource, ICLIHelper cli) {
         if (exists unit = resourceUnits[resource],
-	            cli.inputBooleanInSeries("Is ``unit`` the correct unit for ``resource``? ",
-	                "correct;``unit``;``resource``")) {
+                cli.inputBooleanInSeries("Is ``unit`` the correct unit for ``resource``? ",
+                    "correct;``unit``;``resource``")) {
             return unit;
         } else {
             String retval = cli.inputString("Unit to use for ``resource``: ");
@@ -228,8 +228,8 @@ shared class ResourceAddingCLI() satisfies SimpleCLIDriver {
             IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
             try {
                 while (!players.empty, exists chosen = cli.chooseFromList(players,
-	                    "Players in the maps:", "No players found.",
-	                    "Player to add resources for: ", false).item) {
+                        "Players in the maps:", "No players found.",
+                        "Player to add resources for: ", false).item) {
                     players.remove(chosen);
                     while (cli.inputBoolean("Keep going? ")) {
                         if (cli.inputBooleanInSeries(
@@ -325,17 +325,17 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         panel.addGlue();
         return panel;
     }
-	String resourceLabelText(Player player) => "Add resource for ``player.name``:";
-	String equipmentLabelText(Player player) => "Add equipment for ``player.name``:";
+    String resourceLabelText(Player player) => "Add resource for ``player.name``:";
+    String equipmentLabelText(Player player) => "Add equipment for ``player.name``:";
     "A window to let the user enter resources etc. Note that this is not a dialog to enter
      one resource and close."
     SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
-	        Anything(ActionEvent) menuHandler) {
+            Anything(ActionEvent) menuHandler) {
         IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
         variable Player currentPlayer = PlayerImpl(-1, "");
         JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
-		InterpolatedLabel<[Player]> resourceLabel =
-				InterpolatedLabel<[Player]>(resourceLabelText, [currentPlayer]);
+        InterpolatedLabel<[Player]> resourceLabel =
+                InterpolatedLabel<[Player]>(resourceLabelText, [currentPlayer]);
         mainPanel.add(resourceLabel);
         JPanel resourcePanel = boxPanel(BoxAxis.lineAxis);
         StreamingLabel logLabel = StreamingLabel();
@@ -348,7 +348,7 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         UpdatedComboBox resourceKindBox = UpdatedComboBox(logError);
         resourcePanel.add(pairPanel(JLabel("General Category"), resourceKindBox));
         // If we set the maximum high at this point, the fields would try to be
-		// unneccessarily large. I'm not sure that setting it low at first helps, though.
+        // unneccessarily large. I'm not sure that setting it low at first helps, though.
         SpinnerNumberModel resourceCreatedModel = SpinnerNumberModel(-1, -1, 2000, 1);
         JSpinner creationSpinner = JSpinner(resourceCreatedModel);
         resourcePanel.add(pairPanel(JLabel("Turn created"), creationSpinner));
@@ -404,14 +404,14 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
             editor.addActionListener(resourceListener);
         } else {
             logLabel.append("Turn-created spinner's editor wasn't a text field, but a ``
-				                classDeclaration(creationSpinner.editor)``
-				             ");
+                                classDeclaration(creationSpinner.editor)``
+                             ");
         }
         if (is JTextField editor = resourceQuantitySpinner.editor) {
             editor.addActionListener(resourceListener);
         } else {
             logLabel.append("Quantity spinner's editor wasn't a text field, but a ``
-				                classDeclaration(resourceQuantitySpinner.editor)``
+                                classDeclaration(resourceQuantitySpinner.editor)``
                              ");
         }
         resourceBox.addSubmitListener(resourceListener);
@@ -419,8 +419,8 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
         mainPanel.add(resourcePanel);
 
         mainPanel.addGlue();
-		InterpolatedLabel<[Player]>
-		implementLabel = InterpolatedLabel<[Player]>(equipmentLabelText, [currentPlayer]);
+        InterpolatedLabel<[Player]>
+        implementLabel = InterpolatedLabel<[Player]>(equipmentLabelText, [currentPlayer]);
         mainPanel.add(implementLabel);
         SpinnerNumberModel implementQuantityModel = SpinnerNumberModel(1, 1, 2000, 1);
         JSpinner implementQuantityField = JSpinner(implementQuantityModel);
@@ -446,8 +446,8 @@ shared class ResourceAddingGUI() satisfies SimpleDriver {
             editor.addActionListener(implementListener);
         } else {
             logLabel.append(
-				"Implement quantity spinner's editor wasn't a text field, but a ``
-				                classDeclaration(implementQuantityField.editor)``
+                "Implement quantity spinner's editor wasn't a text field, but a ``
+                                classDeclaration(implementQuantityField.editor)``
                              ");
         }
         mainPanel.add(centeredHorizontalBox(implementQuantityField,

@@ -5,8 +5,8 @@ import ceylon.collection {
 
 import lovelace.util.common {
     DelayedRemovalMap,
-	matchingPredicate,
-	comparingOn
+    matchingPredicate,
+    comparingOn
 }
 
 import strategicprimer.model.map {
@@ -15,8 +15,8 @@ import strategicprimer.model.map {
     invalidPoint,
     IFixture,
     MapDimensions,
-	HasPopulation,
-	HasExtent
+    HasPopulation,
+    HasExtent
 }
 import strategicprimer.model.map.fixtures.resources {
     Meadow,
@@ -26,8 +26,8 @@ import strategicprimer.model.map.fixtures.resources {
     Shrub,
     MineralVein,
     Grove,
-	HarvestableFixture,
-	FieldStatus
+    HarvestableFixture,
+    FieldStatus
 }
 import strategicprimer.report {
     IReportNode
@@ -40,22 +40,22 @@ import strategicprimer.report.nodes {
     emptyReportNode
 }
 import ceylon.decimal {
-	Decimal
+    Decimal
 }
 import com.vasileff.ceylon.structures {
-	HashMultimap,
-	MutableMultimap,
-	Multimap
+    HashMultimap,
+    MutableMultimap,
+    Multimap
 }
 import ceylon.language.meta {
-	type
+    type
 }
 import ceylon.logging {
-	Logger,
-	logger
+    Logger,
+    logger
 }
 import strategicprimer.model.map.fixtures.towns {
-	TownStatus
+    TownStatus
 }
 import ceylon.whole {
     Whole
@@ -64,58 +64,58 @@ Logger log = logger(`module strategicprimer.report`);
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
 shared class HarvestableReportGenerator
-		extends AbstractReportGenerator<HarvestableFixture> {
-	static String populationCountString(HasPopulation<out Anything> item, String singular,
-			String plural = singular + "s") {
-		if (item.population <= 0) {
-			return "";
-		} else if (item.population == 1) {
-			return " (1 ``singular``)";
-		} else {
-			return " (``item.population`` ``plural``)";
-		}
-	}
-	static String acreageString(HasExtent item) {
-		if (item.acres.positive) {
-			switch (acres = item.acres)
-			case (is Integral<out Anything>) {
-				return " (``acres`` acres)";
-			}
-			case (is Float) {
-				return " (``Float.format(acres, 0, 2)`` acres)";
-			}
-			case (is Decimal) {
-				return " (``Float.format(acres.float, 0, 2)`` acres)";
-			}
-			else {
-				if (is Integer|Whole acres) {
-					log.debug("Ran into eclipse/ceylon#7382");
-				} else {
-					log.warn(
-						"Unhandled Number type ``type(acres)`` in HarvestableReportGenerator.acreageString");
-				}
-				return " (``acres`` acres)";
-			}
-		} else {
-			return "";
-		}
-	}
-	shared new (Comparison([Point, IFixture], [Point, IFixture]) comp,
+        extends AbstractReportGenerator<HarvestableFixture> {
+    static String populationCountString(HasPopulation<out Anything> item, String singular,
+            String plural = singular + "s") {
+        if (item.population <= 0) {
+            return "";
+        } else if (item.population == 1) {
+            return " (1 ``singular``)";
+        } else {
+            return " (``item.population`` ``plural``)";
+        }
+    }
+    static String acreageString(HasExtent item) {
+        if (item.acres.positive) {
+            switch (acres = item.acres)
+            case (is Integral<out Anything>) {
+                return " (``acres`` acres)";
+            }
+            case (is Float) {
+                return " (``Float.format(acres, 0, 2)`` acres)";
+            }
+            case (is Decimal) {
+                return " (``Float.format(acres.float, 0, 2)`` acres)";
+            }
+            else {
+                if (is Integer|Whole acres) {
+                    log.debug("Ran into eclipse/ceylon#7382");
+                } else {
+                    log.warn(
+                        "Unhandled Number type ``type(acres)`` in HarvestableReportGenerator.acreageString");
+                }
+                return " (``acres`` acres)";
+            }
+        } else {
+            return "";
+        }
+    }
+    shared new (Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Point hq = invalidPoint)
-			extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) { }
+            extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) { }
     "Convert a Map from kinds to Points to a HtmlList."
-	// Can't be static because HtmlList isn't and can't be
-	// ("Class without parameter list may not be annotated sealed")
+    // Can't be static because HtmlList isn't and can't be
+    // ("Class without parameter list may not be annotated sealed")
     HeadedList<String> mapToList(Multimap<String, Point> map, String heading) =>
             HtmlList(heading, map.asMap.filter(not(matchingPredicate(
-					Iterable<Point>.empty, Entry<String, {Point*}>.item)))
-		        .map((key->list) => "``key``: at ``commaSeparatedList(list)``")
-				.sort(increasing));
+                    Iterable<Point>.empty, Entry<String, {Point*}>.item)))
+                .map((key->list) => "``key``: at ``commaSeparatedList(list)``")
+                .sort(increasing));
     """Produce a sub-report(s) dealing with a single "harvestable" fixture(s). It is to be
        removed from the collection. Caves and battlefields, though HarvestableFixtures,
        are *not* handled here.""""
     shared actual void produceSingle(
-			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, HarvestableFixture item, Point loc) {
         assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
         switch (item)
@@ -126,15 +126,15 @@ shared class HarvestableReportGenerator
         }
         case (is Grove) {
             ostream("At ``loc``: ``(item.cultivated) then "cultivated" else
-	            "wild"`` ``item.kind`` ``(item.orchard) then "orchard" else
-	            "grove"`` ``populationCountString(item, "tree")````
-	            distCalculator.distanceString(loc)``");
+                "wild"`` ``item.kind`` ``(item.orchard) then "orchard" else
+                "grove"`` ``populationCountString(item, "tree")````
+                distCalculator.distanceString(loc)``");
         }
         case (is Meadow) {
             ostream("At ``loc``: ``item.status`` ``(item.cultivated) then
-	            "cultivated" else "wild or abandoned"`` ``item.kind`` ``(item
-	                .field) then "field" else "meadow"`` ``acreageString(item)````
-		            distCalculator.distanceString(loc)``");
+                "cultivated" else "wild or abandoned"`` ``item.kind`` ``(item
+                    .field) then "field" else "meadow"`` ``acreageString(item)````
+                    distCalculator.distanceString(loc)``");
         }
         case (is Mine) {
             ostream("At ``loc``: ``item`` ``distCalculator
@@ -142,8 +142,8 @@ shared class HarvestableReportGenerator
         }
         case (is MineralVein) {
             ostream("At ``loc``: An ``(item.exposed) then
-	            "exposed" else "unexposed"`` vein of ``item
-	                .kind`` ``distCalculator.distanceString(loc)``");
+                "exposed" else "unexposed"`` vein of ``item
+                    .kind`` ``distCalculator.distanceString(loc)``");
         }
         case (is Shrub) {
             ostream("At ``loc``: ``item.kind`` ``populationCountString(item, "plant")````
@@ -159,7 +159,7 @@ shared class HarvestableReportGenerator
        battlefields, though HarvestableFixtures, are presumed to have been handled
        already.""""
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-	        IMapNG map, Anything(String) ostream) {
+            IMapNG map, Anything(String) ostream) {
         MutableMultimap<String, Point> stone = HashMultimap<String, Point>();
         MutableMultimap<String, Point> shrubs = HashMultimap<String, Point>();
         MutableMultimap<String, Point> minerals = HashMultimap<String, Point>();
@@ -172,7 +172,7 @@ shared class HarvestableReportGenerator
                     comparingOn(Meadow.status, byIncreasing(FieldStatus.ordinal)),
                     byIncreasing(Meadow.id)));
         MutableHeadedMap<Grove, Point> groves =
-				HeadedMapImpl<Grove, Point>("<h5>Groves and Orchards</h5>",
+                HeadedMapImpl<Grove, Point>("<h5>Groves and Orchards</h5>",
                     comparing(byIncreasing(Grove.kind), byIncreasing(Grove.id)));
         MutableHeadedMap<CacheFixture, Point> caches = HeadedMapImpl<CacheFixture, Point>(
                 "<h5>Caches collected by your explorers and workers:</h5>",
@@ -180,9 +180,9 @@ shared class HarvestableReportGenerator
                     byIncreasing(CacheFixture.contents),
                     byIncreasing(CacheFixture.id)));
         for ([point, item] in fixtures.items.narrow<[Point, HarvestableFixture]>()
-				.sort(pairComparator)) {
+                .sort(pairComparator)) {
             // TODO: Use a Map by type; with reified generics we can even handle
-			// differently based on whether a List or Map is in the Map!
+            // differently based on whether a List or Map is in the Map!
             switch (item)
             case (is CacheFixture) {
                 caches[item] = point;
@@ -231,7 +231,7 @@ shared class HarvestableReportGenerator
     """Produce a sub-report dealing with a "harvestable" fixture. All fixtures
        referred to in this report are to be removed from the collection."""
     shared actual IReportNode produceRIRSingle(
-			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, HarvestableFixture item, Point loc) {
         SimpleReportNode retval;
         assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
@@ -243,9 +243,9 @@ shared class HarvestableReportGenerator
         }
         case (is Grove) {
             retval = SimpleReportNode("At ``loc``: A ``(item.cultivated) then
-	            "cultivated" else "wild"`` ``item.kind`` ``(item
-	                .orchard) then "orchard" else "grove"`` ``distCalculator
-	                .distanceString(loc)``", loc);
+                "cultivated" else "wild"`` ``item.kind`` ``(item
+                    .orchard) then "orchard" else "grove"`` ``distCalculator
+                    .distanceString(loc)``", loc);
         }
         case (is Meadow) {
             retval = SimpleReportNode("At ``loc``: A ``item.status`` ``(item
@@ -276,7 +276,7 @@ shared class HarvestableReportGenerator
     """Produce the sub-reports dealing with "harvestable" fixture(s). All fixtures
        referred to in this report are to be removed from the collection."""
     shared actual IReportNode produceRIR(
-			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
         MutableMap<String, IReportNode> stone = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> shrubs = HashMap<String, IReportNode>();
         MutableMap<String, IReportNode> minerals = HashMap<String, IReportNode>();
@@ -292,7 +292,7 @@ shared class HarvestableReportGenerator
         groves.suspend();
         caches.suspend();
         for ([loc, item] in fixtures.items.narrow<[Point, HarvestableFixture]>()
-				.sort(pairComparator)) {
+                .sort(pairComparator)) {
             if (is CacheFixture item) {
                 caches.appendNode(produceRIRSingle(fixtures, map, item, loc));
             } else if (is Grove item) {

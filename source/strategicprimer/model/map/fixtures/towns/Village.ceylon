@@ -5,7 +5,7 @@ import strategicprimer.model.map {
     Subsettable
 }
 import lovelace.util.common {
-	anythingEqual
+    anythingEqual
 }
 "A village in the map."
 // TODO: We'd like to be able to have Worker members (directly or in CommunityStats) to represent villagers that players have been informed about by name

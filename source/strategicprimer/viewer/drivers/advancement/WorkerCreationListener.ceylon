@@ -43,9 +43,9 @@ import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
 import lovelace.util.common {
-	silentListener,
+    silentListener,
     narrowedStream,
-	singletonRandom
+    singletonRandom
 }
 "A listener to keep track of the currently selected unit and listen for new-worker
  notifications, then pass this information on to the tree model."

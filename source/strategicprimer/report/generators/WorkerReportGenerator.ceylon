@@ -36,11 +36,11 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     "Produce the sub-sub-report on a worker's stats."
     String statsString(WorkerStats stats) {
         return "He or she has the following stats: ``stats.hitPoints`` / ``stats
-	            .maxHitPoints`` Hit Points, Strength ``modifierString(stats.strength)
-	        ``, Dexterity ``modifierString(stats.dexterity)``, Constitution ``
-	        modifierString(stats.constitution)``, Intelligence ``modifierString(stats
-	            .intelligence)``, Wisdom ``modifierString(stats.wisdom)``, Charisma ``
-	        modifierString(stats.charisma)``";
+                .maxHitPoints`` Hit Points, Strength ``modifierString(stats.strength)
+            ``, Dexterity ``modifierString(stats.dexterity)``, Constitution ``
+            modifierString(stats.constitution)``, Intelligence ``modifierString(stats
+                .intelligence)``, Wisdom ``modifierString(stats.wisdom)``, Charisma ``
+            modifierString(stats.charisma)``";
     }
     String skillString(ISkill skill) => skill.name + " " + skill.level.string;
     "Produce text describing the given Skills."
@@ -87,7 +87,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     "Produce a sub-sub-report on all workers. This should never be called, but we'll
      implement it properly anyway."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-        		IMapNG map, Anything(String) ostream) {
+                IMapNG map, Anything(String) ostream) {
         {[IWorker, Point]*} workers = fixtures.items.narrow<[Point, IWorker]>()
                 .sort(pairComparator).map(reversePair);
         if (!workers.empty) {

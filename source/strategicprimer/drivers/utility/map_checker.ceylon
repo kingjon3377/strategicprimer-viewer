@@ -34,7 +34,7 @@ import strategicprimer.drivers.common {
     DriverUsage,
     ParamCount,
     SPOptions,
-	ISPDriver
+    ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -54,7 +54,7 @@ import strategicprimer.model.map.fixtures.mobile {
 import strategicprimer.model.map.fixtures.mobile.worker {
     IJob,
     suspiciousSkills,
-	ISkill
+    ISkill
 }
 import strategicprimer.model.map.fixtures.resources {
     StoneDeposit,
@@ -120,16 +120,16 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
         }
     }
     void lateriteChecker(TileType terrain, Point context, IFixture fixture,
-	        Warning warner) {
+            Warning warner) {
         if (is StoneDeposit fixture, StoneKind.laterite == fixture.stone,
-	            !TileType.jungle == terrain) {
+                !TileType.jungle == terrain) {
             warner.handle(SPContentWarning(context, "Laterite stone in non-jungle"));
         }
     }
     void aquaticVillageChecker(TileType terrain, Point context, IFixture fixture,
-	        Warning warner) {
+            Warning warner) {
         if (is Village fixture, landRaces.contains(fixture.race),
-	            TileType.ocean == terrain) {
+                TileType.ocean == terrain) {
             warner.handle(SPContentWarning(context,
                 "Aquatic village has non-aquatic race"));
         }
@@ -142,7 +142,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
         }
     }
     void suspiciousSkillCheck(TileType terrain, Point context, IFixture fixture,
-	        Warning warner) {
+            Warning warner) {
         if (is IWorker fixture) {
             if (fixture.any(suspiciousSkill)) {
                 warner.handle(SPContentWarning(context,
@@ -162,7 +162,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
     {String+} placeholderKinds = [ "various", "unknown" ];
     {String+} placeholderUnits = [ "unit", "units" ];
     void resourcePlaceholderChecker(TileType terrain, Point context, IFixture fixture,
-	        Warning warner) {
+            Warning warner) {
         if (is ResourcePile fixture) {
             if (placeholderKinds.contains(fixture.kind)) {
                 warner.handle(SPContentWarning(context,
@@ -236,7 +236,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
         }
     }
     {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker,
-		suspiciousSkillCheck, resourcePlaceholderChecker ];
+        suspiciousSkillCheck, resourcePlaceholderChecker ];
     void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
             IFixture* list) {
         for (fixture in list) {
@@ -255,17 +255,17 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
         } catch (FileNotFoundException|NoSuchFileException except) {
             err("``file`` not found");
             log.error("``file`` not found");
-		    log.debug("Full stack trace of file-not-found:", except);
+            log.debug("Full stack trace of file-not-found:", except);
             return;
         } catch (IOException except) {
             err("I/O error reading ``file``");
             log.error("I/O error reading ``file``: ``except.message``");
-	    log.debug("Full stack trace of I/O error", except);
+        log.debug("Full stack trace of I/O error", except);
             return;
         } catch (XMLStreamException except) {
             err("Malformed XML in ``file``");
             log.error("Malformed XML in ``file``: ``except.message``");
-	    log.debug("Full stack trace of malformed-XML error", except);
+        log.debug("Full stack trace of malformed-XML error", except);
             return;
         } catch (SPFormatException except) {
             err("SP map format error in ``file``");
@@ -298,7 +298,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
 "The map-checker GUI window."
 class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
         Dimension(640, 320), true, noop, "Map Checker") {
-	MapCheckerCLI mapCheckerCLI = MapCheckerCLI();
+    MapCheckerCLI mapCheckerCLI = MapCheckerCLI();
     StreamingLabel label = StreamingLabel();
     void printParagraph(String paragraph,
             LabelTextColor color = LabelTextColor.white) {
@@ -337,7 +337,7 @@ shared class MapCheckerGUI() satisfies UtilityDriver {
         window.jMenuBar = UtilityMenu(window);
         window.showWindow();
         for (arg in args.coalesced) {
-			// can't condense this using Iterable.each() because JPaths.get() is overloaded
+            // can't condense this using Iterable.each() because JPaths.get() is overloaded
             window.check(JPaths.get(arg));
         }
     }

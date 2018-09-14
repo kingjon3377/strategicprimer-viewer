@@ -33,7 +33,7 @@ import java.awt {
 }
 import lovelace.util.common {
     Reorderable,
-	silentListener
+    silentListener
 }
 import java.lang {
     Types
@@ -162,9 +162,9 @@ class BoxPanelImpl(BoxAxis layoutAxis) extends JPanel() satisfies BoxPanel {
 }
 "Create a panel laid out by a [[BoxLayout]]"
 shared JPanel&BoxPanel boxPanel(BoxAxis layoutAxis) {
-	value retval = BoxPanelImpl(layoutAxis);
-	retval.layout = BoxLayout(retval, layoutAxis.axis);
-	return retval;
+    value retval = BoxPanelImpl(layoutAxis);
+    retval.layout = BoxLayout(retval, layoutAxis.axis);
+    return retval;
 }
 "Create a panel laid out by a [[BoxLayout]] on the line axis, with glue at each end and a
  small rigid area between each component."
@@ -291,8 +291,8 @@ shared class HotKeyModifier {
 }
 "Create a key-stroke representing a hot-key accelerator."
 shared KeyStroke createAccelerator(Integer key, HotKeyModifier* modifiers) =>
-		KeyStroke.getKeyStroke(key, modifiers.map(HotKeyModifier.mask)
-			.fold(Toolkit.defaultToolkit.menuShortcutKeyMask)(uncurry(Integer.or)));
+        KeyStroke.getKeyStroke(key, modifiers.map(HotKeyModifier.mask)
+            .fold(Toolkit.defaultToolkit.menuShortcutKeyMask)(uncurry(Integer.or)));
 "Create a menu item."
 shared JMenuItem createMenuItem(
         "The text of the item"
@@ -312,10 +312,10 @@ shared JMenuItem createMenuItem(
     }
     menuItem.accessibleContext.accessibleDescription = description;
     if (is Anything(ActionEvent) listener) {
-	    menuItem.addActionListener(listener);
-	} else {
-		menuItem.addActionListener(silentListener(listener));
-	}
+        menuItem.addActionListener(listener);
+    } else {
+        menuItem.addActionListener(silentListener(listener));
+    }
     InputMap inputMap = menuItem.getInputMap(JComponent.whenInFocusedWindow);
     for (accelerator in accelerators) {
         inputMap.put(accelerator, menuItem.action);

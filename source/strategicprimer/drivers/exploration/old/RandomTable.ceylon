@@ -5,7 +5,7 @@ import strategicprimer.model.map {
     Point
 }
 import lovelace.util.common {
-	comparingOn,
+    comparingOn,
     singletonRandom
 }
 

@@ -29,8 +29,8 @@ import javax.xml.stream.events {
 
 import lovelace.util.common {
     IteratorWrapper,
-	matchingValue,
-	simpleMap
+    matchingValue,
+    simpleMap
 }
 import lovelace.util.jvm {
     TypesafeXMLEventReader
@@ -68,15 +68,15 @@ import strategicprimer.model.map.fixtures.mobile {
     Fairy,
     Dragon,
     maturityModel,
-	Ogre,
-	Troll,
-	Sphinx,
-	Phoenix,
-	Griffin,
-	Djinn,
-	Simurgh,
-	Minotaur,
-	immortalAnimals
+    Ogre,
+    Troll,
+    Sphinx,
+    Phoenix,
+    Griffin,
+    Djinn,
+    Simurgh,
+    Minotaur,
+    immortalAnimals
 }
 import strategicprimer.model.map.fixtures.terrain {
     Hill,
@@ -103,7 +103,7 @@ import strategicprimer.model.xmlio.io_impl {
     IncludingIterator
 }
 import strategicprimer.model.xmlio.fluidxml {
-	FluidBase { ... }
+    FluidBase { ... }
 }
 "The main reader-from-XML class in the 'fluid XML' implementation."
 shared class SPFluidReader() satisfies IMapReader&ISPReader {
@@ -121,7 +121,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
                 return reader(element, parent, stream, players, warner, idFactory);
             } else if (immortalAnimals.contains(tag)) {
                 return unitMemberHandler.readAnimal(element, parent, stream, players,
-					warner, idFactory);
+                    warner, idFactory);
             }
         }
         throw UnsupportedTagException.future(element);
@@ -318,12 +318,12 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         for (event in stream) {
             if (is StartElement event, isSPStartElement(event)) {
                 if (event.name.localPart.lowercased == "orders" ||
-		                    event.name.localPart.lowercased == "results" ||
-	                        event.name.localPart.lowercased == "science") {
+                            event.name.localPart.lowercased == "results" ||
+                            event.name.localPart.lowercased == "science") {
                     warner.handle(UnwantedChildException(element.name, event));
                 } else {
-	                throw UnwantedChildException(element.name, event);
-	            }
+                    throw UnwantedChildException(element.name, event);
+                }
             } else if (is EndElement event, element.name == event.name) {
                 break;
             }
@@ -401,7 +401,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireNonEmptyAttribute(element, "owner", false, warner);
         requireNonEmptyAttribute(element, "name", false, warner);
         expectAttributes(element, warner, "owner", "name", "id", "size", "status",
-			"image", "portrait");
+            "image", "portrait");
         Fortress retval;
         value size = TownSize.parse(getAttribute(element, "size", "small"));
         if (is TownSize size) {

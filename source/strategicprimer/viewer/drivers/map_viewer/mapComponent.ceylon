@@ -26,7 +26,7 @@ import lovelace.util.common {
 import strategicprimer.drivers.common {
     MapChangeListener,
     SelectionChangeListener,
-	FixtureMatcher
+    FixtureMatcher
 }
 
 import strategicprimer.model.map {

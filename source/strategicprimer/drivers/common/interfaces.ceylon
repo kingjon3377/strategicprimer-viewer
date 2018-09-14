@@ -352,37 +352,37 @@ shared interface SimpleCLIDriver satisfies SimpleDriver {
         assert (exists firstArg = args.first);
         IDriverModel model;
         if (nonempty rest = args.rest) {
-	        // We declare this as IMultiMapModel so we can correct the current turn in all
-	        // maps if needed.
-	        log.trace("About to read maps from files");
-	        model = mapReaderAdapter.readMultiMapModel(warningLevels.ignore,
-	            JPaths.get(firstArg), *mapIOHelper.namesToFiles(*rest));
-	        assert (is IMultiMapModel model);
-	        log.trace("Finished reading maps from files");
-	        if (options.hasOption("--current-turn")) {
-	            if (is Integer currentTurn =
-	                    Integer.parse(options.getArgument("--current-turn"))) {
-	                for (map->[path, _] in model.allMaps) {
-	                    map.currentTurn = currentTurn;
-	                }
-	            } else {
-	                cli.println("--current-turn must be an integer");
-	            }
-	        }
-	    } else {
-	        log.trace("About to read map from file");
-	        model = mapReaderAdapter.readMapModel(JPaths.get(firstArg),
-				warningLevels.ignore);
-	        log.trace("Finished reading map from file");
-	        if (options.hasOption("--currentTurn")) {
-	            if (is Integer currentTurn =
+            // We declare this as IMultiMapModel so we can correct the current turn in all
+            // maps if needed.
+            log.trace("About to read maps from files");
+            model = mapReaderAdapter.readMultiMapModel(warningLevels.ignore,
+                JPaths.get(firstArg), *mapIOHelper.namesToFiles(*rest));
+            assert (is IMultiMapModel model);
+            log.trace("Finished reading maps from files");
+            if (options.hasOption("--current-turn")) {
+                if (is Integer currentTurn =
                         Integer.parse(options.getArgument("--current-turn"))) {
-	                model.map.currentTurn = currentTurn;
-		        } else {
-		            cli.println("--current-turn must be an integer");
-		        }
-		    }
-	    }
+                    for (map->[path, _] in model.allMaps) {
+                        map.currentTurn = currentTurn;
+                    }
+                } else {
+                    cli.println("--current-turn must be an integer");
+                }
+            }
+        } else {
+            log.trace("About to read map from file");
+            model = mapReaderAdapter.readMapModel(JPaths.get(firstArg),
+                warningLevels.ignore);
+            log.trace("Finished reading map from file");
+            if (options.hasOption("--currentTurn")) {
+                if (is Integer currentTurn =
+                        Integer.parse(options.getArgument("--current-turn"))) {
+                    model.map.currentTurn = currentTurn;
+                } else {
+                    cli.println("--current-turn must be an integer");
+                }
+            }
+        }
         startDriverOnModel(cli, options, model);
         mapReaderAdapter.writeModel(model);
     }

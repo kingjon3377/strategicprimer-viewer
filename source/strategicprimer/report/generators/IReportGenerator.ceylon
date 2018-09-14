@@ -1,6 +1,6 @@
 import lovelace.util.common {
     DelayedRemovalMap,
-	todo
+    todo
 }
 
 import strategicprimer.model.map {
@@ -12,7 +12,7 @@ import strategicprimer.report {
     IReportNode
 }
 import ceylon.collection {
-	MutableMap
+    MutableMap
 }
 "An interface for report generators."
 shared interface IReportGenerator<T> given T satisfies IFixture {
@@ -78,7 +78,7 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
     shared default Anything(T->Point, Anything(String)) defaultFormatter(
         DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) =>
             (T key->Point val, Anything(String) formatter) =>
-	            produceSingle(fixtures, map, formatter, key, val);
+                produceSingle(fixtures, map, formatter, key, val);
     "Write the contents of a Map to a stream as a list, but don't write anything
      if it is empty."
     shared default void writeMap<out Key>(

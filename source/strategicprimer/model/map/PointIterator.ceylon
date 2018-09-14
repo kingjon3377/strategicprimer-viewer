@@ -51,9 +51,9 @@ shared class PointIterator(dimensions, forwards, horizontal,
         "A diagnostic String."
         shared actual String string =>
                 "PointIterator: Started at (``startRow``, ``startColumn
-					``), currently at (``row``, ``column``), searching ``(horizontal) then
-			        "horizontal" else "vertical"``ly ``(forwards) then "for" else
-			        "back"``wards and no farther than (``maxRow``, ``maxColumn``)";
+                    ``), currently at (``row``, ``column``), searching ``(horizontal) then
+                    "horizontal" else "vertical"``ly ``(forwards) then "for" else
+                    "back"``wards and no farther than (``maxRow``, ``maxColumn``)";
 
         shared actual Point|Finished next() {
             if (started, row == startRow, column == startColumn) {
@@ -117,61 +117,61 @@ shared class PointIterator(dimensions, forwards, horizontal,
     shared actual Iterator<Point> iterator() => PointIteratorImpl();
 }
 object pointIterationTests {
-	"Test iteration forwards, horizontally, from the beginning of the map."
-	test
-	shared void testFromBeginning() {
-	    Point[] expected = [Point(0, 0), Point(0, 1),
-	        Point(0, 2), Point(1, 0), Point(1, 1),
-	        Point(1, 2), Point(2, 0), Point(2, 1),
-	        Point(2, 2)];
-	    Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, true).sequence();
-	    assertEquals(actual, expected, "Iterator produced points in expected order");
-	}
+    "Test iteration forwards, horizontally, from the beginning of the map."
+    test
+    shared void testFromBeginning() {
+        Point[] expected = [Point(0, 0), Point(0, 1),
+            Point(0, 2), Point(1, 0), Point(1, 1),
+            Point(1, 2), Point(2, 0), Point(2, 1),
+            Point(2, 2)];
+        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, true).sequence();
+        assertEquals(actual, expected, "Iterator produced points in expected order");
+    }
 
-	"Test iteration forwards, horizontally, from a selected point."
-	test
-	shared void testFromSelection() {
-	    Point[] expected = [Point(1, 2), Point(2, 0),
-	        Point(2, 1), Point(2, 2), Point(0, 0),
-	        Point(0, 1), Point(0, 2), Point(1, 0),
-	        Point(1, 1)];
-	    Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, true,
-	        Point(1, 1)).sequence(); // Have to have .sequence() to meet declared type
-	    assertEquals(actual, expected, "Iterator produced points in expected order");
-	}
+    "Test iteration forwards, horizontally, from a selected point."
+    test
+    shared void testFromSelection() {
+        Point[] expected = [Point(1, 2), Point(2, 0),
+            Point(2, 1), Point(2, 2), Point(0, 0),
+            Point(0, 1), Point(0, 2), Point(1, 0),
+            Point(1, 1)];
+        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, true,
+            Point(1, 1)).sequence(); // Have to have .sequence() to meet declared type
+        assertEquals(actual, expected, "Iterator produced points in expected order");
+    }
 
-	"""Test searching forwards, vertically, from the "selection" the viewer starts with."""
-	test
-	shared void testInitialSelection() {
-	    Point[] expected = [Point(0, 0), Point(1, 0),
-	        Point(2, 0), Point(0, 1), Point(1, 1),
-	        Point(2, 1), Point(0, 2), Point(1, 2),
-	        Point(2, 2)];
-	    Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, false,
-	        invalidPoint).sequence();
-	    assertEquals(actual, expected, "Iterator produced points in expected order");
-	}
+    """Test searching forwards, vertically, from the "selection" the viewer starts with."""
+    test
+    shared void testInitialSelection() {
+        Point[] expected = [Point(0, 0), Point(1, 0),
+            Point(2, 0), Point(0, 1), Point(1, 1),
+            Point(2, 1), Point(0, 2), Point(1, 2),
+            Point(2, 2)];
+        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, false,
+            invalidPoint).sequence();
+        assertEquals(actual, expected, "Iterator produced points in expected order");
+    }
 
-	"Test searching backwards, horizontally."
-	test
-	shared void testReverse() {
-	    Point[] expected = [Point(2, 2), Point(2, 1),
-	        Point(2, 0), Point(1, 2),
-	        Point(1, 1), Point(1, 0),
-	        Point(0, 2), Point(0, 1),
-	        Point(0, 0)];
-	    Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, true).sequence();
-	    assertEquals(actual, expected, "Iterator produced points in expected order");
-	}
+    "Test searching backwards, horizontally."
+    test
+    shared void testReverse() {
+        Point[] expected = [Point(2, 2), Point(2, 1),
+            Point(2, 0), Point(1, 2),
+            Point(1, 1), Point(1, 0),
+            Point(0, 2), Point(0, 1),
+            Point(0, 0)];
+        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, true).sequence();
+        assertEquals(actual, expected, "Iterator produced points in expected order");
+    }
 
-	"Test searching vertically, backwards."
-	test
-	shared void testVerticalReverse() {
-	    Point[] expected = [Point(2, 2), Point(1, 2),
-	        Point(0, 2), Point(2, 1), Point(1, 1),
-	        Point(0, 1), Point(2, 0), Point(1, 0),
-	        Point(0, 0)];
-	    Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, false).sequence();
-	    assertEquals(actual, expected, "Iterator produced points in expected order");
-	}
+    "Test searching vertically, backwards."
+    test
+    shared void testVerticalReverse() {
+        Point[] expected = [Point(2, 2), Point(1, 2),
+            Point(0, 2), Point(2, 1), Point(1, 1),
+            Point(0, 1), Point(2, 0), Point(1, 0),
+            Point(0, 0)];
+        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, false).sequence();
+        assertEquals(actual, expected, "Iterator produced points in expected order");
+    }
 }

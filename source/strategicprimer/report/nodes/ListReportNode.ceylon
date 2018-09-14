@@ -5,7 +5,7 @@ import javax.swing.tree {
 
 import lovelace.util.common {
     todo,
-	anythingEqual
+    anythingEqual
 }
 
 import strategicprimer.model.map {
@@ -16,15 +16,15 @@ import strategicprimer.report {
 }
 "A node representing a list."
 shared class ListReportNode extends DefaultMutableTreeNode satisfies IReportNode {
-	static Integer boilerPlateLength = "<ul></ul>".size + 3;
-	static Integer perChildBoilerPlate = "<li></li>".size + 1;
-	variable String initialText;
-	shared actual variable Point? localPoint;
-	shared new (String initialText, Point? localPoint = null)
-			extends DefaultMutableTreeNode(initialText) {
-		this.initialText = initialText;
-		this.localPoint = localPoint;
-	}
+    static Integer boilerPlateLength = "<ul></ul>".size + 3;
+    static Integer perChildBoilerPlate = "<li></li>".size + 1;
+    variable String initialText;
+    shared actual variable Point? localPoint;
+    shared new (String initialText, Point? localPoint = null)
+            extends DefaultMutableTreeNode(initialText) {
+        this.initialText = initialText;
+        this.localPoint = localPoint;
+    }
 
     shared actual void appendNode(MutableTreeNode node) {
         if (isNonEmptyNode(node)) {
@@ -56,7 +56,7 @@ shared class ListReportNode extends DefaultMutableTreeNode satisfies IReportNode
     }
     shared actual Boolean equals(Object that) {
         if (is ListReportNode that, that.initialText == initialText,
-	            children() == that.children()) {
+                children() == that.children()) {
             return anythingEqual(localPoint, that.localPoint);
         } else {
             return false;

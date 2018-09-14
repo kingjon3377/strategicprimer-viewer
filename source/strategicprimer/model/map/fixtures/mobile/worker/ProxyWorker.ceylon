@@ -21,8 +21,8 @@ import ceylon.logging {
     Logger
 }
 import lovelace.util.common {
-	anythingEqual,
-	matchingValue
+    anythingEqual,
+    matchingValue
 }
 Logger log = logger(`module strategicprimer.model`);
 "An IWorker implementation to make the UI able to operate on all of a unit's workers at

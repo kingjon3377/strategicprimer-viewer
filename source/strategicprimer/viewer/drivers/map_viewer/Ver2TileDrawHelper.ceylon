@@ -31,12 +31,12 @@ import strategicprimer.model.map.fixtures {
     TerrainFixture
 }
 import strategicprimer.drivers.common {
-	FixtureMatcher
+    FixtureMatcher
 }
 import lovelace.util.common {
-	matchingValue,
-	simpleSet,
-	simpleMap
+    matchingValue,
+    simpleSet,
+    simpleMap
 }
 
 "A [[TileDrawHelper]] for version-2 maps."

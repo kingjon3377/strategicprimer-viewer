@@ -1,6 +1,6 @@
 import lovelace.util.common {
     DelayedRemovalMap,
-	comparingOn,
+    comparingOn,
     narrowedStream
 }
 
@@ -40,7 +40,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     }
     "Produce the part of the report dealing with arbitrary-text notes."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-	        IMapNG map, Anything(String) ostream) {
+            IMapNG map, Anything(String) ostream) {
         {<Integer->[Point, TextFixture]>*} items =
                 narrowedStream<Integer, [Point, TextFixture]>(fixtures).sort(
                     comparingOn(compose(TextFixture.turn,
@@ -82,7 +82,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
      report intermediate representation."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-	        IMapNG map) {
+            IMapNG map) {
         IReportNode retval = SectionListReportNode(4, "Miscellaneous Notes");
         for (key->[loc, item] in fixtures) {
             if (is TextFixture fixture = item) {

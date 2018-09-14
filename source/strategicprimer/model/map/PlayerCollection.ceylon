@@ -13,7 +13,7 @@ import strategicprimer.model.map {
     IPlayerCollection
 }
 import lovelace.util.common {
-	matchingValue
+    matchingValue
 }
 
 "A collection of players. Using a simple List doesn't work when -1 is the default index if
@@ -50,8 +50,8 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
                             "Matching players differ: our ``match``, their ``player``");
                     }
                 } else {
-	                report("Extra player ``player.name``");
-	            }
+                    report("Extra player ``player.name``");
+                }
                 retval = false;
             }
         }

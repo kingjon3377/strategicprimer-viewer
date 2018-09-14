@@ -1,6 +1,6 @@
 import java.io {
     JReader=Reader,
-	JCloseable=Closeable
+    JCloseable=Closeable
 }
 
 import javax.xml.stream {
@@ -12,8 +12,8 @@ import javax.xml.stream.events {
     XMLEvent
 }
 import ceylon.collection {
-	Queue,
-	LinkedList
+    Queue,
+    LinkedList
 }
 "A wrapper around [[XMLEventReader]] that makes the Iterator declaration take a type
  argument. Also contains factory methods so callers don't need to deal *at all* with the
@@ -52,12 +52,12 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent>&Destroyable {
         if (closed) {
             return finished;
         } else {
-	        if (wrapped.hasNext(), exists retval = wrapped.nextEvent()) {
-	            return retval;
-	        } else {
-	            destroy(null);
-	            return finished;
-	        }
+            if (wrapped.hasNext(), exists retval = wrapped.nextEvent()) {
+                return retval;
+            } else {
+                destroy(null);
+                return finished;
+            }
         }
     }
 }

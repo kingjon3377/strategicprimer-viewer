@@ -4,11 +4,11 @@ import javax.swing.tree {
 
 import lovelace.util.common {
     todo,
-	matchingPredicate
+    matchingPredicate
 }
 
 import lovelace.util.jvm {
-	EnumerationWrapper
+    EnumerationWrapper
 }
 
 import strategicprimer.model.map {

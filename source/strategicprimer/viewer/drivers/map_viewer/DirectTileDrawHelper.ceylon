@@ -13,7 +13,7 @@ import strategicprimer.model.map {
     IMapNG
 }
 import java.lang {
-	IntArray
+    IntArray
 }
 
 "A [[TileDrawHelper]] for version-1 maps that draws directly instead of creating Shapes,

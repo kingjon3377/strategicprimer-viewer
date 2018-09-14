@@ -28,7 +28,7 @@ shared class VillageTabularReportGenerator(Player player, Point hq,
             Integer key, Point loc, Map<Integer, Integer> parentMap) {
         fixtures.remove(key);
         return [[distanceString(loc, hq, dimensions), loc.string,
-			ownerString(player, item.owner), item.name]];
+            ownerString(player, item.owner), item.name]];
     }
     "Compare two location-and-village pairs."
     shared actual Comparison comparePairs([Point, Village] one,

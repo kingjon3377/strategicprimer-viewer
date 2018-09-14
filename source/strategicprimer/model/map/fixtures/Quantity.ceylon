@@ -13,12 +13,12 @@ shared class Quantity
     shared Number<out Anything> number;
     "The units in which that number is measured."
     shared String units;
-	shared new (Number<out Anything> number, String units) {
-		this.number = number;
-		this.units = units;
-	}
-	"That quantity as a Float"
-	shared Float floatNumber => numberComparator.floatValue(number);
+    shared new (Number<out Anything> number, String units) {
+        this.number = number;
+        this.units = units;
+    }
+    "That quantity as a Float"
+    shared Float floatNumber => numberComparator.floatValue(number);
     shared actual String string => "``number`` ``units``";
     "A Quantity is a subset iff it has the same units and either the same or a lesser
      quantity."

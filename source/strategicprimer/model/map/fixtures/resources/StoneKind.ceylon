@@ -1,5 +1,5 @@
 import lovelace.util.common {
-	matchingValue
+    matchingValue
 }
 "The kinds of stone we know about."
 shared class StoneKind

@@ -10,7 +10,7 @@ import ceylon.language.meta.model {
 
 import lovelace.util.common {
     DRMap=DelayedRemovalMap,
-	simpleMap
+    simpleMap
 }
 
 import strategicprimer.model.map {
@@ -40,25 +40,25 @@ shared class ExplorableReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Point hq = invalidPoint)
         extends AbstractReportGenerator<Battlefield|Cave|Portal>(comp, dimensions, hq) {
-	"Produces a more verbose sub-report on a cave, battlefield, or portal."
-	shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
-			IMapNG map, Anything(String) ostream, Battlefield|Cave|Portal item, Point loc) {
-		switch (item)
-		case (is Cave) {
-			fixtures.remove(item.id);
-			ostream("Caves beneath ``loc````distCalculator.distanceString(loc)``");
-		}
-		case (is Battlefield) {
-			fixtures.remove(item.id);
-			ostream("Signs of a long-ago battle on ``loc````distCalculator
-				.distanceString(loc)``");
-		}
-		case (is Portal) {
-			fixtures.remove(item.id);
-			ostream("A portal to another world at ``loc`` ``distCalculator
-				.distanceString(loc)``");
-		}
-	}
+    "Produces a more verbose sub-report on a cave, battlefield, or portal."
+    shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, Battlefield|Cave|Portal item, Point loc) {
+        switch (item)
+        case (is Cave) {
+            fixtures.remove(item.id);
+            ostream("Caves beneath ``loc````distCalculator.distanceString(loc)``");
+        }
+        case (is Battlefield) {
+            fixtures.remove(item.id);
+            ostream("Signs of a long-ago battle on ``loc````distCalculator
+                .distanceString(loc)``");
+        }
+        case (is Portal) {
+            fixtures.remove(item.id);
+            ostream("A portal to another world at ``loc`` ``distCalculator
+                .distanceString(loc)``");
+        }
+    }
     "Produces the report on all caves, battlefields, and portals."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
@@ -67,7 +67,7 @@ shared class ExplorableReportGenerator(
             "Signs of long-ago battles on the following tiles:");
         MutableList<Point> caves = PointList("Caves beneath the following tiles: ");
         for ([loc, item] in fixtures.items.narrow<[Point, Portal|Battlefield|Cave]>()
-	            .sort(pairComparator)) {
+                .sort(pairComparator)) {
             switch (item)
             case (is Portal) {
                 portals.add(loc);
@@ -84,7 +84,7 @@ shared class ExplorableReportGenerator(
             ostream("<h4>Caves, Battlefields, and Portals</h4>
                      <ul>");
             for (list in [ caves, battles, portals ]
-					.filter(not(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
+                    .filter(not(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
                 ostream("<li>``list``</li>");
             }
             ostream("</ul>``operatingSystem.newline``");
@@ -113,7 +113,7 @@ shared class ExplorableReportGenerator(
     }
     "Produces the report section on all caves, battlefields, and portals."
     shared actual IReportNode produceRIR(
-			DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
+            DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
         IReportNode portals = ListReportNode("Portals");
         IReportNode battles = ListReportNode("Battlefields");
         IReportNode caves = ListReportNode("Caves");
@@ -124,7 +124,7 @@ shared class ExplorableReportGenerator(
 //            if (exists node = nodes[type(item)]) {
         for ([loc, item] in fixtures.items.sort(pairComparator)) {
             if (is Battlefield|Cave|Portal item,
-	                exists node = nodes[type(item)]) {
+                    exists node = nodes[type(item)]) {
                 node.appendNode(produceRIRSingle(fixtures, map, item, loc));
             }
         }

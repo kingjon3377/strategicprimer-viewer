@@ -6,7 +6,7 @@ import strategicprimer.model.map {
 "A class for immortals that don't have any state other than their ID, so we only need one
  class for all of them."
 shared abstract sealed class SimpleImmortal(kind, plural, dc, id) of Sphinx|Djinn|Griffin|
-		Minotaur|Ogre|Phoenix|Simurgh|Troll satisfies Immortal&HasMutableImage&HasKind {
+        Minotaur|Ogre|Phoenix|Simurgh|Troll satisfies Immortal&HasMutableImage&HasKind {
     "An ID number for the fixture."
     shared actual Integer id;
     "What kind of immortal this is, as a string."
@@ -56,28 +56,28 @@ shared abstract sealed class SimpleImmortal(kind, plural, dc, id) of Sphinx|Djin
     }
 }
 shared class Sphinx(Integer id) extends SimpleImmortal("sphinx", "Sphinxes", 35, id) {
-	shared actual Sphinx copy(Boolean zero) => Sphinx(id);
+    shared actual Sphinx copy(Boolean zero) => Sphinx(id);
 }
 shared class Djinn(Integer id) extends SimpleImmortal("djinn", "Djinni", 30, id) {
-	shared actual Djinn copy(Boolean zero) => Djinn(id);
+    shared actual Djinn copy(Boolean zero) => Djinn(id);
 }
 shared class Griffin(Integer id) extends SimpleImmortal("griffin", "Griffins", 28, id) {
-	shared actual Griffin copy(Boolean zero) => Griffin(id);
+    shared actual Griffin copy(Boolean zero) => Griffin(id);
 }
 shared class Minotaur(Integer id)
         extends SimpleImmortal("minotaur", "Minotaurs", 30, id) {
-	shared actual Minotaur copy(Boolean zero) => Minotaur(id);
+    shared actual Minotaur copy(Boolean zero) => Minotaur(id);
 }
 shared class Ogre(Integer id) extends SimpleImmortal("ogre", "Ogres", 28, id) {
-	shared actual Ogre copy(Boolean zero) => Ogre(id);
-	shared actual String shortDescription => "an ogre";
+    shared actual Ogre copy(Boolean zero) => Ogre(id);
+    shared actual String shortDescription => "an ogre";
 }
 shared class Phoenix(Integer id) extends SimpleImmortal("phoenix", "Phoenixes", 35, id) {
-	shared actual Phoenix copy(Boolean zero) => Phoenix(id);
+    shared actual Phoenix copy(Boolean zero) => Phoenix(id);
 }
 shared class Simurgh(Integer id) extends SimpleImmortal("simurgh", "Simurghs", 35, id) {
-	shared actual Simurgh copy(Boolean zero) => Simurgh(id);
+    shared actual Simurgh copy(Boolean zero) => Simurgh(id);
 }
 shared class Troll(Integer id) extends SimpleImmortal("troll", "Trolls", 28, id) {
-	shared actual Troll copy(Boolean zero) => Troll(id);
+    shared actual Troll copy(Boolean zero) => Troll(id);
 }

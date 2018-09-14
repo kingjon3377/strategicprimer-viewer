@@ -5,7 +5,7 @@ import strategicprimer.model.map {
     HasMutableImage,
     IFixture,
     HasKind,
-	HasPopulation
+    HasPopulation
 }
 import strategicprimer.model.map.fixtures {
     UnitMember,
@@ -16,7 +16,7 @@ todo("More members?")
 shared class Implement(kind, id, count = 1)
         satisfies UnitMember&FortressMember&HasKind&HasMutableImage
             &HasPopulation<Implement> {
-	shared actual String plural = "Equipment";
+    shared actual String plural = "Equipment";
     """The "kind" of the implement."""
     shared actual String kind;
     "The ID number."
@@ -62,7 +62,7 @@ shared class Implement(kind, id, count = 1)
     shared actual Implement reduced(Integer newPopulation, Integer newId) =>
             Implement(kind, newId, newPopulation);
     shared actual Implement combined(Implement addend) =>
-	        Implement(kind, id, Integer.largest(0, count) +
+            Implement(kind, id, Integer.largest(0, count) +
                 Integer.largest(0, addend.count));
     shared actual String defaultImage = "implement.png";
     shared actual Boolean equals(Object obj) {

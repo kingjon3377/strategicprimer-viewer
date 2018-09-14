@@ -1,6 +1,6 @@
 import lovelace.util.common {
     todo,
-	anythingEqual
+    anythingEqual
 }
 
 import strategicprimer.model.map {
@@ -59,7 +59,7 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc)
             localReport("Has contents details we don't");
             retval = false;
         }
-		if (exists ours = population, !ours.isSubset(other.population, localReport)) {
+        if (exists ours = population, !ours.isSubset(other.population, localReport)) {
             localReport("Has different population details");
             retval = false;
         }

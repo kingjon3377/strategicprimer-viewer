@@ -5,7 +5,7 @@ import javax.swing.tree {
 
 import lovelace.util.common {
     todo,
-	anythingEqual
+    anythingEqual
 }
 
 import strategicprimer.model.map {
@@ -26,7 +26,7 @@ shared class SectionListReportNode(Integer level, variable String header,
             Integer.sum(map(IReportNode.htmlSize).map(perChildBoilerPlate.plus));
     shared actual default Boolean equals(Object that) {
         if (is SectionListReportNode that, that.level == level, that.header == header,
-	            that.children() == children()) {
+                that.children() == children()) {
             return anythingEqual(localPoint, that.localPoint);
         } else {
             return false;

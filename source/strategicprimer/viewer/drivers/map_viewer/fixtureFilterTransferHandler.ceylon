@@ -24,7 +24,7 @@ import lovelace.util.jvm {
     IntTransferable
 }
 import strategicprimer.drivers.common {
-	FixtureMatcher
+    FixtureMatcher
 }
 "A transfer-handler to let the user drag items in the list to control Z-order."
 object fixtureFilterTransferHandler extends TransferHandler() {
@@ -72,13 +72,13 @@ object fixtureFilterTransferHandler extends TransferHandler() {
             return false;
         }
         if (is SwingList<out Anything> component,
-	            is Reorderable model = component.model,
-	            is SwingList<out Anything>.DropLocation dropLocation) {
+                is Reorderable model = component.model,
+                is SwingList<out Anything>.DropLocation dropLocation) {
             Integer index = dropLocation.index;
             model.reorder(payload, index);
             return true;
         } else if (is JTable component, is Reorderable model = component.model,
-	            is JTable.DropLocation dropLocation) {
+                is JTable.DropLocation dropLocation) {
             Integer index = dropLocation.row;
             Integer selection = component.selectedRow;
             model.reorder(payload, index);

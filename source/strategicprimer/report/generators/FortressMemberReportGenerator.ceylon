@@ -37,38 +37,38 @@ shared class FortressMemberReportGenerator(
             Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
             MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
         extends AbstractReportGenerator<FortressMember>(comp, dimensions, hq) {
-	"Produces a sub-report on a resource or piece of equipment. All fixtures referred
-	 to in this report are removed from the collection."
-	shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-			IMapNG map, Anything(String) ostream, FortressMember item, Point loc) {
-		assert (is IUnit|ResourcePile|Implement item);
-		if (is IUnit item) {
-			UnitReportGenerator(pairComparator, currentPlayer, dimensions,
-				currentTurn, hq).produceSingle(fixtures, map, ostream, item, loc);
-		} else {
-			switch (item)
-			case (is ResourcePile) {
-				fixtures.remove(item.id);
-				if (item.quantity.units.empty) {
-					ostream("A pile of ``item.quantity`` ``item.contents`` (``item
-						.kind``)");
-				} else {
-					ostream(
-						"A pile of ``item.quantity`` of ``item.contents`` (``item
-								.kind``)");
-				}
-				if (item.created >= 0) {
-					ostream(" from turn ``item.created``");
-				}
-			} case (is Implement) {
-				fixtures.remove(item.id);
-				ostream("Equipment: ``item.kind``");
-				if (item.count > 1) {
-					ostream(" (``item.count``)");
-				}
-			}
-		}
-	}
+    "Produces a sub-report on a resource or piece of equipment. All fixtures referred
+     to in this report are removed from the collection."
+    shared actual void produceSingle(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, Anything(String) ostream, FortressMember item, Point loc) {
+        assert (is IUnit|ResourcePile|Implement item);
+        if (is IUnit item) {
+            UnitReportGenerator(pairComparator, currentPlayer, dimensions,
+                currentTurn, hq).produceSingle(fixtures, map, ostream, item, loc);
+        } else {
+            switch (item)
+            case (is ResourcePile) {
+                fixtures.remove(item.id);
+                if (item.quantity.units.empty) {
+                    ostream("A pile of ``item.quantity`` ``item.contents`` (``item
+                        .kind``)");
+                } else {
+                    ostream(
+                        "A pile of ``item.quantity`` of ``item.contents`` (``item
+                                .kind``)");
+                }
+                if (item.created >= 0) {
+                    ostream(" from turn ``item.created``");
+                }
+            } case (is Implement) {
+                fixtures.remove(item.id);
+                ostream("Equipment: ``item.kind``");
+                if (item.count > 1) {
+                    ostream(" (``item.count``)");
+                }
+            }
+        }
+    }
     "Produces a sub-report on all fortress members. All fixtures referred to in this
      report are removed from the collection. This method should probably never actually
      be called, since nearly all resources will be in fortresses and should be reported
@@ -83,7 +83,7 @@ shared class FortressMemberReportGenerator(
         MutableMap<String, MutableHeadedMap<ResourcePile, Point>> resources =
                 HashMap<String, MutableHeadedMap<ResourcePile, Point>>();
         for ([loc, item] in fixtures.items.narrow<[Point, ResourcePile|Implement]>()
-	            .sort(pairComparator)) {
+                .sort(pairComparator)) {
             if (is ResourcePile resource = item) {
                 MutableHeadedMap<ResourcePile, Point> pileMap;
                 if (exists temp = resources[resource.kind]) {
@@ -130,8 +130,8 @@ shared class FortressMemberReportGenerator(
     "Produces a sub-report on a resource or piece of equipment. All fixtures referred
      to in this report are removed from the collection."
     shared actual IReportNode produceRIRSingle(
-			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-	        IMapNG map, FortressMember item, Point loc) {
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            IMapNG map, FortressMember item, Point loc) {
         assert (is IUnit|ResourcePile|Implement item);
         if (is IUnit item) {
             return UnitReportGenerator(pairComparator, currentPlayer, dimensions,
@@ -139,44 +139,44 @@ shared class FortressMemberReportGenerator(
         } else {
             switch (item)
             case (is ResourcePile) {
-	            fixtures.remove(item.id);
-	            String age;
-	            if (item.created < 0) {
-	                age = "";
-	            } else {
-	                age = " from turn ``item.created``";
-	            }
-	            if (item.quantity.units.empty) {
-	                return SimpleReportNode(
-	                    "A pile of ``item.quantity.number`` ``item.contents`` (``item
-	                            .kind``)``age``");
-	            } else {
-	                return SimpleReportNode(
-	                    "A pile of ``item.quantity`` of ``item.contents`` (``item
-	                            .kind``)``age``");
-	            }
-	        }
-	        case (is Implement) {
-	            fixtures.remove(item.id);
-	            if (item.count > 1) {
-	                return SimpleReportNode("Equipment: ``item.kind`` (``item.count``)");
-	            } else {
-	                return SimpleReportNode("Equipment: ``item.kind``");
-	            }
-	        }
-	    }
+                fixtures.remove(item.id);
+                String age;
+                if (item.created < 0) {
+                    age = "";
+                } else {
+                    age = " from turn ``item.created``";
+                }
+                if (item.quantity.units.empty) {
+                    return SimpleReportNode(
+                        "A pile of ``item.quantity.number`` ``item.contents`` (``item
+                                .kind``)``age``");
+                } else {
+                    return SimpleReportNode(
+                        "A pile of ``item.quantity`` of ``item.contents`` (``item
+                                .kind``)``age``");
+                }
+            }
+            case (is Implement) {
+                fixtures.remove(item.id);
+                if (item.count > 1) {
+                    return SimpleReportNode("Equipment: ``item.kind`` (``item.count``)");
+                } else {
+                    return SimpleReportNode("Equipment: ``item.kind``");
+                }
+            }
+        }
     }
     "Produces a sub-report on all fortress members. All fixtures referred to in this
      report are removed from the collection. This method should probably never actually
      be called, since nearly all resources will be in fortresses and should be reported
      as such, but we'll handle this properly anyway."
     shared actual IReportNode produceRIR(
-			DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
         MutableMap<String, IReportNode> resourceKinds =
                 HashMap<String, IReportNode>();
         IReportNode equipment = ListReportNode("Equipment:");
         for ([loc, item] in fixtures.items.narrow<[Point, ResourcePile|Implement]>()
-	            .sort(pairComparator)) {
+                .sort(pairComparator)) {
             if (is ResourcePile resource = item) {
                 String kind = resource.kind;
                 IReportNode node;

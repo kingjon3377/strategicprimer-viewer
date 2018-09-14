@@ -15,10 +15,10 @@ import strategicprimer.model.map.fixtures.mobile {
     Immortal
 }
 import ceylon.language.meta {
-	type
+    type
 }
 import ceylon.language.meta.model {
-	ClassModel
+    ClassModel
 }
 """A tabular report generator for "immortals.""""
 shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
@@ -38,10 +38,10 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
     shared actual Comparison comparePairs([Point, Immortal] one,
             [Point, Immortal] two) =>
             comparing(comparingOn<[Point, Immortal], Point>(
-	                Tuple.first, DistanceComparator(hq, dimensions).compare),
-	            comparingOn(Tuple<Point|Immortal, Point, [Immortal]>.rest,
-	                comparingOn(Tuple<Immortal, Immortal, []>.first,
-	                    comparing(comparingOn<Immortal, ClassModel<Immortal>>(type,
-	                        comparingOn(Object.hash, increasing<Integer>)),
-	                    comparingOn(Object.hash, increasing<Integer>)))))(one, two);
+                    Tuple.first, DistanceComparator(hq, dimensions).compare),
+                comparingOn(Tuple<Point|Immortal, Point, [Immortal]>.rest,
+                    comparingOn(Tuple<Immortal, Immortal, []>.first,
+                        comparing(comparingOn<Immortal, ClassModel<Immortal>>(type,
+                            comparingOn(Object.hash, increasing<Integer>)),
+                        comparingOn(Object.hash, increasing<Integer>)))))(one, two);
 }

@@ -25,7 +25,7 @@ import ceylon.numeric.float {
     halfEven
 }
 import java.lang {
-	IntArray
+    IntArray
 }
 "A class to do the drawing of a tile, whether on a component representing a single tile or
  a single-component map, using cached [[Shape]]s. Note that this is limited to version-1

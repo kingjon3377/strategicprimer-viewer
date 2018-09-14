@@ -5,8 +5,8 @@ import ceylon.language {
 import lovelace.util.common {
     todo,
     ArraySet,
-	anythingEqual,
-	matchingValue,
+    anythingEqual,
+    matchingValue,
     entryBy
 }
 import strategicprimer.model.map {
@@ -27,10 +27,10 @@ import ceylon.collection {
  unit, not as a top-level tag."
 todo("Convert some other [[MobileFixture]]s similarly?")
 shared class Worker satisfies IWorker&HasPortrait {
-	"Whether neither of two collections of Jobs contains a nonempty Job the other does not."
-	static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
-			set(first.filter(matchingValue(false, IJob.emptyJob))) ==
-			set(second.filter(matchingValue(false, IJob.emptyJob)));
+    "Whether neither of two collections of Jobs contains a nonempty Job the other does not."
+    static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
+            set(first.filter(matchingValue(false, IJob.emptyJob))) ==
+            set(second.filter(matchingValue(false, IJob.emptyJob)));
     "The set of Jobs the worker is trained or experienced in."
     MutableSet<IJob> jobSet;
     "The worker's ID number."
@@ -39,12 +39,12 @@ shared class Worker satisfies IWorker&HasPortrait {
     shared actual String name;
     "The worker's race (elf, dwarf, human, etc.)"
     shared actual String race;
-	shared new (String name, String race, Integer id, IJob* jobs) {
-		this.name = name;
-		this.race = race;
-		this.id = id;
-		jobSet = ArraySet<IJob>(jobs);
-	}
+    shared new (String name, String race, Integer id, IJob* jobs) {
+        this.name = name;
+        this.race = race;
+        this.id = id;
+        jobSet = ArraySet<IJob>(jobs);
+    }
 
     "The worker's stats."
     shared actual variable WorkerStats? stats = null;

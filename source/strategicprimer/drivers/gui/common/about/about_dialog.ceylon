@@ -6,8 +6,8 @@ import java.awt {
 }
 import lovelace.util.common {
     todo,
-	as,
-	silentListener
+    as,
+    silentListener
 }
 import ceylon.regex {
     Regex,

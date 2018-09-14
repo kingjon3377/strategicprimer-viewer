@@ -4,7 +4,7 @@ import java.awt.event {
     WindowEvent
 }
 shared class WindowCloseListener(Anything(ActionEvent) menuListener)
-		extends WindowAdapter() {
-	shared actual void windowClosing(WindowEvent evt) =>
-			menuListener(ActionEvent(evt.source, ActionEvent.actionFirst, "Close"));
+        extends WindowAdapter() {
+    shared actual void windowClosing(WindowEvent evt) =>
+            menuListener(ActionEvent(evt.source, ActionEvent.actionFirst, "Close"));
 }

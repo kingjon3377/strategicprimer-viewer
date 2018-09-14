@@ -20,7 +20,7 @@ import strategicprimer.drivers.common {
     SPOptions,
     ParamCount,
     DriverFailedException,
-	ISPDriver
+    ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -42,7 +42,7 @@ import strategicprimer.drivers.gui.common {
     SPFrame
 }
 import lovelace.util.common {
-	silentListener
+    silentListener
 }
 import lovelace.util.jvm {
     FileChooser

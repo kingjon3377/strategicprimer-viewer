@@ -12,7 +12,7 @@ import ceylon.logging {
 }
 
 import java.lang {
-	UnsupportedOperationException
+    UnsupportedOperationException
 }
 
 import lovelace.util.common {
@@ -173,11 +173,11 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         } else if (!cachedIterable.empty) {
             return cachedIterable.iterator();
         } else {
-	        MutableMap<Integer, UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|
-	                    IWorker&ProxyFor<IWorker>> map =
-	                naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|
-	                    Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker>>([]);
-	        for (member in proxiedList.flatMap(identity)) {
+            MutableMap<Integer, UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|
+                        IWorker&ProxyFor<IWorker>> map =
+                    naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|
+                        Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker>>([]);
+            for (member in proxiedList.flatMap(identity)) {
                 UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|
                     IWorker&ProxyFor<IWorker> proxy;
                 Integer memberID = member.id;
@@ -208,10 +208,10 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
                     }
                     map[memberID] = proxy;
                 }
-	        }
-	        cachedIterable = map.items;
-	        return map.items.iterator();
-	    }
+            }
+            cachedIterable = map.items;
+            return map.items.iterator();
+        }
     }
     shared actual String name => getConsensus(IUnit.name) else "proxied";
     assign name {
@@ -288,12 +288,12 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
                     member.proxied.each(addMember);
                 }
             } else {
-	            for (unit in proxiedList) {
-	                if (!unit.any(member.equals)) {
-	                    unit.addMember(member.copy(false));
-	                }
-	            }
-	        }
+                for (unit in proxiedList) {
+                    if (!unit.any(member.equals)) {
+                        unit.addMember(member.copy(false));
+                    }
+                }
+            }
         } else {
             log.error("addMember() called on proxy for all units of one kind");
         }

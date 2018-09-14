@@ -1,6 +1,6 @@
 import strategicprimer.model.map {
     IFixture,
-	HasPopulation
+    HasPopulation
 }
 "An orchard (fruit trees) or grove (other trees) on the map."
 shared class Grove(orchard, cultivated, kind, id, population = -1)
@@ -19,15 +19,15 @@ shared class Grove(orchard, cultivated, kind, id, population = -1)
     shared actual Integer population;
     shared actual Grove copy(Boolean zero) {
         Grove retval = Grove(orchard, cultivated, kind, id,
-			(zero) then -1 else population);
+            (zero) then -1 else population);
         retval.image = image;
         return retval;
     }
     shared actual Grove reduced(Integer newPopulation, Integer newId) =>
             Grove(orchard, cultivated, kind, newId, newPopulation);
     shared actual Grove combined(Grove addend) =>
-	        Grove(orchard, cultivated, kind, id,
-	            Integer.largest(population, 0) + Integer.largest(addend.population, 0));
+            Grove(orchard, cultivated, kind, id,
+                Integer.largest(population, 0) + Integer.largest(addend.population, 0));
     shared actual String defaultImage = (orchard) then "orchard.png" else "tree.png";
     shared actual String shortDescription {
         String retval;
@@ -53,7 +53,7 @@ shared class Grove(orchard, cultivated, kind, id, population = -1)
         if (is Grove obj) {
             return kind == obj.kind && orchard == obj.orchard &&
                 cultivated == obj.cultivated && id == obj.id &&
-				population == obj.population;
+                population == obj.population;
         } else {
             return false;
         }
@@ -68,38 +68,38 @@ shared class Grove(orchard, cultivated, kind, id, population = -1)
         }
     }
     shared actual Boolean isSubset(IFixture other, Anything(String) report) {
-		if (other.id != id) {
-			report("Different IDs");
-			return false;
-		} else if (is Grove other) {
-			variable Boolean retval = true;
-			Anything(String) localReport;
-			if (orchard) {
-				localReport = (String str) => report("In orchard with ID #``id``:\t``str``");
-			} else {
-				localReport = (String str) => report("In grove with ID #``id``:\t``str``");
-			}
-			if (kind != other.kind) {
-				localReport("Kinds differ");
-				retval = false;
-			}
-			if (orchard != other.orchard) {
-				localReport("Grove vs. orchard differs");
-				retval = false;
-			}
-			if (cultivated != other.cultivated) {
-				localReport("Cultivation status differs");
-				retval = false;
-			}
-			if (population < other.population) {
-				localReport("Has larger number of trees than we do");
-				retval = false;
-			}
-			return retval;
-		} else {
-			report("Different types for ID #``id``");
-			return false;
-		}
+        if (other.id != id) {
+            report("Different IDs");
+            return false;
+        } else if (is Grove other) {
+            variable Boolean retval = true;
+            Anything(String) localReport;
+            if (orchard) {
+                localReport = (String str) => report("In orchard with ID #``id``:\t``str``");
+            } else {
+                localReport = (String str) => report("In grove with ID #``id``:\t``str``");
+            }
+            if (kind != other.kind) {
+                localReport("Kinds differ");
+                retval = false;
+            }
+            if (orchard != other.orchard) {
+                localReport("Grove vs. orchard differs");
+                retval = false;
+            }
+            if (cultivated != other.cultivated) {
+                localReport("Cultivation status differs");
+                retval = false;
+            }
+            if (population < other.population) {
+                localReport("Has larger number of trees than we do");
+                retval = false;
+            }
+            return retval;
+        } else {
+            report("Different types for ID #``id``");
+            return false;
+        }
     }
     shared actual String plural = "Groves and orchards";
     shared actual Integer dc = 18;

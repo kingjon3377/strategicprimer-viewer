@@ -18,7 +18,7 @@ import lovelace.util.jvm {
     platform
 }
 import lovelace.util.common {
-	silentListener
+    silentListener
 }
 "A superclass to perform setup common to dialogs."
 shared class SPDialog(Frame? parentFrame, String title)

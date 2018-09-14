@@ -41,7 +41,7 @@ shared class Direction
  Perception. Traveling to [[Direction.nowhere]] should give an additional bonus (+2?) to
  Perception."
 shared class Speed of hurried|normal|observant|careful|meticulous
-		satisfies HasName&Comparable<Speed> {
+        satisfies HasName&Comparable<Speed> {
     "The multiplicative modifier to apply to movement costs."
     shared Float mpMultiplier;
     "The modifier to add to Perception checks."

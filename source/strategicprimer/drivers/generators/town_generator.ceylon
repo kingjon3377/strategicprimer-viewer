@@ -6,7 +6,7 @@ import strategicprimer.drivers.common {
     SPOptions,
     IDriverModel,
     IMultiMapModel,
-	ISPDriver
+    ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -24,7 +24,7 @@ import strategicprimer.model.map {
     IMapNG,
     IFixture,
     TileType,
-	HasName,
+    HasName,
     TileFixture
 }
 import lovelace.util.jvm {
@@ -80,10 +80,10 @@ import java.lang {
 import lovelace.util.common {
     isNumeric,
     parseInt,
-	matchingValue,
-	matchingPredicate,
-	anythingEqual,
-	defer,
+    matchingValue,
+    matchingPredicate,
+    anythingEqual,
+    defer,
     narrowedStream
 }
 class LazyInit<Wrapped>(Wrapped() generator) {
@@ -118,9 +118,9 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
         for (terrain in ["mountain", "forest", "plains", "ocean"]) {
             String file = "``terrain``_consumption";
              assert (exists tableContents =
-					 readFileContents(`module strategicprimer.drivers.generators`, "tables/``file``"));
+                     readFileContents(`module strategicprimer.drivers.generators`, "tables/``file``"));
              MutableList<[Quantity, String, String]> inner =
-					 ArrayList<[Quantity, String, String]>();
+                     ArrayList<[Quantity, String, String]>();
              for (line in tableContents.lines) {
                  if (line.empty) {
                      continue;
@@ -129,8 +129,8 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
                  value quantity = Integer.parse(split.first);
                  if (is Integer quantity) {
                      assert (exists units = split.rest.first,
-						 exists kind = split.rest.rest.first,
-						 exists resource = split.rest.rest.rest.first);
+                         exists kind = split.rest.rest.first,
+                         exists resource = split.rest.rest.rest.first);
                      inner.add([Quantity(quantity, units), kind, resource]);
                  } else {
                      throw quantity;
@@ -154,7 +154,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             for (reference in loadedTable.allEvents) {
                 if (reference.contains('#')) {
                     assert (exists temp = reference.split('#'.equals, true, false, 2)
-						.rest.first);
+                        .rest.first);
                     if (!retval.hasTable(temp)) {
                         firstTables.push(temp.trimmed);
                     }
@@ -171,7 +171,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             for (reference in loadedTable.allEvents) {
                 if (reference.contains('#')) {
                     assert (exists temp = reference.split('#'.equals, true, false, 2)
-						.rest.first);
+                        .rest.first);
                     if (!retval.hasTable(temp)) {
                         secondTables.push(temp.trimmed);
                     }
@@ -181,7 +181,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
         return retval;
     }
     LazyInit<Map<String,{[Quantity, String, String]*}>> consumption =
-			LazyInit(initConsumption);
+            LazyInit(initConsumption);
     LazyInit<ExplorationRunner> runner = LazyInit(initProduction);
     "The (for now active) towns in the given map that don't have 'stats' yet."
     {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) =>
@@ -200,7 +200,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
 //        for (item in map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
         for (item in map.fixtures.get(location)
                 .narrow<ModifiableTown>().filter(matchingValue(townId,
-				ModifiableTown.id))) {
+                ModifiableTown.id))) {
             assignStatsToTown(item, stats);
         }
     }
@@ -451,7 +451,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             if (runner.wrapped.hasTable(tableName)) {
                 retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
                     runner.wrapped.consultTable(tableName, location,
-						map.baseTerrain.get(location), // TODO: syntax sugar
+                        map.baseTerrain.get(location), // TODO: syntax sugar
                         map.mountainous.get(location), map.fixtures.get(location),
                         map.dimensions),
                 Quantity(2.power(level - 1), (level == 1) then "unit" else "units")));

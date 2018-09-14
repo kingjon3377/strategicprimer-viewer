@@ -34,8 +34,8 @@ import strategicprimer.model.map {
 }
 import strategicprimer.model.map.fixtures {
     UnitMember,
-	Implement,
-	ResourcePile
+    Implement,
+    ResourcePile
 }
 import strategicprimer.model.map.fixtures.mobile {
     ProxyFor,
@@ -198,7 +198,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             if (local.count > 1) {
                 kindLabel.text = "``local.count`` x ``local.kind``";
             } else {
-            	kindLabel.text = local.kind;
+                kindLabel.text = local.kind;
             }
             for (label in statLabels) {
                 label.recache(null);

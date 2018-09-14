@@ -3,7 +3,7 @@ import ceylon.language.meta {
 }
 import ceylon.language.meta.model {
     ClassOrInterface,
-	Class
+    Class
 }
 
 import javax.xml.namespace {
@@ -32,23 +32,23 @@ import strategicprimer.model.map.fixtures.mobile {
     Animal,
     MobileFixture,
     maturityModel,
-	Sphinx,
-	Djinn,
-	Griffin,
-	Minotaur,
-	Ogre,
-	Phoenix,
-	Simurgh,
-	Troll,
-	AnimalImpl,
-	AnimalTracks,
-	immortalAnimals
+    Sphinx,
+    Djinn,
+    Griffin,
+    Minotaur,
+    Ogre,
+    Phoenix,
+    Simurgh,
+    Troll,
+    AnimalImpl,
+    AnimalTracks,
+    immortalAnimals
 }
 import strategicprimer.model.xmlio {
     Warning
 }
 import lovelace.util.common {
-	simpleMap
+    simpleMap
 }
 "A reader for 'mobile fixtures'"
 class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
@@ -78,7 +78,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             // simply `false`.
             tracks = getBooleanParameter(element, "traces",
                 hasParameter(element, "traces") &&
-				getParameter(element, "traces", "").empty);
+                getParameter(element, "traces", "").empty);
             if (!tracks) {
                 expectAttributes(element, "traces", "id", "count", "talking", "kind",
                     "status", "wild", "born", "image");
@@ -97,13 +97,13 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
             }
             return AnimalTracks(kind);
         } else {
-	        // TODO: We'd like default to be 1 inside a unit and -1 outside
-	        Integer count = getIntegerParameter(element, "count", 1);
-	        return AnimalImpl(kind,
-	            getBooleanParameter(element, "talking", false),
-	            getParameter(element, "status", "wild"), getOrGenerateID(element),
-	            getIntegerParameter(element, "born", -1), count);
-	    }
+            // TODO: We'd like default to be 1 inside a unit and -1 outside
+            Integer count = getIntegerParameter(element, "count", 1);
+            return AnimalImpl(kind,
+                getBooleanParameter(element, "talking", false),
+                getParameter(element, "status", "wild"), getOrGenerateID(element),
+                getIntegerParameter(element, "born", -1), count);
+        }
     }
     MobileFixture readSimple(String tag, Integer idNum) {
         "We have to have a reader for ``tag``"
@@ -128,11 +128,11 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         case ("giant") { retval = twoParam(Giant); }
         else {
             if (supportedTags.contains(type)) {
-	            expectAttributes(element, "image", "id");
-	            retval = readSimple(type, getOrGenerateID(element));
-	        } else /*if (immortalAnimals.contains(type))*/ {
-	            retval = createAnimal(element);
-	        }
+                expectAttributes(element, "image", "id");
+                retval = readSimple(type, getOrGenerateID(element));
+            } else /*if (immortalAnimals.contains(type))*/ {
+                retval = createAnimal(element);
+            }
         }
         spinUntilEnd(element.name, stream);
         if (is HasMutableImage retval) {

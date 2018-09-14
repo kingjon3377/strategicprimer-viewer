@@ -3,7 +3,7 @@ import lovelace.util.common {
 }
 import strategicprimer.model.map {
     IFixture,
-	HasPopulation
+    HasPopulation
 }
 "A [[strategicprimer.model.map::TileFixture]] to represent shrubs, or their aquatic
  equivalents, on a tile."

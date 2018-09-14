@@ -15,7 +15,7 @@ import ceylon.file {
 }
 "Sixth generation SP XML writer."
 shared object yaXMLWriter satisfies SPWriter {
-	value wrapped = YAReaderAdapter();
+    value wrapped = YAReaderAdapter();
     "Write an object to a stream."
     throws(`class IOException`, "on I/O error")
     shared actual void writeSPObject("The stream to write to" Path|Anything(String) arg,

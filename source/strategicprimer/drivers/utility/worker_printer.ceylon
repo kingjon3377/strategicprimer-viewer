@@ -1,32 +1,32 @@
 import strategicprimer.drivers.common {
-	SimpleDriver,
-	IDriverUsage,
-	DriverUsage,
-	ParamCount,
-	SPOptions,
-	IDriverModel,
-	ISPDriver
+    SimpleDriver,
+    IDriverUsage,
+    DriverUsage,
+    ParamCount,
+    SPOptions,
+    IDriverModel,
+    ISPDriver
 }
 import strategicprimer.model.map.fixtures.mobile {
-	IUnit,
-	IWorker
+    IUnit,
+    IWorker
 }
 import strategicprimer.drivers.common.cli {
-	ICLIHelper
+    ICLIHelper
 }
 import strategicprimer.model.map.fixtures.mobile.worker {
-	IJob,
-	WorkerStats
+    IJob,
+    WorkerStats
 }
 import java.nio.file {
-	JPath=Path
+    JPath=Path
 }
 import strategicprimer.drivers.exploration.common {
-	IExplorationModel,
-	ExplorationModel
+    IExplorationModel,
+    ExplorationModel
 }
 import lovelace.util.common {
-	matchingPredicate
+    matchingPredicate
 }
 "A driver to print a mini-report on workers, suitable for inclusion in a player's
  results."
@@ -68,10 +68,10 @@ shared class WorkerPrintCLI() satisfies SimpleDriver {
         IDriverModel model) {
         if (is IExplorationModel model) {
             value playerChoice = cli.chooseFromList(model.playerChoices.sequence(),
-				"Players in the map:", "No players", "Player owning the unit:", false);
+                "Players in the map:", "No players", "Player owning the unit:", false);
             if (exists player = playerChoice.item) {
                 value unitChoice = cli.chooseFromList(model.getUnits(player).sequence(),
-					"Units of that player:", "No units", "Unit to print:", false);
+                    "Units of that player:", "No units", "Unit to print:", false);
                 if (exists unit = unitChoice.item) {
                     printWorkers(unit, cli);
                 }
