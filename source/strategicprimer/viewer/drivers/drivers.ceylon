@@ -152,7 +152,7 @@ object appChooserState {
 				.resourceByPath("invocation")) {
 	        mainInvocation = invocationResource.textContent().trimmed;
 	    } else {
-	        mainInvocation = "ceylon --cwd=. run `` `module strategicprimer.viewer`.name```";
+	        mainInvocation = "ceylon --cwd=. run `` `module strategicprimer.viewer`.name``";
 	    }
 	    builder.append(mainInvocation);
 	    if (usage.graphical) {
