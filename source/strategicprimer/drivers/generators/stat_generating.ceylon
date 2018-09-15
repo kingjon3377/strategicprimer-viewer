@@ -449,6 +449,9 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
                     cli.print(stats.string);
                 }
                 enterWorkerJobs(cli, worker, levels);
+                cli.println("``name`` is a ``race`` Stats:");
+                cli.println(", ".join(zipPairs(statLabelArray,
+                    stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
             }
             addWorkerToUnit(model, unit, worker);
         }
