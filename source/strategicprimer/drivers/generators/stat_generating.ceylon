@@ -311,7 +311,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
                 }
             }
             if (candidates.empty) {
-                cli.println("No training available in that village.");
+                cli.println("No training available in ``village.name``.");
                 worker.stats = createWorkerStats(village.race, 0, cli);
                 return worker;
             } else {
@@ -320,7 +320,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
                     WorkerStats stats = createWorkerStats(village.race, training.level,
 	                    cli);
                     cli.println(
-                        "``name`` is a level-``training.level`` ``training.name``. Proposed stats:");
+                        "``name`` is a level-``training.level`` ``training.name`` from ``village.name``. Proposed stats:");
                     cli.println(", ".join(zipPairs(statLabelArray,
                         stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
                     if (cli.inputBoolean("Do those stats fit that profile?")) {
