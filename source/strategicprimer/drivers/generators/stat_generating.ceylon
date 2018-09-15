@@ -320,7 +320,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
                     WorkerStats stats = createWorkerStats(village.race, training.level,
 	                    cli);
                     cli.println(
-                        "``name`` is a level-``training.level`` ``training.name`` from ``village.name``. Proposed stats:");
+                        "``name``, a ``village.race``, is a level-``training.level`` ``training.name`` from ``village.name``. Proposed stats:");
                     cli.println(", ".join(zipPairs(statLabelArray,
                         stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
                     if (cli.inputBoolean("Do those stats fit that profile?")) {
