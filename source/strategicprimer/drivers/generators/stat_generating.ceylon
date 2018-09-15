@@ -312,7 +312,11 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
             }
             if (candidates.empty) {
                 cli.println("No training available in ``village.name``.");
-                worker.stats = createWorkerStats(village.race, 0, cli);
+                WorkerStats stats = createWorkerStats(village.race, 0, cli);
+                worker.stats = stats;
+                cli.println("``name`` is a ``village.race`` from ``village.name``. Stats:");
+                cli.println(", ".join(zipPairs(statLabelArray,
+                    stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
                 return worker;
             } else {
                 assert (exists training = singletonRandom.nextElement(candidates));
@@ -333,7 +337,11 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
             }
         } else {
             cli.println("No population details, so no levels.");
-            worker.stats = createWorkerStats(village.race, 0, cli);
+            WorkerStats stats = createWorkerStats(village.race, 0, cli);
+            worker.stats = stats;
+            cli.println("``name`` is a ``village.race`` from ``village.name``. Stats:");
+            cli.println(", ".join(zipPairs(statLabelArray,
+                stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
             return worker;
         }
     }
