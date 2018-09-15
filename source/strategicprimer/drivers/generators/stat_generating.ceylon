@@ -317,6 +317,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
             } else {
                 assert (exists training = singletonRandom.nextElement(candidates));
                 while (true) {
+                    worker.addJob(training);
                     WorkerStats stats = createWorkerStats(village.race, training.level,
 	                    cli);
                     cli.println(
