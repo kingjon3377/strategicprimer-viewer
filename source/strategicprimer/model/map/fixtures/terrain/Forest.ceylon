@@ -36,7 +36,8 @@ shared class Forest(kind, rows, id, acres = -1)
     shared actual Boolean equals(Object obj) {
         if (is Forest obj) {
             return obj.id == id && kind == obj.kind && rows == obj.rows &&
-                acres == obj.acres;
+//                acres == obj.acres; // TODO: switch back once fix for eclipse/ceylon-sdk#711 released
+                numberComparator.compare(acres, obj.acres) == equal;
         } else {
             return false;
         }
