@@ -1,0 +1,3 @@
+<overrides>
+ <set module="org.jboss.logging" version="3.3.0.Final"/>
+</overrides>

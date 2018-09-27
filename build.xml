@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <project default="all" name="SP viewer" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"
-    xmlns:jacoco="antlib:org.jacoco.ant">
+    xmlns:jacoco="antlib:org.jacoco.ant" xmlns:if="ant:if" xmlns:unless="ant:unless">
   <target name="all" depends="clean,release" />
   <property file="build.properties" />
   <tstamp />
@@ -143,16 +143,23 @@
           description="The method that should run by default when the JAR is invoked" />
       <attribute name="module" default="${main-module}"
                  description="Which module to package into the JAR" />
+      <!-- The overrides parameter is needed because ceylon.transaction, a hard
+           dependency of ceylon.dbc, pulls in (via one of its dependencies) two
+           conflicting versions of org.jboss.logging. -->
+      <attribute name="overrides" default=""
+          description="Maven overrides file to use to fix dependency issues" />
       <sequential>
+          <local name="overrides-value" />
+          <property name="overrides-value" value="@{overrides}" />
           <!-- there isn't a ceylon-fat-jar Ant task (yet) -->
           <exec executable="${ceylon.executable}" failOnError="true">
               <!-- TODO: We'd like to use 'ceylon assemble' instead, but a) it
                    generates a _larger_ JAR file, and b) it's blocked by
                    eclipse/ceylon#7225. -->
               <arg value="fat-jar" />
-              <arg value="--force" /> <!-- TODO: Needed because ceylon.dbc pulls in multiple versions of org.jboss.logging -->
               <arg value="--out=@{out}" />
               <arg value="--run=@{run}" />
+              <arg value="--overrides=@{overrides}" if:set="overrides-value" />
               <arg value="@{module}" />
           </exec>
       </sequential>
@@ -163,7 +170,7 @@
             overwrite="true">java -jar /path/to/${basename}.jar</concat>
     <x-rebuild />
     <x-ceylon-fat-jar out="${release}/${basename}.jar" run="${ceylon-main-run}"
-                      module="${main-module}" />
+        module="${main-module}" overrides="lib/org.jboss.logging.override.xml" />
   </target>
   <target name="icon">
     <for list="512,256,128,64,48,32,16" param="resolution">
@@ -190,7 +197,7 @@
             overwrite="true">/path/to/${basename}.exe</concat>
     <x-rebuild />
     <x-ceylon-fat-jar out="${release}/${basename}-for-exe.jar" run="${ceylon-main-run}"
-                      module="${main-module}" />
+                      module="${main-module}" overrides="lib/org.jboss.logging.override.xml" />
     <launch4j configFile="${project_home}/launch4j.cfg.xml"
       outfile="${release}/${basename}.exe" jar="${release}/${basename}-for-exe.jar" />
     <delete file="${release}/${basename}-for-exe.jar" />
@@ -208,7 +215,7 @@
     <concat destfile="${invocation.path}" overwrite="true">open /path/to/${basename}.app --args</concat>
     <x-rebuild />
     <x-ceylon-fat-jar out="${release}/${shortname}.jar" run="${ceylon-main-run}"
-                      module="${main-module}" />
+                      module="${main-module}" overrides="lib/org.jboss.logging.override.xml" />
     <jarbundler dir="${release}" name="${basename}" mainclass="${main-class}"
       jar="${release}/${shortname}.jar" version="${version-number}"
       shortname="SPHelpers" stubfile="${stub-script-path}"
