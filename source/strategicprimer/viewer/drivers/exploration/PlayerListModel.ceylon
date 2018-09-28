@@ -1,7 +1,7 @@
 import javax.swing {
     DefaultListModel
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Player
 }
 import strategicprimer.drivers.common {

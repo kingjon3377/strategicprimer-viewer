@@ -19,7 +19,7 @@ import lovelace.util.jvm {
     showErrorDialog
 }
 
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     SPFormatException
 }
 import strategicprimer.drivers.common {

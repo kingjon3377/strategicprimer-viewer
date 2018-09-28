@@ -7,22 +7,24 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar,
     createIDFactory
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Player,
-    IMutableMapNG,
-    TileType,
-    TileFixture,
-    IMapNG,
     HasOwner,
+    TileType,
+	TileFixture,
     Point
+}
+import strategicprimer.model.impl.map {
+    IMutableMapNG,
+    IMapNG
 }
 import strategicprimer.model.impl.map.fixtures.mobile {
     AnimalImpl
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     ITownFixture
 }
 import strategicprimer.drivers.common {
@@ -47,7 +49,7 @@ import strategicprimer.drivers.exploration.common {
 import ceylon.random {
     randomize
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import lovelace.util.common {

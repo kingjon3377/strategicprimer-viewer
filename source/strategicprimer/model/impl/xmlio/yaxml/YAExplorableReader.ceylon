@@ -9,11 +9,11 @@ import javax.xml.stream.events {
 import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.impl.map.fixtures.explorable {
+import strategicprimer.model.common.map.fixtures.explorable {
     Battlefield,
     Cave
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 import strategicprimer.model.impl.xmlio.exceptions {

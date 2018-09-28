@@ -20,12 +20,12 @@ import lovelace.util.jvm {
     horizontalSplit,
     InterpolatedLabel
 }
-import strategicprimer.model.impl.map {
-    TileFixture,
+import strategicprimer.model.common.map {
     HasPortrait,
+	HasOwner,
+	TileFixture,
     TileType,
     Point,
-    HasOwner,
     invalidPoint
 }
 import javax.swing.event {

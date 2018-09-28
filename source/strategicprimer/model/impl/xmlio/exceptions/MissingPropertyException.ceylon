@@ -5,7 +5,7 @@ import javax.xml.stream.events {
     StartElement
 }
 
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     SPFormatException
 }
 "An exception for cases where a parameter is required (or, if this is merely logged,

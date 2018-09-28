@@ -6,10 +6,10 @@ import lovelace.util.common {
 import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IFixture,
-    Point,
-    MapDimensions
+	MapDimensions,
+    Point
 }
 import strategicprimer.model.impl.map.fixtures.mobile {
     Animal,

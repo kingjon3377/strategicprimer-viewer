@@ -9,16 +9,18 @@ import java.sql {
 import strategicprimer.model.impl.map {
     IMutableMapNG,
     SPMapNG,
-    MapDimensionsImpl,
     IMutablePlayerCollection,
-    PlayerCollection,
+    PlayerCollection
+}
+import strategicprimer.model.common.map {
+	MapDimensionsImpl,
     PlayerImpl,
     MutablePlayer,
-    Point,
-    TileType,
-    River
+	Point,
+	TileType,
+	River
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbMapReader {

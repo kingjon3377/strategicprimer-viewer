@@ -4,16 +4,18 @@ import ceylon.dbc {
 }
 
 import strategicprimer.model.impl.map {
-    Point,
-    IMutableMapNG,
-    TileFixture,
-    HasMutableImage
+    IMutableMapNG
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map {
+    TileFixture,
+	HasMutableImage,
+    Point
+}
+import strategicprimer.model.common.map.fixtures.terrain {
     Hill,
     Oasis
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>()

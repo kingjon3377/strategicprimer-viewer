@@ -32,17 +32,19 @@ import lovelace.util.common {
 import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.impl.map {
-    HasImage,
-    IPlayerCollection,
-    HasMutableImage,
+import strategicprimer.model.common.map {
+	HasImage,
+	HasMutableImage,
     Player
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.impl.map {
+    IPlayerCollection
+}
+import strategicprimer.model.common.xmlio {
     SPFormatException,
-    spNamespace,
     Warning,
-    warningLevels
+    warningLevels,
+	spNamespace
 }
 import strategicprimer.model.impl.xmlio.exceptions {
     UnwantedChildException,

@@ -2,18 +2,21 @@ import lovelace.util.common {
     todo,
     narrowedStream
 }
-import strategicprimer.model.impl.map {
-    HasMutableImage,
+import strategicprimer.model.common.map {
+	HasPopulation,
     IFixture,
+    HasMutableImage,
     HasKind,
-    HasPopulation,
     HasImage
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
 import lovelace.util.jvm {
     readFileContents
+}
+import strategicprimer.model.common.map.fixtures.mobile {
+    MobileFixture
 }
 "An interface to cover animals and animal tracks, to try to work around
  eclipse/ceylon#7372."

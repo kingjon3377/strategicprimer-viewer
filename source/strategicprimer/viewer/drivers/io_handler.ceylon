@@ -47,7 +47,9 @@ import strategicprimer.model.impl.map {
     IMutableMapNG
 }
 import strategicprimer.model.impl.xmlio {
-    mapIOHelper,
+	mapIOHelper
+}
+import strategicprimer.model.common.xmlio {
     warningLevels,
     SPFormatException
 }

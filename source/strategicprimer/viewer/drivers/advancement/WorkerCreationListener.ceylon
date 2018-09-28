@@ -27,12 +27,12 @@ import lovelace.util.jvm {
 import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Worker,
     IWorker
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats,
     raceFactory
 }

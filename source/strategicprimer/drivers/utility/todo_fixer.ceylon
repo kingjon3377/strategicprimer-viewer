@@ -5,7 +5,7 @@ import lovelace.util.common {
     narrowedStream,
     entryMap
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Village,
     ITownFixture,
     CommunityStats
@@ -14,7 +14,7 @@ import ceylon.random {
     Random,
     DefaultRandom
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     Unit
 }
 import ceylon.collection {
@@ -36,16 +36,18 @@ import strategicprimer.drivers.common {
     IDriverModel,
     ISPDriver
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     TileType,
+    Point
+}
+import strategicprimer.model.impl.map {
     IMapNG,
-    Point,
     IMutableMapNG
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     ResourcePile
 }
 import strategicprimer.drivers.exploration.old {

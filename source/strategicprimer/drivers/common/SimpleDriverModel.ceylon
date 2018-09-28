@@ -10,10 +10,12 @@ import strategicprimer.drivers.common {
     VersionChangeListener
 }
 import strategicprimer.model.impl.map {
-    MapDimensions,
-    SPMapNG,
-    IMutableMapNG,
-    PlayerCollection,
+	SPMapNG,
+	IMutableMapNG,
+	PlayerCollection
+}
+import strategicprimer.model.common.map {
+	MapDimensions,
     MapDimensionsImpl
 }
 "A superclass for driver-models, to handle the common details."

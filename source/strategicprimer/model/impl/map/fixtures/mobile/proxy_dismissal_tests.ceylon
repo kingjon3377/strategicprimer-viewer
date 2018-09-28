@@ -3,14 +3,22 @@ import ceylon.test {
     assertEquals,
     assertNotEquals
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
+    IFixture,
     Player,
-    PlayerImpl,
-    IFixture
+    PlayerImpl
 }
 import lovelace.util.common {
     matchingValue
 }
+import strategicprimer.model.common.map.fixtures.mobile {
+    IUnit,
+    Unit,
+    ProxyFor,
+    IWorker,
+    Worker
+}
+
 test
 void testProxyDismissal() {
     Player player = PlayerImpl(1, "player");

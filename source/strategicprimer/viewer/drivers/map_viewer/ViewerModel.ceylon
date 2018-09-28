@@ -16,11 +16,13 @@ import strategicprimer.drivers.common {
     IDriverModel,
     SelectionChangeListener
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point,
-    IMutableMapNG,
-    IMapNG,
     invalidPoint
+}
+import strategicprimer.model.impl.map {
+    IMutableMapNG,
+    IMapNG
 }
 "A class to encapsulate the various model-type things views need to do with maps."
 todo("Tests")

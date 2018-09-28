@@ -25,7 +25,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     MapDimensions,
     Point
 }

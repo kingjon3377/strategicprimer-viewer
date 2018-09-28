@@ -7,16 +7,20 @@ import java.sql {
     Types
 }
 
-import strategicprimer.model.impl.map {
-    Point,
-    IMutableMapNG
+import strategicprimer.model.common.map {
+	Point
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+
+import strategicprimer.model.impl.map {
+	IMutableMapNG
+}
+
+import strategicprimer.model.common.map.fixtures.towns {
     Village,
     TownStatus,
     CommunityStats
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()

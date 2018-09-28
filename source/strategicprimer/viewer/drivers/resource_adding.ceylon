@@ -75,19 +75,21 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar,
     createIDFactory
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Player,
-    IMutableMapNG,
-    IMapNG,
-    PlayerImpl
+	PlayerImpl
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.impl.map {
+    IMutableMapNG,
+    IMapNG
+}
+import strategicprimer.model.common.map.fixtures {
     ResourcePile,
     Implement,
     FortressMember,
     Quantity
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.viewer.drivers.worker_mgmt {

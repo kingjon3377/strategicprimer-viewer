@@ -1,6 +1,14 @@
 import lovelace.util.common {
     NonNullCorrespondence
 }
+import strategicprimer.model.common.map {
+    TileFixture,
+    Player,
+    Point,
+    River,
+    TileType
+}
+
 "A mutable map."
 shared interface IMutableMapNG satisfies IMapNG {
     "Add a player to the map."

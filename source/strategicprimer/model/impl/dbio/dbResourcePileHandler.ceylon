@@ -9,17 +9,17 @@ import ceylon.decimal {
 import strategicprimer.model.impl.map {
     IMutableMapNG
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     ResourcePile,
     Quantity
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbResourcePileHandler

@@ -10,15 +10,15 @@ import ceylon.decimal {
 import strategicprimer.model.impl.map {
     IMutableMapNG
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     ResourcePile,
     Quantity
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     CommunityStats,
     ITownFixture
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbCommunityStatsHandler

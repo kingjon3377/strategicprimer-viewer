@@ -6,12 +6,12 @@ import lovelace.util.common {
 import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IFixture,
-    Point,
-    MapDimensions
+    MapDimensions,
+    Point
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     Immortal
 }
 import ceylon.language.meta {

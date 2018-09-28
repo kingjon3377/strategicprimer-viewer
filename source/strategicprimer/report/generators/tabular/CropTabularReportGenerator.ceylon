@@ -9,18 +9,18 @@ import lovelace.util.common {
 import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.impl.map {
-    TileFixture,
+import strategicprimer.model.common.map {
     IFixture,
-    Point,
-    MapDimensions
+    TileFixture,
+    MapDimensions,
+    Point
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     Grove,
     Meadow,
     Shrub
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import ceylon.decimal {

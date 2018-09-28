@@ -13,15 +13,18 @@ import lovelace.util.common {
     simpleMap
 }
 
-import strategicprimer.model.impl.map {
-    Point,
-    IMapNG,
-    invalidPoint,
-    IFixture,
+import strategicprimer.model.common.map {
     Player,
-    MapDimensions
+	IFixture,
+    Point,
+	MapDimensions,
+    invalidPoint
 }
-import strategicprimer.model.impl.map.fixtures.explorable {
+
+import strategicprimer.model.impl.map {
+    IMapNG
+}
+import strategicprimer.model.common.map.fixtures.explorable {
     Cave,
     Portal,
     Battlefield

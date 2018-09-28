@@ -18,20 +18,22 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.worker.common {
     IWorkerModel
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Player,
     HasName
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
-    IUnit,
+import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
+    IUnit
+}
+import strategicprimer.model.impl.map.fixtures.mobile {
     Animal,
     animalPlurals
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob
 }
 import com.vasileff.ceylon.structures {

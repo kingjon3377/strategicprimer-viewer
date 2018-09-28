@@ -11,11 +11,13 @@ import strategicprimer.viewer.drivers.map_viewer {
     tileDrawHelperFactory,
     TileDrawHelper
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point,
     TileFixture,
-    IMapNG,
     invalidPoint
+}
+import strategicprimer.model.impl.map {
+    IMapNG
 }
 import strategicprimer.drivers.common {
     FixtureMatcher

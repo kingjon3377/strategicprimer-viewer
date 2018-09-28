@@ -11,11 +11,11 @@ import lovelace.util.common {
     comparingOn
 }
 
-import strategicprimer.model.impl.map {
-    Player,
+import strategicprimer.model.common.map {
+	Player,
     IFixture,
-    Point,
-    MapDimensions
+    MapDimensions,
+    Point
 }
 import javax.swing.table {
     TableModel,

@@ -8,7 +8,7 @@ import lovelace.util.common {
     anythingEqual
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point
 }
 import strategicprimer.report {

@@ -10,10 +10,10 @@ import javax.xml.stream.events {
 import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     TextFixture
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 import strategicprimer.model.impl.xmlio.exceptions {

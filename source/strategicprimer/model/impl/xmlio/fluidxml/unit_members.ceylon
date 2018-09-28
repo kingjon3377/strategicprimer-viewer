@@ -14,27 +14,31 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
 import strategicprimer.model.impl.map {
-    IPlayerCollection,
+	IPlayerCollection
+}
+import strategicprimer.model.common.map {
     HasPortrait
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
     Worker,
     SimpleImmortal,
+    immortalAnimals
+}
+import strategicprimer.model.impl.map.fixtures.mobile {
     Animal,
     maturityModel,
     AnimalImpl,
-    AnimalTracks,
-    immortalAnimals
+    AnimalTracks
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
     Job,
     WorkerStats,
     ISkill,
     Skill
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 import strategicprimer.model.impl.xmlio.exceptions {

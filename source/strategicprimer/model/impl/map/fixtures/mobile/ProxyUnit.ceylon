@@ -6,40 +6,41 @@ import ceylon.collection {
     SortedMap,
     TreeMap
 }
-import ceylon.logging {
-    Logger,
-    logger
-}
-
-import java.lang {
-    UnsupportedOperationException
-}
 
 import lovelace.util.common {
     todo
 }
 
-import strategicprimer.model.impl.map {
-    Player,
+import strategicprimer.model.common.map {
     IFixture,
-    TileFixture,
     HasMutableName,
     HasMutableKind,
-    HasMutableOwner,
     HasMutableImage,
+	TileFixture,
+    Player,
+    HasMutableOwner,
     PlayerImpl
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor,
-    IUnit
+    IUnit,
+    ProxyMember,
+    IWorker
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     ProxyWorker
 }
+import ceylon.logging {
+    Logger,
+    logger
+}
+
+"Logger."
 Logger log = logger(`module strategicprimer.model.impl`);
+
 "A proxy for units in multiple maps, or all a player's units of one kind."
 shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutableImage
         &HasMutableName&HasMutableOwner {
@@ -124,9 +125,11 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     }
     todo("Implement") // FIXME
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
-        log.warn("ProxyUnit.equalsIgnoringID called");
-        throw UnsupportedOperationException(
-            "FIXME: Implement ProxyUnit.equalsIgnoringID");
+        log.error("ProxyUnit.equalsIgnoringID called");
+        "Unimplemented operation"
+        assert (false);
+//        throw UnsupportedOperationException(
+//            "FIXME: Implement ProxyUnit.equalsIgnoringID");
     }
     shared actual Comparison compare(TileFixture fixture) {
         log.warn("ProxyUnit.compare called");

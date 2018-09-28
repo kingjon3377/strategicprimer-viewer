@@ -19,9 +19,11 @@ import lovelace.util.common {
     todo
 }
 
+import strategicprimer.model.common.xmlio {
+	SPFormatException,
+	Warning
+}
 import strategicprimer.model.impl.xmlio {
-    SPFormatException,
-    Warning,
     mapIOHelper
 }
 import ceylon.file {

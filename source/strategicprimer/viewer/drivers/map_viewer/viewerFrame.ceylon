@@ -56,14 +56,16 @@ import strategicprimer.drivers.common {
     mapReaderAdapter,
     FixtureMatcher
 }
+import strategicprimer.model.common.map {
+    TileFixture
+}
 import strategicprimer.model.impl.map {
-    TileFixture,
     IMutableMapNG
 }
 import strategicprimer.viewer.drivers {
     SPMenu
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     warningLevels
 }
 import strategicprimer.drivers.gui.common {

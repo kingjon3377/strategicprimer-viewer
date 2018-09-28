@@ -27,20 +27,22 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar,
     IDFactory
 }
+import strategicprimer.model.common.map {
+	River
+}
 import strategicprimer.model.impl.map {
     IMutablePlayerCollection,
-    River,
     PlayerCollection
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor,
     immortalAnimals
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
     ISkill
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning,
     warningLevels,
     SPFormatException
@@ -48,7 +50,7 @@ import strategicprimer.model.impl.xmlio {
 import strategicprimer.model.impl.xmlio.exceptions {
     UnwantedChildException
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     CommunityStats
 }
 import ceylon.collection {

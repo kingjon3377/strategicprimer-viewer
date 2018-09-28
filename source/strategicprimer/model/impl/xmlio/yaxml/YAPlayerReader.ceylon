@@ -9,11 +9,11 @@ import javax.xml.stream.events {
 import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Player,
     PlayerImpl
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 "A reader for [[Player]]s."

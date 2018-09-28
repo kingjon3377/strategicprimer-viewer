@@ -22,25 +22,27 @@ import javax.xml.stream.events {
 import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.impl.map {
-    Point,
+import strategicprimer.model.common.map {
     Player,
+	MapDimensions,
+	MapDimensionsImpl,
+    Point,
     River,
-    IMutablePlayerCollection,
-    TileFixture,
-    IMutableMapNG,
-    IMapNG,
     TileType,
     invalidPoint,
-    MapDimensions,
-    MapDimensionsImpl,
+	TileFixture
+}
+import strategicprimer.model.impl.map {
+    IMutablePlayerCollection,
+    IMutableMapNG,
+    IMapNG,
     SPMapNG
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     TextFixture,
     Ground
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning,
     futureTags
 }
@@ -50,14 +52,16 @@ import strategicprimer.model.impl.xmlio.exceptions {
     UnwantedChildException,
     UnsupportedTagException
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.model.impl.map.fixtures.mobile {
-    maturityModel,
+    maturityModel
+}
+import strategicprimer.model.common.map.fixtures.mobile {
     immortalAnimals
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
 import ceylon.language.meta.model {

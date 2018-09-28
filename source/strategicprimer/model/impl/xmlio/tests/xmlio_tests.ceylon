@@ -43,60 +43,64 @@ import lovelace.util.common {
     randomlyGenerated
 }
 
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     DuplicateIDException
 }
-import strategicprimer.model.impl.map {
-    Point,
-    Player,
+import strategicprimer.model.common.map {
     HasPortrait,
+	Player,
+	MutablePlayer,
+	PlayerImpl,
+	MapDimensionsImpl,
+    Point,
     River,
     TileType,
+    HasMutableImage
+}
+import strategicprimer.model.impl.map {
     IMutableMapNG,
     IMapNG,
-    HasMutableImage,
-    MutablePlayer,
-    PlayerImpl,
     SPMapNG,
-    MapDimensionsImpl,
     PlayerCollection
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     TextFixture,
     Implement,
     ResourcePile,
     Ground,
     Quantity
 }
-import strategicprimer.model.impl.map.fixtures.explorable {
+import strategicprimer.model.common.map.fixtures.explorable {
     Portal,
     AdventureFixture,
     Battlefield,
     Cave
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     Centaur,
     Unit,
-    Worker,
     SimpleImmortal,
     IUnit,
     Giant,
     Fairy,
     Dragon,
-    Animal,
     Griffin,
     Ogre,
-    AnimalImpl,
-    AnimalTracks,
+    Worker,
     immortalAnimals
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.impl.map.fixtures.mobile {
+    Animal,
+    AnimalImpl,
+    AnimalTracks
+}
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     Job,
     WorkerStats,
     Skill,
     raceFactory
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     FieldStatus,
     Grove,
     CacheFixture,
@@ -107,12 +111,12 @@ import strategicprimer.model.impl.map.fixtures.resources {
     MineralVein,
     Meadow
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Oasis,
     Hill,
     Forest
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     TownStatus,
     TownSize,
     Village,
@@ -124,11 +128,13 @@ import strategicprimer.model.impl.map.fixtures.towns {
 }
 import strategicprimer.model.impl.xmlio {
     ISPReader,
-    warningLevels,
-    Warning,
     IMapReader,
-    spNamespace,
     testReaderFactory
+}
+import strategicprimer.model.common.xmlio {
+    warningLevels,
+    spNamespace,
+    Warning
 }
 import strategicprimer.model.impl.xmlio.exceptions {
     UnsupportedTagException,

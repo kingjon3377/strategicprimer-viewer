@@ -17,47 +17,52 @@ import javax.xml.stream {
     XMLStreamException
 }
 
-import strategicprimer.model.impl.map {
-    Point,
-    MapDimensions,
+import strategicprimer.model.common.map {
     HasKind,
     HasImage,
-    Player,
     HasPortrait,
-    IFixture,
+    Player,
+    MapDimensions,
+	IFixture,
+    Point,
     River,
-    IMapNG,
     TileType
 }
-import strategicprimer.model.impl.map.fixtures {
+
+import strategicprimer.model.impl.map {
+    IMapNG
+}
+import strategicprimer.model.common.map.fixtures {
     Implement,
     ResourcePile,
     TextFixture,
     Ground
 }
-import strategicprimer.model.impl.map.fixtures.explorable {
+import strategicprimer.model.common.map.fixtures.explorable {
     Portal,
     Battlefield,
     AdventureFixture,
     Cave
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     Fairy,
     Giant,
     SimpleImmortal,
-    IWorker,
     IUnit,
     Centaur,
-    Dragon,
+    IWorker,
+    Dragon
+}
+import strategicprimer.model.impl.map.fixtures.mobile {
     Animal,
     AnimalTracks
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
     WorkerStats,
     ISkill
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     Grove,
     Meadow,
     CacheFixture,
@@ -66,12 +71,12 @@ import strategicprimer.model.impl.map.fixtures.resources {
     Shrub,
     MineralVein
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Oasis,
     Hill,
     Forest
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     TownSize,
     Village,
     AbstractTown,
@@ -79,7 +84,9 @@ import strategicprimer.model.impl.map.fixtures.towns {
     CommunityStats
 }
 import strategicprimer.model.impl.xmlio {
-    SPWriter,
+    SPWriter
+}
+import strategicprimer.model.common.xmlio {
     spNamespace
 }
 import ceylon.file {

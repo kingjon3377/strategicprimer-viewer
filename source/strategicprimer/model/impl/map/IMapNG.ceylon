@@ -1,10 +1,10 @@
 import strategicprimer.model.impl.map.fixtures.mobile {
     AnimalTracks
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     TextFixture
 }
 import lovelace.util.common {
@@ -13,6 +13,16 @@ import lovelace.util.common {
 import com.vasileff.ceylon.structures {
     Multimap
 }
+import strategicprimer.model.common.map {
+    Subsettable,
+    TileFixture,
+	Player,
+    MapDimensions,
+    Point,
+    River,
+    TileType
+}
+
 """An interface for game-world maps.
 
    This is the third-generation interface:

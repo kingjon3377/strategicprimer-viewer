@@ -9,15 +9,15 @@ import lovelace.util.common {
     narrowedStream
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IFixture,
     Point
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     Implement,
     ResourcePile
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture
 }
 "A tabular report generator for resources, including caches, resource piles, and

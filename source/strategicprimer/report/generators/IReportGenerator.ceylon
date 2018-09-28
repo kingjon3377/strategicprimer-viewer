@@ -3,9 +3,12 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point,
-    IFixture,
+    IFixture
+}
+
+import strategicprimer.model.impl.map {
     IMapNG
 }
 import strategicprimer.report {

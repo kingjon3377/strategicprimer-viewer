@@ -26,11 +26,11 @@ import lovelace.util.common {
 import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point,
     HasImage
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     spNamespace,
     Warning,
     SPFormatException

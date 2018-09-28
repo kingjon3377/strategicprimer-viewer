@@ -8,11 +8,11 @@ import ceylon.collection {
 import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.impl.map {
-    Point,
+import strategicprimer.model.common.map {
     IFixture,
-    invalidPoint,
-    MapDimensions
+    MapDimensions,
+    Point,
+    invalidPoint
 }
 "An abstract superclass for classes that generate reports for particular kinds of SP
  objects. It's mostly interface and helper methods, but contains a couple of bits of

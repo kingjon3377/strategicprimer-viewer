@@ -17,21 +17,19 @@ import javax.xml.stream.events {
 import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     HasMutableImage,
     HasImage,
     HasKind
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     Centaur,
     IUnit,
     SimpleImmortal,
     Giant,
     Fairy,
     Dragon,
-    Animal,
     MobileFixture,
-    maturityModel,
     Sphinx,
     Djinn,
     Griffin,
@@ -40,11 +38,15 @@ import strategicprimer.model.impl.map.fixtures.mobile {
     Phoenix,
     Simurgh,
     Troll,
-    AnimalImpl,
-    AnimalTracks,
     immortalAnimals
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.impl.map.fixtures.mobile {
+    Animal,
+    maturityModel,
+    AnimalImpl,
+    AnimalTracks
+}
+import strategicprimer.model.common.xmlio {
     Warning
 }
 import lovelace.util.common {

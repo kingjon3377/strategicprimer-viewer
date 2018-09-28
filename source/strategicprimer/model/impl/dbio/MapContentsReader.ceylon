@@ -2,12 +2,15 @@ import ceylon.dbc {
     Sql
 }
 
+import strategicprimer.model.common.map {
+    IFixture
+}
+
 import strategicprimer.model.impl.map {
     IMutableMapNG,
-    IFixture,
     IMapNG
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 "An interface for code to read map contents from an SQL database."

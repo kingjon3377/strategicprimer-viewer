@@ -11,7 +11,7 @@ import lovelace.util.jvm {
     EnumerationWrapper
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point
 }
 import strategicprimer.report.nodes {

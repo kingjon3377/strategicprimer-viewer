@@ -8,18 +8,20 @@ import java.sql {
 }
 
 import strategicprimer.model.impl.map {
-    Point,
-    HasPortrait,
     IMutableMapNG
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map {
+    HasPortrait,
+    Point
+}
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Unit
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 

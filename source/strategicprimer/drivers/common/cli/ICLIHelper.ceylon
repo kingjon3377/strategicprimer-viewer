@@ -1,6 +1,6 @@
-import strategicprimer.model.impl.map {
-    Point,
-    HasName
+import strategicprimer.model.common.map {
+    HasName,
+    Point
 }
 import ceylon.decimal {
     Decimal

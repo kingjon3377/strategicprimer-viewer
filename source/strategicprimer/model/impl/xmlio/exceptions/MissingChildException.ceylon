@@ -5,7 +5,7 @@ import javax.xml.stream.events {
     StartElement
 }
 
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     SPFormatException
 }
 "A custom exception for when a tag requires a child and it isn't there."

@@ -18,12 +18,12 @@ import strategicprimer.drivers.worker.common {
 import strategicprimer.model.impl.idreg {
     createIDFactory
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point,
     TileType,
     invalidPoint
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 

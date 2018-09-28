@@ -13,20 +13,22 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
 import strategicprimer.model.impl.map {
-    Point,
-    Player,
     IPlayerCollection
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map {
+    Point,
+	Player
+}
+import strategicprimer.model.common.map.fixtures {
     TextFixture
 }
-import strategicprimer.model.impl.map.fixtures.explorable {
+import strategicprimer.model.common.map.fixtures.explorable {
     Portal,
     AdventureFixture,
     Battlefield,
     Cave
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object fluidExplorableHandler extends FluidBase() {

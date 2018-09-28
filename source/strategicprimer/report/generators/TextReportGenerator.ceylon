@@ -4,14 +4,17 @@ import lovelace.util.common {
     narrowedStream
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
+	IFixture,
     Point,
-    IFixture,
-    IMapNG,
-    invalidPoint,
-    MapDimensions
+	MapDimensions,
+    invalidPoint
 }
-import strategicprimer.model.impl.map.fixtures {
+
+import strategicprimer.model.impl.map {
+    IMapNG
+}
+import strategicprimer.model.common.map.fixtures {
     TextFixture
 }
 import strategicprimer.report {

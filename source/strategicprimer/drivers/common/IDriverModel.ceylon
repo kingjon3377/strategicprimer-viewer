@@ -3,7 +3,9 @@ import java.nio.file {
 }
 
 import strategicprimer.model.impl.map {
-    IMutableMapNG,
+	IMutableMapNG
+}
+import strategicprimer.model.common.map {
     MapDimensions
 }
 "An interface for driver-model objects that hold a mutable map. Interfaces deriving from

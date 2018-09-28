@@ -5,15 +5,15 @@ import lovelace.util.common {
 import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.impl.map {
-    IFixture,
-    Point,
-    MapDimensions
+import strategicprimer.model.common.map {
+	IFixture,
+    MapDimensions,
+    Point
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IWorker
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats
 }
 "A report generator for workers. We do not cover Jobs or Skills; see

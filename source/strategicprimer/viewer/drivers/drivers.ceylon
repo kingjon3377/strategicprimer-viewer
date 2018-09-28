@@ -74,7 +74,7 @@ import strategicprimer.drivers.gui.common {
     UtilityMenu,
     WindowCloseListener
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     SPFormatException
 }
 import lovelace.util.common {

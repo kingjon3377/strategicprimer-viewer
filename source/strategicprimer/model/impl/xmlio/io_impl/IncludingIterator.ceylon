@@ -34,9 +34,9 @@ import lovelace.util.jvm {
     TypesafeXMLEventReader
 }
 
-import strategicprimer.model.impl.xmlio {
-    spNamespace,
-    SPFormatException
+import strategicprimer.model.common.xmlio {
+    SPFormatException,
+    spNamespace
 }
 import strategicprimer.model.impl.xmlio.exceptions {
     MissingPropertyException

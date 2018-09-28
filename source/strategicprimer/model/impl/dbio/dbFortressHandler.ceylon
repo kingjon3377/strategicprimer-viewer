@@ -3,15 +3,18 @@ import ceylon.dbc {
     SqlNull
 }
 
+import strategicprimer.model.common.map {
+    Point
+}
+
 import strategicprimer.model.impl.map {
-    Point,
     IMutableMapNG
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Fortress,
     TownSize
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()

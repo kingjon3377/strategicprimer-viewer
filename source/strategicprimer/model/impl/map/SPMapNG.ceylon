@@ -1,4 +1,4 @@
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 import lovelace.util.common {
@@ -19,7 +19,7 @@ import ceylon.logging {
     Logger,
     logger
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     AbstractTown
 }
 import com.vasileff.ceylon.structures {
@@ -28,6 +28,19 @@ import com.vasileff.ceylon.structures {
     ArrayListMultimap,
     Multimap
 }
+import strategicprimer.model.common.map {
+    IFixture,
+    Subsettable,
+    TileFixture,
+    Player,
+    MapDimensions,
+    TileType,
+    Point,
+    River,
+    PointIterator,
+    HasOwner
+}
+
 "A logger."
 Logger log = logger(`module strategicprimer.model.impl`);
 "A class to represent a game-world map and its contents."

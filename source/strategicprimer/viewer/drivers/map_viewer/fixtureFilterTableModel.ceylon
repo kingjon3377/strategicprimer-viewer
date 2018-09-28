@@ -28,23 +28,22 @@ import lovelace.util.common {
     matchingValue
 }
 
-import strategicprimer.model.impl.map {
-    TileFixture,
+import strategicprimer.model.common.map {
+	TileFixture,
     Player
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     TextFixture,
     Ground
 }
-import strategicprimer.model.impl.map.fixtures.explorable {
+import strategicprimer.model.common.map.fixtures.explorable {
     Cave,
     Battlefield,
     Portal,
     AdventureFixture
 }
 
-import strategicprimer.model.impl.map.fixtures.mobile {
-    Animal,
+import strategicprimer.model.common.map.fixtures.mobile {
     Dragon,
     Centaur,
     Fairy,
@@ -57,10 +56,14 @@ import strategicprimer.model.impl.map.fixtures.mobile {
     Griffin,
     Sphinx,
     Phoenix,
-    Djinn,
+    Djinn
+}
+
+import strategicprimer.model.impl.map.fixtures.mobile {
+    Animal,
     AnimalTracks
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     Grove,
     Meadow,
     MineralVein,
@@ -69,12 +72,12 @@ import strategicprimer.model.impl.map.fixtures.resources {
     StoneDeposit,
     Shrub
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Oasis,
     Hill,
     Forest
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Village,
     AbstractTown,
     Fortress,

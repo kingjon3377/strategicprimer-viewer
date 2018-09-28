@@ -3,9 +3,12 @@ import ceylon.test {
     assertEquals
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point,
-    MapDimensionsImpl,
+    MapDimensionsImpl
+}
+
+import strategicprimer.model.impl.map {
     PlayerCollection,
     SPMapNG
 }

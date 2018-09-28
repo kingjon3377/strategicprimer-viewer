@@ -40,34 +40,35 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar,
     IDFactory
 }
+import strategicprimer.model.common.map {
+	HasKind,
+	Player,
+	PlayerImpl,
+	MapDimensions,
+	MapDimensionsImpl,
+	Point,
+	TileType,
+	River,
+    TileFixture
+}
 import strategicprimer.model.impl.map {
-    Point,
-    MapDimensions,
-    HasKind,
-    Player,
     IMutablePlayerCollection,
-    TileType,
     IMutableMapNG,
-    TileFixture,
-    River,
-    MapDimensionsImpl,
     SPMapNG,
-    PlayerImpl,
     PlayerCollection
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     FortressMember,
     UnitMember,
     TextFixture
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Unit,
     Giant,
     Centaur,
     Fairy,
     Dragon,
-    maturityModel,
     Ogre,
     Troll,
     Sphinx,
@@ -78,17 +79,22 @@ import strategicprimer.model.impl.map.fixtures.mobile {
     Minotaur,
     immortalAnimals
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.mobile {
+    maturityModel
+}
+import strategicprimer.model.common.map.fixtures.terrain {
     Hill,
     Oasis
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Fortress,
     TownSize
 }
 import strategicprimer.model.impl.xmlio {
     IMapReader,
-    ISPReader,
+    ISPReader
+}
+import strategicprimer.model.common.xmlio {
     Warning,
     spNamespace,
     futureTags

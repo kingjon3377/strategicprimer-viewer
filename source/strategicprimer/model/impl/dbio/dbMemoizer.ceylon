@@ -1,12 +1,14 @@
-import strategicprimer.model.impl.map {
-    IMapNG,
+import strategicprimer.model.common.map {
     IFixture
+}
+import strategicprimer.model.impl.map {
+    IMapNG
 }
 import ceylon.collection {
     MutableMap,
     HashMap
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbMemoizer {

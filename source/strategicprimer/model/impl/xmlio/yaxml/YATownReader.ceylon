@@ -15,13 +15,16 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
 import strategicprimer.model.impl.map {
-    IPlayerCollection,
+	IPlayerCollection
+}
+
+import strategicprimer.model.common.map {
     Player
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     raceFactory
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     TownStatus,
     TownSize,
     ITownFixture,
@@ -33,7 +36,7 @@ import strategicprimer.model.impl.map.fixtures.towns {
     Town,
     CommunityStats
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 import strategicprimer.model.impl.xmlio.exceptions {
@@ -43,7 +46,7 @@ import strategicprimer.model.impl.xmlio.exceptions {
 import ceylon.random {
     DefaultRandom
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     ResourcePile
 }
 import ceylon.collection {

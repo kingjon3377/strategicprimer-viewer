@@ -6,41 +6,47 @@ import ceylon.test {
     assertNotEquals
 }
 
-import strategicprimer.model.impl.map {
-    Point,
-    IFixture,
-    River,
+import strategicprimer.model.common.map {
     Subsettable,
-    IPlayerCollection,
-    IMutablePlayerCollection,
-    TileType,
-    IMutableMapNG,
-    IMapNG,
     TileFixture,
-    PlayerCollection,
     PlayerImpl,
-    SPMapNG,
+    IFixture,
+    Player,
+    Point,
+    River,
+    TileType,
     MapDimensionsImpl
 }
-import strategicprimer.model.impl.map.fixtures {
+
+import strategicprimer.model.impl.map {
+    IPlayerCollection,
+    IMutablePlayerCollection,
+    IMutableMapNG,
+    IMapNG,
+    PlayerCollection,
+    SPMapNG
+}
+import strategicprimer.model.common.map.fixtures {
     TextFixture
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
-    Unit,
+import strategicprimer.model.common.map.fixtures.mobile {
     Worker,
+    Unit
+}
+import strategicprimer.model.impl.map.fixtures.mobile {
     AnimalImpl,
     AnimalTracks
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     Job
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     TownSize,
     Fortress,
     AbstractTown,

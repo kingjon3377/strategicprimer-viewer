@@ -5,16 +5,16 @@ import lovelace.util.common {
 import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Player,
     IFixture,
-    Point,
-    MapDimensions
+	MapDimensions,
+    Point
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     TextFixture
 }
-import strategicprimer.model.impl.map.fixtures.explorable {
+import strategicprimer.model.common.map.fixtures.explorable {
     ExplorableFixture,
     Cave,
     Portal,

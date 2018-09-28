@@ -7,33 +7,37 @@ import ceylon.test {
 }
 
 import strategicprimer.model.impl.map {
-    Point,
-    River,
-    TileType,
     IMutableMapNG,
     IMapNG,
     PlayerCollection,
-    SPMapNG,
-    MapDimensionsImpl,
-    PlayerImpl,
-    TileFixture
+    SPMapNG
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map {
+	Point,
+	River,
+	TileType,
+	TileFixture,
+	PlayerImpl,
+	MapDimensionsImpl
+}
+import strategicprimer.model.common.map.fixtures {
     Ground
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
+    Unit
+}
+import strategicprimer.model.impl.map.fixtures.mobile {
     Animal,
-    Unit,
     AnimalImpl
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     TownSize,
     Fortress
 }

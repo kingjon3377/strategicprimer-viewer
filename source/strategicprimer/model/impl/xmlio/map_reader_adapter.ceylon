@@ -35,6 +35,10 @@ import strategicprimer.model.impl.xmlio.fluidxml {
 import strategicprimer.model.impl.xmlio.yaxml {
     yaXMLWriter
 }
+import strategicprimer.model.common.xmlio {
+	Warning,
+    warningLevels
+}
 
 "A logger."
 Logger log = logger(`module strategicprimer.model.impl`);

@@ -6,16 +6,16 @@ import lovelace.util.common {
 import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.impl.map {
-    IFixture,
-    Point,
-    MapDimensions
+import strategicprimer.model.common.map {
+	IFixture,
+    MapDimensions,
+    Point
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     Ground,
     MineralFixture
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     MineralVein,
     Mine,
     StoneDeposit

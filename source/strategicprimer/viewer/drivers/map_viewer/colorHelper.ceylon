@@ -4,14 +4,14 @@ import ceylon.language.meta {
 import java.awt {
     Color
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Oasis,
     Hill,
     Forest
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     TileType,
-    TileFixture
+	TileFixture
 }
 import ceylon.language.meta.model {
     ClassOrInterface

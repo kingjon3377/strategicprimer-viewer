@@ -1,4 +1,4 @@
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     TileFixture
 }
 import ceylon.language.meta.model {

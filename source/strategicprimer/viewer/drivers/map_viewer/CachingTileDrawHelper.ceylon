@@ -7,10 +7,12 @@ import java.awt.geom {
     Line2D,
     Ellipse2D
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point,
     River,
-    TileType,
+    TileType
+}
+import strategicprimer.model.impl.map {
     IMapNG
 }
 import java.awt {

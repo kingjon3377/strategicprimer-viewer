@@ -1,8 +1,8 @@
-import strategicprimer.model.impl.map {
-    TileFixture,
+import strategicprimer.model.common.map {
     TileType,
-    MapDimensions,
-    Point
+    Point,
+	MapDimensions,
+	TileFixture
 }
 import lovelace.util.common {
     comparingOn,

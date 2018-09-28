@@ -115,6 +115,7 @@
             <!-- FIXME: Go back to <sourcemodules> once Ceylon bug #6986 is fixed -->
             <!--            <sourcemodules dir="${ceylon.source.dir}" /> -->
             <module name="strategicprimer.drivers.exploration.old" />
+            <module name="strategicprimer.model.common" />
             <module name="strategicprimer.model.impl" />
             <module name="strategicprimer.report" />
             <module name="strategicprimer.drivers.worker.common" />

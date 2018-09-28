@@ -28,7 +28,7 @@ import lovelace.util.jvm {
 import strategicprimer.drivers.gui.common {
     SPDialog
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     MapDimensions,
     Point
 }

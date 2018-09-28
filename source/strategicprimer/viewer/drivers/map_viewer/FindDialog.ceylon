@@ -27,13 +27,13 @@ import lovelace.util.jvm {
     boxPanel
 }
 
-import strategicprimer.model.impl.map {
-    Player,
-    HasOwner,
+import strategicprimer.model.common.map {
     IFixture,
-    TileFixture,
     HasName,
     HasKind,
+	Player,
+	HasOwner,
+	TileFixture,
     PointIterator
 }
 import strategicprimer.drivers.gui.common {

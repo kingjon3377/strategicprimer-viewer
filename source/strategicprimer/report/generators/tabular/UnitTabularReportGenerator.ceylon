@@ -6,14 +6,16 @@ import lovelace.util.common {
 import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Player,
     IFixture,
-    Point,
-    MapDimensions
+	MapDimensions,
+    Point
+}
+import strategicprimer.model.common.map.fixtures.mobile {
+    IUnit
 }
 import strategicprimer.model.impl.map.fixtures.mobile {
-    IUnit,
     Animal
 }
 "A tabular report generator for units."

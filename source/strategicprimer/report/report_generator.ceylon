@@ -19,24 +19,26 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar,
     createIDFactory
 }
-import strategicprimer.model.impl.map {
-    Point,
+import strategicprimer.model.common.map {
+	IFixture,
     Player,
-    IFixture,
-    IMapNG,
-    TileFixture,
-    invalidPoint,
-    MapDimensions,
-    HasOwner
+	TileFixture,
+    HasOwner,
+	Point,
+	MapDimensions,
+	invalidPoint
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.impl.map {
+    IMapNG
+}
+import strategicprimer.model.common.map.fixtures {
     TerrainFixture,
     Ground
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.report.generators {

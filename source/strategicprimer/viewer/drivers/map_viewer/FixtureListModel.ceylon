@@ -1,8 +1,10 @@
-import strategicprimer.model.impl.map {
-    IMutableMapNG,
+import strategicprimer.model.common.map {
     TileFixture,
     Point,
     invalidPoint
+}
+import strategicprimer.model.impl.map {
+    IMutableMapNG
 }
 import javax.swing {
     ListModel

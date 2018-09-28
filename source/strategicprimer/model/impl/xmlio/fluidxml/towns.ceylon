@@ -16,10 +16,10 @@ import strategicprimer.model.impl.idreg {
 import strategicprimer.model.impl.map {
     IPlayerCollection
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     raceFactory
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     TownStatus,
     TownSize,
     Village,
@@ -29,7 +29,7 @@ import strategicprimer.model.impl.map.fixtures.towns {
     Fortification,
     CommunityStats
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 import strategicprimer.model.impl.xmlio.exceptions {
@@ -43,7 +43,7 @@ import ceylon.collection {
     Stack,
     LinkedList
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     ResourcePile
 }
 import lovelace.util.common {

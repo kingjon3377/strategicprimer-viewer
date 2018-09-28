@@ -2,10 +2,11 @@ import ceylon.numeric.float {
     sqrt
 }
 
-import strategicprimer.model.impl.map {
-    Point,
-    MapDimensions
+import strategicprimer.model.common.map {
+    MapDimensions,
+    Point
 }
+
 "A class to compare [[Point]]s based on their distance to a specified point (such as a
  player's HQ)."
 shared class DistanceComparator(base, dimensions) {

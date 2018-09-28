@@ -7,18 +7,23 @@ import java.sql {
     Types
 }
 
+import strategicprimer.model.common.map {
+    Point
+}
+
 import strategicprimer.model.impl.map {
-    Point,
     IMutableMapNG
+}
+import strategicprimer.model.common.map.fixtures.mobile {
+    IUnit
 }
 import strategicprimer.model.impl.map.fixtures.mobile {
     Animal,
-    IUnit,
     maturityModel,
     AnimalImpl,
     AnimalTracks
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 

@@ -15,7 +15,7 @@ import lovelace.util.jvm {
 import java.awt.image {
     BufferedImage
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     TileType
 }
 import java.io {

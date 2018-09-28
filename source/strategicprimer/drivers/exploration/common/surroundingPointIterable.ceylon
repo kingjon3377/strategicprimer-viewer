@@ -3,10 +3,11 @@ import ceylon.collection {
     ArrayList
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point,
     MapDimensions
 }
+
 "A stream of the points in a square surrounding a point, with points that are closer
  appearing multiple times."
 shared {Point*} surroundingPointIterable(Point startingPoint, MapDimensions dimensions,

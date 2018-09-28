@@ -11,9 +11,11 @@ import strategicprimer.drivers.common {
     ISPDriver,
     IMultiMapModel
 }
-import strategicprimer.model.impl.map {
-    HasName,
+import strategicprimer.model.common.map {
     Point,
+    HasName
+}
+import strategicprimer.model.impl.map {
     IMutableMapNG
 }
 import java.nio.file {

@@ -1,9 +1,10 @@
-import strategicprimer.model.impl.map {
-    TileFixture,
+import strategicprimer.model.common.map {
     TileType,
+    Point,
     MapDimensions,
-    Point
+    TileFixture
 }
+
 "An [[EncounterTable]] that always returns the same value."
 class ConstantTable(String constant) satisfies EncounterTable {
     shared actual String generateEvent(Point point, TileType? terrain,

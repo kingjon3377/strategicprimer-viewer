@@ -11,24 +11,26 @@ import java.sql {
     Types
 }
 
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     DuplicateIDException
 }
+import strategicprimer.model.common.map {
+    HasPortrait
+}
 import strategicprimer.model.impl.map {
-    HasPortrait,
     IMutableMapNG
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
-    IWorker,
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
+    IWorker,
     Worker
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats,
     Job,
     Skill
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()

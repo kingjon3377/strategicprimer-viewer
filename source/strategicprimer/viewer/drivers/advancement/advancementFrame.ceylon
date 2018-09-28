@@ -22,8 +22,10 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
 import strategicprimer.model.impl.map {
+    IMapNG
+}
+import strategicprimer.model.common.map {
     Player,
-    IMapNG,
     PlayerImpl
 }
 import strategicprimer.viewer.drivers {

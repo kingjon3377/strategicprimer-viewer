@@ -16,10 +16,12 @@ import java.nio.file {
 import strategicprimer.model.impl.map {
     IMapNG
 }
+import strategicprimer.model.common.xmlio {
+    Warning,
+    warningLevels
+}
 import strategicprimer.model.impl.xmlio {
     IMapReader,
-    Warning,
-    warningLevels,
     testReaderFactory,
     SPWriter
 }

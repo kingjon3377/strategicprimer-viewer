@@ -3,16 +3,20 @@ import ceylon.dbc {
     SqlNull
 }
 
-import strategicprimer.model.impl.map {
-    Point,
-    IMutableMapNG
+import strategicprimer.model.common.map {
+	Point
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+
+import strategicprimer.model.impl.map {
+	IMutableMapNG
+}
+
+import strategicprimer.model.common.map.fixtures.resources {
     MineralVein,
     StoneDeposit,
     StoneKind
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit, Point>()

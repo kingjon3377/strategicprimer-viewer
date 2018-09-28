@@ -13,7 +13,7 @@ import lovelace.util.common {
 import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     HarvestableFixture,
     Meadow,
     CacheFixture,
@@ -25,17 +25,17 @@ import strategicprimer.model.impl.map.fixtures.resources {
     Grove,
     FieldStatus
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     TownStatus
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 import strategicprimer.model.impl.xmlio.exceptions {
     MissingPropertyException,
     DeprecatedPropertyException
 }
-"A reader for resource-bearing [[strategicprimer.model.impl.map::TileFixture]]s."
+"A reader for resource-bearing [[strategicprimer.model.common.map::TileFixture]]s."
 class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         extends YAAbstractReader<HarvestableFixture>(warner, idRegistrar) {
     {String*} supportedTags = set { "cache", "grove", "orchard", "field", "meadow",

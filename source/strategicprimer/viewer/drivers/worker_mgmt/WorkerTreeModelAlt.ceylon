@@ -2,7 +2,7 @@ import java.lang {
     ObjectArray,
     IntArray
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
 import javax.swing.tree {
@@ -18,14 +18,16 @@ import ceylon.collection {
     Queue,
     MutableList
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor,
-    IUnit,
+    IUnit
+}
+import strategicprimer.model.impl.map.fixtures.mobile {
     ProxyUnit
 }
-import strategicprimer.model.impl.map {
-    HasMutableName,
+import strategicprimer.model.common.map {
     Player,
+    HasMutableName,
     HasKind
 }
 import strategicprimer.drivers.worker.common {

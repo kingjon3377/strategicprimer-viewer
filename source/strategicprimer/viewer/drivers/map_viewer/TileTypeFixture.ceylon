@@ -1,9 +1,10 @@
-import strategicprimer.model.impl.map {
-    TileFixture,
-    TileType,
+import strategicprimer.model.common.map {
     IFixture,
-    HasImage
+    TileFixture,
+    HasImage,
+    TileType
 }
+
 """A fake "TileFixture" to represent the tile's terrain type, so it can be copied via
    drag-and-drop like a fixture."""
 shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&HasImage {

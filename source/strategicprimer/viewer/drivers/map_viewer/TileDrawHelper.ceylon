@@ -1,14 +1,16 @@
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
+import strategicprimer.model.common.map {
+    Point
+}
 import strategicprimer.model.impl.map {
-    Point,
     IMapNG
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     IEvent
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 import java.awt {

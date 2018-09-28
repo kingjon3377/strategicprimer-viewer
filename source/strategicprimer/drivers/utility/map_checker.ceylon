@@ -40,40 +40,44 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.model.impl.map {
-    Point,
-    IFixture,
-    IMapNG,
-    TileType,
+import strategicprimer.model.common.map {
     HasExtent,
+    IFixture,
     Player,
-    HasOwner
+    HasOwner,
+    Point,
+    TileType
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.impl.map {
+    IMapNG
+}
+import strategicprimer.model.common.map.fixtures.mobile {
     IWorker
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
     suspiciousSkills,
     ISkill
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     StoneDeposit,
     StoneKind,
     Grove
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Village,
     ITownFixture,
     TownSize
 }
 import strategicprimer.model.impl.xmlio {
+    mapIOHelper
+}
+import strategicprimer.model.common.xmlio {
     Warning,
     warningLevels,
-    mapIOHelper,
     SPFormatException
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     ResourcePile
 }
 import strategicprimer.drivers.gui.common {

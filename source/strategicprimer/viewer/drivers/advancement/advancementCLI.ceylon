@@ -11,7 +11,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Player
 }
 import strategicprimer.drivers.worker.common {
@@ -25,7 +25,7 @@ import ceylon.logging {
     logger,
     Logger
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
     IUnit
 }
@@ -33,7 +33,7 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     Job,
     IJob,
     ProxyWorker,

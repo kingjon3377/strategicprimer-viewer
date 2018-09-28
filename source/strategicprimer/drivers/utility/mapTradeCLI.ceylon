@@ -13,7 +13,9 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.model.impl.map {
-    IMapNG,
+    IMapNG
+}
+import strategicprimer.model.common.map {
     TileFixture,
     Player
 }
@@ -21,16 +23,16 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     AbstractTown,
     Fortress,
     Village
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     TextFixture,
     Ground
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture,
     Meadow,
     Mine,
@@ -39,8 +41,7 @@ import strategicprimer.model.impl.map.fixtures.resources {
     MineralVein,
     StoneDeposit
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
-    Animal,
+import strategicprimer.model.common.map.fixtures.mobile {
     Fairy,
     Dragon,
     Centaur,
@@ -53,15 +54,18 @@ import strategicprimer.model.impl.map.fixtures.mobile {
     Ogre,
     Minotaur,
     Troll,
-    Simurgh,
+    Simurgh
+}
+import strategicprimer.model.impl.map.fixtures.mobile {
+    Animal,
     AnimalTracks
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Hill,
     Forest,
     Oasis
 }
-import strategicprimer.model.impl.map.fixtures.explorable {
+import strategicprimer.model.common.map.fixtures.explorable {
     Cave,
     Portal,
     AdventureFixture,

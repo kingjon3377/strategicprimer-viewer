@@ -2,17 +2,17 @@ import javax.swing.tree {
     TreeModel,
     TreePath
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
 import strategicprimer.drivers.common {
     PlayerChangeListener,
     MapChangeListener
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     HasMutableName,
     HasKind
 }

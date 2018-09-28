@@ -21,10 +21,10 @@ import java.lang {
     IllegalArgumentException
 }
 
-import strategicprimer.model.impl.map {
-    Point,
+import strategicprimer.model.common.map {
     MapDimensions,
     MapDimensionsImpl,
+    Point,
     TileType,
     invalidPoint
 }
@@ -32,7 +32,7 @@ import ceylon.logging {
     logger,
     Logger
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import lovelace.util.common {

@@ -12,11 +12,15 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.model.impl.map {
-    IMutableMapNG,
+	IMutableMapNG
+}
+import strategicprimer.model.common.map {
     HasName
 }
+import strategicprimer.model.common.xmlio {
+    warningLevels
+}
 import strategicprimer.model.impl.xmlio {
-    warningLevels,
     mapIOHelper
 }
 import strategicprimer.drivers.common {

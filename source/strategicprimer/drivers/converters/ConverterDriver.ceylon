@@ -32,7 +32,9 @@ import strategicprimer.model.impl.map {
     IMapNG
 }
 import strategicprimer.model.impl.xmlio {
-    mapIOHelper,
+    mapIOHelper
+}
+import strategicprimer.model.common.xmlio {
     warningLevels,
     SPFormatException
 }

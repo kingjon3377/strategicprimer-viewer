@@ -1,4 +1,4 @@
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     ISkill
 }
 "An interface for objects that want to know when the user selects a Skill from a list or

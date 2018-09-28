@@ -7,17 +7,27 @@ import ceylon.test {
     assertFalse
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IFixture,
     Player,
     PlayerImpl
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
-    IWorker,
-    ProxyUnit,
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Unit,
+    IWorker,
     Worker
+}
+import strategicprimer.model.common.map.fixtures.mobile.worker {
+    ProxyJob,
+    Job,
+    Skill,
+    ISkill,
+    ProxyWorker,
+    IJob
+}
+import strategicprimer.model.impl.map.fixtures.mobile {
+    ProxyUnit
 }
 
 "Tests that the proxy classes work as expected."

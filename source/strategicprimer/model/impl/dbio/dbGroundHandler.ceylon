@@ -3,14 +3,17 @@ import ceylon.dbc {
     SqlNull
 }
 
+import strategicprimer.model.common.map {
+    Point
+}
+
 import strategicprimer.model.impl.map {
-    Point,
     IMutableMapNG
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     Ground
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbGroundHandler extends AbstractDatabaseWriter<Ground, Point>()

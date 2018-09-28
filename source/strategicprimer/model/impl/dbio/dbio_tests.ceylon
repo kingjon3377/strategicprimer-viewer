@@ -18,34 +18,34 @@ import org.sqlite {
 
 import strategicprimer.model.impl.map {
     IMapNG,
-    TileFixture,
     IMutableMapNG,
     SPMapNG,
-    MapDimensions,
-    MapDimensionsImpl,
-    PlayerCollection,
-    PlayerImpl,
-    HasOwner,
-    Player,
+    PlayerCollection
+}
+import strategicprimer.model.common.map {
+	MapDimensions,
+	MapDimensionsImpl,
+	PlayerImpl,
+	HasOwner,
+	Player,
+    TileFixture,
     Point
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     ResourcePile,
     Quantity,
     Implement,
     Ground,
     TextFixture
 }
-import strategicprimer.model.impl.map.fixtures.explorable {
+import strategicprimer.model.common.map.fixtures.explorable {
     AdventureFixture,
     Portal,
     Cave,
     Battlefield
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
-    AnimalImpl,
+import strategicprimer.model.common.map.fixtures.mobile {
     Unit,
-    Worker,
     Sphinx,
     Immortal,
     Djinn,
@@ -58,15 +58,19 @@ import strategicprimer.model.impl.map.fixtures.mobile {
     Centaur,
     Dragon,
     Fairy,
-    Giant,
+    Worker,
+    Giant
+}
+import strategicprimer.model.impl.map.fixtures.mobile {
+    AnimalImpl,
     AnimalTracks
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     raceFactory,
     Job,
     Skill
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture,
     Meadow,
     FieldStatus,
@@ -77,12 +81,12 @@ import strategicprimer.model.impl.map.fixtures.resources {
     StoneKind,
     Shrub
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest,
     Hill,
     Oasis
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     TownStatus,
     Fortification,
     TownSize,
@@ -92,7 +96,7 @@ import strategicprimer.model.impl.map.fixtures.towns {
     Fortress,
     Village
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     warningLevels
 }
 import lovelace.util.common {

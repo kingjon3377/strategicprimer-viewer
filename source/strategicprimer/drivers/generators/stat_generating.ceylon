@@ -16,21 +16,23 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar,
     createIDFactory
 }
-import strategicprimer.model.impl.map {
-    Point,
+import strategicprimer.model.common.map {
+	IFixture,
     Player,
-    IFixture,
-    IMapNG,
-    TileFixture,
+	TileFixture,
+    Point,
     HasOwner
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
-    Worker,
+import strategicprimer.model.impl.map {
+    IMapNG
+}
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Unit,
+    Worker,
     IWorker
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats,
     IJob,
     raceFactory,
@@ -68,7 +70,7 @@ import lovelace.util.common {
     narrowedStream,
     entryMap
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Village
 }
 
@@ -227,7 +229,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
     WorkerStats loadRacialBonus(String race) {
         if (exists retval = racialBonuses[race]) {
             return retval;
-        } else if (exists textContent = readFileContents(`module strategicprimer.model.impl`,
+        } else if (exists textContent = readFileContents(`module strategicprimer.model.common`,
             "racial_stat_adjustments/``race``.txt")) {
             value parsed = textContent.lines.map(Integer.parse)
                     .narrow<Integer>().sequence();

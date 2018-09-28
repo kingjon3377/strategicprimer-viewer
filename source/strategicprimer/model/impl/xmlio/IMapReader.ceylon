@@ -14,6 +14,11 @@ import strategicprimer.model.impl.map {
     IMutableMapNG
 }
 
+import strategicprimer.model.common.xmlio {
+    SPFormatException,
+    Warning
+}
+
 "An interface for map readers."
 shared interface IMapReader {
     "Read the map (view) contained in a file."

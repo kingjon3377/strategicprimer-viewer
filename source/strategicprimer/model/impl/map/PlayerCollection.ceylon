@@ -7,9 +7,14 @@ import java.lang {
     ObjectArray
 }
 
+import strategicprimer.model.common.map {
+    Player,
+	MutablePlayer,
+	PlayerImpl
+}
+
 import strategicprimer.model.impl.map {
     IMutablePlayerCollection,
-    Player,
     IPlayerCollection
 }
 import lovelace.util.common {

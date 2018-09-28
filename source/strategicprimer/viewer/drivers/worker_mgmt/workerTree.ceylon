@@ -1,7 +1,7 @@
 import java.awt.image {
     BufferedImage
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
 import java.awt {
@@ -9,16 +9,16 @@ import java.awt {
     Graphics2D,
     Color
 }
-import strategicprimer.model.impl.map.fixtures.mobile.worker {
+import strategicprimer.model.common.map.fixtures.mobile.worker {
     ProxyWorker,
     WorkerStats,
     IJob
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     HasImage,
     IFixture,
-    Player,
-    HasMutableKind
+    HasMutableKind,
+    Player
 }
 import javax.swing.event {
     TreeSelectionEvent,
@@ -40,9 +40,11 @@ import javax.swing {
     Icon,
     DropMode
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
-    IUnit,
+import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
+    IUnit
+}
+import strategicprimer.model.impl.map.fixtures.mobile {
     Animal,
     maturityModel,
     animalPlurals

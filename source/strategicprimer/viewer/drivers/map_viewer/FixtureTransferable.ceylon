@@ -11,9 +11,10 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     TileFixture
 }
+
 "A class to transfer a TileFixture by drag-and-drop."
 class FixtureTransferable satisfies Transferable {
     shared static DataFlavor flavor = DataFlavor(`TileFixture`, "TileFixture");

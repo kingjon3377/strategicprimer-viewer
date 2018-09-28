@@ -4,12 +4,16 @@ import ceylon.dbc {
 }
 
 import strategicprimer.model.impl.map {
-    Player,
     IMapNG,
-    IMutableMapNG,
+    IMutableMapNG
+}
+
+import strategicprimer.model.common.map {
+    Player,
     PlayerImpl
 }
-import strategicprimer.model.impl.xmlio {
+
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()

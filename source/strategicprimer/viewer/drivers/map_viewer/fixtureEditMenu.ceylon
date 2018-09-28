@@ -8,15 +8,15 @@ import javax.swing {
     JMenuItem,
     JPopupMenu
 }
-import strategicprimer.model.impl.map {
-    Player,
+import strategicprimer.model.common.map {
+	HasMutableKind,
+	HasMutableName,
     IFixture,
-    HasMutableKind,
-    HasMutableName,
-    HasMutableOwner,
-    HasName
+	HasName,
+    Player,
+    HasMutableOwner
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
 

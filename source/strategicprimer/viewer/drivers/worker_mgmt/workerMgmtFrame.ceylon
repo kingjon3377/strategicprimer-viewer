@@ -71,16 +71,18 @@ import strategicprimer.model.impl.idreg {
     createIDFactory,
     IDRegistrar
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point,
     Player,
-    IMapNG,
     invalidPoint
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.impl.map {
+    IMapNG
+}
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.report {

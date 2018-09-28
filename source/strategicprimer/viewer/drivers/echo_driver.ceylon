@@ -13,19 +13,23 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar,
     createIDFactory
 }
+import strategicprimer.model.common.map {
+    Point
+}
 import strategicprimer.model.impl.map {
-    Point,
     IMutableMapNG,
     IMapNG
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     Ground
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.model.impl.xmlio {
-    mapIOHelper,
+	mapIOHelper
+}
+import strategicprimer.model.common.xmlio {
     warningLevels,
     SPFormatException
 }

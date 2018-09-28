@@ -29,11 +29,12 @@ import strategicprimer.drivers.common {
     FixtureMatcher
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point,
-    MapDimensions,
-    TileFixture
+    TileFixture,
+	MapDimensions
 }
+
 "An interface for a UI representing a map."
 shared interface MapGUI {
     "The driver model the GUI represents."

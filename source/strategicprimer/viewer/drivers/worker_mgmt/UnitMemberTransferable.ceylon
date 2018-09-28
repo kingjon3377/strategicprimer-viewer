@@ -1,7 +1,7 @@
 import java.lang {
     ObjectArray
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
 import java.awt.datatransfer {
@@ -9,7 +9,7 @@ import java.awt.datatransfer {
     UnsupportedFlavorException,
     Transferable
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 "A class to transfer a UnitMember via drag-and-drop."

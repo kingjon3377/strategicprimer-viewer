@@ -2,7 +2,7 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IFixture
 }
 import ceylon.test {
@@ -10,6 +10,9 @@ import ceylon.test {
 }
 import lovelace.util.common {
     randomlyGenerated
+}
+import strategicprimer.model.common.map.fixtures.mobile {
+    ProxyFor
 }
 
 class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {

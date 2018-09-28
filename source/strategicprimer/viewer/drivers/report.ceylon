@@ -29,9 +29,11 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
+import strategicprimer.model.common.map {
+	Player
+}
 import strategicprimer.model.impl.map {
     IMapNG,
-    Player,
     IMutableMapNG
 }
 import strategicprimer.report {

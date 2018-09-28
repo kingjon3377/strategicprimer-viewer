@@ -10,11 +10,14 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 import javax.xml.stream {
     Location
+}
+import strategicprimer.model.common.idreg {
+    DuplicateIDException
 }
 "A class to register IDs with and produce not-yet-used IDs. Performance is likely to be
  poor, but we don't want to go to random IDs because we want them to be as low as

@@ -6,13 +6,13 @@ import lovelace.util.common {
 import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.impl.map {
-    Player,
-    IFixture,
-    Point,
-    MapDimensions
+import strategicprimer.model.common.map {
+	Player,
+	IFixture,
+	MapDimensions,
+    Point
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     AbstractTown
 }
 "A tabular report generator for towns."

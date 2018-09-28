@@ -16,12 +16,12 @@ import strategicprimer.model.impl.idreg {
 import strategicprimer.model.impl.map {
     IPlayerCollection
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     ResourcePile,
     Quantity,
     Implement
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     FieldStatus,
     Grove,
     Meadow,
@@ -32,10 +32,10 @@ import strategicprimer.model.impl.map.fixtures.resources {
     Shrub,
     MineralVein
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     TownStatus
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 import strategicprimer.model.impl.xmlio.exceptions {

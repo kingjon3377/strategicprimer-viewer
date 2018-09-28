@@ -30,14 +30,17 @@ import lovelace.util.jvm {
     BorderedPanel
 }
 
-import strategicprimer.model.impl.map {
-    IFixture,
-    IMapNG,
-    Player,
-    Point,
-    MapDimensions
+import strategicprimer.model.common.map {
+	Player,
+	IFixture,
+    MapDimensions,
+	Point
 }
-import strategicprimer.model.impl.map.fixtures {
+
+import strategicprimer.model.impl.map {
+    IMapNG
+}
+import strategicprimer.model.common.map.fixtures {
     TerrainFixture
 }
 import strategicprimer.report.generators.tabular {

@@ -1,13 +1,15 @@
-import strategicprimer.model.impl.map {
-    Player,
-    TileType,
-    IMapNG,
-    Point,
-    HasOwner,
-    MapDimensions,
+import strategicprimer.model.common.map {
+	HasPopulation,
     IFixture,
-    HasPopulation,
-    TileFixture
+    Player,
+    HasOwner,
+	TileFixture,
+    TileType,
+	MapDimensions,
+    Point
+}
+import strategicprimer.model.impl.map {
+    IMapNG
 }
 import ceylon.collection {
     MutableSet,
@@ -30,7 +32,7 @@ import strategicprimer.drivers.common {
     IMultiMapModel,
     ISPDriver
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     Ground,
     Quantity
 }
@@ -43,7 +45,7 @@ import lovelace.util.common {
     simpleMap,
     defer
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import ceylon.numeric.float {
@@ -51,8 +53,10 @@ import ceylon.numeric.float {
     sqrt,
     round=halfEven
 }
+import strategicprimer.model.common.map.fixtures.mobile {
+    IWorker
+}
 import strategicprimer.model.impl.map.fixtures.mobile {
-    IWorker,
     Animal,
     AnimalTracks,
     animalPlurals
@@ -74,12 +78,12 @@ import ceylon.logging {
     logger,
     Logger
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     ITownFixture,
     TownStatus,
     Village
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     Grove,
     Shrub,
     Meadow

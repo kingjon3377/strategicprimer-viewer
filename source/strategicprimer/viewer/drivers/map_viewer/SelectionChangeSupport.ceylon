@@ -3,7 +3,7 @@ import ceylon.collection {
     MutableList
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Point
 }
 import strategicprimer.drivers.common {

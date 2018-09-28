@@ -4,7 +4,7 @@ import lovelace.util.common {
 import java.util {
     EventListener
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
 "An interface for objects that want to know when a new unit member (usually a worker) is

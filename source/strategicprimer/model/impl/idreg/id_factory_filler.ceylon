@@ -2,11 +2,13 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar,
     IDFactory
 }
-import strategicprimer.model.impl.map {
-    IMapNG,
+import strategicprimer.model.common.map {
     IFixture
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.impl.map {
+    IMapNG
+}
+import strategicprimer.model.common.map.fixtures.towns {
     ITownFixture
 }
 "Fill a new ID factory from the given map."

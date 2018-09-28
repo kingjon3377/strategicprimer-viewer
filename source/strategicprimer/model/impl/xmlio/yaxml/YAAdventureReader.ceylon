@@ -10,13 +10,15 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
 import strategicprimer.model.impl.map {
-    IPlayerCollection,
+	IPlayerCollection
+}
+import strategicprimer.model.common.map {
     Player
 }
-import strategicprimer.model.impl.map.fixtures.explorable {
+import strategicprimer.model.common.map.fixtures.explorable {
     AdventureFixture
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 "A reader for adventure hooks."

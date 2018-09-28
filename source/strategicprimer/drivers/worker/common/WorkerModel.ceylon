@@ -15,28 +15,32 @@ import java.nio.file {
 }
 
 import strategicprimer.model.impl.map {
-    Point,
-    Player,
-    TileFixture,
     IMutableMapNG,
-    PlayerImpl,
     SPMapNG,
-    MapDimensionsImpl,
     PlayerCollection
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map {
+    Point,
+	MapDimensionsImpl,
+    Player,
+    PlayerImpl,
+    TileFixture
+}
+import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor,
-    ProxyUnit,
     IUnit,
-    Unit,
+    Unit
+}
+import strategicprimer.model.impl.map.fixtures.mobile {
+    ProxyUnit,
     AnimalImpl
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Oasis,
     Hill,
     Forest
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     TownSize,
     Fortress
 }

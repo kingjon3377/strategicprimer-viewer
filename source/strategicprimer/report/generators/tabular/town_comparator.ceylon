@@ -12,11 +12,11 @@ import lovelace.util.common {
     comparingOn
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     Player,
     PlayerImpl
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     TownStatus,
     TownSize,
     ITownFixture,

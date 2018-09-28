@@ -7,14 +7,17 @@ import ceylon.decimal {
     parseDecimal
 }
 
-import strategicprimer.model.impl.map {
-    Point,
-    IMutableMapNG
+import strategicprimer.model.common.map {
+	Point
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+
+import strategicprimer.model.impl.map {
+	IMutableMapNG
+}
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
-import strategicprimer.model.impl.xmlio {
+import strategicprimer.model.common.xmlio {
     Warning
 }
 object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()

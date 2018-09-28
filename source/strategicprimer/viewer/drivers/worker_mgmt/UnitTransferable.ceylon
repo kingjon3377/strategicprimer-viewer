@@ -6,10 +6,10 @@ import java.awt.datatransfer {
     UnsupportedFlavorException,
     Transferable
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     HasMutableKind
 }
 "A class to transfer a Unit (to change its kind) by drag-and-drop."

@@ -11,7 +11,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.model.impl.map.fixtures.towns {
+import strategicprimer.model.common.map.fixtures.towns {
     ITownFixture,
     TownStatus,
     CommunityStats,
@@ -19,18 +19,20 @@ import strategicprimer.model.impl.map.fixtures.towns {
     Village,
     TownSize
 }
-import strategicprimer.model.impl.map {
-    Point,
-    IMapNG,
+import strategicprimer.model.common.map {
     IFixture,
-    TileType,
-    HasName,
-    TileFixture
+	TileFixture,
+	Point,
+	HasName,
+	TileType
+}
+import strategicprimer.model.impl.map {
+    IMapNG
 }
 import lovelace.util.jvm {
     readFileContents
 }
-import strategicprimer.model.impl.map.fixtures {
+import strategicprimer.model.common.map.fixtures {
     ResourcePile,
     Quantity
 }
@@ -41,7 +43,7 @@ import strategicprimer.model.impl.idreg {
 import ceylon.decimal {
     Decimal
 }
-import strategicprimer.model.impl.map.fixtures.resources {
+import strategicprimer.model.common.map.fixtures.resources {
     HarvestableFixture,
     MineralVein,
     Meadow,
@@ -63,7 +65,7 @@ import strategicprimer.drivers.exploration.old {
     ExplorationRunner,
     loadTable
 }
-import strategicprimer.model.impl.map.fixtures.terrain {
+import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import ceylon.collection {
