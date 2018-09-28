@@ -8,8 +8,7 @@ import strategicprimer.viewer.drivers {
     PlayerChangeMenuListener,
     IOHandler,
     MenuBroker,
-    SPFileChooser,
-    WindowCloseListener
+    SPFileChooser
 }
 import ceylon.logging {
     logger,
@@ -45,6 +44,9 @@ import strategicprimer.model.map.fixtures.mobile {
 }
 import lovelace.util.jvm {
     FileChooser
+}
+import strategicprimer.drivers.gui.common {
+    WindowCloseListener
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
