@@ -50,7 +50,8 @@ import strategicprimer.drivers.gui.common.about {
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
-    UtilityMenu
+    UtilityMenu,
+    WindowCloseListener
 }
 import ceylon.collection {
     HashMap,
@@ -281,11 +282,12 @@ shared class TabularReportGUI() satisfies SimpleDriver {
             // can't use a method reference here because JTabbedPane.addTab is overloaded
             (String str, Component comp) => frame.addTab(str, comp), model.map);
         window.add(frame);
-        MenuBroker menuHandler = MenuBroker();
+        MenuBroker menuHandler = MenuBroker(); // FIXME: This object is not actually used!
         menuHandler.register(silentListener(window.dispose), "close");
         menuHandler.registerWindowShower(aboutDialog(frame, window.windowName), "about");
         menuHandler.register((event) => process.exit(0), "quit");
         window.jMenuBar = UtilityMenu(window);
+        window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
         window.showWindow();
     }
     "Ask the user to choose a file."

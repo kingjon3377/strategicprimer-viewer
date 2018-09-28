@@ -25,7 +25,8 @@ import lovelace.util.jvm {
 }
 
 import lovelace.util.common {
-    matchingPredicate
+    matchingPredicate,
+    silentListener
 }
 
 import strategicprimer.drivers.common {
@@ -77,7 +78,8 @@ import strategicprimer.model.map.fixtures {
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
-    UtilityMenu
+    UtilityMenu,
+    WindowCloseListener
 }
 import ceylon.logging {
     Logger,
@@ -336,6 +338,7 @@ shared class MapCheckerGUI() satisfies UtilityDriver {
             String* args) {
         MapCheckerFrame window = MapCheckerFrame();
         window.jMenuBar = UtilityMenu(window);
+        window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
         window.showWindow();
         for (arg in args.coalesced) {
             // can't condense this using Iterable.each(): JPaths.get() is overloaded

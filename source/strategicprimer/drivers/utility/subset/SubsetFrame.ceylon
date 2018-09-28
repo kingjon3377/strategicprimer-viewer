@@ -49,7 +49,11 @@ import strategicprimer.model.xmlio {
 }
 import strategicprimer.drivers.gui.common {
     UtilityMenu,
-    SPFrame
+    SPFrame,
+    WindowCloseListener
+}
+import lovelace.util.common {
+    silentListener
 }
 "A window to show the result of running subset tests."
 class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), true) {
@@ -182,5 +186,6 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
 SubsetFrame subsetFrame() {
     SubsetFrame retval = SubsetFrame();
     retval.jMenuBar = UtilityMenu(retval);
+    retval.addWindowListener(WindowCloseListener(silentListener(retval.dispose)));
     return retval;
 }

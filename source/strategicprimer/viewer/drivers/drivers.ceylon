@@ -71,14 +71,16 @@ import com.pump.window {
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
-    UtilityMenu
+    UtilityMenu,
+    WindowCloseListener
 }
 import strategicprimer.model.xmlio {
     SPFormatException
 }
 import lovelace.util.common {
     todo,
-    defer
+    defer,
+    silentListener
 }
 import com.vasileff.ceylon.structures {
     MutableMultimap,
@@ -454,5 +456,6 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
         JScrollPane(buttonPanel), null);
     frame.pack();
     frame.jMenuBar = UtilityMenu(frame);
+    frame.addWindowListener(WindowCloseListener(silentListener(frame.dispose)));
     return frame;
 }
