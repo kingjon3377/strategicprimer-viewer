@@ -2,7 +2,7 @@ import lovelace.util.common {
     DRMap=DelayedRemovalMap
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     IMapNG,
     invalidPoint,
@@ -10,7 +10,7 @@ import strategicprimer.model.map {
     Player,
     MapDimensions
 }
-import strategicprimer.model.map.fixtures.explorable {
+import strategicprimer.model.impl.map.fixtures.explorable {
     AdventureFixture
 }
 import strategicprimer.report {

@@ -8,7 +8,7 @@ import lovelace.util.common {
     simpleMap
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     Player,
     IFixture,
@@ -16,7 +16,7 @@ import strategicprimer.model.map {
     invalidPoint,
     MapDimensions
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     TownStatus,
     ITownFixture,
     Fortress,

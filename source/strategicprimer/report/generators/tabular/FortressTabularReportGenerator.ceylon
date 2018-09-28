@@ -2,16 +2,16 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model {
+import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player,
     IFixture,
     Point,
     MapDimensions
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     Fortress
 }
 "A tabular report generator for fortresses."

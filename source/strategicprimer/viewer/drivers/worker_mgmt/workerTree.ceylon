@@ -1,7 +1,7 @@
 import java.awt.image {
     BufferedImage
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     UnitMember
 }
 import java.awt {
@@ -9,12 +9,12 @@ import java.awt {
     Graphics2D,
     Color
 }
-import strategicprimer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.impl.map.fixtures.mobile.worker {
     ProxyWorker,
     WorkerStats,
     IJob
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     HasImage,
     IFixture,
     Player,
@@ -40,7 +40,7 @@ import javax.swing {
     Icon,
     DropMode
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     IWorker,
     Animal,
@@ -80,7 +80,7 @@ import strategicprimer.drivers.worker.common {
 import ceylon.language.meta {
     type
 }
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
 import lovelace.util.common {

@@ -11,7 +11,7 @@ import strategicprimer.viewer.drivers.map_viewer {
     tileDrawHelperFactory,
     TileDrawHelper
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     TileFixture,
     IMapNG,

@@ -1,5 +1,5 @@
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point
 }
 import strategicprimer.drivers.common {

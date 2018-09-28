@@ -1,17 +1,17 @@
 import strategicprimer.drivers.exploration.common {
     surroundingPointIterable
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     MapDimensions,
     TileType,
     IMapNG,
     Point
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     Animal,
     AnimalTracks
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     Grove,
     Shrub,
     Meadow

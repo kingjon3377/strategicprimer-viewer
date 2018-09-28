@@ -1,4 +1,4 @@
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IMutableMapNG,
     TileFixture,
     Point,
@@ -14,7 +14,7 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     Animal,
     AnimalTracks
 }

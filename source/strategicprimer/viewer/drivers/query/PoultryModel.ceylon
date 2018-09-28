@@ -1,4 +1,4 @@
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     Quantity
 }
 "Models of (game statistics for) herding poultry."

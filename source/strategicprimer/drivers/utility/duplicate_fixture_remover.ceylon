@@ -16,7 +16,7 @@ import ceylon.whole {
     Whole
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IFixture,
     IMutableMapNG,
     TileFixture,
@@ -24,24 +24,24 @@ import strategicprimer.model.map {
     HasPopulation,
     HasExtent
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     ResourcePile,
     Quantity,
     Implement
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     Animal,
     AnimalImpl
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     CacheFixture,
     Grove,
     Meadow,
     Shrub,
     FieldStatus
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.drivers.common.cli {
@@ -68,7 +68,7 @@ import lovelace.util.common {
 import ceylon.language.meta.model {
     ClassOrInterface
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Forest
 }
 """A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it

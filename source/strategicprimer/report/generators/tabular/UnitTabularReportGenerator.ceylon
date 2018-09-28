@@ -3,16 +3,16 @@ import lovelace.util.common {
     comparingOn
 }
 
-import strategicprimer.model {
+import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player,
     IFixture,
     Point,
     MapDimensions
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     Animal
 }

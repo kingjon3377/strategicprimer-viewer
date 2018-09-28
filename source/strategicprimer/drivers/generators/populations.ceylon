@@ -10,31 +10,31 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IMutableMapNG,
     Point,
     IMapNG,
     HasExtent
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     Animal
 }
 import ceylon.random {
     Random,
     randomize
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     Grove,
     Shrub,
     Meadow
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.drivers.exploration.common {
     surroundingPointIterable
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     ITownFixture,
     TownSize
 }

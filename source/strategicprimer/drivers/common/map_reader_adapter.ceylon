@@ -19,7 +19,7 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.model.xmlio {
+import strategicprimer.model.impl.xmlio {
     SPFormatException,
     Warning,
     mapIOHelper

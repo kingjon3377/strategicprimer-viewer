@@ -1,8 +1,8 @@
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     IFixture
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IWorker
 }
 import lovelace.util.common {

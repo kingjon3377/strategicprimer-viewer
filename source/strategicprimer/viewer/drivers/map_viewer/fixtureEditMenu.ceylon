@@ -8,7 +8,7 @@ import javax.swing {
     JMenuItem,
     JPopupMenu
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player,
     IFixture,
     HasMutableKind,
@@ -16,17 +16,17 @@ import strategicprimer.model.map {
     HasMutableOwner,
     HasName
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     UnitMember
 }
 
 import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     Animal
 }
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
 import java.lang {

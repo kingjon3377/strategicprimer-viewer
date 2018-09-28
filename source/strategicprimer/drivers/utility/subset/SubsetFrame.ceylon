@@ -36,13 +36,13 @@ import lovelace.util.jvm {
     LabelTextColor
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IMapNG,
     SPMapNG,
     MapDimensionsImpl,
     PlayerCollection
 }
-import strategicprimer.model.xmlio {
+import strategicprimer.model.impl.xmlio {
     mapIOHelper,
     warningLevels,
     SPFormatException

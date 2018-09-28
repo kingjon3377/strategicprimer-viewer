@@ -1,4 +1,4 @@
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player,
     TileType,
     IMapNG,
@@ -30,7 +30,7 @@ import strategicprimer.drivers.common {
     IMultiMapModel,
     ISPDriver
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     Ground,
     Quantity
 }
@@ -43,7 +43,7 @@ import lovelace.util.common {
     simpleMap,
     defer
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Forest
 }
 import ceylon.numeric.float {
@@ -51,7 +51,7 @@ import ceylon.numeric.float {
     sqrt,
     round=halfEven
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IWorker,
     Animal,
     AnimalTracks,
@@ -61,7 +61,7 @@ import strategicprimer.drivers.exploration.common {
     surroundingPointIterable,
     pathfinder
 }
-import strategicprimer.model {
+import strategicprimer.model.impl {
     DistanceComparator
 }
 import java.nio.file {
@@ -74,12 +74,12 @@ import ceylon.logging {
     logger,
     Logger
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     ITownFixture,
     TownStatus,
     Village
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     Grove,
     Shrub,
     Meadow

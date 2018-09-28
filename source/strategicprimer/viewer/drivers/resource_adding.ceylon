@@ -71,29 +71,29 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     IDRegistrar,
     createIDFactory
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player,
     IMutableMapNG,
     IMapNG,
     PlayerImpl
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     ResourcePile,
     Implement,
     FortressMember,
     Quantity
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu
 }
-import strategicprimer.model.xmlio {
+import strategicprimer.model.impl.xmlio {
     mapIOHelper
 }
 import strategicprimer.drivers.gui.common {

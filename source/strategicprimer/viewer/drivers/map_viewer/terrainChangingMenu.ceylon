@@ -15,15 +15,15 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.worker.common {
     NewUnitListener
 }
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     createIDFactory
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     TileType,
     invalidPoint
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit
 }
 

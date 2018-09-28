@@ -7,7 +7,7 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     IFixture,
     IMapNG,
@@ -15,7 +15,7 @@ import strategicprimer.model.map {
     Player,
     MapDimensions
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     Village
 }
 import strategicprimer.report {

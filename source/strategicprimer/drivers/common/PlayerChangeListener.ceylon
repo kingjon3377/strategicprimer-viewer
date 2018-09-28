@@ -1,7 +1,7 @@
 import java.util {
     EventListener
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player
 }
 "An interface for things that want to be told when the current player changes."

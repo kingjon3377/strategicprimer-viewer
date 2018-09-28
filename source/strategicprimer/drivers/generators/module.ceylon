@@ -6,7 +6,7 @@ module strategicprimer.drivers.generators "0.4.9017" {
     value ceylonVersion = "1.3.3";
     value spVersion = "0.4.9017";
     shared import strategicprimer.drivers.common spVersion;
-    import strategicprimer.model spVersion;
+    import strategicprimer.model.impl spVersion;
     import lovelace.util.jvm "0.1.0";
     import strategicprimer.drivers.exploration.common spVersion;
     import strategicprimer.drivers.exploration.old spVersion;

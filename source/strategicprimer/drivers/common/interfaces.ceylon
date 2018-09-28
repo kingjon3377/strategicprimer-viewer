@@ -11,11 +11,11 @@ import java.nio.file {
 import lovelace.util.common {
     todo
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IMutableMapNG,
     HasName
 }
-import strategicprimer.model.xmlio {
+import strategicprimer.model.impl.xmlio {
     warningLevels,
     mapIOHelper
 }

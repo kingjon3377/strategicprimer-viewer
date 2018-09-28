@@ -10,7 +10,7 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.impl.map.fixtures.mobile.worker {
     ISkill
 }
 "A tree representing a worker's Jobs and Skills."

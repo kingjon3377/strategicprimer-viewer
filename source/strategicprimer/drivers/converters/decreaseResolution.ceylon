@@ -6,7 +6,7 @@ import ceylon.test {
     assertFalse
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     River,
     TileType,
@@ -18,22 +18,22 @@ import strategicprimer.model.map {
     PlayerImpl,
     TileFixture
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     Ground
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     Animal,
     Unit,
     AnimalImpl
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     CacheFixture
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Forest
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     TownSize,
     Fortress
 }

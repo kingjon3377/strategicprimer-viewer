@@ -2,13 +2,13 @@ import strategicprimer.drivers.common {
     SelectionChangeSource,
     IMultiMapModel
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player,
     TileFixture,
     HasName,
     Point
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit
 }
 "An enumeration of directions of possible travel."
@@ -103,9 +103,9 @@ shared interface IExplorationModel
      change to be owned by the owner of the currently selected unit. This costs MP."
     shared formal void swearVillages();
     "If there is a currently selected unit, change one
-     [[strategicprimer.model.map.fixtures::Ground]],
-     [[strategicprimer.model.map.fixtures.resources::StoneDeposit]], or
-     [[strategicprimer.model.map.fixtures.resources::MineralVein]] at the location of that
+     [[strategicprimer.model.impl.map.fixtures::Ground]],
+     [[strategicprimer.model.impl.map.fixtures.resources::StoneDeposit]], or
+     [[strategicprimer.model.impl.map.fixtures.resources::MineralVein]] at the location of that
      unit from unexposed to exposed (and discover it). This costs MP."
     shared formal void dig();
 }

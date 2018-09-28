@@ -13,10 +13,10 @@ import java.nio.file {
     JPaths=Paths
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IMapNG
 }
-import strategicprimer.model.xmlio {
+import strategicprimer.model.impl.xmlio {
     IMapReader,
     Warning,
     warningLevels,

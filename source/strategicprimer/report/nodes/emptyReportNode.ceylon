@@ -7,7 +7,7 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point
 }
 import strategicprimer.report {

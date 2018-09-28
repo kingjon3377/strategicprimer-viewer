@@ -12,14 +12,14 @@ import lovelace.util.common {
     matchingPredicate
 }
 
-import strategicprimer.model {
+import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     IDRegistrar,
     createIDFactory
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     Player,
     IFixture,
@@ -29,14 +29,14 @@ import strategicprimer.model.map {
     MapDimensions,
     HasOwner
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     TerrainFixture,
     Ground
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.report.generators {

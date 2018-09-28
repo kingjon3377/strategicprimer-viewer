@@ -33,13 +33,13 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.worker.common {
     NewUnitListener
 }
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     Unit
 }

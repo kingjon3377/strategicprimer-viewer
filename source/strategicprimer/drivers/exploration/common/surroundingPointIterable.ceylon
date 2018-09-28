@@ -3,7 +3,7 @@ import ceylon.collection {
     ArrayList
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     MapDimensions
 }

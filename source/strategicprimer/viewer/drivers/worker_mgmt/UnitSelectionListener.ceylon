@@ -2,7 +2,7 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit
 }
 "An interface for objects that want to know when the user selects a Unit from a list or

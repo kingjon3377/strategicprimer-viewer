@@ -20,14 +20,14 @@ import java.nio.file {
     NoSuchFileException
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     River,
     TileFixture,
     HasImage,
     IMapNG
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     TerrainFixture
 }
 import strategicprimer.drivers.common {

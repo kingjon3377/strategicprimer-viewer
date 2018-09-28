@@ -64,23 +64,23 @@ import strategicprimer.drivers.worker.common {
     IWorkerModel,
     IWorkerTreeModel
 }
-import strategicprimer.model {
+import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     createIDFactory,
     IDRegistrar
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     Player,
     IMapNG,
     invalidPoint
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.report {
@@ -100,7 +100,7 @@ import strategicprimer.viewer.drivers.map_viewer {
     IViewerModel,
     MapGUI
 }
-import strategicprimer.model.xmlio {
+import strategicprimer.model.impl.xmlio {
     mapIOHelper
 }
 import lovelace.util.common {

@@ -17,11 +17,11 @@ import lovelace.util.jvm {
     InterpolatedLabel
 }
 
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     createIDFactory,
     IDRegistrar
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player,
     IMapNG,
     PlayerImpl
@@ -45,7 +45,7 @@ import strategicprimer.drivers.worker.common {
 import strategicprimer.drivers.common {
     PlayerChangeListener
 }
-import strategicprimer.model.xmlio {
+import strategicprimer.model.impl.xmlio {
     mapIOHelper
 }
 import strategicprimer.drivers.gui.common {

@@ -11,7 +11,7 @@ import strategicprimer.drivers.common {
     ISPDriver,
     IMultiMapModel
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     HasName,
     Point,
     IMutableMapNG
@@ -32,7 +32,7 @@ import lovelace.util.common {
 import ceylon.numeric.float {
     round=halfEven
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     Animal,
     AnimalTracks
 }

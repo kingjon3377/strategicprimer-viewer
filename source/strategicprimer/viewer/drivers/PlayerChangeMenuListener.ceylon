@@ -27,7 +27,7 @@ import java.awt {
     Frame,
     Component
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player
 }
 import strategicprimer.drivers.worker.common {

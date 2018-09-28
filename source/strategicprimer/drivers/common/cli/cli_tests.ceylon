@@ -6,7 +6,7 @@ import ceylon.test {
 import ceylon.collection {
     LinkedList
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     PlayerImpl,
     Player,
     Point

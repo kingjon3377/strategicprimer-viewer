@@ -27,13 +27,13 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     MapDimensions,
     TileFixture,
     IMapNG,
     Point
 }
-import strategicprimer.model.xmlio {
+import strategicprimer.model.impl.xmlio {
     mapIOHelper,
     warningLevels
 }

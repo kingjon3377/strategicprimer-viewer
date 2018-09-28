@@ -17,7 +17,7 @@ import strategicprimer.drivers.exploration.common {
     Speed,
     TraversalImpossibleException
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player
 }
 import ceylon.random {

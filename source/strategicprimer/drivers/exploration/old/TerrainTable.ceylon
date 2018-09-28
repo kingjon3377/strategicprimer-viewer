@@ -1,10 +1,10 @@
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     TileFixture,
     TileType,
     MapDimensions,
     Point
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Forest
 }
 "An [[EncounterTable]] that gives its result based on the terrain type of the tile in

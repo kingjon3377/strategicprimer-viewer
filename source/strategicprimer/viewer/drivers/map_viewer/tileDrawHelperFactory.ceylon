@@ -6,7 +6,7 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     TileFixture
 }
 import strategicprimer.drivers.common {

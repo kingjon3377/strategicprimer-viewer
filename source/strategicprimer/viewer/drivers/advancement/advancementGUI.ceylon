@@ -37,13 +37,13 @@ import strategicprimer.drivers.gui.common {
     SPFrame,
     WindowCloseListener
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit
 }
 import java.awt.event {
     ActionEvent
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IMapNG
 }
 import lovelace.util.jvm {

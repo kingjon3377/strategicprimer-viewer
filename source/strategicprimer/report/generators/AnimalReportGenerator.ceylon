@@ -9,14 +9,14 @@ import lovelace.util.common {
     narrowedStream
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     IFixture,
     IMapNG,
     invalidPoint,
     MapDimensions
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     Animal,
     maturityModel,
     animalPlurals,

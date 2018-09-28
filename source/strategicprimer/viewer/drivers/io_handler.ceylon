@@ -41,12 +41,12 @@ import lovelace.util.jvm {
     FileChooser
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     SPMapNG,
     PlayerCollection,
     IMutableMapNG
 }
-import strategicprimer.model.xmlio {
+import strategicprimer.model.impl.xmlio {
     mapIOHelper,
     warningLevels,
     SPFormatException

@@ -33,10 +33,10 @@ import lovelace.util.jvm {
 import strategicprimer.drivers.common {
     PlayerChangeListener
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     ProxyUnit
 }

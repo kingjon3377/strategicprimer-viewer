@@ -8,7 +8,7 @@ module strategicprimer.drivers.converters "0.4.9017" {
     value lovelaceUtilsVersion = "0.1.0";
     value spVersion = "0.4.9017";
     import ceylon.collection ceylonVersion;
-    shared import strategicprimer.model spVersion;
+    shared import strategicprimer.model.impl spVersion;
     import ceylon.test ceylonVersion;
     import lovelace.util.common lovelaceUtilsVersion;
     import lovelace.util.jvm lovelaceUtilsVersion;

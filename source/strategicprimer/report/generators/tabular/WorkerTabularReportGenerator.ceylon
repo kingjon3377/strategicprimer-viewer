@@ -2,18 +2,18 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model {
+import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IFixture,
     Point,
     MapDimensions
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IWorker
 }
-import strategicprimer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.impl.map.fixtures.mobile.worker {
     WorkerStats
 }
 "A report generator for workers. We do not cover Jobs or Skills; see

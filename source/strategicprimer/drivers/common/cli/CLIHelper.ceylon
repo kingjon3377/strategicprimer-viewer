@@ -10,7 +10,7 @@ import ceylon.collection {
 import java.io {
     IOException
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     HasName
 }
 import lovelace.util.common {

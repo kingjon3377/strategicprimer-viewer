@@ -6,14 +6,14 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IMapNG,
     Point
 }
 import lovelace.util.common {
     comparingOn
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Forest
 }
 import ceylon.logging {

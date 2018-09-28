@@ -10,7 +10,7 @@ import lovelace.util.common {
     matchingValue
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     Player,
     IFixture,
@@ -19,20 +19,20 @@ import strategicprimer.model.map {
     invalidPoint,
     MapDimensions
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     Implement,
     ResourcePile,
     FortressMember
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Oasis,
     Hill,
     Forest
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.report {

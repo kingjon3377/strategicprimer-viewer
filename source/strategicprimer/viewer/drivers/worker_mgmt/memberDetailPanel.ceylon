@@ -29,22 +29,22 @@ import lovelace.util.jvm {
     platform
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     HasPortrait
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     UnitMember,
     Implement,
     ResourcePile
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     ProxyFor,
     Animal,
     IWorker,
     maturityModel,
     animalPlurals
 }
-import strategicprimer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.impl.map.fixtures.mobile.worker {
     WorkerStats
 }
 import strategicprimer.viewer.drivers.map_viewer {

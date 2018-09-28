@@ -9,22 +9,22 @@ import javax.xml.stream {
     XMLStreamException
 }
 
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     IDRegistrar,
     createIDFactory
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     IMutableMapNG,
     IMapNG
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     Ground
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Forest
 }
-import strategicprimer.model.xmlio {
+import strategicprimer.model.impl.xmlio {
     mapIOHelper,
     warningLevels,
     SPFormatException

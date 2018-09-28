@@ -1,7 +1,7 @@
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit
 }
 import strategicprimer.drivers.common {

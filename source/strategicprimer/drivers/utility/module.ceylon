@@ -12,7 +12,7 @@ module strategicprimer.drivers.utility "0.4.9017" {
     import ceylon.decimal ceylonVersion;
     import ceylon.whole ceylonVersion;
     shared import java.base javaVersion;
-    import strategicprimer.model spVersion;
+    import strategicprimer.model.impl spVersion;
     import java.desktop javaVersion;
     import ceylon.regex ceylonVersion;
     import lovelace.util.jvm "0.1.0";

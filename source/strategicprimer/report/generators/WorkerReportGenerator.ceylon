@@ -2,17 +2,17 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     IFixture,
     IMapNG,
     invalidPoint,
     MapDimensions
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IWorker
 }
-import strategicprimer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.impl.map.fixtures.mobile.worker {
     WorkerStats {
         modifierString=getModifierString
     },

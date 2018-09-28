@@ -1,7 +1,7 @@
 import lovelace.util.common {
     todo
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IMutableMapNG
 }
 "An interface to represent a set of changes that can be made to a map (TODO: or to what?).
@@ -16,7 +16,7 @@ shared interface Changeset {
     shared formal Changeset invert();
     "Apply the changeset to a map."
     todo("Should this possibly take different arguments?",
-        "Should this possibly take [[strategicprimer.model.map::IMapNG]] and return the
+        "Should this possibly take [[strategicprimer.model.impl.map::IMapNG]] and return the
          modified map, instead of modifying an [[IMutableMapNG]] in place?")
     shared formal void apply(IMutableMapNG map);
 }

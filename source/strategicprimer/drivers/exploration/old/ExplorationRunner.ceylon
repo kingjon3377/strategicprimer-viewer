@@ -23,14 +23,14 @@ import lovelace.util.common {
     defer
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     TileFixture,
     TileType,
     MapDimensionsImpl,
     MapDimensions
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Forest
 }
 

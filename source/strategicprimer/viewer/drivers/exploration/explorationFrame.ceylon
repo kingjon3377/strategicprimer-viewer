@@ -70,7 +70,7 @@ import lovelace.util.common {
     silentListener
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     Player,
     TileType,
@@ -82,12 +82,12 @@ import strategicprimer.model.map {
     HasPopulation,
     invalidPoint
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     Animal,
     AnimalTracks
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     CacheFixture
 }
 
@@ -105,7 +105,7 @@ import strategicprimer.viewer.drivers.map_viewer {
     fixtureList,
     TileTypeFixture
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     Village
 }
 import strategicprimer.drivers.exploration.common {
@@ -126,10 +126,10 @@ import strategicprimer.drivers.common {
 import ceylon.random {
     randomize
 }
-import strategicprimer.model.xmlio {
+import strategicprimer.model.impl.xmlio {
     mapIOHelper
 }
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     IDRegistrar,
     createIDFactory
 }

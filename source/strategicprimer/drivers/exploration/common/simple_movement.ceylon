@@ -9,26 +9,26 @@ import lovelace.util.common {
     matchingPredicate,
     singletonRandom
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     River,
     TileFixture,
     TileType,
     HasOwner
 }
-import strategicprimer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.impl.map.fixtures.mobile.worker {
     WorkerStats,
     ISkill
 }
 
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     IWorker
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Hill,
     Forest
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     ITownFixture
 }
 import strategicprimer.drivers.exploration.common {

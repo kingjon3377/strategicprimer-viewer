@@ -16,7 +16,7 @@ import strategicprimer.drivers.common {
     IDriverModel,
     SelectionChangeListener
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     IMutableMapNG,
     IMapNG,

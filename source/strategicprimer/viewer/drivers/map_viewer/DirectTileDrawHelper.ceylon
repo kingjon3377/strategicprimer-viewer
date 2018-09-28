@@ -7,7 +7,7 @@ import java.awt {
     Color
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     River,
     IMapNG

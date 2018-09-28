@@ -3,11 +3,11 @@ import ceylon.collection {
     MutableList
 }
 
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     IDRegistrar,
     createIDFactory
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player,
     IMutableMapNG,
     TileType,
@@ -16,13 +16,13 @@ import strategicprimer.model.map {
     HasOwner,
     Point
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     AnimalImpl
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     CacheFixture
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     ITownFixture
 }
 import strategicprimer.drivers.common {
@@ -47,7 +47,7 @@ import strategicprimer.drivers.exploration.common {
 import ceylon.random {
     randomize
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Forest
 }
 import lovelace.util.common {

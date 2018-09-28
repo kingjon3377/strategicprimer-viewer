@@ -24,15 +24,15 @@ import lovelace.util.jvm {
     BorderedPanel
 }
 
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     Worker,
     IWorker
 }
-import strategicprimer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.impl.map.fixtures.mobile.worker {
     WorkerStats,
     raceFactory
 }

@@ -20,7 +20,7 @@ import lovelace.util.jvm {
     horizontalSplit,
     InterpolatedLabel
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     TileFixture,
     HasPortrait,
     TileType,
@@ -43,7 +43,7 @@ import strategicprimer.drivers.common {
     IDriverModel,
     SelectionChangeListener
 }
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     createIDFactory
 }
 "A panel to show the details of a tile, using a list rather than sub-panels with chits

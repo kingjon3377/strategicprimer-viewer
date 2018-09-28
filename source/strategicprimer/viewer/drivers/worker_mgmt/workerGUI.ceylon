@@ -36,10 +36,10 @@ import strategicprimer.drivers.worker.common {
 import java.awt.event {
     ActionEvent
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IMapNG
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit
 }
 import lovelace.util.jvm {

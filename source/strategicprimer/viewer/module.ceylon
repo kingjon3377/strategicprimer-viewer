@@ -23,7 +23,7 @@ module strategicprimer.viewer "0.4.9017" {
     shared import lovelace.util.jvm lovelaceUtilsVersion;
     import ceylon.regex ceylonVersion;
     import maven:"com.massisframework:orange-extensions" "1.3.1";
-    shared import strategicprimer.model spVersion;
+    shared import strategicprimer.model.impl spVersion;
     import strategicprimer.report spVersion;
     shared import strategicprimer.drivers.common spVersion;
     import strategicprimer.drivers.exploration.old spVersion;

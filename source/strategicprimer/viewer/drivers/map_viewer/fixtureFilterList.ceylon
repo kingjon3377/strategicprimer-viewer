@@ -20,13 +20,13 @@ import lovelace.util.jvm {
     ReorderableListModel
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     TileFixture
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     Ground
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     Grove,
     Meadow
 }

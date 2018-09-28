@@ -27,7 +27,7 @@ import lovelace.util.jvm {
     boxPanel
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player,
     HasOwner,
     IFixture,

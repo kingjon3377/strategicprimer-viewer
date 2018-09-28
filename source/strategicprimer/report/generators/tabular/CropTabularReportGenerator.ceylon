@@ -6,21 +6,21 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model {
+import strategicprimer.model.impl {
     DistanceComparator
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     TileFixture,
     IFixture,
     Point,
     MapDimensions
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     Grove,
     Meadow,
     Shrub
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Forest
 }
 import ceylon.decimal {

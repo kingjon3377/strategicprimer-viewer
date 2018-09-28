@@ -9,7 +9,7 @@ import lovelace.util.common {
     comparingOn
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     IMapNG,
     invalidPoint,
@@ -18,7 +18,7 @@ import strategicprimer.model.map {
     HasPopulation,
     HasExtent
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     Meadow,
     CacheFixture,
     Mine,
@@ -54,7 +54,7 @@ import ceylon.logging {
     Logger,
     logger
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     TownStatus
 }
 import ceylon.whole {

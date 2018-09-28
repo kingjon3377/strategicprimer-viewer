@@ -13,7 +13,7 @@ module strategicprimer.report "0.4.9017" {
     shared import java.desktop javaVersion;
     import ceylon.collection ceylonVersion;
     import ceylon.logging ceylonVersion;
-    shared import strategicprimer.model "0.4.9017";
+    shared import strategicprimer.model.impl "0.4.9017";
     shared import lovelace.util.common lovelaceUtilsVersion;
     import ceylon.test ceylonVersion;
     shared import ceylon.file ceylonVersion;

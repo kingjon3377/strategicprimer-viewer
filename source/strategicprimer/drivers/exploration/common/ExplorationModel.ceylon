@@ -14,7 +14,7 @@ import strategicprimer.drivers.common {
     IDriverModel,
     SelectionChangeListener
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     Player,
     IMutableMapNG,
@@ -26,25 +26,25 @@ import strategicprimer.model.map {
     MapDimensions,
     TileType
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     Ground,
     MineralFixture
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     Animal,
     MobileFixture
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     Grove,
     Meadow,
     Mine,
     MineralVein
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Forest
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     Village,
     Fortress
 }
@@ -64,8 +64,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     static Boolean isDiggable(TileFixture fixture) => fixture is MineralFixture|Mine;
     """Check whether two fixtures are "equal enough" for the purposes of updating a map
        after digging. This method is needed because equals() in
-       [[strategicprimer.model.map.fixtures.resources::StoneDeposit]] and
-       [[strategicprimer.model.map.fixtures.resources::MineralVein]] compares DCs."""
+       [[strategicprimer.model.impl.map.fixtures.resources::StoneDeposit]] and
+       [[strategicprimer.model.impl.map.fixtures.resources::MineralVein]] compares DCs."""
     static Boolean areDiggablesEqual(IFixture firstFixture, IFixture secondFixture) =>
             firstFixture == secondFixture || firstFixture.copy(true) == secondFixture
                 .copy(true);
@@ -432,7 +432,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
     }
     "If there is a currently selected unit, change one [[Ground]],
-     [[strategicprimer.model.map.fixtures.resources::StoneDeposit]], or [[MineralVein]] at
+     [[strategicprimer.model.impl.map.fixtures.resources::StoneDeposit]], or [[MineralVein]] at
      the location of that unit from unexposed to exposed (and discover it). This costs
      MP."
     shared actual void dig() {

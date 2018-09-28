@@ -2,7 +2,7 @@ import javax.swing.tree {
     MutableTreeNode
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point
 }
 import strategicprimer.report {

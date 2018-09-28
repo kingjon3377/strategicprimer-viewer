@@ -4,7 +4,7 @@ import java.lang {
 import lovelace.util.common {
     todo
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player,
     TileFixture,
     Point
@@ -52,7 +52,7 @@ import javax.swing {
 import strategicprimer.drivers.common {
     SelectionChangeListener
 }
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
 "A visual list-based representation of the contents of a tile."

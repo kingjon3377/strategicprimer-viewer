@@ -14,7 +14,7 @@ import java.nio.file {
     JPath=Path
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     Player,
     TileFixture,
@@ -24,19 +24,19 @@ import strategicprimer.model.map {
     MapDimensionsImpl,
     PlayerCollection
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     ProxyFor,
     ProxyUnit,
     IUnit,
     Unit,
     AnimalImpl
 }
-import strategicprimer.model.map.fixtures.terrain {
+import strategicprimer.model.impl.map.fixtures.terrain {
     Oasis,
     Hill,
     Forest
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     TownSize,
     Fortress
 }

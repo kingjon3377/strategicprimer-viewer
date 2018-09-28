@@ -2,7 +2,7 @@ import java.nio.file {
     JPath=Path
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     IMutableMapNG
 }
 """A driver-model for drivers that have a main map (like every driver) and any number of

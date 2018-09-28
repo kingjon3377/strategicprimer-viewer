@@ -1,4 +1,4 @@
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     HasName
 }
 import lovelace.util.common {
@@ -8,13 +8,13 @@ import javax.swing.event {
     TreeModelListener,
     TreeModelEvent
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IWorker
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
     UnitMemberListener
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     UnitMember
 }
 import javax.swing.tree {
@@ -31,7 +31,7 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.impl.map.fixtures.mobile.worker {
     IJob,
     Job,
     Skill,

@@ -9,7 +9,7 @@ import lovelace.util.common {
     matchingValue
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Player,
     TileType,
     TileFixture,
@@ -20,13 +20,13 @@ import strategicprimer.model.map {
     HasPopulation,
     HasExtent
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     Animal,
     Immortal,
     AnimalTracks
 }
-import strategicprimer.model.map.fixtures.resources {
+import strategicprimer.model.impl.map.fixtures.resources {
     CacheFixture
 }
 
@@ -43,7 +43,7 @@ import strategicprimer.drivers.exploration.common {
     MovementCostSource,
     pathfinder
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     Village,
     Fortress,
     AbstractTown,

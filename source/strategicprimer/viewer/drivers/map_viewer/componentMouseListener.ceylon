@@ -7,13 +7,13 @@ import strategicprimer.drivers.common {
     SelectionChangeSource,
     SelectionChangeListener
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     MapDimensions,
     TileFixture,
     IMapNG
 }
-import strategicprimer.model.map.fixtures {
+import strategicprimer.model.impl.map.fixtures {
     TerrainFixture
 }
 "An interface for the method to get the tool-tip message for the location the mouse

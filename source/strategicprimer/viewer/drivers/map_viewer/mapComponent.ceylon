@@ -29,7 +29,7 @@ import strategicprimer.drivers.common {
     FixtureMatcher
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     MapDimensions,
     TileFixture

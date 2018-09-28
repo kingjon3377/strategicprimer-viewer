@@ -7,7 +7,7 @@ import lovelace.util.jvm {
     platform
 }
 
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point
 }
 "A class for moving the cursor around the single-component map UI, including scrolling

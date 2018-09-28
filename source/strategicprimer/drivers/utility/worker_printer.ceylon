@@ -7,14 +7,14 @@ import strategicprimer.drivers.common {
     IDriverModel,
     ISPDriver
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     IUnit,
     IWorker
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.impl.map.fixtures.mobile.worker {
     IJob,
     WorkerStats
 }

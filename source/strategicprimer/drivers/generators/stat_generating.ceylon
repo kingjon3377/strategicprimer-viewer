@@ -12,11 +12,11 @@ import ceylon.file {
     lines
 }
 
-import strategicprimer.model.idreg {
+import strategicprimer.model.impl.idreg {
     IDRegistrar,
     createIDFactory
 }
-import strategicprimer.model.map {
+import strategicprimer.model.impl.map {
     Point,
     Player,
     IFixture,
@@ -24,13 +24,13 @@ import strategicprimer.model.map {
     TileFixture,
     HasOwner
 }
-import strategicprimer.model.map.fixtures.mobile {
+import strategicprimer.model.impl.map.fixtures.mobile {
     Worker,
     IUnit,
     Unit,
     IWorker
 }
-import strategicprimer.model.map.fixtures.mobile.worker {
+import strategicprimer.model.impl.map.fixtures.mobile.worker {
     WorkerStats,
     IJob,
     raceFactory,
@@ -68,7 +68,7 @@ import lovelace.util.common {
     narrowedStream,
     entryMap
 }
-import strategicprimer.model.map.fixtures.towns {
+import strategicprimer.model.impl.map.fixtures.towns {
     Village
 }
 
@@ -227,7 +227,7 @@ shared class StatGeneratingCLI satisfies SimpleCLIDriver {
     WorkerStats loadRacialBonus(String race) {
         if (exists retval = racialBonuses[race]) {
             return retval;
-        } else if (exists textContent = readFileContents(`module strategicprimer.model`,
+        } else if (exists textContent = readFileContents(`module strategicprimer.model.impl`,
             "racial_stat_adjustments/``race``.txt")) {
             value parsed = textContent.lines.map(Integer.parse)
                     .narrow<Integer>().sequence();
