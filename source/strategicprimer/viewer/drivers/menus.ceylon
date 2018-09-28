@@ -1,6 +1,4 @@
 import ceylon.collection {
-    MutableList,
-    ArrayList,
     MutableMap,
     HashMap
 }
@@ -14,8 +12,6 @@ import com.pump.window {
 }
 
 import java.awt {
-    Component,
-    Frame,
     Window
 }
 import java.awt.event {
@@ -25,8 +21,6 @@ import java.awt.event {
 }
 
 import javax.swing {
-    JOptionPane,
-    JPopupMenu,
     SwingUtilities,
     JMenuBar,
     JMenu,
@@ -43,14 +37,7 @@ import lovelace.util.jvm {
 
 import strategicprimer.drivers.common {
     IDriverModel,
-    IMultiMapModel,
-    PlayerChangeListener
-}
-import strategicprimer.model.map {
-    Player
-}
-import strategicprimer.viewer.drivers.exploration {
-    PlayerChangeSource
+    IMultiMapModel
 }
 import strategicprimer.viewer.drivers.map_viewer {
     IViewerModel
@@ -59,56 +46,7 @@ import strategicprimer.drivers.worker.common {
     IWorkerModel
 }
 import lovelace.util.common {
-    as,
     defer
-}
-import java.lang {
-    ObjectArray
-}
-"""A class to respond to "change current player" menu items."""
-shared class PlayerChangeMenuListener(IDriverModel model)
-        satisfies ActionListener&PlayerChangeSource {
-    MutableList<PlayerChangeListener> listeners = ArrayList<PlayerChangeListener>();
-    shared actual void addPlayerChangeListener(PlayerChangeListener listener) =>
-            listeners.add(listener);
-    shared actual void removePlayerChangeListener(PlayerChangeListener listener) =>
-            listeners.remove(listener);
-    Frame? getContainingFrame(Component? component) {
-        variable Component? temp = component;
-        while (exists local = temp) {
-            if (is Frame local) {
-                return local;
-            } else if (is JPopupMenu local) {
-                temp = local.invoker;
-            }  else {
-                temp = local.parent;
-            }
-        }
-        return null;
-    }
-    shared actual void actionPerformed(ActionEvent event) {
-        Player currentPlayer;
-        {Player*} players;
-        if (is IWorkerModel model) {
-            currentPlayer = model.currentPlayer;
-            players = model.players;
-        } else {
-            currentPlayer = model.map.currentPlayer;
-            players = model.map.players;
-        }
-        if (is Player retval = JOptionPane.showInputDialog(
-                getContainingFrame(as<Component>(event.source)),
-                "Player to view:", "Choose New Player:",
-                JOptionPane.plainMessage, null, ObjectArray.with(players),
-                currentPlayer)) {
-            if (is IWorkerModel model) {
-                model.currentPlayer = retval;
-            }
-            for (listener in listeners) {
-                listener.playerChanged(currentPlayer, retval);
-            }
-        }
-    }
 }
 "A class to match menu item selections to the listeners to handle them. Note that at
  most one listener will be notified of any given action-command; subsequent registrations
