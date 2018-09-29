@@ -1,8 +1,3 @@
-import ceylon.logging {
-    Logger,
-    logger
-}
-
 import java.io {
     IOException,
     JReader=Reader
@@ -29,7 +24,14 @@ import strategicprimer.model.impl.xmlio {
 import ceylon.file {
     parsePath
 }
-Logger log = logger(`module strategicprimer.drivers.common`);
+import strategicprimer.drivers.common {
+    IDriverModel,
+    DriverFailedException,
+    IMultiMapModel,
+    SimpleDriverModel,
+    SimpleMultiMapModel
+}
+
 shared object mapReaderAdapter {
     "Read a map model from a file or a stream, wrapping any errors the process generates
      in a [[DriverFailedException]] to simplify callers."

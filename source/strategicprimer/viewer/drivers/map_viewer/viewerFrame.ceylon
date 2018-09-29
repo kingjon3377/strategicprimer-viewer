@@ -53,7 +53,6 @@ import lovelace.util.jvm {
 import strategicprimer.drivers.common {
     VersionChangeListener,
     SelectionChangeListener,
-    mapReaderAdapter,
     FixtureMatcher
 }
 import strategicprimer.model.common.map {
@@ -61,7 +60,8 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import strategicprimer.viewer.drivers {
-    SPMenu
+    SPMenu,
+    mapReaderAdapter
 }
 import strategicprimer.model.common.xmlio {
     warningLevels

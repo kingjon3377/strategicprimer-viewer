@@ -60,7 +60,6 @@ import strategicprimer.drivers.common {
     UtilityDriver,
     CLIDriver,
     GUIDriver,
-    mapReaderAdapter,
     IMultiMapModel,
     ReadOnlyDriver
 }
