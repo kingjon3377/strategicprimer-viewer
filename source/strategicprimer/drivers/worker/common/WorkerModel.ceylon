@@ -16,15 +16,15 @@ import java.nio.file {
 
 import strategicprimer.model.impl.map {
     IMutableMapNG,
-    SPMapNG,
-    PlayerCollection
+    SPMapNG
 }
 import strategicprimer.model.common.map {
     Point,
 	MapDimensionsImpl,
     Player,
     PlayerImpl,
-    TileFixture
+    TileFixture,
+    PlayerCollection
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor,

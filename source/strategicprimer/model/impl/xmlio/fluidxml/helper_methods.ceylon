@@ -35,9 +35,7 @@ import strategicprimer.model.impl.idreg {
 import strategicprimer.model.common.map {
 	HasImage,
 	HasMutableImage,
-    Player
-}
-import strategicprimer.model.impl.map {
+    Player,
     IPlayerCollection
 }
 import strategicprimer.model.common.xmlio {

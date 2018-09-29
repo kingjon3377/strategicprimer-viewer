@@ -20,7 +20,8 @@ import strategicprimer.model.common.map {
     MapDimensions,
     Point,
     River,
-    TileType
+    TileType,
+    IPlayerCollection
 }
 
 """An interface for game-world maps.

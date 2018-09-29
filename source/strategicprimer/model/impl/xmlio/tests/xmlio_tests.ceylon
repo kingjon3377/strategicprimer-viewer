@@ -55,13 +55,13 @@ import strategicprimer.model.common.map {
     Point,
     River,
     TileType,
-    HasMutableImage
+    HasMutableImage,
+    PlayerCollection
 }
 import strategicprimer.model.impl.map {
     IMutableMapNG,
     IMapNG,
-    SPMapNG,
-    PlayerCollection
+    SPMapNG
 }
 import strategicprimer.model.common.map.fixtures {
     TextFixture,

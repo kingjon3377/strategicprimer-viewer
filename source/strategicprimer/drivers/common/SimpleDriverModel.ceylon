@@ -11,12 +11,12 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.impl.map {
 	SPMapNG,
-	IMutableMapNG,
-	PlayerCollection
+	IMutableMapNG
 }
 import strategicprimer.model.common.map {
 	MapDimensions,
-    MapDimensionsImpl
+    MapDimensionsImpl,
+    PlayerCollection
 }
 "A superclass for driver-models, to handle the common details."
 shared class SimpleDriverModel satisfies IDriverModel {

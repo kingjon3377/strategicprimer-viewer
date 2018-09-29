@@ -38,7 +38,9 @@ import strategicprimer.model.common.map {
     Point,
     River,
     PointIterator,
-    HasOwner
+    HasOwner,
+    IMutablePlayerCollection,
+    IPlayerCollection
 }
 
 "A logger."

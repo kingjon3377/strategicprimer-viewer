@@ -9,7 +9,6 @@ import ceylon.test {
 import strategicprimer.model.impl.map {
     IMutableMapNG,
     IMapNG,
-    PlayerCollection,
     SPMapNG
 }
 import strategicprimer.model.common.map {
@@ -18,6 +17,7 @@ import strategicprimer.model.common.map {
 	TileType,
 	TileFixture,
 	PlayerImpl,
+    PlayerCollection,
 	MapDimensionsImpl
 }
 import strategicprimer.model.common.map.fixtures {

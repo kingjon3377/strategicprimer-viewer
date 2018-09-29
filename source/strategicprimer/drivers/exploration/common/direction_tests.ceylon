@@ -5,11 +5,11 @@ import ceylon.test {
 
 import strategicprimer.model.common.map {
     Point,
+    PlayerCollection,
     MapDimensionsImpl
 }
 
 import strategicprimer.model.impl.map {
-    PlayerCollection,
     SPMapNG
 }
 "Tests that the movement code gets its most basic functionality, namely finding adjacent

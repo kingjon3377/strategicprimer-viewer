@@ -49,13 +49,13 @@ import strategicprimer.model.common.map {
 	Point,
 	TileType,
 	River,
-    TileFixture
+    IMutablePlayerCollection,
+    TileFixture,
+    PlayerCollection
 }
 import strategicprimer.model.impl.map {
-    IMutablePlayerCollection,
     IMutableMapNG,
-    SPMapNG,
-    PlayerCollection
+    SPMapNG
 }
 import strategicprimer.model.common.map.fixtures {
     FortressMember,

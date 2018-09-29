@@ -9,14 +9,16 @@ import strategicprimer.model.common.map {
 	PlayerImpl
 }
 
-import strategicprimer.model.impl.map {
-    IMutablePlayerCollection,
-    IPlayerCollection
-}
 import lovelace.util.common {
     matchingValue
 }
+import ceylon.logging {
+    Logger,
+    logger
+}
 
+"A logger."
+Logger log = logger(`module strategicprimer.model.common`);
 "A collection of players. Using a simple List doesn't work when -1 is the default index if
  one isn't given in the XML."
 shared class PlayerCollection() satisfies IMutablePlayerCollection {

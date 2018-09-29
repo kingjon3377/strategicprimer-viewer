@@ -19,8 +19,7 @@ import org.sqlite {
 import strategicprimer.model.impl.map {
     IMapNG,
     IMutableMapNG,
-    SPMapNG,
-    PlayerCollection
+    SPMapNG
 }
 import strategicprimer.model.common.map {
 	MapDimensions,
@@ -29,7 +28,8 @@ import strategicprimer.model.common.map {
 	HasOwner,
 	Player,
     TileFixture,
-    Point
+    Point,
+    PlayerCollection
 }
 import strategicprimer.model.common.map.fixtures {
     ResourcePile,

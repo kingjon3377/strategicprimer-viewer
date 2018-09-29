@@ -13,7 +13,7 @@ import javax.xml.stream.events {
 import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IPlayerCollection
 }
 import strategicprimer.model.common.map.fixtures {

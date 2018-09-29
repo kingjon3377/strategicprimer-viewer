@@ -41,9 +41,12 @@ import lovelace.util.jvm {
     FileChooser
 }
 
+import strategicprimer.model.common.map {
+    PlayerCollection
+}
+
 import strategicprimer.model.impl.map {
     SPMapNG,
-    PlayerCollection,
     IMutableMapNG
 }
 import strategicprimer.model.impl.xmlio {

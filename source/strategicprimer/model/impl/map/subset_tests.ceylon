@@ -15,15 +15,15 @@ import strategicprimer.model.common.map {
     Point,
     River,
     TileType,
+    IPlayerCollection,
+    IMutablePlayerCollection,
+    PlayerCollection,
     MapDimensionsImpl
 }
 
 import strategicprimer.model.impl.map {
-    IPlayerCollection,
-    IMutablePlayerCollection,
     IMutableMapNG,
     IMapNG,
-    PlayerCollection,
     SPMapNG
 }
 import strategicprimer.model.common.map.fixtures {

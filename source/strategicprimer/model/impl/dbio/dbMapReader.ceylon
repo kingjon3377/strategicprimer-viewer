@@ -8,9 +8,7 @@ import java.sql {
 
 import strategicprimer.model.impl.map {
     IMutableMapNG,
-    SPMapNG,
-    IMutablePlayerCollection,
-    PlayerCollection
+    SPMapNG
 }
 import strategicprimer.model.common.map {
 	MapDimensionsImpl,
@@ -18,7 +16,9 @@ import strategicprimer.model.common.map {
     MutablePlayer,
 	Point,
 	TileType,
-	River
+	River,
+    IMutablePlayerCollection,
+    PlayerCollection
 }
 import strategicprimer.model.common.xmlio {
     Warning

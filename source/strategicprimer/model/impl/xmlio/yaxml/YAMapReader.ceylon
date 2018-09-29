@@ -30,10 +30,10 @@ import strategicprimer.model.common.map {
     River,
     TileType,
     invalidPoint,
+    IMutablePlayerCollection,
 	TileFixture
 }
 import strategicprimer.model.impl.map {
-    IMutablePlayerCollection,
     IMutableMapNG,
     IMapNG,
     SPMapNG
