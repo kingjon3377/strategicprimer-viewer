@@ -2,7 +2,7 @@ import ceylon.file {
     Path
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMapNG
 }
 "An interface for map (and other SP XML) writers."

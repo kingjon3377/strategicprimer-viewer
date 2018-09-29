@@ -51,9 +51,7 @@ import strategicprimer.model.common.map {
     River,
     IMutablePlayerCollection,
     TileFixture,
-    PlayerCollection
-}
-import strategicprimer.model.impl.map {
+    PlayerCollection,
     IMutableMapNG,
     SPMapNG
 }

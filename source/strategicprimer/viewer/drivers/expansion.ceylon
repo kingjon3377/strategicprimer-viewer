@@ -12,9 +12,7 @@ import strategicprimer.model.common.map {
     HasOwner,
     TileType,
     TileFixture,
-    Point
-}
-import strategicprimer.model.impl.map {
+    Point,
     IMutableMapNG,
     IMapNG
 }

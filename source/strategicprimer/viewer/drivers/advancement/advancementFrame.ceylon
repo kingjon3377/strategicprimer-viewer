@@ -21,10 +21,8 @@ import strategicprimer.model.impl.idreg {
     createIDFactory,
     IDRegistrar
 }
-import strategicprimer.model.impl.map {
-    IMapNG
-}
 import strategicprimer.model.common.map {
+    IMapNG,
     Player,
     PlayerImpl
 }

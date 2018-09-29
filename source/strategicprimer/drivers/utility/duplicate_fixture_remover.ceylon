@@ -21,10 +21,7 @@ import strategicprimer.model.common.map {
     HasPopulation,
     TileFixture,
     HasExtent,
-    Point
-}
-
-import strategicprimer.model.impl.map {
+    Point,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures {

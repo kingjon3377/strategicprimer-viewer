@@ -6,11 +6,9 @@ import java.sql {
     SQLException
 }
 
-import strategicprimer.model.impl.map {
-    IMutableMapNG,
-    SPMapNG
-}
 import strategicprimer.model.common.map {
+    IMutableMapNG,
+    SPMapNG,
     MapDimensionsImpl,
     PlayerImpl,
     MutablePlayer,

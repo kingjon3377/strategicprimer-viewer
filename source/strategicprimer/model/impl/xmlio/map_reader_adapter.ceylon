@@ -25,7 +25,7 @@ import strategicprimer.model.impl.dbio {
     spDatabaseWriter,
     spDatabaseReader
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMutableMapNG,
     IMapNG
 }

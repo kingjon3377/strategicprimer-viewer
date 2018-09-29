@@ -24,10 +24,7 @@ import strategicprimer.model.common.map {
     HasImage,
     Point,
     River,
-    TileFixture
-}
-
-import strategicprimer.model.impl.map {
+    TileFixture,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {

@@ -64,7 +64,7 @@ import strategicprimer.drivers.worker.common {
     IWorkerModel,
     IWorkerTreeModel
 }
-import strategicprimer.model.impl {
+import strategicprimer.model.common {
     DistanceComparator
 }
 import strategicprimer.model.impl.idreg {
@@ -74,9 +74,7 @@ import strategicprimer.model.impl.idreg {
 import strategicprimer.model.common.map {
     Point,
     Player,
-    invalidPoint
-}
-import strategicprimer.model.impl.map {
+    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {

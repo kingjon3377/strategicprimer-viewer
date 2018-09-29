@@ -36,7 +36,7 @@ import strategicprimer.drivers.worker.common {
 import java.awt.event {
     ActionEvent
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {

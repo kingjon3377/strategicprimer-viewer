@@ -57,9 +57,7 @@ import strategicprimer.drivers.common {
     FixtureMatcher
 }
 import strategicprimer.model.common.map {
-    TileFixture
-}
-import strategicprimer.model.impl.map {
+    TileFixture,
     IMutableMapNG
 }
 import strategicprimer.viewer.drivers {

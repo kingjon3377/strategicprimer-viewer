@@ -3,9 +3,7 @@ import strategicprimer.model.impl.idreg {
     IDFactory
 }
 import strategicprimer.model.common.map {
-    IFixture
-}
-import strategicprimer.model.impl.map {
+    IFixture,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.towns {

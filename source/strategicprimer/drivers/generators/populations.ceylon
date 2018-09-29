@@ -12,9 +12,7 @@ import strategicprimer.drivers.common.cli {
 }
 import strategicprimer.model.common.map {
     Point,
-    HasExtent
-}
-import strategicprimer.model.impl.map {
+    HasExtent,
     IMutableMapNG,
     IMapNG
 }

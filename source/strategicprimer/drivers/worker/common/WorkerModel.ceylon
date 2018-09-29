@@ -14,11 +14,9 @@ import java.nio.file {
     JPath=Path
 }
 
-import strategicprimer.model.impl.map {
-    IMutableMapNG,
-    SPMapNG
-}
 import strategicprimer.model.common.map {
+    IMutableMapNG,
+    SPMapNG,
     Point,
     MapDimensionsImpl,
     Player,

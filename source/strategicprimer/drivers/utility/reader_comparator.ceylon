@@ -13,7 +13,7 @@ import java.nio.file {
     JPaths=Paths
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMapNG
 }
 import strategicprimer.model.common.xmlio {

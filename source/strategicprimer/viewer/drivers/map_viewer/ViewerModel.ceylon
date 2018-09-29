@@ -18,9 +18,7 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.common.map {
     Point,
-    invalidPoint
-}
-import strategicprimer.model.impl.map {
+    invalidPoint,
     IMutableMapNG,
     IMapNG
 }

@@ -13,8 +13,8 @@ shared interface IDRegistrar {
     "Register, and return, an ID, firing a warning if it's already used on the given
      [[Warning]] instance."
     shared formal Integer register(Integer id, Warning warning = warningLevels.default,
-            "The location in some XML that this is coming from. Null if caller isn't an
-             XML reader."
+            "The location ([row, column]) in some XML that this is coming from. Null if
+             caller isn't an XML reader."
             Location? location = null);
     "Generate and register an ID that hasn't been previously registered."
     shared formal Integer createID();

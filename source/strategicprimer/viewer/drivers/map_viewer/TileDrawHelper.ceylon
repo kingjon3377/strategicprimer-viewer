@@ -2,9 +2,7 @@ import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
 import strategicprimer.model.common.map {
-    Point
-}
-import strategicprimer.model.impl.map {
+    Point,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {

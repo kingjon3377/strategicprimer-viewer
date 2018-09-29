@@ -12,7 +12,7 @@ import lovelace.util.common {
     matchingPredicate
 }
 
-import strategicprimer.model.impl {
+import strategicprimer.model.common {
     DistanceComparator
 }
 import strategicprimer.model.impl.idreg {
@@ -26,9 +26,7 @@ import strategicprimer.model.common.map {
     HasOwner,
     Point,
     MapDimensions,
-    invalidPoint
-}
-import strategicprimer.model.impl.map {
+    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {

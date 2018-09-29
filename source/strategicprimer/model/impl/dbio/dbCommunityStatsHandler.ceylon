@@ -7,7 +7,7 @@ import ceylon.decimal {
     parseDecimal
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures {

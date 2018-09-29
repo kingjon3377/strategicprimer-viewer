@@ -9,10 +9,7 @@ import java.awt {
 
 import strategicprimer.model.common.map {
     Point,
-    River
-}
-
-import strategicprimer.model.impl.map {
+    River,
     IMapNG
 }
 import java.lang {

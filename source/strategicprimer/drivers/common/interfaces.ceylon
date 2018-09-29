@@ -11,10 +11,8 @@ import java.nio.file {
 import lovelace.util.common {
     todo
 }
-import strategicprimer.model.impl.map {
-    IMutableMapNG
-}
 import strategicprimer.model.common.map {
+    IMutableMapNG,
     HasName
 }
 import strategicprimer.model.common.xmlio {

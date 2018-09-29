@@ -10,9 +10,7 @@ import java.awt.geom {
 import strategicprimer.model.common.map {
     Point,
     River,
-    TileType
-}
-import strategicprimer.model.impl.map {
+    TileType,
     IMapNG
 }
 import java.awt {

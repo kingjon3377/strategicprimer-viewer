@@ -13,9 +13,7 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.common.map {
     Point,
-    HasName
-}
-import strategicprimer.model.impl.map {
+    HasName,
     IMutableMapNG
 }
 import java.nio.file {

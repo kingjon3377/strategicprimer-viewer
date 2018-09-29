@@ -6,12 +6,10 @@ import ceylon.test {
     assertFalse
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMutableMapNG,
     IMapNG,
-    SPMapNG
-}
-import strategicprimer.model.common.map {
+    SPMapNG,
     Point,
     River,
     TileType,

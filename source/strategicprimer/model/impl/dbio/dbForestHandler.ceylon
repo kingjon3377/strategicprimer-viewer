@@ -8,10 +8,7 @@ import ceylon.decimal {
 }
 
 import strategicprimer.model.common.map {
-    Point
-}
-
-import strategicprimer.model.impl.map {
+    Point,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.terrain {

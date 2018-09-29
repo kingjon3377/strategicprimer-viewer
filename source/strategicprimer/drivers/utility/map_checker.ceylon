@@ -46,9 +46,7 @@ import strategicprimer.model.common.map {
     Player,
     HasOwner,
     Point,
-    TileType
-}
-import strategicprimer.model.impl.map {
+    TileType,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {

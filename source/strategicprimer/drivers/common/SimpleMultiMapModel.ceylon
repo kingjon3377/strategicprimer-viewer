@@ -7,7 +7,7 @@ import java.nio.file {
     JPath=Path
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import lovelace.util.common {

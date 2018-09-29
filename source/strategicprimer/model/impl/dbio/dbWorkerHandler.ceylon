@@ -15,9 +15,7 @@ import strategicprimer.model.common.idreg {
     DuplicateIDException
 }
 import strategicprimer.model.common.map {
-    HasPortrait
-}
-import strategicprimer.model.impl.map {
+    HasPortrait,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {

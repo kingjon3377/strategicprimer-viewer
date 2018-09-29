@@ -7,11 +7,8 @@ import java.sql {
     Types
 }
 
-import strategicprimer.model.impl.map {
-    IMutableMapNG
-}
-
 import strategicprimer.model.common.map {
+    IMutableMapNG,
     Point,
     HasKind,
     HasMutableImage

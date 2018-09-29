@@ -30,9 +30,7 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.model.common.map {
     MapDimensions,
     TileFixture,
-    Point
-}
-import strategicprimer.model.impl.map {
+    Point,
     IMapNG
 }
 import strategicprimer.model.impl.xmlio {

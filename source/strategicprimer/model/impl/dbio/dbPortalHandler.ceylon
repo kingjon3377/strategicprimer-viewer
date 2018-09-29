@@ -8,10 +8,7 @@ import java.sql {
 }
 
 import strategicprimer.model.common.map {
-    Point
-}
-
-import strategicprimer.model.impl.map {
+    Point,
     IMutableMapNG
 }
 

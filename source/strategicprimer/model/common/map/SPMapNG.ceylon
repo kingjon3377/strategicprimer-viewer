@@ -15,10 +15,6 @@ import ceylon.collection {
     HashSet,
     HashMap
 }
-import ceylon.logging {
-    Logger,
-    logger
-}
 import strategicprimer.model.common.map.fixtures.towns {
     AbstractTown
 }
@@ -43,8 +39,6 @@ import strategicprimer.model.common.map {
     IPlayerCollection
 }
 
-"A logger."
-Logger log = logger(`module strategicprimer.model.impl`);
 "A class to represent a game-world map and its contents."
 shared class SPMapNG satisfies IMutableMapNG {
     "Whether the given fixture should be zeroed out if the map is for the given player."

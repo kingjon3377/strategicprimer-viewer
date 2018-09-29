@@ -16,12 +16,10 @@ import org.sqlite {
     SQLiteDataSource
 }
 
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMapNG,
     IMutableMapNG,
-    SPMapNG
-}
-import strategicprimer.model.common.map {
+    SPMapNG,
     MapDimensions,
     MapDimensionsImpl,
     PlayerImpl,

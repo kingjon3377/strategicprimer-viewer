@@ -3,10 +3,8 @@ import ceylon.dbc {
     SqlNull
 }
 
-import strategicprimer.model.impl.map {
-    IMutableMapNG
-}
 import strategicprimer.model.common.map {
+    IMutableMapNG,
     TileFixture,
     HasMutableImage,
     Point

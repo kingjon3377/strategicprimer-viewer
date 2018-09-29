@@ -3,7 +3,7 @@ import lovelace.util.common {
     comparingOn
 }
 
-import strategicprimer.model.impl {
+import strategicprimer.model.common {
     DistanceComparator
 }
 import strategicprimer.model.common.map {

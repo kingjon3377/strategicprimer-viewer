@@ -15,10 +15,7 @@ import strategicprimer.model.common.map {
     HasExtent,
     Point,
     MapDimensions,
-    invalidPoint
-}
-
-import strategicprimer.model.impl.map {
+    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.resources {

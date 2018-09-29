@@ -7,10 +7,7 @@ import strategicprimer.model.common.map {
     IFixture,
     Point,
     MapDimensions,
-    invalidPoint
-}
-
-import strategicprimer.model.impl.map {
+    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.explorable {

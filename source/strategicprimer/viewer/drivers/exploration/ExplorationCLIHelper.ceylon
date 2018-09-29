@@ -9,12 +9,9 @@ import lovelace.util.common {
     matchingValue
 }
 
-import strategicprimer.model.impl.map {
-    IMutableMapNG,
-    IMapNG
-}
-
 import strategicprimer.model.common.map {
+    IMutableMapNG,
+    IMapNG,
     TileType,
     Point,
     HasOwner,

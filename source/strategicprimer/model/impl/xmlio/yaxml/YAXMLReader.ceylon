@@ -29,7 +29,7 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar,
     IDFactory
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import strategicprimer.model.impl.xmlio {

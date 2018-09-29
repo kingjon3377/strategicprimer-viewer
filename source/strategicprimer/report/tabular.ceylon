@@ -34,10 +34,7 @@ import strategicprimer.model.common.map {
     Player,
     IFixture,
     MapDimensions,
-    Point
-}
-
-import strategicprimer.model.impl.map {
+    Point,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {

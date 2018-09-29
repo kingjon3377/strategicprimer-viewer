@@ -24,9 +24,7 @@ import strategicprimer.model.common.map {
     TileFixture,
     Point,
     HasName,
-    TileType
-}
-import strategicprimer.model.impl.map {
+    TileType,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {

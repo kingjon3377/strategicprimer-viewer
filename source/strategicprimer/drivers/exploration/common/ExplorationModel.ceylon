@@ -22,9 +22,7 @@ import strategicprimer.model.common.map {
     Point,
     TileFixture,
     invalidPoint,
-    TileType
-}
-import strategicprimer.model.impl.map {
+    TileType,
     IMutableMapNG,
     IMapNG
 }

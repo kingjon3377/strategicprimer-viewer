@@ -1,7 +1,5 @@
 import strategicprimer.model.common.map {
-    IFixture
-}
-import strategicprimer.model.impl.map {
+    IFixture,
     IMapNG
 }
 import ceylon.collection {

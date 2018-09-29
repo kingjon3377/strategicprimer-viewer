@@ -43,7 +43,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import java.awt.event {
     ActionEvent
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMapNG
 }
 import lovelace.util.jvm {

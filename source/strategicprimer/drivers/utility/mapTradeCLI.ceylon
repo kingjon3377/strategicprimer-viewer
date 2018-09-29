@@ -12,10 +12,8 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.model.impl.map {
-    IMapNG
-}
 import strategicprimer.model.common.map {
+    IMapNG,
     TileFixture,
     Player
 }

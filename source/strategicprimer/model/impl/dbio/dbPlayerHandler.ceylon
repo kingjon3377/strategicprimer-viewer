@@ -3,12 +3,9 @@ import ceylon.dbc {
     SqlNull
 }
 
-import strategicprimer.model.impl.map {
-    IMapNG,
-    IMutableMapNG
-}
-
 import strategicprimer.model.common.map {
+    IMapNG,
+    IMutableMapNG,
     Player,
     PlayerImpl
 }

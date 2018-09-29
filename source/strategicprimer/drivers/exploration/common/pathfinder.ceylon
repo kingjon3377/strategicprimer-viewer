@@ -6,10 +6,8 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
-import strategicprimer.model.impl.map {
-    IMapNG
-}
 import strategicprimer.model.common.map {
+    IMapNG,
     Point
 }
 import lovelace.util.common {

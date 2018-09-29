@@ -1,8 +1,6 @@
-import strategicprimer.model.impl.map {
-    IMutableMapNG,
-    IMapNG
-}
 import strategicprimer.model.common.map {
+    IMutableMapNG,
+    IMapNG,
     River
 }
 import ceylon.dbc {

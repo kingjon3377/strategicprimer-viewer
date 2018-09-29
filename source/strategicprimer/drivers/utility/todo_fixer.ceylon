@@ -38,9 +38,7 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.common.map {
     TileType,
-    Point
-}
-import strategicprimer.model.impl.map {
+    Point,
     IMapNG,
     IMutableMapNG
 }

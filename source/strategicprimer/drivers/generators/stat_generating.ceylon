@@ -21,9 +21,7 @@ import strategicprimer.model.common.map {
     Player,
     TileFixture,
     Point,
-    HasOwner
-}
-import strategicprimer.model.impl.map {
+    HasOwner,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {

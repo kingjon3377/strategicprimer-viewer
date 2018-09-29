@@ -24,7 +24,7 @@ import org.sqlite {
 import javax.sql {
     DataSource
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMapNG
 }
 import ceylon.language.meta {

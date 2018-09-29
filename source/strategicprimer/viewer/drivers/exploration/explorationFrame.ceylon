@@ -79,9 +79,7 @@ import strategicprimer.model.common.map {
     Point,
     TileType,
     TileFixture,
-    invalidPoint
-}
-import strategicprimer.model.impl.map {
+    invalidPoint,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {

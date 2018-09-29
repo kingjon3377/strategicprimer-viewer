@@ -14,9 +14,7 @@ import strategicprimer.viewer.drivers.map_viewer {
 import strategicprimer.model.common.map {
     Point,
     TileFixture,
-    invalidPoint
-}
-import strategicprimer.model.impl.map {
+    invalidPoint,
     IMapNG
 }
 import strategicprimer.drivers.common {

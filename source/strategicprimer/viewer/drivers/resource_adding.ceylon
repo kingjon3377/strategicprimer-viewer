@@ -77,9 +77,7 @@ import strategicprimer.model.impl.idreg {
 }
 import strategicprimer.model.common.map {
     Player,
-    PlayerImpl
-}
-import strategicprimer.model.impl.map {
+    PlayerImpl,
     IMutableMapNG,
     IMapNG
 }

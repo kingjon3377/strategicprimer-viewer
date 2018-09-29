@@ -56,9 +56,7 @@ import strategicprimer.model.common.map {
     River,
     TileType,
     HasMutableImage,
-    PlayerCollection
-}
-import strategicprimer.model.impl.map {
+    PlayerCollection,
     IMutableMapNG,
     IMapNG,
     SPMapNG

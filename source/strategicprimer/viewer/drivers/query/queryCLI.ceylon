@@ -6,9 +6,7 @@ import strategicprimer.model.common.map {
     TileFixture,
     TileType,
     MapDimensions,
-    Point
-}
-import strategicprimer.model.impl.map {
+    Point,
     IMapNG
 }
 import ceylon.collection {
@@ -63,7 +61,7 @@ import strategicprimer.drivers.exploration.common {
     surroundingPointIterable,
     pathfinder
 }
-import strategicprimer.model.impl {
+import strategicprimer.model.common {
     DistanceComparator
 }
 import java.nio.file {

@@ -3,10 +3,7 @@ import ceylon.dbc {
 }
 
 import strategicprimer.model.common.map {
-    IFixture
-}
-
-import strategicprimer.model.impl.map {
+    IFixture,
     IMutableMapNG,
     IMapNG
 }

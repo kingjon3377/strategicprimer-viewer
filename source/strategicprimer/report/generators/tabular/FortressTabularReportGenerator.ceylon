@@ -2,7 +2,7 @@ import lovelace.util.common {
     DelayedRemovalMap
 }
 
-import strategicprimer.model.impl {
+import strategicprimer.model.common {
     DistanceComparator
 }
 import strategicprimer.model.common.map {

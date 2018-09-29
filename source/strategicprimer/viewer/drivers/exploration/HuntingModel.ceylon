@@ -4,9 +4,7 @@ import strategicprimer.drivers.exploration.common {
 import strategicprimer.model.common.map {
     TileType,
     MapDimensions,
-    Point
-}
-import strategicprimer.model.impl.map {
+    Point,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {

@@ -18,10 +18,7 @@ import strategicprimer.model.common.map {
     IPlayerCollection,
     IMutablePlayerCollection,
     PlayerCollection,
-    MapDimensionsImpl
-}
-
-import strategicprimer.model.impl.map {
+    MapDimensionsImpl,
     IMutableMapNG,
     IMapNG,
     SPMapNG

@@ -9,11 +9,9 @@ import java.nio.file {
 import strategicprimer.drivers.common {
     VersionChangeListener
 }
-import strategicprimer.model.impl.map {
-    SPMapNG,
-    IMutableMapNG
-}
 import strategicprimer.model.common.map {
+    SPMapNG,
+    IMutableMapNG,
     MapDimensions,
     MapDimensionsImpl,
     PlayerCollection

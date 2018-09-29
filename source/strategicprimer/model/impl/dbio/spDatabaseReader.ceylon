@@ -4,7 +4,7 @@ import strategicprimer.model.impl.xmlio {
 import strategicprimer.model.common.xmlio {
     Warning
 }
-import strategicprimer.model.impl.map {
+import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import java.nio.file {

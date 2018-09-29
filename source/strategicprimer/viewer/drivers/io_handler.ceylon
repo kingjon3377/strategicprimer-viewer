@@ -42,10 +42,7 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.model.common.map {
-    PlayerCollection
-}
-
-import strategicprimer.model.impl.map {
+    PlayerCollection,
     SPMapNG,
     IMutableMapNG
 }

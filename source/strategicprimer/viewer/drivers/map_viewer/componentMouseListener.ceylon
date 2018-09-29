@@ -10,9 +10,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.common.map {
     MapDimensions,
     Point,
-    TileFixture
-}
-import strategicprimer.model.impl.map {
+    TileFixture,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {

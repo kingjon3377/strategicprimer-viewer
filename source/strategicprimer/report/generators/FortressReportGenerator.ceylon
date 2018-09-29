@@ -16,10 +16,7 @@ import strategicprimer.model.common.map {
     Point,
     River,
     MapDimensions,
-    invalidPoint
-}
-
-import strategicprimer.model.impl.map {
+    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {
