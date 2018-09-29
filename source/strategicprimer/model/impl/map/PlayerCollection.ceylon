@@ -3,10 +3,6 @@ import ceylon.collection {
     naturalOrderTreeMap
 }
 
-import java.lang {
-    ObjectArray
-}
-
 import strategicprimer.model.common.map {
     Player,
 	MutablePlayer,
@@ -99,9 +95,6 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
     }
     """The player for "independent" fixtures."""
     shared actual Player independent => independentPlayer;
-    "The players, as an array."
-    shared actual ObjectArray<Player> asArray() =>
-            ObjectArray.with(players.items);
     "Clone the collection."
     shared actual IMutablePlayerCollection copy() {
         IMutablePlayerCollection retval = PlayerCollection();

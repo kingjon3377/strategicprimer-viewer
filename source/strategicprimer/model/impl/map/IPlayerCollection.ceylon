@@ -1,7 +1,3 @@
-import java.lang {
-    ObjectArray
-}
-
 import strategicprimer.model.common.map {
     Subsettable,
 	Player
@@ -19,6 +15,4 @@ shared interface IPlayerCollection satisfies {Player*}&Subsettable<{Player*}> {
     shared formal Player independent;
     "Clone the collection."
     shared formal IPlayerCollection copy();
-    "The players as an array." // FIXME: Remove (unused and sole JVM-specific member)
-    shared default ObjectArray<Player> asArray() => ObjectArray.with(this);
 }
