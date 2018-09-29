@@ -49,8 +49,8 @@ shared class SubsetGUI() satisfies UtilityDriver {
         SubsetFrame frame = subsetFrame();
         SwingUtilities.invokeLater(frame.showWindow);
         assert (exists first = args.first);
-        try {
-            frame.loadMain(JPaths.get(first)); // FIXME: Handle errors by popping up dialog
+        try { // Errors are reported via the GUI in loadMain(), then rethrown.
+            frame.loadMain(JPaths.get(first));
         } catch (IOException except) {
             throw DriverFailedException(except, "I/O error loading main map ``first``");
         } catch (XMLStreamException except) {
