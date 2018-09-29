@@ -54,9 +54,7 @@ import ceylon.numeric.float {
     round=halfEven
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IWorker
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    IWorker,
     Animal,
     AnimalTracks,
     animalPlurals

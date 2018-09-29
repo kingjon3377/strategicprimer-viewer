@@ -34,7 +34,7 @@ import lovelace.util.common {
 import ceylon.numeric.float {
     round=halfEven
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     AnimalTracks
 }

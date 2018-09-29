@@ -54,9 +54,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Ogre,
     Minotaur,
     Troll,
-    Simurgh
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    Simurgh,
     Animal,
     AnimalTracks
 }

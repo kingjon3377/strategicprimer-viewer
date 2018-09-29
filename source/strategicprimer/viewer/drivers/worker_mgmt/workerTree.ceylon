@@ -42,9 +42,7 @@ import javax.swing {
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
-    IUnit
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    IUnit,
     Animal,
     maturityModel,
     animalPlurals

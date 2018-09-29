@@ -51,9 +51,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Centaur,
     IWorker,
-    Dragon
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    Dragon,
     Animal,
     AnimalTracks
 }

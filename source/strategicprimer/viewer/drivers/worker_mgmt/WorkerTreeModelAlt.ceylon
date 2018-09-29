@@ -20,9 +20,7 @@ import ceylon.collection {
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor,
-    IUnit
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    IUnit,
     ProxyUnit
 }
 import strategicprimer.model.common.map {

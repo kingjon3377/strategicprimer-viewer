@@ -38,9 +38,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Phoenix,
     Simurgh,
     Troll,
-    immortalAnimals
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    immortalAnimals,
     Animal,
     maturityModel,
     AnimalImpl,

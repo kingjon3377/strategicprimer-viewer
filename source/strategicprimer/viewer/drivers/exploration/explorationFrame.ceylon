@@ -85,9 +85,7 @@ import strategicprimer.model.impl.map {
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IUnit
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    IUnit,
     Animal,
     AnimalTracks
 }

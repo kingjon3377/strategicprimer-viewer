@@ -1,4 +1,4 @@
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     AnimalTracks
 }
 import strategicprimer.model.common.map.fixtures.resources {

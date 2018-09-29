@@ -55,10 +55,8 @@ import strategicprimer.model.impl.xmlio.exceptions {
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
-    maturityModel
-}
 import strategicprimer.model.common.map.fixtures.mobile {
+    maturityModel,
     immortalAnimals
 }
 import strategicprimer.model.common.map.fixtures.towns {

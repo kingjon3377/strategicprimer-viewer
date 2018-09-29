@@ -29,9 +29,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.mobile {
     ProxyFor,
     IUnit,
-    Unit
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    Unit,
     ProxyUnit,
     AnimalImpl
 }

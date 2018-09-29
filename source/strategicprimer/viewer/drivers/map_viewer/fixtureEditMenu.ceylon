@@ -23,7 +23,7 @@ import strategicprimer.model.common.map.fixtures {
 import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     Animal
 }
 import strategicprimer.model.impl.idreg {

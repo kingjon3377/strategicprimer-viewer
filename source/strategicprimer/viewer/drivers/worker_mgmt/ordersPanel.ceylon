@@ -37,9 +37,7 @@ import strategicprimer.model.common.map {
     Player
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IUnit
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    IUnit,
     ProxyUnit
 }
 import lovelace.util.common {

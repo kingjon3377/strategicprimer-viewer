@@ -11,7 +11,7 @@ import strategicprimer.model.common.map {
     MapDimensions,
     Point
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     maturityModel,
     AnimalTracks

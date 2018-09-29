@@ -56,10 +56,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Griffin,
     Sphinx,
     Phoenix,
-    Djinn
-}
-
-import strategicprimer.model.impl.map.fixtures.mobile {
+    Djinn,
     Animal,
     AnimalTracks
 }

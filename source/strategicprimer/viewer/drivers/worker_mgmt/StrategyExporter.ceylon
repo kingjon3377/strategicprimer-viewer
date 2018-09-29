@@ -27,9 +27,7 @@ import strategicprimer.model.common.map.fixtures {
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
-    IUnit
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    IUnit,
     Animal,
     animalPlurals
 }

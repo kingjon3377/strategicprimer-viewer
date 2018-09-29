@@ -31,9 +31,7 @@ import strategicprimer.model.common.map.fixtures {
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     Worker,
-    Unit
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    Unit,
     AnimalImpl,
     AnimalTracks
 }

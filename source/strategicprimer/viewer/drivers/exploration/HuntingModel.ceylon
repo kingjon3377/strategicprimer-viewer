@@ -9,7 +9,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.impl.map {
     IMapNG
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
+import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     AnimalTracks
 }

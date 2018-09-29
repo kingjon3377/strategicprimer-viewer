@@ -59,9 +59,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Dragon,
     Fairy,
     Worker,
-    Giant
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    Giant,
     AnimalImpl,
     AnimalTracks
 }

@@ -21,9 +21,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
     Worker,
     SimpleImmortal,
-    immortalAnimals
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    immortalAnimals,
     Animal,
     maturityModel,
     AnimalImpl,

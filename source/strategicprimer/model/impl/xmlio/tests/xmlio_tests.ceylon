@@ -87,9 +87,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Griffin,
     Ogre,
     Worker,
-    immortalAnimals
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    immortalAnimals,
     Animal,
     AnimalImpl,
     AnimalTracks

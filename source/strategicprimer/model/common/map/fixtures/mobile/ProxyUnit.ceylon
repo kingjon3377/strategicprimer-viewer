@@ -33,13 +33,6 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     ProxyWorker
 }
-import ceylon.logging {
-    Logger,
-    logger
-}
-
-"Logger."
-Logger log = logger(`module strategicprimer.model.impl`);
 
 "A proxy for units in multiple maps, or all a player's units of one kind."
 shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutableImage

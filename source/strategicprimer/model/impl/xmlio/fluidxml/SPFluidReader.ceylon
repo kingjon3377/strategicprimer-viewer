@@ -77,9 +77,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Djinn,
     Simurgh,
     Minotaur,
-    immortalAnimals
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    immortalAnimals,
     maturityModel
 }
 import strategicprimer.model.common.map.fixtures.terrain {

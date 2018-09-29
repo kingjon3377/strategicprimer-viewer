@@ -39,9 +39,7 @@ import strategicprimer.model.common.map.fixtures {
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
-    ProxyFor
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    ProxyFor,
     Animal,
     maturityModel,
     animalPlurals

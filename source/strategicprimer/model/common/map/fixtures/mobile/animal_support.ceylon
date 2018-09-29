@@ -10,7 +10,7 @@ object fileSplitter {
     shared Map<String, Type> getFileContents<Type, BroaderType=Type>(String filename,
             BroaderType(String) factory) given Type satisfies BroaderType {
         assert (exists textContent =
-                readFileContents(`module strategicprimer.model.impl`, filename));
+                readFileContents(`module strategicprimer.model.common`, filename));
         return map(narrowedStream<String, Type>(textContent.split('\n'.equals)
             .map(splitOnFirstTab)
             .map(shuffle(curry(lineToEntry<BroaderType>))(factory))));

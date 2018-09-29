@@ -26,10 +26,7 @@ import strategicprimer.model.common.map {
 
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
-    Immortal
-}
-
-import strategicprimer.model.impl.map.fixtures.mobile {
+    Immortal,
     Animal,
     AnimalTracks
 }

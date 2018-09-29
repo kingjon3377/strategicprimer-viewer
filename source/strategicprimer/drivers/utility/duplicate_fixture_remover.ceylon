@@ -33,9 +33,7 @@ import strategicprimer.model.common.map.fixtures {
     Implement
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IUnit
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
+    IUnit,
     Animal,
     AnimalImpl
 }

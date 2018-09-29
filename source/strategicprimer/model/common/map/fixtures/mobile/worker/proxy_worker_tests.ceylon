@@ -16,7 +16,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Unit,
     IWorker,
-    Worker
+    Worker,
+    ProxyUnit
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     ProxyJob,
@@ -25,9 +26,6 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     ISkill,
     ProxyWorker,
     IJob
-}
-import strategicprimer.model.impl.map.fixtures.mobile {
-    ProxyUnit
 }
 
 "Tests that the proxy classes work as expected."

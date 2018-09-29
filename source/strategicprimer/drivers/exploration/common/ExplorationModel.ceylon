@@ -32,10 +32,8 @@ import strategicprimer.model.common.map.fixtures {
     Ground,
     MineralFixture
 }
-import strategicprimer.model.impl.map.fixtures.mobile {
-    Animal
-}
 import strategicprimer.model.common.map.fixtures.mobile {
+    Animal,
     IUnit,
     MobileFixture
 }
