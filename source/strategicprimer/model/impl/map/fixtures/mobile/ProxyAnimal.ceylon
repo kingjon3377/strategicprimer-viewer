@@ -52,6 +52,7 @@ class ProxyAnimal(Animal* proxiedAnimals) satisfies Animal&ProxyFor<Animal> {
     }
     shared actual String status => getConsensus(Animal.status) else "proxied";
     shared actual Boolean talking => getConsensus(Animal.talking) else false;
+    shared actual Integer dc => getConsensus(Animal.dc) else 22;
 }
 
 test

@@ -124,9 +124,6 @@ shared interface Animal
     shared actual formal Animal reduced(Integer newPopulation, Integer newId);
     shared actual formal Animal copy(Boolean zero);
     shared actual formal Animal combined(Animal addend);
-    "Required Perception check result to find the animal."
-    todo("Should be based on population size as well as animal kind")
-    shared actual default Integer dc => animalDiscoveryDCs[kind] else 22;
     shared actual default Boolean isSubset(IFixture obj, Anything(String) report) {
         if (obj.id == id) {
             if (is Animal obj) {
@@ -190,6 +187,9 @@ shared class AnimalImpl(kind, talking, status, id, born = -1, population = 1)
     shared actual Animal combined(Animal addend) =>
             AnimalImpl(kind, talking, status, id, born,
                 Integer.largest(0, population) + Integer.largest(0, addend.population));
+    "Required Perception check result to find the animal."
+    todo("Should be based on population size as well as animal kind")
+    shared actual Integer dc => animalDiscoveryDCs[kind] else 22;
 }
 object fileSplitter {
     {String+} splitOnFirstTab(String line) => line.split('\t'.equals, true, true, 1);
