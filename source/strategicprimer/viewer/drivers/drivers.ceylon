@@ -56,7 +56,13 @@ import strategicprimer.drivers.common {
     ParamCount,
     DriverFailedException,
     IncorrectUsageException,
-    SPOptionsImpl
+    SPOptionsImpl,
+    UtilityDriver,
+    CLIDriver,
+    GUIDriver,
+    mapReaderAdapter,
+    IMultiMapModel,
+    ReadOnlyDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
@@ -75,7 +81,8 @@ import strategicprimer.drivers.gui.common {
     WindowCloseListener
 }
 import strategicprimer.model.common.xmlio {
-    SPFormatException
+    SPFormatException,
+    warningLevels
 }
 import lovelace.util.common {
     todo,
@@ -90,8 +97,13 @@ import java.awt.image {
     BufferedImage
 }
 import java.nio.file {
-    NoSuchFileException
+    NoSuchFileException,
+    JPath=Path
 }
+import strategicprimer.model.impl.xmlio {
+    mapIOHelper
+}
+
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 object appChooserState {
@@ -201,13 +213,114 @@ object appChooserState {
         }
     }
 }
-class AppStarter() {
-    [Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache =
-            appChooserState.createCache(); // TODO: Can we inline that into here?
-    void startCatchingErrors(ISPDriver driver, ICLIHelper cli, SPOptions options,
-            String* args) {
+class DriverWrapper(ISPDriver driver) {
+    Boolean enoughArguments(Integer argc) {
+        assert (argc >= 0);
+        switch (driver.usage.paramsWanted)
+        case (ParamCount.none|ParamCount.anyNumber) {
+            return true;
+        }
+        case (ParamCount.one|ParamCount.atLeastOne) {
+            return argc >= 1;
+        }
+        case (ParamCount.two|ParamCount.atLeastTwo) {
+            return argc >= 2;
+        }
+    }
+    Boolean tooManyArguments(Integer argc) {
+        assert (argc >= 0);
+        switch (driver.usage.paramsWanted)
+        case (ParamCount.anyNumber|ParamCount.atLeastOne|ParamCount.atLeastTwo) {
+            return false;
+        }
+        case (ParamCount.none) {
+            return argc > 0;
+        }
+        case (ParamCount.one) {
+            return argc > 1;
+        }
+        case (ParamCount.two) {
+            return argc > 2;
+        }
+    }
+    void checkArguments(String* args) {
+        if (!enoughArguments(args.size) || tooManyArguments(args.size)) {
+            throw IncorrectUsageException(driver.usage);
+        }
+    }
+    {JPath*} extendArguments(String* args) {
+        if (is GUIDriver driver) {
+            MutableList<JPath> files;
+            if (nonempty temp = args.sequence()) {
+                files = ArrayList {
+                    elements = mapIOHelper.namesToFiles(*temp); };
+            } else {
+                files = ArrayList<JPath>();
+            }
+            if (tooManyArguments(files.size)) {
+                throw IncorrectUsageException(driver.usage);
+            }
+            while (!enoughArguments(files.size) &&
+                    !tooManyArguments(files.size + 1)) {
+                value requested = driver.askUserForFiles();
+                if (requested.empty || tooManyArguments(files.size + requested.size)) {
+                    throw IncorrectUsageException(driver.usage);
+                } else {
+                    files.addAll(requested);
+                }
+            }
+            return files;
+        } else if (nonempty temp = args.sequence()) {
+            return mapIOHelper.namesToFiles(*temp);
+        } else {
+            return [];
+        }
+    }
+    void fixCurrentTurn(SPOptions options, IDriverModel model) {
+        if (options.hasOption("--current-turn")) {
+            if (is Integer currentTurn = Integer.parse(options.getArgument("--current-turn"))) {
+                if (is IMultiMapModel model) {
+                    for (map->_ in model.allMaps) {
+                        map.currentTurn = currentTurn;
+                    }
+                } else {
+                    model.map.currentTurn = currentTurn;
+                }
+            }
+        }
+    }
+    shared void startCatchingErrors(ICLIHelper cli, SPOptions options, String* args) {
         try {
-            driver.startDriverOnArguments(cli, options, *args);
+            switch (driver)
+            case (is UtilityDriver) {
+                checkArguments(*args);
+                driver.startDriverOnArguments(cli, options, *args);
+            }
+            case (is ReadOnlyDriver) {
+                checkArguments(*args);
+                assert (nonempty args);
+                value files = mapIOHelper.namesToFiles(*args);
+                value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn,
+                    files.first, *files.rest);
+                fixCurrentTurn(options, model);
+                driver.startDriverOnModel(cli, options, model);
+            }
+            case (is CLIDriver) {
+                checkArguments(*args);
+                assert (nonempty args);
+                value files = mapIOHelper.namesToFiles(*args);
+                value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn,
+                    files.first, *files.rest);
+                fixCurrentTurn(options, model);
+                driver.startDriverOnModel(cli, options, model);
+                mapReaderAdapter.writeModel(model);
+            }
+            case (is GUIDriver) {
+                assert (nonempty files = extendArguments(*args).sequence());
+                value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn, files.first, *files.rest);
+                fixCurrentTurn(options, model);
+                driver.startDriverOnModel(cli, options, model);
+            }
         } catch (IncorrectUsageException except) {
             cli.println(appChooserState.usageMessage(except.correctUsage,
                 options.getArgument("--verbose") == "true"));
@@ -229,6 +342,10 @@ class AppStarter() {
             log.error(except.message, except);
         }
     }
+}
+class AppStarter() {
+    [Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache =
+            appChooserState.createCache(); // TODO: Can we inline that into here?
     Boolean includeInCLIList(ISPDriver driver) => driver.usage.includeInList(false);
     shared void startDriverOnArguments(ICLIHelper cli, SPOptions options, String* args) {
         //            log.info("Inside appStarter.startDriver()");
@@ -240,10 +357,11 @@ class AppStarter() {
         MutableList<String> others = ArrayList<String>();
         void startChosenDriver(ISPDriver driver, SPOptions currentOptionsTyped) {
             if (driver.usage.graphical) {
-                SwingUtilities.invokeLater(defer(startCatchingErrors,
-                    [driver, cli, currentOptionsTyped, *others]));
+                value lambda = defer(DriverWrapper(driver).startCatchingErrors,  // TODO: inline once eclipse/ceylon#7379 fixed
+                    [cli, currentOptionsTyped, *others]);
+                SwingUtilities.invokeLater(lambda);
             } else {
-                startCatchingErrors(driver, cli, currentOptionsTyped, *others);
+                DriverWrapper(driver).startCatchingErrors(cli, currentOptionsTyped, *others);
             }
             // TODO: clear `others` here?
         }
@@ -358,7 +476,8 @@ class AppStarter() {
                             .sequence(),
                         "CLI apps available:", "No applications available",
                         "App to start: ", true).item) {
-                    startCatchingErrors(chosenDriver, cli, options, *others);
+                    DriverWrapper(chosenDriver).startCatchingErrors(cli, options,
+                        *others);
                 }
             }
         }
@@ -399,7 +518,7 @@ shared void run() {
     }
 }
 SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
-        {String*}|IDriverModel finalArg) {
+        {String*}|IDriverModel finalArg) { // TODO: Drop model as final-arg possibility?
     value tempComponent = JEditorPane();
     value font = tempComponent.font;
     assert (is Graphics2D pen = BufferedImage(1, 1, BufferedImage.typeIntRgb)
@@ -419,9 +538,20 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
     void buttonHandler(ISPDriver target) {
         try {
             if (is IDriverModel finalArg) {
-                target.startDriverOnModel(cli, options, finalArg);
+                if (is UtilityDriver target) {
+                    if (is IMultiMapModel finalArg) {
+                        target.startDriverOnArguments(cli, options,
+                            *finalArg.allMaps.map(Entry.item).map(Tuple.first)
+                                .coalesced.map(JPath.string));
+                    } else {
+                        target.startDriverOnArguments(cli, options,
+                            finalArg.mapFile?.string else "");
+                    }
+                } else {
+                    target.startDriverOnModel(cli, options, finalArg);
+                }
             } else {
-                target.startDriverOnArguments(cli, options, *finalArg);
+                DriverWrapper(target).startCatchingErrors(cli, options, *finalArg);
             }
             SwingUtilities.invokeLater(() {
                 frame.setVisible(false);

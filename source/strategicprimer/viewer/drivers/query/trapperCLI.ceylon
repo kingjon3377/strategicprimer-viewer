@@ -2,22 +2,19 @@ import ceylon.collection {
     Queue
 }
 import strategicprimer.drivers.common {
-    SimpleDriver,
     SPOptions,
     DriverUsage,
     ParamCount,
     IDriverModel,
     IDriverUsage,
     ISPDriver,
-    IMultiMapModel
+    IMultiMapModel,
+    CLIDriver
 }
 import strategicprimer.model.common.map {
     Point,
     HasName,
     IMutableMapNG
-}
-import java.nio.file {
-    JPath=Path
 }
 import strategicprimer.viewer.drivers.exploration {
     HuntingModel
@@ -63,7 +60,7 @@ class QueueWrapper<Type>(variable {Type*} wrapped) satisfies Queue<Type> {
 todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
 service(`interface ISPDriver`)
 // FIXME: Write trapping (and hunting, etc.) GUI
-shared class TrappingCLI() satisfies SimpleDriver {
+shared class TrappingCLI() satisfies CLIDriver {
     Integer minutesPerHour = 60;
     TrapperCommand[] commands = sort(`TrapperCommand`.caseValues);
     shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"],
@@ -197,6 +194,4 @@ shared class TrappingCLI() satisfies SimpleDriver {
             }
         }
     }
-    "As this is a CLI, we can't show a file-chooser dialog."
-    shared actual {JPath*} askUserForFiles() => [];
 }

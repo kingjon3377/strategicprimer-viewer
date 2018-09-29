@@ -30,11 +30,11 @@ import strategicprimer.drivers.common {
     SPOptions,
     DriverUsage,
     IMultiMapModel,
-    SimpleCLIDriver,
     ParamCount,
     IDriverUsage,
     IDriverModel,
-    ISPDriver
+    ISPDriver,
+    CLIDriver
 }
 import strategicprimer.model.common.map {
     TileType,
@@ -68,7 +68,7 @@ class SimpleTerrain of unforested | forested | ocean {
    for their "kind" and aquatic villages with non-aquatic races."""
 todo("Write tests of this functionality") // This'll have to wait until eclipse/ceylon#6986 is fixed
 service(`interface ISPDriver`)
-shared class TodoFixerCLI() satisfies SimpleCLIDriver {
+shared class TodoFixerCLI() satisfies CLIDriver {
     "A list of unit kinds (jobs) for plains etc."
     MutableList<String> plainsList = ArrayList<String>();
     "A list of unit kinds (jobs) for forest and jungle."

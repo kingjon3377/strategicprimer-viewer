@@ -4,13 +4,13 @@ import ceylon.file {
 }
 
 import strategicprimer.drivers.common {
-    IDriverModel,
     IDriverUsage,
     DriverUsage,
     SPOptions,
-    SimpleCLIDriver,
     ParamCount,
-    ISPDriver
+    ISPDriver,
+    UtilityDriver,
+    IncorrectUsageException
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -22,7 +22,7 @@ import java.lang {
 """A driver to help debug "exploration tables", which were the second "exploration
    results" framework I implemented."""
 service(`interface ISPDriver`)
-shared class TableDebugger() satisfies SimpleCLIDriver {
+shared class TableDebugger() satisfies UtilityDriver {
     ExplorationRunner runner = ExplorationRunner();
     variable Boolean initialized = false;
     synchronized void init() {
@@ -39,11 +39,6 @@ shared class TableDebugger() satisfies SimpleCLIDriver {
         ParamCount.none, "Debug old-model encounter tables",
         "See whether old-model encounter tables refer to a nonexistent table", false,
         false);
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        log.warn("tableDebugger doesn't need a driver model");
-        startDriverNoArgs();
-    }
     "Print all possible results from a table."
     void debugSingleTable(
             "The string to print before each result (passed from the calling table)"
@@ -77,7 +72,11 @@ shared class TableDebugger() satisfies SimpleCLIDriver {
             }
         }
     }
-    shared actual void startDriverNoArgs(ICLIHelper cli, SPOptions options) {
+    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
+            String* args) {
+        if (args.size.positive) {
+            throw IncorrectUsageException(usage);
+        }
         init();
         runner.verboseGlobalRecursiveCheck(cli.println);
         EncounterTable mainTable = runner.getTable("main");

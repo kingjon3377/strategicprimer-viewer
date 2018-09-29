@@ -8,8 +8,8 @@ import strategicprimer.drivers.common {
     ParamCount,
     IDriverUsage,
     SPOptions,
-    SimpleDriver,
-    ISPDriver
+    ISPDriver,
+    GUIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -23,7 +23,7 @@ import strategicprimer.drivers.worker.common {
 }
 "A command-line program to export a proto-strategy for a player from orders in a map."
 service(`interface ISPDriver`)
-shared class StrategyExportCLI() satisfies SimpleDriver {
+shared class StrategyExportCLI() satisfies GUIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-w", "--worker", "--export-strategy"];

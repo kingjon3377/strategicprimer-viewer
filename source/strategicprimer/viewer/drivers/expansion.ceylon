@@ -29,12 +29,12 @@ import strategicprimer.drivers.common {
     SimpleMultiMapModel,
     IMultiMapModel,
     IDriverModel,
-    SimpleCLIDriver,
     SPOptions,
     ParamCount,
     IDriverUsage,
     DriverUsage,
-    ISPDriver
+    ISPDriver,
+    CLIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -57,7 +57,7 @@ import lovelace.util.common {
    villages."""
 service(`interface ISPDriver`)
 // FIXME: Write GUI for map-expanding driver
-shared class ExpansionDriver() satisfies SimpleCLIDriver {
+shared class ExpansionDriver() satisfies CLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-n", "--expand"];
@@ -171,7 +171,7 @@ object sampleMapPopulator satisfies MapPopulator {
    the [[populator]] field before each use."""
 service(`interface ISPDriver`)
 // TODO: Write GUI equivalent of Map Populator Driver
-shared class MapPopulatorDriver() satisfies SimpleCLIDriver {
+shared class MapPopulatorDriver() satisfies CLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-l", "--populate"];

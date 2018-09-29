@@ -16,11 +16,11 @@ import strategicprimer.drivers.common {
     IDriverModel,
     IDriverUsage,
     DriverUsage,
-    SimpleDriver,
     SPOptions,
     ParamCount,
     DriverFailedException,
-    ISPDriver
+    ISPDriver,
+    GUIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -51,7 +51,7 @@ import lovelace.util.jvm {
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to start the map viewer."
 service(`interface ISPDriver`)
-shared class ViewerGUI() satisfies SimpleDriver {
+shared class ViewerGUI() satisfies GUIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
         invocations = ["-m", "--map"];

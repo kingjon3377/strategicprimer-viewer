@@ -19,12 +19,12 @@ import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
     ParamCount,
-    SimpleDriver,
     IDriverUsage,
     SPOptions,
     DriverUsage,
     DriverFailedException,
-    ISPDriver
+    ISPDriver,
+    GUIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -123,7 +123,7 @@ object suffixHelper {
 }
 "A driver to produce a report of the contents of a map."
 service(`interface ISPDriver`)
-shared class ReportCLI() satisfies SimpleDriver {
+shared class ReportCLI() satisfies GUIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-m", "--report"];
@@ -269,7 +269,7 @@ shared class ReportCLI() satisfies SimpleDriver {
 }
 "A driver to show tabular reports of the contents of a player's map in a GUI."
 service(`interface ISPDriver`)
-shared class TabularReportGUI() satisfies SimpleDriver {
+shared class TabularReportGUI() satisfies GUIDriver {
     shared actual IDriverUsage usage = DriverUsage(true, ["-b", "--tabular"],
         ParamCount.one, "Tabular Report Viewer",
         "Show the contents of a map in tabular form", false, true);
@@ -302,7 +302,7 @@ shared class TabularReportGUI() satisfies SimpleDriver {
 }
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
 service(`interface ISPDriver`)
-shared class TabularReportCLI() satisfies SimpleDriver {
+shared class TabularReportCLI() satisfies GUIDriver {
     shared actual IDriverUsage usage = DriverUsage {
             graphical = false;
             invocations = ["-b", "--tabular"];

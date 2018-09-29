@@ -51,12 +51,12 @@ import strategicprimer.drivers.common {
     SPOptions,
     DriverUsage,
     IMultiMapModel,
-    SimpleCLIDriver,
-    ParamCount,
     IDriverUsage,
     IDriverModel,
     DriverFailedException,
-    ISPDriver
+    ISPDriver,
+    CLIDriver,
+    ParamCount
 }
 import java.io {
     IOException
@@ -75,7 +75,7 @@ import strategicprimer.model.common.map.fixtures.terrain {
    takes up on disk and the memory and CPU it takes to deal with it)."""
 service(`interface ISPDriver`)
 // FIXME: Write GUI for the duplicate fixture remover
-shared class DuplicateFixtureRemoverCLI() satisfies SimpleCLIDriver {
+shared class DuplicateFixtureRemoverCLI() satisfies CLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-u", "--duplicates"];

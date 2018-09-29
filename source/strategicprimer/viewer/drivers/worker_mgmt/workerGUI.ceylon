@@ -23,8 +23,8 @@ import strategicprimer.drivers.common {
     DriverUsage,
     SPOptions,
     IDriverModel,
-    SimpleDriver,
-    ISPDriver
+    ISPDriver,
+    GUIDriver
 }
 import java.nio.file {
     JPath=Path
@@ -52,7 +52,7 @@ import strategicprimer.drivers.gui.common {
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to start the worker management GUI."
 service(`interface ISPDriver`)
-shared class WorkerGUI() satisfies SimpleDriver {
+shared class WorkerGUI() satisfies GUIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
         invocations = ["-w", "--worker"];

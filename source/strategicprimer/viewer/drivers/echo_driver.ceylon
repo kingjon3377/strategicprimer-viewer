@@ -38,11 +38,11 @@ import strategicprimer.drivers.common {
     UtilityDriver,
     DriverFailedException,
     IncorrectUsageException,
-    SimpleCLIDriver,
     SPOptions,
     DriverUsage,
     IDriverUsage,
-    ISPDriver
+    ISPDriver,
+    CLIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -118,7 +118,7 @@ shared class EchoDriver() satisfies UtilityDriver {
 }
 "A driver to fix ID mismatches between forests and Ground in the main and player maps."
 service(`interface ISPDriver`)
-shared class ForestFixerDriver() satisfies SimpleCLIDriver {
+shared class ForestFixerDriver() satisfies CLIDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-f", "--fix-forest"],
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map", false, false);

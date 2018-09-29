@@ -39,12 +39,12 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
-    SimpleCLIDriver,
     IDriverUsage,
     DriverUsage,
     ParamCount,
     SPOptions,
-    ISPDriver
+    ISPDriver,
+    CLIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -76,7 +76,7 @@ Logger log = logger(`module strategicprimer.drivers.generators`);
  workers."
 service(`interface ISPDriver`)
 // FIXME: Write stat-generating/stat-entering GUI
-shared class StatGeneratingCLI satisfies SimpleCLIDriver {
+shared class StatGeneratingCLI satisfies CLIDriver {
     static String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
     static Boolean hasUnstattedWorker(IUnit unit) =>
             unit.narrow<Worker>().any(matchingValue(null, Worker.stats));

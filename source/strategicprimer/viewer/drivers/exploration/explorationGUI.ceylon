@@ -11,10 +11,10 @@ import strategicprimer.drivers.common {
     ParamCount,
     IDriverUsage,
     SPOptions,
-    SimpleDriver,
     IDriverModel,
     DriverFailedException,
-    ISPDriver
+    ISPDriver,
+    GUIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -40,7 +40,7 @@ import lovelace.util.jvm {
 }
 "An object to start the exploration GUI."
 service(`interface ISPDriver`)
-shared class ExplorationGUI() satisfies SimpleDriver {
+shared class ExplorationGUI() satisfies GUIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
         invocations = ["-x", "--explore"];

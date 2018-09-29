@@ -61,12 +61,12 @@ import strategicprimer.drivers.common {
     SPOptions,
     IDriverUsage,
     DriverFailedException,
-    SimpleDriver,
     ParamCount,
     DriverUsage,
-    SimpleCLIDriver,
     PlayerChangeListener,
-    ISPDriver
+    ISPDriver,
+    CLIDriver,
+    GUIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -140,7 +140,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
 }
 "A driver to le the user enter a player's resources and equipment."
 service(`interface ISPDriver`)
-shared class ResourceAddingCLI() satisfies SimpleCLIDriver {
+shared class ResourceAddingCLI() satisfies CLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-d", "--add-resource"];
@@ -256,7 +256,7 @@ shared class ResourceAddingCLI() satisfies SimpleCLIDriver {
     }
 }
 service(`interface ISPDriver`)
-shared class ResourceAddingGUI() satisfies SimpleDriver {
+shared class ResourceAddingGUI() satisfies GUIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
         invocations = ["-d", "--add-resource"];

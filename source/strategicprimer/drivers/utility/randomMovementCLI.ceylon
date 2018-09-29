@@ -1,11 +1,11 @@
 import strategicprimer.drivers.common {
-    SimpleCLIDriver,
     SPOptions,
     IDriverModel,
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    ISPDriver
+    ISPDriver,
+    CLIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -26,7 +26,7 @@ import ceylon.random {
 }
 "An app to move independent units around at random."
 service(`interface ISPDriver`)
-shared class RandomMovementCLI() satisfies SimpleCLIDriver {
+shared class RandomMovementCLI() satisfies CLIDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-v", "--move"],
         ParamCount.one, "Move independent units at random",
         "Move independent units randomly around the map.",

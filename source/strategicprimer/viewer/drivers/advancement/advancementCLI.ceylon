@@ -3,10 +3,10 @@ import strategicprimer.drivers.common {
     IDriverModel,
     DriverUsage,
     ParamCount,
-    SimpleCLIDriver,
     IDriverUsage,
     SPOptions,
-    ISPDriver
+    ISPDriver,
+    CLIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -52,7 +52,7 @@ Logger log = logger(`module strategicprimer.viewer`);
 todo("Move most implementation stuff out into a class that takes the CLI as a class
       parameter, then *doesn't* pass it around in callback style.")
 service(`interface ISPDriver`)
-shared class AdvancementCLI() satisfies SimpleCLIDriver {
+shared class AdvancementCLI() satisfies CLIDriver {
     "Let the user add hours to a Skill or Skills in a Job."
     void advanceJob(IJob job, ICLIHelper cli, Boolean allowExpertMentoring) {
         MutableList<ISkill> skills = ArrayList{ elements = job; };

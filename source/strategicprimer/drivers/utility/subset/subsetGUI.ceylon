@@ -15,23 +15,19 @@ import javax.xml.stream {
 import lovelace.util.common {
     todo
 }
-import lovelace.util.jvm {
-    showErrorDialog
-}
 
 import strategicprimer.model.common.xmlio {
     SPFormatException
 }
 import strategicprimer.drivers.common {
     DriverFailedException,
-    IMultiMapModel,
-    IDriverModel,
     DriverUsage,
     ParamCount,
     IDriverUsage,
     ISPDriver,
     SPOptions,
-    IncorrectUsageException
+    IncorrectUsageException,
+    UtilityDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -40,25 +36,11 @@ import strategicprimer.drivers.common.cli {
  results graphically."
 todo("Unify with [[SubsetCLI]]")
 service(`interface ISPDriver`)
-shared class SubsetGUI() satisfies ISPDriver {
+shared class SubsetGUI() satisfies UtilityDriver {
     shared actual IDriverUsage usage = DriverUsage(true, ["-s", "--subset"],
         ParamCount.atLeastTwo, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.", false, true);
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is IMultiMapModel model) {
-            SubsetFrame frame = subsetFrame();
-            SwingUtilities.invokeLater(frame.showWindow);
-            frame.loadMain(model.map);
-            for (map->[file, _] in model.subordinateMaps) {
-                frame.testMap(map, file);
-            }
-        } else {
-            showErrorDialog(null, "Strategic Primer Assistive Programs",
-                "The subset driver doesn't make sense on a non-multi-map driver");
-        }
-    }
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         if (args.size < 2) {
@@ -68,7 +50,7 @@ shared class SubsetGUI() satisfies ISPDriver {
         SwingUtilities.invokeLater(frame.showWindow);
         assert (exists first = args.first);
         try {
-            frame.loadMain(JPaths.get(first));
+            frame.loadMain(JPaths.get(first)); // FIXME: Handle errors by popping up dialog
         } catch (IOException except) {
             throw DriverFailedException(except, "I/O error loading main map ``first``");
         } catch (XMLStreamException except) {

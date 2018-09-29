@@ -24,11 +24,11 @@ import strategicprimer.drivers.common {
     SPOptions,
     ParamCount,
     IDriverUsage,
-    SimpleCLIDriver,
     DriverUsage,
     IDriverModel,
     IMultiMapModel,
-    ISPDriver
+    ISPDriver,
+    CLIDriver
 }
 import strategicprimer.model.common.map.fixtures {
     Ground,
@@ -63,9 +63,6 @@ import strategicprimer.drivers.exploration.common {
 }
 import strategicprimer.model.common {
     DistanceComparator
-}
-import java.nio.file {
-    JPath=Path
 }
 import strategicprimer.viewer.drivers.exploration {
     HuntingModel
@@ -558,7 +555,7 @@ class QueryHelper {
 "A driver for 'querying' the driver model about various things."
 service(`interface ISPDriver`)
 // FIXME: Write GUI equivalent of query CLI
-shared class QueryCLI() satisfies SimpleCLIDriver {
+shared class QueryCLI() satisfies CLIDriver {
     shared actual IDriverUsage usage = DriverUsage(false, ["-q", "--query"],
         ParamCount.atLeastOne, "Answer questions about a map.",
         "Look a tiles on a map. Or run hunting, gathering, or fishing.", true, false);
@@ -572,6 +569,4 @@ shared class QueryCLI() satisfies SimpleCLIDriver {
             log.error("I/O error", except);
         }
     }
-    "As we're a CLI driver, we can't show a file-chooser dialog."
-    shared actual {JPath*} askUserForFiles() => [];
 }

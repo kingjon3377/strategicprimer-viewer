@@ -9,11 +9,11 @@ import strategicprimer.drivers.common {
     DriverFailedException,
     DriverUsage,
     ParamCount,
-    SimpleCLIDriver,
     IDriverUsage,
     SPOptions,
     IDriverModel,
-    ISPDriver
+    ISPDriver,
+    CLIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -26,7 +26,7 @@ import strategicprimer.drivers.exploration.common {
 Logger log = logger(`module strategicprimer.viewer`);
 "A CLI to help running exploration."
 service(`interface ISPDriver`)
-shared class ExplorationCLI() satisfies SimpleCLIDriver {
+shared class ExplorationCLI() satisfies CLIDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-x", "--explore"];
