@@ -12,7 +12,7 @@ module strategicprimer.drivers.worker.common "0.4.9017" {
     shared import java.base javaVersion;
     import ceylon.collection ceylonVersion;
     shared import strategicprimer.drivers.common spVersion;
-    shared import strategicprimer.model.impl spVersion;
+    shared import strategicprimer.model.common spVersion;
     import ceylon.test ceylonVersion;
     import lovelace.util.jvm "0.1.0";
     shared import java.desktop javaVersion;

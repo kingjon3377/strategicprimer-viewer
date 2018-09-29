@@ -5,7 +5,7 @@ module strategicprimer.drivers.exploration.common "0.4.9017" {
     value ceylonVersion = "1.3.3";
     value spVersion = "0.4.9017";
     shared import strategicprimer.drivers.common spVersion;
-    import strategicprimer.model.impl spVersion;
+    import strategicprimer.model.common spVersion;
     import ceylon.collection ceylonVersion;
     import ceylon.numeric ceylonVersion;
     import ceylon.test ceylonVersion;
