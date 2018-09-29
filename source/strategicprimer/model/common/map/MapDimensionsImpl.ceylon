@@ -1,5 +1,4 @@
 "An encapsulation of a map's dimensions (and its map version as well)."
-// TODO: Does this really need to be an interface/impl-class pair, since objects are immutable?
 shared class MapDimensionsImpl(rows, columns, version) satisfies MapDimensions {
     "The map version."
     shared actual Integer version;
