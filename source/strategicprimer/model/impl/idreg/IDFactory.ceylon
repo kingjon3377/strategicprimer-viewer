@@ -13,9 +13,6 @@ import lovelace.util.common {
 import strategicprimer.model.common.xmlio {
     Warning
 }
-import javax.xml.stream {
-    Location
-}
 import strategicprimer.model.common.idreg {
     DuplicateIDException
 }
@@ -31,14 +28,14 @@ shared class IDFactory() satisfies IDRegistrar {
     "Register, and return, the given ID, using the given Warning instance to report if it
      has already been registered."
     shared actual Integer register(Integer id, Warning warning,
-            "The location in some XML that this is coming from. Null if caller isn't an
-             XML reader."
-            Location? location) {
+            "The location ([row, column]) in some XML that this is coming from. Null if
+             caller isn't an XML reader."
+            [Integer, Integer]? location) {
         if (id >= 0) {
             if (usedIDs.get(id)) {
                 if (exists location) {
                     warning.handle(DuplicateIDException.atLocation(id,
-                        location.lineNumber, location.columnNumber));
+                        location.first, location.rest.first));
                 } else {
                     warning.handle(DuplicateIDException(id));
                 }

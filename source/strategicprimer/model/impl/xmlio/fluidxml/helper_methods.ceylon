@@ -234,7 +234,7 @@ abstract class FluidBase {
             try {
                 return idFactory.register(
                     numParser.parse(getAttribute(element, "id")).intValue(),
-                    warner, element.location);
+                    warner, [element.location.lineNumber, element.location.columnNumber]);
             } catch (NumberFormatException|ParseException|JParseException except) {
                 throw MissingPropertyException(element, "id", except);
             }

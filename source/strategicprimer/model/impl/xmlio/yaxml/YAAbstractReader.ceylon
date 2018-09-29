@@ -299,7 +299,7 @@ abstract class YAAbstractReader<Element>
     "Register the specified ID number, noting that it came from the specified location,
      and return it."
     shared void registerID(Integer id, Location location) =>
-            idf.register(id, warner, location);
+            idf.register(id, warner, [location.lineNumber, location.columnNumber]);
     "If the specified tag has an ID as a property, return it; otherwise, warn about its
      absence and generate one."
     shared Integer getOrGenerateID(StartElement element) {

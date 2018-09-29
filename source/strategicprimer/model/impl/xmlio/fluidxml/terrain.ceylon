@@ -35,7 +35,8 @@ object fluidTerrainHandler extends FluidBase() {
         expectAttributes(element, warner, "id", "kind", "ground", "image", "exposed");
         Integer id = getIntegerAttribute(element, "id", -1, warner);
         if (id >= 0) {
-            idFactory.register(id, warner, element.location);
+            idFactory.register(id, warner,
+                [element.location.lineNumber, element.location.columnNumber]);
         }
         String kind = getAttrWithDeprecatedForm(element, "kind", "ground", warner);
         spinUntilEnd(element.name, stream);
@@ -49,7 +50,8 @@ object fluidTerrainHandler extends FluidBase() {
         expectAttributes(element, warner, "id", "kind", "rows", "image", "acres");
         Integer id = getIntegerAttribute(element, "id", -1, warner);
         if (id >= 0) {
-            idFactory.register(id, warner, element.location);
+            idFactory.register(id, warner,
+                [element.location.lineNumber, element.location.columnNumber]);
         }
         Forest retval = Forest(getAttribute(element, "kind"),
             getBooleanAttribute(element, "rows", false), id,
