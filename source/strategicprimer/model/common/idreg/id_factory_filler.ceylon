@@ -1,7 +1,3 @@
-import strategicprimer.model.impl.idreg {
-    IDRegistrar,
-    IDFactory
-}
 import strategicprimer.model.common.map {
     IFixture,
     IMapNG

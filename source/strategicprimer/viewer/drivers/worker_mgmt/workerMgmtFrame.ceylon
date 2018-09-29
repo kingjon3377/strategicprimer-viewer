@@ -67,7 +67,7 @@ import strategicprimer.drivers.worker.common {
 import strategicprimer.model.common {
     DistanceComparator
 }
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     createIDFactory,
     IDRegistrar
 }

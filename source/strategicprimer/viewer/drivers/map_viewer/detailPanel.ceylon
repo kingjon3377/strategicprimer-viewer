@@ -43,7 +43,7 @@ import strategicprimer.drivers.common {
     IDriverModel,
     SelectionChangeListener
 }
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     createIDFactory
 }
 "A panel to show the details of a tile, using a list rather than sub-panels with chits

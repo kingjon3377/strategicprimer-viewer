@@ -9,7 +9,7 @@ import javax.xml.stream {
     XMLStreamException
 }
 
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }

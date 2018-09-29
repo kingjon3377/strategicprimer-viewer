@@ -71,7 +71,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }

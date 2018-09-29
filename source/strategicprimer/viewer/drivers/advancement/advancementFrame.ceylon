@@ -17,7 +17,7 @@ import lovelace.util.jvm {
     InterpolatedLabel
 }
 
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     createIDFactory,
     IDRegistrar
 }

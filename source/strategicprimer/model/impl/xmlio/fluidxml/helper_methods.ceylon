@@ -29,7 +29,7 @@ import lovelace.util.common {
     todo
 }
 
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map {

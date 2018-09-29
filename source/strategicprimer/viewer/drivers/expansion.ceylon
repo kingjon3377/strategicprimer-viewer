@@ -3,7 +3,7 @@ import ceylon.collection {
     MutableList
 }
 
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }

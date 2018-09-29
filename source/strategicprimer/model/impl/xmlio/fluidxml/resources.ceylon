@@ -10,7 +10,7 @@ import javax.xml.stream.events {
     EndElement
 }
 
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map {

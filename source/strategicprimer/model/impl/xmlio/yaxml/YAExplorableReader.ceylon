@@ -6,7 +6,7 @@ import javax.xml.stream.events {
     XMLEvent
 }
 
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map.fixtures.explorable {

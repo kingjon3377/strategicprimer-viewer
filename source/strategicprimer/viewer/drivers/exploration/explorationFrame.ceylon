@@ -129,7 +129,7 @@ import ceylon.random {
 import strategicprimer.model.impl.xmlio {
     mapIOHelper
 }
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }

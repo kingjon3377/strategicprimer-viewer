@@ -80,7 +80,7 @@ import strategicprimer.drivers.worker.common {
 import ceylon.language.meta {
     type
 }
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import lovelace.util.common {

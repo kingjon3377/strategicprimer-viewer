@@ -25,7 +25,7 @@ import lovelace.util.jvm {
     TypesafeXMLEventReader
 }
 
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar,
     IDFactory
 }

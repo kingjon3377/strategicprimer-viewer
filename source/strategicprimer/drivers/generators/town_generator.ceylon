@@ -31,7 +31,7 @@ import strategicprimer.model.common.map.fixtures {
     ResourcePile,
     Quantity
 }
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }

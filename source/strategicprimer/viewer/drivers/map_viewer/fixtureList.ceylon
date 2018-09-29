@@ -52,7 +52,7 @@ import javax.swing {
 import strategicprimer.drivers.common {
     SelectionChangeListener
 }
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 "A visual list-based representation of the contents of a tile."

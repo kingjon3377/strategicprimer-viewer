@@ -26,7 +26,7 @@ import strategicprimer.drivers.worker.common {
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal
 }
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import java.lang {

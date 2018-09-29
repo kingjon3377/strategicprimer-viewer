@@ -15,7 +15,7 @@ import lovelace.util.common {
 import strategicprimer.model.common {
     DistanceComparator
 }
-import strategicprimer.model.impl.idreg {
+import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }
