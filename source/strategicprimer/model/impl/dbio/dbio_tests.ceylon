@@ -22,11 +22,11 @@ import strategicprimer.model.impl.map {
     SPMapNG
 }
 import strategicprimer.model.common.map {
-	MapDimensions,
-	MapDimensionsImpl,
-	PlayerImpl,
-	HasOwner,
-	Player,
+    MapDimensions,
+    MapDimensionsImpl,
+    PlayerImpl,
+    HasOwner,
+    Player,
     TileFixture,
     Point,
     PlayerCollection

@@ -1,5 +1,5 @@
 import strategicprimer.model.common.map {
-	IFixture,
+    IFixture,
     HasPopulation
 }
 "An orchard (fruit trees) or grove (other trees) on the map."
@@ -75,9 +75,9 @@ shared class Grove(orchard, cultivated, kind, id, population = -1)
             variable Boolean retval = true;
             Anything(String) localReport;
             if (orchard) {
-	            localReport = compose(report, "In orchard with ID #``id``:\t".plus);
+                localReport = compose(report, "In orchard with ID #``id``:\t".plus);
             } else {
-	            localReport = compose(report, "In grove with ID #``id``:\t".plus);
+                localReport = compose(report, "In grove with ID #``id``:\t".plus);
             }
             if (kind != other.kind) {
                 localReport("Kinds differ");

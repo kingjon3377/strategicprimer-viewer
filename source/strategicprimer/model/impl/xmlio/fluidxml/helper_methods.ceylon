@@ -33,8 +33,8 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map {
-	HasImage,
-	HasMutableImage,
+    HasImage,
+    HasMutableImage,
     Player,
     IPlayerCollection
 }
@@ -42,7 +42,7 @@ import strategicprimer.model.common.xmlio {
     SPFormatException,
     Warning,
     warningLevels,
-	spNamespace
+    spNamespace
 }
 import strategicprimer.model.impl.xmlio.exceptions {
     UnwantedChildException,
@@ -121,7 +121,7 @@ abstract class FluidBase {
             "The parameter we want to get."
             String param, String? defaultValue = null) {
         if (exists attr = getAttributeByName(element, param),
-		        exists retval = attr.\ivalue) {
+                exists retval = attr.\ivalue) {
             return retval;
         } else if (exists defaultValue) {
             return defaultValue;

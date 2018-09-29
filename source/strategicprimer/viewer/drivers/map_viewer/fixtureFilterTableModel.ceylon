@@ -29,7 +29,7 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map {
-	TileFixture,
+    TileFixture,
     Player
 }
 import strategicprimer.model.common.map.fixtures {
@@ -93,7 +93,7 @@ shared class FixtureFilterTableModel extends AbstractTableModel
     shared new () extends AbstractTableModel() {
         matchers = ArrayList<FixtureMatcher>();
         // Can't use our preferred initialization form because an Iterable can only be
-	    // spread as the *last* argument.
+        // spread as the *last* argument.
         for (arg in [
                 FixtureMatcher.complements<IUnit>(matchingPredicate(not(Player.independent),
                     IUnit.owner), "Units", "Independent Units"),
@@ -101,25 +101,25 @@ shared class FixtureFilterTableModel extends AbstractTableModel
                 FixtureMatcher.complements<AbstractTown>(matchingValue(TownStatus.active,
                         AbstractTown.status),
                     "Active Cities, Towns, & Fortifications",
-	                "Ruined, Abandoned, & Burned Communities"),
+                    "Ruined, Abandoned, & Burned Communities"),
                 // TODO: break up by owner beyond owned/independent
                 FixtureMatcher.complements<Village>(matchingPredicate(Player.independent,
                     Village.owner), "Independent Villages", "Villages With Suzerain"),
                 FixtureMatcher.trivialMatcher(`Mine`),
-		        FixtureMatcher.trivialMatcher(`Troll`),
+                FixtureMatcher.trivialMatcher(`Troll`),
                 FixtureMatcher.trivialMatcher(`Simurgh`),
-		        FixtureMatcher.trivialMatcher(`Ogre`),
+                FixtureMatcher.trivialMatcher(`Ogre`),
                 FixtureMatcher.trivialMatcher(`Minotaur`),
-		        FixtureMatcher.trivialMatcher(`Griffin`),
+                FixtureMatcher.trivialMatcher(`Griffin`),
                 FixtureMatcher.trivialMatcher(`Sphinx`, "Sphinxes"),
                 FixtureMatcher.trivialMatcher(`Phoenix`, "Phoenixes"),
                 FixtureMatcher.trivialMatcher(`Djinn`, "Djinni"),
                 FixtureMatcher.trivialMatcher(`Centaur`),
                 FixtureMatcher.trivialMatcher(`Fairy`, "Fairies"),
                 FixtureMatcher.trivialMatcher(`Giant`),
-		        FixtureMatcher.trivialMatcher(`Dragon`),
+                FixtureMatcher.trivialMatcher(`Dragon`),
                 FixtureMatcher.trivialMatcher(`Cave`),
-		        FixtureMatcher.trivialMatcher(`Battlefield`),
+                FixtureMatcher.trivialMatcher(`Battlefield`),
                 FixtureMatcher.trivialMatcher(`Animal`),
                 FixtureMatcher.trivialMatcher(`AnimalTracks`),
                 FixtureMatcher.trivialMatcher(`StoneDeposit`, "Stone Deposits"),
@@ -133,9 +133,9 @@ shared class FixtureFilterTableModel extends AbstractTableModel
                 FixtureMatcher.trivialMatcher(`Forest`),
                 FixtureMatcher.complements<Meadow>(Meadow.field, "Fields", "Meadows"),
                 FixtureMatcher.trivialMatcher(`Shrub`),
-		        FixtureMatcher.trivialMatcher(`Hill`),
+                FixtureMatcher.trivialMatcher(`Hill`),
                 FixtureMatcher.complements<Ground>(Ground.exposed, "Ground (exposed)",
-	                "Ground")
+                    "Ground")
             ]) {
             if (is {FixtureMatcher*} arg) {
                 matchers.addAll(arg);

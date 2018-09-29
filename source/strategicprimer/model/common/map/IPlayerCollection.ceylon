@@ -1,6 +1,6 @@
 import strategicprimer.model.common.map {
     Subsettable,
-	Player
+    Player
 }
 
 "An interface for collections of players."

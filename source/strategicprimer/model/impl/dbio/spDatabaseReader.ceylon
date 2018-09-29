@@ -1,5 +1,5 @@
 import strategicprimer.model.impl.xmlio {
-	IMapReader
+    IMapReader
 }
 import strategicprimer.model.common.xmlio {
     Warning

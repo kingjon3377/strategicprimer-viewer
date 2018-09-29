@@ -10,7 +10,7 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map {
-	IPlayerCollection,
+    IPlayerCollection,
     Player
 }
 import strategicprimer.model.common.map.fixtures.explorable {

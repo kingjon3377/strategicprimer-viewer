@@ -12,13 +12,13 @@ import strategicprimer.model.impl.map {
     SPMapNG
 }
 import strategicprimer.model.common.map {
-	Point,
-	River,
-	TileType,
-	TileFixture,
-	PlayerImpl,
+    Point,
+    River,
+    TileType,
+    TileFixture,
+    PlayerImpl,
     PlayerCollection,
-	MapDimensionsImpl
+    MapDimensionsImpl
 }
 import strategicprimer.model.common.map.fixtures {
     Ground

@@ -10,10 +10,10 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map {
-	Player,
+    Player,
     IFixture,
     Point,
-	MapDimensions,
+    MapDimensions,
     invalidPoint
 }
 

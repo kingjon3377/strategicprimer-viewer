@@ -28,7 +28,7 @@ import strategicprimer.model.impl.idreg {
     IDFactory
 }
 import strategicprimer.model.common.map {
-	River,
+    River,
     IMutablePlayerCollection,
     PlayerCollection
 }

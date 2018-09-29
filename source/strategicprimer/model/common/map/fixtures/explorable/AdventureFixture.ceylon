@@ -3,7 +3,7 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map {
-	IFixture,
+    IFixture,
     Subsettable,
     HasMutableOwner,
     Player
@@ -68,8 +68,8 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         if (obj.id == id) {
             if (is AdventureFixture obj) {
-	            Anything(String) localReport =
-			            compose(report, "In adventure with ID #``id``: ".plus);
+                Anything(String) localReport =
+                        compose(report, "In adventure with ID #``id``: ".plus);
                 if (briefDescription != obj.briefDescription) {
                     localReport("Brief descriptions differ");
                     return false;

@@ -3,7 +3,7 @@ import java.nio.file {
 }
 
 import strategicprimer.model.impl.map {
-	IMutableMapNG
+    IMutableMapNG
 }
 import strategicprimer.model.common.map {
     MapDimensions

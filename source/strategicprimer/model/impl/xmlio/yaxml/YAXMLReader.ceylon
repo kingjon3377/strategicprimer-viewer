@@ -33,8 +33,8 @@ import strategicprimer.model.impl.map {
     IMutableMapNG
 }
 import strategicprimer.model.impl.xmlio {
-	IMapReader,
-	ISPReader
+    IMapReader,
+    ISPReader
 }
 import strategicprimer.model.common.xmlio {
     SPFormatException,

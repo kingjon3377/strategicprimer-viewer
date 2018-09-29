@@ -30,7 +30,7 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.model.common.map {
-	Player
+    Player
 }
 import strategicprimer.model.impl.map {
     IMapNG,
@@ -374,9 +374,9 @@ shared class TabularReportCLI() satisfies SimpleDriver {
         });
         {Endpoint*} tocs = mapping.keys
             .map(curry(suffixHelper.shortestSuffix)(mapping.keys)).map(
-			        (path) => Endpoint {
-			            path = matchEquals("/``path``").or(matchEquals("/``path``/"));
-			            void service(Request request, Response response) {
+                    (path) => Endpoint {
+                        path = matchEquals("/``path``").or(matchEquals("/``path``/"));
+                        void service(Request request, Response response) {
                             response.writeString(
                                 "<!DOCTYPE html>
                                  <html>
@@ -396,8 +396,8 @@ shared class TabularReportCLI() satisfies SimpleDriver {
                             response.writeString("        </ul>
                                                       </body>
                                                   </html>");
-			            }
-			        });
+                        }
+                    });
         Endpoint rootHandler = Endpoint {
             path = isRoot();
             void service(Request request, Response response) {

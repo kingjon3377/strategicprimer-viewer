@@ -21,10 +21,10 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 import strategicprimer.model.common.map {
     IFixture,
-	TileFixture,
-	Point,
-	HasName,
-	TileType
+    TileFixture,
+    Point,
+    HasName,
+    TileType
 }
 import strategicprimer.model.impl.map {
     IMapNG
@@ -121,7 +121,7 @@ shared class TownGeneratingCLI() satisfies SimpleCLIDriver {
             String file = "``terrain``_consumption";
              assert (exists tableContents =
                      readFileContents(`module strategicprimer.drivers.generators`,
-	                     "tables/``file``"));
+                         "tables/``file``"));
              MutableList<[Quantity, String, String]> inner =
                      ArrayList<[Quantity, String, String]>();
              for (line in tableContents.lines) {

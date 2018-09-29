@@ -5,7 +5,7 @@ import lovelace.util.common {
 import strategicprimer.model.common.map {
     IFixture,
     Point,
-	MapDimensions,
+    MapDimensions,
     invalidPoint
 }
 

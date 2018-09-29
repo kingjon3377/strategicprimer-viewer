@@ -59,11 +59,11 @@ shared object spDatabaseWriter satisfies SPWriter {
     }
     DatabaseWriter<Nothing, Nothing>[] writers = [dbAdventureHandler, dbExplorableHandler,
         dbGroundHandler, dbImplementHandler, dbMapWriter, dbAnimalHandler,
-	    dbImmortalHandler, dbPlayerHandler, dbPortalHandler, dbResourcePileHandler,
-	    dbCacheHandler, dbFieldHandler, dbGroveHandler, dbMineHandler, dbMineralHandler,
-	    dbShrubHandler, dbSimpleTerrainHandler, dbForestHandler, dbTextHandler,
-	    dbTownHandler, dbCommunityStatsHandler, dbVillageHandler, dbFortressHandler,
-	    dbUnitHandler, dbWorkerHandler];
+        dbImmortalHandler, dbPlayerHandler, dbPortalHandler, dbResourcePileHandler,
+        dbCacheHandler, dbFieldHandler, dbGroveHandler, dbMineHandler, dbMineralHandler,
+        dbShrubHandler, dbSimpleTerrainHandler, dbForestHandler, dbTextHandler,
+        dbTownHandler, dbCommunityStatsHandler, dbVillageHandler, dbFortressHandler,
+        dbUnitHandler, dbWorkerHandler];
     shared void writeSPObjectInContext(Sql sql, Object obj, Object context) {
         for (writer in writers) {
             if (writer.canWrite(obj, context)) {

@@ -110,7 +110,7 @@ object appChooserState {
         MutableMap<String, ISPDriver> guiCache = HashMap<String, ISPDriver>();
         {String*} reserved = ["-g", "-c", "--gui", "--cli"];
         MutableMultimap<String, ISPDriver> conflicts =
-		        ArrayListMultimap<String, ISPDriver>();
+                ArrayListMultimap<String, ISPDriver>();
         void addToCache(ISPDriver* drivers) {
             for (driver in drivers) {
                 MutableMap<String, ISPDriver> cache;
@@ -130,7 +130,7 @@ object appChooserState {
                     } else if (exists existing = cache[option]) {
                         log.warn("Invocation option conflict for '``option``' between '``
                             driver.usage.shortDescription``' and '``
-	                        existing.usage.shortDescription``'");
+                            existing.usage.shortDescription``'");
                         conflicts.put(option, driver);
                         conflicts.put(option, existing);
                         cache.remove(option);
@@ -153,7 +153,7 @@ object appChooserState {
             mainInvocation = invocationResource.textContent().trimmed;
         } else {
             mainInvocation =
-		            "ceylon --cwd=. run `` `module strategicprimer.viewer`.name``";
+                    "ceylon --cwd=. run `` `module strategicprimer.viewer`.name``";
         }
         builder.append(mainInvocation);
         if (usage.graphical) {
@@ -272,10 +272,10 @@ class AppStarter() {
                 currentOptions.addOption(broken.first, broken.rest.reduce<String>(
                     (String partial, String element) =>
                             if (partial.empty) then element
-	                            else "``partial``=``element``")
+                                else "``partial``=``element``")
                 else "");
                 log.trace(
-	                "User specified ``broken.first``=``broken.rest.first else ""``");
+                    "User specified ``broken.first``=``broken.rest.first else ""``");
             } else if (!gui, driverCache[0].defines(arg.lowercased)) {
                 log.trace("User specified app-choosing option ``arg`` while in CLI mode");
                 if (exists temp = currentDriver) {
@@ -324,10 +324,10 @@ class AppStarter() {
                 log.trace("No driver selected, so giving choices.");
                 process.writeLine("Strategic Primer assistive programs suite");
                 process.writeLine(
-	                "No app specified; use one of the following invocations:");
+                    "No app specified; use one of the following invocations:");
                 process.writeLine();
                 for (driver in driverCache[0].chain(driverCache[1])
-		                .map(Entry.item).distinct) {
+                        .map(Entry.item).distinct) {
                     value lines = appChooserState.usageMessage(driver.usage,
                         options.getArgument("--verbose") == "true").lines;
                     String invocationExample = lines.first.replace("Usage: ", "");
@@ -346,7 +346,7 @@ class AppStarter() {
                 try {
                     SwingUtilities.invokeLater(
                         defer(shuffle(compose(SPFrame.showWindow, appChooserFrame))(),
-	                        [cli, currentOptionsTyped, others]));
+                            [cli, currentOptionsTyped, others]));
                 } catch (DriverFailedException except) {
                     log.fatal(except.message, except);
                     SwingUtilities.invokeLater(defer(showErrorDialog, [null,
@@ -355,7 +355,7 @@ class AppStarter() {
             } else {
                 if (exists chosenDriver = cli.chooseFromList(
                         driverCache.first.items.distinct.filter(includeInCLIList)
-	                        .sequence(),
+                            .sequence(),
                         "CLI apps available:", "No applications available",
                         "App to start: ", true).item) {
                     startCatchingErrors(chosenDriver, cli, options, *others);

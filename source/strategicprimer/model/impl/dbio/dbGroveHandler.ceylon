@@ -4,11 +4,11 @@ import ceylon.dbc {
 }
 
 import strategicprimer.model.common.map {
-	Point
+    Point
 }
 
 import strategicprimer.model.impl.map {
-	IMutableMapNG
+    IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.resources {
     Grove

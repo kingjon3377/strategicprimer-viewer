@@ -3,7 +3,7 @@ import lovelace.util.common {
     narrowedStream
 }
 import strategicprimer.model.common.map {
-	HasPopulation,
+    HasPopulation,
     IFixture,
     HasMutableImage,
     HasKind,

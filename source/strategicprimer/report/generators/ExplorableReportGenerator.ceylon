@@ -15,9 +15,9 @@ import lovelace.util.common {
 
 import strategicprimer.model.common.map {
     Player,
-	IFixture,
+    IFixture,
     Point,
-	MapDimensions,
+    MapDimensions,
     invalidPoint
 }
 
@@ -46,7 +46,7 @@ shared class ExplorableReportGenerator(
     "Produces a more verbose sub-report on a cave, battlefield, or portal."
     shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Battlefield|Cave|Portal item,
-		    Point loc) {
+            Point loc) {
         switch (item)
         case (is Cave) {
             fixtures.remove(item.id);

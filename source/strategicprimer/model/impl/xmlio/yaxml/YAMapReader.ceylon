@@ -24,14 +24,14 @@ import strategicprimer.model.impl.idreg {
 }
 import strategicprimer.model.common.map {
     Player,
-	MapDimensions,
-	MapDimensionsImpl,
+    MapDimensions,
+    MapDimensionsImpl,
     Point,
     River,
     TileType,
     invalidPoint,
     IMutablePlayerCollection,
-	TileFixture
+    TileFixture
 }
 import strategicprimer.model.impl.map {
     IMutableMapNG,

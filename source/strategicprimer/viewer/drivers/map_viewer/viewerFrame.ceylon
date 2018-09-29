@@ -148,7 +148,7 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
         table.fillsViewportHeight = true;
         table.autoResizeMode = JTable.autoResizeLastColumn;
         JButton allButton = listenedButton("Display All",
-	        silentListener(displayAllListener));
+            silentListener(displayAllListener));
         JButton noneButton = listenedButton("Display None",
             silentListener(displayNoneListener));
         platform.makeButtonsSegmented(allButton, noneButton);

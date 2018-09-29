@@ -26,9 +26,9 @@ import lovelace.util.common {
 import strategicprimer.model.common.map {
     Point,
     TileType,
-	TileFixture,
-	MapDimensionsImpl,
-	MapDimensions
+    TileFixture,
+    MapDimensionsImpl,
+    MapDimensions
 }
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest

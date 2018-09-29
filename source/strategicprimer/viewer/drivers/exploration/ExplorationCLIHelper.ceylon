@@ -10,15 +10,15 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.impl.map {
-	IMutableMapNG,
-	IMapNG
+    IMutableMapNG,
+    IMapNG
 }
 
 import strategicprimer.model.common.map {
     TileType,
     Point,
-	HasOwner,
-	Player,
+    HasOwner,
+    Player,
     TileFixture,
     HasPopulation,
     HasExtent

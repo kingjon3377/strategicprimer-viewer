@@ -46,11 +46,11 @@ import strategicprimer.model.impl.xmlio.exceptions {
 
 object fluidResourceHandler extends FluidBase() {
     shared ResourcePile readResource(StartElement element, QName parent,
-		    {XMLEvent*} stream, IPlayerCollection players, Warning warner,
-		    IDRegistrar idFactory) {
+            {XMLEvent*} stream, IPlayerCollection players, Warning warner,
+            IDRegistrar idFactory) {
         requireTag(element, parent, "resource");
         expectAttributes(element, warner, "quantity", "kind", "contents", "unit",
-	        "created", "id", "image");
+            "created", "id", "image");
         spinUntilEnd(element.name, stream);
         ResourcePile retval = ResourcePile(
             getOrGenerateID(element, warner, idFactory),
@@ -207,13 +207,13 @@ object fluidResourceHandler extends FluidBase() {
             IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "mineral");
         expectAttributes(element, warner, "kind", "mineral", "exposed", "dc", "id",
-	        "image");
+            "image");
         spinUntilEnd(element.name, stream);
         return setImage(
             MineralVein(
                 getAttrWithDeprecatedForm(element, "kind", "mineral", warner),
                 getBooleanAttribute(element, "exposed"),
-	            getIntegerAttribute(element, "dc"),
+                getIntegerAttribute(element, "dc"),
                 getOrGenerateID(element, warner, idFactory)), element, warner);
     }
 

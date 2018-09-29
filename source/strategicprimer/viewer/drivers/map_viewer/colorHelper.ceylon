@@ -11,7 +11,7 @@ import strategicprimer.model.common.map.fixtures.terrain {
 }
 import strategicprimer.model.common.map {
     TileType,
-	TileFixture
+    TileFixture
 }
 import ceylon.language.meta.model {
     ClassOrInterface

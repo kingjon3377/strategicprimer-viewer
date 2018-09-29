@@ -38,7 +38,7 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>()
                destination_row INTEGER,
                destination_column INTEGER
                    CHECK ((destination_row IS NOT NULL AND destination_column IS NOT NULL)
-	                   OR (destination_row IS NULL AND destination_column IS NULL))
+                       OR (destination_row IS NULL AND destination_column IS NULL))
            );"""
     ];
     shared actual void write(Sql db, Portal obj, Point context) {
@@ -54,7 +54,7 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>()
                    destination_row, destination_column)
                VALUES(?, ?, ?, ?, ?, ?, ?);""")
                 .execute(context.row, context.column, obj.id, obj.image,
-			        obj.destinationWorld, *destinationCoordinates);
+                    obj.destinationWorld, *destinationCoordinates);
     }
     void readPortal(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],

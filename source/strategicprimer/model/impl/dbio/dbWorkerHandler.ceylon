@@ -75,13 +75,13 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
     shared actual void write(Sql db, IWorker obj, IUnit context) {
         value worker = db.Insert(
             """INSERT INTO workers (unit, id, name, race, image, portrait, hp, max_hp,
-	               str, dex, con, int, wis, cha)
+                   str, dex, con, int, wis, cha)
                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);""");
         value jobRow = db.Insert(
             """INSERT INTO worker_job_levels (worker, job, level) VALUES(?, ?, ?);""");
         value skillRow = db.Insert(
             """INSERT INTO worker_skill_levels (worker, associated_job, skill, level,
-	               hours)
+                   hours)
                VALUES(?, ?, ?, ?, ?);""");
         db.transaction(() {
             String|SqlNull portrait;
@@ -92,18 +92,18 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
             }
             if (exists stats = obj.stats) {
                 worker.execute(context.id, obj.id, obj.name, obj.race, obj.image,
-	                portrait, stats.hitPoints, stats.maxHitPoints, stats.strength,
-	                stats.dexterity, stats.constitution, stats.intelligence, stats.wisdom,
-	                stats.charisma);
+                    portrait, stats.hitPoints, stats.maxHitPoints, stats.strength,
+                    stats.dexterity, stats.constitution, stats.intelligence, stats.wisdom,
+                    stats.charisma);
             } else {
                 worker.execute(context.id, obj.id, obj.name, obj.race, obj.image,
-	                portrait, *Singleton(SqlNull(Types.integer)).cycled.take(8));
+                    portrait, *Singleton(SqlNull(Types.integer)).cycled.take(8));
             }
             for (job in obj) {
                 jobRow.execute(obj.id, job.name, job.level);
                 for (skill in job) {
                     skillRow.execute(obj.id, job.name, skill.name, skill.level,
-	                    skill.hours);
+                        skill.hours);
                 }
             }
             return true;
@@ -114,9 +114,9 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
             Map<String, Object> row, Warning warner) {
         assert (is Integer unitId = row["unit"],
             is IUnit unit = super.findById(map, unitId, warner),
-	        is Integer id = row["id"], is String name = row["name"],
-	        is String race = row["race"], is String|SqlNull image = row["image"],
-	        is String|SqlNull portrait = row["portrait"],
+            is Integer id = row["id"], is String name = row["name"],
+            is String race = row["race"], is String|SqlNull image = row["image"],
+            is String|SqlNull portrait = row["portrait"],
             is Integer|SqlNull hp = row["hp"], is Integer|SqlNull maxHp = row["max_hp"],
             is Integer|SqlNull str = row["str"], is Integer|SqlNull dex = row["dex"],
             is Integer|SqlNull con = row["con"], is Integer|SqlNull int = row["int"],

@@ -10,9 +10,9 @@ import lovelace.util.common {
 import strategicprimer.model.common.map {
     Player,
     IFixture,
-	Point,
+    Point,
     MapDimensions,
-	invalidPoint
+    invalidPoint
 }
 
 import strategicprimer.model.impl.map {
@@ -43,7 +43,7 @@ shared class FortressMemberReportGenerator(
     "Produces a sub-report on a resource or piece of equipment. All fixtures referred
      to in this report are removed from the collection."
     shared actual void produceSingle(
-		    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, FortressMember item, Point loc) {
         assert (is IUnit|ResourcePile|Implement item);
         if (is IUnit item) {

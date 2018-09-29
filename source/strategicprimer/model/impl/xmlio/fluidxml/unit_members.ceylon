@@ -14,7 +14,7 @@ import strategicprimer.model.impl.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map {
-	IPlayerCollection,
+    IPlayerCollection,
     HasPortrait
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -86,7 +86,7 @@ object unitMemberHandler extends FluidBase() {
             if (is StartElement event, isSPStartElement(event)) {
                 if ("skill" == event.name.localPart.lowercased) {
                     retval.addSkill(readSkill(event, element.name, stream, players,
-	                    warner, idFactory));
+                        warner, idFactory));
                 } else {
                     throw UnwantedChildException.listingExpectedTags(element.name, event,
                         Singleton("skill"));
@@ -152,7 +152,7 @@ object unitMemberHandler extends FluidBase() {
     }
 
     shared void writeStats(XMLStreamWriter ostream, WorkerStats obj,
-		    Integer indentation) {
+            Integer indentation) {
         writeTag(ostream, "stats", indentation, true);
         writeAttributes(ostream, "hp"->obj.hitPoints, "max"->obj.maxHitPoints,
             "str"->obj.strength, "dex"->obj.dexterity, "con"->obj.constitution,

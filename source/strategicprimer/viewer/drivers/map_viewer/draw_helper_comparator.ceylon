@@ -28,7 +28,7 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.model.common.map {
-	MapDimensions,
+    MapDimensions,
     TileFixture,
     Point
 }
@@ -36,7 +36,7 @@ import strategicprimer.model.impl.map {
     IMapNG
 }
 import strategicprimer.model.impl.xmlio {
-	mapIOHelper
+    mapIOHelper
 }
 import strategicprimer.model.common.xmlio {
     warningLevels

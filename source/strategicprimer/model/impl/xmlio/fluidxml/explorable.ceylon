@@ -15,7 +15,7 @@ import strategicprimer.model.impl.idreg {
 import strategicprimer.model.common.map {
     IPlayerCollection,
     Point,
-	Player
+    Player
 }
 import strategicprimer.model.common.map.fixtures {
     TextFixture
@@ -122,14 +122,14 @@ object fluidExplorableHandler extends FluidBase() {
     }
 
     shared void writeBattlefield(XMLStreamWriter ostream, Battlefield obj,
-		    Integer indent) {
+            Integer indent) {
         writeTag(ostream, "battlefield", indent, true);
         writeAttributes(ostream, "dc"->obj.dc, "id"->obj.id);
         writeImage(ostream, obj);
     }
 
     shared void writeTextFixture(XMLStreamWriter ostream, TextFixture obj,
-		    Integer indent) {
+            Integer indent) {
         writeTag(ostream, "text", indent, false);
         if (obj.turn != -1) {
             writeAttributes(ostream, "turn"->obj.turn);

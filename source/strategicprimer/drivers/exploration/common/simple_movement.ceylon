@@ -12,8 +12,8 @@ import lovelace.util.common {
 import strategicprimer.model.common.map {
     River,
     TileType,
-	TileFixture,
-	HasOwner
+    TileFixture,
+    HasOwner
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats,

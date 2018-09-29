@@ -8,7 +8,7 @@ import strategicprimer.model.impl.map {
 }
 import strategicprimer.model.common.map {
     TileFixture,
-	HasMutableImage,
+    HasMutableImage,
     Point
 }
 import strategicprimer.model.common.map.fixtures.terrain {

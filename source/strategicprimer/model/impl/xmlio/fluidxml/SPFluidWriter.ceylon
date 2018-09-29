@@ -23,7 +23,7 @@ import strategicprimer.model.common.map {
     HasPortrait,
     Player,
     MapDimensions,
-	IFixture,
+    IFixture,
     Point,
     River,
     TileType

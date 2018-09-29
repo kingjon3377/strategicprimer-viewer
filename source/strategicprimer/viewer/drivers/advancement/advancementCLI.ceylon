@@ -58,7 +58,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
         MutableList<ISkill> skills = ArrayList{ elements = job; };
         while (true) {
             value chosen = cli.chooseFromList(skills, "Skills in Job:",
-	            "No existing Skills.", "Skill to advance: ", false);
+                "No existing Skills.", "Skill to advance: ", false);
             ISkill skill;
             if (exists temp = chosen.item) {
                 skill = temp;
@@ -104,7 +104,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
     }
     "Let the user add experience to a worker."
     void advanceSingleWorker(IWorker worker, ICLIHelper cli,
-		    Boolean allowExpertMentoring) {
+            Boolean allowExpertMentoring) {
         MutableList<IJob> jobs = ArrayList { elements = worker; };
         while (true) {
             value chosen = cli.chooseFromList(jobs,
@@ -153,7 +153,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
                         Integer->ISkill? choice = cli.chooseFromList(
                             job.select(not(matchingValue("miscellaneous", ISkill.name))),
                             "Skill to gain level in:", "No other skill", "Chosen skill:",
-	                        false);
+                            false);
                         if (exists chosenSkill = choice.item) {
                             replacement = chosenSkill;
                             replacement.addHours(100, 0);
@@ -171,7 +171,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
                             cli.println("``worker.name`` gained a level in ``name``");
                         } else {
                             cli.println(
-	                            "``worker.name`` gained ``count`` levels in ``name``");
+                                "``worker.name`` gained ``count`` levels in ``name``");
                         }
                     }
                 } else {
@@ -224,7 +224,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
         if (cli.inputBooleanInSeries("Add experience to workers individually? ")) {
             while (!workers.empty, exists chosen = cli.chooseFromList(workers,
                     "Workers in unit:", "No unadvanced workers remain.",
-		            "Chosen worker: ", false).item) {
+                    "Chosen worker: ", false).item) {
                 workers.remove(chosen);
                 advanceSingleWorker(chosen, cli, allowExpertMentoring);
                 if (!cli.inputBoolean("Choose another worker?")) {
@@ -237,7 +237,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
             MutableList<IJob> jobs = ArrayList { elements = ProxyWorker.fromUnit(unit); };
             while (true) {
                 value chosen = cli.chooseFromList(jobs, "Jobs in workers:",
-	                "No existing jobs.", "Job to advance: ", false);
+                    "No existing jobs.", "Job to advance: ", false);
                 IJob job;
                 if (exists temp = chosen.item) {
                     job = temp;
@@ -269,7 +269,7 @@ shared class AdvancementCLI() satisfies SimpleCLIDriver {
             Boolean allowExpertMentoring) {
         MutableList<IUnit> units = ArrayList {
             elements = model.getUnits(player).filter(
-			            (unit) => !unit.narrow<IWorker>().empty); };
+                        (unit) => !unit.narrow<IWorker>().empty); };
         while (!units.empty, exists chosen = cli.chooseFromList(units,
                 "``player.name``'s units:", "No unadvanced units remain.", "Chosen unit:",
                 false).item) {

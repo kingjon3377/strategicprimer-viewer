@@ -19,10 +19,10 @@ import strategicprimer.model.common.map {
     Player,
     HasOwner,
     MapDimensions,
-	Point,
+    Point,
     TileFixture,
-	invalidPoint,
-	TileType
+    invalidPoint,
+    TileType
 }
 import strategicprimer.model.impl.map {
     IMutableMapNG,
@@ -220,7 +220,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     void fixMovedUnits(Point base) {
         {<Point->TileFixture>*} localFind(IMapNG mapParam, TileFixture target) =>
                 mapParam.fixtures
-	                .filter(matchingValue(target, Entry<Point, TileFixture>.item));
+                    .filter(matchingValue(target, Entry<Point, TileFixture>.item));
         // TODO: Unit vision range
         {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
         for (submap->[file, flag] in subordinateMaps) {
@@ -229,7 +229,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 for (fixture in submap.fixtures.get(point).narrow<MobileFixture>()) { // TODO: syntax sugar once bug fixed
                     for (innerPoint->match in localFind(submap, fixture)) {
                         if (innerPoint != point,
-		                        !map.fixtures.get(innerPoint).contains(match)) {// TODO: syntax sugar
+                                !map.fixtures.get(innerPoint).contains(match)) {// TODO: syntax sugar
                             submap.removeFixture(innerPoint, match);
                             if (!modifiedFlag) {
                                 setModifiedFlag(submap, true);
@@ -278,7 +278,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     map.mountainous.get(dest),
                         simpleMovementModel.riversSpeedTravel(direction,
 //                          map.rivers[point],
-	                        map.rivers.get(point),
+                            map.rivers.get(point),
 //                        map.rivers[dest]), fixtures);
                         map.rivers.get(dest)), fixtures);
             }

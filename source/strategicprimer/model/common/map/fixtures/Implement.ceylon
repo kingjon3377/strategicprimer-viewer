@@ -3,7 +3,7 @@ import lovelace.util.common {
 }
 import strategicprimer.model.common.map {
     IFixture,
-	HasPopulation,
+    HasPopulation,
     HasMutableImage,
     HasKind
 }

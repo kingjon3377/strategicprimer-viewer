@@ -20,13 +20,13 @@ import strategicprimer.model.impl.idreg {
     createIDFactory
 }
 import strategicprimer.model.common.map {
-	IFixture,
+    IFixture,
     Player,
-	TileFixture,
+    TileFixture,
     HasOwner,
-	Point,
-	MapDimensions,
-	invalidPoint
+    Point,
+    MapDimensions,
+    invalidPoint
 }
 import strategicprimer.model.impl.map {
     IMapNG
@@ -85,7 +85,7 @@ object reportGeneratorHelper {
      fixtures in the map."
     shared DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
         DelayedRemovalMap<Integer, [Point, IFixture]> retval =
-		        IntMap<[Point, IFixture]>();
+                IntMap<[Point, IFixture]>();
         IDRegistrar idf = createIDFactory(map);
         Integer checkID(IFixture fixture) {
             if (fixture.id < 0) {
@@ -99,7 +99,7 @@ object reportGeneratorHelper {
                 Integer key = checkID(fixture);
                 value val = [location, fixture];
                 // We could use `retval[key] = val`, but that would be more confusing
-	            // here.
+                // here.
                 if (exists existing = retval.put(key, val), existing != val) {
                     log.warn("Duplicate key, ``key``, for Pairs ``
                         existing`` and ``val``");

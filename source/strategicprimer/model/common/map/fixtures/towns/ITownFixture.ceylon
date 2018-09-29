@@ -1,5 +1,5 @@
 import strategicprimer.model.common.map {
-	TileFixture,
+    TileFixture,
     HasPortrait,
     HasName,
     HasMutableOwner

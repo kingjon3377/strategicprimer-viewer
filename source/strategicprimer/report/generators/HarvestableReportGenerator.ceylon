@@ -11,8 +11,8 @@ import lovelace.util.common {
 
 import strategicprimer.model.common.map {
     IFixture,
-	HasPopulation,
-	HasExtent,
+    HasPopulation,
+    HasExtent,
     Point,
     MapDimensions,
     invalidPoint

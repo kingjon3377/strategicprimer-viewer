@@ -48,10 +48,10 @@ import strategicprimer.model.common.idreg {
 }
 import strategicprimer.model.common.map {
     HasPortrait,
-	Player,
-	MutablePlayer,
-	PlayerImpl,
-	MapDimensionsImpl,
+    Player,
+    MutablePlayer,
+    PlayerImpl,
+    MapDimensionsImpl,
     Point,
     River,
     TileType,
@@ -272,7 +272,7 @@ object xmlTests {
                 try (stringReader = StringReader(createSerializedForm(obj,
                         deprecated))) {
                     assertEquals(reader.readXML<Object>(fakeFilename, stringReader,
-	                    warner), obj, message);
+                        warner), obj, message);
                 }
             }
         }
@@ -381,7 +381,7 @@ object xmlTests {
 
     "Assert that the given XML will produce warnings about duplicate IDs."
     void assertDuplicateID<Type>(String xml, Type desideratum)
-		    given Type satisfies Object {
+            given Type satisfies Object {
         for (reader in readers) {
             assertFormatIssue<Type, DuplicateIDException>(reader, xml, desideratum);
         }
@@ -416,7 +416,7 @@ object xmlTests {
             enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
         Village village = Village(status, "", id, PlayerImpl(-1, ""), race);
         assertMissingProperty(createSerializedForm(village, deprecatedWriter),
-	        "name", village);
+            "name", village);
     }
     test
     shared void testBasicVillageSerialization(parameters(`value treeTypes`) String name,
@@ -427,14 +427,14 @@ object xmlTests {
         assertSerialization("Basic Village serialization", Village(status, name, id,
             owner, race));
         assertUnwantedChild<Village>(
-	        "<village status=\"``status``\"><village /></village>", null);
+            "<village status=\"``status``\"><village /></village>", null);
         assertMissingProperty<Village>("<village />", "status", null);
         assertMissingProperty<Village>(
-	        "<village name=\"``name``\" status=\"``status``\" />", "id",
-	        Village(status, name, 0, PlayerImpl(-1, "Independent"), "human"));
+            "<village name=\"``name``\" status=\"``status``\" />", "id",
+            Village(status, name, 0, PlayerImpl(-1, "Independent"), "human"));
         assertMissingProperty<Village>(
             "<village race=\"``race``\" name=\"``name``\" status=\"``status``\"
-	            id=\"``id``\" />",
+                id=\"``id``\" />",
             "owner", Village(status, name, id, PlayerImpl(-1, "Independent"), race));
         assertImageSerialization("Village image property is preserved", village);
         assertPortraitSerialization("Village portrait property is preserved", village);
@@ -479,7 +479,7 @@ object xmlTests {
             parameters(`value treeTypes`) String name) {
         Player owner = PlayerImpl(-1, "");
         assertSerialization("City serialization",
-	        City(status, size, dc, name, id, owner));
+            City(status, size, dc, name, id, owner));
         City city = City(status, size, dc, "", id, owner);
         assertUnwantedChild<City>(
             "<city status=\"``status``\" size=\"``size``\" name=\"name\" dc=\"``dc``\">
@@ -537,7 +537,7 @@ object xmlTests {
         Fortification thirdFort = Fortification(status, size, 30, "", 3, owner);
         assertUnwantedChild<Fortification>(
             "<fortification status=\"``status``\" size=\"``size``\" name=\"name\"
-	            dc=\"0\"><troll /></fortification>", null);
+                dc=\"0\"><troll /></fortification>", null);
         assertMissingProperty<Fortification>(
             "<fortification status=\"``status``\" size=\"``size``\"
              name=\"name\" dc=\"0\" id=\"0\" />", "owner",
@@ -574,15 +574,15 @@ object xmlTests {
             size``", Town(status, size, 10, "one", 0, owner));
         assertSerialization(
             "Second Town serialization test, status ``status``, size ``size``",
-	        Town(status, size, 40, "two", 1, owner));
+            Town(status, size, 40, "two", 1, owner));
         Town thirdTown = Town(status, size, 30, "", 3, owner);
         assertUnwantedChild<Town>(
             "<town status=\"``status``\" size=\"``size``\" name=\"name\" dc=\"0\">
              <troll /></town>", null);
         assertMissingProperty<Town>(
             "<town status=\"``status``\" size=\"``size``\"
-	             name=\"name\" dc=\"0\" id=\"0\" />", "owner",
-	        Town(status, size, 0, "name", 0, PlayerImpl(-1, "Independent")));
+                 name=\"name\" dc=\"0\" id=\"0\" />", "owner",
+            Town(status, size, 0, "name", 0, PlayerImpl(-1, "Independent")));
         assertImageSerialization("Town image property is preserved", thirdTown);
         assertPortraitSerialization("Town portrait property is preserved", thirdTown);
         Town  fourthTown = Town (status, size, 40, "townName", 4, owner);
@@ -633,7 +633,7 @@ object xmlTests {
     "A factory to encapsulate rivers in a simple map."
     IMapNG encapsulateRivers(Point point, River* rivers) {
         IMutableMapNG retval = SPMapNG(MapDimensionsImpl(point.row + 1,
-	        point.column + 1, 2), PlayerCollection(), -1);
+            point.column + 1, 2), PlayerCollection(), -1);
         retval.baseTerrain[point] = TileType.plains;
         retval.addRivers(point, *rivers);
         return retval;
@@ -672,9 +672,9 @@ object xmlTests {
     test
     shared void testRiverSerializationOne() {
         assertUnwantedChild<IMapNG>(encapsulateTileString("<lake><troll /></lake>"),
-	        null);
+            null);
         assertMissingProperty<IMapNG>(encapsulateTileString("<river />"), "direction",
-	        null);
+            null);
         Set<River> setOne = simpleSet(River.north, River.south);
         Set<River> setTwo = simpleSet(River.south, River.north);
         assertEquals(setOne, setTwo, "Rivers added in different order to set");
@@ -690,7 +690,7 @@ object xmlTests {
             River.north, River.south));
         assertMissingProperty<IMapNG>(
             encapsulateTileString("""<river direction="invalid" />"""), "direction",
-	        null);
+            null);
     }
 
     test

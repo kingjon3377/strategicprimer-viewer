@@ -16,7 +16,7 @@ import strategicprimer.model.common.map {
     HasMutableName,
     HasMutableKind,
     HasMutableImage,
-	TileFixture,
+    TileFixture,
     Player,
     HasMutableOwner,
     PlayerImpl

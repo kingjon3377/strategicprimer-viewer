@@ -5,7 +5,7 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.model.common.map {
-	Player,
+    Player,
     TileFixture,
     Point
 }

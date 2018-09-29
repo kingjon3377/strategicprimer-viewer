@@ -1,5 +1,5 @@
 import strategicprimer.model.common.map {
-	IFixture,
+    IFixture,
     HasMutableImage
 }
 "A TileFixture to represent the basic rock beneath the tile, possibly exposed."

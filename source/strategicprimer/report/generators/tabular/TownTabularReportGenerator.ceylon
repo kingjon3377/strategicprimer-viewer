@@ -7,9 +7,9 @@ import strategicprimer.model.impl {
     DistanceComparator
 }
 import strategicprimer.model.common.map {
-	Player,
-	IFixture,
-	MapDimensions,
+    Player,
+    IFixture,
+    MapDimensions,
     Point
 }
 import strategicprimer.model.common.map.fixtures.towns {

@@ -21,10 +21,10 @@ import java.nio.file {
 }
 
 import strategicprimer.model.common.map {
-	HasImage,
+    HasImage,
     Point,
     River,
-	TileFixture
+    TileFixture
 }
 
 import strategicprimer.model.impl.map {

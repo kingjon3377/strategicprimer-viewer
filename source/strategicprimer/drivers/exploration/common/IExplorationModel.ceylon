@@ -4,9 +4,9 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.common.map {
     Point,
-	Player,
-	HasName,
-	TileFixture
+    Player,
+    HasName,
+    TileFixture
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit

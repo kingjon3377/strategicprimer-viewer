@@ -41,14 +41,14 @@ import strategicprimer.model.impl.idreg {
     IDFactory
 }
 import strategicprimer.model.common.map {
-	HasKind,
-	Player,
-	PlayerImpl,
-	MapDimensions,
-	MapDimensionsImpl,
-	Point,
-	TileType,
-	River,
+    HasKind,
+    Player,
+    PlayerImpl,
+    MapDimensions,
+    MapDimensionsImpl,
+    Point,
+    TileType,
+    River,
     IMutablePlayerCollection,
     TileFixture,
     PlayerCollection

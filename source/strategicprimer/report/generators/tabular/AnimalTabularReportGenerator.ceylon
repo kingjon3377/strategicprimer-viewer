@@ -8,7 +8,7 @@ import strategicprimer.model.impl {
 }
 import strategicprimer.model.common.map {
     IFixture,
-	MapDimensions,
+    MapDimensions,
     Point
 }
 import strategicprimer.model.impl.map.fixtures.mobile {

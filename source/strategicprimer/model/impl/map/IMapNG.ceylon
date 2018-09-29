@@ -16,7 +16,7 @@ import com.vasileff.ceylon.structures {
 import strategicprimer.model.common.map {
     Subsettable,
     TileFixture,
-	Player,
+    Player,
     MapDimensions,
     Point,
     River,

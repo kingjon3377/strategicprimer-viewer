@@ -20,8 +20,8 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.xmlio {
-	SPFormatException,
-	Warning
+    SPFormatException,
+    Warning
 }
 import strategicprimer.model.impl.xmlio {
     mapIOHelper
@@ -57,7 +57,7 @@ shared object mapReaderAdapter {
         variable String current = master.string;
         try {
             IMultiMapModel retval = SimpleMultiMapModel(
-	            mapIOHelper.readMap(master, warner), master);
+                mapIOHelper.readMap(master, warner), master);
             for (file in files) {
                 current = file.string;
                 retval.addSubordinateMap(mapIOHelper.readMap(file, warner), file);
@@ -66,7 +66,7 @@ shared object mapReaderAdapter {
             return retval;
         } catch (IOException except) {
             throw DriverFailedException(except,
-	            "I/O error reading from file ``current``");
+                "I/O error reading from file ``current``");
         } catch (XMLStreamException except) {
             throw DriverFailedException(except, "Malformed XML in ``current``");
         } catch (SPFormatException except) {

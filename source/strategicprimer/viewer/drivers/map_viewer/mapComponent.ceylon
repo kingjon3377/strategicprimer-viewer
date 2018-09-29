@@ -32,7 +32,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.common.map {
     Point,
     TileFixture,
-	MapDimensions
+    MapDimensions
 }
 
 "An interface for a UI representing a map."

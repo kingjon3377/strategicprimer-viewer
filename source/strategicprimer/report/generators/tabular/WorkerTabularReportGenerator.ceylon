@@ -6,7 +6,7 @@ import strategicprimer.model.impl {
     DistanceComparator
 }
 import strategicprimer.model.common.map {
-	IFixture,
+    IFixture,
     MapDimensions,
     Point
 }

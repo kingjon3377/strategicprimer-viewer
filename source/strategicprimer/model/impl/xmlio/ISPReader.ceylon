@@ -10,7 +10,7 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.xmlio {
-	Warning
+    Warning
 }
 
 "An interface for readers of any SP model type."

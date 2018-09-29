@@ -8,8 +8,8 @@ import strategicprimer.model.common.map {
     TileType,
     invalidPoint,
     TileFixture,
-	MapDimensions,
-	MapDimensionsImpl
+    MapDimensions,
+    MapDimensionsImpl
 }
 "An [[EncounterTable]] where results are by quadrant of the map."
 class QuadrantTable satisfies EncounterTable {

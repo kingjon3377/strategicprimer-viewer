@@ -5,8 +5,8 @@ import ceylon.collection {
 
 import strategicprimer.model.common.map {
     Player,
-	MutablePlayer,
-	PlayerImpl
+    MutablePlayer,
+    PlayerImpl
 }
 
 import lovelace.util.common {

@@ -19,9 +19,9 @@ import ceylon.whole {
 import strategicprimer.model.common.map {
     IFixture,
     HasPopulation,
-	TileFixture,
+    TileFixture,
     HasExtent,
-	Point
+    Point
 }
 
 import strategicprimer.model.impl.map {

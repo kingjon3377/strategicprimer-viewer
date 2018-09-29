@@ -11,9 +11,9 @@ import lovelace.util.common {
 
 import strategicprimer.model.common.map {
     IFixture,
-	Point,
+    Point,
     MapDimensions,
-	invalidPoint
+    invalidPoint
 }
 
 import strategicprimer.model.impl.map {
@@ -86,7 +86,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                 Anything(String) ostream) {
         MutableMultimap<String, Point> items = ArrayListMultimap<String, Point>();
         for (key->[loc, animal] in
-		        narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
+                narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
                 .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item, pairComparator))) {
             String desc;
             if (is AnimalTracks animal) {
@@ -132,9 +132,9 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
             IMapNG map) {
         MutableMap<String, IReportNode> items = HashMap<String, IReportNode>();
         for (key->[loc, animal] in
-		        narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
+                narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
                 .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item,
-			        pairComparator))) {
+                    pairComparator))) {
             IReportNode node;
             if (exists temp = items[animal.kind]) {
                 node = temp;

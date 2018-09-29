@@ -9,10 +9,10 @@ import javax.swing {
     JPopupMenu
 }
 import strategicprimer.model.common.map {
-	HasMutableKind,
-	HasMutableName,
+    HasMutableKind,
+    HasMutableName,
     IFixture,
-	HasName,
+    HasName,
     Player,
     HasMutableOwner
 }
@@ -89,7 +89,7 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
     }
     if (is HasMutableKind fixture) {
         addMenuItem(JMenuItem("Change kind", KeyEvent.vkK),
-	        silentListener(changeKindHandler));
+            silentListener(changeKindHandler));
     } else {
         addDisabledMenuItem(JMenuItem("Change kind", KeyEvent.vkK));
     }

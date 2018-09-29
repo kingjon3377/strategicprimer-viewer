@@ -10,11 +10,11 @@ import strategicprimer.drivers.common {
     VersionChangeListener
 }
 import strategicprimer.model.impl.map {
-	SPMapNG,
-	IMutableMapNG
+    SPMapNG,
+    IMutableMapNG
 }
 import strategicprimer.model.common.map {
-	MapDimensions,
+    MapDimensions,
     MapDimensionsImpl,
     PlayerCollection
 }

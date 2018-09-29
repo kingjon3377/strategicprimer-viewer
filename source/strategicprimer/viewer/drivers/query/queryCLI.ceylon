@@ -1,11 +1,11 @@
 import strategicprimer.model.common.map {
-	HasPopulation,
+    HasPopulation,
     IFixture,
     Player,
     HasOwner,
-	TileFixture,
+    TileFixture,
     TileType,
-	MapDimensions,
+    MapDimensions,
     Point
 }
 import strategicprimer.model.impl.map {
@@ -204,7 +204,7 @@ class QueryHelper {
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.subordinateMaps) {
                 if (!map.fixtures.get(point)
-		                .any(matchingValue(fixture.id, TileFixture.id))) {
+                        .any(matchingValue(fixture.id, TileFixture.id))) {
                     map.addFixture(point, fixture.copy(zero));
                 }
             }
@@ -215,7 +215,7 @@ class QueryHelper {
     void reducePopulation(Point point, HasPopulation<out TileFixture>&TileFixture fixture,
             String plural, Boolean zero) {
         Integer count = Integer.smallest(cli.inputNumber(
-	        "How many ``plural`` to remove: "), fixture.population);
+            "How many ``plural`` to remove: "), fixture.population);
         if (count > 0) {
             model.map.removeFixture(point, fixture);
             Integer remaining = fixture.population - count;
@@ -271,9 +271,9 @@ class QueryHelper {
                     // TODO: somehow handle processing-in-parallel case
                     for (i in 0:(cli.inputNumber("How many animals?"))) {
                         Integer mass =
-		                        cli.inputNumber("Weight of this animal's meat in pounds: ");
+                                cli.inputNumber("Weight of this animal's meat in pounds: ");
                         Integer hands =
-		                        cli.inputNumber("# of workers processing this carcass: ");
+                                cli.inputNumber("# of workers processing this carcass: ");
                         time -= round(HuntingModel.processingTime(mass) / hands).integer;
                     }
                 }
@@ -464,7 +464,7 @@ class QueryHelper {
                 if (town.status == TownStatus.active, exists population = town.population,
                     !population.yearlyProduction.empty) {
                     cli.print(
-	                    "At ``location````comparator.distanceString(location, "base")``");
+                        "At ``location````comparator.distanceString(location, "base")``");
                     cli.print(": ``town.name``, a ``town.townSize`` ");
                     if (is Village town, town.race != "human") {
                         cli.print("``town.race`` village");
@@ -510,12 +510,12 @@ class QueryHelper {
                 cli.inputNumber("Within how many tiles? "));
     Anything() deferAction(Anything(Point, Integer) method, String verb) => // TODO: Replace with method-reference logic using defer()
                     () => method(cli.inputPoint("Location to ``verb``? "),
-	                    hunterHours * 60);
+                        hunterHours * 60);
     Map<String, Anything()> commands = simpleMap(
         "?"->replUsage,
         "help"->replUsage,
         "fortress"->defer(compose(fortressInfo, cli.inputPoint),
-	        ["Location of fortress?"]),
+            ["Location of fortress?"]),
         "hunt"->deferAction(hunt, "hunt"),
         "fish"->deferAction(fish, "fish"),
         "gather"->deferAction(gather, "gather"),

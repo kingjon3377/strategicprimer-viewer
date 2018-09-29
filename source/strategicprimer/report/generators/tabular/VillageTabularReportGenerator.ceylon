@@ -9,7 +9,7 @@ import strategicprimer.model.impl {
 import strategicprimer.model.common.map {
     Player,
     IFixture,
-	MapDimensions,
+    MapDimensions,
     Point
 }
 import strategicprimer.model.common.map.fixtures.towns {

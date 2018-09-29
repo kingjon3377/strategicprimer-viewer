@@ -119,7 +119,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
                         "Fixture owned by ``fixture.owner``, who has no name"));
                 }
                 if (!map.players.map(Player.playerId)
-		                .any(fixture.owner.playerId.equals)) {
+                        .any(fixture.owner.playerId.equals)) {
                     warner.handle(SPContentWarning(context,
                         "Fixture owned by ``fixture.owner``, who is not known by the map"));
                 }

@@ -4,11 +4,11 @@ import ceylon.dbc {
 }
 
 import strategicprimer.model.common.map {
-	Point
+    Point
 }
 
 import strategicprimer.model.impl.map {
-	IMutableMapNG
+    IMutableMapNG
 }
 
 import strategicprimer.model.common.map.fixtures.resources {
@@ -48,7 +48,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
         db.Insert(
             """INSERT INTO minerals (row, column, type, id, kind, exposed, dc, image)
                VALUES(?, ?, ?, ?, ?, ?, ?, ?);""")
-	        .execute(context.row, context.column, type,
+            .execute(context.row, context.column, type,
                     obj.id, obj.kind, exposed, obj.dc, obj.image);
     }
     void readMineralVein(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {

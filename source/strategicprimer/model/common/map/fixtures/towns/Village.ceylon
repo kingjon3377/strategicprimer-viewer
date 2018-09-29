@@ -1,5 +1,5 @@
 import strategicprimer.model.common.map {
-	IFixture,
+    IFixture,
     HasMutableImage,
     Subsettable,
     Player

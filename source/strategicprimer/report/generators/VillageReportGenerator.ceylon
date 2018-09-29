@@ -8,10 +8,10 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map {
-	Player,
-	IFixture,
+    Player,
+    IFixture,
     Point,
-	MapDimensions,
+    MapDimensions,
     invalidPoint
 }
 
@@ -48,7 +48,7 @@ shared class VillageReportGenerator(
         MutableMap<Player, MutableHeadedMap<Village, Point>> others =
                 HashMap<Player, MutableHeadedMap<Village, Point>>();
         for ([loc, village] in fixtures.items.narrow<[Point, Village]>()
-		        .sort(pairComparator)) {
+                .sort(pairComparator)) {
             if (village.owner == currentPlayer) {
                 own[village] = loc;
             } else if (village.owner.independent) {
@@ -83,7 +83,7 @@ shared class VillageReportGenerator(
     "Produce the (very brief) report for a particular village (we're probably in the
      middle of a bulleted list, but we don't assume that)."
     shared actual void produceSingle(
-		    DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Village item, Point loc) {
         fixtures.remove(item.id);
         ostream("At ``loc``: ``item.name``, a(n) ``item.race`` village, ");
@@ -105,7 +105,7 @@ shared class VillageReportGenerator(
                 SectionListReportNode(5, "Villages you think are independent:");
         MutableMap<Player, IReportNode> othersMap = HashMap<Player, IReportNode>();
         for ([loc, village] in fixtures.items.narrow<[Point, Village]>()
-		        .sort(pairComparator)) {
+                .sort(pairComparator)) {
             Player owner = village.owner;
             IReportNode parent;
             if (owner == currentPlayer) {

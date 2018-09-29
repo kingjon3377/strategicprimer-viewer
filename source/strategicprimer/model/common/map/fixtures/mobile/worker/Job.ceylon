@@ -67,7 +67,7 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
             for (skill in obj) {
                 if (exists ours = skillSet[skill.name]) {
                     retval = retval && ours.isSubset(skill,
-	                    compose(report, "In Job ``name``:\t".plus));
+                        compose(report, "In Job ``name``:\t".plus));
                 } else {
                     report("In Job ``name``:\tExtra skill ``skill.name``");
                     retval = false;

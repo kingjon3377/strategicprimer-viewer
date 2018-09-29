@@ -188,7 +188,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     try {
                         if (is IUnit tempTarget,
                                 trans.isDataFlavorSupported(
-	                                UnitMemberTransferable.flavor)) {
+                                    UnitMemberTransferable.flavor)) {
                             assert (is [UnitMember, IUnit][] list =
                                     trans.getTransferData(UnitMemberTransferable.flavor));
                             for ([member, unit] in list) {

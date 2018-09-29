@@ -125,7 +125,7 @@ object proxyWorkerTests {
         }
         assertEquals(oneCopy, firstWorker, "Two copies of first worker should be equal");
         assertEquals(twoCopy, secondWorker,
-	        "Two copies of second worker should be equal");
+            "Two copies of second worker should be equal");
         assertNotEquals(firstWorker, oneOrig,
             "First worker should not still be as it was originally");
         assertTrue(firstWorker.isSubset(oneOrig, noop),

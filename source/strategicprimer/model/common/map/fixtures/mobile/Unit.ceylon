@@ -11,10 +11,10 @@ import lovelace.util.common {
 }
 import strategicprimer.model.common.map {
     IFixture,
-	HasMutableName,
-	HasMutableKind,
-	HasMutableImage,
-	HasPortrait,
+    HasMutableName,
+    HasMutableKind,
+    HasMutableImage,
+    HasPortrait,
     TileFixture,
     HasMutableOwner,
     Player

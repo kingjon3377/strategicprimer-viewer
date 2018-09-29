@@ -22,8 +22,8 @@ import lovelace.util.jvm {
 }
 import strategicprimer.model.common.map {
     HasPortrait,
-	HasOwner,
-	TileFixture,
+    HasOwner,
+    TileFixture,
     TileType,
     Point,
     invalidPoint

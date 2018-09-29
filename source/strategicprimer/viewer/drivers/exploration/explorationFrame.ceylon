@@ -78,7 +78,7 @@ import strategicprimer.model.common.map {
     HasOwner,
     Point,
     TileType,
-	TileFixture,
+    TileFixture,
     invalidPoint
 }
 import strategicprimer.model.impl.map {

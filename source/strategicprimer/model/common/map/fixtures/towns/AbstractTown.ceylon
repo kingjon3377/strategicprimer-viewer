@@ -6,7 +6,7 @@ import lovelace.util.common {
 import strategicprimer.model.common.map {
     IFixture,
     Subsettable,
-	HasMutableImage,
+    HasMutableImage,
     Player
 }
 import strategicprimer.model.common.map.fixtures {

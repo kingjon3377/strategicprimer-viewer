@@ -7,7 +7,7 @@ import strategicprimer.model.common.map.fixtures {
 }
 import strategicprimer.model.common.map {
     IFixture,
-	HasExtent,
+    HasExtent,
     HasMutableImage,
     HasKind
 }
@@ -77,8 +77,8 @@ shared class Forest(kind, rows, id, acres = -1)
                 return false;
             }
             variable Boolean retval = true;
-	        Anything(String) localReport =
-			        compose(report, "In ``kind`` forest (ID #``id``):\t".plus);
+            Anything(String) localReport =
+                    compose(report, "In ``kind`` forest (ID #``id``):\t".plus);
             if (other.rows, !rows) {
                 localReport("In rows when we aren't");
                 retval = false;

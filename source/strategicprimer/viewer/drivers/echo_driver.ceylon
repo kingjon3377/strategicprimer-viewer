@@ -27,7 +27,7 @@ import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import strategicprimer.model.impl.xmlio {
-	mapIOHelper
+    mapIOHelper
 }
 import strategicprimer.model.common.xmlio {
     warningLevels,

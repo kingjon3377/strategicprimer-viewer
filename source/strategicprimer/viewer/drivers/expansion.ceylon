@@ -11,7 +11,7 @@ import strategicprimer.model.common.map {
     Player,
     HasOwner,
     TileType,
-	TileFixture,
+    TileFixture,
     Point
 }
 import strategicprimer.model.impl.map {

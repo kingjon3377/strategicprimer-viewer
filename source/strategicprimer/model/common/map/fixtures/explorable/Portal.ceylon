@@ -3,8 +3,8 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map {
-	IFixture,
-	Subsettable,
+    IFixture,
+    Subsettable,
     Point,
     invalidPoint
 }

@@ -8,11 +8,11 @@ import ceylon.decimal {
 }
 
 import strategicprimer.model.common.map {
-	Point
+    Point
 }
 
 import strategicprimer.model.impl.map {
-	IMutableMapNG
+    IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
@@ -45,7 +45,7 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
             is Boolean rows = dbMapReader.databaseBoolean(dbRow["rows"]),
             is String acresString = dbRow["acres"],
-	        is String|SqlNull image = dbRow["image"]);
+            is String|SqlNull image = dbRow["image"]);
         Number<out Anything> acres;
         if (is Integer num = Integer.parse(acresString)) {
             acres = num;

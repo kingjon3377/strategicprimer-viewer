@@ -11,7 +11,7 @@ import lovelace.util.common {
 
 import strategicprimer.model.common.map {
     HasImage,
-	IFixture,
+    IFixture,
     HasKind,
     HasName,
     HasOwner
@@ -72,8 +72,8 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     shared default actual Boolean isSubset(IFixture obj, Anything(String) report) {
         if (obj.id == id) {
             if (is IUnit obj) {
-	            Anything(String) localSimpleReport =
-			            compose(report, "In Unit of ID #``id``:\t".plus);
+                Anything(String) localSimpleReport =
+                        compose(report, "In Unit of ID #``id``:\t".plus);
                 if (owner.playerId != obj.owner.playerId) {
                     localSimpleReport("Owners differ");
                     return false;

@@ -31,9 +31,9 @@ import strategicprimer.model.common.map {
     IFixture,
     HasName,
     HasKind,
-	Player,
-	HasOwner,
-	TileFixture,
+    Player,
+    HasOwner,
+    TileFixture,
     PointIterator
 }
 import strategicprimer.drivers.gui.common {

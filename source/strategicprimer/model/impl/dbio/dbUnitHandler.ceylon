@@ -58,10 +58,10 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>()
     ];
     shared actual void write(Sql db, IUnit obj, Point|Fortress context) {
         value unit = db.Insert("""INSERT INTO units (row, column, parent, owner, kind,
-	                                  name, id, image, portrait)
+                                      name, id, image, portrait)
                                   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""");
         value order = db.Insert(
-	        """INSERT INTO orders (unit, turn, orders) VALUES(?, ?, ?);""");
+            """INSERT INTO orders (unit, turn, orders) VALUES(?, ?, ?);""");
         value result = db.Insert(
             """INSERT INTO results (unit, turn, result) VALUES(?, ?, ?);""");
         db.transaction(() {

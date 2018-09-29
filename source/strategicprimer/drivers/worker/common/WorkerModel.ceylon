@@ -20,7 +20,7 @@ import strategicprimer.model.impl.map {
 }
 import strategicprimer.model.common.map {
     Point,
-	MapDimensionsImpl,
+    MapDimensionsImpl,
     Player,
     PlayerImpl,
     TileFixture,

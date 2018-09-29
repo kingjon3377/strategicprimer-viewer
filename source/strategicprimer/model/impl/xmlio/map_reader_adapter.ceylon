@@ -36,7 +36,7 @@ import strategicprimer.model.impl.xmlio.yaxml {
     yaXMLWriter
 }
 import strategicprimer.model.common.xmlio {
-	Warning,
+    Warning,
     warningLevels
 }
 
@@ -50,12 +50,12 @@ shared object mapIOHelper {
     "Turn a series of Strings into a series of equvalent Paths."
     shared {JPath+} namesToFiles(String+ names) =>
             // Can't use Iterable.map() instead of a comprehension here because
-		    // JPaths.get() is overloaded
+            // JPaths.get() is overloaded
             [ for (name in names) JPaths.get(name) ];
     "Read a map from a file or a stream.."
     todo("Port to use ceylon.file, ceylon.io, or ceylon.buffer")
     shared IMutableMapNG readMap(JPath|JReader file,
-		    Warning warner = warningLevels.warn) {
+            Warning warner = warningLevels.warn) {
         log.trace("In mapIOHelper.readMap");
         if (is JPath file) {
             if (file.string.endsWith(".db")) {
@@ -83,7 +83,7 @@ shared object mapIOHelper {
     test
     shared void testNamesToFiles() {
         {JPath+} expected = [ JPaths.get("two"), JPaths.get("three"),
-	        JPaths.get("four") ];
+            JPaths.get("four") ];
         "[[namesToFiles]] should return all names."
         assert (corresponding(namesToFiles("two", "three", "four"), expected));
     }

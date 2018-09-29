@@ -10,7 +10,7 @@ import lovelace.util.common {
     entryBy
 }
 import strategicprimer.model.common.map {
-	IFixture,
+    IFixture,
     HasPortrait
 }
 

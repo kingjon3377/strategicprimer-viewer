@@ -31,10 +31,10 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.model.common.map {
-	Player,
-	IFixture,
+    Player,
+    IFixture,
     MapDimensions,
-	Point
+    Point
 }
 
 import strategicprimer.model.impl.map {

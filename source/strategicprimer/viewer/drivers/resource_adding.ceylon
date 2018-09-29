@@ -77,7 +77,7 @@ import strategicprimer.model.impl.idreg {
 }
 import strategicprimer.model.common.map {
     Player,
-	PlayerImpl
+    PlayerImpl
 }
 import strategicprimer.model.impl.map {
     IMutableMapNG,
@@ -188,7 +188,7 @@ shared class ResourceAddingCLI() satisfies SimpleCLIDriver {
     String getResourceUnits(String resource, ICLIHelper cli) {
         if (exists unit = resourceUnits[resource],
                 cli.inputBooleanInSeries(
-	                "Is ``unit`` the correct unit for ``resource``? ",
+                    "Is ``unit`` the correct unit for ``resource``? ",
                     "correct;``unit``;``resource``")) {
             return unit;
         } else {

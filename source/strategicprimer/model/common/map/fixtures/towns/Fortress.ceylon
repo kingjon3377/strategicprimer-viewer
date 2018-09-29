@@ -12,11 +12,11 @@ import ceylon.language {
     createMap=map
 }
 import strategicprimer.model.common.map {
-	IFixture,
-	Subsettable,
+    IFixture,
+    Subsettable,
     TileFixture,
-	HasMutableName,
-	HasMutableImage,
+    HasMutableName,
+    HasMutableImage,
     Player
 }
 import strategicprimer.model.common.map.fixtures {
@@ -137,8 +137,8 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
                     createMap(members.map(entryBy(FortressMember.id,
                         identity<FortressMember>)));
             variable Boolean retval = true;
-	        Anything(String) localFormat =
-			        compose(report, "In fortress ``name`` (ID #``id``):\t".plus);
+            Anything(String) localFormat =
+                    compose(report, "In fortress ``name`` (ID #``id``):\t".plus);
             for (member in obj) {
                 if (exists corresponding = ours[member.id]) {
                     if (!corresponding.isSubset(member, localFormat)) {
