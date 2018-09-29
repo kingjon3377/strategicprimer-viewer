@@ -9,9 +9,19 @@ import ceylon.file {
     FilesystemResource=Resource,
     parsePath
 }
-"Get the contents of a file, which may be in the filesystem or a resource in the given
- module, as a String. Returns null if file not found in either place."
-shared String? readFileContents(Module sourceModule, String filename) {
+"Get the contents of a file, which may be in the filesystem (if on a platform for which
+ Ceylon provides a suitable interface for that) or a resource in the given
+ module (which is always supported), as a String. Returns null if file not found in
+ either place."
+shared native String? readFileContents(Module sourceModule, String filename) {
+    if (exists file = sourceModule.resourceByPath(filename)) {
+        return file.textContent();
+    } else {
+        return null;
+    }
+}
+
+shared native("jvm") String? readFileContents(Module sourceModule, String filename) {
     File? getFilesystemResource(FilesystemResource res) {
         switch (res)
         case (is Nil|Directory) { return null; }

@@ -14,4 +14,5 @@ module lovelace.util.common "0.1.0" {
     shared import ceylon.random ceylonVersion;
     native("jvm") import java.base "8";
     import ceylon.logging ceylonVersion;
+    native("jvm") import ceylon.file ceylonVersion;
 }

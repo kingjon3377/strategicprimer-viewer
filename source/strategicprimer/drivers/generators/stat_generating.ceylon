@@ -56,14 +56,12 @@ import strategicprimer.drivers.exploration.common {
     ExplorationModel,
     pathfinder
 }
-import lovelace.util.jvm {
-    readFileContents
-}
 import ceylon.logging {
     logger,
     Logger
 }
 import lovelace.util.common {
+    readFileContents,
     matchingValue,
     comparingOn,
     singletonRandom,

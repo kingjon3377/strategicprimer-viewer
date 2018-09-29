@@ -29,9 +29,6 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.impl.map {
     IMapNG
 }
-import lovelace.util.jvm {
-    readFileContents
-}
 import strategicprimer.model.common.map.fixtures {
     ResourcePile,
     Quantity
@@ -80,6 +77,7 @@ import java.lang {
     synchronized
 }
 import lovelace.util.common {
+    readFileContents,
     isNumeric,
     parseInt,
     matchingValue,

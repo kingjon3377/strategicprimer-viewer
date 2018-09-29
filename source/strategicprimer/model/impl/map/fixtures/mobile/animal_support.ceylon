@@ -1,7 +1,5 @@
-import lovelace.util.jvm {
-    readFileContents
-}
 import lovelace.util.common {
+    readFileContents,
     narrowedStream,
     todo
 }
