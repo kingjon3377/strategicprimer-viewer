@@ -200,7 +200,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     // Deliberately ignore "row"
                     continue;
                 } else if ("tile" == type) {
-                    if (Point.invalidPoint != point) { // TODO: Use Point.valid
+                    if (point.valid) {
                         assert (exists top = tagStack.top);
                         throw UnwantedChildException(top, event);
                     }
@@ -226,7 +226,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 } else if ("sandbar" == type) {
                     tagStack.push(event.name);
                     warner.handle(UnsupportedTagException.obsolete(event));
-                } else if (Point.invalidPoint == point) { // TODO: Use Point.valid
+                } else if (!point.valid) {
                     // fixture outside tile
                     assert (exists top = tagStack.top);
                     throw UnwantedChildException.listingExpectedTags(top, event,
