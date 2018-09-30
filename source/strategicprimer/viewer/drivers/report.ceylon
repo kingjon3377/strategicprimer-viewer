@@ -45,9 +45,6 @@ import java.awt {
     Dimension,
     Component
 }
-import strategicprimer.drivers.gui.common.about {
-    aboutDialog
-}
 import strategicprimer.drivers.gui.common {
     SPFrame,
     UtilityMenu,
@@ -273,7 +270,6 @@ shared class TabularReportGUI() satisfies GUIDriver {
     shared actual IDriverUsage usage = DriverUsage(true, ["-b", "--tabular"],
         ParamCount.one, "Tabular Report Viewer",
         "Show the contents of a map in tabular form", false, true);
-    suppressWarnings("expressionTypeNothing")
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         SPFrame window = SPFrame("Tabular Report", model.mapFile, Dimension(640, 480));
@@ -282,10 +278,6 @@ shared class TabularReportGUI() satisfies GUIDriver {
             // can't use a method reference here because JTabbedPane.addTab is overloaded
             (String str, Component comp) => frame.addTab(str, comp), model.map);
         window.add(frame);
-        MenuBroker menuHandler = MenuBroker(); // FIXME: This object is not actually used!
-        menuHandler.register(silentListener(window.dispose), "close");
-        menuHandler.registerWindowShower(aboutDialog(frame, window.windowName), "about");
-        menuHandler.register((event) => process.exit(0), "quit");
         window.jMenuBar = UtilityMenu(window);
         window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
         window.showWindow();
