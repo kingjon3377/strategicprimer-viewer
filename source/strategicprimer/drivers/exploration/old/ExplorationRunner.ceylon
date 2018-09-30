@@ -14,10 +14,6 @@ import ceylon.test {
     test
 }
 
-import java.lang {
-    UnsupportedOperationException
-}
-
 import lovelace.util.common {
     todo,
     defer
@@ -251,9 +247,8 @@ class MockTable(String* values) satisfies EncounterTable {
         assert (exists retval = queue.accept());
         return retval;
     }
-    shared actual Set<String> allEvents {
-        throw UnsupportedOperationException("mock object");
-    }
+    suppressWarnings("expressionTypeNothing")
+    shared actual Set<String> allEvents => nothing;
 }
 object explorationRunnerTests {
     test
