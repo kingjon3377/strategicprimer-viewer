@@ -32,7 +32,8 @@ import javax.xml.stream {
 import lovelace.util.common {
     todo,
     as,
-    defer
+    defer,
+    PathWrapper
 }
 import lovelace.util.jvm {
     showErrorDialog,
@@ -63,10 +64,6 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
-}
-import ceylon.file {
-    parsePath,
-    Path
 }
 import strategicprimer.drivers.gui.common {
     ISPWindow
@@ -167,8 +164,8 @@ shared class IOHandler
         log.error(message, except);
         showErrorDialog(source, errorTitle, message);
     }
-    void loadHandlerImpl(Anything(IMutableMapNG, Path) handler, Component? source,
-            String errorTitle)(Path path) {
+    void loadHandlerImpl(Anything(IMutableMapNG, PathWrapper) handler, Component? source,
+            String errorTitle)(PathWrapper path) {
         try {
             handler(mapIOHelper.readMap(path, warningLevels.default), path);
         } catch (IOException|SPFormatException|XMLStreamException except) {
@@ -198,7 +195,7 @@ shared class IOHandler
         case ("save") {
             if (exists givenFile = mapModel.mapFile) {
                 try {
-                    mapIOHelper.writeMap(parsePath(givenFile.string), mapModel.map);
+                    mapIOHelper.writeMap(givenFile, mapModel.map);
                     mapModel.mapModified = false;
                 } catch (IOException except) {
                     handleError(except, givenFile.string, source, errorTitle,
@@ -212,8 +209,8 @@ shared class IOHandler
         case ("save as") {
             FileChooser.save(null, filteredFileChooser(false)).call((path) {
                 try {
-                    mapIOHelper.writeMap(parsePath(path.string), mapModel.map);
-                    mapModel.mapFile = parsePath(path.string);
+                    mapIOHelper.writeMap(path, mapModel.map);
+                    mapModel.mapFile = path;
                     mapModel.mapModified = false;
                 } catch (IOException except) {
                     handleError(except, path.string, source, errorTitle, "writing to");
@@ -236,7 +233,7 @@ shared class IOHandler
                 for (map->[file, _] in mapModel.allMaps) {
                     if (exists file) {
                         try {
-                            mapIOHelper.writeMap(parsePath(file.string), map);
+                            mapIOHelper.writeMap(file, map);
                             mapModel.setModifiedFlag(map, false);
                         } catch (IOException except) {
                             handleError(except, file.string, source, errorTitle,
@@ -275,13 +272,13 @@ shared class IOHandler
     }
 }
 shared class SPFileChooser extends FileChooser {
-    shared new open(Path? loc = null,
+    shared new open(PathWrapper? loc = null,
             JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(true))
             extends FileChooser.open(fileChooser, loc) {}
-    shared new save(Path? loc,
+    shared new save(PathWrapper? loc,
             JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false))
             extends FileChooser.save(loc, fileChooser) {}
-    shared new custom(Path? loc, String approveText,
+    shared new custom(PathWrapper? loc, String approveText,
             JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false))
             extends FileChooser.custom(loc, approveText, fileChooser) {}
 }

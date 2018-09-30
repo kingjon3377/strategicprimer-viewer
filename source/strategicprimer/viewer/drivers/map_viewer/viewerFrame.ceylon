@@ -36,7 +36,8 @@ import javax.swing.table {
 import lovelace.util.common {
     Comparator,
     silentListener,
-    defer
+    defer,
+    PathWrapper
 }
 import lovelace.util.jvm {
     centeredHorizontalBox,
@@ -69,9 +70,7 @@ import strategicprimer.drivers.gui.common {
 import java.lang {
     JThread=Thread
 }
-import ceylon.file {
-    Path
-}
+
 "The main window for the map viewer app."
 shared final class ViewerFrame extends SPFrame satisfies MapGUI {
     static JFrame containingWindow(Component component) {
@@ -92,18 +91,18 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
         mapModel = model;
         menuHandler = menuListener;
     }
-    void acceptDroppedFileImpl(Path file) {
+    void acceptDroppedFileImpl(PathWrapper file) {
         value map = mapReaderAdapter.readMapModel(file, warningLevels.default);
         SwingUtilities.invokeLater(defer(compose(ViewerFrame.showWindow, ViewerFrame),
             [ViewerModel.copyConstructor(map), menuHandler]));
     }
-    void setMapWrapper(IMutableMapNG map, Path file, Boolean modified) =>
+    void setMapWrapper(IMutableMapNG map, PathWrapper file, Boolean modified) =>
             mapModel.setMap(map, file, modified);
-    void alternateAcceptDroppedFile(Path file) {
+    void alternateAcceptDroppedFile(PathWrapper file) {
         value newModel = mapReaderAdapter.readMapModel(file, warningLevels.default);
         SwingUtilities.invokeLater(defer(setMapWrapper, [newModel.map, file, false]));
     }
-    shared actual void acceptDroppedFile(Path file) {
+    shared actual void acceptDroppedFile(PathWrapper file) {
         if (mapModel.mapModified) {
             JThread(curry(acceptDroppedFileImpl)(file)).start();
         } else {

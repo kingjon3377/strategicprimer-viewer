@@ -45,6 +45,9 @@ import ceylon.file {
     Nil,
     Path
 }
+import lovelace.util.common {
+    PathWrapper
+}
 
 class Accumulator() {
     variable Integer accumulatedValue = 0;
@@ -245,7 +248,7 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
         MutableMap<String, Integer> mapSizes = HashMap<String, Integer>();
         for (arg in args) {
             Path path = parsePath(arg);
-            IMapNG map = mapIOHelper.readMap(path, warningLevels.ignore);
+            IMapNG map = mapIOHelper.readMap(PathWrapper(arg), warningLevels.ignore);
             mapSizes[arg] = map.locations.size;
             String filename = path.elements.last else "an unsaved map";
             cli.println("Testing using ``filename``");

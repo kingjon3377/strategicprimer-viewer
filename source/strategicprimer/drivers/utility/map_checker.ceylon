@@ -24,7 +24,8 @@ import lovelace.util.jvm {
 
 import lovelace.util.common {
     matchingPredicate,
-    silentListener
+    silentListener,
+    PathWrapper
 }
 
 import strategicprimer.drivers.common {
@@ -90,10 +91,6 @@ import ceylon.decimal {
 }
 import ceylon.whole {
     Whole
-}
-import ceylon.file {
-    Path,
-    parsePath
 }
 
 Logger log = logger(`module strategicprimer.drivers.utility`);
@@ -253,7 +250,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
             checker(terrain, context, fixture, warner);
         }
     }
-    shared void check(Path file, Anything(String) outStream, Anything(String) err,
+    shared void check(PathWrapper file, Anything(String) outStream, Anything(String) err,
             Warning warner = warningLevels.custom()) {
         outStream("Starting ``file``");
         IMapNG map;
@@ -298,7 +295,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         for (filename in args.coalesced) {
-            check(parsePath(filename), cli.println, cli.println);
+            check(PathWrapper(filename), cli.println, cli.println);
         }
     }
 }
@@ -325,11 +322,11 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
     }
     void errHandler(String text) =>
             printParagraph(text, LabelTextColor.red);
-    shared void check(Path filename) {
+    shared void check(PathWrapper filename) {
         mapCheckerCLI.check(filename, outHandler, errHandler,
             warningLevels.custom(customPrinter));
     }
-    shared actual void acceptDroppedFile(Path file) => check(file);
+    shared actual void acceptDroppedFile(PathWrapper file) => check(file);
 }
 "A driver to check every map file in a list for errors and report the results in a
  window."
@@ -344,6 +341,6 @@ shared class MapCheckerGUI() satisfies UtilityDriver {
         window.jMenuBar = UtilityMenu(window);
         window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
         window.showWindow();
-        args.coalesced.map(parsePath).each(window.check);
+        args.coalesced.map(PathWrapper).each(window.check);
     }
 }

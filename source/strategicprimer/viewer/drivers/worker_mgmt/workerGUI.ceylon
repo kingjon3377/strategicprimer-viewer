@@ -45,9 +45,10 @@ import lovelace.util.jvm {
 import strategicprimer.drivers.gui.common {
     WindowCloseListener
 }
-import ceylon.file {
-    Path
+import lovelace.util.common {
+    PathWrapper
 }
+
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to start the worker management GUI."
@@ -102,7 +103,7 @@ shared class WorkerGUI() satisfies GUIDriver {
         }
     }
     "Ask the user to choose a file or files."
-    shared actual {Path*} askUserForFiles() {
+    shared actual {PathWrapper*} askUserForFiles() {
         try {
             return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {

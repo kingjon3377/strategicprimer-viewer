@@ -1,5 +1,4 @@
 import ceylon.file {
-    Path,
     parsePath
 }
 import ceylon.logging {
@@ -15,7 +14,8 @@ import java.io {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    PathWrapper
 }
 
 import strategicprimer.model.impl.dbio {
@@ -45,13 +45,13 @@ shared object mapIOHelper {
     SPWriter dbWriter = spDatabaseWriter;
     IMapReader dbReader = spDatabaseReader;
     "Turn a series of Strings into a series of equvalent Paths."
-    shared {Path+} namesToFiles(String+ names) => names.map(parsePath);
+    shared {PathWrapper+} namesToFiles(String+ names) => names.map(PathWrapper);
     "Read a map from a file or a stream.."
     todo("Port to use ceylon.io or ceylon.buffer")
-    shared IMutableMapNG readMap(Path|JReader file,
+    shared IMutableMapNG readMap(PathWrapper|JReader file,
             Warning warner = warningLevels.warn) {
         log.trace("In mapIOHelper.readMap");
-        if (is Path file) {
+        if (is PathWrapper file) {
             if (file.string.endsWith(".db")) {
                 log.trace("Reading from ``file`` as an SQLite database");
                 return dbReader.readMap(file, warner);
@@ -61,22 +61,24 @@ shared object mapIOHelper {
             }
         } else {
             log.trace("Reading from a Reader");
-            return reader.readMapFromStream(parsePath(""), file, warner);
+            return reader.readMapFromStream(PathWrapper(""), file, warner);
         }
     }
     "Write a map to file."
-    shared void writeMap(Path file, IMapNG map) {
-        if (file.string.endsWith(".db") || file.string.empty) {
+    shared void writeMap(PathWrapper file, IMapNG map) {
+        if (file.filename.endsWith(".db") || file.string.empty) {
             log.trace("Writing to ``file`` as an SQLite database");
-            dbWriter.write(file, map);
+            dbWriter.write(parsePath(file.filename), map);
         } else {
             log.trace("Writing to ``file``");
-            writer.write(file, map);
+            writer.write(parsePath(file.filename), map);
         }
     }
     test
     shared void testNamesToFiles() {
-        {Path+} expected = [ parsePath("two"), parsePath("three"), parsePath("four")];
+//        {Path+} expected = [ parsePath("two"), parsePath("three"), parsePath("four")];
+        {PathWrapper+} expected = [ PathWrapper("two"), PathWrapper("three"),
+            PathWrapper("four")];
         "[[namesToFiles]] should return all names."
         assert (corresponding(namesToFiles("two", "three", "four"), expected));
     }

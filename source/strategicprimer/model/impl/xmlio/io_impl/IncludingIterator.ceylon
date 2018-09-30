@@ -25,7 +25,8 @@ import javax.xml.stream.events {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    PathWrapper
 }
 import lovelace.util.jvm {
     TypesafeXMLEventReader
@@ -41,9 +42,7 @@ import strategicprimer.model.impl.xmlio.exceptions {
 import java.lang {
     AutoCloseable
 }
-import ceylon.file {
-    Path
-}
+
 "An extension to the [[Iterator]] of [[XMLEvent]] to automatically handle
  `include` tags."
 shared class IncludingIterator satisfies Iterator<XMLEvent> {
@@ -61,8 +60,8 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     "The stack of iterators we're working with."
     Stack<[String, Iterator<XMLEvent>]> stack =
             LinkedList<[String, Iterator<XMLEvent>]>();
-    shared new (Path file, Iterator<XMLEvent> iter) {
-        stack.push([file.string, iter]);
+    shared new (PathWrapper file, Iterator<XMLEvent> iter) {
+        stack.push([file.filename, iter]);
     }
     "Completely unwind the stack. Should be called before throwing any exception
      to our callers."

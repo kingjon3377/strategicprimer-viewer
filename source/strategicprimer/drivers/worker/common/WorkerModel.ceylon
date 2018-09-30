@@ -52,11 +52,10 @@ import lovelace.util.common {
     matchingValue,
     matchingPredicate,
     narrowedStream,
-    comparingOn
+    comparingOn,
+    PathWrapper
 }
-import ceylon.file {
-    Path
-}
+
 Logger log = logger(`module strategicprimer.drivers.worker.common`);
 "A model to underlie the advancement GUI, etc."
 shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
@@ -78,7 +77,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
         }
     }
     variable Player? currentPlayerImpl = null;
-    shared new (IMutableMapNG map, Path? file)
+    shared new (IMutableMapNG map, PathWrapper? file)
             extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}

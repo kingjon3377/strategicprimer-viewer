@@ -54,11 +54,10 @@ import strategicprimer.drivers.gui.common {
     WindowCloseListener
 }
 import lovelace.util.common {
-    silentListener
+    silentListener,
+    PathWrapper
 }
-import ceylon.file {
-    Path
-}
+
 "A window to show the result of running subset tests."
 class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), true) {
     StreamingLabel label = StreamingLabel();
@@ -94,8 +93,8 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
                 LabelTextColor color = LabelTextColor.white) =>
             label.append("<p style=\"color:``color``\">``paragraph``</p>");
     variable IMapNG mainMap = SPMapNG(MapDimensionsImpl(0, 0, 2), PlayerCollection(), -1);
-    shared void loadMain(IMapNG|Path arg) {
-        if (is Path path = arg) {
+    shared void loadMain(IMapNG|PathWrapper arg) {
+        if (is PathWrapper path = arg) {
             try {
                 mainMap = mapIOHelper.readMap(path, warningLevels.ignore);
             } catch (FileNotFoundException|NoSuchFileException except) {
@@ -128,7 +127,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
                           reading""");
     }
     "Test a map against the main map, to see if it's a strict subset of it."
-    shared void testMap(IMapNG map, Path? file) {
+    shared void testMap(IMapNG map, PathWrapper? file) {
         String filename;
         if (exists file) {
             filename = file.string;
@@ -153,7 +152,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
     """Read a map from file and test it against the main map to see if it's a strict
        subset. This method "eats" (but logs) all (anticipated) errors in reading the
        file."""
-    shared void testFile(Path path) {
+    shared void testFile(PathWrapper path) {
         printParagraph("Testing ``path`` ...");
         IMapNG map;
         try {
@@ -184,7 +183,7 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
         }
         testMap(map, path);
     }
-    shared actual void acceptDroppedFile(Path file) => testFile(file);
+    shared actual void acceptDroppedFile(PathWrapper file) => testFile(file);
 }
 "Factory method to add the menu bar to a [[SubsetFrame]]."
 SubsetFrame subsetFrame() {

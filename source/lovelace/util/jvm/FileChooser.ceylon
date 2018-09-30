@@ -25,9 +25,8 @@ import ceylon.logging {
     Logger,
     logger
 }
-import ceylon.file {
-    parsePath,
-    Path
+import lovelace.util.common {
+    PathWrapper
 }
 
 "Logger."
@@ -39,11 +38,11 @@ shared class FileChooser {
             extends Exception((cause exists)
                 then "Choice of a file was interrupted by an exception:"
                 else "No file was selected", cause) {}
-    static Path fileToPath(JFile file) => parsePath(file.toPath().string);
+    static PathWrapper fileToPath(JFile file) => PathWrapper(file.toPath().string);
     Integer(Component?) chooserFunction;
-    variable {Path+}? storedFile;
+    variable {PathWrapper+}? storedFile;
     JFileChooser|JFileDialog chooser;
-    shared new open(JFileChooser|JFileDialog fileChooser, Path? loc = null) {
+    shared new open(JFileChooser|JFileDialog fileChooser, PathWrapper? loc = null) {
         log.trace("FileChooser invoked for the Open dialog");
         switch (fileChooser)
         case (is JFileChooser) {
@@ -69,7 +68,7 @@ shared class FileChooser {
         }
         chooser = fileChooser;
     }
-    shared new save(Path? loc,
+    shared new save(PathWrapper? loc,
             JFileChooser|JFileDialog fileChooser) {
         log.trace("FileChooser invoked for Save dialog");
         switch (fileChooser)
@@ -94,7 +93,7 @@ shared class FileChooser {
         }
         chooser = fileChooser;
     }
-    shared new custom(Path? loc, String approveText,
+    shared new custom(PathWrapper? loc, String approveText,
             JFileChooser|JFileDialog fileChooser) {
         log.trace("FileChooser invoked for a custom dialog");
         switch (fileChooser)
@@ -168,7 +167,7 @@ shared class FileChooser {
      return an iterable containing it or them; otherwise, show a dialog for the user to
      select one or more filenames and return the filename(s) the user selected. Throws an
      exception if the choice is interrupted or the user declines to choose."
-    shared {Path+} files {
+    shared {PathWrapper+} files {
         if (exists temp = storedFile) {
             log.trace("FileChooser.files: A file was stored, so returning it");
             return temp;
@@ -190,7 +189,7 @@ shared class FileChooser {
     }
     "Allow the user to choose a file or files, if necessary, and pass each file to the
      given consumer. If the operation is canceled, do nothing."
-    shared void call(Anything(Path) consumer) {
+    shared void call(Anything(PathWrapper) consumer) {
         try {
             files.each(consumer);
         } catch (ChoiceInterruptedException exception) {

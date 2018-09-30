@@ -37,9 +37,10 @@ import strategicprimer.model.common.xmlio {
     warningLevels,
     SPFormatException
 }
-import ceylon.file {
-    parsePath
+import lovelace.util.common {
+    PathWrapper
 }
+
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.converters`);
 "A driver to convert maps: at present, halving their resolution."
@@ -66,7 +67,7 @@ shared class ConverterDriver(
         for (filename in args.coalesced) {
             cli.print("Reading ``filename ``... ");
             try {
-                IMutableMapNG old = mapIOHelper.readMap(parsePath(filename),
+                IMutableMapNG old = mapIOHelper.readMap(PathWrapper(filename),
                     warningLevels.default);
                 if (options.hasOption("--current-turn")) {
                     value currentTurn =
@@ -82,7 +83,7 @@ shared class ConverterDriver(
                 cli.println(" ... Converting ... ");
                 IMapNG map = decreaseResolution(old);
                 cli.println("About to write ``filename``.new.xml");
-                mapIOHelper.writeMap(parsePath(filename + ".new.xml"), map);
+                mapIOHelper.writeMap(PathWrapper(filename + ".new.xml"), map);
             } catch (FileNotFoundException|NoSuchFileException except) {
                 log.error("``filename`` not found", except);
             } catch (IOException except) {

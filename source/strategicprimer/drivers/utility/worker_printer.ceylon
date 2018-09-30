@@ -23,15 +23,14 @@ import strategicprimer.drivers.exploration.common {
     ExplorationModel
 }
 import lovelace.util.common {
-    matchingPredicate
+    matchingPredicate,
+    PathWrapper
 }
-import ceylon.file {
-    Path
-}
+
 "A driver to print a mini-report on workers, suitable for inclusion in a player's
  results."
 service(`interface ISPDriver`)
-shared class WorkerPrintCLI() satisfies GUIDriver {
+shared class WorkerPrintCLI() satisfies GUIDriver { // FIXME: Wrong interface
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["--print"];
@@ -63,7 +62,7 @@ shared class WorkerPrintCLI() satisfies GUIDriver {
             cli.println();
         }
     }
-    shared actual {Path*} askUserForFiles() => [];
+    shared actual {PathWrapper*} askUserForFiles() => [];
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
         IDriverModel model) {
         if (is IExplorationModel model) {

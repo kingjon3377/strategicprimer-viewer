@@ -34,9 +34,10 @@ import strategicprimer.drivers.gui.common {
 import lovelace.util.jvm {
     FileChooser
 }
-import ceylon.file {
-    Path
+import lovelace.util.common {
+    PathWrapper
 }
+
 "An object to start the exploration GUI."
 service(`interface ISPDriver`)
 shared class ExplorationGUI() satisfies GUIDriver {
@@ -73,7 +74,7 @@ shared class ExplorationGUI() satisfies GUIDriver {
         });
     }
     "Ask the user to choose a file or files."
-    shared actual {Path*} askUserForFiles() {
+    shared actual {PathWrapper*} askUserForFiles() {
         try {
             return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {

@@ -1,6 +1,5 @@
 import ceylon.file {
-    parsePath,
-    Path
+    parsePath
 }
 import strategicprimer.drivers.common {
     DriverFailedException,
@@ -18,6 +17,9 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.drivers.worker.common {
     WorkerModel,
     IWorkerModel
+}
+import lovelace.util.common {
+    PathWrapper
 }
 "A command-line program to export a proto-strategy for a player from orders in a map."
 service(`interface ISPDriver`)
@@ -48,5 +50,5 @@ shared class StrategyExportCLI() satisfies GUIDriver { // FIXME: Wrong interface
         }
     }
     "This is a CLI driver, so we can't show a file-chooser dialog."
-    shared actual {Path*} askUserForFiles() => [];
+    shared actual {PathWrapper*} askUserForFiles() => [];
 }

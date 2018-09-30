@@ -23,9 +23,8 @@ import ceylon.logging {
     Logger,
     logger
 }
-import ceylon.file {
-    Path,
-    parsePath
+import lovelace.util.common {
+    PathWrapper
 }
 
 Logger log = logger(`module strategicprimer.drivers.gui.common`);
@@ -51,17 +50,17 @@ class FileDropHandler() extends TransferHandler() {
             return false;
         }
         for (file in payload) {
-            app.acceptDroppedFile(parsePath(file.toPath().string));
+            app.acceptDroppedFile(PathWrapper(file.toPath().string));
         }
         return true;
     }
 }
 "An intermediate subclass of JFrame to take care of some common setup things that can't be
  done in an interface."
-shared class SPFrame(String windowTitle, Path? file, Dimension? minSize = null,
+shared class SPFrame(String windowTitle, PathWrapper? file, Dimension? minSize = null,
         "Whether this app supports having files dropped on it."
         shared default Boolean supportsDroppedFiles = false,
-        Anything(Path) droppedFileHandler = noop,
+        Anything(PathWrapper) droppedFileHandler = noop,
         "The name of the window, for use in customizing the About dialog"
         shared actual default String windowName = windowTitle)
         extends JFrame(windowTitle) satisfies ISPWindow {
@@ -71,7 +70,7 @@ shared class SPFrame(String windowTitle, Path? file, Dimension? minSize = null,
             JPaths.get(file.string).toFile());
     }
     "Handle a dropped file."
-    shared default void acceptDroppedFile(Path file) => droppedFileHandler(file);
+    shared default void acceptDroppedFile(PathWrapper file) => droppedFileHandler(file);
     shared void showWindow() => setVisible(true);
     defaultCloseOperation = WindowConstants.doNothingOnClose;
     if (exists minSize) {

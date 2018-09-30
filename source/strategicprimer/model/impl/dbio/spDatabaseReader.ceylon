@@ -24,12 +24,13 @@ import ceylon.collection {
 import javax.sql {
     DataSource
 }
-import ceylon.file {
-    Path
+import lovelace.util.common {
+    PathWrapper
 }
+
 shared object spDatabaseReader satisfies IMapReader {
-    MutableMap<Path, Sql> connections = HashMap<Path, Sql>();
-    DataSource getBaseConnection(Path path) {
+    MutableMap<PathWrapper, Sql> connections = HashMap<PathWrapper, Sql>();
+    DataSource getBaseConnection(PathWrapper path) {
         SQLiteDataSource retval = SQLiteDataSource();
         if (path.string.empty) {
             log.warn("Setting up an (empty) in-memory database for reading");
@@ -39,7 +40,7 @@ shared object spDatabaseReader satisfies IMapReader {
         }
         return retval;
     }
-    Sql getSQL(Path path) {
+    Sql getSQL(PathWrapper path) {
         if (exists connection = connections[path]) {
             return connection;
         } else {
@@ -48,12 +49,12 @@ shared object spDatabaseReader satisfies IMapReader {
             return retval;
         }
     }
-    shared actual IMutableMapNG readMap(Path file, Warning warner) {
+    shared actual IMutableMapNG readMap(PathWrapper file, Warning warner) {
         Sql sql = getSQL(file);
         return dbMapReader.readMap(sql, warner);
     }
 
-    shared actual IMutableMapNG readMapFromStream(Path file, Reader istream,
+    shared actual IMutableMapNG readMapFromStream(PathWrapper file, Reader istream,
             Warning warner) {
         throw AssertionError("Can't read a database from a stream");
     }

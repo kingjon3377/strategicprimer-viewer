@@ -49,14 +49,13 @@ import ceylon.random {
 }
 import lovelace.util.common {
     matchingPredicate,
-    matchingValue
+    matchingValue,
+    PathWrapper
 }
 import com.vasileff.ceylon.structures {
     Multimap
 }
-import ceylon.file {
-    Path
-}
+
 "A model for exploration drivers."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
     """A fixture is "diggable" if it is a [[MineralFixture]] or a [[Mine]]."""
@@ -163,7 +162,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             ArrayList<SelectionChangeListener>();
     "The currently selected unit and its location."
     variable [Point, IUnit?] selection = [Point.invalidPoint, null];
-    shared new (IMutableMapNG map, Path? file, Boolean modified = false)
+    shared new (IMutableMapNG map, PathWrapper? file, Boolean modified = false)
             extends SimpleMultiMapModel(map, file, modified) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}

@@ -19,7 +19,8 @@ import javax.xml.stream.events {
 }
 
 import lovelace.util.common {
-    IteratorWrapper
+    IteratorWrapper,
+    PathWrapper
 }
 import lovelace.util.jvm {
     TypesafeXMLEventReader
@@ -43,9 +44,7 @@ import strategicprimer.model.common.xmlio {
 import strategicprimer.model.impl.xmlio.io_impl {
     IncludingIterator
 }
-import ceylon.file {
-    Path
-}
+
 "Sixth-generation SP XML reader."
 shared object yaXMLReader satisfies IMapReader&ISPReader {
     "Read an object from XML."
@@ -54,7 +53,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
     throws(`class AssertionError`,
         "if a reader produces a different type than requested")
     shared actual Element readXML<Element>(
-            "The file we're reading from" Path file,
+            "The file we're reading from" PathWrapper file,
             "The stream to read from" JReader istream,
             "The Warning instance to use for warnings" Warning warner)
             given Element satisfies Object {
@@ -74,7 +73,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
     throws(`class XMLStreamException`, "on malformed XML")
     throws(`class SPFormatException`, "on SP format problems")
     shared actual IMutableMapNG readMapFromStream(
-            "The file we're reading from" Path file,
+            "The file we're reading from" PathWrapper file,
             "The stream to read from" JReader istream,
             "The Warning instance to use for warnings" Warning warner) =>
                 readXML<IMutableMapNG>(file, istream, warner);
@@ -82,7 +81,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
     throws(`class IOException`, "on I/O error")
     throws(`class XMLStreamException`, "on malformed XML")
     throws(`class SPFormatException`, "on SP format problems")
-    shared actual IMutableMapNG readMap("The file to read from" Path file,
+    shared actual IMutableMapNG readMap("The file to read from" PathWrapper file,
             "The Warning instance to use for warnings" Warning warner) {
         try (istream = JFiles.newBufferedReader(JPaths.get(file.string))) {
             return readMapFromStream(file, istream, warner);

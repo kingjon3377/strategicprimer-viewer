@@ -33,6 +33,9 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
+import lovelace.util.common {
+    PathWrapper
+}
 
 "A driver for comparing map readers."
 service(`interface ISPDriver`)
@@ -65,13 +68,13 @@ shared class ReaderComparator() satisfies UtilityDriver {
             if (is File file) {
                 String contents = readAll(file);
                 Integer readStartOne = system.nanoseconds;
-                IMapNG mapOne = readerOne.readMapFromStream(path, StringReader(contents),
-                    warner);
+                IMapNG mapOne = readerOne.readMapFromStream(PathWrapper(path.string),
+                    StringReader(contents), warner);
                 Integer readEndOne = system.nanoseconds;
                 print("Old reader took ``readEndOne - readStartOne``");
                 Integer readStartTwo = system.nanoseconds;
-                IMapNG mapTwo = readerTwo.readMapFromStream(path, StringReader(contents),
-                    warner);
+                IMapNG mapTwo = readerTwo.readMapFromStream(PathWrapper(path.string),
+                    StringReader(contents), warner);
                 Integer readEndTwo = system.nanoseconds;
                 print("New reader took ``readEndTwo - readStartTwo``");
                 if (mapOne == mapTwo) {

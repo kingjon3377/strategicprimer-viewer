@@ -16,9 +16,10 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import ceylon.file {
-    Path
+import lovelace.util.common {
+    PathWrapper
 }
+
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.utility`);
 "A driver to check whether player maps are subsets of the main map."
@@ -48,5 +49,5 @@ shared class SubsetCLI() satisfies GUIDriver { // FIXME: Wrong interface
         }
     }
     "This is a CLI driver, so we can't show a file-chooser dialog."
-    shared actual {Path*} askUserForFiles() => [];
+    shared actual {PathWrapper*} askUserForFiles() => [];
 }

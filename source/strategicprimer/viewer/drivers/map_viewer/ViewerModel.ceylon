@@ -4,7 +4,8 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    PathWrapper
 }
 
 import strategicprimer.drivers.common {
@@ -17,9 +18,7 @@ import strategicprimer.model.common.map {
     IMutableMapNG,
     IMapNG
 }
-import ceylon.file {
-    Path
-}
+
 "A class to encapsulate the various model-type things views need to do with maps."
 todo("Tests")
 shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
@@ -59,21 +58,21 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "The visible dimensions of the map."
     variable VisibleDimensions visDimensions;
     shared new ("The initial map" IMutableMapNG theMap,
-        "The file it was loaded from or should be saved to" Path? file)
+        "The file it was loaded from or should be saved to" PathWrapper? file)
             extends SimpleDriverModel(theMap, file) {
         visDimensions = VisibleDimensions(0, theMap.dimensions.rows - 1, 0,
             theMap.dimensions.columns - 1);
     }
     shared new fromEntry(
         "An [[Entry]] of the initial map and its filename"
-        IMutableMapNG->[Path?, Boolean] entry)
+        IMutableMapNG->[PathWrapper?, Boolean] entry)
             extends SimpleDriverModel(entry.key, *entry.item) {
         visDimensions = VisibleDimensions(0, entry.key.dimensions.rows - 1, 0,
             entry.key.dimensions.columns - 1);
     }
     shared new fromPair(
         "A pair of the initial map and its filename"
-        [IMutableMapNG, Path?] pair)
+        [IMutableMapNG, PathWrapper?] pair)
             extends SimpleDriverModel(pair.first, pair.rest.first) {
         visDimensions = VisibleDimensions(0, pair.first.dimensions.rows - 1, 0,
             pair.first.dimensions.columns - 1);
@@ -212,7 +211,8 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     }
     "Set the map and its filename, and also clear the selection and reset the visible
      dimensions and the zoom level."
-    shared actual void setMap(IMutableMapNG newMap, Path? origin, Boolean modified) {
+    shared actual void setMap(IMutableMapNG newMap, PathWrapper? origin,
+            Boolean modified) {
         super.setMap(newMap, origin, modified);
         postSetMap(newMap);
     }

@@ -8,6 +8,7 @@ module strategicprimer.drivers.gui.common "0.4.9017" {
     value javaVersion = "8";
     shared import java.desktop javaVersion;
     shared import java.base javaVersion;
+    shared import lovelace.util.common "0.1.0";
     import lovelace.util.jvm "0.1.0";
     import ceylon.logging ceylonVersion;
     import maven:"com.massisframework:orange-extensions" "1.3.1";

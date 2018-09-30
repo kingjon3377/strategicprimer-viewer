@@ -10,7 +10,8 @@ import javax.xml.stream {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    PathWrapper
 }
 
 import strategicprimer.model.common.xmlio {
@@ -29,9 +30,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import ceylon.file {
-    parsePath
-}
+
 "A driver to check whether player maps are subsets of the main map and display the
  results graphically."
 todo("Unify with [[SubsetCLI]]")
@@ -50,7 +49,7 @@ shared class SubsetGUI() satisfies UtilityDriver {
         SwingUtilities.invokeLater(frame.showWindow);
         assert (exists first = args.first);
         try { // Errors are reported via the GUI in loadMain(), then rethrown.
-            frame.loadMain(parsePath(first));
+            frame.loadMain(PathWrapper(first));
         } catch (IOException except) {
             throw DriverFailedException(except, "I/O error loading main map ``first``");
         } catch (XMLStreamException except) {
@@ -58,6 +57,6 @@ shared class SubsetGUI() satisfies UtilityDriver {
         } catch (SPFormatException except) {
             throw DriverFailedException(except, "Invalid SP XML in main  map ``first``");
         }
-        args.rest.map(parsePath).each(frame.testFile);
+        args.rest.map(PathWrapper).each(frame.testFile);
     }
 }

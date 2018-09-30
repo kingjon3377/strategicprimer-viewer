@@ -75,7 +75,8 @@ import ceylon.http.common {
 import lovelace.util.common {
     matchingValue,
     silentListener,
-    entryMap
+    entryMap,
+    PathWrapper
 }
 import lovelace.util.jvm {
     FileChooser
@@ -137,13 +138,13 @@ shared class ReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
         MutableMap<Path, String> cache = HashMap<Path, String>();
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.allMaps) {
-                if (exists file, !cache.defines(file)) {
-                    cache[file] = reportGenerator.createReport(map,
+                if (exists file, !cache.defines(parsePath(file.filename))) {
+                    cache[parsePath(file.filename)] = reportGenerator.createReport(map,
                         currentPlayer else map.currentPlayer);
                 }
             }
         } else if (exists file = model.mapFile) {
-            cache[file] = reportGenerator.createReport(model.map,
+            cache[parsePath(file.filename)] = reportGenerator.createReport(model.map,
                 currentPlayer else model.map.currentPlayer);
         }
         if (cache.empty) {
@@ -250,15 +251,20 @@ shared class ReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
         } else {
             if (is IMultiMapModel model) {
                 for (map->[file, _] in model.allMaps) {
-                    writeReport(file, map, options);
+                    Path? wrapped =
+                            if (exists file) then parsePath(file.filename) else null;
+                    writeReport(wrapped, map, options);
                 }
             } else {
-                writeReport(model.mapFile, model.map, options);
+                writeReport(
+                    if (exists file = model.mapFile)
+                        then parsePath(file.filename) else null,
+                    model.map, options);
             }
         }
     }
     "As we're a CLI driver, we can't show a file-chooser dialog."
-    shared actual {Path*} askUserForFiles() => [];
+    shared actual {PathWrapper*} askUserForFiles() => [];
 }
 "A driver to show tabular reports of the contents of a player's map in a GUI."
 service(`interface ISPDriver`)
@@ -279,7 +285,7 @@ shared class TabularReportGUI() satisfies GUIDriver {
         window.showWindow();
     }
     "Ask the user to choose a file."
-    shared actual {Path*} askUserForFiles() {
+    shared actual {PathWrapper*} askUserForFiles() {
         try {
             return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {
@@ -309,10 +315,13 @@ shared class TabularReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
         Map<Path, IMapNG> mapping;
         if (is IMultiMapModel model) {
             mapping = map(model.allMaps.coalesced
-                .map(entryMap(identity<IMutableMapNG>, Tuple<Path?|Boolean, Path?,
-                    [Boolean]>.first)).map(Entry.coalesced).coalesced.map(reverseEntry));
+                .map(entryMap(identity<IMutableMapNG>, Tuple<PathWrapper?|Boolean,
+                    PathWrapper?, [Boolean]>.first)).map(Entry.coalesced).coalesced
+                .map(entryMap(identity<IMutableMapNG>,
+                    compose(parsePath, PathWrapper.filename)))
+                .map(reverseEntry));
         } else if (exists path = model.mapFile) {
-            mapping = map { path->model.map };
+            mapping = map { parsePath(path.filename)->model.map };
         } else {
             mapping = map { parsePath("unknown.xml")->model.map };
         }
@@ -344,10 +353,10 @@ shared class TabularReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
         }
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.allMaps) {
-                createReports(map, file);
+                createReports(map, parsePath(file?.filename else "unknown.xml"));
             }
         } else {
-            createReports(model.map, model.mapFile);
+            createReports(model.map, parsePath(model.mapFile?.filename else "unknown.xml"));
         }
         {Endpoint*} endpoints = builders.map(([file, table]->builder) =>
             Endpoint {
@@ -465,10 +474,14 @@ shared class TabularReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
             }
             if (is IMultiMapModel model) {
                 for (map->[file, _] in model.allMaps) {
-                    createReports(map, file);
+                    Path? wrapped =
+                            if (exists file) then parsePath(file.filename) else null;
+                    createReports(map, wrapped);
                 }
             } else {
-                createReports(model.map, model.mapFile);
+                createReports(model.map,
+                    if (exists file = model.mapFile)
+                        then parsePath(file.filename) else null);
             }
             for (writer in writers.items) {
                 writer.close();
@@ -476,5 +489,5 @@ shared class TabularReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
         }
     }
     "Since this is a CLI driver, we can't show a file-chooser dialog."
-    shared actual {Path*} askUserForFiles() => [];
+    shared actual {PathWrapper*} askUserForFiles() => [];
 }

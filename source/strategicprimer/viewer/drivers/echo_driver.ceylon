@@ -44,9 +44,10 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import ceylon.file {
-    parsePath
+import lovelace.util.common {
+    PathWrapper
 }
+
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated
    syntax. (Because of that usage, warnings are disabled.)"""
@@ -63,7 +64,7 @@ shared class EchoDriver() satisfies UtilityDriver {
         if (exists inArg = args.first, exists outArg = args.rest.first, args.size == 2) {
             IMutableMapNG map;
             try {
-                map = mapIOHelper.readMap(parsePath(inArg), warningLevels.ignore);
+                map = mapIOHelper.readMap(PathWrapper(inArg), warningLevels.ignore);
             } catch (IOException except) {
                 throw DriverFailedException(except, "I/O error reading file ``inArg``");
             } catch (XMLStreamException except) {
@@ -104,7 +105,7 @@ shared class EchoDriver() satisfies UtilityDriver {
                 }
             }
             try {
-                mapIOHelper.writeMap(parsePath(outArg), map);
+                mapIOHelper.writeMap(PathWrapper(outArg), map);
             } catch (IOException except) {
                 throw DriverFailedException(except, "I/O error writing ``outArg``");
             }

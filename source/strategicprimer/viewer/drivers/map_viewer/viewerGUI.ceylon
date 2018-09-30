@@ -38,14 +38,13 @@ import strategicprimer.drivers.gui.common {
     WindowCloseListener
 }
 import lovelace.util.common {
-    silentListener
+    silentListener,
+    PathWrapper
 }
 import lovelace.util.jvm {
     FileChooser
 }
-import ceylon.file {
-    Path
-}
+
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A driver to start the map viewer."
@@ -131,7 +130,7 @@ shared class ViewerGUI() satisfies GUIDriver {
         }
     }
     "Ask the user to choose a file or files."
-    shared actual {Path+} askUserForFiles() {
+    shared actual {PathWrapper+} askUserForFiles() {
         try {
             return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {

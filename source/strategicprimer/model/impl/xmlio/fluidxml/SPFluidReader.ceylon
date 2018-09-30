@@ -30,7 +30,8 @@ import javax.xml.stream.events {
 import lovelace.util.common {
     IteratorWrapper,
     matchingValue,
-    simpleMap
+    simpleMap,
+    PathWrapper
 }
 import lovelace.util.jvm {
     TypesafeXMLEventReader
@@ -106,9 +107,6 @@ import strategicprimer.model.impl.xmlio.io_impl {
 }
 import strategicprimer.model.impl.xmlio.fluidxml {
     FluidBase { ... }
-}
-import ceylon.file {
-    Path
 }
 
 "The main reader-from-XML class in the 'fluid XML' implementation."
@@ -497,7 +495,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         SimpleFixtureReader("phoenix", `Phoenix`).entry,
         SimpleFixtureReader("simurgh", `Simurgh`).entry,
         SimpleFixtureReader("troll", `Troll`).entry);
-    shared actual Type readXML<Type>(Path file, JReader istream, Warning warner)
+    shared actual Type readXML<Type>(PathWrapper file, JReader istream, Warning warner)
             given Type satisfies Object {
         // TODO: Pass in Closeables, to pass to TypesafeMLEventReader, to close file descriptor
         Iterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
@@ -514,11 +512,11 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         throw XMLStreamException("XML stream didn't contain a start element");
     }
-    shared actual IMutableMapNG readMap(Path file, Warning warner) {
+    shared actual IMutableMapNG readMap(PathWrapper file, Warning warner) {
         try (istream = JFiles.newBufferedReader(JPaths.get(file.string))) {
             return readMapFromStream(file, istream, warner);
         }
     }
-    shared actual IMutableMapNG readMapFromStream(Path file, JReader istream,
+    shared actual IMutableMapNG readMapFromStream(PathWrapper file, JReader istream,
             Warning warner) => readXML<IMutableMapNG>(file, istream, warner);
 }

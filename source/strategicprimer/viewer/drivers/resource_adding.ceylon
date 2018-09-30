@@ -104,12 +104,13 @@ import com.vasileff.ceylon.structures {
 import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
-import ceylon.file {
-    Path
+import lovelace.util.common {
+    PathWrapper
 }
+
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
-    shared new fromMap(IMutableMapNG map, Path? file) extends
+    shared new fromMap(IMutableMapNG map, PathWrapper? file) extends
         SimpleMultiMapModel(map, file) { }
     shared new fromDriverModel(IDriverModel driverModel) extends
         SimpleMultiMapModel.copyConstructor(driverModel) { }
@@ -502,7 +503,7 @@ shared class ResourceAddingGUI() satisfies GUIDriver {
         }
     }
     "Ask the user to choose a file or files."
-    shared actual {Path*} askUserForFiles() {
+    shared actual {PathWrapper*} askUserForFiles() {
         try {
             return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {

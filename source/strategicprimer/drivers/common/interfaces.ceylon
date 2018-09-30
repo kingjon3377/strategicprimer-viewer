@@ -4,7 +4,8 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    PathWrapper
 }
 import strategicprimer.model.common.map {
     HasName
@@ -15,9 +16,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import ceylon.file {
-    Path
-}
+
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option
    overrides the previous, and any option passed without argument has an implied argument
@@ -119,7 +118,7 @@ shared interface CLIDriver satisfies ModelDriver {}
 shared interface GUIDriver satisfies ModelDriver {
     "Ask the user to choose a file or files. (Or do something equivalent to produce a
      filename.)"
-    shared formal {Path*} askUserForFiles();
+    shared formal {PathWrapper*} askUserForFiles();
 }
 "An interface for drivers which operate on a map model of some kind but never want to
  have its contents written back to disk (automatically)."

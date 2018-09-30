@@ -86,7 +86,8 @@ import strategicprimer.model.common.xmlio {
 import lovelace.util.common {
     todo,
     defer,
-    silentListener
+    silentListener,
+    PathWrapper
 }
 import com.vasileff.ceylon.structures {
     MutableMultimap,
@@ -100,10 +101,6 @@ import java.nio.file {
 }
 import strategicprimer.model.impl.xmlio {
     mapIOHelper
-}
-import ceylon.file {
-    Path,
-    parsePath
 }
 
 "A logger."
@@ -210,7 +207,7 @@ object appChooserState {
         if (exists topWindow = WindowList.getWindows(true, false)
                 .iterable.narrow<SPFrame>().last) {
             for (file in openFilesEvent.files) {
-                topWindow.acceptDroppedFile(parsePath(file.toPath().string));
+                topWindow.acceptDroppedFile(PathWrapper(file.toPath().string));
             }
         }
     }
@@ -250,14 +247,14 @@ class DriverWrapper(ISPDriver driver) {
             throw IncorrectUsageException(driver.usage);
         }
     }
-    {Path*} extendArguments(String* args) {
+    {PathWrapper*} extendArguments(String* args) {
         if (is GUIDriver driver) {
-            MutableList<Path> files;
+            MutableList<PathWrapper> files;
             if (nonempty temp = args.sequence()) {
                 files = ArrayList {
                     elements = mapIOHelper.namesToFiles(*temp); };
             } else {
-                files = ArrayList<Path>();
+                files = ArrayList<PathWrapper>();
             }
             if (tooManyArguments(files.size)) {
                 throw IncorrectUsageException(driver.usage);
@@ -319,7 +316,8 @@ class DriverWrapper(ISPDriver driver) {
             }
             case (is GUIDriver) {
                 assert (nonempty files = extendArguments(*args).sequence());
-                value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn, files.first, *files.rest);
+                value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn,
+                    files.first, *files.rest);
                 fixCurrentTurn(options, model);
                 driver.startDriverOnModel(cli, options, model);
             }
