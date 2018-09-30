@@ -9,7 +9,7 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     SPOptions,
     ISPDriver,
-    GUIDriver
+    ReadOnlyDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -18,12 +18,10 @@ import strategicprimer.drivers.worker.common {
     WorkerModel,
     IWorkerModel
 }
-import lovelace.util.common {
-    PathWrapper
-}
+
 "A command-line program to export a proto-strategy for a player from orders in a map."
 service(`interface ISPDriver`)
-shared class StrategyExportCLI() satisfies GUIDriver { // FIXME: Wrong interface
+shared class StrategyExportCLI() satisfies ReadOnlyDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-w", "--worker", "--export-strategy"];
@@ -49,6 +47,4 @@ shared class StrategyExportCLI() satisfies GUIDriver { // FIXME: Wrong interface
             startDriverOnModel(cli, options, WorkerModel.copyConstructor(model));
         }
     }
-    "This is a CLI driver, so we can't show a file-chooser dialog."
-    shared actual {PathWrapper*} askUserForFiles() => [];
 }

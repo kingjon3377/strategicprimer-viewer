@@ -20,7 +20,8 @@ import strategicprimer.drivers.common {
     DriverUsage,
     DriverFailedException,
     ISPDriver,
-    GUIDriver
+    GUIDriver,
+    ReadOnlyDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -118,7 +119,7 @@ object suffixHelper {
 }
 "A driver to produce a report of the contents of a map."
 service(`interface ISPDriver`)
-shared class ReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
+shared class ReportCLI() satisfies ReadOnlyDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-m", "--report"];
@@ -263,8 +264,6 @@ shared class ReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
             }
         }
     }
-    "As we're a CLI driver, we can't show a file-chooser dialog."
-    shared actual {PathWrapper*} askUserForFiles() => [];
 }
 "A driver to show tabular reports of the contents of a player's map in a GUI."
 service(`interface ISPDriver`)
@@ -296,7 +295,7 @@ shared class TabularReportGUI() satisfies GUIDriver {
 }
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
 service(`interface ISPDriver`)
-shared class TabularReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
+shared class TabularReportCLI() satisfies ReadOnlyDriver {
     shared actual IDriverUsage usage = DriverUsage {
             graphical = false;
             invocations = ["-b", "--tabular"];
@@ -488,6 +487,4 @@ shared class TabularReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
             }
         }
     }
-    "Since this is a CLI driver, we can't show a file-chooser dialog."
-    shared actual {PathWrapper*} askUserForFiles() => [];
 }

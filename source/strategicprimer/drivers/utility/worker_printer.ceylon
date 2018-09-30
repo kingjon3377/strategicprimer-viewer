@@ -5,7 +5,7 @@ import strategicprimer.drivers.common {
     SPOptions,
     IDriverModel,
     ISPDriver,
-    GUIDriver
+    ReadOnlyDriver
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
@@ -23,14 +23,13 @@ import strategicprimer.drivers.exploration.common {
     ExplorationModel
 }
 import lovelace.util.common {
-    matchingPredicate,
-    PathWrapper
+    matchingPredicate
 }
 
 "A driver to print a mini-report on workers, suitable for inclusion in a player's
  results."
 service(`interface ISPDriver`)
-shared class WorkerPrintCLI() satisfies GUIDriver { // FIXME: Wrong interface
+shared class WorkerPrintCLI() satisfies ReadOnlyDriver {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["--print"];
@@ -62,7 +61,6 @@ shared class WorkerPrintCLI() satisfies GUIDriver { // FIXME: Wrong interface
             cli.println();
         }
     }
-    shared actual {PathWrapper*} askUserForFiles() => [];
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
         IDriverModel model) {
         if (is IExplorationModel model) {
