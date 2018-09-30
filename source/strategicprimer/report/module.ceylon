@@ -17,7 +17,6 @@ module strategicprimer.report "0.4.9017" {
     shared import strategicprimer.model.common "0.4.9017";
     shared import lovelace.util.common lovelaceUtilsVersion;
     import ceylon.test ceylonVersion;
-    shared import ceylon.file ceylonVersion;
     import ceylon.random ceylonVersion;
     import com.vasileff.ceylon.structures "1.1.3";
     import ceylon.decimal ceylonVersion;

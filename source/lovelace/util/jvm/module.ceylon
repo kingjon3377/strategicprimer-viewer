@@ -13,7 +13,6 @@ module lovelace.util.jvm "0.1.0" {
 //    import ceylon.test ceylonVersion;
     shared import javax.xml javaVersion;
     import ceylon.logging ceylonVersion;
-    shared import ceylon.file ceylonVersion;
     import ceylon.io ceylonVersion;
     shared import ceylon.buffer ceylonVersion;
 }

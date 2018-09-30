@@ -15,7 +15,6 @@ module strategicprimer.drivers.converters "0.4.9017" {
     import strategicprimer.drivers.common spVersion;
     import ceylon.logging ceylonVersion;
     import ceylon.regex ceylonVersion;
-    import ceylon.file ceylonVersion;
     shared import strategicprimer.drivers.exploration.old spVersion;
     import ceylon.random ceylonVersion;
 }

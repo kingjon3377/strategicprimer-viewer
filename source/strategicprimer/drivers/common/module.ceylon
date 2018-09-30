@@ -17,5 +17,4 @@ module strategicprimer.drivers.common "0.4.9017" {
     import lovelace.util.jvm lovelaceUtilsVersion;
     import ceylon.random ceylonVersion;
     shared import ceylon.decimal ceylonVersion;
-    shared import ceylon.file "1.3.3";
 }

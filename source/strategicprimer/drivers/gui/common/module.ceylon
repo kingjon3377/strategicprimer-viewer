@@ -16,5 +16,4 @@ module strategicprimer.drivers.gui.common "0.4.9017" {
     import com.pump.swing "1.0.00";
     import ceylon.interop.java ceylonVersion;
     import ceylon.regex ceylonVersion;
-    shared import ceylon.file "1.3.3";
 }
