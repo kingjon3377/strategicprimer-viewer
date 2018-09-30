@@ -36,12 +36,13 @@ shared interface ICLIHelper {
             String prompt,
             "Whether to automatically choose if there's only one choice."
             Boolean auto);
-    "Read from the input stream until a non-negative integer is entered, then return it."
-    shared formal Integer inputNumber(
+    "Read from the input stream until a non-negative integer is entered, then return it.
+     Returns null on EOF."
+    shared formal Integer? inputNumber(
             "The prompt to prompt the user with."
             String prompt);
     "Read from the input stream repeatedly until a valid non-negative decimal number is
-     entered, then return it."
+     entered, then return it. On EOF returns NaN."
     shared formal Decimal inputDecimal(
             "The prompt to prompt the user with."
             String prompt);
@@ -71,11 +72,12 @@ shared interface ICLIHelper {
     shared formal void print(
             "The string to print."
             String text);
-    "Get a [[Point]] from the user. This is a convenience wrapper around [[inputNumber]]."
+    "Get a [[Point]] from the user. This is a convenience wrapper around [[inputNumber]].
+     On EOF, returns -1 for any remaining coordinates."
     shared default Point inputPoint(
             "The prompt to use to prompt the user."
             String prompt) {
         print(prompt);
-        return Point(inputNumber("Row: "), inputNumber("Column: "));
+        return Point(inputNumber("Row: ") else -1, inputNumber("Column: ") else -1);
     }
 }

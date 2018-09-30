@@ -120,7 +120,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             cli.println("Details of the unit:");
             cli.println("That unit appears to be at ``model.selectedUnitLocation``");
             cli.println(mover.verbose);
-            Integer totalMP = cli.inputNumber("MP the unit has: ");
+            Integer totalMP = cli.inputNumber("MP the unit has: ") else 0;
             variable Integer movement = totalMP;
             object handleCost satisfies MovementCostListener {
                 shared actual void deduct(Integer cost) => movement -= cost;
@@ -182,7 +182,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         speed.shortName``.");
                     cli.println(
                         """0: Set Speed, 1: SW, 2: S, 3: SE, 4: W, 5: Linger, 6: E, 7: NW, 8: N, 9: NE, 10: Toward Point, 11: Quit""");
-                    Integer directionNum = cli.inputNumber("Direction to move: ");
+                    Integer directionNum = cli.inputNumber("Direction to move: ") else -1;
                     switch (directionNum)
                     case (0) { changeSpeed(); continue; }
                     case (1) { direction = Direction.southwest; }

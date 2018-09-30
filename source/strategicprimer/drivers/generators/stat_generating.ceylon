@@ -106,12 +106,18 @@ shared class StatGeneratingCLI satisfies CLIDriver {
         }
         return null;
     }
+    "Let the user enter a number, assert that there was not EOF, and return the number."
+    static Integer inputNumber(ICLIHelper cli, String prompt) {
+        assert (exists retval = cli.inputNumber(prompt));
+        return retval;
+    }
     "Let the user enter stats for a worker."
     static WorkerStats enterStatsCollection(ICLIHelper cli) {
-        Integer maxHP = cli.inputNumber("Max HP: ");
-        return WorkerStats(maxHP, maxHP, cli.inputNumber("Str: "),
-            cli.inputNumber("Dex: "), cli.inputNumber("Con: "), cli.inputNumber("Int: "),
-            cli.inputNumber("Wis: "), cli.inputNumber("Cha: "));
+        Integer maxHP = inputNumber(cli, "Max HP: ");
+        return WorkerStats(maxHP, maxHP, inputNumber(cli, "Str: "),
+            inputNumber(cli, "Dex: "), inputNumber(cli, "Con: "),
+            inputNumber(cli, "Int: "), inputNumber(cli, "Wis: "),
+            inputNumber(cli, "Cha: "));
     }
     "Let the user enter stats for one worker in particular."
     static void enterStatsForWorker(IMultiMapModel model, Integer id, ICLIHelper cli) {
@@ -346,7 +352,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
     "Let the user create randomly-generated workers in a specific unit."
     void createWorkersForUnit(IMultiMapModel model, IDRegistrar idf, IFixture unit,
         ICLIHelper cli) {
-        Integer count = cli.inputNumber("How many workers to generate? ");
+        Integer count = cli.inputNumber("How many workers to generate? ") else 0;
         for (i in 0:count) {
             String race = raceFactory.randomRace();
             String name = cli.inputString("Worker is a ``race``. Worker name: ");
@@ -382,7 +388,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
      unit."
     void createWorkersFromFile(IMultiMapModel model, IDRegistrar idf,
             IFixture&HasOwner unit, ICLIHelper cli) {
-        Integer count = cli.inputNumber("How many workers to generate? ");
+        Integer count = cli.inputNumber("How many workers to generate? ") else 0;
         String filename = cli.inputString("Filename to load names from: ");
         Queue<String> names;
         if (is File file = parsePath(filename).resource) {
@@ -406,7 +412,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
             .filter(matchingValue(unit.owner,
                 compose(Village.owner, Entry<Point, Village>.item)))
             .map(entryMap(travelDistance, identity<Village>)).sort(increasingKey);
-        Integer mpPerDay = cli.inputNumber("MP per day for village volunteers:");
+        Integer mpPerDay = cli.inputNumber("MP per day for village volunteers:") else -1;
         for (i in 0:count) {
             String name;
             if (exists temp = names.accept()) {

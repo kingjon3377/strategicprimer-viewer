@@ -256,7 +256,7 @@ shared class TownGeneratingCLI() satisfies CLIDriver {
     }
     CommunityStats enterStats(ICLIHelper cli, IDRegistrar idf, IMapNG map, Point location,
             ModifiableTown town) {
-        CommunityStats retval = CommunityStats(cli.inputNumber("Population: "));
+        CommunityStats retval = CommunityStats(cli.inputNumber("Population: ") else 0);
         cli.println("Now enter Skill levels, the highest in the community for each Job.");
         cli.println("(Empty to end.)");
         while (true) {
@@ -264,8 +264,11 @@ shared class TownGeneratingCLI() satisfies CLIDriver {
             if (job.empty) {
                 break;
             }
-            Integer level = cli.inputNumber("Level: ");
-            retval.setSkillLevel(job, level);
+            if (exists level = cli.inputNumber("Level: ")) {
+                retval.setSkillLevel(job, level);
+            } else {
+                break;
+            }
         }
         cli.println("Now enter ID numbers of worked fields (empty to skip).");
         variable {HarvestableFixture*} nearestFields = findNearestFields(map, location);

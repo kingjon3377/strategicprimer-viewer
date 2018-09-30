@@ -7,14 +7,10 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
-import java.io {
-    IOException
-}
 import strategicprimer.model.common.map {
     HasName
 }
 import lovelace.util.common {
-    todo,
     isNumeric,
     parseInt
 }
@@ -75,8 +71,11 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
             return 0->first;
         } else {
             printList(items, func);
-            Integer retval = inputNumber(prompt);
-            return retval->items.getFromFirst(retval);
+            if (exists retval = inputNumber(prompt)) {
+                return retval->items.getFromFirst(retval);
+            } else {
+                return -2->null;
+            }
         }
     }
     "Have the user choose an item from a list."
@@ -86,9 +85,8 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
         chooseFromListImpl<Element>(list, description, none, prompt, auto,
             HasName.name);
     "Read input from the input stream repeatedly until a non-negative integer is entered,
-     then return it."
-    todo("Return null instead of throwing on null input?")
-    shared actual Integer inputNumber(String prompt) {
+     then return it. Returns null on EOF."
+    shared actual Integer? inputNumber(String prompt) {
         variable Integer retval = -1;
         while (retval < 0) {
             writePrompt(prompt);
@@ -98,13 +96,13 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
                     retval = temp;
                 }
             } else {
-                throw IOException("Null line of input");
+                return null;
             }
         }
         return retval;
     }
     "Read from the input stream repeatedly until a valid non-negative decimal number is
-     entered, then return it."
+     entered, then return it. On EOF returns NaN."
     shared actual Decimal inputDecimal(String prompt) {
         variable Decimal retval = decimalNumber(-1);
         Decimal zero = decimalNumber(0);
@@ -117,7 +115,7 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
                     println("Invalid number.");
                 }
             } else {
-                throw IOException("Null line of input");
+                return decimalNumber(0.0/0.0); // FIXME: Check that this actually produces a NaN instead of throwing
             }
         }
         return retval;

@@ -218,7 +218,7 @@ shared class ResourceAddingCLI() satisfies CLIDriver {
         String kind = cli.inputString("Kind of equipment: ");
         Integer count;
         if (cli.inputBooleanInSeries("Add more than one? ")) {
-            count = cli.inputNumber("Number to add: ");
+            count = cli.inputNumber("Number to add: ") else 0;
         } else {
             count = 1;
         }

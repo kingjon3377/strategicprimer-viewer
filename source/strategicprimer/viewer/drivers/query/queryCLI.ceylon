@@ -208,7 +208,7 @@ class QueryHelper {
     void reducePopulation(Point point, HasPopulation<out TileFixture>&TileFixture fixture,
             String plural, Boolean zero) {
         Integer count = Integer.smallest(cli.inputNumber(
-            "How many ``plural`` to remove: "), fixture.population);
+            "How many ``plural`` to remove: ") else 0, fixture.population);
         if (count > 0) {
             model.map.removeFixture(point, fixture);
             Integer remaining = fixture.population - count;
@@ -258,15 +258,18 @@ class QueryHelper {
                 time -= noResultCost;
             } else if (cli.inputBooleanInSeries("Found ``populationDescription(encounter)
                     ``. Should they ``verb``?", encounter.kind)) {
-                Integer cost = cli.inputNumber("Time to ``verb``: ");
+                Integer cost = cli.inputNumber("Time to ``verb``: ")
+                    else runtime.maxArraySize;
                 time -= cost;
                 if (cli.inputBooleanInSeries("Handle processing now?")) {
                     // TODO: somehow handle processing-in-parallel case
-                    for (i in 0:(cli.inputNumber("How many animals?"))) {
+                    for (i in 0:(cli.inputNumber("How many animals?") else 0)) {
                         Integer mass =
-                                cli.inputNumber("Weight of this animal's meat in pounds: ");
+                                cli.inputNumber("Weight of this animal's meat in pounds: ")
+                                else runtime.maxArraySize;
                         Integer hands =
-                                cli.inputNumber("# of workers processing this carcass: ");
+                                cli.inputNumber("# of workers processing this carcass: ")
+                                else 1;
                         time -= round(HuntingModel.processingTime(mass) / hands).integer;
                     }
                 }
@@ -307,7 +310,8 @@ class QueryHelper {
                 continue;
             } else if (cli.inputBooleanInSeries("Found ``encounter.shortDescription````
                     meadowStatus(encounter)``. Should they gather?", encounter.kind)) {
-                Integer cost = cli.inputNumber("Time to gather: ");
+                Integer cost = cli.inputNumber("Time to gather: ")
+                    else runtime.maxArraySize;
                 time -= cost;
                 // TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
                 if (is Shrub encounter, encounter.population > 0,
@@ -376,7 +380,7 @@ class QueryHelper {
         } else {
             herdModel = MammalModel.largeMammals;
         }
-        Integer count = cli.inputNumber("How many animals?\t");
+        Integer count = cli.inputNumber("How many animals?\t") else 0;
         if (count == 0) {
             cli.println("With no animals, no cost and no gain.");
             return;
@@ -384,7 +388,7 @@ class QueryHelper {
             cli.println("Can't have a negative number of animals.");
             return;
         } else {
-            Integer herders = cli.inputNumber("How many herders?\t");
+            Integer herders = cli.inputNumber("How many herders?\t") else 0;
             if (herders <= 0) {
                 cli.println("Can't herd with no herders.");
                 return;
@@ -500,7 +504,7 @@ class QueryHelper {
     }
     void tradeCommand() =>
             suggestTrade(cli.inputPoint("Base location? "),
-                cli.inputNumber("Within how many tiles? "));
+                cli.inputNumber("Within how many tiles? ") else 0);
     Anything() deferAction(Anything(Point, Integer) method, String verb) => // TODO: Replace with method-reference logic using defer()
                     () => method(cli.inputPoint("Location to ``verb``? "),
                         hunterHours * 60);

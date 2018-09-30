@@ -86,7 +86,7 @@ shared class PopulationGeneratingCLI() satisfies CLIDriver {
         }
         String key = (talking) then "talking ``kind``" else kind;
         Integer total = cli.inputNumber(
-            "There are ``count`` groups of ``key`` in the world; what should their total population be?");
+            "There are ``count`` groups of ``key`` in the world; what should their total population be?") else 0;
         variable Integer remainingTotal = total;
         variable Integer remainingCount = count;
         Random rng = singletonRandom;
@@ -131,7 +131,7 @@ shared class PopulationGeneratingCLI() satisfies CLIDriver {
             return;
         }
         Integer total = cli.inputNumber("There are ``count`` groves or orchards of ``kind
-            `` in the world; what should their total population be? ");
+            `` in the world; what should their total population be? ") else 0;
         variable Integer remainingTotal = total;
         variable Integer remainingCount = count;
         Random rng = singletonRandom;
@@ -166,7 +166,7 @@ shared class PopulationGeneratingCLI() satisfies CLIDriver {
             return;
         }
         Integer total = cli.inputNumber("There are ``count`` populations of ``kind
-            `` in the world; what should their total population be? ");
+            `` in the world; what should their total population be? ") else 0;
         variable Integer remainingTotal = total;
         variable Integer remainingCount = count;
         Random rng = singletonRandom;

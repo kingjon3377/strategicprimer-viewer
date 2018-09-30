@@ -77,9 +77,10 @@ shared class AdvancementCLI() satisfies CLIDriver {
                 break;
             }
             Integer oldLevel = skill.level;
-            Integer hours = cli.inputNumber("Hours of experience to add: ");
+            Integer hours = cli.inputNumber("Hours of experience to add: ") else 0;
             if (allowExpertMentoring) {
-                Integer hoursPerHour = cli.inputNumber("'Hours' between hourly checks: ");
+                Integer hoursPerHour = cli.inputNumber("'Hours' between hourly checks: ")
+                    else 0;
                 variable Integer remaining = hours;
                 while (remaining > 0) {
                     skill.addHours(Integer.largest(remaining, hoursPerHour),
@@ -135,7 +136,7 @@ shared class AdvancementCLI() satisfies CLIDriver {
     "Let the user add experience in a single Skill to all of a list of workers."
     void advanceWorkersInSkill(String jobName, String skillName, ICLIHelper cli,
         IWorker* workers) {
-        Integer hours = cli.inputNumber("Hours of experience to add: ");
+        Integer hours = cli.inputNumber("Hours of experience to add: ") else 0;
         for (worker in workers) {
             IJob job = worker.getJob(jobName);
             ISkill skill = job.getSkill(skillName);

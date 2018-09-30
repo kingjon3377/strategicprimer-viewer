@@ -109,12 +109,15 @@ shared class TrappingCLI() satisfies CLIDriver {
             } else {
                 cli.println("Found either ``item.kind`` or evidence of it escaping.");
                 Integer num =
-                        cli.inputNumber("How long to check and deal with the animal? ");
+                        cli.inputNumber("How long to check and deal with the animal? ")
+                        else runtime.maxArraySize;
                 Integer retval;
                 if (cli.inputBooleanInSeries("Handle processing now?")) {
-                    Integer mass = cli.inputNumber("Weight of meat in pounds: ");
+                    Integer mass = cli.inputNumber("Weight of meat in pounds: ") else
+                        runtime.maxArraySize;
                     Integer hands =
-                            cli.inputNumber("# of workers processing this carcass: ");
+                            cli.inputNumber("# of workers processing this carcass: ")
+                            else 1;
                     retval = num +
                         round(HuntingModel.processingTime(mass) / hands).integer;
                 } else {
@@ -123,7 +126,8 @@ shared class TrappingCLI() satisfies CLIDriver {
                 if (cli.inputBooleanInSeries(
                         "Reduce animal group population of ``item.population``?")) {
                     Integer count = Integer.smallest(
-                        cli.inputNumber("How many animals to remove?"), item.population);
+                        cli.inputNumber("How many animals to remove?") else 0,
+                            item.population);
                     if (count > 0) {
                         {IMutableMapNG*} allMaps;
                         if (is IMultiMapModel model) {
@@ -166,8 +170,9 @@ shared class TrappingCLI() satisfies CLIDriver {
         Boolean fishing = cli.inputBooleanInSeries(
             "Is this a fisherman trapping fish rather than a trapper? ");
         String name = (fishing) then "fisherman" else "trapper";
-        variable Integer minutes = cli
-                .inputNumber("How many hours will the ``name`` work? ") * minutesPerHour;
+        variable Integer minutes =
+                (cli.inputNumber("How many hours will the ``name`` work? ") else 0)
+                    * minutesPerHour;
         Point point = cli.inputPoint("Where is the ``name`` working? ");
         HuntingModel huntModel = HuntingModel(model.map);
         Queue<Point->Animal|AnimalTracks|HuntingModel.NothingFound> fixtures;
