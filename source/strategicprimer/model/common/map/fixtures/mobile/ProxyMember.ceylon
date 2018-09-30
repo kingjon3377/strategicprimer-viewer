@@ -10,8 +10,8 @@ import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
 
-"A proxy for non-worker unit members." // FIXME: Remove "shared" once ProxyUnit moves to this module
-shared class ProxyMember satisfies UnitMember&ProxyFor<UnitMember> {
+"A proxy for non-worker unit members."
+class ProxyMember satisfies UnitMember&ProxyFor<UnitMember> {
     MutableList<UnitMember> proxiedMembers = ArrayList<UnitMember>();
     new noop() {}
     shared new (UnitMember member) { proxiedMembers.add(member); }
