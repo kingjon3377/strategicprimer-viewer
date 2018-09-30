@@ -8,8 +8,7 @@ import java.io {
     IOException
 }
 import java.nio.file {
-    NoSuchFileException,
-    Paths
+    NoSuchFileException
 }
 
 import javax.xml.stream {
@@ -67,7 +66,7 @@ shared class ConverterDriver(
         for (filename in args.coalesced) {
             cli.print("Reading ``filename ``... ");
             try {
-                IMutableMapNG old = mapIOHelper.readMap(Paths.get(filename),
+                IMutableMapNG old = mapIOHelper.readMap(parsePath(filename),
                     warningLevels.default);
                 if (options.hasOption("--current-turn")) {
                     value currentTurn =

@@ -7,8 +7,6 @@ import java.io {
     IOException
 }
 import java.nio.file {
-    JPaths=Paths,
-    JPath=Path,
     NoSuchFileException
 }
 
@@ -92,6 +90,10 @@ import ceylon.decimal {
 }
 import ceylon.whole {
     Whole
+}
+import ceylon.file {
+    Path,
+    parsePath
 }
 
 Logger log = logger(`module strategicprimer.drivers.utility`);
@@ -251,7 +253,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
             checker(terrain, context, fixture, warner);
         }
     }
-    shared void check(JPath file, Anything(String) outStream, Anything(String) err,
+    shared void check(Path file, Anything(String) outStream, Anything(String) err,
             Warning warner = warningLevels.custom()) {
         outStream("Starting ``file``");
         IMapNG map;
@@ -296,7 +298,7 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
     shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
             String* args) {
         for (filename in args.coalesced) {
-            check(JPaths.get(filename), cli.println, cli.println);
+            check(parsePath(filename), cli.println, cli.println);
         }
     }
 }
@@ -323,11 +325,11 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
     }
     void errHandler(String text) =>
             printParagraph(text, LabelTextColor.red);
-    shared void check(JPath filename) {
+    shared void check(Path filename) {
         mapCheckerCLI.check(filename, outHandler, errHandler,
             warningLevels.custom(customPrinter));
     }
-    shared actual void acceptDroppedFile(JPath file) => check(file);
+    shared actual void acceptDroppedFile(Path file) => check(file);
 }
 "A driver to check every map file in a list for errors and report the results in a
  window."
@@ -342,9 +344,6 @@ shared class MapCheckerGUI() satisfies UtilityDriver {
         window.jMenuBar = UtilityMenu(window);
         window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
         window.showWindow();
-        for (arg in args.coalesced) {
-            // can't condense this using Iterable.each(): JPaths.get() is overloaded
-            window.check(JPaths.get(arg));
-        }
+        args.coalesced.map(parsePath).each(window.check);
     }
 }

@@ -16,14 +16,14 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import java.nio.file {
-    JPath=Path
+import ceylon.file {
+    Path
 }
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.utility`);
 "A driver to check whether player maps are subsets of the main map."
 service(`interface ISPDriver`)
-shared class SubsetCLI() satisfies GUIDriver {
+shared class SubsetCLI() satisfies GUIDriver { // FIXME: Wrong interface
     shared actual IDriverUsage usage = DriverUsage(false, ["-s", "--subset"],
         ParamCount.atLeastTwo, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
@@ -48,5 +48,5 @@ shared class SubsetCLI() satisfies GUIDriver {
         }
     }
     "This is a CLI driver, so we can't show a file-chooser dialog."
-    shared actual {JPath*} askUserForFiles() => [];
+    shared actual {Path*} askUserForFiles() => [];
 }

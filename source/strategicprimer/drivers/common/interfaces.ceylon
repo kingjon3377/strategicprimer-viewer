@@ -3,10 +3,6 @@ import ceylon.collection {
     HashMap
 }
 
-import java.nio.file {
-    JPath=Path
-}
-
 import lovelace.util.common {
     todo
 }
@@ -18,6 +14,9 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
+}
+import ceylon.file {
+    Path
 }
 """An interface for the command-line options passed by the user. At this point we
    assume that if any option is passed to an app more than once, the subsequent option
@@ -120,7 +119,7 @@ shared interface CLIDriver satisfies ModelDriver {}
 shared interface GUIDriver satisfies ModelDriver {
     "Ask the user to choose a file or files. (Or do something equivalent to produce a
      filename.)"
-    shared formal {JPath*} askUserForFiles();
+    shared formal {Path*} askUserForFiles();
 }
 "An interface for drivers which operate on a map model of some kind but never want to
  have its contents written back to disk (automatically)."

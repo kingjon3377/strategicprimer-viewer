@@ -27,9 +27,6 @@ import java.lang {
     JInteger=Integer,
     JString=String
 }
-import java.nio.file {
-    JPath=Path
-}
 
 import javax.swing {
     SwingUtilities,
@@ -107,9 +104,12 @@ import com.vasileff.ceylon.structures {
 import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
+import ceylon.file {
+    Path
+}
 "A driver model for resource-entering drivers."
 class ResourceManagementDriverModel extends SimpleMultiMapModel {
-    shared new fromMap(IMutableMapNG map, JPath? file) extends
+    shared new fromMap(IMutableMapNG map, Path? file) extends
         SimpleMultiMapModel(map, file) { }
     shared new fromDriverModel(IDriverModel driverModel) extends
         SimpleMultiMapModel.copyConstructor(driverModel) { }
@@ -502,7 +502,7 @@ shared class ResourceAddingGUI() satisfies GUIDriver {
         }
     }
     "Ask the user to choose a file or files."
-    shared actual {JPath*} askUserForFiles() {
+    shared actual {Path*} askUserForFiles() {
         try {
             return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {

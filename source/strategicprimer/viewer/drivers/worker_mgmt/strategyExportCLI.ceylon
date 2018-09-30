@@ -1,5 +1,6 @@
 import ceylon.file {
-    parsePath
+    parsePath,
+    Path
 }
 import strategicprimer.drivers.common {
     DriverFailedException,
@@ -14,16 +15,13 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import java.nio.file {
-    JPath=Path
-}
 import strategicprimer.drivers.worker.common {
     WorkerModel,
     IWorkerModel
 }
 "A command-line program to export a proto-strategy for a player from orders in a map."
 service(`interface ISPDriver`)
-shared class StrategyExportCLI() satisfies GUIDriver {
+shared class StrategyExportCLI() satisfies GUIDriver { // FIXME: Wrong interface
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-w", "--worker", "--export-strategy"];
@@ -50,5 +48,5 @@ shared class StrategyExportCLI() satisfies GUIDriver {
         }
     }
     "This is a CLI driver, so we can't show a file-chooser dialog."
-    shared actual {JPath*} askUserForFiles() => [];
+    shared actual {Path*} askUserForFiles() => [];
 }

@@ -2,15 +2,12 @@ import ceylon.file {
     parsePath,
     File,
     Reader,
-    Resource
+    Resource,
+    Path
 }
 
 import java.io {
     StringReader
-}
-import java.nio.file {
-    JPath=Path,
-    JPaths=Paths
 }
 
 import strategicprimer.model.common.map {
@@ -63,8 +60,8 @@ shared class ReaderComparator() satisfies UtilityDriver {
         Warning warner = warningLevels.ignore;
         for (arg in args) {
             cli.println("``arg``:");
-            Resource file = parsePath(arg).resource;
-            JPath path = JPaths.get(arg);
+            Path path = parsePath(arg);
+            Resource file = path.resource;
             if (is File file) {
                 String contents = readAll(file);
                 Integer readStartOne = system.nanoseconds;

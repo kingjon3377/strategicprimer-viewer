@@ -2,7 +2,7 @@ import java.awt {
     Dimension
 }
 import java.nio.file {
-    JPath=Path
+    JPaths=Paths
 }
 
 import javax.swing {
@@ -23,6 +23,11 @@ import ceylon.logging {
     Logger,
     logger
 }
+import ceylon.file {
+    Path,
+    parsePath
+}
+
 Logger log = logger(`module strategicprimer.drivers.gui.common`);
 "A [[TransferHandler]] to allow SP apps to accept dropped files."
 class FileDropHandler() extends TransferHandler() {
@@ -46,26 +51,27 @@ class FileDropHandler() extends TransferHandler() {
             return false;
         }
         for (file in payload) {
-            app.acceptDroppedFile(file.toPath());
+            app.acceptDroppedFile(parsePath(file.toPath().string));
         }
         return true;
     }
 }
 "An intermediate subclass of JFrame to take care of some common setup things that can't be
  done in an interface."
-shared class SPFrame(String windowTitle, JPath? file, Dimension? minSize = null,
+shared class SPFrame(String windowTitle, Path? file, Dimension? minSize = null,
         "Whether this app supports having files dropped on it."
         shared default Boolean supportsDroppedFiles = false,
-        Anything(JPath) droppedFileHandler = noop,
+        Anything(Path) droppedFileHandler = noop,
         "The name of the window, for use in customizing the About dialog"
         shared actual default String windowName = windowTitle)
         extends JFrame(windowTitle) satisfies ISPWindow {
     if (exists file) {
         title = "``file`` | ``windowTitle``";
-        rootPane.putClientProperty("Window.documentFile", file.toFile());
+        rootPane.putClientProperty("Window.documentFile",
+            JPaths.get(file.string).toFile());
     }
     "Handle a dropped file."
-    shared default void acceptDroppedFile(JPath file) => droppedFileHandler(file);
+    shared default void acceptDroppedFile(Path file) => droppedFileHandler(file);
     shared void showWindow() => setVisible(true);
     defaultCloseOperation = WindowConstants.doNothingOnClose;
     if (exists minSize) {

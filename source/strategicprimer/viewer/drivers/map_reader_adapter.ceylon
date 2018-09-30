@@ -2,9 +2,6 @@ import java.io {
     IOException,
     JReader=Reader
 }
-import java.nio.file {
-    JPath=Path
-}
 
 import javax.xml.stream {
     XMLStreamException
@@ -22,7 +19,8 @@ import strategicprimer.model.impl.xmlio {
     mapIOHelper
 }
 import ceylon.file {
-    parsePath
+    parsePath,
+    Path
 }
 import strategicprimer.drivers.common {
     IDriverModel,
@@ -36,7 +34,7 @@ shared object mapReaderAdapter {
     "Read a map model from a file or a stream, wrapping any errors the process generates
      in a [[DriverFailedException]] to simplify callers."
     todo("Return exceptions instead of throwing them")
-    shared IDriverModel readMapModel(JPath|JReader file, Warning warner) {
+    shared IDriverModel readMapModel(Path|JReader file, Warning warner) {
         try {
             if (is JReader file) {
                 return SimpleDriverModel(mapIOHelper.readMap(file, warner), null);
@@ -54,7 +52,7 @@ shared object mapReaderAdapter {
     "Read several maps into a driver model, wrapping any errors in a
      DriverFailedException to simplify callers."
     todo("Return exceptions instead of throwing them")
-    shared IMultiMapModel readMultiMapModel(Warning warner, JPath master, JPath* files) {
+    shared IMultiMapModel readMultiMapModel(Warning warner, Path master, Path* files) {
         log.trace("In mapReaderAdapter.readMultiMapModel");
         variable String current = master.string;
         try {

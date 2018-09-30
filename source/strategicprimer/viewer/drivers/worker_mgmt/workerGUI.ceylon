@@ -26,9 +26,6 @@ import strategicprimer.drivers.common {
     ISPDriver,
     GUIDriver
 }
-import java.nio.file {
-    JPath=Path
-}
 import strategicprimer.drivers.worker.common {
     WorkerModel,
     IWorkerModel
@@ -47,6 +44,9 @@ import lovelace.util.jvm {
 }
 import strategicprimer.drivers.gui.common {
     WindowCloseListener
+}
+import ceylon.file {
+    Path
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -102,7 +102,7 @@ shared class WorkerGUI() satisfies GUIDriver {
         }
     }
     "Ask the user to choose a file or files."
-    shared actual {JPath*} askUserForFiles() {
+    shared actual {Path*} askUserForFiles() {
         try {
             return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {

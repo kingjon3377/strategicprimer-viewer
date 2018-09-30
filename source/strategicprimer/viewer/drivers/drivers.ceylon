@@ -96,11 +96,14 @@ import java.awt.image {
     BufferedImage
 }
 import java.nio.file {
-    NoSuchFileException,
-    JPath=Path
+    NoSuchFileException
 }
 import strategicprimer.model.impl.xmlio {
     mapIOHelper
+}
+import ceylon.file {
+    Path,
+    parsePath
 }
 
 "A logger."
@@ -207,7 +210,7 @@ object appChooserState {
         if (exists topWindow = WindowList.getWindows(true, false)
                 .iterable.narrow<SPFrame>().last) {
             for (file in openFilesEvent.files) {
-                topWindow.acceptDroppedFile(file.toPath());
+                topWindow.acceptDroppedFile(parsePath(file.toPath().string));
             }
         }
     }
@@ -247,14 +250,14 @@ class DriverWrapper(ISPDriver driver) {
             throw IncorrectUsageException(driver.usage);
         }
     }
-    {JPath*} extendArguments(String* args) {
+    {Path*} extendArguments(String* args) {
         if (is GUIDriver driver) {
-            MutableList<JPath> files;
+            MutableList<Path> files;
             if (nonempty temp = args.sequence()) {
                 files = ArrayList {
                     elements = mapIOHelper.namesToFiles(*temp); };
             } else {
-                files = ArrayList<JPath>();
+                files = ArrayList<Path>();
             }
             if (tooManyArguments(files.size)) {
                 throw IncorrectUsageException(driver.usage);

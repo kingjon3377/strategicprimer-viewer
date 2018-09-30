@@ -12,9 +12,6 @@ import java.awt.event {
     WindowAdapter,
     ActionEvent
 }
-import java.nio.file {
-    JPath=Path
-}
 
 import javax.swing {
     JPanel,
@@ -72,6 +69,9 @@ import strategicprimer.drivers.gui.common {
 import java.lang {
     JThread=Thread
 }
+import ceylon.file {
+    Path
+}
 "The main window for the map viewer app."
 shared final class ViewerFrame extends SPFrame satisfies MapGUI {
     static JFrame containingWindow(Component component) {
@@ -92,18 +92,18 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
         mapModel = model;
         menuHandler = menuListener;
     }
-    void acceptDroppedFileImpl(JPath file) {
+    void acceptDroppedFileImpl(Path file) {
         value map = mapReaderAdapter.readMapModel(file, warningLevels.default);
         SwingUtilities.invokeLater(defer(compose(ViewerFrame.showWindow, ViewerFrame),
             [ViewerModel.copyConstructor(map), menuHandler]));
     }
-    void setMapWrapper(IMutableMapNG map, JPath file, Boolean modified) =>
+    void setMapWrapper(IMutableMapNG map, Path file, Boolean modified) =>
             mapModel.setMap(map, file, modified);
-    void alternateAcceptDroppedFile(JPath file) {
+    void alternateAcceptDroppedFile(Path file) {
         value newModel = mapReaderAdapter.readMapModel(file, warningLevels.default);
         SwingUtilities.invokeLater(defer(setMapWrapper, [newModel.map, file, false]));
     }
-    shared actual void acceptDroppedFile(JPath file) {
+    shared actual void acceptDroppedFile(Path file) {
         if (mapModel.mapModified) {
             JThread(curry(acceptDroppedFileImpl)(file)).start();
         } else {

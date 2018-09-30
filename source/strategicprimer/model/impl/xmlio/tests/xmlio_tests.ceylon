@@ -19,10 +19,6 @@ import java.io {
 import java.lang {
     IllegalArgumentException
 }
-import java.nio.file {
-    JPath=Path,
-    JPaths=Paths
-}
 import java.util {
     NoSuchElementException
 }
@@ -142,6 +138,10 @@ import strategicprimer.model.impl.xmlio.exceptions {
 import ceylon.language.meta.declaration {
     OpenClassType
 }
+import ceylon.file {
+    Path,
+    parsePath
+}
 
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"
@@ -151,7 +151,7 @@ String[] treeTypes = ["oak", "larch", "terebinth"]; // TODO: for these, maybe ha
 String[] fieldTypes = ["wheat", "amaranth", "bluegrass"];
 String[] minerals = ["coal", "platinum", "oil"];
 object xmlTests {
-    JPath fakeFilename = JPaths.get("");
+    Path fakeFilename = parsePath("");
     [ISPReader+] readers = [testReaderFactory.oldReader, testReaderFactory.newReader];
     "Assert that the given XML will produce the given kind of warning and that the warning
      satisfies the given additional assertions. If [[desideratum]] is [[null]], assert

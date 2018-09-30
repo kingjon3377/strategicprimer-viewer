@@ -6,9 +6,6 @@ import java.io {
     FileNotFoundException,
     JCloseable=Closeable
 }
-import java.nio.file {
-    JPath=Path
-}
 import java.util {
     NoSuchElementException
 }
@@ -44,9 +41,11 @@ import strategicprimer.model.impl.xmlio.exceptions {
 import java.lang {
     AutoCloseable
 }
+import ceylon.file {
+    Path
+}
 "An extension to the [[Iterator]] of [[XMLEvent]] to automatically handle
  `include` tags."
-todo("Use `ceylon.file`")
 shared class IncludingIterator satisfies Iterator<XMLEvent> {
     "Get the 'file' attribute for the given tag."
     static String getFileAttribute(StartElement element) {
@@ -62,7 +61,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     "The stack of iterators we're working with."
     Stack<[String, Iterator<XMLEvent>]> stack =
             LinkedList<[String, Iterator<XMLEvent>]>();
-    shared new (JPath file, Iterator<XMLEvent> iter) {
+    shared new (Path file, Iterator<XMLEvent> iter) {
         stack.push([file.string, iter]);
     }
     "Completely unwind the stack. Should be called before throwing any exception

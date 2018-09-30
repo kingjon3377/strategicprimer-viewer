@@ -18,15 +18,15 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
     WorkerStats
 }
-import java.nio.file {
-    JPath=Path
-}
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
     ExplorationModel
 }
 import lovelace.util.common {
     matchingPredicate
+}
+import ceylon.file {
+    Path
 }
 "A driver to print a mini-report on workers, suitable for inclusion in a player's
  results."
@@ -63,7 +63,7 @@ shared class WorkerPrintCLI() satisfies GUIDriver {
             cli.println();
         }
     }
-    shared actual {JPath*} askUserForFiles() => [];
+    shared actual {Path*} askUserForFiles() => [];
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
         IDriverModel model) {
         if (is IExplorationModel model) {

@@ -14,8 +14,7 @@ import java.io {
     JFile=File
 }
 import java.nio.file {
-    NoSuchFileException,
-    JPath=Path
+    NoSuchFileException
 }
 
 import javax.swing {
@@ -66,7 +65,8 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import ceylon.file {
-    parsePath
+    parsePath,
+    Path
 }
 import strategicprimer.drivers.gui.common {
     ISPWindow
@@ -167,8 +167,8 @@ shared class IOHandler
         log.error(message, except);
         showErrorDialog(source, errorTitle, message);
     }
-    void loadHandlerImpl(Anything(IMutableMapNG, JPath) handler, Component? source,
-            String errorTitle)(JPath path) {
+    void loadHandlerImpl(Anything(IMutableMapNG, Path) handler, Component? source,
+            String errorTitle)(Path path) {
         try {
             handler(mapIOHelper.readMap(path, warningLevels.default), path);
         } catch (IOException|SPFormatException|XMLStreamException except) {
@@ -213,7 +213,7 @@ shared class IOHandler
             FileChooser.save(null, filteredFileChooser(false)).call((path) {
                 try {
                     mapIOHelper.writeMap(parsePath(path.string), mapModel.map);
-                    mapModel.mapFile = path;
+                    mapModel.mapFile = parsePath(path.string);
                     mapModel.mapModified = false;
                 } catch (IOException except) {
                     handleError(except, path.string, source, errorTitle, "writing to");
@@ -275,13 +275,13 @@ shared class IOHandler
     }
 }
 shared class SPFileChooser extends FileChooser {
-    shared new open(JPath? loc = null,
+    shared new open(Path? loc = null,
             JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(true))
             extends FileChooser.open(fileChooser, loc) {}
-    shared new save(JPath? loc,
+    shared new save(Path? loc,
             JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false))
             extends FileChooser.save(loc, fileChooser) {}
-    shared new custom(JPath? loc, String approveText,
+    shared new custom(Path? loc, String approveText,
             JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false))
             extends FileChooser.custom(loc, approveText, fileChooser) {}
 }

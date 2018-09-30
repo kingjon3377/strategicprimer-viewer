@@ -1,9 +1,6 @@
 import java.io {
     IOException
 }
-import java.nio.file {
-    JPaths=Paths
-}
 
 import javax.xml.stream {
     XMLStreamException
@@ -66,7 +63,7 @@ shared class EchoDriver() satisfies UtilityDriver {
         if (exists inArg = args.first, exists outArg = args.rest.first, args.size == 2) {
             IMutableMapNG map;
             try {
-                map = mapIOHelper.readMap(JPaths.get(inArg), warningLevels.ignore);
+                map = mapIOHelper.readMap(parsePath(inArg), warningLevels.ignore);
             } catch (IOException except) {
                 throw DriverFailedException(except, "I/O error reading file ``inArg``");
             } catch (XMLStreamException except) {

@@ -5,9 +5,6 @@ import ceylon.collection {
 import ceylon.numeric.float {
     ceiling
 }
-import java.nio.file {
-    JPath=Path
-}
 
 import strategicprimer.drivers.common {
     SimpleMultiMapModel,
@@ -56,6 +53,9 @@ import lovelace.util.common {
 }
 import com.vasileff.ceylon.structures {
     Multimap
+}
+import ceylon.file {
+    Path
 }
 "A model for exploration drivers."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
@@ -163,7 +163,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             ArrayList<SelectionChangeListener>();
     "The currently selected unit and its location."
     variable [Point, IUnit?] selection = [Point.invalidPoint, null];
-    shared new (IMutableMapNG map, JPath? file, Boolean modified = false)
+    shared new (IMutableMapNG map, Path? file, Boolean modified = false)
             extends SimpleMultiMapModel(map, file, modified) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}

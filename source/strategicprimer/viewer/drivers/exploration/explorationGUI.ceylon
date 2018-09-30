@@ -1,7 +1,3 @@
-import java.nio.file {
-    JPath=Path
-}
-
 import javax.swing {
     SwingUtilities
 }
@@ -37,6 +33,9 @@ import strategicprimer.drivers.gui.common {
 }
 import lovelace.util.jvm {
     FileChooser
+}
+import ceylon.file {
+    Path
 }
 "An object to start the exploration GUI."
 service(`interface ISPDriver`)
@@ -74,7 +73,7 @@ shared class ExplorationGUI() satisfies GUIDriver {
         });
     }
     "Ask the user to choose a file or files."
-    shared actual {JPath*} askUserForFiles() {
+    shared actual {Path*} askUserForFiles() {
         try {
             return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {

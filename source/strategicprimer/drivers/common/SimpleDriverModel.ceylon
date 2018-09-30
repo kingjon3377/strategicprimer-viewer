@@ -3,9 +3,6 @@ import ceylon.collection {
     ArrayList
 }
 
-import java.nio.file {
-    JPath=Path
-}
 import strategicprimer.drivers.common {
     VersionChangeListener
 }
@@ -15,6 +12,9 @@ import strategicprimer.model.common.map {
     MapDimensions,
     MapDimensionsImpl,
     PlayerCollection
+}
+import ceylon.file {
+    Path
 }
 "A superclass for driver-models, to handle the common details."
 shared class SimpleDriverModel satisfies IDriverModel {
@@ -29,16 +29,16 @@ shared class SimpleDriverModel satisfies IDriverModel {
     "Whether the map has been changed since it was loaded or last saved."
     shared actual variable Boolean mapModified;
     "The filename from which the map was loaded, if known."
-    variable JPath? mainMapFile;
+    variable Path? mainMapFile;
     shared new (IMutableMapNG map = SPMapNG(MapDimensionsImpl(-1, -1, -1),
-            PlayerCollection(), -1), JPath? file = null, Boolean modified = false) {
+            PlayerCollection(), -1), Path? file = null, Boolean modified = false) {
         mainMap = map;
         mapDim = mainMap.dimensions;
         mainMapFile = file;
         mapModified = modified;
     }
     "Set a new main map."
-    shared actual default void setMap(IMutableMapNG newMap, JPath? origin,
+    shared actual default void setMap(IMutableMapNG newMap, Path? origin,
             Boolean modified) {
         for (listener in vcListeners) {
             listener.changeVersion(mapDim.version, newMap.dimensions.version);
@@ -56,7 +56,7 @@ shared class SimpleDriverModel satisfies IDriverModel {
     "The dimensions of the map."
     shared actual MapDimensions mapDimensions => mapDim;
     "The filename from which the map was loaded, if known."
-    shared actual JPath? mapFile => mainMapFile;
+    shared actual Path? mapFile => mainMapFile;
     assign mapFile {
         mainMapFile = mapFile;
     }

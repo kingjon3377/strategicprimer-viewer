@@ -10,10 +10,6 @@ import java.io {
     IOException,
     IOError
 }
-import java.nio.file {
-    JPath=Path,
-    JPaths=Paths
-}
 
 import strategicprimer.drivers.common {
     IMultiMapModel,
@@ -85,23 +81,24 @@ import lovelace.util.jvm {
     FileChooser
 }
 object suffixHelper {
-    String suffix(JPath file, Integer count) {
+    String suffix(Path file, Integer count) {
         Integer start;
-        if (count >= file.nameCount) {
+        if (count >= file.elementPaths.size) {
             start = 0;
         } else {
-            start = file.nameCount - count;
+            start = file.elementPaths.size - count;
         }
         Integer end;
-        if (file.nameCount == 0) {
+        if (file.elementPaths.size == 0) {
             end = 1;
         } else {
-            end = file.nameCount;
+            end = file.elementPaths.size;
         }
-        return file.subpath(start, end).string;
+        return "/".join(file.elementPaths.sublist(start, end));
     }
-    shared String shortestSuffix({JPath*} all, JPath file) {
-        Integer longestPath = Integer.max(all.map(JPath.nameCount)) else 1;
+    shared String shortestSuffix({Path*} all, Path file) {
+        Integer longestPath = Integer.max(all.map(compose(Sequential<Path>.size,
+            Path.elementPaths))) else 1;
         MutableSet<String> localCache = HashSet<String>();
         for (num in 1..longestPath) {
             for (key in all) {
@@ -120,7 +117,7 @@ object suffixHelper {
 }
 "A driver to produce a report of the contents of a map."
 service(`interface ISPDriver`)
-shared class ReportCLI() satisfies GUIDriver {
+shared class ReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-m", "--report"];
@@ -137,7 +134,7 @@ shared class ReportCLI() satisfies GUIDriver {
         ];
     };
     void serveReports(IDriverModel model, Integer port, Player? currentPlayer) {
-        MutableMap<JPath, String> cache = HashMap<JPath, String>();
+        MutableMap<Path, String> cache = HashMap<Path, String>();
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.allMaps) {
                 if (exists file, !cache.defines(file)) {
@@ -154,7 +151,7 @@ shared class ReportCLI() satisfies GUIDriver {
         } else {
             value localCache = cache.map(
                         (file->report) => suffixHelper.shortestSuffix(cache.keys,
-                            file.toAbsolutePath())->report);
+                            file.absolutePath)->report);
             {Endpoint*} endpoints = localCache.map((file->report) =>
                 Endpoint {
                     path = startsWith("/``file``");
@@ -199,7 +196,7 @@ shared class ReportCLI() satisfies GUIDriver {
             }.start(SocketAddress("127.0.0.1", port));
         }
     }
-    void writeReport(JPath? filename, IMapNG map, SPOptions options) {
+    void writeReport(Path? filename, IMapNG map, SPOptions options) {
         if (exists filename) {
             Player player;
             if (options.hasOption("--player")) {
@@ -214,16 +211,15 @@ shared class ReportCLI() satisfies GUIDriver {
                 player = map.currentPlayer;
             }
             String outString;
-            JPath outPath;
+            Path outPath;
             if (options.hasOption("--out")) {
                 outString = options.getArgument("--out");
-                outPath = JPaths.get(outString);
+                outPath = parsePath(outString);
             } else {
-                outString = "``filename.fileName``.report.html";
-                outPath = filename.resolveSibling(outString);
+                outString = "``filename.elements.last else filename``.report.html";
+                outPath = filename.siblingPath(outString);
             }
-            value outPathCeylon = parsePath(outPath.toAbsolutePath().string);
-            if (is Nil loc = outPathCeylon.resource) {
+            if (is Nil loc = outPath.resource) {
                 value file = loc.createFile();
                 try (writer = file.Overwriter()) {
                     writer.write(reportGenerator.createReport(map, player));
@@ -262,7 +258,7 @@ shared class ReportCLI() satisfies GUIDriver {
         }
     }
     "As we're a CLI driver, we can't show a file-chooser dialog."
-    shared actual {JPath*} askUserForFiles() => [];
+    shared actual {Path*} askUserForFiles() => [];
 }
 "A driver to show tabular reports of the contents of a player's map in a GUI."
 service(`interface ISPDriver`)
@@ -283,7 +279,7 @@ shared class TabularReportGUI() satisfies GUIDriver {
         window.showWindow();
     }
     "Ask the user to choose a file."
-    shared actual {JPath*} askUserForFiles() {
+    shared actual {Path*} askUserForFiles() {
         try {
             return SPFileChooser.open(null).files;
         } catch (FileChooser.ChoiceInterruptedException except) {
@@ -294,7 +290,7 @@ shared class TabularReportGUI() satisfies GUIDriver {
 }
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
 service(`interface ISPDriver`)
-shared class TabularReportCLI() satisfies GUIDriver {
+shared class TabularReportCLI() satisfies GUIDriver { // FIXME: Wrong interface
     shared actual IDriverUsage usage = DriverUsage {
             graphical = false;
             invocations = ["-b", "--tabular"];
@@ -310,19 +306,19 @@ shared class TabularReportCLI() satisfies GUIDriver {
             given Key satisfies Object given Item satisfies Object =>
                 entry.item->entry.key;
     void serveReports(IDriverModel model, Integer port) {
-        Map<JPath, IMapNG> mapping;
+        Map<Path, IMapNG> mapping;
         if (is IMultiMapModel model) {
             mapping = map(model.allMaps.coalesced
-                .map(entryMap(identity<IMutableMapNG>, Tuple<JPath?|Boolean, JPath?,
+                .map(entryMap(identity<IMutableMapNG>, Tuple<Path?|Boolean, Path?,
                     [Boolean]>.first)).map(Entry.coalesced).coalesced.map(reverseEntry));
         } else if (exists path = model.mapFile) {
             mapping = map { path->model.map };
         } else {
-            mapping = map { JPaths.get("unknown.xml")->model.map };
+            mapping = map { parsePath("unknown.xml")->model.map };
         }
         MutableMap<[String, String], StringBuilder> builders =
                 HashMap<[String, String], StringBuilder>();
-        Anything(String)(String) filenameFunction(JPath base) {
+        Anything(String)(String) filenameFunction(Path base) {
             String baseName = suffixHelper.shortestSuffix(mapping.keys, base);
             return (String tableName) {
                 if (exists writer = builders.get([baseName, tableName])) {
@@ -334,7 +330,7 @@ shared class TabularReportCLI() satisfies GUIDriver {
                 }
             };
         }
-        void createReports(IMapNG map, JPath? mapFile) {
+        void createReports(IMapNG map, Path? mapFile) {
             if (exists mapFile) {
                 try {
                     tabularReportGenerator.createTabularReports(map,
@@ -455,7 +451,7 @@ shared class TabularReportCLI() satisfies GUIDriver {
                 }
                 return retval;
             }
-            void createReports(IMapNG map, JPath? mapFile) {
+            void createReports(IMapNG map, Path? mapFile) {
                 if (exists mapFile) {
                     try {
                         tabularReportGenerator.createTabularReports(map,
@@ -480,5 +476,5 @@ shared class TabularReportCLI() satisfies GUIDriver {
         }
     }
     "Since this is a CLI driver, we can't show a file-chooser dialog."
-    shared actual {JPath*} askUserForFiles() => [];
+    shared actual {Path*} askUserForFiles() => [];
 }

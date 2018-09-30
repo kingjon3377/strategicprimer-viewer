@@ -7,9 +7,6 @@ import strategicprimer.model.common.xmlio {
 import strategicprimer.model.common.map {
     IMutableMapNG
 }
-import java.nio.file {
-    Path
-}
 import java.io {
     Reader
 }
@@ -26,6 +23,9 @@ import ceylon.collection {
 }
 import javax.sql {
     DataSource
+}
+import ceylon.file {
+    Path
 }
 shared object spDatabaseReader satisfies IMapReader {
     MutableMap<Path, Sql> connections = HashMap<Path, Sql>();

@@ -5,10 +5,6 @@ import java.awt {
 import java.awt.image {
     BufferedImage
 }
-import java.nio.file {
-    Path,
-    Paths
-}
 import strategicprimer.viewer.drivers.map_viewer {
     CachingTileDrawHelper,
     directTileDrawHelper,
@@ -46,7 +42,8 @@ import ceylon.collection {
 import ceylon.file {
     File,
     parsePath,
-    Nil
+    Nil,
+    Path
 }
 
 class Accumulator() {
@@ -247,10 +244,10 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
         }
         MutableMap<String, Integer> mapSizes = HashMap<String, Integer>();
         for (arg in args) {
-            Path path = Paths.get(arg);
+            Path path = parsePath(arg);
             IMapNG map = mapIOHelper.readMap(path, warningLevels.ignore);
             mapSizes[arg] = map.locations.size;
-            String filename = path.string else "an unsaved map";
+            String filename = path.elements.last else "an unsaved map";
             cli.println("Testing using ``filename``");
             runAllTests(cli, map, filename, reps);
         }

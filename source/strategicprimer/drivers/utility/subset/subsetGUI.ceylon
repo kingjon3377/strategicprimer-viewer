@@ -1,9 +1,6 @@
 import java.io {
     IOException
 }
-import java.nio.file {
-    JPaths=Paths
-}
 
 import javax.swing {
     SwingUtilities
@@ -32,6 +29,9 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
+import ceylon.file {
+    parsePath
+}
 "A driver to check whether player maps are subsets of the main map and display the
  results graphically."
 todo("Unify with [[SubsetCLI]]")
@@ -50,7 +50,7 @@ shared class SubsetGUI() satisfies UtilityDriver {
         SwingUtilities.invokeLater(frame.showWindow);
         assert (exists first = args.first);
         try { // Errors are reported via the GUI in loadMain(), then rethrown.
-            frame.loadMain(JPaths.get(first));
+            frame.loadMain(parsePath(first));
         } catch (IOException except) {
             throw DriverFailedException(except, "I/O error loading main map ``first``");
         } catch (XMLStreamException except) {
@@ -58,9 +58,6 @@ shared class SubsetGUI() satisfies UtilityDriver {
         } catch (SPFormatException except) {
             throw DriverFailedException(except, "Invalid SP XML in main  map ``first``");
         }
-        for (arg in args.rest) {
-            // can't condense using Iterable.each because JPaths.get() is overloaded
-            frame.testFile(JPaths.get(arg));
-        }
+        args.rest.map(parsePath).each(frame.testFile);
     }
 }
