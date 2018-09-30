@@ -13,7 +13,6 @@ import strategicprimer.model.common.map {
     IFixture,
     Point,
     MapDimensions,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -38,7 +37,7 @@ import com.vasileff.ceylon.structures {
 }
 "A report generator for sightings of animals."
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
+        MapDimensions dimensions, Integer currentTurn, Point hq = Point.invalidPoint)
         extends AbstractReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks>(comp,
             dimensions, hq) {
     "Produce the sub-report about an individual Animal. We assume that individual

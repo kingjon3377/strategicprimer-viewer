@@ -1,7 +1,6 @@
 import strategicprimer.model.common.map {
     TileFixture,
     Point,
-    invalidPoint,
     IMutableMapNG
 }
 import javax.swing {
@@ -29,7 +28,7 @@ import java.lang {
 shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSource)
         satisfies ListModel<TileFixture>&SelectionChangeListener {
     "The currently selected point."
-    variable Point point = invalidPoint;
+    variable Point point = Point.invalidPoint;
     variable TileTypeFixture? cachedTerrain = null;
     """Any animal tracks that have been "added" to the current tile but kept out of the
        map."""

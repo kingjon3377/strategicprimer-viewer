@@ -6,7 +6,6 @@ import strategicprimer.model.common.map {
     IFixture,
     Point,
     MapDimensions,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -31,7 +30,7 @@ import strategicprimer.report.nodes {
 }
 "A report generator for Workers."
 class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-            Boolean details, MapDimensions dimensions, Point hq = invalidPoint)
+            Boolean details, MapDimensions dimensions, Point hq = Point.invalidPoint)
         extends AbstractReportGenerator<IWorker>(comp, dimensions, hq) {
     "Produce the sub-sub-report on a worker's stats."
     String statsString(WorkerStats stats) {

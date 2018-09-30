@@ -11,8 +11,7 @@ import strategicprimer.model.common {
 import strategicprimer.model.common.map {
     IFixture,
     MapDimensions,
-    Point,
-    invalidPoint
+    Point
 }
 "An abstract superclass for classes that generate reports for particular kinds of SP
  objects. It's mostly interface and helper methods, but contains a couple of bits of
@@ -21,7 +20,7 @@ import strategicprimer.model.common.map {
 // constructors.
 shared sealed abstract class AbstractReportGenerator<T>(
         shared Comparison([Point, IFixture], [Point, IFixture]) pairComparator,
-        MapDimensions? mapDimensions, Point referencePoint = invalidPoint)
+        MapDimensions? mapDimensions, Point referencePoint = Point.invalidPoint)
         satisfies IReportGenerator<T> given T satisfies IFixture {
     shared DistanceComparator distCalculator = DistanceComparator(referencePoint,
         mapDimensions);

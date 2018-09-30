@@ -29,7 +29,6 @@ import strategicprimer.model.common.map {
     Point,
     River,
     TileType,
-    invalidPoint,
     IMutablePlayerCollection,
     TileFixture,
     IMutableMapNG,
@@ -188,7 +187,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         tagStack.push(element.name);
         tagStack.push(mapTag.name);
         IMutableMapNG retval = SPMapNG(dimensions, players, currentTurn);
-        variable Point point = invalidPoint; // TODO: Use Point? instead?
+        variable Point point = Point.invalidPoint; // TODO: Use Point? instead?
         for (event in stream) {
             if (is StartElement event, isSupportedNamespace(event.name)) {
                 String type = event.name.localPart.lowercased;
@@ -201,7 +200,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     // Deliberately ignore "row"
                     continue;
                 } else if ("tile" == type) {
-                    if (invalidPoint != point) {
+                    if (Point.invalidPoint != point) { // TODO: Use Point.valid
                         assert (exists top = tagStack.top);
                         throw UnwantedChildException(top, event);
                     }
@@ -227,7 +226,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 } else if ("sandbar" == type) {
                     tagStack.push(event.name);
                     warner.handle(UnsupportedTagException.obsolete(event));
-                } else if (invalidPoint == point) {
+                } else if (Point.invalidPoint == point) { // TODO: Use Point.valid
                     // fixture outside tile
                     assert (exists top = tagStack.top);
                     throw UnwantedChildException.listingExpectedTags(top, event,
@@ -256,7 +255,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 if (element.name == event.name) {
                     break;
                 } else if ("tile" == event.name.localPart.lowercased) {
-                    point = invalidPoint;
+                    point = Point.invalidPoint;
                 }
             } else if (is Characters event) {
                 String data = event.data.trimmed;

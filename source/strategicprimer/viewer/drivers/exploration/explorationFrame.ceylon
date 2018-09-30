@@ -79,7 +79,6 @@ import strategicprimer.model.common.map {
     Point,
     TileType,
     TileFixture,
-    invalidPoint,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -269,7 +268,7 @@ SPFrame explorationFrame(IExplorationModel model,
                  Selected fixtures in its left-hand list will be 'discovered'.
                  </body></html>";
         InterpolatedLabel<[Point]> locLabel = InterpolatedLabel<[Point]>(locLabelText,
-            [invalidPoint]);
+            [Point.invalidPoint]);
         MutableMap<Direction, SelectionChangeSupport> mains =
                 HashMap<Direction, SelectionChangeSupport>();
         MutableMap<Direction, SelectionChangeSupport> seconds =

@@ -12,7 +12,6 @@ import strategicprimer.model.common.map {
     IFixture,
     Point,
     MapDimensions,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {
@@ -35,7 +34,7 @@ import strategicprimer.report.nodes {
 "A report generator for equipment and resources."
 shared class FortressMemberReportGenerator(
             Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
-            MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
+            MapDimensions dimensions, Integer currentTurn, Point hq = Point.invalidPoint)
         extends AbstractReportGenerator<FortressMember>(comp, dimensions, hq) {
     "Produces a sub-report on a resource or piece of equipment. All fixtures referred
      to in this report are removed from the collection."

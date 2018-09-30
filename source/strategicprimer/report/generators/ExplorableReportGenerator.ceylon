@@ -18,7 +18,6 @@ import strategicprimer.model.common.map {
     IFixture,
     Point,
     MapDimensions,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.explorable {
@@ -38,7 +37,7 @@ import strategicprimer.report.nodes {
 "A report generator for caves, battlefields, and portals."
 shared class ExplorableReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
-        MapDimensions dimensions, Point hq = invalidPoint)
+        MapDimensions dimensions, Point hq = Point.invalidPoint)
         extends AbstractReportGenerator<Battlefield|Cave|Portal>(comp, dimensions, hq) {
     "Produces a more verbose sub-report on a cave, battlefield, or portal."
     shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,

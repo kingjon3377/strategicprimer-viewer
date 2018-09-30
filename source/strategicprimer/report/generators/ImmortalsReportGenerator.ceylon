@@ -17,7 +17,6 @@ import strategicprimer.model.common.map {
     IFixture,
     Point,
     MapDimensions,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -53,7 +52,7 @@ import com.vasileff.ceylon.structures {
 """A report generator for "immortals"---dragons, fairies, centaurs, and such."""
 shared class ImmortalsReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, MapDimensions dimensions,
-        Point hq = invalidPoint)
+        Point hq = Point.invalidPoint)
         extends AbstractReportGenerator<Immortal>(comp, dimensions, hq) {
     "Produce a report on an individual immortal."
     shared actual void produceSingle(

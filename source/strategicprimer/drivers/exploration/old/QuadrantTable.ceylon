@@ -6,7 +6,6 @@ import ceylon.collection {
 import strategicprimer.model.common.map {
     Point,
     TileType,
-    invalidPoint,
     TileFixture,
     MapDimensions,
     MapDimensionsImpl
@@ -63,7 +62,7 @@ class QuadrantTable satisfies EncounterTable {
             MapDimensions mapDimensions) {
         Map<Point, String> resultsMap = valuesFor(mapDimensions, possibleResults,
             quadrantRows);
-        variable Point bestKey = invalidPoint;
+        variable Point bestKey = Point.invalidPoint;
         for (key in sort(resultsMap.keys).reversed) {
             if (key.row <= row, key.row > bestKey.row, key.column <= column,
                     key.column > bestKey.column) {

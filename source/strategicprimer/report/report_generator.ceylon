@@ -26,7 +26,6 @@ import strategicprimer.model.common.map {
     HasOwner,
     Point,
     MapDimensions,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {
@@ -76,7 +75,7 @@ object reportGeneratorHelper {
                 retval = location;
             }
         } else {
-            return retval else invalidPoint;
+            return retval else Point.invalidPoint;
         }
     }
     "Create a mapping from ID numbers to Pairs of fixtures and their location for all

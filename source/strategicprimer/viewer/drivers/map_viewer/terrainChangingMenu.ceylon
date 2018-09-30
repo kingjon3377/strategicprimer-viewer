@@ -20,8 +20,7 @@ import strategicprimer.model.common.idreg {
 }
 import strategicprimer.model.common.map {
     Point,
-    TileType,
-    invalidPoint
+    TileType
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
@@ -34,7 +33,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         createIDFactory(model.map));
     SelectionChangeSupport scs = SelectionChangeSupport();
     JMenuItem newUnitItem = JMenuItem("Add New Unit");
-    variable Point point = invalidPoint;
+    variable Point point = Point.invalidPoint;
     nuDialog.addNewUnitListener(object satisfies NewUnitListener {
         shared actual void addNewUnit(IUnit unit) {
             model.map.addFixture(point, unit);

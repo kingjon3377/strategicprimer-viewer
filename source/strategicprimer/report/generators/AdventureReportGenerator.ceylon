@@ -7,7 +7,6 @@ import strategicprimer.model.common.map {
     IFixture,
     Point,
     MapDimensions,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.explorable {
@@ -24,7 +23,7 @@ import strategicprimer.report.nodes {
 "A report generator for adventure hooks."
 shared class AdventureReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
-        MapDimensions dimensions, Point hq = invalidPoint)
+        MapDimensions dimensions, Point hq = Point.invalidPoint)
         extends AbstractReportGenerator<AdventureFixture>(comp, dimensions, hq) {
     "Produce the report on all adventure hooks in the map."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,

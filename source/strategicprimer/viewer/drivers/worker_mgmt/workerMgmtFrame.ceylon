@@ -74,7 +74,6 @@ import strategicprimer.model.common.idreg {
 import strategicprimer.model.common.map {
     Point,
     Player,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -178,7 +177,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     }
 
     Point findHQ() {
-        variable Point retval = invalidPoint;
+        variable Point retval = Point.invalidPoint;
         for (location->fixture in narrowedStream<Point, Fortress>(model.map.fixtures)
                 .filter(matchingPredicate(matchingValue(model.currentPlayer.playerId,
                     Player.playerId), compose(Fortress.owner, Entry<Point,

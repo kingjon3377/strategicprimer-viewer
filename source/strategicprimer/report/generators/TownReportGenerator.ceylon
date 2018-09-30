@@ -13,7 +13,6 @@ import strategicprimer.model.common.map {
     IFixture,
     Point,
     MapDimensions,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.towns {
@@ -35,7 +34,7 @@ import strategicprimer.report.nodes {
 todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         Player currentPlayer, MapDimensions dimensions, Integer currentTurn,
-        Point hq = invalidPoint)
+        Point hq = Point.invalidPoint)
         extends AbstractReportGenerator<ITownFixture>(comp, dimensions, hq) {
     {TownStatus+} statuses = [TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
         TownStatus.burned];

@@ -15,7 +15,6 @@ import strategicprimer.model.common.map {
     HasExtent,
     Point,
     MapDimensions,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.resources {
@@ -101,7 +100,7 @@ shared class HarvestableReportGenerator
         }
     }
     shared new (Comparison([Point, IFixture], [Point, IFixture]) comp,
-        MapDimensions dimensions, Point hq = invalidPoint)
+        MapDimensions dimensions, Point hq = Point.invalidPoint)
             extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) { }
     "Convert a Map from kinds to Points to a HtmlList."
     // Can't be static because HtmlList isn't and can't be

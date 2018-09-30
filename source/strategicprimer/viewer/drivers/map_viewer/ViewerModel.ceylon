@@ -18,7 +18,6 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.common.map {
     Point,
-    invalidPoint,
     IMutableMapNG,
     IMapNG
 }
@@ -57,7 +56,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         }
     }
     "The currently selected point in the main map."
-    variable Point selPoint = invalidPoint;
+    variable Point selPoint = Point.invalidPoint;
     "The visible dimensions of the map."
     variable VisibleDimensions visDimensions;
     shared new ("The initial map" IMutableMapNG theMap,
@@ -190,7 +189,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         fixVisibility();
     }
     "Clear the selection."
-    shared void clearSelection() => selection = invalidPoint;
+    shared void clearSelection() => selection = Point.invalidPoint;
     void postSetMap(IMapNG newMap) {
         clearSelection();
         visDimensions = VisibleDimensions(0, newMap.dimensions.rows - 1, 0,

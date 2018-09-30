@@ -21,7 +21,6 @@ import strategicprimer.model.common.map {
     MapDimensions,
     Point,
     TileFixture,
-    invalidPoint,
     TileType,
     IMutableMapNG,
     IMapNG
@@ -163,7 +162,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     MutableList<SelectionChangeListener> scListeners =
             ArrayList<SelectionChangeListener>();
     "The currently selected unit and its location."
-    variable [Point, IUnit?] selection = [invalidPoint, null];
+    variable [Point, IUnit?] selection = [Point.invalidPoint, null];
     shared new (IMutableMapNG map, JPath? file, Boolean modified = false)
             extends SimpleMultiMapModel(map, file, modified) {}
     shared new copyConstructor(IDriverModel model)
@@ -331,7 +330,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 return point;
             }
         } else {
-            return invalidPoint;
+            return Point.invalidPoint;
         }
     }
     "The currently selected unit."
@@ -350,7 +349,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             }
         } else {
             log.trace("Unsetting currently-selected-unit property");
-            loc = invalidPoint;
+            loc = Point.invalidPoint;
         }
         selection = [loc, selectedUnit];
         fireSelectionChange(oldLoc, loc);

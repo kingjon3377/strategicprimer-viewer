@@ -14,7 +14,6 @@ import strategicprimer.viewer.drivers.map_viewer {
 import strategicprimer.model.common.map {
     Point,
     TileFixture,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.drivers.common {
@@ -28,7 +27,7 @@ import java.lang {
 class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matchers)
         extends JButton() {
     Integer margin = 2;
-    variable Point localPoint = invalidPoint;
+    variable Point localPoint = Point.invalidPoint;
     shared Point point => localPoint;
     assign point {
         localPoint = point;

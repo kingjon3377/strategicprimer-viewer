@@ -25,8 +25,7 @@ import strategicprimer.model.common.map {
     MapDimensions,
     MapDimensionsImpl,
     Point,
-    TileType,
-    invalidPoint
+    TileType
 }
 import ceylon.logging {
     logger,
@@ -194,7 +193,7 @@ object loadTableTests {
     shared void testLoadRandomTable() {
         EncounterTable result = loadTable(LinkedList{"random", "0 one", "99 two"}.accept,
             "testLoadRandomTable()");
-        assertEquals(result.generateEvent(invalidPoint, TileType.tundra, false, [],
+        assertEquals(result.generateEvent(Point.invalidPoint, TileType.tundra, false, [],
             mockDimensions), "one", "loading random table");
     }
     test
@@ -202,18 +201,18 @@ object loadTableTests {
         EncounterTable result = loadTable(LinkedList{"terrain", "tundra one",
             "plains two", "ocean three", "mountain four", "temperate_forest five"}.accept,
             "testLoadTerrainTable()");
-        assertEquals(result.generateEvent(invalidPoint, TileType.tundra, false,
+        assertEquals(result.generateEvent(Point.invalidPoint, TileType.tundra, false,
             [], mockDimensions), "one",
             "loading terrain table: tundra");
-        assertEquals(result.generateEvent(invalidPoint, TileType.plains, false,
+        assertEquals(result.generateEvent(Point.invalidPoint, TileType.plains, false,
             [], mockDimensions), "two", "loading terrain table: plains");
-        assertEquals(result.generateEvent(invalidPoint, TileType.ocean, false,
+        assertEquals(result.generateEvent(Point.invalidPoint, TileType.ocean, false,
             [], mockDimensions), "three",
             "loading terrain table: ocean");
-        assertEquals(result.generateEvent(invalidPoint, TileType.plains, false,
+        assertEquals(result.generateEvent(Point.invalidPoint, TileType.plains, false,
             {Forest("forestKind", false, 1)}, mockDimensions), "five",
             "loading terrain table: version 2 equivalent of temperate forest");
-        assertEquals(result.generateEvent(invalidPoint, TileType.plains, true, [],
+        assertEquals(result.generateEvent(Point.invalidPoint, TileType.plains, true, [],
             mockDimensions), "four",
             "loading terrain table: version 2 equivalent of mountain");
     }
@@ -221,7 +220,7 @@ object loadTableTests {
     shared void testLoadConstantTable() {
         EncounterTable result = loadTable(LinkedList{"constant", "one"}.accept,
             "testLoadConstantTable()");
-        assertEquals(result.generateEvent(invalidPoint, TileType.plains, false,
+        assertEquals(result.generateEvent(Point.invalidPoint, TileType.plains, false,
             [], mockDimensions), "one");
     }
     test

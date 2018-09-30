@@ -25,8 +25,7 @@ import strategicprimer.model.common.map {
     HasOwner,
     TileFixture,
     TileType,
-    Point,
-    invalidPoint
+    Point
 }
 import javax.swing.event {
     ListSelectionListener,
@@ -87,7 +86,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
     String headerString(Point point) =>
             "<html><body><p>Contents of the tile at ``point``:</p></body></html>";
     InterpolatedLabel<[Point]> header =
-            InterpolatedLabel<[Point]>(headerString, [invalidPoint]);
+            InterpolatedLabel<[Point]>(headerString, [Point.invalidPoint]);
     object retval extends JSplitPane(JSplitPane.horizontalSplit, true)
             satisfies VersionChangeListener&SelectionChangeListener {
         shared late SelectionChangeListener delegate;

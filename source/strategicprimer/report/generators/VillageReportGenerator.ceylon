@@ -12,7 +12,6 @@ import strategicprimer.model.common.map {
     IFixture,
     Point,
     MapDimensions,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.towns {
@@ -30,7 +29,7 @@ import strategicprimer.report.nodes {
 "A report generator for Villages."
 shared class VillageReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
-        MapDimensions dimensions, Point hq = invalidPoint)
+        MapDimensions dimensions, Point hq = Point.invalidPoint)
         extends AbstractReportGenerator<Village>(comp, dimensions, hq) {
     "Produce the report on all known villages."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,

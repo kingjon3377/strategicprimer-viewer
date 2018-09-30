@@ -5,8 +5,7 @@ import lovelace.util.common {
 import strategicprimer.model.common.map {
     IFixture,
     Subsettable,
-    Point,
-    invalidPoint
+    Point
 }
 "A fixture representing a portal to another world."
 shared class Portal(destinationWorld, destinationCoordinates, id)
@@ -25,7 +24,7 @@ shared class Portal(destinationWorld, destinationCoordinates, id)
     shared actual variable String image = "";
     shared actual Portal copy(Boolean zero) {
         Portal retval = Portal((zero) then "unknown" else destinationWorld,
-            (zero) then invalidPoint else destinationCoordinates, id);
+            (zero) then Point.invalidPoint else destinationCoordinates, id);
         retval.image = image;
         return retval;
     }

@@ -16,7 +16,6 @@ import strategicprimer.model.common.map {
     Point,
     River,
     MapDimensions,
-    invalidPoint,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {
@@ -53,7 +52,7 @@ import com.vasileff.ceylon.structures {
 "A report generator for fortresses."
 shared class FortressReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
-        MapDimensions dimensions, Integer currentTurn, Point hq = invalidPoint)
+        MapDimensions dimensions, Integer currentTurn, Point hq = Point.invalidPoint)
         extends AbstractReportGenerator<Fortress>(comp, dimensions, hq) {
     IReportGenerator<IUnit> urg =
             UnitReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq);
