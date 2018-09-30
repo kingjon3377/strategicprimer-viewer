@@ -1,8 +1,5 @@
-import java.util {
-    EventListener
-}
 "An interface for things that want to be called when a new map is loaded."
-shared interface MapChangeListener satisfies EventListener {
+shared interface MapChangeListener {
     "React to the loading of a new map.
 
      Since all implementations of this interface went to their reference to a map model
