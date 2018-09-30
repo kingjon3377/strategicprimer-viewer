@@ -14,13 +14,6 @@ import ceylon.test {
     assertThatException
 }
 
-import java.io {
-    IOException
-}
-import java.lang {
-    IllegalArgumentException
-}
-
 import strategicprimer.model.common.map {
     MapDimensions,
     MapDimensionsImpl,
@@ -56,7 +49,7 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
         if (is String line = argument()) {
             switch (line[0])
             case (null) {
-                throw IOException("File doesn't start by specifying which kind of table");
+                throw ParseException("File doesn't start by specifying which kind of table");
             }
             case ('q'|'Q') {
                 if (is String firstLine = argument()) {
@@ -68,11 +61,11 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                         }
                         return QuadrantTable(rows, *items);
                     } else {
-                        throw IOException(
+                        throw Exception(
                             "File doesn't start with number of rows of quadrants", rows);
                     }
                 } else {
-                    throw IOException(
+                    throw Exception(
                         "File doesn't start with number of rows of quadrants");
                 }
             }
@@ -97,7 +90,7 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                         if (is Integer leftNum) {
                             list.add([leftNum, " ".join(splitted.rest)]);
                         } else {
-                            throw IOException("Non-numeric data", leftNum);
+                            throw Exception("Non-numeric data", leftNum);
                         }
                     }
                     first = false;
@@ -108,7 +101,7 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                 if (is String tableLine = argument()) {
                     return ConstantTable(tableLine);
                 } else {
-                    throw IOException("constant value not present");
+                    throw ParseException("constant value not present");
                 }
             }
             case ('t'|'T') {
@@ -141,7 +134,7 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                 throw AssertionError("unknown table type '``line`` in file ``name``");
             }
         } else {
-            throw IOException("File ``name`` doesn't specify a table type");
+            throw ParseException("File ``name`` doesn't specify a table type");
         }
     }
 }
@@ -155,7 +148,7 @@ shared void loadAllTables(Directory path, ExplorationRunner runner) {
         } else {
             try {
                 runner.loadTable(child.name, loadTable(child, child.name));
-            } catch (IllegalArgumentException except) {
+            } catch (Exception except) {
                 log.error("Error loading ``child.name``, continuing ...");
                 log.debug("Details of that error:", except);
             }
