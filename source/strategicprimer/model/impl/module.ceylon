@@ -16,7 +16,6 @@ module strategicprimer.model.impl "0.4.9017" {
     import ceylon.test ceylonVersion;
     shared import ceylon.collection ceylonVersion;
     shared import lovelace.util.common lovelaceUtilsVersion;
-    import ceylon.interop.java ceylonVersion;
     import ceylon.logging ceylonVersion;
     shared import ceylon.numeric ceylonVersion;
     import lovelace.util.jvm lovelaceUtilsVersion;

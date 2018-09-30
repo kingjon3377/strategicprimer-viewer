@@ -11,7 +11,6 @@ module strategicprimer.drivers.converters "0.4.9017" {
     import strategicprimer.model.impl spVersion;
     import ceylon.test ceylonVersion;
     import lovelace.util.common lovelaceUtilsVersion;
-    import lovelace.util.jvm lovelaceUtilsVersion;
     import strategicprimer.drivers.common spVersion;
     import ceylon.logging ceylonVersion;
     import ceylon.regex ceylonVersion;

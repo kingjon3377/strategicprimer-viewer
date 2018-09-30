@@ -14,5 +14,5 @@ module strategicprimer.drivers.exploration.old "0.4.9017" {
     import ceylon.logging ceylonVersion;
     shared import strategicprimer.drivers.common spVersion;
     import lovelace.util.common lovelaceUtilsVersion;
-    import lovelace.util.jvm lovelaceUtilsVersion;
+    import java.base "8"; // TODO: Refactor to remove
 }
