@@ -463,7 +463,7 @@ class AppStarter() {
                 try {
                     SwingUtilities.invokeLater(
                         defer(shuffle(compose(SPFrame.showWindow, appChooserFrame))(),
-                            [cli, currentOptionsTyped, others]));
+                            [cli, currentOptionsTyped, *others]));
                 } catch (DriverFailedException except) {
                     log.fatal(except.message, except);
                     SwingUtilities.invokeLater(defer(showErrorDialog, [null,
@@ -516,8 +516,7 @@ shared void run() {
         process.exit(2);
     }
 }
-SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
-        {String*}|IDriverModel finalArg) { // TODO: Drop model as final-arg possibility?
+SPFrame appChooserFrame(ICLIHelper cli, SPOptions options, String* args) {
     value tempComponent = JEditorPane();
     value font = tempComponent.font;
     assert (is Graphics2D pen = BufferedImage(1, 1, BufferedImage.typeIntRgb)
@@ -536,22 +535,7 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options,
     SPFrame frame = SPFrame("SP App Chooser", null, Dimension(width, height));
     void buttonHandler(ISPDriver target) {
         try {
-            if (is IDriverModel finalArg) {
-                if (is UtilityDriver target) {
-                    if (is IMultiMapModel finalArg) {
-                        target.startDriverOnArguments(cli, options,
-                            *finalArg.allMaps.map(Entry.item).map(Tuple.first)
-                                .coalesced.map(JPath.string));
-                    } else {
-                        target.startDriverOnArguments(cli, options,
-                            finalArg.mapFile?.string else "");
-                    }
-                } else {
-                    target.startDriverOnModel(cli, options, finalArg);
-                }
-            } else {
-                DriverWrapper(target).startCatchingErrors(cli, options, *finalArg);
-            }
+            DriverWrapper(target).startCatchingErrors(cli, options, *args);
             SwingUtilities.invokeLater(() {
                 frame.setVisible(false);
                 frame.dispose();
