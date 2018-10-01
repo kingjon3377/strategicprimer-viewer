@@ -71,9 +71,6 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
-import java.lang {
-    synchronized
-}
 import lovelace.util.common {
     readFileContents,
     isNumeric,
@@ -84,58 +81,34 @@ import lovelace.util.common {
     defer,
     narrowedStream
 }
-class LazyInit<Wrapped>(Wrapped() generator) {
-    variable Wrapped? inner = null;
-    shared synchronized Wrapped wrapped {
-        if (exists temp = inner) {
-            return temp;
-        } else {
-            Wrapped temp = generator();
-            inner = temp;
-            return temp;
-        }
-    }
-}
-"A driver to let the user enter or generate 'stats' for towns."
-service(`interface ISPDriver`)
-// TODO: Write GUI to allow user to generate or enter town contents
-shared class TownGeneratingCLI() satisfies CLIDriver {
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = false;
-        invocations = ["--town"];
-        paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "Enter or generate stats and contents for towns and villages";
-        longDescription = "Enter or generate stats and contents for towns and villages";
-        includeInCLIList = true;
-        includeInGUIList = false;
-    };
+class TownGenerator(ICLIHelper cli) {
     alias ModifiableTown=>AbstractTown|Village;
     Map<String, {[Quantity, String, String]*}> initConsumption() {
         MutableMap<String, {[Quantity, String, String]*}> retval =
                 HashMap<String, {[Quantity, String, String]*}>();
         for (terrain in ["mountain", "forest", "plains", "ocean"]) {
             String file = "``terrain``_consumption";
-             assert (exists tableContents =
-                     readFileContents(`module strategicprimer.drivers.generators`,
-                         "tables/``file``"));
-             MutableList<[Quantity, String, String]> inner =
-                     ArrayList<[Quantity, String, String]>();
-             for (line in tableContents.lines) {
-                 if (line.empty) {
-                     continue;
-                 }
-                 value split = line.split('\t'.equals, true, false);
-                 value quantity = Integer.parse(split.first);
-                 if (is Integer quantity) {
-                     assert (exists units = split.rest.first,
-                         exists kind = split.rest.rest.first,
-                         exists resource = split.rest.rest.rest.first);
-                     inner.add([Quantity(quantity, units), kind, resource]);
-                 } else {
-                     throw quantity;
-                 }
-             }
-             retval.put(terrain, inner.sequence());
+            assert (exists tableContents =
+                    readFileContents(`module strategicprimer.drivers.generators`,
+                        "tables/``file``"));
+            MutableList<[Quantity, String, String]> inner =
+                    ArrayList<[Quantity, String, String]>();
+            for (line in tableContents.lines) {
+                if (line.empty) { // TODO: condense
+                    continue;
+                }
+                value split = line.split('\t'.equals, true, false);
+                value quantity = Integer.parse(split.first);
+                if (is Integer quantity) {
+                    assert (exists units = split.rest.first, // TODO: can we use destructuring?
+                        exists kind = split.rest.rest.first,
+                        exists resource = split.rest.rest.rest.first);
+                    inner.add([Quantity(quantity, units), kind, resource]);
+                } else {
+                    throw quantity;
+                }
+            }
+            retval.put(terrain, inner.sequence());
         }
         return map(retval);
     }
@@ -179,14 +152,13 @@ shared class TownGeneratingCLI() satisfies CLIDriver {
         }
         return retval;
     }
-    LazyInit<Map<String,{[Quantity, String, String]*}>> consumption =
-            LazyInit(initConsumption);
-    LazyInit<ExplorationRunner> runner = LazyInit(initProduction);
+    Map<String,{[Quantity, String, String]*}> consumption = initConsumption(); // TODO: inline that?
+    ExplorationRunner runner = initProduction(); // TODO: pull its contents up?
     "The (for now active) towns in the given map that don't have 'stats' yet."
     {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) =>
             narrowedStream<Point, ModifiableTown>(map.fixtures)
                 .filter(matchingPredicate(matchingValue(TownStatus.active,
-                    ITownFixture.status), Entry<Point, ITownFixture>.item)).sequence();
+                ITownFixture.status), Entry<Point, ITownFixture>.item)).sequence();
     void assignStatsToTown(ModifiableTown town, CommunityStats stats) {
         if (is AbstractTown town) {
             town.population = stats;
@@ -198,8 +170,8 @@ shared class TownGeneratingCLI() satisfies CLIDriver {
             CommunityStats stats) {
 //        for (item in map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
         for (item in map.fixtures.get(location)
-                .narrow<ModifiableTown>().filter(matchingValue(townId,
-                ModifiableTown.id))) {
+            .narrow<ModifiableTown>().filter(matchingValue(townId,
+            ModifiableTown.id))) {
             assignStatsToTown(item, stats);
         }
     }
@@ -280,7 +252,7 @@ shared class TownGeneratingCLI() satisfies CLIDriver {
             } else if (isNumeric(input), exists temp = parseInt(input)) {
                 field = temp;
             } else if ("nearest" == input.lowercased,
-                    exists nearest = nearestFields.first) {
+                exists nearest = nearestFields.first) {
                 nearestFields = nearestFields.rest;
                 cli.println("Nearest harvestable fixture is as follows:");
                 cli.println(nearest.shortDescription);
@@ -293,9 +265,9 @@ shared class TownGeneratingCLI() satisfies CLIDriver {
                 cli.println("That field is already worked by another town");
             } else if (exists fieldLoc = findLocById(map, field)) {
                 if (!bothOrNeitherOcean(map.baseTerrain[location],
-                        map.baseTerrain[fieldLoc])) {
+                    map.baseTerrain[fieldLoc])) {
                     if (exists terrain = map.baseTerrain[location],
-                            terrain == TileType.ocean) {
+                        terrain == TileType.ocean) {
                         cli.println(
                             "That would be a land resource worked by an aquatic town.");
                     } else {
@@ -430,7 +402,7 @@ shared class TownGeneratingCLI() satisfies CLIDriver {
             consumptionTableName = "plains";
         }
         for (i in 0:skillCount) {
-            String skill = runner.wrapped.recursiveConsultTable(skillTable, location,
+            String skill = runner.recursiveConsultTable(skillTable, location,
 //                map.baseTerrain[location], map.mountainous[location],
                 map.baseTerrain.get(location), map.mountainous.get(location),
 //                map.fixtures[location], map.dimensions);
@@ -450,19 +422,19 @@ shared class TownGeneratingCLI() satisfies CLIDriver {
         }
         for (skill->level in retval.highestSkillLevels) {
             String tableName = "``skill``_production";
-            if (runner.wrapped.hasTable(tableName)) {
+            if (runner.hasTable(tableName)) {
                 retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
-                    runner.wrapped.consultTable(tableName, location,
+                    runner.consultTable(tableName, location,
                         map.baseTerrain.get(location), // TODO: syntax sugar
                         map.mountainous.get(location), map.fixtures.get(location),
                         map.dimensions),
-                Quantity(2.power(level - 1), (level == 1) then "unit" else "units")));
+                    Quantity(2.power(level - 1), (level == 1) then "unit" else "units")));
             } else {
                 retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
                     "product of ``skill``", Quantity(1, "unit")));
             }
         }
-        assert (exists consumptionTable = consumption.wrapped[consumptionTableName]);
+        assert (exists consumptionTable = consumption[consumptionTableName]);
         for ([quantity, kind, resource] in consumptionTable) {
             retval.yearlyConsumption.add(ResourcePile(idf.createID(), kind, resource,
                 quantity));
@@ -478,8 +450,91 @@ shared class TownGeneratingCLI() satisfies CLIDriver {
             return false;
         }
     }
+    shared void generateSpecificTowns(IDRegistrar idf, IDriverModel model) {
+        while (true) {
+            String input = cli.inputString("ID or name of town to create stats for: ")
+                .trimmed;
+            Point? location;
+            ModifiableTown? town;
+            if (input.empty) {
+                break;
+            } else if (isNumeric(input), exists id = parseInt(input)) {
+                value temp = unstattedTowns(model.map)
+                    .find(matchingPredicate(matchingValue(id, IFixture.id),
+                    Entry<Point, ITownFixture>.item));
+                location = temp?.key;
+                town = temp?.item;
+            } else {
+                value temp = unstattedTowns(model.map)
+                    .find(matchingPredicate(matchingValue(input, HasName.name),
+                    Entry<Point, ITownFixture>.item));
+                location = temp?.key;
+                town = temp?.item;
+            }
+            if (exists town, exists location) {
+                CommunityStats stats;
+                if (cli.inputBooleanInSeries(
+                    "Enter stats rather than generating them? ")) {
+                    stats = enterStats(cli, idf, model.map, location, town);
+                } else {
+                    stats = generateStats(idf, location, town, model.map);
+                }
+                assignStatsToTown(town, stats);
+                model.mapModified = true;
+                if (is IMultiMapModel model) {
+                    for (subMap->[file, _] in model.subordinateMaps) {
+                        assignStatsInMap(subMap, location, town.id, stats);
+                        model.setModifiedFlag(subMap, true);
+                    }
+                }
+            } else {
+                cli.println("No matching town found.");
+            }
+        }
+    }
+    shared void generateAllTowns(IDRegistrar idf, IDriverModel model) {
+        for (location->town in randomize(unstattedTowns(model.map))) {
+            cli.println("Next town is ``town.shortDescription``, at ``location``. ");
+            CommunityStats stats;
+            Boolean? resp = cli.inputBooleanInSeries<Null>(
+                "Enter stats rather than generating them?", "enter stats",
+                nullIfQuit);
+            if (exists resp) {
+                if (resp) {
+                    stats = enterStats(cli, idf, model.map, location, town);
+                } else {
+                    stats = generateStats(idf, location, town, model.map);
+                }
+                model.mapModified = true;
+            } else {
+                break;
+            }
+            assignStatsToTown(town, stats);
+            if (is IMultiMapModel model) {
+                for (subMap->[file, _] in model.subordinateMaps) {
+                    assignStatsInMap(subMap, location, town.id, stats);
+                    model.setModifiedFlag(subMap, true);
+                }
+            }
+        }
+    }
+}
+"A driver to let the user enter or generate 'stats' for towns."
+service(`interface ISPDriver`)
+// TODO: Write GUI to allow user to generate or enter town contents
+shared class TownGeneratingCLI() satisfies CLIDriver {
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        invocations = ["--town"];
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "Enter or generate stats and contents for towns and villages";
+        longDescription = "Enter or generate stats and contents for towns and villages";
+        includeInCLIList = true;
+        includeInGUIList = false;
+    };
     shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
+        TownGenerator generator = TownGenerator(cli);
         IDRegistrar idf;
         if (is IMultiMapModel model) {
             idf = createIDFactory(model.allMaps.map(Entry.key));
@@ -487,71 +542,9 @@ shared class TownGeneratingCLI() satisfies CLIDriver {
             idf = createIDFactory(model.map);
         }
         if (cli.inputBoolean("Enter or generate stats for just specific towns? ")) {
-            while (true) {
-                String input = cli.inputString("ID or name of town to create stats for: ")
-                    .trimmed;
-                Point? location;
-                ModifiableTown? town;
-                if (input.empty) {
-                    break;
-                } else if (isNumeric(input), exists id = parseInt(input)) {
-                    value temp = unstattedTowns(model.map)
-                            .find(matchingPredicate(matchingValue(id, IFixture.id),
-                                Entry<Point, ITownFixture>.item));
-                    location = temp?.key;
-                    town = temp?.item;
-                } else {
-                    value temp = unstattedTowns(model.map)
-                            .find(matchingPredicate(matchingValue(input, HasName.name),
-                                Entry<Point, ITownFixture>.item));
-                    location = temp?.key;
-                    town = temp?.item;
-                }
-                if (exists town, exists location) {
-                    CommunityStats stats;
-                    if (cli.inputBooleanInSeries(
-                            "Enter stats rather than generating them? ")) {
-                        stats = enterStats(cli, idf, model.map, location, town);
-                    } else {
-                        stats = generateStats(idf, location, town, model.map);
-                    }
-                    assignStatsToTown(town, stats);
-                    model.mapModified = true;
-                    if (is IMultiMapModel model) {
-                        for (subMap->[file, _] in model.subordinateMaps) {
-                            assignStatsInMap(subMap, location, town.id, stats);
-                            model.setModifiedFlag(subMap, true);
-                        }
-                    }
-                } else {
-                    cli.println("No matching town found.");
-                }
-            }
+            generator.generateSpecificTowns(idf, model);
         } else {
-            for (location->town in randomize(unstattedTowns(model.map))) {
-                cli.println("Next town is ``town.shortDescription``, at ``location``. ");
-                CommunityStats stats;
-                Boolean? resp = cli.inputBooleanInSeries<Null>(
-                    "Enter stats rather than generating them?", "enter stats",
-                    nullIfQuit);
-                if (exists resp) {
-                    if (resp) {
-                        stats = enterStats(cli, idf, model.map, location, town);
-                    } else {
-                        stats = generateStats(idf, location, town, model.map);
-                    }
-                    model.mapModified = true;
-                } else {
-                    break;
-                }
-                assignStatsToTown(town, stats);
-                if (is IMultiMapModel model) {
-                    for (subMap->[file, _] in model.subordinateMaps) {
-                        assignStatsInMap(subMap, location, town.id, stats);
-                        model.setModifiedFlag(subMap, true);
-                    }
-                }
-            }
+            generator.generateAllTowns(idf, model);
         }
     }
 }
