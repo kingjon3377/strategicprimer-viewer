@@ -24,7 +24,8 @@ import java.awt.event {
 }
 import java.lang {
     IntArray,
-    ObjectArray
+    ObjectArray,
+    JInteger=Integer
 }
 
 import javax.swing {
@@ -43,12 +44,9 @@ import javax.swing {
     JLabel,
     ListCellRenderer,
     SwingUtilities,
-    JButton
-}
-
-import javax.swing.text {
-    BadLocationException,
-    Document
+    JButton,
+    JSpinner,
+    SpinnerNumberModel
 }
 
 import lovelace.util.jvm {
@@ -64,8 +62,6 @@ import lovelace.util.jvm {
 }
 
 import lovelace.util.common {
-    parseInt,
-    isNumeric,
     simpleMap,
     silentListener
 }
@@ -156,7 +152,8 @@ SPFrame explorationFrame(IExplorationModel model,
         (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file));
     CardLayout layoutObj = CardLayout();
     retval.setLayout(layoutObj);
-    JTextField mpField = JTextField(5);
+    SpinnerNumberModel mpModel = SpinnerNumberModel(0, 0, 2000, 0);
+    JSpinner mpField = JSpinner(mpModel);
     object unitListModel extends DefaultListModel<IUnit>()
             satisfies PlayerChangeListener {
         shared actual void playerChanged(Player? old, Player newPlayer) {
@@ -184,7 +181,6 @@ SPFrame explorationFrame(IExplorationModel model,
             satisfies PlayerChangeSource&CompletionSource {
         MutableList<PlayerChangeListener> listeners =
                 ArrayList<PlayerChangeListener>();
-        shared Document mpDocument => mpField.document;
         shared actual void addPlayerChangeListener(PlayerChangeListener listener) =>
                 listeners.add(listener);
         shared actual void removePlayerChangeListener(PlayerChangeListener listener)
@@ -221,7 +217,9 @@ SPFrame explorationFrame(IExplorationModel model,
             }
         }
         unitList.cellRenderer = renderer;
-        mpField.addActionListener(buttonListener);
+        if (is JTextField mpEditor = mpField.editor) {
+            mpEditor.addActionListener(buttonListener);
+        }
         speedModel.selectedItem = Speed.normal;
     }
     explorerSelectingPanel.center = horizontalSplit(
@@ -242,26 +240,8 @@ SPFrame explorationFrame(IExplorationModel model,
     FunctionalGroupLayout headerLayout = FunctionalGroupLayout(headerPanel);
     object explorationPanel extends BorderedPanel()
             satisfies SelectionChangeListener&CompletionSource&MovementCostListener {
-        Document mpDocument = explorerSelectingPanel.mpDocument;
         shared actual void deduct(Integer cost) {
-            String mpText;
-            try {
-                mpText = mpDocument.getText(0, mpDocument.length).trimmed;
-            } catch (BadLocationException except) {
-                log.error("Exception trying to update MP counter", except);
-                return;
-            }
-            if (isNumeric(mpText)) {
-                assert (exists temp = parseInt(mpText));
-                variable Integer movePoints = temp;
-                movePoints -= cost;
-                try {
-                    mpDocument.remove(0, mpDocument.length);
-                    mpDocument.insertString(0, movePoints.string, null);
-                } catch (BadLocationException except) {
-                    log.error("Exception trying to update MP counter", except);
-                }
-            }
+            mpModel.\ivalue = JInteger.valueOf(mpModel.number.intValue() - cost);
         }
         String locLabelText(Point point) =>
                 "<html><body>Currently exploring ``point``; click a tile to explore it.
@@ -304,7 +284,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 }
             });
         JLabel remainingMPLabel = JLabel("Remaining Movement Points:");
-        JTextField mpField = JTextField(explorerSelectingPanel.mpDocument, null, 5);
+        JSpinner mpField = JSpinner(mpModel);
         mpField.maximumSize = Dimension(runtime.maxArraySize,
             mpField.preferredSize.height.integer);
         JLabel speedLabel = JLabel("Current relative speed:");
