@@ -128,6 +128,10 @@ import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }
+import javax.swing.event {
+    ListDataListener,
+    ListDataEvent
+}
 "The main window for the exploration GUI."
 SPFrame explorationFrame(IExplorationModel model,
         MenuBroker menuHandler) { // TODO: Do what we can to convert nested objects/classes to top-level, etc.
@@ -256,13 +260,27 @@ SPFrame explorationFrame(IExplorationModel model,
         MutableMap<Direction, DualTileButton> buttons =
                 HashMap<Direction, DualTileButton>();
         {FixtureMatcher*} matchers = FixtureFilterTableModel();
+        class SpeedChangeListener(SelectionChangeListener scs) satisfies ListDataListener {
+            shared variable Point point = Point.invalidPoint;
+            void apply() {
+                scs.selectedPointChanged(null, point);
+            }
+            shared actual void contentsChanged(ListDataEvent event) => apply();
+            shared actual void intervalAdded(ListDataEvent event) => apply();
+            shared actual void intervalRemoved(ListDataEvent event) => apply();
+        }
+        MutableMap<Direction, SpeedChangeListener> speedChangeListeners =
+                HashMap<Direction, SpeedChangeListener>();
         shared actual void selectedPointChanged(Point? old, Point newPoint) {
             if (exists old, old == newPoint) {
                 return;
             }
             for (direction in `Direction`.caseValues) {
                 Point point = model.getDestination(newPoint, direction);
-                mains[direction]?.fireChanges(old, point);
+                if (exists speedChangeListener = speedChangeListeners[direction]) {
+                    speedChangeListener.point = point;
+                }
+                mains[direction]?.fireChanges(old, point); // TODO: 'old' wasn't previous selection *in this direction* ...
                 seconds[direction]?.fireChanges(old, point);
                 if (exists button = buttons[direction]) {
                     button.point = point;
@@ -522,6 +540,9 @@ SPFrame explorationFrame(IExplorationModel model,
             SelectionChangeSupport secPCS = SelectionChangeSupport();
             secPCS.addSelectionChangeListener(secList);
             tilesPanel.add(JScrollPane(secList));
+            SpeedChangeListener scl = SpeedChangeListener(ell);
+            speedModel.addListDataListener(scl);
+            speedChangeListeners[direction] = scl;
             mains[direction] = mainPCS;
             buttons[direction] = dtb;
             seconds[direction] = secPCS;
