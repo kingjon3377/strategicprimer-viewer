@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <project default="all" name="SP viewer" xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"
-    xmlns:jacoco="antlib:org.jacoco.ant" xmlns:if="ant:if" xmlns:unless="ant:unless">
+    xmlns:if="ant:if" xmlns:unless="ant:unless">
   <target name="all" depends="clean,release" />
   <property file="build.properties" />
   <tstamp />
@@ -291,28 +291,5 @@
   </target>
   <target name="release"
     depends="app,exe,jar,dmg,dist" />
-  <target name="coverage" depends="build">
-      <!-- TODO: Find a Ceylon code-coverage tool -->
-      <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
-          <classpath path="${jacoco.classpath}" />
-      </taskdef>
-      <!--
-      <echo message='You may need to export ANT_TASKS="jacoco" on a Gentoo system.' />
-      <jacoco:coverage>
-       -->
-             <!-- TODO: call ceylon test here, and fix up the 'structure' part below -->
-      <!--
-      </jacoco:coverage>
-      <jacoco:report>
-          <executiondata><file file="jacoco.exec" /></executiondata>
-          <structure name="Strategic Primer Assistive Programs">
-              <classfiles><fileset dir="bin">
-                  <include name="**/*.class" />
-              </fileset></classfiles>
-              <sourcefiles encoding="UTF-8"><fileset dir="src" /></sourcefiles>
-          </structure>
-          <xml destfile="jacoco.xml" />
-      </jacoco:report>
-      -->
-  </target>
+  <!-- TODO: Find a Ceylon code-coverage tool and make a 'coverage' target -->
 </project>
