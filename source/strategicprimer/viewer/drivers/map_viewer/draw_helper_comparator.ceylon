@@ -77,10 +77,10 @@ shared class DrawHelperComparatorFactory satisfies UtilityDriverFactory {
             DrawHelperComparator(cli, options);
 }
 "A driver to compare the performance of TileDrawHelpers."
-shared class DrawHelperComparator(ICLIHelper cli, SPOptions options)
-        satisfies UtilityDriver {
-    "The first test: all in one place." // TODO: Can (some of) these become static?
-    Integer first(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
+shared class DrawHelperComparator satisfies UtilityDriver {
+    "The first test: all in one place."
+    static Integer first(TileDrawHelper helper, IMapNG map, Integer reps,
+            Integer tileSize) {
         BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
         Integer start = system.milliseconds;
         for (rep in 0:reps) {
@@ -94,7 +94,8 @@ shared class DrawHelperComparator(ICLIHelper cli, SPOptions options)
         return end - start;
     }
     "The second test: Translating."
-    Integer second(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
+    static Integer second(TileDrawHelper helper, IMapNG map, Integer reps,
+            Integer tileSize) {
         MapDimensions mapDimensions = map.dimensions;
         BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
             tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
@@ -112,7 +113,8 @@ shared class DrawHelperComparator(ICLIHelper cli, SPOptions options)
         return end - start;
     }
     "Third test: in-place, reusing Graphics."
-    Integer third(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
+    static Integer third(TileDrawHelper helper, IMapNG map, Integer reps,
+            Integer tileSize) {
         BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
         Integer start = system.milliseconds;
         for (rep in 0:reps) {
@@ -127,7 +129,8 @@ shared class DrawHelperComparator(ICLIHelper cli, SPOptions options)
         return end - start;
     }
     "Fourth test: translating, reusing Graphics."
-    Integer fourth(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
+    static Integer fourth(TileDrawHelper helper, IMapNG map, Integer reps,
+            Integer tileSize) {
         MapDimensions mapDimensions = map.dimensions;
         BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
             tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
@@ -145,10 +148,11 @@ shared class DrawHelperComparator(ICLIHelper cli, SPOptions options)
         Integer end = system.milliseconds;
         return end - start;
     }
-    Range<Integer> testRowSpan = 20..40;
-    Range<Integer> testColSpan = 55..82;
+    static Range<Integer> testRowSpan = 20..40; // TODO: randomize these a bit?
+    static Range<Integer> testColSpan = 55..82;
     "Fifth test, part one: iterating."
-    Integer fifthOne(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
+    static Integer fifthOne(TileDrawHelper helper, IMapNG map, Integer reps,
+            Integer tileSize) {
         MapDimensions mapDimensions = map.dimensions;
         BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
             tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
@@ -169,7 +173,7 @@ shared class DrawHelperComparator(ICLIHelper cli, SPOptions options)
         Integer end = system.milliseconds;
         return end - start;
     }
-    Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
+    static Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
         MapDimensions mapDimensions = map.dimensions;
         BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
             tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
@@ -191,7 +195,7 @@ shared class DrawHelperComparator(ICLIHelper cli, SPOptions options)
         Integer end = system.milliseconds;
         return end - start;
     }
-    {[String, Integer(TileDrawHelper, IMapNG, Integer, Integer)]*} tests = [
+    static {[String, Integer(TileDrawHelper, IMapNG, Integer, Integer)]*} tests = [
         ["1. All in one place", first],
         ["2. Translating", second],
         ["3. In-place, reusing Graphics", third],
@@ -199,12 +203,12 @@ shared class DrawHelperComparator(ICLIHelper cli, SPOptions options)
         ["5a. Ordered iteration vs filtering: Iteration", fifthOne],
         ["5b. Ordered iteration vs filtering: Filtering", fifthTwo]
     ];
-    Boolean dummyObserver(Image? image, Integer infoflags,
+    static Boolean dummyObserver(Image? image, Integer infoflags,
         Integer xCoordinate, Integer yCoordinate, Integer width, Integer height) =>
             false;
 
-    Boolean dummyFilter(TileFixture? fix) => true;
-    {[TileDrawHelper, String]*} helpers = [ [CachingTileDrawHelper(), "Caching:"],
+    static Boolean dummyFilter(TileFixture? fix) => true;
+    static {[TileDrawHelper, String]*} helpers = [ [CachingTileDrawHelper(), "Caching:"],
         [directTileDrawHelper, "Direct:"],
         [Ver2TileDrawHelper(dummyObserver, dummyFilter,
             Singleton(FixtureMatcher(dummyFilter, "test"))), "Ver 2:"]
@@ -220,6 +224,12 @@ shared class DrawHelperComparator(ICLIHelper cli, SPOptions options)
             results.put(tuple, retval);
             return retval;
         }
+    }
+    ICLIHelper cli;
+    SPOptions options;
+    shared new (ICLIHelper cli, SPOptions options) {
+        this.cli = cli;
+        this.options = options;
     }
     "Run all the tests on the specified map."
     void runAllTests(IMapNG map, String fileName, Integer repetitions) {
