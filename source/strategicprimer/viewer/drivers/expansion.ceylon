@@ -33,8 +33,11 @@ import strategicprimer.drivers.common {
     ParamCount,
     IDriverUsage,
     DriverUsage,
-    ISPDriver,
-    CLIDriver
+    CLIDriver,
+    DriverFactory,
+    ModelDriverFactory,
+    ModelDriver,
+    SimpleDriverModel
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -51,13 +54,13 @@ import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import lovelace.util.common {
-    singletonRandom
+    singletonRandom,
+    PathWrapper
 }
-"""A driver to update a player's map to include a certain minimum distance around allied
-   villages."""
-service(`interface ISPDriver`)
-// FIXME: Write GUI for map-expanding driver
-shared class ExpansionDriver() satisfies CLIDriver {
+"""A factory for a driver to update a player's map to include a certain minimum distance
+   around allied villages."""
+service(`interface DriverFactory`)
+shared class ExpansionDriverFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-n", "--expand"];
@@ -69,8 +72,17 @@ shared class ExpansionDriver() satisfies CLIDriver {
         includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => ExpansionDriver(cli, options, model);
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleMultiMapModel(map, path);
+}
+"""A driver to update a player's map to include a certain minimum distance around allied
+   villages."""
+// FIXME: Write GUI for map-expanding driver
+shared class ExpansionDriver(ICLIHelper cli, SPOptions options, IDriverModel model)
+        satisfies CLIDriver {
+    shared actual void startDriver() {
         if (is IMultiMapModel model) {
             IMapNG master = model.map;
             for (map->[path, _] in model.subordinateMaps) {
@@ -136,7 +148,6 @@ shared class ExpansionDriver() satisfies CLIDriver {
             }
         } else {
             log.warn("Expansion on a master map with no subordinate maps does nothing");
-            startDriverOnModel(cli, options, SimpleMultiMapModel.copyConstructor(model));
         }
     }
 }
@@ -167,11 +178,10 @@ object sampleMapPopulator satisfies MapPopulator {
             map.addFixture(location,
                 AnimalImpl("hare", false, "wild", idf.createID()));
 }
-"""A driver to add some kind of fixture to suitable tiles throughout the map. Customize
-   the [[populator]] field before each use."""
-service(`interface ISPDriver`)
-// TODO: Write GUI equivalent of Map Populator Driver
-shared class MapPopulatorDriver() satisfies CLIDriver {
+"""A factory for a driver to add some kind of fixture to suitable tiles throughout the
+   map."""
+service(`interface DriverFactory`)
+shared class MapPopulatorFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-l", "--populate"];
@@ -183,6 +193,16 @@ shared class MapPopulatorDriver() satisfies CLIDriver {
         includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => MapPopulatorDriver(cli, options, model);
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleDriverModel(map, path);
+}
+"""A driver to add some kind of fixture to suitable tiles throughout the map. Customize
+   the [[populator]] field before each use."""
+// TODO: Write GUI equivalent of Map Populator Driver
+shared class MapPopulatorDriver(ICLIHelper cli, SPOptions options,
+        IDriverModel model) satisfies CLIDriver {
     "The object that does the heavy lifting of populating the map. This is the one field
      that should be changed before each populating pass."
     MapPopulator populator = sampleMapPopulator;
@@ -201,8 +221,7 @@ shared class MapPopulatorDriver() satisfies CLIDriver {
             }
         }
     }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
+    shared actual void startDriver() {
         populate(model.map);
         cli.println(
             "``changedCount`` out of ``suitableCount`` suitable locations were changed");

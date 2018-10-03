@@ -7,7 +7,8 @@ import strategicprimer.model.common.map {
     TileType,
     MapDimensions,
     Point,
-    IMapNG
+    IMapNG,
+    IMutableMapNG
 }
 import ceylon.collection {
     MutableSet,
@@ -27,8 +28,11 @@ import strategicprimer.drivers.common {
     DriverUsage,
     IDriverModel,
     IMultiMapModel,
-    ISPDriver,
-    CLIDriver
+    CLIDriver,
+    ModelDriverFactory,
+    DriverFactory,
+    ModelDriver,
+    SimpleMultiMapModel
 }
 import strategicprimer.model.common.map.fixtures {
     Ground,
@@ -41,7 +45,8 @@ import lovelace.util.common {
     todo,
     matchingValue,
     simpleMap,
-    defer
+    defer,
+    PathWrapper
 }
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
@@ -84,7 +89,7 @@ import strategicprimer.model.common.map.fixtures.resources {
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 "A helper object for the query driver."
-class QueryHelper {
+class QueryHelper { // TODO: Merge back into QueryCLI.
     "How many hours we assume a working day is for a hunter or such."
     static Integer hunterHours = 10;
     "How many encounters per hour for a hunter or such."
@@ -158,7 +163,7 @@ class QueryHelper {
     IMapNG map;
     ICLIHelper cli;
     HuntingModel huntModel;
-    SPOptions options;
+    SPOptions options; // TODO: Drop
     shared new (IDriverModel theModel, ICLIHelper theCLI, HuntingModel theHuntModel,
             SPOptions theOptions) {
         model = theModel;
@@ -517,8 +522,8 @@ class QueryHelper {
         "fish"->deferAction(fish, "fish"),
         "gather"->deferAction(gather, "gather"),
         "herd"->herd,
-        "trap"->shuffle(compose(TrappingCLI.startDriverOnModel,
-            TrappingCLI))(cli, options, model),
+        "trap"->compose(TrappingCLI.startDriver,
+            TrappingCLI)(cli, model),
         "distance"->printDistance,
         "count"->defer(countWorkers, [model.map.players]),
         "unexplored"->findUnexploredCommand,
@@ -556,20 +561,27 @@ class QueryHelper {
         return true;
     }
 }
-"A driver for 'querying' the driver model about various things."
-service(`interface ISPDriver`)
-// FIXME: Write GUI equivalent of query CLI
-shared class QueryCLI() satisfies CLIDriver {
+"""A factory for the driver to "query" the driver model about various things."""
+service(`interface DriverFactory`)
+shared class QueryCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(false, ["-q", "--query"],
         ParamCount.atLeastOne, "Answer questions about a map.",
         "Look a tiles on a map. Or run hunting, gathering, or fishing.", true, false);
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => QueryCLI(cli, options, model);
+
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleMultiMapModel(map, path);
+}
+"A driver for 'querying' the driver model about various things."
+// FIXME: Write GUI equivalent of query CLI
+shared class QueryCLI(ICLIHelper cli, SPOptions options, IDriverModel model) satisfies CLIDriver {
     "Accept and respond to commands."
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
+    shared actual void startDriver() {
         QueryHelper helper = QueryHelper(model, cli, HuntingModel(model.map), options);
         try {
             while (helper.handleCommand()) {}
-        } catch (IOException except) {
+        } catch (IOException except) { // TODO: This shouldn't be possible any more
             log.error("I/O error", except);
         }
     }

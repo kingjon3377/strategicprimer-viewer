@@ -12,8 +12,10 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     SPOptions,
     IDriverModel,
-    ISPDriver,
-    CLIDriver
+    CLIDriver,
+    DriverFactory,
+    ModelDriverFactory,
+    ModelDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -22,11 +24,17 @@ import strategicprimer.drivers.exploration.common {
     IExplorationModel,
     ExplorationModel
 }
+import lovelace.util.common {
+    PathWrapper
+}
+import strategicprimer.model.common.map {
+    IMutableMapNG
+}
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
-"A CLI to help running exploration."
-service(`interface ISPDriver`)
-shared class ExplorationCLI() satisfies CLIDriver {
+"A factory for the CLI exploration app."
+service(`interface DriverFactory`)
+shared class ExplorationCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-x", "--explore"];
@@ -38,22 +46,27 @@ shared class ExplorationCLI() satisfies CLIDriver {
         includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        IExplorationModel explorationModel;
-        if (is IExplorationModel model) {
-            explorationModel = model;
-        } else {
-            explorationModel = ExplorationModel.copyConstructor(model);
-        }
+        assert (is IExplorationModel model);
+        return ExplorationCLI(cli, model);
+    }
+
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            ExplorationModel(map, path);
+
+}
+"A CLI to help running exploration."
+class ExplorationCLI(ICLIHelper cli, IExplorationModel model) satisfies CLIDriver {
+    shared actual void startDriver() {
         try {
-            ExplorationCLIHelper eCLI = ExplorationCLIHelper(explorationModel, cli);
+            ExplorationCLIHelper eCLI = ExplorationCLIHelper(model, cli);
             if (exists player = eCLI.choosePlayer(),
                     exists unit = eCLI.chooseUnit(player)) {
-                explorationModel.selectedUnit = unit;
+                model.selectedUnit = unit;
                 eCLI.moveUntilDone();
             }
-        } catch (IOException except) {
+        } catch (IOException except) { // TODO: Shouldn't be possible anymore
             throw DriverFailedException(except, "I/O error interacting with user");
         }
     }

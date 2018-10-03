@@ -22,28 +22,37 @@ import strategicprimer.drivers.common {
     DriverUsage,
     ParamCount,
     IDriverUsage,
-    ISPDriver,
     SPOptions,
     IncorrectUsageException,
-    UtilityDriver
+    UtilityDriver,
+    DriverFactory,
+    UtilityDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 
-"A driver to check whether player maps are subsets of the main map and display the
- results graphically."
-todo("Unify with [[SubsetCLI]]")
-service(`interface ISPDriver`)
-shared class SubsetGUI() satisfies UtilityDriver {
-    shared actual IDriverUsage usage = DriverUsage(true, ["-s", "--subset"],
+"A factory for a driver to check whether player maps are subsets of the main map and
+ display the results graphically."
+service(`interface DriverFactory`)
+shared class SubsetGUIFactory satisfies UtilityDriverFactory {
+    shared static IDriverUsage staticUsage = DriverUsage(true, ["-s", "--subset"],
         ParamCount.atLeastTwo, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.", false, true);
-    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
-            String* args) {
+    shared actual IDriverUsage usage => staticUsage;
+    shared new () {}
+    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
+            SubsetGUI(cli, options);
+}
+
+"A driver to check whether player maps are subsets of the main map and display the
+ results graphically."
+todo("Unify with [[SubsetCLI]], like the map-checker GUI")
+shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
+    shared actual void startDriver(String* args) {
         if (args.size < 2) {
-            throw IncorrectUsageException(usage);
+            throw IncorrectUsageException(SubsetGUIFactory.staticUsage);
         }
         SubsetFrame frame = subsetFrame();
         SwingUtilities.invokeLater(frame.showWindow);

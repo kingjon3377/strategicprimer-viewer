@@ -15,19 +15,20 @@ import strategicprimer.drivers.common {
     ParamCount,
     SPOptions,
     IncorrectUsageException,
-    ISPDriver
+    DriverFactory,
+    UtilityDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-"""A driver to create a spreadsheet model of a mine. Its parameters are the name of the
-   file to write the CSV to and the value at the top center (as an index into the
-   LodeStatus values array).""""
-service(`interface ISPDriver`)
-// TODO: Write GUI to allow user to visually explore a mine
-native("jvm") // TODO: Try removing once strategicprimer.drivers.common isn't declared entirely "native".
-shared class MiningCLI() satisfies UtilityDriver {
-    shared actual IDriverUsage usage = DriverUsage {
+
+"A factory for a driver to create a spreadsheet model of a mine. Its parameters are the
+ name of the file to write the CSV to and the value at the top center (as an index into
+ the [[LodeStatus]] values array, or the String representation thereof)."
+service(`interface DriverFactory`)
+native("jvm") // TODO: remove once ceylon.file and ceylon.decimal are implemented for JS, eclipse/ceylon#2448 and eclipse/ceylon-sdk#239
+shared class MiningCLIFactory satisfies UtilityDriverFactory {
+    shared static IDriverUsage staticUsage = DriverUsage {
         graphical = false;
         invocations = ["-i", "--mining"];
         paramsWanted = ParamCount.two;
@@ -39,8 +40,18 @@ shared class MiningCLI() satisfies UtilityDriver {
         includeInGUIList = false;
         supportedOptionsTemp = [ "--seed=NN", "--banded" ];
     };
-    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
-            String* args) {
+    shared actual IDriverUsage usage => staticUsage;
+    shared new () {}
+    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
+            MiningCLI(cli, options);
+}
+"""A driver to create a spreadsheet model of a mine. Its parameters are the name of the
+   file to write the CSV to and the value at the top center (as an index into the
+   LodeStatus values array).""""
+// TODO: Write GUI to allow user to visually explore a mine
+native("jvm") // TODO: Try removing once strategicprimer.drivers.common isn't declared entirely "native".
+shared class MiningCLI(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
+    shared actual void startDriver(String* args) {
         if (exists filename = args.first, exists second = args.rest.first,
                 args.size == 2) {
             Integer seed;
@@ -86,11 +97,11 @@ shared class MiningCLI() satisfies UtilityDriver {
                     }
                 }
             } else {
-                throw DriverFailedException(IOException(
+                throw DriverFailedException(IOException( // TODO: Drop IOException usage
                     "Output file ``filename`` already exists"));
             }
         } else {
-            throw IncorrectUsageException(usage);
+            throw IncorrectUsageException(MiningCLIFactory.staticUsage);
         }
     }
 }

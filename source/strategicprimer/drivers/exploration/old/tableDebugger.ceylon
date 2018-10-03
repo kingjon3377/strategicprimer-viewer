@@ -8,21 +8,30 @@ import strategicprimer.drivers.common {
     DriverUsage,
     SPOptions,
     ParamCount,
-    ISPDriver,
     UtilityDriver,
-    IncorrectUsageException
+    IncorrectUsageException,
+    DriverFactory,
+    UtilityDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-"""A driver to help debug "exploration tables", which were the second "exploration
-   results" framework I implemented."""
-service(`interface ISPDriver`)
-shared class TableDebugger() satisfies UtilityDriver {
-    shared actual IDriverUsage usage = DriverUsage(false, ["-T", "--table-debug"],
+"""A factory for a driver to help debug "exploration tables", which were the second
+   "exploration results" framework I implemented."""
+service(`interface DriverFactory`)
+shared class TableDebuggerFactory satisfies UtilityDriverFactory {
+    shared static IDriverUsage staticUsage = DriverUsage(false, ["-T", "--table-debug"],
         ParamCount.none, "Debug old-model encounter tables",
         "See whether old-model encounter tables refer to a nonexistent table", false,
         false);
+    shared new () {}
+    shared actual IDriverUsage usage => staticUsage;
+    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
+            TableDebugger(cli.println);
+}
+"""A driver to help debug "exploration tables", which were the second "exploration
+   results" framework I implemented."""
+shared class TableDebugger(Anything(String) ostream) satisfies UtilityDriver {
     "Print all possible results from a table."
     void debugSingleTable(
             "The exploration-runner to use for testing"
@@ -35,8 +44,6 @@ shared class TableDebugger() satisfies UtilityDriver {
             EncounterTable table,
             "The name of that table"
             String tableName,
-            "The stream to write to"
-            Anything(String) ostream,
             "The set of tables already on the stack, to prevent infinite recursion"
             {EncounterTable*} set) {
         if (set.contains(table)) {
@@ -52,23 +59,22 @@ shared class TableDebugger() satisfies UtilityDriver {
                 debugSingleTable(runner, "``before````parsed.first``",
                     "``parsed.rest.rest.first else ""````after``",
                     runner.getTable(callee), callee,
-                    ostream, innerState);
+                    innerState);
             } else {
                 ostream("``before````item````after``");
             }
         }
     }
-    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
-            String* args) {
+    shared actual void startDriver(String* args) {
         if (args.size.positive) {
-            throw IncorrectUsageException(usage);
+            throw IncorrectUsageException(TableDebuggerFactory.staticUsage);
         }
         "Table debugger requires a tables directory"
         assert (is Directory directory = parsePath("tables").resource);
         ExplorationRunner runner = ExplorationRunner();
         loadAllTables(directory, runner);
-        runner.verboseGlobalRecursiveCheck(cli.println);
+        runner.verboseGlobalRecursiveCheck(ostream);
         EncounterTable mainTable = runner.getTable("main");
-        debugSingleTable(runner, "", "", mainTable, "main", cli.println, []);
+        debugSingleTable(runner, "", "", mainTable, "main", []);
     }
 }

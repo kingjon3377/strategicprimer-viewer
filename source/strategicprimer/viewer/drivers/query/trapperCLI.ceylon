@@ -7,9 +7,12 @@ import strategicprimer.drivers.common {
     ParamCount,
     IDriverModel,
     IDriverUsage,
-    ISPDriver,
     IMultiMapModel,
-    CLIDriver
+    CLIDriver,
+    DriverFactory,
+    ModelDriverFactory,
+    ModelDriver,
+    SimpleMultiMapModel
 }
 import strategicprimer.model.common.map {
     Point,
@@ -24,7 +27,8 @@ import strategicprimer.drivers.common.cli {
 }
 import lovelace.util.common {
     todo,
-    matchingValue
+    matchingValue,
+    PathWrapper
 }
 import ceylon.numeric.float {
     round=halfEven
@@ -56,17 +60,25 @@ class QueueWrapper<Type>(variable {Type*} wrapped) satisfies Queue<Type> {
     shared actual Type? front => wrapped.first;
     shared actual void offer(Type element) => wrapped = wrapped.chain(Singleton(element));
 }
-"A driver to run a player's trapping activity."
-todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
-service(`interface ISPDriver`)
-// FIXME: Write trapping (and hunting, etc.) GUI
-shared class TrappingCLI() satisfies CLIDriver {
-    Integer minutesPerHour = 60;
-    TrapperCommand[] commands = sort(`TrapperCommand`.caseValues);
+"A factory for a driver to run a player's trapping activity."
+service(`interface DriverFactory`)
+shared class TrappingCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"],
         ParamCount.atLeastOne, "Run a player's trapping",
         "Determine the results a player's trapper finds.", true, false);
-    String inHours(Integer minutes) {
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => TrappingCLI(cli, model);
+
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleMultiMapModel(map, path);
+}
+"A driver to run a player's trapping activity."
+todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
+// FIXME: Write trapping (and hunting, etc.) GUI
+shared class TrappingCLI satisfies CLIDriver {
+    static Integer minutesPerHour = 60;
+    static TrapperCommand[] commands = sort(`TrapperCommand`.caseValues);
+    static String inHours(Integer minutes) {
         if (minutes < minutesPerHour) {
             return "``minutes`` minutes";
         } else {
@@ -74,14 +86,17 @@ shared class TrappingCLI() satisfies CLIDriver {
                 minutes % minutesPerHour`` minutes";
         }
     }
+    ICLIHelper cli;
+    IDriverModel model;
+    shared new (ICLIHelper cli, IDriverModel model) {
+        this.cli = cli;
+        this.model = model;
+    }
     "Handle a command. Returns how long it took to execute the command."
     Integer handleCommand(
-            "The model."
-            IDriverModel model,
             "The animals generated from the tile and the surrounding tiles, with their
              home locations."
             Queue<Point->Animal|AnimalTracks|HuntingModel.NothingFound> fixtures,
-            ICLIHelper cli,
             "The command to handle"
             TrapperCommand command,
             "If true, we're dealing with *fish* traps, which have different costs"
@@ -165,8 +180,7 @@ shared class TrappingCLI() satisfies CLIDriver {
         case (TrapperCommand.quit) { return 0; }
         case (TrapperCommand.setTrap) { return (fishing) then 30 else 45; }
     }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
+    shared actual void startDriver() {
         Boolean fishing = cli.inputBooleanInSeries(
             "Is this a fisherman trapping fish rather than a trapper? ");
         String name = (fishing) then "fisherman" else "trapper";
@@ -191,10 +205,9 @@ shared class TrappingCLI() satisfies CLIDriver {
         while (minutes > 0, exists command = cli.chooseFromList(commands,
                 "What should the ``name`` do next?", "Oops! No commands",
                 "Next action: ", false).item) {
-            minutes -= handleCommand(model, fixtures, cli, command, fishing,
-                addTracksToMaps);
+            minutes -= handleCommand(fixtures, command, fishing, addTracksToMaps);
             cli.println("``inHours(minutes)`` remaining");
-            if (command == TrapperCommand.quit) {
+            if (command == TrapperCommand.quit) { // TODO: Move into loop condition
                 break;
             }
         }

@@ -34,7 +34,8 @@ import strategicprimer.drivers.common {
     DriverUsage,
     ParamCount,
     SPOptions,
-    ISPDriver
+    UtilityDriverFactory,
+    DriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -96,18 +97,23 @@ import ceylon.whole {
 Logger log = logger(`module strategicprimer.drivers.utility`);
 // Left outside mapCheckerCLI because it's also used in the todoFixerCLI.
 {String+} landRaces = [ "Danan", "dwarf", "elf", "half-elf", "gnome", "human" ];
-"A driver to check every map file in a list for errors."
-service(`interface ISPDriver`)
-shared class MapCheckerCLI() satisfies UtilityDriver {
+"A factory for a driver to check every map file in a list for errors."
+service(`interface DriverFactory`)
+shared class MapCheckerCLIFactory() satisfies UtilityDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(false, ["-k", "--check"],
         ParamCount.atLeastOne, "Check map for errors",
         "Check a map file for errors, deprecated syntax, etc.", true, false);
+    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
+            MapCheckerCLI(cli.println, cli.println);
+}
+"A driver to check every map file in a list for errors."
+shared class MapCheckerCLI satisfies UtilityDriver {
     """An interface for checks of a map's *contents* that we don't want the XML-*reading*
        code to do."""
-    alias Checker=>Anything(TileType, Point, IFixture, Warning);
-    class SPContentWarning(Point context, String message)
+    static alias Checker=>Anything(TileType, Point, IFixture, Warning);
+    static class SPContentWarning(Point context, String message)
             extends Exception("At ``context``: ``message``") { }
-    class OwnerChecker(IMapNG map) {
+    static class OwnerChecker(IMapNG map) {
         shared void check(TileType terrain, Point context, IFixture fixture,
                 Warning warner) {
             if (is HasOwner fixture) {
@@ -123,14 +129,14 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
             }
         }
     }
-    void lateriteChecker(TileType terrain, Point context, IFixture fixture,
+    static void lateriteChecker(TileType terrain, Point context, IFixture fixture,
             Warning warner) {
         if (is StoneDeposit fixture, StoneKind.laterite == fixture.stone,
                 !TileType.jungle == terrain) {
             warner.handle(SPContentWarning(context, "Laterite stone in non-jungle"));
         }
     }
-    void aquaticVillageChecker(TileType terrain, Point context, IFixture fixture,
+    static void aquaticVillageChecker(TileType terrain, Point context, IFixture fixture,
             Warning warner) {
         if (is Village fixture, landRaces.contains(fixture.race),
                 TileType.ocean == terrain) {
@@ -138,14 +144,14 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
                 "Aquatic village has non-aquatic race"));
         }
     }
-    Boolean suspiciousSkill(IJob job) {
+    static Boolean suspiciousSkill(IJob job) {
         if (job.size > 1) {
             return false;
         } else {
             return job.map(ISkill.name).any(suspiciousSkills.contains);
         }
     }
-    void suspiciousSkillCheck(TileType terrain, Point context, IFixture fixture,
+    static void suspiciousSkillCheck(TileType terrain, Point context, IFixture fixture,
             Warning warner) {
         if (is IWorker fixture) {
             if (fixture.any(suspiciousSkill)) {
@@ -163,9 +169,9 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
             }
         }
     }
-    {String+} placeholderKinds = [ "various", "unknown" ];
-    {String+} placeholderUnits = [ "unit", "units" ];
-    void resourcePlaceholderChecker(TileType terrain, Point context, IFixture fixture,
+    static {String+} placeholderKinds = [ "various", "unknown" ];
+    static {String+} placeholderUnits = [ "unit", "units" ];
+    static void resourcePlaceholderChecker(TileType terrain, Point context, IFixture fixture,
             Warning warner) {
         if (is ResourcePile fixture) {
             if (placeholderKinds.contains(fixture.kind)) {
@@ -192,8 +198,8 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
             }
         }
     }
-    Boolean positiveNumber(Number<out Anything> num) => num.positive;
-    void acreageChecker(Point context, Warning warner, {IFixture*} fixtures) {
+    static Boolean positiveNumber(Number<out Anything> num) => num.positive;
+    static void acreageChecker(Point context, Warning warner, {IFixture*} fixtures) {
         variable Float total = 0.0;
         for (fixture in fixtures.narrow<HasExtent>()
                 .filter(matchingPredicate(positiveNumber, HasExtent.acres))) {
@@ -239,9 +245,9 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
                 "Counting towns and groves, more acres (``Float.format(total, 0, 1)``) used than tile should allow"));
         }
     }
-    {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker,
+    static {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker,
         suspiciousSkillCheck, resourcePlaceholderChecker ];
-    void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
+    static void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
             IFixture* list) {
         for (fixture in list) {
             if (is {IFixture*} fixture) {
@@ -250,29 +256,34 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
             checker(terrain, context, fixture, warner);
         }
     }
-    shared void check(PathWrapper file, Anything(String) outStream, Anything(String) err,
-            Warning warner = warningLevels.custom()) {
-        outStream("Starting ``file``");
+    Anything(String) stdout;
+    Anything(String) stderr;
+    shared new (Anything(String) stdout, Anything(String) stderr) {
+        this.stdout = stdout;
+        this.stderr = stderr;
+    }
+    shared void check(PathWrapper file, Warning warner = warningLevels.custom()) {
+        stdout("Starting ``file``");
         IMapNG map;
         try {
             map = mapIOHelper.readMap(file, warner);
         } catch (FileNotFoundException|NoSuchFileException except) {
-            err("``file`` not found");
+            stderr("``file`` not found");
             log.error("``file`` not found");
             log.debug("Full stack trace of file-not-found:", except);
             return;
         } catch (IOException except) {
-            err("I/O error reading ``file``");
+            stderr("I/O error reading ``file``");
             log.error("I/O error reading ``file``: ``except.message``");
         log.debug("Full stack trace of I/O error", except);
             return;
         } catch (XMLStreamException except) {
-            err("Malformed XML in ``file``");
+            stderr("Malformed XML in ``file``");
             log.error("Malformed XML in ``file``: ``except.message``");
-        log.debug("Full stack trace of malformed-XML error", except);
+            log.debug("Full stack trace of malformed-XML error", except);
             return;
         } catch (SPFormatException except) {
-            err("SP map format error in ``file``");
+            stderr("SP map format error in ``file``");
             log.error("SP map format error in ``file``: ``except.message``");
             log.debug("Full stack trace of SP map format error:", except);
             return;
@@ -292,17 +303,15 @@ shared class MapCheckerCLI() satisfies UtilityDriver {
             }
         }
     }
-    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
-            String* args) {
+    shared actual void startDriver(String* args) {
         for (filename in args.coalesced) {
-            check(PathWrapper(filename), cli.println, cli.println);
+            check(PathWrapper(filename));
         }
     }
 }
 "The map-checker GUI window."
 class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
         Dimension(640, 320), true, noop, "Map Checker") {
-    MapCheckerCLI mapCheckerCLI = MapCheckerCLI();
     StreamingLabel label = StreamingLabel();
     void printParagraph(String paragraph,
             LabelTextColor color = LabelTextColor.white) {
@@ -322,21 +331,26 @@ class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
     }
     void errHandler(String text) =>
             printParagraph(text, LabelTextColor.red);
+    MapCheckerCLI mapCheckerCLI = MapCheckerCLI(outHandler, errHandler);
     shared void check(PathWrapper filename) {
-        mapCheckerCLI.check(filename, outHandler, errHandler,
-            warningLevels.custom(customPrinter));
+        mapCheckerCLI.check(filename, warningLevels.custom(customPrinter));
     }
     shared actual void acceptDroppedFile(PathWrapper file) => check(file);
 }
-"A driver to check every map file in a list for errors and report the results in a
- window."
-service(`interface ISPDriver`)
-shared class MapCheckerGUI() satisfies UtilityDriver {
+"A factory for a driver to check every map file in a list for errors and report the
+ results in a window."
+service(`interface DriverFactory`)
+shared class MapCheckerGUIFactory() satisfies UtilityDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(true, ["-k", "--check"],
         ParamCount.atLeastOne, "Check map for errors",
         "Check a map file for errors, deprecated syntax, etc.", false, true);
-    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
-            String* args) {
+    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
+            MapCheckerGUI();
+}
+"A driver to check every map file in a list for errors and report the results in a
+ window."
+shared class MapCheckerGUI() satisfies UtilityDriver {
+    shared actual void startDriver(String* args) {
         MapCheckerFrame window = MapCheckerFrame();
         window.jMenuBar = UtilityMenu(window);
         window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));

@@ -9,8 +9,9 @@ import strategicprimer.drivers.common {
     SPOptions,
     IDriverModel,
     DriverFailedException,
-    ISPDriver,
-    GUIDriver
+    GUIDriver,
+    DriverFactory,
+    GUIDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -37,10 +38,13 @@ import lovelace.util.jvm {
 import lovelace.util.common {
     PathWrapper
 }
+import strategicprimer.model.common.map {
+    IMutableMapNG
+}
 
-"An object to start the exploration GUI."
-service(`interface ISPDriver`)
-shared class ExplorationGUI() satisfies GUIDriver {
+"An factory for the exploration GUI."
+service(`interface DriverFactory`)
+shared class ExplorationGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
         invocations = ["-x", "--explore"];
@@ -52,21 +56,33 @@ shared class ExplorationGUI() satisfies GUIDriver {
         includeInGUIList = true;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        IExplorationModel explorationModel;
-        if (is IExplorationModel model) {
-            explorationModel = model;
-        } else {
-            explorationModel = ExplorationModel.copyConstructor(model);
+    "Ask the user to choose a file or files."
+    shared actual {PathWrapper*} askUserForFiles() {
+        try {
+            return SPFileChooser.open(null).files;
+        } catch (FileChooser.ChoiceInterruptedException except) {
+            throw DriverFailedException(except,
+                "Choice interrupted or user didn't choose");
         }
+    }
+    shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        assert (is IExplorationModel model);
+        return ExplorationGUI(cli, options, model);
+    }
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            ExplorationModel(map, path);
+}
+"An object to start the exploration GUI."
+class ExplorationGUI(ICLIHelper cli, SPOptions options,
+        IExplorationModel model) satisfies GUIDriver {
+    shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
-        menuHandler.register(IOHandler(explorationModel, options, cli), "load", "save",
+        menuHandler.register(IOHandler(model, options, cli), "load", "save",
             "save as", "new", "load secondary", "save all", "open in map viewer",
             "open secondary map in map viewer", "close", "quit");
-        SwingUtilities.invokeLater(() {
-            SPFrame frame = explorationFrame(explorationModel,
-                menuHandler);
+        SwingUtilities.invokeLater(() { // TODO: Convert lambda to class method, using defer() to pass in menuHandler
+            SPFrame frame = explorationFrame(model, menuHandler);
             frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
             menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
                 "about");

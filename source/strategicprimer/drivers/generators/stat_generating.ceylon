@@ -22,7 +22,8 @@ import strategicprimer.model.common.map {
     TileFixture,
     Point,
     HasOwner,
-    IMapNG
+    IMapNG,
+    IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
@@ -37,14 +38,15 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     Job
 }
 import strategicprimer.drivers.common {
-    IMultiMapModel,
     IDriverModel,
     IDriverUsage,
     DriverUsage,
     ParamCount,
     SPOptions,
-    ISPDriver,
-    CLIDriver
+    CLIDriver,
+    DriverFactory,
+    ModelDriverFactory,
+    ModelDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -64,7 +66,8 @@ import lovelace.util.common {
     comparingOn,
     singletonRandom,
     narrowedStream,
-    entryMap
+    entryMap,
+    PathWrapper
 }
 import strategicprimer.model.common.map.fixtures.towns {
     Village
@@ -72,11 +75,33 @@ import strategicprimer.model.common.map.fixtures.towns {
 
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.generators`);
+"A factory for a driver to let the user enter pre-generated stats for existing workers or
+ generate new workers."
+service(`interface DriverFactory`)
+shared class StatGeneratingCLIFactory() satisfies ModelDriverFactory {
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        invocations = ["-t", "--stats"];
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "Enter worker stats or generate new workers.";
+        longDescription = "Enter stats for existing workers or generate new workers
+                           randomly.";
+        includeInCLIList = true;
+        includeInGUIList = false;
+        supportedOptionsTemp = [ "--current-turn=NN" ];
+    };
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        assert (is IExplorationModel model);
+        return StatGeneratingCLI(cli, model);
+    }
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            ExplorationModel(map, path);
+}
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
-service(`interface ISPDriver`)
 // FIXME: Write stat-generating/stat-entering GUI
-shared class StatGeneratingCLI satisfies CLIDriver {
+class StatGeneratingCLI satisfies CLIDriver {
     static String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
     static Boolean hasUnstattedWorker(IUnit unit) =>
             unit.narrow<Worker>().any(matchingValue(null, Worker.stats));
@@ -106,22 +131,40 @@ shared class StatGeneratingCLI satisfies CLIDriver {
         }
         return null;
     }
+    "Get the index of the lowest value in an array."
+    static Integer getMinIndex(Integer[] array) =>
+            array.indexed.max(comparingOn(Entry<Integer, Integer>.item,
+                decreasing<Integer>))?.key else 0;
+    static Integer die(Integer max) => singletonRandom.nextInteger(max) + 1;
+    static Integer threeDeeSix() => die(6) + die(6) + die(6);
+    static Float villageChance(Integer days) { // TODO: Define in a constant-time form without a loop
+        variable Float retval = 1.0;
+        for (i in 0:days) {
+            retval *= 0.4;
+        }
+        return retval;
+    }
+    ICLIHelper cli;
+    IExplorationModel model;
+    shared new (ICLIHelper cli, IExplorationModel model) {
+        this.cli = cli;
+        this.model = model;
+    }
     "Let the user enter a number, assert that there was not EOF, and return the number."
-    static Integer inputNumber(ICLIHelper cli, String prompt) {
+    Integer inputNumber(String prompt) {
         assert (exists retval = cli.inputNumber(prompt));
         return retval;
     }
     "Let the user enter stats for a worker."
-    static WorkerStats enterStatsCollection(ICLIHelper cli) {
-        Integer maxHP = inputNumber(cli, "Max HP: ");
-        return WorkerStats(maxHP, maxHP, inputNumber(cli, "Str: "),
-            inputNumber(cli, "Dex: "), inputNumber(cli, "Con: "),
-            inputNumber(cli, "Int: "), inputNumber(cli, "Wis: "),
-            inputNumber(cli, "Cha: "));
+    WorkerStats enterStatsCollection() {
+        Integer maxHP = inputNumber("Max HP: ");
+        return WorkerStats(maxHP, maxHP, inputNumber("Str: "), inputNumber("Dex: "),
+            inputNumber("Con: "), inputNumber("Int: "), inputNumber("Wis: "),
+            inputNumber("Cha: "));
     }
     "Let the user enter stats for one worker in particular."
-    static void enterStatsForWorker(IMultiMapModel model, Integer id, ICLIHelper cli) {
-        WorkerStats stats = enterStatsCollection(cli);
+    void enterStatsForWorker(Integer id) {
+        WorkerStats stats = enterStatsCollection();
         for (map in model.allMaps.map(Entry.key)) {
             if (is Worker fixture = find(map, id), !fixture.stats exists) {
                 fixture.stats = stats;
@@ -131,7 +174,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
     }
     "Let the user enter stats for workers already in the maps that are part of one
      particular unit."
-    static void enterStatsInUnit(IMultiMapModel model, IUnit unit, ICLIHelper cli) {
+    void enterStatsInUnit(IUnit unit) {
         MutableList<Worker> workers = ArrayList { elements = unit.narrow<Worker>()
             .filter(matchingValue(null, Worker.stats)); };
         while (!workers.empty, exists chosen = cli.chooseFromList(workers,
@@ -139,7 +182,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
             "There are no workers without stats in that unit.",
             "Worker to modify: ", false).item) {
             workers.remove(chosen);
-            enterStatsForWorker(model, chosen.id, cli);
+            enterStatsForWorker(chosen.id);
             if (!cli.inputBoolean("Choose another worker?")) {
                 break;
             }
@@ -147,8 +190,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
     }
     "Let the user enter stats for workers already in the maps that belong to one
      particular player."
-    static void enterStatsForPlayer(IExplorationModel model, Player player,
-            ICLIHelper cli) {
+    void enterStatsForPlayer(Player player) {
         // TODO: can we avoid either the spread or the named-argument invocation?
         MutableList<IUnit> units = ArrayList { elements =
             removeStattedUnits(*model.getUnits(player)); };
@@ -157,42 +199,36 @@ shared class StatGeneratingCLI satisfies CLIDriver {
             "All that player's units already have stats.", "Unit selection: ",
             false).item) {
             units.remove(chosen);
-            enterStatsInUnit(model, chosen, cli);
+            enterStatsInUnit(chosen);
             if (!cli.inputBoolean("Choose another unit?")) {
                 break;
             }
         }
     }
     "Let the user enter stats for workers already in the maps."
-    static void enterStats(IExplorationModel model, ICLIHelper cli) {
+    void enterStats() {
         MutableList<Player> players = ArrayList { elements = model.playerChoices; };
         while (!players.empty, exists chosen = cli.chooseFromList(players,
             "Which player owns the worker in question?",
             "There are no players shared by all the maps.", "Player selection: ",
             true).item) {
             players.remove(chosen);
-            enterStatsForPlayer(model, chosen, cli);
+            enterStatsForPlayer(chosen);
             if (!cli.inputBoolean("Choose another player?")) {
                 break;
             }
         }
     }
     "Let the user enter which Jobs a worker's levels are in."
-    static void enterWorkerJobs(ICLIHelper cli, IWorker worker, Integer levels) {
+    void enterWorkerJobs(IWorker worker, Integer levels) {
         for (i in 0:levels) {
             String jobName = cli.inputString("Which Job does worker have a level in? ");
             IJob job = worker.getJob(jobName);
             job.level = job.level + 1;
         }
     }
-    "Get the index of the lowest value in an array."
-    static Integer getMinIndex(Integer[] array) =>
-            array.indexed.max(comparingOn(Entry<Integer, Integer>.item,
-                decreasing<Integer>))?.key else 0;
-    static Integer die(Integer max) => singletonRandom.nextInteger(max) + 1;
-    static Integer threeDeeSix() => die(6) + die(6) + die(6);
     "Add a worker to a unit in all maps."
-    static void addWorkerToUnit(IMultiMapModel model, IFixture unit, IWorker worker) {
+    void addWorkerToUnit(IFixture unit, IWorker worker) {
         for (map->[file, _] in model.allMaps) {
             if (is IUnit fixture = find(map, unit.id)) {
                 fixture.addMember(worker.copy(false));
@@ -204,20 +240,8 @@ shared class StatGeneratingCLI satisfies CLIDriver {
             }
         }
     }
-    shared new () {}
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = false;
-        invocations = ["-t", "--stats"];
-        paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "Enter worker stats or generate new workers.";
-        longDescription = "Enter stats for existing workers or generate new workers
-                           randomly.";
-        includeInCLIList = true;
-        includeInGUIList = false;
-        supportedOptionsTemp = [ "--current-turn=NN" ];
-    };
     MutableMap<Village, Boolean> excludedVillages = HashMap<Village, Boolean>();
-    Boolean hasLeviedRecently(Village village, ICLIHelper cli) {
+    Boolean hasLeviedRecently(Village village) {
         if (exists retval = excludedVillages[village]) {
             return retval;
         } else {
@@ -247,7 +271,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
     }
     variable Boolean alwaysLowest = false;
     "Create randomly-generated stats for a worker, with racial adjustments applied."
-    WorkerStats createWorkerStats(String race, Integer levels, ICLIHelper cli) {
+    WorkerStats createWorkerStats(String race, Integer levels) {
         WorkerStats base = WorkerStats.random(threeDeeSix);
         Integer lowestScore = getMinIndex(base.array);
         WorkerStats racialBonus;
@@ -288,8 +312,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
         }
         return WorkerStats.adjusted(hp, base, racialBonus);
     }
-    Worker generateWorkerFrom(Village village, String name, IDRegistrar idf,
-            ICLIHelper cli) {
+    Worker generateWorkerFrom(Village village, String name, IDRegistrar idf) {
         Worker worker = Worker(name, village.race, idf.createID());
         if (exists populationDetails = village.population) {
             MutableList<IJob> candidates = ArrayList<IJob>();
@@ -316,7 +339,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
             }
             if (candidates.empty) {
                 cli.println("No training available in ``village.name``.");
-                WorkerStats stats = createWorkerStats(village.race, 0, cli);
+                WorkerStats stats = createWorkerStats(village.race, 0);
                 worker.stats = stats;
                 cli.println("``name`` is a ``village.race`` from ``village.name``. Stats:");
                 cli.println(", ".join(zipPairs(statLabelArray,
@@ -326,8 +349,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
                 assert (exists training = singletonRandom.nextElement(candidates));
                 while (true) {
                     worker.addJob(training);
-                    WorkerStats stats = createWorkerStats(village.race, training.level,
-                        cli);
+                    WorkerStats stats = createWorkerStats(village.race, training.level);
                     cli.println(
                         "``name``, a ``village.race``, is a level-``training.level`` ``training.name`` from ``village.name``. Proposed stats:");
                     cli.println(", ".join(zipPairs(statLabelArray,
@@ -341,7 +363,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
             }
         } else {
             cli.println("No population details, so no levels.");
-            WorkerStats stats = createWorkerStats(village.race, 0, cli);
+            WorkerStats stats = createWorkerStats(village.race, 0);
             worker.stats = stats;
             cli.println("``name`` is a ``village.race`` from ``village.name``. Stats:");
             cli.println(", ".join(zipPairs(statLabelArray,
@@ -350,8 +372,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
         }
     }
     "Let the user create randomly-generated workers in a specific unit."
-    void createWorkersForUnit(IMultiMapModel model, IDRegistrar idf, IFixture unit,
-        ICLIHelper cli) {
+    void createWorkersForUnit(IDRegistrar idf, IFixture unit) {
         Integer count = cli.inputNumber("How many workers to generate? ") else 0;
         for (i in 0:count) {
             String race = raceFactory.randomRace();
@@ -364,30 +385,22 @@ shared class StatGeneratingCLI satisfies CLIDriver {
                 cli.println("Worker has ``levels`` Job levels.");
             }
             if (cli.inputBooleanInSeries("Enter pregenerated stats?" )) {
-                worker.stats = enterStatsCollection(cli);
+                worker.stats = enterStatsCollection();
             } else {
-                WorkerStats stats = createWorkerStats(race, levels, cli);
+                WorkerStats stats = createWorkerStats(race, levels);
                 worker.stats = stats;
                 if (levels > 0) {
                     cli.println("Generated stats:");
                     cli.print(stats.string);
                 }
             }
-            enterWorkerJobs(cli, worker, levels);
-            addWorkerToUnit(model, unit, worker);
+            enterWorkerJobs(worker, levels);
+            addWorkerToUnit(unit, worker);
         }
-    }
-    Float villageChance(Integer days) {
-        variable Float retval = 1.0;
-        for (i in 0:days) {
-            retval *= 0.4;
-        }
-        return retval;
     }
     "Let the user create randomly-generated workers, with names read from file, in a
      unit."
-    void createWorkersFromFile(IMultiMapModel model, IDRegistrar idf,
-            IFixture&HasOwner unit, ICLIHelper cli) {
+    void createWorkersFromFile(IDRegistrar idf, IFixture&HasOwner unit) {
         Integer count = cli.inputNumber("How many workers to generate? ") else 0;
         String filename = cli.inputString("Filename to load names from: ");
         Queue<String> names;
@@ -422,7 +435,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
             }
             Village? home;
             for (distance->village in villages) {
-                if (hasLeviedRecently(village, cli)) {
+                if (hasLeviedRecently(village)) {
                     continue;
                 } else if (singletonRandom.nextFloat() <
                         villageChance(distance / mpPerDay + 1)) {
@@ -435,7 +448,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
             }
             Worker worker;
             if (exists home) {
-                worker = generateWorkerFrom(home, name, idf, cli);
+                worker = generateWorkerFrom(home, name, idf);
             } else {
                 String race = raceFactory.randomRace();
                 cli.println("Worker ``name`` is a ``race``");
@@ -446,24 +459,23 @@ shared class StatGeneratingCLI satisfies CLIDriver {
                 } else if (levels>1) {
                     cli.println("Worker has ``levels`` Job levels.");
                 }
-                WorkerStats stats = createWorkerStats(race, levels, cli);
+                WorkerStats stats = createWorkerStats(race, levels);
                 worker.stats = stats;
                 if (levels>0) {
                     cli.println("Generated stats:");
                     cli.print(stats.string);
                 }
-                enterWorkerJobs(cli, worker, levels);
+                enterWorkerJobs(worker, levels);
                 cli.println("``name`` is a ``race`` Stats:");
                 cli.println(", ".join(zipPairs(statLabelArray,
                     stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
             }
-            addWorkerToUnit(model, unit, worker);
+            addWorkerToUnit(unit, worker);
         }
     }
     "Allow the user to create randomly-generated workers belonging to a particular
      player."
-    void createWorkersForPlayer(IExplorationModel model, IDRegistrar idf, Player player,
-        ICLIHelper cli) {
+    void createWorkersForPlayer(IDRegistrar idf, Player player) {
         MutableList<IUnit> units = ArrayList { elements = model.getUnits(player); };
         while (true) {
             value chosen = cli.chooseFromList(units,
@@ -487,9 +499,9 @@ shared class StatGeneratingCLI satisfies CLIDriver {
             }
             if (cli.inputBooleanInSeries(
                 "Load names from file and use randomly generated stats?")) {
-                createWorkersFromFile(model, idf, item, cli);
+                createWorkersFromFile(idf, item);
             } else {
-                createWorkersForUnit(model, idf, item, cli);
+                createWorkersForUnit(idf, item);
             }
             if (!cli.inputBoolean("Choose another unit? ")) {
                 break;
@@ -497,7 +509,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
         }
     }
     "Allow the user to create randomly-generated workers."
-    void createWorkers(IExplorationModel model, IDRegistrar idf, ICLIHelper cli) {
+    void createWorkers(IDRegistrar idf) {
         MutableList<Player> players = ArrayList { elements = model.playerChoices; };
         while (!players.empty, exists chosen = cli.chooseFromList(players,
             "Which player owns the new worker(s)?",
@@ -506,7 +518,7 @@ shared class StatGeneratingCLI satisfies CLIDriver {
             players.remove(chosen);
             variable Boolean again = true;
             while (again) {
-                createWorkersForPlayer(model, idf, chosen, cli);
+                createWorkersForPlayer(idf, chosen);
                 again = cli.inputBoolean("Add more workers to another unit?");
             }
             if (!cli.inputBoolean("Choose another player?")) {
@@ -514,18 +526,12 @@ shared class StatGeneratingCLI satisfies CLIDriver {
             }
         }
     }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is IExplorationModel model) {
-            if (cli.inputBooleanInSeries(
-                    "Enter pregenerated stats for existing workers?")) {
-                enterStats(model, cli);
-            } else {
-                createWorkers(model, createIDFactory(model.allMaps
-                    .map(Entry.key)), cli);
-            }
+    shared actual void startDriver() {
+        if (cli.inputBooleanInSeries(
+                "Enter pregenerated stats for existing workers?")) {
+            enterStats();
         } else {
-            startDriverOnModel(cli, options, ExplorationModel.copyConstructor(model));
+            createWorkers(createIDFactory(model.allMaps.map(Entry.key)));
         }
     }
 }

@@ -10,8 +10,9 @@ import strategicprimer.drivers.common {
     IDriverModel,
     DriverFailedException,
     PlayerChangeListener,
-    ISPDriver,
-    GUIDriver
+    GUIDriver,
+    DriverFactory,
+    GUIDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -40,7 +41,8 @@ import java.awt.event {
     ActionEvent
 }
 import strategicprimer.model.common.map {
-    IMapNG
+    IMapNG,
+    IMutableMapNG
 }
 import lovelace.util.jvm {
     FileChooser
@@ -49,9 +51,9 @@ import lovelace.util.common {
     PathWrapper
 }
 
-"The worker-advancement GUI driver."
-service(`interface ISPDriver`)
-shared class AdvancementGUI() satisfies GUIDriver {
+"A factory for the worker-advancemnt GUI app."
+service(`interface DriverFactory`)
+shared class AdvancementGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
         invocations = ["-a", "--adv"];
@@ -64,33 +66,47 @@ shared class AdvancementGUI() satisfies GUIDriver {
         includeInGUIList = true;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        IWorkerModel workerModel;
-        if (is IWorkerModel model) {
-            workerModel = model;
-        } else {
-            workerModel = WorkerModel.copyConstructor(model);
+    "Ask the user to choose a file or files."
+    shared actual {PathWrapper*} askUserForFiles() {
+        try {
+            return SPFileChooser.open(null).files;
+        } catch (FileChooser.ChoiceInterruptedException except) {
+            throw DriverFailedException(except,
+                "Choice interrupted or user didn't choose");
         }
+    }
+    shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        assert (is IWorkerModel model);
+        return AdvancementGUI(cli, options, model);
+    }
+
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            WorkerModel(map, path);
+
+}
+"The worker-advancement GUI driver."
+shared class AdvancementGUI(ICLIHelper cli, SPOptions options, IWorkerModel model)
+        satisfies GUIDriver {
+    shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
-        menuHandler.register(IOHandler(workerModel, options, cli), "load", "save",
+        menuHandler.register(IOHandler(model, options, cli), "load", "save",
             "save as", "new", "load secondary", "save all", "open in map viewer",
             "open secondary map in map viewer", "close", "quit");
-        PlayerChangeMenuListener pcml = PlayerChangeMenuListener(workerModel);
+        PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
         menuHandler.register(pcml, "change current player");
-        SwingUtilities.invokeLater(() {
-            SPFrame&PlayerChangeListener frame = advancementFrame(workerModel,
-                menuHandler);
+        SwingUtilities.invokeLater(() { // TODO: convert lambda to class method, using defer to pass in menuHandler
+            SPFrame&PlayerChangeListener frame = advancementFrame(model, menuHandler);
             frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
             pcml.addPlayerChangeListener(frame);
-            menuHandler.register((event) =>
-                frame.playerChanged(workerModel.currentPlayer, workerModel.currentPlayer),
+            menuHandler.register((event) => // TODO: convert lambda to class method
+                frame.playerChanged(model.currentPlayer, model.currentPlayer),
                     "reload tree");
             menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
                 "about");
-            if (workerModel.allMaps.map(Entry.key)
+            if (model.allMaps.map(Entry.key)
                     .every(compose(compose(Iterable<IUnit>.empty,
-                    workerModel.getUnits), IMapNG.currentPlayer))) {
+                    model.getUnits), IMapNG.currentPlayer))) {
                 pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
                     "change current player"));
             }

@@ -5,8 +5,11 @@ import strategicprimer.drivers.common {
     SPOptions,
     IDriverModel,
     IMultiMapModel,
-    ISPDriver,
-    CLIDriver
+    CLIDriver,
+    DriverFactory,
+    ModelDriverFactory,
+    ModelDriver,
+    SimpleMultiMapModel
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -25,7 +28,8 @@ import strategicprimer.model.common.map {
     Point,
     HasName,
     TileType,
-    IMapNG
+    IMapNG,
+    IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures {
     ResourcePile,
@@ -79,7 +83,8 @@ import lovelace.util.common {
     matchingPredicate,
     anythingEqual,
     defer,
-    narrowedStream
+    narrowedStream,
+    PathWrapper
 }
 class TownGenerator(ICLIHelper cli) {
     alias ModifiableTown=>AbstractTown|Village;
@@ -519,10 +524,9 @@ class TownGenerator(ICLIHelper cli) {
         }
     }
 }
-"A driver to let the user enter or generate 'stats' for towns."
-service(`interface ISPDriver`)
-// TODO: Write GUI to allow user to generate or enter town contents
-shared class TownGeneratingCLI() satisfies CLIDriver {
+"A factory for a driver to let the user enter or generate 'stats' for towns."
+service(`interface DriverFactory`)
+shared class TownGeneratingCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["--town"];
@@ -532,9 +536,16 @@ shared class TownGeneratingCLI() satisfies CLIDriver {
         includeInCLIList = true;
         includeInGUIList = false;
     };
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        TownGenerator generator = TownGenerator(cli);
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => TownGeneratingCLI(cli, model);
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleMultiMapModel(map, path);
+}
+"A driver to let the user enter or generate 'stats' for towns."
+// TODO: Write GUI to allow user to generate or enter town contents
+shared class TownGeneratingCLI(ICLIHelper cli, IDriverModel model) satisfies CLIDriver {
+    shared actual void startDriver() {
+        TownGenerator generator = TownGenerator(cli); // TODO: Consider combining that with this class again.
         IDRegistrar idf;
         if (is IMultiMapModel model) {
             idf = createIDFactory(model.allMaps.map(Entry.key));

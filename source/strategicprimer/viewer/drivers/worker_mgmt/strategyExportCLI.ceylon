@@ -8,8 +8,10 @@ import strategicprimer.drivers.common {
     ParamCount,
     IDriverUsage,
     SPOptions,
-    ISPDriver,
-    ReadOnlyDriver
+    ReadOnlyDriver,
+    ModelDriverFactory,
+    DriverFactory,
+    ModelDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -18,10 +20,17 @@ import strategicprimer.drivers.worker.common {
     WorkerModel,
     IWorkerModel
 }
+import lovelace.util.common {
+    PathWrapper
+}
+import strategicprimer.model.common.map {
+    IMutableMapNG
+}
 
-"A command-line program to export a proto-strategy for a player from orders in a map."
-service(`interface ISPDriver`)
-shared class StrategyExportCLI() satisfies ReadOnlyDriver {
+"A factory for a command-line program to export a proto-strategy for a player from orders
+ in a map."
+service(`interface DriverFactory`)
+shared class StrategyExportFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-w", "--worker", "--export-strategy"];
@@ -34,17 +43,21 @@ shared class StrategyExportCLI() satisfies ReadOnlyDriver {
             "--export=filename.txt", "--include-unleveled-jobs",
             "--summarize-large-units" ];
     };
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is IWorkerModel model) {
-            if (options.hasOption("--export")) {
-                StrategyExporter(model, options).writeStrategy(parsePath(
-                    options.getArgument("--export")).resource, []);
-            } else {
-                throw DriverFailedException.illegalState("--export option is required");
-            }
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => StrategyExportCLI(cli, options, model);
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            WorkerModel(map, path);
+}
+"A command-line program to export a proto-strategy for a player from orders in a map."
+shared class StrategyExportCLI(ICLIHelper cli, SPOptions options,
+        IDriverModel model) satisfies ReadOnlyDriver {
+    assert (is IWorkerModel model);
+    shared actual void startDriver() {
+        if (options.hasOption("--export")) {
+            StrategyExporter(model, options).writeStrategy(parsePath(
+                options.getArgument("--export")).resource, []);
         } else {
-            startDriverOnModel(cli, options, WorkerModel.copyConstructor(model));
+            throw DriverFailedException.illegalState("--export option is required");
         }
     }
 }

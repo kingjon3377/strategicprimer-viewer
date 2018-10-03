@@ -4,8 +4,10 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     DriverUsage,
     ParamCount,
-    ISPDriver,
-    CLIDriver
+    CLIDriver,
+    DriverFactory,
+    ModelDriverFactory,
+    ModelDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -18,36 +20,45 @@ import strategicprimer.drivers.exploration.common {
     TraversalImpossibleException
 }
 import strategicprimer.model.common.map {
-    Player
+    Player,
+    IMutableMapNG
 }
 import ceylon.random {
     Random,
     DefaultRandom
 }
-"An app to move independent units around at random."
-service(`interface ISPDriver`)
-shared class RandomMovementCLI() satisfies CLIDriver {
+import lovelace.util.common {
+    PathWrapper
+}
+
+"A factory for an app to move independent units around at random."
+service(`interface DriverFactory`)
+shared class RandomMovementFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(false, ["-v", "--move"],
         ParamCount.one, "Move independent units at random",
         "Move independent units randomly around the map.",
         true, false); // TODO: We'd like a GUI for this, perhaps adding customization or limiting the area or something
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        IExplorationModel emodel;
-        if (is IExplorationModel model) {
-            emodel = model;
-        } else {
-            emodel = ExplorationModel.copyConstructor(model);
-        }
-        for (unit in emodel.playerChoices.filter(Player.independent)
-                .flatMap(emodel.getUnits).sequence()) {
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => RandomMovementCLI(cli, options, model);
+
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            ExplorationModel(map, path);
+}
+
+"An app to move independent units around at random."
+shared class RandomMovementCLI(ICLIHelper cli, SPOptions options,
+        IDriverModel model) satisfies CLIDriver {
+    assert (is IExplorationModel model);
+    shared actual void startDriver() {
+        for (unit in model.playerChoices.filter(Player.independent)
+                .flatMap(model.getUnits).sequence()) {
             Random rng =
                     DefaultRandom(unit.id.leftLogicalShift(8) + model.map.currentTurn);
             Integer steps = rng.nextInteger(3) + rng.nextInteger(3);
-            emodel.selectedUnit = unit;
+            model.selectedUnit = unit;
             for (i in 0:steps) {
                 try {
-                    emodel.move(rng.nextElement(`Direction`.caseValues)
+                    model.move(rng.nextElement(`Direction`.caseValues)
                         else Direction.nowhere, Speed.normal);
                 } catch (TraversalImpossibleException except) {
                     continue;

@@ -50,18 +50,18 @@ import lovelace.util.jvm {
 
 import strategicprimer.drivers.common {
     IDriverModel,
-    ISPDriver,
     IDriverUsage,
     SPOptions,
     ParamCount,
     DriverFailedException,
     IncorrectUsageException,
     SPOptionsImpl,
-    UtilityDriver,
     CLIDriver,
-    GUIDriver,
     IMultiMapModel,
-    ReadOnlyDriver
+    DriverFactory,
+    GUIDriverFactory,
+    UtilityDriverFactory,
+    ModelDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
@@ -116,42 +116,42 @@ object appChooserState {
         }
     }
     "Create the cache of driver objects."
-    shared [Map<String, ISPDriver>, Map<String, ISPDriver>] createCache() {
-        MutableMap<String, ISPDriver> cliCache = HashMap<String, ISPDriver>();
-        MutableMap<String, ISPDriver> guiCache = HashMap<String, ISPDriver>();
+    shared [Map<String, DriverFactory>, Map<String, DriverFactory>] createCache() {
+        MutableMap<String, DriverFactory> cliCache = HashMap<String, DriverFactory>();
+        MutableMap<String, DriverFactory> guiCache = HashMap<String, DriverFactory>();
         {String*} reserved = ["-g", "-c", "--gui", "--cli"];
-        MutableMultimap<String, ISPDriver> conflicts =
-                ArrayListMultimap<String, ISPDriver>();
-        void addToCache(ISPDriver* drivers) {
-            for (driver in drivers) {
-                MutableMap<String, ISPDriver> cache;
-                if (driver.usage.graphical) {
+        MutableMultimap<String, DriverFactory> conflicts =
+                ArrayListMultimap<String, DriverFactory>();
+        void addToCache(DriverFactory* factories) {
+            for (factory in factories) {
+                MutableMap<String, DriverFactory> cache;
+                if (factory.usage.graphical) {
                     cache = guiCache;
                 } else {
                     cache = cliCache;
                 }
-                for (option in driver.usage.invocations) {
+                for (option in factory.usage.invocations) {
                     if (reserved.contains(option)) {
                         log.error("A driver wants to register for a reserved option '``
-                            option``': claims to be ``driver.usage.shortDescription``");
+                            option``': claims to be ``factory.usage.shortDescription``");
                     } else if (conflicts.defines(option)) {
                         log.warn("Additional conflict for '``option``': '``
-                            driver.usage.shortDescription``'");
-                        conflicts.put(option, driver);
+                            factory.usage.shortDescription``'");
+                        conflicts.put(option, factory);
                     } else if (exists existing = cache[option]) {
                         log.warn("Invocation option conflict for '``option``' between '``
-                            driver.usage.shortDescription``' and '``
+                            factory.usage.shortDescription``' and '``
                             existing.usage.shortDescription``'");
-                        conflicts.put(option, driver);
+                        conflicts.put(option, factory);
                         conflicts.put(option, existing);
                         cache.remove(option);
                     } else {
-                        cache[option] = driver;
+                        cache[option] = factory;
                     }
                 }
             }
         }
-        addToCache(*`module strategicprimer.viewer`.findServiceProviders(`ISPDriver`));
+        addToCache(*`module strategicprimer.viewer`.findServiceProviders(`DriverFactory`));
         return [cliCache, guiCache];
     }
     "Create the usage message for a particular driver."
@@ -212,10 +212,10 @@ object appChooserState {
         }
     }
 }
-class DriverWrapper(ISPDriver driver) {
+class DriverWrapper(DriverFactory factory) {
     Boolean enoughArguments(Integer argc) {
         assert (argc >= 0);
-        switch (driver.usage.paramsWanted)
+        switch (factory.usage.paramsWanted)
         case (ParamCount.none|ParamCount.anyNumber) {
             return true;
         }
@@ -228,7 +228,7 @@ class DriverWrapper(ISPDriver driver) {
     }
     Boolean tooManyArguments(Integer argc) {
         assert (argc >= 0);
-        switch (driver.usage.paramsWanted)
+        switch (factory.usage.paramsWanted)
         case (ParamCount.anyNumber|ParamCount.atLeastOne|ParamCount.atLeastTwo) {
             return false;
         }
@@ -244,11 +244,11 @@ class DriverWrapper(ISPDriver driver) {
     }
     void checkArguments(String* args) {
         if (!enoughArguments(args.size) || tooManyArguments(args.size)) {
-            throw IncorrectUsageException(driver.usage);
+            throw IncorrectUsageException(factory.usage);
         }
     }
     {PathWrapper*} extendArguments(String* args) {
-        if (is GUIDriver driver) {
+        if (is GUIDriverFactory factory) {
             MutableList<PathWrapper> files;
             if (nonempty temp = args.sequence()) {
                 files = ArrayList {
@@ -257,13 +257,13 @@ class DriverWrapper(ISPDriver driver) {
                 files = ArrayList<PathWrapper>();
             }
             if (tooManyArguments(files.size)) {
-                throw IncorrectUsageException(driver.usage);
+                throw IncorrectUsageException(factory.usage);
             }
             while (!enoughArguments(files.size) &&
                     !tooManyArguments(files.size + 1)) {
-                value requested = driver.askUserForFiles();
+                value requested = factory.askUserForFiles();
                 if (requested.empty || tooManyArguments(files.size + requested.size)) {
-                    throw IncorrectUsageException(driver.usage);
+                    throw IncorrectUsageException(factory.usage);
                 } else {
                     files.addAll(requested);
                 }
@@ -290,36 +290,31 @@ class DriverWrapper(ISPDriver driver) {
     }
     shared void startCatchingErrors(ICLIHelper cli, SPOptions options, String* args) {
         try {
-            switch (driver)
-            case (is UtilityDriver) {
+            switch (factory)
+            case (is UtilityDriverFactory) {
                 checkArguments(*args);
-                driver.startDriverOnArguments(cli, options, *args);
+                factory.createDriver(cli, options).startDriver(*args);
             }
-            case (is ReadOnlyDriver) {
-                checkArguments(*args);
-                assert (nonempty args);
-                value files = mapIOHelper.namesToFiles(*args);
-                value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn,
-                    files.first, *files.rest);
-                fixCurrentTurn(options, model);
-                driver.startDriverOnModel(cli, options, model);
-            }
-            case (is CLIDriver) {
-                checkArguments(*args);
-                assert (nonempty args);
-                value files = mapIOHelper.namesToFiles(*args);
-                value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn,
-                    files.first, *files.rest);
-                fixCurrentTurn(options, model);
-                driver.startDriverOnModel(cli, options, model);
-                mapReaderAdapter.writeModel(model);
-            }
-            case (is GUIDriver) {
-                assert (nonempty files = extendArguments(*args).sequence());
-                value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn,
-                    files.first, *files.rest);
-                fixCurrentTurn(options, model);
-                driver.startDriverOnModel(cli, options, model);
+            case (is ModelDriverFactory) {
+                if (is GUIDriverFactory factory) {
+                    assert (nonempty files = extendArguments(*args).sequence());
+                    value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn,
+                        files.first, *files.rest);
+                    fixCurrentTurn(options, model);
+                    factory.createDriver(cli, options, model).startDriver();
+                } else {
+                    checkArguments(*args);
+                    assert (nonempty args);
+                    value files = mapIOHelper.namesToFiles(*args);
+                    value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn,
+                        files.first, *files.rest);
+                    fixCurrentTurn(options, model);
+                    value driver = factory.createDriver(cli, options, model);
+                    driver.startDriver();
+                    if (is CLIDriver driver) {
+                        mapReaderAdapter.writeModel(model);
+                    }
+                }
             }
         } catch (IncorrectUsageException except) {
             cli.println(appChooserState.usageMessage(except.correctUsage,
@@ -344,9 +339,9 @@ class DriverWrapper(ISPDriver driver) {
     }
 }
 class AppStarter() {
-    [Map<String, ISPDriver>, Map<String, ISPDriver>] driverCache =
+    [Map<String, DriverFactory>, Map<String, DriverFactory>] driverCache =
             appChooserState.createCache(); // TODO: Can we inline that into here?
-    Boolean includeInCLIList(ISPDriver driver) => driver.usage.includeInList(false);
+    Boolean includeInCLIList(DriverFactory driver) => driver.usage.includeInList(false);
     shared void startDriverOnArguments(ICLIHelper cli, SPOptions options, String* args) {
         //            log.info("Inside appStarter.startDriver()");
         variable Boolean gui = !GraphicsEnvironment.headless;
@@ -355,7 +350,7 @@ class AppStarter() {
             currentOptions.addOption("--gui", gui.string);
         }
         MutableList<String> others = ArrayList<String>();
-        void startChosenDriver(ISPDriver driver, SPOptions currentOptionsTyped) {
+        void startChosenDriver(DriverFactory driver, SPOptions currentOptionsTyped) {
             if (driver.usage.graphical) {
                 value lambda = defer(DriverWrapper(driver).startCatchingErrors,  // TODO: inline once eclipse/ceylon#7379 fixed
                     [cli, currentOptionsTyped, *others]);
@@ -365,7 +360,7 @@ class AppStarter() {
             }
             // TODO: clear `others` here?
         }
-        variable ISPDriver? currentDriver = null;
+        variable DriverFactory? currentDriver = null;
         for (arg in args.coalesced) {
             if (arg == "-g" || arg == "--gui") {
                 log.trace("User specified either -g or --gui");
@@ -525,8 +520,8 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options, String* args) {
     value context = pen.fontRenderContext;
     variable Integer width = 0;
     variable Integer height = 10;
-    Boolean includeInGUIList(ISPDriver driver) => driver.usage.includeInList(true);
-    value drivers = `module strategicprimer.viewer`.findServiceProviders(`ISPDriver`)
+    Boolean includeInGUIList(DriverFactory driver) => driver.usage.includeInList(true);
+    value drivers = `module strategicprimer.viewer`.findServiceProviders(`DriverFactory`)
         .filter(includeInGUIList).sequence();
     for (driver in drivers) {
         value dimensions = font.getStringBounds(driver.usage.shortDescription, context);
@@ -534,7 +529,7 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options, String* args) {
         height += dimensions.height.integer;
     }
     SPFrame frame = SPFrame("SP App Chooser", null, Dimension(width, height));
-    void buttonHandler(ISPDriver target) {
+    void buttonHandler(DriverFactory target) {
         try {
             DriverWrapper(target).startCatchingErrors(cli, options, *args);
             SwingUtilities.invokeLater(() {

@@ -19,9 +19,14 @@ import strategicprimer.drivers.common {
     SPOptions,
     DriverUsage,
     DriverFailedException,
-    ISPDriver,
     GUIDriver,
-    ReadOnlyDriver
+    ReadOnlyDriver,
+    ModelDriverFactory,
+    DriverFactory,
+    ModelDriver,
+    SimpleMultiMapModel,
+    GUIDriverFactory,
+    SimpleDriverModel
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -117,9 +122,9 @@ object suffixHelper {
         return file.string;
     }
 }
-"A driver to produce a report of the contents of a map."
-service(`interface ISPDriver`)
-shared class ReportCLI() satisfies ReadOnlyDriver {
+"A factory for a driver to produce a report of the contents of a map."
+service(`interface DriverFactory`)
+shared class ReportCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-m", "--report"];
@@ -130,12 +135,23 @@ shared class ReportCLI() satisfies ReadOnlyDriver {
         includeInGUIList = false;
         supportedOptionsTemp = [
             ("\\" == operatingSystem.fileSeparator) then
-                "--out=C:\\path\\to\\output.html"
-                else "--out=/path/to/output.html",
+            "--out=C:\\path\\to\\output.html"
+            else "--out=/path/to/output.html",
             "--player=NN", "--current-turn=NN", "--serve[=8080]"
         ];
     };
-    void serveReports(IDriverModel model, Integer port, Player? currentPlayer) {
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => ReportCLI(cli, options, model);
+
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleMultiMapModel(map, path);
+
+}
+"A driver to produce a report of the contents of a map."
+// TODO: Split 'serve' and non-'serve' into separate classes, and let the factory choose between them
+shared class ReportCLI(ICLIHelper cli, SPOptions options,
+        IDriverModel model) satisfies ReadOnlyDriver {
+    void serveReports(Integer port, Player? currentPlayer) {
         MutableMap<Path, String> cache = HashMap<Path, String>();
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.allMaps) {
@@ -231,8 +247,7 @@ shared class ReportCLI() satisfies ReadOnlyDriver {
             log.error("Asked to make report from map with no filename");
         }
     }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
+    shared actual void startDriver() {
         if (options.hasOption("--serve")) {
             value tempPort = Integer.parse(options.getArgument("--serve"));
             Integer port;
@@ -248,7 +263,7 @@ shared class ReportCLI() satisfies ReadOnlyDriver {
             } else {
                 player = null;
             }
-            serveReports(model, port, player);
+            serveReports(port, player);
         } else {
             if (is IMultiMapModel model) {
                 for (map->[file, _] in model.allMaps) {
@@ -265,14 +280,32 @@ shared class ReportCLI() satisfies ReadOnlyDriver {
         }
     }
 }
-"A driver to show tabular reports of the contents of a player's map in a GUI."
-service(`interface ISPDriver`)
-shared class TabularReportGUI() satisfies GUIDriver {
+"A factory for a driver to show tabular reports of the contents of a player's map in a
+ GUI."
+service(`interface DriverFactory`)
+shared class TabularReportGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(true, ["-b", "--tabular"],
         ParamCount.one, "Tabular Report Viewer",
         "Show the contents of a map in tabular form", false, true);
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
+    "Ask the user to choose a file."
+    shared actual {PathWrapper*} askUserForFiles() {
+        try {
+            return SPFileChooser.open(null).files;
+        } catch (FileChooser.ChoiceInterruptedException except) {
+            throw DriverFailedException(except,
+                "Choice interrupted or user didn't choose");
+        }
+    }
+    shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => TabularReportGUI(cli, options, model);
+
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleDriverModel(map, path);
+}
+"A driver to show tabular reports of the contents of a player's map in a GUI."
+shared class TabularReportGUI(ICLIHelper cli, SPOptions options,
+        IDriverModel model) satisfies GUIDriver {
+    shared actual void startDriver() {
         SPFrame window = SPFrame("Tabular Report", model.mapFile, Dimension(640, 480));
         JTabbedPane frame = JTabbedPane(JTabbedPane.top, JTabbedPane.scrollTabLayout);
         tabularReportGenerator.createGUITabularReports(
@@ -293,24 +326,35 @@ shared class TabularReportGUI() satisfies GUIDriver {
         }
     }
 }
-"A driver to produce tabular (CSV) reports of the contents of a player's map."
-service(`interface ISPDriver`)
-shared class TabularReportCLI() satisfies ReadOnlyDriver {
+"A factory for a driver to produce tabular (CSV) reports of the contents of a player's
+ map."
+service(`interface DriverFactory`)
+shared class TabularReportCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
-            graphical = false;
-            invocations = ["-b", "--tabular"];
-            paramsWanted = ParamCount.atLeastOne;
-            shortDescription = "Tabular Report Generator";
-            longDescription = "Produce CSV reports of the contents of a map.";
-            includeInCLIList = true;
-            includeInGUIList = false;
-            supportedOptionsTemp = ["--serve[=8080]"];
+        graphical = false;
+        invocations = ["-b", "--tabular"];
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "Tabular Report Generator";
+        longDescription = "Produce CSV reports of the contents of a map.";
+        includeInCLIList = true;
+        includeInGUIList = false;
+        supportedOptionsTemp = ["--serve[=8080]"];
     };
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => TabularReportCLI(cli, options, model);
+
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleMultiMapModel(map, path);
+}
+"A driver to produce tabular (CSV) reports of the contents of a player's map."
+// TODO: Split 'serve' and non-'serve' into separate classes, and let the factory choose between them
+shared class TabularReportCLI(ICLIHelper cli, SPOptions options,
+        IDriverModel model) satisfies ReadOnlyDriver {
     MutableMap<String,Writer> writers = HashMap<String,Writer>();
     Item->Key reverseEntry<Key, Item>(Key->Item entry)
             given Key satisfies Object given Item satisfies Object =>
                 entry.item->entry.key;
-    void serveReports(IDriverModel model, Integer port) {
+    void serveReports(Integer port) {
         Map<Path, IMapNG> mapping;
         if (is IMultiMapModel model) {
             mapping = map(model.allMaps.coalesced
@@ -421,8 +465,45 @@ shared class TabularReportCLI() satisfies ReadOnlyDriver {
             rootHandler, *endpoints.chain(tocs)
         }.start(SocketAddress("127.0.0.1", port));
     }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
+    Anything(String)(String) filenameFunction(Path base) {
+        assert (exists baseName = base.elements.terminal(1).first);
+        Anything(String) retval(String tableName) {
+            if (exists writer = writers.get("``baseName``.``tableName``.csv")) {
+                return writer.write;
+            } else {
+                File file;
+                switch (temp = base.siblingPath("``baseName``.``tableName``.csv")
+                    .resource)
+                case (is File) {
+                    file = temp;
+                }
+                case (is Nil) {
+                    file = temp.createFile();
+                }
+                else {
+                    throw IOException(
+                        "``base``.``tableName``.csv exists but is not a file");
+                }
+                value writer = file.Overwriter();
+                writers["``baseName``.``tableName``.csv"] = writer;
+                return writer.write;
+            }
+        }
+        return retval;
+    }
+    void createReports(IMapNG map, Path? mapFile) {
+        if (exists mapFile) {
+            try {
+                tabularReportGenerator.createTabularReports(map,
+                    filenameFunction(parsePath(mapFile.string)));
+            } catch (IOException|IOError except) {
+                throw DriverFailedException(except);
+            }
+        } else {
+            log.error("Asked to create reports from map with no filename");
+        }
+    }
+    shared actual void startDriver() {
         if (options.hasOption("--serve")) {
             value tempPort = Integer.parse(options.getArgument("--serve"));
             Integer port;
@@ -431,46 +512,8 @@ shared class TabularReportCLI() satisfies ReadOnlyDriver {
             } else {
                 port = 8080;
             }
-            serveReports(model, port);
+            serveReports(port);
         } else {
-            Anything(String)(String) filenameFunction(Path base) {
-                assert (exists baseName = base.elements.terminal(1).first);
-                Anything(String) retval(String tableName) {
-                    if (exists writer = writers.get("``baseName``.``tableName``.csv")) {
-                        return writer.write;
-                    } else {
-                        File file;
-                        switch (temp = base.siblingPath("``baseName``.``tableName``.csv")
-                            .resource)
-                        case (is File) {
-                            file = temp;
-                        }
-                        case (is Nil) {
-                            file = temp.createFile();
-                        }
-                        else {
-                            throw IOException(
-                                "``base``.``tableName``.csv exists but is not a file");
-                        }
-                        value writer = file.Overwriter();
-                        writers["``baseName``.``tableName``.csv"] = writer;
-                        return writer.write;
-                    }
-                }
-                return retval;
-            }
-            void createReports(IMapNG map, Path? mapFile) {
-                if (exists mapFile) {
-                    try {
-                        tabularReportGenerator.createTabularReports(map,
-                            filenameFunction(parsePath(mapFile.string)));
-                    } catch (IOException|IOError except) {
-                        throw DriverFailedException(except);
-                    }
-                } else {
-                    log.error("Asked to create reports from map with no filename");
-                }
-            }
             if (is IMultiMapModel model) {
                 for (map->[file, _] in model.allMaps) {
                     Path? wrapped =

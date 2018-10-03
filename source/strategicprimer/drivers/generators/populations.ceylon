@@ -4,8 +4,11 @@ import strategicprimer.drivers.common {
     ParamCount,
     SPOptions,
     IDriverModel,
-    ISPDriver,
-    CLIDriver
+    CLIDriver,
+    DriverFactory,
+    ModelDriverFactory,
+    ModelDriver,
+    SimpleDriverModel
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -13,8 +16,7 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.model.common.map {
     Point,
     HasExtent,
-    IMutableMapNG,
-    IMapNG
+    IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal
@@ -52,13 +54,14 @@ import lovelace.util.common {
     matchingValue,
     matchingPredicate,
     narrowedStream,
-    singletonRandom
+    singletonRandom,
+    PathWrapper
 }
 
-"A driver to let the user generate animal and shrub populations, meadow and grove sizes,
- and forest acreages."
-service(`interface ISPDriver`)
-shared class PopulationGeneratingCLI() satisfies CLIDriver {
+"A factory for a driver to let the user generate animal and shrub populations, meadow and
+ grove sizes, and forest acreages."
+service(`interface DriverFactory`)
+shared class PopulationGeneratingCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["--populations"];
@@ -68,10 +71,30 @@ shared class PopulationGeneratingCLI() satisfies CLIDriver {
         includeInCLIList = true;
         includeInGUIList = false; // TODO: We'd like a GUI equivalent
     };
-    "Whether the given number is positive."
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => PopulationGeneratingCLI(cli, model);
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleDriverModel(map, path);
+}
+"A driver to let the user generate animal and shrub populations, meadow and grove sizes,
+ and forest acreages."
+shared class PopulationGeneratingCLI(ICLIHelper cli, IDriverModel model)
+        satisfies CLIDriver {
+    "Whether the given number is positive." // TODO: make static // TODO: why is this shared?
     shared Boolean positiveNumber(Number<out Anything> number) => number.positive;
-    void generateAnimalPopulations(IMutableMapNG map, Boolean talking, String kind,
-            ICLIHelper cli) {
+    Boolean negativeNumber(Number<out Anything> number) => number.negative; // TODO: make static
+    Decimal decimalize(Number<out Anything> number) { // TODO: make statc
+        assert (is Decimal|Whole|Integer|Float number);
+        switch (number)
+        case (is Decimal) {
+            return number;
+        }
+        case (is Integer|Float|Whole) {
+            return decimalNumber(number);
+        }
+    }
+    IMutableMapNG map = model.map;
+    void generateAnimalPopulations(Boolean talking, String kind) {
         // We assume there is at most one population of each kind of animal per tile.
         {Point*} locations = randomize(narrowedStream<Point, Animal>(map.fixtures)
             .filter(matchingValue(talking, compose(Animal.talking,
@@ -119,7 +142,7 @@ shared class PopulationGeneratingCLI() satisfies CLIDriver {
             }
         }
     }
-    void generateGroveCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
+    void generateGroveCounts(String kind) {
         // We assume there is at most one grove or orchard of each kind per tile.
         {Point*} locations = randomize(narrowedStream<Point, Grove>(map.fixtures)
             .filter(matchingPredicate(matchingValue(kind, Grove.kind),
@@ -154,7 +177,7 @@ shared class PopulationGeneratingCLI() satisfies CLIDriver {
             }
         }
     }
-    void generateShrubCounts(IMutableMapNG map, String kind, ICLIHelper cli) {
+    void generateShrubCounts(String kind) {
         // We assume there is at most one population of each kind of shrub per tile.
         {Point*} locations = randomize(narrowedStream<Point, Shrub>(map.fixtures)
             .filter(matchingPredicate(matchingValue(kind, Shrub.kind),
@@ -188,8 +211,7 @@ shared class PopulationGeneratingCLI() satisfies CLIDriver {
             }
         }
     }
-    Boolean negativeNumber(Number<out Anything> number) => number.negative;
-    void generateFieldExtents(IMutableMapNG map, ICLIHelper cli) {
+    void generateFieldExtents() {
         {<Point->Meadow>*} entries = randomize(narrowedStream<Point, Meadow>(map.fixtures)
             .filter(matchingPredicate(negativeNumber, compose(Meadow.acres,
                 Entry<Point, Meadow>.item))));
@@ -201,23 +223,13 @@ shared class PopulationGeneratingCLI() satisfies CLIDriver {
                 field.id, field.status, acres));
         }
     }
-    Boolean hasAdjacentForests(IMapNG map, String kind)(Point point) =>
+    Boolean hasAdjacentForests(String kind)(Point point) =>
             map.fixtures.get(point).narrow<Forest>()
                 .any(matchingValue(kind, Forest.kind));
-    Integer countAdjacentForests(IMapNG map, Point center, String kind) =>
+    Integer countAdjacentForests(Point center, String kind) =>
             surroundingPointIterable(center, map.dimensions, 1)
-                .count(hasAdjacentForests(map, kind));
-    Decimal decimalize(Number<out Anything> number) {
-        assert (is Decimal|Whole|Integer|Float number);
-        switch (number)
-        case (is Decimal) {
-            return number;
-        }
-        case (is Integer|Float|Whole) {
-            return decimalNumber(number);
-        }
-    }
-    void generateForestExtents(IMutableMapNG map, ICLIHelper cli) {
+                .count(hasAdjacentForests(kind));
+    void generateForestExtents() {
         {Point*} locations = randomize(narrowedStream<Point, Forest>(map.fixtures)
             .filter(matchingPredicate(not(positiveNumber),
                 compose(Forest.acres, Entry<Point, Forest>.item)))
@@ -238,7 +250,7 @@ shared class PopulationGeneratingCLI() satisfies CLIDriver {
             {Forest*} otherForests = map.fixtures.get(location).narrow<Forest>()
                     .select(not(matchingPredicate(positiveNumber, Forest.acres))).rest;
             Integer adjacentCount =
-                    countAdjacentForests(map, location, primaryForest.kind);
+                    countAdjacentForests(location, primaryForest.kind);
             //for (town in map.fixtures[location].narrow<ITownFixture>()) { // TODO: syntax sugar
             for (town in map.fixtures.get(location).narrow<ITownFixture>()) {
                 switch (town.townSize)
@@ -299,24 +311,23 @@ shared class PopulationGeneratingCLI() satisfies CLIDriver {
             }
         }
     }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
+    shared actual void startDriver() {
         for (kind in model.map.fixtures.map(Entry.item).narrow<Animal>()
                     .filter(not(matchingPredicate(Integer.positive, Animal.population)))
                 .map(Animal.kind).distinct) {
-            generateAnimalPopulations(model.map, true, kind, cli);
-            generateAnimalPopulations(model.map, false, kind, cli);
+            generateAnimalPopulations(true, kind);
+            generateAnimalPopulations(false, kind);
         }
         for (kind in model.map.fixtures.map(Entry.item).narrow<Grove>()
-                .map(Grove.kind).distinct) {
-            generateGroveCounts(model.map, kind, cli);
+                .map(Grove.kind).distinct) { // TODO: use Iterable.each
+            generateGroveCounts(kind);
         }
         for (kind in model.map.fixtures.map(Entry.item).narrow<Shrub>()
-                .map(Shrub.kind).distinct) {
-            generateShrubCounts(model.map, kind, cli);
+                .map(Shrub.kind).distinct) { // TODO: Use Iterable.each
+            generateShrubCounts(kind);
         }
-        generateFieldExtents(model.map, cli);
-        generateForestExtents(model.map, cli);
+        generateFieldExtents();
+        generateForestExtents();
         model.mapModified = true;
     }
 }

@@ -54,8 +54,8 @@ import strategicprimer.model.common.xmlio {
     SPFormatException
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    ViewerGUI,
-    ViewerModel
+    ViewerModel,
+    ViewerGUIFactory
 }
 import strategicprimer.drivers.common {
     IMultiMapModel,
@@ -78,6 +78,7 @@ shared class IOHandler
     shared static variable Anything() quitHandler = defaultQuitHandler;
     static FileFilter mapExtensionsFilter = FileNameExtensionFilter(
         "Strategic Primer world map files", "map", "xml", "db");
+    static ViewerGUIFactory vgf = ViewerGUIFactory();
     "A factory method for [[JFileChooser]] (or AWT [[FileDialog|JFileDialog]] taking a
      [[FileFilter]] to apply in the same operation."
     todo("Move functionality into FileChooser somehow?")
@@ -218,9 +219,8 @@ shared class IOHandler
             });
         }
         case ("new") {
-            ViewerGUI().startDriverOnModel(cli, options, ViewerModel(SPMapNG(
-                    mapModel.mapDimensions, PlayerCollection(), mapModel.map.currentTurn),
-                null));
+            vgf.createDriver(cli, options, vgf.createModel(SPMapNG(mapModel.mapDimensions,
+                PlayerCollection(), mapModel.map.currentTurn), null)).startDriver();
         }
         case ("load secondary") { // TODO: Investigate how various apps handle transitioning between no secondaries and one secondary map.
             if (is IMultiMapModel mapModel) {
@@ -247,14 +247,14 @@ shared class IOHandler
             }
         }
         case ("open in map viewer") {
-            ViewerGUI().startDriverOnModel(cli, options,
-                ViewerModel.copyConstructor(mapModel));
+            vgf.createDriver(cli, options, ViewerModel.copyConstructor(mapModel))
+                .startDriver();
         }
         case ("open secondary map in map viewer") {
             if (is IMultiMapModel mapModel,
                     exists mapEntry = mapModel.subordinateMaps.first) {
-                ViewerGUI().startDriverOnModel(cli, options,
-                    ViewerModel.fromEntry(mapEntry));
+                vgf.createDriver(cli, options, ViewerModel.fromEntry(mapEntry))
+                    .startDriver();
             }
         }
         case ("close") {

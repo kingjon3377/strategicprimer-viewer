@@ -38,8 +38,12 @@ import strategicprimer.drivers.common {
     SPOptions,
     DriverUsage,
     IDriverUsage,
-    ISPDriver,
-    CLIDriver
+    CLIDriver,
+    DriverFactory,
+    UtilityDriverFactory,
+    ModelDriverFactory,
+    ModelDriver,
+    SimpleMultiMapModel
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -48,19 +52,26 @@ import lovelace.util.common {
     PathWrapper
 }
 
-"""A driver that reads in maps and then writes them out again---this is primarily to make
-   sure that the map format is properly read, but is also useful for correcting deprecated
-   syntax. (Because of that usage, warnings are disabled.)"""
-service(`interface ISPDriver`)
-shared class EchoDriver() satisfies UtilityDriver {
-    shared actual IDriverUsage usage = DriverUsage(false, ["-e", "--echo"],
+"A factory for a driver that reads in maps and then writes them out again, to test the
+ map-reading logic and to correct deprecated syntax."
+service(`interface DriverFactory`)
+shared class EchoDriverFactory satisfies UtilityDriverFactory {
+    shared static IDriverUsage staticUsage = DriverUsage(false, ["-e", "--echo"],
         ParamCount.two, "Read, then write a map.",
         "Read and write a map, correcting deprecated syntax.",
         true, false, "input.xml", "output.xml", "--current-turn=NN");
+    shared new () {}
+    shared actual IDriverUsage usage => staticUsage;
+    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
+            EchoDriver(options);
+}
+"""A driver that reads in maps and then writes them out again---this is primarily to make
+   sure that the map format is properly read, but is also useful for correcting deprecated
+   syntax. (Because of that usage, warnings are disabled.)"""
+shared class EchoDriver(SPOptions options) satisfies UtilityDriver {
     """Run the driver: read the map, then write it, correcting deprecated syntax and
        forest and Ground IDs."""
-    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
-            String* args) {
+    shared actual void startDriver(String* args) {
         if (exists inArg = args.first, exists outArg = args.rest.first, args.size == 2) {
             IMutableMapNG map;
             try {
@@ -110,25 +121,36 @@ shared class EchoDriver() satisfies UtilityDriver {
                 throw DriverFailedException(except, "I/O error writing ``outArg``");
             }
         } else {
-            throw IncorrectUsageException(usage);
+            throw IncorrectUsageException(EchoDriverFactory.staticUsage);
         }
     }
 }
-"A driver to fix ID mismatches between forests and Ground in the main and player maps."
-service(`interface ISPDriver`)
-shared class ForestFixerDriver() satisfies CLIDriver {
+
+"A factory for a driver to fix ID mismatches between forests and Ground in the main and
+ player maps."
+service(`interface DriverFactory`)
+shared class ForestFixerFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(false, ["-f", "--fix-forest"],
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map", false, false);
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        assert (is IMultiMapModel model);
+        return ForestFixerDriver(cli, options, model);
+    }
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleMultiMapModel(map, path);
+}
+"A driver to fix ID mismatches between forests and Ground in the main and player maps."
+shared class ForestFixerDriver(ICLIHelper cli, SPOptions options, IMultiMapModel model)
+        satisfies CLIDriver {
     {Forest*} extractForests(IMapNG map, Point location) =>
 //            map.fixtures[location].narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed
             map.fixtures.get(location).narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed
     {Ground*} extractGround(IMapNG map, Point location) =>
 //            map.fixtures[location].narrow<Ground>();
             map.fixtures.get(location).narrow<Ground>();
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        assert (is IMultiMapModel model);
+    shared actual void startDriver() {
         IMutableMapNG mainMap = model.map;
         for (map->[file, _] in model.subordinateMaps) {
             cli.println("Starting ``file?.string

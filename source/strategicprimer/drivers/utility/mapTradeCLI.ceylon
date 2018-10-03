@@ -6,8 +6,11 @@ import strategicprimer.drivers.common {
     IDriverModel,
     IMultiMapModel,
     FixtureMatcher,
-    ISPDriver,
-    CLIDriver
+    CLIDriver,
+    DriverFactory,
+    ModelDriverFactory,
+    ModelDriver,
+    SimpleMultiMapModel
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -15,7 +18,8 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.model.common.map {
     IMapNG,
     TileFixture,
-    Player
+    Player,
+    IMutableMapNG
 }
 import ceylon.collection {
     ArrayList,
@@ -75,10 +79,23 @@ import ceylon.language.meta {
 }
 import lovelace.util.common {
     matchingValue,
-    matchingPredicate
+    matchingPredicate,
+    PathWrapper
 }
+
+"A driver for an app to copy selected contents from one map to another."
+service(`interface DriverFactory`)
+shared class MapTradeFactory() satisfies ModelDriverFactory {
+    shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
+        "Trade maps", "Copy contents from one map to another.", true, false, "source.xml",
+        "destination.xml");
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => MapTradeCLI(cli, model);
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleMultiMapModel(map, path);
+}
+
 "An app to copy selected contents from one map to another."
-service(`interface ISPDriver`)
 shared class MapTradeCLI satisfies CLIDriver {
     static {FixtureMatcher*} flatten(FixtureMatcher|{FixtureMatcher*} item) {
         if (is {FixtureMatcher*} item) {
@@ -127,12 +144,31 @@ shared class MapTradeCLI satisfies CLIDriver {
             FixtureMatcher.complements<Ground>(Ground.exposed, "Ground (exposed)",
                 "Ground")
         ].flatMap(flatten);
-    shared new () {}
-    shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
-        "Trade maps", "Copy contents from one map to another.", true, false, "source.xml",
-        "destination.xml");
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
+    ICLIHelper cli;
+    IDriverModel model;
+    shared new (ICLIHelper cli, IDriverModel model) {
+        this.cli = cli;
+        this.model = model;
+    }
+    MutableList<FixtureMatcher> matchers =
+            ArrayList { elements = initializeMatchers(); };
+    void askAbout(FixtureMatcher matcher, String key = "include") =>
+            matcher.displayed = cli.inputBooleanInSeries(
+                "Include \"``matcher.description``\" items?", key);
+    Boolean testFixture(TileFixture fixture) {
+        for (matcher in matchers) {
+            if (matcher.matches(fixture)) {
+                return matcher.displayed;
+            }
+        }
+        ClassModel<TileFixture> cls = type(fixture);
+        FixtureMatcher newMatcher = FixtureMatcher.trivialMatcher(cls,
+            fixture.plural);
+        askAbout(newMatcher, "new");
+        matchers.add(newMatcher);
+        return newMatcher.displayed;
+    }
+    shared actual void startDriver() {
         IMapNG first = model.map;
         assert (is IMultiMapModel model,
             exists second = model.subordinateMaps.first?.key);
@@ -140,25 +176,7 @@ shared class MapTradeCLI satisfies CLIDriver {
             first.players.each(second.addPlayer);
         }
         Boolean copyRivers = cli.inputBoolean("Include rivers?");
-        MutableList<FixtureMatcher> matchers =
-                ArrayList { elements = initializeMatchers(); };
-        void askAbout(FixtureMatcher matcher, String key = "include") =>
-                matcher.displayed = cli.inputBooleanInSeries(
-                    "Include \"``matcher.description``\" items?", key);
         matchers.each(askAbout);
-        Boolean testFixture(TileFixture fixture) {
-            for (matcher in matchers) {
-                if (matcher.matches(fixture)) {
-                    return matcher.displayed;
-                }
-            }
-            ClassModel<TileFixture> cls = type(fixture);
-            FixtureMatcher newMatcher = FixtureMatcher.trivialMatcher(cls,
-                fixture.plural);
-            askAbout(newMatcher, "new");
-            matchers.add(newMatcher);
-            return newMatcher.displayed;
-        }
         Boolean zeroFixtures;
         if (first.currentPlayer.independent || second.currentPlayer.independent ||
                 first.currentPlayer.playerId != second.currentPlayer.playerId) {

@@ -21,7 +21,8 @@ import strategicprimer.drivers.common {
     UtilityDriver,
     IDriverUsage,
     SPOptions,
-    ISPDriver
+    DriverFactory,
+    UtilityDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -43,12 +44,13 @@ import lovelace.util.common {
 
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.converters`);
-"A driver to convert maps: at present, halving their resolution."
-service(`interface ISPDriver`)
-shared class ConverterDriver(
+"A factory for the driver that convers maps, at present by halving their resolution."
+service(`interface DriverFactory`)
+shared class ConverterDriverFactory(
         """Set to true when the provided [[ICLIHelper]] is connected to a graphical window
            instead of standard output."""
-        Boolean gui = false) satisfies UtilityDriver {
+        Boolean gui = false)
+        satisfies UtilityDriverFactory {
     "The usage object."
     shared actual IDriverUsage usage = DriverUsage {
         graphical = gui;
@@ -61,9 +63,13 @@ shared class ConverterDriver(
         includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
+    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
+            ConverterDriver(cli, options);
+}
+"A driver to convert maps: at present, halving their resolution."
+class ConverterDriver(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
     "Run the driver."
-    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
-            String* args) {
+    shared actual void startDriver(String* args) {
         for (filename in args.coalesced) {
             cli.print("Reading ``filename ``... ");
             try {

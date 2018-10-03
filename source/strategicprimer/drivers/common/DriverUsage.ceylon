@@ -1,4 +1,4 @@
-shared class DriverUsage(
+shared class DriverUsage( // TODO: Convert to constructor so we can get rid of the 'temp' in supportedOptionsTemp
         "Whether this driver is graphical or not."
         shared actual Boolean graphical,
         "Options with which one can invoke this driver. Usually there's a short (if possible

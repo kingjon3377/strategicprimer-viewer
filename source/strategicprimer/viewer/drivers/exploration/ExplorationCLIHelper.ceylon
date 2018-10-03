@@ -51,7 +51,7 @@ import strategicprimer.model.common.map.fixtures.towns {
     TownStatus
 }
 
-"The logic split out of [[ExplorationCLI]]"
+"The logic split out of [[ExplorationCLI]]" // TODO: Merge back in
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         satisfies MovementCostSource {
     HuntingModel huntingModel = HuntingModel(model.map);

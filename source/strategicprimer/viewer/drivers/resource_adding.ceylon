@@ -61,9 +61,12 @@ import strategicprimer.drivers.common {
     ParamCount,
     DriverUsage,
     PlayerChangeListener,
-    ISPDriver,
     CLIDriver,
-    GUIDriver
+    GUIDriver,
+    ModelDriverFactory,
+    DriverFactory,
+    ModelDriver,
+    GUIDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -139,9 +142,10 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
     "Get the current player. If none is current, returns null."
     shared Player? currentPlayer => players.find(Player.current);
 }
-"A driver to le the user enter a player's resources and equipment."
-service(`interface ISPDriver`)
-shared class ResourceAddingCLI() satisfies CLIDriver {
+
+"A factory for a driver to let the user enter a player's resources and equipment."
+service(`interface DriverFactory`)
+shared class ResourceAddingCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-d", "--add-resource"];
@@ -152,12 +156,26 @@ shared class ResourceAddingCLI() satisfies CLIDriver {
         includeInGUIList = false;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        assert (is ResourceManagementDriverModel model);
+        return ResourceAddingCLI(cli, options, model);
+    }
+
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            ResourceManagementDriverModel.fromMap(map, path);
+
+
+}
+"A driver to let the user enter a player's resources and equipment."
+class ResourceAddingCLI(ICLIHelper cli, SPOptions options,
+        ResourceManagementDriverModel model) satisfies CLIDriver {
     MutableSet<String> resourceKinds = HashSet<String>();
     MutableMultimap<String, String> resourceContents =
             HashMultimap<String, String>();
     MutableMap<String, String> resourceUnits = HashMap<String, String>();
     "Ask the user to choose or enter a resource kind."
-    String getResourceKind(ICLIHelper cli) {
+    String getResourceKind() {
         String[] list = resourceKinds.sequence();
         value choice = cli.chooseStringFromList(list, "Possible kinds of resources:",
             "No resource kinds entered yet", "Chosen kind: ", false);
@@ -170,7 +188,7 @@ shared class ResourceAddingCLI() satisfies CLIDriver {
         }
     }
     "Ask the user to choose or enter a resource-content-type for a given resource kind."
-    String getResourceContents(String kind, ICLIHelper cli) {
+    String getResourceContents(String kind) {
         String[] list = resourceContents.get(kind).sequence();
         value num->item = cli.chooseStringFromList(list,
             "Possible resources in the ``kind`` category`", "No resources entered yet",
@@ -184,7 +202,7 @@ shared class ResourceAddingCLI() satisfies CLIDriver {
         }
     }
     "Ask the user to choose units for a type of resource."
-    String getResourceUnits(String resource, ICLIHelper cli) {
+    String getResourceUnits(String resource) {
         if (exists unit = resourceUnits[resource],
                 cli.inputBooleanInSeries(
                     "Is ``unit`` the correct unit for ``resource``? ",
@@ -197,11 +215,10 @@ shared class ResourceAddingCLI() satisfies CLIDriver {
         }
     }
     "Ask the user to enter a resource."
-    void enterResource(IDRegistrar idf, ResourceManagementDriverModel model,
-            ICLIHelper cli, Player player) {
-        String kind = getResourceKind(cli);
-        String origContents = getResourceContents(kind, cli);
-        String units = getResourceUnits(origContents, cli);
+    void enterResource(IDRegistrar idf, Player player) {
+        String kind = getResourceKind();
+        String origContents = getResourceContents(kind);
+        String units = getResourceUnits(origContents);
         String contents;
         if (cli.inputBooleanInSeries("Qualify the particular resource with a prefix? ",
                 "prefix " + origContents)) {
@@ -213,8 +230,7 @@ shared class ResourceAddingCLI() satisfies CLIDriver {
             cli.inputDecimal("Quantity in ``units``?"), units)), player);
     }
     "Ask the user to enter an Implement (a piece of equipment)"
-    void enterImplement(IDRegistrar idf, ResourceManagementDriverModel model,
-            ICLIHelper cli, Player player) {
+    void enterImplement(IDRegistrar idf, Player player) {
         String kind = cli.inputString("Kind of equipment: ");
         Integer count;
         if (cli.inputBooleanInSeries("Add more than one? ")) {
@@ -224,40 +240,36 @@ shared class ResourceAddingCLI() satisfies CLIDriver {
         }
         model.addResource(Implement(kind, idf.createID(), count), player);
     }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is ResourceManagementDriverModel model) {
-            MutableList<Player> players = ArrayList { elements = model.players; };
-            IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
-            try {
-                while (!players.empty, exists chosen = cli.chooseFromList(players,
-                        "Players in the maps:", "No players found.",
-                        "Player to add resources for: ", false).item) {
-                    players.remove(chosen);
-                    while (cli.inputBoolean("Keep going? ")) {
-                        if (cli.inputBooleanInSeries(
-                            "Enter a (quantified) resource? ")) {
-                            enterResource(idf, model, cli, chosen);
-                        } else if (cli.inputBooleanInSeries(
-                            "Enter equipment etc.? ")) {
-                            enterImplement(idf, model, cli, chosen);
-                        }
-                    }
-                    if (!cli.inputBoolean("Choose another player?")) {
-                        break;
+    shared actual void startDriver() {
+        MutableList<Player> players = ArrayList { elements = model.players; };
+        IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
+        try {
+            while (!players.empty, exists chosen = cli.chooseFromList(players,
+                    "Players in the maps:", "No players found.",
+                    "Player to add resources for: ", false).item) {
+                players.remove(chosen);
+                while (cli.inputBoolean("Keep going? ")) {
+                    if (cli.inputBooleanInSeries(
+                        "Enter a (quantified) resource? ")) {
+                        enterResource(idf, chosen);
+                    } else if (cli.inputBooleanInSeries(
+                        "Enter equipment etc.? ")) {
+                        enterImplement(idf, chosen);
                     }
                 }
-            } catch (IOException except) {
-                throw DriverFailedException(except, "I/O error interacting with user");
+                if (!cli.inputBoolean("Choose another player?")) {
+                    break;
+                }
             }
-        } else {
-            startDriverOnModel(cli, options,
-                ResourceManagementDriverModel.fromDriverModel(model));
+        } catch (IOException except) { // TODO: This shouldn't be possible anymore
+            throw DriverFailedException(except, "I/O error interacting with user");
         }
     }
 }
-service(`interface ISPDriver`)
-shared class ResourceAddingGUI() satisfies GUIDriver {
+
+"A factory for the resource-adding GUI app."
+service(`interface DriverFactory`)
+shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
         invocations = ["-d", "--add-resource"];
@@ -268,8 +280,25 @@ shared class ResourceAddingGUI() satisfies GUIDriver {
         includeInGUIList = true;
         supportedOptionsTemp = [ "--current-turn=NN" ];
     };
+    "Ask the user to choose a file or files."
+    shared actual {PathWrapper*} askUserForFiles() {
+        try {
+            return SPFileChooser.open(null).files;
+        } catch (FileChooser.ChoiceInterruptedException except) {
+            throw DriverFailedException(except,
+                "Choice interrupted or user didn't choose");
+        }
+    }
+    shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+        assert (is ResourceManagementDriverModel model);
+        return ResourceAddingGUI(cli, options, model);
+    }
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            ResourceManagementDriverModel.fromMap(map, path);
+}
+class ResourceAddingGUI satisfies GUIDriver {
     "Extends [[ImprovedComboBox]] to keep a running collection of values."
-    class UpdatedComboBox(Anything(String) logger) extends ImprovedComboBox<String>() {
+    static class UpdatedComboBox(Anything(String) logger) extends ImprovedComboBox<String>() {
         "The values we've had in the past."
         MutableSet<String> values = HashSet<String>();
         "Clear the combo box, but if its value was one we haven't had previously, add it
@@ -319,7 +348,7 @@ shared class ResourceAddingGUI() satisfies GUIDriver {
             }
         }
     }
-    JPanel pairPanel(Component first, Component second) { // TODO: Use a better layout than BoxLayout
+    static JPanel pairPanel(Component first, Component second) { // TODO: Use a better layout than BoxLayout
         JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
         panel.addGlue();
         panel.add(first);
@@ -328,12 +357,19 @@ shared class ResourceAddingGUI() satisfies GUIDriver {
         panel.addGlue();
         return panel;
     }
-    String resourceLabelText(Player player) => "Add resource for ``player.name``:";
-    String equipmentLabelText(Player player) => "Add equipment for ``player.name``:";
+    static String resourceLabelText(Player player) => "Add resource for ``player.name``:";
+    static String equipmentLabelText(Player player) => "Add equipment for ``player.name``:";
+    ResourceManagementDriverModel model;
+    ICLIHelper cli;
+    SPOptions options;
+    shared new (ICLIHelper cli, SPOptions options, ResourceManagementDriverModel model) {
+        this.cli = cli;
+        this.options = options;
+        this.model = model;
+    }
     "A window to let the user enter resources etc. Note that this is not a dialog to enter
-     one resource and close."
-    SPFrame&PlayerChangeListener resourceAddingFrame(ResourceManagementDriverModel model,
-            Anything(ActionEvent) menuHandler) {
+     one resource and close." // TODO: Move methods embedded in this method to top level of class
+    SPFrame&PlayerChangeListener resourceAddingFrame(Anything(ActionEvent) menuHandler) {
         IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
         variable Player currentPlayer = PlayerImpl(-1, "");
         JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
@@ -480,27 +516,21 @@ shared class ResourceAddingGUI() satisfies GUIDriver {
         implementQuantityModel.maximum = maximum;
         return retval;
     }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is ResourceManagementDriverModel model) {
-            PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
-            MenuBroker menuHandler = MenuBroker();
-            menuHandler.register(IOHandler(model, options, cli), "load", "save",
-                "save as", "new", "load secondary", "save all", "open in map viewer",
-                "open secondary map in map viewer", "close", "quit");
-            menuHandler.register(pcml, "change current player");
-            SwingUtilities.invokeLater(() {
-                value frame = resourceAddingFrame(model, menuHandler.actionPerformed);
-                frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
-                menuHandler.registerWindowShower(
-                    aboutDialog(frame, frame.windowName), "about");
-                pcml.addPlayerChangeListener(frame);
-                frame.showWindow();
-            });
-        } else {
-            startDriverOnModel(cli, options,
-                ResourceManagementDriverModel.fromDriverModel(model));
-        }
+    shared actual void startDriver() {
+        PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
+        MenuBroker menuHandler = MenuBroker();
+        menuHandler.register(IOHandler(model, options, cli), "load", "save",
+            "save as", "new", "load secondary", "save all", "open in map viewer",
+            "open secondary map in map viewer", "close", "quit");
+        menuHandler.register(pcml, "change current player");
+        SwingUtilities.invokeLater(() { // TODO: convert lambda to class method, using defer() to pass in menuHandler
+            value frame = resourceAddingFrame(menuHandler.actionPerformed);
+            frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
+            menuHandler.registerWindowShower(
+                aboutDialog(frame, frame.windowName), "about");
+            pcml.addPlayerChangeListener(frame);
+            frame.showWindow();
+        });
     }
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {

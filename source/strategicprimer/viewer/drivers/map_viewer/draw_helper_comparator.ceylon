@@ -18,7 +18,8 @@ import strategicprimer.drivers.common {
     UtilityDriver,
     IncorrectUsageException,
     FixtureMatcher,
-    ISPDriver
+    DriverFactory,
+    UtilityDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -54,10 +55,31 @@ class Accumulator() {
     shared Integer storedValue => accumulatedValue;
     shared void add(Integer addend) { accumulatedValue = accumulatedValue + addend; }
 }
+"A factory for a driver to compare the performance of TileDrawHelpers."
+service(`interface DriverFactory`)
+shared class DrawHelperComparatorFactory satisfies UtilityDriverFactory {
+    shared static IDriverUsage staticUsage = DriverUsage {
+        graphical = true;
+        invocations = ["-t", "--test"];
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "Test drawing performance.";
+        longDescription =
+        """Test the performance of the TileDrawHelper classes---which do the heavy
+           lifting of rendering the map in the viewer---using a variety of
+           automated tests.""";
+        includeInCLIList = true;
+        includeInGUIList = false;
+        supportedOptionsTemp = ["--report=out.csv"];
+    };
+    shared new () {}
+    shared actual IDriverUsage usage => staticUsage;
+    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
+            DrawHelperComparator(cli, options);
+}
 "A driver to compare the performance of TileDrawHelpers."
-service(`interface ISPDriver`)
-shared class DrawHelperComparator() satisfies UtilityDriver {
-    "The first test: all in one place."
+shared class DrawHelperComparator(ICLIHelper cli, SPOptions options)
+        satisfies UtilityDriver {
+    "The first test: all in one place." // TODO: Can (some of) these become static?
     Integer first(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
         BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
         Integer start = system.milliseconds;
@@ -200,7 +222,7 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
         }
     }
     "Run all the tests on the specified map."
-    void runAllTests(ICLIHelper cli, IMapNG map, String fileName, Integer repetitions) {
+    void runAllTests(IMapNG map, String fileName, Integer repetitions) {
         Integer printStats(String prefix, Integer total, Integer reps) {
             cli.println("``prefix``\t``total``, average of ``total / reps`` ns.");
             return total;
@@ -225,25 +247,11 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
         }
         cli.println("");
     }
-    shared actual IDriverUsage usage = DriverUsage {
-            graphical = true;
-            invocations = ["-t", "--test"];
-            paramsWanted = ParamCount.atLeastOne;
-            shortDescription = "Test drawing performance.";
-            longDescription =
-                """Test the performance of the TileDrawHelper classes---which do the heavy
-                   lifting of rendering the map in the viewer---using a variety of
-                   automated tests.""";
-            includeInCLIList = true;
-            includeInGUIList = false;
-            supportedOptionsTemp = ["--report=out.csv"];
-    };
     Integer reps = 50;
     "Run the tests."
-    shared actual void startDriverOnArguments(ICLIHelper cli,
-            SPOptions options, String* args) {
+    shared actual void startDriver(String* args) {
         if (args.size == 0) {
-            throw IncorrectUsageException(usage);
+            throw IncorrectUsageException(DrawHelperComparatorFactory.staticUsage);
         }
         MutableMap<String, Integer> mapSizes = HashMap<String, Integer>();
         for (arg in args) {
@@ -252,7 +260,7 @@ shared class DrawHelperComparator() satisfies UtilityDriver {
             mapSizes[arg] = map.locations.size;
             String filename = path.elements.last else "an unsaved map";
             cli.println("Testing using ``filename``");
-            runAllTests(cli, map, filename, reps);
+            runAllTests(map, filename, reps);
         }
         String reportFilename = options.getArgument("--report");
         if (reportFilename != "false") {

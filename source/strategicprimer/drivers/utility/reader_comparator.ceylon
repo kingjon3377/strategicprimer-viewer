@@ -28,7 +28,8 @@ import strategicprimer.drivers.common {
     DriverUsage,
     ParamCount,
     SPOptions,
-    ISPDriver
+    DriverFactory,
+    UtilityDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -37,14 +38,20 @@ import lovelace.util.common {
     PathWrapper
 }
 
-"A driver for comparing map readers."
-service(`interface ISPDriver`)
-shared class ReaderComparator() satisfies UtilityDriver {
+"A factory for a driver to compare the performance and results of the two map reading
+ implementations."
+service(`interface DriverFactory`)
+shared class ReaderComparatorFactory() satisfies UtilityDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(false, ["--test", "--compare-readers"],
         ParamCount.atLeastOne, "Test map readers",
         "Test map-reading implementations by comparing their results on the same file.",
         true, false);
-    String readAll(File file) {
+    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
+            ReaderComparator(cli);
+}
+"A driver for comparing map readers."
+shared class ReaderComparator satisfies UtilityDriver {
+    static String readAll(File file) {
         Reader reader = file.Reader();
         StringBuilder builder = StringBuilder();
         while (exists String line = reader.readLine()) {
@@ -53,9 +60,12 @@ shared class ReaderComparator() satisfies UtilityDriver {
         }
         return builder.string;
     }
+    ICLIHelper cli;
+    shared new (ICLIHelper cli) {
+        this.cli = cli;
+    }
     "Compare the two readers' performance on the given files."
-    shared actual void startDriverOnArguments(ICLIHelper cli, SPOptions options,
-            String* args) {
+    shared actual void startDriver(String* args) {
         IMapReader readerOne = testReaderFactory.oldReader;
         IMapReader readerTwo = testReaderFactory.newReader;
         SPWriter writerOne = testReaderFactory.oldWriter;

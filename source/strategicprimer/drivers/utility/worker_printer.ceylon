@@ -4,8 +4,10 @@ import strategicprimer.drivers.common {
     ParamCount,
     SPOptions,
     IDriverModel,
-    ISPDriver,
-    ReadOnlyDriver
+    ReadOnlyDriver,
+    DriverFactory,
+    ModelDriverFactory,
+    ModelDriver
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
@@ -23,13 +25,17 @@ import strategicprimer.drivers.exploration.common {
     ExplorationModel
 }
 import lovelace.util.common {
-    matchingPredicate
+    matchingPredicate,
+    PathWrapper
+}
+import strategicprimer.model.common.map {
+    IMutableMapNG
 }
 
-"A driver to print a mini-report on workers, suitable for inclusion in a player's
- results."
-service(`interface ISPDriver`)
-shared class WorkerPrintCLI() satisfies ReadOnlyDriver {
+"A factory for the driver to print a mini-report on workers, suitable for inclusion in a
+ player's results."
+service(`interface DriverFactory`)
+shared class WorkerPrinterFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["--print"];
@@ -39,9 +45,27 @@ shared class WorkerPrintCLI() satisfies ReadOnlyDriver {
         includeInCLIList = true;
         includeInGUIList = false;
     };
-    String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
-    String jobString(IJob job) => job.name + " " + job.level.string;
-    void printWorkers(IUnit unit, ICLIHelper cli) {
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        assert (is IExplorationModel model);
+        return WorkerPrintCLI(cli, model);
+    }
+
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            ExplorationModel(map, path);
+}
+"A driver to print a mini-report on workers, suitable for inclusion in a player's
+ results."
+class WorkerPrintCLI satisfies ReadOnlyDriver {
+    static String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
+    static String jobString(IJob job) => job.name + " " + job.level.string;
+    ICLIHelper cli;
+    IExplorationModel model;
+    shared new (ICLIHelper cli, IExplorationModel model) {
+        this.cli = cli;
+        this.model = model;
+    }
+    void printWorkers(IUnit unit) {
         for (worker in unit.narrow<IWorker>()) {
             cli.print("- ");
             cli.print(worker.name);
@@ -61,20 +85,15 @@ shared class WorkerPrintCLI() satisfies ReadOnlyDriver {
             cli.println();
         }
     }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-        IDriverModel model) {
-        if (is IExplorationModel model) {
-            value playerChoice = cli.chooseFromList(model.playerChoices.sequence(),
-                "Players in the map:", "No players", "Player owning the unit:", false);
-            if (exists player = playerChoice.item) {
-                value unitChoice = cli.chooseFromList(model.getUnits(player).sequence(),
-                    "Units of that player:", "No units", "Unit to print:", false);
-                if (exists unit = unitChoice.item) {
-                    printWorkers(unit, cli);
-                }
+    shared actual void startDriver() {
+        value playerChoice = cli.chooseFromList(model.playerChoices.sequence(),
+            "Players in the map:", "No players", "Player owning the unit:", false);
+        if (exists player = playerChoice.item) {
+            value unitChoice = cli.chooseFromList(model.getUnits(player).sequence(),
+                "Units of that player:", "No units", "Unit to print:", false);
+            if (exists unit = unitChoice.item) {
+                printWorkers(unit);
             }
-        } else {
-            startDriverOnModel(cli, options, ExplorationModel.copyConstructor(model));
         }
     }
 }

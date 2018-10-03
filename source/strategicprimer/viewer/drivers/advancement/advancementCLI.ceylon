@@ -5,14 +5,17 @@ import strategicprimer.drivers.common {
     ParamCount,
     IDriverUsage,
     SPOptions,
-    ISPDriver,
-    CLIDriver
+    CLIDriver,
+    ModelDriver,
+    DriverFactory,
+    ModelDriverFactory
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.model.common.map {
-    Player
+    Player,
+    IMutableMapNG
 }
 import strategicprimer.drivers.worker.common {
     WorkerModel,
@@ -42,19 +45,40 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     Skill
 }
 import lovelace.util.common {
-    todo,
     matchingValue,
-    singletonRandom
+    singletonRandom,
+    PathWrapper
 }
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
+"A factory for the worker-advancement CLI driver."
+service(`interface DriverFactory`)
+shared class AdvancementCLIFactory() satisfies ModelDriverFactory {
+    shared actual IDriverUsage usage = DriverUsage {
+        graphical = false;
+        invocations = ["-a", "--adv"];
+        paramsWanted = ParamCount.atLeastOne;
+        shortDescription = "View a player's workers and manage their advancement";
+        longDescription = """View a player's units, the workers in those units, each
+                             worker's Jobs, and his or her level in each Skill in each
+                             Job.""";
+        includeInCLIList = true;
+        includeInGUIList = false;
+        supportedOptionsTemp = [ "--current-turn=NN", "--allow-expert-mentoring" ];
+    };
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        assert (is IWorkerModel model);
+        return AdvancementCLI(cli, options, model);
+    }
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            WorkerModel(map, path);
+}
 "The worker-advancement CLI driver."
-todo("Move most implementation stuff out into a class that takes the CLI as a class
-      parameter, then *doesn't* pass it around in callback style.")
-service(`interface ISPDriver`)
-shared class AdvancementCLI() satisfies CLIDriver {
+shared class AdvancementCLI(ICLIHelper cli, SPOptions options, IWorkerModel model)
+        satisfies CLIDriver {
     "Let the user add hours to a Skill or Skills in a Job."
-    void advanceJob(IJob job, ICLIHelper cli, Boolean allowExpertMentoring) {
+    void advanceJob(IJob job, Boolean allowExpertMentoring) {
         MutableList<ISkill> skills = ArrayList{ elements = job; };
         while (true) {
             value chosen = cli.chooseFromList(skills, "Skills in Job:",
@@ -104,8 +128,7 @@ shared class AdvancementCLI() satisfies CLIDriver {
         }
     }
     "Let the user add experience to a worker."
-    void advanceSingleWorker(IWorker worker, ICLIHelper cli,
-            Boolean allowExpertMentoring) {
+    void advanceSingleWorker(IWorker worker, Boolean allowExpertMentoring) {
         MutableList<IJob> jobs = ArrayList { elements = worker; };
         while (true) {
             value chosen = cli.chooseFromList(jobs,
@@ -127,15 +150,14 @@ shared class AdvancementCLI() satisfies CLIDriver {
             } else {
                 break;
             }
-            advanceJob(job, cli, allowExpertMentoring);
+            advanceJob(job, allowExpertMentoring);
             if (!cli.inputBoolean("Select another Job in this worker?")) {
                 break;
             }
         }
     }
     "Let the user add experience in a single Skill to all of a list of workers."
-    void advanceWorkersInSkill(String jobName, String skillName, ICLIHelper cli,
-        IWorker* workers) {
+    void advanceWorkersInSkill(String jobName, String skillName, IWorker* workers) {
         Integer hours = cli.inputNumber("Hours of experience to add: ") else 0;
         for (worker in workers) {
             IJob job = worker.getJob(jobName);
@@ -186,7 +208,7 @@ shared class AdvancementCLI() satisfies CLIDriver {
     {IJob*} getWorkerJobs(String jobName, IWorker* workers) =>
             workers.map(shuffle(IWorker.getJob)(jobName)).distinct;
     "Let the user add experience in a given Job to all of a list of workers."
-    void advanceWorkersInJob(String jobName, ICLIHelper cli, IWorker* workers) {
+    void advanceWorkersInJob(String jobName, IWorker* workers) {
         {IJob*} jobs = getWorkerJobs(jobName, *workers);
         MutableList<ISkill> skills = ArrayList {
             elements = ProxyJob(jobName, false, *workers);
@@ -213,21 +235,21 @@ shared class AdvancementCLI() satisfies CLIDriver {
             } else {
                 break;
             }
-            advanceWorkersInSkill(jobName, skill.name, cli, *workers);
+            advanceWorkersInSkill(jobName, skill.name, *workers);
             if (!cli.inputBoolean("Select another Skill in this Job?")) {
                 break;
             }
         }
     }
     "Let the user add experience to a worker or workers in a unit."
-    void advanceWorkersInUnit(IUnit unit, ICLIHelper cli, Boolean allowExpertMentoring) {
+    void advanceWorkersInUnit(IUnit unit, Boolean allowExpertMentoring) {
         MutableList<IWorker> workers = ArrayList { elements = unit.narrow<IWorker>(); };
         if (cli.inputBooleanInSeries("Add experience to workers individually? ")) {
             while (!workers.empty, exists chosen = cli.chooseFromList(workers,
                     "Workers in unit:", "No unadvanced workers remain.",
                     "Chosen worker: ", false).item) {
                 workers.remove(chosen);
-                advanceSingleWorker(chosen, cli, allowExpertMentoring);
+                advanceSingleWorker(chosen, allowExpertMentoring);
                 if (!cli.inputBoolean("Choose another worker?")) {
                     break;
                 }
@@ -258,7 +280,7 @@ shared class AdvancementCLI() satisfies CLIDriver {
                 } else {
                     break;
                 }
-                advanceWorkersInJob(job.name, cli, *workers);
+                advanceWorkersInJob(job.name, *workers);
                 if (!cli.inputBoolean("Select another Job in these workers?")) {
                     break;
                 }
@@ -266,8 +288,7 @@ shared class AdvancementCLI() satisfies CLIDriver {
         }
     }
     "Let the user add experience to a player's workers."
-    void advanceWorkers(IWorkerModel model, Player player, ICLIHelper cli,
-            Boolean allowExpertMentoring) {
+    void advanceWorkers(IWorkerModel model, Player player, Boolean allowExpertMentoring) {
         MutableList<IUnit> units = ArrayList {
             elements = model.getUnits(player).filter(
                         (unit) => !unit.narrow<IWorker>().empty); };
@@ -275,7 +296,7 @@ shared class AdvancementCLI() satisfies CLIDriver {
                 "``player.name``'s units:", "No unadvanced units remain.", "Chosen unit:",
                 false).item) {
             units.remove(chosen);
-            advanceWorkersInUnit(chosen, cli, allowExpertMentoring);
+            advanceWorkersInUnit(chosen, allowExpertMentoring);
             if (!cli.inputBoolean("Choose another unit?")) {
                 break;
             }
@@ -285,40 +306,21 @@ shared class AdvancementCLI() satisfies CLIDriver {
         }
     }
     "Let the user choose a player to run worker advancement for."
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        IWorkerModel workerModel;
-        if (is IWorkerModel model) {
-            workerModel = model;
-        } else {
-            workerModel = WorkerModel.copyConstructor(model);
-        }
-        MutableList<Player> playerList = ArrayList { elements = workerModel.players; };
+    shared actual void startDriver() {
+        MutableList<Player> playerList = ArrayList { elements = model.players; };
         try {
             while (!playerList.empty, exists chosen = cli.chooseFromList(playerList,
                     "Available players:", "No players found.", "Chosen player:",
                     false).item) {
                 playerList.remove(chosen);
-                advanceWorkers(workerModel, chosen, cli,
+                advanceWorkers(model, chosen,
                     options.hasOption("--allow-expert-mentoring"));
                 if (!cli.inputBoolean("Select another player?")) {
                     break;
                 }
             }
-        } catch (IOException except) {
+        } catch (IOException except) { // TODO: Shouldn't be possible anymore
             throw DriverFailedException(except, "I/O error interacting with user");
         }
     }
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = false;
-        invocations = ["-a", "--adv"];
-        paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "View a player's workers and manage their advancement";
-        longDescription = """View a player's units, the workers in those units, each
-                             worker's Jobs, and his or her level in each Skill in each
-                             Job.""";
-        includeInCLIList = true;
-        includeInGUIList = false;
-        supportedOptionsTemp = [ "--current-turn=NN", "--allow-expert-mentoring" ];
-    };
 }

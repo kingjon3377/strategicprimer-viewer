@@ -3,7 +3,8 @@ import lovelace.util.common {
     matchingPredicate,
     matchingValue,
     narrowedStream,
-    entryMap
+    entryMap,
+    PathWrapper
 }
 import strategicprimer.model.common.map.fixtures.towns {
     Village,
@@ -33,8 +34,11 @@ import strategicprimer.drivers.common {
     ParamCount,
     IDriverUsage,
     IDriverModel,
-    ISPDriver,
-    CLIDriver
+    CLIDriver,
+    DriverFactory,
+    ModelDriverFactory,
+    ModelDriver,
+    SimpleMultiMapModel
 }
 import strategicprimer.model.common.map {
     TileType,
@@ -64,11 +68,24 @@ class SimpleTerrain of unforested | forested | ocean {
     "Ocean."
     shared new ocean { }
 }
+"""A factory for the hackish driver to fix missing content in the map, namely units with
+   "TODO" for their "kind" and aquatic villages with non-aquatic races."""
+service(`interface DriverFactory`)
+shared class TodoFixerFactory() satisfies ModelDriverFactory {
+    shared actual IDriverUsage usage = DriverUsage(false, ["--fix-todos"],
+        ParamCount.atLeastOne, "Fix TODOs in maps",
+        "Fix TODOs in unit kinds and aquatic villages with non-aquatic races", false,
+        false);
+    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) => TodoFixerCLI(cli, model);
+
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            SimpleMultiMapModel(map, path);
+}
 """A hackish driver to fix TODOs (missing content) in the map, namely units with "TODO"
    for their "kind" and aquatic villages with non-aquatic races."""
 todo("Write tests of this functionality") // This'll have to wait until eclipse/ceylon#6986 is fixed
-service(`interface ISPDriver`)
-shared class TodoFixerCLI() satisfies CLIDriver {
+shared class TodoFixerCLI(ICLIHelper cli, IDriverModel model) satisfies CLIDriver {
     "A list of unit kinds (jobs) for plains etc."
     MutableList<String> plainsList = ArrayList<String>();
     "A list of unit kinds (jobs) for forest and jungle."
@@ -83,10 +100,6 @@ shared class TodoFixerCLI() satisfies CLIDriver {
     variable Integer count = -1;
     "The number of units needing to be fixed."
     variable Integer totalCount = -1;
-    shared actual IDriverUsage usage = DriverUsage(false, ["--fix-todos"],
-        ParamCount.atLeastOne, "Fix TODOs in maps",
-        "Fix TODOs in unit kinds and aquatic villages with non-aquatic races", false,
-        false);
     "Get the simplified-terrain-model instance covering the map's terrain at the given
      location."
     // We don't just use TileType because we need mountains and forests in ver-2 maps.
@@ -112,7 +125,7 @@ shared class TodoFixerCLI() satisfies CLIDriver {
         }
     }
     "Search for and fix aquatic villages with non-aquatic races."
-    void fixAllVillages(IMapNG map, ICLIHelper cli) {
+    void fixAllVillages(IMapNG map) {
         {Village*} villages = map.locations
             .filter(matchingValue(TileType.ocean, map.baseTerrain.get))
             .flatMap(map.fixtures.get).narrow<Village>()
@@ -169,7 +182,7 @@ shared class TodoFixerCLI() satisfies CLIDriver {
         }
     }
     "Fix a stubbed-out kind for a unit."
-    void fixUnit(Unit unit, SimpleTerrain terrain, ICLIHelper cli) {
+    void fixUnit(Unit unit, SimpleTerrain terrain) {
         Random rng = DefaultRandom(unit.id);
         count++;
         MutableList<String> jobList;
@@ -202,7 +215,7 @@ shared class TodoFixerCLI() satisfies CLIDriver {
         jobList.add(kind);
     }
     "Search for and fix units with kinds missing."
-    void fixAllUnits(IMapNG map, ICLIHelper cli) {
+    void fixAllUnits(IMapNG map) {
         totalCount = map.fixtures.map(Entry.item).narrow<Unit>()
             .count(matchingValue("TODO", Unit.kind));
         for (point in map.locations) {
@@ -210,7 +223,7 @@ shared class TodoFixerCLI() satisfies CLIDriver {
 //            for (fixture in map.fixtures[point].narrow<Unit>() // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(point).narrow<Unit>()
                     .filter(matchingValue("TODO", Unit.kind))) {
-                fixUnit(fixture, terrain, cli);
+                fixUnit(fixture, terrain);
             }
         }
     }
@@ -228,12 +241,11 @@ shared class TodoFixerCLI() satisfies CLIDriver {
             }
         }
     }
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
+    shared actual void startDriver() {
         if (is IMultiMapModel model) {
             for (map->[path, _] in model.allMaps) {
-                fixAllUnits(map, cli);
-                fixAllVillages(map, cli);
+                fixAllUnits(map);
+                fixAllVillages(map);
                 model.setModifiedFlag(map, true);
             }
             for (map->[path, _] in model.subordinateMaps) {
@@ -241,8 +253,8 @@ shared class TodoFixerCLI() satisfies CLIDriver {
                 model.setModifiedFlag(map, true);
             }
         } else {
-            fixAllUnits(model.map, cli);
-            fixAllVillages(model.map, cli);
+            fixAllUnits(model.map);
+            fixAllVillages(model.map);
             model.mapModified = true;
         }
     }

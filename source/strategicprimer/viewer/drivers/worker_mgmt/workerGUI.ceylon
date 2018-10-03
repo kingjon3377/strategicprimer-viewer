@@ -23,8 +23,9 @@ import strategicprimer.drivers.common {
     DriverUsage,
     SPOptions,
     IDriverModel,
-    ISPDriver,
-    GUIDriver
+    GUIDriver,
+    DriverFactory,
+    GUIDriverFactory
 }
 import strategicprimer.drivers.worker.common {
     WorkerModel,
@@ -34,7 +35,8 @@ import java.awt.event {
     ActionEvent
 }
 import strategicprimer.model.common.map {
-    IMapNG
+    IMapNG,
+    IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
@@ -51,9 +53,9 @@ import lovelace.util.common {
 
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
-"A driver to start the worker management GUI."
-service(`interface ISPDriver`)
-shared class WorkerGUI() satisfies GUIDriver {
+"A factory for the worker management GUI."
+service(`interface DriverFactory`)
+shared class WorkerGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
         invocations = ["-w", "--worker"];
@@ -65,42 +67,57 @@ shared class WorkerGUI() satisfies GUIDriver {
         supportedOptionsTemp = [ "--current-turn=NN", "--print-empty",
             "--include-unleveled-jobs", "--summarize-large-units" ];
     };
-    shared actual void startDriverOnModel(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is IWorkerModel model) {
-            MenuBroker menuHandler = MenuBroker();
-            menuHandler.register(IOHandler(model, options, cli), "load", "save",
-                "save as", "new", "load secondary", "save all", "open in map viewer",
-                "open secondary map in map viewer", "close", "quit");
-            PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
-            menuHandler.register(pcml, "change current player");
-            SwingUtilities.invokeLater(() {
-                log.trace("Inside GUI creation lambda");
-                value frame = WorkerMgmtFrame(options, model, menuHandler);
-                log.trace("Created worker mgmt frame");
-                pcml.addPlayerChangeListener(frame);
-                log.trace("Added it as a listener on the PCML");
-                frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
-                menuHandler.register((event) => frame.playerChanged(
-                    model.currentPlayer, model.currentPlayer),
-                    "reload tree");
-                menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
-                    "about");
-                log.trace("Registered menu handlers");
-                if (model.allMaps.map(Entry.key)
-                        .every(compose(compose(Iterable<IUnit>.empty,
-                        model.getUnits), IMapNG.currentPlayer))) {
-                    pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
-                        "change current player"));
-                }
-                log.trace("About to show window");
-                frame.showWindow();
-                log.trace("Window should now be visible");
-            });
-            log.trace("Worker GUI window should appear any time now");
-        } else {
-            startDriverOnModel(cli, options, WorkerModel.copyConstructor(model));
+    "Ask the user to choose a file or files."
+    shared actual {PathWrapper*} askUserForFiles() {
+        try {
+            return SPFileChooser.open(null).files;
+        } catch (FileChooser.ChoiceInterruptedException except) {
+            log.debug("Choice interrupted or user didn't choose", except);
+            return [];
         }
+    }
+    shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
+        assert (is IWorkerModel model);
+        return WorkerGUI(cli, options, model);
+    }
+    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+            WorkerModel(map, path);
+}
+"A driver to start the worker management GUI."
+shared class WorkerGUI(ICLIHelper cli, SPOptions options, IWorkerModel model)
+        satisfies GUIDriver {
+    shared actual void startDriver() {
+        MenuBroker menuHandler = MenuBroker();
+        menuHandler.register(IOHandler(model, options, cli), "load", "save",
+            "save as", "new", "load secondary", "save all", "open in map viewer",
+            "open secondary map in map viewer", "close", "quit");
+        PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
+        menuHandler.register(pcml, "change current player");
+        SwingUtilities.invokeLater(() { // TODO: convert lambda to class method, using efer to pass in menuHandler
+            log.trace("Inside GUI creation lambda");
+            value frame = WorkerMgmtFrame(options, model, menuHandler);
+            log.trace("Created worker mgmt frame");
+            pcml.addPlayerChangeListener(frame);
+            log.trace("Added it as a listener on the PCML");
+            frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
+            menuHandler.register((event) => frame.playerChanged( // TODO: convert lambda to class method
+                model.currentPlayer, model.currentPlayer),
+                "reload tree");
+            menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
+                "about");
+            log.trace("Registered menu handlers");
+            if (model.allMaps.map(Entry.key)
+                    .every(compose(compose(Iterable<IUnit>.empty,
+                    model.getUnits), IMapNG.currentPlayer))) {
+                pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
+                    "change current player"));
+            }
+            log.trace("About to show window");
+            frame.showWindow();
+            log.trace("Window should now be visible");
+        });
+        log.trace("Worker GUI window should appear any time now");
     }
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {
