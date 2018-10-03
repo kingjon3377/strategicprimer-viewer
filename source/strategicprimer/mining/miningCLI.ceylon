@@ -3,10 +3,6 @@ import ceylon.file {
     Nil
 }
 
-import java.io {
-    IOException
-}
-
 import strategicprimer.drivers.common {
     DriverFailedException,
     UtilityDriver,
@@ -97,7 +93,7 @@ shared class MiningCLI(ICLIHelper cli, SPOptions options) satisfies UtilityDrive
                     }
                 }
             } else {
-                throw DriverFailedException(IOException( // TODO: Drop IOException usage
+                throw DriverFailedException(Exception(
                     "Output file ``filename`` already exists"));
             }
         } else {
