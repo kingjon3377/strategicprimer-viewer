@@ -98,10 +98,7 @@ class TownGenerator(ICLIHelper cli) {
                         "tables/``file``"));
             MutableList<[Quantity, String, String]> inner =
                     ArrayList<[Quantity, String, String]>();
-            for (line in tableContents.lines) {
-                if (line.empty) { // TODO: condense
-                    continue;
-                }
+            for (line in tableContents.lines.filter(not(String.empty))) {
                 value split = line.split('\t'.equals, true, false);
                 value quantity = Integer.parse(split.first);
                 if (is Integer quantity) {
