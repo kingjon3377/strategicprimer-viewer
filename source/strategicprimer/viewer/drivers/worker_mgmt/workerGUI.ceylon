@@ -48,7 +48,9 @@ import strategicprimer.drivers.gui.common {
     WindowCloseListener
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    silentListener,
+    defer
 }
 
 "A logger."
@@ -87,6 +89,30 @@ shared class WorkerGUIFactory() satisfies GUIDriverFactory {
 "A driver to start the worker management GUI."
 shared class WorkerGUI(ICLIHelper cli, SPOptions options, IWorkerModel model)
         satisfies GUIDriver {
+    void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {
+        log.trace("Inside GUI creation lambda");
+        value frame = WorkerMgmtFrame(options, model, menuHandler);
+        log.trace("Created worker mgmt frame");
+        pcml.addPlayerChangeListener(frame);
+        log.trace("Added it as a listener on the PCML");
+        frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
+        value reloadListener = silentListener(defer(reload, [frame])); // TODO: Inline once eclipse/ceylon#7379 fixed
+        menuHandler.register(reloadListener, "reload tree");
+        menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
+            "about");
+        log.trace("Registered menu handlers");
+        if (model.allMaps.map(Entry.key)
+            .every(compose(compose(Iterable<IUnit>.empty,
+            model.getUnits), IMapNG.currentPlayer))) {
+            pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
+                "change current player"));
+        }
+        log.trace("About to show window");
+        frame.showWindow();
+        log.trace("Window should now be visible");
+    }
+    void reload(WorkerMgmtFrame frame) =>
+            frame.playerChanged(model.currentPlayer, model.currentPlayer);
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(model, options, cli), "load", "save",
@@ -94,29 +120,7 @@ shared class WorkerGUI(ICLIHelper cli, SPOptions options, IWorkerModel model)
             "open secondary map in map viewer", "close", "quit");
         PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
         menuHandler.register(pcml, "change current player");
-        SwingUtilities.invokeLater(() { // TODO: convert lambda to class method, using efer to pass in menuHandler
-            log.trace("Inside GUI creation lambda");
-            value frame = WorkerMgmtFrame(options, model, menuHandler);
-            log.trace("Created worker mgmt frame");
-            pcml.addPlayerChangeListener(frame);
-            log.trace("Added it as a listener on the PCML");
-            frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
-            menuHandler.register((event) => frame.playerChanged( // TODO: convert lambda to class method
-                model.currentPlayer, model.currentPlayer),
-                "reload tree");
-            menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
-                "about");
-            log.trace("Registered menu handlers");
-            if (model.allMaps.map(Entry.key)
-                    .every(compose(compose(Iterable<IUnit>.empty,
-                    model.getUnits), IMapNG.currentPlayer))) {
-                pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
-                    "change current player"));
-            }
-            log.trace("About to show window");
-            frame.showWindow();
-            log.trace("Window should now be visible");
-        });
+        SwingUtilities.invokeLater(defer(createWindow, [menuHandler, pcml]));
         log.trace("Worker GUI window should appear any time now");
     }
     "Ask the user to choose a file or files."
