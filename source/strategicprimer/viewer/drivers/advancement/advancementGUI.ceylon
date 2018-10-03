@@ -48,7 +48,9 @@ import lovelace.util.jvm {
     FileChooser
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    defer,
+    silentListener
 }
 
 "A factory for the worker-advancemnt GUI app."
@@ -88,6 +90,23 @@ shared class AdvancementGUIFactory() satisfies GUIDriverFactory {
 "The worker-advancement GUI driver."
 shared class AdvancementGUI(ICLIHelper cli, SPOptions options, IWorkerModel model)
         satisfies GUIDriver {
+    void reload(PlayerChangeListener frame) =>
+            frame.playerChanged(model.currentPlayer, model.currentPlayer);
+    void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {
+        SPFrame&PlayerChangeListener frame = advancementFrame(model, menuHandler);
+        frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
+        pcml.addPlayerChangeListener(frame);
+        value reloadListener = silentListener(defer(reload, [frame])); // TODO: Inline once eclipse/ceylon#7379 fixed
+        menuHandler.register(reloadListener, "reload tree");
+        menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
+            "about");
+        if (model.allMaps.map(Entry.key).every(compose(compose(Iterable<IUnit>.empty,
+                model.getUnits), IMapNG.currentPlayer))) {
+            pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
+                "change current player"));
+        }
+        frame.showWindow();
+    }
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(model, options, cli), "load", "save",
@@ -95,23 +114,7 @@ shared class AdvancementGUI(ICLIHelper cli, SPOptions options, IWorkerModel mode
             "open secondary map in map viewer", "close", "quit");
         PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
         menuHandler.register(pcml, "change current player");
-        SwingUtilities.invokeLater(() { // TODO: convert lambda to class method, using defer to pass in menuHandler
-            SPFrame&PlayerChangeListener frame = advancementFrame(model, menuHandler);
-            frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
-            pcml.addPlayerChangeListener(frame);
-            menuHandler.register((event) => // TODO: convert lambda to class method
-                frame.playerChanged(model.currentPlayer, model.currentPlayer),
-                    "reload tree");
-            menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
-                "about");
-            if (model.allMaps.map(Entry.key)
-                    .every(compose(compose(Iterable<IUnit>.empty,
-                    model.getUnits), IMapNG.currentPlayer))) {
-                pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
-                    "change current player"));
-            }
-            frame.showWindow();
-        });
+        SwingUtilities.invokeLater(defer(createWindow, [menuHandler, pcml]));
     }
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {
