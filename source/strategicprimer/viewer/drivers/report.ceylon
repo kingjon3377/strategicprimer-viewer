@@ -141,16 +141,21 @@ shared class ReportCLIFactory() satisfies ModelDriverFactory {
         ];
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => ReportCLI(cli, options, model);
+            IDriverModel model) {
+        if (options.hasOption("--serve")) {
+            return ReportServingCLI(options, model);
+        } else {
+            return ReportCLI(cli, options, model);
+        }
+    }
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 
 }
-"A driver to produce a report of the contents of a map."
-// TODO: Split 'serve' and non-'serve' into separate classes, and let the factory choose between them
-shared class ReportCLI(ICLIHelper cli, SPOptions options,
-        IDriverModel model) satisfies ReadOnlyDriver {
+"""A driver to "serve" a report on the contents of a map on an embedded HTTP server."""
+class ReportServingCLI(SPOptions options, IDriverModel model)
+        satisfies ReadOnlyDriver {
     void serveReports(Integer port, Player? currentPlayer) {
         MutableMap<Path, String> cache = HashMap<Path, String>();
         if (is IMultiMapModel model) {
@@ -169,13 +174,13 @@ shared class ReportCLI(ICLIHelper cli, SPOptions options,
         } else {
             value localCache = cache.map(
                         (file->report) => suffixHelper.shortestSuffix(cache.keys,
-                            file.absolutePath)->report);
+                    file.absolutePath)->report);
             {Endpoint*} endpoints = localCache.map((file->report) =>
-                Endpoint {
-                    path = startsWith("/``file``");
-                    service(Request request, Response response) =>
-                            response.writeString(report);
-                });
+            Endpoint {
+                path = startsWith("/``file``");
+                service(Request request, Response response) =>
+                        response.writeString(report);
+            });
             Endpoint|AsynchronousEndpoint rootHandler;
             if (localCache.size == 1) {
                 assert (exists soleFile = localCache.first?.key);
@@ -214,7 +219,28 @@ shared class ReportCLI(ICLIHelper cli, SPOptions options,
             }.start(SocketAddress("127.0.0.1", port));
         }
     }
-    void writeReport(Path? filename, IMapNG map, SPOptions options) {
+    shared actual void startDriver() {
+        value tempPort = Integer.parse(options.getArgument("--serve"));
+        Integer port;
+        if (is Integer tempPort) {
+            port = tempPort;
+        } else {
+            port = 8080;
+        }
+        value playerNum = Integer.parse(options.getArgument("--player"));
+        Player? player;
+        if (is Integer playerNum) {
+            player = model.map.players.getPlayer(playerNum);
+        } else {
+            player = null;
+        }
+        serveReports(port, player);
+    }
+}
+"A driver to produce a report of the contents of a map."
+shared class ReportCLI(ICLIHelper cli, SPOptions options, // TODO: cli is unused
+        IDriverModel model) satisfies ReadOnlyDriver {
+    void writeReport(Path? filename, IMapNG map, SPOptions options) { // FIXME: Use class-level 'options'.
         if (exists filename) {
             Player player;
             if (options.hasOption("--player")) {
@@ -248,35 +274,17 @@ shared class ReportCLI(ICLIHelper cli, SPOptions options,
         }
     }
     shared actual void startDriver() {
-        if (options.hasOption("--serve")) {
-            value tempPort = Integer.parse(options.getArgument("--serve"));
-            Integer port;
-            if (is Integer tempPort) {
-                port = tempPort;
-            } else {
-                port = 8080;
+        if (is IMultiMapModel model) {
+            for (map->[file, _] in model.allMaps) {
+                Path? wrapped =
+                        if (exists file) then parsePath(file.filename) else null;
+                writeReport(wrapped, map, options);
             }
-            value playerNum = Integer.parse(options.getArgument("--player"));
-            Player? player;
-            if (is Integer playerNum) {
-                player = model.map.players.getPlayer(playerNum);
-            } else {
-                player = null;
-            }
-            serveReports(port, player);
         } else {
-            if (is IMultiMapModel model) {
-                for (map->[file, _] in model.allMaps) {
-                    Path? wrapped =
-                            if (exists file) then parsePath(file.filename) else null;
-                    writeReport(wrapped, map, options);
-                }
-            } else {
-                writeReport(
-                    if (exists file = model.mapFile)
-                        then parsePath(file.filename) else null,
-                    model.map, options);
-            }
+            writeReport(
+                if (exists file = model.mapFile)
+                    then parsePath(file.filename) else null,
+                model.map, options);
         }
     }
 }
@@ -341,27 +349,30 @@ shared class TabularReportCLIFactory() satisfies ModelDriverFactory {
         supportedOptionsTemp = ["--serve[=8080]"];
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => TabularReportCLI(cli, options, model);
+            IDriverModel model) {
+        if (options.hasOption("--serve")) {
+            return TabularReportServingCLI(options, model);
+        } else {
+            return TabularReportCLI(cli, options, model);
+        }
+    }
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
-"A driver to produce tabular (CSV) reports of the contents of a player's map."
-// TODO: Split 'serve' and non-'serve' into separate classes, and let the factory choose between them
-shared class TabularReportCLI(ICLIHelper cli, SPOptions options,
-        IDriverModel model) satisfies ReadOnlyDriver {
-    MutableMap<String,Writer> writers = HashMap<String,Writer>();
+class TabularReportServingCLI(SPOptions options, IDriverModel model)
+        satisfies ReadOnlyDriver {
     Item->Key reverseEntry<Key, Item>(Key->Item entry)
             given Key satisfies Object given Item satisfies Object =>
-                entry.item->entry.key;
+            entry.item->entry.key;
     void serveReports(Integer port) {
         Map<Path, IMapNG> mapping;
         if (is IMultiMapModel model) {
             mapping = map(model.allMaps.coalesced
                 .map(entryMap(identity<IMutableMapNG>, Tuple<PathWrapper?|Boolean,
-                    PathWrapper?, [Boolean]>.first)).map(Entry.coalesced).coalesced
+            PathWrapper?, [Boolean]>.first)).map(Entry.coalesced).coalesced
                 .map(entryMap(identity<IMutableMapNG>,
-                    compose(parsePath, PathWrapper.filename)))
+                compose(parsePath, PathWrapper.filename)))
                 .map(reverseEntry));
         } else if (exists path = model.mapFile) {
             mapping = map { parsePath(path.filename)->model.map };
@@ -403,39 +414,39 @@ shared class TabularReportCLI(ICLIHelper cli, SPOptions options,
         }
         {Endpoint*} endpoints = builders.map(([file, table]->builder) =>
             Endpoint {
-            path = matchEquals("/``file``.``table``.csv");
-            void service(Request request, Response response) {
-                response.addHeader(Header("Content-Disposition",
-                    "attachment; filename=\"``table``.csv\""));
-                response.writeString(builder.string);
-            }
-        });
+                path = matchEquals("/``file``.``table``.csv");
+                void service(Request request, Response response) {
+                    response.addHeader(Header("Content-Disposition",
+                        "attachment; filename=\"``table``.csv\""));
+                    response.writeString(builder.string);
+                }
+            });
         {Endpoint*} tocs = mapping.keys
             .map(curry(suffixHelper.shortestSuffix)(mapping.keys)).map(
                     (path) => Endpoint {
-                        path = matchEquals("/``path``").or(matchEquals("/``path``/"));
-                        void service(Request request, Response response) {
-                            response.writeString(
-                                "<!DOCTYPE html>
-                                 <html>
-                                     <head>
-                                         <title>Tabular reports for ``path``</title>
+                path = matchEquals("/``path``").or(matchEquals("/``path``/"));
+                void service(Request request, Response response) {
+                    response.writeString(
+                        "<!DOCTYPE html>
+                         <html>
+                             <head>
+                                 <title>Tabular reports for ``path``</title>
                                      </head>
                                      <body>
                                          <h1>Tabular reports for ``path``</h1>
                                          <ul>
                                  ");
-                            for ([mapFile, table] in builders.keys
-                                    .filter(matchingValue(path,
-                                        Tuple<String, String, String[]>.first))) {
-                                response.writeString("            <li><a href=\"/``mapFile
-                                        ``.``table``.csv\">``table``.csv</a></li>\n");
-                            }
-                            response.writeString("        </ul>
+                    for ([mapFile, table] in builders.keys
+                        .filter(matchingValue(path,
+                        Tuple<String, String, String[]>.first))) {
+                        response.writeString("            <li><a href=\"/``mapFile
+                        ``.``table``.csv\">``table``.csv</a></li>\n");
+                    }
+                    response.writeString("        </ul>
                                                       </body>
                                                   </html>");
-                        }
-                    });
+                }
+            });
         Endpoint rootHandler = Endpoint {
             path = isRoot();
             void service(Request request, Response response) {
@@ -450,7 +461,7 @@ shared class TabularReportCLI(ICLIHelper cli, SPOptions options,
                              <ul>
                      ");
                 for (file in mapping.keys
-                        .map(curry(suffixHelper.shortestSuffix)(mapping.keys))) {
+                    .map(curry(suffixHelper.shortestSuffix)(mapping.keys))) {
                     response.writeString(
                         "            <li><a href=\"/``file``\">``file``</a></li>");
                 }
@@ -465,6 +476,21 @@ shared class TabularReportCLI(ICLIHelper cli, SPOptions options,
             rootHandler, *endpoints.chain(tocs)
         }.start(SocketAddress("127.0.0.1", port));
     }
+    shared actual void startDriver() {
+        value tempPort = Integer.parse(options.getArgument("--serve"));
+        Integer port;
+        if (is Integer tempPort) {
+            port = tempPort;
+        } else {
+            port = 8080;
+        }
+        serveReports(port);
+    }
+}
+"A driver to produce tabular (CSV) reports of the contents of a player's map."
+shared class TabularReportCLI(ICLIHelper cli, SPOptions options,
+        IDriverModel model) satisfies ReadOnlyDriver {
+    MutableMap<String,Writer> writers = HashMap<String,Writer>();
     Anything(String)(String) filenameFunction(Path base) {
         assert (exists baseName = base.elements.terminal(1).first);
         Anything(String) retval(String tableName) {
@@ -504,30 +530,19 @@ shared class TabularReportCLI(ICLIHelper cli, SPOptions options,
         }
     }
     shared actual void startDriver() {
-        if (options.hasOption("--serve")) {
-            value tempPort = Integer.parse(options.getArgument("--serve"));
-            Integer port;
-            if (is Integer tempPort) {
-                port = tempPort;
-            } else {
-                port = 8080;
+        if (is IMultiMapModel model) {
+            for (map->[file, _] in model.allMaps) {
+                Path? wrapped =
+                        if (exists file) then parsePath(file.filename) else null;
+                createReports(map, wrapped);
             }
-            serveReports(port);
         } else {
-            if (is IMultiMapModel model) {
-                for (map->[file, _] in model.allMaps) {
-                    Path? wrapped =
-                            if (exists file) then parsePath(file.filename) else null;
-                    createReports(map, wrapped);
-                }
-            } else {
-                createReports(model.map,
-                    if (exists file = model.mapFile)
-                        then parsePath(file.filename) else null);
-            }
-            for (writer in writers.items) {
-                writer.close();
-            }
+            createReports(model.map,
+                if (exists file = model.mapFile)
+                    then parsePath(file.filename) else null);
+        }
+        for (writer in writers.items) {
+            writer.close();
         }
     }
 }
