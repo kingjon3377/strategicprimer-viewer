@@ -137,13 +137,7 @@ class StatGeneratingCLI satisfies CLIDriver {
                 decreasing<Integer>))?.key else 0;
     static Integer die(Integer max) => singletonRandom.nextInteger(max) + 1;
     static Integer threeDeeSix() => die(6) + die(6) + die(6);
-    static Float villageChance(Integer days) { // TODO: Define in a constant-time form without a loop
-        variable Float retval = 1.0;
-        for (i in 0:days) {
-            retval *= 0.4;
-        }
-        return retval;
-    }
+    static Float villageChance(Integer days) => 0.4.powerOfInteger(days);
     ICLIHelper cli;
     IExplorationModel model;
     shared new (ICLIHelper cli, IExplorationModel model) {
