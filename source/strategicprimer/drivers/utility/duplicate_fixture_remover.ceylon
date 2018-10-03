@@ -59,7 +59,7 @@ import strategicprimer.drivers.common {
     DriverFactory,
     ModelDriverFactory,
     ModelDriver,
-    SimpleDriverModel
+    SimpleMultiMapModel
 }
 import java.io {
     IOException
@@ -83,7 +83,7 @@ shared class DuplicateFixtureRemoverFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-u", "--duplicates"];
-        paramsWanted = ParamCount.one; // TODO: Change to atLeastOne
+        paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Remove duplicate fixtures";
         longDescription = "Remove duplicate fixtures (identical except ID# and on the
                            same tile) from a map.";
@@ -95,7 +95,7 @@ shared class DuplicateFixtureRemoverFactory() satisfies ModelDriverFactory {
             IDriverModel model) => DuplicateFixtureRemoverCLI(cli, model);
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleDriverModel(map, path);
+            SimpleMultiMapModel(map, path);
 }
 "A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
  takes up on disk and the memory and CPU it takes to deal with it)."
