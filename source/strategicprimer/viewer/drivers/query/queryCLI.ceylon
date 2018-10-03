@@ -163,14 +163,11 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
     IMapNG map;
     ICLIHelper cli;
     HuntingModel huntModel;
-    SPOptions options; // TODO: Drop
-    shared new (IDriverModel theModel, ICLIHelper theCLI, HuntingModel theHuntModel,
-            SPOptions theOptions) {
+    shared new (IDriverModel theModel, ICLIHelper theCLI, HuntingModel theHuntModel) {
         model = theModel;
         map = theModel.map;
         cli = theCLI;
         huntModel = theHuntModel;
-        options = theOptions;
     }
     "Count the workers belonging to a player."
     void countWorkers({Player*} players) {
@@ -568,17 +565,17 @@ shared class QueryCLIFactory() satisfies ModelDriverFactory {
         ParamCount.atLeastOne, "Answer questions about a map.",
         "Look a tiles on a map. Or run hunting, gathering, or fishing.", true, false);
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => QueryCLI(cli, options, model);
+            IDriverModel model) => QueryCLI(cli, model);
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
 "A driver for 'querying' the driver model about various things."
 // FIXME: Write GUI equivalent of query CLI
-shared class QueryCLI(ICLIHelper cli, SPOptions options, IDriverModel model) satisfies CLIDriver {
+shared class QueryCLI(ICLIHelper cli, IDriverModel model) satisfies CLIDriver {
     "Accept and respond to commands."
     shared actual void startDriver() {
-        QueryHelper helper = QueryHelper(model, cli, HuntingModel(model.map), options);
+        QueryHelper helper = QueryHelper(model, cli, HuntingModel(model.map));
         try {
             while (helper.handleCommand()) {}
         } catch (IOException except) { // TODO: This shouldn't be possible any more
