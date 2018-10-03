@@ -145,7 +145,7 @@ shared class ReportCLIFactory() satisfies ModelDriverFactory {
         if (options.hasOption("--serve")) {
             return ReportServingCLI(options, model);
         } else {
-            return ReportCLI(cli, options, model);
+            return ReportCLI(options, model);
         }
     }
 
@@ -238,8 +238,7 @@ class ReportServingCLI(SPOptions options, IDriverModel model)
     }
 }
 "A driver to produce a report of the contents of a map."
-shared class ReportCLI(ICLIHelper cli, SPOptions options, // TODO: cli is unused
-        IDriverModel model) satisfies ReadOnlyDriver {
+shared class ReportCLI(SPOptions options, IDriverModel model) satisfies ReadOnlyDriver {
     void writeReport(Path? filename, IMapNG map) {
         if (exists filename) {
             Player player;
