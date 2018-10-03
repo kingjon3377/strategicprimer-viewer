@@ -204,12 +204,9 @@ shared class TrappingCLI satisfies CLIDriver {
         }
         while (minutes > 0, exists command = cli.chooseFromList(commands,
                 "What should the ``name`` do next?", "Oops! No commands",
-                "Next action: ", false).item) {
+                "Next action: ", false).item, command != TrapperCommand.quit) {
             minutes -= handleCommand(fixtures, command, fishing, addTracksToMaps);
             cli.println("``inHours(minutes)`` remaining");
-            if (command == TrapperCommand.quit) { // TODO: Move into loop condition
-                break;
-            }
         }
     }
 }
