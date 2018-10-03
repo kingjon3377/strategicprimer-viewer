@@ -40,7 +40,8 @@ import strategicprimer.drivers.gui.common {
 }
 import lovelace.util.common {
     silentListener,
-    PathWrapper
+    PathWrapper,
+    defer
 }
 import lovelace.util.jvm {
     FileChooser
@@ -82,6 +83,56 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
 shared class ViewerGUI(ICLIHelper cli, SPOptions options,
         IDriverModel model) satisfies GUIDriver {
     assert (is IViewerModel model);
+    void center() {
+        Point selection = model.selection;
+        MapDimensions dimensions = model.mapDimensions;
+        VisibleDimensions visible = model.visibleDimensions;
+        Integer topRow;
+        if (selection.row - (visible.height / 2) <= 0) {
+            topRow = 0;
+        } else if (selection.row + (visible.height / 2) >= dimensions.rows) {
+            topRow = dimensions.rows - visible.height;
+        } else {
+            topRow = selection.row - (visible.height / 2);
+        }
+        Integer leftColumn;
+        if (selection.column - (visible.width / 2) <= 0) {
+            leftColumn = 0;
+        } else if (selection.column + (visible.width / 2) >= dimensions.columns) {
+            leftColumn = dimensions.columns - visible.width;
+        } else {
+            leftColumn = selection.column - (visible.width / 2);
+        }
+        // Java version had topRow + dimensions.rows and
+        // leftColumn + dimensions.columns as max row and column; this seems
+        // plainly wrong.
+        model.visibleDimensions = VisibleDimensions(topRow,
+            topRow + visible.height, leftColumn, leftColumn + visible.width);
+    }
+    void createWindow(MenuBroker menuHandler) {
+        SPFrame&MapGUI frame = ViewerFrame(model,
+            menuHandler.actionPerformed);
+        frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
+        value selectTileDialogInstance = SelectTileDialog(frame, model);
+        menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");
+        selectTileDialogInstance.dispose();
+        variable FindDialog? finder = null;
+        FindDialog getFindDialog() {
+            if (exists temp = finder) {
+                return temp;
+            } else {
+                FindDialog local = FindDialog(frame, model);
+                finder = local;
+                return local;
+            }
+        }
+        menuHandler.registerWindowShower(getFindDialog, "find a fixture");
+        menuHandler.register(silentListener(compose(FindDialog.search,
+            getFindDialog)()), "find next");
+        menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
+            "about");
+        frame.showWindow();
+    }
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(model, options, cli), "load", "save",
@@ -90,56 +141,8 @@ shared class ViewerGUI(ICLIHelper cli, SPOptions options,
         menuHandler.register(silentListener(model.zoomIn), "zoom in");
         menuHandler.register(silentListener(model.zoomOut), "zoom out");
         menuHandler.register(silentListener(model.resetZoom), "reset zoom");
-        menuHandler.register((event) { // TODO: Convert to class method
-            Point selection = model.selection;
-            MapDimensions dimensions = model.mapDimensions;
-            VisibleDimensions visible = model.visibleDimensions;
-            Integer topRow;
-            if (selection.row - (visible.height / 2) <= 0) {
-                topRow = 0;
-            } else if (selection.row + (visible.height / 2) >= dimensions.rows) {
-                topRow = dimensions.rows - visible.height;
-            } else {
-                topRow = selection.row - (visible.height / 2);
-            }
-            Integer leftColumn;
-            if (selection.column - (visible.width / 2) <= 0) {
-                leftColumn = 0;
-            } else if (selection.column + (visible.width / 2) >= dimensions.columns) {
-                leftColumn = dimensions.columns - visible.width;
-            } else {
-                leftColumn = selection.column - (visible.width / 2);
-            }
-            // Java version had topRow + dimensions.rows and
-            // leftColumn + dimensions.columns as max row and column; this seems
-            // plainly wrong.
-            model.visibleDimensions = VisibleDimensions(topRow,
-                topRow + visible.height, leftColumn, leftColumn + visible.width);
-        }, "center");
-        SwingUtilities.invokeLater(() {
-            SPFrame&MapGUI frame = ViewerFrame(model,
-                menuHandler.actionPerformed);
-            frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
-            value selectTileDialogInstance = SelectTileDialog(frame, model);
-            menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");
-            selectTileDialogInstance.dispose();
-            variable FindDialog? finder = null;
-            FindDialog getFindDialog() {
-                if (exists temp = finder) {
-                    return temp;
-                } else {
-                    FindDialog local = FindDialog(frame, model);
-                    finder = local;
-                    return local;
-                }
-            }
-            menuHandler.registerWindowShower(getFindDialog, "find a fixture");
-            menuHandler.register(silentListener(compose(FindDialog.search,
-                getFindDialog)()), "find next");
-            menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
-                "about");
-            frame.showWindow();
-        });
+        menuHandler.register(silentListener(center), "center");
+        SwingUtilities.invokeLater(defer(createWindow, [menuHandler]));
     }
     "Ask the user to choose a file or files."
     shared actual {PathWrapper+} askUserForFiles() {
