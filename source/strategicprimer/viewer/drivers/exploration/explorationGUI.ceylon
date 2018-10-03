@@ -36,7 +36,8 @@ import lovelace.util.jvm {
     FileChooser
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    defer
 }
 import strategicprimer.model.common.map {
     IMutableMapNG
@@ -76,18 +77,19 @@ shared class ExplorationGUIFactory() satisfies GUIDriverFactory {
 "An object to start the exploration GUI."
 class ExplorationGUI(ICLIHelper cli, SPOptions options,
         IExplorationModel model) satisfies GUIDriver {
+    void createWindow(MenuBroker menuHandler) {
+        SPFrame frame = explorationFrame(model, menuHandler);
+        frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
+        menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
+            "about");
+        frame.showWindow();
+    }
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(model, options, cli), "load", "save",
             "save as", "new", "load secondary", "save all", "open in map viewer",
             "open secondary map in map viewer", "close", "quit");
-        SwingUtilities.invokeLater(() { // TODO: Convert lambda to class method, using defer() to pass in menuHandler
-            SPFrame frame = explorationFrame(model, menuHandler);
-            frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
-            menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
-                "about");
-            frame.showWindow();
-        });
+        SwingUtilities.invokeLater(defer(createWindow, [menuHandler]));
     }
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {
