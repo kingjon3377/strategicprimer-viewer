@@ -240,7 +240,7 @@ class ReportServingCLI(SPOptions options, IDriverModel model)
 "A driver to produce a report of the contents of a map."
 shared class ReportCLI(ICLIHelper cli, SPOptions options, // TODO: cli is unused
         IDriverModel model) satisfies ReadOnlyDriver {
-    void writeReport(Path? filename, IMapNG map, SPOptions options) { // FIXME: Use class-level 'options'.
+    void writeReport(Path? filename, IMapNG map) {
         if (exists filename) {
             Player player;
             if (options.hasOption("--player")) {
@@ -278,13 +278,13 @@ shared class ReportCLI(ICLIHelper cli, SPOptions options, // TODO: cli is unused
             for (map->[file, _] in model.allMaps) {
                 Path? wrapped =
                         if (exists file) then parsePath(file.filename) else null;
-                writeReport(wrapped, map, options);
+                writeReport(wrapped, map);
             }
         } else {
             writeReport(
                 if (exists file = model.mapFile)
                     then parsePath(file.filename) else null,
-                model.map, options);
+                model.map);
         }
     }
 }
