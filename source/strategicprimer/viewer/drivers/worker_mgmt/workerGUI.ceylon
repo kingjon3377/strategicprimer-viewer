@@ -101,9 +101,8 @@ shared class WorkerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDr
         menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
             "about");
         log.trace("Registered menu handlers");
-        if (model.allMaps.map(Entry.key)
-            .every(compose(compose(Iterable<IUnit>.empty,
-            model.getUnits), IMapNG.currentPlayer))) {
+        if (model.allMaps.map(Entry.key).every(compose(compose(Iterable<IUnit>.empty,
+                model.getUnits), IMapNG.currentPlayer))) {
             pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
                 "change current player"));
         }
