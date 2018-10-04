@@ -318,14 +318,10 @@ shared class PopulationGeneratingCLI(ICLIHelper cli, IDriverModel model)
             generateAnimalPopulations(true, kind);
             generateAnimalPopulations(false, kind);
         }
-        for (kind in model.map.fixtures.map(Entry.item).narrow<Grove>()
-                .map(Grove.kind).distinct) { // TODO: use Iterable.each
-            generateGroveCounts(kind);
-        }
-        for (kind in model.map.fixtures.map(Entry.item).narrow<Shrub>()
-                .map(Shrub.kind).distinct) { // TODO: Use Iterable.each
-            generateShrubCounts(kind);
-        }
+        model.map.fixtures.map(Entry.item).narrow<Grove>().map(Grove.kind).distinct
+            .each(generateGroveCounts);
+        model.map.fixtures.map(Entry.item).narrow<Shrub>().map(Shrub.kind).distinct
+            .each(generateShrubCounts);
         generateFieldExtents();
         generateForestExtents();
         model.mapModified = true;
