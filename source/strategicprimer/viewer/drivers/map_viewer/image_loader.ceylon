@@ -57,6 +57,7 @@ shared object imageLoader {
     MutableMap<String, Image> imageCache = HashMap<String, Image>();
     "Load an image from the cache, or if not in it, from file (and add it to the cache)"
     // TODO: Add support for SVG (presumably using Batik)
+    // TODO: return null instead of throwing if not loadable?
     shared Image loadImage(String file) {
         if (exists cached = imageCache[file]) {
             return cached;

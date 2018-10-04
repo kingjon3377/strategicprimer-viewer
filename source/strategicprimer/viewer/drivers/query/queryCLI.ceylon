@@ -18,9 +18,6 @@ import ceylon.collection {
     HashSet,
     Queue
 }
-import java.io {
-    IOException
-}
 import strategicprimer.drivers.common {
     SPOptions,
     ParamCount,
@@ -577,10 +574,6 @@ shared class QueryCLI(ICLIHelper cli, model) satisfies CLIDriver {
     "Accept and respond to commands."
     shared actual void startDriver() {
         QueryHelper helper = QueryHelper(model, cli, HuntingModel(model.map));
-        try {
-            while (helper.handleCommand()) {}
-        } catch (IOException except) { // TODO: This shouldn't be possible any more
-            log.error("I/O error", except);
-        }
+        while (helper.handleCommand()) {}
     }
 }

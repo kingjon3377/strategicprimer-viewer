@@ -123,7 +123,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                             portrait = imageLoader.loadImage(portraitName);
                         } catch (IOException except) {
                             log.warn("I/O error loading portrait", except);
-                        }
+                        } // TODO: Should fall back to player portrait on failure to load specific portrait
                     } else if (is HasOwner selectedValue){
                         String playerPortraitName = selectedValue.owner.portrait;
                         if (!playerPortraitName.empty) {
