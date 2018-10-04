@@ -20,9 +20,6 @@ import java.awt {
 import java.awt.event {
     ActionEvent
 }
-import java.io {
-    IOException
-}
 import java.lang {
     JInteger=Integer,
     JString=String
@@ -246,26 +243,22 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
     shared actual void startDriver() {
         MutableList<Player> players = ArrayList { elements = model.players; };
         IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
-        try {
-            while (!players.empty, exists chosen = cli.chooseFromList(players,
-                    "Players in the maps:", "No players found.",
-                    "Player to add resources for: ", false).item) {
-                players.remove(chosen);
-                while (cli.inputBoolean("Keep going? ")) {
-                    if (cli.inputBooleanInSeries(
-                        "Enter a (quantified) resource? ")) {
-                        enterResource(idf, chosen);
-                    } else if (cli.inputBooleanInSeries(
-                        "Enter equipment etc.? ")) {
-                        enterImplement(idf, chosen);
-                    }
-                }
-                if (!cli.inputBoolean("Choose another player?")) {
-                    break;
+        while (!players.empty, exists chosen = cli.chooseFromList(players,
+                "Players in the maps:", "No players found.",
+                "Player to add resources for: ", false).item) {
+            players.remove(chosen);
+            while (cli.inputBoolean("Keep going? ")) {
+                if (cli.inputBooleanInSeries(
+                    "Enter a (quantified) resource? ")) {
+                    enterResource(idf, chosen);
+                } else if (cli.inputBooleanInSeries(
+                    "Enter equipment etc.? ")) {
+                    enterImplement(idf, chosen);
                 }
             }
-        } catch (IOException except) { // TODO: This shouldn't be possible anymore
-            throw DriverFailedException(except, "I/O error interacting with user");
+            if (!cli.inputBoolean("Choose another player?")) {
+                break;
+            }
         }
     }
 }
