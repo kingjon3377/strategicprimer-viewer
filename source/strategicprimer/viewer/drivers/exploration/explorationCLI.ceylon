@@ -1,12 +1,8 @@
-import java.io {
-    IOException
-}
 import ceylon.logging {
     logger,
     Logger
 }
 import strategicprimer.drivers.common {
-    DriverFailedException,
     DriverUsage,
     ParamCount,
     IDriverUsage,
@@ -60,15 +56,11 @@ shared class ExplorationCLIFactory() satisfies ModelDriverFactory {
 class ExplorationCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IExplorationModel model;
     shared actual void startDriver() {
-        try {
-            ExplorationCLIHelper eCLI = ExplorationCLIHelper(model, cli);
-            if (exists player = eCLI.choosePlayer(),
-                    exists unit = eCLI.chooseUnit(player)) {
-                model.selectedUnit = unit;
-                eCLI.moveUntilDone();
-            }
-        } catch (IOException except) { // TODO: Shouldn't be possible anymore
-            throw DriverFailedException(except, "I/O error interacting with user");
+        ExplorationCLIHelper eCLI = ExplorationCLIHelper(model, cli);
+        if (exists player = eCLI.choosePlayer(),
+                exists unit = eCLI.chooseUnit(player)) {
+            model.selectedUnit = unit;
+            eCLI.moveUntilDone();
         }
     }
 }
