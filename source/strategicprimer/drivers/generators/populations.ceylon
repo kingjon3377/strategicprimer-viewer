@@ -78,12 +78,11 @@ shared class PopulationGeneratingCLIFactory() satisfies ModelDriverFactory {
 }
 "A driver to let the user generate animal and shrub populations, meadow and grove sizes,
  and forest acreages."
-shared class PopulationGeneratingCLI(ICLIHelper cli, IDriverModel model)
-        satisfies CLIDriver {
-    "Whether the given number is positive." // TODO: make static // TODO: why is this shared?
-    shared Boolean positiveNumber(Number<out Anything> number) => number.positive;
-    Boolean negativeNumber(Number<out Anything> number) => number.negative; // TODO: make static
-    Decimal decimalize(Number<out Anything> number) { // TODO: make statc
+shared class PopulationGeneratingCLI satisfies CLIDriver {
+    "Whether the given number is positive." // TODO: why is this shared?
+    shared static Boolean positiveNumber(Number<out Anything> number) => number.positive;
+    static Boolean negativeNumber(Number<out Anything> number) => number.negative;
+    static Decimal decimalize(Number<out Anything> number) {
         assert (is Decimal|Whole|Integer|Float number);
         switch (number)
         case (is Decimal) {
@@ -92,6 +91,12 @@ shared class PopulationGeneratingCLI(ICLIHelper cli, IDriverModel model)
         case (is Integer|Float|Whole) {
             return decimalNumber(number);
         }
+    }
+    ICLIHelper cli;
+    IDriverModel model;
+    shared new(ICLIHelper cli, IDriverModel model) {
+        this.cli = cli;
+        this.model = model;
     }
     IMutableMapNG map = model.map;
     void generateAnimalPopulations(Boolean talking, String kind) {
