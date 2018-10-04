@@ -102,8 +102,8 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
         return retval;
     }
     "Read from the input stream repeatedly until a valid non-negative decimal number is
-     entered, then return it. On EOF returns NaN."
-    shared actual Decimal inputDecimal(String prompt) {
+     entered, then return it. Returns null on EOF."
+    shared actual Decimal? inputDecimal(String prompt) {
         variable Decimal retval = decimalNumber(-1);
         Decimal zero = decimalNumber(0);
         while (retval.compare(zero) == smaller) {
@@ -115,7 +115,7 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
                     println("Invalid number.");
                 }
             } else {
-                return decimalNumber(0.0/0.0); // FIXME: Check that this actually produces a NaN instead of throwing
+                return null;
             }
         }
         return retval;

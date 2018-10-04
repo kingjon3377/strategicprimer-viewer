@@ -296,7 +296,12 @@ class TownGenerator(ICLIHelper cli) {
                 break;
             }
             String contents = cli.inputString("Specific kind of resource: ").trimmed;
-            Decimal quantity = cli.inputDecimal("Quantity of the resource produced: ");
+            Decimal quantity;
+            if (exists temp = cli.inputDecimal("Quantity of the resource produced: ")) {
+                quantity = temp;
+            } else {
+                break;
+            }
             String units = cli.inputString("Units of that quantity: ").trimmed;
             ResourcePile pile = ResourcePile(idf.createID(), kind, contents,
                 Quantity(quantity, units));
@@ -309,7 +314,12 @@ class TownGenerator(ICLIHelper cli) {
                 break;
             }
             String contents = cli.inputString("Specific kind of resource: ").trimmed;
-            Decimal quantity = cli.inputDecimal("Quantity of the resource consumed: ");
+            Decimal quantity;
+            if (exists temp = cli.inputDecimal("Quantity of the resource consumed: ")) {
+                quantity = temp;
+            } else {
+                break;
+            }
             String units = cli.inputString("Units of that quantity: ").trimmed;
             ResourcePile pile = ResourcePile(idf.createID(), kind, contents,
                 Quantity(quantity, units));

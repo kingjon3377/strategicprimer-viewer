@@ -42,8 +42,8 @@ shared interface ICLIHelper {
             "The prompt to prompt the user with."
             String prompt);
     "Read from the input stream repeatedly until a valid non-negative decimal number is
-     entered, then return it. On EOF returns NaN."
-    shared formal Decimal inputDecimal(
+     entered, then return it. Returns null on EOF."
+    shared formal Decimal? inputDecimal(
             "The prompt to prompt the user with."
             String prompt);
     "Read a line of input. It is trimmed of leading and trailing whitespace."

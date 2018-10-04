@@ -226,8 +226,10 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options,
         } else {
             contents = origContents;
         }
-        model.addResource(ResourcePile(idf.createID(), kind, contents, Quantity(
-            cli.inputDecimal("Quantity in ``units``?"), units)), player);
+        if (exists quantity = cli.inputDecimal("Quantity in ``units``?")) {
+            model.addResource(ResourcePile(idf.createID(), kind, contents, Quantity(
+                quantity, units)), player);
+        }
     }
     "Ask the user to enter an Implement (a piece of equipment)"
     void enterImplement(IDRegistrar idf, Player player) {

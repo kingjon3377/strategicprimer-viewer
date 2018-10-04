@@ -143,6 +143,10 @@ object cliTests {
             decimalNumber(1) / decimalNumber(10),
             "inputDecimal asks again on non-numerc input",
             "inputDecimal asks again on non-numeric input");
+        assertCLI(`ICLIHelper.inputDecimal`, ["test prompt five "], [],
+            ["test prompt five "], null,
+            "inputDecimal produces null on EOF",
+            "inputDecimal doesn't prompt again on EOF");
     }
     "Test for inputString()"
     test
