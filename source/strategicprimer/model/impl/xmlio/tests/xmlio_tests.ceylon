@@ -149,7 +149,7 @@ String[] fieldTypes = ["wheat", "amaranth", "bluegrass"];
 String[] minerals = ["coal", "platinum", "oil"];
 object xmlTests {
     PathWrapper fakeFilename = PathWrapper("");
-    [ISPReader+] readers = [testReaderFactory.oldReader, testReaderFactory.newReader];
+    [<ISPReader&IMapReader>+] readers = [testReaderFactory.oldReader, testReaderFactory.newReader];
     "Assert that the given XML will produce the given kind of warning and that the warning
      satisfies the given additional assertions. If [[desideratum]] is [[null]], assert
      that the exception is always thrown; if not, assert that the XML will fail with
@@ -364,7 +364,6 @@ object xmlTests {
      methods)."
     void assertMapDeserialization(String message, IMapNG expected, String xml) {
         for (reader in readers) {
-            assert (is IMapReader reader); // TODO: Use Iterable.narrow() instead
             try (stringReader = StringReader(xml)) {
                 assertEquals(reader.readMapFromStream(fakeFilename, stringReader,
                     warningLevels.die), expected, message);
