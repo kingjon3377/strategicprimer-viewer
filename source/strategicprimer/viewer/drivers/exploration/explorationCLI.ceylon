@@ -57,7 +57,8 @@ shared class ExplorationCLIFactory() satisfies ModelDriverFactory {
 
 }
 "A CLI to help running exploration."
-class ExplorationCLI(ICLIHelper cli, IExplorationModel model) satisfies CLIDriver {
+class ExplorationCLI(ICLIHelper cli, model) satisfies CLIDriver {
+    shared actual IExplorationModel model;
     shared actual void startDriver() {
         try {
             ExplorationCLIHelper eCLI = ExplorationCLIHelper(model, cli);

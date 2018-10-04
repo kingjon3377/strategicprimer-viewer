@@ -41,7 +41,8 @@ shared class SubsetCLIFactory() satisfies ModelDriverFactory {
 }
 
 "A driver to check whether player maps are subsets of the main map."
-shared class SubsetCLI(ICLIHelper cli, IDriverModel model) satisfies ReadOnlyDriver {
+shared class SubsetCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
+    shared actual IDriverModel model;
     shared actual void startDriver() {
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.subordinateMaps) {

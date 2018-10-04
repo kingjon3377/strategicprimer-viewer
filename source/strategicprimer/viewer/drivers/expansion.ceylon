@@ -80,10 +80,11 @@ shared class ExpansionDriverFactory() satisfies ModelDriverFactory {
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""
 // FIXME: Write GUI for map-expanding driver
-shared class ExpansionDriver(ICLIHelper cli, SPOptions options, IDriverModel model)
+shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
         satisfies CLIDriver {
+    shared actual IDriverModel model;
     shared actual void startDriver() {
-        if (is IMultiMapModel model) {
+        if (is IMultiMapModel model) { // TODO: Require this interface for the parameter?
             IMapNG master = model.map;
             for (map->[path, _] in model.subordinateMaps) {
                 Player currentPlayer = map.currentPlayer; // TODO: move these inner methods to the top level of the object
@@ -201,8 +202,9 @@ shared class MapPopulatorFactory() satisfies ModelDriverFactory {
 """A driver to add some kind of fixture to suitable tiles throughout the map. Customize
    the [[populator]] field before each use."""
 // TODO: Write GUI equivalent of Map Populator Driver
-shared class MapPopulatorDriver(ICLIHelper cli, SPOptions options,
-        IDriverModel model) satisfies CLIDriver {
+shared class MapPopulatorDriver(ICLIHelper cli, SPOptions options, model)
+        satisfies CLIDriver {
+    shared actual IDriverModel model;
     "The object that does the heavy lifting of populating the map. This is the one field
      that should be changed before each populating pass."
     MapPopulator populator = sampleMapPopulator;

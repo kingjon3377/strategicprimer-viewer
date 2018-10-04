@@ -88,8 +88,9 @@ shared class AdvancementGUIFactory() satisfies GUIDriverFactory {
 
 }
 "The worker-advancement GUI driver."
-shared class AdvancementGUI(ICLIHelper cli, SPOptions options, IWorkerModel model)
+shared class AdvancementGUI(ICLIHelper cli, SPOptions options, model)
         satisfies GUIDriver {
+    shared actual IWorkerModel model;
     void reload(PlayerChangeListener frame) =>
             frame.playerChanged(model.currentPlayer, model.currentPlayer);
     void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {

@@ -148,7 +148,7 @@ shared class MapTradeCLI satisfies CLIDriver {
                 "Ground")
         ].flatMap(flatten);
     ICLIHelper cli;
-    IMultiMapModel model;
+    shared actual IMultiMapModel model;
     shared new (ICLIHelper cli, IMultiMapModel model) {
         this.cli = cli;
         this.model = model;

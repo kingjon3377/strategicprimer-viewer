@@ -168,8 +168,8 @@ shared class ResourceAddingCLIFactory() satisfies ModelDriverFactory {
 
 }
 "A driver to let the user enter a player's resources and equipment."
-class ResourceAddingCLI(ICLIHelper cli, SPOptions options,
-        ResourceManagementDriverModel model) satisfies CLIDriver {
+class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLIDriver {
+    shared actual ResourceManagementDriverModel model;
     MutableSet<String> resourceKinds = HashSet<String>();
     MutableMultimap<String, String> resourceContents =
             HashMultimap<String, String>();
@@ -361,7 +361,7 @@ class ResourceAddingGUI satisfies GUIDriver {
     }
     static String resourceLabelText(Player player) => "Add resource for ``player.name``:";
     static String equipmentLabelText(Player player) => "Add equipment for ``player.name``:";
-    ResourceManagementDriverModel model;
+    shared actual ResourceManagementDriverModel model;
     ICLIHelper cli;
     SPOptions options;
     shared new (ICLIHelper cli, SPOptions options, ResourceManagementDriverModel model) {

@@ -87,7 +87,7 @@ shared class TrappingCLI satisfies CLIDriver {
         }
     }
     ICLIHelper cli;
-    IDriverModel model;
+    shared actual IDriverModel model;
     shared new (ICLIHelper cli, IDriverModel model) {
         this.cli = cli;
         this.model = model;

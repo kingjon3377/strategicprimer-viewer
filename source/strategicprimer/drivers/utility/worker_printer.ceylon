@@ -60,7 +60,7 @@ class WorkerPrintCLI satisfies ReadOnlyDriver {
     static String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
     static String jobString(IJob job) => job.name + " " + job.level.string;
     ICLIHelper cli;
-    IExplorationModel model;
+    shared actual IExplorationModel model;
     shared new (ICLIHelper cli, IExplorationModel model) {
         this.cli = cli;
         this.model = model;

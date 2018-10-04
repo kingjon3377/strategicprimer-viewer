@@ -83,8 +83,8 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
 }
 
 "A driver to start the map viewer."
-shared class ViewerGUI(ICLIHelper cli, SPOptions options,
-        IViewerModel model) satisfies GUIDriver {
+shared class ViewerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDriver {
+    shared actual IViewerModel model;
     void center() {
         Point selection = model.selection;
         MapDimensions dimensions = model.mapDimensions;

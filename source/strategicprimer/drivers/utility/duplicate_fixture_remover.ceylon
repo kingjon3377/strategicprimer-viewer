@@ -194,7 +194,7 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
         return combined;
     }
     ICLIHelper cli;
-    IDriverModel model;
+    shared actual IDriverModel model;
     shared new (ICLIHelper cli, IDriverModel model) {
         this.cli = cli;
         this.model = model;

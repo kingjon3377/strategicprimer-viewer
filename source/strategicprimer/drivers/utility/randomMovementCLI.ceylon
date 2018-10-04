@@ -49,8 +49,8 @@ shared class RandomMovementFactory() satisfies ModelDriverFactory {
 }
 
 "An app to move independent units around at random."
-class RandomMovementCLI(ICLIHelper cli, SPOptions options,
-        IExplorationModel model) satisfies CLIDriver {
+class RandomMovementCLI(ICLIHelper cli, SPOptions options, model) satisfies CLIDriver {
+    shared actual IExplorationModel model;
     shared actual void startDriver() {
         for (unit in model.playerChoices.filter(Player.independent)
                 .flatMap(model.getUnits).sequence()) {

@@ -52,8 +52,9 @@ shared class StrategyExportFactory() satisfies ModelDriverFactory {
             WorkerModel(map, path);
 }
 "A command-line program to export a proto-strategy for a player from orders in a map."
-shared class StrategyExportCLI(ICLIHelper cli, SPOptions options,
-        IWorkerModel model) satisfies ReadOnlyDriver {
+shared class StrategyExportCLI(ICLIHelper cli, SPOptions options, model)
+        satisfies ReadOnlyDriver {
+    shared actual IWorkerModel model;
     shared actual void startDriver() {
         if (options.hasOption("--export")) {
             StrategyExporter(model, options).writeStrategy(parsePath(

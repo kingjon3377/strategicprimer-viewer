@@ -139,7 +139,7 @@ class StatGeneratingCLI satisfies CLIDriver {
     static Integer threeDeeSix() => die(6) + die(6) + die(6);
     static Float villageChance(Integer days) => 0.4.powerOfInteger(days);
     ICLIHelper cli;
-    IExplorationModel model;
+    shared actual IExplorationModel model;
     shared new (ICLIHelper cli, IExplorationModel model) {
         this.cli = cli;
         this.model = model;

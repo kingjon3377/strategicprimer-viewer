@@ -550,7 +550,8 @@ shared class TownGeneratingCLIFactory() satisfies ModelDriverFactory {
 }
 "A driver to let the user enter or generate 'stats' for towns."
 // TODO: Write GUI to allow user to generate or enter town contents
-shared class TownGeneratingCLI(ICLIHelper cli, IDriverModel model) satisfies CLIDriver {
+shared class TownGeneratingCLI(ICLIHelper cli, model) satisfies CLIDriver {
+    shared actual IDriverModel model;
     shared actual void startDriver() {
         TownGenerator generator = TownGenerator(cli); // TODO: Consider combining that with this class again.
         IDRegistrar idf;

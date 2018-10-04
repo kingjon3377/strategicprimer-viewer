@@ -142,8 +142,9 @@ shared class ForestFixerFactory() satisfies ModelDriverFactory {
             SimpleMultiMapModel(map, path);
 }
 "A driver to fix ID mismatches between forests and Ground in the main and player maps."
-shared class ForestFixerDriver(ICLIHelper cli, SPOptions options, IMultiMapModel model)
+shared class ForestFixerDriver(ICLIHelper cli, SPOptions options, model)
         satisfies CLIDriver {
+    shared actual IMultiMapModel model;
     {Forest*} extractForests(IMapNG map, Point location) =>
 //            map.fixtures[location].narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed
             map.fixtures.get(location).narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed

@@ -75,8 +75,9 @@ shared class AdvancementCLIFactory() satisfies ModelDriverFactory {
             WorkerModel(map, path);
 }
 "The worker-advancement CLI driver."
-shared class AdvancementCLI(ICLIHelper cli, SPOptions options, IWorkerModel model)
+shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
         satisfies CLIDriver {
+    shared actual IWorkerModel model;
     "Let the user add hours to a Skill or Skills in a Job."
     void advanceJob(IJob job, Boolean allowExpertMentoring) {
         MutableList<ISkill> skills = ArrayList{ elements = job; };
