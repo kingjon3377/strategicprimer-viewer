@@ -120,7 +120,7 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                             log.info("It was '``tableLine``'");
                         }
                     } else {
-                        String left = splitted.first;
+                        String left = splitted.first; // TODO: Inline these two lines into assertion
                         value leftVal = TileType.parse(left);
                         "Terrain tables must only contain recognized tile types"
                         assert (is TileType leftVal);

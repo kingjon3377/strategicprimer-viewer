@@ -505,7 +505,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         for (event in eventReader) {
             if (is StartElement event, isSPStartElement(event)) {
                 Object retval = readSPObject(event, QName("root"), eventReader, players,
-                    warner, idFactory);
+                    warner, idFactory); // TODO: inline into assertion
                 assert (is Type retval);
                 return retval;
             }

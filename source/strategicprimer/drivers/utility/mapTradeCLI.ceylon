@@ -90,7 +90,10 @@ shared class MapTradeFactory() satisfies ModelDriverFactory {
         "Trade maps", "Copy contents from one map to another.", true, false, "source.xml",
         "destination.xml");
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => MapTradeCLI(cli, model);
+            IDriverModel model) {
+        assert (is IMultiMapModel model);
+        return MapTradeCLI(cli, model);
+    }
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
@@ -145,8 +148,8 @@ shared class MapTradeCLI satisfies CLIDriver {
                 "Ground")
         ].flatMap(flatten);
     ICLIHelper cli;
-    IDriverModel model;
-    shared new (ICLIHelper cli, IDriverModel model) {
+    IMultiMapModel model;
+    shared new (ICLIHelper cli, IMultiMapModel model) {
         this.cli = cli;
         this.model = model;
     }
@@ -170,8 +173,7 @@ shared class MapTradeCLI satisfies CLIDriver {
     }
     shared actual void startDriver() {
         IMapNG first = model.map;
-        assert (is IMultiMapModel model,
-            exists second = model.subordinateMaps.first?.key);
+        assert (exists second = model.subordinateMaps.first?.key);
         if (cli.inputBoolean("Copy players?")) {
             first.players.each(second.addPlayer);
         }

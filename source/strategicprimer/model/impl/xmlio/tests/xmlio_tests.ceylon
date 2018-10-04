@@ -364,7 +364,7 @@ object xmlTests {
      methods)."
     void assertMapDeserialization(String message, IMapNG expected, String xml) {
         for (reader in readers) {
-            assert (is IMapReader reader);
+            assert (is IMapReader reader); // TODO: Use Iterable.narrow() instead
             try (stringReader = StringReader(xml)) {
                 assertEquals(reader.readMapFromStream(fakeFilename, stringReader,
                     warningLevels.die), expected, message);

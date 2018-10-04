@@ -73,7 +73,10 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
         }
     }
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => ViewerGUI(cli, options, model);
+            IDriverModel model) {
+        assert (is IViewerModel model);
+        return ViewerGUI(cli, options, model);
+    }
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             ViewerModel(map, path);
@@ -81,8 +84,7 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
 
 "A driver to start the map viewer."
 shared class ViewerGUI(ICLIHelper cli, SPOptions options,
-        IDriverModel model) satisfies GUIDriver {
-    assert (is IViewerModel model);
+        IViewerModel model) satisfies GUIDriver {
     void center() {
         Point selection = model.selection;
         MapDimensions dimensions = model.mapDimensions;

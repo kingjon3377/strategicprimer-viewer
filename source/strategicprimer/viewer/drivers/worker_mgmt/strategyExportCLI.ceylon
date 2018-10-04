@@ -44,14 +44,16 @@ shared class StrategyExportFactory() satisfies ModelDriverFactory {
             "--summarize-large-units" ];
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => StrategyExportCLI(cli, options, model);
+            IDriverModel model) {
+        assert (is IWorkerModel model);
+        return StrategyExportCLI(cli, options, model);
+    }
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             WorkerModel(map, path);
 }
 "A command-line program to export a proto-strategy for a player from orders in a map."
 shared class StrategyExportCLI(ICLIHelper cli, SPOptions options,
-        IDriverModel model) satisfies ReadOnlyDriver {
-    assert (is IWorkerModel model);
+        IWorkerModel model) satisfies ReadOnlyDriver {
     shared actual void startDriver() {
         if (options.hasOption("--export")) {
             StrategyExporter(model, options).writeStrategy(parsePath(

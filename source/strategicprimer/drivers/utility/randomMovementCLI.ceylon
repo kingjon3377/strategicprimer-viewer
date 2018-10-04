@@ -39,16 +39,18 @@ shared class RandomMovementFactory() satisfies ModelDriverFactory {
         "Move independent units randomly around the map.",
         true, false); // TODO: We'd like a GUI for this, perhaps adding customization or limiting the area or something
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => RandomMovementCLI(cli, options, model);
+            IDriverModel model) {
+        assert (is IExplorationModel model);
+        return RandomMovementCLI(cli, options, model);
+    }
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             ExplorationModel(map, path);
 }
 
 "An app to move independent units around at random."
-shared class RandomMovementCLI(ICLIHelper cli, SPOptions options,
-        IDriverModel model) satisfies CLIDriver {
-    assert (is IExplorationModel model);
+class RandomMovementCLI(ICLIHelper cli, SPOptions options,
+        IExplorationModel model) satisfies CLIDriver {
     shared actual void startDriver() {
         for (unit in model.playerChoices.filter(Player.independent)
                 .flatMap(model.getUnits).sequence()) {

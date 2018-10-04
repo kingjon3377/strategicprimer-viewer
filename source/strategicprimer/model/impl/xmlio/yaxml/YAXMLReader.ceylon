@@ -62,7 +62,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
         IDRegistrar idFactory = IDFactory();
         if (exists event = eventReader.narrow<StartElement>().first) {
             Object retval = YAReaderAdapter(warner, idFactory).parse(event, QName("root"),
-                eventReader);
+                eventReader); // TODO: inline into assertion
             assert (is Element retval);
             return retval;
         } else {
