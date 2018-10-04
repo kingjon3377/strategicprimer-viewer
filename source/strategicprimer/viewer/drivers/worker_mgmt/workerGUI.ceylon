@@ -91,7 +91,7 @@ shared class WorkerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDr
     shared actual IWorkerModel model;
     void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {
         log.trace("Inside GUI creation lambda");
-        value frame = WorkerMgmtFrame(options, model, menuHandler, cli, this);
+        value frame = WorkerMgmtFrame(options, model, menuHandler, this);
         log.trace("Created worker mgmt frame");
         pcml.addPlayerChangeListener(frame);
         log.trace("Added it as a listener on the PCML");
@@ -114,8 +114,8 @@ shared class WorkerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDr
             frame.playerChanged(model.currentPlayer, model.currentPlayer);
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
-        menuHandler.register(IOHandler(this, options, cli), "load", "save",
-            "save as", "new", "load secondary", "save all", "open in map viewer",
+        menuHandler.register(IOHandler(this), "load", "save", "save as", "new",
+            "load secondary", "save all", "open in map viewer",
             "open secondary map in map viewer", "close", "quit");
         PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
         menuHandler.register(pcml, "change current player");

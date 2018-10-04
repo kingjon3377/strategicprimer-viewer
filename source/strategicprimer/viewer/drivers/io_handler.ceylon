@@ -19,7 +19,8 @@ import java.nio.file {
 
 import javax.swing {
     JFileChooser,
-    JOptionPane
+    JOptionPane,
+    SwingUtilities
 }
 import javax.swing.filechooser {
     FileNameExtensionFilter,
@@ -55,18 +56,15 @@ import strategicprimer.model.common.xmlio {
 }
 import strategicprimer.viewer.drivers.map_viewer {
     ViewerModel,
-    ViewerGUIFactory
+    ViewerGUIFactory,
+    ViewerGUI
 }
 import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
-    SPOptions,
     ISPDriver,
     ModelDriver,
     GUIDriver
-}
-import strategicprimer.drivers.common.cli {
-    ICLIHelper
 }
 import strategicprimer.drivers.gui.common {
     ISPWindow
@@ -110,12 +108,8 @@ shared class IOHandler
         }
     }
     ISPDriver driver;
-    SPOptions options;
-    ICLIHelper cli;
-    shared new (ISPDriver driver, SPOptions options, ICLIHelper cli) {
+    shared new (ISPDriver driver) {
         this.driver = driver;
-        this.options = options;
-        this.cli = cli;
     }
     "If any files are marked as modified, ask the user whether to save them before
      closing/quitting."
@@ -242,10 +236,9 @@ shared class IOHandler
         }
         case ("new") {
             if (is ModelDriver driver) {
-                vgf.createDriver(cli, options,
-                    vgf.createModel(SPMapNG(driver.model.mapDimensions,
-                        PlayerCollection(), driver.model.map.currentTurn), null))
-                    .startDriver();
+                SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
+                    ViewerGUI), [vgf.createModel(SPMapNG(driver.model.mapDimensions,
+                    PlayerCollection(), driver.model.map.currentTurn), null)]));
             } else {
                 log.error("IOHandler asked to 'new' in driver it can't do that from");
             }
@@ -283,8 +276,8 @@ shared class IOHandler
         }
         case ("open in map viewer") {
             if (is ModelDriver driver) {
-                vgf.createDriver(cli, options, ViewerModel.copyConstructor(driver.model))
-                    .startDriver();
+                SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
+                    ViewerGUI), [ViewerModel.copyConstructor(driver.model)]));
             } else {
                 log.error(
                     "IOHandler asked to 'open in map viewer' in unsupported driver");
@@ -294,8 +287,8 @@ shared class IOHandler
             if (is ModelDriver driver) {
                 if (is IMultiMapModel mapModel = driver.model,
                         exists mapEntry = mapModel.subordinateMaps.first) {
-                    vgf.createDriver(cli, options, ViewerModel.fromEntry(mapEntry))
-                        .startDriver();
+                    SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
+                        ViewerGUI), [ViewerModel.fromEntry(mapEntry)]));
                 } else { // TODO: handle non-multi-model and proper-model-with-no-secondaries separately
                     log.error(
                         "IOHandler asked to 'open secondary in map viewer'; none there");

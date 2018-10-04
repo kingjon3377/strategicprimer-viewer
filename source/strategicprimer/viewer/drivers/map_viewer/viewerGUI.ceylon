@@ -75,15 +75,15 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         assert (is IViewerModel model);
-        return ViewerGUI(cli, options, model);
+        return ViewerGUI(model);
     }
 
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
+    shared actual IViewerModel createModel(IMutableMapNG map, PathWrapper? path) =>
             ViewerModel(map, path);
 }
 
-"A driver to start the map viewer." // TODO: Try to get rid of 'cli' and 'options' usage, so we don't have to pass them into ViewerFrame
-shared class ViewerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDriver {
+"A driver to start the map viewer."
+shared class ViewerGUI(model) satisfies GUIDriver {
     shared actual IViewerModel model;
     void center() {
         Point selection = model.selection;
@@ -112,8 +112,7 @@ shared class ViewerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDr
             topRow + visible.height, leftColumn, leftColumn + visible.width);
     }
     void createWindow(MenuBroker menuHandler) {
-        SPFrame&MapGUI frame = ViewerFrame(model,
-            menuHandler.actionPerformed, cli, options, this);
+        SPFrame&MapGUI frame = ViewerFrame(model, menuHandler.actionPerformed, this);
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
         value selectTileDialogInstance = SelectTileDialog(frame, model);
         menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");
@@ -137,8 +136,8 @@ shared class ViewerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDr
     }
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
-        menuHandler.register(IOHandler(this, options, cli), "load", "save",
-            "save as", "new", "load secondary", "save all", "open in map viewer",
+        menuHandler.register(IOHandler(this), "load", "save", "save as", "new",
+            "load secondary", "save all", "open in map viewer",
             "open secondary map in map viewer", "close", "quit");
         menuHandler.register(silentListener(model.zoomIn), "zoom in");
         menuHandler.register(silentListener(model.zoomOut), "zoom out");
@@ -158,7 +157,7 @@ shared class ViewerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDr
     shared actual void open(IMutableMapNG map, PathWrapper? path) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
-                ViewerGUI), [cli, options, ViewerModel(map, path)]));
+                ViewerGUI), [ViewerModel(map, path)]));
         } else {
             model.setMap(map, path);
         }
