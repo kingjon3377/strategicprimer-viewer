@@ -61,9 +61,6 @@ import strategicprimer.drivers.common {
     ModelDriver,
     SimpleMultiMapModel
 }
-import java.io {
-    IOException
-}
 import lovelace.util.common {
     NonNullCorrespondence,
     simpleMap,
@@ -329,18 +326,14 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
     }
     "Run the driver"
     shared actual void startDriver() {
-        try {
-            if (is IMultiMapModel model) {
-                for (map->[file, _] in model.allMaps) {
-                    removeDuplicateFixtures(map);
-                    model.setModifiedFlag(map, true);
-                }
-            } else {
-                removeDuplicateFixtures(model.map);
-                model.mapModified = true;
+        if (is IMultiMapModel model) {
+            for (map->[file, _] in model.allMaps) {
+                removeDuplicateFixtures(map);
+                model.setModifiedFlag(map, true);
             }
-        } catch (IOException except) { // TODO: This shouldn't be possible anymore
-            throw DriverFailedException(except, "I/O error interacting with user");
+        } else {
+            removeDuplicateFixtures(model.map);
+            model.mapModified = true;
         }
     }
 }
