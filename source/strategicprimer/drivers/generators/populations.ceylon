@@ -79,8 +79,8 @@ shared class PopulationGeneratingCLIFactory() satisfies ModelDriverFactory {
 "A driver to let the user generate animal and shrub populations, meadow and grove sizes,
  and forest acreages."
 shared class PopulationGeneratingCLI satisfies CLIDriver {
-    "Whether the given number is positive." // TODO: why is this shared?
-    shared static Boolean positiveNumber(Number<out Anything> number) => number.positive;
+    "Whether the given number is positive."
+    static Boolean positiveNumber(Number<out Anything> number) => number.positive;
     static Boolean negativeNumber(Number<out Anything> number) => number.negative;
     static Decimal decimalize(Number<out Anything> number) {
         assert (is Decimal|Whole|Integer|Float number);
