@@ -94,7 +94,7 @@ shared class AdvancementGUI(ICLIHelper cli, SPOptions options, model)
     void reload(PlayerChangeListener frame) =>
             frame.playerChanged(model.currentPlayer, model.currentPlayer);
     void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {
-        SPFrame&PlayerChangeListener frame = advancementFrame(model, menuHandler);
+        SPFrame&PlayerChangeListener frame = advancementFrame(model, menuHandler, this);
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
         pcml.addPlayerChangeListener(frame);
         value reloadListener = silentListener(defer(reload, [frame])); // TODO: Inline once eclipse/ceylon#7379 fixed

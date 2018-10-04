@@ -105,7 +105,6 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 import strategicprimer.drivers.exploration.common {
     Direction,
-    IExplorationModel,
     Speed,
     MovementCostListener,
     MovementCostSource,
@@ -133,7 +132,7 @@ import javax.swing.event {
     ListDataEvent
 }
 "The main window for the exploration GUI."
-SPFrame explorationFrame(IExplorationModel model,
+SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this back into ExplorationGUI?
         MenuBroker menuHandler) { // TODO: Do what we can to convert nested objects/classes to top-level, etc.
     Map<Direction, KeyStroke> arrowKeys = simpleMap(
         Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkUp, 0),
@@ -152,8 +151,8 @@ SPFrame explorationFrame(IExplorationModel model,
         Direction.southwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad1, 0),
         Direction.nowhere->KeyStroke.getKeyStroke(KeyEvent.vkNumpad5, 0)
     );
-    SPFrame retval = SPFrame("Exploration", model.mapFile, Dimension(768, 48), true,
-        (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file));
+    SPFrame retval = SPFrame("Exploration", driver.model.mapFile, Dimension(768, 48), true,
+        (file) => driver.model.addSubordinateMap(mapIOHelper.readMap(file), file)); // TODO: Use driver-interface method once it's available
     CardLayout layoutObj = CardLayout();
     retval.setLayout(layoutObj);
     SpinnerNumberModel mpModel = SpinnerNumberModel(0, 0, 2000, 0);
@@ -162,18 +161,18 @@ SPFrame explorationFrame(IExplorationModel model,
             satisfies PlayerChangeListener {
         shared actual void playerChanged(Player? old, Player newPlayer) {
             clear();
-            model.getUnits(newPlayer).each(addElement);
+            driver.model.getUnits(newPlayer).each(addElement);
         }
     }
     SwingList<IUnit> unitList = SwingList<IUnit>(unitListModel);
-    PlayerListModel playerListModel = PlayerListModel(model);
+    PlayerListModel playerListModel = PlayerListModel(driver.model);
     SwingList<Player> playerList = SwingList<Player>(playerListModel);
     MutableList<Anything()> completionListeners =
             ArrayList<Anything()>();
     void buttonListener(ActionEvent event) {
         if (exists selectedValue = unitList.selectedValue,
                 !unitList.selectionEmpty) {
-            model.selectedUnit = selectedValue;
+            driver.model.selectedUnit = selectedValue;
             for (listener in completionListeners) {
                 listener();
             }
@@ -193,7 +192,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 completionListeners.add(listener);
         shared actual void removeCompletionListener(Anything() listener) =>
                 completionListeners.remove(listener);
-        model.addMapChangeListener(playerListModel);
+        driver.model.addMapChangeListener(playerListModel);
         void handlePlayerChanged() {
             layoutObj.first(retval.contentPane);
             if (!playerList.selectionEmpty,
@@ -276,7 +275,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 return;
             }
             for (direction in `Direction`.caseValues) {
-                Point point = model.getDestination(newPoint, direction);
+                Point point = driver.model.getDestination(newPoint, direction);
                 if (exists speedChangeListener = speedChangeListeners[direction]) {
                     speedChangeListener.point = point;
                 }
@@ -322,16 +321,16 @@ SPFrame explorationFrame(IExplorationModel model,
                 remainingMPLabel, mpField, speedLabel, speedBox));
         headerLayout.setVerticalGroup(headerLayout.parallelGroupOf(explorerChangeButton,
             locLabel, remainingMPLabel, mpField, speedLabel, speedBox));
-        IMutableMapNG secondMap;
-        if (exists entry = model.subordinateMaps.first) {
+        IMutableMapNG secondMap; // TODO: Add 'secondMap' field to IExplorationModel (as IMap), to improve no-second-map to a-second-map transition
+        if (exists entry = driver.model.subordinateMaps.first) {
             secondMap = entry.key;
         } else {
-            secondMap = model.map;
+            secondMap = driver.model.map;
         }
-        IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
-        HuntingModel huntingModel = HuntingModel(model.map);
+        IDRegistrar idf = createIDFactory(driver.model.allMaps.map(Entry.key));
+        HuntingModel huntingModel = HuntingModel(driver.model.map);
         AnimalTracks? tracksCreator(Point point) {
-            if (exists terrain = model.map.baseTerrain[point]) {
+            if (exists terrain = driver.model.map.baseTerrain[point]) {
                 {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*}(Point) source;
                 if (terrain == TileType.ocean) {
                     source = huntingModel.fish;
@@ -381,19 +380,19 @@ SPFrame explorationFrame(IExplorationModel model,
                 return retval;
             }
             void villageSwearingAction() {
-                model.swearVillages();
-                //model.map.fixtures[model.selectedUnitLocation].narrow<Village>() // TODO: syntax sugar once compiler bug fixed
-                model.map.fixtures.get(model.selectedUnitLocation).narrow<Village>()
-                    .each(selectedValuesList.add);
+                driver.model.swearVillages();
+                //model.map.fixtures[model.selectedUnitLocation] // TODO: syntax sugar once compiler bug fixed
+                driver.model.map.fixtures.get(driver.model.selectedUnitLocation)
+                    .narrow<Village>().each(selectedValuesList.add);
             }
             "A list of things the explorer can do: pairs of explanations (in the
              form of questions to ask the user to see if the explorer does them)
              and references to methods for doing them."
-            {[String, Anything()]*} explorerActions = [[
+            {[String, Anything()]*} explorerActions = [[ // TODO: Fix indentation
                 "Should the explorer swear any villages on this tile?",
                 villageSwearingAction],
                 ["Should the explorer dig to find what kind of ground is here?",
-                model.dig]];
+                driver.model.dig]];
             void actionPerformedImpl() {
                 try {
                     value fixtures = selectedValuesList;
@@ -407,13 +406,13 @@ SPFrame explorationFrame(IExplorationModel model,
                             }
                         }
                     }
-                    model.move(direction, speedSource());
-                    Point destPoint = model.selectedUnitLocation;
-                    Player player = model.selectedUnit ?. owner else
-                    PlayerImpl(- 1, "no-one");
+                    driver.model.move(direction, speedSource());
+                    Point destPoint = driver.model.selectedUnitLocation;
+                    Player player = driver.model.selectedUnit ?. owner else
+                    PlayerImpl(- 1, "no-one"); // TODO: fix indentation
                     MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
-                    for (map->[file, _] in model.subordinateMaps) {
-                        map.baseTerrain[destPoint] = model.map
+                    for (map->[file, _] in driver.model.subordinateMaps) {
+                        map.baseTerrain[destPoint] = driver.model.map
 //                                            .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
                                 .baseTerrain.get(destPoint);
                         for (fixture in fixtures) {
@@ -437,14 +436,14 @@ SPFrame explorationFrame(IExplorationModel model,
                                 }
                             }
                         }
-                        model.setModifiedFlag(map, true);
+                        driver.model.setModifiedFlag(map, true);
                     }
                     for (cache in caches) {
-                        model.map.removeFixture(destPoint, cache);
+                        driver.model.map.removeFixture(destPoint, cache);
                     }
                 } catch (TraversalImpossibleException except) {
                     log.debug("Attempted movement to impassable destination", except);
-                    Point selection = model.selectedUnitLocation;
+                    Point selection = driver.model.selectedUnitLocation;
                     for (listener in selectionListeners) {
                         listener.selectedPointChanged(null, selection);
                     }
@@ -457,8 +456,8 @@ SPFrame explorationFrame(IExplorationModel model,
                     SwingUtilities.invokeLater(actionPerformedImpl);
         }
         void markModified() {
-            for (map->_ in model.allMaps) {
-                model.setModifiedFlag(map, true);
+            for (map->_ in driver.model.allMaps) {
+                driver.model.setModifiedFlag(map, true);
             }
         }
         object selectionChangeListenerObject satisfies SelectionChangeListener {
@@ -478,11 +477,11 @@ SPFrame explorationFrame(IExplorationModel model,
                 Direction.southeast]) {
             SelectionChangeSupport mainPCS = SelectionChangeSupport();
             SwingList<TileFixture>&SelectionChangeListener mainList =
-                    fixtureList(tilesPanel, FixtureListModel(model.map, tracksCreator),
-                idf, markModified, model.map.players);
+                    fixtureList(tilesPanel, FixtureListModel(driver.model.map, tracksCreator),
+                idf, markModified, driver.model.map.players);
             mainPCS.addSelectionChangeListener(mainList);
             tilesPanel.add(JScrollPane(mainList));
-            DualTileButton dtb = DualTileButton(model.map, secondMap,
+            DualTileButton dtb = DualTileButton(driver.model.map, secondMap,
                 matchers);
             // At some point we tried wrapping the button in a JScrollPane.
             tilesPanel.add(dtb);
@@ -497,9 +496,9 @@ SPFrame explorationFrame(IExplorationModel model,
             object ell satisfies SelectionChangeListener {
                 variable Boolean outsideCritical = true;
                 shared actual void selectedPointChanged(Point? old, Point newPoint) {
-                    SwingUtilities.invokeLater(() {
+                    SwingUtilities.invokeLater(() { // TODO: Convert lambda to named method in object
                         if (outsideCritical, exists selectedUnit =
-                            model.selectedUnit) {
+                                driver.model.selectedUnit) {
                             outsideCritical = false;
                             mainList.clearSelection();
                             MutableList<[Integer, TileFixture]> constants =
@@ -532,7 +531,7 @@ SPFrame explorationFrame(IExplorationModel model,
                 }
             }
             // mainList.model.addListDataListener(ell);
-            model.addSelectionChangeListener(ell);
+            driver.model.addSelectionChangeListener(ell);
             ecl.addSelectionChangeListener(ell);
             SwingList<TileFixture>&SelectionChangeListener secList =
                     fixtureList(tilesPanel, FixtureListModel(secondMap, (point) => null),
@@ -546,12 +545,12 @@ SPFrame explorationFrame(IExplorationModel model,
             mains[direction] = mainPCS;
             buttons[direction] = dtb;
             seconds[direction] = secPCS;
-            ell.selectedPointChanged(null, model.selectedUnitLocation);
+            ell.selectedPointChanged(null, driver.model.selectedUnitLocation);
         }
     }
     explorationPanel.center = verticalSplit(headerPanel, tilesPanel);
-    model.addMovementCostListener(explorationPanel);
-    model.addSelectionChangeListener(explorationPanel);
+    driver.model.addMovementCostListener(explorationPanel);
+    driver.model.addSelectionChangeListener(explorationPanel);
     variable Boolean onFirstPanel = true;
     void swapPanels() {
         explorationPanel.validate();
@@ -569,9 +568,9 @@ SPFrame explorationFrame(IExplorationModel model,
     retval.add(explorerSelectingPanel);
     retval.add(explorationPanel);
     (retval of Component).preferredSize = Dimension(1024, 640);
-    retval.jMenuBar = SPMenu(SPMenu.createFileMenu(menuHandler.actionPerformed, model),
-        SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler.actionPerformed, model)),
-        SPMenu.createViewMenu(menuHandler.actionPerformed, model), WindowMenu(retval));
+    retval.jMenuBar = SPMenu(SPMenu.createFileMenu(menuHandler.actionPerformed, driver),
+        SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler.actionPerformed, driver)),
+        SPMenu.createViewMenu(menuHandler.actionPerformed, driver), WindowMenu(retval));
     retval.pack();
     return retval;
 }

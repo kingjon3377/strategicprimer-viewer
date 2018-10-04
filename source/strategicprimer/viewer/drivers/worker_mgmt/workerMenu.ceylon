@@ -12,7 +12,7 @@ import java.awt.event {
     ActionEvent
 }
 import strategicprimer.drivers.common {
-    IDriverModel
+    ISPDriver
 }
 "A set of menus for the worker GUI (and other related apps)."
 shared JMenuBar workerMenu(
@@ -20,7 +20,7 @@ shared JMenuBar workerMenu(
         Anything(ActionEvent) handler,
         """The window this is to be attached to, which should close on "Close"."""
         JFrame parentFrame,
-        "The current driver model."
-        IDriverModel model) => SPMenu(SPMenu.createFileMenu(handler, model),
-            SPMenu.disabledMenu(SPMenu.createMapMenu(handler, model)),
-            SPMenu.createViewMenu(handler, model), WindowMenu(parentFrame));
+        "The current driver."
+        ISPDriver driver) => SPMenu(SPMenu.createFileMenu(handler, driver),
+            SPMenu.disabledMenu(SPMenu.createMapMenu(handler, driver)),
+            SPMenu.createViewMenu(handler, driver), WindowMenu(parentFrame));

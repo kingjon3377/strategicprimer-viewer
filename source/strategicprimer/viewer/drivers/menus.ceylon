@@ -36,11 +36,12 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.drivers.common {
-    IDriverModel,
-    IMultiMapModel
+    IMultiMapModel,
+    ISPDriver,
+    ModelDriver
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    IViewerModel
+    ViewerGUI
 }
 import strategicprimer.drivers.worker.common {
     IWorkerModel
@@ -94,21 +95,31 @@ shared class SPMenu extends JMenuBar {
 //    shared static Anything() defaultQuit => localDefaultQuit;
     "Create the file menu."
     shared static JMenu createFileMenu(/*ActionListener|*/Anything(ActionEvent) handler,
-            IDriverModel model) {
+            ISPDriver driver) {
         JMenu fileMenu = JMenu("File");
         fileMenu.mnemonic = KeyEvent.vkF;
         JMenuItem newItem = createMenuItem("New", KeyEvent.vkN,
             "Create a new, empty map the same size as the current one", handler,
             createAccelerator(KeyEvent.vkN));
         fileMenu.add(newItem);
-        if (!model is IViewerModel) {
+        if (!driver is ViewerGUI) { // TODO: Should have an interface for drivers supporting 'new'
             newItem.enabled = false;
         }
-        String desc = (model is IMultiMapModel) then "the main" else "the";
-        String loadCaption = "Load ``(model is IMultiMapModel) then "the main" else "a"
-            `` map from file";
-        String saveCaption = "Save ``desc`` map to the file it was loaded from";
-        String saveAsCaption = "Save ``desc`` map to file";
+        String desc;
+        String loadCaption;
+        String saveCaption;
+        String saveAsCaption;
+        if (is ModelDriver driver, driver.model is IMultiMapModel) { // TODO: Should have an interface for drivers supporting secondary maps (use it below as well)
+            desc = "the main";
+            loadCaption = "Load the main map from file";
+            saveCaption = "Save the main map to the file it was loaded from";
+            saveAsCaption = "Save the main map to file";
+        } else {
+            desc = "the";
+            loadCaption = "Load a map from file";
+            saveCaption = "Save the map to the file it was loaded from";
+            saveAsCaption = "Save the map to file";
+        }
         fileMenu.add(createMenuItem("Load", KeyEvent.vkL, loadCaption, handler,
             createAccelerator(KeyEvent.vkO)));
         JMenuItem loadSecondaryItem = createMenuItem("Load secondary",
@@ -122,7 +133,8 @@ shared class SPMenu extends JMenuBar {
         JMenuItem saveAllItem = createMenuItem("Save All", KeyEvent.vkV,
             "Save all maps to their files", handler, createAccelerator(KeyEvent.vkL));
         fileMenu.add(saveAllItem);
-        if (!model is IMultiMapModel) {
+        if (is ModelDriver driver, driver.model is IMultiMapModel) {
+        } else {
             loadSecondaryItem.enabled = false;
             saveAllItem.enabled = false;
         }
@@ -138,7 +150,7 @@ shared class SPMenu extends JMenuBar {
             "Open the main map in the map viewer for a broader view", handler,
             openViewerHotkey);
         fileMenu.add(openViewerItem);
-        if (model is IViewerModel) {
+        if (driver is ViewerGUI) {
             openViewerItem.enabled = false;
         }
         JMenuItem openSecondaryViewerItem = createMenuItem(
@@ -146,7 +158,8 @@ shared class SPMenu extends JMenuBar {
             "Open the first secondary map in the map vieer for a broader view",
             handler, createAccelerator(KeyEvent.vkE));
         fileMenu.add(openSecondaryViewerItem);
-        if (model is IViewerModel || !model is IMultiMapModel) {
+        if (is ModelDriver driver, driver.model is IMultiMapModel) {
+        } else {
             openSecondaryViewerItem.enabled = false;
         }
         fileMenu.addSeparator();
@@ -175,7 +188,7 @@ shared class SPMenu extends JMenuBar {
         return fileMenu;
     }
     """Create the "map" menu, including go-to-tile, find, and zooming functions."""
-    shared static JMenu createMapMenu(Anything(ActionEvent) handler, IDriverModel model) {
+    shared static JMenu createMapMenu(Anything(ActionEvent) handler, ISPDriver driver) {
         JMenu retval = JMenu("Map");
         retval.mnemonic = KeyEvent.vkM;
         Integer findKey = KeyEvent.vkF;
@@ -190,7 +203,7 @@ shared class SPMenu extends JMenuBar {
         JMenuItem nextItem = createMenuItem("Find next", nextKey,
             "Find the next fixture matching the pattern", handler, nextStroke,
             KeyStroke.getKeyStroke(nextKey, 0));
-        if (!model is IViewerModel) {
+        if (!driver is ViewerGUI) { // TODO: Interface for drivers supporting 'go to tile'?
             gotoTileItem.enabled = false;
             findItem.enabled = false;
             nextItem.enabled = false;
@@ -227,7 +240,7 @@ shared class SPMenu extends JMenuBar {
     }
     """Create the "view" menu."""
     shared static JMenu createViewMenu(Anything(ActionEvent) handler,
-            IDriverModel model) {
+            ISPDriver driver) {
         JMenu viewMenu = JMenu("View");
         viewMenu.mnemonic = KeyEvent.vkE;
 
@@ -244,7 +257,7 @@ shared class SPMenu extends JMenuBar {
                 "Collapse all nodes in the unit tree", handler)
         ];
         JMenuItem currentPlayerItem;
-        if (is IWorkerModel model) {
+        if (is ModelDriver driver, is IWorkerModel model = driver.model) { // TODO: Interface for this distinction
             currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
                 "Look at a different player's units and workers", handler,
                 createAccelerator(KeyEvent.vkP));

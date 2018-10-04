@@ -43,7 +43,8 @@ import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
 import strategicprimer.drivers.common {
-    PlayerChangeListener
+    PlayerChangeListener,
+    ModelDriver
 }
 import strategicprimer.model.impl.xmlio {
     mapIOHelper
@@ -57,7 +58,7 @@ import lovelace.util.common {
 }
 "A GUI to let a user manage workers."
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
-        MenuBroker menuHandler) { // TODO: Try to convert/partially convert back to a class
+        MenuBroker menuHandler, ModelDriver driver) { // TODO: Try to convert/partially convert back to a class
     IMapNG map = model.map;
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
     IDRegistrar idf = createIDFactory(map);
@@ -127,7 +128,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
                     BorderedPanel.verticalPanel(html("Add a Skill to the selected Job:"),
                         null, skillAdditionPanel)), hoursAdditionPanel), 0.5, 0.3));
     retval.playerChanged(null, model.currentPlayer);
-    retval.jMenuBar = workerMenu(menuHandler.actionPerformed, retval, model);
+    retval.jMenuBar = workerMenu(menuHandler.actionPerformed, retval, driver);
     retval.pack();
     return retval;
 }

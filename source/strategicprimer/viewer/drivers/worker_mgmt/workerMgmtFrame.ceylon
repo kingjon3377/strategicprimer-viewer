@@ -94,10 +94,10 @@ import strategicprimer.viewer.drivers {
 }
 import strategicprimer.viewer.drivers.map_viewer {
     NewUnitDialog,
-    ViewerFrame,
     ViewerModel,
     IViewerModel,
-    MapGUI
+    MapGUI,
+    ViewerGUI
 }
 import strategicprimer.model.impl.xmlio {
     mapIOHelper
@@ -114,6 +114,9 @@ import strategicprimer.drivers.gui.common {
 }
 import ceylon.interop.java {
     JavaRunnable
+}
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
 }
 "A window to let the player manage units."
 class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
@@ -135,7 +138,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
             return retval;
         }
     }
-    static IViewerModel getViewerModel(IDriverModel model, MenuBroker menuHandler) {
+    static IViewerModel getViewerModel(IDriverModel model, MenuBroker menuHandler,
+            SPOptions options, ICLIHelper cli) { // TODO: drop 'cli' once ViewerGUI no longer requires it
         if (exists frame = WindowList.getFrames(false, true, true).array.narrow<MapGUI>()
                 .find(matchingValue(model.mapFile, compose(IViewerModel.mapFile,
                     MapGUI.mapModel)))) {
@@ -145,20 +149,20 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
             }
             return frame.mapModel;
         } else {
-            SPFrame&MapGUI frame = ViewerFrame(ViewerModel(model.map,
-                model.mapFile), menuHandler.actionPerformed);
-            SwingUtilities.invokeLater(frame.showWindow);
-            return frame.mapModel;
+            ViewerGUI viewerGUI = ViewerGUI(cli, options, ViewerModel.copyConstructor(model));
+            SwingUtilities.invokeLater(viewerGUI.startDriver);
+            return viewerGUI.model;
         }
     }
     static class ReportMouseHandler(JTree reportTree, IDriverModel model,
-            MenuBroker menuHandler) extends MouseAdapter() {
+                MenuBroker menuHandler, SPOptions options, ICLIHelper cli)
+            extends MouseAdapter() {
         shared actual void mousePressed(MouseEvent event) {
             if (exists selPath = reportTree.getPathForLocation(event.x, event.y),
                     platform.hotKeyPressed(event),
                     is IReportNode node = selPath.lastPathComponent) {
                 if (exists point = node.point) {
-                    IViewerModel viewerModel = getViewerModel(model, menuHandler);
+                    IViewerModel viewerModel = getViewerModel(model, menuHandler, options, cli);
                     SwingUtilities.invokeLater(() => viewerModel.selection = point); // TODO: Figure out a way to defer() an assignment
                 }
             }
@@ -167,13 +171,17 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     SPOptions options;
     IWorkerModel model;
     MenuBroker menuHandler;
-    shared new (SPOptions options, IWorkerModel model, MenuBroker menuHandler)
-            extends SPFrame("Worker Management", model.mapFile,
+    ICLIHelper cli; // TODO: Remove from here and constructor once no longer needed
+    WorkerGUI driver;
+    shared new (SPOptions options, IWorkerModel model, MenuBroker menuHandler,
+            ICLIHelper cli, WorkerGUI driver) extends SPFrame("Worker Management", model.mapFile,
                 Dimension(640, 480), true,
                 (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file)) {
         this.options = options;
         this.model = model;
         this.menuHandler = menuHandler;
+        this.cli = cli;
+        this.driver = driver;
     }
 
     Point findHQ() {
@@ -198,7 +206,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         report.cellRenderer = ReportTreeRenderer(DistanceComparator(findHQ(),
             model.mapDimensions));
         ToolTipManager.sharedInstance().registerComponent(report);
-        report.addMouseListener(ReportMouseHandler(report, model, menuHandler));
+        report.addMouseListener(ReportMouseHandler(report, model, menuHandler, options, cli));
         return report;
     }
     IMapNG mainMap = model.map;
@@ -298,6 +306,6 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     assert (exists thisReference =
             ComponentParentStream(contentPane).narrow<JFrame>().first);
     jMenuBar = workerMenu(menuHandler.actionPerformed,
-        thisReference, model);
+        thisReference, driver);
     pack();
 }

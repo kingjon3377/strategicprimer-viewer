@@ -91,7 +91,7 @@ shared class WorkerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDr
     shared actual IWorkerModel model;
     void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {
         log.trace("Inside GUI creation lambda");
-        value frame = WorkerMgmtFrame(options, model, menuHandler);
+        value frame = WorkerMgmtFrame(options, model, menuHandler, cli, this);
         log.trace("Created worker mgmt frame");
         pcml.addPlayerChangeListener(frame);
         log.trace("Added it as a listener on the PCML");

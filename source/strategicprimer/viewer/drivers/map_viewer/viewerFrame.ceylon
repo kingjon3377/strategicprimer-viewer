@@ -51,7 +51,8 @@ import lovelace.util.jvm {
 import strategicprimer.drivers.common {
     VersionChangeListener,
     SelectionChangeListener,
-    FixtureMatcher
+    FixtureMatcher,
+    SPOptions
 }
 import strategicprimer.model.common.map {
     TileFixture,
@@ -70,6 +71,9 @@ import strategicprimer.drivers.gui.common {
 import java.lang {
     JThread=Thread
 }
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
+}
 
 "The main window for the map viewer app."
 shared final class ViewerFrame extends SPFrame satisfies MapGUI {
@@ -86,15 +90,21 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
     shared actual IViewerModel mapModel;
     shared actual String windowName = "Map Viewer";
     Anything(ActionEvent) menuHandler;
-    shared new(IViewerModel model, Anything(ActionEvent) menuListener)
-            extends SPFrame("Map Viewer", model.mapFile) {
+    ICLIHelper cli;
+    SPOptions options;
+    ViewerGUI driver;
+    shared new(IViewerModel model, Anything(ActionEvent) menuListener, ICLIHelper cli,
+            SPOptions options, ViewerGUI driver) extends SPFrame("Map Viewer", model.mapFile) {
         mapModel = model;
         menuHandler = menuListener;
+        this.cli = cli;
+        this.options = options;
+        this.driver = driver;
     }
     void acceptDroppedFileImpl(PathWrapper file) {
         value map = mapReaderAdapter.readMapModel(file, warningLevels.default);
-        SwingUtilities.invokeLater(defer(compose(ViewerFrame.showWindow, ViewerFrame),
-            [ViewerModel.copyConstructor(map), menuHandler]));
+        SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver, ViewerGUI),
+            [cli, options, ViewerModel.copyConstructor(map)]));
     }
     void setMapWrapper(IMutableMapNG map, PathWrapper file, Boolean modified) =>
             mapModel.setMap(map, file, modified);
@@ -177,8 +187,8 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
     }
     addWindowListener(windowSizeListener);
     addWindowStateListener(windowSizeListener);
-    jMenuBar = SPMenu(SPMenu.createFileMenu(menuHandler, mapModel),
-        SPMenu.createMapMenu(menuHandler, mapModel),
-        SPMenu.createViewMenu(menuHandler, mapModel),
+    jMenuBar = SPMenu(SPMenu.createFileMenu(menuHandler, driver),
+        SPMenu.createMapMenu(menuHandler, driver),
+        SPMenu.createViewMenu(menuHandler, driver),
         WindowMenu(containingWindow(mapPanel)));
 }

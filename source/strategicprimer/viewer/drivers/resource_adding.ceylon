@@ -508,7 +508,7 @@ class ResourceAddingGUI satisfies GUIDriver {
             }
         }
         retval.add(verticalSplit(mainPanel, scrolledLog, 0.2, 0.1));
-        retval.jMenuBar = workerMenu(menuHandler, retval, model);
+        retval.jMenuBar = workerMenu(menuHandler, retval, this);
         retval.pack();
         logLabel.minimumSize = Dimension(retval.width - 20, 50);
         JComponent temp = logLabel;

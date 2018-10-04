@@ -82,7 +82,7 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
             ViewerModel(map, path);
 }
 
-"A driver to start the map viewer."
+"A driver to start the map viewer." // TODO: Try to get rid of 'cli' and 'options' usage, so we don't have to pass them into ViewerFrame
 shared class ViewerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDriver {
     shared actual IViewerModel model;
     void center() {
@@ -113,7 +113,7 @@ shared class ViewerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDr
     }
     void createWindow(MenuBroker menuHandler) {
         SPFrame&MapGUI frame = ViewerFrame(model,
-            menuHandler.actionPerformed);
+            menuHandler.actionPerformed, cli, options, this);
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
         value selectTileDialogInstance = SelectTileDialog(frame, model);
         menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");
