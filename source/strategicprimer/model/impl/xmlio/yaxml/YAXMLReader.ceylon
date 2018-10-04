@@ -61,9 +61,8 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
         {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
         IDRegistrar idFactory = IDFactory();
         if (exists event = eventReader.narrow<StartElement>().first) {
-            Object retval = YAReaderAdapter(warner, idFactory).parse(event, QName("root"),
-                eventReader); // TODO: inline into assertion
-            assert (is Element retval);
+            assert (is Element retval = YAReaderAdapter(warner, idFactory).parse(event, QName("root"),
+                eventReader));
             return retval;
         } else {
             throw XMLStreamException("XML stream didn't contain a start element");
