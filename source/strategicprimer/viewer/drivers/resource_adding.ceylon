@@ -108,7 +108,8 @@ import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    defer
 }
 
 "A driver model for resource-entering drivers."
@@ -541,6 +542,15 @@ class ResourceAddingGUI satisfies GUIDriver {
         } catch (FileChooser.ChoiceInterruptedException except) {
             throw DriverFailedException(except,
                 "Choice interrupted or user didn't choose");
+        }
+    }
+    shared actual void open(IMutableMapNG map, PathWrapper? path) {
+        if (model.mapModified) {
+            SwingUtilities.invokeLater(defer(compose(ResourceAddingGUI.startDriver,
+                ResourceAddingGUI), [cli, options,
+                    ResourceManagementDriverModel.fromMap(map, path)]));
+        } else {
+            model.setMap(map, path);
         }
     }
 }

@@ -132,4 +132,12 @@ shared class WorkerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDr
             return [];
         }
     }
+    shared actual void open(IMutableMapNG map, PathWrapper? path) {
+        if (model.mapModified) {
+            SwingUtilities.invokeLater(defer(compose(WorkerGUI.startDriver,
+                WorkerGUI), [cli, options, WorkerModel(map, path)]));
+        } else {
+            model.setMap(map, path);
+        }
+    }
 }

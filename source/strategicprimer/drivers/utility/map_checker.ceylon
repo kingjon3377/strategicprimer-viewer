@@ -309,7 +309,7 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         }
     }
 }
-"The map-checker GUI window."
+"The map-checker GUI window." // TODO: Add an way to "open" files from the menu
 class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
         Dimension(640, 320), true, noop, "Map Checker") {
     StreamingLabel label = StreamingLabel();

@@ -155,4 +155,12 @@ shared class ViewerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDr
                 "Choice interrupted or user didn't choose");
         }
     }
+    shared actual void open(IMutableMapNG map, PathWrapper? path) {
+        if (model.mapModified) {
+            SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
+                ViewerGUI), [cli, options, ViewerModel(map, path)]));
+        } else {
+            model.setMap(map, path);
+        }
+    }
 }

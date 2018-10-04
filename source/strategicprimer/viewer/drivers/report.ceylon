@@ -334,6 +334,9 @@ shared class TabularReportGUI(ICLIHelper cli, SPOptions options, model)
                 "Choice interrupted or user didn't choose");
         }
     }
+    shared actual void open(IMutableMapNG map, PathWrapper? path) =>
+            model.setMap(map, path); // FIXME: Make sure GUI replaces existing reports with these instead of ignoring this!
+
 }
 "A factory for a driver to produce tabular (CSV) reports of the contents of a player's
  map."

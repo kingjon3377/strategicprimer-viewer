@@ -100,4 +100,12 @@ class ExplorationGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDriv
                 "Choice interrupted or user didn't choose");
         }
     }
+    shared actual void open(IMutableMapNG map, PathWrapper? path) {
+        if (model.mapModified) {
+            SwingUtilities.invokeLater(defer(compose(ExplorationGUI.startDriver,
+                ExplorationGUI), [cli, options, ExplorationModel(map, path)]));
+        } else {
+            model.setMap(map, path);
+        }
+    }
 }

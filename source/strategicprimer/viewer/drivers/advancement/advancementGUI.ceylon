@@ -126,4 +126,12 @@ shared class AdvancementGUI(ICLIHelper cli, SPOptions options, model)
                 "Choice interrupted or user didn't choose");
         }
     }
+    shared actual void open(IMutableMapNG map, PathWrapper? path) {
+        if (model.mapModified) {
+            SwingUtilities.invokeLater(defer(compose(AdvancementGUI.startDriver,
+                AdvancementGUI), [cli, options, WorkerModel(map, path)]));
+        } else {
+            model.setMap(map, path);
+        }
+    }
 }

@@ -64,7 +64,7 @@ shared class SPFrame(String windowTitle, PathWrapper? file, Dimension? minSize =
         "The name of the window, for use in customizing the About dialog"
         shared actual default String windowName = windowTitle)
         extends JFrame(windowTitle) satisfies ISPWindow {
-    if (exists file) {
+    if (exists file) { // TODO: Make title dynamic, based on possibly-changing filename and 'modified' flag
         title = "``file`` | ``windowTitle``";
         rootPane.putClientProperty("Window.documentFile",
             JPaths.get(file.string).toFile());
