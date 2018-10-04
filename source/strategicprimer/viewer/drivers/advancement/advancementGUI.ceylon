@@ -110,7 +110,7 @@ shared class AdvancementGUI(ICLIHelper cli, SPOptions options, model)
     }
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
-        menuHandler.register(IOHandler(model, options, cli), "load", "save",
+        menuHandler.register(IOHandler(this, options, cli), "load", "save",
             "save as", "new", "load secondary", "save all", "open in map viewer",
             "open secondary map in map viewer", "close", "quit");
         PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);

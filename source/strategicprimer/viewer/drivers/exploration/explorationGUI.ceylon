@@ -86,7 +86,7 @@ class ExplorationGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDriv
     }
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
-        menuHandler.register(IOHandler(model, options, cli), "load", "save",
+        menuHandler.register(IOHandler(this, options, cli), "load", "save",
             "save as", "new", "load secondary", "save all", "open in map viewer",
             "open secondary map in map viewer", "close", "quit");
         SwingUtilities.invokeLater(defer(createWindow, [menuHandler]));

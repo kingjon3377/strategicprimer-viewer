@@ -60,7 +60,10 @@ import strategicprimer.viewer.drivers.map_viewer {
 import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
-    SPOptions
+    SPOptions,
+    ISPDriver,
+    ModelDriver,
+    GUIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -106,11 +109,11 @@ shared class IOHandler
             return retval;
         }
     }
-    IDriverModel mapModel;
+    ISPDriver driver;
     SPOptions options;
     ICLIHelper cli;
-    shared new (IDriverModel mapModel, SPOptions options, ICLIHelper cli) {
-        this.mapModel = mapModel;
+    shared new (ISPDriver driver, SPOptions options, ICLIHelper cli) {
+        this.driver = driver;
         this.options = options;
         this.cli = cli;
     }
@@ -118,6 +121,8 @@ shared class IOHandler
      closing/quitting."
     void maybeSave(String verb, Frame? window, Component? source,
             Anything() ifNotCanceled) {
+        assert (is ModelDriver driver);
+        IDriverModel mapModel = driver.model;
         if (mapModel.mapModified) {
             String prompt;
             if (is IMultiMapModel mapModel, !mapModel.subordinateMaps.empty) {
@@ -173,9 +178,14 @@ shared class IOHandler
             handleError(except, path.string, source, errorTitle, "reading");
         }
     }
-    void loadHandler(Component? source, String errorTitle) =>
-            SPFileChooser.open(null).call(loadHandlerImpl(mapModel.setMap, source,
+    void loadHandler(Component? source, String errorTitle) {
+        if (is GUIDriver driver) {
+            SPFileChooser.open(null).call(loadHandlerImpl(driver.open, source,
                 errorTitle));
+        } else {
+            log.error("IOHandler asked to 'load' in app that doesn't support that");
+        }
+    }
     shared actual void actionPerformed(ActionEvent event) {
         Component? source = as<Component>(event.source);
         variable String errorTitle = "Strategic Primer Assistive Programs";
@@ -190,81 +200,127 @@ shared class IOHandler
         }
         switch (event.actionCommand.lowercased)
         case ("load") { // TODO: Open in another window if modified flag set instead of prompting before overwriting
-            maybeSave("loading another map", as<Frame>(iter), source,
-                defer(loadHandler, [source, errorTitle]));
+            if (is ModelDriver driver) {
+                maybeSave("loading another map", as<Frame>(iter), source,
+                    defer(loadHandler, [source, errorTitle]));
+            } else {
+                log.error("IOHandler asked to 'load' in unsupported app");
+            }
         }
         case ("save") {
-            if (exists givenFile = mapModel.mapFile) {
-                try {
-                    mapIOHelper.writeMap(givenFile, mapModel.map);
-                    mapModel.mapModified = false;
-                } catch (IOException except) {
-                    handleError(except, givenFile.string, source, errorTitle,
-                        "writing to");
+            if (is ModelDriver driver) {
+                if (exists givenFile = driver.model.mapFile) {
+                    try {
+                        mapIOHelper.writeMap(givenFile, driver.model.map);
+                        driver.model.mapModified = false;
+                    } catch (IOException except) {
+                        handleError(except, givenFile.string, source, errorTitle,
+                            "writing to");
+                    }
+                } else {
+                    actionPerformed(ActionEvent(event.source, event.id, "save as", event.when,
+                        event.modifiers));
                 }
             } else {
-                actionPerformed(ActionEvent(event.source, event.id, "save as", event.when,
-                    event.modifiers));
+                log.error("IOHandler asked to save in driver it can't do that for");
             }
         }
         case ("save as") {
-            FileChooser.save(null, filteredFileChooser(false)).call((path) {
-                try {
-                    mapIOHelper.writeMap(path, mapModel.map);
-                    mapModel.mapFile = path;
-                    mapModel.mapModified = false;
-                } catch (IOException except) {
-                    handleError(except, path.string, source, errorTitle, "writing to");
-                }
-            });
+            if (is ModelDriver driver) {
+                FileChooser.save(null, filteredFileChooser(false)).call((path) {
+                    try {
+                        mapIOHelper.writeMap(path, driver.model.map);
+                        driver.model.mapFile = path;
+                        driver.model.mapModified = false;
+                    } catch (IOException except) {
+                        handleError(except, path.string, source, errorTitle, "writing to");
+                    }
+                });
+            } else {
+                log.error("IOHandler asked to save-as in driver it can't do that for");
+            }
         }
         case ("new") {
-            vgf.createDriver(cli, options, vgf.createModel(SPMapNG(mapModel.mapDimensions,
-                PlayerCollection(), mapModel.map.currentTurn), null)).startDriver();
+            if (is ModelDriver driver) {
+                vgf.createDriver(cli, options,
+                    vgf.createModel(SPMapNG(driver.model.mapDimensions,
+                        PlayerCollection(), driver.model.map.currentTurn), null))
+                    .startDriver();
+            } else {
+                log.error("IOHandler asked to 'new' in driver it can't do that from");
+            }
         }
         case ("load secondary") { // TODO: Investigate how various apps handle transitioning between no secondaries and one secondary map.
-            if (is IMultiMapModel mapModel) {
+            if (is ModelDriver driver, is IMultiMapModel mapModel = driver.model) {
                 SPFileChooser.open(null).call(loadHandlerImpl(mapModel.addSubordinateMap,
                     source, errorTitle));
+            } else {
+                log.error(
+                    "IOHandler asked to 'load secondary' in driver it can't do that for");
             }
         }
         case ("save all") {
-            if (is IMultiMapModel mapModel) {
-                for (map->[file, _] in mapModel.allMaps) {
-                    if (exists file) {
-                        try {
-                            mapIOHelper.writeMap(file, map);
-                            mapModel.setModifiedFlag(map, false);
-                        } catch (IOException except) {
-                            handleError(except, file.string, source, errorTitle,
-                                "writing to");
+            if (is ModelDriver driver) {
+                if (is IMultiMapModel mapModel = driver.model) {
+                    for (map->[file, _] in mapModel.allMaps) {
+                        if (exists file) {
+                            try {
+                                mapIOHelper.writeMap(file, map);
+                                mapModel.setModifiedFlag(map, false);
+                            } catch (IOException except) {
+                                handleError(except, file.string, source, errorTitle,
+                                    "writing to");
+                            }
                         }
                     }
+                } else {
+                    actionPerformed(ActionEvent(event.source, event.id, "save", event.when,
+                        event.modifiers));
                 }
             } else {
-                actionPerformed(ActionEvent(event.source, event.id, "save", event.when,
-                    event.modifiers));
+                log.error("IOHandler asked to 'save all' in driver it can't do that for");
             }
         }
         case ("open in map viewer") {
-            vgf.createDriver(cli, options, ViewerModel.copyConstructor(mapModel))
-                .startDriver();
+            if (is ModelDriver driver) {
+                vgf.createDriver(cli, options, ViewerModel.copyConstructor(driver.model))
+                    .startDriver();
+            } else {
+                log.error(
+                    "IOHandler asked to 'open in map viewer' in unsupported driver");
+            }
         }
         case ("open secondary map in map viewer") {
-            if (is IMultiMapModel mapModel,
-                    exists mapEntry = mapModel.subordinateMaps.first) {
-                vgf.createDriver(cli, options, ViewerModel.fromEntry(mapEntry))
-                    .startDriver();
+            if (is ModelDriver driver) {
+                if (is IMultiMapModel mapModel = driver.model,
+                        exists mapEntry = mapModel.subordinateMaps.first) {
+                    vgf.createDriver(cli, options, ViewerModel.fromEntry(mapEntry))
+                        .startDriver();
+                } else { // TODO: handle non-multi-model and proper-model-with-no-secondaries separately
+                    log.error(
+                        "IOHandler asked to 'open secondary in map viewer'; none there");
+                }
+            } else {
+                log.error(
+                    "IOHandler asked to 'open secondary in viewer' in unsupported app");
             }
         }
         case ("close") {
             if (is Frame local = iter) {
-                maybeSave("closing", local, source, local.dispose);
+                if (is ModelDriver driver) {
+                    maybeSave("closing", local, source, local.dispose);
+                } else {
+                    log.error("IOHandler asked to close in unsupported app");
+                }
             }
         }
         case ("quit") {
-            maybeSave("quitting", as<Frame>(iter), source, quitHandler);
-//            maybeSave("quitting", as<Frame>(iter), source, SPMenu.defaultQuit()); // TODO: switch to this once eclipse/ceylon#7396 fixed
+            if (is ModelDriver driver) {
+                maybeSave("quitting", as<Frame>(iter), source, quitHandler);
+//              maybeSave("quitting", as<Frame>(iter), source, SPMenu.defaultQuit()); // TODO: switch to this once eclipse/ceylon#7396 fixed
+            } else {
+                log.error("IOHandler asked to quit in unsupported app");
+            }
         }
         else {
             log.info("Unhandled command ``event.actionCommand`` in IOHandler");
