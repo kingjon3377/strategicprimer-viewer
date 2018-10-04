@@ -119,11 +119,9 @@ object cliTests {
             "test prompt four test prompt four ", 9,
             "inputNumber asks again on non-numeric input",
             "inputNumber asks again on non-numeric input");
-        // https://github.com/eclipse/ceylon/issues/5448
-//        try (cli = CLIHelper(LinkedList(Singleton("")).accept, noop)) {
-//           assertThatException(defer(cli.inputNumber, ["test prompt"]))
-//               .hasType(`IOException`);
-//        }
+        assertCLI(`ICLIHelper.inputNumber`, ["test prompt five "], [],
+            "test prompt five ", null, "inputNumber produces null on EOF",
+            "inputNumber doesn't ask again on EOF");
     }
     "Test inputDecimal"
     test

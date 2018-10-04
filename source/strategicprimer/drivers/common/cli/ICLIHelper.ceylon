@@ -10,6 +10,7 @@ import ceylon.collection {
 }
 """An interface for the "CLI helper," which encapsulates input and output streams,
    allowing automated testing of CLIs and GUI wrappers around CLIs."""
+// TODO: Methods beyond inputNumber/inputDecimal should abort (return null) on EOF.
 shared interface ICLIHelper {
     shared alias ListAmendment<Element> => Element?(MutableList<Element>, ICLIHelper);
     "Have the user choose an item from a list. Returns the index."
