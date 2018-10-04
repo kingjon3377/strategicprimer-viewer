@@ -388,11 +388,11 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
             "A list of things the explorer can do: pairs of explanations (in the
              form of questions to ask the user to see if the explorer does them)
              and references to methods for doing them."
-            {[String, Anything()]*} explorerActions = [[ // TODO: Fix indentation
+            {[String, Anything()]*} explorerActions = [[
                 "Should the explorer swear any villages on this tile?",
-                villageSwearingAction],
+                    villageSwearingAction],
                 ["Should the explorer dig to find what kind of ground is here?",
-                driver.model.dig]];
+                    driver.model.dig]];
             void actionPerformedImpl() {
                 try {
                     value fixtures = selectedValuesList;
@@ -409,11 +409,11 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
                     driver.model.move(direction, speedSource());
                     Point destPoint = driver.model.selectedUnitLocation;
                     Player player = driver.model.selectedUnit ?. owner else
-                    PlayerImpl(- 1, "no-one"); // TODO: fix indentation
+                        PlayerImpl(- 1, "no-one");
                     MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
                     for (map->[file, _] in driver.model.subordinateMaps) {
                         map.baseTerrain[destPoint] = driver.model.map
-//                                            .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
+//                              .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
                                 .baseTerrain.get(destPoint);
                         for (fixture in fixtures) {
                             if (is TileTypeFixture fixture) {
