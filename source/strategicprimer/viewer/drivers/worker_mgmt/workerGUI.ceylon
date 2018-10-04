@@ -66,7 +66,7 @@ shared class WorkerGUIFactory() satisfies GUIDriverFactory {
         longDescription = "Organize the members of a player's units.";
         includeInCLIList = false;
         includeInGUIList = true;
-        supportedOptionsTemp = [ "--current-turn=NN", "--print-empty",
+        supportedOptions = [ "--current-turn=NN", "--print-empty",
             "--include-unleveled-jobs", "--summarize-large-units" ];
     };
     "Ask the user to choose a file or files."

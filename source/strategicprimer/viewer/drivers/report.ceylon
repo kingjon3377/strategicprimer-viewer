@@ -133,7 +133,7 @@ shared class ReportCLIFactory() satisfies ModelDriverFactory {
         longDescription = "Produce HTML report of the contents of a map";
         includeInCLIList = true;
         includeInGUIList = false;
-        supportedOptionsTemp = [
+        supportedOptions = [
             ("\\" == operatingSystem.fileSeparator) then
             "--out=C:\\path\\to\\output.html"
             else "--out=/path/to/output.html",
@@ -345,7 +345,7 @@ shared class TabularReportCLIFactory() satisfies ModelDriverFactory {
         longDescription = "Produce CSV reports of the contents of a map.";
         includeInCLIList = true;
         includeInGUIList = false;
-        supportedOptionsTemp = ["--serve[=8080]"];
+        supportedOptions = ["--serve[=8080]"];
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {

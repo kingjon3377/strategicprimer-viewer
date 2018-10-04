@@ -34,7 +34,7 @@ shared class MiningCLIFactory satisfies UtilityDriverFactory {
         subsequentParamDescription = "status";
         includeInCLIList = true;
         includeInGUIList = false;
-        supportedOptionsTemp = [ "--seed=NN", "--banded" ];
+        supportedOptions = [ "--seed=NN", "--banded" ];
     };
     shared actual IDriverUsage usage => staticUsage;
     shared new () {}

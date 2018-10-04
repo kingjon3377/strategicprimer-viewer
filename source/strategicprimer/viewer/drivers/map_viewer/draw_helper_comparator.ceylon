@@ -69,7 +69,7 @@ shared class DrawHelperComparatorFactory satisfies UtilityDriverFactory {
            automated tests.""";
         includeInCLIList = true;
         includeInGUIList = false;
-        supportedOptionsTemp = ["--report=out.csv"];
+        supportedOptions = ["--report=out.csv"];
     };
     shared new () {}
     shared actual IDriverUsage usage => staticUsage;

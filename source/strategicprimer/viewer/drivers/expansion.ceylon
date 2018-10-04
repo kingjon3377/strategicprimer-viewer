@@ -70,7 +70,7 @@ shared class ExpansionDriverFactory() satisfies ModelDriverFactory {
                            see.";
         includeInCLIList = true;
         includeInGUIList = false;
-        supportedOptionsTemp = [ "--current-turn=NN" ];
+        supportedOptions = [ "--current-turn=NN" ];
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => ExpansionDriver(cli, options, model);
@@ -191,7 +191,7 @@ shared class MapPopulatorFactory() satisfies ModelDriverFactory {
                            a map";
         includeInCLIList = true;
         includeInGUIList = false;
-        supportedOptionsTemp = [ "--current-turn=NN" ];
+        supportedOptions = [ "--current-turn=NN" ];
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => MapPopulatorDriver(cli, options, model);

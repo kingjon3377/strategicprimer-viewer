@@ -61,7 +61,7 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
         longDescription = "Look at the map visually. This is probably the app you want.";
         includeInCLIList = false;
         includeInGUIList = true;
-        supportedOptionsTemp = [ "--current-turn=NN" ];
+        supportedOptions = [ "--current-turn=NN" ];
     };
     "Ask the user to choose a file or files."
     shared actual {PathWrapper+} askUserForFiles() {

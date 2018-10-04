@@ -89,7 +89,7 @@ shared class DuplicateFixtureRemoverFactory() satisfies ModelDriverFactory {
                            same tile) from a map.";
         includeInCLIList = true;
         includeInGUIList = false;
-        supportedOptionsTemp = [ "--current-turn=NN" ];
+        supportedOptions = [ "--current-turn=NN" ];
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => DuplicateFixtureRemoverCLI(cli, model);

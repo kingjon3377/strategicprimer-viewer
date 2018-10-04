@@ -55,7 +55,7 @@ shared class ExplorationGUIFactory() satisfies GUIDriverFactory {
                            it sees.";
         includeInCLIList = false;
         includeInGUIList = true;
-        supportedOptionsTemp = [ "--current-turn=NN" ];
+        supportedOptions = [ "--current-turn=NN" ];
     };
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {

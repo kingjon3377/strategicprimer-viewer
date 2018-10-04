@@ -154,7 +154,7 @@ shared class ResourceAddingCLIFactory() satisfies ModelDriverFactory {
         longDescription = "Add resources for players to maps.";
         includeInCLIList = true;
         includeInGUIList = false;
-        supportedOptionsTemp = [ "--current-turn=NN" ];
+        supportedOptions = [ "--current-turn=NN" ];
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
@@ -280,7 +280,7 @@ shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
         longDescription = "Add resources for players to maps";
         includeInCLIList = false;
         includeInGUIList = true;
-        supportedOptionsTemp = [ "--current-turn=NN" ];
+        supportedOptions = [ "--current-turn=NN" ];
     };
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {

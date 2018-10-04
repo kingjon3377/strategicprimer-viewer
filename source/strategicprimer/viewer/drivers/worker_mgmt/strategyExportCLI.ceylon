@@ -39,7 +39,7 @@ shared class StrategyExportFactory() satisfies ModelDriverFactory {
         longDescription = "Create a proto-strategy using orders stored in the map";
         includeInCLIList = true;
         includeInGUIList = false;
-        supportedOptionsTemp = [ "--current-turn=NN", "--print-empty",
+        supportedOptions = [ "--current-turn=NN", "--print-empty",
             "--export=filename.txt", "--include-unleveled-jobs",
             "--summarize-large-units" ];
     };

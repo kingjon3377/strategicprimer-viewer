@@ -61,7 +61,7 @@ shared class ConverterDriverFactory(
                            resolution.";
         includeInCLIList = false;
         includeInGUIList = false;
-        supportedOptionsTemp = [ "--current-turn=NN" ];
+        supportedOptions = [ "--current-turn=NN" ];
     };
     shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
             ConverterDriver(cli, options);

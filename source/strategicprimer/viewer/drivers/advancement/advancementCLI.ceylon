@@ -64,7 +64,7 @@ shared class AdvancementCLIFactory() satisfies ModelDriverFactory {
                              Job.""";
         includeInCLIList = true;
         includeInGUIList = false;
-        supportedOptionsTemp = [ "--current-turn=NN", "--allow-expert-mentoring" ];
+        supportedOptions = [ "--current-turn=NN", "--allow-expert-mentoring" ];
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
