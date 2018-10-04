@@ -21,9 +21,6 @@ import strategicprimer.drivers.worker.common {
     WorkerModel,
     IWorkerModel
 }
-import java.io {
-    IOException
-}
 import ceylon.logging {
     logger,
     Logger
@@ -309,19 +306,15 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
     "Let the user choose a player to run worker advancement for."
     shared actual void startDriver() {
         MutableList<Player> playerList = ArrayList { elements = model.players; };
-        try {
-            while (!playerList.empty, exists chosen = cli.chooseFromList(playerList,
-                    "Available players:", "No players found.", "Chosen player:",
-                    false).item) {
-                playerList.remove(chosen);
-                advanceWorkers(model, chosen,
-                    options.hasOption("--allow-expert-mentoring"));
-                if (!cli.inputBoolean("Select another player?")) {
-                    break;
-                }
+        while (!playerList.empty, exists chosen = cli.chooseFromList(playerList,
+                "Available players:", "No players found.", "Chosen player:",
+                false).item) {
+            playerList.remove(chosen);
+            advanceWorkers(model, chosen,
+                options.hasOption("--allow-expert-mentoring"));
+            if (!cli.inputBoolean("Select another player?")) {
+                break;
             }
-        } catch (IOException except) { // TODO: Shouldn't be possible anymore
-            throw DriverFailedException(except, "I/O error interacting with user");
         }
     }
 }
