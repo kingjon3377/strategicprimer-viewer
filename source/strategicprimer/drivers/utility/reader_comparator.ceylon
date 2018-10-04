@@ -1,9 +1,7 @@
 import ceylon.file {
     parsePath,
     File,
-    Reader,
-    Resource,
-    Path
+    Reader
 }
 
 import java.io {
@@ -51,7 +49,8 @@ shared class ReaderComparatorFactory() satisfies UtilityDriverFactory {
 }
 "A driver for comparing map readers."
 shared class ReaderComparator satisfies UtilityDriver {
-    static String readAll(File file) {
+    static String readAll(PathWrapper path) {
+        assert (is File file = parsePath(path.filename).resource);
         Reader reader = file.Reader();
         StringBuilder builder = StringBuilder();
         while (exists String line = reader.readLine()) {
@@ -73,17 +72,16 @@ shared class ReaderComparator satisfies UtilityDriver {
         Warning warner = warningLevels.ignore;
         for (arg in args) {
             cli.println("``arg``:");
-            Path path = parsePath(arg);
-            Resource file = path.resource;
-            if (is File file) {
-                String contents = readAll(file);
+            PathWrapper path = PathWrapper(arg);
+            if (path.possiblyReadable) {
+                String contents = readAll(path);
                 Integer readStartOne = system.nanoseconds;
-                IMapNG mapOne = readerOne.readMapFromStream(PathWrapper(path.string),
+                IMapNG mapOne = readerOne.readMapFromStream(path,
                     StringReader(contents), warner);
                 Integer readEndOne = system.nanoseconds;
                 print("Old reader took ``readEndOne - readStartOne``");
                 Integer readStartTwo = system.nanoseconds;
-                IMapNG mapTwo = readerTwo.readMapFromStream(PathWrapper(path.string),
+                IMapNG mapTwo = readerTwo.readMapFromStream(path,
                     StringReader(contents), warner);
                 Integer readEndTwo = system.nanoseconds;
                 print("New reader took ``readEndTwo - readStartTwo``");
