@@ -1,5 +1,4 @@
 import strategicprimer.drivers.common {
-    DriverFailedException,
     IDriverModel,
     DriverUsage,
     ParamCount,

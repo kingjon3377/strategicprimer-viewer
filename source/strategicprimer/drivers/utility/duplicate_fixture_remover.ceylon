@@ -53,7 +53,6 @@ import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverUsage,
     IDriverModel,
-    DriverFailedException,
     CLIDriver,
     ParamCount,
     DriverFactory,

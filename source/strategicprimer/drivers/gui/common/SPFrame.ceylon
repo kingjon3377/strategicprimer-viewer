@@ -73,7 +73,7 @@ shared class SPFrame(String windowTitle, ISPDriver driver, Dimension? minSize = 
     String refreshTitle() {
         if (is ModelDriver driver, exists file = driver.model.mapFile) {
             String retval = "``file`` | ``windowTitle``";
-            if (driver.model.mapModified) {
+            if (driver.model.mapModified) { // FIXME: Somehow watch the mapModified flag and fire a PropertyChangeEvent for the title when it changes.
                 return "*" + retval;
             } else {
                 return retval;
