@@ -121,10 +121,13 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                     if (!portraitName.empty) {
                         try {
                             portrait = imageLoader.loadImage(portraitName);
+                            repaint();
+                            return;
                         } catch (IOException except) {
                             log.warn("I/O error loading portrait", except);
-                        } // TODO: Should fall back to player portrait on failure to load specific portrait
-                    } else if (is HasOwner selectedValue){
+                        }
+                    }
+                    if (is HasOwner selectedValue) {
                         String playerPortraitName = selectedValue.owner.portrait;
                         if (!playerPortraitName.empty) {
                             try {
@@ -134,8 +137,8 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                             }
                         }
                     }
-                    repaint();
                 }
+                repaint();
             }
         }
     }
