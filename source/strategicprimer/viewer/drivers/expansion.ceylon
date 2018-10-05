@@ -73,7 +73,13 @@ shared class ExpansionDriverFactory() satisfies ModelDriverFactory {
         supportedOptions = [ "--current-turn=NN" ];
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => ExpansionDriver(cli, options, model);
+            IDriverModel model) {
+        if (is IMultiMapModel model) {
+            return ExpansionDriver(cli, options, model);
+        } else {
+            return createDriver(cli, options, SimpleMultiMapModel.copyConstructor(model));
+        }
+    }
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
@@ -82,73 +88,69 @@ shared class ExpansionDriverFactory() satisfies ModelDriverFactory {
 // FIXME: Write GUI for map-expanding driver
 shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
         satisfies CLIDriver {
-    shared actual IDriverModel model;
+    shared actual IMultiMapModel model;
     shared actual void startDriver() {
-        if (is IMultiMapModel model) { // TODO: Require this interface for the parameter?
-            IMapNG master = model.map;
-            for (map->[path, _] in model.subordinateMaps) {
-                Player currentPlayer = map.currentPlayer; // TODO: move these inner methods to the top level of the object
-                Boolean containsSwornVillage(Point point) { // TODO: fat arrow once syntax sugar in place
+        IMapNG master = model.map;
+        for (map->[path, _] in model.subordinateMaps) {
+            Player currentPlayer = map.currentPlayer; // TODO: move these inner methods to the top level of the object
+            Boolean containsSwornVillage(Point point) { // TODO: fat arrow once syntax sugar in place
 //                    return map.fixtures[point].narrow<ITownFixture>() // TODO: syntax sugar once compiler bug fixed
-                    return map.fixtures.get(point).narrow<ITownFixture>()
-                        .map(HasOwner.owner).any(currentPlayer.equals);
-                }
-                void safeAdd(Point point, TileFixture fixture) {
-                    if (map.fixtures.get(point).any(fixture.equals)) {
-                        return;
-                    } else if (is HasOwner fixture, !fixture is ITownFixture) {
-                        value zeroed = fixture.copy(fixture.owner != currentPlayer);
-                        if (!map.fixtures.get(point).any(zeroed.equals)) {
-                            map.addFixture(point, fixture.copy(
-                                    fixture.owner != currentPlayer));
-                        }
-                    } else {
-                        value zeroed = fixture.copy(true);
-                        if (!map.fixtures.get(point).any(zeroed.equals)) {
-                            map.addFixture(point, fixture.copy(true));
-                        }
-                    }
-                }
-                object mock satisfies HasOwner {
-                    shared actual Player owner = currentPlayer;
-                }
-                for (point in map.locations.filter(containsSwornVillage)) {
-                    for (neighbor in surroundingPointIterable(point,
-                            map.dimensions)) {
-                        if (!map.baseTerrain[neighbor] exists) {
-                            map.baseTerrain[neighbor] =
-                                master.baseTerrain[neighbor];
-                            //if (master.mountainous[neighbor]) { // TODO: syntax sugar once compiler bug fixed
-                            if (master.mountainous.get(neighbor)) {
-                                map.mountainous[neighbor] = true;
-                            }
-                        }
-                        MutableList<TileFixture> possibilities =
-                                ArrayList<TileFixture>();
-                        //for (fixture in master.fixtures[neighbor]) {
-                        for (fixture in master.fixtures.get(neighbor)) {
-                            if (fixture is CacheFixture ||
-                                    //map.fixtures[neighbor]
-                                    map.fixtures.get(neighbor)
-                                        .contains(fixture)) {
-                                continue;
-                            } else if (simpleMovementModel
-                                    .shouldAlwaysNotice(mock, fixture)) {
-                                safeAdd(neighbor, fixture);
-                            } else if (simpleMovementModel.shouldSometimesNotice(mock,
-                                    Speed.careful, fixture)) {
-                                possibilities.add(fixture);
-                            }
-                        }
-                        if (exists first = randomize(possibilities).first) {
-                            safeAdd(neighbor, first);
-                        }
-                    }
-                }
-                model.setModifiedFlag(map, true);
+                return map.fixtures.get(point).narrow<ITownFixture>()
+                    .map(HasOwner.owner).any(currentPlayer.equals);
             }
-        } else {
-            log.warn("Expansion on a master map with no subordinate maps does nothing");
+            void safeAdd(Point point, TileFixture fixture) {
+                if (map.fixtures.get(point).any(fixture.equals)) {
+                    return;
+                } else if (is HasOwner fixture, !fixture is ITownFixture) {
+                    value zeroed = fixture.copy(fixture.owner != currentPlayer);
+                    if (!map.fixtures.get(point).any(zeroed.equals)) {
+                        map.addFixture(point, fixture.copy(
+                                fixture.owner != currentPlayer));
+                    }
+                } else {
+                    value zeroed = fixture.copy(true);
+                    if (!map.fixtures.get(point).any(zeroed.equals)) {
+                        map.addFixture(point, fixture.copy(true));
+                    }
+                }
+            }
+            object mock satisfies HasOwner {
+                shared actual Player owner = currentPlayer;
+            }
+            for (point in map.locations.filter(containsSwornVillage)) {
+                for (neighbor in surroundingPointIterable(point,
+                        map.dimensions)) {
+                    if (!map.baseTerrain[neighbor] exists) {
+                        map.baseTerrain[neighbor] =
+                            master.baseTerrain[neighbor];
+                        //if (master.mountainous[neighbor]) { // TODO: syntax sugar once compiler bug fixed
+                        if (master.mountainous.get(neighbor)) {
+                            map.mountainous[neighbor] = true;
+                        }
+                    }
+                    MutableList<TileFixture> possibilities =
+                            ArrayList<TileFixture>();
+                    //for (fixture in master.fixtures[neighbor]) {
+                    for (fixture in master.fixtures.get(neighbor)) {
+                        if (fixture is CacheFixture ||
+                                //map.fixtures[neighbor]
+                                map.fixtures.get(neighbor)
+                                    .contains(fixture)) {
+                            continue;
+                        } else if (simpleMovementModel
+                                .shouldAlwaysNotice(mock, fixture)) {
+                            safeAdd(neighbor, fixture);
+                        } else if (simpleMovementModel.shouldSometimesNotice(mock,
+                                Speed.careful, fixture)) {
+                            possibilities.add(fixture);
+                        }
+                    }
+                    if (exists first = randomize(possibilities).first) {
+                        safeAdd(neighbor, first);
+                    }
+                }
+            }
+            model.setModifiedFlag(map, true);
         }
     }
 }
