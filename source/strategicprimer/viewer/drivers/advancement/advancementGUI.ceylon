@@ -12,7 +12,8 @@ import strategicprimer.drivers.common {
     PlayerChangeListener,
     GUIDriver,
     DriverFactory,
-    GUIDriverFactory
+    GUIDriverFactory,
+    MultiMapGUIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -92,7 +93,7 @@ shared class AdvancementGUIFactory() satisfies GUIDriverFactory {
 }
 "The worker-advancement GUI driver."
 shared class AdvancementGUI(ICLIHelper cli, SPOptions options, model)
-        satisfies GUIDriver {
+        satisfies MultiMapGUIDriver {
     shared actual IWorkerModel model;
     void reload(PlayerChangeListener frame) =>
             frame.playerChanged(model.currentPlayer, model.currentPlayer);

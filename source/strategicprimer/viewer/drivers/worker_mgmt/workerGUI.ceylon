@@ -25,7 +25,8 @@ import strategicprimer.drivers.common {
     IDriverModel,
     GUIDriver,
     DriverFactory,
-    GUIDriverFactory
+    GUIDriverFactory,
+    MultiMapGUIDriver
 }
 import strategicprimer.drivers.worker.common {
     WorkerModel,
@@ -90,7 +91,8 @@ shared class WorkerGUIFactory() satisfies GUIDriverFactory {
             WorkerModel(map, path);
 }
 "A driver to start the worker management GUI."
-shared class WorkerGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDriver {
+shared class WorkerGUI(ICLIHelper cli, SPOptions options, model)
+        satisfies MultiMapGUIDriver {
     shared actual IWorkerModel model;
     void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {
         log.trace("Inside GUI creation lambda");

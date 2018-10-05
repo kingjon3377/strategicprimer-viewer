@@ -63,7 +63,8 @@ import strategicprimer.drivers.common {
     ModelDriverFactory,
     DriverFactory,
     ModelDriver,
-    GUIDriverFactory
+    GUIDriverFactory,
+    MultiMapGUIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -300,7 +301,7 @@ shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             ResourceManagementDriverModel.fromMap(map, path);
 }
-class ResourceAddingGUI satisfies GUIDriver {
+class ResourceAddingGUI satisfies MultiMapGUIDriver {
     "Extends [[ImprovedComboBox]] to keep a running collection of values."
     static class UpdatedComboBox(Anything(String) logger) extends ImprovedComboBox<String>() {
         "The values we've had in the past."

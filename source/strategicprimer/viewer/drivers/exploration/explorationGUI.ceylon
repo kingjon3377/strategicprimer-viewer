@@ -11,7 +11,8 @@ import strategicprimer.drivers.common {
     DriverFailedException,
     GUIDriver,
     DriverFactory,
-    GUIDriverFactory
+    GUIDriverFactory,
+    MultiMapGUIDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -78,7 +79,8 @@ shared class ExplorationGUIFactory() satisfies GUIDriverFactory {
             ExplorationModel(map, path);
 }
 "An object to start the exploration GUI."
-class ExplorationGUI(ICLIHelper cli, SPOptions options, model) satisfies GUIDriver {
+class ExplorationGUI(ICLIHelper cli, SPOptions options, model)
+        satisfies MultiMapGUIDriver {
     shared actual IExplorationModel model;
     void createWindow(MenuBroker menuHandler) {
         SPFrame frame = explorationFrame(this, menuHandler);
