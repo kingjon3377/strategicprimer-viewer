@@ -90,24 +90,33 @@ shared class MenuBroker() satisfies ActionListener {
     }
 }
 "A class to hold the logic for building our menus."
-// TODO: Add a helper method wrapping JMenu.add(), taking the condition on which the menu item should be enabled
 shared class SPMenu extends JMenuBar {
 //    suppressWarnings("expressionTypeNothing")
 //    static void simpleQuit() => process.exit(0); // TODO: uncomment these once eclipse/ceylon#7396 fixed
 //    static variable Anything() localDefaultQuit = simpleQuit;
 //    shared static Anything() defaultQuit => localDefaultQuit;
+    static JMenuItem enabledForDriver<Driver>(JMenuItem item, ISPDriver driver)
+            given Driver satisfies ISPDriver {
+        if (!driver is Driver) {
+            item.enabled = false;
+        }
+        return item;
+    }
+    static JMenuItem disabledForDriver<Driver>(JMenuItem item, ISPDriver driver)
+            given Driver satisfies ISPDriver {
+        if (driver is Driver) {
+            item.enabled = false;
+        }
+        return item;
+    }
     "Create the file menu."
     shared static JMenu createFileMenu(/*ActionListener|*/Anything(ActionEvent) handler,
             ISPDriver driver) {
         JMenu fileMenu = JMenu("File");
         fileMenu.mnemonic = KeyEvent.vkF;
-        JMenuItem newItem = createMenuItem("New", KeyEvent.vkN,
+        fileMenu.add(enabledForDriver<ViewerGUI>(createMenuItem("New", KeyEvent.vkN,
             "Create a new, empty map the same size as the current one", handler,
-            createAccelerator(KeyEvent.vkN));
-        fileMenu.add(newItem);
-        if (!driver is ViewerGUI) { // TODO: Should have an interface for drivers supporting 'new'
-            newItem.enabled = false;
-        }
+            createAccelerator(KeyEvent.vkN)), driver));
         String desc;
         String loadCaption;
         String saveCaption;
@@ -123,33 +132,20 @@ shared class SPMenu extends JMenuBar {
             saveCaption = "Save the map to the file it was loaded from";
             saveAsCaption = "Save the map to file";
         }
-        JMenuItem loadItem = createMenuItem("Load", KeyEvent.vkL, loadCaption, handler,
-            createAccelerator(KeyEvent.vkO));
-        if (!driver is GUIDriver|UtilityGUI) {
-            loadItem.enabled = false;
-        }
-        fileMenu.add(loadItem);
-        JMenuItem loadSecondaryItem = createMenuItem("Load secondary",
+        fileMenu.add(enabledForDriver<GUIDriver|UtilityGUI>(createMenuItem("Load",
+                KeyEvent.vkL, loadCaption, handler, createAccelerator(KeyEvent.vkO)),
+            driver));
+        fileMenu.add(enabledForDriver<MultiMapGUIDriver>(createMenuItem("Load secondary",
             KeyEvent.vkE, "Load an additional secondary map from file", handler,
-            createAccelerator(KeyEvent.vkO, HotKeyModifier.shift));
-        fileMenu.add(loadSecondaryItem);
-        JMenuItem saveItem = createMenuItem("Save", KeyEvent.vkS, saveCaption, handler,
-            createAccelerator(KeyEvent.vkS));
-        JMenuItem saveAsItem = createMenuItem("Save As", KeyEvent.vkA, saveAsCaption,
-            handler, createAccelerator(KeyEvent.vkS, HotKeyModifier.shift));
-        if (!driver is ModelDriver) {
-            saveItem.enabled = false;
-            saveAsItem.enabled = false;
-        }
-        fileMenu.add(saveItem);
-        fileMenu.add(saveAsItem);
-        JMenuItem saveAllItem = createMenuItem("Save All", KeyEvent.vkV,
-            "Save all maps to their files", handler, createAccelerator(KeyEvent.vkL));
-        fileMenu.add(saveAllItem);
-        if (!driver is MultiMapGUIDriver) {
-            loadSecondaryItem.enabled = false;
-            saveAllItem.enabled = false;
-        }
+            createAccelerator(KeyEvent.vkO, HotKeyModifier.shift)), driver));
+        fileMenu.add(enabledForDriver<ModelDriver>(createMenuItem("Save",
+            KeyEvent.vkS, saveCaption, handler, createAccelerator(KeyEvent.vkS)), driver));
+        fileMenu.add(enabledForDriver<ModelDriver>(createMenuItem("Save As",
+            KeyEvent.vkA, saveAsCaption, handler, createAccelerator(KeyEvent.vkS,
+                HotKeyModifier.shift)), driver));
+        fileMenu.add(enabledForDriver<MultiMapGUIDriver>(createMenuItem("Save All",
+                KeyEvent.vkV, "Save all maps to their files", handler,
+            createAccelerator(KeyEvent.vkL)), driver));
         fileMenu.addSeparator();
         KeyStroke openViewerHotkey;
         if (platform.systemIsMac) {
@@ -158,21 +154,14 @@ shared class SPMenu extends JMenuBar {
         } else {
             openViewerHotkey = createAccelerator(KeyEvent.vkM);
         }
-        JMenuItem openViewerItem = createMenuItem("Open in map viewer", KeyEvent.vkM,
-            "Open the main map in the map viewer for a broader view", handler,
-            openViewerHotkey);
-        fileMenu.add(openViewerItem);
-        if (driver is ViewerGUI || !driver is ModelDriver) {
-            openViewerItem.enabled = false;
-        }
-        JMenuItem openSecondaryViewerItem = createMenuItem(
+        fileMenu.add(disabledForDriver<ViewerGUI>(enabledForDriver<ModelDriver>(
+            createMenuItem("Open in map viewer", KeyEvent.vkM,
+                "Open the main map in the map viewer for a broader view", handler,
+                openViewerHotkey), driver), driver));
+        fileMenu.add(enabledForDriver<MultiMapGUIDriver>(createMenuItem(
             "Open secondary map in map viewer", KeyEvent.vkE,
-            "Open the first secondary map in the map vieer for a broader view",
-            handler, createAccelerator(KeyEvent.vkE));
-        fileMenu.add(openSecondaryViewerItem);
-        if (!driver is MultiMapGUIDriver) {
-            openSecondaryViewerItem.enabled = false;
-        }
+            "Open the first secondary map in the map vieer for a broader view", handler,
+            createAccelerator(KeyEvent.vkE)), driver));
         fileMenu.addSeparator();
         fileMenu.add(createMenuItem("Close", KeyEvent.vkW, "Close this window",
             handler, createAccelerator(KeyEvent.vkW)));
@@ -202,58 +191,42 @@ shared class SPMenu extends JMenuBar {
     shared static JMenu createMapMenu(Anything(ActionEvent) handler, ISPDriver driver) {
         JMenu retval = JMenu("Map");
         retval.mnemonic = KeyEvent.vkM;
+        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Go to tile",
+            KeyEvent.vkT, "Go to a tile by coordinates", handler,
+            createAccelerator(KeyEvent.vkT)), driver));
         Integer findKey = KeyEvent.vkF;
-        KeyStroke findStroke = createAccelerator(findKey);
-        KeyStroke nextStroke = createAccelerator(KeyEvent.vkG);
-        JMenuItem gotoTileItem = createMenuItem("Go to tile", KeyEvent.vkT,
-            "Go to a tile by coordinates", handler, createAccelerator(KeyEvent.vkT));
-        JMenuItem findItem = createMenuItem("Find a fixture", findKey,
-            "Find a fixture by name, kind or ID #", handler, findStroke,
-            KeyStroke.getKeyStroke(KeyEvent.vkSlash, 0));
+        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Find a fixture", findKey,
+            "Find a fixture by name, kind or ID #", handler, createAccelerator(findKey),
+            KeyStroke.getKeyStroke(KeyEvent.vkSlash, 0)), driver));
         Integer nextKey = KeyEvent.vkN;
-        JMenuItem nextItem = createMenuItem("Find next", nextKey,
-            "Find the next fixture matching the pattern", handler, nextStroke,
-            KeyStroke.getKeyStroke(nextKey, 0));
+        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Find next", nextKey,
+                "Find the next fixture matching the pattern", handler,
+                createAccelerator(KeyEvent.vkG), KeyStroke.getKeyStroke(nextKey, 0)),
+            driver));
+        retval.addSeparator();
         // vkPlus only works on non-US keyboards, but we leave it as the primary hot-key
         // because it's the best to *show* in the menu.
         KeyStroke plusKey = createAccelerator(KeyEvent.vkPlus);
-        JMenuItem zoomInItem = createMenuItem("Zoom in", KeyEvent.vkI,
+        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Zoom in", KeyEvent.vkI,
             "Increase the visible size of each tile", handler, plusKey,
             createAccelerator(KeyEvent.vkEquals),
             createAccelerator(KeyEvent.vkEquals, HotKeyModifier.shift),
-            createAccelerator(KeyEvent.vkAdd));
-        JMenuItem zoomOutItem = createMenuItem("Zoom out", KeyEvent.vkO,
+            createAccelerator(KeyEvent.vkAdd)), driver));
+        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Zoom out", KeyEvent.vkO,
             "Decrease the visible size of each tile", handler,
-            createAccelerator(KeyEvent.vkMinus));
-        JMenuItem resetZoomItem = createMenuItem("Reset zoom", KeyEvent.vkR,
-            "Reset the zoom level", handler, createAccelerator(KeyEvent.vk0));
+            createAccelerator(KeyEvent.vkMinus)), driver));
+        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Reset zoom", KeyEvent.vkR,
+            "Reset the zoom level", handler, createAccelerator(KeyEvent.vk0)), driver));
+        retval.addSeparator();
         KeyStroke centerHotkey;
         if (platform.systemIsMac) {
             centerHotkey = createAccelerator(KeyEvent.vkL);
         } else {
             centerHotkey = createAccelerator(KeyEvent.vkC);
         }
-        value centerItem = createMenuItem("Center", KeyEvent.vkC,
+        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Center", KeyEvent.vkC,
             "Center the view on the selected tile", handler,
-            centerHotkey);
-        if (!driver is ViewerGUI) { // TODO: Interface for drivers supporting 'go to tile'?
-            gotoTileItem.enabled = false;
-            findItem.enabled = false;
-            nextItem.enabled = false;
-            zoomInItem.enabled = false;
-            zoomOutItem.enabled = false;
-            resetZoomItem.enabled = false;
-            centerItem.enabled = false;
-        }
-        retval.add(gotoTileItem);
-        retval.add(findItem);
-        retval.add(nextItem);
-        retval.addSeparator();
-        retval.add(zoomInItem);
-        retval.add(zoomOutItem);
-        retval.add(resetZoomItem);
-        retval.addSeparator();
-        retval.add(centerItem);
+            centerHotkey), driver));
         return retval;
     }
     """Create the "view" menu."""
@@ -275,16 +248,14 @@ shared class SPMenu extends JMenuBar {
                 "Collapse all nodes in the unit tree", handler)
         ];
         JMenuItem currentPlayerItem;
-        if (is ModelDriver driver, is IWorkerModel model = driver.model) { // TODO: Interface for this distinction
+        if (is ModelDriver driver, is IWorkerModel model = driver.model) { // TODO: Driver interface for this distinction; use enabledForDriver for the treeItems once it's there
             currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
                 "Look at a different player's units and workers", handler,
                 createAccelerator(KeyEvent.vkP));
         } else {
-            currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
-                "Mark a player as the current player in the map", handler);
-            if (!driver is ModelDriver) {
-                currentPlayerItem.enabled = false;
-            }
+            currentPlayerItem = enabledForDriver<ModelDriver>(createMenuItem(
+                "Change current player", KeyEvent.vkP,
+                "Mark a player as the current player in the map", handler), driver);
             for (item in treeItems) {
                 item.enabled = false;
             }
