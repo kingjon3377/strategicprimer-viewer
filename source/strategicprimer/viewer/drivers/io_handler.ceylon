@@ -60,11 +60,10 @@ import strategicprimer.viewer.drivers.map_viewer {
     ViewerGUI
 }
 import strategicprimer.drivers.common {
-    IMultiMapModel,
-    IDriverModel,
     ISPDriver,
     ModelDriver,
-    GUIDriver
+    GUIDriver,
+    MultiMapGUIDriver
 }
 import strategicprimer.drivers.gui.common {
     ISPWindow
@@ -116,10 +115,9 @@ shared class IOHandler
     void maybeSave(String verb, Frame? window, Component? source,
             Anything() ifNotCanceled) {
         assert (is ModelDriver driver);
-        IDriverModel mapModel = driver.model;
-        if (mapModel.mapModified) {
+        if (driver.model.mapModified) {
             String prompt;
-            if (is IMultiMapModel mapModel, !mapModel.subordinateMaps.empty) {
+            if (is MultiMapGUIDriver driver) {
                 prompt = "Save changes to main map before ``verb``?";
             } else {
                 prompt = "Save changes to map before ``verb``?";
@@ -133,8 +131,8 @@ shared class IOHandler
                 actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save"));
             }
         }
-        if (is IMultiMapModel mapModel, mapModel.allMaps.map(Entry.item)
-            .map(Tuple.last).coalesced.any(true.equals)) {
+        if (is MultiMapGUIDriver driver, driver.model.subordinateMaps.map(Entry.item)
+                .map(Tuple.last).coalesced.any(true.equals)) {
             Integer answer = JOptionPane.showConfirmDialog(window,
                 "Subordinate map(s) have unsaved changes. Save all before ``verb``?",
                 "Save Changes?", JOptionPane.yesNoCancelOption,
@@ -244,32 +242,30 @@ shared class IOHandler
             }
         }
         case ("load secondary") { // TODO: Investigate how various apps handle transitioning between no secondaries and one secondary map.
-            if (is ModelDriver driver, is IMultiMapModel mapModel = driver.model) {
-                SPFileChooser.open(null).call(loadHandlerImpl(mapModel.addSubordinateMap,
-                    source, errorTitle));
+            if (is MultiMapGUIDriver driver) {
+                SPFileChooser.open(null).call(loadHandlerImpl(
+                    driver.model.addSubordinateMap, source, errorTitle));
             } else {
                 log.error(
                     "IOHandler asked to 'load secondary' in driver it can't do that for");
             }
         }
         case ("save all") {
-            if (is ModelDriver driver) {
-                if (is IMultiMapModel mapModel = driver.model) {
-                    for (map->[file, _] in mapModel.allMaps) {
-                        if (exists file) {
-                            try {
-                                mapIOHelper.writeMap(file, map);
-                                mapModel.setModifiedFlag(map, false);
-                            } catch (IOException except) {
-                                handleError(except, file.string, source, errorTitle,
-                                    "writing to");
-                            }
+            if (is MultiMapGUIDriver driver) {
+                for (map->[file, _] in driver.model.allMaps) {
+                    if (exists file) {
+                        try {
+                            mapIOHelper.writeMap(file, map);
+                            driver.model.setModifiedFlag(map, false);
+                        } catch (IOException except) {
+                            handleError(except, file.string, source, errorTitle,
+                                "writing to");
                         }
                     }
-                } else {
-                    actionPerformed(ActionEvent(event.source, event.id, "save", event.when,
-                        event.modifiers));
                 }
+            } else if (is ModelDriver driver) {
+                actionPerformed(ActionEvent(event.source, event.id, "save", event.when,
+                    event.modifiers));
             } else {
                 log.error("IOHandler asked to 'save all' in driver it can't do that for");
             }
@@ -284,12 +280,11 @@ shared class IOHandler
             }
         }
         case ("open secondary map in map viewer") {
-            if (is ModelDriver driver) {
-                if (is IMultiMapModel mapModel = driver.model,
-                        exists mapEntry = mapModel.subordinateMaps.first) {
+            if (is MultiMapGUIDriver driver) {
+                if (exists mapEntry = driver.model.subordinateMaps.first) {
                     SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
                         ViewerGUI), [ViewerModel.fromEntry(mapEntry)]));
-                } else { // TODO: handle non-multi-model and proper-model-with-no-secondaries separately
+                } else {
                     log.error(
                         "IOHandler asked to 'open secondary in map viewer'; none there");
                 }
