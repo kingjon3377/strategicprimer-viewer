@@ -151,7 +151,7 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
         Direction.southwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad1, 0),
         Direction.nowhere->KeyStroke.getKeyStroke(KeyEvent.vkNumpad5, 0)
     );
-    SPFrame retval = SPFrame("Exploration", driver.model.mapFile, Dimension(768, 48), true,
+    SPFrame retval = SPFrame("Exploration", driver, Dimension(768, 48), true,
         (file) => driver.model.addSubordinateMap(mapIOHelper.readMap(file), file)); // TODO: Use driver-interface method once it's available
     CardLayout layoutObj = CardLayout();
     retval.setLayout(layoutObj);

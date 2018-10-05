@@ -61,7 +61,8 @@ import strategicprimer.drivers.common {
     DriverFactory,
     GUIDriverFactory,
     UtilityDriverFactory,
-    ModelDriverFactory
+    ModelDriverFactory,
+    UtilityDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
@@ -528,7 +529,10 @@ SPFrame appChooserFrame(ICLIHelper cli, SPOptions options, String* args) {
         width = Integer.largest(width, dimensions.width.integer);
         height += dimensions.height.integer;
     }
-    SPFrame frame = SPFrame("SP App Chooser", null, Dimension(width, height));
+    SPFrame frame = SPFrame("SP App Chooser", object satisfies UtilityDriver {
+        shared actual void startDriver(String* args) {}
+        // FIXME: Make this into a ISPDriver implementation for this purpose
+    }, Dimension(width, height));
     void buttonHandler(DriverFactory target) {
         try {
             DriverWrapper(target).startCatchingErrors(cli, options, *args);

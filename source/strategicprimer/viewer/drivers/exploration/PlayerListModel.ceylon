@@ -18,4 +18,5 @@ class PlayerListModel(IExplorationModel model) extends DefaultListModel<Player>(
         clear();
         model.playerChoices.each(addElement);
     }
+    shared actual void mapMetadataChanged() {}
 }

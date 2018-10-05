@@ -57,9 +57,13 @@ import lovelace.util.common {
     silentListener,
     PathWrapper
 }
+import strategicprimer.drivers.common {
+    ISPDriver
+}
 
 "A window to show the result of running subset tests."
-class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), true) {
+class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
+        Dimension(640, 320), true) {
     StreamingLabel label = StreamingLabel();
     object htmlWriter extends JWriter() {
         variable Boolean lineStart = true;
@@ -185,9 +189,9 @@ class SubsetFrame() extends SPFrame("Subset Tester", null, Dimension(640, 320), 
     }
     shared actual void acceptDroppedFile(PathWrapper file) => testFile(file);
 }
-"Factory method to add the menu bar to a [[SubsetFrame]]."
-SubsetFrame subsetFrame() {
-    SubsetFrame retval = SubsetFrame();
+"Factory method to add the menu bar to a [[SubsetFrame]]." // FIXME: Merge into SubsetGUI
+SubsetFrame subsetFrame(ISPDriver driver) {
+    SubsetFrame retval = SubsetFrame(driver);
     retval.jMenuBar = UtilityMenu(retval);
     retval.addWindowListener(WindowCloseListener(silentListener(retval.dispose)));
     return retval;

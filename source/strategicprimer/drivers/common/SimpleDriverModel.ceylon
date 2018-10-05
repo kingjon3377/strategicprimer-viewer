@@ -28,7 +28,7 @@ shared class SimpleDriverModel satisfies IDriverModel {
     "The main map."
     variable IMutableMapNG mainMap;
     "Whether the map has been changed since it was loaded or last saved."
-    shared actual variable Boolean mapModified;
+    variable Boolean modifiedFlag;
     "The filename from which the map was loaded, if known."
     variable PathWrapper? mainMapFile;
     shared new (IMutableMapNG map = SPMapNG(MapDimensionsImpl(-1, -1, -1),
@@ -36,7 +36,15 @@ shared class SimpleDriverModel satisfies IDriverModel {
         mainMap = map;
         mapDim = mainMap.dimensions;
         mainMapFile = file;
-        mapModified = modified;
+        modifiedFlag = modified;
+    }
+    shared actual Boolean mapModified => modifiedFlag;
+    assign mapModified {
+        modifiedFlag = mapModified;
+        for (listener in mcListeners) {
+            // Iterable.each(MapChangeListener.mapMetadataChanged) does *not* work!
+            listener.mapMetadataChanged();
+        }
     }
     "Set a new main map."
     shared actual default void setMap(IMutableMapNG newMap, PathWrapper? origin,
@@ -60,6 +68,10 @@ shared class SimpleDriverModel satisfies IDriverModel {
     shared actual PathWrapper? mapFile => mainMapFile;
     assign mapFile {
         mainMapFile = mapFile;
+        for (listener in mcListeners) {
+            // Iterable.each(MapChangeListener.mapMetadataChanged) does *not* work!
+            listener.mapMetadataChanged();
+        }
     }
     "Add a map-change listener."
     shared actual void addMapChangeListener(MapChangeListener listener) =>

@@ -169,7 +169,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     MenuBroker menuHandler;
     WorkerGUI driver;
     shared new (SPOptions options, IWorkerModel model, MenuBroker menuHandler,
-            WorkerGUI driver) extends SPFrame("Worker Management", model.mapFile,
+            WorkerGUI driver) extends SPFrame("Worker Management", driver,
                 Dimension(640, 480), true,
                 (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file)) {
         this.options = options;
@@ -287,6 +287,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     });
     model.addMapChangeListener(object satisfies MapChangeListener {
         shared actual void mapChanged() => Thread(reportGeneratorThread).start();
+        shared actual void mapMetadataChanged() {}
     });
     {PlayerChangeListener+} pcListeners = [ newUnitFrame, treeModel, ordersPanelObj,
         resultsPanel ];

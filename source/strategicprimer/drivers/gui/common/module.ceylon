@@ -15,4 +15,5 @@ module strategicprimer.drivers.gui.common "0.4.9017" {
 //    import maven:"com.pump:pump-swing" "1.0.00";
     import com.pump.swing "1.0.00";
     import ceylon.regex ceylonVersion;
+    shared import strategicprimer.drivers.common "0.4.9017";
 }

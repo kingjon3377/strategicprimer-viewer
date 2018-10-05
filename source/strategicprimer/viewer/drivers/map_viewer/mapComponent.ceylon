@@ -249,4 +249,5 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         }
         repaint();
     }
+    shared actual void mapMetadataChanged() {}
 }

@@ -54,7 +54,7 @@ shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityDrive
         if (args.size < 2) {
             throw IncorrectUsageException(SubsetGUIFactory.staticUsage);
         }
-        SubsetFrame frame = subsetFrame();
+        SubsetFrame frame = subsetFrame(this);
         SwingUtilities.invokeLater(frame.showWindow);
         assert (exists first = args.first);
         try { // Errors are reported via the GUI in loadMain(), then rethrown.

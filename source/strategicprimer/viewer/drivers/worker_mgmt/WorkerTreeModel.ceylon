@@ -309,4 +309,5 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         }
         return null;
     }
+    shared actual void mapMetadataChanged() {}
 }

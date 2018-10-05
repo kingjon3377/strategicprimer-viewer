@@ -315,7 +315,7 @@ shared class TabularReportGUI(ICLIHelper cli, SPOptions options, model)
         satisfies GUIDriver {
     shared actual IDriverModel model;
     shared actual void startDriver() {
-        SPFrame window = SPFrame("Tabular Report", model.mapFile, Dimension(640, 480));
+        SPFrame window = SPFrame("Tabular Report", this, Dimension(640, 480));
         JTabbedPane frame = JTabbedPane(JTabbedPane.top, JTabbedPane.scrollTabLayout);
         tabularReportGenerator.createGUITabularReports(
             // can't use a method reference here because JTabbedPane.addTab is overloaded

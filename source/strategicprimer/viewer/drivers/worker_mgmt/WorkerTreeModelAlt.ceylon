@@ -382,4 +382,5 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
         }
         return null;
     }
+    shared actual void mapMetadataChanged() {}
 }

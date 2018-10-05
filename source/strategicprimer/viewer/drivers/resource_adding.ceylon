@@ -491,7 +491,7 @@ class ResourceAddingGUI satisfies GUIDriver {
         JScrollPane scrolledLog = JScrollPane(logLabel);
         scrolledLog.minimumSize = logLabel.minimumSize;
 
-        object retval extends SPFrame("Resource Entry", model.mapFile, null, true,
+        object retval extends SPFrame("Resource Entry", outer, null, true,
                     (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
                 satisfies PlayerChangeListener {
             shared actual void playerChanged(Player? old, Player newPlayer) {

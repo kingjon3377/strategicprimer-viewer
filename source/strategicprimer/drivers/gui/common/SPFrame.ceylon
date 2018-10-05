@@ -8,7 +8,8 @@ import java.nio.file {
 import javax.swing {
     JFrame,
     WindowConstants,
-    TransferHandler
+    TransferHandler,
+    SwingUtilities
 }
 import java.awt.datatransfer {
     DataFlavor
@@ -25,6 +26,11 @@ import ceylon.logging {
 }
 import lovelace.util.common {
     PathWrapper
+}
+import strategicprimer.drivers.common {
+    ISPDriver,
+    ModelDriver,
+    MapChangeListener
 }
 
 Logger log = logger(`module strategicprimer.drivers.gui.common`);
@@ -57,17 +63,44 @@ class FileDropHandler() extends TransferHandler() {
 }
 "An intermediate subclass of JFrame to take care of some common setup things that can't be
  done in an interface."
-shared class SPFrame(String windowTitle, PathWrapper? file, Dimension? minSize = null,
+shared class SPFrame(String windowTitle, ISPDriver driver, Dimension? minSize = null,
         "Whether this app supports having files dropped on it."
         shared default Boolean supportsDroppedFiles = false,
         Anything(PathWrapper) droppedFileHandler = noop,
         "The name of the window, for use in customizing the About dialog"
         shared actual default String windowName = windowTitle)
         extends JFrame(windowTitle) satisfies ISPWindow {
-    if (exists file) { // TODO: Make title dynamic, based on possibly-changing filename and 'modified' flag
-        title = "``file`` | ``windowTitle``";
-        rootPane.putClientProperty("Window.documentFile",
-            JPaths.get(file.string).toFile());
+    String refreshTitle() {
+        if (is ModelDriver driver, exists file = driver.model.mapFile) {
+            String retval = "``file`` | ``windowTitle``";
+            if (driver.model.mapModified) {
+                return "*" + retval;
+            } else {
+                return retval;
+            }
+        } else {
+            return windowTitle;
+        }
+    }
+    title = refreshTitle();
+    if (is ModelDriver driver) {
+        driver.model.addMapChangeListener(object satisfies MapChangeListener {
+            void impl() {
+                if (exists file = driver.model.mapFile) {
+                    rootPane.putClientProperty("Window.documentFile",
+                        JPaths.get(file.string).toFile());
+                } else {
+                    rootPane.putClientProperty("Window.documentFile", null);
+                }
+                outer.title = refreshTitle();
+            }
+            shared actual void mapChanged() {
+                SwingUtilities.invokeLater(impl);
+            }
+            shared actual void mapMetadataChanged() {
+                SwingUtilities.invokeLater(impl);
+            }
+        });
     }
     "Handle a dropped file."
     shared default void acceptDroppedFile(PathWrapper file) => droppedFileHandler(file);

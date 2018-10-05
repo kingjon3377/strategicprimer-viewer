@@ -105,7 +105,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     InterpolatedLabel<[Player]> playerLabel =
             InterpolatedLabel<[Player]>(compose(shuffle(curry(plus<String>))("'s Units:"),
                 Player.name), [PlayerImpl(-1, "An Unknown Player")]);
-    object retval extends SPFrame("Worker Advancement", model.mapFile,
+    object retval extends SPFrame("Worker Advancement", driver,
                 Dimension(640, 480), true,
                 (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
             satisfies PlayerChangeListener {

@@ -178,4 +178,5 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         verticalBar.model.setRangeProperties(0, 1, 0,
             mapDimensions.rows - visibleDimensions.height, false);
     }
+    shared actual void mapMetadataChanged() {}
 }

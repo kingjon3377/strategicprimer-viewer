@@ -88,7 +88,7 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
     Anything(ActionEvent) menuHandler;
     ViewerGUI driver;
     shared new(IViewerModel model, Anything(ActionEvent) menuListener, ViewerGUI driver)
-            extends SPFrame("Map Viewer", model.mapFile) {
+            extends SPFrame("Map Viewer", driver) {
         mapModel = model;
         menuHandler = menuListener;
         this.driver = driver;

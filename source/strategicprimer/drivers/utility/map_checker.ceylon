@@ -35,7 +35,8 @@ import strategicprimer.drivers.common {
     ParamCount,
     SPOptions,
     UtilityDriverFactory,
-    DriverFactory
+    DriverFactory,
+    ISPDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -309,9 +310,9 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         }
     }
 }
-"The map-checker GUI window." // TODO: Add an way to "open" files from the menu
-class MapCheckerFrame() extends SPFrame("Strategic Primer Map Checker", null,
-        Dimension(640, 320), true, noop, "Map Checker") {
+"The map-checker GUI window." // TODO: Add an way to "open" files from the menu // TODO: Merge into MapCheckerGUI
+class MapCheckerFrame(ISPDriver driver) extends SPFrame("Strategic Primer Map Checker",
+        driver, Dimension(640, 320), true, noop, "Map Checker") {
     StreamingLabel label = StreamingLabel();
     void printParagraph(String paragraph,
             LabelTextColor color = LabelTextColor.white) {
@@ -351,7 +352,7 @@ shared class MapCheckerGUIFactory() satisfies UtilityDriverFactory {
  window."
 shared class MapCheckerGUI() satisfies UtilityDriver {
     shared actual void startDriver(String* args) {
-        MapCheckerFrame window = MapCheckerFrame();
+        MapCheckerFrame window = MapCheckerFrame(this);
         window.jMenuBar = UtilityMenu(window);
         window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
         window.showWindow();
