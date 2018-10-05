@@ -11,7 +11,8 @@ import javax.xml.stream {
 
 import lovelace.util.common {
     todo,
-    PathWrapper
+    PathWrapper,
+    silentListener
 }
 
 import strategicprimer.model.common.xmlio {
@@ -30,6 +31,10 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
+}
+import strategicprimer.drivers.gui.common {
+    UtilityMenu,
+    WindowCloseListener
 }
 
 "A factory for a driver to check whether player maps are subsets of the main map and
@@ -54,7 +59,9 @@ shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityDrive
         if (args.size < 2) {
             throw IncorrectUsageException(SubsetGUIFactory.staticUsage);
         }
-        SubsetFrame frame = subsetFrame(this);
+        SubsetFrame frame = SubsetFrame(this);
+        frame.jMenuBar = UtilityMenu(frame);
+        frame.addWindowListener(WindowCloseListener(silentListener(frame.dispose)));
         SwingUtilities.invokeLater(frame.showWindow);
         assert (exists first = args.first);
         try { // Errors are reported via the GUI in loadMain(), then rethrown.

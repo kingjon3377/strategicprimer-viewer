@@ -49,12 +49,9 @@ import strategicprimer.model.common.xmlio {
     SPFormatException
 }
 import strategicprimer.drivers.gui.common {
-    UtilityMenu,
-    SPFrame,
-    WindowCloseListener
+    SPFrame
 }
 import lovelace.util.common {
-    silentListener,
     PathWrapper
 }
 import strategicprimer.drivers.common {
@@ -188,11 +185,4 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
         testMap(map, path);
     }
     shared actual void acceptDroppedFile(PathWrapper file) => testFile(file);
-}
-"Factory method to add the menu bar to a [[SubsetFrame]]." // FIXME: Merge into SubsetGUI
-SubsetFrame subsetFrame(ISPDriver driver) {
-    SubsetFrame retval = SubsetFrame(driver);
-    retval.jMenuBar = UtilityMenu(retval);
-    retval.addWindowListener(WindowCloseListener(silentListener(retval.dispose)));
-    return retval;
 }
