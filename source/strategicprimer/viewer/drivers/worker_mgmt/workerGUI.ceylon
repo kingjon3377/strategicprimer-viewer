@@ -80,8 +80,11 @@ shared class WorkerGUIFactory() satisfies GUIDriverFactory {
     }
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        assert (is IWorkerModel model);
-        return WorkerGUI(cli, options, model);
+        if (is IWorkerModel model) {
+            return WorkerGUI(cli, options, model);
+        } else {
+            return createDriver(cli, options, WorkerModel.copyConstructor(model));
+        }
     }
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             WorkerModel(map, path);

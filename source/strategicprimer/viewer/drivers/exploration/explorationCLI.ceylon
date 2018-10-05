@@ -44,8 +44,11 @@ shared class ExplorationCLIFactory() satisfies ModelDriverFactory {
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        assert (is IExplorationModel model);
-        return ExplorationCLI(cli, model);
+        if (is IExplorationModel model) {
+            return ExplorationCLI(cli, model);
+        } else {
+            return createDriver(cli, options, ExplorationModel.copyConstructor(model));
+        }
     }
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>

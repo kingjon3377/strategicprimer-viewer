@@ -74,8 +74,11 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
     }
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        assert (is IViewerModel model);
-        return ViewerGUI(model);
+        if (is IViewerModel model) {
+            return ViewerGUI(model);
+        } else {
+            return createDriver(cli, options, ViewerModel.copyConstructor(model));
+        }
     }
 
     shared actual IViewerModel createModel(IMutableMapNG map, PathWrapper? path) =>

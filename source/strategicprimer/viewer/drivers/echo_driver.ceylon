@@ -135,8 +135,11 @@ shared class ForestFixerFactory() satisfies ModelDriverFactory {
         "Make sure that forest IDs in submaps match the main map", false, false);
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        assert (is IMultiMapModel model);
-        return ForestFixerDriver(cli, options, model);
+        if (is IMultiMapModel model) {
+            return ForestFixerDriver(cli, options, model);
+        } else {
+            return createDriver(cli, options, SimpleMultiMapModel.copyConstructor(model));
+        }
     }
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);

@@ -79,8 +79,11 @@ shared class AdvancementGUIFactory() satisfies GUIDriverFactory {
     }
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        assert (is IWorkerModel model);
-        return AdvancementGUI(cli, options, model);
+        if (is IWorkerModel model) {
+            return AdvancementGUI(cli, options, model);
+        } else {
+            return createDriver(cli, options, WorkerModel.copyConstructor(model));
+        }
     }
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>

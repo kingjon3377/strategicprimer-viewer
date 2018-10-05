@@ -40,8 +40,11 @@ shared class RandomMovementFactory() satisfies ModelDriverFactory {
         true, false); // TODO: We'd like a GUI for this, perhaps adding customization or limiting the area or something
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        assert (is IExplorationModel model);
-        return RandomMovementCLI(cli, options, model);
+        if (is IExplorationModel model) {
+            return RandomMovementCLI(cli, options, model);
+        } else {
+            return createDriver(cli, options, ExplorationModel.copyConstructor(model));
+        }
     }
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>

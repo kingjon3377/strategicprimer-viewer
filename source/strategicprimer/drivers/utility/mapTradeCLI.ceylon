@@ -91,8 +91,11 @@ shared class MapTradeFactory() satisfies ModelDriverFactory {
         "destination.xml");
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        assert (is IMultiMapModel model);
-        return MapTradeCLI(cli, model);
+        if (is IMultiMapModel model) {
+            return MapTradeCLI(cli, model);
+        } else {
+            return createDriver(cli, options, SimpleMultiMapModel.copyConstructor(model));
+        }
     }
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);

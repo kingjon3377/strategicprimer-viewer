@@ -156,8 +156,12 @@ shared class ResourceAddingCLIFactory() satisfies ModelDriverFactory {
     };
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        assert (is ResourceManagementDriverModel model);
-        return ResourceAddingCLI(cli, options, model);
+        if (is ResourceManagementDriverModel model) {
+            return ResourceAddingCLI(cli, options, model);
+        } else {
+            return createDriver(cli, options,
+                ResourceManagementDriverModel.fromDriverModel(model));
+        }
     }
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
@@ -286,8 +290,12 @@ shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
         }
     }
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
-        assert (is ResourceManagementDriverModel model);
-        return ResourceAddingGUI(cli, options, model);
+        if (is ResourceManagementDriverModel model) {
+            return ResourceAddingGUI(cli, options, model);
+        } else {
+            return createDriver(cli, options,
+                ResourceManagementDriverModel.fromDriverModel(model));
+        }
     }
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             ResourceManagementDriverModel.fromMap(map, path);
