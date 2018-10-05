@@ -26,7 +26,8 @@ import strategicprimer.drivers.common {
     ModelDriver,
     SimpleMultiMapModel,
     GUIDriverFactory,
-    SimpleDriverModel
+    SimpleDriverModel,
+    MapChangeListener
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -317,9 +318,17 @@ shared class TabularReportGUI(ICLIHelper cli, SPOptions options, model)
     shared actual void startDriver() {
         SPFrame window = SPFrame("Tabular Report", this, Dimension(640, 480));
         JTabbedPane frame = JTabbedPane(JTabbedPane.top, JTabbedPane.scrollTabLayout);
-        tabularReportGenerator.createGUITabularReports(
-            // can't use a method reference here because JTabbedPane.addTab is overloaded
-            (String str, Component comp) => frame.addTab(str, comp), model.map);
+        object listener satisfies MapChangeListener {
+            shared actual void mapChanged() {
+                frame.removeAll();
+                tabularReportGenerator.createGUITabularReports(
+                    // can't use a method reference here: JTabbedPane.addTab is overloaded
+                    (String str, Component comp) => frame.addTab(str, comp), model.map);
+            }
+            shared actual void mapMetadataChanged() {}
+        }
+        listener.mapChanged();
+        model.addMapChangeListener(listener);
         window.add(frame);
         window.jMenuBar = UtilityMenu(window);
         window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
@@ -335,7 +344,7 @@ shared class TabularReportGUI(ICLIHelper cli, SPOptions options, model)
         }
     }
     shared actual void open(IMutableMapNG map, PathWrapper? path) =>
-            model.setMap(map, path); // FIXME: Make sure GUI replaces existing reports with these instead of ignoring this!
+            model.setMap(map, path);
 
 }
 "A factory for a driver to produce tabular (CSV) reports of the contents of a player's
