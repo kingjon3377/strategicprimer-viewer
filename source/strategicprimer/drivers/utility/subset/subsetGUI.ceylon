@@ -27,7 +27,8 @@ import strategicprimer.drivers.common {
     IncorrectUsageException,
     UtilityDriver,
     DriverFactory,
-    UtilityDriverFactory
+    UtilityDriverFactory,
+    UtilityGUI
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -54,14 +55,19 @@ shared class SubsetGUIFactory satisfies UtilityDriverFactory {
 "A driver to check whether player maps are subsets of the main map and display the
  results graphically." // TODO: Add an way to "open" files from the menu
 todo("Unify with [[SubsetCLI]], like the map-checker GUI")
-shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
+shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
+    late SubsetFrame frame;
+    variable Boolean initialized = false;
     shared actual void startDriver(String* args) {
         if (args.size < 2) {
             throw IncorrectUsageException(SubsetGUIFactory.staticUsage);
         }
-        SubsetFrame frame = SubsetFrame(this);
-        frame.jMenuBar = UtilityMenu(frame);
-        frame.addWindowListener(WindowCloseListener(silentListener(frame.dispose)));
+        if (!initialized) {
+            initialized = true;
+            frame = SubsetFrame(this);
+            frame.jMenuBar =UtilityMenu(frame);
+            frame.addWindowListener(WindowCloseListener(silentListener(frame.dispose)));
+        }
         SwingUtilities.invokeLater(frame.showWindow);
         assert (exists first = args.first);
         try { // Errors are reported via the GUI in loadMain(), then rethrown.
@@ -75,4 +81,5 @@ shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityDrive
         }
         args.rest.map(PathWrapper).each(frame.testFile);
     }
+    shared actual void open(PathWrapper path) => frame.testFile(path);
 }

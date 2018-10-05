@@ -36,7 +36,8 @@ import strategicprimer.drivers.common {
     SPOptions,
     UtilityDriverFactory,
     DriverFactory,
-    ISPDriver
+    ISPDriver,
+    UtilityGUI
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -350,12 +351,19 @@ shared class MapCheckerGUIFactory() satisfies UtilityDriverFactory {
 }
 "A driver to check every map file in a list for errors and report the results in a
  window."
-shared class MapCheckerGUI() satisfies UtilityDriver {
+shared class MapCheckerGUI() satisfies UtilityGUI {
+    late MapCheckerFrame window;
+    variable Boolean initialized = false;
     shared actual void startDriver(String* args) {
-        MapCheckerFrame window = MapCheckerFrame(this);
-        window.jMenuBar = UtilityMenu(window);
-        window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
+        if (!initialized) {
+            initialized = true;
+            window = MapCheckerFrame(this);
+            window.jMenuBar =UtilityMenu(window);
+            window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
+        }
         window.showWindow();
         args.coalesced.map(PathWrapper).each(window.check);
     }
+    shared actual void open(PathWrapper path) => window.check(path);
+
 }
