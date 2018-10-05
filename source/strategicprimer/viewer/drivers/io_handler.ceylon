@@ -63,7 +63,8 @@ import strategicprimer.drivers.common {
     ISPDriver,
     ModelDriver,
     GUIDriver,
-    MultiMapGUIDriver
+    MultiMapGUIDriver,
+    UtilityGUI
 }
 import strategicprimer.drivers.gui.common {
     ISPWindow
@@ -174,6 +175,8 @@ shared class IOHandler
         if (is GUIDriver driver) {
             SPFileChooser.open(null).call(loadHandlerImpl(driver.open, source,
                 errorTitle));
+        } else if (is UtilityGUI driver) {
+            SPFileChooser.open(null).call(driver.open);
         } else {
             log.error("IOHandler asked to 'load' in app that doesn't support that");
         }
@@ -195,6 +198,8 @@ shared class IOHandler
             if (is ModelDriver driver) {
                 maybeSave("loading another map", as<Frame>(iter), source,
                     defer(loadHandler, [source, errorTitle]));
+            } else if (is UtilityGUI driver) {
+                loadHandler(source, errorTitle);
             } else {
                 log.error("IOHandler asked to 'load' in unsupported app");
             }
@@ -297,6 +302,8 @@ shared class IOHandler
             if (is Frame local = iter) {
                 if (is ModelDriver driver) {
                     maybeSave("closing", local, source, local.dispose);
+                } else if (is UtilityGUI driver) {
+                    local.dispose();
                 } else {
                     log.error("IOHandler asked to close in unsupported app");
                 }
@@ -306,6 +313,8 @@ shared class IOHandler
             if (is ModelDriver driver) {
                 maybeSave("quitting", as<Frame>(iter), source, quitHandler);
 //              maybeSave("quitting", as<Frame>(iter), source, SPMenu.defaultQuit()); // TODO: switch to this once eclipse/ceylon#7396 fixed
+            } else if (is UtilityGUI driver) {
+                quitHandler();
             } else {
                 log.error("IOHandler asked to quit in unsupported app");
             }
