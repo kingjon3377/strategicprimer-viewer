@@ -36,9 +36,9 @@ import lovelace.util.jvm {
 }
 
 import strategicprimer.drivers.common {
-    IMultiMapModel,
     ISPDriver,
-    ModelDriver
+    ModelDriver,
+    MultiMapGUIDriver
 }
 import strategicprimer.viewer.drivers.map_viewer {
     ViewerGUI
@@ -88,7 +88,7 @@ shared class MenuBroker() satisfies ActionListener {
     }
 }
 "A class to hold the logic for building our menus."
-shared class SPMenu extends JMenuBar {
+shared class SPMenu extends JMenuBar { // TODO: Most of these assume that the driver is a ModelDriver ...
 //    suppressWarnings("expressionTypeNothing")
 //    static void simpleQuit() => process.exit(0); // TODO: uncomment these once eclipse/ceylon#7396 fixed
 //    static variable Anything() localDefaultQuit = simpleQuit;
@@ -109,7 +109,7 @@ shared class SPMenu extends JMenuBar {
         String loadCaption;
         String saveCaption;
         String saveAsCaption;
-        if (is ModelDriver driver, driver.model is IMultiMapModel) { // TODO: Should have an interface for drivers supporting secondary maps (use it below as well)
+        if (is MultiMapGUIDriver driver) {
             desc = "the main";
             loadCaption = "Load the main map from file";
             saveCaption = "Save the main map to the file it was loaded from";
@@ -133,8 +133,7 @@ shared class SPMenu extends JMenuBar {
         JMenuItem saveAllItem = createMenuItem("Save All", KeyEvent.vkV,
             "Save all maps to their files", handler, createAccelerator(KeyEvent.vkL));
         fileMenu.add(saveAllItem);
-        if (is ModelDriver driver, driver.model is IMultiMapModel) {
-        } else {
+        if (!driver is MultiMapGUIDriver) {
             loadSecondaryItem.enabled = false;
             saveAllItem.enabled = false;
         }
@@ -158,8 +157,7 @@ shared class SPMenu extends JMenuBar {
             "Open the first secondary map in the map vieer for a broader view",
             handler, createAccelerator(KeyEvent.vkE));
         fileMenu.add(openSecondaryViewerItem);
-        if (is ModelDriver driver, driver.model is IMultiMapModel) {
-        } else {
+        if (!driver is MultiMapGUIDriver) {
             openSecondaryViewerItem.enabled = false;
         }
         fileMenu.addSeparator();
