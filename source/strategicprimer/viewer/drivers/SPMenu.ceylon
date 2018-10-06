@@ -1,89 +1,35 @@
-import ceylon.collection {
-    MutableMap,
-    HashMap
-}
-import com.apple.eawt {
-    Application,
-    AppEvent,
-    QuitResponse
-}
 import com.pump.window {
     WindowList
 }
-
-import java.awt {
-    Window
+import com.apple.eawt {
+    QuitResponse,
+    Application,
+    AppEvent
 }
 import java.awt.event {
-    ActionListener,
     ActionEvent,
     KeyEvent
 }
-
-import javax.swing {
-    SwingUtilities,
-    JMenuBar,
-    JMenu,
-    JMenuItem,
-    KeyStroke
-}
-
-import lovelace.util.jvm {
-    createMenuItem,
-    createAccelerator,
-    HotKeyModifier,
-    platform
-}
-
 import strategicprimer.drivers.common {
     ISPDriver,
     ModelDriver,
-    MultiMapGUIDriver,
+    WorkerGUI,
     UtilityGUI,
-    GUIDriver,
+    MultiMapGUIDriver,
     ViewerDriver,
-    WorkerGUI
+    GUIDriver
 }
-import lovelace.util.common {
-    defer
+import javax.swing {
+    KeyStroke,
+    JMenuItem,
+    JMenuBar,
+    JMenu
 }
-"A class to match menu item selections to the listeners to handle them. Note that at
- most one listener will be notified of any given action-command; subsequent registrations
- override previous ones."
-shared class MenuBroker() satisfies ActionListener {
-    """The mapping from "actions" to listeners to handle them."""
-    MutableMap<String, Anything(ActionEvent)> mapping =
-            HashMap<String, Anything(ActionEvent)>();
-    "Rgister a listener for a series of action commands."
-    shared void register(ActionListener|Anything(ActionEvent) listener, String* actions) {
-        Anything(ActionEvent) actual;
-        if (is ActionListener listener) {
-            actual = listener.actionPerformed;
-        } else {
-            actual = listener;
-        }
-        for (action in actions) {
-            mapping[action.lowercased] = actual;
-        }
-    }
-    "Register a listener for an action command that shows the given window."
-    shared void registerWindowShower(Window()|Window window, String* actions) {
-        if (is Window window) {
-            register((event) => window.setVisible(true), *actions);
-        } else {
-            register((event) => window().setVisible(true), *actions);
-        }
-    }
-    "Handle an event by passing it to the listener that's registered to handle its action
-     command. If none is registered, log a warning."
-    shared actual void actionPerformed(ActionEvent event) {
-        String action = event.actionCommand;
-        if (exists listener = mapping[action.lowercased]) {
-            SwingUtilities.invokeLater(defer(listener, [event]));
-        } else {
-            log.warn("Unhandled action: ``action``");
-        }
-    }
+import lovelace.util.jvm {
+    platform,
+    createMenuItem,
+    HotKeyModifier,
+    createAccelerator
 }
 "A class to hold the logic for building our menus."
 shared class SPMenu extends JMenuBar {
@@ -129,7 +75,7 @@ shared class SPMenu extends JMenuBar {
             saveAsCaption = "Save the map to file";
         }
         fileMenu.add(enabledForDriver<GUIDriver|UtilityGUI>(createMenuItem("Load",
-                KeyEvent.vkL, loadCaption, handler, createAccelerator(KeyEvent.vkO)),
+            KeyEvent.vkL, loadCaption, handler, createAccelerator(KeyEvent.vkO)),
             driver));
         fileMenu.add(enabledForDriver<MultiMapGUIDriver>(createMenuItem("Load secondary",
             KeyEvent.vkE, "Load an additional secondary map from file", handler,
@@ -140,7 +86,7 @@ shared class SPMenu extends JMenuBar {
             KeyEvent.vkA, saveAsCaption, handler, createAccelerator(KeyEvent.vkS,
                 HotKeyModifier.shift)), driver));
         fileMenu.add(enabledForDriver<MultiMapGUIDriver>(createMenuItem("Save All",
-                KeyEvent.vkV, "Save all maps to their files", handler,
+            KeyEvent.vkV, "Save all maps to their files", handler,
             createAccelerator(KeyEvent.vkL)), driver));
         fileMenu.addSeparator();
         KeyStroke openViewerHotkey;
@@ -163,9 +109,9 @@ shared class SPMenu extends JMenuBar {
             handler, createAccelerator(KeyEvent.vkW)));
         if (platform.systemIsMac) {
             Application.application.setAboutHandler((AppEvent.AboutEvent event) =>
-                handler(ActionEvent(WindowList.getWindows(true, false).iterable.coalesced
-                    .last else event, ActionEvent.actionFirst,
-                    "About")));
+            handler(ActionEvent(WindowList.getWindows(true, false).iterable.coalesced
+                .last else event, ActionEvent.actionFirst,
+                "About")));
             Application.application.setQuitHandler((AppEvent.QuitEvent event,
                     QuitResponse quitResponse) {
                 IOHandler.quitHandler = quitResponse.performQuit;
@@ -196,8 +142,8 @@ shared class SPMenu extends JMenuBar {
             KeyStroke.getKeyStroke(KeyEvent.vkSlash, 0)), driver));
         Integer nextKey = KeyEvent.vkN;
         retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Find next", nextKey,
-                "Find the next fixture matching the pattern", handler,
-                createAccelerator(KeyEvent.vkG), KeyStroke.getKeyStroke(nextKey, 0)),
+            "Find the next fixture matching the pattern", handler,
+            createAccelerator(KeyEvent.vkG), KeyStroke.getKeyStroke(nextKey, 0)),
             driver));
         retval.addSeparator();
         // vkPlus only works on non-US keyboards, but we leave it as the primary hot-key
