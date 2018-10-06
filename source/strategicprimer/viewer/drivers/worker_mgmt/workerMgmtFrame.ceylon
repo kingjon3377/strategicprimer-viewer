@@ -167,9 +167,9 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     SPOptions options;
     IWorkerModel model;
     MenuBroker menuHandler;
-    WorkerGUI driver;
+    WorkerMgmtGUI driver;
     shared new (SPOptions options, IWorkerModel model, MenuBroker menuHandler,
-            WorkerGUI driver) extends SPFrame("Worker Management", driver,
+            WorkerMgmtGUI driver) extends SPFrame("Worker Management", driver,
                 Dimension(640, 480), true,
                 (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file)) {
         this.options = options;

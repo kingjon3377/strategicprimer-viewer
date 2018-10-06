@@ -58,7 +58,7 @@ import lovelace.util.common {
 Logger log = logger(`module strategicprimer.viewer`);
 "A factory for the worker management GUI."
 service(`interface DriverFactory`)
-shared class WorkerGUIFactory() satisfies GUIDriverFactory {
+shared class WorkerMgmtGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
         invocations = ["-w", "--worker"];
@@ -82,7 +82,7 @@ shared class WorkerGUIFactory() satisfies GUIDriverFactory {
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IWorkerModel model) {
-            return WorkerGUI(cli, options, model);
+            return WorkerMgmtGUI(cli, options, model);
         } else {
             return createDriver(cli, options, WorkerModel.copyConstructor(model));
         }
@@ -91,7 +91,7 @@ shared class WorkerGUIFactory() satisfies GUIDriverFactory {
             WorkerModel(map, path);
 }
 "A driver to start the worker management GUI."
-shared class WorkerGUI(ICLIHelper cli, SPOptions options, model)
+shared class WorkerMgmtGUI(ICLIHelper cli, SPOptions options, model)
         satisfies MultiMapGUIDriver {
     shared actual IWorkerModel model;
     void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {
@@ -138,8 +138,8 @@ shared class WorkerGUI(ICLIHelper cli, SPOptions options, model)
     }
     shared actual void open(IMutableMapNG map, PathWrapper? path) {
         if (model.mapModified) {
-            SwingUtilities.invokeLater(defer(compose(WorkerGUI.startDriver,
-                WorkerGUI), [cli, options, WorkerModel(map, path)]));
+            SwingUtilities.invokeLater(defer(compose(WorkerMgmtGUI.startDriver,
+                WorkerMgmtGUI), [cli, options, WorkerModel(map, path)]));
         } else {
             model.setMap(map, path);
         }
