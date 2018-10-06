@@ -34,8 +34,12 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.drivers.gui.common {
-    UtilityMenu,
-    WindowCloseListener
+    WindowCloseListener,
+    UtilityMenuHandler,
+    SPMenu
+}
+import com.pump.window {
+    WindowMenu
 }
 
 "A factory for a driver to check whether player maps are subsets of the main map and
@@ -65,7 +69,11 @@ shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
         if (!initialized) {
             initialized = true;
             frame = SubsetFrame(this);
-            frame.jMenuBar =UtilityMenu(frame);
+            frame.jMenuBar = SPMenu(
+                SPMenu.createFileMenu(UtilityMenuHandler(this, frame).handleEvent, this),
+                SPMenu.disabledMenu(SPMenu.createMapMenu(noop, this)),
+                SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)),
+                WindowMenu(frame));
             frame.addWindowListener(WindowCloseListener(silentListener(frame.dispose)));
         }
         SwingUtilities.invokeLater(frame.showWindow);

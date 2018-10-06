@@ -82,8 +82,9 @@ import strategicprimer.model.common.map.fixtures {
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
-    UtilityMenu,
-    WindowCloseListener
+    WindowCloseListener,
+    SPMenu,
+    UtilityMenuHandler
 }
 import ceylon.logging {
     Logger,
@@ -94,6 +95,9 @@ import ceylon.decimal {
 }
 import ceylon.whole {
     Whole
+}
+import com.pump.window {
+    WindowMenu
 }
 
 Logger log = logger(`module strategicprimer.drivers.utility`);
@@ -358,7 +362,11 @@ shared class MapCheckerGUI() satisfies UtilityGUI {
         if (!initialized) {
             initialized = true;
             window = MapCheckerFrame(this);
-            window.jMenuBar =UtilityMenu(window);
+            window.jMenuBar = SPMenu(
+                SPMenu.createFileMenu(UtilityMenuHandler(this, window).handleEvent, this),
+                SPMenu.disabledMenu(SPMenu.createMapMenu(noop, this)),
+                SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)),
+                WindowMenu(window));
             window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
         }
         window.showWindow();

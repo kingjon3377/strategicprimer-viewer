@@ -50,9 +50,9 @@ import java.awt {
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
-    UtilityMenu,
     WindowCloseListener,
-    SPFileChooser
+    SPFileChooser,
+    SPMenu
 }
 import ceylon.collection {
     HashMap,
@@ -88,6 +88,9 @@ import lovelace.util.common {
 }
 import lovelace.util.jvm {
     FileChooser
+}
+import com.pump.window {
+    WindowMenu
 }
 object suffixHelper {
     String suffix(Path file, Integer count) {
@@ -331,7 +334,11 @@ shared class TabularReportGUI(ICLIHelper cli, SPOptions options, model)
         listener.mapChanged();
         model.addMapChangeListener(listener);
         window.add(frame);
-        window.jMenuBar = UtilityMenu(window);
+        window.jMenuBar = SPMenu(
+            SPMenu.createFileMenu(IOHandler(this).actionPerformed, this),
+            SPMenu.disabledMenu(SPMenu.createMapMenu(noop, this)),
+            SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)),
+            WindowMenu(window));
         window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
         window.showWindow();
     }
