@@ -231,18 +231,6 @@ shared class SPMenu extends JMenuBar {
         JMenu viewMenu = JMenu("View");
         viewMenu.mnemonic = KeyEvent.vkE;
 
-        // We *create* these items here (early) so that we can enable or disable them
-        // without an extra branch.
-        {JMenuItem*} treeItems = [
-            createMenuItem("Reload tree", KeyEvent.vkR, "Refresh the view of the workers",
-                handler, createAccelerator(KeyEvent.vkR)),
-            createMenuItem("Expand All", KeyEvent.vkX,
-                "Expand all nodes in the unit tree", handler),
-            createMenuItem("Expand Unit Kinds", KeyEvent.vkK,
-                "Expand all unit kinds to show the units", handler),
-            createMenuItem("Collapse All", KeyEvent.vkC,
-                "Collapse all nodes in the unit tree", handler)
-        ];
         JMenuItem currentPlayerItem;
         if (is WorkerGUI driver) { // TODO: Use enabledForDriver for the treeItems
             currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
@@ -252,15 +240,17 @@ shared class SPMenu extends JMenuBar {
             currentPlayerItem = enabledForDriver<ModelDriver>(createMenuItem(
                 "Change current player", KeyEvent.vkP,
                 "Mark a player as the current player in the map", handler), driver);
-            for (item in treeItems) {
-                item.enabled = false;
-            }
         }
         viewMenu.add(currentPlayerItem);
-        // can't use Iterable.each() instead of a loop because JMenu.add() is overloaded
-        for (item in treeItems) {
-            viewMenu.add(item);
-        }
+        viewMenu.add(enabledForDriver<WorkerGUI>(createMenuItem("Reload tree",
+            KeyEvent.vkR, "Refresh the view of the workers", handler,
+            createAccelerator(KeyEvent.vkR)), driver));
+        viewMenu.add(enabledForDriver<WorkerGUI>(createMenuItem("Expand All",
+            KeyEvent.vkX, "Expand all nodes in the unit tree", handler), driver));
+        viewMenu.add(enabledForDriver<WorkerGUI>(createMenuItem("Expand Unit Kinds",
+            KeyEvent.vkK, "Expand all unit kinds to show the units", handler), driver));
+        viewMenu.add(enabledForDriver<WorkerGUI>(createMenuItem("Collapse All",
+            KeyEvent.vkC, "Collapse all nodes in the unit tree", handler), driver));
         return viewMenu;
     }
     "Disable a menu and return it."
