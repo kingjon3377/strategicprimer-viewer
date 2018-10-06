@@ -302,12 +302,15 @@ shared class MapCheckerCLI satisfies UtilityDriver {
                         *map.fixtures.get(location));
                 }
             }
+            log.debug("Finished a check for ``file.filename``");
         }
         for (location in map.locations) {
             if (exists terrain = map.baseTerrain[location]) {
                 acreageChecker(location, warner, map.fixtures.get(location));
             }
         }
+        log.debug("Finished with ``file.filename``");
+        stdout("... done");
     }
     shared actual void startDriver(String* args) {
         for (filename in args.coalesced) {
