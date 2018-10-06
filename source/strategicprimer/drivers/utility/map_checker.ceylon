@@ -351,7 +351,7 @@ class MapCheckerFrame(ISPDriver driver) extends SPFrame("Strategic Primer Map Ch
 service(`interface DriverFactory`)
 shared class MapCheckerGUIFactory() satisfies UtilityDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(true, ["-k", "--check"],
-        ParamCount.atLeastOne, "Check map for errors",
+        ParamCount.anyNumber, "Check map for errors",
         "Check a map file for errors, deprecated syntax, etc.", false, true);
     shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
             MapCheckerGUI();
