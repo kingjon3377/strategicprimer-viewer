@@ -67,16 +67,14 @@ import strategicprimer.drivers.common {
     UtilityGUI
 }
 import strategicprimer.drivers.gui.common {
-    ISPWindow
+    ISPWindow,
+    quitHandler
 }
 
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
 shared class IOHandler
         satisfies ActionListener {
-    suppressWarnings("expressionTypeNothing")
-    static void defaultQuitHandler() => process.exit(0); // TODO: remove these once eclipse/ceylon#7396 fixed
-    shared static variable Anything() quitHandler = defaultQuitHandler;
     static FileFilter mapExtensionsFilter = FileNameExtensionFilter(
         "Strategic Primer world map files", "map", "xml", "db");
     static ViewerGUIFactory vgf = ViewerGUIFactory();
@@ -311,10 +309,10 @@ shared class IOHandler
         }
         case ("quit") {
             if (is ModelDriver driver) {
-                maybeSave("quitting", as<Frame>(iter), source, quitHandler);
+                maybeSave("quitting", as<Frame>(iter), source, quitHandler.handler);
 //              maybeSave("quitting", as<Frame>(iter), source, SPMenu.defaultQuit()); // TODO: switch to this once eclipse/ceylon#7396 fixed
             } else if (is UtilityGUI driver) {
-                quitHandler();
+                quitHandler.handler();
             } else {
                 log.error("IOHandler asked to quit in unsupported app");
             }

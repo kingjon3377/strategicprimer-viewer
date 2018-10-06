@@ -31,6 +31,9 @@ import lovelace.util.jvm {
     HotKeyModifier,
     createAccelerator
 }
+import strategicprimer.drivers.gui.common {
+    quitHandler
+}
 "A class to hold the logic for building our menus."
 shared class SPMenu extends JMenuBar {
 //    suppressWarnings("expressionTypeNothing")
@@ -114,7 +117,7 @@ shared class SPMenu extends JMenuBar {
                 "About")));
             Application.application.setQuitHandler((AppEvent.QuitEvent event,
                     QuitResponse quitResponse) {
-                IOHandler.quitHandler = quitResponse.performQuit;
+                quitHandler.handler = quitResponse.performQuit;
 //                localDefaultQuit = quitResponse.performQuit; // TODO: switch to this once eclipse/ceylon#7396 fixed
                 handler(ActionEvent(
                     WindowList.getWindows(true, false).iterable.coalesced.last else event,
