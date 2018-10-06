@@ -7,7 +7,6 @@ import strategicprimer.drivers.gui.common.about {
 import strategicprimer.viewer.drivers {
     PlayerChangeMenuListener,
     IOHandler,
-    MenuBroker,
     SPFileChooser
 }
 import ceylon.logging {
@@ -47,7 +46,8 @@ import lovelace.util.jvm {
     FileChooser
 }
 import strategicprimer.drivers.gui.common {
-    WindowCloseListener
+    WindowCloseListener,
+    MenuBroker
 }
 import lovelace.util.common {
     PathWrapper,

@@ -32,12 +32,12 @@ import strategicprimer.drivers.gui.common.about {
 }
 import strategicprimer.viewer.drivers {
     IOHandler,
-    MenuBroker,
     SPFileChooser
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
-    WindowCloseListener
+    WindowCloseListener,
+    MenuBroker
 }
 import lovelace.util.common {
     silentListener,

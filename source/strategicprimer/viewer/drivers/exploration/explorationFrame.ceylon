@@ -86,12 +86,10 @@ import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture
 }
 
-import strategicprimer.viewer.drivers {
-    MenuBroker
-}
 import strategicprimer.drivers.gui.common {
     SPFrame,
-    SPMenu
+    SPMenu,
+    MenuBroker
 }
 import strategicprimer.viewer.drivers.map_viewer {
     SelectionChangeSupport,

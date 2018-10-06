@@ -22,7 +22,6 @@ import strategicprimer.drivers.gui.common.about {
 }
 import strategicprimer.viewer.drivers {
     IOHandler,
-    MenuBroker,
     SPFileChooser
 }
 import strategicprimer.drivers.exploration.common {
@@ -31,7 +30,8 @@ import strategicprimer.drivers.exploration.common {
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
-    WindowCloseListener
+    WindowCloseListener,
+    MenuBroker
 }
 import lovelace.util.jvm {
     FileChooser

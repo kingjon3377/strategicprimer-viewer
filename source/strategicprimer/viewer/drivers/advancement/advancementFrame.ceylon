@@ -26,9 +26,6 @@ import strategicprimer.model.common.map {
     Player,
     PlayerImpl
 }
-import strategicprimer.viewer.drivers {
-    MenuBroker
-}
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu,
     TreeExpansionOrderListener,
@@ -50,7 +47,8 @@ import strategicprimer.model.impl.xmlio {
     mapIOHelper
 }
 import strategicprimer.drivers.gui.common {
-    SPFrame
+    SPFrame,
+    MenuBroker
 }
 import lovelace.util.common {
     silentListener,
