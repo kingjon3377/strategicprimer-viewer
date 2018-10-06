@@ -51,7 +51,8 @@ import java.awt {
 import strategicprimer.drivers.gui.common {
     SPFrame,
     UtilityMenu,
-    WindowCloseListener
+    WindowCloseListener,
+    SPFileChooser
 }
 import ceylon.collection {
     HashMap,

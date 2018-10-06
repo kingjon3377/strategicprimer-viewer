@@ -97,7 +97,8 @@ import strategicprimer.model.impl.xmlio {
 import strategicprimer.drivers.gui.common {
     SPFrame,
     WindowCloseListener,
-    MenuBroker
+    MenuBroker,
+    SPFileChooser
 }
 import com.vasileff.ceylon.structures {
     MutableMultimap,

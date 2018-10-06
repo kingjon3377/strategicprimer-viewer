@@ -31,13 +31,13 @@ import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
 import strategicprimer.viewer.drivers {
-    IOHandler,
-    SPFileChooser
+    IOHandler
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
     WindowCloseListener,
-    MenuBroker
+    MenuBroker,
+    SPFileChooser
 }
 import lovelace.util.common {
     silentListener,

@@ -28,13 +28,13 @@ import strategicprimer.drivers.gui.common.about {
 }
 import strategicprimer.viewer.drivers {
     PlayerChangeMenuListener,
-    IOHandler,
-    SPFileChooser
+    IOHandler
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
     WindowCloseListener,
-    MenuBroker
+    MenuBroker,
+    SPFileChooser
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit

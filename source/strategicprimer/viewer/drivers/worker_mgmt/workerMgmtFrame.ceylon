@@ -87,10 +87,6 @@ import strategicprimer.report {
     IReportNode,
     simpleReportNode
 }
-import strategicprimer.viewer.drivers {
-    SPFileChooser { filteredFileChooser },
-    IOHandler
-}
 import strategicprimer.viewer.drivers.map_viewer {
     NewUnitDialog,
     ViewerModel,
@@ -110,7 +106,8 @@ import lovelace.util.common {
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
-    MenuBroker
+    MenuBroker,
+    SPFileChooser { filteredFileChooser }
 }
 import ceylon.interop.java {
     JavaRunnable

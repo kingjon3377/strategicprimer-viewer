@@ -12,7 +12,8 @@ import java.awt.event {
 }
 import strategicprimer.drivers.gui.common {
     quitHandler,
-    ISPWindow
+    ISPWindow,
+    SPFileChooser
 }
 import strategicprimer.model.common.xmlio {
     warningLevels,
