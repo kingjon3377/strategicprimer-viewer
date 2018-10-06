@@ -1,11 +1,47 @@
-import java.awt {
-    Component,
-    JFileDialog=FileDialog,
-    Frame
+import strategicprimer.model.impl.xmlio {
+    mapIOHelper
+}
+import strategicprimer.viewer.drivers.map_viewer {
+    ViewerGUIFactory,
+    ViewerModel,
+    ViewerGUI
 }
 import java.awt.event {
-    ActionListener,
-    ActionEvent
+    ActionEvent,
+    ActionListener
+}
+import strategicprimer.drivers.gui.common {
+    quitHandler,
+    ISPWindow
+}
+import strategicprimer.model.common.xmlio {
+    warningLevels,
+    SPFormatException
+}
+import strategicprimer.model.common.map {
+    PlayerCollection,
+    IMutableMapNG,
+    SPMapNG
+}
+import javax.xml.stream {
+    XMLStreamException
+}
+import strategicprimer.drivers.common {
+    ISPDriver,
+    GUIDriver,
+    ModelDriver,
+    UtilityGUI,
+    MultiMapGUIDriver
+}
+import javax.swing.filechooser {
+    FileNameExtensionFilter,
+    FileFilter
+}
+import lovelace.util.common {
+    defer,
+    PathWrapper,
+    todo,
+    as
 }
 import java.io {
     FileNotFoundException,
@@ -13,64 +49,24 @@ import java.io {
     FilenameFilter,
     JFile=File
 }
+import java.awt {
+    JFileDialog=FileDialog,
+    Component,
+    Frame
+}
 import java.nio.file {
     NoSuchFileException
 }
-
 import javax.swing {
-    JFileChooser,
     JOptionPane,
-    SwingUtilities
-}
-import javax.swing.filechooser {
-    FileNameExtensionFilter,
-    FileFilter
-}
-import javax.xml.stream {
-    XMLStreamException
-}
-
-import lovelace.util.common {
-    todo,
-    as,
-    defer,
-    PathWrapper
+    SwingUtilities,
+    JFileChooser
 }
 import lovelace.util.jvm {
     showErrorDialog,
     platform,
     FileChooser
 }
-
-import strategicprimer.model.common.map {
-    PlayerCollection,
-    SPMapNG,
-    IMutableMapNG
-}
-import strategicprimer.model.impl.xmlio {
-    mapIOHelper
-}
-import strategicprimer.model.common.xmlio {
-    warningLevels,
-    SPFormatException
-}
-import strategicprimer.viewer.drivers.map_viewer {
-    ViewerModel,
-    ViewerGUIFactory,
-    ViewerGUI
-}
-import strategicprimer.drivers.common {
-    ISPDriver,
-    ModelDriver,
-    GUIDriver,
-    MultiMapGUIDriver,
-    UtilityGUI
-}
-import strategicprimer.drivers.gui.common {
-    ISPWindow,
-    quitHandler
-}
-
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
 shared class IOHandler
@@ -131,7 +127,7 @@ shared class IOHandler
             }
         }
         if (is MultiMapGUIDriver driver, driver.model.subordinateMaps.map(Entry.item)
-                .map(Tuple.last).coalesced.any(true.equals)) {
+            .map(Tuple.last).coalesced.any(true.equals)) {
             Integer answer = JOptionPane.showConfirmDialog(window,
                 "Subordinate map(s) have unsaved changes. Save all before ``verb``?",
                 "Save Changes?", JOptionPane.yesNoCancelOption,
@@ -321,15 +317,4 @@ shared class IOHandler
             log.info("Unhandled command ``event.actionCommand`` in IOHandler");
         }
     }
-}
-shared class SPFileChooser extends FileChooser {
-    shared new open(PathWrapper? loc = null,
-            JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(true))
-            extends FileChooser.open(fileChooser, loc) {}
-    shared new save(PathWrapper? loc,
-            JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false))
-            extends FileChooser.save(loc, fileChooser) {}
-    shared new custom(PathWrapper? loc, String approveText,
-            JFileChooser|JFileDialog fileChooser = IOHandler.filteredFileChooser(false))
-            extends FileChooser.custom(loc, approveText, fileChooser) {}
 }
