@@ -42,7 +42,7 @@ import strategicprimer.drivers.common {
     UtilityGUI,
     GUIDriver,
     ViewerDriver,
-    IWorkerModel
+    WorkerGUI
 }
 import lovelace.util.common {
     defer
@@ -244,7 +244,7 @@ shared class SPMenu extends JMenuBar {
                 "Collapse all nodes in the unit tree", handler)
         ];
         JMenuItem currentPlayerItem;
-        if (is ModelDriver driver, is IWorkerModel model = driver.model) { // TODO: Driver interface for this distinction; use enabledForDriver for the treeItems once it's there
+        if (is WorkerGUI driver) { // TODO: Use enabledForDriver for the treeItems
             currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
                 "Look at a different player's units and workers", handler,
                 createAccelerator(KeyEvent.vkP));
