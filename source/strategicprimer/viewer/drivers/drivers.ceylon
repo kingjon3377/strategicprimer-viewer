@@ -73,12 +73,13 @@ import com.apple.eawt {
     Application
 }
 import com.pump.window {
-    WindowList
+    WindowList,
+    WindowMenu
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
-    UtilityMenu,
-    WindowCloseListener
+    WindowCloseListener,
+    SPMenu
 }
 import strategicprimer.model.common.xmlio {
     SPFormatException,
@@ -458,9 +459,8 @@ class AppStarter() {
             SPOptions currentOptionsTyped = currentOptions.copy();
             if (gui) {
                 try {
-                    SwingUtilities.invokeLater(
-                        defer(shuffle(compose(SPFrame.showWindow, appChooserFrame))(),
-                            [cli, currentOptionsTyped, *others]));
+                    value lambda = AppChooserGUI(cli, currentOptionsTyped).startDriver; // TODO: Inline once eclipse/ceylon#73739 fixed
+                    SwingUtilities.invokeLater(defer(lambda, others.sequence()));
                 } catch (DriverFailedException except) {
                     log.fatal(except.message, except);
                     SwingUtilities.invokeLater(defer(showErrorDialog, [null,
@@ -513,62 +513,65 @@ shared void run() {
         process.exit(2);
     }
 }
-SPFrame appChooserFrame(ICLIHelper cli, SPOptions options, String* args) {
-    value tempComponent = JEditorPane();
-    value font = tempComponent.font;
-    assert (is Graphics2D pen = BufferedImage(1, 1, BufferedImage.typeIntRgb)
-        .createGraphics());
-    value context = pen.fontRenderContext;
-    variable Integer width = 0;
-    variable Integer height = 10;
+class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
     Boolean includeInGUIList(DriverFactory driver) => driver.usage.includeInList(true);
-    value drivers = `module strategicprimer.viewer`.findServiceProviders(`DriverFactory`)
-        .filter(includeInGUIList).sequence();
-    for (driver in drivers) {
-        value dimensions = font.getStringBounds(driver.usage.shortDescription, context);
-        width = Integer.largest(width, dimensions.width.integer);
-        height += dimensions.height.integer;
-    }
-    SPFrame frame = SPFrame("SP App Chooser", object satisfies UtilityDriver {
-        shared actual void startDriver(String* args) {}
-        // FIXME: Make this into a ISPDriver implementation for this purpose
-    }, Dimension(width, height));
-    void buttonHandler(DriverFactory target) {
-        try {
-            DriverWrapper(target).startCatchingErrors(cli, options, *args);
-            SwingUtilities.invokeLater(() {
-                frame.setVisible(false);
-                frame.dispose();
-            });
-        } catch (IOException except) {
-            log.error("I/O error prompting user for app to start", except);
-            showErrorDialog(frame, "I/O error", except.message );
-        } catch (DriverFailedException except) {
-            if (is SPFormatException cause = except.cause) {
-                showErrorDialog(frame, except.message, cause.message);
-                log.error(cause.message);
-            } else if (exists cause = except.cause) {
-                showErrorDialog(frame, except.message, cause.message);
-                log.error("Driver failed:", cause);
-            } else {
-                showErrorDialog(frame, except.message, except.message);
-                log.error("Driver failed:", except);
-            }
-        } catch (Exception except) {
-            showErrorDialog(frame, except.message, except.message);
-            log.error(except.message, except);
+    shared actual void startDriver(String* args) {
+        value tempComponent = JEditorPane();
+        value font = tempComponent.font;
+        assert (is Graphics2D pen = BufferedImage(1, 1, BufferedImage.typeIntRgb)
+            .createGraphics());
+        value context = pen.fontRenderContext;
+        variable Integer width = 0;
+        variable Integer height = 10;
+        value drivers = `module strategicprimer.viewer`.findServiceProviders(`DriverFactory`)
+            .filter(includeInGUIList).sequence();
+        for (driver in drivers) {
+            value dimensions = font.getStringBounds(driver.usage.shortDescription, context);
+            width = Integer.largest(width, dimensions.width.integer);
+            height += dimensions.height.integer;
         }
+        SPFrame frame = SPFrame("SP App Chooser", this, Dimension(width, height));
+        JPanel buttonPanel = JPanel(GridLayout(0, 1));
+        void buttonHandler(DriverFactory target) {
+            try {
+                DriverWrapper(target).startCatchingErrors(cli, options, *args);
+                SwingUtilities.invokeLater(() {
+                    frame.setVisible(false);
+                    frame.dispose();
+                });
+            } catch (IOException except) {
+                log.error("I/O error prompting user for app to start", except);
+                showErrorDialog(frame, "I/O error", except.message );
+            } catch (DriverFailedException except) {
+                if (is SPFormatException cause = except.cause) {
+                    showErrorDialog(frame, except.message, cause.message);
+                    log.error(cause.message);
+                } else if (exists cause = except.cause) {
+                    showErrorDialog(frame, except.message, cause.message);
+                    log.error("Driver failed:", cause);
+                } else {
+                    showErrorDialog(frame, except.message, except.message);
+                    log.error("Driver failed:", except);
+                }
+            } catch (Exception except) {
+                showErrorDialog(frame, except.message, except.message);
+                log.error(except.message, except);
+            }
+        }
+        for (driver in drivers) {
+            buttonPanel.add(listenedButton(driver.usage.shortDescription,
+                        (evt) => buttonHandler(driver)));
+        }
+        frame.contentPane = BorderedPanel.verticalPanel(
+            JLabel("Please choose one of the applications below"),
+            JScrollPane(buttonPanel), null);
+        frame.pack();
+        frame.jMenuBar = SPMenu(
+            SPMenu.createFileMenu(IOHandler(this).actionPerformed, this),
+            SPMenu.disabledMenu(SPMenu.createMapMenu(noop, this)),
+            SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)),
+            WindowMenu(frame));
+        frame.addWindowListener(WindowCloseListener(silentListener(frame.dispose)));
+        frame.setVisible(true);
     }
-    JPanel buttonPanel = JPanel(GridLayout(0, 1));
-    for (driver in drivers) {
-        buttonPanel.add(listenedButton(driver.usage.shortDescription,
-                    (evt) => buttonHandler(driver)));
-    }
-    frame.contentPane = BorderedPanel.verticalPanel(
-        JLabel("Please choose one of the applications below"),
-        JScrollPane(buttonPanel), null);
-    frame.pack();
-    frame.jMenuBar = UtilityMenu(frame);
-    frame.addWindowListener(WindowCloseListener(silentListener(frame.dispose)));
-    return frame;
 }
