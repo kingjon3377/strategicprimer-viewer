@@ -40,10 +40,8 @@ import strategicprimer.drivers.common {
     ModelDriver,
     MultiMapGUIDriver,
     UtilityGUI,
-    GUIDriver
-}
-import strategicprimer.viewer.drivers.map_viewer {
-    ViewerGUI
+    GUIDriver,
+    ViewerDriver
 }
 import strategicprimer.drivers.worker.common {
     IWorkerModel
@@ -114,7 +112,7 @@ shared class SPMenu extends JMenuBar {
             ISPDriver driver) {
         JMenu fileMenu = JMenu("File");
         fileMenu.mnemonic = KeyEvent.vkF;
-        fileMenu.add(enabledForDriver<ViewerGUI>(createMenuItem("New", KeyEvent.vkN,
+        fileMenu.add(enabledForDriver<ViewerDriver>(createMenuItem("New", KeyEvent.vkN,
             "Create a new, empty map the same size as the current one", handler,
             createAccelerator(KeyEvent.vkN)), driver));
         String desc;
@@ -154,7 +152,7 @@ shared class SPMenu extends JMenuBar {
         } else {
             openViewerHotkey = createAccelerator(KeyEvent.vkM);
         }
-        fileMenu.add(disabledForDriver<ViewerGUI>(enabledForDriver<ModelDriver>(
+        fileMenu.add(disabledForDriver<ViewerDriver>(enabledForDriver<ModelDriver>(
             createMenuItem("Open in map viewer", KeyEvent.vkM,
                 "Open the main map in the map viewer for a broader view", handler,
                 openViewerHotkey), driver), driver));
@@ -191,15 +189,15 @@ shared class SPMenu extends JMenuBar {
     shared static JMenu createMapMenu(Anything(ActionEvent) handler, ISPDriver driver) {
         JMenu retval = JMenu("Map");
         retval.mnemonic = KeyEvent.vkM;
-        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Go to tile",
+        retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Go to tile",
             KeyEvent.vkT, "Go to a tile by coordinates", handler,
             createAccelerator(KeyEvent.vkT)), driver));
         Integer findKey = KeyEvent.vkF;
-        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Find a fixture", findKey,
+        retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Find a fixture", findKey,
             "Find a fixture by name, kind or ID #", handler, createAccelerator(findKey),
             KeyStroke.getKeyStroke(KeyEvent.vkSlash, 0)), driver));
         Integer nextKey = KeyEvent.vkN;
-        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Find next", nextKey,
+        retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Find next", nextKey,
                 "Find the next fixture matching the pattern", handler,
                 createAccelerator(KeyEvent.vkG), KeyStroke.getKeyStroke(nextKey, 0)),
             driver));
@@ -207,15 +205,15 @@ shared class SPMenu extends JMenuBar {
         // vkPlus only works on non-US keyboards, but we leave it as the primary hot-key
         // because it's the best to *show* in the menu.
         KeyStroke plusKey = createAccelerator(KeyEvent.vkPlus);
-        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Zoom in", KeyEvent.vkI,
+        retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Zoom in", KeyEvent.vkI,
             "Increase the visible size of each tile", handler, plusKey,
             createAccelerator(KeyEvent.vkEquals),
             createAccelerator(KeyEvent.vkEquals, HotKeyModifier.shift),
             createAccelerator(KeyEvent.vkAdd)), driver));
-        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Zoom out", KeyEvent.vkO,
+        retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Zoom out", KeyEvent.vkO,
             "Decrease the visible size of each tile", handler,
             createAccelerator(KeyEvent.vkMinus)), driver));
-        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Reset zoom", KeyEvent.vkR,
+        retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Reset zoom", KeyEvent.vkR,
             "Reset the zoom level", handler, createAccelerator(KeyEvent.vk0)), driver));
         retval.addSeparator();
         KeyStroke centerHotkey;
@@ -224,7 +222,7 @@ shared class SPMenu extends JMenuBar {
         } else {
             centerHotkey = createAccelerator(KeyEvent.vkC);
         }
-        retval.add(enabledForDriver<ViewerGUI>(createMenuItem("Center", KeyEvent.vkC,
+        retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Center", KeyEvent.vkC,
             "Center the view on the selected tile", handler,
             centerHotkey), driver));
         return retval;
