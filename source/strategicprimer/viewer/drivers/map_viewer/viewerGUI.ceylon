@@ -16,7 +16,8 @@ import strategicprimer.drivers.common {
     DriverFailedException,
     GUIDriver,
     DriverFactory,
-    GUIDriverFactory
+    GUIDriverFactory,
+    ViewerDriver
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -86,9 +87,9 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
 }
 
 "A driver to start the map viewer."
-shared class ViewerGUI(model) satisfies GUIDriver {
+shared class ViewerGUI(model) satisfies ViewerDriver {
     shared actual IViewerModel model;
-    void center() {
+    shared actual void center() {
         Point selection = model.selection;
         MapDimensions dimensions = model.mapDimensions;
         VisibleDimensions visible = model.visibleDimensions;
@@ -114,6 +115,9 @@ shared class ViewerGUI(model) satisfies GUIDriver {
         model.visibleDimensions = VisibleDimensions(topRow,
             topRow + visible.height, leftColumn, leftColumn + visible.width);
     }
+    shared actual void zoomIn() => model.zoomIn();
+    shared actual void zoomOut() => model.zoomOut();
+    shared actual void resetZoom() => model.resetZoom();
     void createWindow(MenuBroker menuHandler) {
         SPFrame&MapGUI frame = ViewerFrame(model, menuHandler.actionPerformed, this);
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
@@ -142,9 +146,9 @@ shared class ViewerGUI(model) satisfies GUIDriver {
         menuHandler.register(IOHandler(this), "load", "save", "save as", "new",
             "load secondary", "save all", "open in map viewer",
             "open secondary map in map viewer", "close", "quit");
-        menuHandler.register(silentListener(model.zoomIn), "zoom in");
-        menuHandler.register(silentListener(model.zoomOut), "zoom out");
-        menuHandler.register(silentListener(model.resetZoom), "reset zoom");
+        menuHandler.register(silentListener(zoomIn), "zoom in");
+        menuHandler.register(silentListener(zoomOut), "zoom out");
+        menuHandler.register(silentListener(resetZoom), "reset zoom");
         menuHandler.register(silentListener(center), "center");
         SwingUtilities.invokeLater(defer(createWindow, [menuHandler]));
     }
