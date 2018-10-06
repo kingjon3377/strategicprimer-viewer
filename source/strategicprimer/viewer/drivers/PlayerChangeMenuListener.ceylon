@@ -10,7 +10,8 @@ import javax.swing {
 }
 import strategicprimer.drivers.common {
     IDriverModel,
-    PlayerChangeListener
+    PlayerChangeListener,
+    IWorkerModel
 }
 import java.awt.event {
     ActionListener,
@@ -29,9 +30,6 @@ import java.awt {
 }
 import strategicprimer.model.common.map {
     Player
-}
-import strategicprimer.drivers.worker.common {
-    IWorkerModel
 }
 """A class to respond to "change current player" menu items."""
 shared class PlayerChangeMenuListener(IDriverModel model)

@@ -38,7 +38,8 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 import strategicprimer.drivers.common {
     SimpleMultiMapModel,
-    IDriverModel
+    IDriverModel,
+    IWorkerModel
 }
 import ceylon.logging {
     Logger,

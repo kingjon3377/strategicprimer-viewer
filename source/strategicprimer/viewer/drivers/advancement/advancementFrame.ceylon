@@ -39,12 +39,12 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     UnitSelectionSource
 }
 import strategicprimer.drivers.worker.common {
-    IWorkerModel,
     IWorkerTreeModel
 }
 import strategicprimer.drivers.common {
     PlayerChangeListener,
-    ModelDriver
+    ModelDriver,
+    IWorkerModel
 }
 import strategicprimer.model.impl.xmlio {
     mapIOHelper

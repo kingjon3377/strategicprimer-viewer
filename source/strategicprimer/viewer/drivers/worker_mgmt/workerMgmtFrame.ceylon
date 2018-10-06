@@ -58,10 +58,10 @@ import strategicprimer.drivers.common {
     MapChangeListener,
     SPOptions,
     PlayerChangeListener,
-    IDriverModel
+    IDriverModel,
+    IWorkerModel
 }
 import strategicprimer.drivers.worker.common {
-    IWorkerModel,
     IWorkerTreeModel
 }
 import strategicprimer.model.common {

@@ -29,7 +29,6 @@ import strategicprimer.model.common.map {
     HasKind
 }
 import strategicprimer.drivers.worker.common {
-    IWorkerModel,
     IWorkerTreeModel
 }
 import lovelace.util.common {
@@ -39,6 +38,9 @@ import lovelace.util.common {
 }
 import lovelace.util.jvm {
     EnumerationWrapper
+}
+import strategicprimer.drivers.common {
+    IWorkerModel
 }
 "An alternative implementation of the worker tree model."
 shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {

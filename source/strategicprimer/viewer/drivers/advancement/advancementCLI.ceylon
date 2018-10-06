@@ -7,7 +7,8 @@ import strategicprimer.drivers.common {
     CLIDriver,
     ModelDriver,
     DriverFactory,
-    ModelDriverFactory
+    ModelDriverFactory,
+    IWorkerModel
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -17,8 +18,7 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import strategicprimer.drivers.worker.common {
-    WorkerModel,
-    IWorkerModel
+    WorkerModel
 }
 import ceylon.logging {
     logger,

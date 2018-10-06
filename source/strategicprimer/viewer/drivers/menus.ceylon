@@ -41,9 +41,7 @@ import strategicprimer.drivers.common {
     MultiMapGUIDriver,
     UtilityGUI,
     GUIDriver,
-    ViewerDriver
-}
-import strategicprimer.drivers.worker.common {
+    ViewerDriver,
     IWorkerModel
 }
 import lovelace.util.common {

@@ -11,14 +11,14 @@ import strategicprimer.drivers.common {
     ReadOnlyDriver,
     ModelDriverFactory,
     DriverFactory,
-    ModelDriver
+    ModelDriver,
+    IWorkerModel
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.drivers.worker.common {
-    WorkerModel,
-    IWorkerModel
+    WorkerModel
 }
 import lovelace.util.common {
     PathWrapper

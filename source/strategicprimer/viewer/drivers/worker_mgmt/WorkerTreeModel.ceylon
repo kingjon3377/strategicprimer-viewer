@@ -27,11 +27,13 @@ import strategicprimer.model.common.map {
     HasKind
 }
 import strategicprimer.drivers.worker.common {
-    IWorkerModel,
     IWorkerTreeModel
 }
 import lovelace.util.common {
     matchingPredicate
+}
+import strategicprimer.drivers.common {
+    IWorkerModel
 }
 "A TreeModel implementation for a player's units and workers."
 class WorkerTreeModel satisfies IWorkerTreeModel {

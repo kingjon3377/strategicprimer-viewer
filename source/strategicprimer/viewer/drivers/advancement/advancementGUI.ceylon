@@ -13,14 +13,14 @@ import strategicprimer.drivers.common {
     GUIDriver,
     DriverFactory,
     GUIDriverFactory,
-    MultiMapGUIDriver
+    MultiMapGUIDriver,
+    IWorkerModel
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.drivers.worker.common {
-    WorkerModel,
-    IWorkerModel
+    WorkerModel
 }
 import strategicprimer.drivers.gui.common.about {
     aboutDialog

@@ -13,9 +13,7 @@ import ceylon.file {
 
 import strategicprimer.drivers.common {
     SPOptions,
-    PlayerChangeListener
-}
-import strategicprimer.drivers.worker.common {
+    PlayerChangeListener,
     IWorkerModel
 }
 import strategicprimer.model.common.map {

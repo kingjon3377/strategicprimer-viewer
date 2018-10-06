@@ -26,11 +26,11 @@ import strategicprimer.drivers.common {
     GUIDriver,
     DriverFactory,
     GUIDriverFactory,
-    MultiMapGUIDriver
+    MultiMapGUIDriver,
+    IWorkerModel
 }
 import strategicprimer.drivers.worker.common {
-    WorkerModel,
-    IWorkerModel
+    WorkerModel
 }
 import java.awt.event {
     ActionEvent
