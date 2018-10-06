@@ -33,10 +33,6 @@ import strategicprimer.drivers.common {
     UtilityGUI,
     MultiMapGUIDriver
 }
-import javax.swing.filechooser {
-    FileNameExtensionFilter,
-    FileFilter
-}
 import lovelace.util.common {
     defer,
     PathWrapper,
@@ -45,12 +41,9 @@ import lovelace.util.common {
 }
 import java.io {
     FileNotFoundException,
-    IOException,
-    FilenameFilter,
-    JFile=File
+    IOException
 }
 import java.awt {
-    JFileDialog=FileDialog,
     Component,
     Frame
 }
@@ -59,48 +52,17 @@ import java.nio.file {
 }
 import javax.swing {
     JOptionPane,
-    SwingUtilities,
-    JFileChooser
+    SwingUtilities
 }
 import lovelace.util.jvm {
     showErrorDialog,
-    platform,
     FileChooser
 }
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
 shared class IOHandler
         satisfies ActionListener {
-    static FileFilter mapExtensionsFilter = FileNameExtensionFilter(
-        "Strategic Primer world map files", "map", "xml", "db");
     static ViewerGUIFactory vgf = ViewerGUIFactory();
-    "A factory method for [[JFileChooser]] (or AWT [[FileDialog|JFileDialog]] taking a
-     [[FileFilter]] to apply in the same operation."
-    todo("Move functionality into FileChooser somehow?")
-    shared static JFileChooser|JFileDialog filteredFileChooser(
-            "Whether to allow multi-selection."
-            Boolean allowMultiple,
-            "The current directory."
-            String current = ".",
-            "The filter to apply."
-            FileFilter? filter = mapExtensionsFilter) {
-        if (platform.systemIsMac) {
-            JFileDialog retval = JFileDialog(null of Frame?);
-            if (exists filter) {
-                retval.filenameFilter = object satisfies FilenameFilter {
-                    shared actual Boolean accept(JFile dir, String name) =>
-                            filter.accept(JFile(dir, name));
-                };
-            }
-            return retval;
-        } else {
-            JFileChooser retval = JFileChooser(current);
-            if (exists filter) {
-                retval.fileFilter = filter;
-            }
-            return retval;
-        }
-    }
     ISPDriver driver;
     shared new (ISPDriver driver) {
         this.driver = driver;
@@ -218,7 +180,7 @@ shared class IOHandler
         }
         case ("save as") {
             if (is ModelDriver driver) {
-                FileChooser.save(null, filteredFileChooser(false)).call((path) {
+                FileChooser.save(null, SPFileChooser.filteredFileChooser(false)).call((path) { // TODO: Why not use SPFileChooser.save()?
                     try {
                         mapIOHelper.writeMap(path, driver.model.map);
                         driver.model.mapFile = path;

@@ -88,8 +88,8 @@ import strategicprimer.report {
     simpleReportNode
 }
 import strategicprimer.viewer.drivers {
-    SPFileChooser,
-    IOHandler { filteredFileChooser }
+    SPFileChooser { filteredFileChooser },
+    IOHandler
 }
 import strategicprimer.viewer.drivers.map_viewer {
     NewUnitDialog,
