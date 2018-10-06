@@ -113,19 +113,20 @@ shared class LabelTextColor {
     shared new white { string = "white"; }
     shared new red { string = "red"; }
     shared new green { string = "green"; }
+    shared new black { string = "black"; }
 }
 "A label that can easily be written (appended) to."
 shared class StreamingLabel extends JEditorPane {
     shared new () extends JEditorPane("text/html",
-        """<html><body bgcolor="#000000"><p>&nbsp;</p></body></html>""") {}
+        """<html><body bgcolor="#ffffff"><p>&nbsp;</p></body></html>""") {}
     editable = false;
-    setBackground(Color.black);
+    setBackground(Color.white);
     opaque = true;
     StringBuilder buffer = StringBuilder();
     "Add text to the label."
     shared void append(String string) {
         buffer.append(string);
-        text = "<html><body bgcolor=\"#000000\">``buffer``</body></html>";
+        text = "<html><body bgcolor=\"#ffffff\">``buffer``</body></html>";
         repaint();
     }
 }

@@ -320,14 +320,14 @@ class MapCheckerFrame(ISPDriver driver) extends SPFrame("Strategic Primer Map Ch
         driver, Dimension(640, 320), true, noop, "Map Checker") {
     StreamingLabel label = StreamingLabel();
     void printParagraph(String paragraph,
-            LabelTextColor color = LabelTextColor.white) {
+            LabelTextColor color = LabelTextColor.black) {
         label.append("<p style=\"color:``color``\">``paragraph``</p>");
     }
     void customPrinter(String string) =>
             printParagraph(string, LabelTextColor.yellow);
-    setBackground(Color.black);
+    setBackground(Color.white);
     contentPane = JScrollPane(label);
-    contentPane.background = Color.black;
+    contentPane.background = Color.white;
     void outHandler(String text) {
         if (text.startsWith("No errors")) {
             printParagraph(text, LabelTextColor.green);

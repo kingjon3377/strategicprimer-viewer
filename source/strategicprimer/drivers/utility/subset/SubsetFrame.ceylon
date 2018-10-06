@@ -68,9 +68,9 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
         shared actual overloaded JWriter append(CharSequence csq) {
             String local = csq.string;
             if (lineStart) {
-                super.append("<p style=\"color:white\">");
+                super.append("<p style=\"color:black\">");
             }
-            super.append(matcher.replace(local, "</p><p style=\"color:white\">"));
+            super.append(matcher.replace(local, "</p><p style=\"color:black\">"));
             lineStart = false;
             return this;
         }
@@ -91,7 +91,7 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
     }
     contentPane = JScrollPane(label);
     void printParagraph(String paragraph,
-                LabelTextColor color = LabelTextColor.white) =>
+                LabelTextColor color = LabelTextColor.black) =>
             label.append("<p style=\"color:``color``\">``paragraph``</p>");
     variable IMapNG mainMap = SPMapNG(MapDimensionsImpl(0, 0, 2), PlayerCollection(), -1);
     shared void loadMain(IMapNG|PathWrapper arg) {

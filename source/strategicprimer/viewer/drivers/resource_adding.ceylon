@@ -385,7 +385,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         mainPanel.add(resourceLabel);
         JPanel resourcePanel = boxPanel(BoxAxis.lineAxis);
         StreamingLabel logLabel = StreamingLabel();
-        String css = """color:white; margin-bottom: 0.5em; margin-top: 0.5em;""";
+        String css = """color:black; margin-bottom: 0.5em; margin-top: 0.5em;""";
         void logAddition(String addend) => logLabel.append(
             "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``</p>");
         String errorCSS = """color:red; margin-bottom: 0.5em; margin-top: 0.5em;""";
