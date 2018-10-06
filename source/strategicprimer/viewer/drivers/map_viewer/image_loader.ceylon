@@ -25,11 +25,11 @@ import java.awt {
     Image,
     Graphics
 }
-import strategicprimer.viewer.drivers {
-    SPMenu
-}
 import java.lang {
     Types
+}
+import strategicprimer.viewer.drivers {
+    IOHandler
 }
 shared object imageLoader {
     log.trace("Expect to be able to load the following image file formats: " +
@@ -64,7 +64,7 @@ shared object imageLoader {
         } else {
             try (res = ResourceInputStream("images/``file``",
                     `module strategicprimer.viewer`,
-                        Types.classForDeclaration(`class SPMenu`))) {
+                        Types.classForDeclaration(`class IOHandler`))) {
                 if (exists image = ImageIO.read(res)) {
                     imageCache[file] = image;
                     return image;

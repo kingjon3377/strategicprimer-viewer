@@ -1,6 +1,3 @@
-import strategicprimer.viewer.drivers {
-    SPMenu
-}
 import com.pump.window {
     WindowMenu
 }
@@ -14,6 +11,10 @@ import java.awt.event {
 import strategicprimer.drivers.common {
     ISPDriver
 }
+import strategicprimer.drivers.gui.common {
+    SPMenu
+}
+
 "A set of menus for the worker GUI (and other related apps)."
 shared JMenuBar workerMenu(
         "The broker that handles menu items, or arranges for them to be handled"

@@ -58,14 +58,14 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import strategicprimer.viewer.drivers {
-    SPMenu,
     mapReaderAdapter
 }
 import strategicprimer.model.common.xmlio {
     warningLevels
 }
 import strategicprimer.drivers.gui.common {
-    SPFrame
+    SPFrame,
+    SPMenu
 }
 import java.lang {
     JThread=Thread
