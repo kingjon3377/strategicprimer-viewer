@@ -47,7 +47,7 @@ import com.pump.window {
 service(`interface DriverFactory`)
 shared class SubsetGUIFactory satisfies UtilityDriverFactory {
     shared static IDriverUsage staticUsage = DriverUsage(true, ["-s", "--subset"],
-        ParamCount.atLeastTwo, "Check players' maps against master",
+        ParamCount.atLeastOne, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.", false, true);
     shared actual IDriverUsage usage => staticUsage;
@@ -63,7 +63,7 @@ shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
     late SubsetFrame frame;
     variable Boolean initialized = false;
     shared actual void startDriver(String* args) {
-        if (args.size < 2) {
+        if (args.empty) {
             throw IncorrectUsageException(SubsetGUIFactory.staticUsage);
         }
         if (!initialized) {
