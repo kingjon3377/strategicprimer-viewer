@@ -35,29 +35,32 @@ shared class SubsetCLIFactory() satisfies ModelDriverFactory {
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.", true, false);
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => SubsetCLI(cli, model);
+            IDriverModel model) {
+        if (is IMultiMapModel model) {
+            return SubsetCLI(cli, model);
+        } else {
+            log.warn("Subset checking does nothing with no subordinate maps");
+            return createDriver(cli, options, SimpleMultiMapModel.copyConstructor(model));
+        }
+    }
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
 
 "A driver to check whether player maps are subsets of the main map."
 shared class SubsetCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
-    shared actual IDriverModel model;
+    shared actual IMultiMapModel model;
     shared actual void startDriver() {
-        if (is IMultiMapModel model) {
-            for (map->[file, _] in model.subordinateMaps) {
-                String filename = file?.string else "map without a filename";
-                cli.print("``filename``\t...\t\t");
-                if (model.map.isSubset(map,
-                            (String string) =>
-                                cli.println("In ``filename``: ``string``"))) {
-                    cli.println("OK");
-                } else {
-                    cli.println("WARN");
-                }
+        for (map->[file, _] in model.subordinateMaps) {
+            String filename = file?.string else "map without a filename";
+            cli.print("``filename``\t...\t\t");
+            if (model.map.isSubset(map,
+                        (String string) => // TODO: Convert lambda to class method
+                            cli.println("In ``filename``: ``string``"))) {
+                cli.println("OK");
+            } else {
+                cli.println("WARN");
             }
-        } else {
-            log.warn("Subset checking does nothing with no subordinate maps");
         }
     }
 }
