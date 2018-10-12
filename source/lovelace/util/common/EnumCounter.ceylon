@@ -21,4 +21,7 @@ shared class EnumCounter<Type>() given Type satisfies Object {
     shared void countMany(Type* values) => values.each(count);
     "Get the count for a given value."
     shared Integer getCount(Type item) => counts[item]?.sum else 0;
+    "Get all values and counts."
+    shared {<Type->Integer>*} allCounts =>
+            counts.map(entryMap(identity<Type>, Accumulator<Integer>.sum));
 }
