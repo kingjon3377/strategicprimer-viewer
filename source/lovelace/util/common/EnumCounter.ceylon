@@ -9,7 +9,7 @@ import lovelace.util.common {
 }
 "A class to count references to enumerated objects."
 shared class EnumCounter<Type>() given Type satisfies Object {
-    MutableMap<Type, Accumulator> counts = HashMap<Type, Accumulator>();
+    MutableMap<Type, Accumulator<Integer>> counts = HashMap<Type, Accumulator<Integer>>();
     void count(Type item) {
         if (exists counter = counts[item]) {
             counter.add(1);
