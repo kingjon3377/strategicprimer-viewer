@@ -42,13 +42,9 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 import ceylon.decimal {
     decimalNumber,
-    Decimal,
     round,
     halfEven,
     implicitlyRounded
-}
-import ceylon.whole {
-    Whole
 }
 import lovelace.util.common {
     matchingValue,
@@ -56,6 +52,9 @@ import lovelace.util.common {
     narrowedStream,
     singletonRandom,
     PathWrapper
+}
+import lovelace.util.jvm {
+    decimalize
 }
 
 "A factory for a driver to let the user generate animal and shrub populations, meadow and
@@ -82,16 +81,6 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
     "Whether the given number is positive."
     static Boolean positiveNumber(Number<out Anything> number) => number.positive;
     static Boolean negativeNumber(Number<out Anything> number) => number.negative;
-    static Decimal decimalize(Number<out Anything> number) {
-        assert (is Decimal|Whole|Integer|Float number);
-        switch (number)
-        case (is Decimal) {
-            return number;
-        }
-        case (is Integer|Float|Whole) {
-            return decimalNumber(number);
-        }
-    }
     ICLIHelper cli;
     shared actual IDriverModel model;
     shared new(ICLIHelper cli, IDriverModel model) {

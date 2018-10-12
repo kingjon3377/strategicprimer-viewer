@@ -9,13 +9,8 @@ import ceylon.language.meta {
     type
 }
 import ceylon.decimal {
-    decimalNumber,
-    Decimal
+    decimalNumber
 }
-import ceylon.whole {
-    Whole
-}
-
 import strategicprimer.model.common.map {
     IFixture,
     HasPopulation,
@@ -70,6 +65,9 @@ import ceylon.language.meta.model {
 }
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
+}
+import lovelace.util.jvm {
+    decimalize
 }
 
 "A factory for a driver to remove duplicate hills, forests, etc., from the map (to reduce
@@ -142,16 +140,6 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
         }
         else {
             return member.string;
-        }
-    }
-    static Decimal decimalize(Number<out Anything> num) {
-        assert (is Decimal|Whole|Integer|Float num);
-        switch (num)
-        case (is Decimal) {
-            return num;
-        }
-        case (is Whole|Integer|Float) {
-            return decimalNumber(num);
         }
     }
     "Combine like [[Forest]]s into a single object. We assume that all Forests are of the
