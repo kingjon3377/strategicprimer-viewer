@@ -99,6 +99,10 @@ import ceylon.whole {
 import com.pump.window {
     WindowMenu
 }
+import strategicprimer.model.common.map.fixtures.terrain {
+    Hill,
+    Oasis
+}
 
 Logger log = logger(`module strategicprimer.drivers.utility`);
 // Left outside mapCheckerCLI because it's also used in the todoFixerCLI.
@@ -140,6 +144,11 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         if (is StoneDeposit fixture, StoneKind.laterite == fixture.stone,
                 !TileType.jungle == terrain) {
             warner.handle(SPContentWarning(context, "Laterite stone in non-jungle"));
+        }
+    }
+    static void oasisChecker(TileType terrain, Point context, IFixture fixture, Warning warner) {
+        if (is Oasis fixture, TileType.desert != terrain) {
+            warner.handle(SPContentWarning(context, "Oasis in non-desert"));
         }
     }
     static void aquaticVillageChecker(TileType terrain, Point context, IFixture fixture,
@@ -252,7 +261,7 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         }
     }
     static {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker,
-        suspiciousSkillCheck, resourcePlaceholderChecker ];
+        suspiciousSkillCheck, resourcePlaceholderChecker, oasisChecker ];
     static void contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
             IFixture* list) {
         for (fixture in list) {
@@ -307,6 +316,10 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         for (location in map.locations) {
             if (exists terrain = map.baseTerrain[location]) {
                 acreageChecker(location, warner, map.fixtures.get(location));
+            }
+            if (map.mountainous.get(location), // TODO: syntax sugar
+                    !map.fixtures.get(location).narrow<Hill>().empty) { // TODO: syntax sugar
+                warner.handle(SPContentWarning(location, "Hill in mountainous tile"));
             }
         }
         log.debug("Finished with ``file.filename``");
