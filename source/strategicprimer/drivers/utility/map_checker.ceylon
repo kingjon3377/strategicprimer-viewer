@@ -52,7 +52,8 @@ import strategicprimer.model.common.map {
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    IWorker
+    IWorker,
+    AnimalTracks
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
@@ -149,6 +150,13 @@ shared class MapCheckerCLI satisfies UtilityDriver {
     static void oasisChecker(TileType terrain, Point context, IFixture fixture, Warning warner) {
         if (is Oasis fixture, TileType.desert != terrain) {
             warner.handle(SPContentWarning(context, "Oasis in non-desert"));
+        }
+    }
+    static void animalTracksChecker(TileType terrain, Point context, IFixture fixture,
+            Warning warner) {
+        if (is AnimalTracks fixture) {
+            warner.handle(SPContentWarning(context,
+                "Animal tracks in map suspected to be main"));
         }
     }
     static void aquaticVillageChecker(TileType terrain, Point context, IFixture fixture,
@@ -320,6 +328,13 @@ shared class MapCheckerCLI satisfies UtilityDriver {
             if (map.mountainous.get(location), // TODO: syntax sugar
                     !map.fixtures.get(location).narrow<Hill>().empty) { // TODO: syntax sugar
                 warner.handle(SPContentWarning(location, "Hill in mountainous tile"));
+            }
+        }
+        if (file.filename.contains("world_turn")) {
+            for (location->fixture in map.fixtures) {
+                if (exists terrain = map.baseTerrain[location]) {
+                    animalTracksChecker(terrain, location, fixture, warner);
+                }
             }
         }
         log.debug("Finished with ``file.filename``");
