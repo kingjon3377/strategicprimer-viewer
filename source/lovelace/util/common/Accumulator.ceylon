@@ -6,7 +6,8 @@ shared interface Accumulator<Type> given Type satisfies Summable<Type> {
     "Get the current value of the accumulation."
     shared formal Type sum;
 }
-"An implementation of [[Accumulator]]."
+
+"An implementation of [[Accumulator]] for [[integer|Integer]] counts."
 shared class IntHolder(variable Integer count) satisfies Accumulator<Integer> {
     shared actual void add(Integer addend) => count += addend;
     shared actual Integer sum => count;

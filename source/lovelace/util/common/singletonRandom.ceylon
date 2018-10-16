@@ -3,5 +3,5 @@ import ceylon.random {
     DefaultRandom
 }
 
-"A single [[Random]] for the whole application."
+"A single [[Random]] instance for the whole application."
 shared Random singletonRandom = DefaultRandom();

@@ -3,6 +3,7 @@ import ceylon.file {
     parsePath,
     File
 }
+
 "A wrapper around a filename." // TODO: Replace with ceylon.file::Path once eclipse/ceylon-sdk#239 makes it non-JVM-specific
 shared native class PathWrapper(shared String filename) {
     shared actual native Boolean equals(Object other) {

@@ -4,6 +4,11 @@ import ceylon.whole {
 import ceylon.decimal {
     Decimal
 }
+
+"An object providing a comparison for [[Numbers|Number]] of unknown or varied types. In the default
+ implementation, only [[Integer]], [[Float]], and [[Whole]] numbers are supported; on the JVM,
+ [[Decimals|Decimal]] are additionally supported. Passing any unsupported type will raise an
+ [[AssertionError]]."
 shared native object numberComparator satisfies Comparator<Number<out Anything>> {
     "Convert an arbitrary Number to a Float."
     native shared Float floatValue(Number<out Anything> number) {
@@ -14,6 +19,8 @@ shared native object numberComparator satisfies Comparator<Number<out Anything>>
         case (is Float) { return number; }
         case (is Whole) { return number.float; }
     }
+    "Compare two numbers. If they are the same type, delegate to their built-in comparison
+     function; if not, convert both to [[Float]] and return the result of comparing those."
     native shared actual Comparison compare(Number<out Anything> one,
             Number<out Anything> two) {
         if (is Integer one, is Integer two) {
@@ -29,6 +36,7 @@ shared native object numberComparator satisfies Comparator<Number<out Anything>>
         }
     }
 }
+
 native("jvm")
 shared object numberComparator satisfies Comparator<Number<out Anything>> {
     "Convert an arbitrary Number to a Float."

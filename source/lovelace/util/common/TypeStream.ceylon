@@ -11,6 +11,7 @@ import ceylon.language.meta {
 import ceylon.language.meta.model {
     ClassOrInterface
 }
+
 "A stream of all the types that a given object satisfies."
 shared class TypeStream(Object obj) satisfies {ClassOrInterface<Anything>*} {
     MutableList<ClassOrInterface<Anything>> cache =

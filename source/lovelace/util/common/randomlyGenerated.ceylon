@@ -11,15 +11,28 @@ import ceylon.language.meta.declaration {
     OpenClassOrInterfaceType,
     OpenType
 }
-"An annotation to make a parameterized test randomly generate numbers."
-shared annotation RandomGenerationAnnotation randomlyGenerated(Integer count,
+
+"Annotation to make a parameterized test randomly generate numbers. Apply to a parameter
+ of a method annotated with [[ceylon.test::test]], and the test will be run [[count]] times
+ (with the same values for all other parameters, as usual) with randomly generated numbers
+ between 0 and [[max]] passed to the annotated parameter. Can currently generate 
+ [[integers|Integer]] and [[floats|Float]]."
+shared annotation RandomGenerationAnnotation randomlyGenerated(
+        "How many different numbers to generate."
+        Integer count,
+        "The upper bound of the range from which to select random numbers."
         Integer max = /*runtime.maxArraySize*/ 2147483639)
         => RandomGenerationAnnotation(count, max);
 
-shared final annotation class RandomGenerationAnnotation(Integer count, Integer max)
+"The annotation class for the [[randomlyGenerated]] annotation."
+shared final annotation class RandomGenerationAnnotation(
+                "How many different numbers to generate."
+                Integer count, 
+                "The upper bound of the range from which to select random numbers."
+                Integer max)
         satisfies OptionalAnnotation<RandomGenerationAnnotation,ValueDeclaration>
         & ArgumentProvider {
-    object nothingProvider satisfies Iterator<Anything> {
+    object nothingProvider satisfies Iterator<Anything> { // TODO: Should be static
         suppressWarnings("expressionTypeNothing")
         shared actual Anything next() => nothing;
     }
@@ -31,12 +44,12 @@ shared final annotation class RandomGenerationAnnotation(Integer count, Integer 
                 return singletonRandom.integers(max).take(count);
             } else if (declaredType == `class Float`) {
                 return singletonRandom.floats().map(max.float.times).take(count);
-            } else {
+            } else { // TODO: Handle Whole; make a 'native' for Decimal.
                 throw AssertionError("Can't randomly generate ``declaredType`` yet");
             }
         }
         case (is OpenUnion) {
-            for (innerType in type.caseTypes) {
+            for (innerType in type.caseTypes) { // TODO: Extract helper method: this idiom occurs twice in this overlong class.
                 try {
                     return argumentsForType(innerType);
                 } catch (AssertionError error) {

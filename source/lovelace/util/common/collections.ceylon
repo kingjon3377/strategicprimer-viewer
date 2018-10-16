@@ -6,29 +6,41 @@ import ceylon.collection {
     MutableSet
 }
 
-"A MutableMap that actually executes the removal of elements only when the coalesce()
- method is called."
+"A [[MutableMap]] that actually executes the removal of elements only when the coalesce()
+ method is called, to avoid concurrent-modification errors."
 shared interface DelayedRemovalMap<Key, Item> satisfies MutableMap<Key, Item>
         given Key satisfies Object {
     "Apply all scheduled and pending removals."
     shared formal void coalesce();
 }
+
+"Implementation of [[DelayedRemovalMap]] for [[Integer]] keys."
 shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
     MutableMap<Integer, Item> backing = HashMap<Integer, Item>();
     MutableList<Integer> toRemove = ArrayList<Integer>();
+
+    "Add all entries in the map to the to-remove list."
     shared actual void clear() => toRemove.addAll(backing.keys);
+
+    "Clone the map, producing a map with an identical backing map and to-remove list."
     shared actual MutableMap<Integer,Item> clone() {
         MutableMap<Integer, Item> retval = backing.clone();
         retval.removeAll(toRemove);
         return retval;
     }
+
+    "Remove all entries in the to-remove list from the map."
     shared actual void coalesce() {
         toRemove.each(backing.remove);
         toRemove.clear();
     }
+
+    "A key is in the map if it is in the backing map and is not in the to-remove list."
     shared actual Boolean defines(Object key) =>
             backing.defines(key) && !toRemove.contains(key);
 
+    "If the given key is in the to-remove list, returns [[null]]; otherwise, returns
+     the value, if any, associated with it in the backing map."
     shared actual Item? get(Object key) {
         if (toRemove.contains(key)) {
             return null;
@@ -37,35 +49,47 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
         }
     }
 
+    "An iterator over the entries in the map whose keys are not in the to-remove list."
     shared actual Iterator<Integer->Item> iterator() =>
             backing.filterKeys(not(backing.contains)).iterator();
 
+    "Add an entry to the map, removing the key from the to-remove list if present there."
     shared actual Item? put(Integer key, Item item) {
         toRemove.remove(key);
         return backing[key] = item;
     }
 
+    "Add the given key to the to-remove list. If it was already there (the entry 'had been
+     removed' already), return [[null]]; otherwise, return the value that had been associated
+     with the key."
     shared actual Item? remove(Integer key) {
         if (toRemove.contains(key)) {
             return null;
         } else {
             toRemove.add(key);
-            return get(key);
+            return get(key); // FIXME: get() consults toRemove, so this will always return null
         }
     }
+
+    "This class conforms to the equality contract of the [[Map]] interface."
     shared actual Boolean equals(Object that) =>
             (super of Map<Integer, Item>).equals(that);
-    shared actual Integer hash {
+
+    "A hash value for the map."
+    shared actual Integer hash { // TODO: Condense
         variable value hash = 1;
         hash = 31*hash + backing.hash;
         hash = 31*hash + toRemove.hash;
         return hash;
     }
 }
-"An interface for objects providing a comparison function"
-shared interface Comparator<T> {
-    shared formal Comparison compare(T one, T two);
+
+"An interface to provide a comparison function for objects of a specific type."
+shared interface Comparator<Item> {
+    "Compare two instances of the type."
+    shared formal Comparison compare(Item one, Item two);
 }
+
 "An interface for list-like things that can be reordered."
 shared interface Reorderable {
     "Move a row of a list or table from one position to another."
@@ -107,12 +131,14 @@ shared class ArraySet<Element> satisfies MutableSet<Element>
     "Clone the set."
     shared actual ArraySet<Element> clone() => ArraySet.copy(this);
 }
+
 "A wrapper around an [[Iterator]] to let it be used in for-each loops. XML parsing in
  particular always seems to hand me an iterator."
 shared class IteratorWrapper<out Element>(Iterator<Element>? wrapped)
         satisfies {Element*} {
     shared actual Iterator<Element> iterator() => wrapped else emptyIterator;
 }
+
 """A [[Correspondence]] that uses something other than [[null]] for "absent" values."""
 shared interface NonNullCorrespondence<in Key, out Item=Anything>
         satisfies Correspondence<Key, Item> given Key satisfies Object {

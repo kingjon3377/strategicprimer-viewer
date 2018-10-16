@@ -8,6 +8,7 @@ import ceylon.collection {
 import ceylon.test.engine {
     MultipleFailureException
 }
+
 "Verify that at least one of the given assertions passes."
 see(`function assertAll`)
 shared void assertAny(

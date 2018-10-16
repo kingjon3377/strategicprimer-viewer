@@ -7,6 +7,10 @@ import ceylon.language.meta.declaration {
     FunctionOrValueDeclaration,
     ClassOrInterfaceDeclaration
 }
+import ceylon.test {
+    parameters
+}
+
 "The annotation class for the [[enumeratedParameter]] annotation."
 by("Jonathan Lovelace")
 shared final annotation class EnumSingleParameterAnnotation(
@@ -20,8 +24,10 @@ FunctionOrValueDeclaration> & ArgumentListProvider & ArgumentProvider {
             type.apply<Anything>().caseValues.coalesced;
 
 }
-"Annotation to replace [[ceylon.test::parameters]], providing each case value of an
- enumerated type as an argument for the test method in turn."
+"Annotation that provides each case value of an enumerated type in turn as an argument
+ for a test method. May be applied either to the individual parameter or, if
+ the method only takes one parameter, to the method as a whole."
 by("Jonathan Lovelace")
+see(`function parameters`)
 shared annotation EnumSingleParameterAnnotation enumeratedParameter(
         ClassOrInterfaceDeclaration type) => EnumSingleParameterAnnotation(type);

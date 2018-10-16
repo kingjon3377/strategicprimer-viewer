@@ -7,7 +7,11 @@ import lovelace.util.common {
     Accumulator,
     IntHolder
 }
-"A class to count references to enumerated objects."
+
+"A class to count references to enumerated objects---though it does not do any sort
+ of check that its type parameter is an enumerated type. For every object ever passed
+ to [[count]] (or [[countMany]]), it keeps a running total of the number of times it
+ has been passed that object."
 shared class EnumCounter<Type>() given Type satisfies Object {
     MutableMap<Type, Accumulator<Integer>> counts = HashMap<Type, Accumulator<Integer>>();
     void count(Type item) {
