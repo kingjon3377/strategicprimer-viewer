@@ -20,6 +20,7 @@ import strategicprimer.model.common.map.fixtures.resources {
     Mine,
     StoneDeposit
 }
+
 "A tabular report generator for resources that can be mined---mines, mineral veins, stone
  deposits, and Ground."
 shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
@@ -27,8 +28,10 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Kind", "Product",
         "Status"];
+
     "The file-name to (by default) write this table to."
     shared actual String tableName = "minerals";
+
     "Create a GUI table row representing a fixture."
     shared actual {{String+}*} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, MineralFixture item,
@@ -59,10 +62,11 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
         return [[distanceString(loc, hq, dimensions), loc.string, classField, item.kind,
             statusField]];
     }
+
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, MineralFixture] one,
             [Point, MineralFixture] two) => comparing(
-            comparingOn(Tuple<Point|MineralFixture, Point, MineralFixture[1]>.rest,
+            comparingOn(Tuple<Point|MineralFixture, Point, MineralFixture[1]>.rest, // TODO: Use compose() instead of nesting comparingOn()
                 comparingOn(Tuple<MineralFixture, MineralFixture, []>.first,
                     comparingOn(MineralFixture.kind, increasing<String>))),
             comparingOn(Tuple<Point|MineralFixture, Point, MineralFixture[1]>.first,

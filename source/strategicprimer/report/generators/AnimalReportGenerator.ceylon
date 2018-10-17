@@ -35,6 +35,7 @@ import com.vasileff.ceylon.structures {
     ArrayListMultimap,
     MutableMultimap
 }
+
 "A report generator for sightings of animals."
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Integer currentTurn, Point hq = Point.invalidPoint)
@@ -71,12 +72,13 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
 //                    ostream(" ``item.population`` ``animalPlurals[item.kind]``"); // TODO: syntax sugar once compiler bug fixed
                     ostream(" ``item.population`` ``animalPlurals.get(item.kind)``");
                 }
-                if (item.status == "wild") {
+                if (item.status == "wild") { // TODO: Move this into the knows-population block
                     ostream(" (ID # ``item.id``)");
                 }
             }
             ostream(" ``distCalculator.distanceString(loc)``");
     }
+
     "Produce the sub-report about animals."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
                 Anything(String) ostream) {
@@ -109,6 +111,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                    """);
         }
     }
+
     "Produce the sub-report about an individual Animal."
     shared actual IReportNode produceRIRSingle(DRMap<Integer,[Point,IFixture]> fixtures,
             IMapNG map, /*Animal|AnimalTracks*/AnimalOrTracks item, Point loc) {
@@ -123,6 +126,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                 .distanceString(loc)``", loc);
         }
     }
+
     "Produce the sub-report about animals."
     shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures,
             IMapNG map) {

@@ -26,6 +26,7 @@ import strategicprimer.report.nodes {
     SectionReportNode,
     emptyReportNode
 }
+
 "A report generator for Villages."
 shared class VillageReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
@@ -76,6 +77,7 @@ shared class VillageReportGenerator(
             }
         }
     }
+
     "Produce the (very brief) report for a particular village (we're probably in the
      middle of a bulleted list, but we don't assume that)."
     shared actual void produceSingle(
@@ -90,8 +92,9 @@ shared class VillageReportGenerator(
         } else {
             ostream("sworn to ``item.owner.name``");
         }
-        ostream(" ``distCalculator.distanceString(loc)``");
+        ostream(" ``distCalculator.distanceString(loc)``"); // TODO: Move space to each case of 'if' and drop interpolation
     }
+
     "Produce the report on all known villages."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
@@ -127,6 +130,7 @@ shared class VillageReportGenerator(
             return retval;
         }
     }
+
     "Produce the (very brief) report for a particular village."
     shared actual IReportNode produceRIRSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,

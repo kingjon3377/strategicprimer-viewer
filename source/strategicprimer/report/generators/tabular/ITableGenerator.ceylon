@@ -27,6 +27,7 @@ import ceylon.interop.java {
 
 "A regular expression to mtch quote characters."
 Regex quotePattern = regex("\"", true);
+
 "An interface for tabular-report generators. It's expected that implementers will take the
  current player and the location of his or her HQ as constructor parameters."
 shared interface ITableGenerator<T> given T satisfies IFixture {
@@ -46,6 +47,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         }
         fixtures.coalesce();
     }
+
     "Produce a tabular report on a particular category of fixtures in the map, in the
      format of a model for a Swing JTable, and remove all fixtures covered in the table
      from the collection."
@@ -54,7 +56,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             Map<Integer, Integer> parentMap) {
         {[Integer, [Point, T]]*} values = fixtures.map(Entry.pair)
             .narrow<[Integer, [Point, T]]>()
-                .sort(comparingOn(Tuple<Integer|[Point, T], Integer, [[Point, T]]>.rest,
+                .sort(comparingOn(Tuple<Integer|[Point, T], Integer, [[Point, T]]>.rest, // TODO: Use compose() instead of nested comparingOn().
                     comparingOn(Tuple<[Point, T], [Point, T], []>.first, comparePairs)));
         DefaultTableModel retval = DefaultTableModel(
             createJavaStringArray(headerRow), 0);
@@ -69,6 +71,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         fixtures.coalesce();
         return retval;
     }
+
     "Produce lines (usually only one line) of the tabular report. Returns the empty
      iterable if not handled by this generator. Because not all lines should remove
      items from the collection, implementations must do that removal themselves."
@@ -77,12 +80,13 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             "The item to base this line on."
             T item,
-            "Its key in the colleciton (usually its ID, but not always)"
+            "Its key in the collection (usually its ID, but not always)"
             Integer key,
             "The location of this item in the map."
             Point loc,
             "The map from children's to parents' IDs"
             Map<Integer, Integer> parentMap);
+
     "Given two points, return a number sufficiently proportional to the distance between
      them for ordering points based on distance from a base. The default implementation
      returns the *square* of the distance, for efficiency."
@@ -103,6 +107,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         }
         return (colDist * colDist) + (rowDist * rowDist);
     }
+
     "A String showing the distance between two points, suitable to be displayed, rounded
      to a tenth of a tile. This default implementation just takes the square root of
      [[distance]] and formats it."
@@ -110,11 +115,14 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
                 MapDimensions dimensions) =>
             Float.format(sqrt(distance(first, second, dimensions).float),
                 1, 1);
+
     "The header row to print at the top of the report, listing what the fields represent."
     shared formal [String+] headerRow;
+
     "Compare two Point-fixture pairs."
     shared formal Comparison comparePairs([Point, T] one, [Point, T] two);
-    """"A String representing the owner of a fixture: "You" if equal to currentPlayer,
+
+    """A String representing the owner of a fixture: "You" if equal to currentPlayer,
        "Independent" if an independent player, or otherwise the player's name."""
     shared default String ownerString(Player currentPlayer, Player owner) {
         if (currentPlayer == owner) {
@@ -125,12 +133,15 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             return owner.name;
         }
     }
-    """"The field delimiter; provided to limit "magic character" warnings and allow us to
+
+    """The field delimiter; provided to limit "magic character" warnings and allow us to
        change it."""
     shared default Character fieldDelimiter => ',';
+
     """The row delimiter; used to limit "magic character" warnings and allow us to change
        it."""
     shared default String rowDelimiter => operatingSystem.newline;
+
     "Write multiple fields to a row, quoting as necessary, separated by the field
      delimiter, with the last field followed by the row delimiter."
     shared default void writeRow(Anything(String) ostream, String firstField,
@@ -151,6 +162,7 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
         }
         ostream(rowDelimiter);
     }
+
     "The file-name to (by default) write this table to."
     shared formal String tableName;
 }

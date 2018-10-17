@@ -12,6 +12,7 @@ import strategicprimer.report {
 import lovelace.util.common {
     anythingEqual
 }
+
 "A simple node representing plain text. Any children are ignored!"
 shared class SimpleReportNode(variable String nodeText,
         shared actual variable Point? localPoint = null)
@@ -21,8 +22,11 @@ shared class SimpleReportNode(variable String nodeText,
         nodeText = text;
         super.userObject = text;
     }
+
     shared actual default void produce(Anything(String) stream) => stream(text);
+
     shared actual default Integer htmlSize => text.size;
+
     shared actual default Boolean equals(Object that) {
         if (is SimpleReportNode that, text == that.text) {
             return anythingEqual(localPoint, that.localPoint);
@@ -30,16 +34,22 @@ shared class SimpleReportNode(variable String nodeText,
             return false;
         }
     }
+
     shared actual Integer hash => text.hash;
-    shared actual default void appendNode(MutableTreeNode node) {
+
+    shared actual default void appendNode(MutableTreeNode node) { // TODO: =>
         log.warn("SimpleReportNode.appendNode() called");
     }
-    shared actual default void add(MutableTreeNode node) {
+
+    shared actual default void add(MutableTreeNode node) { // TODO: =>
         log.warn("SimpleReportNode.add() called");
     }
-    shared actual default void addAsFirst(MutableTreeNode node) {
+
+    shared actual default void addAsFirst(MutableTreeNode node) { // TODO: =>
         log.warn("SimpleReportNode.addAsFirst() called");
     }
+
     shared actual default String string => text;
+
     shared actual void setUserObject(Object obj) => super.userObject = obj;
 }

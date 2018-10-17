@@ -29,10 +29,15 @@ import strategicprimer.model.common.map.fixtures.towns {
 import ceylon.random {
     randomize
 }
+
+"An object to provide [[a total ordering|compareTowns]] for
+ [[towns|ITownFixture]]. The methods it uses to derive that ordering are useful
+ by themselves as well, and so are also shared."
 object townComparators {
     "A comparator for town-sizes, to put larger towns before smaller ones."
     todo("Reverse the semantics here and use Comparator-reversing methods, so we don't
-          have to say that 'large' is the smallest to get it first in lists")
+          have to say that 'large' is the smallest to get it first in lists",
+         "Move this into TownSize to make it Comparable")
     shared Comparison compareTownSize(TownSize one, TownSize two) {
         if (one == two) {
             return equal;
@@ -49,6 +54,7 @@ object townComparators {
 
     "A comparator for town-statuses, to put active towns before abandoned ones before
      ruined ones before burned-out ones."
+    todo("Move this into TownStatus to make it Comparable")
     shared Comparison compareTownStatus(TownStatus one, TownStatus two) {
         if (one == two) {
             return equal;
@@ -116,6 +122,7 @@ object townComparators {
                 byIncreasing(ITownFixture.name))(one, two);
 }
 "Test that the town-comparison algorithms work as expected."
+todo("Move into townComparators")
 test
 void testComparison() {
     todo("Build this inline as an immutable object instead of using add()")

@@ -21,6 +21,7 @@ import strategicprimer.report.nodes {
     SectionListReportNode,
     emptyReportNode
 }
+
 "A report generator for arbitrary-text notes."
 shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Point hq = Point.invalidPoint)
@@ -37,6 +38,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         }
         ostream(": ``item.text``");
     }
+
     "Produce the part of the report dealing with arbitrary-text notes."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
@@ -62,6 +64,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                        """);
         }
     }
+
     "Produce the part of the report dealing with an arbitrary-text note, in report
      intermediate representation. This does *not* remove it from the collection, because
      this method doesn't know the synthetic ID # that was assigned to it."
@@ -77,6 +80,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 .distanceString(loc)``: ``item.text``");
         }
     }
+
     "Produce the part of the report dealing with arbitrary-text note(s), in
      report intermediate representation."
     shared actual IReportNode produceRIR(

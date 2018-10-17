@@ -59,7 +59,9 @@ import strategicprimer.model.common.map.fixtures.towns {
 import ceylon.whole {
     Whole
 }
+
 Logger log = logger(`module strategicprimer.report`);
+
 "A report generator for harvestable fixtures (other than caves and battlefields, which
  aren't really)."
 shared class HarvestableReportGenerator
@@ -74,6 +76,7 @@ shared class HarvestableReportGenerator
             return " (``item.population`` ``plural``)";
         }
     }
+
     static String acreageString(HasExtent item) {
         if (item.acres.positive) {
             switch (acres = item.acres)
@@ -99,9 +102,11 @@ shared class HarvestableReportGenerator
             return "";
         }
     }
+
     shared new (Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Point hq = Point.invalidPoint)
             extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) { }
+
     "Convert a Map from kinds to Points to a HtmlList."
     // Can't be static because HtmlList isn't and can't be
     // ("Class without parameter list may not be annotated sealed")
@@ -110,15 +115,17 @@ shared class HarvestableReportGenerator
                     Iterable<Point>.empty, Entry<String, {Point*}>.item)))
                 .map((key->list) => "``key``: at ``commaSeparatedList(list)``")
                 .sort(increasing));
+
     """Produce a sub-report(s) dealing with a single "harvestable" fixture(s). It is to be
        removed from the collection. Caves and battlefields, though HarvestableFixtures,
-       are *not* handled here.""""
+       are *not* handled here."""
     shared actual void produceSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, HarvestableFixture item, Point loc) {
         assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
+        // TODO: Move the 'At (loc)' up here, and in general pull as much as possible out of interpolation to condense the cases
         switch (item)
-        case (is CacheFixture) {
+        case (is CacheFixture) { // TODO: Put distance at the end
             ostream("At ``loc``: ``distCalculator
                 .distanceString(loc)``A cache of ``item
                 .kind``, containing ``item.contents``");
@@ -152,11 +159,13 @@ shared class HarvestableReportGenerator
             ostream("At ``loc``: An exposed ``item
                 .kind`` deposit ``distCalculator.distanceString(loc)``");
         }
+        // TODO: Once distance is moved to the end of cache-case, extract it from all the cases to down here
     }
+
     """Produce the sub-report(s) dealing with "harvestable" fixtures. All fixtures
        referred to in this report are to be removed from the collection. Caves and
        battlefields, though HarvestableFixtures, are presumed to have been handled
-       already.""""
+       already."""
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
         MutableMultimap<String, Point> stone = HashMultimap<String, Point>();
@@ -164,11 +173,11 @@ shared class HarvestableReportGenerator
         MutableMultimap<String, Point> minerals = HashMultimap<String, Point>();
         MutableHeadedMap<Mine, Point> mines = HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
                 comparing(byIncreasing(Mine.kind),
-                    comparingOn(Mine.status, byIncreasing(TownStatus.ordinal)),
+                    comparingOn(Mine.status, byIncreasing(TownStatus.ordinal)), // TODO: Once townComparators.compareTownStatus is moved to TownStatus.compare, use that
                     byIncreasing(Mine.id)));
         MutableHeadedMap<Meadow, Point> meadows = HeadedMapImpl<Meadow, Point>(
                 "<h5>Meadows and Fields</h5>", comparing(byIncreasing(Meadow.kind),
-                    comparingOn(Meadow.status, byIncreasing(FieldStatus.ordinal)),
+                    comparingOn(Meadow.status, byIncreasing(FieldStatus.ordinal)), // TODO: Make FieldStatus Comparable and use it directly
                     byIncreasing(Meadow.id)));
         MutableHeadedMap<Grove, Point> groves =
                 HeadedMapImpl<Grove, Point>("<h5>Groves and Orchards</h5>",
@@ -227,6 +236,7 @@ shared class HarvestableReportGenerator
             all.map(Object.string).each(ostream);
         }
     }
+
     """Produce a sub-report dealing with a "harvestable" fixture. All fixtures
        referred to in this report are to be removed from the collection."""
     shared actual IReportNode produceRIRSingle(
@@ -234,6 +244,7 @@ shared class HarvestableReportGenerator
             IMapNG map, HarvestableFixture item, Point loc) {
         SimpleReportNode retval;
         assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
+        // TODO: Delegate to produceSimple()?
         switch (item)
         case (is CacheFixture) {
             retval = SimpleReportNode("At ``loc``: ``distCalculator
@@ -272,6 +283,7 @@ shared class HarvestableReportGenerator
         fixtures.remove(item.id);
         return retval;
     }
+
     """Produce the sub-reports dealing with "harvestable" fixture(s). All fixtures
        referred to in this report are to be removed from the collection."""
     shared actual IReportNode produceRIR(
@@ -290,6 +302,7 @@ shared class HarvestableReportGenerator
         meadows.suspend();
         groves.suspend();
         caches.suspend();
+        // TODO: use Maps by type to condense below
         for ([loc, item] in fixtures.items.narrow<[Point, HarvestableFixture]>()
                 .sort(pairComparator)) {
             if (is CacheFixture item) {
@@ -331,6 +344,7 @@ shared class HarvestableReportGenerator
         }
         SortedSectionListReportNode shrubsNode = SortedSectionListReportNode(5,
             "Shrubs, Small Trees, etc.");
+        // TODO: Does IReportNode have something we can use with Iterable.each() to avoid spreading here?
         shrubsNode.appendNodes(*shrubs.items);
         SortedSectionListReportNode mineralsNode = SortedSectionListReportNode(5,
             "Mineral Deposits");
@@ -338,7 +352,7 @@ shared class HarvestableReportGenerator
         SortedSectionListReportNode stoneNode = SortedSectionListReportNode(5,
             "Exposed Stone Deposits");
         stoneNode.appendNodes(*stone.items);
-        for (node in [mines, meadows, groves, caches]) {
+        for (node in [mines, meadows, groves, caches]) { // TODO: Replace loop with Iterable.each(), if that'll compile.
             node.resume();
         }
         SectionReportNode retval = SectionReportNode(4, "Resource Sources");

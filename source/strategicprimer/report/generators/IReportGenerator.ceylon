@@ -14,6 +14,7 @@ import strategicprimer.report {
 import ceylon.collection {
     MutableMap
 }
+
 "An interface for report generators."
 shared interface IReportGenerator<T> given T satisfies IFixture {
     "A list that knows what its title should be when its contents are written to HTML."
@@ -21,16 +22,19 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
         "The header text."
         shared formal String header;
     }
+
     "A Map that knows what its title should be when its contents are written to HTML."
     shared /* static */ interface HeadedMap<out Key, Value> satisfies Map<Key, Value>
             given Key satisfies Object{
         "The header text."
         shared formal String header;
     }
+
     "A [[HeadedMap]] that is also mutable."
     shared /* static */ interface MutableHeadedMap<Key, Value>
             satisfies HeadedMap<Key, Value>&MutableMap<Key, Value>
             given Key satisfies Object {}
+
     "Write a (sub-)report to a stream. All fixtures that this report references should
      be removed from the set before returning."
     shared formal void produce(
@@ -40,6 +44,7 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
             IMapNG map,
             "The stream to write to"
             Anything(String) ostream);
+
     "Write a (sub-)report on a single item to a stream."
     todo("Move back into [[produce]] once eclipse/ceylon#2147 fixed")
     shared formal void produceSingle(
@@ -53,6 +58,7 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
         T item,
         "Its location"
         Point loc);
+
     "Produce an intermediate-representation form of the report representing a group of
      items. All fixtures that this report references should be removed from the set
      before returning."
@@ -61,6 +67,7 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             "The map. (Needed to get terrain type for some reports.)"
             IMapNG map);
+
     "Produce an intermediate-representation form of the report representing an item. All
      fixtures that this report references should be removed from the set before
      returning."
@@ -74,11 +81,13 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
         T item,
         "Its location"
         Point loc);
+
     "A factory for a default formatter for [[writeMap]]."
-    shared default Anything(T->Point, Anything(String)) defaultFormatter(
+    shared default Anything(T->Point, Anything(String)) defaultFormatter( // TODO: Is this actually used anywhere? If not, remove!
         DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) =>
             (T key->Point val, Anything(String) formatter) =>
                 produceSingle(fixtures, map, formatter, key, val);
+
     "Write the contents of a Map to a stream as a list, but don't write anything
      if it is empty."
     shared default void writeMap<out Key>(
@@ -89,7 +98,7 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
             "The method to write each item."
             Anything(Key->Point, Anything(String)) lambda,
             "An optional sorting method to run the map through before printing."
-            Comparison(Key->Point, Key->Point)? sorter = null
+            Comparison(Key->Point, Key->Point)? sorter = null // TODO: formatting: move close-paren up
             ) given Key satisfies Object {
         if (!map.empty) {
             ostream("``map.header``

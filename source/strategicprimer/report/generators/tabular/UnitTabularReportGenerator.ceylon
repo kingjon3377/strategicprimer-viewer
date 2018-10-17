@@ -16,14 +16,17 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Animal
 }
+
 "A tabular report generator for units."
 shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions dimensions)
         satisfies ITableGenerator<IUnit> {
     "The header row for this table."
     shared actual [String+] headerRow =
             ["Distance", "Location", "Owner", "Kind/Category", "Name", "Orders", "ID #"];
+
     "The file-name to (by default) write this table to."
     shared actual String tableName = "units";
+
     "Create a GUI table row representing the unit."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IUnit item,
@@ -46,14 +49,15 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
         fixtures.remove(key);
         return Singleton(retval);
     }
+
     "Compare two location-unit pairs."
-    shared actual Comparison comparePairs([Point, IUnit] one, [Point, IUnit] two) {
+    shared actual Comparison comparePairs([Point, IUnit] one, [Point, IUnit] two) { // TODO: If we can condense this a bit more, switch to => syntax.
         return comparing(
             comparingOn(Tuple<Point|IUnit, Point, [IUnit]>.first,
                 DistanceComparator(hq, dimensions).compare),
-            comparingOn(Tuple<Point|IUnit, Point, [IUnit]>.rest,
+            comparingOn(Tuple<Point|IUnit, Point, [IUnit]>.rest, // TODO: Use compose() instead of nesting comparingOn()
                 comparingOn(Tuple<IUnit, IUnit, []>.first,
-                    comparing(comparingOn(IUnit.owner, increasing<Player>),
+                    comparing(comparingOn(IUnit.owner, increasing<Player>), // TODO: Could increasing<Type> be a default comparator for comparingOn()?
                         comparingOn(IUnit.kind, increasing<String>),
                         comparingOn(IUnit.name, increasing<String>)))))(one, two);
     }

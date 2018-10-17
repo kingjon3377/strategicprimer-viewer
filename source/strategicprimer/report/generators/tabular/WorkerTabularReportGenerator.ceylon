@@ -16,6 +16,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats
 }
+
 "A report generator for workers. We do not cover Jobs or Skills; see
  [[SkillTabularReportGenerator]] for that."
 shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
@@ -24,8 +25,10 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
     shared actual [String+] headerRow = ["Distance", "Location", "Name", "Race", "HP",
         "Max HP", "Str",
         "Dex", "Con", "Int", "Wis", "Cha"];
+
     "The file-name to (by default) write this table to."
     shared actual String tableName = "workers";
+
     "Create a GUI table row representing a worker."
     shared actual {{String+}+} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IWorker item,
@@ -40,9 +43,10 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
                 item.race, *["---"].cycled.take(9)]];
         }
     }
+
     "Compare two worker-location pairs."
     shared actual Comparison comparePairs([Point, IWorker] one,
-            [Point, IWorker] two) {
+            [Point, IWorker] two) { // TODO: Use pairComparator() and comparingOn() to condense
         IWorker first = one.rest.first;
         IWorker second = two.rest.first;
         Comparison cmp = DistanceComparator(hq, dimensions).compare(one.first, two.first);

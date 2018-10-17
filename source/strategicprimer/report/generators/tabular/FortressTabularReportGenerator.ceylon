@@ -14,13 +14,16 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
+
 "A tabular report generator for fortresses."
 shared class FortressTabularReportGenerator(Player player, Point hq,
         MapDimensions dimensions) satisfies ITableGenerator<Fortress> {
     "The header fields are Distance, Location, Owner, and Name."
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Name"];
+
     "The file-name to (by default) write this table to."
     shared actual String tableName = "fortresses";
+
     "Create a GUI table row representing the fortress."
     shared actual [{String+}+] produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
@@ -35,6 +38,7 @@ shared class FortressTabularReportGenerator(Player player, Point hq,
         fixtures.remove(key);
         return [retval];
     }
+
     "Compare two Point-Fortress pairs."
     shared actual Comparison comparePairs([Point, Fortress] one,
             [Point, Fortress] two) {
@@ -53,7 +57,7 @@ shared class FortressTabularReportGenerator(Player player, Point hq,
                 return smaller;
             } else if ("HQ" != first.name, "HQ" == second.name) {
                 return larger;
-            } else if (nameCmp == equal) {
+            } else if (nameCmp == equal) { // TODO: Use comparing() here to condense these five lines (+1 above) to three
                 return first.owner <=> second.owner;
             } else {
                 return nameCmp;

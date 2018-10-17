@@ -34,6 +34,7 @@ import strategicprimer.report.nodes {
     SectionListReportNode,
     emptyReportNode
 }
+
 "A report generator for caves, battlefields, and portals."
 shared class ExplorableReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
@@ -43,6 +44,7 @@ shared class ExplorableReportGenerator(
     shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Battlefield|Cave|Portal item,
             Point loc) {
+        // TODO: Extract common part of the string to pass to ostream() after the switch
         switch (item)
         case (is Cave) {
             fixtures.remove(item.id);
@@ -59,6 +61,7 @@ shared class ExplorableReportGenerator(
                 .distanceString(loc)``");
         }
     }
+
     "Produces the report on all caves, battlefields, and portals."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
@@ -90,9 +93,11 @@ shared class ExplorableReportGenerator(
             ostream("</ul>``operatingSystem.newline``");
         }
     }
+
     "Produces a more verbose sub-report on a cave, battlefield, or portal."
     shared actual IReportNode produceRIRSingle(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Battlefield|Cave|Portal item, Point loc) {
+        // TODO: Delegate text creation to produceSingle()
         switch (item)
         case (is Cave) {
             fixtures.remove(item.id);
@@ -111,6 +116,7 @@ shared class ExplorableReportGenerator(
                 distCalculator.distanceString(loc)``", loc);
         }
     }
+
     "Produces the report section on all caves, battlefields, and portals."
     shared actual IReportNode produceRIR(
             DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {

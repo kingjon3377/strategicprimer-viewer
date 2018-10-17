@@ -49,6 +49,7 @@ import com.vasileff.ceylon.structures {
     MutableMultimap,
     ArrayListMultimap
 }
+
 "A report generator for fortresses."
 shared class FortressReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
@@ -59,6 +60,7 @@ shared class FortressReportGenerator(
     IReportGenerator<FortressMember> memberReportGenerator =
             FortressMemberReportGenerator(comp, currentPlayer, dimensions, currentTurn,
                 hq);
+
     String terrain(IMapNG map, Point point,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures) {
         StringBuilder builder = StringBuilder();
@@ -84,16 +86,18 @@ shared class FortressReportGenerator(
         }
         return builder.string;
     }
+
     "Write HTML representing a collection of rivers."
     void riversToString(Anything(String) formatter, River* rivers) {
         if (rivers.contains(River.lake)) {
             formatter("""<li>There is a nearby lake.</li>
                          """);
         }
-        value temp = rivers.filter(matchingValue(false, River.lake.equals));
+        value temp = rivers.filter(matchingValue(false, River.lake.equals)); // TODO: Use not(River.lake.equals) instead of matchingValue()
         if (exists first = temp.first) {
             formatter("<li>There is a river on the tile, ");
             formatter("flowing through the following borders: ");
+            // TODO: Use ", ".join() instead of loop
             formatter(first.description);
             for (river in temp.rest) {
                 formatter(", ``river.description``");
@@ -102,16 +106,18 @@ shared class FortressReportGenerator(
                          """);
         }
     }
+
     "Add nodes representing rivers to a parent."
     void riversToNode(Point loc, IReportNode parent, River* rivers) {
         if (rivers.contains(River.lake)) {
             parent.appendNode(SimpleReportNode("There is a nearby lake.", loc));
         }
-        value temp = rivers.filter(matchingValue(false, River.lake.equals));
+        value temp = rivers.filter(matchingValue(false, River.lake.equals)); // TODO: Use not(River.lake.equals) instead of matchingValue()
         if (exists first = temp.first) {
             StringBuilder builder = StringBuilder();
             builder.append(
                 "There is a river on the tile, flowing through the following borders: ");
+            // TODO: Use ", ".join() instead of a loop
             builder.append(first.description);
             for (river in temp.rest) {
                 builder.append(", ``river.description``");
@@ -119,11 +125,13 @@ shared class FortressReportGenerator(
             parent.appendNode(SimpleReportNode(builder.string, loc));
         }
     }
+
     "Produces a sub-report on a fortress. All fixtures referred to in this report are
      removed from the collection."
     shared actual void produceSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Fortress item, Point loc) {
+        // TODO: Split up initial printing to move logic out of interpolation
         ostream("<h5>Fortress ``item.name`` belonging to ``
             (item.owner == currentPlayer) then "you" else item.owner.string``</h5>
                  <ul>
@@ -149,6 +157,7 @@ shared class FortressReportGenerator(
             }
             fixtures.remove(item.id);
         }
+        // TODO: Make printList() helper to condense the following
         if (!units.empty) {
             ostream("""<li>Units on the tile:<ul>
                        """);
@@ -213,6 +222,7 @@ shared class FortressReportGenerator(
         ostream("</ul>``operatingSystem.newline``");
         fixtures.remove(item.id);
     }
+
     "Produces a sub-report on all fortresses. All fixtures referred to in this report are
      removed from the collection."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
@@ -242,12 +252,13 @@ shared class FortressReportGenerator(
             }
         }
     }
+
     "Produces a sub-report on a fortresss. All fixtures referred to in this report are
      removed from the collection."
     shared actual IReportNode produceRIRSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Fortress item, Point loc) {
-        IReportNode retval = SectionListReportNode(5,
+        IReportNode retval = SectionListReportNode(5, // TODO: Extract playerNameOrYou() helper into superclass
             "Fortress ``item.name`` belonging to ``
             (item.owner == currentPlayer) then "you" else item.owner.string``", loc);
         retval.appendNode(SimpleReportNode("Located at ``loc`` ``distCalculator
@@ -286,8 +297,9 @@ shared class FortressReportGenerator(
         fixtures.remove(item.id);
         return retval;
     }
-    "Produces a sub-report on a fortress, or all fortresses. All fixtures referred to in
-     this report are removed from the collection."
+
+    "Produces a sub-report on all fortresses. All fixtures referred to in this
+     report are removed from the collection."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
         IReportNode foreign = SectionReportNode(4, "Foreign fortresses in the map:");

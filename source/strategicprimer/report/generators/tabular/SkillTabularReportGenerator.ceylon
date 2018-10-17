@@ -12,6 +12,7 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
+
 "A generator to produce a tabular report of workers' skill improvements. Because
  [[WorkerTabularReportGenerator]] handles workers, we don't remove anything from the
  [[DelayedRemovalMap]] we are passed."

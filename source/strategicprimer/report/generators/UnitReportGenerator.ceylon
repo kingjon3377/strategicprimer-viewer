@@ -42,6 +42,7 @@ import com.vasileff.ceylon.structures {
     MutableMultimap,
     HashMultimap
 }
+
 "A report generator for units."
 shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         Player currentPlayer, MapDimensions dimensions, Integer currentTurn,
@@ -56,6 +57,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         true, dimensions, hq);
     IReportGenerator<IWorker> otherWorkerReportGenerator = WorkerReportGenerator(comp,
         false, dimensions, hq);
+
     "Produce the sub-sub-report about a unit's orders and results."
     void produceOrders(IUnit item, Anything(String) formatter) {
         if (!item.allOrders.empty || !item.allResults.empty) {
@@ -82,6 +84,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                          """);
         }
     }
+
     "Produce a sub-sub-report on a unit (we assume we're already in the middle of a
      paragraph or bullet point)."
     shared actual void produceSingle(
@@ -123,8 +126,8 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             ostream(""". Members of the unit:
                        <ul>
                        """);
-            void produceInner<T>(String heading, List<T> collection,
-                Anything(T) generator) given T satisfies UnitMember {
+            void produceInner<Member>(String heading, List<Member> collection,
+                Anything(Member) generator) given Member satisfies UnitMember {
                 if (!collection.empty) {
                     ostream("<li>``heading``:
                              <ul>
@@ -141,6 +144,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                                """);
                 }
             }
+            // TODO: Make a produceInnerComplex() so we only have to have one lambda wrapping X.produceSingle(), not three
             IReportGenerator<IWorker> workerReportGenerator;
             if (item.owner == currentPlayer) {
                 workerReportGenerator = ourWorkerReportGenerator;
@@ -171,9 +175,10 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             ostream("""</ul>
                        """);
         }
-        produceOrders(item, ostream);
+        produceOrders(item, ostream); // TODO: Use compose(ostream, operatingSystem.newline.plus) (possibly with a shuffle() in there) to allow us to condense produceOrders
         fixtures.remove(item.id);
     }
+
     "Produce the part of the report on all units not covered as part of fortresses."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
@@ -202,13 +207,14 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             writeMap(ostream, foreign, unitFormatter);
         }
     }
+
     "Produce a sub-sub-report on a unit (we assume we're already in the middle of a
      paragraph or bullet point)."
     shared actual IReportNode produceRIRSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, IUnit item, Point loc) {
         String base;
-        if (item.owner.independent) {
+        if (item.owner.independent) { // TODO: Condense these descriptions
             base = "Unit of type ``item.kind``, named ``item
                 .name``, independent.";
         } else if (item.owner == currentPlayer) {
@@ -278,6 +284,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             return retval;
         }
     }
+
     "Produce the part of the report dealing with all units not already covered."
     shared actual IReportNode produceRIR(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,

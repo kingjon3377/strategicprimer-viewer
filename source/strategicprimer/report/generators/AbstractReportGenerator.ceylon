@@ -13,21 +13,32 @@ import strategicprimer.model.common.map {
     MapDimensions,
     Point
 }
+
 "An abstract superclass for classes that generate reports for particular kinds of SP
  objects. It's mostly interface and helper methods, but contains a couple of bits of
  shared state."
 // We'd like to make methods and member types static, but a sealed class can't have
 // constructors.
-shared sealed abstract class AbstractReportGenerator<T>(
+shared sealed abstract class AbstractReportGenerator<Type>(
+        "A comparator of [[Point]]-fixture pairs."
         shared Comparison([Point, IFixture], [Point, IFixture]) pairComparator,
-        MapDimensions? mapDimensions, Point referencePoint = Point.invalidPoint)
-        satisfies IReportGenerator<T> given T satisfies IFixture {
+        "The dimensions of the map. If [[null]], [[distCalculator]] will give
+         inaccurate results whenever the shortest distance between two points
+         involves wrapping around an edge of the map."
+        MapDimensions? mapDimensions,
+        "The base point to use for distance calculations. Usually the
+         location of the headquarters of the player for whom the report is
+         being prepared."
+        Point referencePoint = Point.invalidPoint)
+        satisfies IReportGenerator<Type> given Type satisfies IFixture {
+    "A calculator-comparator for subclasses to use to compare fixtures on the basis of 
+     distance from [[referencePoint]] and to print that distance in the report."
     shared DistanceComparator distCalculator = DistanceComparator(referencePoint,
         mapDimensions);
     "A list that produces HTML in its [[string]] attribute."
     shared class HtmlList(shared actual String header, {String*} initial = [])
             extends ArrayList<String>(0, 1.5, initial)
-            satisfies IReportGenerator<T>.HeadedList<String> {
+            satisfies IReportGenerator<Type>.HeadedList<String> {
         "If there's nothing in the list, return the empty string, but otherwise produce an
          HTML list of our contents."
         shared actual String string {
@@ -48,7 +59,9 @@ shared sealed abstract class AbstractReportGenerator<T>(
             }
         }
     }
-    "Turn a series of items into a comma-separated list of their string representations."
+    """Turn a series of items into a comma-separated list of their string representations,
+       with "and" before the final item and a special no-comma case for a list of only
+       two items."""
     // Should be static, but can't
     shared String commaSeparatedList(Object* list) {
         if (exists first = list.first) {
@@ -72,15 +85,17 @@ shared sealed abstract class AbstractReportGenerator<T>(
             return "";
         }
     }
-    """A list of Points that produces a comma-separated list in its `string` and has a
+    """A list of Points that produces a comma-separated list in its [[string]] and has a
        "header"."""
-    shared class PointList(shared actual String header) extends ArrayList<Point>()
-            satisfies IReportGenerator<T>.HeadedList<Point> {
+    shared class PointList(
+            "The 'header' to print before the points in the list."
+            shared actual String header) extends ArrayList<Point>()
+            satisfies IReportGenerator<Type>.HeadedList<Point> {
         shared actual String string {
             if (empty) {
                 return "";
             } else {
-                StringBuilder builder = StringBuilder();
+                StringBuilder builder = StringBuilder(); // TODO: Use commaSeparatedList instead of duplicating it here.
                 builder.append(header);
                 builder.append(" ");
                 assert (exists firstItem = first);
@@ -102,10 +117,17 @@ shared sealed abstract class AbstractReportGenerator<T>(
             }
         }
     }
-    "An implementation of HeadedMap."
-    shared class HeadedMapImpl<Key, Value>(shared actual String header,
-            Comparison(Key, Key)? comparator = null, {<Key->Value>*} initial = [])
-            satisfies IReportGenerator<T>.MutableHeadedMap<Key, Value>
+
+    "An implementation of [[HeadedMap]]."
+    shared class HeadedMapImpl<Key, Value>(
+                "The header to prepend to the items in [[string]]."
+                shared actual String header,
+                "A comparator to sort the map by. If provided, we wrap a [[TreeMap]];
+                 if not, we wrap a [[HashMap]]."
+                Comparison(Key, Key)? comparator = null,
+                "Inital entries in the map."
+                {<Key->Value>*} initial = [])
+            satisfies IReportGenerator<Type>.MutableHeadedMap<Key, Value>
             given Key satisfies Object {
         MutableMap<Key, Value> wrapped;
         if (exists comparator) {
@@ -116,7 +138,7 @@ shared sealed abstract class AbstractReportGenerator<T>(
         shared actual Integer size => wrapped.size;
         shared actual Boolean empty => wrapped.empty;
         shared actual Integer hash => wrapped.hash;
-        shared actual Boolean equals(Object that) {
+        shared actual Boolean equals(Object that) { // TODO: Replace with (this of Map<Key, Value>.equals(that)
             if (is Map<Key, Value> that) {
                 return that.containsEvery(this) && containsEvery(that);
             } else {

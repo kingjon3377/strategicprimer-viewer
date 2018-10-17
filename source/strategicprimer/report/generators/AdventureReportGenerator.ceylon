@@ -20,6 +20,7 @@ import strategicprimer.report.nodes {
     SectionListReportNode,
     emptyReportNode
 }
+
 "A report generator for adventure hooks."
 shared class AdventureReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
@@ -31,11 +32,12 @@ shared class AdventureReportGenerator(
         MutableHeadedMap<AdventureFixture, Point> adventures =
                 HeadedMapImpl<AdventureFixture, Point>("<h4>Possible Adventures</h4>");
         for ([loc, item] in fixtures.items.narrow<[Point, AdventureFixture]>()
-                .sort(pairComparator)) {
+                .sort(pairComparator)) { // TODO: Use Tuple.entry() and reverseEntry() and put these into [[adventures]] as its 'initial' in one line.
             adventures[item] = loc;
         }
         writeMap(ostream, adventures, defaultFormatter(fixtures, map));
     }
+
     "Produce a more verbose sub-report on an adventure hook."
     shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, AdventureFixture item, Point loc) {
@@ -52,6 +54,7 @@ shared class AdventureReportGenerator(
             ostream(" (already investigated by ``player``)");
         }
     }
+
     "Produce the report on all adventure hooks in the map."
     shared actual IReportNode produceRIR(
             DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
@@ -66,11 +69,13 @@ shared class AdventureReportGenerator(
             return adventures;
         }
     }
+
     "Produce a more verbose sub-report on an adventure hook."
     shared actual IReportNode produceRIRSingle(
             DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
             AdventureFixture item, Point loc) {
         fixtures.remove(item.id);
+        // TODO: Make an 'ownerString' for the sole varying part to condense the following
         if (item.owner.independent) {
             return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
                 .fullDescription`` ``distCalculator.distanceString(loc)``",

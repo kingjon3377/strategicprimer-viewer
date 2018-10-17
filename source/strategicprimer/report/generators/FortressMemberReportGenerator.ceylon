@@ -31,6 +31,7 @@ import strategicprimer.report.nodes {
     SectionListReportNode,
     emptyReportNode
 }
+
 "A report generator for equipment and resources."
 shared class FortressMemberReportGenerator(
             Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
@@ -69,6 +70,7 @@ shared class FortressMemberReportGenerator(
             }
         }
     }
+
     "Produces a sub-report on all fortress members. All fixtures referred to in this
      report are removed from the collection. This method should probably never actually
      be called, since nearly all resources will be in fortresses and should be reported
@@ -90,7 +92,7 @@ shared class FortressMemberReportGenerator(
                     pileMap = temp;
                 } else {
                     pileMap = HeadedMapImpl<ResourcePile, Point>(
-                        "<li>``resource.kind``:",
+                        "<li>``resource.kind``:", // TODO: Remove initial '<li>, since it duplicates one when it's printed below.
                         comparing(byIncreasing(ResourcePile.kind),
                             byIncreasing(ResourcePile.contents),
                             byDecreasing(ResourcePile.quantity),
@@ -127,6 +129,7 @@ shared class FortressMemberReportGenerator(
                    """);
         }
     }
+
     "Produces a sub-report on a resource or piece of equipment. All fixtures referred
      to in this report are removed from the collection."
     shared actual IReportNode produceRIRSingle(
@@ -166,6 +169,7 @@ shared class FortressMemberReportGenerator(
             }
         }
     }
+
     "Produces a sub-report on all fortress members. All fixtures referred to in this
      report are removed from the collection. This method should probably never actually
      be called, since nearly all resources will be in fortresses and should be reported
@@ -194,7 +198,7 @@ shared class FortressMemberReportGenerator(
             }
         }
         IReportNode resources = ListReportNode("Resources:");
-        resources.addIfNonEmpty(*resourceKinds.items);
+        resources.addIfNonEmpty(*resourceKinds.items); // TODO: Can we avoid the spread with .each()?
         IReportNode retval = SectionListReportNode(4, "Resources and Equipment:");
         retval.addIfNonEmpty(resources, equipment);
         if (retval.childCount == 0) {

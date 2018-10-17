@@ -49,7 +49,8 @@ import com.vasileff.ceylon.structures {
     HashMultimap,
     Multimap
 }
-"""A report generator for "immortals"---dragons, fairies, centaurs, and such."""
+
+"""A report generator for [["immortals"|Immortal]]---dragons, fairies, centaurs, and such."""
 shared class ImmortalsReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, MapDimensions dimensions,
         Point hq = Point.invalidPoint)
@@ -61,6 +62,7 @@ shared class ImmortalsReportGenerator(
         fixtures.remove(item.id);
         ostream("At ``loc``: A(n) ``item`` ``distCalculator.distanceString(loc)``");
     }
+
     "Produce a report on all immortals."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream) {
@@ -95,7 +97,7 @@ shared class ImmortalsReportGenerator(
             }
         }
         if (!centaurs.empty || !giants.empty, !fairies.empty || !dragons.empty ||
-        !simples.empty) {
+        !simples.empty) { // FIXME: Indentation
             ostream("""<h4>Immortals</h4>
                        <ul>""");
             for (key->list in [centaurs, giants, fairies, dragons, simples]
@@ -111,6 +113,7 @@ shared class ImmortalsReportGenerator(
             ostream("</ul>``operatingSystem.newline``");
         }
     }
+
     "Produce a report node on an individual immortal."
     shared actual IReportNode produceRIRSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
@@ -119,6 +122,7 @@ shared class ImmortalsReportGenerator(
         return SimpleReportNode("At ``loc``: A(n) ``item`` ``distCalculator
             .distanceString(loc)``", loc);
     }
+
     "Produce a report node on an individual immortal, or the intermediate-representation
      report on all immortals."
     shared actual IReportNode produceRIR(

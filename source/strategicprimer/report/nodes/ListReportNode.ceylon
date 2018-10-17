@@ -14,6 +14,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.report {
     IReportNode
 }
+
 "A node representing a list."
 shared class ListReportNode extends DefaultMutableTreeNode satisfies IReportNode {
     static Integer boilerPlateLength = "<ul></ul>".size + 3;
@@ -31,15 +32,19 @@ shared class ListReportNode extends DefaultMutableTreeNode satisfies IReportNode
             super.add(node);
         }
     }
+
     shared actual void add(MutableTreeNode node) => appendNode(node);
+
     shared actual String text => initialText;
     assign text {
         super.userObject = text;
         initialText = text;
     }
+
     shared actual Integer htmlSize =>
             boilerPlateLength + text.size +
             Integer.sum(map(IReportNode.htmlSize).map(perChildBoilerPlate.plus));
+
     shared actual void produce(Anything(String) stream) {
         stream(text);
         stream("""
@@ -54,6 +59,7 @@ shared class ListReportNode extends DefaultMutableTreeNode satisfies IReportNode
         stream("""</ul>
                   """);
     }
+
     shared actual Boolean equals(Object that) {
         if (is ListReportNode that, that.initialText == initialText,
                 children() == that.children()) {
@@ -62,8 +68,11 @@ shared class ListReportNode extends DefaultMutableTreeNode satisfies IReportNode
             return false;
         }
     }
+
     shared actual Integer hash => initialText.hash;
+
     todo("Reflect the children")
     shared actual String string => text;
+
     shared actual void setUserObject(Object obj) => super.userObject = obj;
 }

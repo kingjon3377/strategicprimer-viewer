@@ -21,9 +21,12 @@ import strategicprimer.report {
 shared class SortedSectionListReportNode
         extends SectionListReportNode {
     static JComparator<IReportNode> sorter = JavaComparator(increasing<IReportNode>);
+
     shared new (Integer level, String text)
             extends SectionListReportNode(level, text) {}
+
     variable Boolean sorting = true;
+
     shared void appendNodes(MutableTreeNode* newChildren) {
         newChildren.each(super.appendNode);
         if (sorting) {
@@ -34,6 +37,7 @@ shared class SortedSectionListReportNode
             JCollections.sort(temp, sorter);
         }
     }
+
     shared actual void appendNode(MutableTreeNode newChild) {
         super.appendNode(newChild);
         if (sorting) {
@@ -44,15 +48,17 @@ shared class SortedSectionListReportNode
             JCollections.sort(temp, sorter);
         }
     }
+
     "Stop sorting on every addition."
     shared void suspend() => sorting = false;
+
     "Sort, and resume sorting on every addition."
     shared void resume() {
         sorting = true;
         if (exists temp = children) {
             // We use List<> rather than Vector<> because the latter fails at runtime
             // in the metamodel with "Class has more than one overloaded constructor"
-            // TODO: report this bug (if it isn't already known)
+            // It looks like this is eclipse/ceylon#7092
             assert (is JList<IReportNode> temp);
             JCollections.sort(temp, sorter);
         }

@@ -59,8 +59,11 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
+
 "A logger."
 Logger log = logger(`module strategicprimer.report`);
+
+"An encapsulation of helper methods for report generators."
 object reportGeneratorHelper {
     "Find the location of the given player's HQ in the given map."
     todo("""Return null instead of an "invalid" Point when not found?""")
@@ -78,6 +81,7 @@ object reportGeneratorHelper {
             return retval else Point.invalidPoint;
         }
     }
+
     "Create a mapping from ID numbers to Pairs of fixtures and their location for all
      fixtures in the map."
     shared DelayedRemovalMap<Integer, [Point, IFixture]> getFixtures(IMapNG map) {
@@ -113,6 +117,7 @@ object reportGeneratorHelper {
         }
         return retval;
     }
+
     void parentMapImpl(MutableMap<Integer, Integer> retval, IFixture parent,
             {IFixture*} stream) {
         for (fixture in stream) {
@@ -122,6 +127,7 @@ object reportGeneratorHelper {
             }
         }
     }
+
     "Create a mapping from child ID numbers to parent ID numbers."
     shared Map<Integer, Integer> getParentMap(IMapNG map) {
         MutableMap<Integer, Integer> retval = HashMap<Integer, Integer>();
@@ -131,6 +137,8 @@ object reportGeneratorHelper {
         return retval;
     }
 }
+
+"Produces reports based on maps."
 shared object reportGenerator {
     "Produces sub-reports, appending them to the buffer and calling coalesce() on the
      fixtures collection after each."
@@ -142,6 +150,7 @@ shared object reportGenerator {
             fixtures.coalesce();
         }
     }
+
     "Create the report for the given player based on the given map."
     todo("Consider generating Markdown instead of HTML. OTOH, we'd have to keep a list
           nesting level parameter or something.")
@@ -185,6 +194,7 @@ shared object reportGenerator {
         }
         return builder.string;
     }
+
     "Create a slightly abbreviated report, omitting the player's fortresses and units."
     shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPlayer) {
         MapDimensions dimensions = map.dimensions;
@@ -231,6 +241,7 @@ shared object reportGenerator {
         }
         return builder.string;
     }
+
     "Produce sub-reports in report-intermediate-representation, adding them to the root
      node and calling coalesce() on the fixtures collection after each."
     void createSubReportsIR(IReportNode root,
@@ -241,6 +252,7 @@ shared object reportGenerator {
             fixtures.coalesce();
         }
     }
+
     "Create the report, in report-intermediate-representation, based on the given map."
     shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer) {
         IReportNode retval = RootReportNode("Strategic Primer map summary report");
@@ -265,6 +277,7 @@ shared object reportGenerator {
             ImmortalsReportGenerator(comparator, dimensions, hq));
         return retval;
     }
+
     "Create a slightly abbreviated report, omitting the player's fortresses and units, in
      intermediate representation."
     shared IReportNode createAbbreviatedReportIR(IMapNG map,

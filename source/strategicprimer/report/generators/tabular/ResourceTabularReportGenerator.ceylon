@@ -20,8 +20,9 @@ import strategicprimer.model.common.map.fixtures {
 import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture
 }
-"A tabular report generator for resources, including caches, resource piles, and
- implements (equipment)."
+
+"A tabular report generator for resources, including [[caches|CacheFixture]],
+ [[resource piles|ResourcePile]], and [[equipment|Implement]]."
 shared class ResourceTabularReportGenerator()
         satisfies ITableGenerator<Implement|CacheFixture|ResourcePile> {
     "The file-name to (by default) write this table to."

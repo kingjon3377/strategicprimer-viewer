@@ -33,12 +33,15 @@ import ceylon.logging {
 import ceylon.whole {
     Whole
 }
+
 "A logger."
 Logger log = logger(`module strategicprimer.report`);
+
 "A tabular report generator for crops---forests, groves, orchards, fields, meadows, and
  shrubs"
 shared class CropTabularReportGenerator
         satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
+    "Produce a [[String]] representation of a [[Number]], limiting it to two decimal places."
     static String truncatedNumberString(Number<out Anything> number) {
         switch (number)
         case (is Integral<out Anything>) {
@@ -60,6 +63,7 @@ shared class CropTabularReportGenerator
             return number.string;
         }
     }
+
     Point hq;
     MapDimensions dimensions;
     shared new (Point hq, MapDimensions dimensions) {
@@ -136,13 +140,14 @@ shared class CropTabularReportGenerator
         return [[distanceString(loc, hq, dimensions), loc.string, kind, size, sizeUnit,
             cultivation, status, crop]];
     }
+
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, Forest|Shrub|Meadow|Grove] one,
             [Point, Forest|Shrub|Meadow|Grove] two) {
         Forest|Shrub|Meadow|Grove first = one.rest.first;
         Forest|Shrub|Meadow|Grove second = two.rest.first;
         Comparison cropCmp = first.kind.compare(second.kind);
-        if (cropCmp == equal) {
+        if (cropCmp == equal) { // TODO: Use comparing() for this
             Comparison cmp = DistanceComparator(hq, dimensions).compare(
                 one.first, two.first);
             if (cmp == equal) {

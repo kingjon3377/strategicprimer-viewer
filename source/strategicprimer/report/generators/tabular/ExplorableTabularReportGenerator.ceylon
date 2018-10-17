@@ -21,6 +21,7 @@ import strategicprimer.model.common.map.fixtures.explorable {
     AdventureFixture,
     Battlefield
 }
+
 "A tabular report generator for things that can be explored and are not covered elsewhere:
   caves, battlefields, adventure hooks, and portals."
 shared class ExplorableTabularReportGenerator(Player player, Point hq,
@@ -29,8 +30,10 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq,
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Brief Description",
         "Claimed By", "Long Description"];
+
     "The file-name to (by default) write this table to."
     shared actual String tableName = "explorables";
+
     "Create a GUI table row representing the given fixture."
     shared actual {{String+}*} produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
@@ -86,12 +89,13 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq,
         return [[distanceString(loc, hq, dimensions), loc.string, brief, owner,
             longDesc]];
     }
+
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, ExplorableFixture|TextFixture] one,
             [Point, ExplorableFixture|TextFixture] two) {
         Comparison cmp = DistanceComparator(hq, dimensions).compare(one.first, two.first);
         if (cmp == equal) {
-            return one.rest.first.string.compare(two.rest.first.string);
+            return one.rest.first.string.compare(two.rest.first.string); // TODO: Extract this test to a function (to avoid long compose() chain) and use comparing()
         } else {
             return cmp;
         }

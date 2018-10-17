@@ -30,6 +30,7 @@ import strategicprimer.report.nodes {
     SectionListReportNode,
     emptyReportNode
 }
+
 "A report generator for towns."
 todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
@@ -38,6 +39,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         extends AbstractReportGenerator<ITownFixture>(comp, dimensions, hq) {
     {TownStatus+} statuses = [TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
         TownStatus.burned];
+
     "Separate towns by status."
     void separateByStatus<T>(Map<TownStatus, T> mapping,
             Collection<[Point, IFixture]> collection,
@@ -49,6 +51,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             }
         }
     }
+
     "Produce a report for a town. If a single fortress or village is passed in, handling
      it is delegated to its dedicated report-generating class. We remove the town from
      the set of fixtures."
@@ -80,6 +83,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             ostream(" ``distCalculator.distanceString(loc)``");
         }
     }
+
     "Produce a report on all towns. This report omits fortresses and villages, and is
      sorted in a way that I hope is helpful. We remove the town from the set of fixtures."
     shared actual void produce(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
@@ -99,7 +103,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         // separateByStatus() sorts using pairComparator, which should be by distance
         // from HQ
         separateByStatus(separated, fixtures.items,
-                    (MutableMap<ITownFixture, Point> mapping, pair) =>
+                    (MutableMap<ITownFixture, Point> mapping, pair) => // TODO: Work out method-reference logic that's sugar for, to avoid lambda
                             mapping[pair.rest.first] = pair.first);
         if (separated.items.any(not(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
             ostream("""<h4>Cities, towns, and/or fortifications you know about:</h4>
@@ -109,6 +113,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             }
         }
     }
+
     "Produce a report for a town. Handling of fortresses and villages is delegated
      to their dedicated report-generating classes. We remove the town from the set of
      fixtures."
@@ -142,6 +147,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             }
         }
     }
+
     "Produce a report for all towns. (Fortresses and villages are not included in this
      report.) We remove the towns from the set of fixtures."
     shared actual IReportNode produceRIR(
@@ -155,13 +161,13 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 TownStatus.ruined->SectionListReportNode(5,
                     "Ruined Communities"));
         separateByStatus(separated, fixtures.items,
-                    (IReportNode node, pair) {
+                    (IReportNode node, pair) { // TODO: Use =>
                 node.appendNode(produceRIRSingle(fixtures, map, pair.rest.first,
                     pair.first));
             });
         IReportNode retval = SectionListReportNode(4,
             "Cities, towns, and/or fortifications you know about:");
-        retval.addIfNonEmpty(*statuses.map(separated.get).coalesced);
+        retval.addIfNonEmpty(*statuses.map(separated.get).coalesced); // TODO: Refactor to status.map(separated.get).coalesced.each(retval.addIfNonEmpty) to avoid spread
         if (retval.childCount == 0) {
             return emptyReportNode;
         } else {

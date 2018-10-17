@@ -28,6 +28,7 @@ import strategicprimer.report.nodes {
     SectionListReportNode,
     emptyReportNode
 }
+
 "A report generator for Workers."
 class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
             Boolean details, MapDimensions dimensions, Point hq = Point.invalidPoint)
@@ -41,20 +42,24 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
                 .intelligence)``, Wisdom ``modifierString(stats.wisdom)``, Charisma ``
             modifierString(stats.charisma)``";
     }
+
     String skillString(ISkill skill) => skill.name + " " + skill.level.string;
+
     "Produce text describing the given Skills."
     String skills(ISkill* job) {
-        if (job.empty) {
+        if (job.empty) { // TODO: Condense using if expression
             return "";
         } else {
             return "(``", ".join(job.map(skillString))``)";
         }
     }
+
     "Produce the report-intermediate-representation sub-sub-report on a Job."
-    IReportNode produceJobRIR(IJob job, Point loc) {
+    IReportNode produceJobRIR(IJob job, Point loc) { // TODO: =>
         return SimpleReportNode("``job.level`` levels in ``job.name`` ``skills(*job)``",
             loc);
     }
+
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
      paragraph or bullet point)."
     shared actual void produceSingle(
@@ -62,7 +67,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
             IMapNG map, Anything(String) ostream, IWorker worker, Point loc) {
         ostream("``worker.name``, a ``worker.race``.");
         if (details, exists stats = worker.stats) {
-            ostream(
+            ostream( // TODO: Remove newline (move string up to open-paren)
                 "
                  <p>``statsString(stats)``</p>
              ");
@@ -81,8 +86,10 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
                    """);
         }
     }
+
     [Second, First] reversePair<First, Second>([First, Second] pair) => // TODO: move to lovelace.util and use elsewhere
             [pair.rest.first, pair.first];
+
     "Produce a sub-sub-report on all workers. This should never be called, but we'll
      implement it properly anyway."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
@@ -93,7 +100,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
             ostream("""<h5>Workers</h5>
                        <ul>
                        """);
-            for (tuple in workers) {
+            for (tuple in workers) { // TODO: Destructure to avoid spreading below
                 ostream("<li>");
                 produceSingle(fixtures, map, ostream, *tuple);
                 ostream("""</li>
@@ -103,6 +110,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
                        """);
         }
     }
+
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
      paragraph or bullet point)."
     shared actual IReportNode produceRIRSingle(
@@ -128,6 +136,7 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
             return SimpleReportNode("``worker.name``, a ``worker.race``", loc);
         }
     }
+
     "Produce a sub-sub-report on all workers. This should never be called, but we'll
      implement it properly anyway)."
     shared actual IReportNode produceRIR(

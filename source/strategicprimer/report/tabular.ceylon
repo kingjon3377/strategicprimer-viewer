@@ -62,6 +62,8 @@ import javax.swing.table {
     TableRowSorter,
     TableModel
 }
+
+"A collection of methods to produce tabular reports for players."
 shared object tabularReportGenerator {
     "A method to produce tabular reports based on a map for a player."
     shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
@@ -96,6 +98,7 @@ shared object tabularReportGenerator {
             }
         }
     }
+
     "A method to produce tabular reports and add them to a GUI."
     shared void createGUITabularReports(
             "The way to add the tables to the GUI."
@@ -122,7 +125,7 @@ shared object tabularReportGenerator {
             ImmortalsTabularReportGenerator(hq, dimensions),
             ExplorableTabularReportGenerator(player, hq, dimensions)
         ];
-        Comparison sorter(Object one, Object two) {
+        Comparison sorter(Object one, Object two) { // TODO: Move to top level of object
             String actualOne;
             String actualTwo;
             if (is String one) {
