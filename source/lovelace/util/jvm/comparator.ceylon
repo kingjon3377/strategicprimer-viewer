@@ -11,6 +11,7 @@ import ceylon.interop.java {
 import lovelace.util.common {
     singletonRandom
 }
+
 "Convert a Java Comparator to a Ceylon comparator. For the other way round, see
  [[ceylon.interop.java::JavaComparator]]"
 shared Comparison(Type, Type) ceylonComparator<Type>(
@@ -21,6 +22,8 @@ shared Comparison(Type, Type) ceylonComparator<Type>(
         return compose(curry(decreasing<Integer>)(0), comparator.compare);
     }
 }
+
+// TODO: Encapsulate these test methods in an object
 //test // TODO: uncomment and add import once eclipse/ceylon#6986 fixed
 void testCeylonComparator() {
     Comparison(JString, JString) comparator =

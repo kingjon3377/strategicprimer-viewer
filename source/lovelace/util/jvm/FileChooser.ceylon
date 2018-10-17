@@ -26,22 +26,41 @@ import ceylon.logging {
     logger
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    todo
 }
 
 "Logger."
 Logger log = logger(`module lovelace.util.jvm`);
 
-"A wrapper around the Swing and AWT file-choosers."
+"A wrapper around the [[Swing|JFileChooser]] and [[AWT|JFileDialog]] file-choosers.
+ 
+ On most platforms, [[the Swing JFileChooser|JFileChooser]] is close enough to the
+ native widget in appearance and functionality; on macOS, it is decidedly *not*,
+ and it's impossible to conform to the platform HIG without using 
+ [[the AWT FileDialog|JFileDialog]] class instead. This class leaves the choice of
+ which one to use to its callers, but abstracts over the differences between them."
 shared class FileChooser {
+    "An exception to throw when the user cancels the file-chooser."
     shared static class ChoiceInterruptedException(Throwable? cause = null)
             extends Exception((cause exists)
                 then "Choice of a file was interrupted by an exception:"
                 else "No file was selected", cause) {}
+    "Convert the type returned by the file-chooser to the type we expose in
+     return types."
+    todo("Once ceylon.file is marked as cross-platform, convert [[PathWrapper]] usage
+          back to [[ceylon.file::Path]].")
     static PathWrapper fileToPath(JFile file) => PathWrapper(file.toPath().string);
+
+    "The method to call to show the caller's chosen dialog."
     Integer(Component?) chooserFunction;
+    "The file(s) either passed in to the constructor or chosen by the user."
     variable {PathWrapper+}? storedFile;
+    "The file-chooser widget that will actually ask the user to choose a file or files."
     JFileChooser|JFileDialog chooser;
+
+    """Constructor for what will be an "Open" dialog, allowing the user to choose multiple
+       files."""
     shared new open(JFileChooser|JFileDialog fileChooser, PathWrapper? loc = null) {
         log.trace("FileChooser invoked for the Open dialog");
         switch (fileChooser)
@@ -68,6 +87,8 @@ shared class FileChooser {
         }
         chooser = fileChooser;
     }
+
+    """Constructor for what will be a "Save" dialog."""
     shared new save(PathWrapper? loc,
             JFileChooser|JFileDialog fileChooser) {
         log.trace("FileChooser invoked for Save dialog");
@@ -93,13 +114,17 @@ shared class FileChooser {
         }
         chooser = fileChooser;
     }
+
+    """Constructor for a "Custom" dialog. This feature only actually
+       works with [[the Swing JFileChooser|JFileChooser]], so on AWT
+       we fall back to a "Save" dialog."""
     shared new custom(PathWrapper? loc, String approveText,
             JFileChooser|JFileDialog fileChooser) {
         log.trace("FileChooser invoked for a custom dialog");
         switch (fileChooser)
         case (is JFileChooser) {
             log.trace("Using Swing JFileChooser");
-            chooserFunction = (Component? component) =>
+            chooserFunction = (Component? component) => // FIXME: Indentation
             fileChooser.showDialog(component, approveText);
         }
         case (is JFileDialog) {
@@ -121,6 +146,9 @@ shared class FileChooser {
         }
         chooser = fileChooser;
     }
+
+    "A helper method to run a function on the EDT, without leaking any of the
+     implementation-detail exceptions that are commonly thrown to the caller."
     void invoke(Anything() runnable) {
         try {
             log.trace("FileChooser.invoke(): About to invoke the provided function");
@@ -135,6 +163,8 @@ shared class FileChooser {
             throw ChoiceInterruptedException(except);
         }
     }
+
+    "Show the dialog to the user and update [[storedFile]] with his or her choice(s)."
     void haveUserChooseFiles() {
         log.trace("In FileChooser.haveUserChooseFiles");
         Integer status = chooserFunction(null);
@@ -146,7 +176,7 @@ shared class FileChooser {
                 if (nonempty retval) {
                     log.trace("Saving the file(s) the user chose via Swing");
                     storedFile = retval;
-                } else {
+                } else { // TODO: Should probably set storedFile to null
                     log.info("User pressed approve but selected no files");
                 }
             } else {
@@ -163,10 +193,12 @@ shared class FileChooser {
             }
         }
     }
+
     "If a valid filename was, or multiple filenames were, passed in to the constructor,
      return an iterable containing it or them; otherwise, show a dialog for the user to
      select one or more filenames and return the filename(s) the user selected. Throws an
      exception if the choice is interrupted or the user declines to choose."
+    throws(`class ChoiceInterruptedException`)
     shared {PathWrapper+} files {
         if (exists temp = storedFile) {
             log.trace("FileChooser.files: A file was stored, so returning it");
@@ -184,9 +216,11 @@ shared class FileChooser {
             throw ChoiceInterruptedException();
         }
     }
+    "Set the stored file(s) to the given Iterable."
     assign files {
         storedFile = files;
     }
+
     "Allow the user to choose a file or files, if necessary, and pass each file to the
      given consumer. If the operation is canceled, do nothing."
     shared void call(Anything(PathWrapper) consumer) {

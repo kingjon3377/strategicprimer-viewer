@@ -17,12 +17,15 @@ shared object platform {
      the difference between Ceylon and Java strings."
     void setStringProperty(JComponent component, String key, String val) =>
             component.putClientProperty(Types.nativeString(key), Types.nativeString(val));
+
     "Whether this system is a Mac."
     shared Boolean systemIsMac = operatingSystem.name == "mac";
+
     "The usual shortcut-key modifier on this system."
     shared Integer shortcutMask;
     "A String describing that modifier."
     shared String shortcutDescription;
+
     if (systemIsMac) {
         shortcutMask = InputEvent.metaDownMask;
         shortcutDescription = "\{#2318}";
@@ -30,6 +33,7 @@ shared object platform {
         shortcutMask = InputEvent.ctrlDownMask;
         shortcutDescription = "Ctrl+";
     }
+
     "Make buttons segmented on Mac. Does nothing if zero or one buttons, or if not on
      Mac."
     shared void makeButtonsSegmented(JButton* buttons) {
@@ -45,6 +49,7 @@ shared object platform {
             setStringProperty(last, "JButton.segmentPosition", "last");
         }
     }
+
     "Whether the current platform's hotkey is pressed in the given event."
     shared Boolean hotKeyPressed(InputEvent event) =>
             (systemIsMac) then event.metaDown else event.controlDown;

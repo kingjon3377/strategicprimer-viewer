@@ -6,9 +6,14 @@ import java.io {
 import java.lang {
     Thread { currentThread }
 }
+import lovelace.util.common {
+    todo
+}
 
 "Basically a FileInputStream, but the file could be on disk or in the classpath.
  This method replaces the Java class (I wrote) ResourceInputStream."
+todo("Remove, since this doesn't actually work, and [[ResourceInputStream]] at
+      least sort of does.")
 shared InputStream loadResource(String filename) {
     try {
         return FileInputStream(filename);

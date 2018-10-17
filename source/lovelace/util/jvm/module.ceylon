@@ -1,4 +1,5 @@
 "A module for utility methods, objects, and classes that only work on the JVM"
+// TODO: Make this user-introductory documentation, like that of the Ceylon SDK
 license("GPL-3")
 native("jvm")
 module lovelace.util.jvm "0.1.0" {

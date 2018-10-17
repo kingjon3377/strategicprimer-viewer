@@ -2,6 +2,7 @@ import java.util {
     JIterator=Iterator,
     Enumeration
 }
+
 import java.lang {
     JIterable=Iterable,
     ArrayIndexOutOfBoundsException
@@ -10,6 +11,10 @@ import java.lang {
 import javax.swing {
     ListModel
 }
+
+"Wrapper around a [[Java Iterator|JIterator]] that meets [[the Ceylon Iterator
+ interface|Iterator]] and asserts that each element is of the specified type."
+see(`class ConvertingIterable`)
 class ConvertingIterator<Element>(JIterator<out Anything> iter)
         satisfies Iterator<Element> given Element satisfies Object {
     shared actual Element|Finished next() {
@@ -21,8 +26,10 @@ class ConvertingIterator<Element>(JIterator<out Anything> iter)
         }
     }
 }
-"A wrapper around a Java Iterable or Iterator that meets the Ceylon Iterable interface and
- asserts that each element is of the specified type."
+
+"A wrapper around a Java [[Iterable|JIterable]] or [[Iterator|JIterator]] that meets 
+ [[the Ceylon Iterable interface|Iterable]] and asserts that each element is of the
+ specified type."
 shared class ConvertingIterable<Element>(JIterator<out Object>|JIterable<out Object> iter)
         satisfies {Element*} given Element satisfies Object {
     shared actual Iterator<Element> iterator();
@@ -32,6 +39,7 @@ shared class ConvertingIterable<Element>(JIterator<out Object>|JIterable<out Obj
         iterator = () => ConvertingIterator<Element>(iter.iterator());
     }
 }
+
 "A class to adapt a [[ListModel]] to Ceylon's [[List]] interface."
 shared class ListModelWrapper<Element>(ListModel<Element> wrapped)
         satisfies List<Element> {
@@ -54,11 +62,12 @@ shared class ListModelWrapper<Element>(ListModel<Element> wrapped)
  the APIs that use Enumeration rather than [[java.lang::Iterable]] don't parameterize it,
  so we assert that each item returned is of the desired type instead of requiring callers
  to coerce the type of the enumeration to be parameterized properly."
-shared class EnumerationWrapper<T>(Enumeration<out Object> enumeration)
-        satisfies Iterator<T> {
-    shared actual T|Finished next() {
+see(`class ConvertingIterable`)
+shared class EnumerationWrapper<Element>(Enumeration<out Object> enumeration)
+        satisfies Iterator<Element> {
+    shared actual Element|Finished next() {
         if (enumeration.hasMoreElements()) {
-            assert (is T item = enumeration.nextElement());
+            assert (is Element item = enumeration.nextElement());
             return item;
         } else {
             return finished;

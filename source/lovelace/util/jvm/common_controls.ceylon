@@ -33,11 +33,13 @@ import java.awt {
 }
 import lovelace.util.common {
     Reorderable,
-    silentListener
+    silentListener,
+    todo
 }
 import java.lang {
     Types
 }
+
 "A factory method to construct a button and add listeners to it in one step."
 shared JButton listenedButton("The text to put on the button" String text,
         Anything(ActionEvent)|ActionListener* listeners) {
@@ -51,6 +53,7 @@ shared JButton listenedButton("The text to put on the button" String text,
     }
     return retval;
 }
+
 "Show an error dialog to the user."
 shared void showErrorDialog(
         "The parent component for the dialog. [[JOptionPane]] doesn't seem to care if it
@@ -66,7 +69,8 @@ shared void showErrorDialog(
  less verbose and more functional in style."
 shared class FunctionalGroupLayout(Container host) extends GroupLayout(host) {
     "Add components and/or groups to a group."
-    T initializeGroup<T>(T group, Component|Group* components) given T satisfies Group {
+    SpecificGroup initializeGroup<SpecificGroup>(SpecificGroup group,
+            Component|Group* components) given SpecificGroup satisfies Group {
         for (component in components) {
             switch (component)
             case (is Component) { group.addComponent(component); }
@@ -81,10 +85,11 @@ shared class FunctionalGroupLayout(Container host) extends GroupLayout(host) {
     shared SequentialGroup sequentialGroupOf(Component|Group* components) =>
         initializeGroup(createSequentialGroup(), *components);
 }
+
 "An extension to [[JComboBox]] to improve it by making the Tab key do what one expects."
-shared class ImprovedComboBox<T> extends JComboBox<T> {
-    shared new () extends JComboBox<T>() { }
-    shared new withModel(ComboBoxModel<T> boxModel) extends JComboBox<T>(boxModel) { }
+shared class ImprovedComboBox<Element> extends JComboBox<Element> {
+    shared new () extends JComboBox<Element>() { }
+    shared new withModel(ComboBoxModel<Element> boxModel) extends JComboBox<Element>(boxModel) { }
     editable = true;
     "Handle a key-press. If Tab is pressed when the pop-up list is visible, treat it like
      Enter."
@@ -106,6 +111,7 @@ shared class ImprovedComboBox<T> extends JComboBox<T> {
         }
     }
 }
+
 "Possible colors for use by text in a [[StreamingLabel]]"
 shared class LabelTextColor {
     shared actual String string;
@@ -115,6 +121,7 @@ shared class LabelTextColor {
     shared new green { string = "green"; }
     shared new black { string = "black"; }
 }
+
 "A label that can easily be written (appended) to."
 shared class StreamingLabel extends JEditorPane {
     shared new () extends JEditorPane("text/html",
@@ -130,6 +137,7 @@ shared class StreamingLabel extends JEditorPane {
         repaint();
     }
 }
+
 "The possible axes that a [[BoxLayout]] can be laid out on."
 shared class BoxAxis of lineAxis | pageAxis {
     "The constant to pass to the [[BoxLayout]]."
@@ -137,7 +145,9 @@ shared class BoxAxis of lineAxis | pageAxis {
     shared new lineAxis { axis = BoxLayout.lineAxis; }
     shared new pageAxis { axis = BoxLayout.pageAxis; }
 }
-"An interface to provide helper methods for a panel laid out by a [[BoxLayout]]."
+
+"An interface to provide helper methods for a [[panel|JPanel]] laid out by a [[BoxLayout]]."
+see(`function boxPanel`)
 shared sealed interface BoxPanel {
     "Which direction the panel is laid out, for use in the helper methods."
     shared formal BoxAxis axis;
@@ -158,15 +168,20 @@ shared sealed interface BoxPanel {
         container.add(Box.createRigidArea(dimensionObject));
     }
 }
+
+"Implementation of [[BoxPanel]]: a [[JPanel]] laid out by a [[BoxLayout]]."
 class BoxPanelImpl(BoxAxis layoutAxis) extends JPanel() satisfies BoxPanel {
     shared actual BoxAxis axis = layoutAxis;
 }
+
 "Create a panel laid out by a [[BoxLayout]]"
+see(`function centeredHorizontalBox`)
 shared JPanel&BoxPanel boxPanel(BoxAxis layoutAxis) {
     value retval = BoxPanelImpl(layoutAxis);
     retval.layout = BoxLayout(retval, layoutAxis.axis);
     return retval;
 }
+
 "Create a panel laid out by a [[BoxLayout]] on the line axis, with glue at each end and a
  small rigid area between each component."
 shared JPanel&BoxPanel centeredHorizontalBox(Component* items) {
@@ -182,10 +197,17 @@ shared JPanel&BoxPanel centeredHorizontalBox(Component* items) {
     retval.addGlue();
     return retval;
 }
-"A panel laid out by a BorderLayout, with helper methods/attributes to assign components
- to its different sectors."
+
+"A [[panel|JPanel]] laid out by a [[BorderLayout]], with helper methods/attributes to
+ assign components to its different sectors. (This is especially helpful because
+ BorderLayout requires [[Java String|java.lang::String]] sector-identifiers, and
+ the Ceylon compiler automatically wraps them in [[Ceylon Strings|String]], then
+ doesn't unwrap them because they're passed to methods taking Object, causing
+ runtime failures if we don't wrap them in [[Types.nativeString]]."
+todo("When 'null' is assigned to any position, remove component that was formerly there.")
 shared class BorderedPanel extends JPanel {
     variable Component? centerLocal = null;
+    "The central component."
     shared Component? center => centerLocal;
     assign center {
         if (exists temp = center) {
@@ -193,7 +215,10 @@ shared class BorderedPanel extends JPanel {
         }
         centerLocal = center;
     }
+
     variable Component? lineStartLocal = null;
+    "The component in the 'line start' position; this is at the left, or 'west',
+     in left-to-right locales."
     shared Component? lineStart => lineStartLocal;
     assign lineStart {
         if (exists temp = lineStart) {
@@ -201,7 +226,10 @@ shared class BorderedPanel extends JPanel {
         }
         lineStartLocal = lineStart;
     }
+
     variable Component? lineEndLocal = null;
+    "The component in the 'line end' position; this is at the right, or 'east',
+     in left-to-right locales."
     shared Component? lineEnd => lineEndLocal;
     assign lineEnd {
         if (exists temp = lineEnd) {
@@ -209,7 +237,10 @@ shared class BorderedPanel extends JPanel {
         }
         lineEndLocal = lineEnd;
     }
+
     variable Component? pageStartLocal = null;
+    "The component in the 'page start' position; this is at the top, or 'north',
+     in left-to-right locales."
     shared Component? pageStart => pageStartLocal;
     assign pageStart {
         if (exists temp = pageStart) {
@@ -217,7 +248,10 @@ shared class BorderedPanel extends JPanel {
         }
         pageStartLocal = pageStart;
     }
+
     variable Component? pageEndLocal = null;
+    "The component in the 'page end' position; this is at the bottom, or 'south',
+     in left-to-right locales."
     shared Component? pageEnd => pageEndLocal;
     assign pageEnd {
         if (exists temp = pageEnd) {
@@ -225,6 +259,8 @@ shared class BorderedPanel extends JPanel {
         }
         pageEndLocal = pageEnd;
     }
+
+    "Default constructor."
     shared new (Component? center = null, Component? pageStart = null,
             Component? pageEnd = null, Component? lineEnd = null,
             Component? lineStart = null) extends JPanel(BorderLayout()) {
@@ -234,15 +270,22 @@ shared class BorderedPanel extends JPanel {
         this.lineStart = lineStart;
         this.lineEnd = lineEnd;
     }
+
+    "Constructor to arrange three components (pass [[null]] for any position to be left
+     empty) in a vertical line."
     shared new verticalPanel(Component? pageStart, Component? center, Component? pageEnd)
         extends BorderedPanel(center, pageStart, pageEnd) { }
+    "Constructor to arrange three components (pass [[null]] for any position to be left
+     empty) in a horizontal line."
     shared new horizontalPanel(Component? lineStart, Component? center,
             Component? lineEnd) extends BorderedPanel(center, null, null, lineEnd,
                 lineStart) { }
 }
-"Versions of [[JSplitPane]] that take the divider location and resize weight, as well as
- other parameters, in the same operation, and don't require the caller to remember
- whether 'true' means a horizontal or vertical split.."
+
+"A version of [[JSplitPane]] that take the divider location and resize weight, as
+ well as other parameters, in the same operation, and doesn't require the caller
+ to remember whether 'true' means a horizontal or vertical split."
+see(`function horizontalSplit`)
 shared JSplitPane verticalSplit(Component top, Component bottom,
         Float dividerLocation = 0.5, Float resizeWeight = dividerLocation) {
     JSplitPane retval = JSplitPane(JSplitPane.verticalSplit, true, top, bottom);
@@ -250,6 +293,10 @@ shared JSplitPane verticalSplit(Component top, Component bottom,
     retval.resizeWeight = resizeWeight;
     return retval;
 }
+
+"A version of [[JSplitPane]] that take the divider location and resize weight, as
+ well as other parameters, in the same operation, and doesn't require the caller
+ to remember whether 'true' means a horizontal or vertical split."
 see(`function verticalSplit`)
 shared JSplitPane horizontalSplit(Component left, Component right,
         Float dividerLocation = 0.5, Float resizeWeight = dividerLocation) {
@@ -258,6 +305,7 @@ shared JSplitPane horizontalSplit(Component left, Component right,
     retval.resizeWeight = resizeWeight;
     return retval;
 }
+
 "Set up a hot-key for an action that doesn't call a *menu* item."
 shared void createHotKey(
         "The component defining the action's context"
@@ -282,6 +330,7 @@ shared void createHotKey(
     }
     component.actionMap.put(action, temp);
 }
+
 "An enumeration of possible modifiers to hot-keys."
 shared class HotKeyModifier {
     "The mask to OR with the default mask when creating the hot-key."
@@ -290,10 +339,12 @@ shared class HotKeyModifier {
     shared new ctrl { mask = InputEvent.ctrlDownMask; }
     shared new meta { mask = InputEvent.metaDownMask; }
 }
+
 "Create a key-stroke representing a hot-key accelerator."
 shared KeyStroke createAccelerator(Integer key, HotKeyModifier* modifiers) =>
         KeyStroke.getKeyStroke(key, modifiers.map(HotKeyModifier.mask)
             .fold(Toolkit.defaultToolkit.menuShortcutKeyMask)(uncurry(Integer.or)));
+
 "Create a menu item."
 shared JMenuItem createMenuItem(
         "The text of the item"
@@ -323,25 +374,34 @@ shared JMenuItem createMenuItem(
     }
     return menuItem;
 }
+
 "A JLabel that takes a String-interpolation function to produce its text."
 shared class InterpolatedLabel<Args> extends JLabel
         given Args satisfies Anything[] {
     Callable<String, Args> formatter;
     variable Args args;
-    shared new (Callable<String, Args> formatter, Args defaultArguments)
-            extends JLabel(formatter(*defaultArguments)) {
+    shared new (
+            "The function to produce the label's text."
+            Callable<String, Args> formatter,
+            "The arguments to pass to [[formatter]] to produce the label's
+             initial text."
+            Args defaultArguments) extends JLabel(formatter(*defaultArguments)) {
         this.formatter = formatter;
         args = defaultArguments;
     }
+    "The last set of arguments passed to the label. (Ceylon does not support
+     write-only fields.)"
     shared Args arguments => args;
+    "Change the arguments and regenerate the label's text."
     assign arguments {
         args = arguments;
         text = formatter(*arguments);
     }
 }
-"A wrapper around an ActionListener (or equivalent lambda) that extends AbstractAction,
- for the exceedingly common case of a JDK method requiring an Action when we don't need
- more functionality than a single method accepting an ActionEvent."
+
+"A wrapper around an [[ActionListener]] (or equivalent lambda) that extends [[AbstractAction]],
+ for the exceedingly common case of a JDK method requiring an [[Action]] when we don't need
+ more functionality than a single method accepting an [[ActionEvent]]."
 shared class ActionWrapper(Anything(ActionEvent)|ActionListener wrappedListener)
         extends AbstractAction() {
     Anything(ActionEvent) wrapped;
@@ -352,10 +412,12 @@ shared class ActionWrapper(Anything(ActionEvent)|ActionListener wrappedListener)
     }
     shared actual void actionPerformed(ActionEvent event) => wrapped(event);
 }
-"Adds an implementation of the [[Reorderable]] interface to the [[DefaultListModel]]
- class."
-shared class ReorderableListModel<T>(T* initialElements) extends DefaultListModel<T>()
-        satisfies Reorderable {
+
+"An extension of the [[DefaultListModel]] class to add an implementation of the [[Reorderable]]
+ interface. For the convenience of callers, the class also takes its initial elements as initializer
+ parameters."
+shared class ReorderableListModel<Element>(Element* initialElements)
+        extends DefaultListModel<Element>() satisfies Reorderable {
     shared actual void reorder(Integer fromIndex, Integer toIndex) {
         if (fromIndex != toIndex) {
             if (fromIndex > toIndex) {
