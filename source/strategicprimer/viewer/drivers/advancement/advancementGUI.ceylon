@@ -70,6 +70,7 @@ shared class AdvancementGUIFactory() satisfies GUIDriverFactory {
         includeInGUIList = true;
         supportedOptions = [ "--current-turn=NN" ];
     };
+
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {
         try {
@@ -79,6 +80,7 @@ shared class AdvancementGUIFactory() satisfies GUIDriverFactory {
                 "Choice interrupted or user didn't choose");
         }
     }
+
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IWorkerModel model) {
@@ -90,14 +92,16 @@ shared class AdvancementGUIFactory() satisfies GUIDriverFactory {
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             WorkerModel(map, path);
-
 }
+
 "The worker-advancement GUI driver."
 shared class AdvancementGUI(ICLIHelper cli, SPOptions options, model)
         satisfies MultiMapGUIDriver&WorkerGUI {
     shared actual IWorkerModel model;
+
     void reload(PlayerChangeListener frame) =>
             frame.playerChanged(model.currentPlayer, model.currentPlayer);
+
     void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {
         SPFrame&PlayerChangeListener frame = advancementFrame(model, menuHandler, this);
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
@@ -113,6 +117,7 @@ shared class AdvancementGUI(ICLIHelper cli, SPOptions options, model)
         }
         frame.showWindow();
     }
+
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(this), "load", "save", "save as", "new",
@@ -122,6 +127,7 @@ shared class AdvancementGUI(ICLIHelper cli, SPOptions options, model)
         menuHandler.register(pcml, "change current player");
         SwingUtilities.invokeLater(defer(createWindow, [menuHandler, pcml]));
     }
+
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {
         try {
@@ -131,6 +137,7 @@ shared class AdvancementGUI(ICLIHelper cli, SPOptions options, model)
                 "Choice interrupted or user didn't choose");
         }
     }
+
     shared actual void open(IMutableMapNG map, PathWrapper? path) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(AdvancementGUI.startDriver,

@@ -31,7 +31,9 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         satisfies VersionChangeListener&SelectionChangeSource&SelectionChangeListener {
     NewUnitDialog nuDialog = NewUnitDialog(model.map.currentPlayer,
         createIDFactory(model.map));
+
     SelectionChangeSupport scs = SelectionChangeSupport();
+
     JMenuItem newUnitItem = JMenuItem("Add New Unit");
     variable Point point = Point.invalidPoint;
     nuDialog.addNewUnitListener(object satisfies NewUnitListener {
@@ -42,6 +44,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
             scs.fireChanges(null, point);
         }
     });
+
     void updateForVersion(Integer version) {
         removeAll();
         for (type in TileType.valuesForVersion(version)) {
@@ -56,12 +59,15 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         addSeparator();
         add(newUnitItem);
     }
+
     shared actual void changeVersion(Integer old, Integer newVersion) =>
             updateForVersion(newVersion);
+
     shared actual void addSelectionChangeListener(SelectionChangeListener listener) =>
             scs.addSelectionChangeListener(listener);
     shared actual void removeSelectionChangeListener(SelectionChangeListener listener)
             => scs.removeSelectionChangeListener(listener);
+
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         point = newPoint;
         if (newPoint.valid, model.map.baseTerrain[newPoint] exists) {
@@ -70,6 +76,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
             newUnitItem.enabled = false;
         }
     }
+
     updateForVersion(mapVersion);
     // Can't use silentListener(nuDialog.showWindow) because it triggers eclipse/ceylon#7379
     newUnitItem.addActionListener((ActionEvent event) => nuDialog.setVisible(true));

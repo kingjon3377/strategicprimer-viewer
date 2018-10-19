@@ -19,6 +19,7 @@ import ceylon.language.meta.model {
 import lovelace.util.common {
     simpleMap
 }
+
 "An object encapsulating the mapping from tile-types to colors."
 object colorHelper {
     String wrap(String wrapped) => "<html><p>``wrapped``</p></html>";
@@ -36,6 +37,7 @@ object colorHelper {
         TileType.steppe->wrap("Steppe"),
         TileType.swamp->wrap("Swamp")
     );
+
     "A map from types of features to the colors they can make the tile be. Used to
       show that a tile is forested, e.g., even when that is normally represented by
        an icon and there's a higher icon on the tile."
@@ -44,6 +46,7 @@ object colorHelper {
         `Oasis`->Color(72, 218, 164),
         `Hill`->Color(141, 182, 0)
     );
+
     "A map from map versions to maps from tile-types to colors."
     suppressWarnings("deprecation")
     Map<Integer, Map<TileType, Color>> colors = simpleMap(
@@ -66,6 +69,7 @@ object colorHelper {
             TileType.steppe->Color(72, 100, 72)
         )
     );
+
     "Whether the given map version supports the given tile type."
     shared Boolean supportsType(Integer version, TileType type) {
         if (exists map = colors[version], exists color = map[type]) {
@@ -74,6 +78,7 @@ object colorHelper {
             return false;
         }
     }
+
     "Get the color to use for the given tile type in the given map version. Throws
      if the given version does not support that tile type."
     shared Color? get(Integer version, TileType? type) {
@@ -94,6 +99,7 @@ object colorHelper {
             return Color.white;
         }
     }
+
     "Get a String (HTML) representation of the given terrain type."
     shared String? getDescription(TileType? type) {
         if (exists type) {
@@ -107,6 +113,7 @@ object colorHelper {
             return "Unknown";
         }
     }
+
     "Get the color that a fixture should turn the tile if it's not on top."
     shared Color? getFeatureColor(TileFixture fixture) {
         if (exists color = featureColors[type(fixture)]) {
@@ -119,6 +126,7 @@ object colorHelper {
     "The color to use for background mountains."
     shared Color mountainColor = Color(249, 137, 28);
 }
+
 "A fortress is drawn in brown."
 Color fortColor = Color(160, 82, 45);
 "Units are drawn in purple."

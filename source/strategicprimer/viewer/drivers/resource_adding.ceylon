@@ -118,9 +118,11 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
         SimpleMultiMapModel(map, file) { }
     shared new fromDriverModel(IDriverModel driverModel) extends
         SimpleMultiMapModel.copyConstructor(driverModel) { }
+
     "All the players in all the maps."
     shared {Player*} players =>
             allMaps.map(Entry.key).flatMap(IMapNG.players).distinct;
+
     "Add a resource to a player's HQ."
     shared void addResource(FortressMember resource, Player player) {
         for (map->_ in allMaps) {
@@ -129,9 +131,10 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
                     mapPlayer.playerId == player.playerId) {
                 addResourceToMap(resource.copy(false), map, player);
                 setModifiedFlag(map, true);
-            }
+            } // Else log why we're skipping the map
         }
     }
+
     "Add a resource to a player's HQ in a particular map."
     shared void addResourceToMap(FortressMember resource, IMapNG map, Player player) {
         for (fixture in map.fixtures.map(Entry.item).narrow<Fortress>()) {
@@ -140,6 +143,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
             }
         }
     }
+
     "Get the current player. If none is current, returns null."
     shared Player? currentPlayer => players.find(Player.current);
 }
@@ -157,6 +161,7 @@ shared class ResourceAddingCLIFactory() satisfies ModelDriverFactory {
         includeInGUIList = false;
         supportedOptions = [ "--current-turn=NN" ];
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
@@ -169,16 +174,17 @@ shared class ResourceAddingCLIFactory() satisfies ModelDriverFactory {
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             ResourceManagementDriverModel.fromMap(map, path);
-
-
 }
+
 "A driver to let the user enter a player's resources and equipment."
 class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLIDriver {
     shared actual ResourceManagementDriverModel model;
+
     MutableSet<String> resourceKinds = HashSet<String>();
     MutableMultimap<String, String> resourceContents =
             HashMultimap<String, String>();
     MutableMap<String, String> resourceUnits = HashMap<String, String>();
+
     "Ask the user to choose or enter a resource kind."
     String getResourceKind() {
         String[] list = resourceKinds.sequence();
@@ -192,6 +198,7 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
             return retval;
         }
     }
+
     "Ask the user to choose or enter a resource-content-type for a given resource kind."
     String getResourceContents(String kind) {
         String[] list = resourceContents.get(kind).sequence();
@@ -206,6 +213,7 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
             return retval;
         }
     }
+
     "Ask the user to choose units for a type of resource."
     String getResourceUnits(String resource) {
         if (exists unit = resourceUnits[resource],
@@ -219,6 +227,7 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
             return retval;
         }
     }
+
     "Ask the user to enter a resource."
     void enterResource(IDRegistrar idf, Player player) {
         String kind = getResourceKind();
@@ -236,6 +245,7 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
                 quantity, units)), player);
         }
     }
+
     "Ask the user to enter an Implement (a piece of equipment)"
     void enterImplement(IDRegistrar idf, Player player) {
         String kind = cli.inputString("Kind of equipment: ");
@@ -247,10 +257,11 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
         }
         model.addResource(Implement(kind, idf.createID(), count), player);
     }
+
     shared actual void startDriver() {
         MutableList<Player> players = ArrayList { elements = model.players; };
         IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
-        while (!players.empty, exists chosen = cli.chooseFromList(players,
+        while (!players.empty, exists chosen = cli.chooseFromList(players, // TODO: Add a loopOnPlayers() helper method to CLIDriver interface, since there are several disparate CLI drivers that do that.
                 "Players in the maps:", "No players found.",
                 "Player to add resources for: ", false).item) {
             players.remove(chosen);
@@ -283,6 +294,7 @@ shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
         includeInGUIList = true;
         supportedOptions = [ "--current-turn=NN" ];
     };
+
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {
         try {
@@ -292,6 +304,7 @@ shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
                 "Choice interrupted or user didn't choose");
         }
     }
+
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
             return ResourceAddingGUI(cli, options, model);
@@ -300,9 +313,11 @@ shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
                 ResourceManagementDriverModel.fromDriverModel(model));
         }
     }
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             ResourceManagementDriverModel.fromMap(map, path);
 }
+
 class ResourceAddingGUI satisfies MultiMapGUIDriver {
     "Extends [[ImprovedComboBox]] to keep a running collection of values."
     static class UpdatedComboBox(Anything(String) logger) extends ImprovedComboBox<String>() {
@@ -319,6 +334,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             }
             selectedItem = null;
         }
+
         shared actual Object? selectedItem {
             Anything retval = super.selectedItem;
             if (is String retval) {
@@ -329,11 +345,13 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                 return "";
             }
         }
+
         assign selectedItem {
             if (is String|JString selectedItem) {
                 super.selectedItem = selectedItem;
-            }
+            } // TODO: else log the failure, don't silently ignore
         }
+
         shared String selectedString {
             if (is JTextField inner = editor.editorComponent) {
                 value text = inner.text;
@@ -345,6 +363,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             assert (is String retval = selectedItem);
             return retval;
         }
+
         shared void addSubmitListener(Anything(ActionEvent) listener) {
             value inner = editor.editorComponent;
             if (is JTextField inner) {
@@ -355,7 +374,8 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             }
         }
     }
-    static JPanel pairPanel(Component first, Component second) { // TODO: Use a better layout than BoxLayout
+
+    static JPanel pairPanel(Component first, Component second) { // TODO: Use a better layout than BoxLayout: try BorderedPanel.horizontalLine
         JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
         panel.addGlue();
         panel.add(first);
@@ -364,8 +384,10 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         panel.addGlue();
         return panel;
     }
+
     static String resourceLabelText(Player player) => "Add resource for ``player.name``:";
     static String equipmentLabelText(Player player) => "Add equipment for ``player.name``:";
+
     shared actual ResourceManagementDriverModel model;
     ICLIHelper cli;
     SPOptions options;
@@ -374,6 +396,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         this.options = options;
         this.model = model;
     }
+
     "A window to let the user enter resources etc. Note that this is not a dialog to enter
      one resource and close." // TODO: Move methods embedded in this method to top level of class
     SPFrame&PlayerChangeListener resourceAddingFrame(Anything(ActionEvent) menuHandler) {
@@ -382,29 +405,37 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
         InterpolatedLabel<[Player]> resourceLabel =
                 InterpolatedLabel<[Player]>(resourceLabelText, [currentPlayer]);
+
         mainPanel.add(resourceLabel);
         JPanel resourcePanel = boxPanel(BoxAxis.lineAxis);
         StreamingLabel logLabel = StreamingLabel();
         String css = """color:black; margin-bottom: 0.5em; margin-top: 0.5em;""";
         void logAddition(String addend) => logLabel.append(
             "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``</p>");
+
         String errorCSS = """color:red; margin-bottom: 0.5em; margin-top: 0.5em;""";
         void logError(String message) =>
                 logLabel.append("<p style=\"``errorCSS``\">``message``</p>");
+
         UpdatedComboBox resourceKindBox = UpdatedComboBox(logError);
         resourcePanel.add(pairPanel(JLabel("General Category"), resourceKindBox));
+
         // If we set the maximum high at this point, the fields would try to be
         // unneccessarily large. I'm not sure that setting it low at first helps, though.
         SpinnerNumberModel resourceCreatedModel = SpinnerNumberModel(-1, -1, 2000, 1);
         JSpinner creationSpinner = JSpinner(resourceCreatedModel);
         resourcePanel.add(pairPanel(JLabel("Turn created"), creationSpinner));
+
         UpdatedComboBox resourceBox = UpdatedComboBox(logError);
         resourcePanel.add(pairPanel(JLabel("Specific Resource"), resourceBox));
+
         SpinnerNumberModel resourceQuantityModel = SpinnerNumberModel(0, 0, 2000, 1);
         JSpinner resourceQuantitySpinner = JSpinner(resourceQuantityModel);
         resourcePanel.add(pairPanel(JLabel("Quantity"), resourceQuantitySpinner));
+
         UpdatedComboBox resourceUnitsBox = UpdatedComboBox(logError);
         resourcePanel.add(pairPanel(JLabel("Units"), resourceUnitsBox));
+
         variable Boolean playerIsDefault = true;
         void confirmPlayer() {
             if (playerIsDefault, currentPlayer.name.trimmed.empty) {
@@ -412,7 +443,8 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             }
             playerIsDefault = false;
         }
-        Anything(ActionEvent) resourceListener = (ActionEvent event) {
+
+        Anything(ActionEvent) resourceListener = (ActionEvent event) { // TODO: Convert from Callable variable to method
             confirmPlayer();
             String kind = resourceKindBox.selectedString;
             String resource = resourceBox.selectedString;
@@ -427,6 +459,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                 resourceUnitsBox.requestFocusInWindow();
                 return;
             }
+
             if (exists qty = parseDecimal(resourceQuantityModel.number.string)) {
                 ResourcePile pile = ResourcePile(idf.createID(), kind, resource,
                     Quantity(qty, units));
@@ -443,9 +476,11 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                                  ");
             }
         };
+
         resourcePanel.add(pairPanel(JLabel(""),
             listenedButton("Add Resource", resourceListener)));
         resourceUnitsBox.addSubmitListener(resourceListener);
+
         if (is JTextField editor = creationSpinner.editor) {
             editor.addActionListener(resourceListener);
         } else {
@@ -460,6 +495,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                                 classDeclaration(resourceQuantitySpinner.editor)``
                              ");
         }
+
         resourceBox.addSubmitListener(resourceListener);
         resourceKindBox.addSubmitListener(resourceListener);
         mainPanel.add(resourcePanel);
@@ -468,10 +504,11 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         InterpolatedLabel<[Player]>
         implementLabel = InterpolatedLabel<[Player]>(equipmentLabelText, [currentPlayer]);
         mainPanel.add(implementLabel);
+
         SpinnerNumberModel implementQuantityModel = SpinnerNumberModel(1, 1, 2000, 1);
         JSpinner implementQuantityField = JSpinner(implementQuantityModel);
         UpdatedComboBox implementKindBox = UpdatedComboBox(logLabel.append);
-        Anything(ActionEvent) implementListener = (ActionEvent event) {
+        Anything(ActionEvent) implementListener = (ActionEvent event) { // TODO: Convert from Callable variable to method
             confirmPlayer();
             String kind = implementKindBox.selectedString;
             if (kind.empty) {
@@ -487,6 +524,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             implementKindBox.checkAndClear();
             implementQuantityField.requestFocusInWindow();
         };
+
         implementKindBox.addSubmitListener(implementListener);
         if (is JTextField editor = implementQuantityField.editor) {
             editor.addActionListener(implementListener);
@@ -496,6 +534,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                                 classDeclaration(implementQuantityField.editor)``
                              ");
         }
+
         mainPanel.add(centeredHorizontalBox(implementQuantityField,
             implementKindBox, listenedButton("Add Equipment", implementListener)));
         mainPanel.addGlue();
@@ -511,9 +550,11 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                 implementLabel.arguments = [currentPlayer];
             }
         }
+
         retval.add(verticalSplit(mainPanel, scrolledLog, 0.2, 0.1));
         retval.jMenuBar = workerMenu(menuHandler, retval, this);
         retval.pack();
+
         logLabel.minimumSize = Dimension(retval.width - 20, 50);
         JComponent temp = logLabel;
         temp.preferredSize = Dimension(retval.width, 100);
@@ -523,6 +564,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         implementQuantityModel.maximum = maximum;
         return retval;
     }
+
     shared actual void startDriver() {
         PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
         MenuBroker menuHandler = MenuBroker();
@@ -539,6 +581,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             frame.showWindow();
         });
     }
+
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {
         try {
@@ -548,6 +591,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                 "Choice interrupted or user didn't choose");
         }
     }
+
     shared actual void open(IMutableMapNG map, PathWrapper? path) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(ResourceAddingGUI.startDriver,

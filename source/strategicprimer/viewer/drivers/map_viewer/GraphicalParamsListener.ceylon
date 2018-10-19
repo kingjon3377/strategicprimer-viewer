@@ -5,6 +5,7 @@ import lovelace.util.common {
 import java.util {
     EventListener
 }
+
 "An interface for objects that want to keep abreast of visible dimensions and zoom level."
 todo("Take a polymorphic Event object instead of specifying two methods?")
 shared interface GraphicalParamsListener satisfies EventListener {
@@ -14,6 +15,7 @@ shared interface GraphicalParamsListener satisfies EventListener {
             VisibleDimensions oldDimensions,
             "The new dimensions"
             VisibleDimensions newDimensions);
+
     "Handle a change in tile size (i.e. zoom level)."
     shared formal void tileSizeChanged(
             "The previous tile size/zoom level"

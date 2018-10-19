@@ -16,6 +16,7 @@ shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&Has
         log.warn("TileTypeFixture.copy called", Exception("dummy"));
         return TileTypeFixture(tileType);
     }
+
     """A dummy "ID number""""
     deprecated("This class should only ever be used in a FixtureListModel, so this
                 should never be called.")
@@ -23,6 +24,7 @@ shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&Has
         log.warn("TileTypeFixture.id called");
         return -1;
     }
+
     shared actual Boolean equals(Object obj) {
         if (is TileTypeFixture obj) {
             return tileType == obj.tileType;
@@ -30,8 +32,10 @@ shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&Has
             return false;
         }
     }
+
     shared actual Integer hash => tileType.hash;
     shared actual String string => "Terrain: ``tileType``";
+
     "Whether this equals another fixture if we ignore ID."
     deprecated("This class should only ever be used in a FixtureListModel, so this method
                 should never be called.")
@@ -39,6 +43,7 @@ shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&Has
         log.warn("TileTypeFixture.equalsIgnoringID called");
         return equals(fixture);
     }
+
     "The filename of an image to represent the object.
 
      There are now actually images in the repository for each tile type; they are not
@@ -47,8 +52,10 @@ shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&Has
      square aspect ratio. (Except for 'mountain', which has been in the repository for a
      long time because it was used by the Mountain tile fixture."
     shared actual String defaultImage => "``tileType.xml``.png";
+
     "We don't allow per-instance icons for these, so always return the empty string."
     shared actual String image => "";
+
     deprecated("This class should only ever be used in a FixtureListModel, so this method
                 should never be called.")
     shared actual String plural {
@@ -56,8 +63,10 @@ shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&Has
         return "You shouldn't see this text; report this.";
     }
     shared actual String shortDescription => string;
+
     "The required Perception check for an explorer to find the fixture."
     shared actual Integer dc = 0;
+
     "Compare to another fixture."
     deprecated("This class should only ever be used in a FixtureListModel, so this method
                 should never be called.")

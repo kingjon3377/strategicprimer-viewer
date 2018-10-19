@@ -43,18 +43,21 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import lovelace.util.common {
     silentListener
 }
+
 "A panel for the user to enter a unit's orders or read a unit's results."
-JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel(
+JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel( // TODO: Try to convert back to a class, or else split controller-functionality from appearance (perhaps either returning [JPanel, Applyable&...] or making this setupOrdersPanel(), taking the panel as a parameter?)
         Integer currentTurn, variable Player currentPlayer,
         {IUnit*}(Player, String) playerUnits,
         String(IUnit, Integer) ordersSupplier,
         Anything(IUnit, Integer, String)? ordersConsumer,
         Anything() modificationListener) {
     JTextArea area = JTextArea();
+
     Integer minimumTurn = (currentTurn<0) then currentTurn else - 1;
     Integer maximumTurn = (currentTurn>100) then currentTurn else 100;
     SpinnerNumberModel spinnerModel = SpinnerNumberModel(currentTurn, minimumTurn,
         maximumTurn, 1);
+
     object retval extends BorderedPanel()
             satisfies Applyable&Revertible&TreeSelectionListener&PlayerChangeListener {
         variable Anything selection = null;
@@ -68,6 +71,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
                 parent.parent.repaint();
             }
         }
+
         "Change the text in the area to either the current orders, if a unit is selected,
           or the empty string, if one is not."
         shared actual void revert() {
@@ -79,6 +83,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
                 area.text = "";
             }
         }
+
         "Handle a changed value in the tree."
         shared actual void valueChanged(TreeSelectionEvent event) {
             if (exists selectedPath = event.newLeadSelectionPath) {
@@ -99,15 +104,19 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
                 revert();
             }
         }
+
         shared actual void playerChanged(Player? old, Player newPlayer) =>
                 currentPlayer = newPlayer;
     }
+
     value revertListener = silentListener(retval.revert);
+
     if (exists ordersConsumer) {
         JButton applyButton = listenedButton("Apply", silentListener(retval.apply));
         JButton revertButton = listenedButton("Revert", revertListener);
         platform.makeButtonsSegmented(applyButton, revertButton);
-        JPanel buttonPanel = (platform.systemIsMac) then
+
+        JPanel buttonPanel = (platform.systemIsMac) then // TODO: indentation of continuation lines
         centeredHorizontalBox(revertButton, applyButton)
         else BorderedPanel.horizontalPanel(revertButton, null, applyButton);
         String prefix = platform.shortcutDescription;
@@ -126,6 +135,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
     area.lineWrap = true;
     area.wrapStyleWord = true;
     spinnerModel.addChangeListener(revertListener);
+
     object modifiedEnterListener extends KeyAdapter() {
         shared actual void keyPressed(KeyEvent event) {
             if (event.keyCode == KeyEvent.vkEnter, platform.hotKeyPressed(event)) {
@@ -134,6 +144,7 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
         }
     }
     area.addKeyListener(modifiedEnterListener);
+
     Integer keyMask = platform.shortcutMask;
     createHotKey(retval, "openOrders", (event) {
         Boolean newlyGainingFocus = !area.focusOwner;

@@ -45,8 +45,14 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.common.idreg {
     createIDFactory
 }
+import lovelace.util.common {
+    todo
+}
+
 "A panel to show the details of a tile, using a list rather than sub-panels with chits
  for its fixtures."
+todo("Separate controller functionality from presentation",
+     "Try to convert back to a class")
 JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         variable Integer version, IDriverModel model) {
     JComponent keyElement(Integer version, TileType? type) {
@@ -70,6 +76,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
             16 + label.minimumSize.height.integer);
         return retval;
     }
+
     object keyPanel extends JPanel(GridLayout(0, 4)) satisfies VersionChangeListener {
         minimumSize = Dimension(
             (keyElement(version, null).minimumSize.width * 4).integer,
@@ -87,6 +94,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
             "<html><body><p>Contents of the tile at ``point``:</p></body></html>";
     InterpolatedLabel<[Point]> header =
             InterpolatedLabel<[Point]>(headerString, [Point.invalidPoint]);
+
     object retval extends JSplitPane(JSplitPane.horizontalSplit, true)
             satisfies VersionChangeListener&SelectionChangeListener {
         shared late SelectionChangeListener delegate;
@@ -97,12 +105,16 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
             header.arguments = [newPoint];
         }
     }
+
     void markModified() => model.mapModified = true;
+
     SwingList<TileFixture>&SelectionChangeListener fixtureListObject =
             fixtureList(retval, FixtureListModel(model.map, (point) => null),
                 createIDFactory(model.map), markModified,
                     model.map.players);
+
     retval.delegate = fixtureListObject;
+
     object portrait extends JComponent() satisfies ListSelectionListener {
         variable Image? portrait = null;
         shared actual void paintComponent(Graphics pen) {
@@ -111,6 +123,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
                 pen.drawImage(local, 0, 0, width, height, this);
             }
         }
+
         shared actual void valueChanged(ListSelectionEvent event) {
             List<TileFixture> selections =
                     CeylonList(fixtureListObject.selectedValuesList);
@@ -143,6 +156,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         }
     }
     fixtureListObject.addListSelectionListener(portrait);
+
     JPanel listPanel = BorderedPanel.verticalPanel(header, JScrollPane(fixtureListObject),
         null);
     retval.leftComponent = horizontalSplit(listPanel, portrait);

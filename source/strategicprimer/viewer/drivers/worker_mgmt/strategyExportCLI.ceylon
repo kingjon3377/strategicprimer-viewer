@@ -43,6 +43,7 @@ shared class StrategyExportFactory() satisfies ModelDriverFactory {
             "--export=filename.txt", "--include-unleveled-jobs",
             "--summarize-large-units" ];
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IWorkerModel model) {
@@ -51,12 +52,15 @@ shared class StrategyExportFactory() satisfies ModelDriverFactory {
             return createDriver(cli, options, WorkerModel.copyConstructor(model));
         }
     }
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             WorkerModel(map, path);
 }
+
 "A command-line program to export a proto-strategy for a player from orders in a map."
 shared class StrategyExportCLI(SPOptions options, model) satisfies ReadOnlyDriver {
     shared actual IWorkerModel model;
+
     shared actual void startDriver() {
         if (options.hasOption("--export")) {
             StrategyExporter(model, options).writeStrategy(parsePath(

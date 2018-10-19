@@ -40,22 +40,24 @@ import lovelace.util.common {
     matchingValue,
     matchingPredicate
 }
+
 "A class to write a proto-strategy to file."
 class StrategyExporter(IWorkerModel model, SPOptions options)
         satisfies PlayerChangeListener {
     variable Player currentPlayer = model.currentPlayer;
     shared actual void playerChanged(Player? old, Player newPlayer) =>
             currentPlayer = newPlayer;
+
     void writeMember(Writer writer, UnitMember? member) {
         if (is IWorker member) {
             writer.write(member.name);
             {IJob*} jobs;
             if (options.hasOption("--include-unleveled-jobs")) {
-                jobs = member.filter(matchingValue(false, IJob.emptyJob));
+                jobs = member.filter(matchingValue(false, IJob.emptyJob)); // TODO: Use not(IJob.emptyJob) instead of matchingValue()
             } else {
                 jobs = member.filter(matchingPredicate(Integer.positive, IJob.level));
             }
-            if (exists first = jobs.first) {
+            if (exists first = jobs.first) { // TODO: Define a function turning a Job into the name-level-pair String, then use ", ".join()
                 writer.write(" (``first.name`` ``first.level``");
                 for (job in jobs.rest) {
                     writer.write(", ``job.name`` ``job.level``");
@@ -82,6 +84,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             writer.write(member.string);
         }
     }
+
     void summarizeUnitMembers(Writer writer, IUnit unit) {
         MutableList<IWorker> leveledWorkers = ArrayList<IWorker>();
         MutableList<UnitMember> nonWorkers = ArrayList<UnitMember>();
@@ -128,6 +131,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             needComma = true;
         }
     }
+
     shared void writeStrategy(Resource path, {UnitMember*} dismissed) {
         File file;
         assert (is File|Nil path);
@@ -144,7 +148,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             MutableMultimap<String, IUnit> unitsByKind =
                     ArrayListMultimap<String, IUnit>();
             for (unit in units) {
-                if (unit.empty, "false" == options.getArgument("--print-empty")) {
+                if (unit.empty, "false" == options.getArgument("--print-empty")) { // TODO: invert if
                     continue;
                 }
                 unitsByKind.put(unit.kind, unit);
@@ -159,13 +163,14 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                     orders[unit] = "(From turn #``ordersTurn``) ``unitOrders``";
                 }
             }
-            writer.writeLine("[``playerName``");
+            writer.writeLine("[``playerName``"); // TODO: Add 'country' field to Player and use it here if non-empty
             writer.writeLine("Turn ``turn``]");
             writer.writeLine();
             writer.writeLine("Inventions: TODO: any?");
             writer.writeLine();
+
             if (!dismissed.empty) {
-                String workerString(UnitMember? member) =>
+                String workerString(UnitMember? member) => // TODO: Make a class-level function
                         if (is HasName member) then member.name
                             else (member?.string else "");
                 writer.write("Dismissed workers etc.: ");
@@ -173,6 +178,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                 writer.writeLine();
                 writer.writeLine();
             }
+
             writer.writeLine("Workers:");
             writer.writeLine();
             for (kind->list in unitsByKind.asMap) {
@@ -193,7 +199,7 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                                 writer.write(", ");
                                 writeMember(writer, member);
                             }
-                            writer.write("]");
+                            writer.write("]"); // FIXME: Move out of else block
                         }
                     }
                     writer.writeLine(":");

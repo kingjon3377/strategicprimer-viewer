@@ -57,6 +57,7 @@ import lovelace.util.common {
     singletonRandom,
     PathWrapper
 }
+
 """A factory for a driver to update a player's map to include a certain minimum distance
    around allied villages."""
 service(`interface DriverFactory`)
@@ -72,6 +73,7 @@ shared class ExpansionDriverFactory() satisfies ModelDriverFactory {
         includeInGUIList = false;
         supportedOptions = [ "--current-turn=NN" ];
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
@@ -80,9 +82,11 @@ shared class ExpansionDriverFactory() satisfies ModelDriverFactory {
             return createDriver(cli, options, SimpleMultiMapModel.copyConstructor(model));
         }
     }
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
+
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""
 // FIXME: Write GUI for map-expanding driver
@@ -93,12 +97,13 @@ shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
         IMapNG master = model.map;
         for (map->[path, _] in model.subordinateMaps) {
             Player currentPlayer = map.currentPlayer; // TODO: move these inner methods to the top level of the object
-            Boolean containsSwornVillage(Point point) { // TODO: fat arrow once syntax sugar in place
+            Boolean containsSwornVillage(Point point) { // TODO: fat arrow once syntax sugar in place // TODO: Convert to (two-arg-list or to-be-curried) top-level-in-class function
 //                    return map.fixtures[point].narrow<ITownFixture>() // TODO: syntax sugar once compiler bug fixed
                 return map.fixtures.get(point).narrow<ITownFixture>()
                     .map(HasOwner.owner).any(currentPlayer.equals);
             }
-            void safeAdd(Point point, TileFixture fixture) {
+
+            void safeAdd(Point point, TileFixture fixture) { // TODO: Convert to top-level-in-class function
                 if (map.fixtures.get(point).any(fixture.equals)) {
                     return;
                 } else if (is HasOwner fixture, !fixture is ITownFixture) {
@@ -114,9 +119,11 @@ shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
                     }
                 }
             }
-            object mock satisfies HasOwner {
+
+            object mock satisfies HasOwner { // TODO: Convert to top-level-in-class inner class (should be static if we convert this class to have a constructor
                 shared actual Player owner = currentPlayer;
             }
+
             for (point in map.locations.filter(containsSwornVillage)) {
                 for (neighbor in surroundingPointIterable(point,
                         map.dimensions)) {
@@ -154,17 +161,21 @@ shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
         }
     }
 }
+
 "An interface for map-populating passes to implement. Create an object satisfying this
  interface, and assign a reference to it to the designated field in
  [[MapPopulatorDriver]], and run the driver."
 interface MapPopulator {
     "Whether a point is suitable for the kind of fixture we're creating."
     shared formal Boolean isSuitable(IMapNG map, Point location);
+
     "The probability of adding something to any given tile."
     shared formal Float chance;
+
     "Add a fixture of the kind we're creating at the given location."
     shared formal void create(Point location, IMutableMapNG map, IDRegistrar idf);
 }
+
 "A sample map-populator."
 object sampleMapPopulator satisfies MapPopulator {
     "Hares won't appear in mountains, forests, or ocean."
@@ -176,11 +187,14 @@ object sampleMapPopulator satisfies MapPopulator {
             return false;
         }
     }
+
     shared actual Float chance = 0.05;
+
     shared actual void create(Point location, IMutableMapNG map, IDRegistrar idf) =>
             map.addFixture(location,
                 AnimalImpl("hare", false, "wild", idf.createID()));
 }
+
 """A factory for a driver to add some kind of fixture to suitable tiles throughout the
    map."""
 service(`interface DriverFactory`)
@@ -196,22 +210,29 @@ shared class MapPopulatorFactory() satisfies ModelDriverFactory {
         includeInGUIList = false;
         supportedOptions = [ "--current-turn=NN" ];
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => MapPopulatorDriver(cli, options, model);
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleDriverModel(map, path);
 }
+
 """A driver to add some kind of fixture to suitable tiles throughout the map. Customize
    the [[populator]] field before each use."""
 // TODO: Write GUI equivalent of Map Populator Driver
 shared class MapPopulatorDriver(ICLIHelper cli, SPOptions options, model)
         satisfies CLIDriver {
     shared actual IDriverModel model;
+
     "The object that does the heavy lifting of populating the map. This is the one field
      that should be changed before each populating pass."
     MapPopulator populator = sampleMapPopulator;
+
     variable Integer suitableCount = 0;
+
     variable Integer changedCount = 0;
+
     "Populate the map. You shouldn't need to customize this."
     void populate(IMutableMapNG map) {
         IDRegistrar idf = createIDFactory(map);
@@ -225,10 +246,11 @@ shared class MapPopulatorDriver(ICLIHelper cli, SPOptions options, model)
             }
         }
     }
+
     shared actual void startDriver() {
         populate(model.map);
         cli.println(
-            "``changedCount`` out of ``suitableCount`` suitable locations were changed");
+            "``changedCount`` out of ``suitableCount`` suitable locations were changed"); // TODO s/ out of /\// ; rejoin to prev line
         if (changedCount > 0) {
             model.mapModified = true;
         }

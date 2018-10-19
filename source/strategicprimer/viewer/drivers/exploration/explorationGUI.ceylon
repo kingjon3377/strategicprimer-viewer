@@ -58,6 +58,7 @@ shared class ExplorationGUIFactory() satisfies GUIDriverFactory {
         includeInGUIList = true;
         supportedOptions = [ "--current-turn=NN" ];
     };
+
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {
         try {
@@ -67,6 +68,7 @@ shared class ExplorationGUIFactory() satisfies GUIDriverFactory {
                 "Choice interrupted or user didn't choose");
         }
     }
+
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IExplorationModel model) {
@@ -75,9 +77,11 @@ shared class ExplorationGUIFactory() satisfies GUIDriverFactory {
             return createDriver(cli, options, ExplorationModel.copyConstructor(model));
         }
     }
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             ExplorationModel(map, path);
 }
+
 "An object to start the exploration GUI."
 class ExplorationGUI(ICLIHelper cli, SPOptions options, model)
         satisfies MultiMapGUIDriver {
@@ -89,6 +93,7 @@ class ExplorationGUI(ICLIHelper cli, SPOptions options, model)
             "about");
         frame.showWindow();
     }
+
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(this), "load", "save", "save as", "new",
@@ -96,6 +101,7 @@ class ExplorationGUI(ICLIHelper cli, SPOptions options, model)
             "open secondary map in map viewer", "close", "quit");
         SwingUtilities.invokeLater(defer(createWindow, [menuHandler]));
     }
+
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {
         try {
@@ -105,6 +111,7 @@ class ExplorationGUI(ICLIHelper cli, SPOptions options, model)
                 "Choice interrupted or user didn't choose");
         }
     }
+
     shared actual void open(IMutableMapNG map, PathWrapper? path) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(ExplorationGUI.startDriver,

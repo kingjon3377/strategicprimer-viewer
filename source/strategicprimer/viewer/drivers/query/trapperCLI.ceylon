@@ -37,6 +37,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     AnimalTracks
 }
+
 "Possible actions in the trapping CLI; top-level so we can switch on the cases,
  since the other alternative, `static`, isn't possible in an `object` anymore."
 class TrapperCommand of setTrap | check | move | easyReset | quit
@@ -50,34 +51,43 @@ class TrapperCommand of setTrap | check | move | easyReset | quit
     shared new quit { name = "Quit"; ordinal = 4; }
     shared actual Comparison compare(TrapperCommand other) => ordinal <=> other.ordinal;
 }
+
+"A simple [[Queue]] implementation."
 class QueueWrapper<Type>(variable {Type*} wrapped) satisfies Queue<Type> {
     shared actual Type? accept() {
         Type? retval = wrapped.first;
         wrapped = wrapped.rest;
         return retval;
     }
+
     shared actual Type? back => wrapped.last;
+
     shared actual Type? front => wrapped.first;
+
     shared actual void offer(Type element) => wrapped = wrapped.chain(Singleton(element));
 }
+
 "A factory for a driver to run a player's trapping activity."
 service(`interface DriverFactory`)
 shared class TrappingCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"],
         ParamCount.atLeastOne, "Run a player's trapping",
         "Determine the results a player's trapper finds.", true, false);
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => TrappingCLI(cli, model);
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
+
 "A driver to run a player's trapping activity."
 todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
 // FIXME: Write trapping (and hunting, etc.) GUI
 shared class TrappingCLI satisfies CLIDriver {
     static Integer minutesPerHour = 60;
     static TrapperCommand[] commands = sort(`TrapperCommand`.caseValues);
+
     static String inHours(Integer minutes) {
         if (minutes < minutesPerHour) {
             return "``minutes`` minutes";
@@ -86,12 +96,14 @@ shared class TrappingCLI satisfies CLIDriver {
                 minutes % minutesPerHour`` minutes";
         }
     }
+
     ICLIHelper cli;
     shared actual IDriverModel model;
     shared new (ICLIHelper cli, IDriverModel model) {
         this.cli = cli;
         this.model = model;
     }
+
     "Handle a command. Returns how long it took to execute the command."
     Integer handleCommand(
             "The animals generated from the tile and the surrounding tiles, with their
@@ -180,6 +192,7 @@ shared class TrappingCLI satisfies CLIDriver {
         case (TrapperCommand.quit) { return 0; }
         case (TrapperCommand.setTrap) { return (fishing) then 30 else 45; }
     }
+
     shared actual void startDriver() {
         Boolean fishing = cli.inputBooleanInSeries(
             "Is this a fisherman trapping fish rather than a trapper? ");

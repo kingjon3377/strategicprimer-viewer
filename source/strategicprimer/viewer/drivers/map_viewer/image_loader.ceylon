@@ -31,11 +31,19 @@ import java.lang {
 import strategicprimer.viewer.drivers {
     IOHandler
 }
+import lovelace.util.common {
+    todo
+}
+
+"A helper object to load images from file or the classpath (in the directory
+ this suite expects them to be in), given their filename, and cache them."
 shared object imageLoader {
     log.trace("Expect to be able to load the following image file formats: " +
         ", ".join(ImageIO.readerFileSuffixes.array.coalesced));
+
     "The size of fixture icons."
     Integer fixtureIconSize = 28;
+
     "Create a very simple background icon for a terrain type"
     Icon createTerrainIcon(TileType tileType) {
         BufferedImage retval = BufferedImage(fixtureIconSize, fixtureIconSize,
@@ -48,16 +56,20 @@ shared object imageLoader {
         pen.dispose();
         return ImageIcon(retval);
     }
+
     "An icon cache."
     MutableMap<String, Icon> iconCache = HashMap<String, Icon>();
     for (tileType in `TileType`.caseValues) {
         iconCache.put("``tileType.xml``.png", createTerrainIcon(tileType));
     }
+
     "A cache of loaded images."
     MutableMap<String, Image> imageCache = HashMap<String, Image>();
+
     "Load an image from the cache, or if not in it, from file (and add it to the cache)"
-    // TODO: Add support for SVG (presumably using Batik)
-    // TODO: return null instead of throwing if not loadable?
+    todo("Add support for SVG (presumably using Batik)",
+         "Return null instead of throwing if not loadable?")
+    throws(`class IOException`, "If no reader could read the file")
     shared Image loadImage(String file) {
         if (exists cached = imageCache[file]) {
             return cached;
@@ -74,7 +86,9 @@ shared object imageLoader {
             }
         }
     }
+
     "Load an icon from cache, or if not in the cache from file (adding it to the cache)"
+    throws(`class IOException`, "If not in the cache and can't be loaded from file")
     shared Icon loadIcon(String file) {
         if (exists cached = iconCache[file]) {
             return cached;

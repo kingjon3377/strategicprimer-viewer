@@ -3,6 +3,7 @@
 shared interface GraphicalParamsSource {
     "Add a listener."
     shared formal void addGraphicalParamsListener(GraphicalParamsListener listener);
+
     "Remove a listener."
     shared formal void removeGraphicalParamsListener(GraphicalParamsListener listener);
 }

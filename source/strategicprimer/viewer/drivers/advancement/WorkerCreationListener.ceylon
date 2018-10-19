@@ -47,12 +47,14 @@ import lovelace.util.common {
     narrowedStream,
     singletonRandom
 }
+
 "A listener to keep track of the currently selected unit and listen for new-worker
  notifications, then pass this information on to the tree model."
 class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         satisfies ActionListener&UnitSelectionListener {
     "The currently selected unit"
     variable IUnit? selectedUnit = null;
+
     shared void addNewWorker(IWorker worker) {
         if (exists local = selectedUnit) {
             model.addUnitMember(local, worker);
@@ -62,6 +64,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                 "As no unit was selected, the new worker wasn't added to a unit.");
         }
     }
+
     object workerCreationFrame extends JFrame("Create Worker") {
         defaultCloseOperation = WindowConstants.disposeOnClose;
         JTextField name = JTextField();
@@ -75,6 +78,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         JTextField wisdom = JTextField();
         JTextField charisma = JTextField();
         JPanel textPanel = JPanel(GridLayout(0, 2));
+
         void accept() {
             String nameText = name.text.trimmed;
             String raceText = race.text.trimmed;
@@ -124,6 +128,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                     builder.string);
             }
         }
+
         void addLabeledField(JPanel panel, String text, JComponent field) {
             panel.add(JLabel(text));
             panel.add(field);
@@ -132,11 +137,15 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                 field.setActionCommand("Add Worker");
             }
         }
+
         addLabeledField(textPanel, "Worker Name:", name);
         addLabeledField(textPanel, "Worker Race", race);
+
         JPanel buttonPanel = JPanel(GridLayout(0, 2));
+
         JButton addButton = listenedButton("Add Worker", silentListener(accept));
         buttonPanel.add(addButton);
+
         shared void revert() {
             for (field in [name, hpBox, maxHP, strength, dexterity, constitution,
                     intelligence, wisdom, charisma]) {
@@ -145,14 +154,19 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
             race.text = raceFactory.randomRace();
             dispose();
         }
+
         JButton cancelButton = listenedButton("Cancel", silentListener(revert));
         buttonPanel.add(cancelButton);
+
         platform.makeButtonsSegmented(addButton, cancelButton);
+
         JPanel statsPanel = JPanel(GridLayout(0, 4));
         hpBox.text = "8";
         addLabeledField(statsPanel, "HP:", hpBox);
+
         maxHP.text = "8";
         addLabeledField(statsPanel, "Max HP:", maxHP);
+
         for ([stat, box] in [["Strength:", strength],
                 ["Intelligence:", intelligence], ["Dexterity:", dexterity],
                 ["Wisdom:", wisdom], ["Constitution:", constitution],
@@ -161,17 +175,22 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                 .reduce(plus)?.string else "0";
             addLabeledField(statsPanel, stat, box);
         }
+
         contentPane = BorderedPanel.verticalPanel(textPanel, statsPanel,
             buttonPanel);
+
         setMinimumSize(Dimension(320, 240));
+
         pack();
     }
+
     shared actual void actionPerformed(ActionEvent event) {
         if (event.actionCommand.lowercased.startsWith("add worker")) {
             workerCreationFrame.revert();
             workerCreationFrame.setVisible(true);
         }
     }
+
     "Update our currently-selected-unit reference."
     shared actual void selectUnit(IUnit? unit) {
         selectedUnit = unit;

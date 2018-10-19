@@ -59,15 +59,17 @@ import lovelace.util.jvm {
     showErrorDialog,
     FileChooser
 }
+
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
-shared class IOHandler
+shared class IOHandler // TODO: reformat
         satisfies ActionListener {
     static ViewerGUIFactory vgf = ViewerGUIFactory();
     ISPDriver driver;
     shared new (ISPDriver driver) {
         this.driver = driver;
     }
+
     "If any files are marked as modified, ask the user whether to save them before
      closing/quitting."
     void maybeSave(String verb, Frame? window, Component? source,
@@ -89,6 +91,7 @@ shared class IOHandler
                 actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save"));
             }
         }
+
         if (is MultiMapGUIDriver driver, driver.model.subordinateMaps.map(Entry.item)
             .map(Tuple.last).coalesced.any(true.equals)) {
             Integer answer = JOptionPane.showConfirmDialog(window,
@@ -103,6 +106,7 @@ shared class IOHandler
         }
         ifNotCanceled();
     }
+
     void handleError(Exception except, String filename, Component? source,
             String errorTitle, String verb) {
         String message;
@@ -120,6 +124,7 @@ shared class IOHandler
         log.error(message, except);
         showErrorDialog(source, errorTitle, message);
     }
+
     void loadHandlerImpl(Anything(IMutableMapNG, PathWrapper) handler, Component? source,
             String errorTitle)(PathWrapper path) {
         try {
@@ -128,6 +133,7 @@ shared class IOHandler
             handleError(except, path.string, source, errorTitle, "reading");
         }
     }
+
     void loadHandler(Component? source, String errorTitle) {
         if (is GUIDriver driver) {
             SPFileChooser.open(null).call(loadHandlerImpl(driver.open, source,
@@ -138,11 +144,12 @@ shared class IOHandler
             log.error("IOHandler asked to 'load' in app that doesn't support that");
         }
     }
+
     shared actual void actionPerformed(ActionEvent event) {
         Component? source = as<Component>(event.source);
         variable String errorTitle = "Strategic Primer Assistive Programs";
         variable Component? iter = source;
-        while (exists local = iter) {
+        while (exists local = iter) { // TODO: Use ComponentParentStream to replace this loop with a one-liner and make 'iter' non-variable (rename it)
             if (is ISPWindow local) {
                 errorTitle = local.windowName;
                 break;
@@ -150,6 +157,7 @@ shared class IOHandler
                 iter = local.parent;
             }
         }
+
         switch (event.actionCommand.lowercased)
         case ("load") { // TODO: Open in another window if modified flag set instead of prompting before overwriting
             if (is ModelDriver driver) {
@@ -161,6 +169,7 @@ shared class IOHandler
                 log.error("IOHandler asked to 'load' in unsupported app");
             }
         }
+
         case ("save") {
             if (is ModelDriver driver) {
                 if (exists givenFile = driver.model.mapFile) {
@@ -179,6 +188,7 @@ shared class IOHandler
                 log.error("IOHandler asked to save in driver it can't do that for");
             }
         }
+
         case ("save as") {
             if (is ModelDriver driver) {
                 FileChooser.save(null, SPFileChooser.filteredFileChooser(false)).call((path) { // TODO: Why not use SPFileChooser.save()?
@@ -194,6 +204,7 @@ shared class IOHandler
                 log.error("IOHandler asked to save-as in driver it can't do that for");
             }
         }
+
         case ("new") {
             if (is ModelDriver driver) {
                 SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
@@ -203,6 +214,7 @@ shared class IOHandler
                 log.error("IOHandler asked to 'new' in driver it can't do that from");
             }
         }
+
         case ("load secondary") { // TODO: Investigate how various apps handle transitioning between no secondaries and one secondary map.
             if (is MultiMapGUIDriver driver) {
                 SPFileChooser.open(null).call(loadHandlerImpl(
@@ -212,6 +224,7 @@ shared class IOHandler
                     "IOHandler asked to 'load secondary' in driver it can't do that for");
             }
         }
+
         case ("save all") {
             if (is MultiMapGUIDriver driver) {
                 for (map->[file, _] in driver.model.allMaps) {
@@ -232,6 +245,7 @@ shared class IOHandler
                 log.error("IOHandler asked to 'save all' in driver it can't do that for");
             }
         }
+
         case ("open in map viewer") {
             if (is ModelDriver driver) {
                 SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
@@ -241,6 +255,7 @@ shared class IOHandler
                     "IOHandler asked to 'open in map viewer' in unsupported driver");
             }
         }
+
         case ("open secondary map in map viewer") {
             if (is MultiMapGUIDriver driver) {
                 if (exists mapEntry = driver.model.subordinateMaps.first) {
@@ -255,6 +270,7 @@ shared class IOHandler
                     "IOHandler asked to 'open secondary in viewer' in unsupported app");
             }
         }
+
         case ("close") {
             if (is Frame local = iter) {
                 if (is ModelDriver driver) {
@@ -266,6 +282,7 @@ shared class IOHandler
                 }
             }
         }
+
         case ("quit") {
             if (is ModelDriver driver) {
                 maybeSave("quitting", as<Frame>(iter), source, quitHandler.handler);
@@ -276,6 +293,7 @@ shared class IOHandler
                 log.error("IOHandler asked to quit in unsupported app");
             }
         }
+
         else {
             log.info("Unhandled command ``event.actionCommand`` in IOHandler");
         }

@@ -61,11 +61,13 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             listeners.add(listener);
     shared actual void removeMovementCostListener(MovementCostListener listener) =>
             listeners.remove(listener);
+
     void fireMovementCost(Integer cost) {
         for (listener in listeners) {
             listener.deduct(cost);
         }
     }
+
     "Have the user choose a player."
     shared Player? choosePlayer() {
         Player[] players = model.playerChoices.sequence();
@@ -73,29 +75,33 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             "Players shared by all the maps:", "No players shared by all the maps:",
             "Chosen player: ", true).item;
     }
+
     "Have the user choose a unit belonging to that player."
     shared IUnit? chooseUnit(Player player) {
         IUnit[] units = model.getUnits(player).sequence();
         return cli.chooseFromList(units, "Player's units:",
             "That player has no units in the master map", "Chosen unit: ", true).item;
     }
+
     "The explorer's current movement speed."
     variable Speed speed = Speed.normal;
+
     "Let the user change the explorer's speed"
     void changeSpeed() {
-        Speed[] speeds = sort(`Speed`.caseValues);
-        Integer->Speed? newSpeed = cli.chooseFromList(speeds,
+        Speed[] speeds = sort(`Speed`.caseValues); // TODO: inline
+        Integer->Speed? newSpeed = cli.chooseFromList(speeds, // TODO: inline
             "Possible Speeds:", "No speeds available", "Chosen Speed: ", true);
         if (exists temp = newSpeed.item) {
             speed = temp;
         }
     }
+
     "Copy the given fixture to subordinate maps and print it to the output stream."
     void printAndTransferFixture(Point destPoint, TileFixture? fixture, HasOwner mover) {
         if (exists fixture) {
             cli.println(fixture.string);
             Boolean zero;
-            if (is HasOwner fixture, fixture.owner != mover.owner || fixture is Village) {
+            if (is HasOwner fixture, fixture.owner != mover.owner || fixture is Village) { // TODO: Add clarifying parentheses
                 zero = true;
             } else if (is HasPopulation<out Anything>|HasExtent fixture) {
                 zero = true;
@@ -110,6 +116,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
         }
     }
+
     "Ask the user for directions the unit should move until it runs out of MP or the user
       decides to quit."
     todo("Inline back into [[ExplorationCLI]]?")
@@ -128,8 +135,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             model.addMovementCostListener(handleCost);
 //            addMovementCostListener(handleCost);
             listeners.add(handleCost);
+
             MutableList<Point>&Queue<Point> proposedPath = ArrayList<Point>();
-            object automationConfig {
+            object automationConfig { // TODO: Move to top level of class, and make memoized attribute there instead of encapsulating in an object
                 variable ExplorationAutomationConfig? wrapped = null;
                 shared ExplorationAutomationConfig config {
                     if (exists temp = wrapped) {
@@ -161,6 +169,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                     }
                 }
             }
+
             while (movement > 0) {
                 Point point = model.selectedUnitLocation;
                 Direction direction;
@@ -170,7 +179,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                             curry(model.getDestination)(point))) else Direction.nowhere;
                     if (proposedDestination == point) {
                         continue;
-                    } else if (direction == Direction.nowhere) {
+                    } else if (direction == Direction.nowhere) { // TODO: shorten message
                         cli.println("Intended next destination ``
                             proposedDestination`` is not adjacent to current location ``point``");
                         continue;
@@ -206,8 +215,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         }
                         continue;
                     }
-                    else { fireMovementCost(runtime.maxArraySize); continue; }
+                    else { fireMovementCost(runtime.maxArraySize); continue; } // TODO: Set 'movement' to 0 instead of relying on whoever is listening
                 }
+
                 Point destPoint = model.getDestination(point, direction);
                 try {
                     model.move(direction, speed);
@@ -217,9 +227,11 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                                  show that at a cost of 1 MP");
                     continue;
                 }
+
                 MutableList<TileFixture> constants = ArrayList<TileFixture>();
                 IMutableMapNG map = model.map;
                 MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
+
                 //        for (fixture in map.fixtures[destPoint]) { // TODO: syntax sugar once compiler bug fixed
                 for (fixture in map.fixtures.get(destPoint)) {
                     if (simpleMovementModel.shouldAlwaysNotice(mover, fixture)) {
@@ -229,6 +241,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         allFixtures.add(fixture);
                     }
                 }
+
                 Animal|AnimalTracks|HuntingModel.NothingFound tracksAnimal;
                 // Since not-visible terrain is impassable, by this point we know the tile
                 // is visible.
@@ -240,11 +253,13 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                     tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first
                         else HuntingModel.NothingFound.nothingFound;
                 }
+
                 if (is Animal tracksAnimal) {
                     allFixtures.add(AnimalTracks(tracksAnimal.kind));
                 } else if (is AnimalTracks tracksAnimal) {
                     allFixtures.add(tracksAnimal.copy(false));
                 }
+
                 if (Direction.nowhere == direction) {
                     if (cli.inputBooleanInSeries(
                         "Should any village here swear to the player?  ")) {
@@ -254,6 +269,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         model.dig();
                     }
                 }
+
                 String mtn;
                 //        if (map.mountainous[destPoint]) { // TODO: syntax sugar once compiler bug fixed
                 if (map.mountainous.get(destPoint)) {
@@ -264,10 +280,12 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 } else {
                     mtn = "";
                 }
+
                 cli.println("The explorer comes to ``destPoint``, a ``mtn````
                     map.baseTerrain[destPoint] else "unknown-terrain"`` tile");
                 {TileFixture*} noticed = simpleMovementModel.selectNoticed(allFixtures,
                     identity<TileFixture>, mover, speed);
+
                 if (!constants.empty || !noticed.empty) {
                     if (noticed.empty) {
                         cli.println("The following were automatically noticed:");
@@ -284,6 +302,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         printAndTransferFixture(destPoint, fixture, mover);
                     }
                 }
+
                 if (!proposedPath.empty, automationConfig.config.stopAtPoint(cli,
                         model.subordinateMaps.first?.key else model.map, destPoint)) {
                     proposedPath.clear();
@@ -301,6 +320,8 @@ class ExplorationAutomationConfig(Player player, Boolean stopForForts,
         Boolean stopForOtherVillages, Boolean stopForPlayerUnits,
         Boolean stopForIndieUnits, Boolean stopForImmortals) {
     shared Boolean stopAtPoint(ICLIHelper cli, IMapNG map, Point point) {
+        // TODO: add abstraction: make a list of conditions (methods) with descriptions, memoize whether the user wants to stop for them, and iterate over them, instead of having a long multi-branch if
+        // TODO: Make a helper (method-in-method) for the cli.println("There is a ``thing`` here, so the explorer stops."), to condense the below
         //for (fixture in map.fixtures[point]) { // TODO: syntax sugar
         for (fixture in map.fixtures.get(point)) {
             if (is Fortress fixture, fixture.owner != player, stopForForts) {

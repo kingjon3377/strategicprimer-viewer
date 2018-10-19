@@ -24,25 +24,30 @@ import javax.swing.event {
 import java.lang {
     ArrayIndexOutOfBoundsException
 }
+
 "A model for the list-based representation of the contents of a tile."
 shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSource)
         satisfies ListModel<TileFixture>&SelectionChangeListener {
     "The currently selected point."
     variable Point point = Point.invalidPoint;
     variable TileTypeFixture? cachedTerrain = null;
+
     """Any animal tracks that have been "added" to the current tile but kept out of the
        map."""
     MutableList<AnimalTracks> currentTracks = ArrayList<AnimalTracks>();
+
     MutableList<ListDataListener> listDataListeners = ArrayList<ListDataListener>();
     shared actual void addListDataListener(ListDataListener listener) =>
             listDataListeners.add(listener);
     shared actual void removeListDataListener(ListDataListener listener) =>
             listDataListeners.remove(listener);
+
     shared actual Integer size {
         //Integer retval = map.fixtures[point].size + currentTracks.size; // TODO: syntax sugar
         Integer retval = map.fixtures.get(point).size + currentTracks.size;
         return if (map.baseTerrain[point] exists) then retval + 1 else retval;
     }
+
     void fireIntervalReplaced(Range<Integer> oldRange, Range<Integer> newRange) {
         ListDataEvent removeEvent = ListDataEvent(this, ListDataEvent.intervalRemoved,
             oldRange.first, oldRange.lastIndex);
@@ -53,6 +58,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
             listener.intervalAdded(addEvent);
         }
     }
+
     void fireContentsChanged(Range<Integer> range) {
         ListDataEvent event = ListDataEvent(this, ListDataEvent.contentsChanged,
             range.first, range.lastIndex);
@@ -60,6 +66,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
             listener.contentsChanged(event);
         }
     }
+
     void fireIntervalAdded(Range<Integer> range) {
         ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalAdded,
             range.first, range.lastIndex);
@@ -67,6 +74,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
             listener.intervalAdded(event);
         }
     }
+
     void fireIntervalRemoved(Range<Integer> range) {
         ListDataEvent event = ListDataEvent(this, ListDataEvent.intervalRemoved,
             range.first, range.lastIndex);
@@ -74,6 +82,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
             listener.intervalRemoved(event);
         }
     }
+
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         Integer oldSize = size;
         cachedTerrain = null;
@@ -85,6 +94,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
         Integer newSize = size;
         fireIntervalReplaced(0..(oldSize - 1), 0..(newSize - 1));
     }
+
     shared actual TileFixture getElementAt(Integer index) {
         //TileFixture[] main = map.fixtures[point].sequence(); // TODO: syntax sugar
         TileFixture[] main = map.fixtures.get(point).sequence();
@@ -117,6 +127,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
             throw ArrayIndexOutOfBoundsException(index);
         }
     }
+
     Integer adjustedIndex(Integer index) {
         if (map.baseTerrain[point] exists) {
             return index + 1;
@@ -124,6 +135,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
             return index;
         }
     }
+
     shared void addFixture(TileFixture fixture) {
         if (is TileTypeFixture fixture) {
             if (exists existingTerrain = map.baseTerrain[point]) {
@@ -146,6 +158,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
             fireContentsChanged(adjusted..adjusted);
         }
     }
+
     "Remove the specified items from the tile and the list."
     shared void removeAll(TileFixture* fixtures) {
         for (fixture in fixtures) {

@@ -83,10 +83,13 @@ import strategicprimer.model.common.map.fixtures.towns {
 import strategicprimer.drivers.common {
     FixtureMatcher
 }
-"A class to allow the Z-order of fixtures to be represented as a table."
+
+"A class to allow the Z-order of fixtures to be represented as a table (and so
+ dynamically controlled by the user)."
 shared class FixtureFilterTableModel extends AbstractTableModel
         satisfies Reorderable&ZOrderFilter&{FixtureMatcher*}&Comparator<TileFixture> {
     MutableList<FixtureMatcher> matchers;
+
     shared new () extends AbstractTableModel() {
         matchers = ArrayList<FixtureMatcher>();
         // Can't use our preferred initialization form because an Iterable can only be
@@ -141,6 +144,7 @@ shared class FixtureFilterTableModel extends AbstractTableModel
             }
         }
     }
+
     shared actual Integer rowCount => matchers.size;
     shared actual Integer columnCount => 2;
     shared actual Object getValueAt(Integer rowIndex, Integer columnIndex) {
@@ -153,20 +157,24 @@ shared class FixtureFilterTableModel extends AbstractTableModel
             throw ArrayIndexOutOfBoundsException(rowIndex);
         }
     }
+
     shared actual String getColumnName(Integer column) {
         switch (column)
         case (0) { return "Visible"; }
         case (1) { return "Category"; }
         else { return super.getColumnName(column); }
     }
+
     shared actual JClass<out Object> getColumnClass(Integer columnIndex) {
         switch (columnIndex)
         case (0) { return Types.classForType<JBoolean>(); }
         case (1) { return Types.classForType<JString>(); }
         else { return Types.classForType<Object>(); }
     }
+
     shared actual Boolean isCellEditable(Integer rowIndex, Integer columnIndex) =>
             columnIndex == 0;
+
     shared actual void setValueAt(Object val, Integer rowIndex, Integer columnIndex) {
         if (columnIndex == 0, exists matcher = matchers[rowIndex]) {
             if (is Boolean val) {
@@ -178,6 +186,7 @@ shared class FixtureFilterTableModel extends AbstractTableModel
             }
         }
     }
+
     shared actual void reorder(Integer fromIndex, Integer toIndex) {
         if (fromIndex != toIndex) {
             matchers.move(fromIndex, toIndex);
@@ -185,6 +194,7 @@ shared class FixtureFilterTableModel extends AbstractTableModel
             fireTableRowsInserted(toIndex, toIndex);
         }
     }
+
     shared actual Boolean shouldDisplay(TileFixture fixture) {
         for (matcher in matchers) {
             if (matcher.matches(fixture)) {
@@ -197,10 +207,12 @@ shared class FixtureFilterTableModel extends AbstractTableModel
         fireTableRowsInserted(size - 1, size - 1);
         return true;
     }
+
     shared actual Iterator<FixtureMatcher> iterator() => matchers.iterator();
+
     shared actual Comparison compare(TileFixture first, TileFixture second) {
         for (matcher in matchers) {
-            if (!matcher.displayed) {
+            if (!matcher.displayed) { // TODO: Use 'in matchers.filter(FixtureMatcher.displayed)' instead of filtering like this
                 continue;
             }
             if (matcher.matches(first)) {

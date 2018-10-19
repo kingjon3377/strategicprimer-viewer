@@ -5,6 +5,7 @@ import lovelace.util.common {
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
+
 "An interface for objects that want to know when the user selects a Unit from a list or
  tree."
 todo("Combine with other similar interfaces?")

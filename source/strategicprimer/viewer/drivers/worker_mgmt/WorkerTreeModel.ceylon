@@ -35,10 +35,12 @@ import lovelace.util.common {
 import strategicprimer.drivers.common {
     IWorkerModel
 }
+
 "A TreeModel implementation for a player's units and workers."
 class WorkerTreeModel satisfies IWorkerTreeModel {
     static Boolean(IUnit) containingItem(UnitMember item) =>
                     shuffle(IUnit.contains)(item);
+
     variable Player player;
     IWorkerModel model;
     shared new (Player player, IWorkerModel model) {
@@ -89,6 +91,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
     }
 
     shared actual Boolean isLeaf(Object node) => !node is Player|IUnit|String;
+
     shared actual void valueForPathChanged(TreePath path, Object newValue) =>
             log.error("valueForPathChanged needs to be implemented");
 
@@ -127,7 +130,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         Integer oldIndex = getIndexOfChild(old, member);
         TreeModelEvent removedEvent = TreeModelEvent(this,
             TreePath(ObjectArray<Object>.with([ root, old.kind, old ])),
-            IntArray.with(Singleton(oldIndex)),
+            IntArray.with(Singleton(oldIndex)), // TODO: Combine with next line
             ObjectArray.with(Singleton(member)));
         TreeModelEvent removedChangeEvent = TreeModelEvent(this,
             TreePath(ObjectArray<Object>.with([ root, old.kind, old ])));
@@ -148,6 +151,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         }
         markModified();
     }
+
     shared actual void addUnit(IUnit unit) {
         model.addUnit(unit);
         TreePath path = TreePath(ObjectArray<Object>.with([root, unit.kind]));
@@ -159,15 +163,18 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         }
         markModified();
     }
+
     shared actual void addNewUnit(IUnit unit) => addUnit(unit);
-    shared actual void mapChanged() {
+
+    shared actual void mapChanged() { // TODO: Switch places with playerChanged() and delegate to it
         player = model.currentPlayer;
-        TreePath path = TreePath(root);
+        TreePath path = TreePath(root); // TODO: Inline
         TreeModelEvent event = TreeModelEvent(this, path);
         for (listener in listeners) {
             listener.treeNodesChanged(event);
         }
     }
+
     shared actual void playerChanged(Player? old, Player newPlayer) {
         player = newPlayer;
         TreeModelEvent event = TreeModelEvent(this, TreePath(root));
@@ -175,7 +182,9 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             listener.treeNodesChanged(event);
         }
     }
+
     shared actual Object getModelObject(Object obj) => obj;
+
     shared actual void addUnitMember(IUnit unit, UnitMember member) {
         log.trace("In WorkerTreeModel.addUnitMember");
         unit.addMember(member);
@@ -191,6 +200,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         log.trace("Notified listeners of inserted nodes");
         markModified();
     }
+
     shared actual void renameItem(HasMutableName item) {
         TreePath path;
         IntArray indices;
@@ -220,6 +230,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         }
         markModified();
     }
+
     shared actual void moveItem(HasKind item, String priorKind) {
         TreePath path;
         IntArray indices;
@@ -244,6 +255,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         }
         markModified();
     }
+
     shared actual void dismissUnitMember(UnitMember member) {
         for (unit in model.getUnits(root)) {
             if (exists index->item = unit.locate(member.equals)) {
@@ -259,7 +271,9 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         }
         markModified();
     }
+
     shared actual {UnitMember*} dismissed => dismissedMembers;
+
     shared actual void addSibling(UnitMember base, UnitMember sibling) {
         for (unit in model.getUnits(root)) {
             if (exists index->item = unit.locate(base.equals)) {
@@ -287,11 +301,12 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         }
         markModified();
     }
+
     """Get the path to the "next" unit whose orders for the given turn either contain
        "TODO", contain "FIXME", or are empty. Returns null if no unit matches those
        criteria."""
     shared actual TreePath? nextProblem(TreePath? starting, Integer turn) {
-        {IUnit*} sequence;
+        {IUnit*} sequence; // TODO: What if the 'starting' path is [root, JString(kind)]?
         if (exists starting, exists startingUnit =
                 starting.path.array.narrow<IUnit>().first) {
             sequence = model.getUnits(root).repeat(2).sequence()
@@ -311,5 +326,6 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         }
         return null;
     }
+
     shared actual void mapMetadataChanged() {}
 }

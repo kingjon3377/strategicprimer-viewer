@@ -34,20 +34,32 @@ import java.lang {
     ObjectArray
 }
 import lovelace.util.common {
-    silentListener
+    silentListener,
+    todo
 }
+
 "A pop-up menu to let the user edit a fixture."
-shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar idf,
-        Anything() mutationListener, IWorkerTreeModel* changeListeners)
-        extends JPopupMenu() {
-    void addMenuItem(JMenuItem item, Anything(ActionEvent) listener) {
+shared class FixtureEditMenu(
+        "The fixture to be edited. Its type determines what menu items are enabled."
+        IFixture fixture, 
+        "The players in the map(s)."
+        {Player*} players,
+        "A source for unique-in-the-map ID numbers."
+        IDRegistrar idf,
+        // TODO: What is this for?
+        Anything() mutationListener,
+        "Listeners to notify when something is renamed or changes kind."
+        IWorkerTreeModel* changeListeners) extends JPopupMenu() {
+    void addMenuItem(JMenuItem item, Anything(ActionEvent) listener) { // TODO: Make a combined addMenuItem(item, handlerIfEnabled, conditionToEnable), to condense the below code
         add(item);
         item.addActionListener(listener);
     }
+
     void addDisabledMenuItem(JMenuItem item) {
         add(item);
         item.enabled = false;
     }
+
     void renameHandler() {
         assert (is HasMutableName fixture);
         String originalName = fixture.name;
@@ -65,11 +77,13 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
             }
         }
     }
+
     if (is HasMutableName fixture) {
         addMenuItem(JMenuItem("Rename", KeyEvent.vkN), silentListener(renameHandler));
     } else {
         addDisabledMenuItem(JMenuItem("Rename", KeyEvent.vkN));
     }
+
     void changeKindHandler() {
         assert (is HasMutableKind fixture);
         String originalKind = fixture.kind;
@@ -87,12 +101,14 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
             }
         }
     }
+
     if (is HasMutableKind fixture) {
         addMenuItem(JMenuItem("Change kind", KeyEvent.vkK),
             silentListener(changeKindHandler));
     } else {
         addDisabledMenuItem(JMenuItem("Change kind", KeyEvent.vkK));
     }
+
     void changeOwnerHandler() {
         assert (is HasMutableOwner fixture);
         if (is Player player = JOptionPane.showInputDialog(parent, "Fixture's new owner:",
@@ -100,19 +116,21 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
                 ObjectArray.with(players), fixture.owner)) {
             HasMutableOwner temp = fixture;
             temp.owner = player;
-            mutationListener();
+            mutationListener(); // TODO: Notify callers beyond this, adding methods to IWorkerTreeModel if necessary? If a unit's owner changed, it shouldn't be in the tree anymore, after all ...
         }
     }
+
     if (is HasMutableOwner fixture) {
         addMenuItem(JMenuItem("Change owner", KeyEvent.vkO),
             silentListener(changeOwnerHandler));
     } else {
         addDisabledMenuItem(JMenuItem("Change owner", KeyEvent.vkO));
     }
+
     void dismissHandler() {
         assert (is UnitMember fixture);
         String name;
-        if (is HasName fixture) {
+        if (is HasName fixture) { // TODO: Condense to as<HasName>(fixture)?.name else "this ``fixture``"
             name = fixture.name;
         } else {
             name = "this ``fixture``";
@@ -127,11 +145,14 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
             mutationListener();
         }
     }
+
     if (is UnitMember fixture) {
         addMenuItem(JMenuItem("Dismiss", KeyEvent.vkD), silentListener(dismissHandler));
     } else {
         addDisabledMenuItem(JMenuItem("Dismiss", KeyEvent.vkD));
     }
+
+    todo("Generalize splitting to HasPopulation more generally")
     void splitAnimalHandler() {
         assert (is Animal fixture);
         if (exists result = JOptionPane.showInputDialog(parent,
@@ -152,7 +173,7 @@ shared class FixtureEditMenu(IFixture fixture, {Player*} players, IDRegistrar id
             mutationListener();
         }
     }
-    // TODO: Generalize splitting to HasPopulation more generally
+
     if (is Animal fixture, fixture.population > 1) {
         addMenuItem(JMenuItem("Split animal population", KeyEvent.vkS),
             silentListener(splitAnimalHandler));

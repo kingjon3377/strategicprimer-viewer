@@ -40,6 +40,7 @@ shared interface MapGUI {
     "The driver model the GUI represents."
     shared formal IViewerModel mapModel;
 }
+
 "A component to display the map, even a large one, without the performance problems that
  came from drawing the entire map every time and letting Java manage the scrolling or,
  worse, instantiating a GUITile object for every visible tile every time the map was
@@ -53,6 +54,7 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
     ComponentMouseListener cml;
     DirectionSelectionChanger dsl;
     variable TileDrawHelper helper;
+
     shared new (IViewerModel model, Boolean(TileFixture) zof,
             {FixtureMatcher*}&Comparator<TileFixture> matchers) extends JComponent() {
         mapModel = model;
@@ -64,6 +66,7 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
             matchers);
         doubleBuffered = true;
     }
+
     Rectangle boundsCheck(Rectangle? rect) {
         if (exists rect) {
             return rect;
@@ -75,6 +78,7 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
                 dimensions.height * tileSize);
         }
     }
+
     void fixVisibility() {
         Point selectedPoint = mapModel.selection;
         Integer selectedRow = largest(selectedPoint.row, 0);
@@ -105,10 +109,13 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         mapModel.visibleDimensions = VisibleDimensions(minimumRow, maximumRow,
             minimumColumn, maximumColumn);
     }
+
     shared actual String? getToolTipText(MouseEvent event) =>
             cml.getToolTipText(event);
+
     shared actual void dimensionsChanged(VisibleDimensions oldDim,
             VisibleDimensions newDim) => repaint();
+
     void paintTile(Graphics pen, Integer tileSize, Point point, Integer row,
             Integer column, Boolean selected) {
         helper.drawTile(pen, mapModel.map, point,
@@ -125,6 +132,7 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
             }
         }
     }
+
     Boolean selectionVisible {
         Point selectedPoint = mapModel.selection;
         Integer selectedRow = largest(selectedPoint.row, 0);
@@ -133,8 +141,10 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         return visibleDimensions.rows.contains(selectedRow) &&
         visibleDimensions.columns.contains(selectedColumn);
     }
+
     // Can't take method reference to requestFocusInWindow() because it's overloaded
     void requestFocusNarrowly() => requestFocusInWindow();
+
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         SwingUtilities.invokeLater(requestFocusNarrowly);
         if (!selectionVisible) {
@@ -142,10 +152,12 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         }
         repaint();
     }
+
     shared actual void mapChanged() {
         helper = tileDrawHelperFactory(mapModel.mapDimensions.version,
             imageUpdate, zof, matchers);
     }
+
     void drawMapPortion(Graphics context, Integer tileSize, Integer minX,
             Integer minY, Integer maxX, Integer maxY) {
         Integer minRow = mapModel.visibleDimensions.minimumRow;
@@ -166,6 +178,7 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
             }
         }
     }
+
     shared actual void paint(Graphics pen) {
         Graphics context = pen.create();
         try {
@@ -186,16 +199,20 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         }
         super.paint(pen);
     }
+
     object cmlDelegate satisfies SelectionChangeListener {
         shared actual void selectedPointChanged(Point? oldSelection, Point newSelection)
                 => outer.selectedPointChanged(oldSelection, newSelection);
     }
     cml.addSelectionChangeListener(cmlDelegate);
+
     addMouseListener(cml);
     addMouseWheelListener(dsl);
+
     assert (exists localActionMap = actionMap, exists localInputMap =
             getInputMap(JComponent.whenAncestorOfFocusedComponent));
     arrowListenerInitializer.setUpArrowListeners(dsl, localInputMap, localActionMap);
+
     object mapSizeListener extends ComponentAdapter() {
         shared actual void componentResized(ComponentEvent event) {
             Integer tileSize = scaleZoom(mapModel.zoomLevel,
@@ -208,8 +225,8 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
             variable Integer maximumRow = mapModel.visibleDimensions.maximumRow;
             MapDimensions mapDimensions = mapModel.mapDimensions;
             if (visibleColumns != mapModel.visibleDimensions.width ||
-            visibleRows != mapModel.visibleDimensions.height) {
-                Integer totalColumns = mapDimensions.columns;
+            visibleRows != mapModel.visibleDimensions.height) { // TODO: Fix indentation
+                Integer totalColumns = mapDimensions.columns; // TODO: Extract a helper function, producing [min, max] Tuples, since we use the same algorithm for columns and rows
                 if (visibleColumns >= totalColumns) {
                     minimumColumn = 0;
                     maximumColumn = totalColumns - 1;
@@ -233,15 +250,19 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
                     minimumColumn, maximumColumn);
             }
         }
+
         shared actual void componentShown(ComponentEvent event) =>
                 componentResized(event);
     }
     addComponentListener(mapSizeListener);
+
     toolTipText = "";
     addMouseMotionListener(object extends MouseMotionAdapter() {
         shared actual void mouseMoved(MouseEvent event) => outer.repaint();
     });
+
     requestFocusEnabled = true;
+
     shared actual void tileSizeChanged(Integer olSize, Integer newSize) {
         ComponentEvent event = ComponentEvent(this, ComponentEvent.componentResized);
         for (listener in componentListeners) {
@@ -249,5 +270,6 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         }
         repaint();
     }
+
     shared actual void mapMetadataChanged() {}
 }

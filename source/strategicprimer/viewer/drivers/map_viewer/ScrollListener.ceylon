@@ -29,6 +29,7 @@ import javax.swing {
 import java.lang {
     Types
 }
+
 "A class to change the visible area of the map based on the user's use of the scrollbars."
 todo("Maybe keep track of visible dimensions and selected point directly instaed of
       through the model, so we can drop the reference to the model.")
@@ -42,11 +43,13 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             mapDimension = compose(MapDimensions.columns, mapDimsSource);
             visibleDimension = compose(VisibleDimensions.height, visibleDimsSource);
         }
+
         shared new vertical(MapDimensions() mapDimsSource,
                 VisibleDimensions() visibleDimsSource) extends InputVerifier() {
             mapDimension = compose(MapDimensions.rows, mapDimsSource);
             visibleDimension = compose(VisibleDimensions.height, visibleDimsSource);
         }
+
         "A scrollbar is valid if its value is between 0 and the size of the map minus the
          visible size of the map (that subtraction is to prevent scrolling so far that
          empty tiles show to the right of or below the map)."
@@ -58,6 +61,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             }
         }
     }
+
     static Integer constrainToRange(Integer val, Integer min, Integer max) {
         if (val < min) {
             return min;
@@ -67,6 +71,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             return val;
         }
     }
+
     IViewerModel model;
     JScrollBar horizontalBar;
     JScrollBar verticalBar;
@@ -91,7 +96,8 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         vertical.inputVerifier = LocalInputVerifier.vertical(
             defer(IViewerModel.mapDimensions, [mapModel]),
                     defer(IViewerModel.visibleDimensions, [mapModel]));
-        object adjustmentListener satisfies AdjustmentListener {
+
+        object adjustmentListener satisfies AdjustmentListener { // TODO: Move to top level of class, converting to class if needed
             shared actual void adjustmentValueChanged(AdjustmentEvent event) {
                 VisibleDimensions oldDimensions = model.visibleDimensions;
                 Integer newColumn = horizontalBar.\ivalue;
@@ -127,18 +133,22 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
                 }
             }
         }
+
         horizontalBar.addAdjustmentListener(adjustmentListener);
         verticalBar.addAdjustmentListener(adjustmentListener);
     }
+
     "Alternate constructor that adds new scroll-bars to an existing component. This only
      works if that component is laid out using a [[BorderLayout]] and doesn't already have
       members at page-end and line-end."
+    todo("Use BorderedPanel attributes rather than JPanel.add(), and assert that they were 'null' before.")
     shared new createScrollBars(IViewerModel mapModel, BorderedPanel component)
             extends ScrollListener(mapModel, JScrollBar(Adjustable.horizontal),
         JScrollBar(Adjustable.vertical)) {
         component.add(horizontalBar, Types.nativeString(BorderLayout.pageEnd));
         component.add(verticalBar, Types.nativeString(BorderLayout.lineEnd));
     }
+
     variable Boolean mutex = true;
     "Handle a change in visible dimensions."
     shared actual void dimensionsChanged(VisibleDimensions oldDimensions,
@@ -153,9 +163,11 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             mutex = true;
         }
     }
+
     "Ignored; other listeners will adjust the dimensions, causing [[dimensionsChanged]] to
      be called."
     shared actual void tileSizeChanged(Integer oldSize, Integer newSize) { }
+
     "Handle a change to the selected location in the map. The property-change based
      version this replaced went to the model for the selected point rather than looking
      at the reported new value; since it's typesafe here, and probably faster, this
@@ -169,6 +181,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             verticalBar.model.\ivalue = largest(newPoint.row, 0);
         }
     }
+
     "Handle notification that a new map was loaded."
     shared actual void mapChanged() {
         mapDimensions = model.mapDimensions;
@@ -178,5 +191,6 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         verticalBar.model.setRangeProperties(0, 1, 0,
             mapDimensions.rows - visibleDimensions.height, false);
     }
+
     shared actual void mapMetadataChanged() {}
 }

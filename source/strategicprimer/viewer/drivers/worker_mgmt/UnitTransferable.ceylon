@@ -12,7 +12,12 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.model.common.map {
     HasMutableKind
 }
+import lovelace.util.common {
+    todo
+}
+
 "A class to transfer a Unit (to change its kind) by drag-and-drop."
+todo("Extract an interface to handle the commonly-duplicated flavor-bookkeeping aspect")
 class UnitTransferable satisfies Transferable {
     shared static DataFlavor flavor = DataFlavor(`{IUnit*}`, "List<IUnit>");
     <IUnit&HasMutableKind>[] payload;

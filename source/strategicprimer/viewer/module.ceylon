@@ -1,5 +1,6 @@
 "Assistive programs for players and Judges of
  [Strategic Primer](https://shinecycle.wordpress.com/archives/strategic-primer)"
+// TODO: Expand into user-introductory documentation for the suite
 // TODO: add tagged() annotations throughout
 license("GPL-3")
 native("jvm")

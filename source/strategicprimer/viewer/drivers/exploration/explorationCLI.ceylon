@@ -26,8 +26,10 @@ import lovelace.util.common {
 import strategicprimer.model.common.map {
     IMutableMapNG
 }
+
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
+
 "A factory for the CLI exploration app."
 service(`interface DriverFactory`)
 shared class ExplorationCLIFactory() satisfies ModelDriverFactory {
@@ -42,6 +44,7 @@ shared class ExplorationCLIFactory() satisfies ModelDriverFactory {
         includeInGUIList = false;
         supportedOptions = [ "--current-turn=NN" ];
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IExplorationModel model) {
@@ -55,6 +58,7 @@ shared class ExplorationCLIFactory() satisfies ModelDriverFactory {
             ExplorationModel(map, path);
 
 }
+
 "A CLI to help running exploration."
 class ExplorationCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IExplorationModel model;

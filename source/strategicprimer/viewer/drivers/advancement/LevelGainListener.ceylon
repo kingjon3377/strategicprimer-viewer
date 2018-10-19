@@ -5,6 +5,7 @@ import java.util {
 import lovelace.util.common {
     todo
 }
+
 "An interface for objects that want to be notified when a worker gains a level in the
  currently selected skill."
 shared interface LevelGainListener satisfies EventListener {

@@ -133,6 +133,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
             return retval;
         }
     }
+
     static IViewerModel getViewerModel(IDriverModel model, MenuBroker menuHandler) {
         if (exists frame = WindowList.getFrames(false, true, true).array.narrow<MapGUI>()
                 .find(matchingValue(model.mapFile, compose(IViewerModel.mapFile,
@@ -148,6 +149,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
             return viewerGUI.model;
         }
     }
+
     static class ReportMouseHandler(JTree reportTree, IDriverModel model,
                 MenuBroker menuHandler) extends MouseAdapter() {
         shared actual void mousePressed(MouseEvent event) {
@@ -161,6 +163,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
             }
         }
     }
+
     SPOptions options;
     IWorkerModel model;
     MenuBroker menuHandler;
@@ -178,7 +181,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     Point findHQ() {
         variable Point retval = Point.invalidPoint;
         for (location->fixture in narrowedStream<Point, Fortress>(model.map.fixtures)
-                .filter(matchingPredicate(matchingValue(model.currentPlayer.playerId,
+                .filter(matchingPredicate(matchingValue(model.currentPlayer.playerId, // TODO: Use compose() instead of nesting matchingPredicate() and matchingValue()
                     Player.playerId), compose(Fortress.owner, Entry<Point,
                         Fortress>.item)))) {
             if ("HQ" == fixture.name) {
@@ -189,6 +192,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         }
         return retval;
     }
+
     JTree createReportTree(DefaultTreeModel reportModel) {
         JTree report = JTree(reportModel);
         report.rootVisible = true;
@@ -200,32 +204,39 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         report.addMouseListener(ReportMouseHandler(report, model, menuHandler));
         return report;
     }
+
     IMapNG mainMap = model.map;
     IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
     NewUnitDialog newUnitFrame = NewUnitDialog(model.currentPlayer, idf);
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
+
     void markModified() {
         for (subMap->_ in model.allMaps) {
             model.setModifiedFlag(subMap, true);
         }
     }
+
     value tree = workerTree(treeModel, model.players,
         defer(IMapNG.currentTurn, [mainMap]), true, idf, markModified);
     newUnitFrame.addNewUnitListener(treeModel);
+
     Integer keyMask = platform.shortcutMask;
     createHotKey(tree, "openUnits",
         // can't use silentListener() because requestFocusInWindow() is overloaded
         (ActionEvent event) => tree.requestFocusInWindow(),
         JComponent.whenInFocusedWindow,
         KeyStroke.getKeyStroke(KeyEvent.vkU, keyMask));
+
     String playerLabelText(Player player) =>
             "Units belonging to ``player.name``: (``platform.shortcutDescription``U)";
     InterpolatedLabel<[Player]> playerLabel =
             InterpolatedLabel<[Player]>(playerLabelText, [model.currentPlayer]);
+
     value ordersPanelObj = ordersPanel(mainMap.currentTurn, model.currentPlayer,
         model.getUnits, uncurry(IUnit.getLatestOrders), uncurry(IUnit.setOrders),
         markModified);
     tree.addTreeSelectionListener(ordersPanelObj);
+
     DefaultTreeModel reportModel = DefaultTreeModel(simpleReportNode(
         "Please wait, loading report ..."));
     void reportGeneratorThread() {
@@ -233,15 +244,18 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         IReportNode report = reportGenerator.createAbbreviatedReportIR(
             model.subordinateMaps.first?.key else mainMap, model.currentPlayer);
         log.info("Finished generating report");
-        // JavaRunnable because of https://github.com/eclipse/ceylon/issues/7379
+        // JavaRunnable because of eclipse/ceylon#7379
         SwingUtilities.invokeLater(JavaRunnable(defer(reportModel.setRoot, [report])));
     }
     Thread(reportGeneratorThread).start();
+
     value resultsPanel = ordersPanel(mainMap.currentTurn, model.currentPlayer,
         model.getUnits, uncurry(IUnit.getResults), null, noop);
     tree.addTreeSelectionListener(resultsPanel);
+
     JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel);
     tree.addUnitMemberListener(mdp);
+
     void jumpNext(ActionEvent _) {
         assert (is IWorkerTreeModel treeModel = tree.model);
         TreePath? currentSelection = tree.selectionModel.selectionPath;
@@ -257,35 +271,42 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     }
     value jumpButton = listenedButton(
         "Jump to Next Blank (``platform.shortcutDescription``J)", jumpNext);
+
     StrategyExporter strategyExporter = StrategyExporter(model, options);
     BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
         listenedButton("Add New Unit", silentListener(newUnitFrame.showWindow)),
         ordersPanelObj, listenedButton("Export a proto-strategy",
-            (ActionEvent event) => SPFileChooser.save(null,
+            (ActionEvent event) => SPFileChooser.save(null, // TODO: convert lambda to named method
                 filteredFileChooser(false, ".", null))
-                    .call((file) => strategyExporter.writeStrategy(
+                    .call((file) => strategyExporter.writeStrategy( // TODO: convert lambda to named method
                     parsePath(file.string).resource, treeModel.dismissed))));
-    value playerLabelPanel = BorderedPanel.horizontalPanel(playerLabel, null, jumpButton);
+
+    value playerLabelPanel = BorderedPanel.horizontalPanel(playerLabel, null, jumpButton); // TODO: If only used once, inline?
     contentPane = horizontalSplit(verticalSplit(
         BorderedPanel.verticalPanel(playerLabelPanel, JScrollPane(tree), null),
         lowerLeft, 2.0 / 3.0),
         verticalSplit(BorderedPanel.verticalPanel(
             JLabel("Contents of the world you know about, for reference:"),
             JScrollPane(createReportTree(reportModel)), null), mdp, 0.6));
+
     createHotKey(jumpButton, "jumpToNext", jumpNext, JComponent.whenInFocusedWindow,
         createAccelerator(KeyEvent.vkJ));
+
     TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
     menuHandler.register(silentListener(expander.expandAll), "expand all");
     menuHandler.register(silentListener(expander.collapseAll), "collapse all");
     menuHandler.register((event) => expander.expandSome(2), "expand unit kinds");
     expander.expandAll();
+
     addWindowListener(object extends WindowAdapter() {
         shared actual void windowClosed(WindowEvent event) => newUnitFrame.dispose();
     });
+
     model.addMapChangeListener(object satisfies MapChangeListener {
         shared actual void mapChanged() => Thread(reportGeneratorThread).start();
         shared actual void mapMetadataChanged() {}
     });
+
     {PlayerChangeListener+} pcListeners = [ newUnitFrame, treeModel, ordersPanelObj,
         resultsPanel ];
     shared actual void playerChanged(Player? old, Player newPlayer) {
@@ -295,8 +316,9 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         Thread(reportGeneratorThread).start();
         playerLabel.arguments = [newPlayer];
     }
+
     assert (exists thisReference =
-            ComponentParentStream(contentPane).narrow<JFrame>().first);
+            ComponentParentStream(contentPane).narrow<JFrame>().first); // TODO: Make menu classes take Component (e.g. 'contentPane') and derive the containing frame using ComponentParentStream themselves
     jMenuBar = workerMenu(menuHandler.actionPerformed,
         thisReference, driver);
     pack();

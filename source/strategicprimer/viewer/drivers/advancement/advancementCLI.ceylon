@@ -43,10 +43,13 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 import lovelace.util.common {
     matchingValue,
     singletonRandom,
-    PathWrapper
+    PathWrapper,
+    todo
 }
+
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
+
 "A factory for the worker-advancement CLI driver."
 service(`interface DriverFactory`)
 shared class AdvancementCLIFactory() satisfies ModelDriverFactory {
@@ -62,6 +65,7 @@ shared class AdvancementCLIFactory() satisfies ModelDriverFactory {
         includeInGUIList = false;
         supportedOptions = [ "--current-turn=NN", "--allow-expert-mentoring" ];
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IWorkerModel model) {
@@ -70,13 +74,16 @@ shared class AdvancementCLIFactory() satisfies ModelDriverFactory {
             return createDriver(cli, options, WorkerModel.copyConstructor(model));
         }
     }
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             WorkerModel(map, path);
 }
+
 "The worker-advancement CLI driver."
 shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
         satisfies CLIDriver {
     shared actual IWorkerModel model;
+
     "Let the user add hours to a Skill or Skills in a Job."
     void advanceJob(IJob job, Boolean allowExpertMentoring) {
         MutableList<ISkill> skills = ArrayList{ elements = job; };
@@ -104,7 +111,7 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             Integer hours = cli.inputNumber("Hours of experience to add: ") else 0;
             if (allowExpertMentoring) {
                 Integer hoursPerHour = cli.inputNumber("'Hours' between hourly checks: ")
-                    else 0;
+                    else 0; // TODO: The 0 here causes an infinite loop
                 variable Integer remaining = hours;
                 while (remaining > 0) {
                     skill.addHours(Integer.largest(remaining, hoursPerHour),
@@ -127,6 +134,7 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             }
         }
     }
+
     "Let the user add experience to a worker."
     void advanceSingleWorker(IWorker worker, Boolean allowExpertMentoring) {
         MutableList<IJob> jobs = ArrayList { elements = worker; };
@@ -156,7 +164,9 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             }
         }
     }
+
     "Let the user add experience in a single Skill to all of a list of workers."
+    todo("Support expert mentoring")
     void advanceWorkersInSkill(String jobName, String skillName, IWorker* workers) {
         Integer hours = cli.inputNumber("Hours of experience to add: ") else 0;
         for (worker in workers) {
@@ -168,7 +178,7 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                 if (oldLevel == 0, skill.name == "miscellaneous",
                     cli.inputBooleanInSeries("``worker.name`` gained ``skill.
                         level`` level(s) in miscellaneous, choose another skill?",
-                    "misc-replacement")) {
+                    "misc-replacement")) { // FIXME: Indentation
                     MutableList<String> gains = ArrayList<String>();
                     for (i in 0:skill.level) {
                         ISkill replacement;
@@ -203,10 +213,12 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             }
         }
     }
+
     "Ensure that there is a Job by the given name in each worker, and return a
-     collection of those Jobs."
+     collection of those Jobs." // FIXME: Test that this actually works when some workers lack the Job!
     {IJob*} getWorkerJobs(String jobName, IWorker* workers) =>
             workers.map(shuffle(IWorker.getJob)(jobName)).distinct;
+
     "Let the user add experience in a given Job to all of a list of workers."
     void advanceWorkersInJob(String jobName, IWorker* workers) {
         {IJob*} jobs = getWorkerJobs(jobName, *workers);
@@ -241,6 +253,7 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             }
         }
     }
+
     "Let the user add experience to a worker or workers in a unit."
     void advanceWorkersInUnit(IUnit unit, Boolean allowExpertMentoring) {
         MutableList<IWorker> workers = ArrayList { elements = unit.narrow<IWorker>(); };
@@ -287,6 +300,7 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             }
         }
     }
+
     "Let the user add experience to a player's workers."
     void advanceWorkers(IWorkerModel model, Player player, Boolean allowExpertMentoring) {
         MutableList<IUnit> units = ArrayList {
@@ -305,6 +319,7 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             model.setModifiedFlag(map, true);
         }
     }
+
     "Let the user choose a player to run worker advancement for."
     shared actual void startDriver() {
         MutableList<Player> playerList = ArrayList { elements = model.players; };

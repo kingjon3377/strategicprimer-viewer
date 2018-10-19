@@ -31,6 +31,7 @@ import java.awt {
 import strategicprimer.model.common.map {
     Player
 }
+
 """A class to respond to "change current player" menu items."""
 shared class PlayerChangeMenuListener(IDriverModel model)
         satisfies ActionListener&PlayerChangeSource {
@@ -39,6 +40,11 @@ shared class PlayerChangeMenuListener(IDriverModel model)
             listeners.add(listener);
     shared actual void removePlayerChangeListener(PlayerChangeListener listener) =>
             listeners.remove(listener);
+
+    "Get the window containing the given component. This goes beyond
+     [[ComponentParentStream|lovelace.util.jvm::ComponentParentStream]] in that
+     we get the invoker of any [[pop-up menu|JPopupMenu]], and we also throw
+     away the results of the intermediate steps."
     Frame? getContainingFrame(Component? component) {
         variable Component? temp = component;
         while (exists local = temp) {
@@ -52,6 +58,10 @@ shared class PlayerChangeMenuListener(IDriverModel model)
         }
         return null;
     }
+
+    "Handle the event caused by the player choosing the menu item: show a
+     dialog asking the user to choose the new current player. Once the user
+     has done so, notify all listeners of the change."
     shared actual void actionPerformed(ActionEvent event) {
         Player currentPlayer;
         {Player*} players;
@@ -63,7 +73,7 @@ shared class PlayerChangeMenuListener(IDriverModel model)
             players = model.map.players;
         }
         if (is Player retval = JOptionPane.showInputDialog(
-            getContainingFrame(as<Component>(event.source)),
+            getContainingFrame(as<Component>(event.source)), // TODO: fix indentation here
             "Player to view:", "Choose New Player:",
             JOptionPane.plainMessage, null, ObjectArray.with(players),
             currentPlayer)) {

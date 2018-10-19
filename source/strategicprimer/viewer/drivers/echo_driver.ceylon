@@ -60,11 +60,15 @@ shared class EchoDriverFactory satisfies UtilityDriverFactory {
         ParamCount.two, "Read, then write a map.",
         "Read and write a map, correcting deprecated syntax.",
         true, false, "input.xml", "output.xml", "--current-turn=NN");
+
     shared new () {}
+
     shared actual IDriverUsage usage => staticUsage;
+
     shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
             EchoDriver(options);
 }
+
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated
    syntax. (Because of that usage, warnings are disabled.)"""
@@ -88,13 +92,13 @@ shared class EchoDriver(SPOptions options) satisfies UtilityDriver {
                 if (exists mainForest = map.fixtures[location]?.narrow<Forest>()?.first,
                         mainForest.id < 0) {
                     Integer id = 1147200 + location.row * 176 + location.column;
-                    idFactory.register(id);
+                    idFactory.register(id); // TODO: Inline all this; IDRegistrar.register returns the ID
                     mainForest.id = id;
                 }
                 if (exists mainGround = map.fixtures[location]?.narrow<Ground>()?.first,
                         mainGround.id < 0) {
                     Integer id = 1171484 + location.row * 176 + location.column;
-                    idFactory.register(id);
+                    idFactory.register(id); // TODO: Inline all this; IDRegistrar.register returns the ID
                     mainGround.id = id;
                 }
 //                for (fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
@@ -106,6 +110,7 @@ shared class EchoDriver(SPOptions options) satisfies UtilityDriver {
                     }
                 }
             }
+
             if (options.hasOption("--current-turn")) {
                 value currentTurn = Integer.parse(options.getArgument("--current-turn"));
                 if (is Integer currentTurn) {
@@ -115,6 +120,7 @@ shared class EchoDriver(SPOptions options) satisfies UtilityDriver {
                         "--current-turn must be an integer"));
                 }
             }
+
             try {
                 mapIOHelper.writeMap(PathWrapper(outArg), map);
             } catch (IOException except) {
@@ -133,6 +139,7 @@ shared class ForestFixerFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(false, ["-f", "--fix-forest"],
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map", false, false);
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
@@ -141,9 +148,11 @@ shared class ForestFixerFactory() satisfies ModelDriverFactory {
             return createDriver(cli, options, SimpleMultiMapModel.copyConstructor(model));
         }
     }
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
+
 "A driver to fix ID mismatches between forests and Ground in the main and player maps."
 shared class ForestFixerDriver(ICLIHelper cli, SPOptions options, model)
         satisfies CLIDriver {
@@ -154,11 +163,13 @@ shared class ForestFixerDriver(ICLIHelper cli, SPOptions options, model)
     {Ground*} extractGround(IMapNG map, Point location) =>
 //            map.fixtures[location].narrow<Ground>();
             map.fixtures.get(location).narrow<Ground>();
+
     shared actual void startDriver() {
         IMutableMapNG mainMap = model.map;
         for (map->[file, _] in model.subordinateMaps) {
             cli.println("Starting ``file?.string
                 else "a map with no associated path"``");
+
             for (location in map.locations) {
                 {Forest*} mainForests = extractForests(mainMap, location);
                 {Forest*} subForests = extractForests(map, location);
@@ -173,6 +184,7 @@ shared class ForestFixerDriver(ICLIHelper cli, SPOptions options, model)
                         mainMap.addFixture(location, forest.copy(false));
                     }
                 }
+
                 {Ground*} mainGround = extractGround(mainMap, location);
                 {Ground*} subGround = extractGround(map, location);
                 for (ground in subGround) {

@@ -44,11 +44,14 @@ import ceylon.numeric.float {
 import java.lang {
     Types
 }
+
 "A cell renderer for tile-details GUIs."
 class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
     static DefaultListCellRenderer defaultRenderer =
             DefaultListCellRenderer();
+
     static MutableSet<String> missingFilenames = HashSet<String>();
+
     static Icon createDefaultFixtureIcon() {
         Integer imageSize = 24;
         BufferedImage temp = BufferedImage(imageSize, imageSize,
@@ -72,6 +75,7 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
             newCorner.integer);
         return ImageIcon(temp);
     }
+
     "Set a component's height given a fixed with."
     by("http://blog.nobel-joergensen.com/2009/01/18/changing-preferred-size-of-a-html-jlabel/")
     static void setComponentPreferredSize(JComponent component, Integer width) {
@@ -82,8 +86,11 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
         Integer height = ceiling(view.getPreferredSpan(View.yAxis)).integer;
         component.preferredSize = Dimension(wid, height);
     }
+
     static Icon defaultFixtureIcon = createDefaultFixtureIcon();
+
     shared new () { }
+
     Icon getIcon(HasImage obj) {
         String image = obj.image;
         String actualImage;
@@ -107,6 +114,7 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
             return defaultFixtureIcon;
         }
     }
+
     shared actual Component getListCellRendererComponent(SwingList<out TileFixture> list,
             TileFixture val, Integer index, Boolean isSelected, Boolean cellHasFocus) {
         assert (is JLabel component = defaultRenderer.getListCellRendererComponent(list,

@@ -36,6 +36,7 @@ import strategicprimer.drivers.common {
 import lovelace.util.common {
     silentListener
 }
+
 "A list to let the user select which fixtures ought to be searched."
 class FixtureFilterList() extends SwingList<FixtureMatcher>() satisfies ZOrderFilter {
     DefaultListModel<FixtureMatcher> matcherListModel =
@@ -46,8 +47,9 @@ class FixtureFilterList() extends SwingList<FixtureMatcher>() satisfies ZOrderFi
                 FixtureMatcher.simpleMatcher<Grove>(not(Grove.orchard), "Groves"),
                 FixtureMatcher.simpleMatcher<Meadow>(Meadow.field, "Fields"),
                 FixtureMatcher.simpleMatcher<Meadow>(not(Meadow.field), "Meadows"));
+
     shared actual Boolean shouldDisplay(TileFixture fixture) {
-        for (i in 0:matcherListModel.size) {
+        for (i in 0:matcherListModel.size) { // TODO: Condense this loop to if (exists matcher = (0:matcherListModel.size).map(matcherListModel.getElementAt).find(shuffle(curry(FixtureMatcher.matches))(fixture))) ... (subject to type-checking)
             FixtureMatcher matcher = matcherListModel.getElementAt(i);
             if (matcher.matches(fixture)) {
                 return matcher.displayed;
@@ -60,6 +62,7 @@ class FixtureFilterList() extends SwingList<FixtureMatcher>() satisfies ZOrderFi
         selectionModel.addSelectionInterval(size - 1, size - 1);
         return true;
     }
+
     model = matcherListModel;
     selectionModel.selectionMode = ListSelectionModel.multipleIntervalSelection;
     void selectionChanged() {
@@ -68,6 +71,7 @@ class FixtureFilterList() extends SwingList<FixtureMatcher>() satisfies ZOrderFi
                     selectionModel.isSelectedIndex(i);
         }
     }
+
     selectionModel.addListSelectionListener(silentListener(selectionChanged));
     DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
     cellRenderer = object satisfies ListCellRenderer<FixtureMatcher> {
@@ -82,6 +86,7 @@ class FixtureFilterList() extends SwingList<FixtureMatcher>() satisfies ZOrderFi
             return retval;
         }
     };
+
     transferHandler = fixtureFilterTransferHandler;
     dropMode = DropMode.insert;
     dragEnabled = true;

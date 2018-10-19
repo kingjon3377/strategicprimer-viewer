@@ -1,6 +1,7 @@
 import lovelace.util.common {
     todo
 }
+
 "How big, in pixels, the GUI representation of a tile should be at the specified zoom
  level."
 todo("Even better zoom support", "tests")

@@ -7,6 +7,7 @@ import java.util {
 import strategicprimer.model.common.map.fixtures {
     UnitMember
 }
+
 "An interface for objects that want to know when a new unit member (usually a worker) is
  selected."
 todo("combine with similar interfaces?")

@@ -4,6 +4,7 @@ import javax.swing {
 import lovelace.util.jvm {
     BorderedPanel
 }
+
 "Encapsulate the map component in a panel with scroll-bars and set up the connection
  between the scroll-bars and the map's scrolling."
 BorderedPanel mapScrollPanel(IViewerModel model, JComponent component) {

@@ -2,6 +2,7 @@
 shared interface UnitMemberSelectionSource {
     "Add a listener."
     shared formal void addUnitMemberListener(UnitMemberListener listener);
+
     "Remove a listener."
     shared formal void removeUnitMemberListener(UnitMemberListener listener);
 }

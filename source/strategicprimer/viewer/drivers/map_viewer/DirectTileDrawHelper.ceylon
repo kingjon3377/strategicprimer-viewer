@@ -19,8 +19,11 @@ import java.lang {
 "A [[TileDrawHelper]] for version-1 maps that draws directly instead of creating Shapes,
  which proves more efficent in practice."
 object directTileDrawHelper satisfies TileDrawHelper {
+    "A helper to scale an Integer by a Float without making the result a Float."
     Integer multiply(Integer one, Float two) =>
             (halfEven(one * two) + runtime.epsilon).integer;
+
+    "Draw a river."
     void drawRiver(Graphics pen, River river, Integer xCoordinate,
             Integer yCoordinate, Integer width, Integer height) {
         switch (river)
@@ -60,6 +63,8 @@ object directTileDrawHelper satisfies TileDrawHelper {
                 multiply(height, drawingNumericConstants.riverShortDimension));
         }
     }
+
+    "Draw the tile, including symbols for everything on it that we know how to draw."
     shared actual void drawTile(Graphics pen, IMapNG map, Point location,
             Coordinate coordinates, Coordinate dimensions) {
         Graphics context = pen.create();
@@ -119,6 +124,7 @@ object directTileDrawHelper satisfies TileDrawHelper {
             context.dispose();
         }
     }
+
     Coordinate origin = Coordinate(0, 0);
     shared actual void drawTileTranslated(Graphics pen, IMapNG map,
             Point location, Integer width, Integer height) =>

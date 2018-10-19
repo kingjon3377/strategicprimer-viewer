@@ -57,6 +57,7 @@ import lovelace.util.common {
 
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
+
 "A factory for the worker management GUI."
 service(`interface DriverFactory`)
 shared class WorkerMgmtGUIFactory() satisfies GUIDriverFactory {
@@ -71,6 +72,7 @@ shared class WorkerMgmtGUIFactory() satisfies GUIDriverFactory {
         supportedOptions = [ "--current-turn=NN", "--print-empty",
             "--include-unleveled-jobs", "--summarize-large-units" ];
     };
+
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {
         try {
@@ -80,6 +82,7 @@ shared class WorkerMgmtGUIFactory() satisfies GUIDriverFactory {
             return [];
         }
     }
+
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IWorkerModel model) {
@@ -88,13 +91,16 @@ shared class WorkerMgmtGUIFactory() satisfies GUIDriverFactory {
             return createDriver(cli, options, WorkerModel.copyConstructor(model));
         }
     }
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             WorkerModel(map, path);
 }
+
 "A driver to start the worker management GUI."
 shared class WorkerMgmtGUI(ICLIHelper cli, SPOptions options, model)
         satisfies MultiMapGUIDriver&WorkerGUI {
     shared actual IWorkerModel model;
+
     void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {
         log.trace("Inside GUI creation lambda");
         value frame = WorkerMgmtFrame(options, model, menuHandler, this);
@@ -108,16 +114,20 @@ shared class WorkerMgmtGUI(ICLIHelper cli, SPOptions options, model)
             "about");
         log.trace("Registered menu handlers");
         if (model.allMaps.map(Entry.key).every(compose(compose(Iterable<IUnit>.empty,
+
                 model.getUnits), IMapNG.currentPlayer))) {
             pcml.actionPerformed(ActionEvent(frame, ActionEvent.actionFirst,
                 "change current player"));
         }
+
         log.trace("About to show window");
         frame.showWindow();
         log.trace("Window should now be visible");
     }
+
     void reload(WorkerMgmtFrame frame) =>
             frame.playerChanged(model.currentPlayer, model.currentPlayer);
+
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(this), "load", "save", "save as", "new",
@@ -128,6 +138,7 @@ shared class WorkerMgmtGUI(ICLIHelper cli, SPOptions options, model)
         SwingUtilities.invokeLater(defer(createWindow, [menuHandler, pcml]));
         log.trace("Worker GUI window should appear any time now");
     }
+
     "Ask the user to choose a file or files."
     shared actual {PathWrapper*} askUserForFiles() {
         try {
@@ -137,6 +148,7 @@ shared class WorkerMgmtGUI(ICLIHelper cli, SPOptions options, model)
             return [];
         }
     }
+
     shared actual void open(IMutableMapNG map, PathWrapper? path) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(WorkerMgmtGUI.startDriver,

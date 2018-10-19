@@ -64,6 +64,7 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
         includeInGUIList = true;
         supportedOptions = [ "--current-turn=NN" ];
     };
+
     "Ask the user to choose a file or files."
     shared actual {PathWrapper+} askUserForFiles() {
         try {
@@ -73,6 +74,7 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
                 "Choice interrupted or user didn't choose");
         }
     }
+
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IViewerModel model) {
@@ -89,6 +91,7 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
 "A driver to start the map viewer."
 shared class ViewerGUI(model) satisfies ViewerDriver {
     shared actual IViewerModel model;
+
     shared actual void center() {
         Point selection = model.selection;
         MapDimensions dimensions = model.mapDimensions;
@@ -115,9 +118,11 @@ shared class ViewerGUI(model) satisfies ViewerDriver {
         model.visibleDimensions = VisibleDimensions(topRow,
             topRow + visible.height, leftColumn, leftColumn + visible.width);
     }
+
     shared actual void zoomIn() => model.zoomIn();
     shared actual void zoomOut() => model.zoomOut();
     shared actual void resetZoom() => model.resetZoom();
+
     void createWindow(MenuBroker menuHandler) {
         SPFrame&MapGUI frame = ViewerFrame(model, menuHandler.actionPerformed, this);
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
@@ -141,6 +146,7 @@ shared class ViewerGUI(model) satisfies ViewerDriver {
             "about");
         frame.showWindow();
     }
+
     shared actual void startDriver() {
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(this), "load", "save", "save as", "new",
@@ -152,6 +158,7 @@ shared class ViewerGUI(model) satisfies ViewerDriver {
         menuHandler.register(silentListener(center), "center");
         SwingUtilities.invokeLater(defer(createWindow, [menuHandler]));
     }
+
     "Ask the user to choose a file or files."
     shared actual {PathWrapper+} askUserForFiles() {
         try {
@@ -161,6 +168,7 @@ shared class ViewerGUI(model) satisfies ViewerDriver {
                 "Choice interrupted or user didn't choose");
         }
     }
+
     shared actual void open(IMutableMapNG map, PathWrapper? path) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,

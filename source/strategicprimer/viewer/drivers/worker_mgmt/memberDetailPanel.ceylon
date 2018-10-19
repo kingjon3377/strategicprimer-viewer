@@ -50,15 +50,17 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 import strategicprimer.viewer.drivers.map_viewer {
     imageLoader
 }
+
 "A panel to show the details of the currently selected unit-member."
 JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     JPanel statPanel = JPanel();
-    FunctionalGroupLayout statLayout = FunctionalGroupLayout(statPanel);
+    FunctionalGroupLayout statLayout = FunctionalGroupLayout(statPanel); // TODO: Add parameters to let us pass autoCreateGaps, autoCreateContainerGaps, to this method
     statPanel.layout = statLayout;
     statPanel.border = BorderFactory.createEmptyBorder();
     statLayout.autoCreateGaps = true;
     statLayout.autoCreateContainerGaps = true;
-    class StatLabel(Integer(WorkerStats) stat) extends JLabel("+NaN") {
+
+    class StatLabel(Integer(WorkerStats) stat) extends JLabel("+NaN") { // TODO: Replace with InterpolatedLabel
         shared void recache(WorkerStats? stats) {
             if (exists stats) {
                 text = WorkerStats.getModifierString(stat(stats));
@@ -75,7 +77,8 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     StatLabel chaLabel = StatLabel(WorkerStats.charisma);
     StatLabel[6] statLabels = [strLabel, dexLabel, conLabel, intLabel, wisLabel,
         chaLabel];
-    JLabel caption(String string) {
+
+    JLabel caption(String string) { // TODO: =>
         return JLabel("<html><b>``string``:</b></html>");
     }
     JLabel typeCaption = caption("Member Type");
@@ -92,6 +95,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     JLabel chaCaption = caption("Cha");
     JLabel jobsCaption = caption("Job Levels");
     JPanel jobsPanel = JPanel(GridLayout(0, 1));
+
     statLayout.setVerticalGroup(statLayout.sequentialGroupOf(
         statLayout.parallelGroupOf(typeCaption, typeLabel),
         statLayout.parallelGroupOf(nameCaption, nameLabel),
@@ -100,6 +104,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
         statLayout.parallelGroupOf(dexCaption, dexLabel, wisCaption, wisLabel),
         statLayout.parallelGroupOf(conCaption, conLabel, chaCaption, chaLabel),
         statLayout.parallelGroupOf(jobsCaption, jobsPanel)));
+
     statLayout.setHorizontalGroup(statLayout.parallelGroupOf(
         statLayout.sequentialGroupOf(
             statLayout.parallelGroupOf(typeCaption, nameCaption, kindCaption,
@@ -110,6 +115,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
                 statLayout.sequentialGroupOf(intCaption, intLabel),
                 statLayout.sequentialGroupOf(wisCaption, wisLabel),
                 statLayout.sequentialGroupOf(chaCaption, chaLabel), jobsPanel))));
+
     statLayout.linkSize(SwingConstants.horizontal, typeCaption, nameCaption, kindCaption,
         jobsCaption);
     statLayout.linkSize(SwingConstants.horizontal, typeLabel, nameLabel, kindLabel,
@@ -120,6 +126,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     statLayout.linkSize(SwingConstants.vertical, typeCaption, typeLabel);
     statLayout.linkSize(SwingConstants.vertical, nameCaption, nameLabel);
     statLayout.linkSize(SwingConstants.vertical, kindCaption, kindLabel);
+
     object portraitComponent extends JComponent() {
         shared variable Image? portrait = null;
         shared actual void paintComponent(Graphics pen) {
@@ -129,14 +136,16 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             }
         }
     }
+
     JScrollPane statPanelWrapped = JScrollPane(horizontalSplit(statPanel,
             portraitComponent, 0.6),
         (platform.systemIsMac) then ScrollPaneConstants.verticalScrollbarAlways
-        else ScrollPaneConstants.verticalScrollbarAsNeeded,
+        else ScrollPaneConstants.verticalScrollbarAsNeeded, // TODO: indentation
         (platform.systemIsMac) then ScrollPaneConstants.horizontalScrollbarAlways
-        else ScrollPaneConstants.horizontalScrollbarAsNeeded);
+        else ScrollPaneConstants.horizontalScrollbarAsNeeded); // TODO: indentation
     JComponent split = verticalSplit(statPanelWrapped, resultsPanel);
     split.border = BorderFactory.createEmptyBorder();
+
     variable UnitMember? current = null;
     void recache() {
         UnitMember? local = current;
@@ -148,11 +157,12 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             for (label in statLabels) {
                 label.recache(stats);
             }
-            jobsPanel.removeAll();
-            for (job in local) {
+            jobsPanel.removeAll(); // TODO: Pull this statement out of all of the if branches to above the first if statement
+            for (job in local) { // TODO: Change to local.filter(not(IJob.emptyJob)) and remove if
                 if (!job.emptyJob) {
                     JLabel label = JLabel("``job.name`` ``job.level``");
                     if (exists firstSkill = job.first) {
+                        // TODO: Replace with label.toolTipText = "Skills: ``", ".join(job.map(skillString))``"; (defining skillString somewhere if there isn't a suitable String attribute in ISkill already)
                         StringBuilder skillsBuilder = StringBuilder();
                         skillsBuilder.append("Skills: ``firstSkill.name`` ``firstSkill
                             .level``");
@@ -242,6 +252,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
         }
         portraitComponent.repaint();
     }
+
     object retval extends BorderedPanel() satisfies UnitMemberListener {
         shared actual void memberSelected(UnitMember? old, UnitMember? selected) {
             if (is ProxyFor<out UnitMember> selected) {
@@ -267,6 +278,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             }
         }
     }
+
     retval.pageStart = JLabel("<html><h2>Unit Member Details:</h2></html>");
     retval.center = split;
     recache();

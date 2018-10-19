@@ -55,9 +55,10 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.common.idreg {
     IDRegistrar
 }
+
 "A visual list-based representation of the contents of a tile."
 // Can't make a class (yet) because the createDefaultDragGestureRecognizer() line would
-// have an unavoidable 'this' reference
+// have an unavoidable 'this' reference // TODO: Try to work around that to fool the typechecker into allowing it
 shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
         JComponent parentComponent, FixtureListModel listModel, IDRegistrar idf,
         Anything() mutationListener, {Player*} players) {
@@ -65,6 +66,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
             satisfies DragGestureListener&SelectionChangeListener {
         cellRenderer = FixtureCellRenderer();
         selectionMode = ListSelectionModel.multipleIntervalSelection;
+
         shared actual void dragGestureRecognized(DragGestureEvent event) {
             List<TileFixture> selection = CeylonList(selectedValuesList);
             if (exists first = selection.first) {
@@ -78,6 +80,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
                 event.startDrag(null, payload);
             }
         }
+
         shared actual Boolean equals(Object that) {
             if (is SwingList<out Anything> that) {
                 return model == that.model;
@@ -85,9 +88,11 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
                 return false;
             }
         }
+
         shared actual Integer hash => listModel.hash;
         shared actual void selectedPointChanged(Point? old, Point newPoint) =>
                 listModel.selectedPointChanged(old, newPoint);
+
         object fixtureMouseListener extends MouseAdapter() {
             void handleMouseEvent(MouseEvent event) {
                 if (event.popupTrigger, event.clickCount == 1) {
@@ -104,8 +109,10 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
         }
         addMouseListener(fixtureMouseListener);
     }
+
     DragSource.defaultDragSource.createDefaultDragGestureRecognizer(retval,
         DnDConstants.actionCopy, retval);
+
     object dropListener extends DropTargetAdapter() {
         todo("Figure out how to skip all this (return true) on non-local drags")
         Boolean isXfrFromOutside(DropTargetEvent dtde) {
@@ -116,6 +123,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
                 return true;
             }
         }
+
         void handleDrag(DropTargetDragEvent dtde) {
             if (dtde.dropAction.and(DnDConstants.actionCopy) != 0,
                 (dtde.currentDataFlavorsAsList.contains(FixtureTransferable.flavor) ||
@@ -126,10 +134,12 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
                 dtde.rejectDrag();
             }
         }
+
         shared actual void dragEnter(DropTargetDragEvent dtde) => handleDrag(dtde);
         shared actual void dragOver(DropTargetDragEvent dtde) => handleDrag(dtde);
         shared actual void dropActionChanged(DropTargetDragEvent dtde) =>
                 handleDrag(dtde);
+
         void handleDrop(Transferable trans) {
             ObjectArray<DataFlavor>? flavors = trans.transferDataFlavors;
             if (exists flavors) {
@@ -151,6 +161,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
                 throw UnsupportedFlavorException(DataFlavor(`DataFlavor`, "null"));
             }
         }
+
         shared actual void drop(DropTargetDropEvent dtde) {
             if (isXfrFromOutside(dtde)) {
                 for (flavor in dtde.currentDataFlavorsAsList) {
@@ -174,7 +185,9 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
             }
         }
     }
+
     retval.dropTarget = DropTarget(retval, dropListener);
+
     createHotKey(retval, "delete",
         (ActionEvent event) => listModel.removeAll(*retval.selectedValuesList),
         JComponent.whenAncestorOfFocusedComponent,

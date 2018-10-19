@@ -39,6 +39,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.drivers.gui.common {
     SPDialog
 }
+
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
     JTextField searchField = JTextField("", 20);
@@ -46,33 +47,36 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     JCheckBox vertically = JCheckBox("Search vertically then horizontally");
     JCheckBox caseSensitive = JCheckBox("Case-sensitive search");
     Component&ZOrderFilter filterList = FixtureFilterList();
+
     "Whether the fixture has a name matching the given pattern."
     Boolean matchesName(String pattern, IFixture fixture, Boolean caseSensitivity) {
         if (is HasName fixture) {
             String name = (caseSensitivity) then fixture.name else
-            fixture.name.lowercased;
+            fixture.name.lowercased; // TODO: Fix indentation
             return name.contains(pattern);
         } else {
             return false;
         }
     }
+
     "Whether the fixture has a kind matching the given pattern."
     Boolean matchesKind(String pattern, IFixture fixture, Boolean caseSensitivity) {
         if (is HasKind fixture) {
             String kind = (caseSensitivity) then fixture.kind else
-            fixture.kind.lowercased;
+            fixture.kind.lowercased; // TODO: Fix indentation
             return kind.contains(pattern);
         } else {
             return false;
         }
     }
+
     "Whether the fixture has an owner matching the given pattern."
     Boolean matchesOwner(String pattern, Integer? idNum, IFixture fixture,
             Boolean caseSensitivity) {
         if (is HasOwner fixture) {
             Player owner = fixture.owner;
             String ownerName = (caseSensitivity) then owner.name else
-            owner.name.lowercased;
+            owner.name.lowercased; // TODO: Fix indentation
             if (exists idNum, owner.playerId == idNum || ownerName.contains(pattern)) {
                 return true;
             } else if ("me".equals(pattern.lowercased), owner.current) {
@@ -87,6 +91,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             return false;
         }
     }
+
     "Whether the fixture matches the pattern in any of our simple ways."
     Boolean matchesSimple(String pattern, Integer? idNum, IFixture fixture,
             Boolean caseSensitivity) {
@@ -104,6 +109,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             return false;
         }
     }
+
     "Whether the given fixture matches the given pattern in any way we recognize."
     Boolean matches(IFixture fixture, String pattern, Integer? idNum,
             Boolean caseSensitivity) {
@@ -115,6 +121,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             return false;
         }
     }
+
     "Search for the current pattern. If the pattern is found (as the ID of a fixture,
      or the name of a [[HasName]], or the kind of a [[HasKind]]), select the tile
      containing the thing found. If the pattern is the empty string, don't search."
@@ -130,7 +137,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             return;
         }
         Integer? idNum;
-        if (is Integer temp = Integer.parse(pattern)) {
+        if (is Integer temp = Integer.parse(pattern)) { // TODO: Replace with = as<Integer>(Integer.parse(pattern))
             idNum = temp;
         } else {
             idNum = null;
@@ -138,49 +145,60 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         if (exists result = PointIterator(model.mapDimensions, !backwards.selected,
                 !vertically.selected, model.selection).find(
 //                    (point) => model.map.fixtures[point].any( // TODO: syntax sugar once compiler bug fixed
-                    (point) => model.map.fixtures.get(point).any(
+                    (point) => model.map.fixtures.get(point).any( // TODO: extract named method (which'd have to be curried here, but better that than an explicit lambda)
                         shuffle(curry(matches))(pattern, idNum, caseSensitivity)))) {
             log.debug("Found in point ``result``");
             model.selection = result;
         }
     }
-    void okListener(ActionEvent event) {
+
+    void okListener(ActionEvent event) { // TODO: Make a void function and use silentListener()?
         search();
         setVisible(false);
         parent.requestFocus();
         dispose();
     }
+
     searchField.addActionListener(okListener);
     searchField.setActionCommand("OK");
-    JPanel searchBoxPane = JPanel();
+
+    JPanel searchBoxPane = JPanel(); // TODO: Use a different layout than BoxLayout for contentPanel so we won't have to wrap searchField in a JPanel
     searchBoxPane.add(searchField);
+
     JPanel contentPanel = boxPanel(BoxAxis.pageAxis);
     contentPanel.add(searchBoxPane);
     contentPanel.add(backwards);
     contentPanel.add(vertically);
     contentPanel.add(caseSensitive);
-    JPanel&BoxPanel buttonPanel = boxPanel(BoxAxis.lineAxis);
+
+    JPanel&BoxPanel buttonPanel = boxPanel(BoxAxis.lineAxis); // TODO: Use a better layout
     buttonPanel.addGlue();
+
     JButton okButton = listenedButton("OK", okListener);
-    void cancelListener(ActionEvent event) {
+
+    void cancelListener(ActionEvent event) { // TODO: Make a void function and use silentListener()?
         setVisible(false);
         parent.requestFocus();
         dispose();
     }
     JButton cancelButton = listenedButton("Cancel", cancelListener);
+
     platform.makeButtonsSegmented(okButton, cancelButton);
     buttonPanel.add(okButton);
+
     if (platform.systemIsMac) {
         searchField.putClientProperty("JTextField.variant", "search");
         searchField.putClientProperty("JTextField.Search.FindAction", okListener);
         searchField.putClientProperty("JTextField.Search.CancelAction",
-                    (ActionEvent event) => searchField.text = "");
+                    (ActionEvent event) => searchField.text = ""); // TODO: Extract named method
     } else {
         buttonPanel.addGlue();
     }
+
     buttonPanel.add(cancelButton);
     buttonPanel.addGlue();
     contentPanel.add(buttonPanel);
+
     void populate(Anything fixture) {
         if (is TileFixture fixture) {
             filterList.shouldDisplay(fixture);
@@ -188,8 +206,10 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             fixture.each(populate);
         }
     }
+
     void populateAll() => populate(model.map.fixtures.map(Entry.item));
     SwingUtilities.invokeLater(populateAll);
+
     JScrollPane scrollPane;
     if (platform.systemIsMac) {
         scrollPane = JScrollPane(filterList,
@@ -200,6 +220,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
             ScrollPaneConstants.verticalScrollbarAsNeeded,
             ScrollPaneConstants.horizontalScrollbarAsNeeded);
     }
+
     contentPane = horizontalSplit(contentPanel,
         BorderedPanel.verticalPanel(JLabel("Find only ..."),
             scrollPane, null), 0.6);

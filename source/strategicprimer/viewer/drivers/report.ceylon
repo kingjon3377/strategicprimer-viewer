@@ -84,7 +84,8 @@ import lovelace.util.common {
     matchingValue,
     silentListener,
     entryMap,
-    PathWrapper
+    PathWrapper,
+    todo
 }
 import lovelace.util.jvm {
     FileChooser
@@ -92,7 +93,11 @@ import lovelace.util.jvm {
 import com.pump.window {
     WindowMenu
 }
+
+"An object to help us present files with only as much of their paths as
+ necessary to uniquely identify them, without their shared prefix."
 object suffixHelper {
+    "Get the last [[count]] path elements in [[the given path|file]]."
     String suffix(Path file, Integer count) {
         Integer start;
         if (count >= file.elementPaths.size) {
@@ -108,6 +113,10 @@ object suffixHelper {
         }
         return "/".join(file.elementPaths.sublist(start, end));
     }
+
+    "Divide the given [[filename|file]] into prefix and suffix, returning the
+     suffix, such that the prefix is shared with all files in [[all]], but is
+     otherwise as long as possible."
     shared String shortestSuffix({Path*} all, Path file) {
         Integer longestPath = Integer.max(all.map(compose(Sequential<Path>.size,
             Path.elementPaths))) else 1;
@@ -127,6 +136,7 @@ object suffixHelper {
         return file.string;
     }
 }
+
 "A factory for a driver to produce a report of the contents of a map."
 service(`interface DriverFactory`)
 shared class ReportCLIFactory() satisfies ModelDriverFactory {
@@ -145,6 +155,7 @@ shared class ReportCLIFactory() satisfies ModelDriverFactory {
             "--player=NN", "--current-turn=NN", "--serve[=8080]"
         ];
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (options.hasOption("--serve")) {
@@ -156,8 +167,8 @@ shared class ReportCLIFactory() satisfies ModelDriverFactory {
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
-
 }
+
 """A driver to "serve" a report on the contents of a map on an embedded HTTP server."""
 class ReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver {
     shared actual IDriverModel model;
@@ -219,11 +230,13 @@ class ReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver {
                 };
             }
             log.info("About to start serving on port ``port``");
-            newServer {
+            newServer { // TODO: Switch to positional-argument format (parentheses, not braces) for this, and snug up
                 rootHandler, *endpoints
             }.start(SocketAddress("127.0.0.1", port));
         }
     }
+
+    todo("Log parsing failures")
     shared actual void startDriver() {
         value tempPort = Integer.parse(options.getArgument("--serve"));
         Integer port;
@@ -242,9 +255,11 @@ class ReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver {
         serveReports(port, player);
     }
 }
+
 "A driver to produce a report of the contents of a map."
 shared class ReportCLI(SPOptions options, model) satisfies ReadOnlyDriver {
     shared actual IDriverModel model;
+
     void writeReport(Path? filename, IMapNG map) {
         if (exists filename) {
             Player player;
@@ -278,6 +293,7 @@ shared class ReportCLI(SPOptions options, model) satisfies ReadOnlyDriver {
             log.error("Asked to make report from map with no filename");
         }
     }
+
     shared actual void startDriver() {
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.allMaps) {
@@ -293,6 +309,7 @@ shared class ReportCLI(SPOptions options, model) satisfies ReadOnlyDriver {
         }
     }
 }
+
 "A factory for a driver to show tabular reports of the contents of a player's map in a
  GUI."
 service(`interface DriverFactory`)
@@ -301,6 +318,7 @@ shared class TabularReportGUIFactory() satisfies GUIDriverFactory {
         ParamCount.one, "Tabular Report Viewer",
         "Show the contents of a map in tabular form", false, true);
     "Ask the user to choose a file."
+
     shared actual {PathWrapper*} askUserForFiles() {
         try {
             return SPFileChooser.open(null).files;
@@ -309,16 +327,19 @@ shared class TabularReportGUIFactory() satisfies GUIDriverFactory {
                 "Choice interrupted or user didn't choose");
         }
     }
+
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => TabularReportGUI(cli, options, model);
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleDriverModel(map, path);
 }
+
 "A driver to show tabular reports of the contents of a player's map in a GUI."
 shared class TabularReportGUI(ICLIHelper cli, SPOptions options, model)
         satisfies GUIDriver {
     shared actual IDriverModel model;
+
     shared actual void startDriver() {
         SPFrame window = SPFrame("Tabular Report", this, Dimension(640, 480));
         JTabbedPane frame = JTabbedPane(JTabbedPane.top, JTabbedPane.scrollTabLayout);
@@ -342,6 +363,7 @@ shared class TabularReportGUI(ICLIHelper cli, SPOptions options, model)
         window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
         window.showWindow();
     }
+
     "Ask the user to choose a file."
     shared actual {PathWrapper*} askUserForFiles() {
         try {
@@ -351,10 +373,11 @@ shared class TabularReportGUI(ICLIHelper cli, SPOptions options, model)
                 "Choice interrupted or user didn't choose");
         }
     }
+
     shared actual void open(IMutableMapNG map, PathWrapper? path) =>
             model.setMap(map, path);
-
 }
+
 "A factory for a driver to produce tabular (CSV) reports of the contents of a player's
  map."
 service(`interface DriverFactory`)
@@ -369,6 +392,7 @@ shared class TabularReportCLIFactory() satisfies ModelDriverFactory {
         includeInGUIList = false;
         supportedOptions = ["--serve[=8080]"];
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (options.hasOption("--serve")) {
@@ -381,11 +405,14 @@ shared class TabularReportCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
+
 class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver {
     shared actual IDriverModel model;
+
     Item->Key reverseEntry<Key, Item>(Key->Item entry)
             given Key satisfies Object given Item satisfies Object =>
             entry.item->entry.key;
+
     void serveReports(Integer port) {
         Map<Path, IMapNG> mapping;
         if (is IMultiMapModel model) {
@@ -400,8 +427,10 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
         } else {
             mapping = map { parsePath("unknown.xml")->model.map };
         }
+
         MutableMap<[String, String], StringBuilder> builders =
                 HashMap<[String, String], StringBuilder>();
+
         Anything(String)(String) filenameFunction(Path base) {
             String baseName = suffixHelper.shortestSuffix(mapping.keys, base);
             return (String tableName) {
@@ -414,6 +443,7 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
                 }
             };
         }
+
         void createReports(IMapNG map, Path? mapFile) {
             if (exists mapFile) {
                 try {
@@ -426,6 +456,7 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
                 log.error("Asked to create reports from map with no filename");
             }
         }
+
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.allMaps) {
                 createReports(map, parsePath(file?.filename else "unknown.xml"));
@@ -433,6 +464,7 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
         } else {
             createReports(model.map, parsePath(model.mapFile?.filename else "unknown.xml"));
         }
+
         {Endpoint*} endpoints = builders.map(([file, table]->builder) =>
             Endpoint {
                 path = matchEquals("/``file``.``table``.csv");
@@ -442,6 +474,7 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
                     response.writeString(builder.string);
                 }
             });
+
         {Endpoint*} tocs = mapping.keys
             .map(curry(suffixHelper.shortestSuffix)(mapping.keys)).map(
                     (path) => Endpoint {
@@ -468,6 +501,7 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
                                                   </html>");
                 }
             });
+
         Endpoint rootHandler = Endpoint {
             path = isRoot();
             void service(Request request, Response response) {
@@ -492,26 +526,30 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
                      </html>");
             }
         };
+
         log.info("About to start serving on port ``port``");
-        newServer {
+        newServer { // TODO: Use () syntax, snug up
             rootHandler, *endpoints.chain(tocs)
         }.start(SocketAddress("127.0.0.1", port));
     }
+
     shared actual void startDriver() {
         value tempPort = Integer.parse(options.getArgument("--serve"));
         Integer port;
         if (is Integer tempPort) {
             port = tempPort;
         } else {
-            port = 8080;
+            port = 8080; // TODO: log parsing failure
         }
         serveReports(port);
     }
 }
+
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
 shared class TabularReportCLI(ICLIHelper cli, SPOptions options, model)
         satisfies ReadOnlyDriver {
     shared actual IDriverModel model;
+
     MutableMap<String,Writer> writers = HashMap<String,Writer>();
     Anything(String)(String) filenameFunction(Path base) {
         assert (exists baseName = base.elements.terminal(1).first);
@@ -539,6 +577,7 @@ shared class TabularReportCLI(ICLIHelper cli, SPOptions options, model)
         }
         return retval;
     }
+
     void createReports(IMapNG map, Path? mapFile) {
         if (exists mapFile) {
             try {
@@ -551,6 +590,7 @@ shared class TabularReportCLI(ICLIHelper cli, SPOptions options, model)
             log.error("Asked to create reports from map with no filename");
         }
     }
+
     shared actual void startDriver() {
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.allMaps) {
@@ -564,7 +604,7 @@ shared class TabularReportCLI(ICLIHelper cli, SPOptions options, model)
                     then parsePath(file.filename) else null);
         }
         for (writer in writers.items) {
-            writer.close();
+            writer.close(); // TODO: Once there's lovelace.util.common::invoke use it to condense this loop
         }
     }
 }

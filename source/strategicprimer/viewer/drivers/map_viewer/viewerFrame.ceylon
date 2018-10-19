@@ -81,29 +81,36 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
             return containingWindow(parent);
         }
     }
+
     AbstractTableModel&{FixtureMatcher*}&ZOrderFilter&Comparator<TileFixture> tableModel =
             FixtureFilterTableModel();
+
     shared actual IViewerModel mapModel;
     shared actual String windowName = "Map Viewer";
     Anything(ActionEvent) menuHandler;
     ViewerGUI driver;
+
     shared new(IViewerModel model, Anything(ActionEvent) menuListener, ViewerGUI driver)
             extends SPFrame("Map Viewer", driver) {
         mapModel = model;
         menuHandler = menuListener;
         this.driver = driver;
     }
+
     void acceptDroppedFileImpl(PathWrapper file) {
         value map = mapReaderAdapter.readMapModel(file, warningLevels.default);
         SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver, ViewerGUI),
             [ViewerModel.copyConstructor(map)]));
     }
+
     void setMapWrapper(IMutableMapNG map, PathWrapper file, Boolean modified) =>
             mapModel.setMap(map, file, modified);
+
     void alternateAcceptDroppedFile(PathWrapper file) {
         value newModel = mapReaderAdapter.readMapModel(file, warningLevels.default);
         SwingUtilities.invokeLater(defer(setMapWrapper, [newModel.map, file, false]));
     }
+
     shared actual void acceptDroppedFile(PathWrapper file) {
         if (mapModel.mapModified) {
             JThread(curry(acceptDroppedFileImpl)(file)).start();
@@ -111,29 +118,36 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
             JThread(curry(alternateAcceptDroppedFile)(file)).start();
         }
     }
+
     shared actual Boolean supportsDroppedFiles = true;
+
     MapComponent mapPanel = MapComponent(mapModel, tableModel.shouldDisplay, tableModel);
+
     // can't use silentListener because repaint() is overloaded
     tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint());
     mapModel.addGraphicalParamsListener(mapPanel);
     mapModel.addMapChangeListener(mapPanel);
     mapModel.addSelectionChangeListener(mapPanel);
+
     JComponent&SelectionChangeListener&VersionChangeListener detailPane =
             detailPanel(mapModel.mapDimensions.version, mapModel);
     mapModel.addVersionChangeListener(detailPane);
     mapModel.addSelectionChangeListener(detailPane);
+
     void displayAllListener() {
         for (matcher in tableModel) {
             matcher.displayed = true;
         }
         tableModel.fireTableRowsUpdated(0, tableModel.rowCount);
     }
+
     void displayNoneListener() {
         for (matcher in tableModel) {
             matcher.displayed = false;
         }
         tableModel.fireTableRowsUpdated(0, tableModel.rowCount);
     }
+
     JComponent createFilterPanel() {
         JTable table = JTable(tableModel);
         table.dragEnabled = true;
@@ -157,12 +171,14 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
         return BorderedPanel.verticalPanel(JLabel("Display ..."), JScrollPane(table),
             buttonPanel);
     }
+
     contentPane = verticalSplit(horizontalSplit(mapScrollPanel(mapModel, mapPanel),
         createFilterPanel(), 0.95), detailPane, 0.9);
     (super of Container).preferredSize = Dimension(800, 600);
     setSize(800, 600);
     setMinimumSize(Dimension(800, 600));
     pack();
+
     mapPanel.requestFocusInWindow();
     "When the window is maximized, restored, or de-iconified, force the listener that is
      listening for *resize* events to adjust the number of tiles displayed properly."
@@ -179,6 +195,7 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
     }
     addWindowListener(windowSizeListener);
     addWindowStateListener(windowSizeListener);
+
     jMenuBar = SPMenu(SPMenu.createFileMenu(menuHandler, driver),
         SPMenu.createMapMenu(menuHandler, driver),
         SPMenu.createViewMenu(menuHandler, driver),

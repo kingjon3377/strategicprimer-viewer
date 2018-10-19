@@ -54,20 +54,24 @@ import lovelace.util.common {
     isNumeric,
     parseInt
 }
+
 "A dialog to let the user add a new unit."
 shared class NewUnitDialog(variable Player player, IDRegistrar idf)
         extends SPDialog(null, "Add a New Unit")
         satisfies NewUnitSource&PlayerChangeListener {
     MutableList<NewUnitListener> listeners = ArrayList<NewUnitListener>();
+
     JTextField nameField = JTextField(10);
     JTextField kindField = JTextField(10);
     JFormattedTextField idField = JFormattedTextField(NumberFormat.integerInstance);
+
     shared actual void playerChanged(Player? old, Player newPlayer) =>
             player = newPlayer;
     shared actual void addNewUnitListener(NewUnitListener listener) =>
             listeners.add(listener);
     shared actual void removeNewUnitListener(NewUnitListener listener) =>
             listeners.remove(listener);
+
     void okListener(ActionEvent event) {
         String name = nameField.text.trimmed;
         String kind = kindField.text.trimmed;
@@ -94,6 +98,7 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
             dispose();
         }
     }
+
     setLayout(GridLayout(0, 2));
     add(JLabel("<html><b>Unit Name:&nbsp;</b></html>"));
     void setupField(JTextField field) {
@@ -101,6 +106,7 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
         field.addActionListener(okListener);
         add(field);
     }
+
     setupField(nameField);
     add(JLabel("<html><b>Kind of Unit:&nbsp;</b></html>"));
     setupField(kindField);
@@ -109,12 +115,14 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
     setupField(idField);
     JButton okButton = listenedButton("OK", okListener);
     add(okButton);
+
     void cancelListener() {
         nameField.text = "";
         kindField.text = "";
         setVisible(false);
         dispose();
     }
+
     JButton cancelButton = listenedButton("Cancel", silentListener(cancelListener));
     platform.makeButtonsSegmented(okButton, cancelButton);
     add(cancelButton);

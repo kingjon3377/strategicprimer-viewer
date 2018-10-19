@@ -27,6 +27,11 @@ import strategicprimer.drivers.common {
     SimpleMultiMapModel
 }
 
+"A collection of a few methods for reading and writing map models, adding an
+ additional layer of caller convenience on top of [[mapIOHelper]]."
+todo("Evaluate whether this is really desirable now that driver factories have
+      their own type-specific model factory methods. Maybe take the factory
+      methods as parameters in the reading methods here?")
 shared object mapReaderAdapter {
     "Read a map model from a file or a stream, wrapping any errors the process generates
      in a [[DriverFailedException]] to simplify callers."
@@ -46,6 +51,7 @@ shared object mapReaderAdapter {
             throw DriverFailedException(except, "SP map format error");
         }
     }
+
     "Read several maps into a driver model, wrapping any errors in a
      DriverFailedException to simplify callers."
     todo("Return exceptions instead of throwing them")
@@ -71,6 +77,7 @@ shared object mapReaderAdapter {
             throw DriverFailedException(except, "SP map format error in ``current``");
         }
     }
+
     "Write maps from a map model back to file, wrapping any errors in a
      [[DriverFailedException]] to simplify callers."
     todo("Return exceptions instead of throwing them")

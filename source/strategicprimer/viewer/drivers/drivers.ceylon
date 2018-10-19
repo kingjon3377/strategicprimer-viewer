@@ -107,6 +107,7 @@ import strategicprimer.model.impl.xmlio {
 
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
+
 object appChooserState {
     "The method to actually write log messages to stderr."
     shared void logWriter(Priority priority, Module|Package mod,
@@ -117,6 +118,7 @@ object appChooserState {
             except.printStackTrace();
         }
     }
+
     "Create the cache of driver objects."
     shared [Map<String, DriverFactory>, Map<String, DriverFactory>] createCache() {
         MutableMap<String, DriverFactory> cliCache = HashMap<String, DriverFactory>();
@@ -156,6 +158,7 @@ object appChooserState {
         addToCache(*`module strategicprimer.viewer`.findServiceProviders(`DriverFactory`));
         return [cliCache, guiCache];
     }
+
     "Create the usage message for a particular driver."
     shared String usageMessage(IDriverUsage usage, Boolean verbose) {
         StringBuilder builder = StringBuilder();
@@ -205,6 +208,7 @@ object appChooserState {
         }
         return builder.string;
     }
+
     shared void handleDroppedFiles(AppEvent.OpenFilesEvent openFilesEvent) {
         if (exists topWindow = WindowList.getWindows(true, false)
                 .iterable.narrow<SPFrame>().last) {
@@ -214,6 +218,7 @@ object appChooserState {
         }
     }
 }
+
 class DriverWrapper(DriverFactory factory) {
     Boolean enoughArguments(Integer argc) {
         assert (argc >= 0);
@@ -228,6 +233,7 @@ class DriverWrapper(DriverFactory factory) {
             return argc >= 2;
         }
     }
+
     Boolean tooManyArguments(Integer argc) {
         assert (argc >= 0);
         switch (factory.usage.paramsWanted)
@@ -244,11 +250,13 @@ class DriverWrapper(DriverFactory factory) {
             return argc > 2;
         }
     }
+
     void checkArguments(String* args) {
         if (!enoughArguments(args.size) || tooManyArguments(args.size)) {
             throw IncorrectUsageException(factory.usage);
         }
     }
+
     {PathWrapper*} extendArguments(String* args) {
         if (is GUIDriverFactory factory) {
             MutableList<PathWrapper> files;
@@ -277,6 +285,7 @@ class DriverWrapper(DriverFactory factory) {
             return [];
         }
     }
+
     void fixCurrentTurn(SPOptions options, IDriverModel model) {
         if (options.hasOption("--current-turn")) {
             if (is Integer currentTurn = Integer.parse(options.getArgument("--current-turn"))) {
@@ -290,6 +299,7 @@ class DriverWrapper(DriverFactory factory) {
             }
         }
     }
+
     shared void startCatchingErrors(ICLIHelper cli, SPOptions options, String* args) {
         try {
             switch (factory)
@@ -340,10 +350,13 @@ class DriverWrapper(DriverFactory factory) {
         }
     }
 }
+
 class AppStarter() {
     [Map<String, DriverFactory>, Map<String, DriverFactory>] driverCache =
             appChooserState.createCache(); // TODO: Can we inline that into here?
+
     Boolean includeInCLIList(DriverFactory driver) => driver.usage.includeInList(false);
+
     shared void startDriverOnArguments(ICLIHelper cli, SPOptions options, String* args) {
         //            log.info("Inside appStarter.startDriver()");
         variable Boolean gui = !GraphicsEnvironment.headless;
@@ -362,6 +375,7 @@ class AppStarter() {
             }
             // TODO: clear `others` here?
         }
+
         variable DriverFactory? currentDriver = null;
         for (arg in args.coalesced) {
             if (arg == "-g" || arg == "--gui") {
@@ -429,6 +443,7 @@ class AppStarter() {
                 others.add(arg);
             }
         }
+
         log.trace("Reached the end of options");
         if (currentOptions.hasOption("--help")) { // TODO: Handle --help in startChosenDriver() instead, so it works for drivers other than the last (TODO: figure out how to ma
             if (exists currentUsage = currentDriver?.usage) {
@@ -479,6 +494,7 @@ class AppStarter() {
         }
     }
 }
+
 todo("Try to combine/rearrange things so we have as few top-level and inner classes and
       `object`s as possible")
 suppressWarnings("expressionTypeNothing")
@@ -513,6 +529,7 @@ shared void run() {
         process.exit(2);
     }
 }
+
 class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
     Boolean includeInGUIList(DriverFactory driver) => driver.usage.includeInList(true);
     shared actual void startDriver(String* args) {

@@ -7,6 +7,7 @@ import java.awt {
 import javax.swing {
     JComponent
 }
+
 "The part of the key showing a tile's color."
 class KeyElementComponent(Color color, Dimension minimum, Dimension preferred,
         Dimension maximum) extends JComponent() {

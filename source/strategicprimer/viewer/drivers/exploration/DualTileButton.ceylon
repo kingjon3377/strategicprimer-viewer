@@ -27,14 +27,17 @@ import java.lang {
 class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matchers)
         extends JButton() {
     Integer margin = 2;
+
     variable Point localPoint = Point.invalidPoint;
     shared Point point => localPoint;
     assign point {
         localPoint = point;
         repaint();
     }
+
     TileDrawHelper helper = tileDrawHelperFactory(2, super.imageUpdate,
                 (TileFixture fix) => true, matchers);
+
     shared actual void paintComponent(Graphics pen) {
         super.paintComponent(pen);
         pen.clip = Polygon(IntArray.with([width - margin, margin, margin]),

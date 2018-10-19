@@ -26,6 +26,7 @@ import lovelace.util.jvm {
 import strategicprimer.drivers.common {
     FixtureMatcher
 }
+
 "A transfer-handler to let the user drag items in the list to control Z-order."
 object fixtureFilterTransferHandler extends TransferHandler() {
     DataFlavor flavor = DataFlavor(`FixtureMatcher`, "FixtureMatcher");
@@ -41,6 +42,7 @@ object fixtureFilterTransferHandler extends TransferHandler() {
             return false;
         }
     }
+
     "Create a wrapper to transfer contents of the given component, which must be a
      [[SwingList]] or a [[JTable]]."
     shared actual Transferable createTransferable(JComponent component) {
@@ -53,8 +55,10 @@ object fixtureFilterTransferHandler extends TransferHandler() {
             return IntTransferable(flavor, component.selectedRow);
         }
     }
+
     "This listener only allows move operations."
     shared actual Integer getSourceActions(JComponent component) => TransferHandler.move;
+
     "Handle a drop."
     shared actual Boolean importData(TransferSupport support) {
         if (!support.drop) {

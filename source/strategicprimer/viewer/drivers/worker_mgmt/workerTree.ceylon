@@ -86,6 +86,7 @@ import strategicprimer.model.common.idreg {
 import lovelace.util.common {
     matchingValue
 }
+
 "A tree of a player's units."
 shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         "The tree model"
@@ -102,12 +103,14 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         "A method to call if the user does something to modify the maps."
         Anything() mutationListener) {
     DefaultTreeCellRenderer defaultStorer = DefaultTreeCellRenderer();
+
     value statReferencesList = [["Str", WorkerStats.strength],
                                 ["Dex", WorkerStats.dexterity],
                                 ["Con", WorkerStats.constitution],
                                 ["Int", WorkerStats.intelligence],
                                 ["Wis", WorkerStats.wisdom],
                                 ["Cha", WorkerStats.charisma]];
+
     object retval extends JTree()
             satisfies UnitMemberSelectionSource&UnitSelectionSource {
         model = wtModel;
@@ -115,7 +118,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         dragEnabled = true;
         showsRootHandles = true;
         dropMode = DropMode.on;
-        object workerTreeTransferHandler extends TransferHandler() {
+
+        object workerTreeTransferHandler extends TransferHandler() { // TODO: Can we move out of the JTree, at least?
             "Unit members can only be moved, not copied or linked."
             shared actual Integer getSourceActions(JComponent component) =>
                     TransferHandler.move;
@@ -127,6 +131,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         ArrayList<[UnitMember, IUnit]>();
                 MutableList<IUnit&HasMutableKind> unitsToTransfer =
                         ArrayList<IUnit&HasMutableKind>();
+
                 for (path in paths) {
                     if (exists last = path.lastPathComponent,
                             exists parentObj = path.parentPath?.lastPathComponent) {
@@ -142,16 +147,18 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         }
                     }
                 }
+
                 if (membersToTransfer.empty) {
                     if (unitsToTransfer.empty) {
                         return null;
                     } else {
                         return UnitTransferable(*unitsToTransfer);
                     }
-                } else {
+                } else { // TODO: Warn, or at least log, if neither was empty
                     return UnitMemberTransferable(*membersToTransfer);
                 }
             }
+
             "Whether a drag here is possible."
             shared actual Boolean canImport(TransferSupport support) {
                 if (support.isDataFlavorSupported(UnitMemberTransferable.flavor),
@@ -168,6 +175,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     return false;
                 }
             }
+
             "Handle a drop."
             shared actual Boolean importData(TransferSupport support) {
                 if (canImport(support),
@@ -219,7 +227,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
         }
         transferHandler = workerTreeTransferHandler;
-        object unitMemberCellRenderer extends DefaultTreeCellRenderer() {
+
+        object unitMemberCellRenderer extends DefaultTreeCellRenderer() { // TODO: Can we move this out of the JTree, at least?
             Icon createDefaultFixtureIcon() {
                 Integer imageSize = 24;
                 BufferedImage temp = BufferedImage(imageSize, imageSize,
@@ -257,6 +266,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     return null;
                 }
             }
+
             String jobCSL(IWorker worker) {
                 StringBuilder builder = StringBuilder();
                 {IJob*} jobs = worker.filter(matchingValue(false, IJob.emptyJob));
@@ -271,6 +281,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     return "";
                 }
             }
+
             Icon getIcon(HasImage obj) {
                 String image = obj.image;
                 if (!image.empty, exists icon = getIconForFile(image)) {
@@ -281,13 +292,14 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     return defaultFixtureIcon;
                 }
             }
+
             shared actual Component getTreeCellRendererComponent(JTree? tree,
                     Object? item, Boolean selected, Boolean expanded, Boolean leaf,
                     Integer row, Boolean hasFocus) {
                 assert (exists tree, exists item);
                 Component component = super.getTreeCellRendererComponent(tree, item,
                     selected, expanded, leaf, row, hasFocus);
-                Object internal;
+                Object internal; // TODO: Replace following if with = as<DefaultMutableTreeNode>(item)?.userObject else item
                 if (is DefaultMutableTreeNode item) {
                     internal = item.userObject;
                 } else {
@@ -338,7 +350,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         shouldWarn = true;
                     }
                 } else if (orderCheck,
-                        is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
+                        is WorkerTreeModelAlt.WorkerTreeNode<String> item) { // TODO: What if the model is a WorkerTreeModel, so the item is a String or JString?
                     for (child in item
                             .narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()) {
                         IUnit unit = child.userObjectNarrowed;
@@ -379,6 +391,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
         }
         cellRenderer = unitMemberCellRenderer;
+
         shared actual String? getToolTipText(MouseEvent event) {
             if (getRowForLocation(event.x, event.y) == -1) {
                 return null;
@@ -393,6 +406,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 return null;
             }
         }
+
         MutableList<UnitSelectionListener> selectionListeners =
                 ArrayList<UnitSelectionListener>();
         MutableList<UnitMemberListener> memberListeners =
@@ -405,6 +419,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 memberListeners.remove(listener);
         shared actual void removeUnitSelectionListener(UnitSelectionListener listener)
                 => selectionListeners.remove(listener);
+
         object tsl satisfies TreeSelectionListener {
             shared actual void valueChanged(TreeSelectionEvent event) {
                 Anything pathLast = event.newLeadSelectionPath?.lastPathComponent;
@@ -452,12 +467,14 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
         }
         addTreeSelectionListener(tsl);
+
         variable Integer i = 0;
         while (i < rowCount) {
             expandRow(i);
             i++;
         }
     }
+
     object tml satisfies TreeModelListener {
         shared actual void treeStructureChanged(TreeModelEvent event) {
             if (exists parent = event.treePath?.parentPath) {
@@ -472,6 +489,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
             retval.updateUI();
         }
+
         shared actual void treeNodesRemoved(TreeModelEvent event) => retval.updateUI();
         shared actual void treeNodesInserted(TreeModelEvent event) {
             if (exists path = event.treePath) {
@@ -490,9 +508,12 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         }
     }
     wtModel.addTreeModelListener(tml);
+
     assert (is TreeModelListener temp = retval.accessibleContext);
     wtModel.addTreeModelListener(temp);
+
     ToolTipManager.sharedInstance().registerComponent(retval);
+
     object treeMouseListener extends MouseAdapter() {
         void handleMouseEvent(MouseEvent event) {
             if (event.popupTrigger, event.clickCount == 1,

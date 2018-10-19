@@ -50,11 +50,12 @@ import lovelace.util.common {
     PathWrapper
 }
 
-class Accumulator() {
+class Accumulator() { // FIXME: Use lovelace.util.common::Accumulator instead
     variable Integer accumulatedValue = 0;
     shared Integer storedValue => accumulatedValue;
     shared void add(Integer addend) { accumulatedValue = accumulatedValue + addend; }
 }
+
 "A factory for a driver to compare the performance of TileDrawHelpers."
 service(`interface DriverFactory`)
 shared class DrawHelperComparatorFactory satisfies UtilityDriverFactory {
@@ -71,11 +72,15 @@ shared class DrawHelperComparatorFactory satisfies UtilityDriverFactory {
         includeInGUIList = false;
         supportedOptions = ["--report=out.csv"];
     };
+
     shared new () {}
+
     shared actual IDriverUsage usage => staticUsage;
+
     shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
             DrawHelperComparator(cli, options);
 }
+
 "A driver to compare the performance of TileDrawHelpers."
 shared class DrawHelperComparator satisfies UtilityDriver {
     "The first test: all in one place."
@@ -93,6 +98,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         Integer end = system.milliseconds;
         return end - start;
     }
+
     "The second test: Translating."
     static Integer second(TileDrawHelper helper, IMapNG map, Integer reps,
             Integer tileSize) {
@@ -112,6 +118,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         Integer end = system.milliseconds;
         return end - start;
     }
+
     "Third test: in-place, reusing Graphics."
     static Integer third(TileDrawHelper helper, IMapNG map, Integer reps,
             Integer tileSize) {
@@ -128,6 +135,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         Integer end = system.milliseconds;
         return end - start;
     }
+
     "Fourth test: translating, reusing Graphics."
     static Integer fourth(TileDrawHelper helper, IMapNG map, Integer reps,
             Integer tileSize) {
@@ -148,8 +156,10 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         Integer end = system.milliseconds;
         return end - start;
     }
+
     static Range<Integer> testRowSpan = 20..40; // TODO: randomize these a bit?
     static Range<Integer> testColSpan = 55..82;
+
     "Fifth test, part one: iterating."
     static Integer fifthOne(TileDrawHelper helper, IMapNG map, Integer reps,
             Integer tileSize) {
@@ -173,6 +183,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         Integer end = system.milliseconds;
         return end - start;
     }
+
     static Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
         MapDimensions mapDimensions = map.dimensions;
         BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
@@ -195,6 +206,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         Integer end = system.milliseconds;
         return end - start;
     }
+
     static {[String, Integer(TileDrawHelper, IMapNG, Integer, Integer)]*} tests = [
         ["1. All in one place", first],
         ["2. Translating", second],
@@ -203,18 +215,22 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         ["5a. Ordered iteration vs filtering: Iteration", fifthOne],
         ["5b. Ordered iteration vs filtering: Filtering", fifthTwo]
     ];
+
     static Boolean dummyObserver(Image? image, Integer infoflags,
         Integer xCoordinate, Integer yCoordinate, Integer width, Integer height) =>
             false;
 
     static Boolean dummyFilter(TileFixture? fix) => true;
+
     static {[TileDrawHelper, String]*} helpers = [ [CachingTileDrawHelper(), "Caching:"],
         [directTileDrawHelper, "Direct:"],
         [Ver2TileDrawHelper(dummyObserver, dummyFilter,
             Singleton(FixtureMatcher(dummyFilter, "test"))), "Ver 2:"]
     ];
+
     MutableMap<[String, String, String], Accumulator> results =
             HashMap<[String, String, String], Accumulator>();
+
     Accumulator getResultsAccumulator(String file, String testee, String test) {
         [String, String, String] tuple = [file, testee, test];
         if (exists retval = results[tuple]) {
@@ -225,12 +241,14 @@ shared class DrawHelperComparator satisfies UtilityDriver {
             return retval;
         }
     }
+
     ICLIHelper cli;
     SPOptions options;
     shared new (ICLIHelper cli, SPOptions options) {
         this.cli = cli;
         this.options = options;
     }
+
     "Run all the tests on the specified map."
     void runAllTests(IMapNG map, String fileName, Integer repetitions) {
         Integer printStats(String prefix, Integer total, Integer reps) {
@@ -257,6 +275,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         }
         cli.println("");
     }
+
     Integer reps = 50;
     "Run the tests."
     shared actual void startDriver(String* args) {

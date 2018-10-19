@@ -41,12 +41,16 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 "A model for a tree of a worker's Jobs and Skills."
 class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     MutableList<TreeModelListener> listeners = ArrayList<TreeModelListener>();
+
     "The worker whom the Jobs and Skills describe."
     variable IWorker? localRoot = null;
+
     shared late TreeSelectionModel selectionModel;
+
     shared actual IWorker? root => localRoot;
+
     shared actual HasName getChild(Object parent, Integer index) {
-        if (index >= 0, is IWorker parent,
+        if (index >= 0, is IWorker parent, // TODO: Combine with IJob case
                 exists child = parent.getFromFirst(index)) {
             return child;
         } else if (index >= 0, is IJob parent,
@@ -56,6 +60,7 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
             throw ArrayIndexOutOfBoundsException("Parent does not have that child");
         }
     }
+
     shared actual Integer getChildCount(Object parent) {
         if (is IWorker|IJob parent) {
             return parent.size;
@@ -64,11 +69,14 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
             return 0;
         }
     }
+
     shared actual Boolean isLeaf(Object node) => !node is IWorker|IJob;
+
     "Handling changed values is not yet implemented."
     todo("Implement if necessary")
     shared actual void valueForPathChanged(TreePath path, Object newValue) =>
             log.error("valueForPathChanged needs to be implemented");
+
     shared actual Integer getIndexOfChild(Object parent, Object child) {
         if (is IWorker|IJob parent,
                 exists index->ignored = parent.locate(child.equals)) {
@@ -77,21 +85,25 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
             return -1;
         }
     }
+
     shared actual void addTreeModelListener(TreeModelListener listener) =>
             listeners.add(listener);
     shared actual void removeTreeModelListener(TreeModelListener listener) =>
             listeners.remove(listener);
+
     void fireTreeNodesInserted(TreeModelEvent event) {
         for (listener in listeners) {
             listener.treeNodesInserted(event);
         }
     }
+
     void fireTreeStructureChanged(TreeModelEvent event) {
         for (listener in listeners) {
             listener.treeStructureChanged(event);
         }
     }
-    "Add a new Job"
+
+    "Add a new Job or Skill."
     shared actual void add(String category, String addendum) {
         if ("job" == category, exists currentRoot = localRoot) {
             IJob job = Job(addendum, 0);
@@ -110,8 +122,9 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
                     IntArray.with(Singleton(childCount)),
                     ObjectArray.with(Singleton(skill))));
             }
-        }
+        } // TODO: Warn instead of silently failing
     }
+
     "Change what unit member is currently selected"
     shared actual void memberSelected(UnitMember? old, UnitMember? selected) {
         if (is IWorker selected) {

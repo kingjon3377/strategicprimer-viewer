@@ -66,6 +66,7 @@ class Ver2TileDrawHelper(
         }
         return equal;
     }
+
     "Images we've already determined aren't there."
     MutableSet<String> missingFiles = HashSet<String>();
     "A mapping from river-sets to filenames."
@@ -100,6 +101,7 @@ class Ver2TileDrawHelper(
         simpleSet(River.east,River.south,River.west,River.lake)->"riv30.png",
         simpleSet(River.north,River.east,River.south,River.west,River.lake)->"riv31.png"
     );
+
     for (file in ["trees.png", "mountain.png"]) {
         try {
             imageLoader.loadImage(file);
@@ -109,6 +111,7 @@ class Ver2TileDrawHelper(
             log.error("I/O error while loading image ``file``", except);
         }
     }
+
     "Create the fallback image---made a method so the object reference can be immutable"
     Image createFallbackImage() {
         Image fallbackFallback = BufferedImage(1, 1, BufferedImage.typeIntArgb);
@@ -123,8 +126,10 @@ class Ver2TileDrawHelper(
             return fallbackFallback;
         }
     }
+
     "A fallback image for when an image file is missing or fails to load."
     Image fallbackImage = createFallbackImage();
+
     """Get the color representing a "not-on-top" terrain fixture at the given location."""
     Color? getFixtureColor(IMapNG map, Point location) {
         if (exists top = getTopFixture(map, location)) {
@@ -138,10 +143,12 @@ class Ver2TileDrawHelper(
                 return colorHelper.mountainColor;
             }
         }
+
         return colorHelper.get(map.dimensions.version,
 //            map.baseTerrain[location]); // TODO: syntax sugar once compiler bug fixed
             map.baseTerrain.get(location));
     }
+
     "Return either a loaded image or, if the specified image fails to load, the generic
      one."
     Image getImage(String filename) {
@@ -159,6 +166,7 @@ class Ver2TileDrawHelper(
             return fallbackImage;
         }
     }
+
     "Get the image representing the given fixture."
     Image getImageForFixture(TileFixture fixture) {
         if (is HasImage fixture) {
@@ -173,11 +181,13 @@ class Ver2TileDrawHelper(
             return fallbackImage;
         }
     }
-    object observerWrapper satisfies ImageObserver {
+
+    object observerWrapper satisfies ImageObserver { // TODO: Drop (replace in caller(s) with observer()) once eclipse/ceylon#7380 fixed
         shared actual Boolean imageUpdate(Image img, Integer infoflags, Integer x,
                 Integer y, Integer width, Integer height) =>
                 observer(img, infoflags, x, y, width, height);
     }
+
     "Draw a tile at the specified coordinates. Because this is at present only called in
      a loop that's the last thing before the graphics context is disposed, we alter the
      state freely and don't restore it."
@@ -208,16 +218,19 @@ class Ver2TileDrawHelper(
         pen.color = Color.black;
         pen.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
     }
+
     "Draw a tile at the upper left corner of the drawing surface."
     shared actual void drawTileTranslated(Graphics pen, IMapNG map, Point location,
             Integer width, Integer height) => drawTile(pen, map, location, origin,
                 Coordinate(width, height));
+
     "The drawable fixtures at the given location."
     {TileFixture*} getDrawableFixtures(IMapNG map, Point location) {
 //        return map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
         return map.fixtures.get(location).filter(not(`TileTypeFixture`.typeOf))
             .filter(filter).sort(compareFixtures);
     }
+
     "Get the image representing the given configuration of rivers."
     Image getRiverImage({River*} rivers) {
         if (exists file = riverFiles[set(rivers)]) {
@@ -227,9 +240,11 @@ class Ver2TileDrawHelper(
             return getImage("riv00.png");
         }
     }
+
     """Get the "top" fixture at the given location"""
     TileFixture? getTopFixture(IMapNG map, Point location) =>
             getDrawableFixtures(map, location).first;
+
     """Whether there is a "terrain fixture" at the gtiven location."""
     Boolean hasTerrainFixture(IMapNG map, Point location) {
         if (!getDrawableFixtures(map, location).narrow<TerrainFixture>().empty) {
@@ -242,11 +257,12 @@ class Ver2TileDrawHelper(
             return false;
         }
     }
+
     "Whether we need a different background color to show a non-top fixture (e.g. forest)
      at the given location"
     Boolean needsFixtureColor(IMapNG map, Point location) {
         if (hasTerrainFixture(map, location), exists top = getTopFixture(map, location)) {
-            if (exists bottom = getDrawableFixtures(map, location).last) {
+            if (exists bottom = getDrawableFixtures(map, location).last) { // TODO: Is this right? It looks like we're checking whether the top fixture, period, and the bottom fixture for which drawing is enabled are the same, regardless of whether either is a terrain fixture!
                 return top != bottom;
 //            } else if (map.mountainous[location]) {
             } else if (map.mountainous.get(location)) {
