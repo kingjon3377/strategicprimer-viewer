@@ -50,8 +50,11 @@ shared class SubsetGUIFactory satisfies UtilityDriverFactory {
         ParamCount.atLeastOne, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.", false, true);
+
     shared actual IDriverUsage usage => staticUsage;
+
     shared new () {}
+
     shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
             SubsetGUI(cli, options);
 }
@@ -61,7 +64,9 @@ shared class SubsetGUIFactory satisfies UtilityDriverFactory {
 todo("Unify with [[SubsetCLI]], like the map-checker GUI")
 shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
     late SubsetFrame frame;
+
     variable Boolean initialized = false;
+
     shared actual void startDriver(String* args) {
         if (args.empty) {
             throw IncorrectUsageException(SubsetGUIFactory.staticUsage);
@@ -89,5 +94,6 @@ shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
         }
         args.rest.map(PathWrapper).each(frame.testFile);
     }
+
     shared actual void open(PathWrapper path) => frame.testFile(path);
 }

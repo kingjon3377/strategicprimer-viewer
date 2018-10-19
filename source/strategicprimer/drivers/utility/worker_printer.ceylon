@@ -45,6 +45,7 @@ shared class WorkerPrinterFactory() satisfies ModelDriverFactory {
         includeInCLIList = true;
         includeInGUIList = false;
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IExplorationModel model) {
@@ -57,17 +58,20 @@ shared class WorkerPrinterFactory() satisfies ModelDriverFactory {
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             ExplorationModel(map, path);
 }
+
 "A driver to print a mini-report on workers, suitable for inclusion in a player's
  results."
 class WorkerPrintCLI satisfies ReadOnlyDriver {
     static String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
     static String jobString(IJob job) => job.name + " " + job.level.string;
+
     ICLIHelper cli;
     shared actual IExplorationModel model;
     shared new (ICLIHelper cli, IExplorationModel model) {
         this.cli = cli;
         this.model = model;
     }
+
     void printWorkers(IUnit unit) {
         for (worker in unit.narrow<IWorker>()) {
             cli.print("- ");
@@ -75,12 +79,14 @@ class WorkerPrintCLI satisfies ReadOnlyDriver {
             if (worker.race != "human") {
                 cli.print(" (``worker.race``)");
             }
-            {IJob*} jobs = worker.filter(matchingPredicate(Integer.positive, IJob.level));
+
+            {IJob*} jobs = worker.filter(matchingPredicate(Integer.positive, IJob.level)); // TODO: Use compose() instead of matchingPredicate()
             if (!jobs.empty) {
                 cli.print(" (");
                 cli.print(", ".join(jobs.map(jobString)));
                 cli.print(")");
             }
+
             if (exists stats = worker.stats) {
                 cli.print(" [``", ".join(zipPairs(statLabelArray,
                     stats.array.map(WorkerStats.getModifierString)).map(" ".join))``]");
@@ -88,6 +94,7 @@ class WorkerPrintCLI satisfies ReadOnlyDriver {
             cli.println();
         }
     }
+
     shared actual void startDriver() {
         value playerChoice = cli.chooseFromList(model.playerChoices.sequence(),
             "Players in the map:", "No players", "Player owning the unit:", false);

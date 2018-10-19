@@ -27,6 +27,7 @@ import strategicprimer.model.common.map {
 
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.utility`);
+
 "A factory for a driver to check whether player maps are subsets of the main map."
 service(`interface DriverFactory`)
 shared class SubsetCLIFactory() satisfies ModelDriverFactory {
@@ -34,6 +35,7 @@ shared class SubsetCLIFactory() satisfies ModelDriverFactory {
         ParamCount.atLeastTwo, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.", true, false);
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IMultiMapModel model) {
@@ -43,6 +45,7 @@ shared class SubsetCLIFactory() satisfies ModelDriverFactory {
             return createDriver(cli, options, SimpleMultiMapModel.copyConstructor(model));
         }
     }
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
@@ -50,6 +53,7 @@ shared class SubsetCLIFactory() satisfies ModelDriverFactory {
 "A driver to check whether player maps are subsets of the main map."
 shared class SubsetCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
     shared actual IMultiMapModel model;
+
     shared actual void startDriver() {
         for (map->[file, _] in model.subordinateMaps) {
             String filename = file?.string else "map without a filename";

@@ -44,9 +44,11 @@ shared class ReaderComparatorFactory() satisfies UtilityDriverFactory {
         ParamCount.atLeastOne, "Test map readers",
         "Test map-reading implementations by comparing their results on the same file.",
         true, false);
+
     shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
             ReaderComparator(cli);
 }
+
 "A driver for comparing map readers."
 shared class ReaderComparator satisfies UtilityDriver {
     static String readAll(PathWrapper path) {
@@ -59,10 +61,12 @@ shared class ReaderComparator satisfies UtilityDriver {
         }
         return builder.string;
     }
+
     ICLIHelper cli;
     shared new (ICLIHelper cli) {
         this.cli = cli;
     }
+
     "Compare the two readers' performance on the given files."
     shared actual void startDriver(String* args) {
         IMapReader readerOne = testReaderFactory.oldReader;

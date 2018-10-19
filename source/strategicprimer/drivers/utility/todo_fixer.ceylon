@@ -60,6 +60,9 @@ import ceylon.file {
     parsePath,
     Directory
 }
+
+"""A simplified model of terrain, dividing tiles into "ocean", "forested", and
+   "unforested"."""
 class SimpleTerrain of unforested | forested | ocean {
     "Plains, desert, and mountains"
     shared new unforested { }
@@ -68,6 +71,7 @@ class SimpleTerrain of unforested | forested | ocean {
     "Ocean."
     shared new ocean { }
 }
+
 """A factory for the hackish driver to fix missing content in the map, namely units with
    "TODO" for their "kind" and aquatic villages with non-aquatic races."""
 service(`interface DriverFactory`)
@@ -76,12 +80,14 @@ shared class TodoFixerFactory() satisfies ModelDriverFactory {
         ParamCount.atLeastOne, "Fix TODOs in maps",
         "Fix TODOs in unit kinds and aquatic villages with non-aquatic races", false,
         false);
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => TodoFixerCLI(cli, model);
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
+
 """A hackish driver to fix TODOs (missing content) in the map, namely units with "TODO"
    for their "kind" and aquatic villages with non-aquatic races."""
 todo("Write tests of this functionality") // This'll have to wait until eclipse/ceylon#6986 is fixed
@@ -89,18 +95,25 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IDriverModel model;
     "A list of unit kinds (jobs) for plains etc."
     MutableList<String> plainsList = ArrayList<String>();
+
     "A list of unit kinds (jobs) for forest and jungle."
     MutableList<String> forestList = ArrayList<String>();
+
     "A list of unit kinds (jobs) for ocean."
     MutableList<String> oceanList = ArrayList<String>();
+
     "A map from village IDs to races."
     MutableMap<Integer, String> raceMap = HashMap<Integer, String>();
+
     "A list of aqautic races."
     MutableList<String> raceList = ArrayList<String>();
+
     "How many units we've fixed."
     variable Integer count = -1;
+
     "The number of units needing to be fixed."
     variable Integer totalCount = -1;
+
     "Get the simplified-terrain-model instance covering the map's terrain at the given
      location."
     // We don't just use TileType because we need mountains and forests in ver-2 maps.
@@ -125,6 +138,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
             }
         }
     }
+
     "Search for and fix aquatic villages with non-aquatic races."
     void fixAllVillages(IMapNG map) {
         {Village*} villages = map.locations
@@ -152,6 +166,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 }
             }
         }
+
         {[Point, CommunityStats]*} brokenTownContents =
                 narrowedStream<Point, ITownFixture>(map.fixtures)
                     .map(entryMap(identity<Point>, ITownFixture.population))
@@ -159,6 +174,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
                     .narrow<[Point, CommunityStats]>()
                     .filter(([loc, pop]) => pop.yearlyProduction.map(
                         ResourcePile.contents).any(shuffle(String.contains)('#')));
+
         if (!brokenTownContents.empty) {
             value runner = ExplorationRunner();
             "TODO fixer requires a tables directory"
@@ -166,7 +182,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
             loadAllTables(directory, runner);
             for ([loc, population] in brokenTownContents) {
                 value production = population.yearlyProduction;
-                for (resource in production.sequence()) {
+                for (resource in production.sequence()) { // TODO: Combine with if: production.filter(compose(shuffle(String.contains)('#'), ResourcePile.contents)).sequence()
                     if (resource.contents.contains('#')) {
                         assert (exists table = resource.contents
                             .split('#'.equals, true, true).sequence()[1]);
@@ -182,6 +198,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
             }
         }
     }
+
     "Fix a stubbed-out kind for a unit."
     void fixUnit(Unit unit, SimpleTerrain terrain) {
         Random rng = DefaultRandom(unit.id);
@@ -215,6 +232,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
         unit.kind = kind;
         jobList.add(kind);
     }
+
     "Search for and fix units with kinds missing."
     void fixAllUnits(IMapNG map) {
         totalCount = map.fixtures.map(Entry.item).narrow<Unit>()
@@ -228,6 +246,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
             }
         }
     }
+
     "Add rivers missing from the subordinate map where it has other terrain information."
     void fixMissingRivers(IMapNG mainMap, IMutableMapNG subordinateMap) {
         for (location in mainMap.locations) {
@@ -242,6 +261,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
             }
         }
     }
+
     shared actual void startDriver() {
         if (is IMultiMapModel model) {
             for (map->[path, _] in model.allMaps) {

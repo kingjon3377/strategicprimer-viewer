@@ -85,12 +85,14 @@ shared class DuplicateFixtureRemoverFactory() satisfies ModelDriverFactory {
         includeInGUIList = false;
         supportedOptions = [ "--current-turn=NN" ];
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => DuplicateFixtureRemoverCLI(cli, model);
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
+
 "A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
  takes up on disk and the memory and CPU it takes to deal with it)."
 shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
@@ -99,12 +101,16 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
             func(item);
         }
     }
+
     static class CoalescedHolder<Type,Key>(Key(Type) extractor, shared Type({Type+}) combiner)
             satisfies NonNullCorrespondence<Type, MutableList<Type>>&{List<Type>*}
             given Type satisfies IFixture given Key satisfies Object {
         MutableMap<Key, MutableList<Type>> map = HashMap<Key, MutableList<Type>>();
+
         shared actual Boolean defines(Type key) => true;
+
         shared variable String plural = "unknown";
+
         shared actual MutableList<Type> get(Type item) {
             Key key = extractor(item);
             plural = item.plural;
@@ -116,17 +122,21 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
                 return retval;
             }
         }
+
         shared actual Iterator<List<Type>> iterator() => map.items.iterator();
+
         shared void addIfType(Anything item) {
             if (is Type item) {
                 get(item).add(item);
             }
         }
+
         shared Type combineRaw({IFixture+} list) {
             assert (is {Type+} list);
             return combiner(list);
         }
     }
+
     static String memberKind(IFixture? member) {
         switch (member)
         case (is AnimalImpl|Implement|Forest|Grove|Meadow) {
@@ -142,13 +152,15 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
             return member.string;
         }
     }
+
     "Combine like [[Forest]]s into a single object. We assume that all Forests are of the
      same kind of tree and either all or none are in rows."
-    static Forest combineForests({Forest*} list) {
+    static Forest combineForests({Forest*} list) { // TODO: Try requiring {Forest+} instead of asserting, allowing us to use => syntax (and similarly below) // TODO: Conversely, add a 'combine()' method to HasExtent?
         assert (exists top = list.first);
         return Forest(top.kind, top.rows, top.id,
             list.map(Forest.acres).map(decimalize).fold(decimalNumber(0))(plus));
     }
+
     "Combine like [[Meadow]]s into a single object. We assume all Meadows are identical
      except for acreage and ID."
     static Meadow combineMeadows({Meadow*} list) {
@@ -156,15 +168,18 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
         return Meadow(top.kind, top.field, top.cultivated, top.id, top.status,
             list.map(Meadow.acres).map(decimalize).fold(decimalNumber(0))(plus));
     }
+
     "A two-parameter wrapper around [[HasPopulation.combined]]."
     static Type combine<Type>(Type one, Type two) given Type satisfies HasPopulation<Type> =>
             one.combined(two);
+
     "Combine like populations into a single object. We assume all are identical (i.e. of
      the same kind, and in the case of animals have the same domestication status and
      turn of birth) except for population."
     static Type combinePopulations<Type>({Type+} list)
             given Type satisfies HasPopulation<Type> =>
             list.rest.fold(list.first)(combine);
+
     "Combine like resources into a single resource pile. We assume that all resources have
      the same kind, contents, units, and created date."
     static ResourcePile combineResources({ResourcePile*} list) {
@@ -177,12 +192,14 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
         combined.created = top.created;
         return combined;
     }
+
     ICLIHelper cli;
     shared actual IDriverModel model;
     shared new (ICLIHelper cli, IDriverModel model) {
         this.cli = cli;
         this.model = model;
     }
+
     Boolean approveRemoval(Point location, TileFixture fixture,
             TileFixture matching) {
         String fCls = classDeclaration(fixture).name;
@@ -193,6 +210,7 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
             matching.shortDescription``', of class '``mCls``', ID #``
             matching.id``?", "duplicate``fCls````mCls``");
     }
+
     """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests of the
        same kind, oases, etc.---we use [[TileFixture.equalsIgnoringID]]) from every tile
        in a map."""
@@ -237,6 +255,7 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
                 ifApplicable<TileFixture, IFixture>(shuffle(curry(map.removeFixture))));
         }
     }
+
     "Offer to combine like resources in a unit or fortress."
     void coalesceResources(String context, {IFixture*} stream,
             Anything(IFixture) add, Anything(IFixture) remove) {
@@ -261,10 +280,11 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
                 combineMeadows),
             `Shrub`->CoalescedHolder<Shrub, String>(Shrub.kind, combinePopulations<Shrub>)
         );
+
         for (fixture in stream) {
             if (is {IFixture*} fixture) {
                 String shortDesc;
-                if (is TileFixture fixture) {
+                if (is TileFixture fixture) { // TODO: Replace with as<TileFixture>(fixture)?.shortDescription else fixture.string ?
                     shortDesc = fixture.shortDescription;
                 } else {
                     shortDesc = fixture.string;
@@ -293,6 +313,7 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
                 handler.addIfType(fixture);
             }
         }
+
         for (helper in mapping.items) {
             for (list in helper.map(shuffle(List<IFixture>.sequence)())) {
                 if (list.size <= 1) {
@@ -311,6 +332,7 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
             }
         }
     }
+
     "Run the driver"
     shared actual void startDriver() {
         if (is IMultiMapModel model) {

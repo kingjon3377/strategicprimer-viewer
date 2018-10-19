@@ -38,6 +38,7 @@ shared class RandomMovementFactory() satisfies ModelDriverFactory {
         ParamCount.one, "Move independent units at random",
         "Move independent units randomly around the map.",
         true, false); // TODO: We'd like a GUI for this, perhaps adding customization or limiting the area or something
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IExplorationModel model) {
@@ -54,6 +55,7 @@ shared class RandomMovementFactory() satisfies ModelDriverFactory {
 "An app to move independent units around at random."
 class RandomMovementCLI(ICLIHelper cli, SPOptions options, model) satisfies CLIDriver {
     shared actual IExplorationModel model;
+
     shared actual void startDriver() {
         for (unit in model.playerChoices.filter(Player.independent)
                 .flatMap(model.getUnits).sequence()) {

@@ -62,6 +62,7 @@ import strategicprimer.drivers.common {
 class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
         Dimension(640, 320), true) {
     StreamingLabel label = StreamingLabel();
+
     object htmlWriter extends JWriter() {
         variable Boolean lineStart = true;
         Regex matcher = regex(operatingSystem.newline, true);
@@ -89,6 +90,7 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
         }
 
     }
+
     contentPane = JScrollPane(label);
     void printParagraph(String paragraph,
                 LabelTextColor color = LabelTextColor.black) =>
@@ -139,7 +141,7 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
             filename = "an unnamed file";
         }
         printParagraph("Testing ``filename`` ...");
-        try (formatter = Formatter(htmlWriter)) {
+        try (formatter = Formatter(htmlWriter)) { // TODO: Convert from Formatter(htmlWriter) to an implementation not involving a JDK type with overloads, but probably a class taking the filename as a parameter
             if (mainMap.isSubset(map,
                         // can't use curry() directly: Formatter.format() is overloaded
                         (String string) => formatter.format("%s: %s", filename,
@@ -150,6 +152,7 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
             }
         }
     }
+
     """Read a map from file and test it against the main map to see if it's a strict
        subset. This method "eats" (but logs) all (anticipated) errors in reading the
        file."""
@@ -184,5 +187,6 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
         }
         testMap(map, path);
     }
+
     shared actual void acceptDroppedFile(PathWrapper file) => testFile(file);
 }

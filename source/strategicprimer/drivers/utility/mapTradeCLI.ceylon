@@ -110,6 +110,7 @@ shared class MapTradeCLI satisfies CLIDriver {
             return Singleton(item);
         }
     }
+
     static {FixtureMatcher*} initializeMatchers() => [
             FixtureMatcher.complements<IUnit>(not(
                     matchingPredicate(Player.independent, IUnit.owner)),
@@ -150,30 +151,35 @@ shared class MapTradeCLI satisfies CLIDriver {
             FixtureMatcher.complements<Ground>(Ground.exposed, "Ground (exposed)",
                 "Ground")
         ].flatMap(flatten);
+
     ICLIHelper cli;
     shared actual IMultiMapModel model;
     shared new (ICLIHelper cli, IMultiMapModel model) {
         this.cli = cli;
         this.model = model;
     }
+
     MutableList<FixtureMatcher> matchers =
             ArrayList { elements = initializeMatchers(); };
+
     void askAbout(FixtureMatcher matcher, String key = "include") =>
             matcher.displayed = cli.inputBooleanInSeries(
                 "Include \"``matcher.description``\" items?", key);
+
     Boolean testFixture(TileFixture fixture) {
         for (matcher in matchers) {
             if (matcher.matches(fixture)) {
                 return matcher.displayed;
             }
         }
-        ClassModel<TileFixture> cls = type(fixture);
+        ClassModel<TileFixture> cls = type(fixture); // TODO: inline
         FixtureMatcher newMatcher = FixtureMatcher.trivialMatcher(cls,
             fixture.plural);
         askAbout(newMatcher, "new");
         matchers.add(newMatcher);
         return newMatcher.displayed;
     }
+
     shared actual void startDriver() {
         IMapNG first = model.map;
         assert (exists second = model.subordinateMaps.first?.key);
