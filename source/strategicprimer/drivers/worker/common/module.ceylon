@@ -3,6 +3,7 @@
  programs suite, and possibly even CLI versions Any class extending a Swing class should
  go elsewhere, at least until [the Ceylon tooling
  bug](https://github.com/eclipse/ceylon/issues/6986) is fixed."
+// TODO: Write user-introductory documentation of the module.
 license("GPL-3")
 native("jvm")
 module strategicprimer.drivers.worker.common "0.4.9017" {

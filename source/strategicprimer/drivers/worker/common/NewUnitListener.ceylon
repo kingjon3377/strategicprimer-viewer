@@ -4,6 +4,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import java.util {
     EventListener
 }
+
 "An interface for things that want to accept a new user-created unit."
 shared interface NewUnitListener satisfies EventListener {
     "Add the new unit."

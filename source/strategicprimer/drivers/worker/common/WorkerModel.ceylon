@@ -57,9 +57,14 @@ import lovelace.util.common {
     PathWrapper
 }
 
+"Logger."
 Logger log = logger(`module strategicprimer.drivers.worker.common`);
+
 "A model to underlie the advancement GUI, etc."
 shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
+    "If [[the argument|fixture]] is a [[Fortress]], return it; otherwise,
+     return a [[Singleton]] of the argument. This allows callers to get a
+     flattened stream of units, including those in fortresses."
     static {Anything*} flatten(Anything fixture) {
         if (is Fortress fixture) {
             return fixture;
@@ -67,6 +72,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             return Singleton(fixture);
         }
     }
+
     "Add the given unit at the given location in the given map."
     static void addUnitAtLocationImpl(IUnit unit, Point location, IMutableMapNG map) {
         //if (exists fortress = map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
@@ -77,11 +83,15 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             map.addFixture(location, unit.copy(false));
         }
     }
+
+    "The current player, subject to change by user action."
     variable Player? currentPlayerImpl = null;
     shared new (IMutableMapNG map, PathWrapper? file)
             extends SimpleMultiMapModel(map, file) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
+
+    "The current player, subject to change by user action."
     shared actual Player currentPlayer {
         if (exists temp = currentPlayerImpl) {
             return temp;
@@ -101,15 +111,18 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     assign currentPlayer {
         currentPlayerImpl = currentPlayer;
     }
+
     "Flatten and filter the stream to include only units, and only those owned by the
      given player."
     {IUnit*} getUnitsImpl({Anything*} iter, Player player) =>
             iter.flatMap(flatten).narrow<IUnit>()
                 .filter(matchingPredicate(matchingValue(player.playerId, Player.playerId),
                     IUnit.owner));
+
     "All the players in all the maps."
     shared actual {Player*} players =>
             allMaps.map(Entry.key).flatMap(IMutableMapNG.players).distinct;
+
     "Get all the given player's units, or only those of a specified kind."
     shared actual {IUnit*} getUnits(Player player, String? kind) {
         if (exists kind) {
@@ -142,10 +155,12 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 comparingOn(String.lowercased, increasing<String>)));
         }
     }
+
     """All the "kinds" of units the given player has."""
     shared actual {String*} getUnitKinds(Player player) =>
             getUnits(player).map(IUnit.kind).distinct
                 .sort(comparingOn(String.lowercased, increasing<String>));
+
     "Add the given unit at the given location in all maps."
     void addUnitAtLocation(IUnit unit, Point location) {
         if (subordinateMaps.empty) {
@@ -158,6 +173,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             }
         }
     }
+
     "Add a unit to all the maps, at the location of its owner's HQ in the main map."
     shared actual void addUnit(IUnit unit) {
         variable [Fortress, Point]? temp = null;
@@ -182,10 +198,13 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             }
         }
     }
+
     "Get a unit by its owner and ID."
     shared actual IUnit? getUnitByID(Player owner, Integer id) =>
             getUnits(owner).find(matchingValue(id, IUnit.id));
 }
+
+"Test of the worker model."
 object workerModelTests {
     "Helper method: Flatten any proxies in the list by replacing them with what they are
      proxies for."
@@ -208,6 +227,7 @@ object workerModelTests {
         }
     }
 
+    "Test of the [[IWorkerModel.getUnits]] method."
     test
     shared void testGetUnits() {
         MutableList<TileFixture> fixtures = ArrayList<TileFixture>();
