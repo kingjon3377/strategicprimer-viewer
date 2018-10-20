@@ -7,6 +7,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
+
 "An [[EncounterTable]] that gives its result based on the terrain type of the tile in
  question."
 class TerrainTable(<TileType->String>* items) satisfies EncounterTable {
@@ -35,7 +36,9 @@ class TerrainTable(<TileType->String>* items) satisfies EncounterTable {
             throw AssertionError("Table does not account for terrain type ``terrain``");
         }
     }
+
     shared actual Set<String> allEvents => set(mapping.items);
+
     shared actual String string =
             "TerrainTable covering ``mapping.size`` terrain types";
 }

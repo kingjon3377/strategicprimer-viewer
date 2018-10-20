@@ -23,6 +23,7 @@ shared interface EncounterTable {
             {TileFixture*} fixtures,
             "The dimensions of the map."
             MapDimensions mapDimensions);
+
     "For table-debugging purposes, return the set of all events the table can return."
     shared formal Set<String> allEvents;
 }

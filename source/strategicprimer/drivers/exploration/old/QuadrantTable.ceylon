@@ -10,11 +10,13 @@ import strategicprimer.model.common.map {
     MapDimensions,
     MapDimensionsImpl
 }
+
 "An [[EncounterTable]] where results are by quadrant of the map."
 class QuadrantTable satisfies EncounterTable {
     "The collection of collections of results."
     MutableMap<MapDimensions, Map<Point, String>> quadrants =
             HashMap<MapDimensions, Map<Point, String>>();
+
     Map<Point, String> valuesFor(MapDimensions dimensions, String[] possResults,
             Integer quadrantRowCount) {
         // Instance variables passed in because we want to call this from the
@@ -43,6 +45,7 @@ class QuadrantTable satisfies EncounterTable {
             return temp;
         }
     }
+
     "The items to allocate by quadrant."
     String[] possibleResults;
     "How many rows of quadrants there should be."
@@ -51,11 +54,13 @@ class QuadrantTable satisfies EncounterTable {
         possibleResults = items.sequence();
         quadrantRows = rows;
     }
+
     shared new forDimensions(Integer mapRows, Integer mapColumns, Integer rows,
             String* items) extends QuadrantTable(rows, *items) {
         MapDimensions dimensions = MapDimensionsImpl(mapRows, mapColumns, 2);
         quadrants[dimensions] = valuesFor(dimensions, possibleResults, rows);
     }
+
     "Get the item in the table at the quadrant containing the given row and column in a
      map of the specified dimensions."
     shared String getQuadrantValue(Integer row, Integer column,
@@ -76,10 +81,13 @@ class QuadrantTable satisfies EncounterTable {
             return "";
         }
     }
+
     shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) =>
                 getQuadrantValue(point.row, point.column, mapDimensions);
+
     shared actual Set<String> allEvents => set(possibleResults);
+
     shared actual String string =>
             "QuadrantTable in ``quadrantRows`` rows of quadrants";
 }

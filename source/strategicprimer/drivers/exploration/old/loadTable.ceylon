@@ -28,12 +28,16 @@ import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import lovelace.util.common {
-    defer
+    defer,
+    todo
 }
 
 Logger log = logger(`module strategicprimer.drivers.exploration.old`);
-// Made shared so the oneToTwoConverter tests can get tables as classpath resources and
-// load them from there. Also used by the 'town contents' generator.
+
+"Load a table from file (or from provided data). This is [[shared]] because it
+ is used by [[strategicprimer.drivers.generators::TownGenerator]]."
+todo("Is it really?", "List any other uses")
+suppressWarnings("doclink")
 shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource argument,
         String name) {
     if (is File argument) {
@@ -136,6 +140,7 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
         }
     }
 }
+
 "Load all tables in the specified path."
 shared void loadAllTables(Directory path, ExplorationRunner runner) {
     // While it would probably be possible to exclude dotfiles using the `filter`
@@ -153,7 +158,10 @@ shared void loadAllTables(Directory path, ExplorationRunner runner) {
         }
     }
 }
+
+"Tests of the table-loading functionality."
 object loadTableTests {
+    "Test loading [[quadrant-based tables|QuadrantTable]]."
     test
     shared void testLoadQuadrantTable() {
         Queue<String> data = LinkedList<String>(["quadrant", "2", "one", "two", "three",
@@ -174,12 +182,17 @@ object loadTableTests {
         assertThatException(defer(loadTable,
             [LinkedList{"quadrant"}.accept, "testLoadQuadrantTable().illegal"]));
     }
+    
+    "A mock object to make sure that tables other than [[QuadrantTable]] do not
+     use the map dimensions."
     suppressWarnings("expressionTypeNothing")
     object mockDimensions satisfies MapDimensions {
         shared actual Integer rows => nothing;
         shared actual Integer columns => nothing;
         shared actual Integer version => nothing;
     }
+
+    "Test loading [[random-number-based tables|RandomTable]]."
     test
     shared void testLoadRandomTable() {
         EncounterTable result = loadTable(LinkedList{"random", "0 one", "99 two"}.accept,
@@ -187,6 +200,8 @@ object loadTableTests {
         assertEquals(result.generateEvent(Point.invalidPoint, TileType.tundra, false, [],
             mockDimensions), "one", "loading random table");
     }
+
+    "Test loading [[terrain-based tables|TerrainTable]]."
     test
     shared void testLoadTerrainTable() {
         EncounterTable result = loadTable(LinkedList{"terrain", "tundra one",
@@ -207,6 +222,8 @@ object loadTableTests {
             mockDimensions), "four",
             "loading terrain table: version 2 equivalent of mountain");
     }
+
+    """Test loading [[constant "tables"|ConstantTable]]"""
     test
     shared void testLoadConstantTable() {
         EncounterTable result = loadTable(LinkedList{"constant", "one"}.accept,
@@ -214,6 +231,8 @@ object loadTableTests {
         assertEquals(result.generateEvent(Point.invalidPoint, TileType.plains, false,
             [], mockDimensions), "one");
     }
+
+    "Test that the table-loading code correctly rejects invalid input."
     test
     shared void testTableLoadingInvalidInput() {
         // no data

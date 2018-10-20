@@ -33,10 +33,12 @@ import strategicprimer.model.common.map.fixtures.terrain {
 """A class to create exploration results. The initial implementation is a bit hackish, and
    should be generalized and improved---except that the entire idea of generating results
    from "encounter tables" instead of selecting from "fixtures" stored in the map has been
-   abandoned. This old method remains as a way of generating the map's contents *once* per
-   campaign."""
+   abandoned. This old method remains primarily as a way of generating the
+   map's contents *once* per campaign."""
+todo("List any other uses of this module left in the codebase; if none, remove it!")
 shared class ExplorationRunner() {
     MutableMap<String, EncounterTable> tables = HashMap<String, EncounterTable>();
+
     "Get a table by name." // Used by the table debugger.
     throws(`class MissingTableException`, "if there is no table by that name")
     restricted shared EncounterTable getTable(String name) {
@@ -46,8 +48,10 @@ shared class ExplorationRunner() {
             throw MissingTableException(name);
         }
     }
+
     "Whether we have a table of the given name."
-    shared Boolean hasTable(String name) => tables[name] exists;
+    shared Boolean hasTable(String name) => tables[name] exists; // TODO: Maybe switch to 'name in tables'?
+
     "Consult a table, and if a result indicates recursion, perform it. Recursion is
      indicated by hash-marks around the name of the table to call; results are undefined
      if there are more than two hash marks in any given String, or if either is at the
@@ -57,7 +61,7 @@ shared class ExplorationRunner() {
         String result = consultTable(table, location, terrain, mountainous, fixtures,
             mapDimensions);
         if (result.contains('#')) {
-            {String+} broken = result.split('#'.equals, true, false, 3);
+            {String+} broken = result.split('#'.equals, true, false, 3); // TODO: Extract this method call with these parameters to a named method; it occurs a lot, and in too-long-line contexts
             String before = broken.first;
             assert (exists middle = broken.rest.first);
             StringBuilder builder = StringBuilder();
@@ -70,6 +74,7 @@ shared class ExplorationRunner() {
             return result;
         }
     }
+
     "Check whether a table contains recursive calls to a table that doesn't exist. The
      outermost call to this method should not provide a second parameter (i.e. should
      use the default)"
@@ -98,6 +103,7 @@ shared class ExplorationRunner() {
             return true;
         }
     }
+
     "Check whether any table contains recursive calls to a table that doesn't exist."
     shared Boolean globalRecursiveCheck() {
         MutableSet<String> state = HashSet<String>();
@@ -108,6 +114,7 @@ shared class ExplorationRunner() {
         }
         return false;
     }
+
     "Print the names of any tables that are called but don't exist yet."
     shared void verboseRecursiveCheck(String table, Anything(String) ostream,
             MutableSet<String> state = HashSet<String>()) {
@@ -131,6 +138,7 @@ shared class ExplorationRunner() {
             }
         }
     }
+
     "Print the names of any tables that are called but don't exist yet."
     shared void verboseGlobalRecursiveCheck(Anything(String) ostream) {
         MutableSet<String> state = HashSet<String>();
@@ -138,6 +146,7 @@ shared class ExplorationRunner() {
             verboseRecursiveCheck(table, ostream, state);
         }
     }
+
     "Consult a table. (Look up the given tile if it's a quadrant table, roll on it if
      it's a random-encounter table.) Note that the result may be or include the name of
      another table, which should then be consultd."
@@ -155,6 +164,7 @@ shared class ExplorationRunner() {
             "The dimensions of the map"
             MapDimensions mapDimensions) => getTable(table).generateEvent(location,
                 terrain, mountainous, fixtures, mapDimensions);
+
     "Get the primary rock at the given location."
     shared String getPrimaryRock(
             "The tile's location."
@@ -168,6 +178,7 @@ shared class ExplorationRunner() {
             "The dimensions of the map."
             MapDimensions mapDimensions) => consultTable("major_rock", location, terrain,
                 mountainous, fixtures, mapDimensions);
+
     "Get the primary forest at the given location."
     suppressWarnings("deprecation")
     shared String getPrimaryTree(
@@ -201,6 +212,7 @@ shared class ExplorationRunner() {
         } else { }
         throw AssertionError("Only forests have primary trees");
     }
+
     """Get the "default results" (primary rock and primary forest) for the given
        location."""
     suppressWarnings("deprecation")
@@ -229,6 +241,7 @@ shared class ExplorationRunner() {
                     ";
         }
     }
+
     "Add a table. This is shared so that tests can use it, but shouldn't be used beyond
      that."
     todo("Consider whether non-test uses are reasonable",
@@ -239,18 +252,25 @@ shared class ExplorationRunner() {
         void loadTable(String name, EncounterTable table) => tables[name] = table;
 }
 
-"A mock [[EncounterTable]] for the apparatus to test the ExplorationRunner."
+"A mock [[EncounterTable]] for the apparatus to test the ExplorationRunner, to
+ produce the events the tests want in the order they want, and guarantee that
+ the runner never calls [[allEvents]]."
 class MockTable(String* values) satisfies EncounterTable {
     Queue<String> queue = LinkedList<String>(values);
+
     shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
         assert (exists retval = queue.accept());
         return retval;
     }
+
     suppressWarnings("expressionTypeNothing")
     shared actual Set<String> allEvents => nothing;
 }
+
+"Tests of the [[ExplorationRunner]]."
 object explorationRunnerTests {
+    "Test of the [[ExplorationRunner.getPrimaryRock]] method."
     test
     shared void testGetPrimaryRock() {
         ExplorationRunner runner = ExplorationRunner();
@@ -259,6 +279,8 @@ object explorationRunnerTests {
                 TileType.tundra, false, [], MapDimensionsImpl(69, 88, 2)),
             "primary_rock_test", "primary rock test");
     }
+
+    "Test of the [[ExplorationRunner.getPrimaryTree]] method."
     test
     suppressWarnings("deprecation")
     shared void testGetPrimaryTree() {
@@ -282,16 +304,19 @@ object explorationRunnerTests {
             "primary tree test for forest in plains");
     }
 
+    "Test that [[ExplorationRunner.getPrimaryTree]] objects to being called on
+     non-forested tiles."
     test
     shared void testIllegalGetPrimaryTree() {
         // TODO: Uncomment hasType() call once Ceylon tooling bug fixed
-        Point point = Point(0, 0);
+        Point point = Point(0, 0); // TODO: Inline, then make this method use => syntax
         assertThatException(
                     defer(ExplorationRunner().getPrimaryTree, [point,
                         TileType.tundra, false, [], MapDimensionsImpl(69, 88, 2)]))
             /*.hasType(`IllegalArgumentException`)*/;
     }
 
+    "Test the [[ExplorationRunner.consultTable]] method."
     test
     shared void testConsultTable() {
         ExplorationRunner runner = ExplorationRunner();
@@ -307,9 +332,11 @@ object explorationRunnerTests {
         assertEquals(runner.consultTable("test_table_three", point,
                 TileType.tundra, false, [], dimensions), "test_three", "third table");
     }
-    "Test the recursiveConsultTable method: the one method under test whose correctness
-     is non-obvious. We don't use mock tables here because setting them up would be
-     more trouble than they're worth."
+
+    "Test the [[ExplorationRunner.recursiveConsultTable]] method: the one
+     method under test whose correctness is non-obvious. We don't use mock
+     tables here because setting them up would be more trouble than they're
+     worth."
     test
     shared void testRecursiveConsultTable() {
         ExplorationRunner runner = ExplorationRunner();
@@ -332,6 +359,7 @@ object explorationRunnerTests {
             "one-sided split");
     }
 
+    "Test the [[ExplorationRunner.defaultResults]] method."
     test
     suppressWarnings("deprecation")
     shared void testDefaultResults() {
