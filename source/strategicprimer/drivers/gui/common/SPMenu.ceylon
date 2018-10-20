@@ -34,12 +34,16 @@ import lovelace.util.jvm {
 import strategicprimer.drivers.gui.common {
     quitHandler
 }
+
 "A class to hold the logic for building our menus."
 shared class SPMenu extends JMenuBar {
 //    suppressWarnings("expressionTypeNothing")
 //    static void simpleQuit() => process.exit(0); // TODO: uncomment these once eclipse/ceylon#7396 fixed
 //    static variable Anything() localDefaultQuit = simpleQuit;
 //    shared static Anything() defaultQuit => localDefaultQuit;
+
+    "If the given driver isn't of the specfied driver type, disable the given
+     menu-item; regardless, return the menu item."
     static JMenuItem enabledForDriver<Driver>(JMenuItem item, ISPDriver driver)
             given Driver satisfies ISPDriver {
         if (!driver is Driver) {
@@ -47,6 +51,9 @@ shared class SPMenu extends JMenuBar {
         }
         return item;
     }
+    
+    "If the given driver is of the specified driver type, disable the given
+     menu item; regardless, return the menu item."
     static JMenuItem disabledForDriver<Driver>(JMenuItem item, ISPDriver driver)
             given Driver satisfies ISPDriver {
         if (driver is Driver) {
@@ -54,7 +61,8 @@ shared class SPMenu extends JMenuBar {
         }
         return item;
     }
-    "Create the file menu."
+
+    "Create the File menu."
     shared static JMenu createFileMenu(/*ActionListener|*/Anything(ActionEvent) handler,
             ISPDriver driver) {
         JMenu fileMenu = JMenu("File");
@@ -62,6 +70,7 @@ shared class SPMenu extends JMenuBar {
         fileMenu.add(enabledForDriver<ViewerDriver>(createMenuItem("New", KeyEvent.vkN,
             "Create a new, empty map the same size as the current one", handler,
             createAccelerator(KeyEvent.vkN)), driver));
+
         String desc;
         String loadCaption;
         String saveCaption;
@@ -77,12 +86,14 @@ shared class SPMenu extends JMenuBar {
             saveCaption = "Save the map to the file it was loaded from";
             saveAsCaption = "Save the map to file";
         }
+
         fileMenu.add(enabledForDriver<GUIDriver|UtilityGUI>(createMenuItem("Load",
             KeyEvent.vkL, loadCaption, handler, createAccelerator(KeyEvent.vkO)),
             driver));
         fileMenu.add(enabledForDriver<MultiMapGUIDriver>(createMenuItem("Load secondary",
             KeyEvent.vkE, "Load an additional secondary map from file", handler,
             createAccelerator(KeyEvent.vkO, HotKeyModifier.shift)), driver));
+
         fileMenu.add(enabledForDriver<ModelDriver>(createMenuItem("Save",
             KeyEvent.vkS, saveCaption, handler, createAccelerator(KeyEvent.vkS)), driver));
         fileMenu.add(enabledForDriver<ModelDriver>(createMenuItem("Save As",
@@ -92,6 +103,7 @@ shared class SPMenu extends JMenuBar {
             KeyEvent.vkV, "Save all maps to their files", handler,
             createAccelerator(KeyEvent.vkL)), driver));
         fileMenu.addSeparator();
+
         KeyStroke openViewerHotkey;
         if (platform.systemIsMac) {
             openViewerHotkey = KeyStroke.getKeyStroke(KeyEvent.vkM,
@@ -103,13 +115,16 @@ shared class SPMenu extends JMenuBar {
             createMenuItem("Open in map viewer", KeyEvent.vkM,
                 "Open the main map in the map viewer for a broader view", handler,
                 openViewerHotkey), driver), driver));
+
         fileMenu.add(enabledForDriver<MultiMapGUIDriver>(createMenuItem(
             "Open secondary map in map viewer", KeyEvent.vkE,
             "Open the first secondary map in the map vieer for a broader view", handler,
             createAccelerator(KeyEvent.vkE)), driver));
         fileMenu.addSeparator();
+
         fileMenu.add(createMenuItem("Close", KeyEvent.vkW, "Close this window",
             handler, createAccelerator(KeyEvent.vkW)));
+
         if (platform.systemIsMac) {
             Application.application.setAboutHandler((AppEvent.AboutEvent event) =>
             handler(ActionEvent(WindowList.getWindows(true, false).iterable.coalesced
@@ -132,23 +147,28 @@ shared class SPMenu extends JMenuBar {
         }
         return fileMenu;
     }
-    """Create the "map" menu, including go-to-tile, find, and zooming functions."""
+
+    """Create the "Map" menu, including go-to-tile, find, and zooming functions."""
     shared static JMenu createMapMenu(Anything(ActionEvent) handler, ISPDriver driver) {
         JMenu retval = JMenu("Map");
         retval.mnemonic = KeyEvent.vkM;
+
         retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Go to tile",
             KeyEvent.vkT, "Go to a tile by coordinates", handler,
             createAccelerator(KeyEvent.vkT)), driver));
+
         Integer findKey = KeyEvent.vkF;
         retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Find a fixture", findKey,
             "Find a fixture by name, kind or ID #", handler, createAccelerator(findKey),
             KeyStroke.getKeyStroke(KeyEvent.vkSlash, 0)), driver));
+
         Integer nextKey = KeyEvent.vkN;
         retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Find next", nextKey,
             "Find the next fixture matching the pattern", handler,
             createAccelerator(KeyEvent.vkG), KeyStroke.getKeyStroke(nextKey, 0)),
             driver));
         retval.addSeparator();
+
         // vkPlus only works on non-US keyboards, but we leave it as the primary hot-key
         // because it's the best to *show* in the menu.
         KeyStroke plusKey = createAccelerator(KeyEvent.vkPlus);
@@ -157,12 +177,15 @@ shared class SPMenu extends JMenuBar {
             createAccelerator(KeyEvent.vkEquals),
             createAccelerator(KeyEvent.vkEquals, HotKeyModifier.shift),
             createAccelerator(KeyEvent.vkAdd)), driver));
+
         retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Zoom out", KeyEvent.vkO,
             "Decrease the visible size of each tile", handler,
             createAccelerator(KeyEvent.vkMinus)), driver));
+
         retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Reset zoom", KeyEvent.vkR,
             "Reset the zoom level", handler, createAccelerator(KeyEvent.vk0)), driver));
         retval.addSeparator();
+
         KeyStroke centerHotkey;
         if (platform.systemIsMac) {
             centerHotkey = createAccelerator(KeyEvent.vkL);
@@ -172,16 +195,18 @@ shared class SPMenu extends JMenuBar {
         retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Center", KeyEvent.vkC,
             "Center the view on the selected tile", handler,
             centerHotkey), driver));
+
         return retval;
     }
-    """Create the "view" menu."""
+
+    """Create the "View" menu."""
     shared static JMenu createViewMenu(Anything(ActionEvent) handler,
             ISPDriver driver) {
         JMenu viewMenu = JMenu("View");
         viewMenu.mnemonic = KeyEvent.vkE;
 
-        JMenuItem currentPlayerItem;
-        if (is WorkerGUI driver) { // TODO: Use enabledForDriver for the treeItems
+        JMenuItem currentPlayerItem; // TODO: Refactor to put a String currentPlayerDesc variable here, defined in the two if branches, and create the item inline in the viewMenu.add() call
+        if (is WorkerGUI driver) {
             currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
                 "Look at a different player's units and workers", handler,
                 createAccelerator(KeyEvent.vkP));
@@ -191,9 +216,11 @@ shared class SPMenu extends JMenuBar {
                 "Mark a player as the current player in the map", handler), driver);
         }
         viewMenu.add(currentPlayerItem);
+
         viewMenu.add(enabledForDriver<WorkerGUI>(createMenuItem("Reload tree",
             KeyEvent.vkR, "Refresh the view of the workers", handler,
             createAccelerator(KeyEvent.vkR)), driver));
+
         viewMenu.add(enabledForDriver<WorkerGUI>(createMenuItem("Expand All",
             KeyEvent.vkX, "Expand all nodes in the unit tree", handler), driver));
         viewMenu.add(enabledForDriver<WorkerGUI>(createMenuItem("Expand Unit Kinds",
@@ -202,10 +229,12 @@ shared class SPMenu extends JMenuBar {
             KeyEvent.vkC, "Collapse all nodes in the unit tree", handler), driver));
         return viewMenu;
     }
+
     "Disable a menu and return it."
     shared static JMenu disabledMenu(JMenu menu) {
         menu.enabled = false;
         return menu;
     }
+
     shared new (JMenu* menus) extends JMenuBar() { menus.each(add); }
 }

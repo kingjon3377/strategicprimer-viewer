@@ -21,9 +21,15 @@ import java.io {
     FilenameFilter,
     JFile=File
 }
+
+"An extension of the more-generic [[FileChooser]] class that, by default,
+ filters the view to show only files that (by their extension) might be SP map
+ files, and that chooses between [[Swing|JFileChooser]] and [[AWT|JFileDialog]]
+ based on what platform the code is running on."
 shared class SPFileChooser extends FileChooser {
     static FileFilter mapExtensionsFilter = FileNameExtensionFilter(
         "Strategic Primer world map files", "map", "xml", "db");
+
     "A factory method for [[JFileChooser]] (or AWT [[FileDialog|JFileDialog]] taking a
      [[FileFilter]] to apply in the same operation."
     todo("Move functionality into FileChooser somehow?")
@@ -51,12 +57,18 @@ shared class SPFileChooser extends FileChooser {
             return retval;
         }
     }
+
+    """Constructor for a filtered "Open" dialog."""
     shared new open(PathWrapper? loc = null,
             JFileChooser|JFileDialog fileChooser = filteredFileChooser(true))
             extends FileChooser.open(fileChooser, loc) {}
+
+    """Constructor for a filtered "Save" dialog."""
     shared new save(PathWrapper? loc,
             JFileChooser|JFileDialog fileChooser = filteredFileChooser(false))
             extends FileChooser.save(loc, fileChooser) {}
+
+    "Constructor for a filtered custom-verb dialog."
     shared new custom(PathWrapper? loc, String approveText,
             JFileChooser|JFileDialog fileChooser = filteredFileChooser(false))
             extends FileChooser.custom(loc, approveText, fileChooser) {}

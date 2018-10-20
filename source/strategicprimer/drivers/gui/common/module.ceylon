@@ -1,5 +1,6 @@
 "Common code for [Strategic
  Primer](https://shinecycle.wordpress.com/archives/strategic-primer) GUIs."
+// TODO: Write user-introductory documentation for this module
 // TODO: add tagged() annotations throughout
 license("GPL-3")
 native("jvm")

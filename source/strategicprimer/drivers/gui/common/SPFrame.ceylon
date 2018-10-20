@@ -33,13 +33,17 @@ import strategicprimer.drivers.common {
     MapChangeListener
 }
 
+"Logger."
 Logger log = logger(`module strategicprimer.drivers.gui.common`);
+
 "A [[TransferHandler]] to allow SP apps to accept dropped files."
 class FileDropHandler() extends TransferHandler() {
     shared late SPFrame app;
+
     shared actual Boolean canImport(TransferSupport support) => support.drop &&
         app.supportsDroppedFiles &&
         support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+
     shared actual Boolean importData(TransferSupport support) {
         if (!canImport(support)) {
             return false;
@@ -61,6 +65,7 @@ class FileDropHandler() extends TransferHandler() {
         return true;
     }
 }
+
 "An intermediate subclass of JFrame to take care of some common setup things that can't be
  done in an interface."
 shared class SPFrame(String windowTitle, ISPDriver driver, Dimension? minSize = null,
@@ -83,6 +88,7 @@ shared class SPFrame(String windowTitle, ISPDriver driver, Dimension? minSize = 
         }
     }
     title = refreshTitle();
+
     if (is ModelDriver driver) {
         driver.model.addMapChangeListener(object satisfies MapChangeListener {
             void impl() {
@@ -94,21 +100,25 @@ shared class SPFrame(String windowTitle, ISPDriver driver, Dimension? minSize = 
                 }
                 outer.title = refreshTitle();
             }
-            shared actual void mapChanged() {
+            shared actual void mapChanged() { // TODO: =>
                 SwingUtilities.invokeLater(impl);
             }
-            shared actual void mapMetadataChanged() {
+            shared actual void mapMetadataChanged() { // TODO: =>
                 SwingUtilities.invokeLater(impl);
             }
         });
     }
+
     "Handle a dropped file."
     shared default void acceptDroppedFile(PathWrapper file) => droppedFileHandler(file);
+
     shared void showWindow() => setVisible(true);
+
     defaultCloseOperation = WindowConstants.doNothingOnClose;
     if (exists minSize) {
         setMinimumSize(minSize);
     }
+
     FileDropHandler temp = FileDropHandler();
     transferHandler = temp;
     temp.app = this;
