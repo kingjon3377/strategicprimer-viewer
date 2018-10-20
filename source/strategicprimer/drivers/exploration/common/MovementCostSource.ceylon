@@ -3,6 +3,7 @@
 shared interface MovementCostSource {
     "Notify the given listener of any future movement costs."
     shared formal void addMovementCostListener(MovementCostListener listener);
+
     "Stop notifying the given listener of movement costs."
     shared formal void removeMovementCostListener(MovementCostListener listener);
 }

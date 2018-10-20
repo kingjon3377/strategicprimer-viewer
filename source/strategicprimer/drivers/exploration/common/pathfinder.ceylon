@@ -20,8 +20,13 @@ import ceylon.logging {
     logger,
     Logger
 }
+
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.exploration.common`);
+
+"An encapsulation (for ease of importing and just in case I decide to do some
+ caching between runs at some point) of an implementation of Dijkstra's
+ shortest-path algorithm."
 shared object pathfinder {
     "The shortest-path distance, avoiding obstacles, in MP, between two points, using
      Dijkstra's algorithm."

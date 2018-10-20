@@ -56,10 +56,11 @@ import com.vasileff.ceylon.structures {
     Multimap
 }
 
-"A model for exploration drivers."
+"A model for exploration apps."
 shared class ExplorationModel extends SimpleMultiMapModel satisfies IExplorationModel {
     """A fixture is "diggable" if it is a [[MineralFixture]] or a [[Mine]]."""
     static Boolean isDiggable(TileFixture fixture) => fixture is MineralFixture|Mine;
+
     """Check whether two fixtures are "equal enough" for the purposes of updating a map
        after digging. This method is needed because equals() in
        [[strategicprimer.model.common.map.fixtures.resources::StoneDeposit]] and
@@ -67,6 +68,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     static Boolean areDiggablesEqual(IFixture firstFixture, IFixture secondFixture) =>
             firstFixture == secondFixture || firstFixture.copy(true) == secondFixture
                 .copy(true);
+
     "If a unit's motion could be observed by someone allied to another (non-independent)
      player (which at present means the unit is moving *to* a tile two or fewer tiles away
      from the watcher), print a message saying so to stdout."
@@ -89,6 +91,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             }
         }
     }
+
     "Remove a unit from a location, even if it's in a fortress."
     static void removeImpl(IMutableMapNG map, Point point, IUnit unit) {
         variable Boolean outside = false;
@@ -106,6 +109,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             map.removeFixture(point, unit);
         }
     }
+
     "Ensure that a given map has at least terrain information for the specified location."
     static void ensureTerrain(IMapNG mainMap, IMutableMapNG map, Point point) {
         if (!map.baseTerrain[point] exists) {
@@ -118,6 +122,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         //map.addRivers(point, *mainMap.rivers[point]); // TODO: syntax sugar
         map.addRivers(point, *mainMap.rivers.get(point));
     }
+
     "Whether the given fixture is contained in the given stream."
     static Boolean doesStreamContainFixture({IFixture*} stream, IFixture fixture) {
         for (member in stream) {
@@ -129,25 +134,30 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
         return false;
     }
+
     "Whether the given fixture is at the given location in the given map."
     static Boolean doesLocationHaveFixture(IMapNG map, Point point, TileFixture fixture)
             => doesStreamContainFixture(map.fixtures.get(point), fixture); // TODO: syntax sugar
+
     """A "plus one" method with a configurable, low "overflow"."""
     static Integer increment(
             "The number to increment"
             Integer number,
             "The maximum number we want to return"
             Integer max) => if (number >= max) then 0 else number + 1;
+
     """A "minus one" method that "underflows" after 0 to a configurable, low value."""
     static Integer decrement(
             "The number to decrement"
             Integer number,
             """The number to "underflow" to"""
             Integer max) => if (number <= 0) then max else number - 1;
+
     "The intersection of two sets; here so it can be passed as a method reference rather
      than a lambda in [[playerChoices]]."
     static Set<T> intersection<T>(Set<T> one, Set<T> two) given T satisfies Object =>
             one.intersection(two);
+
     "If [[fixture]] is a [[Fortress]], return it; otherwise, return a Singleton
      containing it. This is intended to be used in [[Iterable.flatMap]]."
     static {IFixture*} unflattenNonFortresses(TileFixture fixture) {
@@ -157,34 +167,42 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             return Singleton(fixture);
         }
     }
+
     MutableList<MovementCostListener> mcListeners = ArrayList<MovementCostListener>();
     MutableList<SelectionChangeListener> scListeners =
             ArrayList<SelectionChangeListener>();
+
     "The currently selected unit and its location."
     variable [Point, IUnit?] selection = [Point.invalidPoint, null];
+
     shared new (IMutableMapNG map, PathWrapper? file, Boolean modified = false)
             extends SimpleMultiMapModel(map, file, modified) {}
     shared new copyConstructor(IDriverModel model)
             extends SimpleMultiMapModel.copyConstructor(model) {}
+
     "All the players shared by all the maps."
     shared actual {Player*} playerChoices => allMaps.map(Entry.key).map(IMapNG.players)
         .map(set).fold(set(map.players))(intersection);
+
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) =>
             map.fixtures.map(Entry.item).flatMap(unflattenNonFortresses)
                 .narrow<IUnit>().filter(matchingValue(player, HasOwner.owner));
+
     "Tell listeners that the selected point changed."
     void fireSelectionChange(Point old, Point newSelection) {
         for (listener in scListeners) {
             listener.selectedPointChanged(old, newSelection);
         }
     }
+
     "Tell listeners to deduct a cost from their movement-point totals."
     void fireMovementCost(Integer cost) {
         for (listener in mcListeners) {
             listener.deduct(cost);
         }
     }
+
     "Get the location one tile in the given direction from the given point."
     shared actual Point getDestination(Point point, Direction direction) {
         MapDimensions dims = mapDimensions;
@@ -211,6 +229,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         case (Direction.west) { return Point(row, decrement(column, maxColumn)); }
         case (Direction.nowhere) { return point; }
     }
+
     void fixMovedUnits(Point base) {
         {<Point->TileFixture>*} localFind(IMapNG mapParam, TileFixture target) =>
                 mapParam.fixtures
@@ -235,6 +254,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             }
         }
     }
+
     "Move the currently selected unit from its current location one tile in the specified
      direction. Moves the unit in all maps where the unit *was* in that tile, copying
      terrain information if the tile didn't exist in a subordinate map. If movement in the
@@ -321,6 +341,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             throw TraversalImpossibleException();
         }
     }
+
     """Search the main map for the given fixture. Returns the first location found (search
        order is not defined) containing a fixture "equal to" the specified one."""
     shared actual Point find(TileFixture fixture) {
@@ -332,6 +353,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             return Point.invalidPoint;
         }
     }
+
     "The currently selected unit."
     shared actual IUnit? selectedUnit => selection.rest.first;
     "Select the given unit."
@@ -353,20 +375,24 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         selection = [loc, selectedUnit];
         fireSelectionChange(oldLoc, loc);
     }
+
     "The location of the currently selected unit."
     shared actual Point selectedUnitLocation => selection.first;
+
     "Add a selection-change listener."
     shared actual void addSelectionChangeListener(SelectionChangeListener listener) =>
             scListeners.add(listener);
     "Remove a selection-change listener."
     shared actual void removeSelectionChangeListener(SelectionChangeListener listener) =>
             scListeners.remove(listener);
+
     "Add a movement-cost listener."
     shared actual void addMovementCostListener(MovementCostListener listener) =>
             mcListeners.add(listener);
     "Remove a movement-cost listener."
     shared actual void removeMovementCostListener(MovementCostListener listener) =>
             mcListeners.remove(listener);
+
     "If there is a currently selected unit, make any independent villages at its location
      change to be owned by the owner of the currently selected unit. This costs MP."
     shared actual void swearVillages() {
@@ -429,6 +455,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             fireMovementCost(5);
         }
     }
+
     "If there is a currently selected unit, change one [[Ground]],
      [[strategicprimer.model.common.map.fixtures.resources::StoneDeposit]], or [[MineralVein]] at
      the location of that unit from unexposed to exposed (and discover it). This costs
@@ -452,7 +479,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             }
             assert (exists oldFixture = diggables.first);
             TileFixture newFixture = oldFixture.copy(false);
-            if (is Ground newFixture) {
+            if (is Ground newFixture) { // TODO: Extract an interface for this field so we only have to do one test
                 newFixture.exposed = true;
             } else if (is MineralVein newFixture) {
                 newFixture.exposed = true;

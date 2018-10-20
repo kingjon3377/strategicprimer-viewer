@@ -11,12 +11,13 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
+
 "An enumeration of directions of possible travel."
 shared class Direction
         of north|northeast|east|southeast|south|southwest|west|northwest|nowhere {
     "A representation of the direction for debugging purposes."
     shared actual String string;
-    "The number used to select this direction in the CLI."
+    "The number used to select this direction in the CLI." // FIXME: This is no longer true!
     shared Integer ordinal;
     "North."
     shared new north { string = "north"; ordinal = 0; }
@@ -37,6 +38,7 @@ shared class Direction
     "Stand still."
     shared new nowhere { string = "nowhere"; ordinal = 8; }
 }
+
 "An enumeration of possible movement speeds, joining their effects on MP costs and
  Perception. Traveling to [[Direction.nowhere]] should give an additional bonus (+2?) to
  Perception."
@@ -50,6 +52,7 @@ shared class Speed of hurried|normal|observant|careful|meticulous
     shared actual String name;
     "A description to use in prose text."
     shared String shortName;
+
     abstract new delegate(Float multMod, Integer addMod, String desc) {
         mpMultiplier = multMod;
         perceptionModifier = addMod;
@@ -58,6 +61,7 @@ shared class Speed of hurried|normal|observant|careful|meticulous
             1)`` MP costs, ``perceptionString`` Perception";
         shortName = desc;
     }
+
     "Traveling as quickly as possible."
     shared new hurried extends delegate(0.66, -6, "Hurried") {}
     "Normal speed."
@@ -68,18 +72,22 @@ shared class Speed of hurried|normal|observant|careful|meticulous
     shared new careful extends delegate(2.0, 0, "Careful") {}
     "Painstaking searches."
     shared new meticulous extends delegate(2.5, 2, "Meticulous") {}
+
     "A description to use in GUI menus."
     shared actual String string => name;
     shared actual Comparison compare(Speed other) =>
             perceptionModifier <=> other.perceptionModifier;
 }
-"A model for exploration drivers."
+
+"A model for exploration apps."
 shared interface IExplorationModel
         satisfies IMultiMapModel&SelectionChangeSource&MovementCostSource {
     "Players that are shared by all the maps."
     shared formal {Player*} playerChoices;
+
     "The given player's units in the main (master) map."
     shared formal {IUnit*} getUnits(Player player);
+
     "Move the currently selected unit from its current location one tile in the specified
      direction. Moves the unit in all maps where the unit *was* in that tile, copying
      terrain information if the tile didn't exist in a subordinate map. If movement in the
@@ -90,18 +98,24 @@ shared interface IExplorationModel
     throws(`class TraversalImpossibleException`,
         "if movement in the specified direction is impossible")
     shared formal Integer move(Direction direction, Speed speed);
+
     "Given a starting point and a direction, get the next point in that direction."
     shared formal Point getDestination(Point point, Direction direction);
+
     """Get the location of the first fixture that can be found that is "equal to" the
        given fixture, or "the invalid point" if not found."""
     shared formal Point find(TileFixture fixture);
+
     "The currently selected unit, if any."
     shared formal variable IUnit? selectedUnit;
+
     """The location of the currently selected unit, or "the invalid point" if none."""
     shared formal Point selectedUnitLocation;
+
     "If there is a currently selected unit, make any independent villages at its location
      change to be owned by the owner of the currently selected unit. This costs MP."
     shared formal void swearVillages();
+
     "If there is a currently selected unit, change one
      [[strategicprimer.model.common.map.fixtures::Ground]],
      [[strategicprimer.model.common.map.fixtures.resources::StoneDeposit]], or

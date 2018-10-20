@@ -37,9 +37,25 @@ import strategicprimer.drivers.exploration.common {
 import ceylon.random {
     randomize
 }
+
+"""An encapsulation of the very basic movement model we currently use:
+
+   - It is possible to move from a land tile to a land tile, and from one
+     [[ocean|TileType.ocean]] tile to another, but not from land to water or
+     vice versa.
+   - Each unit has a certain number of "movement points" per turn, and each
+     action it takes costs MP; how many MP it takes to move depends on the
+     terrain type, whether the tile is mountainous, whether it has any forests,
+     and whether there are any rivers going in approximately the same
+     direction.
+   - Units notice nearby [["fixtures"|TileFixture]] in the map (only on the
+     tiles they visit, for now) as they move, some automatically and some with
+     a probability dependent on the kind of fixture and on the unit's members'
+     Perception score."""
 shared object simpleMovementModel {
     "Whether land movement is possible on the given terrain."
     shared Boolean landMovementPossible(TileType terrain) => TileType.ocean != terrain;
+
     "Whether rivers in either the source or the destination will speed travel in the given
      direction." // "X in Y" means "Y.contains(X)"
     shared Boolean riversSpeedTravel(Direction direction,
@@ -65,6 +81,7 @@ shared object simpleMovementModel {
         }
         case (Direction.nowhere) { return false; }
     }
+
     "Get the cost of movement in the given conditions."
     shared Integer movementCost(
             """The terrain being traversed. Null if "not visible.""""
@@ -172,6 +189,7 @@ shared object simpleMovementModel {
         return retval.sequence();
     }
 }
+
 "An exception thrown to signal traversal is impossible."
 todo("Ocean isn't impassable to everything, of course.") // FIXME
 shared class TraversalImpossibleException()

@@ -19,6 +19,7 @@ shared {Point*} surroundingPointIterable(Point startingPoint, MapDimensions dime
             return column % dimensions.columns;
         }
     }
+
     Integer roundRow(Integer row) {
         if (row < 0) {
             return dimensions.rows + row;
@@ -26,6 +27,7 @@ shared {Point*} surroundingPointIterable(Point startingPoint, MapDimensions dime
             return row % dimensions.rows;
         }
     }
+
     MutableList<Point> points = ArrayList<Point>();
     for (inner in (0..(radius)).reversed) {
         Integer lowerBound = 0 - inner;

@@ -9,14 +9,17 @@ import strategicprimer.model.common.map {
     MapDimensionsImpl,
     SPMapNG
 }
+
 "Tests that the movement code gets its most basic functionality, namely finding adjacent
  tiles, right."
 object directionTests {
-    void directionAssert(IExplorationModel model, Direction direction,
-            Point source, Point destination, String extraMessage = "") {
+    "A custom assertion for these tests."
+    void directionAssert(IExplorationModel model, Direction direction, // TODO: Have two parameter lists to avoid lambdas in test methods.
+            Point source, Point destination, String extraMessage = "") { // TODO: =>
         assertEquals(model.getDestination(source, direction), destination,
             "``direction`` of ``source````extraMessage`` is ``destination``");
     }
+
     "Test that wrapping to the east works properly."
     test
     shared void testEast() {
