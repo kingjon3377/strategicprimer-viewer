@@ -8,11 +8,13 @@ import ceylon.decimal {
 import ceylon.collection {
     MutableList
 }
+
 """An interface for the "CLI helper," which encapsulates input and output streams,
-   allowing automated testing of CLIs and GUI wrappers around CLIs."""
+   allowing automated testing of command-line apps and graphical wrappers around them."""
 // TODO: Methods beyond inputNumber/inputDecimal should abort (return null) on EOF.
 shared interface ICLIHelper {
-    shared alias ListAmendment<Element> => Element?(MutableList<Element>, ICLIHelper);
+    shared alias ListAmendment<Element> => Element?(MutableList<Element>, ICLIHelper); // TODO: Is this used anymore?
+
     "Have the user choose an item from a list. Returns the index."
     shared formal Integer->Element? chooseFromList<Element>(
             "The list of items to choose from."
@@ -25,6 +27,7 @@ shared interface ICLIHelper {
             String prompt,
             "Whether to automatically choose if there's only one choice."
             Boolean auto) given Element satisfies Object&HasName;
+
     "Have the user choose an item from a list."
     shared formal Integer->String? chooseStringFromList(
             "The list of items to choose from."
@@ -37,24 +40,29 @@ shared interface ICLIHelper {
             String prompt,
             "Whether to automatically choose if there's only one choice."
             Boolean auto);
+
     "Read from the input stream until a non-negative integer is entered, then return it.
      Returns null on EOF."
     shared formal Integer? inputNumber(
             "The prompt to prompt the user with."
             String prompt);
+
     "Read from the input stream repeatedly until a valid non-negative decimal number is
      entered, then return it. Returns null on EOF."
     shared formal Decimal? inputDecimal(
             "The prompt to prompt the user with."
             String prompt);
+
     "Read a line of input. It is trimmed of leading and trailing whitespace."
     shared formal String inputString(
             "The prompt to prompt the user with."
             String prompt);
+
     "Ask the user a yes-or-no question."
     shared formal Boolean inputBoolean(
             "The prompt to prompt the user with."
             String prompt);
+
     """Ask the user a yes-or-no question, allowing "yes to all" or "no to all" to
        forestall further similar questions."""
     shared formal Boolean|Absent inputBooleanInSeries<Absent=Nothing>(
@@ -65,14 +73,17 @@ shared interface ICLIHelper {
             "A function to produce an [[Absent]] value to return if an input should
              short-circuit the loop."
             <Absent|Boolean?>(String) quitResultFactory = (String str) => null);
+
     "Print the specified string, then a newline."
     shared formal void println(
             "The line to print"
             String line = "");
+
     "Print the specified string."
     shared formal void print(
             "The string to print."
             String text);
+
     "Get a [[Point]] from the user. This is a convenience wrapper around [[inputNumber]].
      On EOF, returns -1 for any remaining coordinates."
     shared default Point inputPoint(

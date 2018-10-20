@@ -17,14 +17,17 @@ shared interface IMultiMapModel satisfies IDriverModel {
             PathWrapper? file,
             "Whether it has been modified since being loaded or last saved"
             Boolean modified = false);
+
     "Subordinate maps with their filenames (and the flag of whether the map has been
      modified since loaded or last saved), as [[Entries|Entry]]"
     shared formal {<IMutableMapNG->[PathWrapper?, Boolean]>*} subordinateMaps;
+
     "All maps with their filenames (and the flag of whether the map has been
      modified since loaded or last saved), including the main map and the subordinate
      maps, as [[Entries|Entry]]"
     shared default {<IMutableMapNG->[PathWrapper?, Boolean]>*} allMaps =>
             subordinateMaps.follow(map->[mapFile, mapModified]);
+
     "Set the 'modified' flag for the given map."
     shared formal void setModifiedFlag(IMutableMapNG map, Boolean modified);
 }

@@ -3,6 +3,7 @@
  one level up from `strategicprimer.model.common`."
 license("GPL-3")
 // TODO: add tagged() annotations throughout
+// TODO: Write user-introductory documentation of this module
 native("jvm") // TODO: Remove once ceylon.decimal becomes cross-platform, eclipse/ceylon#2448
 module strategicprimer.drivers.common "0.4.9017" {
     value ceylonVersion = "1.3.3";

@@ -6,6 +6,7 @@ shared interface MapChangeListener {
      rather than taking the map from an event even when one was provided, this method
       specifies no parameters."
     shared formal void mapChanged();
+
     "React to a change in the map's filename (without a change in the map itself) or the
      'modified' flag."
     shared formal void mapMetadataChanged();

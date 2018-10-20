@@ -1,6 +1,7 @@
 import strategicprimer.model.common.map {
     Point
 }
+
 "An interface for objects that want to know when the selected tile, or its location,
  changes."
 shared interface SelectionChangeListener {

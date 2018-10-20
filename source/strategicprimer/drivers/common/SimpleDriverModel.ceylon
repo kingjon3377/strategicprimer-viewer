@@ -21,16 +21,22 @@ import lovelace.util.common {
 shared class SimpleDriverModel satisfies IDriverModel {
     "The list of map-change listeners."
     MutableList<MapChangeListener> mcListeners = ArrayList<MapChangeListener>();
+
     "The list of version change listeners."
     MutableList<VersionChangeListener> vcListeners = ArrayList<VersionChangeListener>();
+
     "The dimensions of the map."
     variable MapDimensions mapDim;
+
     "The main map."
     variable IMutableMapNG mainMap;
+
     "Whether the map has been changed since it was loaded or last saved."
     variable Boolean modifiedFlag;
+
     "The filename from which the map was loaded, if known."
     variable PathWrapper? mainMapFile;
+
     shared new (IMutableMapNG map = SPMapNG(MapDimensionsImpl(-1, -1, -1),
             PlayerCollection(), -1), PathWrapper? file = null, Boolean modified = false) {
         mainMap = map;
@@ -38,14 +44,16 @@ shared class SimpleDriverModel satisfies IDriverModel {
         mainMapFile = file;
         modifiedFlag = modified;
     }
+
     shared actual Boolean mapModified => modifiedFlag;
     assign mapModified {
         modifiedFlag = mapModified;
         for (listener in mcListeners) {
             // Iterable.each(MapChangeListener.mapMetadataChanged) does *not* work!
-            listener.mapMetadataChanged();
+            listener.mapMetadataChanged(); // TODO: Once we have lovelace.util.common::invoke, use it to condense this again
         }
     }
+
     "Set a new main map."
     shared actual default void setMap(IMutableMapNG newMap, PathWrapper? origin,
             Boolean modified) {
@@ -57,28 +65,32 @@ shared class SimpleDriverModel satisfies IDriverModel {
         mainMapFile = origin;
         mapModified = modified;
         for (listener in mcListeners) {
-            listener.mapChanged();
+            listener.mapChanged(); // TODO: Once we have lovelace.util.common::invoke, use it to condense this
         }
     }
+
     "The (main) map."
     shared actual IMutableMapNG map => mainMap;
     "The dimensions of the map."
     shared actual MapDimensions mapDimensions => mapDim;
+
     "The filename from which the map was loaded, if known."
     shared actual PathWrapper? mapFile => mainMapFile;
     assign mapFile {
         mainMapFile = mapFile;
         for (listener in mcListeners) {
             // Iterable.each(MapChangeListener.mapMetadataChanged) does *not* work!
-            listener.mapMetadataChanged();
+            listener.mapMetadataChanged(); // TODO: Once we have lovelace.util.common::invoke, use it to condense this again
         }
     }
+
     "Add a map-change listener."
     shared actual void addMapChangeListener(MapChangeListener listener) =>
             mcListeners.add(listener);
     "Remove a map-change listener."
     shared actual void removeMapChangeListener(MapChangeListener listener) =>
             mcListeners.remove(listener);
+
     "Add a version-change listener."
     shared actual void addVersionChangeListener(VersionChangeListener listener) =>
             vcListeners.add(listener);

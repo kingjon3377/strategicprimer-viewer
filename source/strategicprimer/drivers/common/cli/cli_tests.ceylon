@@ -17,8 +17,10 @@ import ceylon.decimal {
 import ceylon.language.meta.model {
     Method
 }
+
 String[] truePossibilities = ["yes", "true", "y", "t"];
 String[] falsePossibilities = ["no", "false", "n", "f"];
+
 object cliTests {
     "A helper method to condense tests."
     void assertCLI<out T, in Arguments>(
@@ -52,7 +54,7 @@ object cliTests {
         assertEquals(ostream.string, expectedOutputReal, outputMessage);
     }
 
-    "Test chooseFromList()."
+    "Test [[ICLIHelper.chooseFromList]]."
     test
     shared void testChooseFromList() {
         assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
@@ -79,7 +81,8 @@ object cliTests {
             "chooseFromList doesn't always auto-choose only choice",
             "chooseFromList didn't automatically choose only choice");
     }
-    "A second test of chooseFromList"
+
+    "A second test of [[ICLIHelper.chooseFromList]]"
     test
     shared void testChooseFromListMore() {
         assertCLI(`ICLIHelper.chooseFromList<Player>`, [[PlayerImpl(1, "one"),
@@ -104,7 +107,8 @@ object cliTests {
             "chooseFromList handles no-item case",
             "chooseFromList didn't prompt the user");
     }
-    "Test inputNumber"
+
+    "Test [[ICLIHelper.inputNumber]]"
     test
     shared void testInputNumber() {
         assertCLI(`ICLIHelper.inputNumber`, ["test prompt"], Singleton("2"),
@@ -123,7 +127,8 @@ object cliTests {
             "test prompt five ", null, "inputNumber produces null on EOF",
             "inputNumber doesn't ask again on EOF");
     }
-    "Test inputDecimal"
+
+    "Test [[ICLIHelper.inputDecimal]]"
     test
     shared void testInputDecimal() {
         assertCLI(`ICLIHelper.inputDecimal`, ["test prompt"], Singleton("10"),
@@ -146,7 +151,8 @@ object cliTests {
             "inputDecimal produces null on EOF",
             "inputDecimal doesn't prompt again on EOF");
     }
-    "Test for inputString()"
+
+    "Test for [[ICLIHelper.inputString]]"
     test
     shared void testInputString() {
         assertCLI(`ICLIHelper.inputString`, ["string prompt"], Singleton("first"),
@@ -158,6 +164,8 @@ object cliTests {
         assertCLI(`ICLIHelper.inputString`, ["third prompt"], [], "third prompt ", "",
             "inputString returns empty on EOF", "inputString displays prompt");
     }
+
+    "Test that [[ICLIHelper.inputBoolean]] returns [[true]] when it should."
     parameters(`value truePossibilities`)
     test
     shared void testInputBooleanSimpleTrue(String arg) {
@@ -165,6 +173,8 @@ object cliTests {
             "bool prompt ", true, "inputBoolean returns true on ``arg``",
             "inputBoolean displays prompt");
     }
+
+    "Test that [[ICLIHelper.inputBoolean]] returns [[false]] when it should."
     parameters(`value falsePossibilities`)
     test
     shared void testInputBooleanSimpleFalse(String arg) {
@@ -172,7 +182,8 @@ object cliTests {
             "prompt two ", false, "inputBoolean returns false on ``arg``",
             "inputBoolean displays prompt");
     }
-    "Test for inputBoolean()"
+
+    "Test that [[ICLIHelper.inputBoolean asks again on invalid input."
     test
     shared void testInputBooleanInvalidInput() {
         assertCLI(`ICLIHelper.inputBoolean`, ["prompt three "], ["yoo-hoo", "no"],
@@ -181,6 +192,9 @@ object cliTests {
             "inputBoolean rejects other input",
             "inputBoolean gives message on invalid input");
     }
+
+    """Test that [[ICLIHelper.inputBooleanInSeries]] handles the basic "truthy"
+       inputs properly."""
     parameters(`value truePossibilities`)
     test
     shared void testInputBooleanInSeriesSimpleTrue(String arg) {
@@ -188,6 +202,9 @@ object cliTests {
             "bool prompt ", true, "inputBooleanInSeries returns true on '``arg``",
             "inputBooleanInSeries displays prompt");
     }
+
+    """Test that [[ICLIHelper.inputBooleanInSeries]] handles the basic "falsey"
+       inputs properly."""
     parameters(`value falsePossibilities`)
     test
     shared void testInputBooleanInSeriesSimpleFalse(String arg) {
@@ -195,7 +212,9 @@ object cliTests {
             "prompt two ", false, "inputBooleanInSeries returns false on ``arg``",
             "inputBooleanInSeries displays prompt");
     }
-    "Test the input-boolean-with-skipping functionality."
+
+    """Test that [[ICLIHelper.inputBooleanInSeries]] supports "always" and
+       "never" and synonyms."""
     test
     shared void testInputBooleanInSeries() {
         assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["prompt three "],
@@ -263,7 +282,8 @@ object cliTests {
                                         prompt thirteen no
                                         """, "inputBooleanInSeries shows prompts");
     }
-    "Test of chooseStringFromList()"
+
+    "Test of [[ICLIHelper.chooseStringFromList]]"
     test
     shared void testChooseStringFromList() {
         assertCLI(`ICLIHelper.chooseStringFromList`, [["one", "two"],
@@ -288,7 +308,8 @@ object cliTests {
             "chooseStringFromList doesn't always auto-choose",
             "chooseStringFromList didn't automatically choose only choice");
     }
-    "A second test of chooseStringFromList"
+
+    "A second test of [[ICLIHelper.chooseStringFromList]]"
     test
     shared void testChooseStringFromListMore() {
         assertCLI(`ICLIHelper.chooseStringFromList`, [["zero", "one", "two"],
@@ -311,13 +332,17 @@ object cliTests {
             "chooseStringFromList handles empty list",
             "chooseStringFromList handles empty list");
     }
+
+    "A helper method for testing [[ICLIHelper]] methods that don't take input
+     from the user or return values."
     void assertPrintingOutput(Method<ICLIHelper, Anything, String[1]> method,
             String argument, String expected, String message) {
         StringBuilder ostream = StringBuilder();
         method(CLIHelper(LinkedList<String>().accept, ostream.append))(argument);
         assertEquals(ostream.string, expected, message);
     }
-    "Test print() and friends"
+
+    "Test [[ICLIHelper.print]] and [[println|ICLIHelper.println]]."
     test
     shared void testPrinting() {
         assertPrintingOutput(`ICLIHelper.print`, "test string", "test string",
@@ -326,7 +351,7 @@ object cliTests {
             "test two``operatingSystem.newline``", "println() adds newline");
     }
 
-    "Test inputPoint()"
+    "Test [[ICLIHelper.inputPoint]]."
     test
     shared void testInputPoint() {
         assertCLI(`ICLIHelper.inputPoint`, ["point prompt one "], ["2", "3"],

@@ -4,6 +4,7 @@ import strategicprimer.drivers.common.cli {
 import lovelace.util.common {
     PathWrapper
 }
+
 "An interface for factories producing GUI drivers. This interface exists so the
  app-chooser can detect such drivers before instantiating them (which requires
  deserializing possibly-large maps)."
@@ -17,8 +18,8 @@ shared interface GUIDriverFactory satisfies ModelDriverFactory {
             SPOptions options,
             "The driver-model that should be used by the app."
             IDriverModel model);
+
     "Ask the user to choose a file or files. (Or do something equivalent to produce a
      filename.)"
     shared formal {PathWrapper*} askUserForFiles();
-
 }

@@ -2,6 +2,7 @@
 shared interface VersionChangeSource {
     "Add a listener."
     shared formal void addVersionChangeListener(VersionChangeListener listener);
+
     "Remove a listener."
     shared formal void removeVersionChangeListener(VersionChangeListener listener);
 }
