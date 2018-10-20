@@ -75,6 +75,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.generators`);
+
 "A factory for a driver to let the user enter pre-generated stats for existing workers or
  generate new workers."
 service(`interface DriverFactory`)
@@ -90,6 +91,7 @@ shared class StatGeneratingCLIFactory() satisfies ModelDriverFactory {
         includeInGUIList = false;
         supportedOptions = [ "--current-turn=NN" ];
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IExplorationModel model) {
@@ -98,20 +100,26 @@ shared class StatGeneratingCLIFactory() satisfies ModelDriverFactory {
             return createDriver(cli, options, ExplorationModel.copyConstructor(model));
         }
     }
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             ExplorationModel(map, path);
 }
+
 "A driver to let the user enter pre-generated stats for existing workers or generate new
  workers."
 // FIXME: Write stat-generating/stat-entering GUI
 class StatGeneratingCLI satisfies CLIDriver {
     static String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
+
+    "Whether the unit has any workers without stats."
     static Boolean hasUnstattedWorker(IUnit unit) =>
             unit.narrow<Worker>().any(matchingValue(null, Worker.stats));
+
     "The units in the given collection that have workers without stats."
     static IUnit[] removeStattedUnits(IUnit* units) => units.select(hasUnstattedWorker);
+
     "Find a fixture in a given iterable with the given ID."
-    static IFixture? findInIterable(Integer id, IFixture* fixtures) {
+    static IFixture? findInIterable(Integer id, IFixture* fixtures) { // TODO: Take two parameter lists, so we can convert the loop in find() to an Iterable.map().find() call.
         for (fixture in fixtures) {
             if (fixture.id == id) {
                 return fixture;
@@ -122,6 +130,7 @@ class StatGeneratingCLI satisfies CLIDriver {
         }
         return null;
     }
+
     "Find a fixture in a map by ID number."
     static IFixture? find(IMapNG map, Integer id) {
         // We don't want to use fixtureEntries here because we'd have to spread it,
@@ -134,31 +143,43 @@ class StatGeneratingCLI satisfies CLIDriver {
         }
         return null;
     }
+
     "Get the index of the lowest value in an array."
     static Integer getMinIndex(Integer[] array) =>
             array.indexed.max(comparingOn(Entry<Integer, Integer>.item,
                 decreasing<Integer>))?.key else 0;
+
+    "Simulate a die-roll."
     static Integer die(Integer max) => singletonRandom.nextInteger(max) + 1;
+
+    "Simulate rolling 3d6."
     static Integer threeDeeSix() => die(6) + die(6) + die(6);
+
+    "The chance that someone from a village located a [[days]]-day journey away
+     will come as a volunteer."
     static Float villageChance(Integer days) => 0.4.powerOfInteger(days);
+
     ICLIHelper cli;
     shared actual IExplorationModel model;
     shared new (ICLIHelper cli, IExplorationModel model) {
         this.cli = cli;
         this.model = model;
     }
+
     "Let the user enter a number, assert that there was not EOF, and return the number."
     Integer inputNumber(String prompt) {
         assert (exists retval = cli.inputNumber(prompt));
         return retval;
     }
+
     "Let the user enter stats for a worker."
     WorkerStats enterStatsCollection() {
         Integer maxHP = inputNumber("Max HP: ");
-        return WorkerStats(maxHP, maxHP, inputNumber("Str: "), inputNumber("Dex: "),
+        return WorkerStats(maxHP, maxHP, inputNumber("Str: "), inputNumber("Dex: "), // TODO: Replace last 6 params with *statLabelArray.map(shuffle(plus)(": ")).map(inputNumber)
             inputNumber("Con: "), inputNumber("Int: "), inputNumber("Wis: "),
             inputNumber("Cha: "));
     }
+
     "Let the user enter stats for one worker in particular."
     void enterStatsForWorker(Integer id) {
         WorkerStats stats = enterStatsCollection();
@@ -169,13 +190,14 @@ class StatGeneratingCLI satisfies CLIDriver {
             }
         }
     }
+
     "Let the user enter stats for workers already in the maps that are part of one
      particular unit."
     void enterStatsInUnit(IUnit unit) {
         MutableList<Worker> workers = ArrayList { elements = unit.narrow<Worker>()
             .filter(matchingValue(null, Worker.stats)); };
         while (!workers.empty, exists chosen = cli.chooseFromList(workers,
-            "Which worker do you want to enter stats for?",
+            "Which worker do you want to enter stats for?", // TODO: indentation
             "There are no workers without stats in that unit.",
             "Worker to modify: ", false).item) {
             workers.remove(chosen);
@@ -185,6 +207,7 @@ class StatGeneratingCLI satisfies CLIDriver {
             }
         }
     }
+
     "Let the user enter stats for workers already in the maps that belong to one
      particular player."
     void enterStatsForPlayer(Player player) {
@@ -192,7 +215,7 @@ class StatGeneratingCLI satisfies CLIDriver {
         MutableList<IUnit> units = ArrayList { elements =
             removeStattedUnits(*model.getUnits(player)); };
         while (!units.empty, exists chosen = cli.chooseFromList(units,
-            "Which unit contains the worker in question?",
+            "Which unit contains the worker in question?", // TODO: indentation
             "All that player's units already have stats.", "Unit selection: ",
             false).item) {
             units.remove(chosen);
@@ -202,11 +225,12 @@ class StatGeneratingCLI satisfies CLIDriver {
             }
         }
     }
+
     "Let the user enter stats for workers already in the maps."
     void enterStats() {
         MutableList<Player> players = ArrayList { elements = model.playerChoices; };
         while (!players.empty, exists chosen = cli.chooseFromList(players,
-            "Which player owns the worker in question?",
+            "Which player owns the worker in question?", // TODO: indentation
             "There are no players shared by all the maps.", "Player selection: ",
             true).item) {
             players.remove(chosen);
@@ -216,14 +240,16 @@ class StatGeneratingCLI satisfies CLIDriver {
             }
         }
     }
+
     "Let the user enter which Jobs a worker's levels are in."
     void enterWorkerJobs(IWorker worker, Integer levels) {
         for (i in 0:levels) {
-            String jobName = cli.inputString("Which Job does worker have a level in? ");
+            String jobName = cli.inputString("Which Job does worker have a level in? "); // TODO: inline
             IJob job = worker.getJob(jobName);
-            job.level = job.level + 1;
+            job.level = job.level + 1; // TODO: Replace with += 1?
         }
     }
+
     "Add a worker to a unit in all maps."
     void addWorkerToUnit(IFixture unit, IWorker worker) {
         for (map->[file, _] in model.allMaps) {
@@ -237,7 +263,12 @@ class StatGeneratingCLI satisfies CLIDriver {
             }
         }
     }
+
+    "Villages from which newcomers have arrived either recently or already this turn."
     MutableMap<Village, Boolean> excludedVillages = HashMap<Village, Boolean>();
+
+    "Get from the cache, or if not present there ask the user, if a newcomer
+     has come from the given village recently."
     Boolean hasLeviedRecently(Village village) {
         if (exists retval = excludedVillages[village]) {
             return retval;
@@ -248,12 +279,16 @@ class StatGeneratingCLI satisfies CLIDriver {
             return retval;
         }
     }
+
+    "Racial stat bonuses."
     MutableMap<String, WorkerStats> racialBonuses = HashMap<String, WorkerStats>();
+
+    "Load racial stat bonuses for the given race from the cache, or if not present there from file."
     WorkerStats loadRacialBonus(String race) {
         if (exists retval = racialBonuses[race]) {
             return retval;
         } else if (exists textContent = readFileContents(`module strategicprimer.model.common`,
-            "racial_stat_adjustments/``race``.txt")) {
+            "racial_stat_adjustments/``race``.txt")) { // TODO: indentation
             value parsed = textContent.lines.map(Integer.parse)
                     .narrow<Integer>().sequence();
             assert (is Integer[6] temp = [parsed[0], parsed[1], parsed[2], parsed[3],
@@ -266,7 +301,10 @@ class StatGeneratingCLI satisfies CLIDriver {
             return WorkerStats.factory(0, 0, 0, 0, 0, 0);
         }
     }
+
+    "Whether the user has said to always give a human's racial stat bonus to the lowest stat."
     variable Boolean alwaysLowest = false;
+
     "Create randomly-generated stats for a worker, with racial adjustments applied."
     WorkerStats createWorkerStats(String race, Integer levels) {
         WorkerStats base = WorkerStats.random(threeDeeSix);
@@ -309,6 +347,9 @@ class StatGeneratingCLI satisfies CLIDriver {
         }
         return WorkerStats.adjusted(hp, base, racialBonus);
     }
+
+    "Generate a worker with race and Job levels based on the population of the
+     given village."
     Worker generateWorkerFrom(Village village, String name, IDRegistrar idf) {
         Worker worker = Worker(name, village.race, idf.createID());
         if (exists populationDetails = village.population) {
@@ -368,6 +409,7 @@ class StatGeneratingCLI satisfies CLIDriver {
             return worker;
         }
     }
+
     "Let the user create randomly-generated workers in a specific unit."
     void createWorkersForUnit(IDRegistrar idf, IFixture unit) {
         Integer count = cli.inputNumber("How many workers to generate? ") else 0;
@@ -395,6 +437,7 @@ class StatGeneratingCLI satisfies CLIDriver {
             addWorkerToUnit(unit, worker);
         }
     }
+
     "Let the user create randomly-generated workers, with names read from file, in a
      unit."
     void createWorkersFromFile(IDRegistrar idf, IFixture&HasOwner unit) {
@@ -470,6 +513,7 @@ class StatGeneratingCLI satisfies CLIDriver {
             addWorkerToUnit(unit, worker);
         }
     }
+
     "Allow the user to create randomly-generated workers belonging to a particular
      player."
     void createWorkersForPlayer(IDRegistrar idf, Player player) {
@@ -505,6 +549,7 @@ class StatGeneratingCLI satisfies CLIDriver {
             }
         }
     }
+
     "Allow the user to create randomly-generated workers."
     void createWorkers(IDRegistrar idf) {
         MutableList<Player> players = ArrayList { elements = model.playerChoices; };
@@ -523,6 +568,7 @@ class StatGeneratingCLI satisfies CLIDriver {
             }
         }
     }
+
     shared actual void startDriver() {
         if (cli.inputBooleanInSeries(
                 "Enter pregenerated stats for existing workers?")) {

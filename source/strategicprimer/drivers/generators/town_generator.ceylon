@@ -86,8 +86,13 @@ import lovelace.util.common {
     narrowedStream,
     PathWrapper
 }
+
+"A command-line app to generate population details for villages."
 class TownGenerator(ICLIHelper cli) {
+    "Fortresses' [[population]] field cannot be set."
     alias ModifiableTown=>AbstractTown|Village;
+
+    "Load consumption possibilities from file."
     Map<String, {[Quantity, String, String]*}> initConsumption() {
         MutableMap<String, {[Quantity, String, String]*}> retval =
                 HashMap<String, {[Quantity, String, String]*}>();
@@ -114,6 +119,8 @@ class TownGenerator(ICLIHelper cli) {
         }
         return map(retval);
     }
+
+    "Load production possibilities from file."
     ExplorationRunner initProduction() {
         ExplorationRunner retval = ExplorationRunner();
         Stack<String> firstTables = LinkedList {
@@ -154,13 +161,17 @@ class TownGenerator(ICLIHelper cli) {
         }
         return retval;
     }
+
     Map<String,{[Quantity, String, String]*}> consumption = initConsumption(); // TODO: inline that?
     ExplorationRunner runner = initProduction(); // TODO: pull its contents up?
+
     "The (for now active) towns in the given map that don't have 'stats' yet."
     {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) =>
             narrowedStream<Point, ModifiableTown>(map.fixtures)
                 .filter(matchingPredicate(matchingValue(TownStatus.active,
                 ITownFixture.status), Entry<Point, ITownFixture>.item)).sequence();
+
+    "Assign the given [[population details object|stats]] to the given town."
     void assignStatsToTown(ModifiableTown town, CommunityStats stats) {
         if (is AbstractTown town) {
             town.population = stats;
@@ -168,6 +179,10 @@ class TownGenerator(ICLIHelper cli) {
             town.population = stats;
         }
     }
+
+    "Assign the given [[population details object|stats]] to the town
+     identified by the given [[ID number|townId]] at the given [[location]] in
+     the given [[map]]."
     void assignStatsInMap(IMapNG map, Point location, Integer townId,
             CommunityStats stats) {
 //        for (item in map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
@@ -177,17 +192,33 @@ class TownGenerator(ICLIHelper cli) {
             assignStatsToTown(item, stats);
         }
     }
+
+    "Get the fixture in the given [[map]] identified by the given [[ID
+     number|id]]."
     IFixture? findByID(IMapNG map, Integer id) => map.fixtures
         .map(Entry.item).find(matchingValue(id, IFixture.id));
+
+    "Find the location in the given [[map]] of the fixture identified by the
+     given [[ID number|id]]."
     Point? findLocById(IMapNG map, Integer id) =>
-            map.fixtures.find(matchingPredicate(matchingValue(id, IFixture.id),
+            map.fixtures.find(matchingPredicate(matchingValue(id, IFixture.id), // TODO: compose() instead of nesting matchingPredicate() and matchingValue()
                 Entry<Point, TileFixture>.item))?.key;
+
+    "Whether, in the given [[map]], any town claims a resource identified by
+     the given [[ID number|id]]."
     Boolean isClaimedField(IMapNG map, Integer id) => map.fixtures
         .map(Entry.item).narrow<ITownFixture>()
         .map(ITownFixture.population).coalesced
         .flatMap(CommunityStats.workedFields).contains(id);
+
+    "Whether, in the given [[map]], the given [[ID number|id]] refers to [[a
+     resource that can be worked|HarvestableFixture]] that [[is presently
+     unclaimed|isClaimedField]]."
     Boolean isUnclaimedField(IMapNG map, Integer id) =>
             !isClaimedField(map, id) && findByID(map, id) is HarvestableFixture;
+
+    "If both arguments exist and are ocean, return true; if one is ocean and
+     the other is not, return false; otherwise, return true."
     Boolean bothOrNeitherOcean(TileType? one, TileType? two) {
         if (exists one, one == TileType.ocean) {
             return anythingEqual(two, TileType.ocean);
@@ -197,6 +228,10 @@ class TownGenerator(ICLIHelper cli) {
             return true;
         }
     }
+
+    "Whether the given [[fixture|fix]] is actually claimable: an unexposed
+     mineral vein, an uncultivated field or meadow, an uncultivated grove or
+     orchard, an abandoned mine, or a cache is not claimable."
     Boolean isReallyClaimable(HarvestableFixture fix) {
         switch (fix)
         case (is MineralVein) {
@@ -218,6 +253,8 @@ class TownGenerator(ICLIHelper cli) {
             return true;
         }
     }
+
+    "Find the nearest claimable resources to the given location."
     {HarvestableFixture*} findNearestFields(IMapNG map, Point location) {
         if (exists base = map.baseTerrain[location]) {
             return surroundingPointIterable(location, map.dimensions, 10).distinct
@@ -228,6 +265,8 @@ class TownGenerator(ICLIHelper cli) {
             return [];
         }
     }
+
+    "Have the user enter expertise levels and claimed resources for a town."
     CommunityStats enterStats(ICLIHelper cli, IDRegistrar idf, IMapNG map, Point location,
             ModifiableTown town) {
         CommunityStats retval = CommunityStats(cli.inputNumber("Population: ") else 0);
@@ -244,6 +283,7 @@ class TownGenerator(ICLIHelper cli) {
                 break;
             }
         }
+
         cli.println("Now enter ID numbers of worked fields (empty to skip).");
         variable {HarvestableFixture*} nearestFields = findNearestFields(map, location);
         while (true) {
@@ -269,7 +309,7 @@ class TownGenerator(ICLIHelper cli) {
                 if (!bothOrNeitherOcean(map.baseTerrain[location],
                     map.baseTerrain[fieldLoc])) {
                     if (exists terrain = map.baseTerrain[location],
-                        terrain == TileType.ocean) {
+                        terrain == TileType.ocean) { // TODO: indentation
                         cli.println(
                             "That would be a land resource worked by an aquatic town.");
                     } else {
@@ -289,6 +329,7 @@ class TownGenerator(ICLIHelper cli) {
                 cli.println("That is not the ID of a resource in the map.");
             }
         }
+
         cli.println("Now add resources produced each year. (Empty to end.)");
         while (true) {
             String kind = cli.inputString("General kind of resource: ").trimmed;
@@ -307,6 +348,7 @@ class TownGenerator(ICLIHelper cli) {
                 Quantity(quantity, units));
             retval.yearlyProduction.add(pile);
         }
+
         cli.println("Now add resources consumed each year. (Empty to end.)");
         while (true) {
             String kind = cli.inputString("General kind of resource: ").trimmed;
@@ -325,8 +367,11 @@ class TownGenerator(ICLIHelper cli) {
                 Quantity(quantity, units));
             retval.yearlyConsumption.add(pile);
         }
+
         return retval;
     }
+
+    "What general kind of thing the given harvestable fixture will produce each year."
     String getHarvestableKind(HarvestableFixture fixture) {
         switch (fixture)
         case (is Grove) {
@@ -345,12 +390,19 @@ class TownGenerator(ICLIHelper cli) {
             return "unknown";
         }
     }
+
+    "What specific resource the given harvestable fixture will produce."
     String getHarvestedProduct(HarvestableFixture fixture) => fixture.kind;
+
+    "Generate expertise and production and consumption data for the given town."
     CommunityStats generateStats(IDRegistrar idf, Point location, ModifiableTown town,
             IMapNG map) {
+        "To ensure consistency between runs of this algorithm, seed the random number generator with the town's ID."
         Random rng = DefaultRandom(town.id);
+        "A die roll using our pre-seeded RNG."
         Integer roll(Integer die) => rng.nextInteger(die) + 1;
 
+        "Repeatedly roll our pre-seeded RNG-die, optionally adding a constant value."
         Integer repeatedlyRoll(Integer count, Integer die, Integer addend = 0) {
             variable Integer sum = addend;
             for (i in 0:count) {
@@ -390,6 +442,7 @@ class TownGenerator(ICLIHelper cli) {
                 resourceCount = repeatedlyRoll(4, 6);
             }
         }
+
         CommunityStats retval = CommunityStats(population);
         String skillTable;
         String consumptionTableName;
@@ -413,6 +466,7 @@ class TownGenerator(ICLIHelper cli) {
             skillTable = "plains_skills";
             consumptionTableName = "plains";
         }
+
         for (i in 0:skillCount) {
             String skill = runner.recursiveConsultTable(skillTable, location,
 //                map.baseTerrain[location], map.mountainous[location],
@@ -424,6 +478,7 @@ class TownGenerator(ICLIHelper cli) {
                 retval.setSkillLevel(skill, level);
             }
         }
+
         {HarvestableFixture*} workedFields = findNearestFields(map, location)
             .take(resourceCount);
         for (field in workedFields) {
@@ -432,6 +487,7 @@ class TownGenerator(ICLIHelper cli) {
                 getHarvestableKind(field), getHarvestedProduct(field),
                 Quantity(1, "unit")));
         }
+
         for (skill->level in retval.highestSkillLevels) {
             String tableName = "``skill``_production";
             if (runner.hasTable(tableName)) {
@@ -446,15 +502,19 @@ class TownGenerator(ICLIHelper cli) {
                     "product of ``skill``", Quantity(1, "unit")));
             }
         }
+
         assert (exists consumptionTable = consumption[consumptionTableName]);
         for ([quantity, kind, resource] in consumptionTable) {
             retval.yearlyConsumption.add(ResourcePile(idf.createID(), kind, resource,
                 quantity));
         }
+
         retval.yearlyConsumption.add(ResourcePile(idf.createID(), "food", "various",
             Quantity(4 * 14 * population, "pounds")));
         return retval;
     }
+
+    """If the given [[string]] is "quit", return null; otherwise return false."""
     Boolean? nullIfQuit(String string) {
         if ("quit" == string) {
             return null;
@@ -462,6 +522,8 @@ class TownGenerator(ICLIHelper cli) {
             return false;
         }
     }
+
+    "Allow the user to create population details for specific towns."
     shared void generateSpecificTowns(IDRegistrar idf, IDriverModel model) {
         while (true) {
             String input = cli.inputString("ID or name of town to create stats for: ")
@@ -504,6 +566,9 @@ class TownGenerator(ICLIHelper cli) {
             }
         }
     }
+
+    "Help the user generate population details for all the towns in the map
+     that don't have such details already."
     shared void generateAllTowns(IDRegistrar idf, IDriverModel model) {
         for (location->town in randomize(unstattedTowns(model.map))) {
             cli.println("Next town is ``town.shortDescription``, at ``location``. ");
@@ -531,6 +596,7 @@ class TownGenerator(ICLIHelper cli) {
         }
     }
 }
+
 "A factory for a driver to let the user enter or generate 'stats' for towns."
 service(`interface DriverFactory`)
 shared class TownGeneratingCLIFactory() satisfies ModelDriverFactory {
@@ -543,15 +609,19 @@ shared class TownGeneratingCLIFactory() satisfies ModelDriverFactory {
         includeInCLIList = true;
         includeInGUIList = false;
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => TownGeneratingCLI(cli, model);
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleMultiMapModel(map, path);
 }
+
 "A driver to let the user enter or generate 'stats' for towns."
 // TODO: Write GUI to allow user to generate or enter town contents
 shared class TownGeneratingCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IDriverModel model;
+
     shared actual void startDriver() {
         TownGenerator generator = TownGenerator(cli); // TODO: Consider combining that with this class again.
         IDRegistrar idf;

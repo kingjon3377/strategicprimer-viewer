@@ -70,17 +70,23 @@ shared class PopulationGeneratingCLIFactory() satisfies ModelDriverFactory {
         includeInCLIList = true;
         includeInGUIList = false; // TODO: We'd like a GUI equivalent
     };
+
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => PopulationGeneratingCLI(cli, model);
+
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
             SimpleDriverModel(map, path);
 }
+
 "A driver to let the user generate animal and shrub populations, meadow and grove sizes,
  and forest acreages."
 shared class PopulationGeneratingCLI satisfies CLIDriver {
     "Whether the given number is positive."
     static Boolean positiveNumber(Number<out Anything> number) => number.positive;
+
+    "Whether the given number is negative."
     static Boolean negativeNumber(Number<out Anything> number) => number.negative;
+
     ICLIHelper cli;
     shared actual IDriverModel model;
     shared new(ICLIHelper cli, IDriverModel model) {
@@ -88,6 +94,8 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
         this.model = model;
     }
     IMutableMapNG map = model.map;
+
+    "Generate [[Animal]] populations."
     void generateAnimalPopulations(Boolean talking, String kind) {
         // We assume there is at most one population of each kind of animal per tile.
         {Point*} locations = randomize(narrowedStream<Point, Animal>(map.fixtures)
@@ -136,6 +144,8 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             }
         }
     }
+
+    "Generate [[grove and orchard|Grove]] populations."
     void generateGroveCounts(String kind) {
         // We assume there is at most one grove or orchard of each kind per tile.
         {Point*} locations = randomize(narrowedStream<Point, Grove>(map.fixtures)
@@ -171,6 +181,8 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             }
         }
     }
+
+    "Generate [[Shrub]] populations."
     void generateShrubCounts(String kind) {
         // We assume there is at most one population of each kind of shrub per tile.
         {Point*} locations = randomize(narrowedStream<Point, Shrub>(map.fixtures)
@@ -205,6 +217,8 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             }
         }
     }
+
+    "Generate [[field and meadow|Meadow]] acreages."
     void generateFieldExtents() {
         {<Point->Meadow>*} entries = randomize(narrowedStream<Point, Meadow>(map.fixtures)
             .filter(matchingPredicate(negativeNumber, compose(Meadow.acres,
@@ -217,12 +231,20 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
                 field.id, field.status, acres));
         }
     }
-    Boolean hasAdjacentForests(String kind)(Point point) =>
+
+    "Whether any of the fixtures on the given tile are forests of the given
+     kind."
+    Boolean hasAdjacentForests(String kind)(Point point) => // TODO: Rename to hasForests()
             map.fixtures.get(point).narrow<Forest>()
                 .any(matchingValue(kind, Forest.kind));
+
+    "How many tiles adjacent to the given location have forests of the given
+     kind."
     Integer countAdjacentForests(Point center, String kind) =>
             surroundingPointIterable(center, map.dimensions, 1)
                 .count(hasAdjacentForests(kind));
+
+    "Generate [[Forest]] acreages."
     void generateForestExtents() {
         {Point*} locations = randomize(narrowedStream<Point, Forest>(map.fixtures)
             .filter(matchingPredicate(not(positiveNumber),
@@ -305,6 +327,7 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             }
         }
     }
+
     shared actual void startDriver() {
         for (kind in model.map.fixtures.map(Entry.item).narrow<Animal>()
                     .filter(not(matchingPredicate(Integer.positive, Animal.population)))
