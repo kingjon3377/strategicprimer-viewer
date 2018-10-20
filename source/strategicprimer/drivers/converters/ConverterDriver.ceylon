@@ -44,6 +44,7 @@ import lovelace.util.common {
 
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.converters`);
+
 "A factory for the driver that convers maps, at present by halving their resolution."
 service(`interface DriverFactory`)
 shared class ConverterDriverFactory(
@@ -63,9 +64,11 @@ shared class ConverterDriverFactory(
         includeInGUIList = false;
         supportedOptions = [ "--current-turn=NN" ];
     };
+
     shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
             ConverterDriver(cli, options);
 }
+
 "A driver to convert maps: at present, halving their resolution."
 class ConverterDriver(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
     "Run the driver."

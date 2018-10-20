@@ -45,6 +45,7 @@ import lovelace.util.common {
     comparingOn,
     defer
 }
+
 "A utility to convert a map to an equivalent half-resolution one."
 shared IMapNG decreaseResolution(IMapNG old) {
     "Can only convert maps with even numbers of rows and columns"
@@ -55,8 +56,13 @@ shared IMapNG decreaseResolution(IMapNG old) {
     Integer newRows = old.dimensions.rows / 2;
     IMutableMapNG retval = SPMapNG(MapDimensionsImpl(newRows, newColumns, 2), players,
         old.currentTurn);
+
+    "Switch an [[Entry]]'s key and item."
     Item->Key reverse<Key, Item>(Key->Item entry) given Key satisfies Object
             given Item satisfies Object => entry.item->entry.key;
+
+    "Pick the most common tile type among the four old-size tiles that are
+     being condensed into one."
     TileType? consensus([TileType?+] types) {
         value counted = types.frequencies().map(reverse).map(Entry.pair).sort(
             comparing(
@@ -78,6 +84,7 @@ shared IMapNG decreaseResolution(IMapNG old) {
             return retval;
         }
     }
+
     for (row in 0:newRows) {
         for (column in 0:newColumns) {
             Point point = Point(row, column);
@@ -116,7 +123,11 @@ shared IMapNG decreaseResolution(IMapNG old) {
     }
     return retval;
 }
+
+"Tests of [[the resolution-decrease converter|decreaseResolution]]."
 object resolutionDecreaseTests {
+    "Helper method: initialize the given point in the given map with the given
+     terrain and fixtures."
     void initialize(IMutableMapNG map, Point point, TileType? terrain,
             TileFixture* fixtures) {
         if (exists terrain) {
@@ -126,6 +137,8 @@ object resolutionDecreaseTests {
             map.addFixture(point, fixture);
         }
     }
+
+    "A first test."
     test
     shared void testResolutionReduction() {
         IMutableMapNG start = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
@@ -148,6 +161,8 @@ object resolutionDecreaseTests {
         assertEquals(converted.baseTerrain[zeroPoint], TileType.desert,
             "Combined tile has type of most of input tiles");
     }
+
+    "A second test."
     test
     shared void testMoreReduction() {
         IMutableMapNG start = SPMapNG(MapDimensionsImpl(2, 2, 2), PlayerCollection(), 0);
@@ -190,6 +205,8 @@ object resolutionDecreaseTests {
         assertEquals(converted.baseTerrain[zeroPoint], TileType.steppe,
             "Combined tile has most common terrain type among inputs");
     }
+
+    "Test that the process requires both dimensions to be even numbers."
     test
     shared void testResolutionDecreaseRequirement() {
         // TODO: Uncomment hasType() once Ceylon compiler bug #5448 fixed

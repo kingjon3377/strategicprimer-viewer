@@ -1,6 +1,7 @@
 "Various converters for the [Strategic
  Primer](https://shinecycle.wordpress.com/archives/strategic-primer) assistive programs
  suite."
+// TODO: Write user-introductory documentation
 license("GPL-3")
 native("jvm")
 module strategicprimer.drivers.converters "0.4.9017" {
