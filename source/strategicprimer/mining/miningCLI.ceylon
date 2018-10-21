@@ -36,14 +36,18 @@ shared class MiningCLIFactory satisfies UtilityDriverFactory {
         includeInGUIList = false;
         supportedOptions = [ "--seed=NN", "--banded" ];
     };
+
     shared actual IDriverUsage usage => staticUsage;
+
     shared new () {}
+
     shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
             MiningCLI(cli, options);
 }
+
 """A driver to create a spreadsheet model of a mine. Its parameters are the name of the
    file to write the CSV to and the value at the top center (as an index into the
-   LodeStatus values array).""""
+   LodeStatus values array)."""
 // TODO: Write GUI to allow user to visually explore a mine
 native("jvm") // TODO: Try removing once strategicprimer.drivers.common isn't declared entirely "native".
 shared class MiningCLI(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
@@ -61,16 +65,18 @@ shared class MiningCLI(ICLIHelper cli, SPOptions options) satisfies UtilityDrive
             } else {
                 seed = system.milliseconds;
             }
+
             LodeStatus initial;
             if (is LodeStatus specified = LodeStatus.parse(second)) {
                 initial = specified;
             } else if (is Integer index = Integer.parse(second),
-                     exists specified = `LodeStatus`.caseValues[index]) {
+                     exists specified = `LodeStatus`.caseValues[index]) { // TODO: Sort `LodeStatus`.caseValues, to make sure indexes are stable?
                 initial = specified;
             } else {
                 throw DriverFailedException(AssertionError(
                     "Status must be a valid status or the index of a valid status"));
             }
+
             MineKind mineKind;
             // TODO: Support distance-from-center deposits
             if (options.hasOption("--banded")) {
@@ -78,8 +84,10 @@ shared class MiningCLI(ICLIHelper cli, SPOptions options) satisfies UtilityDrive
             } else {
                 mineKind = MineKind.normal;
             }
+
             MiningModel model = MiningModel(initial, seed, mineKind);
             value [lowerRightRow, lowerRightColumn] = model.maximumPoint;
+
             value path = parsePath(filename);
             if (is Nil loc = path.resource) {
                 value file = loc.createFile();

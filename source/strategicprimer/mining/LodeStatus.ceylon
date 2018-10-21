@@ -1,17 +1,22 @@
 import ceylon.random {
     Random
 }
+
 "The status of a vein of ore or deposit of stone at any given point."
 class LodeStatus of
         minimal | veryPoor | poor | fair | good | veryGood | motherLode {
     shared static LodeStatus? parse(String str) => parseLodeStatus(str);
+
     "The number of parts of other rock per part of ore."
     shared Integer ratio;
+
     "The probability that an adjacent area will be the next state lower."
     Float lowerProbability;
+
     "The probability that an adjacent area will be either the next state lower or the
      same state, not the next state higher."
     Float notHigherProbability;
+
     "Delegating constructor."
     abstract new delegated(Integer qty, Float lowerChance = 0.5,
             Float notHigherChance = 0.8) {
@@ -19,6 +24,7 @@ class LodeStatus of
         lowerProbability = lowerChance;
         notHigherProbability = notHigherChance;
     }
+
     "There is very little ore: one part ore per 16,384 parts other rock."
     shared new minimal extends delegated(16384, 0.4) {}
     "There is quite little ore: one part ore per 4096 parts other rock."
@@ -33,6 +39,7 @@ class LodeStatus of
     shared new veryGood extends delegated(4) {}
     "The mother-lode: one part ore per one part other rock."
     shared new motherLode extends delegated(1, 0.7, 1.0) {}
+
     "The next lower status."
     LodeStatus? lower {
         switch (this)
@@ -44,6 +51,7 @@ class LodeStatus of
         case (veryGood) { return good; }
         case (motherLode) { return veryGood; }
     }
+
     "The next higher status."
     LodeStatus? higher {
         switch (this)
@@ -55,6 +63,7 @@ class LodeStatus of
         case (veryGood) { return motherLode; }
         case (motherLode) { return motherLode; }
     }
+
     "Randomly choose a status of a location adjacent to one with this status."
     shared LodeStatus? adjacent("The random-number generator to use" Float() rng) {
         Float rand = rng();
@@ -66,6 +75,7 @@ class LodeStatus of
             return higher;
         }
     }
+
     """Randomly choose the status of a location horizontally adjacent in a "banded" (e.g.
        sand) mine to one with this status."""
     shared LodeStatus? bandedAdjacent(Random rng) {
@@ -79,6 +89,9 @@ class LodeStatus of
         });
     }
 }
+
+"Given a String, if it is the name of a [[LodeStatus]], return that value;
+ otherwise, return null."
 LodeStatus? parseLodeStatus(String status) {
     switch (status.lowercased)
     case ("none") { return null; }

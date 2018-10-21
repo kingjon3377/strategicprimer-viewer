@@ -1,3 +1,4 @@
+// TODO: Write user-introductory documentation for this module
 native("jvm") // TODO: remove this
 module strategicprimer.mining "0.4.9017" {
     value ceylonVersion = "1.3.3";
