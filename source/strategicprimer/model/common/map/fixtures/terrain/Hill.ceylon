@@ -8,16 +8,23 @@ import strategicprimer.model.common.map {
     IFixture,
     HasMutableImage
 }
+
 "A hill on the map. Should increase unit's effective vision by a small fraction when the
  unit is on it, if not in forest."
-todo("Implement that")
+todo("Implement that",
+     "Convert to a [[Boolean]] property of the tile instead of a fixture, like
+      mountains?")
 shared class Hill(id) satisfies TerrainFixture&HasMutableImage {
     "The ID number of this fixture."
     shared actual Integer id;
+
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
+
     shared actual String string = "Hill";
+
     shared actual String defaultImage = "hill.png";
+
     shared actual Boolean equals(Object obj) {
         if (is Hill obj) {
             return obj.id == id;
@@ -25,14 +32,20 @@ shared class Hill(id) satisfies TerrainFixture&HasMutableImage {
             return false;
         }
     }
+
     shared actual Integer hash => id;
+
     shared actual Boolean equalsIgnoringID(IFixture fixture) => fixture is Hill;
+
     shared actual String plural = "Hills";
+
     shared actual String shortDescription => "a hill";
+
     shared actual Hill copy(Boolean zero) {
         Hill retval = Hill(id);
         retval.image = image;
         return retval;
     }
+
     shared actual Integer dc = 10;
 }

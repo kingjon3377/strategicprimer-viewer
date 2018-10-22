@@ -15,6 +15,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
     ProxyFor
 }
+
 "An IJob implementation to let the Job tree operate on a whole unit at once."
 shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
         satisfies IJob&ProxyFor<IJob> {
@@ -23,15 +24,19 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
        different maps. Thus, if true, we should use the same "random" seed repeatedly in
        any given adding-hours operation, and not if false."""
     shared actual Boolean parallel;
+
     "Jobs we're proxying."
     MutableList<IJob> proxiedJobs = ArrayList<IJob>();
+
     "The names of skills we're proxying."
     MutableSet<String> skillNames = HashSet<String>();
+
     "The name of the Job."
     shared actual String name;
+
     for (worker in proxiedWorkers) {
         variable Boolean unmodified = true;
-        for (job in worker) {
+        for (job in worker) { // TODO: Filter with .filter() instead of 'if' to reduce nesting
             if (name == job.name) {
                 proxiedJobs.add(job);
                 skillNames.addAll(job.map(ISkill.name));
@@ -44,11 +49,14 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
             proxiedJobs.add(worker.find(matchingValue(name, IJob.name)) else job);
         }
     }
+
     ProxySkill proxyForSkill(String skill) => ProxySkill(skill, parallel, *proxiedJobs);
+
     "Proxy-skills."
     MutableList<ISkill&ProxyFor<IJob>> proxiedSkills =
             ArrayList<ISkill&ProxyFor<IJob>> { elements = skillNames
                 .map(proxyForSkill); };
+
     shared actual IJob copy() {
         ProxyJob retval = ProxyJob(name, parallel);
         for (job in proxiedJobs) {
@@ -56,7 +64,9 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
         }
         return retval;
     }
+
     shared actual Iterator<ISkill> iterator() => proxiedSkills.iterator();
+
     "Add a skill; returns false if we were already proxying a skill by that name, and true
      otherwise."
     shared actual void addSkill(ISkill skill) {
@@ -69,8 +79,10 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
             proxiedSkills.add(ProxySkill(skill.name, parallel, *proxiedJobs));
         }
     }
+
     "The lowest level among proxied jobs."
     shared actual Integer level => Integer.min(proxiedJobs.map(IJob.level)) else 0;
+
     "Set the proxied jobs' level."
     assign level {
         log.warn("ProxyJob.level assigned");
@@ -78,13 +90,16 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
             job.level = level;
         }
     }
+
     "Delegates to [[name]]."
     todo("Indicate we're a proxy?")
     shared actual String string => name;
+
     shared actual Boolean isSubset(IJob obj, Anything(String) report) {
         report("\tisSubset called on ProxyJob");
         return false;
     }
+
     "Proxy an additional Job."
     shared actual void addProxied(IJob item) {
         if (is Identifiable item, item === this) {
@@ -96,17 +111,20 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
         for (skill in proxiedSkills) {
             skill.addProxied(item);
         }
-        for (skill in item) {
+        for (skill in item) { // TODO: Filter with filter() instead of if
             if (!skillNames.contains(skill.name)) {
                 proxiedSkills.add(ProxySkill(skill.name, parallel, *proxiedJobs));
             }
         }
     }
+
     "A view of the proxied Jobs."
     shared actual {IJob*} proxied => proxiedJobs.sequence();
+
     """Whether all of the Jobs this is a proxy for are "empty," i.e. having no levels and
        containing no Skills that report either levels or hours of experience."""
     shared actual Boolean emptyJob => proxiedJobs.every(IJob.emptyJob);
+
     "Get a Skill by name."
     shared actual ISkill getSkill(String skillName) {
         if (exists retval = proxiedSkills.find(matchingValue(skillName, ISkill.name))) {
@@ -116,6 +134,7 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
         proxiedSkills.add(retval);
         return retval;
     }
+
     shared actual void removeSkill(ISkill skill) {
         if (exists local = proxiedSkills.find(skill.equals)) {
             proxiedSkills.remove(local);

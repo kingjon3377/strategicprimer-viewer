@@ -39,8 +39,13 @@ import strategicprimer.model.common.map {
 import strategicprimer.drivers.gui.common {
     SPDialog
 }
+import lovelace.util.common {
+    todo
+}
 
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
+todo("""Add a "nearby" search (using
+        [[strategicprimer.drivers.exploration.common::surroundingPointIterable]]?)""")
 class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Find") {
     JTextField searchField = JTextField("", 20);
     JCheckBox backwards = JCheckBox("Search backwards");

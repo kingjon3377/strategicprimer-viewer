@@ -10,6 +10,7 @@ shared object raceFactory {
        human, which is more likely than the others put together."""
     shared String[] races = ["dwarf", "elf", "gnome", "half-elf", "Danan"]
         .chain(Singleton("human").cycled).take(20).sequence();
+
     "Select a race at random."
     shared String randomRace(
             "The RNG to use to determine the result."

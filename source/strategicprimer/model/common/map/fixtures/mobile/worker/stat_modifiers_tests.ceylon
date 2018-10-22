@@ -3,6 +3,7 @@ import ceylon.test {
     assertEquals
 }
 
+"A test that [[WorkerStats.getModifier]] calculates the modifier for all stats correctly."
 test
 void testModifiers() {
     value stats = (0..20).by(2);

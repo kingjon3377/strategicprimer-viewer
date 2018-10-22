@@ -15,14 +15,19 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
         satisfies ExplorableFixture&HasMutableOwner&IFixture&Subsettable<IFixture> {
     "A brief description of the adventure."
     shared String briefDescription;
+
     "A longer description of the adventure."
     shared String fullDescription;
+
     "A unique ID number."
     shared actual Integer id;
+
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
+
     "The player that has undertaken the adventure."
     shared actual variable Player owner;
+
     "Clone the fixture."
     shared actual AdventureFixture copy(Boolean zero) {
         AdventureFixture retval = AdventureFixture(owner, briefDescription,
@@ -30,6 +35,7 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
         retval.image = image;
         return retval;
     }
+
     shared actual String string {
         if (fullDescription.empty) {
             if (briefDescription.empty) {
@@ -41,7 +47,9 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
             return fullDescription;
         }
     }
+
     shared actual String defaultImage = "adventure.png";
+
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is AdventureFixture obj = fixture) {
             return ((owner.independent && obj.owner.independent) ||
@@ -52,6 +60,7 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
             return false;
         }
     }
+
     shared actual Boolean equals(Object obj) {
         if (is AdventureFixture obj) {
             return id == obj.id && equalsIgnoringID(obj);
@@ -59,12 +68,17 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
             return false;
         }
     }
+
     shared actual Integer hash => id;
+
     shared actual String plural => "Adventures";
+
     shared actual String shortDescription => briefDescription;
+
     "The required Perception check result for an explorer to find the adventure hook."
     todo("Should probably be variable, i.e. read from XML")
     shared actual Integer dc => 30;
+
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         if (obj.id == id) {
             if (is AdventureFixture obj) {
@@ -91,5 +105,4 @@ shared class AdventureFixture(owner, briefDescription, fullDescription, id)
             return false;
         }
     }
-
 }

@@ -1,6 +1,7 @@
 import lovelace.util.common {
     todo
 }
+
 "An interface for model elements that have images that can be used to represent them."
 shared interface HasImage {
     """The filename of an image to use as an icon if the individual fixture doesn't
@@ -9,6 +10,7 @@ shared interface HasImage {
        instances of a class."""
     todo("Replace this with a centralized registry")
     shared formal String defaultImage;
+
     "The filename of an image to use as an icon for this particular instance."
     shared formal String image;
 }

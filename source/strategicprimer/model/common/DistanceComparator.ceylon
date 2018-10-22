@@ -12,8 +12,10 @@ import strategicprimer.model.common.map {
 shared class DistanceComparator(base, dimensions) {
     "The point we want to measure distance from."
     Point base;
+
     "The dimensions of the map. May, but shouldn't, be null."
     MapDimensions? dimensions;
+
     "Returns a value that is proportional to the distance from the base to the given
      point: in fact the *square* of the distance, to avoid taking an expensive square
      root."
@@ -34,9 +36,11 @@ shared class DistanceComparator(base, dimensions) {
         }
         return (colDist * colDist) + (rowDist * rowDist);
     }
+
     "Compare two points on the basis of distance from the base point."
     shared Comparison compare(Point firstPoint, Point secondPoint) =>
             distance(firstPoint) <=> distance(secondPoint);
+
     """Returns a String describing how far a point is from "HQ", which the base point is
        presumed to be."""
     shared String distanceString(Point point, String name = "HQ") {

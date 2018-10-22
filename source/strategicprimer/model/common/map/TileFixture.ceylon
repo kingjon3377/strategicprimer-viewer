@@ -13,10 +13,13 @@ shared interface TileFixture satisfies IFixture&Comparable<TileFixture> {
      description of the fixture, suitable for saying what it is when an explorer happens
      on it."
     shared formal String shortDescription;
+
     "Clone the object."
     shared actual formal TileFixture copy(Boolean zero);
+
     "Compare to another fixture."
     shared actual default Comparison compare(TileFixture other) => hash <=> other.hash;
+
     """The required Perception check for an explorer to find the fixture.
 
        Some rough guidelines for the scale:

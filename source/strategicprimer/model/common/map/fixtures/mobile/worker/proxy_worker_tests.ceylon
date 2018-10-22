@@ -52,6 +52,8 @@ object proxyWorkerTests {
         fail(message.string);
     }
 
+    "Test that adding experience to a proxy for multiple workers, not in a
+     unit, works properly."
     test
     shared void testProxyWorker() {
         IWorker firstWorker = Worker("one", "human", 1, Job("jobOne", 1,
@@ -189,6 +191,7 @@ object proxyWorkerTests {
             assertEquals(worker.copy(false), worker, "Worker copy should still be equal");
     }
 
+    "Test that removing a Skill from workers via a proxy works properly."
     test
     shared void testRemoval() {
         Boolean nonemptySkill(ISkill skill) => !skill.empty;

@@ -11,28 +11,36 @@ import strategicprimer.model.common.map {
     HasMutableImage,
     HasKind
 }
+
 "A forest on a tile."
 shared class Forest(kind, rows, id, acres = -1)
         satisfies TerrainFixture&HasMutableImage&HasKind&HasExtent {
     "What kind of trees dominate this forest."
     shared actual String kind;
+
     """Whether this is "rows of" trees."""
     shared Boolean rows;
+
     "Unique identifying number for this instance."
     shared actual variable Integer id;
+
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
+
     "The size of the forest, in acres. (Or a negative number if unknown.)"
     shared actual Number<out Anything> acres;
+
     "Clone the forest"
     shared actual Forest copy(Boolean zero) {
         Forest retval = Forest(kind, rows, id, (zero) then -1 else acres);
         retval.image = image;
         return retval;
     }
+
     "The filename of an image to represent forests by default."
     todo("Should differ based on kind of tree.")
     shared actual String defaultImage = "trees.png";
+
     shared actual Boolean equals(Object obj) {
         if (is Forest obj) {
             return obj.id == id && kind == obj.kind && rows == obj.rows &&
@@ -42,7 +50,9 @@ shared class Forest(kind, rows, id, acres = -1)
             return false;
         }
     }
+
     shared actual Integer hash => id;
+
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is Forest fixture) {
             return fixture.kind == kind && fixture.rows == rows && fixture.acres == acres;
@@ -50,9 +60,11 @@ shared class Forest(kind, rows, id, acres = -1)
             return false;
         }
     }
+
     shared actual String plural = "Forests";
+
     shared actual String shortDescription {
-        if (!acres.positive) {
+        if (!acres.positive) { // TODO: Invert if
             if (rows) {
                 return "Rows of ``kind`` trees";
             } else {
@@ -66,7 +78,9 @@ shared class Forest(kind, rows, id, acres = -1)
             }
         }
     }
+
     shared actual String string => shortDescription;
+
     shared actual Boolean isSubset(IFixture other, Anything(String) report) {
         if (id != other.id) {
             report("Different IDs");
@@ -93,5 +107,6 @@ shared class Forest(kind, rows, id, acres = -1)
             return false;
         }
     }
+
     shared actual Integer dc = 5;
 }

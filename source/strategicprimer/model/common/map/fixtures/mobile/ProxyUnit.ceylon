@@ -40,10 +40,13 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
     "If true, we are proxying parallel units in different maps; if false, multiple units
      of the same kind owned by one player."
     shared actual Boolean parallel;
+
     "The units we are a proxy for."
     MutableList<IUnit> proxiedList = ArrayList<IUnit>();
+
     variable {UnitMember*} cachedIterable = [];
-    SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) {
+
+    SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) { // TODO: Isn't there a Map constructor method that does almost what we want, only needing us to define a method for what to do in case of key collisions
         MutableMap<Integer,String>&SortedMap<Integer, String> retval =
                 TreeMap<Integer, String>(increasing, []);
         for (key->item in proxiedList.map(method).flatMap(identity)) {
@@ -57,9 +60,11 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         }
         return retval;
     }
+
     "If we're proxying parallel units, their ID; if we're proxying all units of a given
      kind, their kind."
     variable Integer|String identifier;
+
     shared new fromParallelMaps(Integer idNum) {
         identifier = idNum;
         parallel = true;
@@ -68,10 +73,13 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         identifier = unitKind;
         parallel = false;
     }
+
     "All orders shared by all the proxied units."
     shared actual SortedMap<Integer, String> allOrders => mergeMaps(IUnit.allOrders);
+
     "All results shared by all the proxied units."
     shared actual SortedMap<Integer, String> allResults => mergeMaps(IUnit.allResults);
+
     shared actual IUnit copy(Boolean zero) {
         ProxyUnit retval;
         if (parallel) {
@@ -86,8 +94,11 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         }
         return retval;
     }
+
     Player defaultPlayer = PlayerImpl(-1, "proxied");
+
     shared actual Player owner => getConsensus(IUnit.owner) else defaultPlayer;
+
     shared actual String kind {
         if (parallel) {
             return getConsensus(IUnit.kind) else "proxied";
@@ -96,6 +107,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             return temp;
         }
     }
+
     shared actual String shortDescription {
         if (parallel || proxiedList.size == 1) {
             if (owner.current) {
@@ -109,6 +121,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             return "Multiple units of kind ``kind``";
         }
     }
+
     shared actual Integer id {
         if (is Integer temp = identifier) {
             return temp;
@@ -116,6 +129,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             return -1;
         }
     }
+
     todo("Implement") // FIXME
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         log.error("ProxyUnit.equalsIgnoringID called");
@@ -124,10 +138,12 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
 //        throw UnsupportedOperationException(
 //            "FIXME: Implement ProxyUnit.equalsIgnoringID");
     }
+
     shared actual Comparison compare(TileFixture fixture) {
         log.warn("ProxyUnit.compare called");
         return super.compare(fixture);
     }
+
     shared actual String defaultImage {
         if (proxiedList.empty) {
             return "";
@@ -137,7 +153,9 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             return "unit.png";
         }
     }
+
     shared actual String image => getConsensus(IUnit.image) else "";
+
     assign image {
         log.warn("ProxyUnit.image setter called");
         for (unit in proxiedList) {
@@ -148,6 +166,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             }
         }
     }
+
     assign kind {
         if (!parallel || identifier is String) {
             identifier = kind;
@@ -160,6 +179,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             }
         }
     }
+
     shared actual Iterator<UnitMember> iterator() {
         if (!parallel) {
             return emptyIterator;
@@ -209,6 +229,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             return map.items.iterator();
         }
     }
+
     shared actual String name => getConsensus(IUnit.name) else "proxied";
     assign name {
         for (unit in proxiedList) {
@@ -219,7 +240,8 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             }
         }
     }
-    assign owner {
+
+    assign owner { // TODO: Move getter down here (to be adjacent to setter) if possible
         for (unit in proxiedList) {
             if (is HasMutableOwner unit) {
                 unit.owner = owner;
@@ -228,24 +250,30 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             }
         }
     }
+
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         report("Called ProxyUnit.isSubset()");
         return super.isSubset(obj, (String str) => report("In proxy unit:\t``str``"));
     }
+
     shared actual String getOrders(Integer turn) =>
             getConsensus(shuffle(IUnit.getOrders)(turn)) else "";
+
     shared actual String getResults(Integer turn) =>
             getConsensus(shuffle(IUnit.getResults)(turn)) else "";
+
     shared actual void setOrders(Integer turn, String newOrders) {
         for (unit in proxiedList) {
             unit.setOrders(turn, newOrders);
         }
     }
+
     shared actual void setResults(Integer turn, String newResults) {
         for (unit in proxiedList) {
             unit.setResults(turn, newResults);
         }
     }
+
     shared actual String verbose {
         if (parallel) {
             if (exists first = proxiedList.first) {
@@ -259,6 +287,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             return "A proxy for units of kind ``temp``";
         }
     }
+
     shared actual void addMember(UnitMember member) {
         if (parallel) {
             if (is ProxyFor<out UnitMember> member) {
@@ -294,6 +323,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             log.error("addMember() called on proxy for all units of one kind");
         }
     }
+
     shared actual void removeMember(UnitMember member) {
         if (parallel) {
             variable Boolean anyFound = false;
@@ -318,9 +348,12 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             log.error("RemoveMember() called on proxy for all units of one kind");
         }
     }
+
     shared actual {IUnit*} proxied => proxiedList.sequence();
+
     shared actual String string => (parallel) then "ProxyUnit for ID #``identifier``"
         else "ProxyUnit for units of kind ``identifier``";
+
     shared actual Boolean equals(Object obj) {
         if (is ProxyUnit obj) {
             return parallel == obj.parallel && identifier == obj.identifier &&
@@ -329,10 +362,14 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
             return false;
         }
     }
+
     Integer hashAccumulator(Integer left, Integer right) => left.or(right);
+
     shared actual Integer hash =>
             proxiedList.map(Object.hash).fold(0)(hashAccumulator);
+
     shared actual Integer dc => getConsensus(IUnit.dc) else 10;
+
     "Proxy an additonal unit."
     shared actual void addProxied(IUnit item) {
         if (is Identifiable item, item === this) {

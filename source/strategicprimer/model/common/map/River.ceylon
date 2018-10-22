@@ -2,6 +2,7 @@ import lovelace.util.common {
     todo,
     matchingValue
 }
+
 "If a tile has a river, it could be in any one of several directions. This class
  enumerates those directions. Tiles should have a *set* of these.
 
@@ -11,10 +12,13 @@ shared class River of north|east|south|west|lake satisfies Comparable<River> {
     "Get the river matching the given description."
     shared static River|ParseException parse(String description) =>
             parseRiver(description);
+
     "A descriptive string representing the direction, suitable for use in XML as well."
     shared String description;
+
     "A unique-per-case number for consistent sorting."
     Integer ordinal;
+
     "North."
     shared new north {
         description = "north";
@@ -40,12 +44,14 @@ shared class River of north|east|south|west|lake satisfies Comparable<River> {
         description = "lake";
         ordinal = 4;
     }
+
     "The description with the first letter capitalized."
     shared actual String string =
             String(description.rest.follow(description.first?.uppercased).coalesced);
-    shared actual Comparison compare(River other) => ordinal <=> other.ordinal;
 
+    shared actual Comparison compare(River other) => ordinal <=> other.ordinal;
 }
+
 River|ParseException parseRiver(String description) =>
         `River`.caseValues.find(matchingValue(description, River.description)) else
             ParseException("Failed to parse River from '``description``'");

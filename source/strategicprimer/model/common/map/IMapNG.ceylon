@@ -45,30 +45,40 @@ import strategicprimer.model.common.map {
 shared interface IMapNG satisfies Subsettable<IMapNG> {
     "The dimensions (and version) of the map."
     shared formal MapDimensions dimensions;
+
     "(A view of) the players in the map."
     shared formal IPlayerCollection players;
+
     """The locations in the map. This should *not* include locations outside the
        dimensions of the map even if callers have modified them, but *should* include all
        points within the dimensions of the map even if they are "empty"."""
     shared formal {Point*} locations;
+
     "The base terrain at any given point."
     shared formal Correspondence<Point, TileType> baseTerrain;
+
     "Whether any given point is mountainous."
     shared formal NonNullCorrespondence<Point, Boolean> mountainous;
+
     "The rivers in the map."
     shared formal Multimap<Point, River> rivers;
+
     "The tile-fixtures at the various locations."
     shared formal Multimap<Point, TileFixture> fixtures;
+
     "The current turn."
     shared formal Integer currentTurn;
+
     "The current player."
     shared formal Player currentPlayer;
+
     "Clone the map."
     shared formal IMapNG copy(
             """Whether to "zero" sensitive data"""
             Boolean zero,
             "The player for whom the copied map is being prepared, if any."
             Player? player);
+
     "A location is empty if it has no terrain, no Ground, no Forest, no rivers, and no
      other fixtures"
     shared default Boolean locationEmpty(Point location) {
@@ -84,7 +94,8 @@ shared interface IMapNG satisfies Subsettable<IMapNG> {
             return true;
         }
     }
+
     "Strict-subset calculations should skip caches, text fixtures, and animal tracks."
-    shared default Boolean shouldSkip(TileFixture fixture) =>
+    shared default Boolean shouldSkip(TileFixture fixture) => // TODO: Move into the TileFixture interface?
             fixture is CacheFixture|TextFixture|AnimalTracks;
 }

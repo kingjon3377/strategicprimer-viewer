@@ -2,31 +2,44 @@ import ceylon.test {
     assertEquals,
     test
 }
+import lovelace.util.common {
+   todo
+}
 
 "A view of locations on the map in order, starting at a given point."
 shared class PointIterator(dimensions, forwards, horizontal,
         selection = null) satisfies {Point*} {
     "The dimensions of the map we're a view of."
     MapDimensions dimensions;
+
     "Whether we should search forwards (if true) or backwards (if false)."
     Boolean forwards;
+
     "Whether we should search horizontally (if true) or vertically (if false)"
     Boolean horizontal;
+
     "The selected point; we start from (just before) (0, 0) if omitted."
     Point? selection;
+
     class PointIteratorImpl() satisfies Iterator<Point> {
         variable Integer remainingCount = dimensions.rows * dimensions.columns;
+
         "The maximum row in the map."
         Integer maxRow = dimensions.rows - 1;
+
         "The maximum column in the map."
         Integer maxColumn = dimensions.columns - 1;
+
         "The row where we started."
         Integer startRow;
+
         "The column where we started."
         Integer startColumn;
-        """Wrap negative values to the provided "wrap" value, but return positive
-           values."""
-        Integer wrap(Integer item, Integer wrap) => if (item<0) then wrap else item;
+
+        "If [[item]] is zero or positive, return it; otherwise, return
+         [[wrap]]."
+        Integer wrap(Integer item, Integer wrap) => if (item<0) then wrap else item; // TODO: Use item.negative instead of item < 0
+
         if (exists selection) {
             startRow = wrap(selection.row, maxRow);
             startColumn = wrap(selection.column, maxColumn);
@@ -37,12 +50,16 @@ shared class PointIterator(dimensions, forwards, horizontal,
             startRow = 0;
             startColumn = 0;
         }
+
         "The current row."
         variable Integer row = startRow;
+
         "The current column."
         variable Integer column = startColumn;
+
         "Whether we've started iterating."
         variable Boolean started = false;
+
         "A diagnostic String."
         shared actual String string =>
                 "PointIterator: Started at (``startRow``, ``startColumn
@@ -58,8 +75,8 @@ shared class PointIterator(dimensions, forwards, horizontal,
                 started = true;
                 if (horizontal) {
                     if (forwards) {
-                        if (column == maxColumn) {
-                            if (row == maxRow) {
+                        if (column == maxColumn) { // TODO: Increment first, then 'if (column > maxColumn) { column = 0; ... }'
+                            if (row == maxRow) { // TODO: Increment first, then 'if (row > maxRow) { row = 0; }'
                                 row = 0;
                             } else {
                                 row++;
@@ -69,8 +86,8 @@ shared class PointIterator(dimensions, forwards, horizontal,
                             column++;
                         }
                     } else {
-                        if (column == 0) {
-                            if (row == 0) {
+                        if (column == 0) { // TODO: Decrement first, then 'if (column.negative) { column = maxColumn; ... }'
+                            if (row == 0) { // TODO: Decrement first, then 'if (row.negative) { row = maxRow; }'
                                 row = maxRow;
                             } else {
                                 row--;
@@ -82,8 +99,8 @@ shared class PointIterator(dimensions, forwards, horizontal,
                     }
                 } else {
                     if (forwards) {
-                        if (row == maxRow) {
-                            if (column == maxColumn) {
+                        if (row == maxRow) { // TODO: Increment first, then 'if (row > maxRow) { row = 0; ... }'
+                            if (column == maxColumn) { // TODO: Increment first, then 'if (column > maxColumn) { column = 0; }
                                 column = 0;
                             } else {
                                 column++;
@@ -93,8 +110,8 @@ shared class PointIterator(dimensions, forwards, horizontal,
                             row++;
                         }
                     } else {
-                        if (row == 0) {
-                            if (column == 0) {
+                        if (row == 0) { // TODO: Decrement first, then 'if (row.negative) { row = maxRow; ... }'
+                            if (column == 0) { // TODO: Decrement first, then 'if (column.negative) { column = maxColumn; }'
                                 column = maxColumn;
                             } else {
                                 column--;
@@ -109,8 +126,12 @@ shared class PointIterator(dimensions, forwards, horizontal,
             }
         }
     }
+
     shared actual Iterator<Point> iterator() => PointIteratorImpl();
 }
+
+"Tests that [[PointIterator]] works properly for each possible configuration."
+todo("Use [[corresponding]] instead of [[Iterable.sequence]] and [[assertEquals]].")
 object pointIterationTests {
     "Test iteration forwards, horizontally, from the beginning of the map."
     test

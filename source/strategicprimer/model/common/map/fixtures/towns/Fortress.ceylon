@@ -25,6 +25,7 @@ import strategicprimer.model.common.map.fixtures {
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
+
 "A fortress on the map. A player can only have one fortress per tile, but multiple players
   may have fortresses on the same tile."
 todo("FIXME: We need something about buildings yet")
@@ -33,26 +34,36 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
         {FortressMember*}&IFixture&Subsettable<IFixture> {
     "The player who owns the fortress."
     shared actual variable Player owner;
+
     "The name of the fortress."
     shared actual variable String name;
+
     "The ID number."
     shared actual Integer id;
+
     "The size of the fortress."
     shared actual TownSize townSize;
+
     "The members of the fortress."
     todo("Should this perhaps be a Set?")
     MutableList<FortressMember> members = ArrayList<FortressMember>();
+
     "A Fortress's contents aren't handled like those of other towns."
     todo("OTOH, should they be?")
     shared actual CommunityStats? population = null;
+
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
+
     "The name of an image to use as a portrait."
     shared actual variable String portrait = "";
+
     "Add a member to the fortress."
     shared void addMember(FortressMember member) => members.add(member);
+
     "Remove a member from the fortress."
     shared void removeMember(FortressMember member) => members.remove(member);
+
     "Clone the fortress."
     shared actual Fortress copy(Boolean zero) {
         Fortress retval;
@@ -67,8 +78,10 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
         retval.image = image;
         return retval;
     }
+
     "An iterator over the members of the fortress."
     shared actual Iterator<FortressMember> iterator() => members.iterator();
+
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is Fortress fixture) {
             return name == fixture.name && owner.playerId == fixture.owner.playerId &&
@@ -77,6 +90,7 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
             return false;
         }
     }
+
     shared actual Boolean equals(Object obj) {
         if (is Fortress obj) {
             return equalsIgnoringID(obj) && id == obj.id;
@@ -84,7 +98,9 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
             return false;
         }
     }
+
     shared actual Integer hash => id;
+
     shared actual String string {
         StringBuilder builder = StringBuilder();
         builder.append("Fortress ``name``, owned by player ``owner``. Members:");
@@ -111,10 +127,12 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
         }
         return builder.string;
     }
+
     "The filename of the image to use as an icon when no per-instance icon has been
      specified."
     todo("Should perhaps be more granular")
     shared actual String defaultImage => "fortress.png";
+
     """A fixture is a subset if it is a Fortress with the same ID, owner, and name (or it
        has the name "unknown") and every member it has is equal to, or a subset of, one of
        our members."""
@@ -155,12 +173,15 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
             return false;
         }
     }
+
     "The status of the fortress."
     todo("Add support for having a different status? (but leave 'active' the default) Or
           maybe a non-'active' fortress is a Fortification, and an active fortification is
           a Fortress.")
     shared actual TownStatus status = TownStatus.active;
+
     shared actual String plural = "Fortresses";
+
     shared actual String shortDescription {
         if (owner.current) {
             return "a fortress, ``name``, owned by you";
@@ -170,7 +191,9 @@ shared class Fortress(owner, name, id, townSize = TownSize.small)
             return "a fortress, ``name``, owned by ``owner.name``";
         }
     }
+
     shared actual String kind => "fortress";
+
     "The required Perception check for an explorer to find the fortress."
     shared actual Integer dc => min(members.narrow<TileFixture>().map(TileFixture.dc))
             else 20 - members.size - townSize.ordinal * 2;

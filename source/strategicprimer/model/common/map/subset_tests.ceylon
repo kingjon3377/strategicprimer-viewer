@@ -54,13 +54,25 @@ import strategicprimer.model.common.map.fixtures.towns {
 import lovelace.util.common {
     enumeratedParameter
 }
+
+"A collection of tests of the subset-checking features."
 object subsetTests {
-    void assertIsSubset<T,U=T>(T&U one, T&U two, String message)
-            given T satisfies Subsettable<U> given U satisfies Object =>
+    """Assert that [[two]] is a "strict subset," by our loose definition, of
+       [[one]]."""
+    void assertIsSubset<SpecificType,GeneralType=SpecificType>(
+                SpecificType&GeneralType one, SpecificType&GeneralType two,
+                String message)
+            given SpecificType satisfies Subsettable<GeneralType>
+            given GeneralType satisfies Object =>
                 assertTrue(one.isSubset(two, noop), message);
-    void assertNotSubset<T,U=T>(T&U one, T&U two, String message)
-            given T satisfies Subsettable<U> given U satisfies Object =>
-            assertFalse(one.isSubset(two, noop), message);
+    """Assert that [[two]] is *not* a "strict subset," even by our loose
+       definition, of [[one]]."""
+    void assertNotSubset<SpecificType,GeneralType=SpecificType>(SpecificType&GeneralType one,
+                SpecificType&GeneralType two, String message)
+            given SpecificType satisfies Subsettable<GeneralType>
+            given GeneralType satisfies Object =>
+                assertFalse(one.isSubset(two, noop), message);
+
     "A test of [[PlayerCollection]]'s subset feature"
     test
     shared void testPlayerCollectionSubset() {
@@ -85,6 +97,8 @@ object subsetTests {
             "Two is subset of self");
     }
 
+    "Assert that neither of two [[fortresses|Fortress]] is a subset of the
+     other."
     void requireMatching(Fortress one, Fortress two, String what) {
         assertNotSubset<Fortress, IFixture>(one, two,
             "Subset requires ``what``, first test");
@@ -126,6 +140,7 @@ object subsetTests {
             "Different size breaks Fortress subset");
     }
 
+    "Create a map with the given terrain."
     IMutableMapNG createMap(<Point->TileType>* terrain) {
         IMutableMapNG retval = SPMapNG(MapDimensionsImpl(2, 2, 2),
             PlayerCollection(), -1);

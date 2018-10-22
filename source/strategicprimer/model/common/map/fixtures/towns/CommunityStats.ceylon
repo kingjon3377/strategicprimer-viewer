@@ -14,15 +14,19 @@ import strategicprimer.model.common.map.fixtures {
 import strategicprimer.model.common.map {
     Subsettable
 }
+
 todo("Convert to an interface, or otherwise provide an alternative for non-active
       communities to suggest contents to be found there",
-    "Allow towns to contain Workers, so inhabitants players know about can be
-     represented")
+     "Allow towns to contain
+      [[Workers|strategicprimer.model.common.map.fixtures.mobile::Worker]], so
+      inhabitants players know about can be represented")
 shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStats?> {
     "Approximately how many adults live in the community."
     variable Integer populationCount;
+
     "Population cannot be negative"
     assert (populationCount >= 0);
+
     "Approximately how many adults live in the community."
     shared Integer population => populationCount;
     assign population {
@@ -30,9 +34,11 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
         assert (population >= 0);
         populationCount = population;
     }
+
     MutableMap<String, Integer> skillLevels = HashMap<String, Integer>();
     "The highest Job (skill) levels in the community."
     shared Map<String, Integer> highestSkillLevels => map(skillLevels);
+
     "Set the highest level in the community for the given Job"
     shared void setSkillLevel(String skill, Integer level) {
         "Skill level cannot be negative; zero removes the skill entirely"
@@ -43,6 +49,7 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
             skillLevels[skill] = level;
         }
     }
+
     "ID numbers of fields, orchards, and the like that this community cultivates. We don't
      have references to the
      [[strategicprimer.model.common.map.fixtures.resources::HarvestableFixture]] objects
@@ -51,6 +58,7 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
      [[strategicprimer.model.common.map.fixtures.resources::HarvestableFixture]] that is not
      claimed by any other community."
     MutableSet<Integer> workedFieldIDs = HashSet<Integer>();
+
     "ID numbers of fields, orchards, and the like that this community cultivates. We don't
      have references to the
      [[strategicprimer.model.common.map.fixtures.resources::HarvestableFixture]] objects
@@ -59,21 +67,26 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
       [[strategicprimer.model.common.map.fixtures.resources::HarvestableFixture]] that is not
       claimed by any other community."
     shared {Integer*} workedFields => workedFieldIDs.sequence();
+
     "Add a field (or orchard, or other harvestable resource source) (ID number) to the
      collection of worked fields."
     shared void addWorkedField(Integer fieldID) => workedFieldIDs.add(fieldID);
+
     "Remove a harvestable resource source (ID number) from the collection of such sources
       worked by this community"
     shared void removeWorkedField(Integer fieldID) => workedFieldIDs.remove(fieldID);
+
     "The set of resources produced each year."
     todo("Should we really expose this as a [[MutableSet]], instead of merely a [[Set]]
           modified by mutators on this class?")
     shared MutableSet<ResourcePile> yearlyProduction = HashSet<ResourcePile>();
+
     "The set of resources consumed each year. (Though substitutions of like resources are
      to be expected.)"
     todo("Should we really expose this as a [[MutableSet]], instead of merely a [[Set]]
           modified by mutators on this class?")
     shared MutableSet<ResourcePile> yearlyConsumption = HashSet<ResourcePile>();
+
     shared actual String string {
         StringBuilder builder = StringBuilder();
         builder.append("Community stats:");
@@ -102,6 +115,7 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
         }
         return builder.string;
     }
+
     shared actual Boolean equals(Object that) {
         if (is CommunityStats that) {
             return population == that.population && skillLevels == that.skillLevels &&
@@ -112,6 +126,7 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
             return false;
         }
     }
+
     shared actual Boolean isSubset(CommunityStats? other, Anything(String) report) {
         if (exists other) {
             if (population < other.population) {
@@ -149,6 +164,7 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
             return true;
         }
     }
+
     // Going for speed rather than excellent hashing
     shared actual Integer hash => population;
 }

@@ -49,6 +49,9 @@ shared class SPMapNG satisfies IMutableMapNG {
             return true;
         }
     }
+
+    "If either of the provided fixtures is a subset of the other, return true;
+     otherwise return false."
     static Boolean subsetCheck(TileFixture one, TileFixture two) {
         if (is Subsettable<IFixture> one, one.isSubset(two, noop)) {
             return true;
@@ -58,38 +61,54 @@ shared class SPMapNG satisfies IMutableMapNG {
             return false;
         }
     }
+
+    "Switch the key and item in an [[Entry]]."
     static Item->Key reverseEntry<Key, Item>(Key->Item entry)
             given Key satisfies Object
             given Item satisfies Object => entry.item->entry.key;
+
     "The set of mountainous places."
     MutableSet<Point> mountains = HashSet<Point>();
+
     "The base terrain at points in the map."
     MutableMap<Point, TileType> terrain = HashMap<Point, TileType>();
+
     "The players in the map."
     IMutablePlayerCollection playerCollection;
+
     "Fixtures at various points, other than the main ground and forest."
     MutableMultimap<Point, TileFixture> fixturesMap = HashMultimap<Point, TileFixture>();
+
+    "The version and dimensions of the map."
     MapDimensions mapDimensions;
+
     "The rivers in the map."
     MutableMultimap<Point, River> riversMap = HashMultimap<Point, River>();
+
     "The current turn."
     shared actual variable Integer currentTurn;
+
     shared new (MapDimensions dimensions, IMutablePlayerCollection players,
             Integer turn) {
         mapDimensions = dimensions;
         playerCollection = players;
         currentTurn = turn;
     }
+
     "Whether the given point is in the map."
-    Boolean contained(Point point) =>
+    Boolean contained(Point point) => // TODO: Move to MapDimensions?
             (0:mapDimensions.rows).contains(point.row) && (0:mapDimensions.columns)
                 .contains(point.column);
+
     "The dimensions of the map."
     shared actual MapDimensions dimensions => mapDimensions;
+
     "A stream of the players known in the map"
     shared actual IPlayerCollection players => playerCollection;
+
     "The locations in the map."
     shared actual {Point*} locations => PointIterator(dimensions, true, true);
+
     "The base terrain at the given location."
     shared actual object baseTerrain satisfies Correspondence<Point, TileType>&
             KeyedCorrespondenceMutator<Point, TileType?> {
@@ -103,6 +122,7 @@ shared class SPMapNG satisfies IMutableMapNG {
             }
         }
     }
+
     "Whether the given location is mountainous."
     shared actual object mountainous satisfies NonNullCorrespondence<Point, Boolean>&
             KeyedCorrespondenceMutator<Point, Boolean> {
@@ -116,24 +136,31 @@ shared class SPMapNG satisfies IMutableMapNG {
             }
         }
     }
+
     "The rivers, if any, at the given location."
     shared actual Multimap<Point, River> rivers => riversMap;
+
     "The tile fixtures (other than rivers and mountains) at the given location."
     shared actual Multimap<Point, TileFixture> fixtures => fixturesMap;
+
     "The current player."
     shared actual Player currentPlayer => playerCollection.currentPlayer;
     assign currentPlayer => playerCollection.currentPlayer = currentPlayer;
+
     "Add a player."
     shared actual void addPlayer(Player player) => playerCollection.add(player);
+
     "Add rivers at a location."
     shared actual void addRivers(Point location, River* addedRivers) =>
             riversMap.putMultiple(location, addedRivers);
+
     "Remove rivers from the given location."
     shared actual void removeRivers(Point location, River* removedRivers) {
         for (river in removedRivers) {
             riversMap.remove(location, river);
         }
     }
+
     """Add a fixture at a location, and return whether the "all fixtures at this point"
        set has an additional member as a result of this."""
     shared actual Boolean addFixture(Point location, TileFixture fixture) {
@@ -163,12 +190,15 @@ shared class SPMapNG satisfies IMutableMapNG {
             return oldSize < fixturesMap.get(location).size;
         }
     }
+
     "Remove a fixture from a location."
     shared actual void removeFixture(Point location, TileFixture fixture) =>
             fixturesMap.remove(location, fixture);
+
     shared actual Integer hash =>
             dimensions.hash + (currentTurn.leftLogicalShift(3)) +
             currentPlayer.hash.leftLogicalShift(5);
+
     shared actual Boolean equals(Object obj) {
         if (is IMapNG obj) {
             if (dimensions == obj.dimensions, players.containsEvery(obj.players),
@@ -192,6 +222,7 @@ shared class SPMapNG satisfies IMutableMapNG {
         }
         return false;
     }
+
     shared actual String string {
         StringBuilder builder = StringBuilder();
         builder.append("SPMapNG:
@@ -202,7 +233,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                         Players:
                         ");
         for (player in players) {
-            if (player.current) {
+            if (player.current) { // TODO: Use player.string unconditionally, and optionally add the " (current)" in a separate operation.
                 builder.append("``player`` (current)");
             } else {
                 builder.append(player.string);
@@ -212,7 +243,7 @@ shared class SPMapNG satisfies IMutableMapNG {
         builder.appendNewline();
         builder.append("Contents:");
         builder.appendNewline();
-        for (location in locations) {
+        for (location in locations) { // TODO: Filter with .filter() instead of the if
             if (locationEmpty(location)) {
                 continue;
             }
@@ -236,6 +267,7 @@ shared class SPMapNG satisfies IMutableMapNG {
         }
         return builder.string;
     }
+
     """Returns true if the other map is a "strict subset" of this one, except for those
        cases we deliberately ignore."""
     shared actual Boolean isSubset(IMapNG obj, Anything(String) report) {
@@ -261,6 +293,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                     ourSubsettables.put(fixture.id, [fixture, point]);
                 }
             }
+
             Boolean movedFrom(Point location, TileFixture fixture) {
                 if (exists ourLocation = ourLocations[fixture], ourLocation != location) {
                     report("``fixture`` moved from our ``ourLocation`` to ``location``");
@@ -269,6 +302,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                     return false;
                 }
             }
+
             Boolean testAgainstList<Target, SubsetType>(Target desideratum,
                     Point location, {[SubsetType, Point]*} list, Anything(String) ostream)
                     given Target satisfies Object&IFixture
@@ -279,7 +313,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                 variable Point? matchPoint = null;
                 variable Boolean exactly = false;
                 for ([item, ourLocation] in list.follow(list.find(
-                        matchingPredicate(matchingValue(location,
+                        matchingPredicate(matchingValue(location, // TODO: Use compose() instead of nesting matchingPredicate and matchingValue()
                                     Tuple<Point, Point, []>.first),
                                 Tuple<SubsetType|Point, SubsetType, [Point]>.rest)))
                             .coalesced.distinct) {
@@ -395,6 +429,7 @@ shared class SPMapNG satisfies IMutableMapNG {
             return false;
         }
     }
+
     "Clone a map, possibly for a specific player, who shouldn't see other players'
      details."
     shared actual IMapNG copy(Boolean zero, Player? player) {

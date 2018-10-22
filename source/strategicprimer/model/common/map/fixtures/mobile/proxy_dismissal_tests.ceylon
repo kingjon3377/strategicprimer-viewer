@@ -19,6 +19,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Worker
 }
 
+"A test that dismissing workers from units works when the situation is
+ complicated by proxies."
 test
 void testProxyDismissal() {
     Player player = PlayerImpl(1, "player");

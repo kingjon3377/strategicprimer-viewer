@@ -5,6 +5,7 @@ import strategicprimer.model.common.map {
     IFixture,
     Subsettable
 }
+
 "A (marker) interface for things that can be part of a unit.
 
  We extend [[strategicprimer.model.common.map::Subsettable]] to make Unit's subset calculation

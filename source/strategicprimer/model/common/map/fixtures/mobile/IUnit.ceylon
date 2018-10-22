@@ -20,31 +20,40 @@ import strategicprimer.model.common.map.fixtures {
     UnitMember,
     FortressMember
 }
+
 "An interface for units."
 shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
         {UnitMember*}&FortressMember&HasOwner {
     "The unit's orders history, a mapping from turns to the orders for those turns."
     shared formal SortedMap<Integer, String> allOrders;
+
     "Get the unit's orders for the given turn."
     shared formal String getOrders(Integer turn);
+
     "Set the unit's orders for a turn."
     todo("Move to a 'mutable' interface?")
     shared formal void setOrders(Integer turn, String newOrders);
+
     "The unit's results for the given turn."
     shared formal String getResults(Integer turn);
+
     "The unit's results history, a mapping from turns to the results for those turns."
     shared formal SortedMap<Integer, String> allResults;
+
     "Set the unit's results for a turn."
     todo("Move to a 'mutable' interface?")
     shared formal void setResults(Integer turn, String newResults);
+
     "The unit's latest orders as of the given turn."
     shared default String getLatestOrders(Integer turn) =>
             (turn..-1).map(allOrders.get).coalesced.map(String.trimmed)
                 .find(not(String.empty)) else "";
+
     "The unit's latest results as of the given turn."
     shared default String getLatestResults(Integer turn) =>
             (turn..-1).map(allResults.get).coalesced.map(String.trimmed)
                 .find(not(String.empty)) else "";
+
     "Get the latest turn that the given orders were the current orders."
     shared default Integer getOrdersTurn(String orders) {
         variable Integer retval = -1;
@@ -55,18 +64,24 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
         }
         return retval;
     }
+
     "A verbose description of the unit."
     shared formal String verbose;
+
     "Add a member."
     todo("Move to a 'mutable' interface?")
     shared formal void addMember(UnitMember member);
+
     "Remove a member"
     todo("Move to a 'mutable' interface?")
     shared formal void removeMember(UnitMember member);
+
     "Clone the unit."
     shared formal actual IUnit copy(Boolean zero);
+
     "The plural of Unit is Units"
     shared default actual String plural => "Units";
+
     "A fixture is a subset if it is a unit with the same ID and no extra members, and all
      corresponding (by ID, presumably) members are either equal or themselves subsets."
     shared default actual Boolean isSubset(IFixture obj, Anything(String) report) {

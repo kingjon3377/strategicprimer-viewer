@@ -5,6 +5,7 @@ import lovelace.util.common {
 import ceylon.random {
     DefaultRandom
 }
+
 "Possible status of fields (and meadows, and orchards ...) Fields should rotate between
  these, at a rate determined by the kind of field."
 todo("Implement that")
@@ -12,9 +13,13 @@ shared class FieldStatus of fallow|seeding|growing|bearing
         satisfies Comparable<FieldStatus> {
     shared static FieldStatus|ParseException parse(String status) =>
             parseFieldStatus(status);
+
     shared static FieldStatus random(Integer seed) => randomStatus(seed);
+
     shared actual String string;
+
     shared Integer ordinal;
+
     "Fallow: waiting to be planted, or waiting to start growing."
     shared new fallow {
         string = "fallow";
@@ -37,9 +42,11 @@ shared class FieldStatus of fallow|seeding|growing|bearing
     }
     shared actual Comparison compare(FieldStatus other) => ordinal.compare(other.ordinal);
 }
+
 FieldStatus|ParseException parseFieldStatus(String status) =>
         `FieldStatus`.caseValues.find(matchingValue(status, FieldStatus.string))
             else ParseException("Failed to parse FieldStatus from '``status``'");
+
 FieldStatus randomStatus(Integer seed) {
     assert (exists retval = DefaultRandom(seed).nextElement(
         sort<FieldStatus>(`FieldStatus`.caseValues)));

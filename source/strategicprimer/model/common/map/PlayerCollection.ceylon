@@ -19,13 +19,16 @@ import ceylon.logging {
 
 "A logger."
 Logger log = logger(`module strategicprimer.model.common`);
+
 "A collection of players. Using a simple List doesn't work when -1 is the default index if
  one isn't given in the XML."
 shared class PlayerCollection() satisfies IMutablePlayerCollection {
     "The collection this class wraps."
     MutableMap<Integer, Player> players = naturalOrderTreeMap<Integer, Player>([]);
+
     """The player for "independent" fixtures."""
     variable Player independentPlayer = PlayerImpl(-1, "Independent");
+
     "Get a player by ID number."
     shared actual Player getPlayer(Integer player) {
         if (exists retval = players[player]) {
@@ -38,8 +41,10 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
             return retval;
         }
     }
+
     "An iterator over the players in the collection."
     shared actual Iterator<Player> iterator() => players.items.iterator();
+
     "A player collection is a subset if it has no players we don't."
     shared actual Boolean isSubset({Player*} obj, Anything(String) report) {
         variable Boolean retval = true;
@@ -60,9 +65,13 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
         }
         return retval;
     }
+
     shared actual Integer hash => players.hash;
+
     shared actual String string => "Player collection with ``players.size`` players";
+
     variable Player current = PlayerImpl(-1, "");
+
     "Add a player to the collection. Returns true if the collection changed as a result of
      this call"
     shared actual void add(Player player) {
@@ -74,6 +83,7 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
         }
         players[player.playerId] = player;
     }
+
     "Remove a player from the collection. Returns true if the collection changed as a
      result of this call."
     shared actual void remove(Player|Integer obj) {
@@ -95,16 +105,20 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
             }
         }
     }
+
     """The player for "independent" fixtures."""
     shared actual Player independent => independentPlayer;
+
     "Clone the collection."
     shared actual IMutablePlayerCollection copy() {
         IMutablePlayerCollection retval = PlayerCollection();
         each(retval.add);
         return retval;
     }
+
     "Get the current player, or a new player with an empty name and number -1."
     shared actual Player currentPlayer => current;
+
     assign currentPlayer {
         Player oldCurrent = current;
         if (is MutablePlayer oldCurrent) {
@@ -127,6 +141,7 @@ shared class PlayerCollection() satisfies IMutablePlayerCollection {
                 "Player in collection matching specified 'new' player wasn't mutable");
         }
     }
+
     "An object is equal iff it is a player collection with exactly the players we have."
     shared actual Boolean equals(Object obj) {
         if (is IPlayerCollection obj) {

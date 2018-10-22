@@ -1,19 +1,24 @@
 import lovelace.util.common {
     todo
 }
+
 "A structure encapsulating two coordinates: a row and column in the map."
 shared final class Point satisfies Comparable<Point> {
     "The first coordinate, the point's row."
     shared Integer row;
+
     "The second coordinate, the point's column."
     shared Integer column;
+
     shared new (Integer row, Integer column) {
         this.row = row;
         this.column = column;
     }
+
     """The standard "invalid point.""""
     todo("Replace with [[null]]?")
     shared new invalidPoint extends Point(-1, -1) {}
+
     shared actual Boolean equals(Object obj) {
         if (is Point obj) {
             return obj.row == row && obj.column == column;
@@ -21,8 +26,11 @@ shared final class Point satisfies Comparable<Point> {
             return false;
         }
     }
+
     shared actual Integer hash => row.leftLogicalShift(9) + column;
+
     shared actual String string => "(``row``, ``column``)";
+
     "Compare to another point, by first row and then column."
     shared actual Comparison compare(Point point) {
         Comparison rowComparison = row <=> point.row;
@@ -32,6 +40,7 @@ shared final class Point satisfies Comparable<Point> {
             return rowComparison;
         }
     }
+
     """A point is "valid" if neither row nor column is negative."""
     shared Boolean valid => row >= 0 && column >= 0;
 }

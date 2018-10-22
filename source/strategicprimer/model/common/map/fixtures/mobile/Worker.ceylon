@@ -22,6 +22,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 import ceylon.collection {
     MutableSet
 }
+
 "A worker (or soldier) in a unit. This is deliberately not a
  [[TileFixture|strategicprimer.model.common.map::TileFixture]]: these should only be part of a
  unit, not as a top-level tag."
@@ -32,14 +33,19 @@ shared class Worker satisfies IWorker&HasPortrait {
     static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
             set(first.filter(matchingValue(false, IJob.emptyJob))) ==
             set(second.filter(matchingValue(false, IJob.emptyJob)));
+
     "The set of Jobs the worker is trained or experienced in."
     MutableSet<IJob> jobSet;
+
     "The worker's ID number."
     shared actual Integer id;
+
     "The worker's name."
     shared actual String name;
+
     "The worker's race (elf, dwarf, human, etc.)"
     shared actual String race;
+
     shared new (String name, String race, Integer id, IJob* jobs) {
         this.name = name;
         this.race = race;
@@ -49,18 +55,23 @@ shared class Worker satisfies IWorker&HasPortrait {
 
     "The worker's stats."
     shared actual variable WorkerStats? stats = null;
+
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
+
     "The filename of an image to use as a portrait for the worker."
     shared actual variable String portrait = "";
+
     "Add a Job."
     shared actual Boolean addJob(IJob job) {
         Integer size = jobSet.size;
         jobSet.add(job);
         return size != jobSet.size;
     }
+
     "An iterator over the worker's Jobs."
     shared actual Iterator<IJob> iterator() => jobSet.iterator();
+
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is IWorker fixture) {
             return fixture.name == name && jobSetsEqual(jobSet, fixture)
@@ -69,6 +80,7 @@ shared class Worker satisfies IWorker&HasPortrait {
             return false;
         }
     }
+
     shared actual Boolean equals(Object obj) {
         if (is IWorker obj) {
             return obj.id == id && equalsIgnoringID(obj);
@@ -76,14 +88,18 @@ shared class Worker satisfies IWorker&HasPortrait {
             return false;
         }
     }
+
     shared actual Integer hash => id;
+
     "We only use the worker's name and race for `string`."
     shared actual String string =>
             ("human" == race) then name else "``name``, a ``race``";
+
     "The filename of the icon to use by default. This is just for icons in lists and such,
      not the map, since this isn't a
      [[TileFixture|strategicprimer.model.common.map::TileFixture]]."
     shared actual String defaultImage = "worker.png";
+
     "A fixture is a subset if it is a worker with the same ID, name, race, and stats, and
      no Jobs we don't have, and its Jobs are subsets of our corresponding Jobs."
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
@@ -124,6 +140,7 @@ shared class Worker satisfies IWorker&HasPortrait {
             return false;
         }
     }
+
     "Clone the object."
     shared actual Worker copy(Boolean zero) {
         Worker retval = Worker(name, race, id);
@@ -140,6 +157,7 @@ shared class Worker satisfies IWorker&HasPortrait {
         }
         return retval;
     }
+
     "Get a Job by name: the Job by that name the worker has, or a newly-constructed one if
      it didn't have one."
     shared actual IJob getJob(String name) {

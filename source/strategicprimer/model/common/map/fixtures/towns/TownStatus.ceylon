@@ -2,8 +2,11 @@
 shared class TownStatus of active|abandoned|burned|ruined {
     shared static TownStatus|ParseException parse(String status) =>
             parseTownStatus(status);
+
     shared actual String string;
+
     shared Integer ordinal;
+
     shared new active {
         string = "active";
         ordinal = 0;
@@ -21,6 +24,7 @@ shared class TownStatus of active|abandoned|burned|ruined {
         ordinal = 3;
     }
 }
+
 TownStatus|ParseException parseTownStatus(String status) {
     switch (status)
     case ("active") { return TownStatus.active; }

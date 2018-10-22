@@ -5,6 +5,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.towns {
     ITownFixture
 }
+
 "Fill a new ID factory from the given map."
 shared IDRegistrar createIDFactory(IMapNG|{IMapNG*}|{IFixture*} arg) {
     IDRegistrar retval = IDFactory();

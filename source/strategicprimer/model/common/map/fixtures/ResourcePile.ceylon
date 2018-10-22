@@ -12,24 +12,32 @@ import strategicprimer.model.common.map.fixtures {
     FortressMember,
     Quantity
 }
+
 "A quantity of some kind of resource."
 todo("More members?")
 shared class ResourcePile(id, kind, contents, quantity)
         satisfies UnitMember&FortressMember&HasKind&HasMutableImage {
     shared actual String plural = "Resource Piles";
+
     "The ID # of the resource pile."
     shared actual Integer id;
+
     "What general kind of thing is in the resource pile."
     shared actual String kind;
+
     "What specific kind of thing is in the resource pile."
     shared variable String contents;
+
     "How much of that thing is in the pile, including units."
     shared variable Quantity quantity;
+
     "The filename of an image to use as an icon for this instance."
     shared actual variable String image = "";
+
     variable Integer createdTurn = -1;
     "The turn on which the resource was created."
     shared Integer created => createdTurn;
+
     assign created {
         if (created < 0) {
             createdTurn = -1;
@@ -37,7 +45,9 @@ shared class ResourcePile(id, kind, contents, quantity)
             createdTurn = created;
         }
     }
+
     shared actual String defaultImage = "resource.png";
+
     "If we ignore ID, a fixture is equal iff it is a ResourcePile with the same kind and
      contents, of the same age, with equal quantity."
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
@@ -48,6 +58,7 @@ shared class ResourcePile(id, kind, contents, quantity)
             return false;
         }
     }
+
     "A fixture is a subset iff it is a ResourcePile of the same kind, contents, and age,
      with the same ID, and its quantity is a subset of ours."
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
@@ -81,6 +92,7 @@ shared class ResourcePile(id, kind, contents, quantity)
             return false;
         }
     }
+
     "Clone the object."
     shared actual ResourcePile copy(Boolean zero) {
         ResourcePile retval = ResourcePile(id, kind, contents, quantity);
@@ -89,7 +101,9 @@ shared class ResourcePile(id, kind, contents, quantity)
         }
         return retval;
     }
+
     shared actual Integer hash => id;
+
     shared actual Boolean equals(Object obj) {
         if (is ResourcePile obj) {
             return id == obj.id && equalsIgnoringID(obj);
@@ -97,6 +111,7 @@ shared class ResourcePile(id, kind, contents, quantity)
             return false;
         }
     }
+
     shared actual String string {
         if (quantity.units.empty) {
             return "A pile of ``quantity`` ``contents`` (``kind``)``(created < 0) then
