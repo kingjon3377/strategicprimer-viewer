@@ -22,6 +22,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbResourcePileHandler
         extends AbstractDatabaseWriter<ResourcePile, IUnit|Fortress>()
         satisfies MapContentsReader {
@@ -38,7 +39,8 @@ object dbResourcePileHandler
                image VARCHAR(255)
            );"""
     ];
-    shared actual void write(Sql db, ResourcePile obj, IUnit|Fortress context) {
+
+    shared actual void write(Sql db, ResourcePile obj, IUnit|Fortress context) { // TODO: =>
         db.Insert("""INSERT INTO resource_piles (parent, id, kind, contents, quantity,
                          units, created, image)
                      VALUES(?, ?, ?, ?, ?, ?, ?, ?);""")
@@ -46,7 +48,9 @@ object dbResourcePileHandler
                         obj.quantity.number.string, obj.quantity.units, obj.created,
                         obj.image);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
+
     void readResourcePile(IMutableMapNG map, Map<String, Object> row, Warning warner) {
         assert (is Integer parentId = row["parent"],
             is IUnit|Fortress parent = findById(map, parentId, warner),
@@ -75,6 +79,7 @@ object dbResourcePileHandler
             parent.addMember(pile);
         }
     }
+
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "resource piles", curry(readResourcePile)(map),
                 """SELECT * FROM resource_piles""");

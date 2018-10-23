@@ -38,6 +38,7 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>()
                        OR (destination_row IS NULL AND destination_column IS NULL))
            );"""
     ];
+
     shared actual void write(Sql db, Portal obj, Point context) {
         Integer[2]|SqlNull[2] destinationCoordinates;
         if (obj.destinationCoordinates.valid) {
@@ -53,6 +54,7 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>()
                 .execute(context.row, context.column, obj.id, obj.image,
                     obj.destinationWorld, *destinationCoordinates);
     }
+
     void readPortal(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"],
@@ -68,6 +70,7 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>()
         }
         map.addFixture(Point(row, column), portal);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "portals", curry(readPortal)(map),
                 """SELECT * FROM portals""");

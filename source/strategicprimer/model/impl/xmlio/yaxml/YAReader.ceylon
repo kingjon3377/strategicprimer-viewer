@@ -26,6 +26,7 @@ interface YAReader<out Item, in Value=Item> given Item satisfies Object {
             QName parent,
             "The stream of XML events to read more from"
             {XMLEvent*} stream);
+
     "Write an object to the stream."
     throws(`class IOException`, "on I/O error in writing")
     shared formal void write(
@@ -35,10 +36,13 @@ interface YAReader<out Item, in Value=Item> given Item satisfies Object {
             Value obj,
             "The current indentation level"
             Integer indentation);
+
     "Whether we can read the given tag."
     shared formal Boolean isSupportedTag(String tag);
+
     "Whether we can write the given object."
     shared default Boolean canWrite(Object obj) => obj is Item;
+
     "Write the given object, when the caller knows the object is the right type but the
      typechecker doesn't. This will probably crash the program if the types don't in fact
      match."

@@ -19,11 +19,13 @@ import strategicprimer.model.common.xmlio {
 import strategicprimer.model.impl.xmlio.exceptions {
     UnsupportedTagException
 }
+
 "A reader for Caves and Battlefields."
 class YAExplorableReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Cave|Battlefield>(warning, idRegistrar) {
     shared actual Boolean isSupportedTag(String tag) =>
             ["cave", "battlefield"].contains(tag.lowercased);
+
     shared actual Cave|Battlefield read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "battlefield", "cave");
@@ -40,6 +42,7 @@ class YAExplorableReader(Warning warning, IDRegistrar idRegistrar)
         retval.image = getParameter(element, "image", "");
         return retval;
     }
+
     shared actual void write(Anything(String) ostream, Cave|Battlefield obj,
             Integer indent) {
         switch (obj)

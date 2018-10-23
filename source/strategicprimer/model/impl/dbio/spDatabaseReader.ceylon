@@ -30,6 +30,7 @@ import lovelace.util.common {
 
 shared object spDatabaseReader satisfies IMapReader {
     MutableMap<PathWrapper, Sql> connections = HashMap<PathWrapper, Sql>();
+
     DataSource getBaseConnection(PathWrapper path) {
         SQLiteDataSource retval = SQLiteDataSource();
         if (path.string.empty) {
@@ -40,6 +41,7 @@ shared object spDatabaseReader satisfies IMapReader {
         }
         return retval;
     }
+
     Sql getSQL(PathWrapper path) {
         if (exists connection = connections[path]) {
             return connection;
@@ -49,6 +51,7 @@ shared object spDatabaseReader satisfies IMapReader {
             return retval;
         }
     }
+
     shared actual IMutableMapNG readMap(PathWrapper file, Warning warner) {
         Sql sql = getSQL(file);
         return dbMapReader.readMap(sql, warner);

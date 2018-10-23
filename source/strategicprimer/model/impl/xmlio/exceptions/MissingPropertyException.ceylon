@@ -8,6 +8,7 @@ import javax.xml.stream.events {
 import strategicprimer.model.common.xmlio {
     SPFormatException
 }
+
 "An exception for cases where a parameter is required (or, if this is merely logged,
  recommended) but missing."
 shared class MissingPropertyException("The current tag." StartElement context, param,
@@ -17,6 +18,7 @@ shared class MissingPropertyException("The current tag." StartElement context, p
             context.location.lineNumber, context.location.columnNumber, cause) {
     "The current tag."
     shared QName tag = context.name;
+
     "The missing parameter."
     shared String param;
 }

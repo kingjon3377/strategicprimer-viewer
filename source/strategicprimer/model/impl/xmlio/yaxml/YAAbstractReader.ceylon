@@ -49,32 +49,37 @@ import ceylon.decimal {
     Decimal,
     parseDecimal
 }
+
 // TODO: If eclipse/ceylon#6991 is ever fixed, move these into YAAbstractReader
 "A parser for numeric data, so integers can contain commas."
 NumberFormat numParser = NumberFormat.integerInstance;
 "Patterns to match XML metacharacters, and their quoted forms."
 {[String, String]*} quoting = [["""&""", """&amp;"""], ["""<""", """&lt;"""],
     [""">""", """&gt;"""]];
+
 "A superclass for YAXML reader classes to provide helper methods."
 abstract class YAAbstractReader<Element>
         satisfies YAReader<Element> given Element satisfies Object {
     "Whether the given tag is in a namespace we support."
     shared static Boolean isSupportedNamespace(QName tag) =>
             {spNamespace, XMLConstants.nullNsUri}.contains(tag.namespaceURI);
+
     "Require that an element be one of the specified tags."
     shared static void requireTag(StartElement element, QName parent, String* tags) {
         if (!isSupportedNamespace(element.name)) {
             throw UnwantedChildException.unexpectedNamespace(parent, element);
         }
-        String localName = element.name.localPart;
+        String localName = element.name.localPart; // TODO: inline
         if (!tags.map(String.lowercased).contains(localName.lowercased)) {
             // While we'd like tests to exercise this, we're always careful to only call
             // readers when we know they support the tag ...
             throw UnwantedChildException.listingExpectedTags(parent, element, tags);
         }
     }
+
     "Create a [[QName]] for the given tag in our namespace."
     static QName qname(String tag) => QName(spNamespace, tag);
+
     "Get an attribute by name from the given tag, if it's there."
     static Attribute? getAttributeByName(StartElement element, String parameter) {
         if (exists retval = element.getAttributeByName(qname(parameter))) {
@@ -85,11 +90,12 @@ abstract class YAAbstractReader<Element>
             return null;
         }
     }
+
     "Read a parameter (aka attribute aka property) from an XML tag."
     shared static String getParameter(StartElement element, String param,
             String? defaultValue = null) {
         if (exists attr = getAttributeByName(element, param),
-            exists retval = attr.\ivalue) {
+            exists retval = attr.\ivalue) { // TODO: fix indentation
             return retval;
         } else if (exists defaultValue) {
             return defaultValue;
@@ -97,6 +103,7 @@ abstract class YAAbstractReader<Element>
             throw MissingPropertyException(element, param);
         }
     }
+
     "Whether the given XML event is an end element matching the given tag."
     shared static Boolean isMatchingEnd(QName tag, XMLEvent event) {
         if (is EndElement event) {
@@ -105,15 +112,18 @@ abstract class YAAbstractReader<Element>
             return false;
         }
     }
+
     "Whether the given tag has the given parameter."
     shared static Boolean hasParameter(StartElement element, String param) =>
             getAttributeByName(element, param) exists;
+
     "Append the given number of tabs to the stream."
-    shared static void indent(Anything(String) ostream, Integer tabs) {
+    shared static void indent(Anything(String) ostream, Integer tabs) { // TODO: =>
         ostream("\t".repeat(tabs));
     }
+
     "Replace XML meta-characters in a string with their equivalents."
-    shared static String simpleQuote(String text,
+    shared static String simpleQuote(String text, // TODO: indentation of following parameter and its docstring
         "The character that will mark the end of the string as far as XML is concerned.
          If a single or double quote, that character will be encoded every time it occurs
          in the string; if a greater-than sign or an equal sign, both types of quotes will
@@ -133,6 +143,7 @@ abstract class YAAbstractReader<Element>
         }
         return retval;
     }
+
     "Write a property to XML."
     shared static void writeProperty(Anything(String) ostream, String name,
             String|Integer val) {
@@ -142,6 +153,7 @@ abstract class YAAbstractReader<Element>
         }
         case (is Integer) { writeProperty(ostream, name, val.string); }
     }
+
     "Write a property to XML only if its value is nonempty."
     shared static void writeNonemptyProperty(Anything(String) ostream, String name,
             String val) {
@@ -149,6 +161,7 @@ abstract class YAAbstractReader<Element>
             writeProperty(ostream, name, val);
         }
     }
+
     "Write the image property to XML if the object's image is nonempty and differs from
      the default."
     shared static void writeImageXML(Anything(String) ostream, HasImage obj) {
@@ -157,6 +170,7 @@ abstract class YAAbstractReader<Element>
             writeNonemptyProperty(ostream, "image", image);
         }
     }
+
     "Parse an integer. We use [[NumberFormat]] rather than [[Integer.parse]] because we
      want to allow commas in the input."
     todo("Inline this into the caller or pass in information that lets us throw a more
@@ -165,14 +179,15 @@ abstract class YAAbstractReader<Element>
     throws(`class ParseException`,
         "on non-numeric input, if we were using [[Integer.parse]]")
     static Integer parseInt(String string,
-            "The current location in the document" Location location) {
+            "The current location in the document" Location location) { // TODO: =>
         return numParser.parse(string).intValue();
     }
+
     "Read a parameter from XML whose value must be an integer."
     shared static Integer getIntegerParameter(StartElement element, String parameter,
             Integer? defaultValue = null) {
         if (exists attr = getAttributeByName(element, parameter),
-            exists retval = attr.\ivalue) {
+            exists retval = attr.\ivalue) { // TODO: indentation
             try {
                 return parseInt(retval, element.location);
             } catch (ParseException|JParseException except) {
@@ -184,6 +199,7 @@ abstract class YAAbstractReader<Element>
             throw MissingPropertyException(element, parameter);
         }
     }
+
     "Read a parameter from XML whose value can be an Integer or a Decimal."
     shared static Integer|Decimal getNumericParameter(StartElement element,
             String parameter, Integer|Decimal? defaultValue = null) {
@@ -209,6 +225,7 @@ abstract class YAAbstractReader<Element>
             throw MissingPropertyException(element, parameter);
         }
     }
+
     "Write the necessary number of tab characters and a tag. Does not write the
      right-bracket to close the tag. If `tabs` is 0, emit a namespace declaration as
      well."
@@ -219,12 +236,15 @@ abstract class YAAbstractReader<Element>
             ostream(" xmlns=\"``spNamespace``\"");
         }
     }
+
     "Close a tag with a right-bracket and add a newline."
     shared static void finishParentTag(Anything(String) ostream) =>
-            ostream(">``operatingSystem.newline``");
+            ostream(">``operatingSystem.newline``"); // TODO: Use '+' instead of interpolation?
+
     "Close a 'leaf' tag and add a newline."
     shared static void closeLeafTag(Anything(String) ostream) =>
-            ostream(" />``operatingSystem.newline``");
+            ostream(" />``operatingSystem.newline``"); // TODO: Use '+' instead of interpolation?
+
     "Write a closing tag to the stream, optionally indented, and followed by a
      newline."
     shared static void closeTag(Anything(String) ostream, Integer tabs, String tag) {
@@ -233,10 +253,12 @@ abstract class YAAbstractReader<Element>
         }
         ostream("</``simpleQuote(tag, '>')``>``operatingSystem.newline``");
     }
+
     "Parse a Point from a tag's properties."
     shared static Point parsePoint(StartElement element) =>
             Point(getIntegerParameter(element, "row"),
                 getIntegerParameter(element, "column"));
+
     "The Warning instance to use."
     Warning warner;
     "The factory for ID numbers"
@@ -245,9 +267,11 @@ abstract class YAAbstractReader<Element>
         warner = warning;
         idf = idRegistrar;
     }
+
     "Warn about a not-yet-(fully-)supported tag."
     shared void warnFutureTag(StartElement tag) =>
             warner.handle(UnsupportedTagException.future(tag));
+
     "Advance the stream until we hit an end element matching the given name, but object to
      any start elements."
     shared void spinUntilEnd(QName tag, {XMLEvent*} reader, {String*} futureTags = []) {
@@ -264,6 +288,7 @@ abstract class YAAbstractReader<Element>
             }
         }
     }
+
     "Read a parameter from XML whose value must be a boolean."
     shared Boolean getBooleanParameter(StartElement element, String parameter,
             Boolean? defaultValue = null) {
@@ -284,6 +309,7 @@ abstract class YAAbstractReader<Element>
             throw MissingPropertyException(element, parameter);
         }
     }
+
     "Require that a parameter be present and non-empty."
     shared void requireNonEmptyParameter(StartElement element, String parameter,
             Boolean mandatory) {
@@ -296,22 +322,25 @@ abstract class YAAbstractReader<Element>
             }
         }
     }
+
     "Register the specified ID number, noting that it came from the specified location,
      and return it."
     shared void registerID(Integer id, Location location) =>
             idf.register(id, warner, [location.lineNumber, location.columnNumber]);
+
     "If the specified tag has an ID as a property, return it; otherwise, warn about its
      absence and generate one."
     shared Integer getOrGenerateID(StartElement element) {
         if (hasParameter(element, "id")) {
             value idNum = getIntegerParameter(element, "id");
-            registerID(idNum, element.location);
+            registerID(idNum, element.location); // TODO: If registerID() returns the ID number, inline as 'return registerID(getIntegerParameter(element, "id"), element.location);'
             return idNum;
         } else {
             warner.handle(MissingPropertyException(element, "id"));
             return idf.createID();
         }
     }
+
     "Get a parameter from an element in its preferred form, if present, or in a deprecated
      form, in which case fire a warning."
     shared String getParamWithDeprecatedForm(StartElement element, String preferred,
@@ -327,6 +356,7 @@ abstract class YAAbstractReader<Element>
             throw MissingPropertyException(element, preferred);
         }
     }
+
     "Warn if any unsupported attribute is on this tag."
     shared void expectAttributes(StartElement element, String* attributes) {
         {String*} local = attributes.map(String.lowercased);

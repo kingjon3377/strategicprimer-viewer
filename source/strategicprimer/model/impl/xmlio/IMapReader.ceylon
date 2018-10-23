@@ -31,6 +31,7 @@ shared interface IMapReader {
     shared formal IMutableMapNG readMap(
             "The file to read" PathWrapper file,
             "The Warning instance to use for warnings" Warning warner);
+
     "Read a map from a [[JReader]]."
     throws(`class SPFormatException`, "if the reader can't handle this map version,
                                        doesn't recognize the map format, or finds the file

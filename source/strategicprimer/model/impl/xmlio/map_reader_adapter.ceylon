@@ -39,13 +39,28 @@ import strategicprimer.model.common.xmlio {
 
 "A logger."
 Logger log = logger(`module strategicprimer.model.impl`);
+
+"A helper to abstract the details of specific I/O implementations to shield
+ callers from them, and in particular to encapsulate the decision of which
+ implementation to use in one place."
 shared object mapIOHelper {
+    "The reader to use to read from XML. (The FluidXML implementation turned
+     out to be significantly faster than YAXML, which was written to replace it
+     ...)"
     IMapReader reader = SPFluidReader();
+
+    "The writer to use to write to XML."
     SPWriter writer = yaXMLWriter;
+
+    "The writer to use to write to SQLite databases."
     SPWriter dbWriter = spDatabaseWriter;
+
+    "The reader to use to read from SQLite databases."
     IMapReader dbReader = spDatabaseReader;
+
     "Turn a series of Strings into a series of equvalent Paths."
     shared {PathWrapper+} namesToFiles(String+ names) => names.map(PathWrapper);
+
     "Read a map from a file or a stream.."
     todo("Port to use ceylon.io or ceylon.buffer")
     shared IMutableMapNG readMap(PathWrapper|JReader file,
@@ -64,6 +79,7 @@ shared object mapIOHelper {
             return reader.readMapFromStream(PathWrapper(""), file, warner);
         }
     }
+
     "Write a map to file."
     shared void writeMap(PathWrapper file, IMapNG map) {
         if (file.filename.endsWith(".db") || file.string.empty) {
@@ -74,6 +90,11 @@ shared object mapIOHelper {
             writer.write(parsePath(file.filename), map);
         }
     }
+
+    "A test that [[namesToFiles]] works as expected.
+    
+     This is something of a holdover from the Java version, since it had to
+     also strip off the first one."
     test
     shared void testNamesToFiles() {
 //        {Path+} expected = [ parsePath("two"), parsePath("three"), parsePath("four")];

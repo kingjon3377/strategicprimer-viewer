@@ -30,6 +30,7 @@ import strategicprimer.model.common.xmlio {
 import strategicprimer.model.impl.xmlio.exceptions {
     UnwantedChildException
 }
+
 "A reader for workers."
 class YAWorkerReader extends YAAbstractReader<IWorker> {
     shared static void writeSkill(Anything(String) ostream, ISkill obj, Integer indent) {
@@ -41,6 +42,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
             closeLeafTag(ostream);
         }
     }
+
     shared static void writeJob(Anything(String) ostream, IJob obj, Integer indent) {
         if (obj.level <= 0, obj.empty) {
             return;
@@ -58,11 +60,13 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
             closeTag(ostream, indent, "job");
         }
     }
+
     Warning warner;
     shared new (Warning warning, IDRegistrar idRegistrar)
             extends YAAbstractReader<IWorker>(warning, idRegistrar) {
         warner = warning;
     }
+
     WorkerStats parseStats(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "stats");
@@ -73,12 +77,14 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         spinUntilEnd(element.name, stream);
         return retval;
     }
+
     ISkill parseSkill(StartElement element, QName parent) {
         requireTag(element, parent, "skill");
         expectAttributes(element, "name", "level", "hours");
         return Skill(getParameter(element, "name"), getIntegerParameter(element, "level"),
             getIntegerParameter(element, "hours"));
     }
+
     IJob parseJob(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, "job");
         expectAttributes(element, "name", "level");
@@ -99,6 +105,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         }
         return retval;
     }
+
     void writeStats(Anything(String) ostream, WorkerStats? stats, Integer indent) {
         if (exists stats) {
             writeTag(ostream, "stats", indent);
@@ -113,6 +120,7 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
             closeLeafTag(ostream);
         }
     }
+
     shared actual IWorker read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "worker");
@@ -137,7 +145,9 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         }
         return retval;
     }
-    shared actual void write(Anything(String) ostream, IWorker obj, Integer indent) {
+
+    shared actual void write(Anything(String) ostream, IWorker obj,
+            Integer indent) {
         writeTag(ostream, "worker", indent);
         writeProperty(ostream, "name", obj.name);
         if ("human" != obj.race) {
@@ -159,6 +169,9 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
             closeLeafTag(ostream);
         }
     }
-    shared actual Boolean isSupportedTag(String tag) => "worker" == tag.lowercased;
+
+    shared actual Boolean isSupportedTag(String tag) =>
+            "worker" == tag.lowercased;
+
     shared actual Boolean canWrite(Object obj) => obj is IWorker;
 }

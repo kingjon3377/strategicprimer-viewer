@@ -57,12 +57,14 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
             throw MissingPropertyException(element, "file");
         }
     }
+
     "The stack of iterators we're working with."
     Stack<[String, Iterator<XMLEvent>]> stack =
             LinkedList<[String, Iterator<XMLEvent>]>();
     shared new (PathWrapper file, Iterator<XMLEvent> iter) {
         stack.push([file.filename, iter]);
     }
+
     "Completely unwind the stack. Should be called before throwing any exception
      to our callers."
     void exhaust(Throwable? cause) {
@@ -96,6 +98,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
             throw exception;
         }
     }
+
     """Handle an "include" tag by adding an iterator for the contents of the file it
        references to the top of the stack."""
     throws(`class FileNotFoundException`,
@@ -114,6 +117,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
             throw except;
         }
     }
+
     """Get the next item in the topmost iterator. We always make sure that there *is* a
        next item in the topmost iterator. If the next item would be an "include" tag, we
         open the file it specifies and push an iterator of its elements onto the stack."""
@@ -149,6 +153,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
             throw exception;
         }
     }
+
     "Get the file we're currently reading from."
     todo("Tests")
     shared String file {
@@ -158,6 +163,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
             throw NoSuchElementException("We're not reading at all");
         }
     }
+
     shared actual String string {
         if (exists top = stack.top) {
             return "IncludingIterator, currently on ``top.first``";

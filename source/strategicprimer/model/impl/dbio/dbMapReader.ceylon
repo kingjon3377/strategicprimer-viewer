@@ -21,6 +21,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbMapReader {
     {MapContentsReader*} readers = [dbPlayerHandler, dbCacheHandler, dbExplorableHandler,
         dbFieldHandler, dbFortressHandler, dbUnitHandler, dbGroundHandler, dbGroveHandler,
@@ -28,6 +29,7 @@ object dbMapReader {
         dbPortalHandler, dbShrubHandler, dbSimpleTerrainHandler, dbTextHandler,
         dbTownHandler, dbVillageHandler, dbResourcePileHandler, dbAnimalHandler,
         dbCommunityStatsHandler, dbWorkerHandler, dbAdventureHandler, dbForestHandler];
+
     "If [[field]] is is an Integer and either 0 or 1, which is how SQLite stores Boolean
      values, convert to the equivalent Boolean and return that; otherwise, return the
      original value."
@@ -47,6 +49,7 @@ object dbMapReader {
             return field;
         }
     }
+
     shared IMutableMapNG readMap(Sql db, Warning warner) {
         assert (exists metadata = db.Select(
             """SELECT version, rows, columns, current_turn FROM metadata LIMIT 1""")

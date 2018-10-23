@@ -49,6 +49,7 @@ import strategicprimer.model.common.map.fixtures {
 import lovelace.util.common {
     comparingOn
 }
+
 object fluidTownHandler extends FluidBase() {
     shared Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
             IPlayerCollection players, Warning warner, IDRegistrar idFactory) {

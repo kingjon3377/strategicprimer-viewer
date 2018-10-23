@@ -147,9 +147,14 @@ String[] animalStatuses = ["wild", "semi-domesticated", "domesticated", "tame"];
 String[] treeTypes = ["oak", "larch", "terebinth"]; // TODO: for these, maybe have longer lists and randomly select 3?
 String[] fieldTypes = ["wheat", "amaranth", "bluegrass"];
 String[] minerals = ["coal", "platinum", "oil"];
+
 object xmlTests {
+    """The "filename" to give to map-readers when they require one."""
     PathWrapper fakeFilename = PathWrapper("");
+
+    "The map readers to test each other against."
     [<ISPReader&IMapReader>+] readers = [testReaderFactory.oldReader, testReaderFactory.newReader];
+
     "Assert that the given XML will produce the given kind of warning and that the warning
      satisfies the given additional assertions. If [[desideratum]] is [[null]], assert
      that the exception is always thrown; if not, assert that the XML will fail with
@@ -184,6 +189,7 @@ object xmlTests {
             }
         }
     }
+
     "Assert that reading the given XML will produce an [[UnsupportedTagException]]. If
      it's only supposed to be a warning, assert that it'll pass with warnings disabled
      but fail with warnings made fatal."
@@ -257,6 +263,7 @@ object xmlTests {
         }
         return writer.string;
     }
+
     "Assert that the serialized form of the given object will deserialize without error."
     void assertSerialization(String message, Object obj,
             Warning warner = warningLevels.die) {
@@ -270,6 +277,7 @@ object xmlTests {
             }
         }
     }
+
     "Assert that the serialized form of the given object, using both writers, will contain
      the given string."
     void assertSerializedFormContains(Object obj, String expected, String message) {
@@ -400,6 +408,8 @@ object xmlTests {
         return "<map version=\"2\" rows=\"2\" columns=\"2\">
                 <tile row=\"1\" column=\"1\" kind=\"plains\">``str``</tile></map>";
     }
+
+    "Test that deserializing a [[Village]] without a name will cause a warning."
     test
     shared void testVillageWantsName(
             enumeratedParameter(`class TownStatus`) TownStatus status,
@@ -410,6 +420,8 @@ object xmlTests {
         assertMissingProperty(createSerializedForm(village, deprecatedWriter),
             "name", village);
     }
+
+    "Test basic (de)serialization of [[villages|Village]]."
     test
     shared void testBasicVillageSerialization(parameters(`value treeTypes`) String name,
             enumeratedParameter(`class TownStatus`) TownStatus status,
@@ -431,6 +443,9 @@ object xmlTests {
         assertImageSerialization("Village image property is preserved", village);
         assertPortraitSerialization("Village portrait property is preserved", village);
     }
+
+    "Test (de)serialization of [[villages'|Village]] [[population
+     details|CommunityStats]]."
     test
     shared void testVillagePopulationSerialization(
             enumeratedParameter(`class TownStatus`) TownStatus status,
@@ -455,6 +470,8 @@ object xmlTests {
         assertSerialization("Village stats can have both production and consumption",
             village);
     }
+
+    "Test that deserializing a [[City]] without a name will cause a warning."
     test
     shared void testCityWantsName(enumeratedParameter(`class TownSize`) TownSize size,
             enumeratedParameter(`class TownStatus`) TownStatus status,
@@ -464,6 +481,8 @@ object xmlTests {
         City city = City(status, size, dc, "", id, PlayerImpl(-1, ""));
         assertMissingProperty(createSerializedForm(city, deprecatedWriter), "name", city);
     }
+
+    "Test basic (de)serialization of [[cities|City]]."
     test
     shared void testCitySerialization(enumeratedParameter(`class TownSize`) TownSize size,
             enumeratedParameter(`class TownStatus`) TownStatus status,
@@ -483,6 +502,9 @@ object xmlTests {
         assertImageSerialization("City image property is preserved", city);
         assertPortraitSerialization("City portrait property is preserved", city);
     }
+    
+    "Test (de)serialization of [[cities'|City]] [[population
+     details|CommunityStats]]."
     test
     shared void testCityPopulationSerialization(parameters(`value treeTypes`) String name,
             enumeratedParameter(`class TownSize`) TownSize size,
@@ -506,6 +528,8 @@ object xmlTests {
         assertSerialization("City can have community-stats", city);
     }
 
+    "Test that deserializing a [[Fortification]] without a name will trigger a
+     warning."
     test
     shared void testFortificationWantsName(
             enumeratedParameter(`class TownSize`) TownSize size,
@@ -516,8 +540,11 @@ object xmlTests {
         Fortification fort = Fortification(status, size, dc, "", id, PlayerImpl(-1, ""));
         assertMissingProperty(createSerializedForm(fort, deprecatedWriter), "name", fort);
     }
+
+    "Test basic [[Fortification]] (de)serialization."
+    todo("Split and further randomize this and further tests")
     test
-    shared void testFortificationSerialization( // TODO: split and further randomize this and further tests
+    shared void testFortificationSerialization(
             enumeratedParameter(`class TownSize`) TownSize size,
             enumeratedParameter(`class TownStatus`) TownStatus status) {
         Player owner = PlayerImpl(-1, "");
@@ -549,6 +576,7 @@ object xmlTests {
         assertSerialization("Fortification can have community-stats", fourthFort);
     }
 
+    "Test that deserializing a [[Town]] without a name triggers a warning."
     test
     shared void testTownWantsName(enumeratedParameter(`class TownSize`) TownSize size,
             enumeratedParameter(`class TownStatus`) TownStatus status,
@@ -558,6 +586,9 @@ object xmlTests {
         Town town = Town(status, size, dc, "", id, PlayerImpl(-1, ""));
         assertMissingProperty(createSerializedForm(town, deprecatedWriter), "name", town);
     }
+
+    "Test basic [[Town]] (de)serialization."
+    todo("Split and further randomize this test")
     test
     shared void testTownSerialization(enumeratedParameter(`class TownSize`) TownSize size,
             enumeratedParameter(`class TownStatus`) TownStatus status) {
@@ -591,6 +622,7 @@ object xmlTests {
         assertSerialization("Fortification can have community-stats", fourthTown);
     }
 
+    "Test [[StoneDeposit]] (de)serialization."
     test
     enumeratedParameter(`class StoneKind`)
     shared void testStoneSerialization(StoneKind kind) {
@@ -602,6 +634,8 @@ object xmlTests {
             StoneDeposit(kind, 10, 3));
     }
 
+    "Test deserialization of the old XML idiom for [[stone
+     deposits|StoneDeposit]]."
     test
     shared void testOldStoneIdiom(enumeratedParameter(`class StoneKind`) StoneKind kind,
             enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
@@ -611,6 +645,7 @@ object xmlTests {
                 thirdDeposit);
     }
 
+    "Test that [[StoneDeposit]] deserialization rejects invalid input."
     test
     enumeratedParameter(`class StoneKind`)
     shared void testStoneSerializationErrors(StoneKind kind) {
@@ -641,6 +676,8 @@ object xmlTests {
         return retval;
     }
 
+    "Test [[Player]] deserialization."
+    todo("Split and randomize")
     test
     shared void testPlayerSerialization() {
         assertSerialization("First Player serialization test", PlayerImpl(1, "one"));
@@ -653,14 +690,17 @@ object xmlTests {
             PlayerImpl(3, "three"));
     }
 
+    "Test that [[rivers|River]] are properly (de)serialized in the simplest case."
     test
-    enumeratedParameter(`class River`)
+    enumeratedParameter(`class River`) // TODO: put on the parameter itself
     shared void testSimpleRiverSerialization(River river) {
         assertSerialization("River alone", river);
         Point loc = Point(0, 0);
         assertSerialization("River in tile", encapsulateRivers(loc, river));
     }
 
+    "Test [[River]] (de)serialization in more complicated cases, including ways
+     that have improperly failed in the past."
     test
     shared void testRiverSerializationOne() {
         assertUnwantedChild<IMapNG>(encapsulateTileString("<lake><troll /></lake>"),
@@ -685,6 +725,8 @@ object xmlTests {
             null);
     }
 
+    "Test (de)serialization of a single simple tile."
+    todo("Split and randomize")
     test
     shared void testSimpleTileSerializtion() {
         assertSerialization("Simple Tile", createSimpleMap(Point(1, 1),
@@ -712,6 +754,7 @@ object xmlTests {
             """<tile row="2" column="0" kind="plains" />"""), null);
     }
 
+    "Further test serialization of a tile's contents."
     test
     shared void testTileSerialization() {
         IMutableMapNG thirdMap = createSimpleMap(Point(4, 4),
@@ -727,6 +770,8 @@ object xmlTests {
         thirdMap.addPlayer(playerOne);
         assertSerialization("More complex tile", thirdMap);
     }
+
+    "Test that the deprecated XML idiom for tile types is still supported."
     test
     shared void testTileDeprecatedIdiom(
             enumeratedParameter(`class TileType`) TileType terrain,
@@ -736,6 +781,7 @@ object xmlTests {
             .replace("kind", "type"), "type", "kind", "tile", map);
     }
 
+    "A further test of (de)serialization of a tile."
     test
     shared void testTileSerializationTwo() {
         IMutableMapNG five = createSimpleMap(Point(3, 4),
@@ -805,13 +851,16 @@ object xmlTests {
             "Shouldn't print empty not-visible tiles");
     }
 
+    "Test that [[a unit's|IUnit]] image property is preserved through
+     (de)serialization."
     test
-    shared void testUnitImageSerialization() {
+    shared void testUnitImageSerialization() { // TODO: =>
         assertImageSerialization("Unit image property is preserved",
             Unit(PlayerImpl(5, ""), "herder",
                 "herderName", 9));
     }
 
+    "Another test of serialization within a single tile."
     test
     shared void testTileSerializationThree(
             enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
@@ -823,6 +872,9 @@ object xmlTests {
         assertMissingProperty(createSerializedForm(six, deprecatedWriter), "kind", six);
     }
 
+    "Test that tags we intend to possibly support in the future (or include in
+     the XML for readability, like `row`) are properly skipped when
+     deserializing."
     test
     shared void testSkippableSerialization() {
         assertEquivalentForms("Two maps, one with row tags, one without",
@@ -846,6 +898,7 @@ object xmlTests {
             "futureTag", expected);
     }
 
+    "Test that a complex map is properly (de)serialized."
     test
     shared void testMapSerialization() {
         assertUnwantedChild<IMapNG>(
@@ -893,6 +946,7 @@ object xmlTests {
                </row></map>""");
     }
 
+    "Test that deserialization handles XML namespaces properly."
     test
     shared void testNamespacedSerialization() {
         MutablePlayer player = PlayerImpl(1, "playerOne");
@@ -948,6 +1002,9 @@ object xmlTests {
             }
     }
 
+    "Test that the `include` tag is handled properly."
+    todo("Remove this functionality? AFAICS, it is used only here, and it
+          complicates the XML-reading architecture significantly.")
     test
     shared void testInclude() {
         assertForwardDeserialization<SimpleImmortal>("Reading Ogre via <include>",
@@ -965,6 +1022,7 @@ object xmlTests {
         }
     }
 
+    "Test that duplicate IDs are warned about."
     test
     shared void testDuplicateID() {
         IMutableMapNG expected =
@@ -984,6 +1042,7 @@ object xmlTests {
                <hill id="1" /><ogre id="1" /></tile></row></map>""", expected);
     }
 
+    "Test that the XML-reading code properly rejects several invalid constructs."
     test
     shared void testRejectsInvalid() {
         assertInvalid("""<map version="2" rows="1" columns="1" current_player="1">""");
@@ -998,6 +1057,8 @@ object xmlTests {
         assertInvalid("""<include file="string:&lt;xyzzy" />""");
     }
 
+    "Test proper [[Grove]] (de)serialization."
+    todo("Split and further randomize")
     test
     shared void testGroveSerialization(enumeratedParameter(`class Boolean`) Boolean fruit,
             enumeratedParameter(`class Boolean`) Boolean cultivated,
@@ -1025,6 +1086,8 @@ object xmlTests {
             Grove(true, true, trees, id, 4));
     }
 
+    "Test proper [[Meadow]] (de)serialization."
+    todo("Split and further randomize")
     test
     shared void testMeadowSerialization(randomlyGenerated(2) Integer id,
             enumeratedParameter(`class FieldStatus`) FieldStatus status,
@@ -1052,6 +1115,8 @@ object xmlTests {
                 decimalNumber(3).divided(decimalNumber(4))));
     }
 
+    "Test proper [[Mine]] (de)serialization."
+    todo("Further randomize (use provided parameters in missing-property assertions")
     test
     shared void testMineSerialization(randomlyGenerated(2) Integer id,
             parameters(`value minerals`) String kind,
@@ -1071,6 +1136,8 @@ object xmlTests {
         assertImageSerialization("Mine image property is preserved", mine);
     }
 
+    "Test proper [[Shrub]] (de)serialization."
+    todo("Further randomize (use provided parameters in missing-property assertions")
     test
     shared void testShrubSerialization(randomlyGenerated(2) Integer id,
             parameters(`value fieldTypes`) String kind,
@@ -1086,6 +1153,8 @@ object xmlTests {
         assertSerialization("Shrub can have 'count' property", Shrub(kind, id, 3));
     }
 
+    "Test proper [[TextFixture]] (de)serialization."
+    todo("Split, randomize to condense")
     test
     shared void testTextSerialization() {
         assertSerialization("First test of [[TextFixture]] serialization",
@@ -1106,6 +1175,8 @@ object xmlTests {
             wrapper.equals);
     }
 
+    "Test that [[unit|IUnit]] deserialization requires certain properties to be
+     present."
     test
     shared void testUnitHasRequiredProperties() {
         assertMissingProperty<IUnit>("""<unit name="name" />""", "owner",
@@ -1116,6 +1187,8 @@ object xmlTests {
             "kind", Unit(PlayerImpl(1, ""), "", "name", 0));
     }
 
+    "Test that [[unit|IUnit]] deserialization warns about various deprecated
+     idioms and objects to certain other disallowed idioms."
     test
     shared void testUnitWarnings(
             enumeratedParameter(`class Boolean`) Boolean deprecatedWriter,
@@ -1144,6 +1217,9 @@ object xmlTests {
             Unit(PlayerImpl(1, ""), kind, name, 0));
     }
 
+    "Test (de)serialization of
+     [[members|strategicprimer.model.common.map.fixtures::UnitMember]] of
+     [[units|IUnit]]."
     test
     shared void testUnitMemberSerialization() {
         IUnit firstUnit = Unit(PlayerImpl(1, ""), "unitType", "unitName", 1);
@@ -1174,6 +1250,7 @@ object xmlTests {
             secondWorker);
     }
 
+    "Test (de)serialization of [[unit|IUnit]] orders."
     test
     shared void testOrdersSerialization() {
         Player player = PlayerImpl(0, "");
@@ -1202,6 +1279,9 @@ object xmlTests {
                     (unit) => unit.getOrders(-1) == "Orders orders");
     }
 
+    "Test that XML metacharacters are properly quoted (i.e. don't break the
+     reader but are properly deserialized) when they appear in text that must
+     be serialized."
     test
     shared void testQuoting(randomlyGenerated(3) Integer id) {
         Player player = PlayerImpl(0, "");
@@ -1218,6 +1298,8 @@ object xmlTests {
         assertSerialization("Data stored in XML attributes is quoted", unit);
     }
 
+    "Test that [[units'|IUnit]] [[portraits|HasPortrait.portrait]] are preserved in
+     (de)serialization."
     test
     shared void testUnitPortraitSerialization(randomlyGenerated(3) Integer id) {
         Unit unit = Unit(PlayerImpl(1, ""), "kind", "name", id);
@@ -1228,6 +1310,8 @@ object xmlTests {
         assertPortraitSerialization("Unit portrait property is preserved", unit);
     }
 
+    "Test that [[adventure hooks|AdventureFixture]] are properly
+     (de)serialized."
     test
     shared void testAdventureSerialization(
             randomlyGenerated(2) Integer idOne,
@@ -1254,6 +1338,9 @@ object xmlTests {
         assertSerialization("Second [[Portal]] serialization test", fourth);
     }
 
+    "Test that [[Fortress]] contents other than units are properly
+     (de)serialized."
+    todo("Split resource details testing into a separate test")
     test
     shared void testFortressMemberSerialization() {
         Fortress firstFort = Fortress(PlayerImpl(1, ""), "fortName", 1, TownSize.small);
@@ -1276,6 +1363,8 @@ object xmlTests {
             Quantity(decimalNumber(3) / decimalNumber(2), "cubic feet")));
     }
 
+    "Test that [[animal tracks|AnimalTracks]] are properly (de)serialized,
+     including that the old now-deprecated XML idiom is still read properly."
     test
     shared void testAnimalTracksSerialization(parameters(`value treeTypes`) String kind) {
         assertSerialization("Test of animal-track serialization", AnimalTracks(kind));
@@ -1289,6 +1378,9 @@ object xmlTests {
             "<animal kind=\"kind\" status=\"wild\" traces=\"true\" />",
             warningLevels.die);
     }
+
+    "Test [[Animal]] (de)serialization."
+    todo("Randomize to condense")
     test
     shared void testAnimalSerialization(randomlyGenerated(2) Integer id,
             parameters(`value animalStatuses`) String status,
@@ -1331,6 +1423,8 @@ object xmlTests {
             "Animal population count is checked in equals()");
     }
 
+    """Test that the future idiom for "immortal animals" is already supported
+       for reading, but warned about."""
     test
     shared void testImmortalAnimalDeserialization(
             parameters(`value immortalAnimals`) String animal,
@@ -1339,6 +1433,8 @@ object xmlTests {
         assertUnsupportedTag("<``animal`` id=\"``id``\" count=\"``count``\" />",
             animal, AnimalImpl(animal, false, "wild", id, -1, count));
 
+    "Test [[CacheFixture]] (de)serialization."
+    todo("Randomize and condense")
     test
     shared void testCacheSerialization(randomlyGenerated(3) Integer id) {
         assertSerialization("First test of Cache serialization", CacheFixture("kindOne",
@@ -1358,6 +1454,8 @@ object xmlTests {
             CacheFixture("kindThree", "contentsThree", id));
     }
 
+    "Test [[Centaur]] (de)serialization."
+    todo("Randomize and condense")
     test
     shared void testCentaurSerialization(randomlyGenerated(3) Integer id) {
         assertSerialization("First test of Centaur serialization",
@@ -1373,6 +1471,8 @@ object xmlTests {
             Centaur("thirdCentaur", id));
     }
 
+    "Test [[Dragon]] (de)serialization."
+    todo("Randomize and condense")
     test
     shared void testDragonSerialization(randomlyGenerated(3) Integer id) {
         assertSerialization("First test of Dragon serialization", Dragon("", id));
@@ -1386,6 +1486,8 @@ object xmlTests {
             Dragon("thirdDragon", id));
     }
 
+    "Test [[Fairy]] (de)serialization."
+    todo("Randomize and condense")
     test
     shared void testFairySerialization(randomlyGenerated(3) Integer id) {
         assertSerialization("First test of Fairy serialization", Fairy("oneFairy", id));
@@ -1397,6 +1499,8 @@ object xmlTests {
             Fairy("threeFairy", id));
     }
 
+    "Test [[Forest]] (de)serialization."
+    todo("Randomize, condense, and perhaps split")
     test
     shared void testForestSerialization(randomlyGenerated(3) Integer id) {
         assertSerialization("First test of Forest serialization",
@@ -1431,6 +1535,7 @@ object xmlTests {
             false, 6, decimalNumber(3).divided(decimalNumber(2))));
     }
 
+    "Test [[Fortress]] (de)serialization in the simplest cases."
     test
     shared void testFortressSerialization(
             randomlyGenerated(2) Integer id,
@@ -1456,6 +1561,8 @@ object xmlTests {
         assertImageSerialization("Fortress image property is preserved", five);
     }
 
+    "Test [[Giant]] (de)serialization."
+    todo("Randomize")
     test
     shared void testGiantSerialization(randomlyGenerated(3) Integer id) {
         assertSerialization("Test of Giant serialization", Giant("one", id));
@@ -1466,6 +1573,8 @@ object xmlTests {
         assertImageSerialization("Giant image property is preserved", Giant("three", id));
     }
 
+    "Test [[Ground]] (de)serialization"
+    todo("Randomize, condense, perhaps split")
     test
     shared void testGroundSerialization(randomlyGenerated(3) Integer id) {
         assertSerialization("First test of Ground serialization",
@@ -1508,6 +1617,8 @@ object xmlTests {
             Ground(id, "five", true));
     }
 
+    "Test that the code reading various fixtures whose only properties are ID
+     and image properly objects when the XML tries to give them child tags."
     test
     shared void testSimpleSerializationNoChildren() {
         assertUnwantedChild<SimpleImmortal>("<djinn><troll /></djinn>", null);
@@ -1522,6 +1633,8 @@ object xmlTests {
         assertUnwantedChild<SimpleImmortal>("<troll><troll /></troll>", null);
     }
 
+    "Test that various fixtures whose only properties are ID and image have
+     their image property properly (de)serialized."
     test
     shared void testSimpleImageSerialization(randomlyGenerated(3) Integer id) {
         for (type in `class SimpleImmortal`.caseTypes.narrow<OpenClassType>()
@@ -1534,6 +1647,8 @@ object xmlTests {
         assertImageSerialization("Oasis image property is preserved", Oasis(id));
     }
 
+    "Test that various fixtures whose only properties are ID and image are
+     properly (de)serialized."
     test
     shared void testSimpleSerialization(randomlyGenerated(3) Integer id) {
         for (type in `class SimpleImmortal`.caseTypes.narrow<OpenClassType>()
@@ -1549,6 +1664,7 @@ object xmlTests {
     }
 
 
+    "Test [[Cave]] (de)serialization."
     test
     shared void testCaveSerialization(randomlyGenerated(2) Integer dc,
             randomlyGenerated(2) Integer id) {
@@ -1559,6 +1675,7 @@ object xmlTests {
         assertImageSerialization("Cave image property is preserved", Cave(dc, id));
     }
 
+    "Test [[MineralVein]] (de)serialization."
     test
     shared void testMineralSerialization(
             randomlyGenerated(2) Integer dc,
@@ -1567,7 +1684,7 @@ object xmlTests {
             enumeratedParameter(`class Boolean`) Boolean exposed,
             enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
         MineralVein secondVein = MineralVein(kind, exposed, dc, id);
-        assertSerialization("Second MineralEvent serialization test", secondVein);
+        assertSerialization("Second MineralEvent serialization test", secondVein); // TODO: Refers to MineralEvent
         assertDeprecatedProperty(createSerializedForm(secondVein, deprecatedWriter)
                 .replace("kind", "mineral"), "mineral", "kind", "mineral", secondVein);
         assertUnwantedChild<MineralVein>(
@@ -1575,9 +1692,9 @@ object xmlTests {
             null);
         assertMissingProperty<MineralVein>("<mineral dc=\"``dc``\" exposed=\"false\" />",
             "kind", null);
-        assertMissingProperty<MineralVein>("""<mineral kind="gold" exposed="false" />""",
+        assertMissingProperty<MineralVein>("""<mineral kind="gold" exposed="false" />""", // TODO: Use provided kind
             "dc", null);
-        assertMissingProperty<MineralVein>("<mineral dc=\"``dc``\" kind=\"gold\" />",
+        assertMissingProperty<MineralVein>("<mineral dc=\"``dc``\" kind=\"gold\" />", // TODO: Use provided kind
             "exposed", null);
         assertMissingProperty<MineralVein>(
             "<mineral kind=\"``kind``\" exposed=\"``exposed``\" dc=\"``dc``\" />", "id",
@@ -1585,6 +1702,7 @@ object xmlTests {
         assertImageSerialization("Mineral image property is preserved", secondVein);
     }
 
+    "Test [[Battlefield]] serialization."
     test
     shared void testBattlefieldSerialization(
             randomlyGenerated(2) Integer dc,
@@ -1599,12 +1717,14 @@ object xmlTests {
             Battlefield(dc, id));
     }
 
+    "Test that XML-reading code can handle numbers containing commas."
     test
-    shared void testCommaSeparators() {
+    shared void testCommaSeparators() { // TODO: =>
         assertEquivalentForms("ID numbers can contain commas", """<hill id="1,002" />""",
             """<hill id="1002" />""", warningLevels.die);
     }
 
+    """Test that the old, now removed, "sandbar" tag produces only a warning if present in XML."""
     test
     shared void testOldSandbars() =>
         assertUnsupportedTag("""<view current_player="-1" current_turn="-1">

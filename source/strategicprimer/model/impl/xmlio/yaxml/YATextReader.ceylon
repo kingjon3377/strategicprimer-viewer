@@ -19,10 +19,12 @@ import strategicprimer.model.common.xmlio {
 import strategicprimer.model.impl.xmlio.exceptions {
     UnwantedChildException
 }
+
 "A reader for arbitrary-text notes."
 class YATextReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<TextFixture>(warning, idRegistrar) {
     shared actual Boolean isSupportedTag(String tag) => "text" == tag.lowercased;
+
     shared actual TextFixture read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "text");
@@ -42,6 +44,7 @@ class YATextReader(Warning warning, IDRegistrar idRegistrar)
         fixture.image = getParameter(element, "image", "");
         return fixture;
     }
+
     shared actual void write(Anything(String) ostream, TextFixture obj, Integer indent) {
         writeTag(ostream, "text", indent);
         if (obj.turn != -1) {
@@ -52,5 +55,6 @@ class YATextReader(Warning warning, IDRegistrar idRegistrar)
         ostream(obj.text.trimmed);
         closeTag(ostream, 0, "text");
     }
+
     shared actual Boolean canWrite(Object obj) => obj is TextFixture;
 }

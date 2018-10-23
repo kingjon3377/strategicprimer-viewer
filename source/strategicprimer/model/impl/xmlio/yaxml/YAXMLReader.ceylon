@@ -68,6 +68,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
             throw XMLStreamException("XML stream didn't contain a start element");
         }
     }
+
     "Read a map from a stream."
     throws(`class XMLStreamException`, "on malformed XML")
     throws(`class SPFormatException`, "on SP format problems")
@@ -76,6 +77,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
             "The stream to read from" JReader istream,
             "The Warning instance to use for warnings" Warning warner) =>
                 readXML<IMutableMapNG>(file, istream, warner);
+
     "Read a map from XML."
     throws(`class IOException`, "on I/O error")
     throws(`class XMLStreamException`, "on malformed XML")

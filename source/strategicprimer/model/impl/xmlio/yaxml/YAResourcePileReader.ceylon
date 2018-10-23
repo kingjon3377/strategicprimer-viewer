@@ -36,8 +36,11 @@ class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
         retval.image = getParameter(element, "image", "");
         return retval;
     }
-    shared actual Boolean isSupportedTag(String tag) => "resource" == tag.lowercased;
-    shared actual void write(Anything(String) ostream, ResourcePile obj, Integer indent) {
+
+    shared actual Boolean isSupportedTag(String tag) =>
+            "resource" == tag.lowercased;
+    shared actual void write(Anything(String) ostream, ResourcePile obj,
+            Integer indent) {
         writeTag(ostream, "resource", indent);
         writeProperty(ostream, "id", obj.id);
         writeProperty(ostream, "kind", obj.kind);
@@ -50,5 +53,6 @@ class YAResourcePileReader(Warning warning, IDRegistrar idRegistrar)
         writeImageXML(ostream, obj);
         closeLeafTag(ostream);
     }
+
     shared actual Boolean canWrite(Object obj) => obj is ResourcePile;
 }

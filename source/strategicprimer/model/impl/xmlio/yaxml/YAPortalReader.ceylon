@@ -15,6 +15,7 @@ import strategicprimer.model.common.map.fixtures.explorable {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 "A reader for portals."
 class YAPortalReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Portal>(warning, idRegistrar) {
@@ -27,6 +28,7 @@ class YAPortalReader(Warning warning, IDRegistrar idRegistrar)
         spinUntilEnd(element.name, stream);
         return retval;
     }
+
     shared actual void write(Anything(String) ostream, Portal obj, Integer indent) {
         writeTag(ostream, "portal", indent);
         writeProperty(ostream, "world", obj.destinationWorld);
@@ -36,6 +38,8 @@ class YAPortalReader(Warning warning, IDRegistrar idRegistrar)
         writeImageXML(ostream, obj);
         closeLeafTag(ostream);
     }
+
     shared actual Boolean isSupportedTag(String tag) => "portal" == tag.lowercased;
+
     shared actual Boolean canWrite(Object obj) => obj is Portal;
 }

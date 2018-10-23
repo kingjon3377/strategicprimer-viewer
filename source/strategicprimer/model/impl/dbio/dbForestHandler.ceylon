@@ -17,6 +17,7 @@ import strategicprimer.model.common.map.fixtures.terrain {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -31,12 +32,14 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
                image VARCHAR(255)
            );"""
     ];
-    shared actual void write(Sql db, Forest obj, Point context) {
+
+    shared actual void write(Sql db, Forest obj, Point context) { // TODO: =>
         db.Insert("""INSERT INTO forests(row, column, id, kind, rows, acres, image)
                      VALUES(?, ?, ?, ?, ?, ?, ?);""")
                 .execute(context.row, context.column, obj.id, obj.kind, obj.rows,
                     obj.acres.string, obj.image);
     }
+
     void readForest(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
@@ -56,6 +59,7 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
         }
         map.addFixture(Point(row, column), forest);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "forests", curry(readForest)(map),
                 """SELECT * FROM forests""");

@@ -13,6 +13,7 @@ import strategicprimer.model.common.map.fixtures.explorable {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point>()
         satisfies MapContentsReader {
     shared actual {String+} initializers =
@@ -25,13 +26,15 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
                     owner INTEGER NOT NULL,
                     image VARCHAR(255)
                 );"""];
-    shared actual void write(Sql db, AdventureFixture obj, Point context) {
+
+    shared actual void write(Sql db, AdventureFixture obj, Point context) { // TODO: =>
             db.Insert("""INSERT INTO adventures (row, column, id, brief, full, owner,
                              image)
                          VALUES(?, ?, ?, ?, ?, ?, ?);""")
                     .execute(context.row, context.column, obj.id, obj.briefDescription,
                         obj.fullDescription, obj.owner.playerId, obj.image);
     }
+
     void readAdventure(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String brief = dbRow["brief"],
@@ -44,6 +47,7 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
         }
         map.addFixture(Point(row, column), adventure);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "adventures", curry(readAdventure)(map),
                 """SELECT * FROM adventures""");

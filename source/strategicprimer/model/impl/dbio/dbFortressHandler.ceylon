@@ -14,6 +14,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -29,6 +30,7 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
                portrait VARCHAR(255)
            );"""
     ];
+
     shared actual void write(Sql db, Fortress obj, Point context) {
         db.Insert("""INSERT INTO fortresses (row, column, owner, name, size, id, image,
                           portrait)
@@ -39,6 +41,7 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
             spDatabaseWriter.writeSPObjectInContext(db, member, obj);
         }
     }
+
     void readFortress(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer ownerId = dbRow["owner"], is String name = dbRow["name"],
@@ -55,6 +58,7 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
         }
         map.addFixture(Point(row, column), fortress);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "fortresses", curry(readFortress)(map),
                 """SELECT * FROM fortresses""");

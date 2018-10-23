@@ -19,6 +19,7 @@ import strategicprimer.model.common.map.fixtures.explorable {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 "A reader for adventure hooks."
 class YAAdventureReader(Warning warner, IDRegistrar idFactory, IPlayerCollection players)
         extends YAAbstractReader<AdventureFixture>(warner, idFactory) {
@@ -40,6 +41,7 @@ class YAAdventureReader(Warning warner, IDRegistrar idFactory, IPlayerCollection
         spinUntilEnd(element.name, stream);
         return retval;
     }
+
     "Write an adventure to XML."
     shared actual void write(Anything(String) ostream, AdventureFixture obj,
             Integer indent) {
@@ -53,6 +55,8 @@ class YAAdventureReader(Warning warner, IDRegistrar idFactory, IPlayerCollection
         writeImageXML(ostream, obj);
         closeLeafTag(ostream);
     }
+
     shared actual Boolean isSupportedTag(String tag) => "adventure" == tag.lowercased;
+
     shared actual Boolean canWrite(Object obj) => obj is AdventureFixture;
 }

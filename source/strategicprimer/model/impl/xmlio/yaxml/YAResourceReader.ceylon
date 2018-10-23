@@ -35,11 +35,13 @@ import strategicprimer.model.impl.xmlio.exceptions {
     MissingPropertyException,
     DeprecatedPropertyException
 }
+
 "A reader for resource-bearing [[strategicprimer.model.common.map::TileFixture]]s."
 class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         extends YAAbstractReader<HarvestableFixture>(warner, idRegistrar) {
     {String*} supportedTags = set { "cache", "grove", "orchard", "field", "meadow",
         "mine", "mineral", "shrub", "stone"};
+
     HarvestableFixture createMeadow(StartElement element, Boolean field, Integer idNum) {
         expectAttributes(element, "status", "kind", "id", "cultivated", "image", "acres");
         requireNonEmptyParameter(element, "status", false);
@@ -53,6 +55,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             throw MissingPropertyException(element, "status", status);
         }
     }
+
     Boolean isCultivated(StartElement element) {
         if (hasParameter(element, "cultivated")) {
             return getBooleanParameter(element, "cultivated");
@@ -63,6 +66,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
             throw MissingPropertyException(element, "cultivated");
         }
     }
+
     todo("Inline?")
     HarvestableFixture createGrove(StartElement element, Boolean orchard, Integer idNum) {
             expectAttributes(element, "kind", "tree", "cultivated", "wild", "id",
@@ -71,8 +75,10 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
                 getParamWithDeprecatedForm(element, "kind", "tree"), idNum,
                 getIntegerParameter(element, "count", -1));
     }
+
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
+
     shared actual HarvestableFixture read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, *supportedTags);
@@ -132,6 +138,7 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         retval.image = getParameter(element, "image", "");
         return retval;
     }
+
     shared actual void write(Anything(String) ostream, HarvestableFixture obj,
             Integer indent) {
         assert (is CacheFixture|Meadow|Grove|Mine|MineralVein|Shrub|StoneDeposit obj);
@@ -185,5 +192,6 @@ class YAResourceReader(Warning warner, IDRegistrar idRegistrar)
         writeImageXML(ostream, obj);
         closeLeafTag(ostream);
     }
+
     shared actual Boolean canWrite(Object obj) => obj is HarvestableFixture;
 }

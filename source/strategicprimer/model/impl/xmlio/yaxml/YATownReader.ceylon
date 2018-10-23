@@ -53,14 +53,17 @@ import ceylon.collection {
 import lovelace.util.common {
     comparingOn
 }
+
 "A reader for fortresses, villages, and other towns."
 class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players)
         extends YAAbstractReader<ITownFixture>(warner, idRegistrar) {
     value resourceReader = YAResourcePileReader(warner, idRegistrar);
+
     value memberReaders = [
         YAUnitReader(warner, idRegistrar, players),
         resourceReader, YAImplementReader(warner, idRegistrar)
     ];
+
     """If the tag has an "owner" parameter, return the player it indicates; otherwise
        trigger a warning and return the "independent" player."""
     Player getOwnerOrIndependent(StartElement element) {
@@ -171,6 +174,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
         return retval;
     }
+
     ITownFixture parseVillage(StartElement element, {XMLEvent*} stream) {
         expectAttributes(element, "status", "name", "race", "image", "portrait",
             "id", "owner");
@@ -200,6 +204,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             throw MissingPropertyException(element, "status", status);
         }
     }
+
     ITownFixture parseTown(StartElement element, {XMLEvent*} stream) {
         expectAttributes(element, "name", "status", "size", "dc", "id", "image", "owner",
             "portrait");
@@ -244,6 +249,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             throw MissingPropertyException(element, "status", status);
         }
     }
+
     ITownFixture parseFortress(StartElement element, {XMLEvent*} stream) {
         expectAttributes(element, "owner", "name", "size", "status", "id", "portrait",
             "image");
@@ -284,6 +290,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         retval.portrait = getParameter(element, "portrait", "");
         return retval;
     }
+
     void writeAbstractTown(Anything(String) ostream, AbstractTown obj, Integer tabs) {
         writeTag(ostream, obj.kind, tabs);
         writeProperty(ostream, "status", obj.status.string);
@@ -302,6 +309,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             closeLeafTag(ostream);
         }
     }
+
     shared void writeCommunityStats(Anything(String) ostream,
             CommunityStats obj, Integer tabs) {
         writeTag(ostream, "population", tabs);
@@ -337,9 +345,11 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
         closeTag(ostream, tabs, "population");
     }
+
     shared actual Boolean isSupportedTag(String tag) =>
             ["village", "fortress", "town", "city", "fortification"]
                 .contains(tag.lowercased);
+
     shared actual ITownFixture read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "village", "fortress", "town", "city",
@@ -349,6 +359,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         case ("fortress") { return parseFortress(element, stream); }
         else { return parseTown(element, stream); }
     }
+
     shared actual void write(Anything(String) ostream, ITownFixture obj, Integer tabs) {
         assert (is AbstractTown|Village|Fortress obj);
         switch (obj)
@@ -400,5 +411,6 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             ostream(operatingSystem.newline);
         }
     }
+
     shared actual Boolean canWrite(Object obj) => obj is ITownFixture;
 }

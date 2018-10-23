@@ -14,6 +14,7 @@ import strategicprimer.model.common.map.fixtures.explorable {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Point>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -32,6 +33,7 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
                image VARCHAR(255)
            );"""
     ];
+
     shared actual void write(Sql db, Cave|Battlefield obj, Point context) {
         Sql.Insert insertion;
         switch (obj)
@@ -45,6 +47,7 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
         }
         insertion.execute(context.row, context.column, obj.id, obj.dc, obj.image);
     }
+
     void readCave(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is Integer dc = dbRow["dc"],
@@ -55,6 +58,7 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
         }
         map.addFixture(Point(row, column), cave);
     }
+
     void readBattlefield(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is Integer dc = dbRow["dc"],
@@ -65,7 +69,8 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
         }
         map.addFixture(Point(row, column), battlefield);
     }
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+
+    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) { // TODO: Here and elsewhere, why not make methods take two parameter lists instead of calling curry() on them?
         handleQueryResults(db, warner, "caves", curry(readCave)(map),
             """SELECT * FROM caves""");
         handleQueryResults(db, warner, "battlefields", curry(readBattlefield)(map),

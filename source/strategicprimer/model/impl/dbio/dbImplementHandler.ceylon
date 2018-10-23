@@ -18,6 +18,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortress>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -29,12 +30,15 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
                image VARCHAR(255)
            );"""
     ];
+
     shared actual void write(Sql db, Implement obj, IUnit|Fortress context) {
         db.Insert("""INSERT INTO implements (parent, id, kind, count, image)
                      VALUES(?, ?, ?, ?, ?);""")
                 .execute(context.id, obj.id, obj.kind, obj.count, obj.image);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
+
     void readImplement(IMutableMapNG map, Map<String, Object> row, Warning warner) {
         assert (is Integer parentId = row["parent"],
             is IUnit|Fortress parent = findById(map, parentId, warner),
@@ -50,6 +54,7 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
             parent.addMember(implement);
         }
     }
+
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "pieces of equipment",
                 curry(readImplement)(map), """SELECT * FROM implements""");

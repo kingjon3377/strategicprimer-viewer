@@ -13,6 +13,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -23,11 +24,13 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
                portrait VARCHAR(256)
            );"""
     ];
-    shared actual void write(Sql db, Player obj, IMapNG context) {
+
+    shared actual void write(Sql db, Player obj, IMapNG context) { // TODO: =>
         db.Insert("""INSERT INTO players (id, codename, current, portrait)
                      VALUES(?, ?, ?, ?);""")
                 .execute(obj.playerId, obj.name, obj.current, obj.portrait);
     }
+
     void readPlayer(IMutableMapNG map, Map<String, Object> row, Warning warner) {
         assert (is Integer id = row["id"], is String name = row["codename"],
             is Boolean current = dbMapReader.databaseBoolean(row["current"]),
@@ -39,6 +42,7 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
         }
         map.addPlayer(player);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "players", curry(readPlayer)(map),
                 """SELECT * FROM players""");

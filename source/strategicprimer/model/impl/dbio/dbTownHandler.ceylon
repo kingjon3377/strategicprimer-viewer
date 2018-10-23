@@ -25,6 +25,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -46,6 +47,7 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
                population INTEGER
            );"""
     ];
+
     shared actual void write(Sql db, AbstractTown obj, Point context) {
         db.Insert("""INSERT INTO towns (row, column, id, kind, status, size, dc, name,
                          owner, image, portrait, population)
@@ -58,6 +60,7 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
             dbCommunityStatsHandler.write(db, stats, obj);
         }
     }
+
     void readTown(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
@@ -95,6 +98,7 @@ object dbTownHandler extends AbstractDatabaseWriter<AbstractTown, Point>()
         }
         map.addFixture(Point(row, column), town);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "towns", curry(readTown)(map),
                 """SELECT * FROM towns""");

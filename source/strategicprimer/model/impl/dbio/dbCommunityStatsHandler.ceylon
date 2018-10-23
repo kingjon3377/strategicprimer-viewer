@@ -21,6 +21,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbCommunityStatsHandler
         extends AbstractDatabaseWriter<CommunityStats, ITownFixture>()
         satisfies MapContentsReader {
@@ -55,6 +56,7 @@ object dbCommunityStatsHandler
                created INTEGER
            );"""
     ];
+
     shared actual void write(Sql db, CommunityStats obj, ITownFixture context) {
         value expertise = db.Insert("""INSERT INTO town_expertise (town, skill, level)
                                        VALUES(?, ?, ?);""");
@@ -88,7 +90,9 @@ object dbCommunityStatsHandler
             return true;
         });
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
+
     void readTownExpertise(IMutableMapNG map, Map<String, Object> row, Warning warner) {
         assert (is Integer townId = row["town"],
             is ITownFixture town = findById(map, townId, warner),
@@ -96,12 +100,14 @@ object dbCommunityStatsHandler
             is Integer level = row["level"]);
         population.setSkillLevel(skill, level);
     }
+
     void readWorkedResource(IMutableMapNG map, Map<String, Object> row, Warning warner) {
         assert (is Integer townId = row["town"],
             is ITownFixture town = findById(map, townId, warner),
             exists population = town.population, is Integer resource = row["resource"]);
         population.addWorkedField(resource);
     }
+
     void readProducedResource(IMutableMapNG map, Map<String, Object> row,
             Warning warner) {
         assert (is Integer townId = row["town"],
@@ -123,6 +129,7 @@ object dbCommunityStatsHandler
         }
         population.yearlyProduction.add(pile);
     }
+
     void readConsumedResource(IMutableMapNG map, Map<String, Object> row,
             Warning warner) {
         assert (is Integer townId = row["town"],
@@ -144,6 +151,7 @@ object dbCommunityStatsHandler
         }
         population.yearlyConsumption.add(pile);
     }
+
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
         handleQueryResults(db, warner, "town expertise levels",
             curry(readTownExpertise)(map), """SELECT * FROM town_expertise""");

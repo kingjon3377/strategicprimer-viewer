@@ -23,12 +23,15 @@ import strategicprimer.model.common.map.fixtures.terrain {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 "A reader for [[TerrainFixture]]s."
 class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<TerrainFixture>(warning, idRegistrar) {
-    Set<String> supportedTags = set { "forest", "hill", "oasis" };
+    Set<String> supportedTags = set { "forest", "hill", "oasis" }; // TODO: Use lovelace.util.common::simpleSet
+
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
+
     shared actual TerrainFixture read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, *supportedTags);
@@ -62,6 +65,7 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         }
         return retval;
     }
+
     shared actual void write(Anything(String) ostream, TerrainFixture obj,
             Integer indent) {
         assert (is Forest|Hill|Oasis obj);
@@ -86,5 +90,6 @@ class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         writeProperty(ostream, "id", obj.id);
         closeLeafTag(ostream);
     }
+
     shared actual Boolean canWrite(Object obj) => obj is TerrainFixture;
 }

@@ -113,7 +113,9 @@ import strategicprimer.model.impl.xmlio.fluidxml {
 shared class SPFluidReader() satisfies IMapReader&ISPReader {
     alias LocalXMLReader=>Object(StartElement, QName, {XMLEvent*},
         IMutablePlayerCollection, Warning, IDRegistrar);
+
     late Map<String, LocalXMLReader> readers;
+
     Object readSPObject(StartElement element, QName parent,
             {XMLEvent*} stream, IMutablePlayerCollection players, Warning warner,
             IDRegistrar idFactory) {
@@ -130,6 +132,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         throw UnsupportedTagException.future(element);
     }
+
     class SimpleFixtureReader(String tag, Object(Integer) factory) {
         shared Object reader(StartElement element, QName parent, {XMLEvent*} stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
@@ -141,6 +144,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         shared String->LocalXMLReader entry => tag->reader;
     }
+
     class SimpleHasKindReader(String tag, HasKind(String, Integer) factory) {
         shared Object reader(StartElement element, QName parent, {XMLEvent*} stream,
                 IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
@@ -152,6 +156,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         shared String->LocalXMLReader entry => tag->reader;
     }
+
     StartElement firstStartElement({XMLEvent*} stream, StartElement parent) {
         if (exists element = stream.narrow<StartElement>().find(isSPStartElement)) {
             return element;
@@ -159,6 +164,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             throw MissingChildException(parent);
         }
     }
+
     Boolean isFutureTag(StartElement tag, Warning warner) {
         if (futureTags.contains(tag.name.localPart.lowercased)) {
             warner.handle(UnsupportedTagException.future(tag));
@@ -167,6 +173,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             return false;
         }
     }
+
     void parseTileChild(IMutableMapNG map, StartElement parent,
             {XMLEvent*} stream, IMutablePlayerCollection players, Warning warner,
             IDRegistrar idFactory, Point currentTile, StartElement element) {
@@ -186,7 +193,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             idFactory);
         if (is River child) {
             map.addRivers(currentTile, child);
-        } else if (is {River*} child) {
+        } else if (is {River*} child) { // TODO: Is this actually possible anymore?
             map.addRivers(currentTile, *child);
         } else if (is TileFixture child) {
             if (is Fortress child, map.fixtures.get(currentTile).narrow<Fortress>()
@@ -199,6 +206,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             throw UnwantedChildException(parent.name, element);
         }
     }
+
     void parseTile(IMutableMapNG map, StartElement element, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         expectAttributes(element, warner, "row", "column", "kind", "type");
@@ -232,6 +240,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             }
         }
     }
+
     IMutableMapNG readMapOrViewTag(StartElement element, QName parent, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "map", "view");
@@ -309,6 +318,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         return retval;
     }
+
     Player readPlayer(StartElement element, QName parent, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "player");
@@ -337,18 +347,21 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         retval.portrait = getAttribute(element, "portrait", "");
         return retval;
     }
+
     void parseOrders(StartElement element, IUnit unit, {XMLEvent*} stream,
             Warning warner) {
         expectAttributes(element, warner, "turn");
         Integer turn = getIntegerAttribute(element, "turn", -1, warner);
         unit.setOrders(turn, getTextUntil(element.name, stream));
     }
+
     void parseResults(StartElement element, IUnit unit, {XMLEvent*} stream,
             Warning warner) {
         expectAttributes(element, warner, "turn");
         Integer turn = getIntegerAttribute(element, "turn", -1, warner);
         unit.setResults(turn, getTextUntil(element.name, stream));
     }
+
     IUnit readUnit(StartElement element, QName parent, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "unit");
@@ -399,6 +412,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         return retval;
     }
+
     Fortress readFortress(StartElement element, QName parent, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "fortress");
@@ -442,10 +456,12 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         retval.portrait = getAttribute(element, "portrait", "");
         return setImage(retval, element, warner);
     }
-    IMutableMapNG mapOrViewTagHandler(StartElement element, QName parent,
+
+    IMutableMapNG mapOrViewTagHandler(StartElement element, QName parent, // TODO: Can we inline this into its reference(s)?
         {XMLEvent*} stream, IMutablePlayerCollection players, Warning warner,
         IDRegistrar idFactory) =>
             readMapOrViewTag(element, parent, stream, players, warner, idFactory);
+
     readers = simpleMap("adventure"->fluidExplorableHandler.readAdventure,
         "portal"->fluidExplorableHandler.readPortal,
         "cave"->fluidExplorableHandler.readCave,
@@ -495,6 +511,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         SimpleFixtureReader("phoenix", `Phoenix`).entry,
         SimpleFixtureReader("simurgh", `Simurgh`).entry,
         SimpleFixtureReader("troll", `Troll`).entry);
+
     shared actual Type readXML<Type>(PathWrapper file, JReader istream, Warning warner)
             given Type satisfies Object {
         // TODO: Pass in Closeables, to pass to TypesafeMLEventReader, to close file descriptor
@@ -502,7 +519,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
         IMutablePlayerCollection players = PlayerCollection();
         IDRegistrar idFactory = IDFactory();
-        for (event in eventReader) {
+        for (event in eventReader) { // TODO: Filter with narrow() and filter() instead of 'if'
             if (is StartElement event, isSPStartElement(event)) {
                 assert (is Type retval = readSPObject(event, QName("root"), eventReader,
                     players, warner, idFactory));
@@ -511,6 +528,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
         throw XMLStreamException("XML stream didn't contain a start element");
     }
+
     shared actual IMutableMapNG readMap(PathWrapper file, Warning warner) {
         try (istream = JFiles.newBufferedReader(JPaths.get(file.string))) {
             return readMapFromStream(file, istream, warner);

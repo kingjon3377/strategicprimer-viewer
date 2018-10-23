@@ -31,6 +31,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -70,6 +71,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
                hours INTEGER NOT NULL check(hours >= 0)
            );"""
     ];
+
     shared actual void write(Sql db, IWorker obj, IUnit context) {
         value worker = db.Insert(
             """INSERT INTO workers (unit, id, name, race, image, portrait, hp, max_hp,
@@ -107,7 +109,9 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
             return true;
         });
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
+
     void readWorkerStats(IMutableMapNG map, MutableMap<Integer, Worker> workers,
             Map<String, Object> row, Warning warner) {
         assert (is Integer unitId = row["unit"],
@@ -137,12 +141,14 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
         workers[id] = worker;
         unit.addMember(worker);
     }
+
     void readJobLevel(IMutableMapNG map, Map<Integer, Worker> workers,
             Map<String, Object> row, Warning warner) {
         assert (is Integer id = row["worker"], exists worker = workers[id],
             is String job = row["job"], is Integer level = row["level"]);
         worker.addJob(Job(job, level));
     }
+
     void readSkillLevel(IMutableMapNG map, Map<Integer, Worker> workers,
             Map<String, Object> row, Warning warner) {
         assert (is Integer id = row["worker"], exists worker = workers[id],
@@ -150,6 +156,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
             is Integer level = row["level"], is Integer hours = row["hours"]);
         worker.getJob(job).addSkill(Skill(skill, level, hours));
     }
+
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
         MutableMap<Integer, Worker> workers = HashMap<Integer, Worker>();
         handleQueryResults(db, warner, "worker stats",

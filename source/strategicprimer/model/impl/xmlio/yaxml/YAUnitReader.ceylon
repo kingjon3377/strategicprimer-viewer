@@ -41,6 +41,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         YATextReader(warner, idRegistrar), YAWorkerReader(warner, idRegistrar),
         YAResourcePileReader(warner, idRegistrar), YAImplementReader(warner, idRegistrar)
     ];
+
     """Parse the kind of unit, from the "kind" or deprecated "type" parameter, but merely
        warn if neither is present."""
     String parseKind(StartElement element) {
@@ -55,6 +56,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             return "";
         }
     }
+
     "Parse orders for a unit for a specified turn."
     void parseOrders(StartElement element, IUnit unit, {XMLEvent*} stream) {
         expectAttributes(element, "turn");
@@ -71,6 +73,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
         unit.setOrders(turn, builder.string.trimmed);
     }
+
     "Parse results for a unit for a specified turn."
     void parseResults(StartElement element, IUnit unit, {XMLEvent*} stream) {
         expectAttributes(element, "turn");
@@ -87,6 +90,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
         unit.setResults(turn, builder.string.trimmed);
     }
+
     UnitMember parseChild(StartElement element, QName parent, {XMLEvent*} stream) {
         String name = element.name.localPart.lowercased;
         for (reader in readers) {
@@ -101,6 +105,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             throw UnwantedChildException(parent, element);
         }
     }
+
     shared actual IUnit read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, "unit");
@@ -136,6 +141,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         }
         return retval;
     }
+
     shared actual Boolean isSupportedTag(String tag) => "unit" == tag.lowercased;
     void writeOrders(Anything(String) ostream, String tag, Integer turn, String orders,
             Integer indent) {
@@ -150,6 +156,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         ostream(simpleQuote(orders, '<'));
         closeTag(ostream, 0, tag);
     }
+
     void writeChild(Anything(String) ostream, UnitMember child, Integer indent) {
         for (reader in readers) {
             if (reader.canWrite(child)) {
@@ -162,6 +169,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
                 .name``");
         }
     }
+
     shared actual void write(Anything(String) ostream, IUnit obj, Integer indent) {
         writeTag(ostream, "unit", indent);
         writeProperty(ostream, "owner", obj.owner.playerId);
@@ -187,5 +195,6 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
             closeTag(ostream, indent, "unit");
         }
     }
+
     shared actual Boolean canWrite(Object obj) => obj is IUnit;
 }

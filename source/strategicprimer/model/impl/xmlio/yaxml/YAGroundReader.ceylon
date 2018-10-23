@@ -15,6 +15,7 @@ import strategicprimer.model.common.map.fixtures {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 "A reader for [[Ground]]."
 class YAGroundReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Ground>(warning, idRegistrar) {
@@ -33,7 +34,9 @@ class YAGroundReader(Warning warning, IDRegistrar idRegistrar)
         retval.image = getParameter(element, "image", "");
         return retval;
     }
+
     shared actual Boolean isSupportedTag(String tag) => "ground" == tag.lowercased;
+
     shared actual void write(Anything(String) ostream, Ground obj, Integer indent) {
         writeTag(ostream, "ground", indent);
         writeProperty(ostream, "kind", obj.kind);
@@ -42,5 +45,6 @@ class YAGroundReader(Warning warning, IDRegistrar idRegistrar)
         writeImageXML(ostream, obj);
         closeLeafTag(ostream);
     }
+
     shared actual Boolean canWrite(Object obj) => obj is Ground;
 }

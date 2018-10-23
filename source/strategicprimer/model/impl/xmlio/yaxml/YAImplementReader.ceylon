@@ -15,6 +15,7 @@ import strategicprimer.model.common.map.fixtures {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 "A reader for [[Implement]]s."
 class YAImplementReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Implement>(warning, idRegistrar) {
@@ -28,7 +29,9 @@ class YAImplementReader(Warning warning, IDRegistrar idRegistrar)
         retval.image = getParameter(element, "image", "");
         return retval;
     }
+
     shared actual Boolean isSupportedTag(String tag) => "implement" == tag.lowercased;
+
     shared actual void write(Anything(String) ostream, Implement obj, Integer indent) {
         writeTag(ostream, "implement", indent);
         writeProperty(ostream, "kind", obj.kind);
@@ -39,5 +42,6 @@ class YAImplementReader(Warning warning, IDRegistrar idRegistrar)
         writeImageXML(ostream, obj);
         closeLeafTag(ostream);
     }
+
     shared actual Boolean canWrite(Object obj) => obj is Implement;
 }

@@ -100,12 +100,17 @@ import strategicprimer.model.impl.xmlio.fluidxml {
 import ceylon.language.meta {
     classDeclaration
 }
+
 Regex snugEndTag = regex("([^ ])/>", true);
+
 variable Integer currentTurn = -1;
+
 """The main writer-to-XML class in the "fluid XML" implementation."""
 shared class SPFluidWriter() satisfies SPWriter {
     alias LocalXMLWriter=>Anything(XMLStreamWriter, Object, Integer);
+
     late Map<ClassOrInterface<Anything>, LocalXMLWriter> writers;
+
     void writeSPObjectImpl(XMLStreamWriter ostream, Object obj, Integer indentation) {
         for (type in TypeStream(obj)) {
             if (exists writer = writers[type]) {
@@ -115,6 +120,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         }
         throw AssertionError("No writer present for ``classDeclaration(obj).name``");
     }
+
     shared actual void writeSPObject(Anything(String)|Path arg, Object obj) {
         if (is Anything(String) ostream = arg) {
             XMLOutputFactory xof = XMLOutputFactory.newInstance();
@@ -151,8 +157,9 @@ shared class SPFluidWriter() satisfies SPWriter {
             }
         }
     }
+
     shared actual void write(Path|Anything(String) arg, IMapNG map) {
-        if (is Path path = arg) {
+        if (is Path path = arg) { // TODO: Just delegate to writeSPObject for this too
             File file;
             switch (res = path.resource)
             case (is File) {
@@ -171,6 +178,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             writeSPObject(ostream, map);
         }
     }
+
     todo("Does this really need to be a class method?")
     void writePlayer(XMLStreamWriter ostream, Player obj, Integer indentation) {
         if (!obj.name.empty) {
@@ -179,6 +187,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
         }
     }
+
     Entry<ClassOrInterface<Anything>, LocalXMLWriter> simpleFixtureWriter(
             ClassOrInterface<Anything> cls, String tag) {
         void retval(XMLStreamWriter ostream, Object obj, Integer indentation) {
@@ -197,6 +206,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         }
         return cls->retval;
     }
+
     void writeUnitOrders(XMLStreamWriter ostream, Integer indentation, Integer turn,
             String tag, String text) {
         // assert (tag == "orders" || tag == "results");
@@ -210,6 +220,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         ostream.writeCharacters(text);
         ostream.writeEndElement();
     }
+
     void writeUnit(XMLStreamWriter ostream, IUnit obj, Integer indentation) {
         Boolean nonemptyOrders(Integer->String entry) => !entry.item.empty;
         Boolean empty = obj.empty && obj.allOrders.filter(nonemptyOrders).empty &&
@@ -237,6 +248,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             ostream.writeEndElement();
         }
     }
+
     void writeFortress(XMLStreamWriter ostream, Fortress obj, Integer indentation) {
         writeTag(ostream, "fortress", indentation, false);
         writeAttributes(ostream, "owner"->obj.owner.playerId);
@@ -255,6 +267,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         }
         ostream.writeEndElement();
     }
+
     void writeMap(XMLStreamWriter ostream, IMapNG obj, Integer indentation) {
         writeTag(ostream, "view", indentation, false);
         writeAttributes(ostream, "current_player"->obj.currentPlayer.playerId,
@@ -333,6 +346,7 @@ shared class SPFluidWriter() satisfies SPWriter {
         indent(ostream, indentation);
         ostream.writeEndElement();
     }
+
     writers = simpleMap<ClassOrInterface<Anything>, LocalXMLWriter>(
         `River`->castingWriter<River>(fluidTerrainHandler.writeRivers),
         `AdventureFixture`->castingWriter<AdventureFixture>(

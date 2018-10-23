@@ -65,7 +65,9 @@ import ceylon.language.meta.model {
 import lovelace.util.common {
     matchingValue
 }
-variable Integer currentTurn = -1;
+
+variable Integer currentTurn = -1; // TODO: Use the one in the Animal maturityModel instead of here?
+
 "A reader for Strategic Primer maps."
 class YAMapReader("The Warning instance to use" Warning warner,
         "The factory for ID numbers" IDRegistrar idRegistrar,
@@ -73,6 +75,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         extends YAAbstractReader<IMapNG>(warner, idRegistrar) {
     "The reader for players"
     YAReader<Player> playerReader = YAPlayerReader(warner, idRegistrar);
+
     "The readers we'll try sub-tags on"
     value readers = [YAMobileReader(warner, idRegistrar),
         YAResourceReader(warner, idRegistrar), YATerrainReader(warner, idRegistrar),
@@ -81,13 +84,16 @@ class YAMapReader("The Warning instance to use" Warning warner,
         YAAdventureReader(warner, idRegistrar, players),
         YAPortalReader(warner, idRegistrar), YAExplorableReader(warner, idRegistrar),
         YAUnitReader(warner, idRegistrar, players) ];
+
     MutableMap<String, YAAbstractReader<out TileFixture>> readerCache =
             HashMap<String, YAAbstractReader<out TileFixture>>();
+
     MutableMap<ClassOrInterface<TileFixture>, YAAbstractReader<out TileFixture>> writerCache =
             HashMap<ClassOrInterface<TileFixture>, YAAbstractReader<out TileFixture>>();
+
     "Get the first open-tag event in our namespace in the stream."
     StartElement getFirstStartElement({XMLEvent*} stream, StartElement parent) {
-        for (element in stream) {
+        for (element in stream) { // TODO: Condense to 'if (exists element = stream.narrow<StartElement>().find(matchingPredicate(isSupportedNamespace, StartElement.name)))'
             if (is StartElement element, isSupportedNamespace(element.name)) {
                 return element;
             }
@@ -95,12 +101,14 @@ class YAMapReader("The Warning instance to use" Warning warner,
             throw MissingChildException(parent);
         }
     }
+
     "Write a newline if needed."
     void eolIfNeeded(Boolean needEol, Anything(String) writer) {
         if (needEol) {
             writer(operatingSystem.newline);
         }
     }
+
     "Parse a river from XML. The caller is now responsible for advancing the stream past
      the closing tag."
     shared River parseRiver(StartElement element, QName parent) {
@@ -118,6 +126,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
             }
         }
     }
+
     "Write a river."
     shared void writeRiver(Anything(String) ostream, River obj, Integer indent) {
         if (River.lake == obj) {
@@ -128,6 +137,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         }
         closeLeafTag(ostream);
     }
+
     "Parse what should be a [[TileFixture]] from the XML."
     TileFixture parseFixture(StartElement element, QName parent,
             {XMLEvent*} stream) {
@@ -156,6 +166,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 element);
         }
     }
+
     "Read a map from XML."
     shared actual IMutableMapNG read(StartElement element, QName parent,
             {XMLEvent*} stream) {
@@ -275,6 +286,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         }
         return retval;
     }
+
     "Write a child object"
     void writeChild(Anything(String) ostream, TileFixture child, Integer tabs) {
         value cls = type(child);
@@ -294,6 +306,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 .name``");
         }
     }
+
     "Write a map."
     shared actual void write(Anything(String) ostream, IMapNG obj, Integer tabs) {
         writeTag(ostream, "view", tabs);
@@ -382,7 +395,9 @@ class YAMapReader("The Warning instance to use" Warning warner,
         closeTag(ostream, tabs + 1, "map");
         closeTag(ostream, tabs, "view");
     }
+
     shared actual Boolean isSupportedTag(String tag) =>
             ["map", "view"].contains(tag.lowercased);
+
     shared actual Boolean canWrite(Object obj) => obj is IMapNG;
 }

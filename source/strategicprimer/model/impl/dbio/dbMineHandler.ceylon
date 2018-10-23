@@ -16,6 +16,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -29,12 +30,14 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>()
                image VARCHAR(255)
            );"""
     ];
-    shared actual void write(Sql db, Mine obj, Point context) {
+
+    shared actual void write(Sql db, Mine obj, Point context) { // TODO: =>
         db.Insert("""INSERT INTO mines (row, column, id, kind, status, image)
                      VALUES(?, ?, ?, ?, ?, ?);""")
                 .execute(context.row, context.column, obj.id, obj.kind,
                     obj.status.string, obj.image);
     }
+
     void readMine(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
@@ -47,6 +50,7 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>()
         }
         map.addFixture(Point(row, column), mine);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "mines", curry(readMine)(map),
                 """SELECT * FROM mines""");

@@ -11,12 +11,15 @@ import javax.xml.stream.events {
 import strategicprimer.model.common.xmlio {
     SPFormatException
 }
+
 "A custom exception for when a tag has a child tag it can't handle."
 shared class UnwantedChildException extends SPFormatException {
     "The current tag."
     shared QName tag;
+
     "The unwanted child."
     shared QName child;
+
     "For when the unwanted child isn't an unwanted *tag* at all. (The one current use
      is for arbitrary text outside a tile."
     shared new childInTag(
@@ -30,6 +33,7 @@ shared class UnwantedChildException extends SPFormatException {
         tag = parent;
         this.child = child;
     }
+
     shared new (
             "The current tag"
             QName parent,
@@ -43,6 +47,7 @@ shared class UnwantedChildException extends SPFormatException {
         tag = parent;
         this.child = child.name;
     }
+
     "Copy-constructor-with-replacement, for cases where the original thrower didn't know
      the parent tag."
     shared new addParent(QName parent, UnwantedChildException except)
@@ -52,6 +57,7 @@ shared class UnwantedChildException extends SPFormatException {
         tag = parent;
         child = except.child;
     }
+
     "Where the caller asserted that a tag was one of a specified list."
     shared new listingExpectedTags(
             "The current tag"
@@ -66,6 +72,7 @@ shared class UnwantedChildException extends SPFormatException {
         tag = parent;
         this.child = child.name;
     }
+
     "When the problem is that the child is not of a recognized namespace."
     shared new unexpectedNamespace(
             "The current tag"
@@ -78,6 +85,7 @@ shared class UnwantedChildException extends SPFormatException {
         tag = parent;
         this.child = child.name;
     }
+
     "When a child is unwanted for a reason that needs further explanation."
     shared new withMessage(
             "The current tag"

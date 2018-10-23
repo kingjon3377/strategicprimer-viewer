@@ -20,6 +20,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -37,6 +38,7 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()
                population INTEGER
            );"""
     ];
+
     shared actual void write(Sql db, Village obj, Point context) {
         db.Insert("""INSERT INTO villages (row, column, status, name, id, owner, race,
                          image, portrait, population)
@@ -49,6 +51,7 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()
             dbCommunityStatsHandler.write(db, stats, obj);
         }
     }
+
     void readVillage(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is String statusString = dbRow["status"],
@@ -70,6 +73,7 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()
         }
         map.addFixture(Point(row, column), village);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "villages", curry(readVillage)(map),
                 """SELECT * from villages""");

@@ -33,6 +33,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -65,6 +66,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
                image VARCHAR(255)
            );"""
     ];
+
     shared actual void write(Sql db, Immortal obj, Point|IUnit context) {
         if (is SimpleImmortal obj) {
             value insertion = db.Insert("""INSERT INTO simple_immortals (row, column,
@@ -107,6 +109,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
             }
         }
     }
+
     void readSimpleImmortal(IMutableMapNG map, Map<String, Object> dbRow,
             Warning warner) {
         assert (is String type = dbRow["type"], is Integer id = dbRow["id"],
@@ -151,6 +154,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
             parent.addMember(immortal);
         }
     }
+
     void readKindedImmortal(IMutableMapNG map, Map<String, Object> dbRow,
             Warning warner) {
         assert (is String type = dbRow["type"], is String kind = dbRow["kind"],
@@ -183,6 +187,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
             parent.addMember(immortal);
         }
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
         handleQueryResults(db, warner, "simple immortals", curry(readSimpleImmortal)(map),
             """SELECT * FROM simple_immortals WHERE row IS NOT NULL""");
@@ -190,6 +195,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
             curry(readKindedImmortal)(map),
             """SELECT * FROM kinded_immortals WHERE row IS NOT NULL""");
     }
+
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
         handleQueryResults(db, warner, "simple immortals in units",
             curry(readSimpleImmortal)(map),

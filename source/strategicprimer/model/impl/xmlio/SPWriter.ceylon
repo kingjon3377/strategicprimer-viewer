@@ -5,6 +5,7 @@ import ceylon.file {
 import strategicprimer.model.common.map {
     IMapNG
 }
+
 "An interface for map (and other SP XML) writers."
 shared interface SPWriter {
     "Write a map to file or a stream."

@@ -6,13 +6,16 @@ import strategicprimer.model.common.map {
 import ceylon.dbc {
     Sql
 }
+
 variable Integer currentTurn = -1;
+
 object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
-    Boolean[5] riverFlags(River* rivers) {
+    Boolean[5] riverFlags(River* rivers) { // TODO: =>
         return [rivers.contains(River.north), rivers.contains(River.south),
             rivers.contains(River.east), rivers.contains(River.west),
             rivers.contains(River.lake)];
     }
+
     shared actual {String+} initializers = [
         """CREATE TABLE IF NOT EXISTS metadata (
                version INTEGER NOT NULL,
@@ -34,6 +37,7 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
            lake BOOLEAN NOT NULL
        );"""
     ];
+
     shared actual void write(Sql db, IMutableMapNG obj, IMapNG context) {
         db.Insert("""INSERT INTO metadata (version, rows, columns, current_turn)
                      VALUES(?, ?, ?, ?);""")

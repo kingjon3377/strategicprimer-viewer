@@ -16,6 +16,7 @@ import strategicprimer.model.common.map.fixtures.terrain {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -28,6 +29,7 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>(
                image VARCHAR(255)
            );"""
     ];
+
     shared actual void write(Sql db, Hill|Oasis obj, Point context) {
         String type;
         switch (obj)
@@ -41,6 +43,7 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>(
                      VALUES(?, ?, ?, ?, ?);""")
                 .execute(context.row, context.column, type, obj.id, obj.image);
     }
+
     void readSimpleTerrain(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is String type = dbRow["type"], is Integer id = dbRow["id"],
@@ -65,6 +68,7 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>(
         }
         map.addFixture(Point(row, column), fixture);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "simple terrain fixtures",
                 curry(readSimpleTerrain)(map), """SELECT * FROM simple_terrain""");

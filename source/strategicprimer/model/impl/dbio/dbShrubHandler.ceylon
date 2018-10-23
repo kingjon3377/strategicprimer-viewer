@@ -31,12 +31,14 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>()
                image VARCHAR(255)
            );"""
     ];
-    shared actual void write(Sql db, Shrub obj, Point context) {
+
+    shared actual void write(Sql db, Shrub obj, Point context) { // TODO: =>
         db.Insert("""INSERT INTO shrubs (row, column, id, kind, count, image)
                      VALUES(?, ?, ?, ?, ?, ?);""")
                 .execute(context.row, context.column, obj.id, obj.kind,
                     obj.population, obj.image);
     }
+
     void readShrub(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
@@ -48,6 +50,7 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>()
         }
         map.addFixture(Point(row, column), shrub);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "shrubs", curry(readShrub)(map),
                 """SELECT * FROM shrubs""");

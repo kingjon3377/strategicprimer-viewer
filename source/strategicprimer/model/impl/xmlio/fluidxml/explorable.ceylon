@@ -29,6 +29,7 @@ import strategicprimer.model.common.map.fixtures.explorable {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object fluidExplorableHandler extends FluidBase() {
     shared AdventureFixture readAdventure(StartElement element, QName parent,
             {XMLEvent*} stream, IPlayerCollection players, Warning warner,

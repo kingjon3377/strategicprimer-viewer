@@ -50,6 +50,7 @@ import strategicprimer.model.common.xmlio {
 import lovelace.util.common {
     simpleMap
 }
+
 "A reader for 'mobile fixtures'"
 class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<MobileFixture>(warning, idRegistrar) {
@@ -60,12 +61,15 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         `Ogre`->"ogre", `Phoenix`->"phoenix", `Simurgh`->"simurgh",
         `Troll`->"troll"
     );
+
     Set<String> supportedTags = set(tagMap.items);
+
     Map<String, Class<SimpleImmortal, [Integer]>> simples = simpleMap(
         "sphinx"->`Sphinx`,
         "djinn"->`Djinn`, "griffin"->`Griffin`, "minotaur"->`Minotaur`,
         "ogre"->`Ogre`, "phoenix"->`Phoenix`, "simurgh"->`Simurgh`,
         "troll"->`Troll`);
+
     MobileFixture createAnimal(StartElement element) {
         String tag = element.name.localPart.lowercased;
         String kind;
@@ -105,13 +109,16 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
                 getIntegerParameter(element, "born", -1), count);
         }
     }
+
     MobileFixture readSimple(String tag, Integer idNum) {
         "We have to have a reader for ``tag``"
         assert (exists cls = simples[tag]);
         return cls(idNum);
     }
+
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
+
     shared actual MobileFixture read(StartElement element, QName parent,
             {XMLEvent*} stream) {
         requireTag(element, parent, *supportedTags.chain(immortalAnimals));
@@ -140,6 +147,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         }
         return retval;
     }
+
     shared actual void write(Anything(String) ostream, MobileFixture obj,
             Integer indent) {
         if (is IUnit obj) {
@@ -191,5 +199,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         }
         closeLeafTag(ostream);
     }
-    shared actual Boolean canWrite(Object obj) => obj is MobileFixture && !obj is IUnit;
+
+    shared actual Boolean canWrite(Object obj) =>
+            obj is MobileFixture && !obj is IUnit;
 }

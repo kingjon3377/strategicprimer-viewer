@@ -9,9 +9,11 @@ import ceylon.collection {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbMemoizer {
     MutableMap<[IMapNG, Integer], IFixture> cache =
             HashMap<[IMapNG, Integer], IFixture>();
+
     shared IFixture findById(IMapNG map, Integer id, MapContentsReader context,
             Warning warner) {
         if (exists retval = cache[[map, id]]) {

@@ -16,6 +16,7 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 "A reader for [[Player]]s."
 class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Player>(warning, idRegistrar) {
@@ -34,7 +35,9 @@ class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
         retval.portrait = getParameter(element, "portrait", "");
         return retval;
     }
+
     shared actual Boolean isSupportedTag(String tag) => "player" == tag.lowercased;
+
     shared actual void write(Anything(String) ostream, Player obj, Integer indent) {
         if (!obj.name.empty) {
             writeTag(ostream, "player", indent);
@@ -44,5 +47,6 @@ class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
             closeLeafTag(ostream);
         }
     }
+
     shared actual Boolean canWrite(Object obj) => obj is Player;
 }

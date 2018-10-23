@@ -36,6 +36,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
             return animal.born;
         }
     }
+
     shared actual {String+} initializers = [
         """CREATE TABLE IF NOT EXISTS animals (
                row INTEGER,
@@ -53,9 +54,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
                id INTEGER NOT NULL,
                image VARCHAR(255)
            );""",
-        // We assume that animal tracks can't occur inside a unit or fortress, and ignore
-        // their 'domestication status', 'talking', 'born', and 'count'. We also follow
-        // the XML I/O framework in discarding their IDs.
+        // We assume that animal tracks can't occur inside a unit or fortress.
         """CREATE TABLE IF NOT EXISTS tracks (
                row INTEGER NOT NULL,
                column INTEGER NOT NULL,
@@ -63,6 +62,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
                image VARCHAR(255)
            );"""
     ];
+
     shared actual void write(Sql db, Animal|AnimalTracks obj, Point|IUnit context) {
         if (is AnimalTracks obj) {
             "We assume that animal tracks can't occur inside a unit."
@@ -86,6 +86,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
             }
         }
     }
+
     void readAnimal(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is String kind = dbRow["kind"],
             is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
@@ -105,6 +106,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
             parent.addMember(animal);
         }
     }
+
     void readTracks(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is String kind = dbRow["kind"], is String|SqlNull image = dbRow["image"]);
@@ -114,12 +116,14 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
         }
         map.addFixture(Point(row, column), track);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
         handleQueryResults(db, warner, "animal populations", curry(readAnimal)(map),
             """SELECT * FROM animals WHERE row IS NOT NULL""");
         handleQueryResults(db, warner, "animal tracks", curry(readTracks)(map),
             """SELECT * FROM tracks""");
     }
+
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "animals in units", curry(readAnimal)(map),
                 """SELECT * FROM animals WHERE parent IS NOT NULL""");

@@ -16,6 +16,7 @@ import strategicprimer.model.common.map.fixtures.resources {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+
 object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit, Point>()
         satisfies MapContentsReader {
     shared actual {String+} initializers = [
@@ -30,6 +31,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
                image VARCHAR(255)
            );"""
     ];
+
     shared actual void write(Sql db, MineralVein|StoneDeposit obj, Point context) {
         String type;
         Boolean exposed;
@@ -48,6 +50,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
             .execute(context.row, context.column, type,
                     obj.id, obj.kind, exposed, obj.dc, obj.image);
     }
+
     void readMineralVein(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
@@ -59,6 +62,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
         }
         map.addFixture(Point(row, column), mineral);
     }
+
     void readStoneDeposit(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kindString = dbRow["kind"],
@@ -70,6 +74,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
         }
         map.addFixture(Point(row, column), stone);
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
         handleQueryResults(db, warner, "stone deposits", curry(readStoneDeposit)(map),
             """SELECT row, column, id, kind, dc, image FROM minerals

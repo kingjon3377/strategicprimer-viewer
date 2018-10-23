@@ -54,6 +54,7 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>()
                result VARCHAR(2048) NOT NULL
            );"""
     ];
+
     shared actual void write(Sql db, IUnit obj, Point|Fortress context) {
         value unit = db.Insert("""INSERT INTO units (row, column, parent, owner, kind,
                                       name, id, image, portrait)
@@ -88,16 +89,19 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>()
             spDatabaseWriter.writeSPObjectInContext(db, member, obj);
         }
     }
+
     void readOrders(IUnit unit, Map<String, Object> ordersRow, Warning warner) {
         assert (is Integer|SqlNull turn = ordersRow["turn"],
             is String orders = ordersRow["orders"]);
         unit.setOrders(as<Integer>(turn) else -1, orders);
     }
+
     void readResults(IUnit unit, Map<String, Object> resultsRow, Warning warner) {
         assert (is Integer|SqlNull turn = resultsRow["turn"],
             is String results = resultsRow["results"]);
         unit.setResults(as<Integer>(turn) else -1, results);
     }
+
     void readUnit(IMutableMapNG map, Sql db, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer ownerNum = dbRow["owner"], is String kind = dbRow["kind"],
             is String name = dbRow["name"], is Integer id = dbRow["id"],
@@ -122,10 +126,12 @@ object dbUnitHandler extends AbstractDatabaseWriter<IUnit, Point|Fortress>()
             parent.addMember(unit);
         }
     }
+
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "units outside fortresses",
                 curry(curry(readUnit)(map))(db),
                 """SELECT * FROM units WHERE row IS NOT NULL""");
+
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "units in fortresses",
                 curry(curry(readUnit)(map))(db),

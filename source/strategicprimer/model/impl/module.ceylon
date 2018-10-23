@@ -3,6 +3,7 @@
  suite. Some of the converter apps, being tightly bound to XML I/O and to implementation
  details of the model, also have code in this module."
 license("GPL-3")
+// TODO: Write user-introductory documentation for this module
 // TODO: Make only the I/O parts "native"; blocked by eclipse/ceylon#7336
 native("jvm")
 module strategicprimer.model.impl "0.4.9017" {

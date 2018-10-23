@@ -58,18 +58,23 @@ import ceylon.collection {
 import ceylon.language.meta.model {
     ClassOrInterface
 }
+
 "A logger."
 Logger log = logger(`module strategicprimer.model.impl`);
+
 "A class to hide the complexity of YAXML from callers."
 class YAReaderAdapter(
         "The Warning instance to use" Warning warning = warningLevels.default,
         "The factory for ID numbers" IDRegistrar idFactory = IDFactory()) {
     "The player collection to use."
     IMutablePlayerCollection players = PlayerCollection();
+
     "The map reader"
     YAMapReader mapReader = YAMapReader(warning, idFactory, players);
+
     "The reader for towns, etc."
     YATownReader townReader = YATownReader(warning, idFactory, players);
+
     "The set of readers."
     value readers = [ YAAdventureReader(warning, idFactory, players),
         YAExplorableReader(warning, idFactory), YAGroundReader(warning, idFactory),
@@ -79,10 +84,13 @@ class YAReaderAdapter(
         YAResourceReader(warning, idFactory), YATerrainReader(warning, idFactory),
         YATextReader(warning, idFactory), townReader,
         YAUnitReader(warning, idFactory, players), YAWorkerReader(warning, idFactory) ];
+
     MutableMap<String, YAAbstractReader<out Object>> readerCache =
             HashMap<String, YAAbstractReader<out Object>>();
+
     MutableMap<ClassOrInterface<Object>, YAAbstractReader<out Object>> writerCache =
             HashMap<ClassOrInterface<Object>, YAAbstractReader<out Object>>();
+
     "Parse an object from XML."
     throws(`class SPFormatException`, "on SP format problems")
     shared Object parse(StartElement element, QName parent, {XMLEvent*} stream) {
@@ -120,6 +128,7 @@ class YAReaderAdapter(
             throw UnwantedChildException(parent, element);
         }
     }
+
     "Write a series of rivers."
     todo("Test this")
     throws(`class IOException`, "on I/O error")
@@ -128,6 +137,7 @@ class YAReaderAdapter(
             mapReader.writeRiver(ostream, river, indent);
         }
     }
+
     "Write an object to XML."
     todo("Improve test coverage")
     throws(`class IOException`, "on I/O error")

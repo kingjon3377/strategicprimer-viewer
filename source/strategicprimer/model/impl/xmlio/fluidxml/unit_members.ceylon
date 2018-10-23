@@ -45,6 +45,7 @@ import strategicprimer.model.impl.xmlio.exceptions {
 import lovelace.util.common {
     matchingValue
 }
+
 object unitMemberHandler extends FluidBase() {
     shared Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,
             IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
@@ -110,6 +111,7 @@ object unitMemberHandler extends FluidBase() {
     shared WorkerStats readStats(StartElement element, QName parent, {XMLEvent*} stream,
             IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "stats");
+        // TODO: Make a Tuple of expected arguments and pass it to expectAttributes(), then map() it via a curried and partially-applied form of getIntegerAttribute() into the WorkerStats constructor
         expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int",
             "wis", "cha");
         spinUntilEnd(element.name, stream);
@@ -238,12 +240,14 @@ object unitMemberHandler extends FluidBase() {
                 AnimalImpl(kind, talking, status, id, born, count), element, warner);
         }
     }
+
     shared void writeAnimalTracks(XMLStreamWriter ostream, AnimalTracks obj,
             Integer indentation) {
         writeTag(ostream, "animal", indentation, true);
         writeAttributes(ostream, "kind"->obj.kind, "traces"->true);
         writeImage(ostream, obj);
     }
+
     shared void writeAnimal(XMLStreamWriter ostream, Animal obj, Integer indentation) {
         writeTag(ostream, "animal", indentation, true);
         writeAttributes(ostream, "kind"->obj.kind);

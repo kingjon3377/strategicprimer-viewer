@@ -70,6 +70,7 @@ import ceylon.logging {
     Logger,
     logger
 }
+
 abstract class FluidBase {
     static Logger log = logger(`module strategicprimer.model.impl`);
     static NumberFormat numParser = NumberFormat.integerInstance;
@@ -161,6 +162,7 @@ abstract class FluidBase {
             throw MissingPropertyException(element, param);
         }
     }
+
     "Require (or recommend) that a parameter (to be subsequently retrieved via
      [[getAttribute]]) be non-empty."
     throws(`class SPFormatException`, "if mandatory and missing")
@@ -187,7 +189,7 @@ abstract class FluidBase {
     "Whether the given XML element is a [[StartElement]] and in a namespace we support."
     static shared Boolean isSPStartElement(XMLEvent element) {
         if (is StartElement element,
-            [spNamespace, XMLConstants.nullNsUri]
+            [spNamespace, XMLConstants.nullNsUri] // TODO: fix indentation
                     .contains(element.name.namespaceURI)) {
             return true;
         } else {
@@ -275,6 +277,7 @@ abstract class FluidBase {
             XMLStreamWriter ostream,
             "The number of tabs to write."
             Integer tabs) {
+        "Cannot write a negative number of tabs."
         assert (tabs >= 0);
         ostream.writeCharacters(operatingSystem.newline);
         ostream.writeCharacters("\t".repeat(tabs));
@@ -316,7 +319,7 @@ abstract class FluidBase {
             "The text to parse"
             String string,
             "The current location in the XML."
-            Location location) {
+            Location location) { // TODO: =>
         return numParser.parse(string).intValue();
     }
 
@@ -351,6 +354,7 @@ abstract class FluidBase {
             throw MissingPropertyException(tag, parameter);
         }
     }
+
     "Parse an XML parameter whose value can be an Integer or a Decimal."
     todo("Replace this with a conversion function passed to [[getAttribute]]")
     throws(`class SPFormatException`,
@@ -503,8 +507,10 @@ abstract class FluidBase {
                 assert (is T obj);
                 wrapped(ostream, obj, indent);
             };
+
     static Boolean isSupportedNamespace(QName name) =>
-            {spNamespace, XMLConstants.nullNsUri}.contains(name.namespaceURI);
+            {spNamespace, XMLConstants.nullNsUri}.contains(name.namespaceURI); // FIXME: [] instead of {}
+
     "Warn if any unsupported attribute is on this tag."
     static shared void expectAttributes(StartElement element, Warning warner,
             String* attributes) {
@@ -516,5 +522,6 @@ abstract class FluidBase {
             }
         }
     }
+
     shared new () {}
 }
