@@ -142,10 +142,9 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             MutableMultimap<String, IUnit> unitsByKind =
                     ArrayListMultimap<String, IUnit>();
             for (unit in units) {
-                if (unit.empty, "false" == options.getArgument("--print-empty")) { // TODO: invert if
-                    continue;
+                if (!unit.empty || "true" == options.getArgument("--print-empty")) {
+                    unitsByKind.put(unit.kind, unit);
                 }
-                unitsByKind.put(unit.kind, unit);
             }
             MutableMap<IUnit, String> orders = HashMap<IUnit, String>();
             for (kind->unit in unitsByKind) {
