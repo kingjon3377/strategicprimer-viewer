@@ -129,12 +129,10 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     retval.contentPane = horizontalSplit(BorderedPanel.verticalPanel(playerLabel,
             JScrollPane(tree), listenedButton("Add worker to selected unit ...",
                 newWorkerListener)),
-        verticalSplit(BorderedPanel.verticalPanel( // TODO: reformat
-            html("Worker's Jobs and Skills:"), JScrollPane(jobsTreeObject), null),
-            BorderedPanel.verticalPanel(null,
-                BorderedPanel.verticalPanel(
-                    BorderedPanel.verticalPanel(html("Add a job to the worker:"), null,
-                        jobAdditionPanel), null,
+        verticalSplit(BorderedPanel.verticalPanel(html("Worker's Jobs and Skills:"),
+            JScrollPane(jobsTreeObject), null), BorderedPanel.verticalPanel(null,
+                BorderedPanel.verticalPanel(BorderedPanel.verticalPanel(
+                        html("Add a job to the worker:"), null, jobAdditionPanel), null,
                     BorderedPanel.verticalPanel(html("Add a Skill to the selected Job:"),
                         null, skillAdditionPanel)), hoursAdditionPanel), 0.5, 0.3));
 
