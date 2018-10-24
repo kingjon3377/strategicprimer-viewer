@@ -79,7 +79,7 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
         Point point = Point(
             ((eventPoint.y / tileSize) + visibleDimensions.minimumRow).integer,
             ((eventPoint.x / tileSize) + visibleDimensions.minimumColumn).integer);
-        log.trace("Generated point was ``point``"); // TODO: Reword as "User clicked on ``point``"
+        log.trace("User clicked on ``point``");
         if (point.valid, point.row < mapDimensions.rows,
                 point.column < mapDimensions.columns) {
             model.selection = point; // TODO: Should we support the "left-click to select, right-click to modify without selecting" interaction model?
