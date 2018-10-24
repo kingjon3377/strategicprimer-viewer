@@ -201,7 +201,7 @@ class TownGenerator(ICLIHelper cli) {
     "Find the location in the given [[map]] of the fixture identified by the
      given [[ID number|id]]."
     Point? findLocById(IMapNG map, Integer id) =>
-            map.fixtures.find(matchingPredicate(matchingValue(id, IFixture.id), // TODO: compose() instead of nesting matchingPredicate() and matchingValue()
+            map.fixtures.find(compose(compose(id.equals, IFixture.id),
                 Entry<Point, TileFixture>.item))?.key;
 
     "Whether, in the given [[map]], any town claims a resource identified by
