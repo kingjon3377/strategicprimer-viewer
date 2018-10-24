@@ -84,6 +84,7 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import lovelace.util.common {
+    as,
     matchingValue
 }
 
@@ -302,12 +303,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 assert (exists tree, exists item);
                 Component component = super.getTreeCellRendererComponent(tree, item,
                     selected, expanded, leaf, row, hasFocus);
-                Object internal; // TODO: Replace following if with = as<DefaultMutableTreeNode>(item)?.userObject else item
-                if (is DefaultMutableTreeNode item) {
-                    internal = item.userObject;
-                } else {
-                    internal = item;
-                }
+                Object internal = as<DefaultMutableTreeNode>(item)?.userObject else item;
                 if (is HasImage internal, is JLabel component) {
                     component.icon = getIcon(internal);
                 }
