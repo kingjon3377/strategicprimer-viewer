@@ -77,12 +77,8 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
             (super of Map<Integer, Item>).equals(that);
 
     "A hash value for the map."
-    shared actual Integer hash { // TODO: Condense
-        variable value hash = 1;
-        hash = 31*hash + backing.hash;
-        hash = 31*hash + toRemove.hash;
-        return hash;
-    }
+    shared actual Integer hash =>
+        31 * (31 + backing.hash) + toRemove.hash;
 }
 
 "An interface to provide a comparison function for objects of a specific type."
