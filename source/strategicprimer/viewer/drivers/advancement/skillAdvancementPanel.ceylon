@@ -45,7 +45,7 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() { // TODO:
     firstPanel.add(JLabel(" hours to skill?"));
     variable ISkill? skill = null;
     MutableList<LevelGainListener> listeners = ArrayList<LevelGainListener>();
-    Anything(ActionEvent) okListener = (ActionEvent event) { // TODO: convert from Callable object to method
+    void okListener(ActionEvent event) {
         if (exists local = skill) {
             Integer level = local.level;
             if (is Integer number = Integer.parse(hours.text)) {
@@ -73,7 +73,7 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() { // TODO:
         // Clear if OK and no skill selected, on Cancel, and after successfully adding
         // skill
         hours.text = "";
-    };
+    }
     JButton okButton = listenedButton("OK", okListener);
     hours.setActionCommand("OK");
     hours.addActionListener(okListener);
