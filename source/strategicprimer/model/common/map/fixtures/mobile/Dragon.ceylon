@@ -26,7 +26,7 @@ shared class Dragon(kind, id) satisfies Immortal&HasMutableImage&HasKind {
 
     shared actual String string => shortDescription;
 
-    by("https://openclipart.org/detail/166560/fire-dragon-by-olku") // TODO: Add to About dialog
+    by("https://openclipart.org/detail/166560/fire-dragon-by-olku")
     shared actual String defaultImage = "dragon.png";
 
     shared actual Boolean equals(Object obj) {
