@@ -7,7 +7,7 @@ import lovelace.util.common {
 todo("Is this really necessary any more?")
 shared class DriverFailedException extends Exception {
     shared new (Throwable cause,
-            String message = "The driver could not start because of an exception:")
+            String message = "The app could not start because of an exception:")
             extends Exception(message, cause) {}
 
     shared new illegalState(String message) extends
