@@ -286,11 +286,11 @@ shared class MapCheckerCLI satisfies UtilityDriver {
                     "Unexpected acreage type in ID #``fixture.id``"));
                 retval = true;
             }
-            if (total > 160.0) { // TODO: Move out of loop
-                warner.handle(SPContentWarning(context,
-                    "More explicit acres (``Float.format(total, 0, 1)``) than tile should allow"));
-                return true;
-            }
+        }
+        if (total > 160.0) {
+            warner.handle(SPContentWarning(context,
+                "More explicit acres (``Float.format(total, 0, 1)``) than tile should allow"));
+            return true;
         }
         for (fixture in fixtures.narrow<ITownFixture>()) {
             switch (fixture.townSize)
