@@ -101,16 +101,21 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     }
 
     "Add a new Job or Skill."
+    todo("Show error dialog, or at least visual-beep, instead of just logging warnings?")
     shared actual void add(String category, String addendum) {
-        if ("job" == category, exists currentRoot = localRoot) {
-            IJob job = Job(addendum, 0);
-            Integer childCount = getChildCount(currentRoot);
-            currentRoot.addJob(job);
-            fireTreeNodesInserted(TreeModelEvent(this, TreePath(currentRoot),
-                IntArray.with(Singleton(childCount)), ObjectArray.with(Singleton(job))));
+        if ("job" == category) {
+            if (exists currentRoot = localRoot) {
+                IJob job = Job(addendum, 0);
+                Integer childCount = getChildCount(currentRoot);
+                currentRoot.addJob(job);
+                fireTreeNodesInserted(TreeModelEvent(this, TreePath(currentRoot),
+                    IntArray.with(Singleton(childCount)), ObjectArray.with(Singleton(job))));
+            } else {
+                log.warn("Can't add a new Job when no worker selected");
+            }
         } else if ("skill" == category) {
             if (exists selectionPath = selectionModel.selectionPath,
-                is IJob job = selectionPath.lastPathComponent) {
+                    is IJob job = selectionPath.lastPathComponent) {
                 ISkill skill = Skill(addendum, 0, 0);
                 Integer childCount = getChildCount(job);
                 job.addSkill(skill);
@@ -118,8 +123,12 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
                     TreePath(ObjectArray<Object>.with([localRoot, job])),
                     IntArray.with(Singleton(childCount)),
                     ObjectArray.with(Singleton(skill))));
+            } else {
+                log.warn("Can't add a new Skill when no Job selected");
             }
-        } // TODO: Warn instead of silently failing
+        } else {
+            log.warn("Don't know how to add a new '``category``");
+        }
     }
 
     "Change what unit member is currently selected"
