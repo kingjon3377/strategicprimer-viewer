@@ -126,6 +126,9 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
         }
     }
 
+    String workerString(UnitMember? member) =>
+            if (is HasName member) then member.name else (member?.string else "");
+
     shared void writeStrategy(Resource path, {UnitMember*} dismissed) {
         File file;
         assert (is File|Nil path);
@@ -163,9 +166,6 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             writer.writeLine();
 
             if (!dismissed.empty) {
-                String workerString(UnitMember? member) => // TODO: Make a class-level function
-                        if (is HasName member) then member.name
-                            else (member?.string else "");
                 writer.write("Dismissed workers etc.: ");
                 writer.write(", ".join(dismissed.map(workerString)));
                 writer.writeLine();
