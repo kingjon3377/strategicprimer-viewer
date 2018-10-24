@@ -96,11 +96,7 @@ shared class FortressReportGenerator(
         if (exists first = temp.first) {
             formatter("<li>There is a river on the tile, ");
             formatter("flowing through the following borders: ");
-            // TODO: Use ", ".join() instead of loop
-            formatter(first.description);
-            for (river in temp.rest) {
-                formatter(", ``river.description``");
-            }
+            formatter(", ".join(temp.map(River.description)));
             formatter("""</li>
                          """);
         }
@@ -116,11 +112,7 @@ shared class FortressReportGenerator(
             StringBuilder builder = StringBuilder();
             builder.append(
                 "There is a river on the tile, flowing through the following borders: ");
-            // TODO: Use ", ".join() instead of a loop
-            builder.append(first.description);
-            for (river in temp.rest) {
-                builder.append(", ``river.description``");
-            }
+            builder.append(", ".join(temp.map(River.description)));
             parent.appendNode(SimpleReportNode(builder.string, loc));
         }
     }
