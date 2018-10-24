@@ -25,7 +25,6 @@ import strategicprimer.drivers.exploration.common {
     ExplorationModel
 }
 import lovelace.util.common {
-    matchingPredicate,
     PathWrapper
 }
 import strategicprimer.model.common.map {
@@ -80,7 +79,7 @@ class WorkerPrintCLI satisfies ReadOnlyDriver {
                 cli.print(" (``worker.race``)");
             }
 
-            {IJob*} jobs = worker.filter(matchingPredicate(Integer.positive, IJob.level)); // TODO: Use compose() instead of matchingPredicate()
+            {IJob*} jobs = worker.filter(compose(Integer.positive, IJob.level));
             if (!jobs.empty) {
                 cli.print(" (");
                 cli.print(", ".join(jobs.map(jobString)));
