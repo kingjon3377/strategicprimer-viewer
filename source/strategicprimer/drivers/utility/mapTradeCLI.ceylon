@@ -71,9 +71,6 @@ import strategicprimer.model.common.map.fixtures.explorable {
     AdventureFixture,
     Battlefield
 }
-import ceylon.language.meta.model {
-    ClassModel
-}
 import ceylon.language.meta {
     type
 }
@@ -172,8 +169,7 @@ shared class MapTradeCLI satisfies CLIDriver {
                 return matcher.displayed;
             }
         }
-        ClassModel<TileFixture> cls = type(fixture); // TODO: inline
-        FixtureMatcher newMatcher = FixtureMatcher.trivialMatcher(cls,
+        FixtureMatcher newMatcher = FixtureMatcher.trivialMatcher(type(fixture),
             fixture.plural);
         askAbout(newMatcher, "new");
         matchers.add(newMatcher);
