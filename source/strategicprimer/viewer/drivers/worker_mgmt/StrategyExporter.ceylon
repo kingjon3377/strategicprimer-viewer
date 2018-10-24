@@ -192,8 +192,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                                 writer.write(", ");
                                 writeMember(writer, member);
                             }
-                            writer.write("]"); // FIXME: Move out of else block
                         }
+                        writer.write("]");
                     }
                     writer.writeLine(":");
                     writer.writeLine();
