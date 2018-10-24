@@ -36,10 +36,6 @@ import com.vasileff.ceylon.structures {
     MutableMultimap,
     ArrayListMultimap
 }
-import lovelace.util.common {
-    matchingValue,
-    matchingPredicate
-}
 
 "A class to write a proto-strategy to file."
 class StrategyExporter(IWorkerModel model, SPOptions options)
@@ -53,9 +49,9 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             writer.write(member.name);
             {IJob*} jobs;
             if (options.hasOption("--include-unleveled-jobs")) {
-                jobs = member.filter(matchingValue(false, IJob.emptyJob)); // TODO: Use not(IJob.emptyJob) instead of matchingValue()
+                jobs = member.filter(not(IJob.emptyJob));
             } else {
-                jobs = member.filter(matchingPredicate(Integer.positive, IJob.level));
+                jobs = member.filter(compose(Integer.positive, IJob.level));
             }
             if (exists first = jobs.first) { // TODO: Define a function turning a Job into the name-level-pair String, then use ", ".join()
                 writer.write(" (``first.name`` ``first.level``");
