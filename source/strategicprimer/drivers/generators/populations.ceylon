@@ -234,15 +234,15 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
 
     "Whether any of the fixtures on the given tile are forests of the given
      kind."
-    Boolean hasAdjacentForests(String kind)(Point point) => // TODO: Rename to hasForests()
-            map.fixtures.get(point).narrow<Forest>()
+    Boolean hasForests(String kind)(Point point) =>
+            map.fixtures.get(point).narrow<Forest>() // TODO: syntax sugar
                 .any(matchingValue(kind, Forest.kind));
 
     "How many tiles adjacent to the given location have forests of the given
      kind."
     Integer countAdjacentForests(Point center, String kind) =>
             surroundingPointIterable(center, map.dimensions, 1)
-                .count(hasAdjacentForests(kind));
+                .count(hasForests(kind));
 
     "Generate [[Forest]] acreages."
     void generateForestExtents() {
