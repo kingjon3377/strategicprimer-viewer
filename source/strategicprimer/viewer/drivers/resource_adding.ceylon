@@ -349,7 +349,9 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         assign selectedItem {
             if (is String|JString selectedItem) {
                 super.selectedItem = selectedItem;
-            } // TODO: else log the failure, don't silently ignore
+            } else {
+                logger("Failed to set selectedItem: must be a String.");
+            }
         }
 
         shared String selectedString {
