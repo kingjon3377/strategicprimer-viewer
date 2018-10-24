@@ -93,9 +93,9 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
             ostream("""<h5>Workers</h5>
                        <ul>
                        """);
-            for (tuple in workers) { // TODO: Destructure to avoid spreading below
+            for ([worker, loc] in workers) {
                 ostream("<li>");
-                produceSingle(fixtures, map, ostream, *tuple);
+                produceSingle(fixtures, map, ostream, worker, loc);
                 ostream("""</li>
                            """);
             }
