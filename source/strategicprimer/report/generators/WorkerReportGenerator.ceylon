@@ -46,13 +46,8 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     String skillString(ISkill skill) => skill.name + " " + skill.level.string;
 
     "Produce text describing the given Skills."
-    String skills(ISkill* job) {
-        if (job.empty) { // TODO: Condense using if expression
-            return "";
-        } else {
-            return "(``", ".join(job.map(skillString))``)";
-        }
-    }
+    String skills(ISkill* job) =>
+        (job.empty) then "" else "(``", ".join(job.map(skillString))``)";
 
     "Produce the report-intermediate-representation sub-sub-report on a Job."
     IReportNode produceJobRIR(IJob job, Point loc) =>
