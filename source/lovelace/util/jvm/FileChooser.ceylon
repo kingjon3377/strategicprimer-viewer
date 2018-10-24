@@ -176,8 +176,9 @@ shared class FileChooser {
                 if (nonempty retval) {
                     log.trace("Saving the file(s) the user chose via Swing");
                     storedFile = retval;
-                } else { // TODO: Should probably set storedFile to null
+                } else {
                     log.info("User pressed approve but selected no files");
+                    storedFile = null;
                 }
             } else {
                 log.info("Chooser function returned ``status``");
@@ -190,6 +191,7 @@ shared class FileChooser {
             } else {
                 log.debug("User failed to choose?");
                 log.debug("Returned iterable was ``retval`` (``type(retval)``");
+                storedFile = null;
             }
         }
     }
