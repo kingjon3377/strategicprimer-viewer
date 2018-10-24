@@ -55,18 +55,12 @@ import strategicprimer.model.common.map.fixtures.towns {
 class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         satisfies MovementCostSource {
     HuntingModel huntingModel = HuntingModel(model.map);
-    MutableList<MovementCostListener> listeners =
+    MutableList<MovementCostListener> listeners = // TODO: Drop our satisfaction of MovementCostSource, since we now never fire any cost notifications
             ArrayList<MovementCostListener>();
     shared actual void addMovementCostListener(MovementCostListener listener) =>
             listeners.add(listener);
     shared actual void removeMovementCostListener(MovementCostListener listener) =>
             listeners.remove(listener);
-
-    void fireMovementCost(Integer cost) {
-        for (listener in listeners) {
-            listener.deduct(cost);
-        }
-    }
 
     "Have the user choose a player."
     shared Player? choosePlayer() {
@@ -214,7 +208,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         }
                         continue;
                     }
-                    else { fireMovementCost(runtime.maxArraySize); continue; } // TODO: Set 'movement' to 0 instead of relying on whoever is listening
+                    else { movement = 0; continue; }
                 }
 
                 Point destPoint = model.getDestination(point, direction);
