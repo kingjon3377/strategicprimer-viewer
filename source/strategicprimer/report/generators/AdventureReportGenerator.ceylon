@@ -75,22 +75,16 @@ shared class AdventureReportGenerator(
             DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
             AdventureFixture item, Point loc) {
         fixtures.remove(item.id);
-        // TODO: Make an 'ownerString' for the sole varying part to condense the following
+        String ownerString;
         if (item.owner.independent) {
-            return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
-                .fullDescription`` ``distCalculator.distanceString(loc)``",
-            loc);
+            ownerString = "";
         } else if (currentPlayer == item.owner) {
-            return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
-                .fullDescription`` ``distCalculator
-                    .distanceString(loc)`` (already investigated by you)",
-            loc);
+            ownerString = " (already investigated by you)";
         } else {
-            return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
-                .fullDescription`` ``distCalculator
-                    .distanceString(
-                loc)`` (already investigated by another player)",
-            loc);
+            ownerString = " (already investigated by another player)";
         }
+        return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
+                .fullDescription`` ``distCalculator.distanceString(loc)````ownerString``",
+            loc);
     }
 }
