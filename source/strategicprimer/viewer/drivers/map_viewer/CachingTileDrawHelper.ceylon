@@ -116,7 +116,8 @@ class CachingTileDrawHelper satisfies TileDrawHelper {
     updateCache(2, 2);
 
     shared actual void drawTileTranslated(Graphics pen, IMapNG map, Point location,
-            Integer width, Integer height) { // FIXME: Call updateCache()!
+            Integer width, Integer height) {
+        updateCache(width, height);
         assert (is Graphics2D pen);
         TileType? terrain = map.baseTerrain[location];
         pen.color = colorHelper.get(map.dimensions.version, terrain);
