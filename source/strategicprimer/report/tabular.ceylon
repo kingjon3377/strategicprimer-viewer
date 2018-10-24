@@ -99,6 +99,30 @@ shared object tabularReportGenerator {
         }
     }
 
+    "A comparison method for two things that might be [[String]]
+     representations of numbers, to sort numerically if possible and otherwise
+     lexicographically."
+    Comparison sorter(Object one, Object two) {
+        String actualOne;
+        String actualTwo;
+        if (is String one) {
+            actualOne = one;
+        } else {
+            actualOne = one.string;
+        }
+        if (is String two) {
+            actualTwo = two;
+        } else {
+            actualTwo = two.string;
+        }
+        if (is Float floatOne = Float.parse(actualOne),
+                is Float floatTwo = Float.parse(actualTwo)) {
+            return floatOne <=> floatTwo;
+        } else {
+            return actualOne <=> actualTwo;
+        }
+    }
+
     "A method to produce tabular reports and add them to a GUI."
     shared void createGUITabularReports(
             "The way to add the tables to the GUI."
@@ -125,26 +149,6 @@ shared object tabularReportGenerator {
             ImmortalsTabularReportGenerator(hq, dimensions),
             ExplorableTabularReportGenerator(player, hq, dimensions)
         ];
-        Comparison sorter(Object one, Object two) { // TODO: Move to top level of object
-            String actualOne;
-            String actualTwo;
-            if (is String one) {
-                actualOne = one;
-            } else {
-                actualOne = one.string;
-            }
-            if (is String two) {
-                actualTwo = two;
-            } else {
-                actualTwo = two.string;
-            }
-            if (is Float floatOne = Float.parse(actualOne),
-                    is Float floatTwo = Float.parse(actualTwo)) {
-                return floatOne <=> floatTwo;
-            } else {
-                return actualOne <=> actualTwo;
-            }
-        }
         JComparator<out Object> wrapped = JavaComparator(sorter);
         for (generator in generators) {
             value tableModel = generator.produceTableModel(fixtures, parentMap);
