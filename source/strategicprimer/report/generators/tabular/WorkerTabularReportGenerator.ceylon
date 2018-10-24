@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+    comparingOn
 }
 
 import strategicprimer.model.common {
@@ -46,14 +47,11 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
 
     "Compare two worker-location pairs."
     shared actual Comparison comparePairs([Point, IWorker] one,
-            [Point, IWorker] two) { // TODO: Use pairComparator() and comparingOn() to condense
-        IWorker first = one.rest.first;
-        IWorker second = two.rest.first;
-        Comparison cmp = DistanceComparator(hq, dimensions).compare(one.first, two.first);
-        if (cmp == equal) {
-            return (first.name.compare(second.name));
-        } else {
-            return cmp;
-        }
-    }
+            [Point, IWorker] two) => comparing( // TODO: Make pairComparator() shared and use it to further condense
+                comparingOn(
+                    Tuple<Point|IWorker, Point, [IWorker]>.first,
+                    DistanceComparator(hq, dimensions).compare),
+                comparingOn(compose(compose(IWorker.name, Tuple<IWorker,
+                        IWorker, []>.first), Tuple<Point|IWorker, Point,
+                    [IWorker]>.rest), increasing<String>))(one, two);
 }
