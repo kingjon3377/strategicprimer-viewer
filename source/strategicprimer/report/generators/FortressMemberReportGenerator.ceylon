@@ -91,8 +91,7 @@ shared class FortressMemberReportGenerator(
                 if (exists temp = resources[resource.kind]) {
                     pileMap = temp;
                 } else {
-                    pileMap = HeadedMapImpl<ResourcePile, Point>(
-                        "<li>``resource.kind``:", // TODO: Remove initial '<li>, since it duplicates one when it's printed below.
+                    pileMap = HeadedMapImpl<ResourcePile, Point>("``resource.kind``:",
                         comparing(byIncreasing(ResourcePile.kind),
                             byIncreasing(ResourcePile.contents),
                             byDecreasing(ResourcePile.quantity),
