@@ -6,8 +6,7 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    DelayedRemovalMap,
-    matchingValue
+    DelayedRemovalMap
 }
 
 import strategicprimer.model.common.map {
@@ -93,7 +92,7 @@ shared class FortressReportGenerator(
             formatter("""<li>There is a nearby lake.</li>
                          """);
         }
-        value temp = rivers.filter(matchingValue(false, River.lake.equals)); // TODO: Use not(River.lake.equals) instead of matchingValue()
+        value temp = rivers.filter(not(River.lake.equals));
         if (exists first = temp.first) {
             formatter("<li>There is a river on the tile, ");
             formatter("flowing through the following borders: ");
@@ -112,7 +111,7 @@ shared class FortressReportGenerator(
         if (rivers.contains(River.lake)) {
             parent.appendNode(SimpleReportNode("There is a nearby lake.", loc));
         }
-        value temp = rivers.filter(matchingValue(false, River.lake.equals)); // TODO: Use not(River.lake.equals) instead of matchingValue()
+        value temp = rivers.filter(not(River.lake.equals));
         if (exists first = temp.first) {
             StringBuilder builder = StringBuilder();
             builder.append(
