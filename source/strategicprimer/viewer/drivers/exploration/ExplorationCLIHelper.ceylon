@@ -41,7 +41,6 @@ import strategicprimer.drivers.exploration.common {
     MovementCostListener,
     TraversalImpossibleException,
     simpleMovementModel,
-    MovementCostSource,
     pathfinder
 }
 import strategicprimer.model.common.map.fixtures.towns {
@@ -52,15 +51,8 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 
 "The logic split out of [[ExplorationCLI]]" // TODO: Merge back in
-class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
-        satisfies MovementCostSource {
+class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
     HuntingModel huntingModel = HuntingModel(model.map);
-    MutableList<MovementCostListener> listeners = // TODO: Drop our satisfaction of MovementCostSource, since we now never fire any cost notifications
-            ArrayList<MovementCostListener>();
-    shared actual void addMovementCostListener(MovementCostListener listener) =>
-            listeners.add(listener);
-    shared actual void removeMovementCostListener(MovementCostListener listener) =>
-            listeners.remove(listener);
 
     "Have the user choose a player."
     shared Player? choosePlayer() {
@@ -126,8 +118,6 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 shared actual void deduct(Integer cost) => movement -= cost;
             }
             model.addMovementCostListener(handleCost);
-//            addMovementCostListener(handleCost);
-            listeners.add(handleCost);
 
             MutableList<Point>&Queue<Point> proposedPath = ArrayList<Point>();
             object automationConfig { // TODO: Move to top level of class, and make memoized attribute there instead of encapsulating in an object
