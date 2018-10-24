@@ -91,15 +91,11 @@ shared class EchoDriver(SPOptions options) satisfies UtilityDriver {
             for (location in map.locations) {
                 if (exists mainForest = map.fixtures[location]?.narrow<Forest>()?.first,
                         mainForest.id < 0) {
-                    Integer id = 1147200 + location.row * 176 + location.column;
-                    idFactory.register(id); // TODO: Inline all this; IDRegistrar.register returns the ID
-                    mainForest.id = id;
+                    mainForest.id = idFactory.register(1147200 + location.row * 176 + location.column);
                 }
                 if (exists mainGround = map.fixtures[location]?.narrow<Ground>()?.first,
                         mainGround.id < 0) {
-                    Integer id = 1171484 + location.row * 176 + location.column;
-                    idFactory.register(id); // TODO: Inline all this; IDRegistrar.register returns the ID
-                    mainGround.id = id;
+                    mainGround.id = idFactory.register(1171484 + location.row * 176 + location.column);
                 }
 //                for (fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
                 for (fixture in map.fixtures.get(location)) {
@@ -159,9 +155,9 @@ shared class ForestFixerDriver(ICLIHelper cli, SPOptions options, model)
     shared actual IMultiMapModel model;
     {Forest*} extractForests(IMapNG map, Point location) =>
 //            map.fixtures[location].narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed
-            map.fixtures.get(location).narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed
+            map.fixtures.get(location).narrow<Forest>();
     {Ground*} extractGround(IMapNG map, Point location) =>
-//            map.fixtures[location].narrow<Ground>();
+//            map.fixtures[location].narrow<Ground>(); // TODO: syntax sugar once compiler bug fixed
             map.fixtures.get(location).narrow<Ground>();
 
     shared actual void startDriver() {
