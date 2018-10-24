@@ -178,9 +178,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                             curry(model.getDestination)(point))) else Direction.nowhere;
                     if (proposedDestination == point) {
                         continue;
-                    } else if (direction == Direction.nowhere) { // TODO: shorten message
-                        cli.println("Intended next destination ``
-                            proposedDestination`` is not adjacent to current location ``point``");
+                    } else if (direction == Direction.nowhere) {
+                        cli.println("Next step ``
+                            proposedDestination`` isn't adjacent to ``point``");
                         continue;
                     }
                     cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``
