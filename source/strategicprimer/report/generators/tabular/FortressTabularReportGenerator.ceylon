@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+    comparingOn
 }
 
 import strategicprimer.model.common {
@@ -47,20 +48,19 @@ shared class FortressTabularReportGenerator(Player player, Point hq,
         Fortress first = one.rest.first;
         Fortress second = two.rest.first;
         Comparison cmp = comparator(one.first, two.first);
-        if (player == first.owner, player != second.owner) {
+        if (player == first.owner, player != second.owner) { // TODO: Extract special cases to separate methods so we can just use comparing() for everything
             return smaller;
         } else if (player != first.owner, player == second.owner) {
             return larger;
         } else if (cmp == equal) {
-            Comparison nameCmp = first.name.compare(second.name);
             if ("HQ" == first.name, "HQ" != second.name) {
                 return smaller;
             } else if ("HQ" != first.name, "HQ" == second.name) {
                 return larger;
-            } else if (nameCmp == equal) { // TODO: Use comparing() here to condense these five lines (+1 above) to three
-                return first.owner <=> second.owner;
             } else {
-                return nameCmp;
+                 return comparing(
+                    comparingOn(Fortress.name, increasing<String>),
+                        comparingOn(Fortress.owner, increasing<Player>))(first, second);
             }
         } else {
             return cmp;
