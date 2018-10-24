@@ -80,13 +80,9 @@ shared class Village(status, name, id, owner, race)
     "If we ignore ID, a fixture is equal iff it is a Village with the same status, owner,
      and race."
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
-        if (is Village fixture) { // TODO: combine if statements
-            if (status == fixture.status && name == fixture.name &&
-                    owner == fixture.owner) {
-                return anythingEqual(population, fixture.population);
-            } else {
-                return false;
-            }
+        if (is Village fixture, status == fixture.status && name == fixture.name &&
+                owner == fixture.owner) {
+            return anythingEqual(population, fixture.population);
         } else {
             return false;
         }

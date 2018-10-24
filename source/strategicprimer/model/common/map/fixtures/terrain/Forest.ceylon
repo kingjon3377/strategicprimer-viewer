@@ -64,17 +64,17 @@ shared class Forest(kind, rows, id, acres = -1)
     shared actual String plural = "Forests";
 
     shared actual String shortDescription {
-        if (!acres.positive) { // TODO: Invert if
-            if (rows) {
-                return "Rows of ``kind`` trees";
-            } else {
-                return "A ``kind`` forest";
-            }
-        } else {
+        if (acres.positive) {
             if (rows) {
                 return "Rows of ``kind`` trees for ``acres`` acres";
             } else {
                 return "A ``acres``-acre ``kind`` forest";
+            }
+        } else {
+            if (rows) {
+                return "Rows of ``kind`` trees";
+            } else {
+                return "A ``kind`` forest";
             }
         }
     }
