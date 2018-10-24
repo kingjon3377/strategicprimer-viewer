@@ -298,7 +298,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
        "TODO", contain "FIXME", or are empty. Returns null if no unit matches those
        criteria."""
     shared actual TreePath? nextProblem(TreePath? starting, Integer turn) {
-        {IUnit*} sequence; // TODO: What if the 'starting' path is [root, JString(kind)]?
+        {IUnit*} sequence;
         if (exists starting, exists startingUnit =
                 starting.path.array.narrow<IUnit>().first) {
             sequence = model.getUnits(root).repeat(2).sequence()
@@ -307,6 +307,10 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
                 starting.path.array.narrow<String>().first) {
             sequence = model.getUnits(root).repeat(2).sequence()
                 .trimLeading(not(matchingPredicate(startingKind.equals, IUnit.kind)));
+        } else if (exists starting, exists startingKind =
+                starting.path.array.narrow<JString>().first) {
+            return nextProblem(TreePath(ObjectArray<Object>
+                .with([root, startingKind.string])), turn);
         } else {
             sequence = model.getUnits(root);
         }
