@@ -44,9 +44,11 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "Zoom in, increasing the zoom level."
     shared actual void zoomIn() {
         if (_zoomLevel < maxZoomLevel) {
+            Integer oldZoom = _zoomLevel;
             _zoomLevel++;
+            Integer newZoom = _zoomLevel;
             for (listener in gpListeners) {
-                listener.tileSizeChanged(_zoomLevel - 1, _zoomLevel); // TODO: save both old and new values in local variables before calling listeners, in case of race conditions
+                listener.tileSizeChanged(oldZoom, newZoom);
             }
         }
     }
@@ -54,9 +56,11 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "Zoom out, decreasing the zoom level."
     shared actual void zoomOut() {
         if (_zoomLevel > 1) {
+            Integer oldZoom = _zoomLevel;
             _zoomLevel--;
+            Integer newZoom = _zoomLevel;
             for (listener in gpListeners) {
-                listener.tileSizeChanged(_zoomLevel + 1, _zoomLevel); // TODO: save both old and new values in local variables before calling listeners, in case of race conditions
+                listener.tileSizeChanged(oldZoom, newZoom);
             }
         }
     }
