@@ -66,8 +66,9 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
         if (toRemove.contains(key)) {
             return null;
         } else {
+            Item? retval = get(key);
             toRemove.add(key);
-            return get(key); // FIXME: get() consults toRemove, so this will always return null
+            return retval;
         }
     }
 
