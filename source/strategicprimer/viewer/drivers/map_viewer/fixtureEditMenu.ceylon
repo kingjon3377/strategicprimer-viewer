@@ -35,6 +35,7 @@ import java.lang {
 }
 import lovelace.util.common {
     silentListener,
+    as,
     todo
 }
 
@@ -129,12 +130,7 @@ shared class FixtureEditMenu(
 
     void dismissHandler() {
         assert (is UnitMember fixture);
-        String name;
-        if (is HasName fixture) { // TODO: Condense to as<HasName>(fixture)?.name else "this ``fixture``"
-            name = fixture.name;
-        } else {
-            name = "this ``fixture``";
-        }
+        String name = as<HasName>(fixture)?.name else "this ``fixture``";
         Integer reply = JOptionPane.showConfirmDialog(parent,
             "Are you sure you want to dismiss ``name``?",
             "Confirm Dismissal", JOptionPane.yesNoOption);
