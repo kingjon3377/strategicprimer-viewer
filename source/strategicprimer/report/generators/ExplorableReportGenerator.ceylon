@@ -95,24 +95,9 @@ shared class ExplorableReportGenerator(
     "Produces a more verbose sub-report on a cave, battlefield, or portal."
     shared actual IReportNode produceRIRSingle(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Battlefield|Cave|Portal item, Point loc) {
-        // TODO: Delegate text creation to produceSingle()
-        switch (item)
-        case (is Cave) {
-            fixtures.remove(item.id);
-            return SimpleReportNode("Caves beneath ``loc`` ``distCalculator
-                .distanceString(loc)``", loc);
-        }
-        case (is Battlefield) {
-            fixtures.remove(item.id);
-            return SimpleReportNode(
-                "Signs of a long-ago battle on ``loc`` ``distCalculator
-                    .distanceString(loc)``", loc);
-        }
-        case (is Portal) {
-            fixtures.remove(item.id);
-            return SimpleReportNode("A portal to another world at ``loc`` ``
-                distCalculator.distanceString(loc)``", loc);
-        }
+        StringBuilder builder = StringBuilder();
+        produceSingle(fixtures, map, builder.append, item, loc);
+        return SimpleReportNode(builder.string, loc);
     }
 
     "Produces the report section on all caves, battlefields, and portals."
