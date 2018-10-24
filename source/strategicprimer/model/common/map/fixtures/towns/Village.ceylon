@@ -66,13 +66,9 @@ shared class Village(status, name, id, owner, race)
     "An object is equal if it is a Village with the same status, ID, name, race, and
      owner."
     shared actual Boolean equals(Object obj) {
-        if (is Village obj) { // TODO: combine if statements
-            if (status == obj.status && name == obj.name && id == obj.id &&
-                    owner == obj.owner && race == obj.race) {
-                return anythingEqual(population, obj.population);
-            } else {
-                return false;
-            }
+        if (is Village obj, status == obj.status && name == obj.name && id == obj.id &&
+                owner == obj.owner && race == obj.race) {
+            return anythingEqual(population, obj.population);
         } else {
             return false;
         }
