@@ -211,10 +211,7 @@ shared class FixtureFilterTableModel extends AbstractTableModel
     shared actual Iterator<FixtureMatcher> iterator() => matchers.iterator();
 
     shared actual Comparison compare(TileFixture first, TileFixture second) {
-        for (matcher in matchers) {
-            if (!matcher.displayed) { // TODO: Use 'in matchers.filter(FixtureMatcher.displayed)' instead of filtering like this
-                continue;
-            }
+        for (matcher in matchers.filter(FixtureMatcher.displayed)) {
             if (matcher.matches(first)) {
                 if (matcher.matches(second)) {
                     return equal;
