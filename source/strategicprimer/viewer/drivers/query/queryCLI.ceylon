@@ -570,14 +570,12 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
                 replUsage();
             }
         }
-        if (exists first = matches.first) { // TODO: Flatten if statement: '!if.rest.empty', 'exists first', 'else'
-            if (matches.rest.empty) {
-                first.item();
-            } else {
-                cli.println("That command was ambiguous between the following: ");
-                cli.println(", ".join(matches.map(Entry.key)));
-                replUsage();
-            }
+        if (!matches.rest.empty) {
+            cli.println("That command was ambiguous between the following: ");
+            cli.println(", ".join(matches.map(Entry.key)));
+            replUsage();
+        } else if (exists first = matches.first) {
+            first.item();
         } else {
             cli.println("Unknown command.");
             replUsage();
