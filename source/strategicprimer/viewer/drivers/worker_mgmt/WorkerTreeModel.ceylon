@@ -165,15 +165,6 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
 
     shared actual void addNewUnit(IUnit unit) => addUnit(unit);
 
-    shared actual void mapChanged() { // TODO: Switch places with playerChanged() and delegate to it
-        player = model.currentPlayer;
-        TreePath path = TreePath(root); // TODO: Inline
-        TreeModelEvent event = TreeModelEvent(this, path);
-        for (listener in listeners) {
-            listener.treeNodesChanged(event);
-        }
-    }
-
     shared actual void playerChanged(Player? old, Player newPlayer) {
         player = newPlayer;
         TreeModelEvent event = TreeModelEvent(this, TreePath(root));
@@ -181,6 +172,8 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             listener.treeNodesChanged(event);
         }
     }
+
+    shared actual void mapChanged() => playerChanged(player, model.currentPlayer);
 
     shared actual Object getModelObject(Object obj) => obj;
 
