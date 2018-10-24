@@ -117,7 +117,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
             // dimensionsChanged() delegates to repaint(). (The other uses the parameter
             // we provide for robustness.)
             for (listener in gpListeners) {
-                listener.dimensionsChanged(oldDimensions, visDimensions); // TODO: Use 'visibleDimensions' instead of 'visDimensions', to be robust in the face of race conditions.
+                listener.dimensionsChanged(oldDimensions, visibleDimensions);
             }
         }
     }
