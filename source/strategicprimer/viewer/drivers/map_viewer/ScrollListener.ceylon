@@ -141,12 +141,13 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     "Alternate constructor that adds new scroll-bars to an existing component. This only
      works if that component is laid out using a [[BorderLayout]] and doesn't already have
       members at page-end and line-end."
-    todo("Use BorderedPanel attributes rather than JPanel.add(), and assert that they were 'null' before.")
     shared new createScrollBars(IViewerModel mapModel, BorderedPanel component)
             extends ScrollListener(mapModel, JScrollBar(Adjustable.horizontal),
         JScrollBar(Adjustable.vertical)) {
-        component.add(horizontalBar, Types.nativeString(BorderLayout.pageEnd));
-        component.add(verticalBar, Types.nativeString(BorderLayout.lineEnd));
+        "We don't want to replace existing components with scrollbars"
+        assert (!component.pageEnd exists, !component.lineEnd exists);
+        component.pageEnd = horizontalBar;
+        component.lineEnd = verticalBar;
     }
 
     variable Boolean mutex = true;
