@@ -130,8 +130,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         Integer oldIndex = getIndexOfChild(old, member);
         TreeModelEvent removedEvent = TreeModelEvent(this,
             TreePath(ObjectArray<Object>.with([ root, old.kind, old ])),
-            IntArray.with(Singleton(oldIndex)), // TODO: Combine with next line
-            ObjectArray.with(Singleton(member)));
+            IntArray.with(Singleton(oldIndex)), ObjectArray.with(Singleton(member)));
         TreeModelEvent removedChangeEvent = TreeModelEvent(this,
             TreePath(ObjectArray<Object>.with([ root, old.kind, old ])));
         for (listener in listeners) {
