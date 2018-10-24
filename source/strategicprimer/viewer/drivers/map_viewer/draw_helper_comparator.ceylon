@@ -47,13 +47,9 @@ import ceylon.file {
     Path
 }
 import lovelace.util.common {
-    PathWrapper
-}
-
-class Accumulator() { // FIXME: Use lovelace.util.common::Accumulator instead
-    variable Integer accumulatedValue = 0;
-    shared Integer storedValue => accumulatedValue;
-    shared void add(Integer addend) { accumulatedValue = accumulatedValue + addend; }
+    PathWrapper,
+    Accumulator,
+    IntHolder
 }
 
 "A factory for a driver to compare the performance of TileDrawHelpers."
@@ -228,15 +224,15 @@ shared class DrawHelperComparator satisfies UtilityDriver {
             Singleton(FixtureMatcher(dummyFilter, "test"))), "Ver 2:"]
     ];
 
-    MutableMap<[String, String, String], Accumulator> results =
-            HashMap<[String, String, String], Accumulator>();
+    MutableMap<[String, String, String], Accumulator<Integer>> results =
+            HashMap<[String, String, String], Accumulator<Integer>>();
 
-    Accumulator getResultsAccumulator(String file, String testee, String test) {
+    Accumulator<Integer> getResultsAccumulator(String file, String testee, String test) {
         [String, String, String] tuple = [file, testee, test];
         if (exists retval = results[tuple]) {
             return retval;
         } else {
-            Accumulator retval = Accumulator();
+            Accumulator<Integer> retval = IntHolder(0);
             results.put(tuple, retval);
             return retval;
         }
@@ -258,7 +254,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         for ([testDesc, test] in tests) {
             cli.println("``testDesc``:");
             for ([testCase, caseDesc] in helpers) {
-                Accumulator accumulator = getResultsAccumulator(fileName, caseDesc,
+                Accumulator<Integer> accumulator = getResultsAccumulator(fileName, caseDesc,
                     testDesc);
                 accumulator.add(printStats(caseDesc, test(testCase, map, repetitions,
                     scaleZoom(ViewerModel.defaultZoomLevel, map.dimensions.version)),
@@ -271,7 +267,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
             printStats(caseDesc, results
                 .filterKeys(shuffle(Tuple<String, String, String[2]>
                     .startsWith)([fileName, caseDesc]))
-                .items.map(Accumulator.storedValue).fold(0)(plus), repetitions);
+                .items.map(Accumulator<Integer>.sum).fold(0)(plus), repetitions);
         }
         cli.println("");
     }
@@ -311,7 +307,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
                     "Filename,# Tile,DrawHelper Tested,Test Case,Repetitions,Time (ns)");
                 for ([file, helper, test]->total in results) {
                     writer.writeLine(",".join([file, mapSizes[file] else "", helper, test,
-                        reps, total.storedValue]));
+                        reps, total.sum]));
                 }
             }
         }
