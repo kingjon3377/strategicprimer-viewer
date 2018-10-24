@@ -446,7 +446,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             playerIsDefault = false;
         }
 
-        Anything(ActionEvent) resourceListener = (ActionEvent event) { // TODO: Convert from Callable variable to method
+        void resourceListener(ActionEvent event) {
             confirmPlayer();
             String kind = resourceKindBox.selectedString;
             String resource = resourceBox.selectedString;
@@ -477,7 +477,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                 logLabel.append("Failed to convert quantity into the form we need.
                                  ");
             }
-        };
+        }
 
         resourcePanel.add(pairPanel(JLabel(""),
             listenedButton("Add Resource", resourceListener)));
@@ -510,7 +510,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         SpinnerNumberModel implementQuantityModel = SpinnerNumberModel(1, 1, 2000, 1);
         JSpinner implementQuantityField = JSpinner(implementQuantityModel);
         UpdatedComboBox implementKindBox = UpdatedComboBox(logLabel.append);
-        Anything(ActionEvent) implementListener = (ActionEvent event) { // TODO: Convert from Callable variable to method
+        void implementListener(ActionEvent event) {
             confirmPlayer();
             String kind = implementKindBox.selectedString;
             if (kind.empty) {
@@ -525,7 +525,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             implementQuantityModel.\ivalue = JInteger.valueOf(1);
             implementKindBox.checkAndClear();
             implementQuantityField.requestFocusInWindow();
-        };
+        }
 
         implementKindBox.addSubmitListener(implementListener);
         if (is JTextField editor = implementQuantityField.editor) {
