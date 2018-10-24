@@ -205,17 +205,15 @@ shared class SPMenu extends JMenuBar {
         JMenu viewMenu = JMenu("View");
         viewMenu.mnemonic = KeyEvent.vkE;
 
-        JMenuItem currentPlayerItem; // TODO: Refactor to put a String currentPlayerDesc variable here, defined in the two if branches, and create the item inline in the viewMenu.add() call
+        String currentPlayerDesc;
         if (is WorkerGUI driver) {
-            currentPlayerItem = createMenuItem("Change current player", KeyEvent.vkP,
-                "Look at a different player's units and workers", handler,
-                createAccelerator(KeyEvent.vkP));
+            currentPlayerDesc = "Look at a different player's units and workers";
         } else {
-            currentPlayerItem = enabledForDriver<ModelDriver>(createMenuItem(
-                "Change current player", KeyEvent.vkP,
-                "Mark a player as the current player in the map", handler), driver);
+            currentPlayerDesc = "Mark a player as the current player in the map";
         }
-        viewMenu.add(currentPlayerItem);
+        viewMenu.add(enabledForDriver<ModelDriver|WorkerGUI>(createMenuItem(
+            "Change current player", KeyEvent.vkP, currentPlayerDesc, handler,
+            createAccelerator(KeyEvent.vkP)), driver));
 
         viewMenu.add(enabledForDriver<WorkerGUI>(createMenuItem("Reload tree",
             KeyEvent.vkR, "Refresh the view of the workers", handler,
