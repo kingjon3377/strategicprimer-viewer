@@ -78,13 +78,8 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     tree.addUnitSelectionListener(newWorkerListener);
 
     object flaggingListener satisfies LevelGainListener&AddRemoveListener {
-        void flag() { // TODO: Use [outer.]markModified() instead
-            for (map->_ in model.allMaps) {
-                model.setModifiedFlag(map, true);
-            }
-        }
-        shared actual void add(String category, String addendum) => flag();
-        shared actual void level() => flag();
+        shared actual void add(String category, String addendum) => markModified();
+        shared actual void level() => markModified();
     }
 
     JobTreeModel jobsTreeModel = JobTreeModel();
