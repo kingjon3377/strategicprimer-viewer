@@ -205,7 +205,7 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
         void handlePlayerChanged() {
             layoutObj.first(retval.contentPane);
             if (!playerList.selectionEmpty,
-                exists newPlayer = playerList.selectedValue) { // TODO: indentation
+                    exists newPlayer = playerList.selectedValue) {
                 for (listener in listeners) {
                     listener.playerChanged(null, newPlayer);
                 }

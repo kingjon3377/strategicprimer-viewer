@@ -189,7 +189,7 @@ abstract class FluidBase {
     "Whether the given XML element is a [[StartElement]] and in a namespace we support."
     static shared Boolean isSPStartElement(XMLEvent element) {
         if (is StartElement element,
-            [spNamespace, XMLConstants.nullNsUri] // TODO: fix indentation
+                [spNamespace, XMLConstants.nullNsUri]
                     .contains(element.name.namespaceURI)) {
             return true;
         } else {

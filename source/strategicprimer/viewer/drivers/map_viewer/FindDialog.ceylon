@@ -57,7 +57,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     Boolean matchesName(String pattern, IFixture fixture, Boolean caseSensitivity) {
         if (is HasName fixture) {
             String name = (caseSensitivity) then fixture.name else
-            fixture.name.lowercased; // TODO: Fix indentation
+                fixture.name.lowercased;
             return name.contains(pattern);
         } else {
             return false;
@@ -68,7 +68,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     Boolean matchesKind(String pattern, IFixture fixture, Boolean caseSensitivity) {
         if (is HasKind fixture) {
             String kind = (caseSensitivity) then fixture.kind else
-            fixture.kind.lowercased; // TODO: Fix indentation
+                fixture.kind.lowercased;
             return kind.contains(pattern);
         } else {
             return false;
@@ -81,7 +81,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         if (is HasOwner fixture) {
             Player owner = fixture.owner;
             String ownerName = (caseSensitivity) then owner.name else
-            owner.name.lowercased; // TODO: Fix indentation
+                owner.name.lowercased;
             if (exists idNum, owner.playerId == idNum || ownerName.contains(pattern)) {
                 return true;
             } else if ("me".equals(pattern.lowercased), owner.current) {

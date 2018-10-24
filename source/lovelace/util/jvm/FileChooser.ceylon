@@ -124,8 +124,8 @@ shared class FileChooser {
         switch (fileChooser)
         case (is JFileChooser) {
             log.trace("Using Swing JFileChooser");
-            chooserFunction = (Component? component) => // FIXME: Indentation
-            fileChooser.showDialog(component, approveText);
+            chooserFunction = (Component? component) =>
+            	fileChooser.showDialog(component, approveText);
         }
         case (is JFileDialog) {
             log.trace("Using AWT FileDialog, specifying Save");

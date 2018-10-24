@@ -32,7 +32,7 @@ shared class Job(name, levelNum, ISkill* skills) satisfies IJob {
     todo("What should we do with matching but non-equal skill?")
     shared actual void addSkill(ISkill skill) {
         if (exists existing = skillSet[skill.name], existing == skill) {
-                return; // TODO: regularize indentation
+            return;
         } else {
             skillSet[skill.name] = skill;
         }

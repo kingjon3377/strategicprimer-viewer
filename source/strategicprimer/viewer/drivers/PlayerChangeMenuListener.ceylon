@@ -73,10 +73,10 @@ shared class PlayerChangeMenuListener(IDriverModel model)
             players = model.map.players;
         }
         if (is Player retval = JOptionPane.showInputDialog(
-            getContainingFrame(as<Component>(event.source)), // TODO: fix indentation here
-            "Player to view:", "Choose New Player:",
-            JOptionPane.plainMessage, null, ObjectArray.with(players),
-            currentPlayer)) {
+                getContainingFrame(as<Component>(event.source)),
+                "Player to view:", "Choose New Player:",
+                JOptionPane.plainMessage, null, ObjectArray.with(players),
+                currentPlayer)) {
             if (is IWorkerModel model) {
                 model.currentPlayer = retval;
             }

@@ -176,9 +176,9 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             skill.addHours(hours, singletonRandom.nextInteger(100));
             if (skill.level != oldLevel) {
                 if (oldLevel == 0, skill.name == "miscellaneous",
-                    cli.inputBooleanInSeries("``worker.name`` gained ``skill.
-                        level`` level(s) in miscellaneous, choose another skill?",
-                    "misc-replacement")) { // FIXME: Indentation
+                        cli.inputBooleanInSeries("``worker.name`` gained ``skill.
+                            level`` level(s) in miscellaneous, choose another skill?",
+                        "misc-replacement")) {
                     MutableList<String> gains = ArrayList<String>();
                     for (i in 0:skill.level) {
                         ISkill replacement;

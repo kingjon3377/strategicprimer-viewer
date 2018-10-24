@@ -95,7 +95,7 @@ abstract class YAAbstractReader<Element>
     shared static String getParameter(StartElement element, String param,
             String? defaultValue = null) {
         if (exists attr = getAttributeByName(element, param),
-            exists retval = attr.\ivalue) { // TODO: fix indentation
+                exists retval = attr.\ivalue) {
             return retval;
         } else if (exists defaultValue) {
             return defaultValue;
@@ -123,12 +123,13 @@ abstract class YAAbstractReader<Element>
     }
 
     "Replace XML meta-characters in a string with their equivalents."
-    shared static String simpleQuote(String text, // TODO: indentation of following parameter and its docstring
-        "The character that will mark the end of the string as far as XML is concerned.
-         If a single or double quote, that character will be encoded every time it occurs
-         in the string; if a greater-than sign or an equal sign, both types of quotes will
-         be; if a less-than sign, neither will be."
-        Character? delimiter = null) {
+    shared static String simpleQuote(String text,
+            "The character that will mark the end of the string as far as XML
+             is concerned.  If a single or double quote, that character will be
+             encoded every time it occurs in the string; if a greater-than sign
+             or an equal sign, both types of quotes will be; if a less-than
+             sign, neither will be."
+            Character? delimiter = null) {
         variable String retval = text;
         for ([pattern, replacement] in quoting) {
             retval = retval.replace(pattern, replacement);
@@ -187,7 +188,7 @@ abstract class YAAbstractReader<Element>
     shared static Integer getIntegerParameter(StartElement element, String parameter,
             Integer? defaultValue = null) {
         if (exists attr = getAttributeByName(element, parameter),
-            exists retval = attr.\ivalue) { // TODO: indentation
+                exists retval = attr.\ivalue) {
             try {
                 return parseInt(retval, element.location);
             } catch (ParseException|JParseException except) {

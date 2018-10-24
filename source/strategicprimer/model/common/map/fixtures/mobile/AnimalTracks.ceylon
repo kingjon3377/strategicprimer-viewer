@@ -54,7 +54,7 @@ shared class AnimalTracks(kind)
                 return true;
             } else {
                 report("Comparing tracks from different kinds of animals: ``
-                fixture.kind`` and ``kind``"); // TODO: Fix indentation
+                	    fixture.kind`` and ``kind``");
                 return false;
             }
         } else if (is Animal fixture, fixture.kind == kind) {

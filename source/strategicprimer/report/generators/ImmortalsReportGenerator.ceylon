@@ -97,7 +97,7 @@ shared class ImmortalsReportGenerator(
             }
         }
         if (!centaurs.empty || !giants.empty, !fairies.empty || !dragons.empty ||
-        !simples.empty) { // FIXME: Indentation
+                !simples.empty) {
             ostream("""<h4>Immortals</h4>
                        <ul>""");
             for (key->list in [centaurs, giants, fairies, dragons, simples]

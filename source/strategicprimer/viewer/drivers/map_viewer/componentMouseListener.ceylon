@@ -61,7 +61,7 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
                 point.column < mapDimensions.columns) {
 //            String mountainString = (model.map.mountainous[point]) // TODO: syntax sugar once compiler bug fixed
             String mountainString = (model.map.mountainous.get(point))
-            then ", mountainous" else ""; // TODO: Fix indentation
+                        then ", mountainous" else "";
             return "<html><body>``point``: ``model.map
                     .baseTerrain[point] else "not visible"````mountainString``<br />``
                     terrainFixturesAndTop(point)``</body></html>";

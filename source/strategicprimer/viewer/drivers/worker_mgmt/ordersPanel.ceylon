@@ -116,9 +116,9 @@ JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPan
         JButton revertButton = listenedButton("Revert", revertListener);
         platform.makeButtonsSegmented(applyButton, revertButton);
 
-        JPanel buttonPanel = (platform.systemIsMac) then // TODO: indentation of continuation lines
-        centeredHorizontalBox(revertButton, applyButton)
-        else BorderedPanel.horizontalPanel(revertButton, null, applyButton);
+        JPanel buttonPanel = (platform.systemIsMac) then
+                centeredHorizontalBox(revertButton, applyButton)
+                else BorderedPanel.horizontalPanel(revertButton, null, applyButton);
         String prefix = platform.shortcutDescription;
         retval.pageStart = BorderedPanel.horizontalPanel(
             JLabel("Orders for current selection, if a unit: (``prefix``D)"), null,

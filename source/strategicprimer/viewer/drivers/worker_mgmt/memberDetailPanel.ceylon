@@ -140,9 +140,9 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     JScrollPane statPanelWrapped = JScrollPane(horizontalSplit(statPanel,
             portraitComponent, 0.6),
         (platform.systemIsMac) then ScrollPaneConstants.verticalScrollbarAlways
-        else ScrollPaneConstants.verticalScrollbarAsNeeded, // TODO: indentation
+                else ScrollPaneConstants.verticalScrollbarAsNeeded,
         (platform.systemIsMac) then ScrollPaneConstants.horizontalScrollbarAlways
-        else ScrollPaneConstants.horizontalScrollbarAsNeeded); // TODO: indentation
+                else ScrollPaneConstants.horizontalScrollbarAsNeeded);
     JComponent split = verticalSplit(statPanelWrapped, resultsPanel);
     split.border = BorderFactory.createEmptyBorder();
 

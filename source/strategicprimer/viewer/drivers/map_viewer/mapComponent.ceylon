@@ -225,7 +225,7 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
             variable Integer maximumRow = mapModel.visibleDimensions.maximumRow;
             MapDimensions mapDimensions = mapModel.mapDimensions;
             if (visibleColumns != mapModel.visibleDimensions.width ||
-            visibleRows != mapModel.visibleDimensions.height) { // TODO: Fix indentation
+                    visibleRows != mapModel.visibleDimensions.height) {
                 Integer totalColumns = mapDimensions.columns; // TODO: Extract a helper function, producing [min, max] Tuples, since we use the same algorithm for columns and rows
                 if (visibleColumns >= totalColumns) {
                     minimumColumn = 0;

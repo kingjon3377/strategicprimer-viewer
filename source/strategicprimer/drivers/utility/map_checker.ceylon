@@ -350,7 +350,7 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         } catch (IOException except) {
             stderr("I/O error reading ``file``");
             log.error("I/O error reading ``file``: ``except.message``");
-        log.debug("Full stack trace of I/O error", except); // TODO: Indentation here
+	    log.debug("Full stack trace of I/O error", except);
             return;
         } catch (XMLStreamException except) {
             stderr("Malformed XML in ``file``");
