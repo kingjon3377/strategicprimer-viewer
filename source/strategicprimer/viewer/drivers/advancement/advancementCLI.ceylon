@@ -111,8 +111,13 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             Integer hours = cli.inputNumber("Hours of experience to add: ") else 0;
             if (allowExpertMentoring) {
                 Integer hoursPerHour = cli.inputNumber("'Hours' between hourly checks: ")
-                    else 0; // TODO: The 0 here causes an infinite loop
-                variable Integer remaining = hours;
+                    else 0;
+                variable Integer remaining;
+                if (hoursPerHour > 0) {
+                    remaining = hours;
+                } else {
+                    remaining = 0;
+                }
                 while (remaining > 0) {
                     skill.addHours(Integer.largest(remaining, hoursPerHour),
                         singletonRandom.nextInteger(100));
