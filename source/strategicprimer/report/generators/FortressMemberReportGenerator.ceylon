@@ -197,7 +197,7 @@ shared class FortressMemberReportGenerator(
             }
         }
         IReportNode resources = ListReportNode("Resources:");
-        resources.addIfNonEmpty(*resourceKinds.items); // TODO: Can we avoid the spread with .each()?
+        resourceKinds.items.each(resources.addIfNonEmpty);
         IReportNode retval = SectionListReportNode(4, "Resources and Equipment:");
         retval.addIfNonEmpty(resources, equipment);
         if (retval.childCount == 0) {
