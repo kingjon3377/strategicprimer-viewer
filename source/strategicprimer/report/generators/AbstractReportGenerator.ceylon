@@ -120,13 +120,7 @@ shared sealed abstract class AbstractReportGenerator<Type>(
         shared actual Integer size => wrapped.size;
         shared actual Boolean empty => wrapped.empty;
         shared actual Integer hash => wrapped.hash;
-        shared actual Boolean equals(Object that) { // TODO: Replace with (this of Map<Key, Value>.equals(that)
-            if (is Map<Key, Value> that) {
-                return that.containsEvery(this) && containsEvery(that);
-            } else {
-                return false;
-            }
-        }
+        shared actual Boolean equals(Object that) => (this of Map<Key, Value>).equals(that);
         shared actual void clear() => wrapped.clear();
         shared actual MutableMap<Key,Value> clone() => HeadedMapImpl<Key, Value>(header,
             comparator, initial);
