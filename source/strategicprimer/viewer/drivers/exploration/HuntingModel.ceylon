@@ -112,12 +112,9 @@ shared class HuntingModel {
        tiles. This may be an infinite stream."""
     shared {<Point->Grove|Meadow|Shrub|NothingFound>*} gather(
             "Whereabouts to search"
-            Point point) {
-        {<Point->Grove|Meadow|Shrub|NothingFound>*} retval = // TODO: Inline; make method use =>
-                surroundingPointIterable(point, dimensions)
-                    .map((loc) => plants(loc)
+            Point point) =>
+        singletonRandom.elements(surroundingPointIterable(point, dimensions)
+                .map((loc) => plants(loc) // TODO: Convert lambda to named method, possibly taking two parameter lists
                         .map(curry(Entry<Point, Grove|Meadow|Shrub|NothingFound>)(loc)))
-                .flatMap(identity);
-        return singletonRandom.elements(retval);
-    }
+                .flatMap(identity));
 }
