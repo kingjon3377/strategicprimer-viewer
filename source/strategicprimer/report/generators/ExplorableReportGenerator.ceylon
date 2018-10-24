@@ -44,22 +44,20 @@ shared class ExplorableReportGenerator(
     shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Battlefield|Cave|Portal item,
             Point loc) {
-        // TODO: Extract common part of the string to pass to ostream() after the switch
         switch (item)
         case (is Cave) {
             fixtures.remove(item.id);
-            ostream("Caves beneath ``loc````distCalculator.distanceString(loc)``");
+            ostream("Caves beneath ");
         }
         case (is Battlefield) {
             fixtures.remove(item.id);
-            ostream("Signs of a long-ago battle on ``loc````distCalculator
-                .distanceString(loc)``");
+            ostream("Signs of a long-ago battle on ");
         }
         case (is Portal) {
             fixtures.remove(item.id);
-            ostream("A portal to another world at ``loc`` ``distCalculator
-                .distanceString(loc)``");
+            ostream("A portal to another world at ");
         }
+        ostream(loc.string + distCalculator.distanceString(loc));
     }
 
     "Produces the report on all caves, battlefields, and portals."
