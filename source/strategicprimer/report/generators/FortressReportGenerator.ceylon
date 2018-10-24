@@ -122,11 +122,11 @@ shared class FortressReportGenerator(
     shared actual void produceSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Fortress item, Point loc) {
-        // TODO: Split up initial printing to move logic out of interpolation
-        ostream("<h5>Fortress ``item.name`` belonging to ``
-            (item.owner == currentPlayer) then "you" else item.owner.string``</h5>
+        ostream("<h5>Fortress ``item.name`` belonging to ");
+        ostream((item.owner == currentPlayer) then "you" else item.owner.string);
+        ostream("</h5>
                  <ul>
-                 <li>Located at ``loc`` ``distCalculator.distanceString(loc)``</li>
+                     <li>Located at ``loc`` ``distCalculator.distanceString(loc)``</li>
                      <li>``terrain(map, loc, fixtures)``</li>
                      ");
         //            riversToString(ostream, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
