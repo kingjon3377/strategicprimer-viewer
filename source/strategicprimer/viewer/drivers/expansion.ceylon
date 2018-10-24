@@ -249,8 +249,7 @@ shared class MapPopulatorDriver(ICLIHelper cli, SPOptions options, model)
 
     shared actual void startDriver() {
         populate(model.map);
-        cli.println(
-            "``changedCount`` out of ``suitableCount`` suitable locations were changed"); // TODO s/ out of /\// ; rejoin to prev line
+        cli.println("``changedCount``/``suitableCount`` suitable locations were changed");
         if (changedCount > 0) {
             model.mapModified = true;
         }
