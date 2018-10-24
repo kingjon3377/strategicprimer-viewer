@@ -137,7 +137,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         if (currSelection.column < 0) {
             column = 0;
         } else if (currSelection.column >= map.dimensions.columns) {
-            column = map.dimensions.columns -1; // TODO: Reformat this line (missing space)
+            column = map.dimensions.columns - 1;
         } else {
             column = currSelection.column;
         }
