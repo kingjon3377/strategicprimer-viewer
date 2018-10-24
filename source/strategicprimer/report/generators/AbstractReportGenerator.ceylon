@@ -95,25 +95,7 @@ shared sealed abstract class AbstractReportGenerator<Type>(
             if (empty) {
                 return "";
             } else {
-                StringBuilder builder = StringBuilder(); // TODO: Use commaSeparatedList instead of duplicating it here.
-                builder.append(header);
-                builder.append(" ");
-                assert (exists firstItem = first);
-                builder.append(firstItem.string);
-                if (exists third = rest.rest.first) {
-                    variable {Point*} temp = rest;
-                    while (exists current = temp.first) {
-                        if (temp.rest.first exists) {
-                            builder.append(", ``current``");
-                        } else {
-                            builder.append(", and ``current``");
-                        }
-                        temp = temp.rest;
-                    }
-                } else if (exists second = rest.first) {
-                    builder.append(" and ``second``");
-                }
-                return builder.string;
+                return "``header`` ``commaSeparatedList(this)``";
             }
         }
     }
