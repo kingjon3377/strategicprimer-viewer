@@ -154,7 +154,10 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     } else {
                         return UnitTransferable(*unitsToTransfer);
                     }
-                } else { // TODO: Warn, or at least log, if neither was empty
+                } else {
+                    if (!unitsToTransfer.empty) {
+                        log.warn("Selection included both units and unit members");
+                    }
                     return UnitMemberTransferable(*membersToTransfer);
                 }
             }
