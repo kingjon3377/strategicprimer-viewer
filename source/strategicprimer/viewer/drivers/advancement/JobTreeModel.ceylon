@@ -50,10 +50,7 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
     shared actual IWorker? root => localRoot;
 
     shared actual HasName getChild(Object parent, Integer index) {
-        if (index >= 0, is IWorker parent, // TODO: Combine with IJob case
-                exists child = parent.getFromFirst(index)) {
-            return child;
-        } else if (index >= 0, is IJob parent,
+        if (index >= 0, is IWorker|IJob parent,
                 exists child = parent.getFromFirst(index)) {
             return child;
         } else {
