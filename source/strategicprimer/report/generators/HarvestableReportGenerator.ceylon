@@ -123,42 +123,39 @@ shared class HarvestableReportGenerator
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, HarvestableFixture item, Point loc) {
         assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
-        // TODO: Move the 'At (loc)' up here, and in general pull as much as possible out of interpolation to condense the cases
+        ostream("At ``loc``: ");
         switch (item)
         case (is CacheFixture) {
-            ostream("At ``loc``: A cache of ``item.kind``, containing ``
-                        item.contents`` ``distCalculator.distanceString(loc)``");
+            ostream("A cache of ``item.kind``, containing ``item.contents``");
         }
         case (is Grove) {
-            ostream("At ``loc``: ``(item.cultivated) then "cultivated" else
-                "wild"`` ``item.kind`` ``(item.orchard) then "orchard" else
-                "grove"`` ``populationCountString(item, "tree")````
-                distCalculator.distanceString(loc)``");
+            ostream((item.cultivated) then "cultivated " else "wild ");
+            ostream(item.kind);
+            ostream((item.orchard) then " orchard " else " grove ");
+            ostream(populationCountString(item, "tree"));
         }
         case (is Meadow) {
-            ostream("At ``loc``: ``item.status`` ``(item.cultivated) then
-                "cultivated" else "wild or abandoned"`` ``item.kind`` ``(item
-                    .field) then "field" else "meadow"`` ``acreageString(item)````
-                    distCalculator.distanceString(loc)``");
+            ostream(item.status.string);
+            ostream((item.cultivated) then " cultivated " else " wild or abandoned ");
+            ostream(item.kind);
+            ostream((item.field) then " field " else " meadow ");
+            ostream(acreageString(item));
         }
         case (is Mine) {
-            ostream("At ``loc``: ``item`` ``distCalculator
-                .distanceString(loc)``");
+            ostream(item.string);
         }
         case (is MineralVein) {
-            ostream("At ``loc``: An ``(item.exposed) then
-                "exposed" else "unexposed"`` vein of ``item
-                    .kind`` ``distCalculator.distanceString(loc)``");
+            ostream("An ``(item.exposed) then
+                "exposed" else "unexposed"`` vein of ``item.kind``");
         }
         case (is Shrub) {
-            ostream("At ``loc``: ``item.kind`` ``populationCountString(item, "plant")````
-                distCalculator.distanceString(loc)``");
+            ostream("``item.kind`` ``populationCountString(item, "plant")``");
         }
         case (is StoneDeposit) {
-            ostream("At ``loc``: An exposed ``item
-                .kind`` deposit ``distCalculator.distanceString(loc)``");
+            ostream("An exposed ``item.kind`` deposit");
         }
-        // TODO: Once distance is moved to the end of cache-case, extract it from all the cases to down here
+        ostream(" ");
+        ostream(distCalculator.distanceString(loc));
     }
 
     """Produce the sub-report(s) dealing with "harvestable" fixtures. All fixtures
