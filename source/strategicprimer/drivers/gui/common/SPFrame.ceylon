@@ -100,12 +100,10 @@ shared class SPFrame(String windowTitle, ISPDriver driver, Dimension? minSize = 
                 }
                 outer.title = refreshTitle();
             }
-            shared actual void mapChanged() { // TODO: =>
+            shared actual void mapChanged() =>
                 SwingUtilities.invokeLater(impl);
-            }
-            shared actual void mapMetadataChanged() { // TODO: =>
+            shared actual void mapMetadataChanged() =>
                 SwingUtilities.invokeLater(impl);
-            }
         });
     }
 

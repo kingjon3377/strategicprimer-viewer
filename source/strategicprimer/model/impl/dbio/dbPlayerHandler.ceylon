@@ -25,11 +25,10 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
            );"""
     ];
 
-    shared actual void write(Sql db, Player obj, IMapNG context) { // TODO: =>
+    shared actual void write(Sql db, Player obj, IMapNG context) =>
         db.Insert("""INSERT INTO players (id, codename, current, portrait)
                      VALUES(?, ?, ?, ?);""")
                 .execute(obj.playerId, obj.name, obj.current, obj.portrait);
-    }
 
     void readPlayer(IMutableMapNG map, Map<String, Object> row, Warning warner) {
         assert (is Integer id = row["id"], is String name = row["codename"],

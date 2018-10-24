@@ -30,14 +30,13 @@ object dbGroveHandler extends AbstractDatabaseWriter<Grove, Point>()
            );"""
     ];
 
-    shared actual void write(Sql db, Grove obj, Point context) { // TODO: =>
+    shared actual void write(Sql db, Grove obj, Point context) =>
         db.Insert("""INSERT INTO groves (row, column, id, type, kind, cultivated, count,
                          image)
                      VALUES(?, ?, ?, ?, ?, ?, ?, ?);""")
                 .execute(context.row, context.column, obj.id,
                     (obj.orchard) then "orchard" else "grove",
                     obj.kind, obj.cultivated, obj.population, obj.image);
-    }
 
     void readGrove(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],

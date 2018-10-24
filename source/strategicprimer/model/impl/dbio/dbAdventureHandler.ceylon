@@ -27,13 +27,12 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
                     image VARCHAR(255)
                 );"""];
 
-    shared actual void write(Sql db, AdventureFixture obj, Point context) { // TODO: =>
+    shared actual void write(Sql db, AdventureFixture obj, Point context) =>
             db.Insert("""INSERT INTO adventures (row, column, id, brief, full, owner,
                              image)
                          VALUES(?, ?, ?, ?, ?, ?, ?);""")
                     .execute(context.row, context.column, obj.id, obj.briefDescription,
                         obj.fullDescription, obj.owner.playerId, obj.image);
-    }
 
     void readAdventure(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],

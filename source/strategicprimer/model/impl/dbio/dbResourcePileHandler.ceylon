@@ -40,14 +40,13 @@ object dbResourcePileHandler
            );"""
     ];
 
-    shared actual void write(Sql db, ResourcePile obj, IUnit|Fortress context) { // TODO: =>
+    shared actual void write(Sql db, ResourcePile obj, IUnit|Fortress context) =>
         db.Insert("""INSERT INTO resource_piles (parent, id, kind, contents, quantity,
                          units, created, image)
                      VALUES(?, ?, ?, ?, ?, ?, ?, ?);""")
             .execute(context.id, obj.id, obj.kind, obj.contents,
                         obj.quantity.number.string, obj.quantity.units, obj.created,
                         obj.image);
-    }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 

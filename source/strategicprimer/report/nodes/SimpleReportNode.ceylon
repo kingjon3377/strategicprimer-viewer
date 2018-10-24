@@ -37,17 +37,14 @@ shared class SimpleReportNode(variable String nodeText,
 
     shared actual Integer hash => text.hash;
 
-    shared actual default void appendNode(MutableTreeNode node) { // TODO: =>
+    shared actual default void appendNode(MutableTreeNode node) =>
         log.warn("SimpleReportNode.appendNode() called");
-    }
 
-    shared actual default void add(MutableTreeNode node) { // TODO: =>
+    shared actual default void add(MutableTreeNode node) =>
         log.warn("SimpleReportNode.add() called");
-    }
 
-    shared actual default void addAsFirst(MutableTreeNode node) { // TODO: =>
+    shared actual default void addAsFirst(MutableTreeNode node) =>
         log.warn("SimpleReportNode.addAsFirst() called");
-    }
 
     shared actual default String string => text;
 

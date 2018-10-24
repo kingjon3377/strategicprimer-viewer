@@ -55,10 +55,9 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     }
 
     "Produce the report-intermediate-representation sub-sub-report on a Job."
-    IReportNode produceJobRIR(IJob job, Point loc) { // TODO: =>
-        return SimpleReportNode("``job.level`` levels in ``job.name`` ``skills(*job)``",
+    IReportNode produceJobRIR(IJob job, Point loc) =>
+        SimpleReportNode("``job.level`` levels in ``job.name`` ``skills(*job)``",
             loc);
-    }
 
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
      paragraph or bullet point)."

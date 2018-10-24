@@ -33,12 +33,11 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
            );"""
     ];
 
-    shared actual void write(Sql db, Forest obj, Point context) { // TODO: =>
+    shared actual void write(Sql db, Forest obj, Point context) =>
         db.Insert("""INSERT INTO forests(row, column, id, kind, rows, acres, image)
                      VALUES(?, ?, ?, ?, ?, ?, ?);""")
                 .execute(context.row, context.column, obj.id, obj.kind, obj.rows,
                     obj.acres.string, obj.image);
-    }
 
     void readForest(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],

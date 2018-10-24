@@ -32,12 +32,11 @@ object dbShrubHandler extends AbstractDatabaseWriter<Shrub, Point>()
            );"""
     ];
 
-    shared actual void write(Sql db, Shrub obj, Point context) { // TODO: =>
+    shared actual void write(Sql db, Shrub obj, Point context) =>
         db.Insert("""INSERT INTO shrubs (row, column, id, kind, count, image)
                      VALUES(?, ?, ?, ?, ?, ?);""")
                 .execute(context.row, context.column, obj.id, obj.kind,
                     obj.population, obj.image);
-    }
 
     void readShrub(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],

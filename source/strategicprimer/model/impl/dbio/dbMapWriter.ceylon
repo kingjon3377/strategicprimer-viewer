@@ -10,11 +10,10 @@ import ceylon.dbc {
 variable Integer currentTurn = -1;
 
 object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
-    Boolean[5] riverFlags(River* rivers) { // TODO: =>
-        return [rivers.contains(River.north), rivers.contains(River.south),
+    Boolean[5] riverFlags(River* rivers) =>
+        [rivers.contains(River.north), rivers.contains(River.south),
             rivers.contains(River.east), rivers.contains(River.west),
             rivers.contains(River.lake)];
-    }
 
     shared actual {String+} initializers = [
         """CREATE TABLE IF NOT EXISTS metadata (

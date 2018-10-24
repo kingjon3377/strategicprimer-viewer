@@ -854,11 +854,10 @@ object xmlTests {
     "Test that [[a unit's|IUnit]] image property is preserved through
      (de)serialization."
     test
-    shared void testUnitImageSerialization() { // TODO: =>
+    shared void testUnitImageSerialization() =>
         assertImageSerialization("Unit image property is preserved",
             Unit(PlayerImpl(5, ""), "herder",
                 "herderName", 9));
-    }
 
     "Another test of serialization within a single tile."
     test
@@ -1719,10 +1718,9 @@ object xmlTests {
 
     "Test that XML-reading code can handle numbers containing commas."
     test
-    shared void testCommaSeparators() { // TODO: =>
+    shared void testCommaSeparators() =>
         assertEquivalentForms("ID numbers can contain commas", """<hill id="1,002" />""",
             """<hill id="1002" />""", warningLevels.die);
-    }
 
     """Test that the old, now removed, "sandbar" tag produces only a warning if present in XML."""
     test

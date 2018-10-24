@@ -78,9 +78,8 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     StatLabel[6] statLabels = [strLabel, dexLabel, conLabel, intLabel, wisLabel,
         chaLabel];
 
-    JLabel caption(String string) { // TODO: =>
-        return JLabel("<html><b>``string``:</b></html>");
-    }
+    JLabel caption(String string) =>
+        JLabel("<html><b>``string``:</b></html>");
     JLabel typeCaption = caption("Member Type");
     JLabel typeLabel = JLabel("member type");
     JLabel nameCaption = caption("Name");

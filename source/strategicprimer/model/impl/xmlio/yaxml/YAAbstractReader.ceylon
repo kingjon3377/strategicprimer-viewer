@@ -118,9 +118,8 @@ abstract class YAAbstractReader<Element>
             getAttributeByName(element, param) exists;
 
     "Append the given number of tabs to the stream."
-    shared static void indent(Anything(String) ostream, Integer tabs) { // TODO: =>
+    shared static void indent(Anything(String) ostream, Integer tabs) =>
         ostream("\t".repeat(tabs));
-    }
 
     "Replace XML meta-characters in a string with their equivalents."
     shared static String simpleQuote(String text,
@@ -180,9 +179,8 @@ abstract class YAAbstractReader<Element>
     throws(`class ParseException`,
         "on non-numeric input, if we were using [[Integer.parse]]")
     static Integer parseInt(String string,
-            "The current location in the document" Location location) { // TODO: =>
-        return numParser.parse(string).intValue();
-    }
+            "The current location in the document" Location location) =>
+	    	numParser.parse(string).intValue();
 
     "Read a parameter from XML whose value must be an integer."
     shared static Integer getIntegerParameter(StartElement element, String parameter,

@@ -59,10 +59,9 @@ shared interface Animal
     shared actual String plural => "Animals";
 
     "Whether another animal is equal except its ID and population count."
-    shared default Boolean equalExceptPopulation(Animal other) { // TODO: =>
-        return kind == other.kind && talking == other.talking &&
+    shared default Boolean equalExceptPopulation(Animal other) =>
+            kind == other.kind && talking == other.talking &&
                 status == other.status && born == other.born;
-    }
 
     shared actual default Boolean equalsIgnoringID(IFixture fixture) {
         if (is Animal fixture) {

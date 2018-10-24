@@ -319,9 +319,7 @@ abstract class FluidBase {
             "The text to parse"
             String string,
             "The current location in the XML."
-            Location location) { // TODO: =>
-        return numParser.parse(string).intValue();
-    }
+            Location location) => numParser.parse(string).intValue();
 
     "Parse an Integer parameter."
     todo("Replace this with a conversion function passed to [[getAttribute]]")
