@@ -45,7 +45,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     animalPlurals
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
-    WorkerStats
+    WorkerStats,
+    IJob
 }
 import strategicprimer.viewer.drivers.map_viewer {
     imageLoader
@@ -157,21 +158,19 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
                 label.recache(stats);
             }
             jobsPanel.removeAll(); // TODO: Pull this statement out of all of the if branches to above the first if statement
-            for (job in local) { // TODO: Change to local.filter(not(IJob.emptyJob)) and remove if
-                if (!job.emptyJob) {
-                    JLabel label = JLabel("``job.name`` ``job.level``");
-                    if (exists firstSkill = job.first) {
-                        // TODO: Replace with label.toolTipText = "Skills: ``", ".join(job.map(skillString))``"; (defining skillString somewhere if there isn't a suitable String attribute in ISkill already)
-                        StringBuilder skillsBuilder = StringBuilder();
-                        skillsBuilder.append("Skills: ``firstSkill.name`` ``firstSkill
-                            .level``");
-                        for (skill in job.rest) {
-                            skillsBuilder.append(", ``skill.name`` ``skill.level``");
-                        }
-                        label.toolTipText = skillsBuilder.string;
+            for (job in local.filter(not(IJob.emptyJob))) {
+                JLabel label = JLabel("``job.name`` ``job.level``");
+                if (exists firstSkill = job.first) {
+                    // TODO: Replace with label.toolTipText = "Skills: ``", ".join(job.map(skillString))``"; (defining skillString somewhere if there isn't a suitable String attribute in ISkill already)
+                    StringBuilder skillsBuilder = StringBuilder();
+                    skillsBuilder.append("Skills: ``firstSkill.name`` ``firstSkill
+                        .level``");
+                    for (skill in job.rest) {
+                        skillsBuilder.append(", ``skill.name`` ``skill.level``");
                     }
-                    jobsPanel.add(label);
+                    label.toolTipText = skillsBuilder.string;
                 }
+                jobsPanel.add(label);
             }
         } else if (is Animal local) {
 //            String plural = animalPlurals[local.kind]; // TODO: syntax sugar once compiler bug fixed
