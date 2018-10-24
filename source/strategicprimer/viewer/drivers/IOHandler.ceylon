@@ -57,7 +57,8 @@ import javax.swing {
 }
 import lovelace.util.jvm {
     showErrorDialog,
-    FileChooser
+    FileChooser,
+    ComponentParentStream
 }
 
 """A handler for "open" and "save" menu items (and a few others)"""
@@ -146,21 +147,23 @@ shared class IOHandler satisfies ActionListener {
 
     shared actual void actionPerformed(ActionEvent event) {
         Component? source = as<Component>(event.source);
-        variable String errorTitle = "Strategic Primer Assistive Programs";
-        variable Component? iter = source;
-        while (exists local = iter) { // TODO: Use ComponentParentStream to replace this loop with a one-liner and make 'iter' non-variable (rename it)
-            if (is ISPWindow local) {
-                errorTitle = local.windowName;
-                break;
-            } else {
-                iter = local.parent;
-            }
+        Frame? parentWindow;
+        if (exists source) {
+            parentWindow = ComponentParentStream(source).narrow<Frame>().first;
+        } else {
+            parentWindow = null;
+        }
+        String errorTitle;
+        if (is ISPWindow parentWindow) {
+            errorTitle = parentWindow.windowName;
+        } else {
+            errorTitle = "Strategic Primer Assistive Programs";
         }
 
         switch (event.actionCommand.lowercased)
         case ("load") { // TODO: Open in another window if modified flag set instead of prompting before overwriting
             if (is ModelDriver driver) {
-                maybeSave("loading another map", as<Frame>(iter), source,
+                maybeSave("loading another map", parentWindow, source,
                     defer(loadHandler, [source, errorTitle]));
             } else if (is UtilityGUI driver) {
                 loadHandler(source, errorTitle);
@@ -271,21 +274,23 @@ shared class IOHandler satisfies ActionListener {
         }
 
         case ("close") {
-            if (is Frame local = iter) {
+            if (exists parentWindow) {
                 if (is ModelDriver driver) {
-                    maybeSave("closing", local, source, local.dispose);
+                    maybeSave("closing", parentWindow, source, parentWindow.dispose);
                 } else if (is UtilityGUI driver) {
-                    local.dispose();
+                    parentWindow.dispose();
                 } else {
                     log.error("IOHandler asked to close in unsupported app");
                 }
+            } else {
+                log.error("IOHandler asked to save but couldn't get current window");
             }
         }
 
         case ("quit") {
             if (is ModelDriver driver) {
-                maybeSave("quitting", as<Frame>(iter), source, quitHandler.handler);
-//              maybeSave("quitting", as<Frame>(iter), source, SPMenu.defaultQuit()); // TODO: switch to this once eclipse/ceylon#7396 fixed
+                maybeSave("quitting", parentWindow, source, quitHandler.handler);
+//              maybeSave("quitting", parentWindow, source, SPMenu.defaultQuit()); // TODO: switch to this once eclipse/ceylon#7396 fixed
             } else if (is UtilityGUI driver) {
                 quitHandler.handler();
             } else {
