@@ -182,18 +182,17 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
             loadAllTables(directory, runner);
             for ([loc, population] in brokenTownContents) {
                 value production = population.yearlyProduction;
-                for (resource in production.sequence()) { // TODO: Combine with if: production.filter(compose(shuffle(String.contains)('#'), ResourcePile.contents)).sequence()
-                    if (resource.contents.contains('#')) {
-                        assert (exists table = resource.contents
-                            .split('#'.equals, true, true).sequence()[1]);
-                        value replacement = ResourcePile(resource.id, resource.kind,
-                            runner.recursiveConsultTable(table, loc, map.baseTerrain[loc],
-                                //map.mountainous[loc],  map.fixtures[loc], // TODO: syntax sugar once compiler bug fixed
-                                map.mountainous.get(loc),  map.fixtures.get(loc),
-                                map.dimensions), resource.quantity);
-                        production.remove(resource);
-                        production.add(replacement);
-                    }
+                for (resource in production.filter(compose(shuffle(String.contains)('#'),
+                        ResourcePile.contents)).sequence()) {
+                    assert (exists table = resource.contents
+                        .split('#'.equals, true, true).sequence()[1]);
+                    value replacement = ResourcePile(resource.id, resource.kind,
+                        runner.recursiveConsultTable(table, loc, map.baseTerrain[loc],
+                            //map.mountainous[loc],  map.fixtures[loc], // TODO: syntax sugar once compiler bug fixed
+                            map.mountainous.get(loc),  map.fixtures.get(loc),
+                            map.dimensions), resource.quantity);
+                    production.remove(resource);
+                    production.add(replacement);
                 }
             }
         }
