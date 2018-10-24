@@ -307,14 +307,11 @@ object explorationRunnerTests {
     "Test that [[ExplorationRunner.getPrimaryTree]] objects to being called on
      non-forested tiles."
     test
-    shared void testIllegalGetPrimaryTree() {
-        // TODO: Uncomment hasType() call once Ceylon tooling bug fixed
-        Point point = Point(0, 0); // TODO: Inline, then make this method use => syntax
+    shared void testIllegalGetPrimaryTree() =>
         assertThatException(
-                    defer(ExplorationRunner().getPrimaryTree, [point,
+                    defer(ExplorationRunner().getPrimaryTree, [Point(0, 0),
                         TileType.tundra, false, [], MapDimensionsImpl(69, 88, 2)]))
-            /*.hasType(`IllegalArgumentException`)*/;
-    }
+            /*.hasType(`IllegalArgumentException`)*/; // TODO: Uncomment once Ceylon tooling bug fixed
 
     "Test the [[ExplorationRunner.consultTable]] method."
     test
