@@ -62,8 +62,7 @@ import lovelace.util.jvm {
 
 """A handler for "open" and "save" menu items (and a few others)"""
 todo("Further splitting up", "Fix circular dependency between this and viewerGUI")
-shared class IOHandler // TODO: reformat
-        satisfies ActionListener {
+shared class IOHandler satisfies ActionListener {
     static ViewerGUIFactory vgf = ViewerGUIFactory();
     ISPDriver driver;
     shared new (ISPDriver driver) {
