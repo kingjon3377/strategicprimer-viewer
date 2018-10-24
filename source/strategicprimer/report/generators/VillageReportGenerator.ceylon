@@ -86,13 +86,13 @@ shared class VillageReportGenerator(
         fixtures.remove(item.id);
         ostream("At ``loc``: ``item.name``, a(n) ``item.race`` village, ");
         if (item.owner.independent) {
-            ostream("independent");
+            ostream("independent ");
         } else if (item.owner == currentPlayer) {
-            ostream("sworn to you");
+            ostream("sworn to you ");
         } else {
-            ostream("sworn to ``item.owner.name``");
+            ostream("sworn to ``item.owner.name`` ");
         }
-        ostream(" ``distCalculator.distanceString(loc)``"); // TODO: Move space to each case of 'if' and drop interpolation
+        ostream(distCalculator.distanceString(loc));
     }
 
     "Produce the report on all known villages."
