@@ -61,10 +61,9 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
             IMapNG map, Anything(String) ostream, IWorker worker, Point loc) {
         ostream("``worker.name``, a ``worker.race``.");
         if (details, exists stats = worker.stats) {
-            ostream( // TODO: Remove newline (move string up to open-paren)
-                "
-                 <p>``statsString(stats)``</p>
-             ");
+            ostream("
+                     <p>``statsString(stats)``</p>
+                     ");
         }
         if (details, !worker.empty) {
             ostream(
