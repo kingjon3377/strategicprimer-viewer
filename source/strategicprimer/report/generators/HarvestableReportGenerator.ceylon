@@ -125,10 +125,9 @@ shared class HarvestableReportGenerator
         assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
         // TODO: Move the 'At (loc)' up here, and in general pull as much as possible out of interpolation to condense the cases
         switch (item)
-        case (is CacheFixture) { // TODO: Put distance at the end
-            ostream("At ``loc``: ``distCalculator
-                .distanceString(loc)``A cache of ``item
-                .kind``, containing ``item.contents``");
+        case (is CacheFixture) {
+            ostream("At ``loc``: A cache of ``item.kind``, containing ``
+                        item.contents`` ``distCalculator.distanceString(loc)``");
         }
         case (is Grove) {
             ostream("At ``loc``: ``(item.cultivated) then "cultivated" else
