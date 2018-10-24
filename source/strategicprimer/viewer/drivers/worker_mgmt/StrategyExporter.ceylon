@@ -44,6 +44,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
     shared actual void playerChanged(Player? old, Player newPlayer) =>
             currentPlayer = newPlayer;
 
+    String jobString(IJob job) => "``job.name`` ``job.level``";
+
     void writeMember(Writer writer, UnitMember? member) {
         if (is IWorker member) {
             writer.write(member.name);
@@ -53,12 +55,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             } else {
                 jobs = member.filter(compose(Integer.positive, IJob.level));
             }
-            if (exists first = jobs.first) { // TODO: Define a function turning a Job into the name-level-pair String, then use ", ".join()
-                writer.write(" (``first.name`` ``first.level``");
-                for (job in jobs.rest) {
-                    writer.write(", ``job.name`` ``job.level``");
-                }
-                writer.write(")");
+            if (!jobs.empty) {
+                writer.write(" (``", ".join(jobs.map(jobString))``)");
             }
         } else if (is Animal member) {
             if (member.population > 1) {
