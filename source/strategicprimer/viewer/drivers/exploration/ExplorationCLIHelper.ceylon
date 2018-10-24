@@ -88,10 +88,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
 
     "Let the user change the explorer's speed"
     void changeSpeed() {
-        Speed[] speeds = sort(`Speed`.caseValues); // TODO: inline
-        Integer->Speed? newSpeed = cli.chooseFromList(speeds, // TODO: inline
-            "Possible Speeds:", "No speeds available", "Chosen Speed: ", true);
-        if (exists temp = newSpeed.item) {
+        if (exists temp = cli.chooseFromList(sort(`Speed`.caseValues),
+                "Possible Speeds:", "No speeds available", "Chosen Speed: ",
+                true).item) {
             speed = temp;
         }
     }
