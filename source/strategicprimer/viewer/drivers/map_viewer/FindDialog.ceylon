@@ -40,6 +40,7 @@ import strategicprimer.drivers.gui.common {
     SPDialog
 }
 import lovelace.util.common {
+    as,
     todo
 }
 
@@ -141,12 +142,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         if (pattern.empty) {
             return;
         }
-        Integer? idNum;
-        if (is Integer temp = Integer.parse(pattern)) { // TODO: Replace with = as<Integer>(Integer.parse(pattern))
-            idNum = temp;
-        } else {
-            idNum = null;
-        }
+        Integer? idNum = as<Integer>(Integer.parse(pattern));
         if (exists result = PointIterator(model.mapDimensions, !backwards.selected,
                 !vertically.selected, model.selection).find(
 //                    (point) => model.map.fixtures[point].any( // TODO: syntax sugar once compiler bug fixed
