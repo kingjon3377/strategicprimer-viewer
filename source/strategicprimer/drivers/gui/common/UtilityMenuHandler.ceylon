@@ -11,9 +11,6 @@ import com.apple.eawt {
     Application,
     AppEvent
 }
-import com.pump.window {
-    WindowList
-}
 import strategicprimer.drivers.gui.common.about {
     aboutDialog
 }
@@ -22,16 +19,11 @@ import strategicprimer.drivers.gui.common.about {
    "Close", "About", and "Quit" menu items enabled."""
 shared class UtilityMenuHandler(UtilityGUI driver, SPFrame window) {
     "Show the About dialog (as a response to a menu-item event)."
-    void aboutHandler(ActionEvent event) => // TODO: Make these static methods? // TODO: Drop 'event' parameter; it's unused, and macAboutHandler() has to go to some length to create it
+    void aboutHandler() => // TODO: Make these static methods?
             aboutDialog(window, window.windowName).setVisible(true);
     "Show the About dialog (as a response to the About item in the Mac app-menu
      being chosen)."
-    void macAboutHandler(AppEvent.AboutEvent event) {
-        Object source =
-                WindowList.getWindows(true, false).iterable.coalesced.last else event;
-        aboutHandler(ActionEvent(source, ActionEvent.actionFirst,
-            "About"));
-    }
+    void macAboutHandler(AppEvent.AboutEvent event) => aboutHandler();
     if (platform.systemIsMac) {
         Application.application.setAboutHandler(macAboutHandler);
     }
@@ -49,7 +41,7 @@ shared class UtilityMenuHandler(UtilityGUI driver, SPFrame window) {
             quitHandler.handler();
         }
         case ("about") {
-            aboutHandler(event);
+            aboutHandler();
         }
         else {
             log.info("Unhandled command ``event.actionCommand``");
