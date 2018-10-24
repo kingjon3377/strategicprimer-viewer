@@ -5,8 +5,7 @@ import lovelace.util.common {
 "An exception to throw whenever a driver fails, so drivers only have to directly handle
  one exception class."
 todo("Is this really necessary any more?")
-shared class DriverFailedException // TODO: reformat
-        extends Exception {
+shared class DriverFailedException extends Exception {
     shared new (Throwable cause,
             String message = "The driver could not start because of an exception:")
             extends Exception(message, cause) {}
