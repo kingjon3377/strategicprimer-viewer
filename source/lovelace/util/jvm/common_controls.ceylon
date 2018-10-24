@@ -33,8 +33,7 @@ import java.awt {
 }
 import lovelace.util.common {
     Reorderable,
-    silentListener,
-    todo
+    silentListener
 }
 import java.lang {
     Types
@@ -204,7 +203,6 @@ shared JPanel&BoxPanel centeredHorizontalBox(Component* items) {
  the Ceylon compiler automatically wraps them in [[Ceylon Strings|String]], then
  doesn't unwrap them because they're passed to methods taking Object, causing
  runtime failures if we don't wrap them in [[Types.nativeString]]."
-todo("When 'null' is assigned to any position, remove component that was formerly there.")
 shared class BorderedPanel extends JPanel {
     variable Component? centerLocal = null;
     "The central component."
@@ -212,6 +210,8 @@ shared class BorderedPanel extends JPanel {
     assign center {
         if (exists temp = center) {
             add(temp, Types.nativeString(BorderLayout.center));
+        } else if (exists temp = centerLocal) {
+            remove(temp);
         }
         centerLocal = center;
     }
@@ -223,6 +223,8 @@ shared class BorderedPanel extends JPanel {
     assign lineStart {
         if (exists temp = lineStart) {
             add(temp, Types.nativeString(BorderLayout.lineStart));
+        } else if (exists temp = lineStartLocal) {
+            remove(temp);
         }
         lineStartLocal = lineStart;
     }
@@ -234,6 +236,8 @@ shared class BorderedPanel extends JPanel {
     assign lineEnd {
         if (exists temp = lineEnd) {
             add(temp, Types.nativeString(BorderLayout.lineEnd));
+        } else if (exists temp = lineEndLocal) {
+            remove(temp);
         }
         lineEndLocal = lineEnd;
     }
@@ -245,6 +249,8 @@ shared class BorderedPanel extends JPanel {
     assign pageStart {
         if (exists temp = pageStart) {
             add(temp, Types.nativeString(BorderLayout.pageStart));
+        } else if (exists temp = pageStartLocal) {
+            remove(temp);
         }
         pageStartLocal = pageStart;
     }
@@ -256,6 +262,8 @@ shared class BorderedPanel extends JPanel {
     assign pageEnd {
         if (exists temp = pageEnd) {
             add(temp, Types.nativeString(BorderLayout.pageEnd));
+        } else if (exists temp = pageEndLocal) {
+            remove(temp);
         }
         pageEndLocal = pageEnd;
     }
