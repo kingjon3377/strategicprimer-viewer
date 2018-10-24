@@ -244,8 +244,8 @@ class StatGeneratingCLI satisfies CLIDriver {
     "Let the user enter which Jobs a worker's levels are in."
     void enterWorkerJobs(IWorker worker, Integer levels) {
         for (i in 0:levels) {
-            String jobName = cli.inputString("Which Job does worker have a level in? "); // TODO: inline
-            IJob job = worker.getJob(jobName);
+            IJob job = worker.getJob(cli.inputString(
+                "Which Job does worker have a level in? "));
             job.level = job.level + 1; // TODO: Replace with += 1?
         }
     }
