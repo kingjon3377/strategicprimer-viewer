@@ -53,8 +53,8 @@ shared class WorkerStats {
 
     "Constructor for making a stat-adjustments version, so omitting HP."
     shared new factory(Integer str, Integer dex, Integer con,
-            Integer int, Integer wis, Integer cha) extends WorkerStats(0, 0, str, dex, // TODO: reformat
-        con, int, wis, cha) {}
+            Integer int, Integer wis, Integer cha)
+        extends WorkerStats(0, 0, str, dex, con, int, wis, cha) {}
 
     "Takes an existing set of stats and a set of adjustments to produce an adjusted set."
     shared new adjusted(
