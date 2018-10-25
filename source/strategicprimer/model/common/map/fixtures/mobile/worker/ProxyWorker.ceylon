@@ -26,6 +26,7 @@ import lovelace.util.common {
     todo
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
+    IJob,
     ProxyJob
 }
 
@@ -154,10 +155,8 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
         for (job in item) {
             String name = job.name;
             if (jobNames.contains(name)) {
-                for (proxyJob in proxyJobs) { // TODO: Filter with filter() instead of 'if', to reduce nesting
-                    if (proxyJob.name == name) {
-                        proxyJob.addProxied(job);
-                    }
+                for (proxyJob in proxyJobs.filter(matchingValue(name, IJob.name))) {
+                    proxyJob.addProxied(job);
                 }
             } else {
                 jobNames.add(name);
