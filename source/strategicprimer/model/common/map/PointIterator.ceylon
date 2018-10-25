@@ -1,9 +1,5 @@
 import ceylon.test {
-    assertEquals,
     test
-}
-import lovelace.util.common {
-   todo
 }
 
 "A view of locations on the map in order, starting at a given point."
@@ -124,66 +120,56 @@ shared class PointIterator(dimensions, forwards, horizontal,
 }
 
 "Tests that [[PointIterator]] works properly for each possible configuration."
-todo("Use [[corresponding]] instead of [[Iterable.sequence]] and [[assertEquals]].")
+// Using => for these one-line methods causes compilation errors.
 object pointIterationTests {
     "Test iteration forwards, horizontally, from the beginning of the map."
     test
     shared void testFromBeginning() {
-        Point[] expected = [Point(0, 0), Point(0, 1),
-            Point(0, 2), Point(1, 0), Point(1, 1),
-            Point(1, 2), Point(2, 0), Point(2, 1),
-            Point(2, 2)];
-        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, true).sequence();
-        assertEquals(actual, expected, "Iterator produced points in expected order");
+        "Iterator should produce points in the expected order when given no
+         starting point and iterating forwards horizontally."
+        assert (corresponding([Point(0, 0), Point(0, 1), Point(0, 2), Point(1, 0),
+                Point(1, 1), Point(1, 2), Point(2, 0), Point(2, 1), Point(2, 2)],
+            PointIterator(MapDimensionsImpl(3, 3, 1), true, true)));
     }
 
     "Test iteration forwards, horizontally, from a selected point."
     test
     shared void testFromSelection() {
-        Point[] expected = [Point(1, 2), Point(2, 0),
-            Point(2, 1), Point(2, 2), Point(0, 0),
-            Point(0, 1), Point(0, 2), Point(1, 0),
-            Point(1, 1)];
-        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, true,
-            Point(1, 1)).sequence(); // Have to have .sequence() to meet declared type
-        assertEquals(actual, expected, "Iterator produced points in expected order");
+        "Iterator should produce points in the expected order when given a
+         starting point and iterating forwards horizontally."
+        assert (corresponding([Point(1, 2), Point(2, 0), Point(2, 1), Point(2, 2),
+                Point(0, 0), Point(0, 1), Point(0, 2), Point(1, 0), Point(1, 1)],
+            PointIterator(MapDimensionsImpl(3, 3, 1), true, true, Point(1, 1))));
     }
 
     """Test searching forwards, vertically, from the "selection" the viewer starts
        with."""
     test
     shared void testInitialSelection() {
-        Point[] expected = [Point(0, 0), Point(1, 0),
-            Point(2, 0), Point(0, 1), Point(1, 1),
-            Point(2, 1), Point(0, 2), Point(1, 2),
-            Point(2, 2)];
-        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), true, false,
-            Point.invalidPoint).sequence();
-        assertEquals(actual, expected, "Iterator produced points in expected order");
+        "Iterator should produce points in the expected order when starting at
+         [[Point.invalidPoint]] and iterating forwards vertically."
+        assert (corresponding([Point(0, 0), Point(1, 0), Point(2, 0), Point(0, 1),
+                Point(1, 1), Point(2, 1), Point(0, 2), Point(1, 2), Point(2, 2)],
+            PointIterator(MapDimensionsImpl(3, 3, 1), true, false, Point.invalidPoint)));
     }
 
     "Test searching backwards, horizontally."
     test
     shared void testReverse() {
-        Point[] expected = [Point(2, 2), Point(2, 1),
-            Point(2, 0), Point(1, 2),
-            Point(1, 1), Point(1, 0),
-            Point(0, 2), Point(0, 1),
-            Point(0, 0)];
-        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, true)
-            .sequence();
-        assertEquals(actual, expected, "Iterator produced points in expected order");
+        "Iterator should produce points in the expected order when iterating
+         backwards horizontally."
+        assert (corresponding([Point(2, 2), Point(2, 1), Point(2, 0), Point(1, 2),
+                Point(1, 1), Point(1, 0), Point(0, 2), Point(0, 1), Point(0, 0)],
+            PointIterator(MapDimensionsImpl(3, 3, 1), false, true)));
     }
 
     "Test searching vertically, backwards."
     test
     shared void testVerticalReverse() {
-        Point[] expected = [Point(2, 2), Point(1, 2),
-            Point(0, 2), Point(2, 1), Point(1, 1),
-            Point(0, 1), Point(2, 0), Point(1, 0),
-            Point(0, 0)];
-        Point[] actual = PointIterator(MapDimensionsImpl(3, 3, 1), false, false)
-            .sequence();
-        assertEquals(actual, expected, "Iterator produced points in expected order");
+        "Iterator should produce points in the expected order when iterating
+         backwards vertically."
+        assert (corresponding([Point(2, 2), Point(1, 2), Point(0, 2), Point(2, 1),
+                Point(1, 1), Point(0, 1), Point(2, 0), Point(1, 0), Point(0, 0)],
+            PointIterator(MapDimensionsImpl(3, 3, 1), false, false)));
     }
 }
