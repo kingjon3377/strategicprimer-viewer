@@ -109,7 +109,7 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
         for (skill in proxiedSkills) {
             skill.addProxied(item);
         }
-        for (skill in item) { // TODO: Filter with filter() instead of if
+        for (skill in item) {
             if (!skillNames.contains(skill.name)) {
                 proxiedSkills.add(ProxySkill(skill.name, parallel, *proxiedJobs));
             }
