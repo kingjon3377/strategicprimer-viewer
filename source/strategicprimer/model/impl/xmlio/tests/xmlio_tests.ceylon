@@ -692,8 +692,8 @@ object xmlTests {
 
     "Test that [[rivers|River]] are properly (de)serialized in the simplest case."
     test
-    enumeratedParameter(`class River`) // TODO: put on the parameter itself
-    shared void testSimpleRiverSerialization(River river) {
+    shared void testSimpleRiverSerialization(
+            enumeratedParameter(`class River`) River river) {
         assertSerialization("River alone", river);
         Point loc = Point(0, 0);
         assertSerialization("River in tile", encapsulateRivers(loc, river));
