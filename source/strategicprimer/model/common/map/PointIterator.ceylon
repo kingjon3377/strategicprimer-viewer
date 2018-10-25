@@ -76,50 +76,42 @@ shared class PointIterator(dimensions, forwards, horizontal,
                 started = true;
                 if (horizontal) {
                     if (forwards) {
-                        if (column == maxColumn) { // TODO: Increment first, then 'if (column > maxColumn) { column = 0; ... }'
-                            if (row == maxRow) { // TODO: Increment first, then 'if (row > maxRow) { row = 0; }'
-                                row = 0;
-                            } else {
-                                row++;
-                            }
+                        column++;
+                        if (column > maxColumn) {
                             column = 0;
-                        } else {
-                            column++;
+                            row++;
+                            if (row > maxRow) {
+                                row = 0;
+                            }
                         }
                     } else {
-                        if (column == 0) { // TODO: Decrement first, then 'if (column.negative) { column = maxColumn; ... }'
-                            if (row == 0) { // TODO: Decrement first, then 'if (row.negative) { row = maxRow; }'
-                                row = maxRow;
-                            } else {
-                                row--;
-                            }
+                        column--;
+                        if (column.negative) {
                             column = maxColumn;
-                        } else {
-                            column--;
+                            row--;
+                            if (row.negative) {
+                                row = maxRow;
+                            }
                         }
                     }
                 } else {
                     if (forwards) {
-                        if (row == maxRow) { // TODO: Increment first, then 'if (row > maxRow) { row = 0; ... }'
-                            if (column == maxColumn) { // TODO: Increment first, then 'if (column > maxColumn) { column = 0; }
-                                column = 0;
-                            } else {
-                                column++;
-                            }
+                        row++;
+                        if (row > maxRow) {
                             row = 0;
-                        } else {
-                            row++;
+                            column++;
+                            if (column > maxColumn) {
+                                column = 0;
+                            }
                         }
                     } else {
-                        if (row == 0) { // TODO: Decrement first, then 'if (row.negative) { row = maxRow; ... }'
-                            if (column == 0) { // TODO: Decrement first, then 'if (column.negative) { column = maxColumn; }'
-                                column = maxColumn;
-                            } else {
-                                column--;
-                            }
+                        row--;
+                        if (row.negative) {
                             row = maxRow;
-                        } else {
-                            row--;
+                            column--;
+                            if (column.negative) {
+                                column = maxColumn;
+                            }
                         }
                     }
                 }
