@@ -61,7 +61,7 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
         }
     }
 
-    shared actual String string = shortDescription; // TODO: Should be =>
+    shared actual String string => shortDescription;
 
     shared actual Boolean equals(Object obj) {
         if (is Meadow obj) {
