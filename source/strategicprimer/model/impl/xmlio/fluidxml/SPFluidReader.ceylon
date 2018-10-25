@@ -519,12 +519,10 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
         IMutablePlayerCollection players = PlayerCollection();
         IDRegistrar idFactory = IDFactory();
-        for (event in eventReader) { // TODO: Filter with narrow() and filter() instead of 'if'
-            if (is StartElement event, isSPStartElement(event)) {
-                assert (is Type retval = readSPObject(event, QName("root"), eventReader,
-                    players, warner, idFactory));
-                return retval;
-            }
+        if (exists event = eventReader.narrow<StartElement>().find(isSPStartElement)) {
+            assert (is Type retval = readSPObject(event, QName("root"), eventReader,
+                players, warner, idFactory));
+            return retval;
         }
         throw XMLStreamException("XML stream didn't contain a start element");
     }
