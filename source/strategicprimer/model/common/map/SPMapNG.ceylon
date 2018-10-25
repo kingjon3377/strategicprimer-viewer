@@ -233,10 +233,9 @@ shared class SPMapNG satisfies IMutableMapNG {
                         Players:
                         ");
         for (player in players) {
-            if (player.current) { // TODO: Use player.string unconditionally, and optionally add the " (current)" in a separate operation.
-                builder.append("``player`` (current)");
-            } else {
-                builder.append(player.string);
+            builder.append(player.string);
+            if (player.current) {
+                builder.append(" (current)");
             }
             builder.appendNewline();
         }
