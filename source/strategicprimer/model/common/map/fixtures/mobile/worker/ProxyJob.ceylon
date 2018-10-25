@@ -36,12 +36,10 @@ shared class ProxyJob(name, parallel, IWorker* proxiedWorkers)
 
     for (worker in proxiedWorkers) {
         variable Boolean unmodified = true;
-        for (job in worker) { // TODO: Filter with .filter() instead of 'if' to reduce nesting
-            if (name == job.name) {
-                proxiedJobs.add(job);
-                skillNames.addAll(job.map(ISkill.name));
-                unmodified = false;
-            }
+        for (job in worker.filter(matchingValue(name, IJob.name))) {
+            proxiedJobs.add(job);
+            skillNames.addAll(job.map(ISkill.name));
+            unmodified = false;
         }
         if (unmodified) {
             IJob job = Job(name, 0);
