@@ -69,8 +69,7 @@ abstract class YAAbstractReader<Element>
         if (!isSupportedNamespace(element.name)) {
             throw UnwantedChildException.unexpectedNamespace(parent, element);
         }
-        String localName = element.name.localPart; // TODO: inline
-        if (!tags.map(String.lowercased).contains(localName.lowercased)) {
+        if (!tags.map(String.lowercased).contains(element.name.localPart.lowercased)) {
             // While we'd like tests to exercise this, we're always careful to only call
             // readers when we know they support the tag ...
             throw UnwantedChildException.listingExpectedTags(parent, element, tags);
