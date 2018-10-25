@@ -4,8 +4,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import lovelace.util.common {
     anythingEqual,
     NonNullCorrespondence,
-    matchingValue,
-    matchingPredicate
+    matchingValue
 }
 import ceylon.collection {
     MutableSet,
@@ -309,8 +308,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                 variable Point? matchPoint = null;
                 variable Boolean exactly = false;
                 for ([item, ourLocation] in list.follow(list.find(
-                        matchingPredicate(matchingValue(location, // TODO: Use compose() instead of nesting matchingPredicate and matchingValue()
-                                    Tuple<Point, Point, []>.first),
+                        compose(compose(location.equals, Tuple<Point, Point, []>.first),
                                 Tuple<SubsetType|Point, SubsetType, [Point]>.rest)))
                             .coalesced.distinct) {
                     count++;
