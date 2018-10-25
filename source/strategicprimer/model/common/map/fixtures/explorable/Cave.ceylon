@@ -40,7 +40,7 @@ shared class Cave(dc, id) satisfies IEvent&ExplorableFixture {
     "If we ignore ID (and DC), all caves are equal."
     shared actual Boolean equalsIgnoringID(IFixture fixture) => fixture is Cave;
 
-    by("MrBeast", "http://opengameart.org/content/cave-tileset-0") // TODO: Add to About dialog
+    by("MrBeast", "http://opengameart.org/content/cave-tileset-0")
     shared actual String defaultImage = "cave.png";
 
     shared actual String plural = "Caves";
