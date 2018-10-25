@@ -144,10 +144,8 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
         if (workers.empty) {
             statsCache = tempStats;
         } else if (exists tempStats) {
-            if (exists priorStats) { // TODO: Combine with next (nested) if statement
-                if (tempStats != priorStats) {
-                    statsCache = null;
-                }
+            if (exists priorStats, tempStats != priorStats) {
+                statsCache = null;
             }
         } else if (exists priorStats) {
             statsCache = null;
