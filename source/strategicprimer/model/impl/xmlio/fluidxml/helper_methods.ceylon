@@ -507,7 +507,7 @@ abstract class FluidBase {
             };
 
     static Boolean isSupportedNamespace(QName name) =>
-            {spNamespace, XMLConstants.nullNsUri}.contains(name.namespaceURI); // FIXME: [] instead of {}
+            [spNamespace, XMLConstants.nullNsUri].contains(name.namespaceURI);
 
     "Warn if any unsupported attribute is on this tag."
     static shared void expectAttributes(StartElement element, Warning warner,
