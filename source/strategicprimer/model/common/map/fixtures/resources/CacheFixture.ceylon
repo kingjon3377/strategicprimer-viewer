@@ -12,7 +12,7 @@ shared class CacheFixture(kind, contents, id) satisfies HarvestableFixture {
     shared actual String kind;
 
     "The contents of this cache."
-    todo("TODO: Should be turned into objects (serialized as children) as part of the
+    todo("Should be turned into objects (serialized as children) as part of the
           general Resource framework.")
     shared String contents;
 
