@@ -111,7 +111,10 @@ object unitMemberHandler extends FluidBase() {
     shared WorkerStats readStats(StartElement element, QName parent, {XMLEvent*} stream,
             IPlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "stats");
-        // TODO: Make a Tuple of expected arguments and pass it to expectAttributes(), then map() it via a curried and partially-applied form of getIntegerAttribute() into the WorkerStats constructor
+        // I'd like to make a Tuple of expected arguments and pass it to
+        // expectAttributes(), then map() it via curry(getIntegerAttribute)(element)
+        // into the WorkerStats constructor. That won't pass the typechecker without
+        // asserting (falsely, per runtime testing) that the result is an Integer[8].
         expectAttributes(element, warner, "hp", "max", "str", "dex", "con", "int",
             "wis", "cha");
         spinUntilEnd(element.name, stream);
