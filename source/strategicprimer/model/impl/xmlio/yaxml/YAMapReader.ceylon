@@ -93,10 +93,9 @@ class YAMapReader("The Warning instance to use" Warning warner,
 
     "Get the first open-tag event in our namespace in the stream."
     StartElement getFirstStartElement({XMLEvent*} stream, StartElement parent) {
-        for (element in stream) { // TODO: Condense to 'if (exists element = stream.narrow<StartElement>().find(matchingPredicate(isSupportedNamespace, StartElement.name)))'
-            if (is StartElement element, isSupportedNamespace(element.name)) {
-                return element;
-            }
+        if (exists element = stream.narrow<StartElement>().find(
+                compose(isSupportedNamespace, StartElement.name))) {
+            return element;
         } else {
             throw MissingChildException(parent);
         }
