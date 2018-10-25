@@ -242,10 +242,7 @@ shared class SPMapNG satisfies IMutableMapNG {
         builder.appendNewline();
         builder.append("Contents:");
         builder.appendNewline();
-        for (location in locations) { // TODO: Filter with .filter() instead of the if
-            if (locationEmpty(location)) {
-                continue;
-            }
+        for (location in locations.filter(not(locationEmpty))) {
             builder.append("At ``location``");
             if (exists terrain = baseTerrain[location]) {
                 builder.append("terrain: ``terrain``, ");
