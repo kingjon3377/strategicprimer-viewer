@@ -54,12 +54,9 @@ shared native class IDFactory() satisfies IDRegistrar {
     "Generate and register an ID that hasn't been previously registered. Note that this
      method is only thread-safe, and only performant, on the JVM."
     shared actual native Integer createID() {
-        for (i in 0:runtime.maxArraySize) { // TODO: Convert to assert (exists i = (0:runtime.maxArraySize).find(not(commonUsedIDs.contains)))
-            if (!(i in commonUsedIDs)) {
-                return register(i);
-            }
-        }
-        throw AssertionError("Ran out of possible IDs");
+        "We haven't run out of possible IDs."
+        assert (exists i = (0:runtime.maxArraySize).find(not(commonUsedIDs.contains)));
+        return register(i);
     }
 
     """Create a copy of this factory for testing purposes. (So that we don't "register"
