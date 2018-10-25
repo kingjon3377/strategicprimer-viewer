@@ -158,26 +158,8 @@ shared class SPFluidWriter() satisfies SPWriter {
         }
     }
 
-    shared actual void write(Path|Anything(String) arg, IMapNG map) {
-        if (is Path path = arg) { // TODO: Just delegate to writeSPObject for this too
-            File file;
-            switch (res = path.resource)
-            case (is File) {
-                file = res;
-            }
-            case (is Nil) {
-                file = res.createFile();
-            }
-            else {
-                throw IOException("``path`` exists but is not a file");
-            }
-            try (writer = file.Overwriter()) {
-                writeSPObject(writer.write, map);
-            }
-        } else if (is Anything(String) ostream = arg) {
-            writeSPObject(ostream, map);
-        }
-    }
+    shared actual void write(Path|Anything(String) arg, IMapNG map) =>
+                writeSPObject(arg, map);
 
     todo("Does this really need to be a class method?")
     void writePlayer(XMLStreamWriter ostream, Player obj, Integer indentation) {
