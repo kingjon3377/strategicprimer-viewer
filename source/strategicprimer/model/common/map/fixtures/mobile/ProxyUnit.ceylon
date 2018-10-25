@@ -135,8 +135,6 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         log.error("ProxyUnit.equalsIgnoringID called");
         "Unimplemented operation"
         assert (false);
-//        throw UnsupportedOperationException(
-//            "FIXME: Implement ProxyUnit.equalsIgnoringID");
     }
 
     shared actual Comparison compare(TileFixture fixture) {
