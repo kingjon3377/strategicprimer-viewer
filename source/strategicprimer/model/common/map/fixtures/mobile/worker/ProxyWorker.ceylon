@@ -57,9 +57,7 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
         statsCache = null;
     }
 
-    shared new fromUnit(IUnit unit) { // TODO: Extend noop()
-        parallel = false;
-        statsCache = null;
+    shared new fromUnit(IUnit unit) extends noop(false) {
         for (member in unit.narrow<IWorker>()) {
             WorkerStats? tempStats = member.stats;
             WorkerStats? priorStats = statsCache;
@@ -76,9 +74,7 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
         }
     }
 
-    shared new fromWorkers(IWorker* proxiedWorkers) { // TODO: extend noop()
-        parallel = true;
-        statsCache = null;
+    shared new fromWorkers(IWorker* proxiedWorkers) extends noop(true) {
         for (worker in proxiedWorkers) {
             WorkerStats? tempStats = worker.stats;
             WorkerStats? priorStats = statsCache;
