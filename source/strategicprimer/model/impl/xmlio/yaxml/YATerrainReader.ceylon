@@ -23,11 +23,14 @@ import strategicprimer.model.common.map.fixtures.terrain {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+import lovelace.util.common {
+    simpleSet
+}
 
 "A reader for [[TerrainFixture]]s."
 class YATerrainReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<TerrainFixture>(warning, idRegistrar) {
-    Set<String> supportedTags = set { "forest", "hill", "oasis" }; // TODO: Use lovelace.util.common::simpleSet
+    Set<String> supportedTags = simpleSet("forest", "hill", "oasis");
 
     shared actual Boolean isSupportedTag(String tag) =>
             supportedTags.contains(tag.lowercased);
