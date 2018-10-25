@@ -38,7 +38,8 @@ shared class PointIterator(dimensions, forwards, horizontal,
 
         "If [[item]] is zero or positive, return it; otherwise, return
          [[wrap]]."
-        Integer wrap(Integer item, Integer wrap) => if (item<0) then wrap else item; // TODO: Use item.negative instead of item < 0
+        Integer wrap(Integer item, Integer wrap) =>
+                if (item.negative) then wrap else item;
 
         if (exists selection) {
             startRow = wrap(selection.row, maxRow);
