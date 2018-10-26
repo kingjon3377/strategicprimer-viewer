@@ -26,9 +26,6 @@ import javax.swing {
     JComponent,
     InputVerifier
 }
-import java.lang {
-    Types
-}
 
 "A class to change the visible area of the map based on the user's use of the scrollbars."
 todo("Maybe keep track of visible dimensions and selected point directly instaed of
