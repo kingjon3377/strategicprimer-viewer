@@ -22,7 +22,6 @@ import ceylon.language.meta.declaration {
     Module
 }
 
-variable Boolean first = false;
 "Basically a [[FileInputStream]], but the file could be on disk or in the classpath."
 todo("Test how this works with Ceylon 'resources'",
     "Use Ceylon's metamodel when it supports binary access")
@@ -48,10 +47,7 @@ shared class ResourceInputStream(String filename,
 //                        .getResourceAsStream(uri.string)) {
 //                return temp;
             } else if (exists uri = sourceModule.resourceByPath(filename)?.uri) {
-                if (first) { // FIXME: Replace with trace-level logging that fires every time, not only the first.
-                    process.writeLine("URI is '``uri``'");
-                    first = false;
-                }
+		log.trace("Found ``filename`` at URI ``uri``");
                 if (exists temp = sourceClass
                         .getResourceAsStream(uri)) {
                     return temp;
