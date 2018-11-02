@@ -4,7 +4,8 @@ import ceylon.random {
 
 "The status of a vein of ore or deposit of stone at any given point."
 class LodeStatus of
-        minimal | veryPoor | poor | fair | good | veryGood | motherLode {
+        minimal | veryPoor | poor | fair | good | veryGood | motherLode
+        satisfies Comparable<LodeStatus> {
     shared static LodeStatus? parse(String str) => parseLodeStatus(str);
 
     "The number of parts of other rock per part of ore."
@@ -88,6 +89,8 @@ class LodeStatus of
             return sum / 12;
         });
     }
+    "Another status is *greater* than us iff its [[ratio]] is *less* than ours."
+    shared actual Comparison compare(LodeStatus other) => other.ratio <=> ratio;
 }
 
 "Given a String, if it is the name of a [[LodeStatus]], return that value;

@@ -70,7 +70,8 @@ shared class MiningCLI(ICLIHelper cli, SPOptions options) satisfies UtilityDrive
             if (is LodeStatus specified = LodeStatus.parse(second)) {
                 initial = specified;
             } else if (is Integer index = Integer.parse(second),
-                     exists specified = `LodeStatus`.caseValues[index]) { // TODO: Sort `LodeStatus`.caseValues, to make sure indexes are stable?
+                     exists specified = sort(`LodeStatus`.caseValues)
+                         .getFromFirst(index)) {
                 initial = specified;
             } else {
                 throw DriverFailedException(AssertionError(
