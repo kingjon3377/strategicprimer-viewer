@@ -60,7 +60,7 @@ shared class SubsetGUIFactory satisfies UtilityDriverFactory {
 }
 
 "A driver to check whether player maps are subsets of the main map and display the
- results graphically." // TODO: Add an way to "open" files from the menu
+ results graphically."
 todo("Unify with [[SubsetCLI]], like the map-checker GUI")
 shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
     late SubsetFrame frame;
