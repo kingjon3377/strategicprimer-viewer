@@ -604,7 +604,7 @@ shared class TabularReportCLI(ICLIHelper cli, SPOptions options, model)
                     then parsePath(file.filename) else null);
         }
         for (writer in writers.items) {
-            writer.close(); // TODO: Once there's lovelace.util.common::invoke use it to condense this loop
+            writer.close(); // TODO: Once there's lovelace.util.common::invoke use it (or other method-reference logic) to condense this loop
         }
     }
 }

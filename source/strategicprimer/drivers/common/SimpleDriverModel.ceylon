@@ -14,7 +14,8 @@ import strategicprimer.model.common.map {
     PlayerCollection
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    invoke
 }
 
 "A superclass for driver-models, to handle the common details."
@@ -48,10 +49,7 @@ shared class SimpleDriverModel satisfies IDriverModel {
     shared actual Boolean mapModified => modifiedFlag;
     assign mapModified {
         modifiedFlag = mapModified;
-        for (listener in mcListeners) {
-            // Iterable.each(MapChangeListener.mapMetadataChanged) does *not* work!
-            listener.mapMetadataChanged(); // TODO: Once we have lovelace.util.common::invoke, use it to condense this again
-        }
+        mcListeners.map(MapChangeListener.mapMetadataChanged).each(invoke);
     }
 
     "Set a new main map."
@@ -64,9 +62,7 @@ shared class SimpleDriverModel satisfies IDriverModel {
         mapDim = newMap.dimensions;
         mainMapFile = origin;
         mapModified = modified;
-        for (listener in mcListeners) {
-            listener.mapChanged(); // TODO: Once we have lovelace.util.common::invoke, use it to condense this
-        }
+        mcListeners.map(MapChangeListener.mapChanged).each(invoke);
     }
 
     "The (main) map."
@@ -78,10 +74,7 @@ shared class SimpleDriverModel satisfies IDriverModel {
     shared actual PathWrapper? mapFile => mainMapFile;
     assign mapFile {
         mainMapFile = mapFile;
-        for (listener in mcListeners) {
-            // Iterable.each(MapChangeListener.mapMetadataChanged) does *not* work!
-            listener.mapMetadataChanged(); // TODO: Once we have lovelace.util.common::invoke, use it to condense this again
-        }
+        mcListeners.map(MapChangeListener.mapMetadataChanged).each(invoke);
     }
 
     "Add a map-change listener."

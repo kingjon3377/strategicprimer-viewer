@@ -63,7 +63,8 @@ import lovelace.util.jvm {
 
 import lovelace.util.common {
     simpleMap,
-    silentListener
+    silentListener,
+    invoke
 }
 
 import strategicprimer.model.common.map {
@@ -179,9 +180,7 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
         if (exists selectedValue = unitList.selectedValue,
                 !unitList.selectionEmpty) {
             driver.model.selectedUnit = selectedValue;
-            for (listener in completionListeners) { // TODO: Add invoke() method to lovelace.util.common so we can use Iterable.each() here.
-                listener();
-            }
+            completionListeners.each(invoke);
         }
     }
 

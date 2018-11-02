@@ -97,7 +97,7 @@ class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener
         } else {
             func = up;
         }
-        for (i in 0:count) { // TODO: Once we have lovelace.util.common::invoke, use it here
+        for (i in 0:count) { // TODO: Use Iterable.each(silentListener(func))
             func();
         }
     }
@@ -110,11 +110,11 @@ class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener
             // Zoom if Command-scroll/Control-scroll
             Integer count = event.wheelRotation;
             if (count < 0) {
-                for (i in 0:(count.magnitude)) { // TODO: Once we have lovelace.util.common::invoke, use it here
+                for (i in 0:(count.magnitude)) { // TODO: Use Iterable.each(silentListener(model.zoomIn))
                     model.zoomIn();
                 }
             } else {
-                for (i in 0:count) { // TODO: Once we have lovelace.util.common::invoke, use it here
+                for (i in 0:count) { // TODO: Use Iterable.each(silentListener(model.zoomOut))
                     model.zoomOut();
                 }
             }
