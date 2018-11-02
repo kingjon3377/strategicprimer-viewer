@@ -13,8 +13,6 @@ import ceylon.collection {
    allowing automated testing of command-line apps and graphical wrappers around them."""
 // TODO: Methods beyond inputNumber/inputDecimal should abort (return null) on EOF.
 shared interface ICLIHelper {
-    shared alias ListAmendment<Element> => Element?(MutableList<Element>, ICLIHelper); // TODO: Is this used anymore?
-
     "Have the user choose an item from a list. Returns the index."
     shared formal Integer->Element? chooseFromList<Element>(
             "The list of items to choose from."
