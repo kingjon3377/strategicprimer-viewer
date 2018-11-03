@@ -280,10 +280,10 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
                 filteredFileChooser(false, ".", null))
                     .call((file) => strategyExporter.writeStrategy( // TODO: convert lambda to named method
                     parsePath(file.string).resource, treeModel.dismissed))));
-
-    value playerLabelPanel = BorderedPanel.horizontalPanel(playerLabel, null, jumpButton); // TODO: If only used once, inline?
     contentPane = horizontalSplit(verticalSplit(
-        BorderedPanel.verticalPanel(playerLabelPanel, JScrollPane(tree), null),
+        BorderedPanel.verticalPanel(
+            BorderedPanel.horizontalPanel(playerLabel, null, jumpButton),
+            JScrollPane(tree), null),
         lowerLeft, 2.0 / 3.0),
         verticalSplit(BorderedPanel.verticalPanel(
             JLabel("Contents of the world you know about, for reference:"),
