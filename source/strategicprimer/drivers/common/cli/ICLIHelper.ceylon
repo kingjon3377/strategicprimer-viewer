@@ -5,9 +5,6 @@ import strategicprimer.model.common.map {
 import ceylon.decimal {
     Decimal
 }
-import ceylon.collection {
-    MutableList
-}
 
 """An interface for the "CLI helper," which encapsulates input and output streams,
    allowing automated testing of command-line apps and graphical wrappers around them."""
