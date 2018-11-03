@@ -149,6 +149,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     variable UnitMember? current = null;
     void recache() {
         UnitMember? local = current;
+        jobsPanel.removeAll();
         if (is IWorker local) {
             typeLabel.text = "Worker";
             nameLabel.text = local.name;
@@ -157,7 +158,6 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             for (label in statLabels) {
                 label.recache(stats);
             }
-            jobsPanel.removeAll(); // TODO: Pull this statement out of all of the if branches to above the first if statement
             for (job in local.filter(not(IJob.emptyJob))) {
                 JLabel label = JLabel("``job.name`` ``job.level``");
                 if (exists firstSkill = job.first) {
@@ -199,7 +199,6 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             for (label in statLabels) {
                 label.recache(null);
             }
-            jobsPanel.removeAll();
         } else if (is Implement local) {
             typeLabel.text = "Equipment";
             nameLabel.text = "";
@@ -211,7 +210,6 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             for (label in statLabels) {
                 label.recache(null);
             }
-            jobsPanel.removeAll();
         } else if (is ResourcePile local) {
             typeLabel.text = "Resource";
             nameLabel.text = "";
@@ -219,7 +217,6 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             for (label in statLabels) {
                 label.recache(null);
             }
-            jobsPanel.removeAll();
         } else if (exists local) {
             typeLabel.text = "Unknown";
             nameLabel.text = "";
@@ -227,7 +224,6 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             for (label in statLabels) {
                 label.recache(null);
             }
-            jobsPanel.removeAll();
         } else {
             typeLabel.text = "";
             nameLabel.text = "";
@@ -235,7 +231,6 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             for (label in statLabels) {
                 label.recache(null);
             }
-            jobsPanel.removeAll();
         }
         portraitComponent.portrait = null;
         if (is HasPortrait local) {
