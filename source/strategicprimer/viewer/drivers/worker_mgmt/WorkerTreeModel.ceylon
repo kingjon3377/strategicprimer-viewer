@@ -324,4 +324,15 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
     }
 
     shared actual void mapMetadataChanged() {}
+    shared actual {Object*} childrenOf(Object obj) {
+        if (is Player obj) {
+            return model.getUnitKinds(obj);
+        } else if (is String obj) {
+            return model.getUnits(root, obj);
+        } else if (is IUnit obj) {
+            return obj;
+        } else {
+            return [];
+        }
+    }
 }

@@ -486,4 +486,12 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
 
     """Ignore notification of changes to map filename or "modified" flag."""
     shared actual void mapMetadataChanged() {}
+
+    shared actual {TreeNode*} childrenOf(Object obj) {
+        if (is WorkerTreeNode<out Object> obj) {
+            return obj;
+        } else {
+            return [];
+        }
+    }
 }

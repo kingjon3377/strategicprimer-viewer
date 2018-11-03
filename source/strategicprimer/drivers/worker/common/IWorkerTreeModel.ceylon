@@ -72,4 +72,8 @@ shared interface IWorkerTreeModel
        "TODO", contain "FIXME", or are empty. Returns null if no unit matches those
        criteria."""
     shared formal TreePath? nextProblem(TreePath? starting, Integer turn);
+
+    "If [[arg]] is a node in the tree, return its children, if any; otherwise, return
+     the empty sequence."
+    shared formal {Object*} childrenOf(Object arg);
 }

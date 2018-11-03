@@ -87,6 +87,9 @@ import lovelace.util.common {
     as,
     matchingValue
 }
+import java.lang {
+    JString=String
+}
 
 "A tree of a player's units."
 shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
@@ -349,10 +352,24 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         shouldWarn = true;
                     }
                 } else if (orderCheck,
-                        is WorkerTreeModelAlt.WorkerTreeNode<String> item) { // TODO: What if the model is a WorkerTreeModel, so the item is a String or JString?
+                        is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
                     for (child in item
-                            .narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()) {
+                            .narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()) { // TODO: Map to userObjectNarrowed
                         IUnit unit = child.userObjectNarrowed;
+                        if (!unit.empty) {
+                            String orders = unit.getLatestOrders(turnSource())
+                                .lowercased;
+                            if (orders.contains("fixme")) {
+                                shouldError = true;
+                                shouldWarn = false;
+                                break;
+                            } else if (orders.contains("todo")) {
+                                shouldWarn = true;
+                            }
+                        }
+                    }
+                } else if (orderCheck, is String|JString item) { // TODO: Find a way to unify with previous case
+                    for (unit in wtModel.childrenOf(item).narrow<IUnit>()) {
                         if (!unit.empty) {
                             String orders = unit.getLatestOrders(turnSource())
                                 .lowercased;
