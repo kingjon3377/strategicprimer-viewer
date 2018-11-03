@@ -97,9 +97,6 @@ import ceylon.decimal {
 import ceylon.whole {
     Whole
 }
-import com.pump.window {
-    WindowMenu
-}
 import strategicprimer.model.common.map.fixtures.terrain {
     Hill,
     Oasis
@@ -467,11 +464,10 @@ shared class MapCheckerGUI() satisfies UtilityGUI {
         if (!initialized) {
             initialized = true;
             window = MapCheckerFrame(this);
-            window.jMenuBar = SPMenu(
+            window.jMenuBar = SPMenu.forWindowContaining(window.contentPane,
                 SPMenu.createFileMenu(UtilityMenuHandler(this, window).handleEvent, this),
                 SPMenu.disabledMenu(SPMenu.createMapMenu(noop, this)),
-                SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)),
-                WindowMenu(window));
+                SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)));
             window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
         }
         window.showWindow();

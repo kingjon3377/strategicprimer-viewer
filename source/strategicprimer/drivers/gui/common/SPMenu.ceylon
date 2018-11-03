@@ -1,5 +1,6 @@
 import com.pump.window {
-    WindowList
+    WindowList,
+    WindowMenu
 }
 import com.apple.eawt {
     QuitResponse,
@@ -23,16 +24,21 @@ import javax.swing {
     KeyStroke,
     JMenuItem,
     JMenuBar,
-    JMenu
+    JMenu,
+    JFrame
 }
 import lovelace.util.jvm {
     platform,
     createMenuItem,
     HotKeyModifier,
-    createAccelerator
+    createAccelerator,
+    ComponentParentStream
 }
 import strategicprimer.drivers.gui.common {
     quitHandler
+}
+import java.awt {
+    Component
 }
 
 "A class to hold the logic for building our menus."
@@ -235,4 +241,8 @@ shared class SPMenu extends JMenuBar {
     }
 
     shared new (JMenu* menus) extends JMenuBar() { menus.each(add); }
+    shared new forWindowContaining(Component component, JMenu* menus)
+            extends SPMenu(*menus) {
+        add(WindowMenu(ComponentParentStream(component).narrow<JFrame>().first));
+    }
 }

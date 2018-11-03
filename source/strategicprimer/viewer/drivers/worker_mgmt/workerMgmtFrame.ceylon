@@ -32,8 +32,7 @@ import javax.swing {
     JComponent,
     KeyStroke,
     JLabel,
-    SwingUtilities,
-    JFrame
+    SwingUtilities
 }
 import javax.swing.tree {
     TreePath,
@@ -49,7 +48,6 @@ import lovelace.util.jvm {
     horizontalSplit,
     BorderedPanel,
     verticalSplit,
-    ComponentParentStream,
     createAccelerator,
     InterpolatedLabel
 }
@@ -317,9 +315,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         playerLabel.arguments = [newPlayer];
     }
 
-    assert (exists thisReference =
-            ComponentParentStream(contentPane).narrow<JFrame>().first); // TODO: Make menu classes take Component (e.g. 'contentPane') and derive the containing frame using ComponentParentStream themselves
     jMenuBar = workerMenu(menuHandler.actionPerformed,
-        thisReference, driver);
+        contentPane, driver);
     pack();
 }

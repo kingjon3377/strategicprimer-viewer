@@ -73,8 +73,7 @@ import com.apple.eawt {
     Application
 }
 import com.pump.window {
-    WindowList,
-    WindowMenu
+    WindowList
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
@@ -579,15 +578,14 @@ class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
             buttonPanel.add(listenedButton(driver.usage.shortDescription,
                         (evt) => buttonHandler(driver)));
         }
-        frame.contentPane = BorderedPanel.verticalPanel(
+        frame.contentPane = BorderedPanel.verticalPanel( // TODO: Extract local variable to refer to here and below
             JLabel("Please choose one of the applications below"),
             JScrollPane(buttonPanel), null);
         frame.pack();
-        frame.jMenuBar = SPMenu(
+        frame.jMenuBar = SPMenu.forWindowContaining(frame.contentPane,
             SPMenu.createFileMenu(IOHandler(this).actionPerformed, this),
             SPMenu.disabledMenu(SPMenu.createMapMenu(noop, this)),
-            SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)),
-            WindowMenu(frame));
+            SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)));
         frame.addWindowListener(WindowCloseListener(silentListener(frame.dispose)));
         frame.setVisible(true);
     }

@@ -38,9 +38,6 @@ import strategicprimer.drivers.gui.common {
     UtilityMenuHandler,
     SPMenu
 }
-import com.pump.window {
-    WindowMenu
-}
 
 "A factory for a driver to check whether player maps are subsets of the main map and
  display the results graphically."
@@ -74,11 +71,10 @@ shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
         if (!initialized) {
             initialized = true;
             frame = SubsetFrame(this);
-            frame.jMenuBar = SPMenu(
+            frame.jMenuBar = SPMenu.forWindowContaining(frame.contentPane,
                 SPMenu.createFileMenu(UtilityMenuHandler(this, frame).handleEvent, this),
                 SPMenu.disabledMenu(SPMenu.createMapMenu(noop, this)),
-                SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)),
-                WindowMenu(frame));
+                SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)));
             frame.addWindowListener(WindowCloseListener(silentListener(frame.dispose)));
         }
         SwingUtilities.invokeLater(frame.showWindow);

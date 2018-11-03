@@ -1,7 +1,3 @@
-import com.pump.window {
-    WindowMenu
-}
-
 import java.awt {
     Dimension,
     Component,
@@ -196,8 +192,8 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
     addWindowListener(windowSizeListener);
     addWindowStateListener(windowSizeListener);
 
-    jMenuBar = SPMenu(SPMenu.createFileMenu(menuHandler, driver),
+    jMenuBar = SPMenu.forWindowContaining(mapPanel,
+        SPMenu.createFileMenu(menuHandler, driver),
         SPMenu.createMapMenu(menuHandler, driver),
-        SPMenu.createViewMenu(menuHandler, driver),
-        WindowMenu(containingWindow(mapPanel)));
+        SPMenu.createViewMenu(menuHandler, driver));
 }

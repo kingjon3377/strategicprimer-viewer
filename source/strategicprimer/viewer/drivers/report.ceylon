@@ -90,9 +90,6 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     FileChooser
 }
-import com.pump.window {
-    WindowMenu
-}
 
 "An object to help us present files with only as much of their paths as
  necessary to uniquely identify them, without their shared prefix."
@@ -355,11 +352,10 @@ shared class TabularReportGUI(ICLIHelper cli, SPOptions options, model)
         listener.mapChanged();
         model.addMapChangeListener(listener);
         window.add(frame);
-        window.jMenuBar = SPMenu(
+        window.jMenuBar = SPMenu.forWindowContaining(frame,
             SPMenu.createFileMenu(IOHandler(this).actionPerformed, this),
             SPMenu.disabledMenu(SPMenu.createMapMenu(noop, this)),
-            SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)),
-            WindowMenu(window));
+            SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)));
         window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
         window.showWindow();
     }

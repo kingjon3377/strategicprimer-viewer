@@ -7,10 +7,6 @@ import ceylon.collection {
     MutableMap
 }
 
-import com.pump.window {
-    WindowMenu
-}
-
 import java.awt {
     CardLayout,
     Dimension,
@@ -621,9 +617,10 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
 
     (retval of Component).preferredSize = Dimension(1024, 640);
 
-    retval.jMenuBar = SPMenu(SPMenu.createFileMenu(menuHandler.actionPerformed, driver),
+    retval.jMenuBar = SPMenu.forWindowContaining(explorationPanel,
+        SPMenu.createFileMenu(menuHandler.actionPerformed, driver),
         SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler.actionPerformed, driver)),
-        SPMenu.createViewMenu(menuHandler.actionPerformed, driver), WindowMenu(retval));
+        SPMenu.createViewMenu(menuHandler.actionPerformed, driver));
     retval.pack();
     return retval;
 }
