@@ -353,9 +353,10 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     }
                 } else if (orderCheck,
                         is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
-                    for (child in item
-                            .narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()) { // TODO: Map to userObjectNarrowed
-                        IUnit unit = child.userObjectNarrowed;
+                    for (unit in item
+                            .narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()
+                            .map(WorkerTreeModelAlt.WorkerTreeNode<IUnit>
+                                .userObjectNarrowed)) {
                         if (!unit.empty) {
                             String orders = unit.getLatestOrders(turnSource())
                                 .lowercased;
