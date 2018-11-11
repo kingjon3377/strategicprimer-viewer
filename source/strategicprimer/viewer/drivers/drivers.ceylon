@@ -62,7 +62,7 @@ import strategicprimer.drivers.common {
     GUIDriverFactory,
     UtilityDriverFactory,
     ModelDriverFactory,
-    UtilityDriver
+    UtilityGUI
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
@@ -529,7 +529,8 @@ shared void run() {
     }
 }
 
-class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
+class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
+    MutableList<String> additionalFiles = ArrayList<String>();
     Boolean includeInGUIList(DriverFactory driver) => driver.usage.includeInList(true);
     shared actual void startDriver(String* args) {
         value tempComponent = JEditorPane();
@@ -550,7 +551,8 @@ class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
         JPanel buttonPanel = JPanel(GridLayout(0, 1));
         void buttonHandler(DriverFactory target) {
             try {
-                DriverWrapper(target).startCatchingErrors(cli, options, *args);
+                DriverWrapper(target).startCatchingErrors(cli, options,
+                    *(args.chain(additionalFiles)));
                 SwingUtilities.invokeLater(() {
                     frame.setVisible(false);
                     frame.dispose();
@@ -589,4 +591,5 @@ class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
         frame.addWindowListener(WindowCloseListener(silentListener(frame.dispose)));
         frame.setVisible(true);
     }
+    shared actual void open(PathWrapper path) => additionalFiles.add(path.filename);
 }
