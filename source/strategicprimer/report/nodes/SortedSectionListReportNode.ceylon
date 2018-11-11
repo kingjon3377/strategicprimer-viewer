@@ -26,11 +26,11 @@ shared class SortedSectionListReportNode
     variable Boolean sorting = true;
     shared void appendNodes(MutableTreeNode* newChildren) {
         newChildren.each(super.appendNode);
-        if (sorting) {
+        if (sorting, !newChildren.empty, exists temp = children) {
             // We use List<> rather than Vector<> because the latter fails at runtime
             // in the metamodel with "Class has more than one overloaded constructor"
             // It looks like this is eclipse/ceylon#7092
-            assert (is JList<IReportNode> temp = children);
+            assert (is JList<IReportNode> temp);
             JCollections.sort(temp, sorter);
         }
     }
