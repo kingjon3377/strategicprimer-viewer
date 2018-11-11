@@ -2,11 +2,12 @@ import java.awt {
 	Component
 }
 shared class ComponentParentStream satisfies {Component*} {
-	static class ComponentParentIterator(variable Component widget)
+	static class ComponentParentIterator(Component widget)
 			satisfies Iterator<Component> {
+		variable Component? current = widget;
 		shared actual Component|Finished next() {
-			if (exists retval = widget.parent) {
-				widget = retval;
+			if (exists retval = current) {
+				current = retval.parent;
 				return retval;
 			} else {
 				return finished;
