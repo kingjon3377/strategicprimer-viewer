@@ -78,19 +78,28 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
     shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (is IViewerModel model) {
+            log.trace("Creating a viewer-GUI instance for a model of the proper type");
             return ViewerGUI(model);
         } else {
+            log.trace("Creating a viewer-GUI instance after converting its type");
             return createDriver(cli, options, ViewerModel.copyConstructor(model));
         }
     }
 
-    shared actual IViewerModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            ViewerModel(map, path);
+    shared actual IViewerModel createModel(IMutableMapNG map, PathWrapper? path) {
+        if (exists path) {
+            log.trace("Creating a viewer model for path ``path``");
+        } else {
+            log.trace("Creating a viewer model for a null path");
+        }
+        return ViewerModel(map, path);
+    }
 }
 
 "A driver to start the map viewer."
 shared class ViewerGUI(model) satisfies ViewerDriver {
     shared actual IViewerModel model;
+    log.trace("In ViewerGUI constructor");
 
     shared actual void center() {
         Point selection = model.selection;
@@ -144,10 +153,12 @@ shared class ViewerGUI(model) satisfies ViewerDriver {
             getFindDialog)()), "find next");
         menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
             "about");
+        log.trace("About to show viewer GUI window");
         frame.showWindow();
     }
 
     shared actual void startDriver() {
+        log.trace("In ViewerGUI.startDriver()");
         MenuBroker menuHandler = MenuBroker();
         menuHandler.register(IOHandler(this), "load", "save", "save as", "new",
             "load secondary", "save all", "open in map viewer",
