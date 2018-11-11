@@ -284,6 +284,9 @@ shared class IOHandler satisfies ActionListener {
                 }
             } else {
                 log.error("IOHandler asked to save but couldn't get current window");
+                log.debug("Event details: ``event``");
+                log.debug("Source: ``source else "null"``");
+                log.trace("Stack trace:", AssertionError("Stack trace"));
             }
         }
 
