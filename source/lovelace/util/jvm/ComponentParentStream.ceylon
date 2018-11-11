@@ -1,6 +1,10 @@
 import java.awt {
     Component
 }
+import javax.swing {
+    JMenu,
+    JPopupMenu
+}
 
 "A [[stream|Iterable]] of a component's [[parent|Component.parent]], its
  parent, and so on until a component's parent is null."
@@ -11,6 +15,13 @@ shared class ComponentParentStream satisfies {Component*} {
         shared actual Component|Finished next() {
             if (exists retval = current) {
                 current = retval.parent;
+                if (!current exists) {
+                    if (is JPopupMenu retval) {
+                        current = retval.invoker;
+                    } else if (is JMenu retval) {
+                        current = retval.popupMenu;
+                    }
+                }
                 return retval;
             } else {
                 return finished;
