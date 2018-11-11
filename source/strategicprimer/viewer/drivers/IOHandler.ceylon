@@ -145,6 +145,13 @@ shared class IOHandler satisfies ActionListener {
         }
     }
 
+    "Start a new map-viewer window for a new map with the same dimensions as that
+     represented by the given driver's model. Should be run on the EDT, i.e. using
+     [[SwingUtilities.invokeLater]]."
+    void startNewViewerWindow(ModelDriver driver) =>
+        ViewerGUI(vgf.createModel(SPMapNG(driver.model.mapDimensions, PlayerCollection(),
+            driver.model.map.currentTurn), null)).startDriver();
+
     shared actual void actionPerformed(ActionEvent event) {
         Component? source = as<Component>(event.source);
         Frame? parentWindow;
@@ -209,9 +216,7 @@ shared class IOHandler satisfies ActionListener {
 
         case ("new") {
             if (is ModelDriver driver) {
-                SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
-                    ViewerGUI), [vgf.createModel(SPMapNG(driver.model.mapDimensions,
-                    PlayerCollection(), driver.model.map.currentTurn), null)]));
+                SwingUtilities.invokeLater(defer(startNewViewerWindow, [driver]));
             } else {
                 log.error("IOHandler asked to 'new' in driver it can't do that from");
             }
