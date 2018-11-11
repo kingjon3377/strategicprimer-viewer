@@ -1,6 +1,11 @@
 import java.awt {
 	Component
 }
+import javax.swing {
+	JMenu,
+	JPopupMenu
+}
+
 shared class ComponentParentStream satisfies {Component*} {
 	static class ComponentParentIterator(Component widget)
 			satisfies Iterator<Component> {
@@ -8,6 +13,13 @@ shared class ComponentParentStream satisfies {Component*} {
 		shared actual Component|Finished next() {
 			if (exists retval = current) {
 				current = retval.parent;
+				if (!current exists) {
+					if (is JPopupMenu retval) {
+						current = retval.invoker;
+					} else if (is JMenu retval) {
+						current = retval.popupMenu;
+					}
+				}
 				return retval;
 			} else {
 				return finished;
