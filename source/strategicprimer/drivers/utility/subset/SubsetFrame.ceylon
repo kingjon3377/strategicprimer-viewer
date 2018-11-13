@@ -8,19 +8,10 @@ import java.awt {
 }
 import java.io {
     FileNotFoundException,
-    IOException,
-    JWriter=Writer
-}
-import java.lang {
-    CharArray,
-    CharSequence,
-    overloaded
+    IOException
 }
 import java.nio.file {
     NoSuchFileException
-}
-import java.util {
-    Formatter
 }
 
 import javax.swing {
@@ -63,32 +54,18 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
         Dimension(640, 320), true) {
     StreamingLabel label = StreamingLabel();
 
-    object htmlWriter extends JWriter() {
+    class HtmlWriter(String filename) {
         variable Boolean lineStart = true;
         Regex matcher = regex(operatingSystem.newline, true);
-        shared actual overloaded JWriter append(CharSequence csq) {
-            String local = csq.string;
+        shared void write(String string) {
             if (lineStart) {
-                super.append("<p style=\"color:black\">");
+                label.append("""<p style="color:black">""");
             }
-            super.append(matcher.replace(local, "</p><p style=\"color:black\">"));
+            label.append(filename);
+            label.append(""": """);
+            label.append(matcher.replace(string, """</p><p style="color:black">"""));
             lineStart = false;
-            return this;
         }
-        shared actual overloaded JWriter append(CharSequence csq, Integer start,
-                Integer end) => append(csq.subSequence(start, end));
-        shared actual overloaded JWriter append(Character c) => append(c.string);
-        shared actual void close() {}
-        shared actual void flush() {}
-        shared actual void write(CharArray cbuf, Integer off, Integer len) {
-            variable Integer i = 0;
-            while (i < cbuf.size) {
-                if (i >= off, (i - off) < len) {
-                    append(cbuf[i]);
-                }
-            }
-        }
-
     }
 
     contentPane = JScrollPane(label);
@@ -103,7 +80,7 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
             } catch (FileNotFoundException|NoSuchFileException except) {
                 printParagraph("File ``path`` not found", LabelTextColor.red);
                 throw except;
-            } catch (XMLStreamException except) {
+            } catch (XMLStreamException except) { // FIXME: Indentation in this block
                 printParagraph("ERROR: Malformed XML in ``path
                 ``; see following error message for details",
                     LabelTextColor.red);
@@ -141,15 +118,10 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
             filename = "an unnamed file";
         }
         printParagraph("Testing ``filename`` ...");
-        try (formatter = Formatter(htmlWriter)) { // TODO: Convert from Formatter(htmlWriter) to an implementation not involving a JDK type with overloads, but probably a class taking the filename as a parameter
-            if (mainMap.isSubset(map,
-                        // can't use curry() directly: Formatter.format() is overloaded
-                        (String string) => formatter.format("%s: %s", filename,
-                            string))) {
-                printParagraph("OK", LabelTextColor.green);
-            } else {
-                printParagraph("WARN", LabelTextColor.yellow);
-            }
+        if (mainMap.isSubset(map, HtmlWriter(filename).write)) {
+            printParagraph("OK", LabelTextColor.green);
+        } else {
+            printParagraph("WARN", LabelTextColor.yellow);
         }
     }
 
