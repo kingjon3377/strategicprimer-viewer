@@ -54,13 +54,14 @@ shared class SubsetCLIFactory() satisfies ModelDriverFactory {
 shared class SubsetCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
     shared actual IMultiMapModel model;
 
+    void report(String filename)(String string) =>
+            cli.println("In ``filename``: ``string``");
+
     shared actual void startDriver() {
         for (map->[file, _] in model.subordinateMaps) {
             String filename = file?.string else "map without a filename";
             cli.print("``filename``\t...\t\t");
-            if (model.map.isSubset(map,
-                        (String string) => // TODO: Convert lambda to class method
-                            cli.println("In ``filename``: ``string``"))) {
+            if (model.map.isSubset(map, report(filename))) {
                 cli.println("OK");
             } else {
                 cli.println("WARN");
