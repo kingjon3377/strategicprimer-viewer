@@ -254,9 +254,8 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
 
     object explorationPanel extends BorderedPanel() // TODO: try to split controller-functionality from presentation
             satisfies SelectionChangeListener&CompletionSource&MovementCostListener {
-        shared actual void deduct(Integer cost) { // TODO: use =>
+        shared actual void deduct(Integer cost) =>
             mpModel.\ivalue = JInteger.valueOf(mpModel.number.intValue() - cost);
-        }
 
         String locLabelText(Point point) =>
                 "<html><body>Currently exploring ``point``; click a tile to explore it.
