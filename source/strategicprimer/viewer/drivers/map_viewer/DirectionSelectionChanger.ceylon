@@ -12,6 +12,7 @@ import strategicprimer.model.common.map {
 }
 
 import lovelace.util.common {
+    silentListener,
     todo
 }
 
@@ -97,9 +98,7 @@ class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener
         } else {
             func = up;
         }
-        for (i in 0:count) { // TODO: Use Iterable.each(silentListener(func))
-            func();
-        }
+        (0:count).each(silentListener(func));
     }
 
     "Scroll when the user scrolls the mouse wheel: zooming when Command (on
@@ -110,13 +109,9 @@ class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener
             // Zoom if Command-scroll/Control-scroll
             Integer count = event.wheelRotation;
             if (count < 0) {
-                for (i in 0:(count.magnitude)) { // TODO: Use Iterable.each(silentListener(model.zoomIn))
-                    model.zoomIn();
-                }
+                (0:(count.magnitude)).each(silentListener(model.zoomIn));
             } else {
-                for (i in 0:count) { // TODO: Use Iterable.each(silentListener(model.zoomOut))
-                    model.zoomOut();
-                }
+                (0:count).each(silentListener(model.zoomOut));
             }
         } else if (event.shiftDown) {
             // Scroll sideways on Shift-scroll
