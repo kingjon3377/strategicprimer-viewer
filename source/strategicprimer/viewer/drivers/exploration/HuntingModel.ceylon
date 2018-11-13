@@ -107,6 +107,11 @@ shared class HuntingModel {
             "Whereabouts to search"
             Point point) => chooseFromMap(point, waterAnimals);
 
+    "Given a location, return the stream of gathering results from just that
+     tile."
+    {<Point->Grove|Meadow|Shrub|NothingFound>*} gatherImpl(Point point) =>
+            plants(point).map(curry(Entry<Point, Grove|Meadow|Shrub|NothingFound>)(point));
+
     """Get a stream of gathering results from the area surrounding the given tile. Many
        will be "nothing," especially from desert and tundra tiles and less from jungle
        tiles. This may be an infinite stream."""
@@ -114,7 +119,5 @@ shared class HuntingModel {
             "Whereabouts to search"
             Point point) =>
         singletonRandom.elements(surroundingPointIterable(point, dimensions)
-                .map((loc) => plants(loc) // TODO: Convert lambda to named method, possibly taking two parameter lists
-                        .map(curry(Entry<Point, Grove|Meadow|Shrub|NothingFound>)(loc)))
-                .flatMap(identity));
+                .map(gatherImpl).flatMap(identity));
 }
