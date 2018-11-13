@@ -97,8 +97,6 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
 
     Player defaultPlayer = PlayerImpl(-1, "proxied");
 
-    shared actual Player owner => getConsensus(IUnit.owner) else defaultPlayer;
-
     shared actual String kind {
         if (parallel) {
             return getConsensus(IUnit.kind) else "proxied";
@@ -239,7 +237,9 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         }
     }
 
-    assign owner { // TODO: Move getter down here (to be adjacent to setter) if possible
+    shared actual Player owner => getConsensus(IUnit.owner) else defaultPlayer;
+
+    assign owner {
         for (unit in proxiedList) {
             if (is HasMutableOwner unit) {
                 unit.owner = owner;
