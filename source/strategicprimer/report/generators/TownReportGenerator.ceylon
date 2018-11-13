@@ -161,10 +161,9 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 TownStatus.ruined->SectionListReportNode(5,
                     "Ruined Communities"));
         separateByStatus(separated, fixtures.items,
-                    (IReportNode node, pair) { // TODO: Use =>
+                    (IReportNode node, pair) =>
                 node.appendNode(produceRIRSingle(fixtures, map, pair.rest.first,
-                    pair.first));
-            });
+                    pair.first)));
         IReportNode retval = SectionListReportNode(4,
             "Cities, towns, and/or fortifications you know about:");
         retval.addIfNonEmpty(*statuses.map(separated.get).coalesced); // TODO: Refactor to status.map(separated.get).coalesced.each(retval.addIfNonEmpty) to avoid spread
