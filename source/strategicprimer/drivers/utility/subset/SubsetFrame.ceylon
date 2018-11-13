@@ -80,9 +80,9 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
             } catch (FileNotFoundException|NoSuchFileException except) {
                 printParagraph("File ``path`` not found", LabelTextColor.red);
                 throw except;
-            } catch (XMLStreamException except) { // FIXME: Indentation in this block
+            } catch (XMLStreamException except) {
                 printParagraph("ERROR: Malformed XML in ``path
-                ``; see following error message for details",
+                        ``; see following error message for details",
                     LabelTextColor.red);
                 printParagraph(except.message, LabelTextColor.red);
                 throw except;
