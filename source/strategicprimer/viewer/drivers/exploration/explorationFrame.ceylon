@@ -503,14 +503,10 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
             shared actual void deduct(Integer cost) => outer.deduct(cost);
         }
 
-        for (direction in [Direction.northwest, // TODO: reformat // TODO: Make Direction comparable so we can replace this Tuple with sort(`Direction.caseValues`)?
-                Direction.north,
-                Direction.northeast,
-                Direction.west, Direction.nowhere,
-                Direction.east,
-                Direction.southwest,
-                Direction.south,
-                Direction.southeast]) {
+        // TODO: Make Direction comparable so we can replace this Tuple with sort(`Direction.caseValues`)?
+        for (direction in [Direction.northwest, Direction.north, Direction.northeast,
+                Direction.west, Direction.nowhere, Direction.east, Direction.southwest,
+                Direction.south, Direction.southeast]) {
             SelectionChangeSupport mainPCS = SelectionChangeSupport();
             SwingList<TileFixture>&SelectionChangeListener mainList =
                     fixtureList(tilesPanel, FixtureListModel(driver.model.map, tracksCreator),
