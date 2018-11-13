@@ -91,15 +91,16 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
     "Write the contents of a Map to a stream as a list, but don't write anything
      if it is empty."
     shared default void writeMap<out Key>(
-            "The stream to write to."
-            Anything(String) ostream,
-            "The map to write. Has to be a [[HeadedMap]] so we can get its heading."
-            HeadedMap<Key, Point> map,
-            "The method to write each item."
-            Anything(Key->Point, Anything(String)) lambda,
-            "An optional sorting method to run the map through before printing."
-            Comparison(Key->Point, Key->Point)? sorter = null // TODO: formatting: move close-paren up
-            ) given Key satisfies Object {
+                "The stream to write to."
+                Anything(String) ostream,
+                "The map to write. Has to be a [[HeadedMap]] so we can get its
+                 heading."
+                HeadedMap<Key, Point> map,
+                "The method to write each item."
+                Anything(Key->Point, Anything(String)) lambda,
+                "An optional sorting method to run the map through before printing."
+                Comparison(Key->Point, Key->Point)? sorter = null)
+            given Key satisfies Object {
         if (!map.empty) {
             ostream("``map.header``
                      <ul>
