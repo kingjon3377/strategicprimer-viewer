@@ -17,26 +17,24 @@ shared class Direction
         of north|northeast|east|southeast|south|southwest|west|northwest|nowhere {
     "A representation of the direction for debugging purposes."
     shared actual String string;
-    "The number used to select this direction in the CLI." // FIXME: This is no longer true!
-    shared Integer ordinal;
     "North."
-    shared new north { string = "north"; ordinal = 0; }
+    shared new north { string = "north"; }
     "Northeast."
-    shared new northeast { string = "northeast"; ordinal = 1; }
+    shared new northeast { string = "northeast"; }
     "East."
-    shared new east { string = "east"; ordinal = 2; }
+    shared new east { string = "east"; }
     "Southeast."
-    shared new southeast { string = "southeast"; ordinal = 3; }
+    shared new southeast { string = "southeast"; }
     "South."
-    shared new south { string = "south"; ordinal = 4; }
+    shared new south { string = "south"; }
     "Southwest."
-    shared new southwest { string = "southwest"; ordinal = 5; }
+    shared new southwest { string = "southwest"; }
     "West."
-    shared new west { string = "west"; ordinal = 6; }
+    shared new west { string = "west"; }
     "Northwest."
-    shared new northwest { string = "northwest"; ordinal = 7; }
+    shared new northwest { string = "northwest"; }
     "Stand still."
-    shared new nowhere { string = "nowhere"; ordinal = 8; }
+    shared new nowhere { string = "nowhere"; }
 }
 
 "An enumeration of possible movement speeds, joining their effects on MP costs and
