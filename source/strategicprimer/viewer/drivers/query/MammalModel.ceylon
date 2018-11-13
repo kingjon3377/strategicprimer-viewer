@@ -18,21 +18,25 @@ class MammalModel satisfies HerdModel {
      regardless of its size, in addition to each herder's time with individual animals."
     shared Integer dailyTimeFloor = 60;
 
+    "A description of the model to show the user."
+    shared actual String name;
+
     new ("The amount produced per head per turn, in gallons" Float production,
-            Integer dailyTimePerHead) {
+            Integer dailyTimePerHead, String nomen) {
         this.dailyTimePerHead = dailyTimePerHead;
         productionPerHead = Quantity(production, "gallons");
+        name = nomen;
     }
 
     "The model for dairy cattle."
-    shared new dairyCattle extends MammalModel(4.0, 40) { }
+    shared new dairyCattle extends MammalModel(4.0, 40, "Dairy Cattle") { }
 
     "The model for other roughly-cattle-sized mammals. (Not for anything as large as
      elephants.)"
-    shared new largeMammals extends MammalModel(3.0, 40) { }
+    shared new largeMammals extends MammalModel(3.0, 40, "Large Mammals") { }
 
     "The model for roughly-goat-sized mammals."
-    shared new smallMammals extends MammalModel(1.5, 30) { }
+    shared new smallMammals extends MammalModel(1.5, 30, "Medium-Size Mammals") { }
 
     "How much time, in minutes, herders must spend on a flock with this many animals per
      herder."

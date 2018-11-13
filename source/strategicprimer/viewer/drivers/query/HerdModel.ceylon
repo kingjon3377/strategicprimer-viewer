@@ -2,8 +2,12 @@ import strategicprimer.model.common.map.fixtures {
     Quantity
 }
 
+import strategicprimer.model.common.map {
+    HasName
+}
+
 "Models of (game statistics for) herding."
-interface HerdModel of PoultryModel | MammalModel {
+interface HerdModel of PoultryModel | MammalModel satisfies HasName {
     "How much is produced per head per turn, in some model-specified unit."
     shared formal Quantity productionPerHead;
 

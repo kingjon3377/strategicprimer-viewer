@@ -19,23 +19,27 @@ class PoultryModel satisfies HerdModel {
     """How much time, in minutes, must be spent per head on "extra chores" days."""
     shared Integer extraTimePerHead = 30;
 
+    "A description of the model to show the user."
+    shared actual String name;
+
     new ("The number of eggs produced per head per turn." Float production,
             Float poundsCoefficient, Integer dailyTimePerHead,
-            Integer extraChoresInterval) {
+            Integer extraChoresInterval, String nomen) {
         this.poundsCoefficient = poundsCoefficient;
         this.dailyTimePerHead = dailyTimePerHead;
         this.extraChoresInterval = extraChoresInterval;
         productionPerHead = Quantity(production, "eggs");
+        name = nomen;
     }
 
     "The model for chickens."
-    shared new chickens extends PoultryModel(0.75, 0.125, 2, 2) { }
+    shared new chickens extends PoultryModel(0.75, 0.125, 2, 2, "Chickens") { }
 
     "The model for turkeys."
-    shared new turkeys extends PoultryModel(0.75, 0.25, 2, 2) { }
+    shared new turkeys extends PoultryModel(0.75, 0.25, 2, 2, "Turkeys") { }
 
     "The model for pigeons."
-    shared new pigeons extends PoultryModel(0.5, 0.035, 1, 4) { }
+    shared new pigeons extends PoultryModel(0.5, 0.035, 1, 4, "Pigeons") { }
 
     "How much time, in minutes, herders must spend on a flock with this many animals per
      herder."
