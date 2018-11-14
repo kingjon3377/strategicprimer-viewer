@@ -84,6 +84,10 @@ import strategicprimer.model.common.map.fixtures.resources {
     Meadow
 }
 
+import ceylon.language.meta.model {
+    ValueConstructor
+}
+
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 
@@ -387,20 +391,12 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
 
     "Run herding."
     void herd() {
-        HerdModel herdModel;
-        if (cli.inputBooleanInSeries("Are these small animals, like sheep?\t")) { // TODO: [Make HerdModel satisfy HasName and] use chooseFromList()
-            herdModel = MammalModel.smallMammals;
-        } else if (cli.inputBooleanInSeries("Are these dairy cattle?\t")) {
-            herdModel = MammalModel.dairyCattle;
-        } else if (cli.inputBooleanInSeries("Are these chickens?\t")) {
-            herdModel = PoultryModel.chickens;
-        } else if (cli.inputBooleanInSeries("Are these turkeys?\t")) {
-            herdModel = PoultryModel.turkeys;
-        } else if (cli.inputBooleanInSeries("Are these pigeons?\t")) {
-            herdModel = PoultryModel.pigeons;
-        } else {
-            herdModel = MammalModel.largeMammals;
-        }
+        assert (exists herdModel = cli.chooseFromList(
+            `MammalModel`.getValueConstructors().chain(`PoultryModel`.getValueConstructors())
+                .narrow<ValueConstructor<HerdModel>>()
+                .map((model) => model.get()).sequence(),
+            "What kind of animals are these?", "No animal kinds found",
+            "Kind of animal:", false).item);
         Integer count = cli.inputNumber("How many animals?\t") else 0;
         if (count == 0) {
             cli.println("With no animals, no cost and no gain.");
