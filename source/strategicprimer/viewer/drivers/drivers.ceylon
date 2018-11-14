@@ -308,11 +308,17 @@ class DriverWrapper(DriverFactory factory) {
             }
             case (is ModelDriverFactory) {
                 if (is GUIDriverFactory factory) {
-                    assert (nonempty files = extendArguments(*args).sequence());
-                    value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn,
-                        files.first, *files.rest);
-                    fixCurrentTurn(options, model);
-                    factory.createDriver(cli, options, model).startDriver();
+                    if (ParamCount.one == factory.usage.paramsWanted, args.size > 1) {
+                        for (arg in args) {
+                            startCatchingErrors(cli, options, arg);
+                        }
+                    } else {
+                        assert (nonempty files = extendArguments(*args).sequence());
+                        value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn,
+                            files.first, *files.rest);
+                        fixCurrentTurn(options, model);
+                        factory.createDriver(cli, options, model).startDriver();
+                    }
                 } else {
                     checkArguments(*args);
                     assert (nonempty args);
