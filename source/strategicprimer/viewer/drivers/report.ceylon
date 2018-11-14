@@ -84,8 +84,7 @@ import lovelace.util.common {
     matchingValue,
     silentListener,
     entryMap,
-    PathWrapper,
-    todo
+    PathWrapper
 }
 import lovelace.util.jvm {
     FileChooser
@@ -233,13 +232,17 @@ class ReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver {
         }
     }
 
-    todo("Log parsing failures")
     shared actual void startDriver() {
-        value tempPort = Integer.parse(options.getArgument("--serve"));
+        String portArgument = options.getArgument("--serve");
+        value tempPort = Integer.parse(portArgument);
         Integer port;
         if (is Integer tempPort) {
             port = tempPort;
         } else {
+            if (portArgument != "true") {
+                log.warn("Port must be a number");
+                log.trace("Stack trace of port parse failure", tempPort);
+            }
             port = 8080;
         }
         value playerNum = Integer.parse(options.getArgument("--player"));
@@ -530,12 +533,17 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
     }
 
     shared actual void startDriver() {
-        value tempPort = Integer.parse(options.getArgument("--serve"));
+        String portArgument = options.getArgument("--serve");
+        value tempPort = Integer.parse(portArgument);
         Integer port;
         if (is Integer tempPort) {
             port = tempPort;
         } else {
-            port = 8080; // TODO: log parsing failure
+            if (portArgument != "true") {
+                log.warn("Port must be a number");
+                log.trace("Stack trace of port parse failure", tempPort);
+            }
+            port = 8080;
         }
         serveReports(port);
     }
