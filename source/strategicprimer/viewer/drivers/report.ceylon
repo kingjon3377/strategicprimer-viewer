@@ -227,7 +227,7 @@ class ReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver {
                 };
             }
             log.info("About to start serving on port ``port``");
-            newServer { // TODO: Switch to positional-argument format (parentheses, not braces) for this, and snug up
+            newServer {
                 rootHandler, *endpoints
             }.start(SocketAddress("127.0.0.1", port));
         }
@@ -524,7 +524,7 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
         };
 
         log.info("About to start serving on port ``port``");
-        newServer { // TODO: Use () syntax, snug up
+        newServer {
             rootHandler, *endpoints.chain(tocs)
         }.start(SocketAddress("127.0.0.1", port));
     }
