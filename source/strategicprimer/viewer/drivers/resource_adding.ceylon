@@ -567,6 +567,15 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         return retval;
     }
 
+    void startDriverImpl(PlayerChangeMenuListener pcml, MenuBroker menuHandler) {
+        value frame = resourceAddingFrame(menuHandler.actionPerformed);
+        frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
+        menuHandler.registerWindowShower(
+            aboutDialog(frame, frame.windowName), "about");
+        pcml.addPlayerChangeListener(frame);
+        frame.showWindow();
+    }
+
     shared actual void startDriver() {
         PlayerChangeMenuListener pcml = PlayerChangeMenuListener(model);
         MenuBroker menuHandler = MenuBroker();
@@ -574,14 +583,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             "load secondary", "save all", "open in map viewer",
             "open secondary map in map viewer", "close", "quit");
         menuHandler.register(pcml, "change current player");
-        SwingUtilities.invokeLater(() { // TODO: convert lambda to class method, using defer() to pass in menuHandler
-            value frame = resourceAddingFrame(menuHandler.actionPerformed);
-            frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
-            menuHandler.registerWindowShower(
-                aboutDialog(frame, frame.windowName), "about");
-            pcml.addPlayerChangeListener(frame);
-            frame.showWindow();
-        });
+        SwingUtilities.invokeLater(defer(startDriverImpl, [pcml, menuHandler]));
     }
 
     "Ask the user to choose a file or files."
