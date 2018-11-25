@@ -1,0 +1,50 @@
+<view xmlns="https://github.com/kingjon3377/strategicprimer-viewer" current_player="-1" current_turn="16">
+	<map version="2" rows="1" columns="1">
+		<player number="1" code_name="Player 1" />
+		<player number="2" code_name="Player 2" />
+		<player number="3" code_name="Independent" />
+		<row index="0">
+			<tile row="0" column="0" kind="plains">
+				<fortress owner="1" name="HQ" id="0">
+					<unit owner="1" kind="agriculture" name="farmer" id="1">
+						<orders turn="16">Weed farms</orders>
+						<worker name="Rupert Piper" id="2">
+							<stats hp="8" max="8" str="10" dex="10" con="10" int="10" wis="10" cha="10" />
+							<job name="farmer" level="0">
+								<skill name="miscellaeous" level="0" hours="30" />
+							</job>
+						</worker>
+						<animal kind="horse" status="domesticated" id="3" count="2" />
+					</unit>
+					<unit owner="1" kind="agriculture" name="herd" id="4">
+						<orders turn="16">Herd sheep</orders>
+						<worker name="Harry Potter" id="5">
+							<stats hp="8" max="8" str="10" dex="10" con="10" int="10" wis="10" cha="10" />
+							<job name="herder" level="0">
+								<skill name="miscellaeous" level="0" hours="30" />
+							</job>
+						</worker>
+						<animal kind="sheep" status="domesticated" id="6" count="10" />
+					</unit>
+					<unit owner="1" kind="industry" name="carpenter" id="7">
+						<orders turn="16">Build barracks</orders>
+						<worker name="Bilbo Baggins" id="8">
+							<stats hp="8" max="8" str="10" dex="10" con="10" int="10" wis="10" cha="10" />
+							<job name="carpenter" level="0">
+								<skill name="miscellaeous" level="0" hours="30" />
+							</job>
+							<job name="burglar" level="1" />
+						</worker>
+						<worker name="Thorin Oakenshield" kind="dwarf" id="9">
+							<stats hp="8" max="8" str="10" dex="10" con="10" int="10" wis="10" cha="10" />
+							<job name="carpenter" level="0">
+								<skill name="miscellaeous" level="0" hours="30" />
+							</job>
+						</worker>
+					</unit>
+				</fortress>
+				<animal kind="elephant" id="10" />
+			</tile>
+		</row>
+	</map>
+</view>
