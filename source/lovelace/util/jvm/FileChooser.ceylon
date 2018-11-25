@@ -34,10 +34,10 @@ import lovelace.util.common {
 Logger log = logger(`module lovelace.util.jvm`);
 
 "A wrapper around the [[Swing|JFileChooser]] and [[AWT|JFileDialog]] file-choosers.
- 
+
  On most platforms, [[the Swing JFileChooser|JFileChooser]] is close enough to the
  native widget in appearance and functionality; on macOS, it is decidedly *not*,
- and it's impossible to conform to the platform HIG without using 
+ and it's impossible to conform to the platform HIG without using
  [[the AWT FileDialog|JFileDialog]] class instead. This class leaves the choice of
  which one to use to its callers, but abstracts over the differences between them."
 shared class FileChooser {
