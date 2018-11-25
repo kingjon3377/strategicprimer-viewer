@@ -92,7 +92,7 @@ shared object mapIOHelper {
     }
 
     "A test that [[namesToFiles]] works as expected.
-    
+
      This is something of a holdover from the Java version, since it had to
      also strip off the first one."
     test

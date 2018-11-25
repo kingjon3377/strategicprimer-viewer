@@ -502,7 +502,7 @@ object xmlTests {
         assertImageSerialization("City image property is preserved", city);
         assertPortraitSerialization("City portrait property is preserved", city);
     }
-    
+
     "Test (de)serialization of [[cities'|City]] [[population
      details|CommunityStats]]."
     test
