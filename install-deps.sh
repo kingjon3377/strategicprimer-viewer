@@ -12,7 +12,7 @@ done
 wget http://central.maven.org/maven2/com/yuvimasory/orange-extensions/1.3.0/orange-extensions-1.3.0.jar
 sudo apt-get update -qq
 sudo apt-get install genisoimage
-wget https://github.com/tofi86/universalJavaApplicationStub/archive/v3.0.3.tar.gz -O \
+wget https://github.com/tofi86/universalJavaApplicationStub/archive/v3.0.4.tar.gz -O \
 		universalJavaApplicationStub-3.0.4.tar.gz
 tar xzf universalJavaApplicationStub-3.0.4.tar.gz
 if test -n "${TRAVIS_TAG}"; then
