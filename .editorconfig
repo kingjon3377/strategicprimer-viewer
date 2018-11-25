@@ -1,0 +1,50 @@
+# See https://editorconfig.org for more details
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+
+# Until eclipse/ceylon#3972 is fixed, tab indentation in code containing
+# multiline strings causes compilation errors.
+[*.ceylon]
+indent_style = space
+indent_size = 4
+
+[{build.xml,.travis.yml,checkstyle.xml,.checkstyle,.eclipse-pmd,launch4j.cfg.xml}]
+indent_style = space
+indent_size = 2
+
+[*.html]
+indent_style = space
+indent_size = 2
+
+[*.iml]
+indent_style = space
+indent_size = 2
+
+[{ruleset.xml,.pmd}]
+indent_style = space
+indent_size = 4
+
+[viewer.eml]
+indent_style = tab
+indent_size = 4
+
+[{.classpath,.project}]
+indent_style = space
+indent_size = 8
+
+[*.sh]
+indent_style = tab
+indent_size = 4
+
+[*.override.xml]
+indent_style = space
+indent_size = 1
+
+[sample_map.xml]
+indent_style = tab
+indent_size = 4
+
