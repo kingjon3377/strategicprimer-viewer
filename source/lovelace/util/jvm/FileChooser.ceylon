@@ -48,6 +48,7 @@ shared class FileChooser {
                 else "No file was selected", cause) {}
     "Convert the type returned by the file-chooser to the type we expose in
      return types."
+    suppressWarnings("doclink")
     todo("Once ceylon.file is marked as cross-platform, convert [[PathWrapper]] usage
           back to [[ceylon.file::Path]].")
     static PathWrapper fileToPath(JFile file) => PathWrapper(file.toPath().string);
