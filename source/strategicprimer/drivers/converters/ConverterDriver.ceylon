@@ -4,11 +4,7 @@ import ceylon.logging {
 }
 
 import java.io {
-    FileNotFoundException,
     IOException
-}
-import java.nio.file {
-    NoSuchFileException
 }
 
 import javax.xml.stream {
@@ -39,7 +35,8 @@ import strategicprimer.model.common.xmlio {
     SPFormatException
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    MissingFileException
 }
 
 "A logger."
@@ -93,7 +90,7 @@ class ConverterDriver(ICLIHelper cli, SPOptions options) satisfies UtilityDriver
                 IMapNG map = decreaseResolution(old);
                 cli.println("About to write ``filename``.new.xml");
                 mapIOHelper.writeMap(PathWrapper(filename + ".new.xml"), map);
-            } catch (FileNotFoundException|NoSuchFileException except) {
+            } catch (MissingFileException except) {
                 log.error("``filename`` not found", except);
             } catch (IOException except) {
                 log.error("I/O error processing ``filename``", except);

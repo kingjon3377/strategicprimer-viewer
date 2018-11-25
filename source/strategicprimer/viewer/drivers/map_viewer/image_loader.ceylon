@@ -32,7 +32,8 @@ import strategicprimer.viewer.drivers {
     IOHandler
 }
 import lovelace.util.common {
-    todo
+    todo,
+    MissingFileException
 }
 
 "A helper object to load images from file or the classpath (in the directory
@@ -69,6 +70,7 @@ shared object imageLoader {
     "Load an image from the cache, or if not in it, from file (and add it to the cache)"
     todo("Add support for SVG (presumably using Batik)",
          "Return null instead of throwing if not loadable?")
+    throws(`class MissingFileException`, "if the file does not exist")
     throws(`class IOException`, "If no reader could read the file")
     shared Image loadImage(String file) {
         if (exists cached = imageCache[file]) {

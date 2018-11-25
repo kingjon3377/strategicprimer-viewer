@@ -8,7 +8,8 @@ import strategicprimer.model.common.map {
     IMutableMapNG
 }
 import java.io {
-    Reader
+    Reader,
+    FileNotFoundException
 }
 import ceylon.dbc {
     newConnectionFromDataSource,
@@ -25,7 +26,11 @@ import javax.sql {
     DataSource
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    MissingFileException
+}
+import java.nio.file {
+    NoSuchFileException
 }
 
 shared object spDatabaseReader satisfies IMapReader {
@@ -46,9 +51,13 @@ shared object spDatabaseReader satisfies IMapReader {
         if (exists connection = connections[path]) {
             return connection;
         } else {
-            Sql retval = Sql(newConnectionFromDataSource(getBaseConnection(path)));
-            connections[path] = retval;
-            return retval;
+            try {
+                Sql retval = Sql(newConnectionFromDataSource(getBaseConnection(path)));
+                connections[path] = retval;
+                return retval;
+            } catch (FileNotFoundException|NoSuchFileException except) {
+                throw MissingFileException(path, except);
+            }
         }
     }
 

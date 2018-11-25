@@ -4,11 +4,13 @@ import ceylon.collection {
 }
 
 import java.io {
-    JReader=Reader
+    JReader=Reader,
+    FileNotFoundException
 }
 import java.nio.file {
     JPaths=Paths,
-    JFiles=Files
+    JFiles=Files,
+    NoSuchFileException
 }
 
 import javax.xml {
@@ -31,7 +33,8 @@ import lovelace.util.common {
     IteratorWrapper,
     matchingValue,
     simpleMap,
-    PathWrapper
+    PathWrapper,
+    MissingFileException
 }
 import lovelace.util.jvm {
     TypesafeXMLEventReader
@@ -530,6 +533,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     shared actual IMutableMapNG readMap(PathWrapper file, Warning warner) {
         try (istream = JFiles.newBufferedReader(JPaths.get(file.string))) {
             return readMapFromStream(file, istream, warner);
+        } catch (FileNotFoundException|NoSuchFileException except) {
+            throw MissingFileException(file, except);
         }
     }
     shared actual IMutableMapNG readMapFromStream(PathWrapper file, JReader istream,

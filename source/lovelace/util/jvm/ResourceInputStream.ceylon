@@ -16,7 +16,9 @@ import java.lang {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    MissingFileException,
+    PathWrapper
 }
 import ceylon.language.meta.declaration {
     Module
@@ -66,7 +68,7 @@ shared class ResourceInputStream(String filename,
                     return temp;
                 }
             }
-            throw except;
+            throw MissingFileException(PathWrapper(filename), except);
         }
     }
     InputStream wrapped = factory();

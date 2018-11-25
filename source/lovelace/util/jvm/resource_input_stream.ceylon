@@ -7,7 +7,9 @@ import java.lang {
     Thread { currentThread }
 }
 import lovelace.util.common {
-    todo
+    todo,
+    MissingFileException,
+    PathWrapper
 }
 
 "Basically a FileInputStream, but the file could be on disk or in the classpath.
@@ -26,7 +28,7 @@ shared InputStream loadResource(String filename) {
                 .getResourceAsStream("``filename``")) {
             return retval;
         } else {
-            throw except;
+            throw MissingFileException(PathWrapper(filename), except);
         }
     }
 }

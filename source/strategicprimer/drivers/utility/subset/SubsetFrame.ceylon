@@ -7,11 +7,7 @@ import java.awt {
     Dimension
 }
 import java.io {
-    FileNotFoundException,
     IOException
-}
-import java.nio.file {
-    NoSuchFileException
 }
 
 import javax.swing {
@@ -43,7 +39,8 @@ import strategicprimer.drivers.gui.common {
     SPFrame
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    MissingFileException
 }
 import strategicprimer.drivers.common {
     ISPDriver
@@ -77,7 +74,7 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
         if (is PathWrapper path = arg) {
             try {
                 mainMap = mapIOHelper.readMap(path, warningLevels.ignore);
-            } catch (FileNotFoundException|NoSuchFileException except) {
+            } catch (MissingFileException except) {
                 printParagraph("File ``path`` not found", LabelTextColor.red);
                 throw except;
             } catch (XMLStreamException except) {
@@ -133,7 +130,7 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
         IMapNG map;
         try {
             map = mapIOHelper.readMap(path, warningLevels.ignore);
-        } catch (FileNotFoundException|NoSuchFileException except) {
+        } catch (MissingFileException except) {
             printParagraph("FAIL: File not found", LabelTextColor.red);
             log.error("``path`` not found", except);
             return;

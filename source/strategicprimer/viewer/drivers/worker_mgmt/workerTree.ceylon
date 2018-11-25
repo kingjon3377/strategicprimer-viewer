@@ -65,11 +65,7 @@ import ceylon.collection {
     MutableList
 }
 import java.io {
-    FileNotFoundException,
     IOException
-}
-import java.nio.file {
-    NoSuchFileException
 }
 import ceylon.numeric.float {
     halfEven
@@ -85,7 +81,8 @@ import strategicprimer.model.common.idreg {
 }
 import lovelace.util.common {
     as,
-    matchingValue
+    matchingValue,
+    MissingFileException
 }
 import java.lang {
     JString=String
@@ -264,7 +261,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             Icon? getIconForFile(String filename) {
                 try {
                     return imageLoader.loadIcon(filename);
-                }  catch (FileNotFoundException|NoSuchFileException except) {
+                }  catch (MissingFileException except) {
                     log.error("Image file images/``filename`` not found`");
                     log.debug("with stack trace", except);
                     return null;

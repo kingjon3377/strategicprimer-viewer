@@ -3,11 +3,7 @@ import java.awt {
     Color
 }
 import java.io {
-    FileNotFoundException,
     IOException
-}
-import java.nio.file {
-    NoSuchFileException
 }
 
 import javax.swing {
@@ -25,7 +21,8 @@ import lovelace.util.jvm {
 import lovelace.util.common {
     matchingPredicate,
     silentListener,
-    PathWrapper
+    PathWrapper,
+    MissingFileException
 }
 
 import strategicprimer.drivers.common {
@@ -339,7 +336,7 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         IMapNG map;
         try {
             map = mapIOHelper.readMap(file, warner);
-        } catch (FileNotFoundException|NoSuchFileException except) {
+        } catch (MissingFileException except) {
             stderr("``file`` not found");
             log.error("``file`` not found");
             log.debug("Full stack trace of file-not-found:", except);

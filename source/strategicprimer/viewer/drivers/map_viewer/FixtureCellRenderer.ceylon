@@ -27,15 +27,11 @@ import java.awt {
     Dimension
 }
 import java.io {
-    FileNotFoundException,
     IOException
 }
 import ceylon.collection {
     MutableSet,
     HashSet
-}
-import java.nio.file {
-    NoSuchFileException
 }
 import ceylon.numeric.float {
     halfEven,
@@ -43,6 +39,9 @@ import ceylon.numeric.float {
 }
 import java.lang {
     Types
+}
+import lovelace.util.common {
+    MissingFileException
 }
 
 "A cell renderer for tile-details GUIs."
@@ -104,7 +103,7 @@ class FixtureCellRenderer satisfies ListCellRenderer<TileFixture> {
         }
         try {
             return imageLoader.loadIcon(actualImage);
-        } catch (FileNotFoundException|NoSuchFileException except) {
+        } catch (MissingFileException except) {
             log.error("image file images/``actualImage`` not found");
             log.debug("With stack trace", except);
             missingFilenames.add(actualImage);

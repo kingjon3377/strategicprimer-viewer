@@ -13,8 +13,7 @@ import ceylon.test {
 }
 
 import java.io {
-    StringReader,
-    FileNotFoundException
+    StringReader
 }
 import java.lang {
     IllegalArgumentException
@@ -37,7 +36,8 @@ import lovelace.util.common {
     defer,
     simpleSet,
     randomlyGenerated,
-    PathWrapper
+    PathWrapper,
+    MissingFileException
 }
 
 import strategicprimer.model.common.idreg {
@@ -392,7 +392,7 @@ object xmlTests {
     void assertInvalid(String xml) {
         for (reader in readers) {
             assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
-                    XMLStreamException|FileNotFoundException|MissingPropertyException>(
+                    XMLStreamException|MissingFileException|MissingPropertyException>(
                 reader,
                 xml, null, (Exception exception) {
                     if (is MissingPropertyException exception) {
@@ -1013,7 +1013,7 @@ object xmlTests {
                 """ParseError at [row,col]:[1,10]
                    Message: XML document structures must start and end within the same entity.""";
         for (reader in readers) {
-            assertFormatIssue<Object, FileNotFoundException>(reader,
+            assertFormatIssue<Object, MissingFileException>(reader,
                 """<include file="nosuchfile" />""", null);
             assertFormatIssue<Object, XMLStreamException>(reader,
                 """<include file="string:&lt;nonsense" />""", null,

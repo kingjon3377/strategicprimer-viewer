@@ -1,10 +1,12 @@
 import java.io {
     JReader=Reader,
-    IOException
+    IOException,
+    FileNotFoundException
 }
 import java.nio.file {
     JPaths=Paths,
-    JFiles=Files
+    JFiles=Files,
+    NoSuchFileException
 }
 
 import javax.xml.namespace {
@@ -20,7 +22,8 @@ import javax.xml.stream.events {
 
 import lovelace.util.common {
     IteratorWrapper,
-    PathWrapper
+    PathWrapper,
+    MissingFileException
 }
 import lovelace.util.jvm {
     TypesafeXMLEventReader
@@ -86,6 +89,8 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
             "The Warning instance to use for warnings" Warning warner) {
         try (istream = JFiles.newBufferedReader(JPaths.get(file.string))) {
             return readMapFromStream(file, istream, warner);
+        } catch (FileNotFoundException|NoSuchFileException except) {
+            throw MissingFileException(file, except);
         }
     }
 }

@@ -16,7 +16,8 @@ import strategicprimer.model.common.xmlio {
     Warning
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    MissingFileException
 }
 
 "An interface for map readers."
@@ -25,6 +26,7 @@ shared interface IMapReader {
     throws(`class SPFormatException`, "if the reader can't handle this map version,
                                        doesn't recognize the map format, or finds the file
                                        contains format errors")
+    throws(`class MissingFileException`, "if the file does not exist")
     throws(`class XMLStreamException`, "on low-level XML errors")
     throws(`class IOException`,
         "on I/O errors not covered by `XMLStreamException` or `SPFormatException`")

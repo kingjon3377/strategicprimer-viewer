@@ -38,18 +38,15 @@ import lovelace.util.common {
     defer,
     PathWrapper,
     todo,
-    as
+    as,
+    MissingFileException
 }
 import java.io {
-    FileNotFoundException,
     IOException
 }
 import java.awt {
     Component,
     Frame
-}
-import java.nio.file {
-    NoSuchFileException
 }
 import javax.swing {
     JOptionPane,
@@ -112,7 +109,7 @@ shared class IOHandler satisfies ActionListener {
         String message;
         if (is XMLStreamException except) {
             message = "Malformed XML in ``filename``";
-        } else if (is FileNotFoundException|NoSuchFileException except) {
+        } else if (is MissingFileException except) {
             message = "File ``filename`` not found";
         } else if (is IOException except) {
             message = "I/O error ``verb`` file ``filename``";

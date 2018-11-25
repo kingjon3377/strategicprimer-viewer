@@ -25,8 +25,7 @@ import java.awt {
     Graphics2D
 }
 import java.io {
-    IOException,
-    FileNotFoundException
+    IOException
 }
 import java.lang {
     System
@@ -88,7 +87,8 @@ import lovelace.util.common {
     todo,
     defer,
     silentListener,
-    PathWrapper
+    PathWrapper,
+    MissingFileException
 }
 import com.vasileff.ceylon.structures {
     MutableMultimap,
@@ -96,9 +96,6 @@ import com.vasileff.ceylon.structures {
 }
 import java.awt.image {
     BufferedImage
-}
-import java.nio.file {
-    NoSuchFileException
 }
 import strategicprimer.model.impl.xmlio {
     mapIOHelper
@@ -344,11 +341,8 @@ class DriverWrapper(DriverFactory factory) {
             } else {
                 log.error("Driver failed:", except);
             }
-        } catch (NoSuchFileException except) {
-            log.error("File ``except.file`` not found");
-            log.trace("File-not-found stack trace:", except);
-        } catch (FileNotFoundException except) {
-            log.error("File not found: ``except.message``");
+        } catch (MissingFileException except) {
+            log.error("File ``except.filename`` not found");
             log.trace("File-not-found stack trace:", except);
         } catch (Exception except) {
             log.error(except.message, except);

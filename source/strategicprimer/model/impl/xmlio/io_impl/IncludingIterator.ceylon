@@ -3,7 +3,6 @@ import ceylon.collection {
     Stack
 }
 import java.io {
-    FileNotFoundException,
     JCloseable=Closeable
 }
 import java.util {
@@ -26,7 +25,8 @@ import javax.xml.stream.events {
 
 import lovelace.util.common {
     todo,
-    PathWrapper
+    PathWrapper,
+    MissingFileException
 }
 import lovelace.util.jvm {
     TypesafeXMLEventReader
@@ -101,7 +101,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
 
     """Handle an "include" tag by adding an iterator for the contents of the file it
        references to the top of the stack."""
-    throws(`class FileNotFoundException`,
+    throws(`class MissingFileException`,
         "when file referenced by <include> does not exist")
     throws(`class XMLStreamException`,
         "on XML parsing error in parsing the <include> tag or opening the included file")

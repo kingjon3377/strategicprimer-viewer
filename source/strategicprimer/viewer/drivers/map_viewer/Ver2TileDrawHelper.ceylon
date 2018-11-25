@@ -13,11 +13,7 @@ import java.awt.image {
     BufferedImage
 }
 import java.io {
-    FileNotFoundException,
     IOException
-}
-import java.nio.file {
-    NoSuchFileException
 }
 
 import strategicprimer.model.common.map {
@@ -36,7 +32,8 @@ import strategicprimer.drivers.common {
 import lovelace.util.common {
     matchingValue,
     simpleSet,
-    simpleMap
+    simpleMap,
+    MissingFileException
 }
 
 "A [[TileDrawHelper]] for version-2 maps."
@@ -105,7 +102,7 @@ class Ver2TileDrawHelper(
     for (file in ["trees.png", "mountain.png"]) {
         try {
             imageLoader.loadImage(file);
-        } catch (FileNotFoundException|NoSuchFileException except) {
+        } catch (MissingFileException except) {
             log.info("Image ``file`` not found", except);
         } catch (IOException except) {
             log.error("I/O error while loading image ``file``", except);
@@ -118,7 +115,7 @@ class Ver2TileDrawHelper(
         String filename = "event_fallback.png";
         try {
             return imageLoader.loadImage(filename);
-        } catch (FileNotFoundException|NoSuchFileException except) {
+        } catch (MissingFileException except) {
             log.error("Image ``filename`` not found", except);
             return fallbackFallback;
         } catch (IOException except) {
@@ -154,7 +151,7 @@ class Ver2TileDrawHelper(
     Image getImage(String filename) {
         try {
             return imageLoader.loadImage(filename);
-        } catch (FileNotFoundException|NoSuchFileException except) {
+        } catch (MissingFileException except) {
             if (!missingFiles.contains(filename)) {
                 log.error("images/``filename`` not found");
                 log.debug("with stack trace", except);
