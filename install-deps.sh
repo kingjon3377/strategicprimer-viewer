@@ -1,6 +1,13 @@
 #!/bin/sh
 set -ex
-. dependencies.sh
+if test -f dependencies.sh; then
+	. dependencies.sh
+elif test -f "${TRAVIS_BUILD_DIR}/dependencies.sh"; then
+	. "${TRAVIS_BUILD_DIR}/dependencies.sh"
+else
+	echo "Can't find dependencies.sh" 1>&2
+	exit 1
+fi
 mkdir -p "${HOME}/.ant/lib"
 wget https://download.sourceforge.net/launch4j/launch4j-${launch4j_major}/${launch4j_version}/launch4j-${launch4j_version}-linux.tgz \
 		-O "launch4j-${launch4j_version}-linux.tgz"

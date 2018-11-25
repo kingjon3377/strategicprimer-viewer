@@ -1,6 +1,13 @@
 #!/bin/sh
 # This is for use by Travis CI, to reduce too-long lines in .travis.yml
-. dependencies.sh
+if test -f dependencies.sh; then
+	. dependencies.sh
+elif test -f "${TRAVIS_BUILD_DIR}/dependencies.sh"; then
+	. "${TRAVIS_BUILD_DIR}/dependencies.sh"
+else
+	echo "Can't find dependencies.sh" 1>&2
+	exit 1
+fi
 ant \
 	-lib /usr/share/java/ant-contrib.jar \
 	-lib "$(pwd)/launch4j" \
