@@ -25,6 +25,9 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
+import lovelace.util.common {
+    silentListener
+}
 
 "A popup menu to let the user change a tile's terrain type, or add a unit."
 class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopupMenu()
@@ -45,6 +48,20 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         }
     });
 
+    JMenuItem mountainItem = JMenuItem("Mountainous");
+
+    void toggleMountains() {
+        Point localPoint = point;
+        if (localPoint.valid) {
+            Boolean newValue = !mountainItem.model.selected;
+            model.map.mountainous[localPoint] = newValue;
+            model.mapModified = true;
+            mountainItem.model.selected = newValue;
+        }
+    }
+
+    mountainItem.addActionListener(silentListener(toggleMountains));
+
     void updateForVersion(Integer version) {
         removeAll();
         for (type in TileType.valuesForVersion(version)) {
@@ -58,6 +75,9 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         }
         addSeparator();
         add(newUnitItem);
+//        mountainItem.model.selected = model.map.mountainous[point]; // TODO: syntax sugar once compiler bug fixed
+        mountainItem.model.selected = model.map.mountainous.get(point);
+        add(mountainItem);
     }
 
     shared actual void changeVersion(Integer old, Integer newVersion) =>
