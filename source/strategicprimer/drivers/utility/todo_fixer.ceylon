@@ -13,7 +13,8 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 import ceylon.random {
     Random,
-    DefaultRandom
+    DefaultRandom,
+    randomize
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     Unit
@@ -59,6 +60,13 @@ import strategicprimer.drivers.exploration.old {
 import ceylon.file {
     parsePath,
     Directory
+}
+import strategicprimer.drivers.exploration.common {
+    surroundingPointIterable
+}
+import strategicprimer.model.common.idreg {
+    IDRegistrar,
+    createIDFactory
 }
 
 """A simplified model of terrain, dividing tiles into "ocean", "forested", and
@@ -261,11 +269,62 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
         }
     }
 
+    suppressWarnings("deprecation")
+    void fixAdjacentForests(IMutableMapNG map, IDRegistrar idf, Point location, TileType tileType,
+            String forest) {
+        TileType destination;
+        switch (tileType)
+        case (TileType.temperateForest) {
+            destination = TileType.plains;
+        }
+        case (TileType.borealForest) {
+            destination = TileType.steppe;
+        }
+        else {
+            throw AssertionError(
+                "tileType to convert must be temperate or boreal forest");
+        }
+        if (exists terrain = map.baseTerrain[location], terrain == tileType) {
+            map.baseTerrain[location] = destination;
+            map.addFixture(location, Forest(forest, false, idf.createID()));
+            for (neighbor in surroundingPointIterable(location, map.dimensions, 1)
+                .filter(not(location.equals))) {
+                fixAdjacentForests(map, idf, neighbor, tileType, forest);
+            }
+        }
+    }
+    suppressWarnings("deprecation")
+    void fixTerrain(IMutableMapNG map) {
+        if (map.dimensions.version < 2) {
+            return;
+        }
+        IDRegistrar idf = createIDFactory(map);
+        for (location in randomize(map.locations)) {
+            if (exists terrain = map.baseTerrain[location]) {
+                if (terrain == TileType.mountain) {
+                    map.baseTerrain[location] = TileType.plains;
+                    map.mountainous[location] = true;
+                } else if (terrain == TileType.temperateForest) {
+                    String forest = cli.inputString(
+                        "Kind of tree for a temperate forest: ");
+                    fixAdjacentForests(map, idf, location,
+                        TileType.temperateForest, forest);
+                } else if (terrain == TileType.borealForest) {
+                    String forest = cli.inputString(
+                        "Kind of tree for a boreal forest:");
+                    fixAdjacentForests(map, idf, location, TileType.borealForest,
+                        forest);
+                }
+            }
+        }
+    }
+
     shared actual void startDriver() {
         if (is IMultiMapModel model) {
             for (map->[path, _] in model.allMaps) {
                 fixAllUnits(map);
                 fixAllVillages(map);
+                fixTerrain(map);
                 model.setModifiedFlag(map, true);
             }
             for (map->[path, _] in model.subordinateMaps) {
@@ -275,6 +334,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
         } else {
             fixAllUnits(model.map);
             fixAllVillages(model.map);
+            fixTerrain(model.map);
             model.mapModified = true;
         }
     }
