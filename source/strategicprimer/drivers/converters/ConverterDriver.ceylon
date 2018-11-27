@@ -7,10 +7,6 @@ import java.io {
     IOException
 }
 
-import javax.xml.stream {
-    XMLStreamException
-}
-
 import strategicprimer.drivers.common {
     DriverUsage,
     ParamCount,
@@ -36,7 +32,8 @@ import strategicprimer.model.common.xmlio {
 }
 import lovelace.util.common {
     PathWrapper,
-    MissingFileException
+    MissingFileException,
+    MalformedXMLException
 }
 
 "A logger."
@@ -94,7 +91,7 @@ class ConverterDriver(ICLIHelper cli, SPOptions options) satisfies UtilityDriver
                 log.error("``filename`` not found", except);
             } catch (IOException except) {
                 log.error("I/O error processing ``filename``", except);
-            } catch (XMLStreamException except) {
+            } catch (MalformedXMLException except) {
                 log.error("XML stream error reading ``filename``", except);
             } catch (SPFormatException except) {
                 log.error("SP map format error in ``filename``", except);

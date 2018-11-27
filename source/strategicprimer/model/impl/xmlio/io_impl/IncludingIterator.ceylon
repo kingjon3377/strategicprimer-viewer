@@ -15,9 +15,7 @@ import javax.xml {
 import javax.xml.namespace {
     QName
 }
-import javax.xml.stream {
-    XMLStreamException
-}
+
 import javax.xml.stream.events {
     XMLEvent,
     StartElement
@@ -26,7 +24,8 @@ import javax.xml.stream.events {
 import lovelace.util.common {
     todo,
     PathWrapper,
-    MissingFileException
+    MissingFileException,
+    MalformedXMLException
 }
 import lovelace.util.jvm {
     TypesafeXMLEventReader
@@ -103,7 +102,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
        references to the top of the stack."""
     throws(`class MissingFileException`,
         "when file referenced by <include> does not exist")
-    throws(`class XMLStreamException`,
+    throws(`class MalformedXMLException`,
         "on XML parsing error in parsing the <include> tag or opening the included file")
     throws(`class SPFormatException`, "on SP format problem in <include>")
     todo("Ensure that any thrown exceptions make clear that there's inclusion involved")

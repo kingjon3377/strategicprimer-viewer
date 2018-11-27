@@ -2,10 +2,6 @@ import java.io {
     IOException
 }
 
-import javax.xml.stream {
-    XMLStreamException
-}
-
 import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
@@ -49,7 +45,8 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    MalformedXMLException
 }
 
 "A factory for a driver that reads in maps and then writes them out again, to test the
@@ -82,7 +79,7 @@ shared class EchoDriver(SPOptions options) satisfies UtilityDriver {
                 map = mapIOHelper.readMap(PathWrapper(inArg), warningLevels.ignore);
             } catch (IOException except) {
                 throw DriverFailedException(except, "I/O error reading file ``inArg``");
-            } catch (XMLStreamException except) {
+            } catch (MalformedXMLException except) {
                 throw DriverFailedException(except, "Malformed XML in ``inArg``");
             } catch (SPFormatException except) {
                 throw DriverFailedException(except, "SP map format error in ``inArg``");

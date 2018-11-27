@@ -26,7 +26,8 @@ import javax.xml.stream.events {
 }
 
 import lovelace.util.common {
-    todo
+    todo,
+    MalformedXMLException
 }
 
 import strategicprimer.model.common.idreg {
@@ -271,7 +272,7 @@ abstract class FluidBase {
     }
 
     "Write the given number of tabs to the given stream."
-    throws(`class XMLStreamException`, "on I/O error writing to the stream")
+    throws(`class MalformedXMLException`, "on I/O error writing to the stream")
     static shared void indent(
             "The stream to write the tabs to."
             XMLStreamWriter ostream,
@@ -279,26 +280,34 @@ abstract class FluidBase {
             Integer tabs) {
         "Cannot write a negative number of tabs."
         assert (tabs >= 0);
-        ostream.writeCharacters(operatingSystem.newline);
-        ostream.writeCharacters("\t".repeat(tabs));
+        try {
+            ostream.writeCharacters(operatingSystem.newline);
+            ostream.writeCharacters("\t".repeat(tabs));
+        } catch (XMLStreamException except) {
+            throw MalformedXMLException(except);
+        }
     }
 
     "Write an attribute if its value is nonempty."
-    throws(`class XMLStreamException`, "on I/O error")
+    throws(`class MalformedXMLException`, "on I/O error")
     static shared void writeNonEmptyAttributes(
         "The stream to write to"
         XMLStreamWriter ostream,
         "The names and values of the attributes to write."
                 <String->String>* items) {
-        for (name->item in items) {
-            if (!item.empty) {
-                ostream.writeAttribute(spNamespace, name, item);
+        try {
+            for (name->item in items) {
+                if (!item.empty) {
+                    ostream.writeAttribute(spNamespace, name, item);
+                }
             }
+        } catch (XMLStreamException except) {
+            throw MalformedXMLException(except);
         }
     }
 
     "If the object has a custom (non-default) image, write it to XML."
-    throws(`class XMLStreamException`, "on I/O error when writing")
+    throws(`class MalformedXMLException`, "on I/O error when writing")
     static shared void writeImage(
             "The stream to write to"
             XMLStreamWriter ostream,
@@ -306,7 +315,11 @@ abstract class FluidBase {
             HasImage obj) {
         String image = obj.image;
         if (image != obj.defaultImage) {
-            writeNonEmptyAttributes(ostream, "image"->image);
+            try {
+                writeNonEmptyAttributes(ostream, "image"->image);
+            } catch (XMLStreamException except) {
+                throw MalformedXMLException(except);
+            }
         }
     }
 
@@ -389,7 +402,7 @@ abstract class FluidBase {
     }
 
     "Write the necessary number of tab characters and a tag."
-    throws(`class XMLStreamException`, "on I/O error writing to the stream")
+    throws(`class MalformedXMLException`, "on I/O error writing to the stream")
     static shared void writeTag(
             "The stream to write to"
             XMLStreamWriter ostream,
@@ -404,39 +417,47 @@ abstract class FluidBase {
         if (indentation > 0) {
             indent(ostream, indentation);
         }
-        if (leaf) {
-            ostream.writeEmptyElement(spNamespace, tag);
-        } else {
-            ostream.writeStartElement(spNamespace, tag);
-        }
-        if (indentation == 0) {
-            ostream.writeDefaultNamespace(spNamespace);
+        try {
+            if (leaf) {
+                ostream.writeEmptyElement(spNamespace, tag);
+            } else {
+                ostream.writeStartElement(spNamespace, tag);
+            }
+            if (indentation == 0) {
+                ostream.writeDefaultNamespace(spNamespace);
+            }
+        } catch (XMLStreamException except) {
+            throw MalformedXMLException(except);
         }
     }
 
     "Write attributes to XML."
-    throws(`class XMLStreamException`, "on I/O error")
+    throws(`class MalformedXMLException`, "on I/O error")
     static shared void writeAttributes(
             "The stream to write to"
             XMLStreamWriter ostream,
             "The name and values of the attributes to write"
             <String-><String|Boolean|Number<out Anything>>>* attributes) {
-        for (name->item in attributes) {
-            if (is String item) {
-                ostream.writeAttribute(spNamespace, name, item);
-            } else if (is Decimal item, item.scale <= 0) {
-                ostream.writeAttribute(spNamespace, name, item.integer.string);
-            } else if (is Decimal item, is JBigDecimal impl = item.implementation) {
-                ostream.writeAttribute(spNamespace, name, impl.toPlainString());
-            } else if (is Whole item) {
-                ostream.writeAttribute(spNamespace, name, item.integer.string);
-            } else if (is Integer|Boolean item) {
-                ostream.writeAttribute(spNamespace, name, item.string);
-            } else {
-                log.warn(
-                    "Unhandled Number type ``type(item)`` in FluidBase.writeAttributes");
-                ostream.writeAttribute(spNamespace, name, item.string);
+        try {
+            for (name->item in attributes) {
+                if (is String item) {
+                    ostream.writeAttribute(spNamespace, name, item);
+                } else if (is Decimal item, item.scale<=0) {
+                    ostream.writeAttribute(spNamespace, name, item.integer.string);
+                } else if (is Decimal item, is JBigDecimal impl = item.implementation) {
+                    ostream.writeAttribute(spNamespace, name, impl.toPlainString());
+                } else if (is Whole item) {
+                    ostream.writeAttribute(spNamespace, name, item.integer.string);
+                } else if (is Integer|Boolean item) {
+                    ostream.writeAttribute(spNamespace, name, item.string);
+                } else {
+                    log.warn(
+                        "Unhandled Number type ``type(item)`` in FluidBase.writeAttributes");
+                    ostream.writeAttribute(spNamespace, name, item.string);
+                }
             }
+        } catch (XMLStreamException except) {
+            throw MalformedXMLException(except);
         }
     }
 

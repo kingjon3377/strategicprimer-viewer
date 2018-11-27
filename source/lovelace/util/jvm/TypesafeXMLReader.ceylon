@@ -15,6 +15,9 @@ import ceylon.collection {
     Queue,
     LinkedList
 }
+import lovelace.util.common {
+    MalformedXMLException
+}
 
 """A wrapper around [[XMLEventReader]] that hides its "raw type" from callers,
    additionally satisfying [[the Ceylon Iterable interface|Iterable]] instead
@@ -35,7 +38,11 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent>&Destroyable {
                 closeHandles.offer((reader of JCloseable).close);
             }
         } else {
-            wrapped = XMLInputFactory.newInstance().createXMLEventReader(reader);
+            try {
+                wrapped = XMLInputFactory.newInstance().createXMLEventReader(reader);
+            } catch (XMLStreamException except) {
+                throw MalformedXMLException(except);
+            }
             closeHandles.offer(reader.close);
         }
         closeMethods.each(closeHandles.offer);
@@ -51,16 +58,20 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent>&Destroyable {
             throw error;
         }
     }
-    throws(`class XMLStreamException`, "on malformed XML")
+    throws(`class MalformedXMLException`, "on malformed XML")
     shared actual XMLEvent|Finished next() {
         if (closed) {
             return finished;
         } else {
-            if (wrapped.hasNext(), exists retval = wrapped.nextEvent()) {
-                return retval;
-            } else {
-                destroy(null);
-                return finished;
+            try {
+                if (wrapped.hasNext(), exists retval = wrapped.nextEvent()) {
+                    return retval;
+                } else {
+                    destroy(null);
+                    return finished;
+                }
+            } catch (XMLStreamException exception) {
+                throw MalformedXMLException(exception);
             }
         }
     }

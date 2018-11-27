@@ -3,13 +3,10 @@ import java.io {
     JReader=Reader
 }
 
-import javax.xml.stream {
-    XMLStreamException
-}
-
 import lovelace.util.common {
     todo,
-    PathWrapper
+    PathWrapper,
+    MalformedXMLException
 }
 
 import strategicprimer.model.common.xmlio {
@@ -45,7 +42,7 @@ shared object mapReaderAdapter {
             }
         } catch (IOException except) {
             throw DriverFailedException(except, "I/O error while reading");
-        } catch (XMLStreamException except) {
+        } catch (MalformedXMLException except) {
             throw DriverFailedException(except, "Malformed XML");
         } catch (SPFormatException except) {
             throw DriverFailedException(except, "SP map format error");
@@ -71,7 +68,7 @@ shared object mapReaderAdapter {
         } catch (IOException except) {
             throw DriverFailedException(except,
                 "I/O error reading from file ``current``");
-        } catch (XMLStreamException except) {
+        } catch (MalformedXMLException except) {
             throw DriverFailedException(except, "Malformed XML in ``current``");
         } catch (SPFormatException except) {
             throw DriverFailedException(except, "SP map format error in ``current``");

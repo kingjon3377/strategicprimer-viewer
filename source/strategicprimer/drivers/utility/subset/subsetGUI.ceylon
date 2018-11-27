@@ -5,14 +5,12 @@ import java.io {
 import javax.swing {
     SwingUtilities
 }
-import javax.xml.stream {
-    XMLStreamException
-}
 
 import lovelace.util.common {
     todo,
     PathWrapper,
-    silentListener
+    silentListener,
+    MalformedXMLException
 }
 
 import strategicprimer.model.common.xmlio {
@@ -83,7 +81,7 @@ shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
             frame.loadMain(PathWrapper(first));
         } catch (IOException except) {
             throw DriverFailedException(except, "I/O error loading main map ``first``");
-        } catch (XMLStreamException except) {
+        } catch (MalformedXMLException except) {
             throw DriverFailedException(except, "Malformed XML in main map ``first``");
         } catch (SPFormatException except) {
             throw DriverFailedException(except, "Invalid SP XML in main  map ``first``");

@@ -24,9 +24,7 @@ import strategicprimer.model.common.map {
     IMutableMapNG,
     SPMapNG
 }
-import javax.xml.stream {
-    XMLStreamException
-}
+
 import strategicprimer.drivers.common {
     ISPDriver,
     GUIDriver,
@@ -39,7 +37,8 @@ import lovelace.util.common {
     PathWrapper,
     todo,
     as,
-    MissingFileException
+    MissingFileException,
+    MalformedXMLException
 }
 import java.io {
     IOException
@@ -107,7 +106,7 @@ shared class IOHandler satisfies ActionListener {
     void handleError(Exception except, String filename, Component? source,
             String errorTitle, String verb) {
         String message;
-        if (is XMLStreamException except) {
+        if (is MalformedXMLException except) {
             message = "Malformed XML in ``filename``";
         } else if (is MissingFileException except) {
             message = "File ``filename`` not found";
@@ -126,7 +125,7 @@ shared class IOHandler satisfies ActionListener {
             String errorTitle)(PathWrapper path) {
         try {
             handler(mapIOHelper.readMap(path, warningLevels.default), path);
-        } catch (IOException|SPFormatException|XMLStreamException except) {
+        } catch (IOException|SPFormatException|MalformedXMLException except) {
             handleError(except, path.string, source, errorTitle, "reading");
         }
     }

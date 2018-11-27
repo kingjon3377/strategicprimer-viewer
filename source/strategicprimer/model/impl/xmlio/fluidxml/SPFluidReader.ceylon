@@ -34,7 +34,8 @@ import lovelace.util.common {
     matchingValue,
     simpleMap,
     PathWrapper,
-    MissingFileException
+    MissingFileException,
+    MalformedXMLException
 }
 import lovelace.util.jvm {
     TypesafeXMLEventReader
@@ -517,17 +518,22 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
 
     shared actual Type readXML<Type>(PathWrapper file, JReader istream, Warning warner)
             given Type satisfies Object {
-        // TODO: Pass in Closeables, to pass to TypesafeMLEventReader, to close file descriptor
-        Iterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
-        {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
-        IMutablePlayerCollection players = PlayerCollection();
-        IDRegistrar idFactory = IDFactory();
-        if (exists event = eventReader.narrow<StartElement>().find(isSPStartElement)) {
-            assert (is Type retval = readSPObject(event, QName("root"), eventReader,
-                players, warner, idFactory));
-            return retval;
+        try {
+            // TODO: Pass in Closeables, to pass to TypesafeMLEventReader, to close file descriptor
+            Iterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
+            {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
+            IMutablePlayerCollection players = PlayerCollection();
+            IDRegistrar idFactory = IDFactory();
+            if (exists event = eventReader.narrow<StartElement>().find(isSPStartElement)) {
+                assert (is Type retval = readSPObject(event, QName("root"), eventReader,
+                    players, warner, idFactory));
+                return retval;
+            }
+        } catch (XMLStreamException except) {
+            throw MalformedXMLException(except);
         }
-        throw XMLStreamException("XML stream didn't contain a start element");
+        throw MalformedXMLException.notWrapping(
+            "XML stream didn't contain a start element");
     }
 
     shared actual IMutableMapNG readMap(PathWrapper file, Warning warner) {

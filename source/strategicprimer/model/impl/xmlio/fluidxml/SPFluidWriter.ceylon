@@ -92,7 +92,8 @@ import ceylon.file {
 import lovelace.util.common {
     todo,
     simpleMap,
-    TypeStream
+    TypeStream,
+    MalformedXMLException
 }
 import strategicprimer.model.impl.xmlio.fluidxml {
     FluidBase { ... }
@@ -133,7 +134,7 @@ shared class SPFluidWriter() satisfies SPWriter {
                 xsw.flush();
                 xsw.close();
             } catch (XMLStreamException except) {
-                throw IOException("Failure in creating XML", except);
+                throw MalformedXMLException(except);
             }
             {String+} lines = writer.string.lines;
             for (line in lines) {

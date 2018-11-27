@@ -13,9 +13,6 @@ import java.io {
 import javax.swing {
     JScrollPane
 }
-import javax.xml.stream {
-    XMLStreamException
-}
 
 import lovelace.util.jvm {
     StreamingLabel,
@@ -40,7 +37,8 @@ import strategicprimer.drivers.gui.common {
 }
 import lovelace.util.common {
     PathWrapper,
-    MissingFileException
+    MissingFileException,
+    MalformedXMLException
 }
 import strategicprimer.drivers.common {
     ISPDriver
@@ -77,7 +75,7 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
             } catch (MissingFileException except) {
                 printParagraph("File ``path`` not found", LabelTextColor.red);
                 throw except;
-            } catch (XMLStreamException except) {
+            } catch (MalformedXMLException except) {
                 printParagraph("ERROR: Malformed XML in ``path
                         ``; see following error message for details",
                     LabelTextColor.red);
@@ -139,7 +137,7 @@ class SubsetFrame(ISPDriver driver) extends SPFrame("Subset Tester", driver,
                 LabelTextColor.red);
             log.error("I/O error reading ``path``", except);
             return;
-        } catch (XMLStreamException except) {
+        } catch (MalformedXMLException except) {
             printParagraph(
                 "FAIL: Malformed XML; see following error message for details",
                 LabelTextColor.red);

@@ -9,9 +9,6 @@ import java.io {
 import javax.swing {
     JScrollPane
 }
-import javax.xml.stream {
-    XMLStreamException
-}
 
 import lovelace.util.jvm {
     StreamingLabel,
@@ -22,7 +19,8 @@ import lovelace.util.common {
     matchingPredicate,
     silentListener,
     PathWrapper,
-    MissingFileException
+    MissingFileException,
+    MalformedXMLException
 }
 
 import strategicprimer.drivers.common {
@@ -346,7 +344,7 @@ shared class MapCheckerCLI satisfies UtilityDriver {
             log.error("I/O error reading ``file``: ``except.message``");
 	    log.debug("Full stack trace of I/O error", except);
             return;
-        } catch (XMLStreamException except) {
+        } catch (MalformedXMLException except) {
             stderr("Malformed XML in ``file``");
             log.error("Malformed XML in ``file``: ``except.message``");
             log.debug("Full stack trace of malformed-XML error", except);

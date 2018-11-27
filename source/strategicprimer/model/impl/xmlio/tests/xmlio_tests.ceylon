@@ -25,9 +25,6 @@ import java.util {
 import javax.xml.namespace {
     QName
 }
-import javax.xml.stream {
-    XMLStreamException
-}
 
 import lovelace.util.common {
     todo,
@@ -37,7 +34,8 @@ import lovelace.util.common {
     simpleSet,
     randomlyGenerated,
     PathWrapper,
-    MissingFileException
+    MissingFileException,
+    MalformedXMLException
 }
 
 import strategicprimer.model.common.idreg {
@@ -392,7 +390,7 @@ object xmlTests {
     void assertInvalid(String xml) {
         for (reader in readers) {
             assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
-                    XMLStreamException|MissingFileException|MissingPropertyException>(
+                    MalformedXMLException|MissingFileException|MissingPropertyException>(
                 reader,
                 xml, null, (Exception exception) {
                     if (is MissingPropertyException exception) {
@@ -974,7 +972,7 @@ object xmlTests {
              </map>
              ");
         for (reader in readers) {
-                assertFormatIssue<IMapNG,UnwantedChildException|XMLStreamException>(
+                assertFormatIssue<IMapNG,UnwantedChildException|MalformedXMLException>(
                     reader,
                     """<map xmlns="xyzzy" version="2" rows="1" columns="1"
                            current_player="1">
@@ -988,13 +986,14 @@ object xmlTests {
                             assertEquals(except.child, QName("xyzzy", "map"),
                                 "Unwanted child was the one we expected");
                         }
-                        case (is XMLStreamException) {
+                        case (is MalformedXMLException) {
                             assertThatException(except)
                                     .hasMessage(
                                         "XML stream didn't contain a start element");
                         }
                     });
-                assertFormatIssue<AdventureFixture,UnwantedChildException|XMLStreamException>(
+                assertFormatIssue<AdventureFixture,
+                        UnwantedChildException|MalformedXMLException>(
                     reader,
                     """<adventure xmlns="xyzzy" id="1" brief="one" full="two" />""",
                     null);
@@ -1015,7 +1014,7 @@ object xmlTests {
         for (reader in readers) {
             assertFormatIssue<Object, MissingFileException>(reader,
                 """<include file="nosuchfile" />""", null);
-            assertFormatIssue<Object, XMLStreamException>(reader,
+            assertFormatIssue<Object, MalformedXMLException>(reader,
                 """<include file="string:&lt;nonsense" />""", null,
                 (except) => assertThatException(except).hasMessage(exceptionMessage));
         }

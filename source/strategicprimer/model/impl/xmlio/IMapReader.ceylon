@@ -3,9 +3,6 @@ import java.io {
     IOException
 }
 
-import javax.xml.stream {
-    XMLStreamException
-}
 
 import strategicprimer.model.common.map {
     IMutableMapNG
@@ -17,7 +14,8 @@ import strategicprimer.model.common.xmlio {
 }
 import lovelace.util.common {
     PathWrapper,
-    MissingFileException
+    MissingFileException,
+    MalformedXMLException
 }
 
 "An interface for map readers."
@@ -27,7 +25,7 @@ shared interface IMapReader {
                                        doesn't recognize the map format, or finds the file
                                        contains format errors")
     throws(`class MissingFileException`, "if the file does not exist")
-    throws(`class XMLStreamException`, "on low-level XML errors")
+    throws(`class MalformedXMLException`, "on low-level XML errors")
     throws(`class IOException`,
         "on I/O errors not covered by `XMLStreamException` or `SPFormatException`")
     shared formal IMutableMapNG readMap(
@@ -38,7 +36,7 @@ shared interface IMapReader {
     throws(`class SPFormatException`, "if the reader can't handle this map version,
                                        doesn't recognize the map format, or finds the file
                                        contains format errors")
-    throws(`class XMLStreamException`, "on low-level XML errors")
+    throws(`class MalformedXMLException`, "on low-level XML errors")
     shared formal IMutableMapNG readMapFromStream(
             "The name of the file the stream represents" PathWrapper file,
             "The reader to read from" JReader istream,
