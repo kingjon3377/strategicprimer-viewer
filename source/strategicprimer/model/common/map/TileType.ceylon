@@ -8,7 +8,7 @@ todo("Other additional types for use in other worlds' maps?")
 suppressWarnings("deprecation")
 shared class TileType
         of tundra|desert|mountain|borealForest|temperateForest|ocean|plains|jungle
-            |steppe|swamp {
+            |steppe|swamp satisfies HasName {
     "All tile types the given version supports."
     todo("Write tests for this")
     shared static {TileType*} valuesForVersion(Integer version) =>
@@ -80,6 +80,9 @@ shared class TileType
 
     "Whether this the given map version supports this tile type."
     shared Boolean isSupportedByVersion(Integer version) => versions.contains(version);
+
+    "A description of the instance, for human consumption"
+    shared actual String name => string;
 }
 
 {TileType*} getTypesForVersion(Integer version) =>
