@@ -35,6 +35,7 @@ import lovelace.util.common {
     randomlyGenerated,
     PathWrapper,
     MissingFileException,
+    singletonRandom,
     MalformedXMLException
 }
 
@@ -140,11 +141,12 @@ import ceylon.language.meta.declaration {
 
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"
-{String*} races = raceFactory.races.distinct;
-String[] animalStatuses = ["wild", "semi-domesticated", "domesticated", "tame"];
-String[] treeTypes = ["oak", "larch", "terebinth"]; // TODO: for these, maybe have longer lists and randomly select 3?
-String[] fieldTypes = ["wheat", "amaranth", "bluegrass"];
-String[] minerals = ["coal", "platinum", "oil"];
+// TODO: Use a wrapper around parameters() to limit the number chosen each time instead of using take() here
+{String*} races => singletonRandom.elements(raceFactory.races.distinct).take(2);
+{String*} animalStatuses => singletonRandom.elements(["wild", "semi-domesticated", "domesticated", "tame"]).take(2);
+{String*} treeTypes => singletonRandom.elements(["oak", "larch", "terebinth", "elm", "skybroom", "silver maple"]).take(2);
+{String*} fieldTypes => singletonRandom.elements(["wheat", "amaranth", "bluegrass", "corn", "winter wheat"]).take(2);
+{String*} minerals => singletonRandom.elements(["coal", "platinum", "oil", "diamonds", "natural gas"]).take(2);
 
 object xmlTests {
     """The "filename" to give to map-readers when they require one."""
