@@ -3,7 +3,8 @@ import ceylon.language.meta {
 }
 
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+    comparingOn
 }
 
 import strategicprimer.model.common {
@@ -13,7 +14,8 @@ import strategicprimer.model.common.map {
     IFixture,
     TileFixture,
     MapDimensions,
-    Point
+    Point,
+    HasKind
 }
 import strategicprimer.model.common.map.fixtures.resources {
     Grove,
@@ -78,11 +80,12 @@ shared class CropTabularReportGenerator
         "Size Unit", "Cultivation", "Status", "Crop"];
     "The file-name to (by default) write this table to."
     shared actual String tableName = "crops";
+
     "Create a GUI table row representing the crop."
     shared actual [{String+}+] produce(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
+            DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
             Forest|Shrub|Meadow|Grove item, Integer key, Point loc,
-            Map<Integer, Integer> parentMap) {
+            Map<Integer,Integer> parentMap) {
         String kind;
         String cultivation;
         String status;
@@ -145,23 +148,9 @@ shared class CropTabularReportGenerator
 
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, Forest|Shrub|Meadow|Grove] one,
-            [Point, Forest|Shrub|Meadow|Grove] two) {
-        Forest|Shrub|Meadow|Grove first = one.rest.first;
-        Forest|Shrub|Meadow|Grove second = two.rest.first;
-        Comparison cropCmp = first.kind.compare(second.kind);
-        if (cropCmp == equal) { // TODO: Use comparing() for this
-            Comparison cmp = DistanceComparator(hq, dimensions).compare(
-                one.first, two.first);
-            if (cmp == equal) {
-                return comparing(byIncreasing<TileFixture, Integer>(
-                            compose(Object.hash, typeOf<TileFixture>)),
-                        byIncreasing(TileFixture.hash))(
-                    first, second);
-            } else {
-                return cmp;
-            }
-        } else {
-            return cropCmp;
-        }
-    }
+        [Point, Forest|Shrub|Meadow|Grove] two) =>
+        comparing(byIncreasing(compose(HasKind.kind, pairFixture)),
+            comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+            byIncreasing(compose(Object.hash, compose(typeOf<TileFixture>, pairFixture))),
+            byIncreasing(compose(TileFixture.hash, pairFixture)))(one, two);
 }

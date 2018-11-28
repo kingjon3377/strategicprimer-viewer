@@ -52,14 +52,8 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
     }
 
     "Compare two location-unit pairs."
-    shared actual Comparison comparePairs([Point, IUnit] one, [Point, IUnit] two) { // TODO: If we can condense this a bit more, switch to => syntax.
-        return comparing(
-            comparingOn(Tuple<Point|IUnit, Point, [IUnit]>.first,
-                DistanceComparator(hq, dimensions).compare),
-            comparingOn(compose(Tuple<IUnit, IUnit, []>.first,
-                Tuple<Point|IUnit, Point, [IUnit]>.rest),
-                    comparing(comparingOn(IUnit.owner, increasing<Player>), // TODO: Could increasing<Type> be a default comparator for comparingOn()?
-                        comparingOn(IUnit.kind, increasing<String>),
-                        comparingOn(IUnit.name, increasing<String>))))(one, two);
-    }
+    shared actual Comparison comparePairs([Point, IUnit] one, [Point, IUnit] two) =>
+        comparing(comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+            comparingOn(pairFixture, comparing(byIncreasing(IUnit.owner),
+                byIncreasing(IUnit.kind), byIncreasing(IUnit.name))))(one, two);
 }

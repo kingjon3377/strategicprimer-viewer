@@ -48,11 +48,7 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
 
     "Compare two worker-location pairs."
     shared actual Comparison comparePairs([Point, IWorker] one,
-            [Point, IWorker] two) => comparing( // TODO: Make pairComparator() shared and use it to further condense
-                comparingOn(
-                    Tuple<Point|IWorker, Point, [IWorker]>.first,
-                    DistanceComparator(hq, dimensions).compare),
-                comparingOn(compose(compose(IWorker.name, Tuple<IWorker,
-                        IWorker, []>.first), Tuple<Point|IWorker, Point,
-                    [IWorker]>.rest), increasing<String>))(one, two);
+            [Point, IWorker] two) =>
+        comparing(comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+            byIncreasing(compose(IWorker.name, pairFixture)))(one, two);
 }

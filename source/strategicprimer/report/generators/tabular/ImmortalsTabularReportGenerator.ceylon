@@ -42,11 +42,8 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, Immortal] one,
             [Point, Immortal] two) =>
-            comparing(comparingOn<[Point, Immortal], Point>(
-                    Tuple.first, DistanceComparator(hq, dimensions).compare),
-                comparingOn(compose(Tuple<Immortal, Immortal, []>.first,
-                        Tuple<Point|Immortal, Point, [Immortal]>.rest),
-                    comparing(comparingOn<Immortal, ClassModel<Immortal>>(type,
-                        comparingOn(Object.hash, increasing<Integer>)),
-                    comparingOn(Object.hash, increasing<Integer>))))(one, two);
+            comparing(comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+                comparingOn(pairFixture,
+                    comparing(byIncreasing(compose(Object.hash, type<Immortal>)),
+                    byIncreasing(Object.hash))))(one, two);
 }

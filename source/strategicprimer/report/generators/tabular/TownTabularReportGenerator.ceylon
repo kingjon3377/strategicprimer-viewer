@@ -39,17 +39,12 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
 
     "Compare two location-town pairs."
     shared actual Comparison comparePairs([Point, AbstractTown] one,
-            [Point, AbstractTown] two) => comparing(
-                comparingOn(compose(Tuple<AbstractTown, AbstractTown, []>.first,
-                        Tuple<Point|AbstractTown, Point, [AbstractTown]>.rest),
-                    townComparators.compareTownKind),
-                comparingOn(Tuple<Point|AbstractTown, Point, [AbstractTown]>.first,
-                    DistanceComparator(hq, dimensions).compare),
-                comparingOn(compose(Tuple<AbstractTown, AbstractTown, []>.first,
-                        Tuple<Point|AbstractTown, Point, [AbstractTown]>.rest),
-                    comparing(comparingOn(AbstractTown.townSize, // TODO: Can't we just use townComparators.compareTowns()?
-                            townComparators.compareTownSize),
-                        comparingOn(AbstractTown.status,
-                            townComparators.compareTownStatus),
-                        comparingOn(AbstractTown.name, increasing<String>))))(one, two);
+            [Point, AbstractTown] two) =>
+        comparing(comparingOn(pairFixture, townComparators.compareTownKind),
+            comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+            comparingOn(pairFixture,
+                comparing(comparingOn(AbstractTown.townSize, // TODO: Can't we just use townComparators.compareTowns()?
+                        townComparators.compareTownSize),
+                    comparingOn(AbstractTown.status, townComparators.compareTownStatus),
+                    byIncreasing(AbstractTown.name))))(one, two);
 }
