@@ -43,9 +43,9 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
             [Point, Immortal] two) =>
             comparing(comparingOn<[Point, Immortal], Point>(
                     Tuple.first, DistanceComparator(hq, dimensions).compare),
-                comparingOn(Tuple<Point|Immortal, Point, [Immortal]>.rest, // TODO: Use compose() instead of nesting comparingOn()
-                    comparingOn(Tuple<Immortal, Immortal, []>.first,
-                        comparing(comparingOn<Immortal, ClassModel<Immortal>>(type,
-                            comparingOn(Object.hash, increasing<Integer>)),
-                        comparingOn(Object.hash, increasing<Integer>)))))(one, two);
+                comparingOn(compose(Tuple<Immortal, Immortal, []>.first,
+                        Tuple<Point|Immortal, Point, [Immortal]>.rest),
+                    comparing(comparingOn<Immortal, ClassModel<Immortal>>(type,
+                        comparingOn(Object.hash, increasing<Integer>)),
+                    comparingOn(Object.hash, increasing<Integer>))))(one, two);
 }
