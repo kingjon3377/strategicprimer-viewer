@@ -339,9 +339,8 @@ class TownGenerator(ICLIHelper cli) {
                 exists contents = cli.inputString("Specific kind of resource: "),
                 exists quantity = cli.inputDecimal("Quantity of the resource consumed: "),
                 exists units = cli.inputString("Units of that quantity: ")) {
-            ResourcePile pile = ResourcePile(idf.createID(), kind, contents, // TODO: inline
-                Quantity(quantity, units));
-            retval.yearlyConsumption.add(pile);
+            retval.yearlyConsumption.add(ResourcePile(idf.createID(), kind, contents,
+                Quantity(quantity, units)));
         }
 
         return retval;
