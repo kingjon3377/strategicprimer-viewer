@@ -39,7 +39,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 "A panel to let a user add hours of experience to a Skill."
 JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() { // TODO: Try to convert back to class
     JTextField hours = JTextField(3);
-    JPanel firstPanel = JPanel(FlowLayout()); // TODO: Add FlowPanel to lovelace.util.jvm to condense this
+    JPanel firstPanel = JPanel(); // TODO: Add FlowPanel to lovelace.util.jvm to condense this
     firstPanel.add(JLabel("Add "));
     firstPanel.add(hours);
     firstPanel.add(JLabel(" hours to skill?"));
