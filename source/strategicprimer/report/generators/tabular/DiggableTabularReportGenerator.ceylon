@@ -66,12 +66,14 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, MineralFixture] one,
             [Point, MineralFixture] two) => comparing(
-            comparingOn(Tuple<Point|MineralFixture, Point, MineralFixture[1]>.rest, // TODO: Use compose() instead of nesting comparingOn()
-                comparingOn(Tuple<MineralFixture, MineralFixture, []>.first,
-                    comparingOn(MineralFixture.kind, increasing<String>))),
+            comparingOn(compose(compose(MineralFixture.kind,
+                        Tuple<MineralFixture, MineralFixture, []>.first),
+                    Tuple<Point|MineralFixture, Point, MineralFixture[1]>.rest),
+                increasing<String>),
             comparingOn(Tuple<Point|MineralFixture, Point, MineralFixture[1]>.first,
                 DistanceComparator(hq, dimensions).compare),
-            comparingOn(Tuple<Point|MineralFixture, Point, MineralFixture[1]>.rest,
-                comparingOn(Tuple<MineralFixture, MineralFixture, []>.first,
-                    comparingOn(Object.hash, increasing<Integer>))))(one, two);
+            comparingOn(compose(compose(Object.hash,
+                        Tuple<MineralFixture, MineralFixture, []>.first),
+                    Tuple<Point|MineralFixture, Point, MineralFixture[1]>.rest),
+                increasing<Integer>))(one, two);
 }
