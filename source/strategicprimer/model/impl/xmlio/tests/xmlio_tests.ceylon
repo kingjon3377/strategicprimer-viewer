@@ -1692,9 +1692,9 @@ object xmlTests {
             null);
         assertMissingProperty<MineralVein>("<mineral dc=\"``dc``\" exposed=\"false\" />",
             "kind", null);
-        assertMissingProperty<MineralVein>("""<mineral kind="gold" exposed="false" />""", // TODO: Use provided kind
-            "dc", null);
-        assertMissingProperty<MineralVein>("<mineral dc=\"``dc``\" kind=\"gold\" />", // TODO: Use provided kind
+        assertMissingProperty<MineralVein>(
+            "<mineral kind=\"``kind``\" exposed=\"false\" />", "dc", null);
+        assertMissingProperty<MineralVein>("<mineral dc=\"``dc``\" kind=\"``kind``\" />",
             "exposed", null);
         assertMissingProperty<MineralVein>(
             "<mineral kind=\"``kind``\" exposed=\"``exposed``\" dc=\"``dc``\" />", "id",
