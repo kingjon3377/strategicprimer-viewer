@@ -18,6 +18,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 
 "A tabular report generator for towns."
 shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions dimensions)
+        extends AbstractTableGenerator<AbstractTown>()
         satisfies ITableGenerator<AbstractTown> {
     "The file-name to (by default) write this table to"
     shared actual String tableName = "towns";

@@ -123,6 +123,9 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
     "Compare two Point-fixture pairs."
     shared formal Comparison comparePairs([Point, T] one, [Point, T] two);
 
+    "The Point in a Point-fixture pair."
+    shared default Point pairPoint([Point, T] pair) => pair.first;
+
     """A String representing the owner of a fixture: "You" if equal to currentPlayer,
        "Independent" if an independent player, or otherwise the player's name."""
     shared default String ownerString(Player currentPlayer, Player owner) {
@@ -166,4 +169,12 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
 
     "The file-name to (by default) write this table to."
     shared formal String tableName;
+}
+
+"An abstract base class for table generators until eclipse/ceylon#7438 is fixed."
+// TODO: Move method back into interface at that point and remove this class
+shared abstract class AbstractTableGenerator<Type>() satisfies ITableGenerator<Type>
+        given Type satisfies IFixture {
+    "The fixture in a Point-fixture pair."
+    shared default Type pairFixture([Point, Type] pair) => pair.rest.first;
 }

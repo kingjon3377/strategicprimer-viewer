@@ -24,6 +24,7 @@ import strategicprimer.model.common.map.fixtures.resources {
 "A tabular report generator for resources that can be mined---mines, mineral veins, stone
  deposits, and Ground."
 shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
+        extends AbstractTableGenerator<MineralFixture>()
         satisfies ITableGenerator<MineralFixture> {
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Kind", "Product",

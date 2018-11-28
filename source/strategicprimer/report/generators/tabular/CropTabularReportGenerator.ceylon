@@ -40,6 +40,7 @@ Logger log = logger(`module strategicprimer.report`);
 "A tabular report generator for crops---forests, groves, orchards, fields, meadows, and
  shrubs"
 shared class CropTabularReportGenerator
+        extends AbstractTableGenerator<Forest|Shrub|Meadow|Grove>
         satisfies ITableGenerator<Forest|Shrub|Meadow|Grove> {
     "Produce a [[String]] representation of a [[Number]], limiting it to two decimal places."
     static String truncatedNumberString(Number<out Anything> number) {
@@ -66,7 +67,8 @@ shared class CropTabularReportGenerator
 
     Point hq;
     MapDimensions dimensions;
-    shared new (Point hq, MapDimensions dimensions) {
+    shared new (Point hq, MapDimensions dimensions)
+            extends AbstractTableGenerator<Forest|Shrub|Meadow|Grove>() {
         this.hq = hq;
         this.dimensions = dimensions;
     }

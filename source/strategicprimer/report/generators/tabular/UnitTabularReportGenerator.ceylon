@@ -19,6 +19,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 
 "A tabular report generator for units."
 shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions dimensions)
+        extends AbstractTableGenerator<IUnit>()
         satisfies ITableGenerator<IUnit> {
     "The header row for this table."
     shared actual [String+] headerRow =

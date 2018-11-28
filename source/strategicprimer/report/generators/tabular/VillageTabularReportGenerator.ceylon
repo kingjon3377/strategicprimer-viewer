@@ -18,7 +18,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 
 "A tabular report generator for villages."
 shared class VillageTabularReportGenerator(Player player, Point hq,
-        MapDimensions dimensions) satisfies ITableGenerator<Village> {
+        MapDimensions dimensions) extends AbstractTableGenerator<Village>() satisfies ITableGenerator<Village> {
     "The header of this table."
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Name"];
 

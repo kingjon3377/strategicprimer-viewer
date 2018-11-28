@@ -26,6 +26,7 @@ import strategicprimer.model.common.map.fixtures.explorable {
   caves, battlefields, adventure hooks, and portals."
 shared class ExplorableTabularReportGenerator(Player player, Point hq,
         MapDimensions dimensions)
+        extends AbstractTableGenerator<ExplorableFixture|TextFixture>()
         satisfies ITableGenerator<ExplorableFixture|TextFixture> {
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Brief Description",

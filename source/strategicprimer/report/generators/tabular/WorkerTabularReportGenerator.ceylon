@@ -21,6 +21,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 "A report generator for workers. We do not cover Jobs or Skills; see
  [[SkillTabularReportGenerator]] for that."
 shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
+        extends AbstractTableGenerator<IWorker>()
         satisfies ITableGenerator<IWorker> {
     "The header row of the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Name", "Race", "HP",

@@ -23,7 +23,8 @@ import ceylon.language.meta.model {
 
 """A tabular report generator for [["immortals."|Immortal]]"""
 shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
-        satisfies ITableGenerator<Immortal> {
+        extends AbstractTableGenerator<Immortal>()
+        /*satisfies ITableGenerator<Immortal>*/ {
     "The header row for this table."
     shared actual [String+] headerRow = ["Distance", "Location", "Immortal"];
 
