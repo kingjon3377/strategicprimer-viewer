@@ -17,8 +17,7 @@ wget "https://github.com/UltraMixer/JarBundler/releases/download/${jarbundler_ve
 for jar in pump-swing pump-common pump-awt pump-image pump-button;do
 	wget "https://github.com/mickleness/pumpernickel/raw/master/pump-release/com/pump/${jar}/${pumpernickel_version}/${jar}-${pumpernickel_version}.jar"
 done
-# TODO: HTTPS !!!!
-wget "http://central.maven.org/maven2/com/yuvimasory/orange-extensions/${orange_version}/orange-extensions-${orange_version}.jar"
+wget "https://repo.maven.apache.org/maven2/com/yuvimasory/orange-extensions/${orange_version}/orange-extensions-${orange_version}.jar"
 sudo apt-get update -qq
 sudo apt-get install genisoimage
 wget "https://github.com/tofi86/universalJavaApplicationStub/archive/v${app_stub_version}.tar.gz" -O \
