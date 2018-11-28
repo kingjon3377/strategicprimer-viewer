@@ -46,7 +46,7 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 narrowedStream<Integer, [Point, TextFixture]>(fixtures).sort(
                     comparingOn(compose(TextFixture.turn,
                         compose(Tuple<TextFixture, TextFixture, []>.first,
-                            compose(Tuple<Point|TextFixture, Point, TextFixture[1]>.rest,
+                            compose(Tuple<Point|TextFixture, Point, [TextFixture]>.rest,
                                 Entry<Integer, [Point, TextFixture]>.item))),
                         increasing<Integer>));
         if (!items.empty) {

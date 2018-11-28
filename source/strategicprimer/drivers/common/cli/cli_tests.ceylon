@@ -335,7 +335,7 @@ object cliTests {
 
     "A helper method for testing [[ICLIHelper]] methods that don't take input
      from the user or return values."
-    void assertPrintingOutput(Method<ICLIHelper, Anything, String[1]> method,
+    void assertPrintingOutput(Method<ICLIHelper, Anything, [String]> method,
             String argument, String expected, String message) {
         StringBuilder ostream = StringBuilder();
         method(CLIHelper(LinkedList<String>().accept, ostream.append))(argument);
