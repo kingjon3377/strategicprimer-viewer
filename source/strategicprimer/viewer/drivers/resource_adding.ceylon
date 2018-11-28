@@ -185,54 +185,70 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
             HashMultimap<String, String>();
     MutableMap<String, String> resourceUnits = HashMap<String, String>();
 
-    "Ask the user to choose or enter a resource kind."
-    String getResourceKind() {
+    "Ask the user to choose or enter a resource kind. Returns [[null]] on EOF."
+    String? getResourceKind() {
         String[] list = resourceKinds.sequence();
         value choice = cli.chooseStringFromList(list, "Possible kinds of resources:",
             "No resource kinds entered yet", "Chosen kind: ", false);
         if (exists retval = choice.item) {
             return retval;
-        } else {
-            assert (exists retval = cli.inputString("Resource kind to use: "));
+        } else if (exists retval = cli.inputString("Resource kind to use: ")) {
             resourceKinds.add(retval);
             return retval;
+        } else {
+            return null;
         }
     }
 
-    "Ask the user to choose or enter a resource-content-type for a given resource kind."
-    String getResourceContents(String kind) {
+    "Ask the user to choose or enter a resource-content-type for a given resource kind.
+     Returns [[null]] on EOF."
+    String? getResourceContents(String kind) {
         String[] list = resourceContents.get(kind).sequence();
         value num->item = cli.chooseStringFromList(list,
             "Possible resources in the ``kind`` category`", "No resources entered yet",
             "Choose resource: ", false);
         if (exists item) {
             return item;
-        } else {
-            assert (exists retval = cli.inputString("Resource to use: "));
+        } else if (exists retval = cli.inputString("Resource to use: ")) {
             resourceContents.put(kind, retval);
             return retval;
+        } else {
+            return null;
         }
     }
 
-    "Ask the user to choose units for a type of resource."
-    String getResourceUnits(String resource) {
-        if (exists unit = resourceUnits[resource],
-                exists correct = cli.inputBooleanInSeries(
-                    "Is ``unit`` the correct unit for ``resource``? ",
-                    "correct;``unit``;``resource``"), correct) {
-            return unit;
-        } else {
-            assert (exists retval = cli.inputString("Unit to use for ``resource``: ")); // TODO: Allow this method to return null on EOF
+    "Ask the user to choose units for a type of resource. Returns [[null]] on EOF."
+    String? getResourceUnits(String resource) {
+        if (exists unit = resourceUnits[resource]) {
+            switch (cli.inputBooleanInSeries(
+                "Is ``unit`` the correct unit for ``resource``? ",
+                "correct;``unit``;``resource``"))
+            case (true) { return unit; }
+            case (null) { return null; }
+            case (false) {}
+        }
+        if (exists retval = cli.inputString("Unit to use for ``resource``: ")) {
             resourceUnits[resource] = retval;
             return retval;
+        } else {
+            return null;
         }
     }
 
     "Ask the user to enter a resource."
     void enterResource(IDRegistrar idf, Player player) {
-        String kind = getResourceKind();
-        String origContents = getResourceContents(kind);
-        String units = getResourceUnits(origContents);
+        String? kind = getResourceKind();
+        if (is Null kind) {
+            return;
+        }
+        String? origContents = getResourceContents(kind);
+        if (is Null origContents) {
+            return;
+        }
+        String? units = getResourceUnits(origContents);
+        if (is Null units) {
+            return;
+        }
         String contents;
         switch (cli.inputBooleanInSeries("Qualify the particular resource with a prefix? ",
                 "prefix " + origContents))
