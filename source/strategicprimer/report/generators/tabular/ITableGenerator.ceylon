@@ -56,8 +56,9 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
             Map<Integer, Integer> parentMap) {
         {[Integer, [Point, T]]*} values = fixtures.map(Entry.pair)
             .narrow<[Integer, [Point, T]]>()
-                .sort(comparingOn(Tuple<Integer|[Point, T], Integer, [[Point, T]]>.rest, // TODO: Use compose() instead of nested comparingOn().
-                    comparingOn(Tuple<[Point, T], [Point, T], []>.first, comparePairs)));
+                .sort(comparingOn(compose(Tuple<[Point, T], [Point, T], []>.first,
+                        Tuple<Integer|[Point, T], Integer, [[Point, T]]>.rest),
+                    comparePairs));
         DefaultTableModel retval = DefaultTableModel(
             createJavaStringArray(headerRow), 0);
         variable Integer count = 0;
