@@ -29,12 +29,9 @@ object arrowListenerInitializer {
         KeyEvent.vkNumpad3->"down-right", KeyEvent.vkNumpad1->"down-left"
     ];
 
-    Anything() join(Anything() first, Anything() second) {
-        void retval() { // TODO: Inline and make join() use =>?
-            first();
-            second();
-        }
-        return retval;
+    void join(Anything() first, Anything() second)() {
+        first();
+        second();
     }
 
     """Key-codes that are used, when modified with a platgform-specific modifier,
