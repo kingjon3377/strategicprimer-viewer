@@ -1,11 +1,3 @@
-"Given a function and a predicate, produces another predicate that applies the function
- to each object and returns the result of the given predicate applied to that result. In
- other words, given a reference to an accessor and a test to apply to objects of its type,
- produces a test that accepts objects of the containing type. This is intended to be used
- with [[Iterable.filter]] and the like."
-see(`function matchingValue`)
-shared Boolean(Type) matchingPredicate<Type, Field>(Boolean(Field) predicate,
-        Field(Type) field) given Type satisfies Object => compose(predicate, field);
 "Given a function and an expected value, produces a predicate that applies that function
  to each object and returns true iff it produces the expected value. This is intended to
  be used with [[Iterable.filter]] and the like."
