@@ -155,19 +155,17 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
 
     "Combine like [[Forest]]s into a single object. We assume that all Forests are of the
      same kind of tree and either all or none are in rows."
-    static Forest combineForests({Forest*} list) { // TODO: Try requiring {Forest+} instead of asserting, allowing us to use => syntax (and similarly below) // TODO: Conversely, add a 'combine()' method to HasExtent?
-        assert (exists top = list.first);
-        return Forest(top.kind, top.rows, top.id,
+    // TODO: Add a 'combine()' method to HasExtent?
+    static Forest combineForests({Forest+} list) =>
+        Forest(list.first.kind, list.first.rows, list.first.id,
             list.map(Forest.acres).map(decimalize).fold(decimalNumber(0))(plus));
-    }
 
     "Combine like [[Meadow]]s into a single object. We assume all Meadows are identical
      except for acreage and ID."
-    static Meadow combineMeadows({Meadow*} list) {
-        assert (exists top = list.first);
-        return Meadow(top.kind, top.field, top.cultivated, top.id, top.status,
+    static Meadow combineMeadows({Meadow+} list) =>
+        Meadow(list.first.kind, list.first.field, list.first.cultivated, list.first.id,
+            list.first.status,
             list.map(Meadow.acres).map(decimalize).fold(decimalNumber(0))(plus));
-    }
 
     "A two-parameter wrapper around [[HasPopulation.combined]]."
     static Type combine<Type>(Type one, Type two) given Type satisfies HasPopulation<Type> =>
