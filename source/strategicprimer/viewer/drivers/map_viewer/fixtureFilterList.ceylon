@@ -49,7 +49,7 @@ class FixtureFilterList() extends SwingList<FixtureMatcher>() satisfies ZOrderFi
                 FixtureMatcher.simpleMatcher<Meadow>(not(Meadow.field), "Meadows"));
 
     shared actual Boolean shouldDisplay(TileFixture fixture) {
-        for (i in 0:matcherListModel.size) { // TODO: Condense this loop to if (exists matcher = (0:matcherListModel.size).map(matcherListModel.getElementAt).find(shuffle(curry(FixtureMatcher.matches))(fixture))) ... (subject to type-checking)
+        for (i in 0:matcherListModel.size) {
             FixtureMatcher matcher = matcherListModel.getElementAt(i);
             if (matcher.matches(fixture)) {
                 return matcher.displayed;
