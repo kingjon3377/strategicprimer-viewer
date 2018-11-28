@@ -55,10 +55,10 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
         return comparing(
             comparingOn(Tuple<Point|IUnit, Point, [IUnit]>.first,
                 DistanceComparator(hq, dimensions).compare),
-            comparingOn(Tuple<Point|IUnit, Point, [IUnit]>.rest, // TODO: Use compose() instead of nesting comparingOn()
-                comparingOn(Tuple<IUnit, IUnit, []>.first,
+            comparingOn(compose(Tuple<IUnit, IUnit, []>.first,
+                Tuple<Point|IUnit, Point, [IUnit]>.rest),
                     comparing(comparingOn(IUnit.owner, increasing<Player>), // TODO: Could increasing<Type> be a default comparator for comparingOn()?
                         comparingOn(IUnit.kind, increasing<String>),
-                        comparingOn(IUnit.name, increasing<String>)))))(one, two);
+                        comparingOn(IUnit.name, increasing<String>))))(one, two);
     }
 }
