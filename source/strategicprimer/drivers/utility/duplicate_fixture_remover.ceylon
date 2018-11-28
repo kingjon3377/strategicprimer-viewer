@@ -58,7 +58,8 @@ import strategicprimer.drivers.common {
 import lovelace.util.common {
     NonNullCorrespondence,
     simpleMap,
-    PathWrapper
+    PathWrapper,
+    as
 }
 import ceylon.language.meta.model {
     ClassOrInterface
@@ -285,12 +286,8 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
 
         for (fixture in stream) {
             if (is {IFixture*} fixture) {
-                String shortDesc;
-                if (is TileFixture fixture) { // TODO: Replace with as<TileFixture>(fixture)?.shortDescription else fixture.string ?
-                    shortDesc = fixture.shortDescription;
-                } else {
-                    shortDesc = fixture.string;
-                }
+                String shortDesc = as<TileFixture>(fixture)?.shortDescription
+                    else fixture.string;
                 if (is IUnit fixture) {
                     coalesceResources(context + "In ``shortDesc``: ", fixture,
                         ifApplicable(fixture.addMember),
