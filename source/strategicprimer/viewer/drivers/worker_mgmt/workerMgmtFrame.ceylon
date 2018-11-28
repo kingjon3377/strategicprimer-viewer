@@ -100,7 +100,8 @@ import lovelace.util.common {
     matchingValue,
     silentListener,
     narrowedStream,
-    defer
+    defer,
+    PathWrapper
 }
 import strategicprimer.drivers.gui.common {
     SPFrame,
@@ -271,13 +272,14 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         "Jump to Next Blank (``platform.shortcutDescription``J)", jumpNext);
 
     StrategyExporter strategyExporter = StrategyExporter(model, options);
+    void writeStrategy(PathWrapper file) => strategyExporter
+        .writeStrategy(parsePath(file.string).resource, treeModel.dismissed);
+    void strategyWritingListener() => SPFileChooser.save(null,
+        filteredFileChooser(false, ".", null)).call(writeStrategy);
     BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
         listenedButton("Add New Unit", silentListener(newUnitFrame.showWindow)),
         ordersPanelObj, listenedButton("Export a proto-strategy",
-            (ActionEvent event) => SPFileChooser.save(null, // TODO: convert lambda to named method
-                filteredFileChooser(false, ".", null))
-                    .call((file) => strategyExporter.writeStrategy( // TODO: convert lambda to named method
-                    parsePath(file.string).resource, treeModel.dismissed))));
+            silentListener(strategyWritingListener)));
     contentPane = horizontalSplit(verticalSplit(
         BorderedPanel.verticalPanel(
             BorderedPanel.horizontalPanel(playerLabel, null, jumpButton),
