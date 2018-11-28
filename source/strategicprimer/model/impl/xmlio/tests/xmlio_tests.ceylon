@@ -1684,7 +1684,7 @@ object xmlTests {
             enumeratedParameter(`class Boolean`) Boolean exposed,
             enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
         MineralVein secondVein = MineralVein(kind, exposed, dc, id);
-        assertSerialization("Second MineralEvent serialization test", secondVein); // TODO: Refers to MineralEvent
+        assertSerialization("MineralVein serialization", secondVein);
         assertDeprecatedProperty(createSerializedForm(secondVein, deprecatedWriter)
                 .replace("kind", "mineral"), "mineral", "kind", "mineral", secondVein);
         assertUnwantedChild<MineralVein>(
