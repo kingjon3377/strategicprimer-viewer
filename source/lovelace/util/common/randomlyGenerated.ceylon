@@ -15,7 +15,7 @@ import ceylon.language.meta.declaration {
 "Annotation to make a parameterized test randomly generate numbers. Apply to a parameter
  of a method annotated with [[ceylon.test::test]], and the test will be run [[count]] times
  (with the same values for all other parameters, as usual) with randomly generated numbers
- between 0 and [[max]] passed to the annotated parameter. Can currently generate 
+ between 0 and [[max]] passed to the annotated parameter. Can currently generate
  [[integers|Integer]] and [[floats|Float]]."
 shared annotation RandomGenerationAnnotation randomlyGenerated(
         "How many different numbers to generate."
@@ -27,7 +27,7 @@ shared annotation RandomGenerationAnnotation randomlyGenerated(
 "The annotation class for the [[randomlyGenerated]] annotation."
 shared final annotation class RandomGenerationAnnotation(
                 "How many different numbers to generate."
-                Integer count, 
+                Integer count,
                 "The upper bound of the range from which to select random numbers."
                 Integer max)
         satisfies OptionalAnnotation<RandomGenerationAnnotation,ValueDeclaration>
