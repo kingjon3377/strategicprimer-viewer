@@ -1,12 +1,3 @@
-import strategicprimer.model.common.map.fixtures.mobile {
-    AnimalTracks
-}
-import strategicprimer.model.common.map.fixtures.resources {
-    CacheFixture
-}
-import strategicprimer.model.common.map.fixtures {
-    TextFixture
-}
 import lovelace.util.common {
     NonNullCorrespondence
 }

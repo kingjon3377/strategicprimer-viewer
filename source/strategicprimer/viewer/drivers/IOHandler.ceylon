@@ -53,7 +53,6 @@ import javax.swing {
 }
 import lovelace.util.jvm {
     showErrorDialog,
-    FileChooser,
     ComponentParentStream
 }
 

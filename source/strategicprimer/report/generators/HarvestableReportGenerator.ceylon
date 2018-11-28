@@ -24,8 +24,7 @@ import strategicprimer.model.common.map.fixtures.resources {
     Shrub,
     MineralVein,
     Grove,
-    HarvestableFixture,
-    FieldStatus
+    HarvestableFixture
 }
 import strategicprimer.report {
     IReportNode

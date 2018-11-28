@@ -17,9 +17,6 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import ceylon.language.meta {
     type
 }
-import ceylon.language.meta.model {
-    ClassModel
-}
 
 """A tabular report generator for [["immortals."|Immortal]]"""
 shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)

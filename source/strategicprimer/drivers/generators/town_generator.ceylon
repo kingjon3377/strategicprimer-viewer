@@ -39,9 +39,6 @@ import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }
-import ceylon.decimal {
-    Decimal
-}
 import strategicprimer.model.common.map.fixtures.resources {
     HarvestableFixture,
     MineralVein,
