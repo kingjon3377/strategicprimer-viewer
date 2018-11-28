@@ -66,7 +66,16 @@ shared void showErrorDialog(
 
 "An extension to [[GroupLayout]] to provide additional methods to make initialization
  less verbose and more functional in style."
-shared class FunctionalGroupLayout(Container host) extends GroupLayout(host) {
+shared class FunctionalGroupLayout(
+        "The container to lay out."
+        Container host,
+        "Whether to automatically create gaps between components."
+        Boolean autoCreatePadding = false,
+        "Whether to automatically create gaps between components at an edge of the
+         container and that edge."
+        Boolean autoCreateContainerPadding = false) extends GroupLayout(host) { // TODO: convert to class with constructor?
+    autoCreateGaps = autoCreatePadding;
+    autoCreateContainerGaps = autoCreateContainerPadding;
     "Add components and/or groups to a group."
     SpecificGroup initializeGroup<SpecificGroup>(SpecificGroup group,
             Component|Group* components) given SpecificGroup satisfies Group {

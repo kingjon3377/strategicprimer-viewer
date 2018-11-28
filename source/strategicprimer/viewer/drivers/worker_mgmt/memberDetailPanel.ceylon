@@ -57,11 +57,9 @@ import strategicprimer.viewer.drivers.map_viewer {
 "A panel to show the details of the currently selected unit-member."
 JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     JPanel statPanel = JPanel();
-    FunctionalGroupLayout statLayout = FunctionalGroupLayout(statPanel); // TODO: Add parameters to let us pass autoCreateGaps, autoCreateContainerGaps, to this method
+    FunctionalGroupLayout statLayout = FunctionalGroupLayout(statPanel, true, true);
     statPanel.layout = statLayout;
     statPanel.border = BorderFactory.createEmptyBorder();
-    statLayout.autoCreateGaps = true;
-    statLayout.autoCreateContainerGaps = true;
 
     String labelFormat(Integer(WorkerStats) stat)(WorkerStats? stats) {
         if (exists stats) {
