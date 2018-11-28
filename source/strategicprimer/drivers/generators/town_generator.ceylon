@@ -614,10 +614,13 @@ shared class TownGeneratingCLI(ICLIHelper cli, model) satisfies CLIDriver {
         } else {
             idf = createIDFactory(model.map);
         }
-        if (cli.inputBoolean("Enter or generate stats for just specific towns? ")) {
-            generator.generateSpecificTowns(idf, model);
-        } else {
-            generator.generateAllTowns(idf, model);
+        if (exists specific =
+                cli.inputBoolean("Enter or generate stats for just specific towns? ")) {
+            if (specific) {
+                generator.generateSpecificTowns(idf, model);
+            } else {
+                generator.generateAllTowns(idf, model);
+            }
         }
     }
 }

@@ -270,16 +270,29 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
                 "Players in the maps:", "No players found.",
                 "Player to add resources for: ", false).item) {
             players.remove(chosen);
-            while (cli.inputBoolean("Keep going? ")) {
-                if (cli.inputBooleanInSeries(
-                    "Enter a (quantified) resource? ")) {
-                    enterResource(idf, chosen);
-                } else if (cli.inputBooleanInSeries(
-                    "Enter equipment etc.? ")) {
-                    enterImplement(idf, chosen);
+            while (true) {
+                Boolean? condition = cli.inputBoolean("Keep going? ");
+                switch (condition)
+                case (true) {
+                    if (cli.inputBooleanInSeries(
+                        "Enter a (quantified) resource? ")) {
+                        enterResource(idf, chosen);
+                    } else if (cli.inputBooleanInSeries(
+                        "Enter equipment etc.? ")) {
+                        enterImplement(idf, chosen);
+                    }
+                }
+                case (null) {
+                    return;
+                }
+                case (false) {
+                    break;
                 }
             }
-            if (!cli.inputBoolean("Choose another player?")) {
+            Boolean? continuation = cli.inputBoolean("Choose another player?");
+            if (exists continuation, continuation) {
+                // continue;
+            } else {
                 break;
             }
         }

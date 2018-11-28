@@ -202,7 +202,10 @@ class StatGeneratingCLI satisfies CLIDriver {
             	"Worker to modify: ", false).item) {
             workers.remove(chosen);
             enterStatsForWorker(chosen.id);
-            if (!cli.inputBoolean("Choose another worker?")) {
+            if (exists continuation = cli.inputBoolean("Choose another worker?"),
+                    continuation) {
+                // continue;
+            } else {
                 break;
             }
         }
@@ -220,7 +223,10 @@ class StatGeneratingCLI satisfies CLIDriver {
             	false).item) {
             units.remove(chosen);
             enterStatsInUnit(chosen);
-            if (!cli.inputBoolean("Choose another unit?")) {
+            if (exists continuation = cli.inputBoolean("Choose another unit?"),
+                    continuation) {
+                // continue;
+            } else {
                 break;
             }
         }
@@ -235,7 +241,10 @@ class StatGeneratingCLI satisfies CLIDriver {
             	true).item) {
             players.remove(chosen);
             enterStatsForPlayer(chosen);
-            if (!cli.inputBoolean("Choose another player?")) {
+            if (exists continuation = cli.inputBoolean("Choose another player?"),
+                    continuation) {
+                // continue;
+            } else {
                 break;
             }
         }
@@ -276,8 +285,8 @@ class StatGeneratingCLI satisfies CLIDriver {
         if (exists retval = excludedVillages[village]) {
             return retval;
         } else {
-            Boolean retval = cli.inputBoolean(
-                "Has a newcomer come from ``village.name`` in the last 7 turns?");
+            assert (exists retval = cli.inputBoolean(
+                "Has a newcomer come from ``village.name`` in the last 7 turns?"));
             excludedVillages[village] = retval;
             return retval;
         }
@@ -395,7 +404,9 @@ class StatGeneratingCLI satisfies CLIDriver {
                         "``name``, a ``village.race``, is a level-``training.level`` ``training.name`` from ``village.name``. Proposed stats:");
                     cli.println(", ".join(zipPairs(statLabelArray,
                         stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
-                    if (cli.inputBoolean("Do those stats fit that profile?")) {
+                    assert (exists acceptance =
+                        cli.inputBoolean("Do those stats fit that profile?"));
+                    if (acceptance) {
                         worker.stats = stats;
                         return worker;
                     }
@@ -560,7 +571,10 @@ class StatGeneratingCLI satisfies CLIDriver {
             } else {
                 createWorkersForUnit(idf, item);
             }
-            if (!cli.inputBoolean("Choose another unit? ")) {
+            if (exists continuation = cli.inputBoolean("Choose another unit? "),
+                    continuation) {
+                // continue;
+            } else {
                 break;
             }
         }
@@ -570,16 +584,21 @@ class StatGeneratingCLI satisfies CLIDriver {
     void createWorkers(IDRegistrar idf) {
         MutableList<Player> players = ArrayList { elements = model.playerChoices; };
         while (!players.empty, exists chosen = cli.chooseFromList(players,
-            "Which player owns the new worker(s)?",
+            "Which player owns the new worker(s)?", // FIXME: indentation
             "There are no players shared by all the maps.",
             "Player selection: ", false).item) {
             players.remove(chosen);
-            variable Boolean again = true;
-            while (again) {
+            while (true) {
                 createWorkersForPlayer(idf, chosen);
-                again = cli.inputBoolean("Add more workers to another unit?");
+                switch (cli.inputBoolean("Add more workers to another unit?"))
+                case (null) { return; }
+                case (false) { break; }
+                case (true) {}
             }
-            if (!cli.inputBoolean("Choose another player?")) {
+            if (exists continuation = cli.inputBoolean("Choose another player?"),
+                    continuation) {
+                // continue;
+            } else {
                 break;
             }
         }

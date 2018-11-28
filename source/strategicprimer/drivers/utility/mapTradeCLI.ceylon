@@ -178,10 +178,18 @@ shared class MapTradeCLI satisfies CLIDriver {
     shared actual void startDriver() {
         IMapNG first = model.map;
         assert (exists second = model.subordinateMaps.first?.key);
-        if (cli.inputBoolean("Copy players?")) {
-            first.players.each(second.addPlayer);
+        Boolean? copyPlayers = cli.inputBoolean("Copy players?");
+        if (exists copyPlayers) {
+            if (copyPlayers) {
+                first.players.each(second.addPlayer);
+            }
+        } else {
+            return;
         }
-        Boolean copyRivers = cli.inputBoolean("Include rivers?");
+        Boolean? copyRivers = cli.inputBoolean("Include rivers?");
+        if (is Null copyRivers) {
+            return;
+        }
         matchers.each(askAbout);
         Boolean zeroFixtures;
         if (first.currentPlayer.independent || second.currentPlayer.independent ||

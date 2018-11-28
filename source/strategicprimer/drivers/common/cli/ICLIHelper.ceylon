@@ -54,8 +54,8 @@ shared interface ICLIHelper {
             "The prompt to prompt the user with."
             String prompt);
 
-    "Ask the user a yes-or-no question."
-    shared formal Boolean inputBoolean(
+    "Ask the user a yes-or-no question. Returns [[null]] on EOF."
+    shared formal Boolean? inputBoolean(
             "The prompt to prompt the user with."
             String prompt);
 
@@ -82,7 +82,7 @@ shared interface ICLIHelper {
 
     "Get a [[Point]] from the user. This is a convenience wrapper around [[inputNumber]].
      On EOF, returns -1 for any remaining coordinates."
-    shared default Point inputPoint(
+    shared default Point inputPoint( // TODO: Return null on EOF, not the invalid point?
             "The prompt to use to prompt the user."
             String prompt) {
         print(prompt);

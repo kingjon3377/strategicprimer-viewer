@@ -137,7 +137,10 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                     }
                 }
             }
-            if (!cli.inputBoolean("Select another Skill in this Job?")) {
+            if (exists continuation =
+                    cli.inputBoolean("Select another Skill in this Job?"), continuation) {
+                // continue;
+            } else {
                 break;
             }
         }
@@ -171,7 +174,11 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                 break;
             }
             advanceJob(job, allowExpertMentoring);
-            if (!cli.inputBoolean("Select another Job in this worker?")) {
+            if (exists continuation =
+                        cli.inputBoolean("Select another Job in this worker?"),
+                    continuation) {
+                // continue;
+            } else {
                 break;
             }
         }
@@ -263,7 +270,10 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                 break;
             }
             advanceWorkersInSkill(jobName, skill.name, *workers);
-            if (!cli.inputBoolean("Select another Skill in this Job?")) {
+            if (exists continuation =
+                    cli.inputBoolean("Select another Skill in this Job?"), continuation) {
+                // continue;
+            } else {
                 break;
             }
         }
@@ -278,7 +288,10 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                     "Chosen worker: ", false).item) {
                 workers.remove(chosen);
                 advanceSingleWorker(chosen, allowExpertMentoring);
-                if (!cli.inputBoolean("Choose another worker?")) {
+                if (exists continuation = cli.inputBoolean("Choose another worker?"),
+                        continuation) {
+                    // continue;
+                } else {
                     break;
                 }
             }
@@ -313,7 +326,11 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                     break;
                 }
                 advanceWorkersInJob(job.name, *workers);
-                if (!cli.inputBoolean("Select another Job in these workers?")) {
+                if (exists continuation =
+                            cli.inputBoolean("Select another Job in these workers?"),
+                        continuation) {
+                    // continue;
+                } else {
                     break;
                 }
             }
@@ -330,7 +347,10 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                 false).item) {
             units.remove(chosen);
             advanceWorkersInUnit(chosen, allowExpertMentoring);
-            if (!cli.inputBoolean("Choose another unit?")) {
+            if (exists continuation = cli.inputBoolean("Choose another unit?"),
+                    continuation) {
+                // continue;
+            } else {
                 break;
             }
         }
@@ -348,7 +368,10 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             playerList.remove(chosen);
             advanceWorkers(model, chosen,
                 options.hasOption("--allow-expert-mentoring"));
-            if (!cli.inputBoolean("Select another player?")) {
+            if (exists continuation = cli.inputBoolean("Select another player?"),
+                    continuation) {
+                // continue;
+            } else {
                 break;
             }
         }

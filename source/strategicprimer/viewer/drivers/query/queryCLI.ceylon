@@ -199,13 +199,17 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
     void printDistance() {
         Point start = cli.inputPoint("Starting point:\t");
         Point end = cli.inputPoint("Destination:\t");
-        if (cli.inputBoolean("Compute ground travel distance?")) {
+        Boolean? groundTravel = cli.inputBoolean("Compute ground travel distance?");
+        switch (groundTravel)
+        case (true) {
             cli.println("Distance (on the ground, in MP cost):\t``pathfinder.
             getTravelDistance(map, start, end).first``");
-        } else {
+        }
+        case (false) {
             cli.println("Distance (as the crow flies, in tiles):\t``Float
                 .format(distance(start, end, map.dimensions), 0, 0)``");
         }
+        case (null) {}
     }
 
     "If the given driver model *has* subordinate maps, add a copy of the given fixture to

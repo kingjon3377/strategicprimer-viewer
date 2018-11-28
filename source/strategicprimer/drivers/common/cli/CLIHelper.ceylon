@@ -43,13 +43,13 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
         ostream(operatingSystem.newline);
     }
 
-    "Ask the user a yes-or-no question."
-    shared actual Boolean inputBoolean(String prompt) {
+    "Ask the user a yes-or-no question. Returns [[null]] on EOF."
+    shared actual Boolean? inputBoolean(String prompt) {
         while (true) {
             switch(input = inputString(prompt)?.lowercased)
             case ("yes"|"true"|"y"|"t") { return true; }
             case ("no"|"false"|"n"|"f") { return false; }
-            case (null) { throw AssertionError("EOF"); } // FIXME: Make this method return Boolean? and return the null
+            case (null) { return null; }
             else {
                 ostream("""Please enter "yes", "no", "true", or "false",
                            or the first character of any of those.
