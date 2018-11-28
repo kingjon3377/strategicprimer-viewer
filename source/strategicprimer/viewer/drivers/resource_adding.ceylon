@@ -277,8 +277,7 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
                 "Player to add resources for: ", false).item) {
             players.remove(chosen);
             while (true) {
-                Boolean? condition = cli.inputBoolean("Keep going? "); // TODO: inlie
-                switch (condition)
+                switch (cli.inputBoolean("Keep going? "))
                 case (true) {
                     switch (cli.inputBooleanInSeries(
                         "Enter a (quantified) resource? "))
