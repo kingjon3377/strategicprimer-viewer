@@ -165,7 +165,7 @@ shared class FortressReportGenerator(
                 ostream(operatingSystem.newline);
             }
         }
-        printList(units, "Units on the tile", urg); // TODO: Should be "in the fortress", not "on the tile"
+        printList(units, "Units in the fortress", urg);
         printList(equipment, "Equipment", memberReportGenerator);
         if (!resources.empty) {
             ostream("""<li>Resources:<ul>
@@ -224,7 +224,7 @@ shared class FortressReportGenerator(
         // This is a no-op if no rivers, so avoid an if
 //            riversToNode(loc, retval, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
         riversToNode(loc, retval, *map.rivers.get(loc));
-        IReportNode units = ListReportNode("Units on the tile:");
+        IReportNode units = ListReportNode("Units in the Fortress:");
         IReportNode resources = ListReportNode("Resources:", loc);
         MutableMap<String,IReportNode> resourceKinds = HashMap<String,IReportNode>();
         IReportNode equipment = ListReportNode("Equipment:", loc);
