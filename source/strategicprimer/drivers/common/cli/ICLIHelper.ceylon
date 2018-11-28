@@ -8,9 +8,9 @@ import ceylon.decimal {
 
 """An interface for the "CLI helper," which encapsulates input and output streams,
    allowing automated testing of command-line apps and graphical wrappers around them."""
-// TODO: Methods beyond inputNumber/inputDecimal should abort (return null) on EOF.
 shared interface ICLIHelper {
-    "Have the user choose an item from a list. Returns the index."
+    "Have the user choose an item from a list. Returns the index and the item, if any.
+     On EOF, returns an index of -2."
     shared formal Integer->Element? chooseFromList<Element>(
             "The list of items to choose from."
             Element[]|List<Element> items,
@@ -23,7 +23,8 @@ shared interface ICLIHelper {
             "Whether to automatically choose if there's only one choice."
             Boolean auto) given Element satisfies Object&HasName;
 
-    "Have the user choose an item from a list."
+    "Have the user choose an item from a list. Returns the index and the item, if any. On
+     EOF, returns an index of -2."
     shared formal Integer->String? chooseStringFromList(
             "The list of items to choose from."
             String[] items,
