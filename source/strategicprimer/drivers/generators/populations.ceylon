@@ -44,13 +44,15 @@ import ceylon.decimal {
     decimalNumber,
     round,
     halfEven,
-    implicitlyRounded
+    implicitlyRounded,
+    Decimal
 }
 import lovelace.util.common {
     matchingValue,
     narrowedStream,
     singletonRandom,
-    PathWrapper
+    PathWrapper,
+    defer
 }
 import lovelace.util.jvm {
     decimalize
@@ -242,6 +244,9 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             surroundingPointIterable(center, map.dimensions, 1)
                 .count(hasForests(kind));
 
+    Decimal perForestAcreage(Integer reserved, Integer otherForests) =>
+        decimalNumber(160 - reserved) / decimalNumber(otherForests);
+
     "Generate [[Forest]] acreages."
     void generateForestExtents() {
         {Point*} locations = randomize(narrowedStream<Point, Forest>(map.fixtures)
@@ -318,14 +323,13 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
                 for (forest in otherForests) {
                     map.removeFixture(location, forest);
                     map.addFixture(location, Forest(forest.kind, forest.rows, forest.id,
-                        // TODO: figure out how to use defer() to avoid a lambda here
-                        implicitlyRounded(() => decimalNumber(160 - reserved) /
-                            decimalNumber(otherForests.size), round(12, halfEven))));
+                        implicitlyRounded(
+                            defer(perForestAcreage, [reserved, otherForests.size]),
+                            round(12, halfEven))));
                 }
             }
         }
     }
-
     shared actual void startDriver() {
         for (kind in model.map.fixtures.map(Entry.item).narrow<Animal>()
                     .filter(not(compose(Integer.positive, Animal.population)))
