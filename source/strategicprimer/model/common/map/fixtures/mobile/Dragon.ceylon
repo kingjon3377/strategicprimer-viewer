@@ -22,7 +22,7 @@ shared class Dragon(kind, id) satisfies Immortal&HasMutableImage&HasKind {
     }
 
     shared actual String shortDescription =>
-            (kind.empty) then "dragon" else "``kind`` dragon"; // TODO: Is interpolation or + concatenation faster?
+            (kind.empty) then "dragon" else kind + " dragon";
 
     shared actual String string => shortDescription;
 

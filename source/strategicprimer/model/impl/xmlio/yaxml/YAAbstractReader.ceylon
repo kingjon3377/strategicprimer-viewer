@@ -237,11 +237,11 @@ abstract class YAAbstractReader<Element>
 
     "Close a tag with a right-bracket and add a newline."
     shared static void finishParentTag(Anything(String) ostream) =>
-            ostream(">``operatingSystem.newline``"); // TODO: Use '+' instead of interpolation?
+            ostream(">" + operatingSystem.newline);
 
     "Close a 'leaf' tag and add a newline."
     shared static void closeLeafTag(Anything(String) ostream) =>
-            ostream(" />``operatingSystem.newline``"); // TODO: Use '+' instead of interpolation?
+            ostream(" />" + operatingSystem.newline);
 
     "Write a closing tag to the stream, optionally indented, and followed by a
      newline."
