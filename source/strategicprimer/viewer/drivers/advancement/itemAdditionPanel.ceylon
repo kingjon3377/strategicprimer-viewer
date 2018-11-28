@@ -48,7 +48,9 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     setPanelSizes(retval);
 
     JPanel first = boxPanel(BoxAxis.lineAxis);
-    first.add(listenedButton("+", (ActionEvent event) { // TODO: Would field.requestFocusInWindow() cause the layout to flip to that card? (If so, omit the first line of the lambda ...)
+    first.add(listenedButton("+", (ActionEvent event) {
+        // I had wondered if Component.requestFocusInWindow() would make CardLayout flip
+        // to the card containing the component, but it apparently doesn't work that way.
         layoutObj.next(retval);
         field.requestFocusInWindow();
     }));
