@@ -96,7 +96,6 @@ import strategicprimer.model.impl.xmlio {
     mapIOHelper
 }
 import lovelace.util.common {
-    matchingPredicate,
     matchingValue,
     silentListener,
     narrowedStream,
@@ -180,7 +179,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     Point findHQ() {
         variable Point retval = Point.invalidPoint;
         for (location->fixture in narrowedStream<Point, Fortress>(model.map.fixtures)
-                .filter(matchingPredicate(matchingValue(model.currentPlayer.playerId, // TODO: Use compose() instead of nesting matchingPredicate() and matchingValue()
+                .filter(compose(matchingValue(model.currentPlayer.playerId,
                     Player.playerId), compose(Fortress.owner, Entry<Point,
                         Fortress>.item)))) {
             if ("HQ" == fixture.name) {
