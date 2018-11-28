@@ -257,7 +257,11 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
             Integer count;
             switch (cli.inputBooleanInSeries("Add more than one? "))
             case (true) {
-                count = cli.inputNumber("Number to add: ") else 0; // TODO: explicitly abort on EOF instead of defaulting to 0
+                if (exists temp = cli.inputNumber("Number to add: ")) {
+                    count = temp;
+                } else {
+                    return;
+                }
             }
             case (false) { count = 1; }
             case (null) { return; }
