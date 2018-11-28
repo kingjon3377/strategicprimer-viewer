@@ -26,7 +26,8 @@ import lovelace.util.jvm {
     verticalSplit,
     horizontalSplit,
     BorderedPanel,
-    platform
+    platform,
+    InterpolatedLabel
 }
 
 import strategicprimer.model.common.map {
@@ -62,23 +63,23 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     statLayout.autoCreateGaps = true;
     statLayout.autoCreateContainerGaps = true;
 
-    class StatLabel(Integer(WorkerStats) stat) extends JLabel("+NaN") { // TODO: Replace with InterpolatedLabel
-        shared void recache(WorkerStats? stats) {
-            if (exists stats) {
-                text = WorkerStats.getModifierString(stat(stats));
-            } else {
-                text = "";
-            }
+    String labelFormat(Integer(WorkerStats) stat)(WorkerStats? stats) {
+        if (exists stats) {
+            return WorkerStats.getModifierString(stat(stats));
+        } else {
+            return "";
         }
     }
-    StatLabel strLabel = StatLabel(WorkerStats.strength);
-    StatLabel dexLabel = StatLabel(WorkerStats.dexterity);
-    StatLabel conLabel = StatLabel(WorkerStats.constitution);
-    StatLabel intLabel = StatLabel(WorkerStats.intelligence);
-    StatLabel wisLabel = StatLabel(WorkerStats.wisdom);
-    StatLabel chaLabel = StatLabel(WorkerStats.charisma);
-    StatLabel[6] statLabels = [strLabel, dexLabel, conLabel, intLabel, wisLabel,
-        chaLabel];
+    InterpolatedLabel<[WorkerStats?]> statLabel(Integer(WorkerStats) stat) =>
+        InterpolatedLabel<[WorkerStats?]>(labelFormat(stat), [null]);
+    InterpolatedLabel<[WorkerStats?]> strLabel = statLabel(WorkerStats.strength);
+    InterpolatedLabel<[WorkerStats?]> dexLabel = statLabel(WorkerStats.dexterity);
+    InterpolatedLabel<[WorkerStats?]> conLabel = statLabel(WorkerStats.constitution);
+    InterpolatedLabel<[WorkerStats?]> intLabel = statLabel(WorkerStats.intelligence);
+    InterpolatedLabel<[WorkerStats?]> wisLabel = statLabel(WorkerStats.wisdom);
+    InterpolatedLabel<[WorkerStats?]> chaLabel = statLabel(WorkerStats.charisma);
+    InterpolatedLabel<[WorkerStats?]>[6] statLabels = [strLabel, dexLabel, conLabel,
+        intLabel, wisLabel, chaLabel];
 
     JLabel caption(String string) =>
         JLabel("<html><b>``string``:</b></html>");
@@ -159,7 +160,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             kindLabel.text = local.kind;
             WorkerStats? stats = local.stats;
             for (label in statLabels) {
-                label.recache(stats);
+                label.arguments = [stats];
             }
             for (job in local.filter(not(IJob.emptyJob))) {
                 JLabel label = JLabel("``job.name`` ``job.level``");
@@ -193,7 +194,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             }
             nameLabel.text = "";
             for (label in statLabels) {
-                label.recache(null);
+                label.arguments = [null];
             }
         } else if (is Implement local) {
             typeLabel.text = "Equipment";
@@ -204,28 +205,28 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
                 kindLabel.text = local.kind;
             }
             for (label in statLabels) {
-                label.recache(null);
+                label.arguments = [null];
             }
         } else if (is ResourcePile local) {
             typeLabel.text = "Resource";
             nameLabel.text = "";
             kindLabel.text = "``local.quantity`` ``local.contents`` (``local.kind``)";
             for (label in statLabels) {
-                label.recache(null);
+                label.arguments = [null];
             }
         } else if (exists local) {
             typeLabel.text = "Unknown";
             nameLabel.text = "";
             kindLabel.text = classDeclaration(local).name;
             for (label in statLabels) {
-                label.recache(null);
+                label.arguments = [null];
             }
         } else {
             typeLabel.text = "";
             nameLabel.text = "";
             kindLabel.text = "";
             for (label in statLabels) {
-                label.recache(null);
+                label.arguments = [null];
             }
         }
         portraitComponent.portrait = null;
