@@ -148,68 +148,35 @@ shared class FortressReportGenerator(
             }
             fixtures.remove(item.id);
         }
-        // TODO: Make printList() helper to condense the following
-        if (!units.empty) {
-            ostream("""<li>Units on the tile:<ul>
-                       """);
-            for (unit in units) {
-                ostream("<li>");
-                urg.produceSingle(fixtures, map, ostream, unit, loc);
-                ostream("""</li>
-                           """);
+        void printList<Type>({Type*} list, String header,
+                IReportGenerator<Type> helper) {
+            if (!list.empty) {
+                ostream("""<li>""");
+                ostream(header);
+                ostream(""":<ul>""");
+                ostream(operatingSystem.newline);
+                for (item in list) {
+                    ostream("""<li>""");
+                    helper.produceSingle(fixtures, map, ostream, item, loc);
+                    ostream("""</li>""");
+                    ostream(operatingSystem.newline);
+                }
+                ostream("""</ul></li>""");
+                ostream(operatingSystem.newline);
             }
-            ostream("""</ul></li>
-                       """);
         }
-        if (!equipment.empty) {
-            ostream("""<li>Equipment:<ul>
-                       """);
-            for (implement in equipment) {
-                ostream("<li>");
-                memberReportGenerator.produceSingle(fixtures, map, ostream, implement,
-                    loc);
-                ostream("""</li>
-                           """);
-            }
-            ostream("""</ul></li>
-                       """);
-        }
+        printList(units, "Units on the tile", urg); // TODO: Should be "in the fortress", not "on the tile"
+        printList(equipment, "Equipment", memberReportGenerator);
         if (!resources.empty) {
             ostream("""<li>Resources:<ul>
                        """);
             for (kind->list in resources.asMap) {
-                if (list.empty) {
-                    continue;
-                }
-                ostream("<li>``kind``
-                         <ul>
-                         ");
-                for (pile in list) {
-                    ostream("<li>");
-                    memberReportGenerator.produceSingle(fixtures, map, ostream, pile,
-                        loc);
-                    ostream("""</li>
-                               """);
-                }
-                ostream("""</ul>
-                           </li>
-                           """);
+                printList(list, kind, memberReportGenerator);
             }
             ostream("""</ul></li>
                        """);
         }
-        if (!contents.empty) {
-            ostream("""<li>Other fortress contents:<ul>
-                       """);
-            for (member in contents) {
-                ostream("<li>");
-                memberReportGenerator.produceSingle(fixtures, map, ostream, member, loc);
-                ostream("""</li>
-                           """);
-            }
-            ostream("""</ul></li>
-                       """);
-        }
+        printList(contents, "Other fortress contents", memberReportGenerator);
         ostream("</ul>``operatingSystem.newline``");
         fixtures.remove(item.id);
     }
