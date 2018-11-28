@@ -271,13 +271,9 @@ class TownGenerator(ICLIHelper cli) {
         CommunityStats retval = CommunityStats(cli.inputNumber("Population: ") else 0);
         cli.println("Now enter Skill levels, the highest in the community for each Job.");
         cli.println("(Empty to end.)");
-        while (true) {
-            if (exists job = cli.inputString("Job: "), !job.empty, // TODO: Make this the loop condition instead of breaking on falsehood
-                    exists level = cli.inputNumber("Level: ")) {
-                retval.setSkillLevel(job, level);
-            } else {
-                break;
-            }
+        while (exists job = cli.inputString("Job: "), !job.empty,
+                exists level = cli.inputNumber("Level: ")) {
+            retval.setSkillLevel(job, level);
         }
 
         cli.println("Now enter ID numbers of worked fields (empty to skip).");
@@ -329,19 +325,10 @@ class TownGenerator(ICLIHelper cli) {
         }
 
         cli.println("Now add resources produced each year. (Empty to end.)");
-        while (true) {
-            assert (exists kind = cli.inputString("General kind of resource: ")); // TODO: Move conditions up into loop condition
-            if (kind.empty) {
-                break;
-            }
-            assert (exists contents = cli.inputString("Specific kind of resource: "));
-            Decimal quantity;
-            if (exists temp = cli.inputDecimal("Quantity of the resource produced: ")) {
-                quantity = temp;
-            } else {
-                break;
-            }
-            assert (exists units = cli.inputString("Units of that quantity: "));
+        while (exists kind = cli.inputString("General kind of resource: "), !kind.empty,
+                exists contents = cli.inputString("Specific kind of resource: "),
+                exists quantity = cli.inputDecimal("Quantity of the resource produced: "),
+                exists units = cli.inputString("Units of that quantity: ")) {
             ResourcePile pile = ResourcePile(idf.createID(), kind, contents,
                 Quantity(quantity, units));
             retval.yearlyProduction.add(pile);
