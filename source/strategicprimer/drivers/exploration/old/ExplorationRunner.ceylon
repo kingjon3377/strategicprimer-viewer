@@ -52,16 +52,19 @@ shared class ExplorationRunner() {
     "Whether we have a table of the given name."
     shared Boolean hasTable(String name) => tables[name] exists; // TODO: Maybe switch to 'name in tables'?
 
+    "Split a string on hash-marks."
+    {String+} splitOnHash(String string) => string.split('#'.equals, true, false, 3);
+
     "Consult a table, and if a result indicates recursion, perform it. Recursion is
      indicated by hash-marks around the name of the table to call; results are undefined
      if there are more than two hash marks in any given String, or if either is at the
-     beginning or end of the string, since we use String.split"
+     beginning or end of the string, since we use [[String.split]]"
     shared String recursiveConsultTable(String table, Point location, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
         String result = consultTable(table, location, terrain, mountainous, fixtures,
             mapDimensions);
         if (result.contains('#')) {
-            {String+} broken = result.split('#'.equals, true, false, 3); // TODO: Extract this method call with these parameters to a named method; it occurs a lot, and in too-long-line contexts
+            {String+} broken = splitOnHash(result);
             String before = broken.first;
             assert (exists middle = broken.rest.first);
             StringBuilder builder = StringBuilder();
@@ -88,8 +91,7 @@ shared class ExplorationRunner() {
             try {
                 for (string in getTable(table).allEvents) {
                     if (string.contains('#'), recursiveCheck(
-                            string.split('#'.equals, true,
-                                false, 3).rest.first else "",
+                            splitOnHash(string).rest.first else "",
                             state)) {
                         return true;
                     }
@@ -125,8 +127,7 @@ shared class ExplorationRunner() {
                     for (string in getTable(table).allEvents) {
                         if (string.contains('#')) {
                             verboseRecursiveCheck(
-                                string.split('#'.equals, true,
-                                    false, 3).rest.first else "",
+                                splitOnHash(string).rest.first else "",
                                     ostream, state);
                         }
                     }
