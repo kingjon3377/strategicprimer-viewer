@@ -279,33 +279,39 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
                 cli.println("Found only tracks or traces from ``
                 encounter.kind`` for the next ``noResultCost`` minutes.");
                 time -= noResultCost;
-            } else if (cli.inputBooleanInSeries("Found ``populationDescription(encounter)
-                    ``. Should they ``verb``?", encounter.kind)) {
-                Integer cost = cli.inputNumber("Time to ``verb``: ")
-                    else runtime.maxArraySize;
-                time -= cost;
-                if (cli.inputBooleanInSeries("Handle processing now?")) {
-                    // TODO: somehow handle processing-in-parallel case
-                    for (i in 0:(cli.inputNumber("How many animals?") else 0)) {
-                        Integer mass =
-                                cli.inputNumber("Weight of this animal's meat in pounds: ")
-                                else runtime.maxArraySize;
-                        Integer hands =
-                                cli.inputNumber("# of workers processing this carcass: ")
-                                else 1;
-                        time -= round(HuntingModel.processingTime(mass) / hands).integer;
+            } else {
+                Boolean? fight = cli.inputBooleanInSeries("Found ``
+                        populationDescription(encounter)``. Should they ``verb``?",
+                    encounter.kind);
+                if (is Null fight) {
+                    return;
+                } else if (fight) {
+                    Integer cost = cli.inputNumber("Time to ``verb``: ") else runtime.maxArraySize;
+                    time -= cost;
+                    Boolean? processNow =
+                        cli.inputBooleanInSeries("Handle processing now?");
+                    if (is Null processNow) {
+                        return;
+                    } else if (processNow) {
+                        // TODO: somehow handle processing-in-parallel case
+                        for (i in 0:(cli.inputNumber("How many animals?") else 0)) {
+                            Integer mass =
+                                cli.inputNumber("Weight of this animal's meat in pounds: ") else runtime.maxArraySize;
+                            Integer hands =
+                                cli.inputNumber("# of workers processing this carcass: ") else 1;
+                            time -= round(HuntingModel.processingTime(mass) / hands).integer;
+                        }
                     }
-                }
-                if (cli.inputBooleanInSeries("Reduce animal group population of ``
-                        encounter.population``?")) {
-                    reducePopulation(loc, encounter, "animals", true);
+                    switch (cli.inputBooleanInSeries("Reduce animal group population of ``
+                        encounter.population``?"))
+                    case (true) { reducePopulation(loc, encounter, "animals", true); }
+                    case (false) { addToSubMaps(loc, encounter, true); }
+                    case (null) { return; }
+                    cli.println("``time`` minutes remaining.");
                 } else {
                     addToSubMaps(loc, encounter, true);
+                    time -= noResultCost;
                 }
-                cli.println("``time`` minutes remaining.");
-            } else {
-                addToSubMaps(loc, encounter, true);
-                time -= noResultCost;
             }
         }
     }
@@ -334,21 +340,30 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
                 cli.println("Found nothing for the next ``noResultCost`` minutes.");
                 time -= noResultCost;
                 continue;
-            } else if (cli.inputBooleanInSeries("Found ``encounter.shortDescription````
-                    meadowStatus(encounter)``. Should they gather?", encounter.kind)) {
-                Integer cost = cli.inputNumber("Time to gather: ")
-                    else runtime.maxArraySize;
-                time -= cost;
-                // TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
-                if (is Shrub encounter, encounter.population > 0,
-                    cli.inputBooleanInSeries("Reduce shrub population here?")) {
-                    reducePopulation(loc, encounter, "plants", true);
-                    cli.println("``time`` minutes remaining.");
-                    continue;
-                }
-                cli.println("``time`` minutes remaining.");
             } else {
-                time -= noResultCost;
+                switch (cli.inputBooleanInSeries(
+                    "Found ``encounter.shortDescription````
+                    meadowStatus(encounter)``. Should they gather?", encounter.kind))
+                case (true) {
+                    Integer cost = cli.inputNumber("Time to gather: ") else runtime.maxArraySize;
+                    time -= cost;
+                    // TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
+                    if (is Shrub encounter, encounter.population>0) {
+                        switch (cli.inputBooleanInSeries("Reduce shrub population here?"))
+                        case (true) {
+                            reducePopulation(loc, encounter, "plants", true);
+                            cli.println("``time`` minutes remaining.");
+                            continue;
+                        }
+                        case (false) {}
+                        case (null) {
+                            return;
+                        }
+                    }
+                    cli.println("``time`` minutes remaining.");
+                }
+                case (false) { time -= noResultCost; }
+                case (null) { return; }
             }
             addToSubMaps(loc, encounter, true);
         }
@@ -365,7 +380,8 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
         cli.println("This produces ``formatFloat(production)`` ``base.units``, ``
             formatFloat(animal.scaledPoundsProduction(count))`` lbs, of milk per day.`");
         Integer cost;
-        if (cli.inputBooleanInSeries("Are the herders experts? ")) {
+        assert (exists experts = cli.inputBooleanInSeries("Are the herders experts? "));
+        if (experts) {
             cost = animal.dailyExpertTime(flockPerHerder);
         } else {
             cost = animal.dailyTime(flockPerHerder);
@@ -385,7 +401,9 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
         cli.println("This produces ``Float.format(production, 0, 0)`` ``
             base.units``, totaling ``formatFloat(bird.scaledPoundsProduction(count))`` lbs.");
         Integer cost;
-        if (cli.inputBooleanInSeries("Do they do the cleaning this turn? ")) {
+        assert (exists cleaning =
+            cli.inputBooleanInSeries("Do they do the cleaning this turn? "));
+        if (cleaning) {
             cost = bird.dailyTimePerHead + bird.extraTimePerHead;
         } else {
             cost = bird.dailyTimePerHead;
@@ -422,7 +440,8 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
                 hours = herdMammals(herdModel, count, flockPerHerder);
             }
             if (hours < hunterHours,
-                cli.inputBooleanInSeries("Spend remaining time as Food Gatherers? ")) {
+                    exists gatherNow = cli.inputBooleanInSeries(
+                        "Spend remaining time as Food Gatherers? "), gatherNow) {
                 gather(cli.inputPoint("Gathering location? "), hunterHours - hours);
             }
         }

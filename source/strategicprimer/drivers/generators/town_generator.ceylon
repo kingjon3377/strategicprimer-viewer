@@ -312,7 +312,9 @@ class TownGenerator(ICLIHelper cli) {
                         cli.println(
                             "That would be an ocean resource worked by a town on land.");
                     }
-                    if (!cli.inputBooleanInSeries("Are you sure? ", "aquatic")) {
+                    assert (exists affirmation =
+                        cli.inputBooleanInSeries("Are you sure? ", "aquatic"));
+                    if (!affirmation) {
                         continue;
                     }
                 }
@@ -531,8 +533,9 @@ class TownGenerator(ICLIHelper cli) {
             }
             if (exists town, exists location) {
                 CommunityStats stats;
-                if (cli.inputBooleanInSeries(
-                    "Enter stats rather than generating them? ")) {
+                assert (exists chooseNotGenerate = cli.inputBooleanInSeries(
+                    "Enter stats rather than generating them? "));
+                if (chooseNotGenerate) {
                     stats = enterStats(cli, idf, model.map, location, town);
                 } else {
                     stats = generateStats(idf, location, town, model.map);
@@ -557,7 +560,7 @@ class TownGenerator(ICLIHelper cli) {
         for (location->town in randomize(unstattedTowns(model.map))) {
             cli.println("Next town is ``town.shortDescription``, at ``location``. ");
             CommunityStats stats;
-            Boolean? resp = cli.inputBooleanInSeries<Null>(
+            Boolean? resp = cli.inputBooleanInSeries(
                 "Enter stats rather than generating them?", "enter stats",
                 nullIfQuit);
             if (exists resp) {

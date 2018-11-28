@@ -129,23 +129,23 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
                         value retval = ExplorationAutomationConfig {
                             player = mover.owner;
                             stopForForts = cli.inputBooleanInSeries(
-                                "Stop for instructions at others' fortresses?");
+                                "Stop for instructions at others' fortresses?") else false;
                             stopForActiveTowns = cli.inputBooleanInSeries(
-                                "Stop for instructions at active towns?");
+                                "Stop for instructions at active towns?") else false;
                             stopForInactiveTowns = cli.inputBooleanInSeries(
-                                "Stop for instructions at inactive towns?");
+                                "Stop for instructions at inactive towns?") else false;
                             stopForIndieVillages = cli.inputBooleanInSeries(
-                                "Stop for instructions at independent villages?");
+                                "Stop for instructions at independent villages?") else false;
                             stopForOtherVillages = cli.inputBooleanInSeries(
-                                "Stop for instructions at other players' villages?");
+                                "Stop for instructions at other players' villages?") else false;
                             stopForYourVillages = cli.inputBooleanInSeries(
-                                "Stop for instructons at villages sworn to you?");
+                                "Stop for instructons at villages sworn to you?") else false;
                             stopForPlayerUnits = cli.inputBooleanInSeries(
-                                "Stop for instructions on meeting other players' units?");
+                                "Stop for instructions on meeting other players' units?") else false;
                             stopForIndieUnits = cli.inputBooleanInSeries(
-                                "Stop for instructions on meeting independent units?");
+                                "Stop for instructions on meeting independent units?") else false;
                             stopForImmortals = cli.inputBooleanInSeries(
-                                "Stop for instructions on meeting an immortal?");
+                                "Stop for instructions on meeting an immortal?") else false;
                         };
                         wrapped = retval;
                         return retval;
@@ -244,13 +244,15 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
                 }
 
                 if (Direction.nowhere == direction) {
-                    if (cli.inputBooleanInSeries(
-                        "Should any village here swear to the player?  ")) {
-                        model.swearVillages();
-                    }
-                    if (cli.inputBooleanInSeries("Dig to expose some ground here? ")) {
-                        model.dig();
-                    }
+                    switch (cli.inputBooleanInSeries(
+                        "Should any village here swear to the player?  "))
+                    case (true) { model.swearVillages(); }
+                    case (null) { return; }
+                    case (false) {}
+                    switch (cli.inputBooleanInSeries("Dig to expose some ground here? "))
+                    case (true) { model.dig(); }
+                    case (false) {}
+                    case (null) { return; }
                 }
 
                 String mtn;

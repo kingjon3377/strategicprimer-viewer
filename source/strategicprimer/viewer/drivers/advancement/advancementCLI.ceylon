@@ -194,10 +194,14 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             Integer oldLevel = skill.level;
             skill.addHours(hours, singletonRandom.nextInteger(100));
             if (skill.level != oldLevel) {
-                if (oldLevel == 0, skill.name == "miscellaneous",
-                        cli.inputBooleanInSeries("``worker.name`` gained ``skill.
+                if (oldLevel == 0, skill.name == "miscellaneous") {
+                    Boolean? chooseAnother = cli.inputBooleanInSeries("``worker.name`` gained ``skill.
                             level`` level(s) in miscellaneous, choose another skill?",
-                        "misc-replacement")) {
+                        "misc-replacement");
+                    switch (chooseAnother)
+                    case (null) { return; }
+                    case (false) { continue; }
+                    case (true) {}
                     MutableList<String> gains = ArrayList<String>();
                     for (i in 0:skill.level) {
                         ISkill replacement;
@@ -282,7 +286,10 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
     "Let the user add experience to a worker or workers in a unit."
     void advanceWorkersInUnit(IUnit unit, Boolean allowExpertMentoring) {
         MutableList<IWorker> workers = ArrayList { elements = unit.narrow<IWorker>(); };
-        if (cli.inputBooleanInSeries("Add experience to workers individually? ")) {
+        Boolean? individualAdvancement =
+            cli.inputBooleanInSeries("Add experience to workers individually? ");
+        switch (individualAdvancement)
+        case (true) {
             while (!workers.empty, exists chosen = cli.chooseFromList(workers,
                     "Workers in unit:", "No unadvanced workers remain.",
                     "Chosen worker: ", false).item) {
@@ -295,46 +302,49 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                     break;
                 }
             }
-        } else if (workers.empty) {
-            cli.println("No workers in unit.");
-        } else {
-            MutableList<IJob> jobs = ArrayList { elements = ProxyWorker.fromUnit(unit); };
-            while (true) {
-                value chosen = cli.chooseFromList(jobs, "Jobs in workers:",
-                    "No existing jobs.", "Job to advance: ", false);
-                IJob job;
-                if (exists temp = chosen.item) {
-                    job = temp;
-                } else if (chosen.key <= jobs.size ) {
-                    String? jobName = cli.inputString("Name of new Job: ");
-                    if (!jobName exists) {
-                        return;
-                    }
-                    assert (exists jobName);
-                    for (worker in workers) {
-                        worker.addJob(Job(jobName, 0));
-                    }
-                    jobs.clear();
-                    jobs.addAll(ProxyWorker.fromUnit(unit));
-                    if (exists temp = jobs.find(matchingValue(jobName, IJob.name))) {
+        } case (false) {
+            if (workers.empty) {
+                cli.println("No workers in unit.");
+            } else {
+                MutableList<IJob> jobs = ArrayList { elements = ProxyWorker.fromUnit(unit); };
+                while (true) {
+                    value chosen = cli.chooseFromList(jobs, "Jobs in workers:",
+                        "No existing jobs.", "Job to advance: ", false);
+                    IJob job;
+                    if (exists temp = chosen.item) {
                         job = temp;
+                    } else if (chosen.key<=jobs.size) {
+                        String? jobName = cli.inputString("Name of new Job: ");
+                        if (!jobName exists) {
+                            return;
+                        }
+                        assert (exists jobName);
+                        for (worker in workers) {
+                            worker.addJob(Job(jobName, 0));
+                        }
+                        jobs.clear();
+                        jobs.addAll(ProxyWorker.fromUnit(unit));
+                        if (exists temp = jobs.find(matchingValue(jobName, IJob.name))) {
+                            job = temp;
+                        } else {
+                            cli.println("Select the new item at the next prompt.");
+                            continue;
+                        }
                     } else {
-                        cli.println("Select the new item at the next prompt.");
-                        continue;
+                        break;
                     }
-                } else {
-                    break;
-                }
-                advanceWorkersInJob(job.name, *workers);
-                if (exists continuation =
-                            cli.inputBoolean("Select another Job in these workers?"),
-                        continuation) {
-                    // continue;
-                } else {
-                    break;
+                    advanceWorkersInJob(job.name, *workers);
+                    if (exists continuation =
+                                cli.inputBoolean("Select another Job in these workers?"),
+                            continuation) {
+                        // continue;
+                    } else {
+                            break;
+                    }
                 }
             }
         }
+        case (null) {}
     }
 
     "Let the user add experience to a player's workers."

@@ -198,7 +198,7 @@ object cliTests {
     parameters(`value truePossibilities`)
     test
     shared void testInputBooleanInSeriesSimpleTrue(String arg) {
-        assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["bool prompt"], {arg},
+        assertCLI(`ICLIHelper.inputBooleanInSeries`, ["bool prompt"], {arg},
             "bool prompt ", true, "inputBooleanInSeries returns true on '``arg``",
             "inputBooleanInSeries displays prompt");
     }
@@ -208,7 +208,7 @@ object cliTests {
     parameters(`value falsePossibilities`)
     test
     shared void testInputBooleanInSeriesSimpleFalse(String arg) {
-        assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["prompt two"], {arg},
+        assertCLI(`ICLIHelper.inputBooleanInSeries`, ["prompt two"], {arg},
             "prompt two ", false, "inputBooleanInSeries returns false on ``arg``",
             "inputBooleanInSeries displays prompt");
     }
@@ -217,7 +217,7 @@ object cliTests {
        "never" and synonyms."""
     test
     shared void testInputBooleanInSeries() {
-        assertCLI(`ICLIHelper.inputBooleanInSeries<Nothing>`, ["prompt three "],
+        assertCLI(`ICLIHelper.inputBooleanInSeries`, ["prompt three "],
             ["nothing", "true"],
             ["""prompt three Please enter "yes", "no", "true", or "false", the first""",
                 """character of any of those, or "all", "none", "always", or""",

@@ -158,9 +158,11 @@ shared class MapTradeCLI satisfies CLIDriver {
     MutableList<FixtureMatcher> matchers =
             ArrayList { elements = initializeMatchers(); };
 
-    void askAbout(FixtureMatcher matcher, String key = "include") =>
-            matcher.displayed = cli.inputBooleanInSeries(
-                "Include \"``matcher.description``\" items?", key);
+    void askAbout(FixtureMatcher matcher, String key = "include") {
+        assert (exists retval = cli.inputBooleanInSeries(
+            "Include \"``matcher.description``\" items?", key));
+        matcher.displayed = retval;
+    }
 
     Boolean testFixture(TileFixture fixture) {
         for (matcher in matchers) {

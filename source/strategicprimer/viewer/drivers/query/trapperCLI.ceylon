@@ -139,7 +139,8 @@ shared class TrappingCLI satisfies CLIDriver {
                         cli.inputNumber("How long to check and deal with the animal? ")
                         else runtime.maxArraySize;
                 Integer retval;
-                if (cli.inputBooleanInSeries("Handle processing now?")) {
+                switch (cli.inputBooleanInSeries("Handle processing now?"))
+                case (true) {
                     Integer mass = cli.inputNumber("Weight of meat in pounds: ") else
                         runtime.maxArraySize;
                     Integer hands =
@@ -147,11 +148,12 @@ shared class TrappingCLI satisfies CLIDriver {
                             else 1;
                     retval = num +
                         round(HuntingModel.processingTime(mass) / hands).integer;
-                } else {
-                    retval = num;
                 }
-                if (cli.inputBooleanInSeries(
-                        "Reduce animal group population of ``item.population``?")) {
+                case (false) { retval = num; }
+                case (null) { return runtime.maxArraySize; }
+                switch (cli.inputBooleanInSeries(
+                        "Reduce animal group population of ``item.population``?"))
+                case (true) {
                     Integer count = Integer.smallest(
                         cli.inputNumber("How many animals to remove?") else 0,
                             item.population);
@@ -181,8 +183,11 @@ shared class TrappingCLI satisfies CLIDriver {
                     } else {
                         tracksHandler(AnimalTracks(item.kind));
                     }
-                } else {
+                } case (false) {
                     tracksHandler(AnimalTracks(item.kind));
+                }
+                case (null) {
+                    return runtime.maxArraySize;
                 }
                 return retval;
             }
@@ -194,11 +199,16 @@ shared class TrappingCLI satisfies CLIDriver {
     }
 
     shared actual void startDriver() {
-        Boolean fishing = cli.inputBooleanInSeries(
+        Boolean? fishing = cli.inputBooleanInSeries(
             "Is this a fisherman trapping fish rather than a trapper? ");
-        String name = (fishing) then "fisherman" else "trapper";
+        String name;
+        switch (fishing)
+        case (true) { name = "fisherman"; }
+        case (false) { name = "trapper"; }
+        case (null) { return; }
+        assert (exists fishing);
         variable Integer minutes =
-                (cli.inputNumber("How many hours will the ``name`` work? ") else 0)
+                (cli.inputNumber("How many hours will the ``name`` work? ") else 0) // TODO: abort on EOF instead of defaulting to 0
                     * minutesPerHour;
         Point point = cli.inputPoint("Where is the ``name`` working? ");
         HuntingModel huntModel = HuntingModel(model.map);

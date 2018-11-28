@@ -441,15 +441,20 @@ class StatGeneratingCLI satisfies CLIDriver {
             } else if (levels > 1) {
                 cli.println("Worker has ``levels`` Job levels.");
             }
-            if (cli.inputBooleanInSeries("Enter pregenerated stats?" )) {
+            switch (cli.inputBooleanInSeries("Enter pregenerated stats?" ))
+            case (true) {
                 worker.stats = enterStatsCollection();
-            } else {
+            }
+            case (false) {
                 WorkerStats stats = createWorkerStats(race, levels);
                 worker.stats = stats;
                 if (levels > 0) {
                     cli.println("Generated stats:");
                     cli.print(stats.string);
                 }
+            }
+            case (null) {
+                return;
             }
             enterWorkerJobs(worker, levels);
             addWorkerToUnit(unit, worker);
@@ -565,12 +570,11 @@ class StatGeneratingCLI satisfies CLIDriver {
             } else {
                 break;
             }
-            if (cli.inputBooleanInSeries(
-                "Load names from file and use randomly generated stats?")) {
-                createWorkersFromFile(idf, item);
-            } else {
-                createWorkersForUnit(idf, item);
-            }
+            switch (cli.inputBooleanInSeries(
+                "Load names from file and use randomly generated stats?"))
+            case (true) { createWorkersFromFile(idf, item); }
+            case (false) { createWorkersForUnit(idf, item); }
+            case (null) { return; }
             if (exists continuation = cli.inputBoolean("Choose another unit? "),
                     continuation) {
                 // continue;
@@ -605,11 +609,10 @@ class StatGeneratingCLI satisfies CLIDriver {
     }
 
     shared actual void startDriver() {
-        if (cli.inputBooleanInSeries(
-                "Enter pregenerated stats for existing workers?")) {
-            enterStats();
-        } else {
-            createWorkers(createIDFactory(model.allMaps.map(Entry.key)));
-        }
+        switch (cli.inputBooleanInSeries(
+                "Enter pregenerated stats for existing workers?"))
+        case (true) { enterStats(); }
+        case (false) { createWorkers(createIDFactory(model.allMaps.map(Entry.key))); }
+        case (null) {}
     }
 }

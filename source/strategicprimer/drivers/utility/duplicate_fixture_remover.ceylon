@@ -204,11 +204,15 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
             TileFixture matching) {
         String fCls = classDeclaration(fixture).name;
         String mCls = classDeclaration(matching).name;
-        return cli.inputBooleanInSeries(
-            "At ``location``: Remove '``fixture.shortDescription``', of class '``
-            fCls``', ID #``fixture.id``, which matches '``
-            matching.shortDescription``', of class '``mCls``', ID #``
-            matching.id``?", "duplicate``fCls````mCls``");
+        if (exists retval = cli.inputBooleanInSeries(
+                "At ``location``: Remove '``fixture.shortDescription``', of class '``
+                fCls``', ID #``fixture.id``, which matches '``
+                matching.shortDescription``', of class '``mCls``', ID #``
+                matching.id``?", "duplicate``fCls````mCls``"), retval) {
+            return true; // TODO: allow returning null on EOF
+        } else {
+            return false;
+        }
     }
 
     """"Remove" (at first we just report) duplicate fixtures (i.e. hills, forests of the
@@ -324,11 +328,14 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
                 cli.println(
                     "The following ``helper.plural.lowercased`` can be combined:");
                 list.map(Object.string).each(cli.println);
-                if (cli.inputBooleanInSeries("Combine them? ", memberKind(list.first))) {
+                switch (cli.inputBooleanInSeries("Combine them? ", memberKind(list.first)))
+                case (true) {
                     IFixture combined = helper.combineRaw(list);
                     list.each(remove);
                     add(combined);
                 }
+                case (false) {}
+                case (null) { return; }
             }
         }
     }

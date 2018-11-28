@@ -217,12 +217,12 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
     "Ask the user to choose units for a type of resource."
     String getResourceUnits(String resource) {
         if (exists unit = resourceUnits[resource],
-                cli.inputBooleanInSeries(
+                exists correct = cli.inputBooleanInSeries(
                     "Is ``unit`` the correct unit for ``resource``? ",
-                    "correct;``unit``;``resource``")) {
+                    "correct;``unit``;``resource``"), correct) {
             return unit;
         } else {
-            assert (exists retval = cli.inputString("Unit to use for ``resource``: "));
+            assert (exists retval = cli.inputString("Unit to use for ``resource``: ")); // TODO: Allow this method to return null on EOF
             resourceUnits[resource] = retval;
             return retval;
         }
@@ -234,16 +234,17 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
         String origContents = getResourceContents(kind);
         String units = getResourceUnits(origContents);
         String contents;
-        if (cli.inputBooleanInSeries("Qualify the particular resource with a prefix? ",
-                "prefix " + origContents)) {
+        switch (cli.inputBooleanInSeries("Qualify the particular resource with a prefix? ",
+                "prefix " + origContents))
+        case (true) {
             if (exists prefix = cli.inputString("Prefix to use: ")) {
                 contents = prefix + " " + origContents;
             } else {
                 return;
             }
-        } else {
-            contents = origContents;
         }
+        case (false) { contents = origContents; }
+        case (null) { return; }
         if (exists quantity = cli.inputDecimal("Quantity in ``units``?")) {
             model.addResource(ResourcePile(idf.createID(), kind, contents, Quantity(
                 quantity, units)), player);
@@ -254,11 +255,12 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
     void enterImplement(IDRegistrar idf, Player player) {
         if (exists kind = cli.inputString("Kind of equipment: ")) {
             Integer count;
-            if (cli.inputBooleanInSeries("Add more than one? ")) {
-                count = cli.inputNumber("Number to add: ") else 0;
-            } else {
-                count = 1;
+            switch (cli.inputBooleanInSeries("Add more than one? "))
+            case (true) {
+                count = cli.inputNumber("Number to add: ") else 0; // TODO: explicitly abort on EOF instead of defaulting to 0
             }
+            case (false) { count = 1; }
+            case (null) { return; }
             model.addResource(Implement(kind, idf.createID(), count), player);
         }
     }
@@ -271,16 +273,24 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
                 "Player to add resources for: ", false).item) {
             players.remove(chosen);
             while (true) {
-                Boolean? condition = cli.inputBoolean("Keep going? ");
+                Boolean? condition = cli.inputBoolean("Keep going? "); // TODO: inlie
                 switch (condition)
                 case (true) {
-                    if (cli.inputBooleanInSeries(
-                        "Enter a (quantified) resource? ")) {
+                    switch (cli.inputBooleanInSeries(
+                        "Enter a (quantified) resource? "))
+                    case (true) {
                         enterResource(idf, chosen);
-                    } else if (cli.inputBooleanInSeries(
-                        "Enter equipment etc.? ")) {
+                        continue;
+                    }
+                    case (false) {}
+                    case (null) { return; }
+                    switch (cli.inputBooleanInSeries(
+                        "Enter equipment etc.? "))
+                    case (true) {
                         enterImplement(idf, chosen);
                     }
+                    case (false) {}
+                    case (null) { return; }
                 }
                 case (null) {
                     return;

@@ -142,19 +142,22 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
 
     "Ask the user a yes-or-no question, allowing yes-to-all or no-to-all to skip further
      questions."
-    shared actual Boolean|Absent inputBooleanInSeries<Absent=Nothing>(String prompt,
-            String key, <Absent|Boolean?>(String) quitResultFactory) {
+    shared actual Boolean? inputBooleanInSeries(String prompt,
+            String key, Boolean?(String) quitResultFactory) {
         if (exists retval = seriesState[key]) {
             writePrompt(prompt);
             println((retval) then "yes" else "no");
             return retval;
         } else {
             while (true) {
-                assert (exists input = inputString(prompt)?.lowercased); // TODO: Make this method return Boolean?, and pass null along. Also drop the |Absent rigamarole and just return 'null' on 'quit'.
-                if (is Absent result = quitResultFactory(input)) {
+                String? input = inputString(prompt)?.lowercased;
+                if (exists input, is Null result = quitResultFactory(input)) {
                     return result;
                 }
                 switch(input)
+                case (null) {
+                    return null;
+                }
                 case ("all"|"ya"|"ta"|"always") {
                     seriesState[key] = true;
                     return true;
