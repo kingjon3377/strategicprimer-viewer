@@ -41,7 +41,8 @@ import strategicprimer.drivers.gui.common {
 }
 import lovelace.util.common {
     as,
-    todo
+    todo,
+    silentListener
 }
 
 """A dialog to let the user find fixtures by ID, name, or "kind"."""
@@ -187,11 +188,13 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     platform.makeButtonsSegmented(okButton, cancelButton);
     buttonPanel.add(okButton);
 
+    void clearSearchField() => searchField.text = "";
+
     if (platform.systemIsMac) {
         searchField.putClientProperty("JTextField.variant", "search");
         searchField.putClientProperty("JTextField.Search.FindAction", okListener);
         searchField.putClientProperty("JTextField.Search.CancelAction",
-                    (ActionEvent event) => searchField.text = ""); // TODO: Extract named method
+            silentListener(clearSearchField));
     } else {
         buttonPanel.addGlue();
     }
