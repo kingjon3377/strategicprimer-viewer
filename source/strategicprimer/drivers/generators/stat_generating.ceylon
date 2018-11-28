@@ -244,9 +244,12 @@ class StatGeneratingCLI satisfies CLIDriver {
     "Let the user enter which Jobs a worker's levels are in."
     void enterWorkerJobs(IWorker worker, Integer levels) {
         for (i in 0:levels) {
-            IJob job = worker.getJob(cli.inputString(
-                "Which Job does worker have a level in? "));
-            job.level = job.level + 1; // TODO: Replace with += 1?
+            if (exists jobName = cli.inputString("Which Job does worker have a level in? ")) {
+                IJob job = worker.getJob(jobName);
+                job.level = job.level + 1; // TODO: Replace with += 1?
+            } else {
+                break;
+            }
         }
     }
 
@@ -415,8 +418,12 @@ class StatGeneratingCLI satisfies CLIDriver {
         Integer count = cli.inputNumber("How many workers to generate? ") else 0;
         for (i in 0:count) {
             String race = raceFactory.randomRace();
-            String name = cli.inputString("Worker is a ``race``. Worker name: ");
-            Worker worker = Worker(name, race, idf.createID());
+            Worker worker;
+            if (exists name = cli.inputString("Worker is a ``race``. Worker name: ")) {
+                worker = Worker(name, race, idf.createID());
+            } else {
+                break;
+            }
             Integer levels = singletonRandom.integers(20).take(3).count(0.equals);
             if (levels == 1) {
                 cli.println("Worker has 1 Job level.");
@@ -442,13 +449,16 @@ class StatGeneratingCLI satisfies CLIDriver {
      unit."
     void createWorkersFromFile(IDRegistrar idf, IFixture&HasOwner unit) {
         Integer count = cli.inputNumber("How many workers to generate? ") else 0;
-        String filename = cli.inputString("Filename to load names from: ");
         Queue<String> names;
-        if (is File file = parsePath(filename).resource) {
-            names = LinkedList(lines(file));
+        if (exists filename = cli.inputString("Filename to load names from: ")) {
+            if (is File file = parsePath(filename).resource) {
+                names = LinkedList(lines(file));
+            } else {
+                names = LinkedList<String>();
+                cli.println("No such file.");
+            }
         } else {
-            names = LinkedList<String>();
-            cli.println("No such file.");
+            return;
         }
         Point hqLoc;
         if (exists found = model.map.fixtures.find(
@@ -470,8 +480,10 @@ class StatGeneratingCLI satisfies CLIDriver {
             String name;
             if (exists temp = names.accept()) {
                 name = temp.trimmed;
+            } else if (exists temp = cli.inputString("Next worker name: ")) {
+                name = temp;
             } else {
-                name = cli.inputString("Next worker name: ");
+                break;
             }
             Village? home;
             for (distance->village in villages) {
@@ -528,13 +540,17 @@ class StatGeneratingCLI satisfies CLIDriver {
                 item = temp;
             } else if (chosen.key <= units.size) {
                 Point point = cli.inputPoint("Where to put new unit? ");
-                IUnit temp = Unit(player, cli.inputString("Kind of unit: "),
-                    cli.inputString("Unit name: "), idf.createID());
-                for (indivMap->[file, _] in model.allMaps) {
-                    indivMap.addFixture(point, temp);
+                if (exists kind = cli.inputString("Kind of unit: "),
+                        exists name = cli.inputString("Unit name: ")) {
+                    IUnit temp = Unit(player, kind, name, idf.createID());
+                    for (indivMap->[file, _] in model.allMaps) {
+                        indivMap.addFixture(point, temp);
+                    }
+                    units.add(temp);
+                    item = temp;
+                } else {
+                    return;
                 }
-                units.add(temp);
-                item = temp;
             } else {
                 break;
             }

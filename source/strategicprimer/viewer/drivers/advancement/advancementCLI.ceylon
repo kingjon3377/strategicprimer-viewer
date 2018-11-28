@@ -94,15 +94,18 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             if (exists temp = chosen.item) {
                 skill = temp;
             } else if (chosen.key <= skills.size) {
-                String skillName = cli.inputString("Name of new Skill: ");
-                job.addSkill(Skill(skillName, 0, 0));
-                skills.clear();
-                skills.addAll(job);
-                if (exists temp = skills.find(matchingValue(skillName, ISkill.name))) {
-                    skill = temp;
+                if (exists skillName = cli.inputString("Name of new Skill: ")) {
+                    job.addSkill(Skill(skillName, 0, 0));
+                    skills.clear();
+                    skills.addAll(job);
+                    if (exists temp = skills.find(matchingValue(skillName, ISkill.name))) {
+                        skill = temp;
+                    } else {
+                        cli.println("Select the new item at the next prompt.");
+                        continue;
+                    }
                 } else {
-                    cli.println("Select the new item at the next prompt.");
-                    continue;
+                    return;
                 }
             } else {
                 break;
@@ -150,7 +153,11 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             if (exists temp = chosen.item) {
                 job = temp;
             } else if (chosen.key <= jobs.size ) {
-                String jobName = cli.inputString("Name of new Job: ");
+                String? jobName = cli.inputString("Name of new Job: ");
+                if (!jobName exists) {
+                    return;
+                }
+                assert (exists jobName);
                 worker.addJob(Job(jobName, 0));
                 jobs.clear();
                 jobs.addAll(worker);
@@ -187,7 +194,6 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                     MutableList<String> gains = ArrayList<String>();
                     for (i in 0:skill.level) {
                         ISkill replacement;
-                        String replacementName;
                         Integer->ISkill? choice = cli.chooseFromList(
                             job.select(not(matchingValue("miscellaneous", ISkill.name))),
                             "Skill to gain level in:", "No other skill", "Chosen skill:",
@@ -195,12 +201,13 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                         if (exists chosenSkill = choice.item) {
                             replacement = chosenSkill;
                             replacement.addHours(100, 0);
-                            replacementName = replacement.name;
-                        } else {
-                            replacementName = cli.inputString("Skill to gain level in: ");
+                        } else if (exists replacementName =
+                                cli.inputString("Skill to gain level in: ")) {
                             replacement = Skill(replacementName, 1, 0);
                             job.addSkill(replacement);
                             gains.add(replacementName);
+                        } else {
+                            return;
                         }
                         job.removeSkill(skill);
                     }
@@ -237,17 +244,20 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             if (exists temp = chosen.item) {
                 skill = temp;
             } else if (chosen.key <= skills.size ) {
-                String skillName = cli.inputString("Name of new Skill: ");
-                for (job in jobs) {
-                    job.addSkill(Skill(skillName, 0, 0));
-                }
-                skills.clear();
-                skills.addAll(ProxyJob(jobName, false, *workers));
-                if (exists temp = skills.find(matchingValue(skillName, ISkill.name))) {
-                    skill = temp;
+                if (exists skillName = cli.inputString("Name of new Skill: ")) {
+                    for (job in jobs) {
+                        job.addSkill(Skill(skillName, 0, 0));
+                    }
+                    skills.clear();
+                    skills.addAll(ProxyJob(jobName, false, *workers));
+                    if (exists temp = skills.find(matchingValue(skillName, ISkill.name))) {
+                        skill = temp;
+                    } else {
+                        cli.println("Select the new item at the next prompt.");
+                        continue;
+                    }
                 } else {
-                    cli.println("Select the new item at the next prompt.");
-                    continue;
+                    return;
                 }
             } else {
                 break;
@@ -283,7 +293,11 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                 if (exists temp = chosen.item) {
                     job = temp;
                 } else if (chosen.key <= jobs.size ) {
-                    String jobName = cli.inputString("Name of new Job: ");
+                    String? jobName = cli.inputString("Name of new Job: ");
+                    if (!jobName exists) {
+                        return;
+                    }
+                    assert (exists jobName);
                     for (worker in workers) {
                         worker.addJob(Job(jobName, 0));
                     }

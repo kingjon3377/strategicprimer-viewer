@@ -48,8 +48,9 @@ shared interface ICLIHelper {
             "The prompt to prompt the user with."
             String prompt);
 
-    "Read a line of input. It is trimmed of leading and trailing whitespace."
-    shared formal String inputString(
+    "Read a line of input. It is trimmed of leading and trailing whitespace. Returns
+     [[null]] on EOF."
+    shared formal String? inputString(
             "The prompt to prompt the user with."
             String prompt);
 

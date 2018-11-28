@@ -155,11 +155,14 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
         if (!villages.empty) {
             if (raceList.empty) {
                 while (true) {
-                    String race = cli.inputString("Next aquatic race: ").trimmed;
-                    if (race.empty) {
-                        break;
+                    if (exists race = cli.inputString("Next aquatic race: ")) {
+                        if (race.empty) {
+                            break;
+                        }
+                        raceList.add(race);
+                    } else {
+                        return;
                     }
-                    raceList.add(race);
                 }
             }
             for (village in villages) {
@@ -233,10 +236,11 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 return;
             }
         }
-        String kind = cli.inputString(
-            "What's the next possible kind for ``description``? ");
-        unit.kind = kind;
-        jobList.add(kind);
+        if (exists kind = cli.inputString(
+                "What's the next possible kind for ``description``? ")) {
+            unit.kind = kind;
+            jobList.add(kind);
+        }
     }
 
     "Search for and fix units with kinds missing."
@@ -304,15 +308,21 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
                     map.baseTerrain[location] = TileType.plains;
                     map.mountainous[location] = true;
                 } else if (terrain == TileType.temperateForest) {
-                    String forest = cli.inputString(
-                        "Kind of tree for a temperate forest: ");
-                    fixAdjacentForests(map, idf, location,
-                        TileType.temperateForest, forest);
+                    if (exists forest = cli.inputString(
+                            "Kind of tree for a temperate forest: ")) {
+                        fixAdjacentForests(map, idf, location,
+                            TileType.temperateForest, forest);
+                    } else {
+                        return;
+                    }
                 } else if (terrain == TileType.borealForest) {
-                    String forest = cli.inputString(
-                        "Kind of tree for a boreal forest:");
-                    fixAdjacentForests(map, idf, location, TileType.borealForest,
-                        forest);
+                    if (exists forest = cli.inputString(
+                            "Kind of tree for a boreal forest:")) {
+                        fixAdjacentForests(map, idf, location, TileType.borealForest,
+                            forest);
+                    } else {
+                        return;
+                    }
                 }
             }
         }

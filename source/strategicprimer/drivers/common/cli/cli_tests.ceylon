@@ -161,8 +161,8 @@ object cliTests {
         assertCLI(`ICLIHelper.inputString`, ["second prompt"], Singleton("second"),
             "second prompt ", "second", "inputString returns the entered string",
             "inputString displays prompt");
-        assertCLI(`ICLIHelper.inputString`, ["third prompt"], [], "third prompt ", "",
-            "inputString returns empty on EOF", "inputString displays prompt");
+        assertCLI(`ICLIHelper.inputString`, ["third prompt"], [], "third prompt ", null,
+            "inputString returns null on EOF", "inputString displays prompt");
     }
 
     "Test that [[ICLIHelper.inputBoolean]] returns [[true]] when it should."

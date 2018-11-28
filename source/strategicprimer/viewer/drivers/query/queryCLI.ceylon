@@ -549,10 +549,13 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
         "trade"->tradeCommand
     );
 
-    """Ask the user for a command; if "quit", return false, otherwise handle it
+    """Ask the user for a command; if "quit", or on EOF, return false, otherwise handle it
        and return true."""
     shared Boolean handleCommand() {
-        String command = cli.inputString("Command:").lowercased;
+        String? command = cli.inputString("Command:")?.lowercased;
+        if (is Null command) {
+            return false;
+        }
         {<String->Anything()>*} matches =
                 commands.filterKeys(shuffle(String.startsWith)(command));
         if ("quit".startsWith(command) || "exit".startsWith(command)) {

@@ -162,15 +162,21 @@ class ImporterDriver(ICLIHelper cli, SPOptions options) satisfies UtilityDriver 
                         finalRetval.baseTerrain[location] = TileType.plains;
                         finalRetval.mountainous[location] = true;
                     } else if (terrain == TileType.temperateForest) {
-                        String forest = cli.inputString(
-                            "Kind of tree for a temperate forest: ");
-                        fixAdjacentForests(finalRetval, location,
-                            TileType.temperateForest, forest);
+                        if (exists forest = cli.inputString(
+                                "Kind of tree for a temperate forest: ")) {
+                            fixAdjacentForests(finalRetval, location,
+                                TileType.temperateForest, forest);
+                        } else {
+                            return;
+                        }
                     } else if (terrain == TileType.borealForest) {
-                        String forest = cli.inputString(
-                            "Kind of tree for a boreal forest:");
-                        fixAdjacentForests(finalRetval, location, TileType.borealForest,
-                            forest);
+                        if (exists forest = cli.inputString(
+                                "Kind of tree for a boreal forest:")) {
+                            fixAdjacentForests(finalRetval, location, TileType.borealForest,
+                                forest);
+                        } else {
+                            return;
+                        }
                     }
                 }
             }

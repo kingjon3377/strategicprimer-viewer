@@ -46,9 +46,10 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
     "Ask the user a yes-or-no question."
     shared actual Boolean inputBoolean(String prompt) {
         while (true) {
-            switch(input = inputString(prompt).lowercased)
+            switch(input = inputString(prompt)?.lowercased)
             case ("yes"|"true"|"y"|"t") { return true; }
             case ("no"|"false"|"n"|"f") { return false; }
+            case (null) { throw AssertionError("EOF"); } // FIXME: Make this method return Boolean? and return the null
             else {
                 ostream("""Please enter "yes", "no", "true", or "false",
                            or the first character of any of those.
@@ -133,10 +134,10 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
     }
 
     "Read a line of input from the input stream. It is trimmed of leading and trailing
-     whitespace."
-    shared actual String inputString(String prompt) {
+     whitespace. Returns [[null]] on EOF."
+    shared actual String? inputString(String prompt) {
         writePrompt(prompt);
-        return istream()?.trimmed else "";
+        return istream()?.trimmed;
     }
 
     "Ask the user a yes-or-no question, allowing yes-to-all or no-to-all to skip further
@@ -149,7 +150,7 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
             return retval;
         } else {
             while (true) {
-                String input = inputString(prompt).lowercased;
+                assert (exists input = inputString(prompt)?.lowercased); // TODO: Make this method return Boolean?, and pass null along. Also drop the |Absent rigamarole and just return 'null' on 'quit'.
                 if (is Absent result = quitResultFactory(input)) {
                     return result;
                 }

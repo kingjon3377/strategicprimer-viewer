@@ -193,7 +193,7 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
         if (exists retval = choice.item) {
             return retval;
         } else {
-            String retval = cli.inputString("Resource kind to use: ");
+            assert (exists retval = cli.inputString("Resource kind to use: "));
             resourceKinds.add(retval);
             return retval;
         }
@@ -208,7 +208,7 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
         if (exists item) {
             return item;
         } else {
-            String retval = cli.inputString("Resource to use: ");
+            assert (exists retval = cli.inputString("Resource to use: "));
             resourceContents.put(kind, retval);
             return retval;
         }
@@ -222,7 +222,7 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
                     "correct;``unit``;``resource``")) {
             return unit;
         } else {
-            String retval = cli.inputString("Unit to use for ``resource``: ");
+            assert (exists retval = cli.inputString("Unit to use for ``resource``: "));
             resourceUnits[resource] = retval;
             return retval;
         }
@@ -236,7 +236,11 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
         String contents;
         if (cli.inputBooleanInSeries("Qualify the particular resource with a prefix? ",
                 "prefix " + origContents)) {
-            contents = "``cli.inputString("Prefix to use: ").trimmed`` ``origContents``";
+            if (exists prefix = cli.inputString("Prefix to use: ")) {
+                contents = prefix + " " + origContents;
+            } else {
+                return;
+            }
         } else {
             contents = origContents;
         }
@@ -248,14 +252,15 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
 
     "Ask the user to enter an Implement (a piece of equipment)"
     void enterImplement(IDRegistrar idf, Player player) {
-        String kind = cli.inputString("Kind of equipment: ");
-        Integer count;
-        if (cli.inputBooleanInSeries("Add more than one? ")) {
-            count = cli.inputNumber("Number to add: ") else 0;
-        } else {
-            count = 1;
+        if (exists kind = cli.inputString("Kind of equipment: ")) {
+            Integer count;
+            if (cli.inputBooleanInSeries("Add more than one? ")) {
+                count = cli.inputNumber("Number to add: ") else 0;
+            } else {
+                count = 1;
+            }
+            model.addResource(Implement(kind, idf.createID(), count), player);
         }
-        model.addResource(Implement(kind, idf.createID(), count), player);
     }
 
     shared actual void startDriver() {

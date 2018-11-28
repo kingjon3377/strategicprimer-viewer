@@ -272,11 +272,8 @@ class TownGenerator(ICLIHelper cli) {
         cli.println("Now enter Skill levels, the highest in the community for each Job.");
         cli.println("(Empty to end.)");
         while (true) {
-            String job = cli.inputString("Job: ").trimmed;
-            if (job.empty) {
-                break;
-            }
-            if (exists level = cli.inputNumber("Level: ")) {
+            if (exists job = cli.inputString("Job: "), !job.empty, // TODO: Make this the loop condition instead of breaking on falsehood
+                    exists level = cli.inputNumber("Level: ")) {
                 retval.setSkillLevel(job, level);
             } else {
                 break;
@@ -286,7 +283,7 @@ class TownGenerator(ICLIHelper cli) {
         cli.println("Now enter ID numbers of worked fields (empty to skip).");
         variable {HarvestableFixture*} nearestFields = findNearestFields(map, location);
         while (true) {
-            String input = cli.inputString("Field ID #: ").trimmed;
+            assert (exists input = cli.inputString("Field ID #: "));
             Integer field;
             if (input.empty) {
                 break;
@@ -331,38 +328,29 @@ class TownGenerator(ICLIHelper cli) {
 
         cli.println("Now add resources produced each year. (Empty to end.)");
         while (true) {
-            String kind = cli.inputString("General kind of resource: ").trimmed;
+            assert (exists kind = cli.inputString("General kind of resource: ")); // TODO: Move conditions up into loop condition
             if (kind.empty) {
                 break;
             }
-            String contents = cli.inputString("Specific kind of resource: ").trimmed;
+            assert (exists contents = cli.inputString("Specific kind of resource: "));
             Decimal quantity;
             if (exists temp = cli.inputDecimal("Quantity of the resource produced: ")) {
                 quantity = temp;
             } else {
                 break;
             }
-            String units = cli.inputString("Units of that quantity: ").trimmed;
+            assert (exists units = cli.inputString("Units of that quantity: "));
             ResourcePile pile = ResourcePile(idf.createID(), kind, contents,
                 Quantity(quantity, units));
             retval.yearlyProduction.add(pile);
         }
 
         cli.println("Now add resources consumed each year. (Empty to end.)");
-        while (true) {
-            String kind = cli.inputString("General kind of resource: ").trimmed;
-            if (kind.empty) {
-                break;
-            }
-            String contents = cli.inputString("Specific kind of resource: ").trimmed;
-            Decimal quantity;
-            if (exists temp = cli.inputDecimal("Quantity of the resource consumed: ")) {
-                quantity = temp;
-            } else {
-                break;
-            }
-            String units = cli.inputString("Units of that quantity: ").trimmed;
-            ResourcePile pile = ResourcePile(idf.createID(), kind, contents,
+        while (exists kind = cli.inputString("General kind of resource: "), !kind.empty,
+                exists contents = cli.inputString("Specific kind of resource: "),
+                exists quantity = cli.inputDecimal("Quantity of the resource consumed: "),
+                exists units = cli.inputString("Units of that quantity: ")) {
+            ResourcePile pile = ResourcePile(idf.createID(), kind, contents, // TODO: inline
                 Quantity(quantity, units));
             retval.yearlyConsumption.add(pile);
         }
@@ -524,14 +512,11 @@ class TownGenerator(ICLIHelper cli) {
 
     "Allow the user to create population details for specific towns."
     shared void generateSpecificTowns(IDRegistrar idf, IDriverModel model) {
-        while (true) {
-            String input = cli.inputString("ID or name of town to create stats for: ")
-                .trimmed;
+        while (exists input = cli.inputString("ID or name of town to create stats for: "),
+                !input.empty) {
             Point? location;
             ModifiableTown? town;
-            if (input.empty) {
-                break;
-            } else if (isNumeric(input), exists id = parseInt(input)) {
+            if (isNumeric(input), exists id = parseInt(input)) {
                 value temp = unstattedTowns(model.map)
                     .find(compose(matchingValue(id, IFixture.id),
                         Entry<Point, ITownFixture>.item));
