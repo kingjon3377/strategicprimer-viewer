@@ -11,6 +11,10 @@ import ceylon.language.meta.declaration {
     OpenClassOrInterfaceType,
     OpenType
 }
+import ceylon.whole {
+    Whole,
+    wholeNumber
+}
 
 "Annotation to make a parameterized test randomly generate numbers. Apply to a parameter
  of a method annotated with [[ceylon.test::test]], and the test will be run [[count]] times
@@ -44,7 +48,9 @@ shared final annotation class RandomGenerationAnnotation(
                 return singletonRandom.integers(max).take(count);
             } else if (declaredType == `class Float`) {
                 return singletonRandom.floats().map(max.float.times).take(count);
-            } else { // TODO: Handle Whole; make a 'native' for Decimal.
+            } else if (declaredType == `interface Whole`) {
+                return singletonRandom.integers(max).map(wholeNumber).take(count);
+            } else { // TODO: Make a 'native' for Decimal.
                 throw AssertionError("Can't randomly generate ``declaredType`` yet");
             }
         }
