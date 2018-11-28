@@ -51,7 +51,6 @@ import ceylon.random {
 import lovelace.util.common {
     anythingEqual,
     matchingValue,
-    matchingPredicate,
     narrowedStream,
     comparingOn,
     PathWrapper
@@ -116,7 +115,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
      given player."
     {IUnit*} getUnitsImpl({Anything*} iter, Player player) =>
             iter.flatMap(flatten).narrow<IUnit>()
-                .filter(matchingPredicate(matchingValue(player.playerId, Player.playerId),
+                .filter(compose(matchingValue(player.playerId, Player.playerId),
                     IUnit.owner));
 
     "All the players in all the maps."
@@ -178,9 +177,8 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
     shared actual void addUnit(IUnit unit) {
         variable [Fortress, Point]? temp = null;
         for (point->fixture in narrowedStream<Point, Fortress>(map.fixtures)
-                .filter(matchingPredicate(matchingValue(unit.owner.playerId,
-                    Player.playerId),
-                compose(Fortress.owner, Entry<Point, Fortress>.item)))) {
+                .filter(compose(matchingValue(unit.owner.playerId, Player.playerId),
+                    compose(Fortress.owner, Entry<Point, Fortress>.item)))) {
             if ("HQ" == fixture.name) {
                 addUnitAtLocation(unit, point);
                 return;

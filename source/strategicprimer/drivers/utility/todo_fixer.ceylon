@@ -1,6 +1,5 @@
 import lovelace.util.common {
     todo,
-    matchingPredicate,
     matchingValue,
     narrowedStream,
     entryMap,
@@ -152,7 +151,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
         {Village*} villages = map.locations
             .filter(matchingValue(TileType.ocean, map.baseTerrain.get))
             .flatMap(map.fixtures.get).narrow<Village>()
-            .filter(matchingPredicate(landRaces.contains, Village.race));
+            .filter(compose(landRaces.contains, Village.race));
         if (!villages.empty) {
             if (raceList.empty) {
                 while (true) {

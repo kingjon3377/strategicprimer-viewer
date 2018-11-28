@@ -16,7 +16,6 @@ import lovelace.util.jvm {
 }
 
 import lovelace.util.common {
-    matchingPredicate,
     silentListener,
     PathWrapper,
     MissingFileException,
@@ -259,7 +258,7 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         variable Float total = 0.0;
         variable Boolean retval = false;
         for (fixture in fixtures.narrow<HasExtent>()
-                .filter(matchingPredicate(positiveNumber, HasExtent.acres))) {
+                .filter(compose(positiveNumber, HasExtent.acres))) {
             switch (acres = fixture.acres)
             case (is Integer) {
                 total += acres;

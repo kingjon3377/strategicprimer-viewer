@@ -24,7 +24,6 @@ import javax.swing.table {
 import lovelace.util.common {
     Reorderable,
     Comparator,
-    matchingPredicate,
     matchingValue
 }
 
@@ -95,7 +94,7 @@ shared class FixtureFilterTableModel extends AbstractTableModel
         // Can't use our preferred initialization form because an Iterable can only be
         // spread as the *last* argument.
         for (arg in [
-                FixtureMatcher.complements<IUnit>(matchingPredicate(not(Player.independent),
+                FixtureMatcher.complements<IUnit>(compose(not(Player.independent),
                     IUnit.owner), "Units", "Independent Units"),
                 FixtureMatcher.trivialMatcher(`Fortress`, "Fortresses"),
                 FixtureMatcher.complements<AbstractTown>(matchingValue(TownStatus.active,
@@ -103,7 +102,7 @@ shared class FixtureFilterTableModel extends AbstractTableModel
                     "Active Cities, Towns, & Fortifications",
                     "Ruined, Abandoned, & Burned Communities"),
                 // TODO: break up by owner beyond owned/independent
-                FixtureMatcher.complements<Village>(matchingPredicate(Player.independent,
+                FixtureMatcher.complements<Village>(compose(Player.independent,
                     Village.owner), "Independent Villages", "Villages With Suzerain"),
                 FixtureMatcher.trivialMatcher(`Mine`),
                 FixtureMatcher.trivialMatcher(`Troll`),

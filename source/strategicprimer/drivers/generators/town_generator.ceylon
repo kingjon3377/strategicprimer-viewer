@@ -80,7 +80,6 @@ import lovelace.util.common {
     isNumeric,
     parseInt,
     matchingValue,
-    matchingPredicate,
     anythingEqual,
     defer,
     narrowedStream,
@@ -168,8 +167,8 @@ class TownGenerator(ICLIHelper cli) {
     "The (for now active) towns in the given map that don't have 'stats' yet."
     {<Point->ModifiableTown>*} unstattedTowns(IMapNG map) =>
             narrowedStream<Point, ModifiableTown>(map.fixtures)
-                .filter(matchingPredicate(matchingValue(TownStatus.active,
-                ITownFixture.status), Entry<Point, ITownFixture>.item)).sequence();
+                .filter(compose(matchingValue(TownStatus.active, ITownFixture.status),
+                    Entry<Point, ITownFixture>.item)).sequence();
 
     "Assign the given [[population details object|stats]] to the given town."
     void assignStatsToTown(ModifiableTown town, CommunityStats stats) {
@@ -534,14 +533,14 @@ class TownGenerator(ICLIHelper cli) {
                 break;
             } else if (isNumeric(input), exists id = parseInt(input)) {
                 value temp = unstattedTowns(model.map)
-                    .find(matchingPredicate(matchingValue(id, IFixture.id),
-                    Entry<Point, ITownFixture>.item));
+                    .find(compose(matchingValue(id, IFixture.id),
+                        Entry<Point, ITownFixture>.item));
                 location = temp?.key;
                 town = temp?.item;
             } else {
                 value temp = unstattedTowns(model.map)
-                    .find(matchingPredicate(matchingValue(input, HasName.name),
-                    Entry<Point, ITownFixture>.item));
+                    .find(compose(matchingValue(input, HasName.name),
+                        Entry<Point, ITownFixture>.item));
                 location = temp?.key;
                 town = temp?.item;
             }

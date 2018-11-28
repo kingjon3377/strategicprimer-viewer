@@ -17,7 +17,6 @@ import strategicprimer.model.common.map.fixtures.resources {
     Meadow
 }
 import lovelace.util.common {
-    matchingPredicate,
     matchingValue,
     singletonRandom
 }
@@ -59,11 +58,11 @@ shared class HuntingModel {
 
     "Non-aquatic animals (outside fortresses and units) at the given location in the map."
     {Animal*} animals(Point point) => baseAnimals(point)
-        .filter(not(matchingPredicate(fishKinds.contains, Animal.kind)));
+        .filter(not(compose(fishKinds.contains, Animal.kind)));
 
     "Aquatic animals (outside fortresses and units) at the given location in the map."
     {Animal*} waterAnimals(Point point) =>
-            baseAnimals(point).filter(matchingPredicate(fishKinds.contains, Animal.kind));
+            baseAnimals(point).filter(compose(fishKinds.contains, Animal.kind));
 
     """Plant-type harvestable fixtures in the map, followed by a number of "nothing found"
        sufficient to give the proportion we want for that tile type."""

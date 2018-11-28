@@ -3,8 +3,7 @@ import javax.swing.tree {
 }
 
 import lovelace.util.common {
-    todo,
-    matchingPredicate
+    todo
 }
 
 import lovelace.util.jvm {
@@ -43,8 +42,8 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&
 
     "Add children iff they have children of their own."
     shared default void addIfNonEmpty(MutableTreeNode* children) =>
-            children.filter(matchingPredicate(Integer.positive,
-                MutableTreeNode.childCount)).each(appendNode);
+            children.filter(compose(Integer.positive, MutableTreeNode.childCount))
+                .each(appendNode);
 
     "Add a node as a child."
     todo("Allow null instead of having

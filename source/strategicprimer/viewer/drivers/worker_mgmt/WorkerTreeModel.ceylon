@@ -29,9 +29,6 @@ import strategicprimer.model.common.map {
 import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
-import lovelace.util.common {
-    matchingPredicate
-}
 import strategicprimer.drivers.common {
     IWorkerModel
 }
@@ -306,7 +303,7 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         } else if (exists starting, exists startingKind =
                 starting.path.array.narrow<String>().first) {
             sequence = model.getUnits(root).repeat(2).sequence()
-                .trimLeading(not(matchingPredicate(startingKind.equals, IUnit.kind)));
+                .trimLeading(not(compose(startingKind.equals, IUnit.kind)));
         } else if (exists starting, exists startingKind =
                 starting.path.array.narrow<JString>().first) {
             return nextProblem(TreePath(ObjectArray<Object>

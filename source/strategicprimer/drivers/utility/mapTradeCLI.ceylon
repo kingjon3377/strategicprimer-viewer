@@ -76,7 +76,6 @@ import ceylon.language.meta {
 }
 import lovelace.util.common {
     matchingValue,
-    matchingPredicate,
     PathWrapper
 }
 
@@ -110,7 +109,7 @@ shared class MapTradeCLI satisfies CLIDriver {
 
     static {FixtureMatcher*} initializeMatchers() => [
             FixtureMatcher.complements<IUnit>(not(
-                    matchingPredicate(Player.independent, IUnit.owner)),
+                    compose(Player.independent, IUnit.owner)),
                 "Units", "Independent Units"),
             FixtureMatcher.trivialMatcher(`Fortress`, "Fortresses"),
             FixtureMatcher.trivialMatcher(`TextFixture`, "Arbitrary-Text Notes"),

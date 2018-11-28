@@ -9,10 +9,9 @@ shared Boolean(Type) matchingPredicate<Type, Field>(Boolean(Field) predicate,
 "Given a function and an expected value, produces a predicate that applies that function
  to each object and returns true iff it produces the expected value. This is intended to
  be used with [[Iterable.filter]] and the like."
-see(`function matchingPredicate`)
 shared Boolean(Type) matchingValue<Type, Field>(Field expected, Field(Type) field)
         given Type satisfies Object =>
-            matchingPredicate(curry(anythingEqual)(expected), field);
+            compose(curry(anythingEqual)(expected), field);
 "Given an [[Entry]], return true iff its key and item are the given types.
 
  Using [[Iterable.narrow]] on a stream of [[tuples|Tuple]] works, but doing so on a stream
@@ -29,7 +28,7 @@ Key->Item entryIdentity<Key, Item>(Object->Anything entry) given Key satisfies O
 }
 "Given a stream of [[entries|Entry]], return a version of it narrowed to the given type
  parameters.  [[Iterable.narrow]] returns the empty stream, since [[Entry]] does not have
- the special handling to set its type parameters to the objects' precise types that 
+ the special handling to set its type parameters to the objects' precise types that
  [[Tuple]] does."
 shared {<Key->Item>*} narrowedStream<Key, Item>({<Object->Anything>*} stream)
         given Key satisfies Object =>

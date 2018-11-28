@@ -48,7 +48,6 @@ import ceylon.random {
     randomize
 }
 import lovelace.util.common {
-    matchingPredicate,
     matchingValue,
     PathWrapper
 }
@@ -403,8 +402,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             {Village*} villages = allMaps.map(Entry.key)
                 .flatMap(shuffle(compose(Multimap<Point, TileFixture>.get,
                     IMutableMapNG.fixtures))(currentPoint))
-                .narrow<Village>().filter(matchingPredicate(Player.independent,
-                    Village.owner));
+                .narrow<Village>().filter(compose(Player.independent, Village.owner));
             if (!villages.empty) {
                 variable Boolean subordinate = false;
                 for (village in villages) {

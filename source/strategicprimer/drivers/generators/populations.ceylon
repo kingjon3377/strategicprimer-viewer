@@ -48,7 +48,6 @@ import ceylon.decimal {
 }
 import lovelace.util.common {
     matchingValue,
-    matchingPredicate,
     narrowedStream,
     singletonRandom,
     PathWrapper
@@ -149,10 +148,9 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
     void generateGroveCounts(String kind) {
         // We assume there is at most one grove or orchard of each kind per tile.
         {Point*} locations = randomize(narrowedStream<Point, Grove>(map.fixtures)
-            .filter(matchingPredicate(matchingValue(kind, Grove.kind),
-                Entry<Point, Grove>.item))
-            .filter(matchingPredicate(matchingPredicate(Integer.negative,
-                Grove.population), Entry<Point, Grove>.item)).map(Entry.key).distinct);
+            .filter(compose(matchingValue(kind, Grove.kind), Entry<Point, Grove>.item))
+            .filter(compose(compose(Integer.negative, Grove.population),
+                Entry<Point, Grove>.item)).map(Entry.key).distinct);
         Integer count = locations.size;
         if (count == 0) {
             return;
@@ -186,10 +184,10 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
     void generateShrubCounts(String kind) {
         // We assume there is at most one population of each kind of shrub per tile.
         {Point*} locations = randomize(narrowedStream<Point, Shrub>(map.fixtures)
-            .filter(matchingPredicate(matchingValue(kind, Shrub.kind),
+            .filter(compose(matchingValue(kind, Shrub.kind),
                 Entry<Point, Shrub>.item))
-            .filter(matchingPredicate(matchingPredicate(Integer.negative,
-                Shrub.population), Entry<Point, Shrub>.item)).map(Entry.key).distinct);
+            .filter(compose(compose(Integer.negative, Shrub.population),
+                Entry<Point, Shrub>.item)).map(Entry.key).distinct);
         Integer count = locations.size;
         if (count == 0) {
             return;
@@ -221,7 +219,7 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
     "Generate [[field and meadow|Meadow]] acreages."
     void generateFieldExtents() {
         {<Point->Meadow>*} entries = randomize(narrowedStream<Point, Meadow>(map.fixtures)
-            .filter(matchingPredicate(negativeNumber, compose(Meadow.acres,
+            .filter(compose(negativeNumber, compose(Meadow.acres,
                 Entry<Point, Meadow>.item))));
         Random rng = singletonRandom;
         for (loc->field in entries) {
@@ -247,7 +245,7 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
     "Generate [[Forest]] acreages."
     void generateForestExtents() {
         {Point*} locations = randomize(narrowedStream<Point, Forest>(map.fixtures)
-            .filter(matchingPredicate(not(positiveNumber),
+            .filter(compose(not(positiveNumber),
                 compose(Forest.acres, Entry<Point, Forest>.item)))
             .map(Entry.key).distinct);
         for (location in locations) {
@@ -264,7 +262,7 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             }
             //{Forest*} otherForests = map.fixtures[location].narrow<Forest>() // TODO: syntax sugar
             {Forest*} otherForests = map.fixtures.get(location).narrow<Forest>()
-                    .select(not(matchingPredicate(positiveNumber, Forest.acres))).rest;
+                    .select(not(compose(positiveNumber, Forest.acres))).rest;
             Integer adjacentCount =
                     countAdjacentForests(location, primaryForest.kind);
             //for (town in map.fixtures[location].narrow<ITownFixture>()) { // TODO: syntax sugar
@@ -330,7 +328,7 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
 
     shared actual void startDriver() {
         for (kind in model.map.fixtures.map(Entry.item).narrow<Animal>()
-                    .filter(not(matchingPredicate(Integer.positive, Animal.population)))
+                    .filter(not(compose(Integer.positive, Animal.population)))
                 .map(Animal.kind).distinct) {
             generateAnimalPopulations(true, kind);
             generateAnimalPopulations(false, kind);
