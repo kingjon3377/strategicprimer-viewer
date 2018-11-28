@@ -588,9 +588,9 @@ class StatGeneratingCLI satisfies CLIDriver {
     void createWorkers(IDRegistrar idf) {
         MutableList<Player> players = ArrayList { elements = model.playerChoices; };
         while (!players.empty, exists chosen = cli.chooseFromList(players,
-            "Which player owns the new worker(s)?", // FIXME: indentation
-            "There are no players shared by all the maps.",
-            "Player selection: ", false).item) {
+                "Which player owns the new worker(s)?",
+                "There are no players shared by all the maps.",
+                "Player selection: ", false).item) {
             players.remove(chosen);
             while (true) {
                 createWorkersForPlayer(idf, chosen);
