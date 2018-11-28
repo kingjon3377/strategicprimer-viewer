@@ -172,8 +172,7 @@ shared class HarvestableReportGenerator
                     byIncreasing(Mine.id)));
         MutableHeadedMap<Meadow, Point> meadows = HeadedMapImpl<Meadow, Point>(
                 "<h5>Meadows and Fields</h5>", comparing(byIncreasing(Meadow.kind),
-                    comparingOn(Meadow.status, byIncreasing(FieldStatus.ordinal)), // TODO: Make FieldStatus Comparable and use it directly
-                    byIncreasing(Meadow.id)));
+                    byIncreasing(Meadow.status), byIncreasing(Meadow.id)));
         MutableHeadedMap<Grove, Point> groves =
                 HeadedMapImpl<Grove, Point>("<h5>Groves and Orchards</h5>",
                     comparing(byIncreasing(Grove.kind), byIncreasing(Grove.id)));
