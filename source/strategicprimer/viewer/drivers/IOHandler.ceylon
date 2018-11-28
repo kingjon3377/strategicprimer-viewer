@@ -196,7 +196,7 @@ shared class IOHandler satisfies ActionListener {
 
         case ("save as") {
             if (is ModelDriver driver) {
-                FileChooser.save(null, SPFileChooser.filteredFileChooser(false)).call((path) { // TODO: Why not use SPFileChooser.save()?
+                SPFileChooser.save(null).call((path) {
                     try {
                         mapIOHelper.writeMap(path, driver.model.map);
                         driver.model.mapFile = path;
