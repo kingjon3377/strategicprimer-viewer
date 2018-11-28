@@ -9,11 +9,16 @@ import ceylon.language.meta.declaration {
     ValueDeclaration,
     OpenTypeVariable,
     OpenClassOrInterfaceType,
-    OpenType
+    OpenType,
+    ClassOrInterfaceDeclaration
 }
 import ceylon.whole {
     Whole,
     wholeNumber
+}
+import ceylon.decimal {
+    Decimal,
+    decimalNumber
 }
 
 "Annotation to make a parameterized test randomly generate numbers. Apply to a parameter
@@ -40,19 +45,35 @@ shared final annotation class RandomGenerationAnnotation(
         suppressWarnings("expressionTypeNothing")
         shared actual Anything next() => nothing;
     }
+    native {Anything*} argumentsForSpecificType(ClassOrInterfaceDeclaration type) {
+        if (type == `class Integer`) {
+            return singletonRandom.integers(max).take(count);
+        } else if (type == `class Float`) {
+            return singletonRandom.floats().map(max.float.times).take(count);
+        } else if (type == `interface Whole`) {
+            return singletonRandom.integers(max).map(wholeNumber).take(count);
+        } else {
+            throw AssertionError("Can't randomly generate ``type`` yet");
+        }
+    }
+    native("jvm") {Anything*} argumentsForSpecificType(ClassOrInterfaceDeclaration type) {
+        if (type == `class Integer`) {
+            return singletonRandom.integers(max).take(count);
+        } else if (type == `class Float`) {
+            return singletonRandom.floats().map(max.float.times).take(count);
+        } else if (type == `interface Whole`) {
+            return singletonRandom.integers(max).map(wholeNumber).take(count);
+        } else if (type == `interface Decimal`) {
+            return singletonRandom.floats().map(max.float.times).map(decimalNumber)
+                .take(count);
+        } else {
+            throw AssertionError("Can't randomly generate ``type`` yet");
+        }
+    }
     {Anything*} argumentsForType(OpenType type) {
         switch (type)
         case (is OpenClassOrInterfaceType) {
-            value declaredType = type.declaration;
-            if (declaredType == `class Integer`) {
-                return singletonRandom.integers(max).take(count);
-            } else if (declaredType == `class Float`) {
-                return singletonRandom.floats().map(max.float.times).take(count);
-            } else if (declaredType == `interface Whole`) {
-                return singletonRandom.integers(max).map(wholeNumber).take(count);
-            } else { // TODO: Make a 'native' for Decimal.
-                throw AssertionError("Can't randomly generate ``declaredType`` yet");
-            }
+            return argumentsForSpecificType(type.declaration);
         }
         case (is OpenUnion) {
             for (innerType in type.caseTypes) { // TODO: Extract helper method: this idiom occurs twice in this overlong class.
