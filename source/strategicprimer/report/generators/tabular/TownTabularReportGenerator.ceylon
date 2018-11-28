@@ -39,16 +39,16 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
     "Compare two location-town pairs."
     shared actual Comparison comparePairs([Point, AbstractTown] one,
             [Point, AbstractTown] two) => comparing(
-                comparingOn(Tuple<Point|AbstractTown, Point, [AbstractTown]>.rest, // TODO: Use compose() instead of nested comparingOn()
-                    comparingOn(Tuple<AbstractTown, AbstractTown, []>.first,
-                        townComparators.compareTownKind)),
+                comparingOn(compose(Tuple<AbstractTown, AbstractTown, []>.first,
+                        Tuple<Point|AbstractTown, Point, [AbstractTown]>.rest),
+                    townComparators.compareTownKind),
                 comparingOn(Tuple<Point|AbstractTown, Point, [AbstractTown]>.first,
                     DistanceComparator(hq, dimensions).compare),
-                comparingOn(Tuple<Point|AbstractTown, Point, [AbstractTown]>.rest, // TODO: Can't we just use townComparators.compareTowns()?
-                    comparingOn(Tuple<AbstractTown, AbstractTown, []>.first,
-                        comparing(comparingOn(AbstractTown.townSize,
-                                townComparators.compareTownSize),
-                            comparingOn(AbstractTown.status,
-                                townComparators.compareTownStatus),
-                            comparingOn(AbstractTown.name, increasing<String>)))))(one, two);
+                comparingOn(compose(Tuple<AbstractTown, AbstractTown, []>.first,
+                        Tuple<Point|AbstractTown, Point, [AbstractTown]>.rest),
+                    comparing(comparingOn(AbstractTown.townSize, // TODO: Can't we just use townComparators.compareTowns()?
+                            townComparators.compareTownSize),
+                        comparingOn(AbstractTown.status,
+                            townComparators.compareTownStatus),
+                        comparingOn(AbstractTown.name, increasing<String>))))(one, two);
 }
