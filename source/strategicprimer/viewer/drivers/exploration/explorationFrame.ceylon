@@ -136,7 +136,7 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
         Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkLeft, 0),
         Direction.east->KeyStroke.getKeyStroke(KeyEvent.vkRight, 0)
     );
-    
+
     Map<Direction, KeyStroke> numKeys = simpleMap(
         Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkNumpad8, 0),
         Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkNumpad2, 0),
@@ -324,10 +324,10 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
             mpField.preferredSize.height.integer);
 
         JLabel speedLabel = JLabel("Current relative speed:");
-        Speed() speedSource = () { // TODO: Convert to method
+        Speed speedSource() {
             assert (is Speed retval = speedModel.selectedItem);
             return retval;
-        };
+        }
         value speedBox = ImprovedComboBox<Speed>.withModel(speedModel);
 
         headerPanel.add(explorerChangeButton);
