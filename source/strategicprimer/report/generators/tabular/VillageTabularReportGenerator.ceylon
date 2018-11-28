@@ -40,9 +40,9 @@ shared class VillageTabularReportGenerator(Player player, Point hq,
         return comparing(
             comparingOn(Tuple<Point|Village, Point, [Village]>.first,
                 DistanceComparator(hq, dimensions).compare),
-            comparingOn(Tuple<Point|Village, Point, [Village]>.rest, // TODO: Use compose() instead of nesting comparingOn()
-                comparingOn(Tuple<Village, Village, []>.first,
+            comparingOn(compose(Tuple<Village, Village, []>.first,
+                Tuple<Point|Village, Point, [Village]>.rest),
                     comparing(comparingOn(Village.owner, increasing<Player>),
-                        comparingOn(Village.name, increasing<String>)))))(one, two);
+                        comparingOn(Village.name, increasing<String>))))(one, two);
     }
 }
