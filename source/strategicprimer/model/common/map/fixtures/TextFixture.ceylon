@@ -52,4 +52,8 @@ shared class TextFixture(text, turn) satisfies TileFixture&HasMutableImage {
 
     "The required Perception check result for an explorer to find the note."
     shared actual Integer dc = 5;
+
+    "A TextFixture is a note *to a player* that there's no other fixture to represent,
+     and so shouldn't be in the main map."
+    shared actual Boolean subsetShouldSkip = true;
 }

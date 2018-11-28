@@ -34,4 +34,7 @@ shared interface TileFixture satisfies IFixture&Comparable<TileFixture> {
           and so this shouldn't be an instance function here, but either on the map, in a
           separate class, or in a toplevel function.")
     shared formal Integer dc;
+    "Whether this fixture should be skipped in strict-subset calculations (at the map
+     level)."
+    shared default Boolean subsetShouldSkip => false;
 }

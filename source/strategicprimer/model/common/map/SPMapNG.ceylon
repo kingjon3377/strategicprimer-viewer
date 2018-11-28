@@ -391,7 +391,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                 //{TileFixture*} theirFixtures = obj.fixtures[point]; // TODO: syntax sugar
                 {TileFixture*} theirFixtures = obj.fixtures.get(point);
                 for (fixture in theirFixtures) {
-                    if (ourFixtures.contains(fixture) || shouldSkip(fixture)) {
+                    if (ourFixtures.contains(fixture) || fixture.subsetShouldSkip) {
                         continue;
                     } else if (is IUnit fixture, ourUnits.defines(fixture.id)) {
                         retval = testAgainstList<IFixture, IUnit>(fixture, point,

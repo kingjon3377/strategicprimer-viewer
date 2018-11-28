@@ -59,4 +59,7 @@ shared class CacheFixture(kind, contents, id) satisfies HarvestableFixture {
 
     todo("Make variable (loaded from XML) or otherwise more granular?")
     shared actual Integer dc = 25;
+
+    "Caches are *moved* to player maps when discovered."
+    shared actual Boolean subsetShouldSkip = true;
 }

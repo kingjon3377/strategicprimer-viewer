@@ -94,8 +94,4 @@ shared interface IMapNG satisfies Subsettable<IMapNG> {
             return true;
         }
     }
-
-    "Strict-subset calculations should skip caches, text fixtures, and animal tracks."
-    shared default Boolean shouldSkip(TileFixture fixture) => // TODO: Move into the TileFixture interface?
-            fixture is CacheFixture|TextFixture|AnimalTracks;
 }

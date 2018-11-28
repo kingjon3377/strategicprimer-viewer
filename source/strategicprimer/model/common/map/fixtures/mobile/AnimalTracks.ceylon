@@ -65,4 +65,8 @@ shared class AnimalTracks(kind)
             return false;
         }
     }
+
+    "Animal tracks are a representation of evidence for players of the presence of animals
+     that are in the main map, and so should not be in the main map themselves."
+    shared actual Boolean subsetShouldSkip = true;
 }
