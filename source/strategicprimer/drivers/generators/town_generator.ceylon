@@ -106,7 +106,12 @@ class TownGenerator(ICLIHelper cli) {
                 value split = line.split('\t'.equals, true, false);
                 value quantity = Integer.parse(split.first);
                 if (is Integer quantity) {
-                    assert (exists units = split.rest.first, // TODO: can we use destructuring?
+                    // I'd like to use destructuring here
+                    // (exists [units, kind, resource] = split.rest), but it only works
+                    // for Tuples, and we don't statically know that there are only 4
+                    // items in the sequence (destructuring doesn't allow us to silently
+                    // ignore the rest)
+                    assert (exists units = split.rest.first,
                         exists kind = split.rest.rest.first,
                         exists resource = split.rest.rest.rest.first);
                     inner.add([Quantity(quantity, units), kind, resource]);
