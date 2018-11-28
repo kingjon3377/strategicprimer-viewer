@@ -46,7 +46,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats,
-    IJob
+    IJob,
+    ISkill
 }
 import strategicprimer.viewer.drivers.map_viewer {
     imageLoader
@@ -146,6 +147,8 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     JComponent split = verticalSplit(statPanelWrapped, resultsPanel);
     split.border = BorderFactory.createEmptyBorder();
 
+    String skillString(ISkill skill) => skill.name + " " + skill.level.string;
+
     variable UnitMember? current = null;
     void recache() {
         UnitMember? local = current;
@@ -161,14 +164,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
             for (job in local.filter(not(IJob.emptyJob))) {
                 JLabel label = JLabel("``job.name`` ``job.level``");
                 if (exists firstSkill = job.first) {
-                    // TODO: Replace with label.toolTipText = "Skills: ``", ".join(job.map(skillString))``"; (defining skillString somewhere if there isn't a suitable String attribute in ISkill already)
-                    StringBuilder skillsBuilder = StringBuilder();
-                    skillsBuilder.append("Skills: ``firstSkill.name`` ``firstSkill
-                        .level``");
-                    for (skill in job.rest) {
-                        skillsBuilder.append(", ``skill.name`` ``skill.level``");
-                    }
-                    label.toolTipText = skillsBuilder.string;
+                    label.toolTipText = "Skills" + ", ".join(job.map(skillString));
                 }
                 jobsPanel.add(label);
             }
