@@ -120,38 +120,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
             model.addMovementCostListener(handleCost);
 
             MutableList<Point>&Queue<Point> proposedPath = ArrayList<Point>();
-            object automationConfig { // TODO: Move to top level of class, and make memoized attribute there instead of encapsulating in an object
-                variable ExplorationAutomationConfig? wrapped = null;
-                shared ExplorationAutomationConfig config {
-                    if (exists temp = wrapped) {
-                        return temp;
-                    } else {
-                        value retval = ExplorationAutomationConfig {
-                            player = mover.owner;
-                            stopForForts = cli.inputBooleanInSeries(
-                                "Stop for instructions at others' fortresses?") else false;
-                            stopForActiveTowns = cli.inputBooleanInSeries(
-                                "Stop for instructions at active towns?") else false;
-                            stopForInactiveTowns = cli.inputBooleanInSeries(
-                                "Stop for instructions at inactive towns?") else false;
-                            stopForIndieVillages = cli.inputBooleanInSeries(
-                                "Stop for instructions at independent villages?") else false;
-                            stopForOtherVillages = cli.inputBooleanInSeries(
-                                "Stop for instructions at other players' villages?") else false;
-                            stopForYourVillages = cli.inputBooleanInSeries(
-                                "Stop for instructons at villages sworn to you?") else false;
-                            stopForPlayerUnits = cli.inputBooleanInSeries(
-                                "Stop for instructions on meeting other players' units?") else false;
-                            stopForIndieUnits = cli.inputBooleanInSeries(
-                                "Stop for instructions on meeting independent units?") else false;
-                            stopForImmortals = cli.inputBooleanInSeries(
-                                "Stop for instructions on meeting an immortal?") else false;
-                        };
-                        wrapped = retval;
-                        return retval;
-                    }
-                }
-            }
+            ExplorationAutomationConfig automationConfig =
+                ExplorationAutomationConfig(mover.owner);
 
             while (movement > 0) {
                 Point point = model.selectedUnitLocation;
@@ -288,7 +258,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
                     }
                 }
 
-                if (!proposedPath.empty, automationConfig.config.stopAtPoint(cli,
+                if (!proposedPath.empty, automationConfig.stopAtPoint(cli,
                         model.subordinateMaps.first?.key else model.map, destPoint)) {
                     proposedPath.clear();
                 }
@@ -299,62 +269,82 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
     }
 }
 
-class ExplorationAutomationConfig(Player player, Boolean stopForForts,
-        Boolean stopForActiveTowns, Boolean stopForInactiveTowns,
-        Boolean stopForYourVillages, Boolean stopForIndieVillages,
-        Boolean stopForOtherVillages, Boolean stopForPlayerUnits,
-        Boolean stopForIndieUnits, Boolean stopForImmortals) {
-    shared Boolean stopAtPoint(ICLIHelper cli, IMapNG map, Point point) {
-        // TODO: add abstraction: make a list of conditions (methods) with descriptions, memoize whether the user wants to stop for them, and iterate over them, instead of having a long multi-branch if
-        // TODO: Make a helper (method-in-method) for the cli.println("There is a ``thing`` here, so the explorer stops."), to condense the below
-        //for (fixture in map.fixtures[point]) { // TODO: syntax sugar
-        for (fixture in map.fixtures.get(point)) {
-            if (is Fortress fixture, fixture.owner != player, stopForForts) {
-                cli.println("There is a fortress belonging to ``
-                    fixture.owner`` here, so the explorer stops.");
+class ExplorationAutomationConfig(Player player) {
+    class Condition<Type>(configExplanation, stopExplanation, conditions)
+        given Type satisfies TileFixture {
+        "A description to use in the question asking wheter to stop for this condition."
+        shared String configExplanation;
+        "A description, or a factory for a description, to use when stopping because of
+         this condition."
+        shared String|String(Type) stopExplanation;
+        "Returns true when a tile fixture matches all of these conditions."
+        Boolean(Type)* conditions;
+        Boolean allConditions(TileFixture fixture) {
+            if (is Type fixture) {
+                for (condition in conditions) {
+                    if (!condition(fixture)) {
+                        return false;
+                    }
+                }
                 return true;
-            } else if (is AbstractTown fixture) {
-                if (fixture.status == TownStatus.active, stopForActiveTowns) {
-                    cli.println("There is a ``fixture.townSize`` active ``
-                        fixture.kind`` here, so the explorer stops.");
-                    return true;
-                } else if (fixture.status != TownStatus.active, stopForInactiveTowns) {
-                    cli.println("There is a ``fixture.townSize`` ``
-                        fixture.status`` ``fixture.kind`` here, so the explorer stops.");
-                    return true;
-                }
-            } else if (is Village fixture) {
-                if (fixture.owner == player, stopForYourVillages) {
-                    cli.println(
-                        "There is one of your villages here, so the explorer stops.");
-                    return true;
-                } else if (fixture.owner.independent, stopForIndieVillages) {
-                    cli.println(
-                        "There is an independent village here, so the explorer stops.");
-                    return true;
-                } else if (!fixture.owner.independent, fixture.owner != player,
-                        stopForOtherVillages) {
-                    cli.println(
-                        "There is another player's village here, so the explorer stops.");
-                    return true;
-                }
-            } else if (is IUnit fixture) {
-                if (fixture.owner.independent, stopForIndieUnits) {
-                    cli.println(
-                        "There is an independent unit here, so the explorer stops.");
-                    return true;
-                } else if (!fixture.owner.independent, fixture.owner != player,
-                        stopForPlayerUnits) {
-                    cli.println("There is a unit belonging to ``
-                        fixture.owner`` here, so the explorer stops.");
-                    return true;
-                }
-            } else if (is Immortal fixture, stopForImmortals) {
-                cli.print("There is a(n) ``fixture.shortDescription
-                        `` here, so the explorer stops.");
-                return true;
+            } else {
+                return false;
             }
         }
-        return false;
+        "Returns true when the given tile matches this condition."
+        shared Boolean matches(IMapNG map, Point point) =>
+            map.fixtures.get(point).any(allConditions);
+    }
+    {Condition<out TileFixture>+} conditions =
+        [Condition<Fortress>("at others' fortresses",
+                (fixture) => "a fortress belonging to " + fixture.owner.string),
+            Condition<AbstractTown>("at active towns",
+                    (fixture) => "a ``fixture.townSize`` active ``fixture.kind``",
+                matchingValue(TownStatus.active, AbstractTown.status)),
+            Condition<AbstractTown>("at inactive towns",
+                    (fixture) => "a ``fixture.townSize`` ``fixture.status`` ``fixture.kind``",
+                not(matchingValue(TownStatus.active, AbstractTown.status))),
+            Condition<Village>("at independent villages", "an independent village",
+                compose(Player.independent, Village.owner)),
+            Condition<Village>("at other players' villages", "another player's village",
+                not(matchingValue(player, Village.owner)),
+                not(compose(Player.independent, Village.owner))),
+            Condition<Village>("at villages sworn to you", "one of your villages",
+                matchingValue(player, Village.owner)),
+            Condition<IUnit>("on meeting other players' units",
+                    (unit) => "a unit belonging to " + unit.owner.string,
+                not(matchingValue(player, IUnit.owner)),
+                not(compose(Player.independent, IUnit.owner))),
+            Condition<IUnit>("on meeting independent units", "an independent unit",
+                compose(Player.independent, IUnit.owner)),
+            Condition<Immortal>("on meeting an immortal",
+                compose("a(n) ".plus, Immortal.shortDescription))];
+    variable {Condition<out TileFixture>*}? enabledConditions = null;
+    Boolean matchesCondition(IMapNG map, Point point)(Condition<out TileFixture> condition) =>
+        condition.matches(map, point);
+    shared Boolean stopAtPoint(ICLIHelper cli, IMapNG map, Point point) {
+        {Condition<out TileFixture>*} localEnabledConditions;
+        if (exists temp = enabledConditions) {
+            localEnabledConditions = temp;
+        } else {
+            MutableList<Condition<out TileFixture>> temp = ArrayList<Condition<out TileFixture>>();
+            for (condition in conditions) {
+                switch (cli.inputBooleanInSeries(
+                    "Stop for instructions ``condition.configExplanation``?"))
+                case (true) { temp.add(condition); }
+                case (false) {}
+                case (null) { return true; }
+            }
+            localEnabledConditions = temp.sequence();
+            enabledConditions = localEnabledConditions;
+        }
+        if (exists matchingCondition = localEnabledConditions
+                .find(matchesCondition(map, point))) {
+            cli.println("There is ``matchingCondition
+                .stopExplanation`` here, so the explorer stops.");
+            return true;
+        } else {
+            return false;
+        }
     }
 }
