@@ -122,8 +122,9 @@ class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener
                 scroll(true, true, count);
             }
         } else {
-            // Otherwise, no relevant modifiers being pressed, scroll vertically
-            // TODO: should Control have meaning on Mac?
+            // Otherwise, no relevant modifiers being pressed, scroll vertically.
+            // Control is ignored on Mac because it is rarely used as a modifier, and
+            // Control-clicking is the same as right-clicking.
             Integer count = event.wheelRotation;
             if (count < 0) {
                 scroll(false, false, 0 - count);
