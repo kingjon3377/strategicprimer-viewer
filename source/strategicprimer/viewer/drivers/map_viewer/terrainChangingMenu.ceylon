@@ -20,13 +20,18 @@ import strategicprimer.model.common.idreg {
 }
 import strategicprimer.model.common.map {
     Point,
-    TileType
+    TileType,
+    River
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 import lovelace.util.common {
     silentListener
+}
+import ceylon.collection {
+    MutableMap,
+    HashMap
 }
 
 "A popup menu to let the user change a tile's terrain type, or add a unit."
@@ -50,9 +55,9 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     JMenuItem mountainItem = JMenuItem("Mountainous");
 
-    void toggleMountains() {
+    void toggleMountains() { // TODO: Call scs.fireChanges()
         Point localPoint = point;
-        if (localPoint.valid) {
+        if (localPoint.valid) { // TODO: Restrict to non-ocean, non-Mountain terrain
             Boolean newValue = !mountainItem.model.selected;
             model.map.mountainous[localPoint] = newValue;
             model.mapModified = true;
@@ -61,6 +66,29 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     }
 
     mountainItem.addActionListener(silentListener(toggleMountains));
+
+	void toggleRiver(River river, JMenuItem item)() { // TODO: Call scs.fireChanges()
+        Point localPoint = point;
+        if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
+                terrain != TileType.ocean) {
+            if (item.model.selected) {
+                model.map.removeRivers(localPoint, river);
+                model.mapModified = true;
+                item.model.selected = false;
+            } else {
+                model.map.addRivers(localPoint, river);
+                model.mapModified = true;
+                item.model.selected = true;
+            }
+        }
+    }
+
+    MutableMap<River, JMenuItem> riverItems = HashMap<River, JMenuItem>();
+    for (direction in `River`.caseValues) {
+        JMenuItem item = JMenuItem(direction.description + " river");
+        item.addActionListener(silentListener(toggleRiver(direction, item)));
+        riverItems[direction] = item;
+    }
 
     void updateForVersion(Integer version) {
         removeAll();
@@ -77,7 +105,13 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         add(newUnitItem);
 //        mountainItem.model.selected = model.map.mountainous[point]; // TODO: syntax sugar once compiler bug fixed
         mountainItem.model.selected = model.map.mountainous.get(point);
-        add(mountainItem);
+		add(mountainItem); // TODO: Disable it when listener will ignore it
+//        {River*} rivers = model.map.rivers[point]; // TODO: syntax sugar
+        {River*} rivers = model.map.rivers.get(point);
+        for (direction->item in riverItems) {
+            item.model.selected = direction in rivers;
+            add(item); // TODO: Disable it when listener will ignore it
+        }
     }
 
     shared actual void changeVersion(Integer old, Integer newVersion) =>
