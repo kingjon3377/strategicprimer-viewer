@@ -66,7 +66,8 @@ object colorHelper {
             TileType.ocean->Color.\iBLUE,
             TileType.plains->Color(72, 218, 164),
             TileType.tundra->Color(153, 153, 153),
-            TileType.steppe->Color(72, 100, 72)
+            TileType.steppe->Color(72, 100, 72),
+            TileType.swamp->Color(231,41,138)
         )
     );
 
