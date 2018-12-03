@@ -55,9 +55,11 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     JMenuItem mountainItem = JMenuItem("Mountainous");
 
+    suppressWarnings("deprecation")
     void toggleMountains() { // TODO: Call scs.fireChanges()
         Point localPoint = point;
-        if (localPoint.valid) { // TODO: Restrict to non-ocean, non-Mountain terrain
+        if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
+                terrain != TileType.ocean, terrain != TileType.mountain) {
             Boolean newValue = !mountainItem.model.selected;
             model.map.mountainous[localPoint] = newValue;
             model.mapModified = true;
@@ -117,6 +119,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     shared actual void removeSelectionChangeListener(SelectionChangeListener listener)
             => scs.removeSelectionChangeListener(listener);
 
+    suppressWarnings("deprecation")
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         point = newPoint;
         if (newPoint.valid, model.map.baseTerrain[newPoint] exists) {
@@ -124,8 +127,15 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         } else {
             newUnitItem.enabled = false;
         }
-//        mountainItem.model.selected = model.map.mountainous[newPoint]; // TODO: syntax sugar once compiler bug fixed
-        mountainItem.model.selected = model.map.mountainous.get(newPoint); // TODO: Disable it when listener will ignore it
+        if (newPoint.valid, exists terrain = model.map.baseTerrain[newPoint],
+                terrain != TileType.ocean, terrain != TileType.mountain) {
+//          mountainItem.model.selected = model.map.mountainous[newPoint]; // TODO: syntax sugar once compiler bug fixed
+            mountainItem.model.selected = model.map.mountainous.get(newPoint);
+            mountainItem.enabled = true;
+        } else {
+            mountainItem.model.selected = false;
+            mountainItem.enabled = false;
+        }
         if (newPoint.valid, exists terrain = model.map.baseTerrain[newPoint],
                 terrain != TileType.ocean) {
 //        {River*} rivers = model.map.rivers[point]; // TODO: syntax sugar
