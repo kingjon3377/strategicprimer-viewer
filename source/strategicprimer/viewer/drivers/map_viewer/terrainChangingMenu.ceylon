@@ -56,7 +56,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     JMenuItem mountainItem = JMenuItem("Mountainous");
 
     suppressWarnings("deprecation")
-    void toggleMountains() { // TODO: Call scs.fireChanges()
+    void toggleMountains() {
         Point localPoint = point;
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
                 terrain != TileType.ocean, terrain != TileType.mountain) {
@@ -64,12 +64,13 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
             model.map.mountainous[localPoint] = newValue;
             model.mapModified = true;
             mountainItem.model.selected = newValue;
+            scs.fireChanges(null, localPoint);
         }
     }
 
     mountainItem.addActionListener(silentListener(toggleMountains));
 
-	void toggleRiver(River river, JMenuItem item)() { // TODO: Call scs.fireChanges()
+	void toggleRiver(River river, JMenuItem item)() {
         Point localPoint = point;
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
                 terrain != TileType.ocean) {
@@ -82,6 +83,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
                 model.mapModified = true;
                 item.model.selected = true;
             }
+            scs.fireChanges(null, localPoint);
         }
     }
 
