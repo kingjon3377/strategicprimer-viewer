@@ -197,7 +197,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
         tagStack.push(element.name);
         tagStack.push(mapTag.name);
         IMutableMapNG retval = SPMapNG(dimensions, players, currentTurn);
-        variable Point point = Point.invalidPoint; // TODO: Use Point? instead?
+        variable Point? point = null;
         for (event in stream) {
             if (is StartElement event, isSupportedNamespace(event.name)) {
                 String type = event.name.localPart.lowercased;
@@ -210,20 +210,21 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     // Deliberately ignore "row"
                     continue;
                 } else if ("tile" == type) {
-                    if (point.valid) {
+                    if (point exists) {
                         assert (exists top = tagStack.top);
                         throw UnwantedChildException(top, event);
                     }
                     expectAttributes(event, "row", "column", "kind", "type");
                     tagStack.push(event.name);
-                    point = parsePoint(event);
+                    Point localPoint = parsePoint(event);
+                    point = localPoint;
                     // Since tiles have sometimes been *written* without "kind", then
                     // failed to load, be liberal in waht we accept here.
                     if ((hasParameter(event, "kind") || hasParameter(event, "type"))) {
                         value kind = TileType.parse(getParamWithDeprecatedForm(event,
                             "kind", "type"));
                         if (is TileType kind) {
-                            retval.baseTerrain[point] = kind;
+                            retval.baseTerrain[localPoint] = kind;
                         } else {
                             warner.handle(MissingPropertyException(event, "kind", kind));
                         }
@@ -236,27 +237,30 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 } else if ("sandbar" == type) {
                     tagStack.push(event.name);
                     warner.handle(UnsupportedTagException.obsolete(event));
-                } else if (!point.valid) {
+                } else if (exists localPoint = point) {
+                    if ("lake" == type || "river" == type) {
+                        assert (exists top = tagStack.top);
+                        retval.addRivers(localPoint, parseRiver(event, top));
+                        spinUntilEnd(event.name, stream);
+                    } else if ("mountain" == type) {
+                        tagStack.push(event.name);
+                        retval.mountainous[localPoint] = true;
+                    } else {
+                        assert (exists top = tagStack.top);
+                        value child = parseFixture(event, top, stream);
+                        if (is Fortress child, retval.fixtures.get(localPoint) // TODO: syntax sugar
+                                .narrow<Fortress>()
+                                .any(matchingValue(child.owner, Fortress.owner))) {
+                            warner.handle(UnwantedChildException.withMessage(top, event,
+                                    "Multiple fortresses owned by one player on a tile"));
+                        }
+                        retval.addFixture(localPoint, child);
+                    }
+                } else {
                     // fixture outside tile
                     assert (exists top = tagStack.top);
                     throw UnwantedChildException.listingExpectedTags(top, event,
                         Singleton("tile"));
-                } else if ("lake" == type || "river" == type) {
-                    assert (exists top = tagStack.top);
-                    retval.addRivers(point, parseRiver(event, top));
-                    spinUntilEnd(event.name, stream);
-                } else if ("mountain" == type) {
-                    tagStack.push(event.name);
-                    retval.mountainous[point] = true;
-                } else {
-                    assert (exists top = tagStack.top);
-                    value child = parseFixture(event, top, stream);
-                    if (is Fortress child, retval.fixtures.get(point).narrow<Fortress>()
-                            .any(matchingValue(child.owner, Fortress.owner))) {
-                        warner.handle(UnwantedChildException.withMessage(top, event,
-                                "Multiple fortresses owned by same player on same tile"));
-                    }
-                    retval.addFixture(point, child);
                 }
             } else if (is EndElement event) {
                 if (exists top = tagStack.top, top == event.name) {
@@ -265,12 +269,12 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 if (element.name == event.name) {
                     break;
                 } else if ("tile" == event.name.localPart.lowercased) {
-                    point = Point.invalidPoint;
+                    point = null;
                 }
             } else if (is Characters event) {
                 String data = event.data.trimmed;
                 if (!data.empty) {
-                    retval.addFixture(point, TextFixture(data, -1));
+                    retval.addFixture(point else Point.invalidPoint, TextFixture(data, -1));
                 }
             }
         }
