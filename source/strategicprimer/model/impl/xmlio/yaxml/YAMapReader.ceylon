@@ -220,7 +220,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     point = localPoint;
                     // Since tiles have sometimes been *written* without "kind", then
                     // failed to load, be liberal in waht we accept here.
-                    if ((hasParameter(event, "kind") || hasParameter(event, "type"))) {
+                    if ((hasParameter(event, "kind") ||hasParameter(event, "type"))) {
                         value kind = TileType.parse(getParamWithDeprecatedForm(event,
                             "kind", "type"));
                         if (is TileType kind) {
@@ -231,6 +231,14 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     } else {
                         warner.handle(MissingPropertyException(event, "kind"));
                     }
+                } else if ("elsewhere" == type) {
+                    if (point exists) {
+                        assert (exists top = tagStack.top);
+                        throw UnwantedChildException(top, event);
+                    }
+                    expectAttributes(event);
+                    tagStack.push(event.name);
+                    point = Point.invalidPoint;
                 } else if (futureTags.contains(type)) {
                     tagStack.push(event.name);
                     warner.handle(UnsupportedTagException.future(event));
@@ -260,7 +268,7 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     // fixture outside tile
                     assert (exists top = tagStack.top);
                     throw UnwantedChildException.listingExpectedTags(top, event,
-                        Singleton("tile"));
+                        ["tile", "elsewhere"]);
                 }
             } else if (is EndElement event) {
                 if (exists top = tagStack.top, top == event.name) {
@@ -268,7 +276,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 }
                 if (element.name == event.name) {
                     break;
-                } else if ("tile" == event.name.localPart.lowercased) {
+                } else if ("tile" == event.name.localPart.lowercased ||
+                        "elsewhere" == event.name.localPart.lowercased) {
                     point = null;
                 }
             } else if (is Characters event) {
@@ -309,6 +318,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
                 .name``");
         }
     }
+
+    Boolean validPoint(Point->TileFixture entry) => entry.key.valid;
 
     "Write a map."
     shared actual void write(Anything(String) ostream, IMapNG obj, Integer tabs) {
@@ -394,6 +405,15 @@ class YAMapReader("The Warning instance to use" Warning warner,
             if (!rowEmpty) {
                 closeTag(ostream, tabs + 2, "row");
             }
+        }
+        if (obj.fixtures.any(not(validPoint))) {
+            writeTag(ostream, "elsewhere", tabs + 2);
+            finishParentTag(ostream);
+            for (fixture in obj.fixtures.filter(not(validPoint)).map(Entry.item)
+                    .coalesced) {
+                writeChild(ostream, fixture, tabs + 3);
+            }
+            closeTag(ostream, tabs + 2, "elsewhere");
         }
         closeTag(ostream, tabs + 1, "map");
         closeTag(ostream, tabs, "view");

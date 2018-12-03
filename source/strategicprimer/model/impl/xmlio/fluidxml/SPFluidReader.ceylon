@@ -245,6 +245,26 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         }
     }
 
+    void parseElsewhere(IMutableMapNG map, StartElement element, {XMLEvent*} stream,
+            IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
+        expectAttributes(element, warner);
+        Point loc = Point.invalidPoint;
+        for (event in stream) {
+            if (is StartElement event, isSPStartElement(event)) {
+                parseTileChild(map, element, stream, players, warner, idFactory, loc,
+                    event);
+                continue;
+            } else if (is EndElement event, element.name == event.name) {
+                break;
+            } else if (is Characters event) {
+                String data = event.data.trimmed;
+                if (!data.empty) {
+                    map.addFixture(loc, TextFixture(data, -1));
+                }
+            }
+        }
+    }
+
     IMutableMapNG readMapOrViewTag(StartElement element, QName parent, {XMLEvent*} stream,
             IMutablePlayerCollection players, Warning warner, IDRegistrar idFactory) {
         requireTag(element, parent, "map", "view");
@@ -287,6 +307,9 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
                     continue;
                 } else if ("tile" == type) {
                     parseTile(retval, event, stream, players, warner, idFactory);
+                    continue;
+                } else if ("elsewhere" == type) {
+                    parseElsewhere(retval, event, stream, players, warner, idFactory);
                     continue;
                 }
                 assert (exists stackTop);

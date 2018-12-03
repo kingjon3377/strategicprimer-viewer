@@ -27,7 +27,8 @@ import strategicprimer.model.common.map {
     Point,
     River,
     TileType,
-    IMapNG
+    IMapNG,
+    TileFixture
 }
 import strategicprimer.model.common.map.fixtures {
     Implement,
@@ -251,6 +252,8 @@ shared class SPFluidWriter() satisfies SPWriter {
         ostream.writeEndElement();
     }
 
+    Boolean validPoint(Point->TileFixture entry) => entry.key.valid;
+
     void writeMap(XMLStreamWriter ostream, IMapNG obj, Integer indentation) {
         writeTag(ostream, "view", indentation, false);
         writeAttributes(ostream, "current_player"->obj.currentPlayer.playerId,
@@ -323,6 +326,15 @@ shared class SPFluidWriter() satisfies SPWriter {
                 indent(ostream, indentation + 2);
                 ostream.writeEndElement();
             }
+        }
+        if (obj.fixtures.any(not(validPoint))) {
+            writeTag(ostream, "elsewhere", indentation +2, false);
+            for (fixture in obj.fixtures.filter(not(validPoint)).map(Entry.item)
+                    .coalesced) {
+                writeSPObjectImpl(ostream, fixture, indentation + 3);
+            }
+            indent(ostream, indentation + 2);
+            ostream.writeEndElement();
         }
         indent(ostream, indentation + 1);
         ostream.writeEndElement();

@@ -1731,4 +1731,14 @@ object xmlTests {
                                 <tile row="0" column="0" kind="plains">
                                 <sandbar id="0" /></tile></map></view>""", "sandbar",
             createSimpleMap(Point(1, 1), Point(0, 0)->TileType.plains));
+
+    """Test that maps can store units (or other fixtures) with a location of
+       "elsewhere"."""
+    test
+    shared void testElsewhere(randomlyGenerated(2) Integer id) {
+        IMutableMapNG map = createSimpleMap(Point(1, 1));
+        map.addFixture(Point.invalidPoint, Ogre(id));
+        assertSerialization(
+            """Map with fixture "elsewhere" should be properly serialized""", map);
+    }
 }
