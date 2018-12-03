@@ -126,10 +126,19 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         }
 //        mountainItem.model.selected = model.map.mountainous[newPoint]; // TODO: syntax sugar once compiler bug fixed
         mountainItem.model.selected = model.map.mountainous.get(newPoint); // TODO: Disable it when listener will ignore it
+        if (newPoint.valid, exists terrain = model.map.baseTerrain[newPoint],
+                terrain != TileType.ocean) {
 //        {River*} rivers = model.map.rivers[point]; // TODO: syntax sugar
-        {River*} rivers = model.map.rivers.get(point);
-        for (direction->item in riverItems) {
-            item.model.selected = direction in rivers; // TODO: Disable it when listener will ignore it
+            {River*} rivers = model.map.rivers.get(point);
+            for (direction->item in riverItems) {
+                item.enabled = true;
+                item.model.selected = direction in rivers;
+            }
+        } else {
+            for (item in riverItems.items) {
+                item.model.selected = false;
+                item.enabled = false;
+            }
         }
     }
 
