@@ -103,14 +103,9 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         }
         addSeparator();
         add(newUnitItem);
-//        mountainItem.model.selected = model.map.mountainous[point]; // TODO: syntax sugar once compiler bug fixed
-        mountainItem.model.selected = model.map.mountainous.get(point);
-		add(mountainItem); // TODO: Disable it when listener will ignore it
-//        {River*} rivers = model.map.rivers[point]; // TODO: syntax sugar
-        {River*} rivers = model.map.rivers.get(point);
+		add(mountainItem);
         for (direction->item in riverItems) {
-            item.model.selected = direction in rivers;
-            add(item); // TODO: Disable it when listener will ignore it
+            add(item);
         }
     }
 
@@ -128,6 +123,13 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
             newUnitItem.enabled = true;
         } else {
             newUnitItem.enabled = false;
+        }
+//        mountainItem.model.selected = model.map.mountainous[newPoint]; // TODO: syntax sugar once compiler bug fixed
+        mountainItem.model.selected = model.map.mountainous.get(newPoint); // TODO: Disable it when listener will ignore it
+//        {River*} rivers = model.map.rivers[point]; // TODO: syntax sugar
+        {River*} rivers = model.map.rivers.get(point);
+        for (direction->item in riverItems) {
+            item.model.selected = direction in rivers; // TODO: Disable it when listener will ignore it
         }
     }
 
