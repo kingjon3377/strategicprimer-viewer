@@ -15,12 +15,12 @@ shared class TownStatus of active|abandoned|burned|ruined {
         string = "abandoned";
         ordinal = 1;
     }
-    shared new burned {
-        string = "burned";
-        ordinal = 2;
-    }
     shared new ruined {
         string = "ruined";
+        ordinal = 2;
+    }
+    shared new burned {
+        string = "burned";
         ordinal = 3;
     }
 }
