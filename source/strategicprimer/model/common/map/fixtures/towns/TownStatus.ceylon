@@ -1,5 +1,6 @@
 "Possible statuses of towns, fortifications, and cities."
-shared class TownStatus of active|abandoned|burned|ruined {
+shared class TownStatus of active|abandoned|burned|ruined
+        satisfies Comparable<TownStatus> {
     shared static TownStatus|ParseException parse(String status) =>
             parseTownStatus(status);
 
@@ -23,6 +24,7 @@ shared class TownStatus of active|abandoned|burned|ruined {
         string = "burned";
         ordinal = 3;
     }
+    shared actual Comparison compare(TownStatus other) => ordinal <=> other.ordinal;
 }
 
 TownStatus|ParseException parseTownStatus(String status) {

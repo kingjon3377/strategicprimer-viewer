@@ -8,8 +8,7 @@ import ceylon.test {
 }
 
 import lovelace.util.common {
-    todo,
-    comparingOn
+    todo
 }
 
 import strategicprimer.model.common.map {
@@ -34,27 +33,6 @@ import ceylon.random {
  [[towns|ITownFixture]]. The methods it uses to derive that ordering are useful
  by themselves as well, and so are also shared."
 object townComparators {
-    "A comparator for town-statuses, to put active towns before abandoned ones before
-     ruined ones before burned-out ones."
-    todo("Move this into TownStatus to make it Comparable")
-    shared Comparison compareTownStatus(TownStatus one, TownStatus two) {
-        if (one == two) {
-            return equal;
-        } else if (TownStatus.active == one) {
-            return smaller;
-        } else if (TownStatus.active == two) {
-            return larger;
-        } else if (TownStatus.abandoned == one) {
-            return smaller;
-        } else if (TownStatus.abandoned == two) {
-            return larger;
-        } else if (TownStatus.ruined == one) {
-            return smaller;
-        } else {
-            return larger;
-        }
-    }
-
     "A comparator for towns, sorting them *only* on the basis of what kind of town they
      are, putting fortresses before cities before towns before fortifications before
      villages."
@@ -99,7 +77,7 @@ object townComparators {
 
     "A total ordering for towns."
     shared Comparison compareTowns(ITownFixture one, ITownFixture two) =>
-            comparing(comparingOn(ITownFixture.status, compareTownStatus),
+            comparing(byIncreasing(ITownFixture.status),
                 byDecreasing(ITownFixture.townSize), compareTownKind,
                 byIncreasing(ITownFixture.name))(one, two);
 }

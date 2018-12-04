@@ -46,6 +46,6 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
             comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
             comparingOn(pairFixture,
                 comparing(byDecreasing(AbstractTown.townSize),
-                    comparingOn(AbstractTown.status, townComparators.compareTownStatus),
+                    byIncreasing(AbstractTown.status),
                     byIncreasing(AbstractTown.name))))(one, two);
 }
