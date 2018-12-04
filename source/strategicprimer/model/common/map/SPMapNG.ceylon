@@ -94,11 +94,6 @@ shared class SPMapNG satisfies IMutableMapNG {
         currentTurn = turn;
     }
 
-    "Whether the given point is in the map."
-    Boolean contained(Point point) => // TODO: Move to MapDimensions?
-            (0:mapDimensions.rows).contains(point.row) && (0:mapDimensions.columns)
-                .contains(point.column);
-
     "The dimensions of the map."
     shared actual MapDimensions dimensions => mapDimensions;
 
@@ -111,7 +106,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The base terrain at the given location."
     shared actual object baseTerrain satisfies Correspondence<Point, TileType>&
             KeyedCorrespondenceMutator<Point, TileType?> {
-        shared actual Boolean defines(Point key) => contained(key);
+        shared actual Boolean defines(Point key) => key in dimensions;
         shared actual TileType? get(Point key) => terrain[key];
         shared actual void put(Point key, TileType? item) {
             if (exists item) {
@@ -125,7 +120,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     "Whether the given location is mountainous."
     shared actual object mountainous satisfies NonNullCorrespondence<Point, Boolean>&
             KeyedCorrespondenceMutator<Point, Boolean> {
-        shared actual Boolean defines(Point key) => contained(key);
+        shared actual Boolean defines(Point key) => key in dimensions;
         shared actual Boolean get(Point key) => mountains.contains(key);
         shared actual void put(Point key, Boolean item) {
             if (item) {
