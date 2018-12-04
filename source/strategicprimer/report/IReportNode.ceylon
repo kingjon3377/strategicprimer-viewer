@@ -66,9 +66,12 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&
         if (exists retval = localPoint) {
             return retval;
         } else {
+            variable Boolean first = true;
             variable Point? retval = null;
-            for (child in this) { // FIXME: This doesn't work properly for [null, somePoint]
-                if (exists temp = retval) {
+            for (child in this) {
+                if (first) {
+                    retval = child.point;
+                } else if (exists temp = retval) {
                     if (exists childPoint = child.point) {
                         if (temp != childPoint) {
                             return null;
@@ -76,8 +79,8 @@ shared interface IReportNode satisfies Comparable<IReportNode>&MutableTreeNode&
                     } else {
                         return null;
                     }
-                } else {
-                    retval = child.point;
+                } else if (child.point exists) {
+                    return null;
                 }
             }
             return retval;
