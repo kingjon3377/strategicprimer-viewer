@@ -143,7 +143,7 @@ shared class HarvestableReportGenerator
             ostream(item.string);
         }
         case (is MineralVein) {
-            ostream("An ``(item.exposed) then
+            ostream("An ``(item.exposed) then // TODO: Extract interpolated text into separate statement
                 "exposed" else "unexposed"`` vein of ``item.kind``");
         }
         case (is Shrub) {
@@ -235,46 +235,11 @@ shared class HarvestableReportGenerator
     shared actual IReportNode produceRIRSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, HarvestableFixture item, Point loc) {
-        SimpleReportNode retval;
         assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
-        // TODO: Delegate to produceSimple()?
-        switch (item)
-        case (is CacheFixture) {
-            retval = SimpleReportNode("At ``loc``: ``distCalculator
-                .distanceString(loc)`` A cache of ``item.kind``, containing ``item
-                .contents``", loc);
-        }
-        case (is Grove) {
-            retval = SimpleReportNode("At ``loc``: A ``(item.cultivated) then
-                "cultivated" else "wild"`` ``item.kind`` ``(item
-                    .orchard) then "orchard" else "grove"`` ``distCalculator
-                    .distanceString(loc)``", loc);
-        }
-        case (is Meadow) {
-            retval = SimpleReportNode("At ``loc``: A ``item.status`` ``(item
-                .cultivated) then "cultivated" else "wild or abandoned"`` ``item
-                .kind`` ``(item.field) then "field" else "meadow"`` ``distCalculator
-                .distanceString(loc)``", loc);
-        }
-        case (is Mine) {
-            retval = SimpleReportNode("At ``loc``: ``item`` ``distCalculator
-                .distanceString(loc)``", loc);
-        }
-        case (is MineralVein) {
-            retval = SimpleReportNode("At ``loc``: An ``(item
-                .exposed) then "exposed" else "unexposed"`` vein of ``item
-                .kind`` ``distCalculator.distanceString(loc)``", loc);
-        }
-        case (is Shrub) {
-            retval = SimpleReportNode("At ``loc``: ``item.kind`` ``distCalculator
-                .distanceString(loc)``", loc);
-        }
-        case (is StoneDeposit) {
-            retval = SimpleReportNode("At ``loc``: An exposed ``item
-                .kind`` deposit ``distCalculator.distanceString(loc)``", loc);
-        }
+        StringBuilder nodeText = StringBuilder();
+        produceSingle(fixtures, map, nodeText.append, item, loc);
         fixtures.remove(item.id);
-        return retval;
+        return SimpleReportNode(nodeText.string, loc);
     }
 
     """Produce the sub-reports dealing with "harvestable" fixture(s). All fixtures
