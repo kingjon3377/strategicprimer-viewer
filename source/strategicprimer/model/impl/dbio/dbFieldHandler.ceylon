@@ -46,7 +46,7 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>()
                     (obj.field) then "field" else "meadow", obj.kind, obj.cultivated,
                     obj.status.string, obj.acres.string, obj.image);
 
-    void readMeadow(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readMeadow(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String type = dbRow["type"],
             is String kind = dbRow["kind"],
@@ -81,6 +81,6 @@ object dbFieldHandler extends AbstractDatabaseWriter<Meadow, Point>()
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "meadows", curry(readMeadow)(map),
+            handleQueryResults(db, warner, "meadows", readMeadow(map),
                 """SELECT * FROM fields""");
 }

@@ -39,7 +39,7 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
                 .execute(context.row, context.column, obj.id, obj.kind, obj.rows,
                     obj.acres.string, obj.image);
 
-    void readForest(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readForest(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
             is Boolean rows = dbMapReader.databaseBoolean(dbRow["rows"]),
@@ -60,6 +60,6 @@ object dbForestHandler extends AbstractDatabaseWriter<Forest, Point>()
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "forests", curry(readForest)(map),
+            handleQueryResults(db, warner, "forests", readForest(map),
                 """SELECT * FROM forests""");
 }

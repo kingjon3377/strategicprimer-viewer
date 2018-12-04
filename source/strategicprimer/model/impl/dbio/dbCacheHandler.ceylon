@@ -33,7 +33,7 @@ object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>()
                 .execute(context.row, context.column, obj.id, obj.kind, obj.contents,
                     obj.image);
 
-    void readCache(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readCache(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
             is String contents = dbRow["contents"],
@@ -46,6 +46,6 @@ object dbCacheHandler extends AbstractDatabaseWriter<CacheFixture, Point>()
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "caches", curry(readCache)(map),
+            handleQueryResults(db, warner, "caches", readCache(map),
                 """SELECT * FROM caches""");
 }

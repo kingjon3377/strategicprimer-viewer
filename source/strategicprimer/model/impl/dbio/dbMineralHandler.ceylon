@@ -51,7 +51,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
                     obj.id, obj.kind, exposed, obj.dc, obj.image);
     }
 
-    void readMineralVein(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readMineralVein(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
             is Boolean exposed = dbMapReader.databaseBoolean(dbRow["exposed"]),
@@ -63,7 +63,7 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
         map.addFixture(Point(row, column), mineral);
     }
 
-    void readStoneDeposit(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readStoneDeposit(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kindString = dbRow["kind"],
             is StoneKind kind = StoneKind.parse(kindString), is Integer dc = dbRow["dc"],
@@ -76,10 +76,10 @@ object dbMineralHandler extends AbstractDatabaseWriter<MineralVein|StoneDeposit,
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-        handleQueryResults(db, warner, "stone deposits", curry(readStoneDeposit)(map),
+        handleQueryResults(db, warner, "stone deposits", readStoneDeposit(map),
             """SELECT row, column, id, kind, dc, image FROM minerals
                WHERE type = 'stone'""");
-        handleQueryResults(db, warner, "mineral veins", curry(readMineralVein)(map),
+        handleQueryResults(db, warner, "mineral veins", readMineralVein(map),
             """SELECT row, column, id, kind, exposed, dc, image FROM minerals
                WHERE type = 'mineral'""");
     }

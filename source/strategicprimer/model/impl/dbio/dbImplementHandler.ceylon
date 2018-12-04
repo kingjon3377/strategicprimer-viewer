@@ -39,7 +39,7 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 
-    void readImplement(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+    void readImplement(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
         assert (is Integer parentId = row["parent"],
             is IUnit|Fortress parent = findById(map, parentId, warner),
             is Integer id = row["id"], is String kind = row["kind"],
@@ -57,5 +57,5 @@ object dbImplementHandler extends AbstractDatabaseWriter<Implement, IUnit|Fortre
 
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "pieces of equipment",
-                curry(readImplement)(map), """SELECT * FROM implements""");
+                readImplement(map), """SELECT * FROM implements""");
 }

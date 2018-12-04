@@ -87,7 +87,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
         }
     }
 
-    void readAnimal(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readAnimal(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is String kind = dbRow["kind"],
             is Boolean talking = dbMapReader.databaseBoolean(dbRow["talking"]),
             is String status = dbRow["status"], is Integer|SqlNull born = dbRow["born"],
@@ -107,7 +107,7 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
         }
     }
 
-    void readTracks(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readTracks(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is String kind = dbRow["kind"], is String|SqlNull image = dbRow["image"]);
         value track = AnimalTracks(kind);
@@ -118,13 +118,13 @@ object dbAnimalHandler extends AbstractDatabaseWriter<Animal|AnimalTracks, Point
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-        handleQueryResults(db, warner, "animal populations", curry(readAnimal)(map),
+        handleQueryResults(db, warner, "animal populations", readAnimal(map),
             """SELECT * FROM animals WHERE row IS NOT NULL""");
-        handleQueryResults(db, warner, "animal tracks", curry(readTracks)(map),
+        handleQueryResults(db, warner, "animal tracks", readTracks(map),
             """SELECT * FROM tracks""");
     }
 
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "animals in units", curry(readAnimal)(map),
+            handleQueryResults(db, warner, "animals in units", readAnimal(map),
                 """SELECT * FROM animals WHERE parent IS NOT NULL""");
 }

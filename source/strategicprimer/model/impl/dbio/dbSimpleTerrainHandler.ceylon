@@ -44,7 +44,7 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>(
                 .execute(context.row, context.column, type, obj.id, obj.image);
     }
 
-    void readSimpleTerrain(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readSimpleTerrain(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is String type = dbRow["type"], is Integer id = dbRow["id"],
             is String|SqlNull image = dbRow["image"]);
@@ -71,5 +71,5 @@ object dbSimpleTerrainHandler extends AbstractDatabaseWriter<Hill|Oasis, Point>(
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
             handleQueryResults(db, warner, "simple terrain fixtures",
-                curry(readSimpleTerrain)(map), """SELECT * FROM simple_terrain""");
+                readSimpleTerrain(map), """SELECT * FROM simple_terrain""");
 }

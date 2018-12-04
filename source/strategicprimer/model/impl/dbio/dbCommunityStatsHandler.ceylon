@@ -93,7 +93,7 @@ object dbCommunityStatsHandler
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 
-    void readTownExpertise(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+    void readTownExpertise(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
         assert (is Integer townId = row["town"],
             is ITownFixture town = findById(map, townId, warner),
             exists population = town.population, is String skill = row["skill"],
@@ -101,14 +101,14 @@ object dbCommunityStatsHandler
         population.setSkillLevel(skill, level);
     }
 
-    void readWorkedResource(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+    void readWorkedResource(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
         assert (is Integer townId = row["town"],
             is ITownFixture town = findById(map, townId, warner),
             exists population = town.population, is Integer resource = row["resource"]);
         population.addWorkedField(resource);
     }
 
-    void readProducedResource(IMutableMapNG map, Map<String, Object> row,
+    void readProducedResource(IMutableMapNG map)(Map<String, Object> row,
             Warning warner) {
         assert (is Integer townId = row["town"],
             is ITownFixture town = findById(map, townId, warner),
@@ -130,7 +130,7 @@ object dbCommunityStatsHandler
         population.yearlyProduction.add(pile);
     }
 
-    void readConsumedResource(IMutableMapNG map, Map<String, Object> row,
+    void readConsumedResource(IMutableMapNG map)(Map<String, Object> row,
             Warning warner) {
         assert (is Integer townId = row["town"],
             is ITownFixture town = findById(map, townId, warner),
@@ -154,12 +154,12 @@ object dbCommunityStatsHandler
 
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
         handleQueryResults(db, warner, "town expertise levels",
-            curry(readTownExpertise)(map), """SELECT * FROM town_expertise""");
+            readTownExpertise(map), """SELECT * FROM town_expertise""");
         handleQueryResults(db, warner, "town worked resources",
-            curry(readWorkedResource)(map), """SELECT * FROM town_worked_resources""");
+            readWorkedResource(map), """SELECT * FROM town_worked_resources""");
         handleQueryResults(db, warner, "town produced resources",
-            curry(readProducedResource)(map), """SELECT * FROM town_production""");
+            readProducedResource(map), """SELECT * FROM town_production""");
         handleQueryResults(db, warner, "town consumed resources",
-            curry(readConsumedResource)(map), """SELECT * FROM town_consumption""");
+            readConsumedResource(map), """SELECT * FROM town_consumption""");
     }
 }

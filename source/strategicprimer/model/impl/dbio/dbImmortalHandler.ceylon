@@ -110,7 +110,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
         }
     }
 
-    void readSimpleImmortal(IMutableMapNG map, Map<String, Object> dbRow,
+    void readSimpleImmortal(IMutableMapNG map)(Map<String, Object> dbRow,
             Warning warner) {
         assert (is String type = dbRow["type"], is Integer id = dbRow["id"],
             is String|SqlNull image = dbRow["image"]);
@@ -155,7 +155,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
         }
     }
 
-    void readKindedImmortal(IMutableMapNG map, Map<String, Object> dbRow,
+    void readKindedImmortal(IMutableMapNG map)(Map<String, Object> dbRow,
             Warning warner) {
         assert (is String type = dbRow["type"], is String kind = dbRow["kind"],
             is Integer id = dbRow["id"], is String|SqlNull image = dbRow["image"]);
@@ -189,19 +189,18 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
-        handleQueryResults(db, warner, "simple immortals", curry(readSimpleImmortal)(map),
+        handleQueryResults(db, warner, "simple immortals", readSimpleImmortal(map),
             """SELECT * FROM simple_immortals WHERE row IS NOT NULL""");
-        handleQueryResults(db, warner, "immortals with kinds",
-            curry(readKindedImmortal)(map),
+        handleQueryResults(db, warner, "immortals with kinds", readKindedImmortal(map),
             """SELECT * FROM kinded_immortals WHERE row IS NOT NULL""");
     }
 
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
         handleQueryResults(db, warner, "simple immortals in units",
-            curry(readSimpleImmortal)(map),
+            readSimpleImmortal(map),
             """SELECT * FROM simple_immortals WHERE parent IS NOT NULL""");
         handleQueryResults(db, warner, "immortals with kinds in units",
-            curry(readKindedImmortal)(map),
+            readKindedImmortal(map),
             """SELECT * FROM kinded_immortals WHERE parent IS NOT NULL""");
     }
 }

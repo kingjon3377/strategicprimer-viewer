@@ -52,7 +52,7 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()
         }
     }
 
-    void readVillage(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readVillage(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is String statusString = dbRow["status"],
             is TownStatus status = TownStatus.parse(statusString),
@@ -75,6 +75,6 @@ object dbVillageHandler extends AbstractDatabaseWriter<Village, Point>()
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "villages", curry(readVillage)(map),
+            handleQueryResults(db, warner, "villages", readVillage(map),
                 """SELECT * from villages""");
 }

@@ -48,7 +48,7 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
         insertion.execute(context.row, context.column, obj.id, obj.dc, obj.image);
     }
 
-    void readCave(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readCave(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is Integer dc = dbRow["dc"],
             is String|SqlNull image = dbRow["image"]);
@@ -59,7 +59,7 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
         map.addFixture(Point(row, column), cave);
     }
 
-    void readBattlefield(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readBattlefield(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is Integer dc = dbRow["dc"],
             is String|SqlNull image = dbRow["image"]);
@@ -70,10 +70,10 @@ object dbExplorableHandler extends AbstractDatabaseWriter<Cave|Battlefield, Poin
         map.addFixture(Point(row, column), battlefield);
     }
 
-    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) { // TODO: Here and elsewhere, why not make methods take two parameter lists instead of calling curry() on them?
-        handleQueryResults(db, warner, "caves", curry(readCave)(map),
+    shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {
+        handleQueryResults(db, warner, "caves", readCave(map),
             """SELECT * FROM caves""");
-        handleQueryResults(db, warner, "battlefields", curry(readBattlefield)(map),
+        handleQueryResults(db, warner, "battlefields", readBattlefield(map),
             """SELECT * FROM battlefields""");
     }
 }

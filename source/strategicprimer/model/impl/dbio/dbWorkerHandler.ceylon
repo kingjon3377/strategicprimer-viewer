@@ -112,7 +112,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 
-    void readWorkerStats(IMutableMapNG map, MutableMap<Integer, Worker> workers,
+    void readWorkerStats(IMutableMapNG map, MutableMap<Integer, Worker> workers)(
             Map<String, Object> row, Warning warner) {
         assert (is Integer unitId = row["unit"],
             is IUnit unit = super.findById(map, unitId, warner),
@@ -142,14 +142,14 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
         unit.addMember(worker);
     }
 
-    void readJobLevel(IMutableMapNG map, Map<Integer, Worker> workers,
+    void readJobLevel(IMutableMapNG map, Map<Integer, Worker> workers)(
             Map<String, Object> row, Warning warner) {
         assert (is Integer id = row["worker"], exists worker = workers[id],
             is String job = row["job"], is Integer level = row["level"]);
         worker.addJob(Job(job, level));
     }
 
-    void readSkillLevel(IMutableMapNG map, Map<Integer, Worker> workers,
+    void readSkillLevel(IMutableMapNG map, Map<Integer, Worker> workers)(
             Map<String, Object> row, Warning warner) {
         assert (is Integer id = row["worker"], exists worker = workers[id],
             is String job = row["associated_job"], is String skill = row["skill"],
@@ -159,14 +159,11 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
 
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
         MutableMap<Integer, Worker> workers = HashMap<Integer, Worker>();
-        handleQueryResults(db, warner, "worker stats",
-            curry(curry(readWorkerStats)(map))(workers),
+        handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers),
             """SELECT * FROM workers""");
-        handleQueryResults(db, warner, "Job levels",
-            curry(curry(readJobLevel)(map))(workers),
+        handleQueryResults(db, warner, "Job levels", readJobLevel(map, workers),
             """SELECT * FROM worker_job_levels""");
-        handleQueryResults(db, warner, "Skill levels",
-            curry(curry(readSkillLevel)(map))(workers),
+        handleQueryResults(db, warner, "Skill levels", readSkillLevel(map, workers),
             """SELECT * FROM worker_skill_levels""");
     }
 }

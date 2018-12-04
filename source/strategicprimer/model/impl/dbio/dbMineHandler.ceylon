@@ -37,7 +37,7 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>()
                 .execute(context.row, context.column, obj.id, obj.kind,
                     obj.status.string, obj.image);
 
-    void readMine(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readMine(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String kind = dbRow["kind"],
             is String statusString = dbRow["status"],
@@ -51,6 +51,6 @@ object dbMineHandler extends AbstractDatabaseWriter<Mine, Point>()
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "mines", curry(readMine)(map),
+            handleQueryResults(db, warner, "mines", readMine(map),
                 """SELECT * FROM mines""");
 }

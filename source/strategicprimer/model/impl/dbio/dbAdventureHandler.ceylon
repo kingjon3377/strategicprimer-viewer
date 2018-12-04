@@ -34,7 +34,7 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
                     .execute(context.row, context.column, obj.id, obj.briefDescription,
                         obj.fullDescription, obj.owner.playerId, obj.image);
 
-    void readAdventure(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readAdventure(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"], is String brief = dbRow["brief"],
             is String full = dbRow["full"], is Integer ownerId = dbRow["owner"],
@@ -48,6 +48,6 @@ object dbAdventureHandler extends AbstractDatabaseWriter<AdventureFixture, Point
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "adventures", curry(readAdventure)(map),
+            handleQueryResults(db, warner, "adventures", readAdventure(map),
                 """SELECT * FROM adventures""");
 }

@@ -30,7 +30,7 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
                      VALUES(?, ?, ?, ?);""")
                 .execute(obj.playerId, obj.name, obj.current, obj.portrait);
 
-    void readPlayer(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+    void readPlayer(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
         assert (is Integer id = row["id"], is String name = row["codename"],
             is Boolean current = dbMapReader.databaseBoolean(row["current"]),
             is String|SqlNull portrait = row["portrait"]);
@@ -43,6 +43,6 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "players", curry(readPlayer)(map),
+            handleQueryResults(db, warner, "players", readPlayer(map),
                 """SELECT * FROM players""");
 }

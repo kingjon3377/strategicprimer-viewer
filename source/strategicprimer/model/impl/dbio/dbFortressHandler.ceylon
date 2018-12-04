@@ -42,7 +42,7 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
         }
     }
 
-    void readFortress(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readFortress(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer ownerId = dbRow["owner"], is String name = dbRow["name"],
             is String sizeString = dbRow["size"],
@@ -60,6 +60,6 @@ object dbFortressHandler extends AbstractDatabaseWriter<Fortress, Point>()
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "fortresses", curry(readFortress)(map),
+            handleQueryResults(db, warner, "fortresses", readFortress(map),
                 """SELECT * FROM fortresses""");
 }

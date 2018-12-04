@@ -50,7 +50,7 @@ object dbResourcePileHandler
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) {}
 
-    void readResourcePile(IMutableMapNG map, Map<String, Object> row, Warning warner) {
+    void readResourcePile(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
         assert (is Integer parentId = row["parent"],
             is IUnit|Fortress parent = findById(map, parentId, warner),
             is Integer id = row["id"], is String kind = row["kind"],
@@ -80,6 +80,6 @@ object dbResourcePileHandler
     }
 
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "resource piles", curry(readResourcePile)(map),
+            handleQueryResults(db, warner, "resource piles", readResourcePile(map),
                 """SELECT * FROM resource_piles""");
 }

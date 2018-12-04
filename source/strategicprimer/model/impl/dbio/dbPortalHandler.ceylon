@@ -55,7 +55,7 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>()
                     obj.destinationWorld, *destinationCoordinates);
     }
 
-    void readPortal(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readPortal(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer id = dbRow["id"],
             is String|SqlNull destinationWorld = dbRow["destination_world"],
@@ -72,6 +72,6 @@ object dbPortalHandler extends AbstractDatabaseWriter<Portal, Point>()
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "portals", curry(readPortal)(map),
+            handleQueryResults(db, warner, "portals", readPortal(map),
                 """SELECT * FROM portals""");
 }

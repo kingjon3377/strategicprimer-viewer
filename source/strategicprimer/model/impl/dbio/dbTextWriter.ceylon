@@ -47,7 +47,7 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>()
                 .execute(context.row, context.column, turn, obj.text, obj.image);
     }
 
-    void readTextNote(IMutableMapNG map, Map<String, Object> dbRow, Warning warner) {
+    void readTextNote(IMutableMapNG map)(Map<String, Object> dbRow, Warning warner) {
         assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
             is Integer|SqlNull turn = dbRow["turn"], is String text = dbRow["text"],
             is String|SqlNull image = dbRow["image"]);
@@ -59,6 +59,6 @@ object dbTextHandler extends AbstractDatabaseWriter<TextFixture, Point>()
     }
 
     shared actual void readMapContents(Sql db, IMutableMapNG map, Warning warner) =>
-            handleQueryResults(db, warner, "text notes", curry(readTextNote)(map),
+            handleQueryResults(db, warner, "text notes", readTextNote(map),
                 """SELECT * FROM text_notes""");
 }
