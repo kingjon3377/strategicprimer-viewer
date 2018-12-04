@@ -37,13 +37,15 @@ shared class TownTabularReportGenerator(Player player, Point hq, MapDimensions d
                 item.status.string, item.name]];
     }
 
-    "Compare two location-town pairs."
+    "Compare two location-town pairs. We partially reimplement
+     [[townComparators.compareTowns]] because there we want to have all active communities
+     together, and so on, while here we want all fortifications together, and so on."
     shared actual Comparison comparePairs([Point, AbstractTown] one,
             [Point, AbstractTown] two) =>
         comparing(comparingOn(pairFixture, townComparators.compareTownKind),
             comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
             comparingOn(pairFixture,
-                comparing(byDecreasing(AbstractTown.townSize), // TODO: Can't we just use townComparators.compareTowns()?
+                comparing(byDecreasing(AbstractTown.townSize),
                     comparingOn(AbstractTown.status, townComparators.compareTownStatus),
                     byIncreasing(AbstractTown.name))))(one, two);
 }
