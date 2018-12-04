@@ -83,7 +83,7 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
         Point loc);
 
     "A factory for a default formatter for [[writeMap]]."
-    shared default Anything(T->Point, Anything(String)) defaultFormatter( // TODO: Is this actually used anywhere? If not, remove!
+    shared default Anything(T->Point, Anything(String)) defaultFormatter(
         DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) =>
             (T key->Point val, Anything(String) formatter) =>
                 produceSingle(fixtures, map, formatter, key, val);
