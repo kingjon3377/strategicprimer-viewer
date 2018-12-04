@@ -57,7 +57,11 @@ shared class ExplorableReportGenerator(
             fixtures.remove(item.id);
             ostream("A portal to another world at ");
         }
-        ostream(loc.string + distCalculator.distanceString(loc));
+        if (loc.valid) {
+            ostream(loc.string + distCalculator.distanceString(loc));
+        } else {
+            ostream("an unknown location");
+        }
     }
 
     "Produces the report on all caves, battlefields, and portals."
