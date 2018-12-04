@@ -43,7 +43,7 @@ shared interface Animal
             } else {
                 popString = "``population`` ";
             }
-            if (born >= 0) { // TODO: Use + instead of interpolation when prepending?
+            if (born >= 0) {
                 return "``popString````kind`` (born ``born``)";
             } else {
                 return "``popString````status`` ``kind``";
