@@ -63,7 +63,8 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
             population = "---";
         }
         fixtures.remove(key);
-        return [[distanceString(loc, hq, dimensions), loc.string, population, kind, age]];
+        return [[distanceString(loc, hq, dimensions), locationString(loc), population,
+            kind, age]];
     }
 
     Comparison compareBools(Boolean first, Boolean second) {

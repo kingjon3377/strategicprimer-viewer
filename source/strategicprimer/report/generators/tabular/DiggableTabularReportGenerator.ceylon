@@ -60,8 +60,8 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
             return [];
         }
         fixtures.remove(key);
-        return [[distanceString(loc, hq, dimensions), loc.string, classField, item.kind,
-            statusField]];
+        return [[distanceString(loc, hq, dimensions), locationString(loc), classField,
+            item.kind, statusField]];
     }
 
     "Compare two Point-fixture pairs."

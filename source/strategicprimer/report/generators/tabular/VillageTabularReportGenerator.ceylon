@@ -30,7 +30,7 @@ shared class VillageTabularReportGenerator(Player player, Point hq,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, Village item,
             Integer key, Point loc, Map<Integer, Integer> parentMap) {
         fixtures.remove(key);
-        return [[distanceString(loc, hq, dimensions), loc.string,
+        return [[distanceString(loc, hq, dimensions), locationString(loc),
             ownerString(player, item.owner), item.name]];
     }
 

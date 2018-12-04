@@ -89,7 +89,7 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq,
             return [];
         }
         fixtures.remove(key);
-        return [[distanceString(loc, hq, dimensions), loc.string, brief, owner,
+        return [[distanceString(loc, hq, dimensions), locationString(loc), brief, owner,
             longDesc]];
     }
 

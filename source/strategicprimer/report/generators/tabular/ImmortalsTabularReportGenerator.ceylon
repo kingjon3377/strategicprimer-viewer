@@ -33,7 +33,7 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Immortal item, Integer key, Point loc, Map<Integer, Integer> parentMap) {
         fixtures.remove(key);
-        return [[distanceString(loc, hq, dimensions), loc.string, item.string]];
+        return [[distanceString(loc, hq, dimensions), locationString(loc), item.string]];
     }
 
     "Compare two Point-fixture pairs."

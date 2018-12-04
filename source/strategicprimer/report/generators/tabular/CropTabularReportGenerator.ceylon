@@ -142,8 +142,8 @@ shared class CropTabularReportGenerator
             }
         }
         fixtures.remove(key);
-        return [[distanceString(loc, hq, dimensions), loc.string, kind, size, sizeUnit,
-            cultivation, status, crop]];
+        return [[distanceString(loc, hq, dimensions), locationString(loc), kind, size,
+            sizeUnit, cultivation, status, crop]];
     }
 
     "Compare two Point-fixture pairs."
