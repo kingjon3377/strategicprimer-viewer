@@ -469,9 +469,8 @@ class TownGenerator(ICLIHelper cli) {
             String tableName = "``skill``_production";
             if (runner.hasTable(tableName)) {
                 retval.yearlyProduction.add(ResourcePile(idf.createID(), "unknown",
-                    runner.consultTable(tableName, location,
-                        map.baseTerrain.get(location), // TODO: syntax sugar
-                        map.mountainous.get(location), map.fixtures.get(location),
+                    runner.consultTable(tableName, location, map.baseTerrain[location],
+                        map.mountainous.get(location), map.fixtures.get(location), // TODO: syntax sugar once compiler bug fixed
                         map.dimensions),
                     Quantity(2.power(level - 1), (level == 1) then "unit" else "units")));
             } else {
