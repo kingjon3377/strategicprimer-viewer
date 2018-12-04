@@ -1,5 +1,5 @@
 "Sizes of towns, fortifications, and cities."
-shared class TownSize of small|medium|large {
+shared class TownSize of small|medium|large satisfies Comparable<TownSize> {
     shared static TownSize|ParseException parse(String size) =>
             parseTownSize(size);
 
@@ -21,6 +21,8 @@ shared class TownSize of small|medium|large {
         string = "large";
         ordinal = 2;
     }
+
+    shared actual Comparison compare(TownSize other) => ordinal <=> other.ordinal;
 }
 
 TownSize|ParseException parseTownSize(String size) {
