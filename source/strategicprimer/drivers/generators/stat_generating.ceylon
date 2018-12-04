@@ -255,7 +255,7 @@ class StatGeneratingCLI satisfies CLIDriver {
         for (i in 0:levels) {
             if (exists jobName = cli.inputString("Which Job does worker have a level in? ")) {
                 IJob job = worker.getJob(jobName);
-                job.level = job.level + 1; // TODO: Replace with += 1?
+                job.level += 1;
             } else {
                 break;
             }
