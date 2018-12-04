@@ -292,8 +292,8 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
     }
 
     """Get the path to the "next" unit whose orders for the given turn either contain
-       "TODO", contain "FIXME", or are empty. Returns null if no unit matches those
-       criteria."""
+       "TODO", contain "FIXME", contain "XXX", or are empty. Returns null if no unit
+       matches those criteria."""
     shared actual TreePath? nextProblem(TreePath? starting, Integer turn) {
         {IUnit*} sequence;
         if (exists starting, exists startingUnit =
@@ -313,7 +313,8 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
         }
         for (unit in sequence) {
             String orders = unit.getOrders(turn).lowercased;
-            if (orders.empty || orders.contains("todo") || orders.contains("fixme")) {
+            if (orders.empty || orders.contains("todo") || orders.contains("fixme") ||
+                    orders.contains("xxx")) {
                 return TreePath(ObjectArray<Object>.with([root, unit.kind, unit]));
             }
         }

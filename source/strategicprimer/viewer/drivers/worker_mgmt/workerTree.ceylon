@@ -345,7 +345,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     String orders = internal.getLatestOrders(turnSource()).lowercased;
                     if (orderCheck, orders.contains("fixme"), !internal.empty) {
                         shouldError = true;
-                    } else if (orderCheck, orders.contains("todo"), !internal.empty) {
+                    } else if (orderCheck, (orders.contains("todo") || orders.contains("xxx")),
+                            !internal.empty) {
                         shouldWarn = true;
                     }
                 } else if (orderCheck,
@@ -361,7 +362,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                                 shouldError = true;
                                 shouldWarn = false;
                                 break;
-                            } else if (orders.contains("todo")) {
+                            } else if (orders.contains("todo") || orders.contains("xxx")) {
                                 shouldWarn = true;
                             }
                         }
@@ -375,7 +376,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                                 shouldError = true;
                                 shouldWarn = false;
                                 break;
-                            } else if (orders.contains("todo")) {
+                            } else if (orders.contains("todo") || orders.contains("xxx")) {
                                 shouldWarn = true;
                             }
                         }
