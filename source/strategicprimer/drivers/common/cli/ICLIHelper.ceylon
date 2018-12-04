@@ -83,11 +83,15 @@ shared interface ICLIHelper {
             String text);
 
     "Get a [[Point]] from the user. This is a convenience wrapper around [[inputNumber]].
-     On EOF, returns -1 for any remaining coordinates."
-    shared default Point inputPoint( // TODO: Return null on EOF, not the invalid point?
+     Returns [[null]] on EOF."
+    shared default Point? inputPoint(
             "The prompt to use to prompt the user."
             String prompt) {
         print(prompt);
-        return Point(inputNumber("Row: ") else -1, inputNumber("Column: ") else -1);
+        if (exists row = inputNumber("Row: "), exists column = inputNumber("Column: ")) {
+            return Point(row, column);
+        } else {
+            return null;
+        }
     }
 }

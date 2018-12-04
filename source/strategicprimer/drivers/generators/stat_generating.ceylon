@@ -483,7 +483,11 @@ class StatGeneratingCLI satisfies CLIDriver {
             hqLoc = found;
         } else {
             cli.println("That unit's location not found in main map.");
-            hqLoc = cli.inputPoint("Location to use for village distances:");
+            if (exists point = cli.inputPoint("Location to use for village distances:")) {
+                hqLoc = point;
+            } else {
+                return;
+            }
         }
         Integer travelDistance(Point dest) =>
                 pathfinder.getTravelDistance(model.map, hqLoc, dest).first;
@@ -555,8 +559,8 @@ class StatGeneratingCLI satisfies CLIDriver {
             if (exists temp = chosen.item) {
                 item = temp;
             } else if (chosen.key <= units.size) {
-                Point point = cli.inputPoint("Where to put new unit? ");
-                if (exists kind = cli.inputString("Kind of unit: "),
+                if (exists point = cli.inputPoint("Where to put new unit? "),
+                        exists kind = cli.inputString("Kind of unit: "),
                         exists name = cli.inputString("Unit name: ")) {
                     IUnit temp = Unit(player, kind, name, idf.createID());
                     for (indivMap->[file, _] in model.allMaps) {

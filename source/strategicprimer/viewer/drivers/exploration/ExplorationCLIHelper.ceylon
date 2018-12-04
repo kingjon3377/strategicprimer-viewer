@@ -157,16 +157,21 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
                     case (8) { direction = Direction.north; }
                     case (9) { direction = Direction.northeast; }
                     case (10) {
-                        value [cost, path] = pathfinder.getTravelDistance(model
+                        if (exists destination =
+                                cli.inputPoint("Location to move toward: ")) {
+                            value [cost, path] = pathfinder.getTravelDistance(model
                                 .subordinateMaps.first?.key else model.map,
-                            point, cli.inputPoint("Location to move toward: "));
-                        if (path.empty) {
-                            cli.println(
-                                "The explorer doesn't know how to get there from here.");
+                                point, destination);
+                            if (path.empty) {
+                                cli.println(
+                                    "S/he doesn't know how to get there from here.");
+                            } else {
+                                proposedPath.addAll(path);
+                            }
+                            continue;
                         } else {
-                            proposedPath.addAll(path);
+                            return;
                         }
-                        continue;
                     }
                     else { movement = 0; continue; }
                 }

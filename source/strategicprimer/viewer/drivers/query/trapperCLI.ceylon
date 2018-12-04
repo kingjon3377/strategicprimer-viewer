@@ -210,7 +210,12 @@ shared class TrappingCLI satisfies CLIDriver {
         variable Integer minutes =
                 (cli.inputNumber("How many hours will the ``name`` work? ") else 0) // TODO: abort on EOF instead of defaulting to 0
                     * minutesPerHour;
-        Point point = cli.inputPoint("Where is the ``name`` working? ");
+        Point point;
+        if (exists temp = cli.inputPoint("Where is the ``name`` working? ")) {
+            point = temp;
+        } else {
+            return;
+        }
         HuntingModel huntModel = HuntingModel(model.map);
         Queue<Point->Animal|AnimalTracks|HuntingModel.NothingFound> fixtures;
         if (fishing) {

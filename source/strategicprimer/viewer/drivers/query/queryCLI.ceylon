@@ -197,19 +197,19 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
 
     "Report the distance between two points."
     void printDistance() {
-        Point start = cli.inputPoint("Starting point:\t");
-        Point end = cli.inputPoint("Destination:\t");
-        Boolean? groundTravel = cli.inputBoolean("Compute ground travel distance?");
-        switch (groundTravel)
-        case (true) {
-            cli.println("Distance (on the ground, in MP cost):\t``pathfinder.
-            getTravelDistance(map, start, end).first``");
+        if (exists start = cli.inputPoint("Starting point:\t"),
+                exists end = cli.inputPoint("Destination:\t")) {
+            Boolean? groundTravel = cli.inputBoolean("Compute ground travel distance?"); // TODO: combine with outside if
+            switch (groundTravel)
+            case (true) {
+                cli.println("Distance (on the ground, in MP cost):\t``pathfinder.getTravelDistance(map, start, end).first``");
+            }
+            case (false) {
+                cli.println("Distance (as the crow flies, in tiles):\t``Float
+                    .format(distance(start, end, map.dimensions), 0, 0)``");
+            }
+            case (null) {}
         }
-        case (false) {
-            cli.println("Distance (as the crow flies, in tiles):\t``Float
-                .format(distance(start, end, map.dimensions), 0, 0)``");
-        }
-        case (null) {}
     }
 
     "If the given driver model *has* subordinate maps, add a copy of the given fixture to
@@ -441,27 +441,31 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
             }
             if (hours < hunterHours,
                     exists gatherNow = cli.inputBooleanInSeries(
-                        "Spend remaining time as Food Gatherers? "), gatherNow) {
-                gather(cli.inputPoint("Gathering location? "), hunterHours - hours);
+                        "Spend remaining time as Food Gatherers? "), gatherNow,
+                    exists location = cli.inputPoint("Gathering location? ")) {
+                gather(location, hunterHours - hours);
             }
         }
     }
 
     "Give the data about a tile that the player is supposed to automatically know if he
-     has a fortress on it."
-    void fortressInfo(Point location) {
-        cli.println("Terrain is ``map.baseTerrain[location] else "unknown"``");
-        //        Ground[] ground = map.fixtures[location].narrow<Ground>().sequence();
-        Ground[] ground = map.fixtures.get(location).narrow<Ground>().sequence();
-        //        Forest[] forests = map.fixtures[location].narrow<Forest>().sequence();
-        Forest[] forests = map.fixtures.get(location).narrow<Forest>().sequence();
-        if (nonempty ground) {
-            cli.println("Kind(s) of ground (rock) on the tile:");
-            ground.map(Object.string).each(cli.println);
-        }
-        if (nonempty forests) {
-            cli.println("Kind(s) of forests on the tile:");
-            forests.map(Object.string).each(cli.println);
+     has a fortress on it. For the convenience of the sole caller, this method accepts
+     [[null]], and does nothing when that is the parameter."
+    void fortressInfo(Point? location) {
+        if (exists location) {
+            cli.println("Terrain is ``map.baseTerrain[location] else "unknown"``");
+//          Ground[] ground = map.fixtures[location].narrow<Ground>().sequence();
+            Ground[] ground = map.fixtures.get(location).narrow<Ground>().sequence();
+//          Forest[] forests = map.fixtures[location].narrow<Forest>().sequence();
+            Forest[] forests = map.fixtures.get(location).narrow<Forest>().sequence();
+            if (nonempty ground) {
+                cli.println("Kind(s) of ground (rock) on the tile:");
+                ground.map(Object.string).each(cli.println);
+            }
+            if (nonempty forests) {
+                cli.println("Kind(s) of forests on the tile:");
+                forests.map(Object.string).each(cli.println);
+            }
         }
     }
 
@@ -537,23 +541,31 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
     "Print a usage message for the REPL"
     void replUsage() => cli.print(usageMessage);
     void findUnexploredCommand() {
-        Point base = cli.inputPoint("Starting point? ");
-        if (exists unexplored = findUnexplored(base)) {
-            Float distanceTo = distance(base, unexplored, map.dimensions);
-            cli.println("Nearest unexplored tile is ``unexplored``, ``Float
-                .format(distanceTo, 0, 1, '.', ',')`` tiles away");
-        } else {
-            cli.println("No unexplored tiles found.");
+        if (exists base = cli.inputPoint("Starting point? ")) {
+            if (exists unexplored = findUnexplored(base)) {
+                Float distanceTo = distance(base, unexplored, map.dimensions);
+                cli.println("Nearest unexplored tile is ``unexplored``, ``Float
+                    .format(distanceTo, 0, 1, '.', ',')`` tiles away");
+            } else {
+                cli.println("No unexplored tiles found.");
+            }
         }
     }
 
-    void tradeCommand() =>
-            suggestTrade(cli.inputPoint("Base location? "),
-                cli.inputNumber("Within how many tiles? ") else 0);
+    void tradeCommand() {
+        if (exists location = cli.inputPoint("Base location? ")) {
+            suggestTrade(location, cli.inputNumber("Within how many tiles? ") else 0);
+        }
+    }
 
     Anything() deferAction(Anything(Point, Integer) method, String verb) => // TODO: Replace with method-reference logic using defer()
-                    () => method(cli.inputPoint("Location to ``verb``? "),
-                        hunterHours * 60);
+                    () {
+                        if (exists location = cli.inputPoint("Location to ``verb``? ")) {
+                            return method (location, hunterHours * 60);
+                        } else {
+                            return null;
+                        }
+                    };
 
     Map<String, Anything()> commands = simpleMap(
         "?"->replUsage,
