@@ -143,8 +143,8 @@ shared class HarvestableReportGenerator
             ostream(item.string);
         }
         case (is MineralVein) {
-            ostream("An ``(item.exposed) then // TODO: Extract interpolated text into separate statement
-                "exposed" else "unexposed"`` vein of ``item.kind``");
+            ostream((item.exposed) then "An exposed vein of " else "An unexposed vein of ");
+            ostream(item.kind);
         }
         case (is Shrub) {
             ostream("``item.kind`` ``populationCountString(item, "plant")``");
