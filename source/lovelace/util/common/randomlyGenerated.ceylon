@@ -41,7 +41,7 @@ shared final annotation class RandomGenerationAnnotation(
                 Integer max)
         satisfies OptionalAnnotation<RandomGenerationAnnotation,ValueDeclaration>
         & ArgumentProvider {
-    object nothingProvider satisfies Iterator<Anything> { // TODO: Should be static
+    object nothingProvider satisfies Iterator<Anything> { // TODO: Make static once eclipse/ceylon#7441 fixed
         suppressWarnings("expressionTypeNothing")
         shared actual Anything next() => nothing;
     }
