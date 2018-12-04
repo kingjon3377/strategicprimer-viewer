@@ -3,7 +3,11 @@ import ceylon.collection {
     Stack
 }
 import java.io {
-    JCloseable=Closeable
+    JCloseable=Closeable,
+    FileNotFoundException,
+    FileReader,
+    JReader=Reader,
+    StringReader
 }
 import java.util {
     NoSuchElementException
@@ -41,10 +45,29 @@ import strategicprimer.model.impl.xmlio.exceptions {
 import java.lang {
     AutoCloseable
 }
+import java.nio.file {
+    NoSuchFileException
+}
 
 "An extension to the [[Iterator]] of [[XMLEvent]] to automatically handle
  `include` tags."
 shared class IncludingIterator satisfies Iterator<XMLEvent> {
+    """Get the appropriate reader based on the given filename: if it begins "string:<", strip
+       the "string:" prefix, pass the remainder to a [[StringReader]], and return it;
+       otherwise return a [[FileReader]]."""
+    throws(`class MissingFileException`)
+    static JReader magicReader(String possibleFilename) {
+        if (possibleFilename.startsWith("string:<")) {
+            return StringReader(possibleFilename.substring(7));
+        } else {
+            try {
+                return FileReader(possibleFilename);
+            } catch (FileNotFoundException|NoSuchFileException except) {
+                throw MissingFileException(PathWrapper(possibleFilename), except);
+            }
+        }
+    }
+
     "Get the 'file' attribute for the given tag."
     static String getFileAttribute(StartElement element) {
         for (QName name in [ QName(spNamespace, "file"), QName("file") ]) {
