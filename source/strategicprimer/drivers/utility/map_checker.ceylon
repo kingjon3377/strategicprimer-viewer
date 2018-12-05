@@ -253,12 +253,12 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         }
     }
 
-    static Boolean positiveNumber(Number<out Anything> num) => num.positive;
+    static Boolean positiveAcres(HasExtent<out Anything> item) => item.acres.positive;
     static Boolean acreageChecker(Point context, Warning warner, {IFixture*} fixtures) {
         variable Float total = 0.0;
         variable Boolean retval = false;
-        for (fixture in fixtures.narrow<HasExtent>()
-                .filter(compose(positiveNumber, HasExtent.acres))) {
+        for (fixture in fixtures.narrow<HasExtent<out Anything>>()
+                .filter(positiveAcres)) {
             switch (acres = fixture.acres)
             case (is Integer) {
                 total += acres;

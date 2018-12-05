@@ -14,4 +14,6 @@ module strategicprimer.model.common "0.4.9017" {
     shared import com.vasileff.ceylon.structures "1.1.3";
     native("jvm") import java.base javaVersion;
     native("jvm") import ceylon.interop.java ceylonVersion;
+    import ceylon.whole ceylonVersion;
+    native("jvm") import ceylon.decimal ceylonVersion;
 }

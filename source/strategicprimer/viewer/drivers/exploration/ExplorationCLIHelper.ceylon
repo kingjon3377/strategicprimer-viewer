@@ -88,7 +88,7 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
             Boolean zero;
             if (is HasOwner fixture, (fixture.owner != mover.owner || fixture is Village)) {
                 zero = true;
-            } else if (is HasPopulation<out Anything>|HasExtent fixture) {
+            } else if (is HasPopulation<out Anything>|HasExtent<out Anything> fixture) {
                 zero = true;
             } else {
                 zero = false;

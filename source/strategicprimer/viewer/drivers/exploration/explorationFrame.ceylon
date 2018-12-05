@@ -456,7 +456,7 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
                                 if (is HasOwner fixture, fixture.owner != player || // TODO: add clarifying parentheses
                                         fixture is Village) {
                                     zero = true;
-                                } else if (is HasPopulation<Anything>|HasExtent fixture) {
+                                } else if (is HasPopulation<Anything>|HasExtent<out Anything> fixture) {
                                     zero = true;
                                 } else {
                                     zero = false;

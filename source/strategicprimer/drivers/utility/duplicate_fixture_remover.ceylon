@@ -231,7 +231,7 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
                 } else if (is HasPopulation<out Anything> fixture,
                         fixture.population.positive) {
                     continue;
-                } else if (is HasExtent fixture, fixture.acres.positive) {
+                } else if (is HasExtent<out Anything> fixture, fixture.acres.positive) {
                     continue;
                 }
                 if (exists matching = fixtures.find(fixture.equalsIgnoringID),
@@ -306,7 +306,7 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
                 }
             } else if (is HasPopulation<out Anything> fixture, fixture.population < 0) {
                 continue;
-            } else if (is HasExtent fixture, !fixture.acres.positive) {
+            } else if (is HasExtent<out Anything> fixture, !fixture.acres.positive) {
                 continue;
             } else if (exists handler = mapping[type(fixture)]) {
                 handler.addIfType(fixture);

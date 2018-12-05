@@ -14,7 +14,7 @@ import strategicprimer.model.common.map {
 
 "A forest on a tile."
 shared class Forest(kind, rows, id, acres = -1)
-        satisfies TerrainFixture&HasMutableImage&HasKind&HasExtent {
+        satisfies TerrainFixture&HasMutableImage&HasKind&HasExtent<Forest> {
     "What kind of trees dominate this forest."
     shared actual String kind;
 
@@ -109,4 +109,7 @@ shared class Forest(kind, rows, id, acres = -1)
     }
 
     shared actual Integer dc = 5;
+
+    shared actual Forest combined(Forest other) =>
+        Forest(kind, rows, id, sum(acres, other.acres));
 }

@@ -247,6 +247,8 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
     Decimal perForestAcreage(Integer reserved, Integer otherForests) =>
         decimalNumber(160 - reserved) / decimalNumber(otherForests);
 
+    Number<out Anything> acreageExtent(HasExtent<out Anything> item) => item.acres;
+
     "Generate [[Forest]] acreages."
     void generateForestExtents() {
         {Point*} locations = randomize(narrowedStream<Point, Forest>(map.fixtures)
@@ -287,8 +289,8 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             reserved += map.fixtures.get(location).narrow<Grove>()
                     .map(Grove.population).filter(Integer.positive).fold(0)(plus) / 500;
             //reserved += map.fixtures[location].narrow<HasExtent>() // TODO: syntax sugar
-            reserved += map.fixtures.get(location).narrow<HasExtent>()
-                    .map(HasExtent.acres).filter(positiveNumber).map(decimalize)
+            reserved += map.fixtures.get(location).narrow<HasExtent<out Anything>>()
+                    .map(acreageExtent).filter(positiveNumber).map(decimalize)
                     .fold(decimalNumber(0))(plus).integer;
             if (reserved >= 160) {
                 process.writeLine(

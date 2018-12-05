@@ -75,7 +75,7 @@ shared class HarvestableReportGenerator
         }
     }
 
-    static String acreageString(HasExtent item) {
+    static String acreageString(HasExtent<out Anything> item) {
         if (item.acres.positive) {
             switch (acres = item.acres)
             case (is Integral<out Anything>) {

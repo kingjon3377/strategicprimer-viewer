@@ -11,7 +11,7 @@ import strategicprimer.model.common.map {
  is on it."
 todo("Implement that effect")
 shared class Meadow(kind, field, cultivated, id, status, acres = -1)
-        satisfies HarvestableFixture&HasExtent {
+        satisfies HarvestableFixture&HasExtent<Meadow> {
     "The kind of grain or grass growing in this field or meadow."
     shared actual String kind;
 
@@ -130,4 +130,7 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
     shared actual Integer dc = 18; // TODO: reflect size
 
     shared actual Integer hash => id;
+
+    shared actual Meadow combined(Meadow other) =>
+        Meadow(kind, field, cultivated, id, status, sum(acres, other.acres));
 }
