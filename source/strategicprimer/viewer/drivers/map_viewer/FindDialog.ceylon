@@ -34,7 +34,9 @@ import strategicprimer.model.common.map {
     Player,
     HasOwner,
     TileFixture,
-    PointIterator
+    PointIterator,
+    IMapNG,
+    Point
 }
 import strategicprimer.drivers.gui.common {
     SPDialog
@@ -129,6 +131,12 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         }
     }
 
+    Boolean matchesPoint(String pattern, Integer? id,
+            Boolean caseSensitivity)(Point point) { // TODO: => once syntax sugar in place
+//        return model.map.fixtures[point].any( // TODO: syntax sugar
+        return model.map.fixtures.get(point).any(
+            matches(pattern, id, caseSensitivity));
+    }
     "Search for the current pattern. If the pattern is found (as the ID of a fixture,
      or the name of a [[HasName]], or the kind of a [[HasKind]]), select the tile
      containing the thing found. If the pattern is the empty string, don't search."
@@ -145,10 +153,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         }
         Integer? idNum = as<Integer>(Integer.parse(pattern));
         if (exists result = PointIterator(model.mapDimensions, !backwards.selected,
-                !vertically.selected, model.selection).find(
-//                    (point) => model.map.fixtures[point].any( // TODO: syntax sugar once compiler bug fixed
-                    (point) => model.map.fixtures.get(point).any( // TODO: extract named method (which'd have to be curried here, but better that than an explicit lambda)
-                        matches(pattern, idNum, caseSensitivity)))) {
+                    !vertically.selected, model.selection)
+                .find(matchesPoint(pattern, idNum, caseSensitivity))) {
             log.debug("Found in point ``result``");
             model.selection = result;
         }
