@@ -93,15 +93,16 @@ shared class ExpansionDriverFactory() satisfies ModelDriverFactory {
 shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
         satisfies CLIDriver {
     shared actual IMultiMapModel model;
+    Boolean containsSwornVillage(IMapNG map, Player currentPlayer)(Point point) { // TODO: fat arrow once syntax sugar in place
+//        return map.fixtures[point].narrow<ITownFixture>() // TODO: syntax sugar once compiler bug fixed
+        return map.fixtures.get(point).narrow<ITownFixture>()
+            .map(HasOwner.owner).any(currentPlayer.equals);
+    }
+
     shared actual void startDriver() {
         IMapNG master = model.map;
         for (map->[path, _] in model.subordinateMaps) {
             Player currentPlayer = map.currentPlayer; // TODO: move these inner methods to the top level of the object
-            Boolean containsSwornVillage(Point point) { // TODO: fat arrow once syntax sugar in place // TODO: Convert to (two-arg-list or to-be-curried) top-level-in-class function
-//                    return map.fixtures[point].narrow<ITownFixture>() // TODO: syntax sugar once compiler bug fixed
-                return map.fixtures.get(point).narrow<ITownFixture>()
-                    .map(HasOwner.owner).any(currentPlayer.equals);
-            }
 
             void safeAdd(Point point, TileFixture fixture) { // TODO: Convert to top-level-in-class function
                 if (map.fixtures.get(point).any(fixture.equals)) {
@@ -124,7 +125,7 @@ shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
                 shared actual Player owner = currentPlayer;
             }
 
-            for (point in map.locations.filter(containsSwornVillage)) {
+            for (point in map.locations.filter(containsSwornVillage(map, currentPlayer))) {
                 for (neighbor in surroundingPointIterable(point,
                         map.dimensions)) {
                     if (!map.baseTerrain[neighbor] exists) {
