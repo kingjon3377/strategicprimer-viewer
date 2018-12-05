@@ -431,6 +431,15 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
     static String resourceLabelText(Player player) => "Add resource for ``player.name``:";
     static String equipmentLabelText(Player player) => "Add equipment for ``player.name``:";
 
+    static String css = """color:black; margin-bottom: 0.5em; margin-top: 0.5em;""";
+    static void logAddition(StreamingLabel logLabel, Player currentPlayer, String addend)
+        => logLabel.append(
+            "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``</p>");
+    static String errorCSS = """color:red; margin-bottom: 0.5em; margin-top: 0.5em;""";
+    static void logError(StreamingLabel logLabel)(String message) =>
+        logLabel.append("<p style=\"``errorCSS``\">``message``</p>");
+
+
     shared actual ResourceManagementDriverModel model;
     ICLIHelper cli;
     SPOptions options;
@@ -452,15 +461,8 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         mainPanel.add(resourceLabel);
         JPanel resourcePanel = boxPanel(BoxAxis.lineAxis);
         StreamingLabel logLabel = StreamingLabel();
-        String css = """color:black; margin-bottom: 0.5em; margin-top: 0.5em;""";
-        void logAddition(String addend) => logLabel.append(
-            "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``</p>");
 
-        String errorCSS = """color:red; margin-bottom: 0.5em; margin-top: 0.5em;""";
-        void logError(String message) =>
-                logLabel.append("<p style=\"``errorCSS``\">``message``</p>");
-
-        UpdatedComboBox resourceKindBox = UpdatedComboBox(logError);
+        UpdatedComboBox resourceKindBox = UpdatedComboBox(logError(logLabel));
         resourcePanel.add(pairPanel(JLabel("General Category"), resourceKindBox));
 
         // If we set the maximum high at this point, the fields would try to be
@@ -469,14 +471,14 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         JSpinner creationSpinner = JSpinner(resourceCreatedModel);
         resourcePanel.add(pairPanel(JLabel("Turn created"), creationSpinner));
 
-        UpdatedComboBox resourceBox = UpdatedComboBox(logError);
+        UpdatedComboBox resourceBox = UpdatedComboBox(logError(logLabel));
         resourcePanel.add(pairPanel(JLabel("Specific Resource"), resourceBox));
 
         SpinnerNumberModel resourceQuantityModel = SpinnerNumberModel(0, 0, 2000, 1);
         JSpinner resourceQuantitySpinner = JSpinner(resourceQuantityModel);
         resourcePanel.add(pairPanel(JLabel("Quantity"), resourceQuantitySpinner));
 
-        UpdatedComboBox resourceUnitsBox = UpdatedComboBox(logError);
+        UpdatedComboBox resourceUnitsBox = UpdatedComboBox(logError(logLabel));
         resourcePanel.add(pairPanel(JLabel("Units"), resourceUnitsBox));
 
         variable Boolean playerIsDefault = true;
@@ -508,7 +510,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                     Quantity(qty, units));
                 pile.created = resourceCreatedModel.number.intValue();
                 model.addResource(pile, currentPlayer);
-                logAddition(pile.string);
+                logAddition(logLabel, currentPlayer, pile.string);
                 for (box in [ resourceKindBox, resourceBox, resourceUnitsBox ]) {
                     box.checkAndClear();
                 }
@@ -566,7 +568,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             for (i in 0:quantity) {
                 model.addResource(Implement(kind, idf.createID()), currentPlayer);
             }
-            logAddition("``quantity`` x ``kind``");
+            logAddition(logLabel, currentPlayer, "``quantity`` x ``kind``");
             implementQuantityModel.\ivalue = JInteger.valueOf(1);
             implementKindBox.checkAndClear();
             implementQuantityField.requestFocusInWindow();
