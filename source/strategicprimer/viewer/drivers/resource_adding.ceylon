@@ -46,7 +46,8 @@ import lovelace.util.jvm {
     boxPanel,
     verticalSplit,
     FileChooser,
-    InterpolatedLabel
+    InterpolatedLabel,
+    BorderedPanel
 }
 
 import strategicprimer.drivers.common {
@@ -424,15 +425,8 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         }
     }
 
-    static JPanel pairPanel(Component first, Component second) { // TODO: Use a better layout than BoxLayout: try BorderedPanel.horizontalLine
-        JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
-        panel.addGlue();
-        panel.add(first);
-        panel.addGlue();
-        panel.add(second);
-        panel.addGlue();
-        return panel;
-    }
+    static JPanel pairPanel(Component first, Component second) =>
+        BorderedPanel.verticalPanel(first, null, second);
 
     static String resourceLabelText(Player player) => "Add resource for ``player.name``:";
     static String equipmentLabelText(Player player) => "Add equipment for ``player.name``:";
