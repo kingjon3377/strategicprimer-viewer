@@ -270,6 +270,7 @@
         <include name="*.sh" />
         <include name="viewer.eml" />
         <include name="viewer-ceylon.iml" />
+        <include name="sample_map.xml" />
       </tarfileset>
       <tarfileset dir="source" prefix="${basename}/source">
         <include name="**" />
