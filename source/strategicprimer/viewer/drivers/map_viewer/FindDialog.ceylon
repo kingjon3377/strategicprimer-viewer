@@ -118,12 +118,12 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     }
 
     "Whether the given fixture matches the given pattern in any way we recognize."
-    Boolean matches(IFixture fixture, String pattern, Integer? idNum,
-            Boolean caseSensitivity) {
+    Boolean matches(String pattern, Integer? idNum,
+            Boolean caseSensitivity)(IFixture fixture) {
         if (matchesSimple(pattern, idNum, fixture, caseSensitivity)) {
             return true;
         } else if (is {IFixture*} fixture) {
-            return fixture.any(shuffle(curry(matches))(pattern, idNum, caseSensitivity));
+            return fixture.any(matches(pattern, idNum, caseSensitivity));
         } else {
             return false;
         }
@@ -148,7 +148,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
                 !vertically.selected, model.selection).find(
 //                    (point) => model.map.fixtures[point].any( // TODO: syntax sugar once compiler bug fixed
                     (point) => model.map.fixtures.get(point).any( // TODO: extract named method (which'd have to be curried here, but better that than an explicit lambda)
-                        shuffle(curry(matches))(pattern, idNum, caseSensitivity)))) {
+                        matches(pattern, idNum, caseSensitivity)))) {
             log.debug("Found in point ``result``");
             model.selection = result;
         }
