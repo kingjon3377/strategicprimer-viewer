@@ -50,7 +50,7 @@ shared class ExplorationRunner() {
     }
 
     "Whether we have a table of the given name."
-    shared Boolean hasTable(String name) => tables[name] exists; // TODO: Maybe switch to 'name in tables'?
+    shared Boolean hasTable(String name) => name in tables.keys;
 
     "Split a string on hash-marks."
     {String+} splitOnHash(String string) => string.split('#'.equals, true, false, 3);
