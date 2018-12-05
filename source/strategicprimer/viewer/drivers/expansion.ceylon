@@ -103,27 +103,27 @@ shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
         shared actual Player owner;
     }
 
+    void safeAdd(IMutableMapNG map, Player currentPlayer, Point point, TileFixture fixture) {
+        if (map.fixtures.get(point).any(fixture.equals)) {
+            return;
+        } else if (is HasOwner fixture, !fixture is ITownFixture) {
+            value zeroed = fixture.copy(fixture.owner != currentPlayer);
+            if (!map.fixtures.get(point).any(zeroed.equals)) {
+                map.addFixture(point, fixture.copy(
+                    fixture.owner != currentPlayer));
+            }
+        } else {
+            value zeroed = fixture.copy(true);
+            if (!map.fixtures.get(point).any(zeroed.equals)) {
+                map.addFixture(point, fixture.copy(true));
+            }
+        }
+    }
+
     shared actual void startDriver() {
         IMapNG master = model.map;
         for (map->[path, _] in model.subordinateMaps) {
-            Player currentPlayer = map.currentPlayer; // TODO: move these inner methods to the top level of the object
-
-            void safeAdd(Point point, TileFixture fixture) { // TODO: Convert to top-level-in-class function
-                if (map.fixtures.get(point).any(fixture.equals)) {
-                    return;
-                } else if (is HasOwner fixture, !fixture is ITownFixture) {
-                    value zeroed = fixture.copy(fixture.owner != currentPlayer);
-                    if (!map.fixtures.get(point).any(zeroed.equals)) {
-                        map.addFixture(point, fixture.copy(
-                                fixture.owner != currentPlayer));
-                    }
-                } else {
-                    value zeroed = fixture.copy(true);
-                    if (!map.fixtures.get(point).any(zeroed.equals)) {
-                        map.addFixture(point, fixture.copy(true));
-                    }
-                }
-            }
+            Player currentPlayer = map.currentPlayer;
 
             Mock mock = Mock(currentPlayer);
 
@@ -149,14 +149,14 @@ shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
                             continue;
                         } else if (simpleMovementModel
                                 .shouldAlwaysNotice(mock, fixture)) {
-                            safeAdd(neighbor, fixture);
+                            safeAdd(map, currentPlayer, neighbor, fixture);
                         } else if (simpleMovementModel.shouldSometimesNotice(mock,
                                 Speed.careful, fixture)) {
                             possibilities.add(fixture);
                         }
                     }
                     if (exists first = randomize(possibilities).first) {
-                        safeAdd(neighbor, first);
+                        safeAdd(map, currentPlayer, neighbor, first);
                     }
                 }
             }
