@@ -532,6 +532,8 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
 
         if (is JTextField editor = creationSpinner.editor) {
             editor.addActionListener(resourceListener);
+        } else if (is JSpinner.DefaultEditor editor = creationSpinner.editor) {
+            editor.textField.addActionListener(resourceListener);
         } else {
             logLabel.append("Turn-created spinner's editor wasn't a text field, but a ``
                                 classDeclaration(creationSpinner.editor)``
@@ -539,6 +541,8 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         }
         if (is JTextField editor = resourceQuantitySpinner.editor) {
             editor.addActionListener(resourceListener);
+        } else if (is JSpinner.DefaultEditor editor = creationSpinner.editor) {
+            editor.textField.addActionListener(resourceListener);
         } else {
             logLabel.append("Quantity spinner's editor wasn't a text field, but a ``
                                 classDeclaration(resourceQuantitySpinner.editor)``
@@ -577,6 +581,8 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         implementKindBox.addSubmitListener(implementListener);
         if (is JTextField editor = implementQuantityField.editor) {
             editor.addActionListener(implementListener);
+        } else if (is JSpinner.DefaultEditor editor = implementQuantityField.editor) {
+            editor.textField.addActionListener(implementListener);
         } else {
             logLabel.append(
                 "Implement quantity spinner's editor wasn't a text field, but a ``
