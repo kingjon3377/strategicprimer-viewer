@@ -154,23 +154,18 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
         }
     }
 
-    "Combine like [[Forest]]s into a single object. We assume that all Forests are of the
-     same kind of tree and either all or none are in rows."
-    // TODO: Add a 'combine()' method to HasExtent?
-    static Forest combineForests({Forest+} list) =>
-        Forest(list.first.kind, list.first.rows, list.first.id,
-            list.map(Forest.acres).map(decimalize).fold(decimalNumber(0))(plus));
-
-    "Combine like [[Meadow]]s into a single object. We assume all Meadows are identical
-     except for acreage and ID."
-    static Meadow combineMeadows({Meadow+} list) =>
-        Meadow(list.first.kind, list.first.field, list.first.cultivated, list.first.id,
-            list.first.status,
-            list.map(Meadow.acres).map(decimalize).fold(decimalNumber(0))(plus));
+    "A two-parameter wrapper around [[HasExtent.combined]]."
+    static Type combineExtentImpl<Type>(Type one, Type two)
+        given Type satisfies HasExtent<Type> => one.combined(two);
 
     "A two-parameter wrapper around [[HasPopulation.combined]]."
     static Type combine<Type>(Type one, Type two) given Type satisfies HasPopulation<Type> =>
             one.combined(two);
+
+    "Combine like extents into a single object. We assume all are identical except for
+     acreage."
+    static Type combineExtents<Type>({Type+} list) given Type satisfies HasExtent<Type> =>
+        list.rest.fold(list.first)(combineExtentImpl);
 
     "Combine like populations into a single object. We assume all are identical (i.e. of
      the same kind, and in the case of animals have the same domestication status and
@@ -274,13 +269,13 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
                 combinePopulations<Implement>),
             `Forest`->CoalescedHolder<Forest, [String, Boolean]>(
                         (forest) => [forest.kind, forest.rows],
-                combineForests),
+                combineExtents<Forest>),
             `Grove`->CoalescedHolder<Grove, [Boolean, Boolean, String]>(
                 (grove) => [grove.orchard, grove.cultivated, grove.kind],
                 combinePopulations<Grove>),
             `Meadow`->CoalescedHolder<Meadow, [String, Boolean, Boolean, FieldStatus]>(
                 (meadow) => [meadow.kind, meadow.field, meadow.cultivated, meadow.status],
-                combineMeadows),
+                combineExtents<Meadow>),
             `Shrub`->CoalescedHolder<Shrub, String>(Shrub.kind, combinePopulations<Shrub>)
         );
 
