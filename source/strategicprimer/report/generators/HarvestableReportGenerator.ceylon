@@ -166,8 +166,7 @@ shared class HarvestableReportGenerator
         MutableMultimap<String, Point> shrubs = HashMultimap<String, Point>();
         MutableMultimap<String, Point> minerals = HashMultimap<String, Point>();
         MutableHeadedMap<Mine, Point> mines = HeadedMapImpl<Mine, Point>("<h5>Mines</h5>",
-                comparing(byIncreasing(Mine.kind),
-                    comparingOn(Mine.status, byIncreasing(TownStatus.ordinal)), // TODO: Once townComparators.compareTownStatus is moved to TownStatus.compare, use that
+                comparing(byIncreasing(Mine.kind), byIncreasing(Mine.status),
                     byIncreasing(Mine.id)));
         MutableHeadedMap<Meadow, Point> meadows = HeadedMapImpl<Meadow, Point>(
                 "<h5>Meadows and Fields</h5>", comparing(byIncreasing(Meadow.kind),
