@@ -35,7 +35,6 @@ import strategicprimer.model.common.map {
     HasOwner,
     TileFixture,
     PointIterator,
-    IMapNG,
     Point
 }
 import strategicprimer.drivers.gui.common {

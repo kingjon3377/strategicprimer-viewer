@@ -4,8 +4,7 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    DelayedRemovalMap,
-    comparingOn
+    DelayedRemovalMap
 }
 
 import strategicprimer.model.common.map {
@@ -50,9 +49,6 @@ import ceylon.language.meta {
 import ceylon.logging {
     Logger,
     logger
-}
-import strategicprimer.model.common.map.fixtures.towns {
-    TownStatus
 }
 import ceylon.whole {
     Whole
