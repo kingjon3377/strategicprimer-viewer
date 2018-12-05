@@ -99,6 +99,10 @@ shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
             .map(HasOwner.owner).any(currentPlayer.equals);
     }
 
+    class Mock(owner) satisfies HasOwner { // TODO: make static if we convert to class-with-constructor
+        shared actual Player owner;
+    }
+
     shared actual void startDriver() {
         IMapNG master = model.map;
         for (map->[path, _] in model.subordinateMaps) {
@@ -121,9 +125,7 @@ shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
                 }
             }
 
-            object mock satisfies HasOwner { // TODO: Convert to top-level-in-class inner class (should be static if we convert this class to have a constructor
-                shared actual Player owner = currentPlayer;
-            }
+            Mock mock = Mock(currentPlayer);
 
             for (point in map.locations.filter(containsSwornVillage(map, currentPlayer))) {
                 for (neighbor in surroundingPointIterable(point,
