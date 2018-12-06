@@ -120,7 +120,7 @@ shared class FixtureFilterTableModel extends AbstractTableModel
                 FixtureMatcher.trivialMatcher(`Cave`),
                 FixtureMatcher.trivialMatcher(`Battlefield`),
                 FixtureMatcher.trivialMatcher(`Animal`),
-                FixtureMatcher.trivialMatcher(`AnimalTracks`),
+                FixtureMatcher.trivialMatcher(`AnimalTracks`, "Animal Tracks"),
                 FixtureMatcher.trivialMatcher(`StoneDeposit`, "Stone Deposits"),
                 FixtureMatcher.trivialMatcher(`MineralVein`, "Mineral Veins"),
                 FixtureMatcher.complements<Grove>(Grove.orchard, "Orchards", "Groves"),
