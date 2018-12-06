@@ -126,7 +126,7 @@ shared class FileChooser {
         case (is JFileChooser) {
             log.trace("Using Swing JFileChooser");
             chooserFunction = (Component? component) =>
-            	fileChooser.showDialog(component, approveText);
+                fileChooser.showDialog(component, approveText);
         }
         case (is JFileDialog) {
             log.trace("Using AWT FileDialog, specifying Save");

@@ -70,7 +70,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     mountainItem.addActionListener(silentListener(toggleMountains));
 
-	void toggleRiver(River river, JMenuItem item)() {
+    void toggleRiver(River river, JMenuItem item)() {
         Point localPoint = point;
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
                 terrain != TileType.ocean) {
@@ -107,7 +107,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         }
         addSeparator();
         add(newUnitItem);
-		add(mountainItem);
+        add(mountainItem);
         for (direction->item in riverItems) {
             add(item);
         }

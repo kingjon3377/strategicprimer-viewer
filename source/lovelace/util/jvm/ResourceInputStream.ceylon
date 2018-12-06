@@ -49,7 +49,7 @@ shared class ResourceInputStream(String filename,
 //                        .getResourceAsStream(uri.string)) {
 //                return temp;
             } else if (exists uri = sourceModule.resourceByPath(filename)?.uri) {
-		log.trace("Found ``filename`` at URI ``uri``");
+                log.trace("Found ``filename`` at URI ``uri``");
                 if (exists temp = sourceClass
                         .getResourceAsStream(uri)) {
                     return temp;

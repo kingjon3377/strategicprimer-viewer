@@ -303,7 +303,7 @@ class TownGenerator(ICLIHelper cli) {
                 if (!bothOrNeitherOcean(map.baseTerrain[location],
                     map.baseTerrain[fieldLoc])) {
                     if (exists terrain = map.baseTerrain[location],
-                        	terrain == TileType.ocean) {
+                            terrain == TileType.ocean) {
                         cli.println(
                             "That would be a land resource worked by an aquatic town.");
                     } else {

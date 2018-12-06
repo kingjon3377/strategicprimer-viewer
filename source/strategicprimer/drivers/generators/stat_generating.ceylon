@@ -197,9 +197,9 @@ class StatGeneratingCLI satisfies CLIDriver {
         MutableList<Worker> workers = ArrayList { elements = unit.narrow<Worker>()
             .filter(matchingValue(null, Worker.stats)); };
         while (!workers.empty, exists chosen = cli.chooseFromList(workers,
-            	"Which worker do you want to enter stats for?",
-            	"There are no workers without stats in that unit.",
-            	"Worker to modify: ", false).item) {
+                "Which worker do you want to enter stats for?",
+                "There are no workers without stats in that unit.",
+                "Worker to modify: ", false).item) {
             workers.remove(chosen);
             enterStatsForWorker(chosen.id);
             if (exists continuation = cli.inputBoolean("Choose another worker?"),
@@ -218,9 +218,9 @@ class StatGeneratingCLI satisfies CLIDriver {
         MutableList<IUnit> units = ArrayList { elements =
             removeStattedUnits(*model.getUnits(player)); };
         while (!units.empty, exists chosen = cli.chooseFromList(units,
-            	"Which unit contains the worker in question?",
-            	"All that player's units already have stats.", "Unit selection: ",
-            	false).item) {
+                "Which unit contains the worker in question?",
+                "All that player's units already have stats.", "Unit selection: ",
+                false).item) {
             units.remove(chosen);
             enterStatsInUnit(chosen);
             if (exists continuation = cli.inputBoolean("Choose another unit?"),
@@ -236,9 +236,9 @@ class StatGeneratingCLI satisfies CLIDriver {
     void enterStats() {
         MutableList<Player> players = ArrayList { elements = model.playerChoices; };
         while (!players.empty, exists chosen = cli.chooseFromList(players,
-            	"Which player owns the worker in question?",
-            	"There are no players shared by all the maps.", "Player selection: ",
-            	true).item) {
+                "Which player owns the worker in question?",
+                "There are no players shared by all the maps.", "Player selection: ",
+                true).item) {
             players.remove(chosen);
             enterStatsForPlayer(chosen);
             if (exists continuation = cli.inputBoolean("Choose another player?"),
@@ -300,7 +300,7 @@ class StatGeneratingCLI satisfies CLIDriver {
         if (exists retval = racialBonuses[race]) {
             return retval;
         } else if (exists textContent = readFileContents(`module strategicprimer.model.common`,
-            	"racial_stat_adjustments/``race``.txt")) {
+                "racial_stat_adjustments/``race``.txt")) {
             value parsed = textContent.lines.map(Integer.parse)
                     .narrow<Integer>().sequence();
             assert (is Integer[6] temp = [parsed[0], parsed[1], parsed[2], parsed[3],

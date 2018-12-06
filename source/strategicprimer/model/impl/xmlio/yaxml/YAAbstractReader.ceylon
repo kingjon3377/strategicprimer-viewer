@@ -179,7 +179,7 @@ abstract class YAAbstractReader<Element>
         "on non-numeric input, if we were using [[Integer.parse]]")
     static Integer parseInt(String string,
             "The current location in the document" Location location) =>
-	    	numParser.parse(string).intValue();
+                numParser.parse(string).intValue();
 
     "Read a parameter from XML whose value must be an integer."
     shared static Integer getIntegerParameter(StartElement element, String parameter,
