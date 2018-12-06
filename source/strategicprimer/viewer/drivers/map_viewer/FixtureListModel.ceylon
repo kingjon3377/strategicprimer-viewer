@@ -98,7 +98,9 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
     shared actual TileFixture getElementAt(Integer index) {
         //TileFixture[] main = map.fixtures[point].sequence(); // TODO: syntax sugar
         TileFixture[] main = map.fixtures.get(point).sequence();
-        if (exists terrain = map.baseTerrain[point]) {
+        if (index < 0) {
+            throw ArrayIndexOutOfBoundsException(index);
+        } else if (exists terrain = map.baseTerrain[point]) {
              if (index == 0) {
                  if (exists retval = cachedTerrain) {
                      return retval;
@@ -107,8 +109,6 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
                      cachedTerrain = retval;
                      return retval;
                  }
-             } else if (index < 0) {
-                 throw ArrayIndexOutOfBoundsException(index);
              } else if (exists retval = main.getFromFirst(index - 1)) {
                  return retval;
              } else if (exists retval =
@@ -117,8 +117,6 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
              } else {
                  throw ArrayIndexOutOfBoundsException(index);
              }
-        } else if (index < 0) {
-            throw ArrayIndexOutOfBoundsException(index);
         } else if (exists retval = main.getFromFirst(index)) {
             return retval;
         } else if (exists retval = currentTracks.getFromFirst(index - main.size)) {
