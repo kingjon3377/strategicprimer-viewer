@@ -30,7 +30,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
         satisfies ListModel<TileFixture>&SelectionChangeListener {
     "The currently selected point."
     variable Point point = Point.invalidPoint;
-    variable TileTypeFixture? cachedTerrain = null;
+    variable TileFixture[] cachedTerrainList = [];
 
     """Any animal tracks that have been "added" to the current tile but kept out of the
        map."""
@@ -42,10 +42,9 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
     shared actual void removeListDataListener(ListDataListener listener) =>
             listDataListeners.remove(listener);
 
-    shared actual Integer size {
-        //Integer retval = map.fixtures[point].size + currentTracks.size; // TODO: syntax sugar
-        Integer retval = map.fixtures.get(point).size + currentTracks.size;
-        return if (map.baseTerrain[point] exists) then retval + 1 else retval;
+    shared actual Integer size { // TODO: => once syntax sugar in place
+        //return map.fixtures[point].size + currentTracks.size + cachedTerrainList.size; // TODO: syntax sugar
+        return map.fixtures.get(point).size + currentTracks.size + cachedTerrainList.size;
     }
 
     void fireIntervalReplaced(Range<Integer> oldRange, Range<Integer> newRange) {
@@ -85,7 +84,14 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
 
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         Integer oldSize = size;
-        cachedTerrain = null;
+        cachedTerrainList = [];
+        if (exists terrain = map.baseTerrain[newPoint]) {
+            cachedTerrainList = [TileTypeFixture(terrain)];
+        }
+        if (nonempty rivers = map.rivers.get(newPoint).sequence()) { // TODO: syntax sugar
+            cachedTerrainList = cachedTerrainList.withTrailing(RiverFixture(*rivers));
+        }
+        // TODO: mountain
         point = newPoint;
         currentTracks.clear();
         if (exists tracks = tracksSource(newPoint)) {
@@ -100,26 +106,12 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
         TileFixture[] main = map.fixtures.get(point).sequence();
         if (index < 0) {
             throw ArrayIndexOutOfBoundsException(index);
-        } else if (exists terrain = map.baseTerrain[point]) {
-             if (index == 0) {
-                 if (exists retval = cachedTerrain) {
-                     return retval;
-                 } else {
-                     TileTypeFixture retval = TileTypeFixture(terrain);
-                     cachedTerrain = retval;
-                     return retval;
-                 }
-             } else if (exists retval = main.getFromFirst(index - 1)) {
-                 return retval;
-             } else if (exists retval =
-                     currentTracks.getFromFirst(index - main.size - 1)) {
-                 return retval;
-             } else {
-                 throw ArrayIndexOutOfBoundsException(index);
-             }
-        } else if (exists retval = main.getFromFirst(index)) {
+        } else if (exists retval = cachedTerrainList.getFromFirst(index)) {
             return retval;
-        } else if (exists retval = currentTracks.getFromFirst(index - main.size)) {
+        } else if (exists retval = main.getFromFirst(index - cachedTerrainList.size)) {
+            return retval;
+        } else if (exists retval =
+                currentTracks.getFromFirst(index - cachedTerrainList.size - main.size)) {
             return retval;
         } else {
             throw ArrayIndexOutOfBoundsException(index);
@@ -127,11 +119,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
     }
 
     Integer adjustedIndex(Integer index) {
-        if (map.baseTerrain[point] exists) {
-            return index + 1;
-        } else {
-            return index;
-        }
+        return index + cachedTerrainList.size;
     }
 
     shared void addFixture(TileFixture fixture) {
@@ -146,6 +134,25 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
             } else {
                 map.baseTerrain[point] = fixture.tileType;
                 fireIntervalAdded(0..0);
+            }
+        } else if (is RiverFixture fixture) {
+            if (nonempty existingRivers = map.rivers.get(point).sequence()) { // TODO: syntax sugar
+                if (existingRivers.containsEvery(fixture.rivers)) {
+                    return;
+                } else {
+                    map.addRivers(point, *fixture.rivers);
+                    assert (exists index =
+                        cachedTerrainList.firstIndexWhere(`RiverFixture`.typeOf));
+                    fireContentsChanged(index..index);
+                    cachedTerrainList =
+                        cachedTerrainList.patch([RiverFixture(*map.rivers.get(point))],
+                            index, 1).sequence();
+                }
+            } else {
+                map.addRivers(point, *fixture.rivers);
+                Integer index = cachedTerrainList.size;
+                cachedTerrainList = cachedTerrainList.withTrailing(fixture);
+                fireIntervalAdded(index..index);
             }
         } else if (map.addFixture(point, fixture),
                 exists index = map.fixtures[point]?.locate(fixture.equals)?.key) {
@@ -162,10 +169,16 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
         for (fixture in fixtures) {
             if (is TileTypeFixture fixture) {
                 if (exists currentTerrain = map.baseTerrain[point],
-                        currentTerrain == fixture.tileType) {
+                    currentTerrain == fixture.tileType) { // TODO: fix indentation
                     map.baseTerrain[point] = null;
                     fireIntervalRemoved(0..0);
                 }
+            } else if (is RiverFixture fixture) {
+                assert (exists index = cachedTerrainList.locate(fixture.equals)?.key);
+                map.removeRivers(point, *fixture.rivers);
+                cachedTerrainList = cachedTerrainList.filter(not(fixture.equals))
+                    .sequence();
+                fireIntervalRemoved(index..index);
             } else if (exists index = map.fixtures[point]?.locate(fixture.equals)?.key) {
                 map.removeFixture(point, fixture);
                 Integer adjusted = adjustedIndex(index);

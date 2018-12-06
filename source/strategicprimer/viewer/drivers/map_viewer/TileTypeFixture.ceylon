@@ -34,7 +34,7 @@ shared class TileTypeFixture(shared TileType tileType) satisfies TileFixture&Has
     }
 
     shared actual Integer hash => tileType.hash;
-    shared actual String string => "Terrain: ``tileType``";
+    shared actual String string => "Terrain: ``tileType``"; // TODO: Use + instead of interpolation
 
     "Whether this equals another fixture if we ignore ID."
     deprecated("This class should only ever be used in a FixtureListModel, so this method

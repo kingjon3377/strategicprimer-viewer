@@ -93,7 +93,8 @@ import strategicprimer.viewer.drivers.map_viewer {
     FixtureFilterTableModel,
     FixtureListModel,
     fixtureList,
-    TileTypeFixture
+    TileTypeFixture,
+    RiverFixture
 }
 import strategicprimer.model.common.map.fixtures.towns {
     Village
@@ -447,7 +448,7 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
 //                              .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
                                 .baseTerrain.get(destPoint);
                         for (fixture in fixtures) {
-                            if (is TileTypeFixture fixture) {
+                            if (is TileTypeFixture|RiverFixture fixture) {
                                 // Skip it! It'll corrupt the output XML!
                                 continue;
                             //} else if (!map.fixtures[destPoint].any(fixture.equals)) { // TODO: syntax sugar once compiler bug fixed
