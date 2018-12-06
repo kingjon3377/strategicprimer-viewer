@@ -4,7 +4,8 @@ import java.awt.event {
 
 import javax.swing {
     JMenuItem,
-    JPopupMenu
+    JPopupMenu,
+    JCheckBoxMenuItem
 }
 
 import strategicprimer.drivers.common {
@@ -53,7 +54,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         }
     });
 
-    JMenuItem mountainItem = JMenuItem("Mountainous");
+    JCheckBoxMenuItem mountainItem = JCheckBoxMenuItem("Mountainous");
 
     suppressWarnings("deprecation")
     void toggleMountains() {
@@ -70,7 +71,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     mountainItem.addActionListener(silentListener(toggleMountains));
 
-    void toggleRiver(River river, JMenuItem item)() {
+    void toggleRiver(River river, JCheckBoxMenuItem item)() {
         Point localPoint = point;
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
                 terrain != TileType.ocean) {
@@ -87,9 +88,9 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         }
     }
 
-    MutableMap<River, JMenuItem> riverItems = HashMap<River, JMenuItem>();
+    MutableMap<River, JCheckBoxMenuItem> riverItems = HashMap<River, JCheckBoxMenuItem>();
     for (direction in `River`.caseValues) {
-        JMenuItem item = JMenuItem(direction.description + " river");
+        JCheckBoxMenuItem item = JCheckBoxMenuItem(direction.description + " river");
         item.addActionListener(silentListener(toggleRiver(direction, item)));
         riverItems[direction] = item;
     }
