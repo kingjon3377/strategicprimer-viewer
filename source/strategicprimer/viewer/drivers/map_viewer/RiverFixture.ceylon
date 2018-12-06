@@ -1,16 +1,14 @@
 import strategicprimer.model.common.map {
     River,
-    TileFixture,
-    HasImage,
-    IFixture
+    FakeFixture
 }
 import lovelace.util.common {
     simpleMap,
     simpleSet
 }
 """A fake "TileFixture" to represent the rivers on a tile, so they can appear in the list
-   of the tile's contents.""" // TODO: Make a "fake fixture" interface for fixtures that should never actually be in the map
-shared class RiverFixture satisfies TileFixture&HasImage {
+   of the tile's contents."""
+shared class RiverFixture satisfies FakeFixture {
 
     "A mapping from river-sets to filenames." // TODO: Find some way to share this between this class and Ver2TileDrawHelper
     static Map<Set<River>, String> riverFiles = simpleMap(
@@ -63,14 +61,6 @@ shared class RiverFixture satisfies TileFixture&HasImage {
         return RiverFixture(*rivers);
     }
 
-    """A dummy "ID number""""
-    deprecated("This class should only ever be used in a FixtureListModel, so this
-                should never be called.")
-    shared actual Integer id {
-        log.warn("TileTypeFixture.id called");
-        return -1;
-    }
-
     shared actual Boolean equals(Object obj) {
         if (is RiverFixture obj) {
             return rivers.containsEvery(obj.rivers) && obj.rivers.containsEvery(rivers);
@@ -83,33 +73,8 @@ shared class RiverFixture satisfies TileFixture&HasImage {
 
     shared actual String string => "Rivers: " + ", ".join(rivers).lowercased;
 
-    "Whether this equals another fixture if we ignore ID."
-    deprecated("This class should only ever be used in a FixtureListModel, so this method
-                should never be called.")
-    shared actual Boolean equalsIgnoringID(IFixture fixture) {
-        log.warn("TileTypeFixture.equalsIgnoringID called");
-        return equals(fixture);
-    }
-
-    "We don't allow per-instance icons for these, so always return the empty string."
-    shared actual String image => "";
-
-    deprecated("This class should only ever be used in a FixtureListModel, so this method
-                should never be called.")
-    shared actual String plural {
-        log.warn("RiverFixture.plural called");
-        return "You shouldn't see this text; report this.";
-    }
     shared actual String shortDescription => string;
 
     "The required Perception check for an explorer to find the fixture."
     shared actual Integer dc = 0;
-
-    "Compare to another fixture."
-    deprecated("This class should only ever be used in a FixtureListModel, so this method
-                should never be called.")
-    shared actual Comparison compare(TileFixture fixture) {
-        log.warn("RiverFixture.compare called");
-        return (super of TileFixture).compare(fixture);
-    }
 }

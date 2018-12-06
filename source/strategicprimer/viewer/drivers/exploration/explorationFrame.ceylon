@@ -72,7 +72,8 @@ import strategicprimer.model.common.map {
     Point,
     TileType,
     TileFixture,
-    IMutableMapNG
+    IMutableMapNG,
+    FakeFixture
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
@@ -448,7 +449,7 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
 //                              .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
                                 .baseTerrain.get(destPoint);
                         for (fixture in fixtures) {
-                            if (is TileTypeFixture|RiverFixture fixture) {
+                            if (is FakeFixture fixture) {
                                 // Skip it! It'll corrupt the output XML!
                                 continue;
                             //} else if (!map.fixtures[destPoint].any(fixture.equals)) { // TODO: syntax sugar once compiler bug fixed
