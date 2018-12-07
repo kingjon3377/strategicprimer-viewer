@@ -186,7 +186,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
                     fireIntervalRemoved(0..0);
                 }
             } else if (is RiverFixture fixture) {
-                assert (exists index = cachedTerrainList.locate(fixture.equals)?.key); // TODO: Put in loop condition
+                assert (exists index = cachedTerrainList.locate(fixture.equals)?.key);
                 map.removeRivers(point, *fixture.rivers);
                 cachedTerrainList = cachedTerrainList.filter(not(fixture.equals))
                     .sequence();
