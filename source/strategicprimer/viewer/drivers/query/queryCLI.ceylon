@@ -198,17 +198,16 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
     "Report the distance between two points."
     void printDistance() {
         if (exists start = cli.inputPoint("Starting point:\t"),
-                exists end = cli.inputPoint("Destination:\t")) {
-            Boolean? groundTravel = cli.inputBoolean("Compute ground travel distance?"); // TODO: combine with outside if
-            switch (groundTravel)
-            case (true) {
+                exists end = cli.inputPoint("Destination:\t"),
+                exists groundTravel =
+                    cli.inputBoolean("Compute ground travel distance?")) {
+            if (groundTravel) {
                 cli.println("Distance (on the ground, in MP cost):\t``pathfinder.getTravelDistance(map, start, end).first``");
             }
-            case (false) {
+            else {
                 cli.println("Distance (as the crow flies, in tiles):\t``Float
                     .format(distance(start, end, map.dimensions), 0, 0)``");
             }
-            case (null) {}
         }
     }
 
