@@ -211,13 +211,6 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "Clear the selection."
     shared void clearSelection() => selection = Point.invalidPoint;
 
-    void postSetMap(IMapNG newMap) { // TODO: Why not inline this into its sole(?) caller?
-        clearSelection();
-        visDimensions = VisibleDimensions(0, newMap.dimensions.rows - 1, 0,
-            newMap.dimensions.columns - 1);
-        resetZoom();
-    }
-
     shared actual void addSelectionChangeListener(SelectionChangeListener listener) =>
             scs.addSelectionChangeListener(listener);
     shared actual void removeSelectionChangeListener(SelectionChangeListener listener) =>
@@ -240,6 +233,9 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     shared actual void setMap(IMutableMapNG newMap, PathWrapper? origin,
             Boolean modified) {
         super.setMap(newMap, origin, modified);
-        postSetMap(newMap);
+        clearSelection();
+        visDimensions = VisibleDimensions(0, newMap.dimensions.rows - 1, 0,
+            newMap.dimensions.columns - 1);
+        resetZoom();
     }
 }
