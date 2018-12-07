@@ -1,6 +1,5 @@
 import strategicprimer.model.common.map {
-    FakeFixture,
-    TileFixture
+    FakeFixture
 }
 """A fake "TileFixture" to represent the mountain(s) on a mountainous tile, so it/they can
    appear in the list of the tile's contents."""

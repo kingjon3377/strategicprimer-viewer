@@ -93,9 +93,7 @@ import strategicprimer.viewer.drivers.map_viewer {
     SelectionChangeSupport,
     FixtureFilterTableModel,
     FixtureListModel,
-    fixtureList,
-    TileTypeFixture,
-    RiverFixture
+    fixtureList
 }
 import strategicprimer.model.common.map.fixtures.towns {
     Village
