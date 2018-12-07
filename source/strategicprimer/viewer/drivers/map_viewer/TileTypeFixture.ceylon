@@ -24,7 +24,7 @@ shared class TileTypeFixture(shared TileType tileType) satisfies FakeFixture { /
     }
 
     shared actual Integer hash => tileType.hash;
-    shared actual String string => "Terrain: ``tileType``"; // TODO: Use + instead of interpolation
+    shared actual String string => "Terrain: " + tileType.string;
 
     "The filename of an image to represent the object.
 
