@@ -207,9 +207,12 @@ shared class TrappingCLI satisfies CLIDriver {
         case (false) { name = "trapper"; }
         case (null) { return; }
         assert (exists fishing);
-        variable Integer minutes =
-                (cli.inputNumber("How many hours will the ``name`` work? ") else 0) // TODO: abort on EOF instead of defaulting to 0
-                    * minutesPerHour;
+        variable Integer minutes = 0;
+        if (exists input = cli.inputNumber("How many hours will the ``name`` work? ")) {
+            minutes = input * minutesPerHour;
+        } else {
+            return;
+        }
         Point point;
         if (exists temp = cli.inputPoint("Where is the ``name`` working? ")) {
             point = temp;
