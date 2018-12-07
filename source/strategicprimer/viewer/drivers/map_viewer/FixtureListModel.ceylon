@@ -181,7 +181,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
         for (fixture in fixtures) {
             if (is TileTypeFixture fixture) {
                 if (exists currentTerrain = map.baseTerrain[point],
-                    currentTerrain == fixture.tileType) { // TODO: fix indentation
+                        currentTerrain == fixture.tileType) {
                     map.baseTerrain[point] = null;
                     fireIntervalRemoved(0..0);
                 }
