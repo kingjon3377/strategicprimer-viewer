@@ -61,7 +61,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         Point localPoint = point;
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
                 terrain != TileType.ocean, terrain != TileType.mountain) {
-            Boolean newValue = !mountainItem.model.selected;
+            Boolean newValue = !model.map.mountainous.get(localPoint);
             model.map.mountainous[localPoint] = newValue;
             model.mapModified = true;
             mountainItem.model.selected = newValue;
@@ -75,15 +75,14 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         Point localPoint = point;
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
                 terrain != TileType.ocean) {
-            if (item.model.selected) {
+            if (river in model.map.rivers.get(localPoint)) {
                 model.map.removeRivers(localPoint, river);
-                model.mapModified = true;
                 item.model.selected = false;
             } else {
                 model.map.addRivers(localPoint, river);
-                model.mapModified = true;
                 item.model.selected = true;
             }
+            model.mapModified = true;
             scs.fireChanges(null, localPoint);
         }
     }
