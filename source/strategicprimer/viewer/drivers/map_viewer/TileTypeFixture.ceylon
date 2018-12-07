@@ -5,7 +5,7 @@ import strategicprimer.model.common.map {
 
 """A fake "TileFixture" to represent the tile's terrain type, so it can be copied via
    drag-and-drop like a fixture."""
-shared class TileTypeFixture(shared TileType tileType) satisfies FakeFixture {
+shared class TileTypeFixture(shared TileType tileType) satisfies FakeFixture { // TODO: Drop the "shared"?
     "Clone the object."
     deprecated("This class should only ever be used in a FixtureListModel, and copying
                 a tile's terrain type should be handled specially anyway, so this method

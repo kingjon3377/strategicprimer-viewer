@@ -8,7 +8,7 @@ import lovelace.util.common {
 }
 """A fake "TileFixture" to represent the rivers on a tile, so they can appear in the list
    of the tile's contents."""
-shared class RiverFixture satisfies FakeFixture {
+shared class RiverFixture satisfies FakeFixture { // TODO: Drop the "shared"?
 
     "A mapping from river-sets to filenames." // TODO: Find some way to share this between this class and Ver2TileDrawHelper
     static Map<Set<River>, String> riverFiles = simpleMap(

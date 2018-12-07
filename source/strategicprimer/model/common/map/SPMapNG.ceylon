@@ -158,6 +158,7 @@ shared class SPMapNG satisfies IMutableMapNG {
     """Add a fixture at a location, and return whether the "all fixtures at this point"
        set has an additional member as a result of this."""
     shared actual Boolean addFixture(Point location, TileFixture fixture) {
+        // TODO: Warn loudly and abort if a fake fixture passed in
         //{TileFixture*} local = fixturesMap[location]; // TODO: syntax sugar once compiler bug fixed
         {TileFixture*} local = fixturesMap.get(location);
         if (fixture.id >= 0,

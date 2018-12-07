@@ -91,7 +91,10 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
         if (nonempty rivers = map.rivers.get(newPoint).sequence()) { // TODO: syntax sugar
             cachedTerrainList = cachedTerrainList.withTrailing(RiverFixture(*rivers));
         }
-        // TODO: mountain
+//        if (map.mountainous[newPoint]) { // TODO: syntax sugar
+        if (map.mountainous.get(newPoint)) {
+            cachedTerrainList = cachedTerrainList.withTrailing(MountainFixture());
+        }
         point = newPoint;
         currentTracks.clear();
         if (exists tracks = tracksSource(newPoint)) {
@@ -154,6 +157,15 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
                 cachedTerrainList = cachedTerrainList.withTrailing(fixture);
                 fireIntervalAdded(index..index);
             }
+        } else if (is MountainFixture fixture) {
+//        if (map.mountainous[point]) { // TODO: syntax sugar
+            if (map.mountainous.get(point)) {
+                return;
+            } else {
+                Integer index = cachedTerrainList.size;
+                map.mountainous[point] = true;
+                fireIntervalAdded(index..index);
+            }
         } else if (map.addFixture(point, fixture),
                 exists index = map.fixtures[point]?.locate(fixture.equals)?.key) {
             Integer adjusted = adjustedIndex(index);
@@ -174,11 +186,18 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
                     fireIntervalRemoved(0..0);
                 }
             } else if (is RiverFixture fixture) {
-                assert (exists index = cachedTerrainList.locate(fixture.equals)?.key);
+                assert (exists index = cachedTerrainList.locate(fixture.equals)?.key); // TODO: Put in loop condition
                 map.removeRivers(point, *fixture.rivers);
                 cachedTerrainList = cachedTerrainList.filter(not(fixture.equals))
                     .sequence();
                 fireIntervalRemoved(index..index);
+            } else if (is MountainFixture fixture) {
+                assert (exists index = cachedTerrainList.locate(fixture.equals)?.key);
+                map.mountainous[point] = false;
+                cachedTerrainList = cachedTerrainList.filter(not(fixture.equals))
+                    .sequence();
+                fireIntervalRemoved(index..index);
+                return;
             } else if (exists index = map.fixtures[point]?.locate(fixture.equals)?.key) {
                 map.removeFixture(point, fixture);
                 Integer adjusted = adjustedIndex(index);
