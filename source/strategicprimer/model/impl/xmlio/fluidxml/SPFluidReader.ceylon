@@ -197,8 +197,6 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             idFactory);
         if (is River child) {
             map.addRivers(currentTile, child);
-        } else if (is {River*} child) { // TODO: Is this actually possible anymore?
-            map.addRivers(currentTile, *child);
         } else if (is TileFixture child) {
             if (is Fortress child, map.fixtures.get(currentTile).narrow<Fortress>()
                     .any(matchingValue(child.owner, Fortress.owner))) {
