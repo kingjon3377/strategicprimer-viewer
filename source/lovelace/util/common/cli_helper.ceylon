@@ -23,7 +23,8 @@ shared object cliHelper {
                 return item;
             } else {
                 printList(*choices.map(Tuple.first));
-                if (exists [description, choice] = choices[inputNumber(prompt)]) {
+                if (exists index = inputNumber(prompt),
+                        exists [description, choice] = choices[index]) {
                     return choice;
                 } else {
                     return null;
@@ -52,16 +53,19 @@ shared object cliHelper {
     }
 
     "Ask the user to enter a nonnegative integer. Loops until one is provided on
-     [[the standard input|process.readLine]]." // TODO: Should return null, or at least return -1, on EOF
-    shared Integer inputNumber(String prompt) {
+     [[the standard input|process.readLine]]. Returns [[null]] on EOF."
+    shared Integer? inputNumber(String prompt) {
         variable Integer retval = -1;
         while (retval<0) {
             writePrompt(prompt);
-            if (exists input = process.readLine(),
-                is Integer temp = Integer.parse(input.replace(",", ""))) {
-                retval = temp;
+            if (exists input = process.readLine()) {
+                if (is Integer temp = Integer.parse(input.replace(",", ""))) {
+                    retval = temp;
+                } else {
+                    retval = -1;
+                }
             } else {
-                retval = -1;
+                return null;
             }
         }
         return retval;
@@ -71,8 +75,8 @@ shared object cliHelper {
        or "t" is provided on [[the standard input|process.readLine]], returns
        [[false]] if "no", "false", "n", or "f" is provided, and on any other input
        asks again and again (loops) until an acceptable input is provided. (Those
-       answers are parsed case-insensitively.)""" // TODO: Should return null on EOF instead of infinite-looping
-    shared Boolean inputBoolean(String prompt) {
+       answers are parsed case-insensitively.) Returns [[null]] on EOF."""
+    shared Boolean? inputBoolean(String prompt) {
         while (true) {
             writePrompt(prompt);
             switch (process.readLine()?.lowercased)
@@ -81,6 +85,9 @@ shared object cliHelper {
             }
             case ("no"|"false"|"n"|"f") {
                 return false;
+            }
+            case (null) {
+                return null;
             }
             else {
                 print("Please enter 'yes', 'no', 'true', or 'false',");
