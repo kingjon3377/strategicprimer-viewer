@@ -15,8 +15,7 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.common.map {
     Point,
-    IMutableMapNG,
-    IMapNG
+    IMutableMapNG
 }
 
 "A class to encapsulate the various model-type things views need to do with maps."
