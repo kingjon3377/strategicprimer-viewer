@@ -19,7 +19,8 @@ import strategicprimer.drivers.gui.common.about {
    "Close", "About", and "Quit" menu items enabled."""
 shared class UtilityMenuHandler(UtilityGUI driver, SPFrame window) {
     "Show the About dialog (as a response to a menu-item event)."
-    void aboutHandler() => // TODO: Make these static methods?
+    // Note that this can't be made static because it refers to [[window]].
+    void aboutHandler() =>
             aboutDialog(window, window.windowName).setVisible(true);
     "Show the About dialog (as a response to the About item in the Mac app-menu
      being chosen)."
