@@ -527,39 +527,40 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
                 be "discovered" if the tile is explored."""
             object ell satisfies SelectionChangeListener {
                 variable Boolean outsideCritical = true;
-                shared actual void selectedPointChanged(Point? old, Point newPoint) {
-                    SwingUtilities.invokeLater(() { // TODO: Convert lambda to named method in object
-                        if (outsideCritical, exists selectedUnit =
-                                driver.model.selectedUnit) {
-                            outsideCritical = false;
-                            mainList.clearSelection();
-                            MutableList<[Integer, TileFixture]> constants =
-                                    ArrayList<[Integer, TileFixture]>();
-                            MutableList<[Integer, TileFixture]> possibles =
-                                    ArrayList<[Integer, TileFixture]>();
-                            for (index->fixture in ListModelWrapper(mainList.model)
-                                    .indexed) {
-                                if (simpleMovementModel.shouldAlwaysNotice(selectedUnit,
-                                        fixture)) {
-                                    constants.add([index, fixture]);
-                                } else if (simpleMovementModel
-                                        .shouldSometimesNotice(selectedUnit,
-                                            speedSource(), fixture)) {
-                                    possibles.add([index, fixture]);
-                                }
+                void selectedPointChangedImpl() {
+                    if (outsideCritical, exists selectedUnit =
+                            driver.model.selectedUnit) {
+                        outsideCritical = false;
+                        mainList.clearSelection();
+                        MutableList<[Integer, TileFixture]> constants =
+                            ArrayList<[Integer, TileFixture]>();
+                        MutableList<[Integer, TileFixture]> possibles =
+                            ArrayList<[Integer, TileFixture]>();
+                        for (index->fixture in ListModelWrapper(mainList.model)
+                                .indexed) {
+                            if (simpleMovementModel.shouldAlwaysNotice(selectedUnit,
+                                fixture)) {
+                                constants.add([index, fixture]);
+                            } else if (simpleMovementModel
+                                .shouldSometimesNotice(selectedUnit,
+                                speedSource(), fixture)) {
+                                possibles.add([index, fixture]);
                             }
-                            constants.addAll(simpleMovementModel.selectNoticed(
-                                randomize(possibles),
-                                compose(Tuple<TileFixture, TileFixture, []>.first,
-                                    Tuple<Integer|TileFixture, Integer,
-                                    [TileFixture]>.rest),
-                                selectedUnit, speedSource()));
-                            IntArray indices = IntArray.with(
-                                constants.map(Tuple.first));
-                            mainList.selectedIndices = indices;
-                            outsideCritical = true;
                         }
-                    });
+                        constants.addAll(simpleMovementModel.selectNoticed(
+                            randomize(possibles),
+                            compose(Tuple<TileFixture, TileFixture, []>.first,
+                                Tuple<Integer|TileFixture, Integer,
+                                [TileFixture]>.rest),
+                            selectedUnit, speedSource()));
+                        IntArray indices = IntArray.with(
+                            constants.map(Tuple.first));
+                        mainList.selectedIndices = indices;
+                        outsideCritical = true;
+                    }
+                }
+                shared actual void selectedPointChanged(Point? old, Point newPoint) {
+                    SwingUtilities.invokeLater(selectedPointChangedImpl);
                 }
             }
 
