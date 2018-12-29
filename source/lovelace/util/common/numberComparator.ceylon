@@ -5,10 +5,10 @@ import ceylon.decimal {
     Decimal
 }
 
-"An object providing a comparison for [[Numbers|Number]] of unknown or varied types. In the default
- implementation, only [[Integer]], [[Float]], and [[Whole]] numbers are supported; on the JVM,
- [[Decimals|Decimal]] are additionally supported. Passing any unsupported type will raise an
- [[AssertionError]]."
+"An object providing a comparison for [[Numbers|Number]] of unknown or varied types. In
+ the default implementation, only [[Integer]], [[Float]], and [[Whole]] numbers are
+ supported; on the JVM, [[Decimals|Decimal]] are additionally supported. Passing any
+ unsupported type will raise an [[AssertionError]]."
 shared native object numberComparator satisfies Comparator<Number<out Anything>> {
     "Convert an arbitrary Number to a Float."
     native shared Float floatValue(Number<out Anything> number) {

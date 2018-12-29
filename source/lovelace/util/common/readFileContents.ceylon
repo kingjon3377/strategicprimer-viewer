@@ -11,8 +11,8 @@ import ceylon.file {
 }
 
 "Get the contents of a file, which may be in the filesystem (if on a platform for which
- Ceylon provides a suitable interface for that, i.e. `ceylon.file` is supported) or a 
- resource in the given module (which is always supported), as a String. Returns null 
+ Ceylon provides a suitable interface for that, i.e. `ceylon.file` is supported) or a
+ resource in the given module (which is always supported), as a String. Returns null
  if file not found in either place."
 shared native String? readFileContents(Module sourceModule, String filename) {
     if (exists file = sourceModule.resourceByPath(filename)) {

@@ -7,10 +7,11 @@ shared Boolean(Type) matchingValue<Type, Field>(Field expected, Field(Type) fiel
 "Given an [[Entry]], return true iff its key and item are the given types.
 
  Using [[Iterable.narrow]] on a stream of [[tuples|Tuple]] works, but doing so on a stream
- of [[entries|Entry]] results in the empty stream: the compiler and runtime set the reified
- type parameters of every tuple to the precise runtime type(s) of the objects, but make no
- such optimization for Entries, and so the type parameters are generally the declared or
- inferred types of the objects put into the Entry."
+ of [[entries|Entry]] results in the empty stream: the compiler and runtime set the
+ reified type parameters of every tuple to the precise runtime type(s) of the objects, but
+ make no such optimization for Entries, and so the type parameters are generally the
+ declared or inferred types of the objects put into the Entry."
+// TODO: drop 'shared'
 shared Boolean matchingEntry<Key, Item>(Entry<Object, Anything> entry) =>
         entry.key is Key && entry.item is Item;
 
