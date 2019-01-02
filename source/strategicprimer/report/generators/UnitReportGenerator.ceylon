@@ -90,7 +90,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
     shared actual void produceSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, IUnit item, Point loc) {
-        ostream("Unit of type ``item.kind``, named ``item.name``, ");
+        ostream("Unit ``item.name`` (``item.kind``), ");
         if (item.owner.independent) {
             ostream("independent");
         } else if (item.owner == currentPlayer) {
@@ -214,14 +214,12 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, IUnit item, Point loc) {
         String base;
-        if (item.owner.independent) { // TODO: Condense these descriptions
-            base = "Unit of type ``item.kind``, named ``item
-                .name``, independent.";
+        if (item.owner.independent) {
+            base = "Unit ``item.name`` (``item.kind``), independent.";
         } else if (item.owner == currentPlayer) {
-            base = "Unit of type ``item.kind``, named ``item.name``, owned by you.";
+            base = "Unit ``item.name`` (``item.kind``), owned by you.";
         } else {
-            base = "Unit of type ``item.kind``, named ``item.name``, owned by ``
-                item.owner``.";
+            base = "Unit ``item.name`` (``item.kind``), owned by ``item.owner``.";
         }
         fixtures.remove(item.id);
         ListReportNode workers = ListReportNode("Workers:");
