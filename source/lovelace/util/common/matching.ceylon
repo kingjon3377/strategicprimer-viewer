@@ -11,8 +11,7 @@ shared Boolean(Type) matchingValue<Type, Field>(Field expected, Field(Type) fiel
  reified type parameters of every tuple to the precise runtime type(s) of the objects, but
  make no such optimization for Entries, and so the type parameters are generally the
  declared or inferred types of the objects put into the Entry."
-// TODO: drop 'shared'
-shared Boolean matchingEntry<Key, Item>(Entry<Object, Anything> entry) =>
+Boolean matchingEntry<Key, Item>(Entry<Object, Anything> entry) =>
         entry.key is Key && entry.item is Item;
 
 Key->Item entryIdentity<Key, Item>(Object->Anything entry) given Key satisfies Object {
