@@ -1,5 +1,5 @@
 "Model objects, and their XML I/O, for the [Strategic
- Primer](https://shinecycle.wordpress.com/archives/strategic-primer) assitive programs
+ Primer](https://strategicprimer.wordpress.com) assitive programs
  suite. Some of the converter apps, being tightly bound to XML I/O and to implementation
  details of the model, also have code in this module."
 license("GPL-3")

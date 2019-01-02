@@ -1,8 +1,7 @@
 ## Strategic Primer Assistive Programs
 
 This repository contains a suite of assistive programs for players and Judges
-of the strategy game
-[Strategic Primer](https://shinecycle.wordpress.com/archives/strategic-primer).
+of the strategy game [Strategic Primer](https://strategicprimer.wordpress.com).
 The flagship application is a map viewer; players may also find the
 worker-management app useful. Other programs are primarily designed for use by
 the Judge in maintaining the master map.

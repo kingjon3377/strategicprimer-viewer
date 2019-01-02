@@ -1,5 +1,5 @@
 "Common code for [Strategic
- Primer](https://shinecycle.wordpress.com/archives/strategic-primer) GUIs."
+ Primer](https://strategicprimer.wordpress.com) GUIs."
 // TODO: add tagged() annotations throughout
 license("GPL-3")
 native("jvm")

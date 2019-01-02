@@ -1,6 +1,6 @@
 "Model objects, tests, and debugging methods for the old, table-based,
  encounter/exploration-results model of [Strategic
- Primer](https://shinecycle.wordpress.com/archives/strategic-primer)"
+ Primer](https://strategicprimer.wordpress.com)"
 license("GPL-3")
 native("jvm")
 module strategicprimer.drivers.exploration.old "0.4.9016" {
