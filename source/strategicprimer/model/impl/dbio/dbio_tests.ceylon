@@ -148,12 +148,12 @@ object dbio_tests {
                 "hook brief", "hook full", id));
 
     test
-    shared void testPortalSerialization(randomlyGenerated(3) Integer id,
-        randomlyGenerated(3) Integer row, randomlyGenerated(3) Integer column) =>
+    shared void testPortalSerialization(randomlyGenerated(2) Integer id,
+        randomlyGenerated(2) Integer row, randomlyGenerated(2) Integer column) =>
             assertFixtureSerialization(Portal("portal dest", Point(row, column), id));
 
     test
-    shared void testAnimalSerialization(randomlyGenerated(3) Integer id,
+    shared void testAnimalSerialization(randomlyGenerated(2) Integer id,
         enumeratedParameter(`class Boolean`) Boolean talking) =>
             assertFixtureSerialization(AnimalImpl("animal kind", talking, "status", id,
                 -1, 1));
@@ -168,22 +168,22 @@ object dbio_tests {
             assertFixtureSerialization(CacheFixture("kind", "contents", id));
 
     test
-    shared void testCaveSerialization(randomlyGenerated(3) Integer id,
-        randomlyGenerated(3) Integer dc) =>
+    shared void testCaveSerialization(randomlyGenerated(2) Integer id,
+        randomlyGenerated(2) Integer dc) =>
             assertFixtureSerialization(Cave(dc, id));
 
     test
     shared void testBattlefieldSerialization(
-            randomlyGenerated(3) Integer id,
-        randomlyGenerated(3) Integer dc) =>
+            randomlyGenerated(2) Integer id,
+        randomlyGenerated(2) Integer dc) =>
             assertFixtureSerialization(Battlefield(dc, id));
 
     test
     shared void testFortificationSerialization(
-            randomlyGenerated(3) Integer id,
+            randomlyGenerated(2) Integer id,
             enumeratedParameter(`class TownStatus`) TownStatus status,
             enumeratedParameter(`class TownSize`) TownSize size,
-            randomlyGenerated(3) Integer dc) {
+            randomlyGenerated(1) Integer dc) {
         // TODO: We want more of the state to be random
         value town = Fortification(status, size, dc, "name", id, PlayerImpl(0, ""));
         CommunityStats stats = CommunityStats(5);
@@ -204,10 +204,10 @@ object dbio_tests {
     }
 
     test
-    shared void testCitySerialization(randomlyGenerated(3) Integer id,
+    shared void testCitySerialization(randomlyGenerated(1) Integer id,
         enumeratedParameter(`class TownStatus`) TownStatus status,
         enumeratedParameter(`class TownSize`) TownSize size,
-        randomlyGenerated(3) Integer dc) {
+        randomlyGenerated(1) Integer dc) {
         // TODO: We want more of the state to be random
         value town = City(status, size, dc, "name", id, PlayerImpl(0, ""));
         CommunityStats stats = CommunityStats(5);
@@ -228,10 +228,10 @@ object dbio_tests {
     }
 
     test
-    shared void testTownSerialization(randomlyGenerated(3) Integer id,
+    shared void testTownSerialization(randomlyGenerated(1) Integer id,
         enumeratedParameter(`class TownStatus`) TownStatus status,
             enumeratedParameter(`class TownSize`) TownSize size,
-        randomlyGenerated(3) Integer dc) {
+        randomlyGenerated(1) Integer dc) {
         // TODO: We want more of the state to be random
         value town = Town(status, size, dc, "name", id, PlayerImpl(0, ""));
         CommunityStats stats = CommunityStats(5);
@@ -255,9 +255,9 @@ object dbio_tests {
     shared void testMeadowSerialization(
             enumeratedParameter(`class Boolean`) Boolean field,
             enumeratedParameter(`class Boolean`) Boolean cultivated,
-            randomlyGenerated(3) Integer id,
+            randomlyGenerated(1) Integer id,
             enumeratedParameter(`class FieldStatus`) FieldStatus status,
-            randomlyGenerated(3) Integer acres) =>
+            randomlyGenerated(1) Integer acres) =>
                 assertFixtureSerialization(Meadow("kind", field, cultivated, id, status,
                     acres));
 
@@ -265,28 +265,28 @@ object dbio_tests {
     shared void testFractionalMeadowSerialization(
         enumeratedParameter(`class Boolean`) Boolean field,
         enumeratedParameter(`class Boolean`) Boolean cultivated,
-        randomlyGenerated(3) Integer id,
+        randomlyGenerated(1) Integer id,
         enumeratedParameter(`class FieldStatus`) FieldStatus status,
-        randomlyGenerated(3) Integer acres) =>
+        randomlyGenerated(1) Integer acres) =>
             assertFixtureSerialization(Meadow("kind", field, cultivated, id, status,
                 decimalNumber(acres) + decimalNumber(1) / decimalNumber(2)));
 
     test
     shared void testForestSerialization(enumeratedParameter(`class Boolean`) Boolean rows,
-        randomlyGenerated(3) Integer id, randomlyGenerated(3) Integer acres) =>
+        randomlyGenerated(1) Integer id, randomlyGenerated(1) Integer acres) =>
             assertFixtureSerialization(Forest("kind", rows, id, acres));
 
     test
     shared void testFractionalForestSerialization(
         enumeratedParameter(`class Boolean`) Boolean rows,
-        randomlyGenerated(3) Integer id,
-        randomlyGenerated(3) Integer acres) =>
+        randomlyGenerated(1) Integer id,
+        randomlyGenerated(1) Integer acres) =>
             assertFixtureSerialization(Forest("kind", rows, id,
                 decimalNumber(acres) + decimalNumber(1) / decimalNumber(4)));
 
     test
     shared void testFortressSerialization(
-            randomlyGenerated(3) Integer id,
+            randomlyGenerated(2) Integer id,
             enumeratedParameter(`class TownSize`) TownSize size) {
         Player owner = PlayerImpl(1, "owner");
         value fortress = Fortress(owner, "fortress", id, size);
@@ -303,7 +303,7 @@ object dbio_tests {
     }
 
     test
-    shared void testGroundSerialization(randomlyGenerated(3) Integer id, // TODO: should randomize kind
+    shared void testGroundSerialization(randomlyGenerated(2) Integer id, // TODO: should randomize kind
         enumeratedParameter(`class Boolean`) Boolean exposed) =>
             assertFixtureSerialization(Ground(id, "ground kind", exposed));
 
@@ -311,49 +311,49 @@ object dbio_tests {
     shared void testGroveSerialization( // TODO: should randomize kind
             enumeratedParameter(`class Boolean`) Boolean orchard,
             enumeratedParameter(`class Boolean`) Boolean cultivated,
-            randomlyGenerated(3) Integer id,
-            randomlyGenerated(3) Integer count) =>
+            randomlyGenerated(2) Integer id,
+            randomlyGenerated(1) Integer count) =>
                 assertFixtureSerialization(Grove(orchard, cultivated, "kind", id, count));
 
     test
     shared void testSimpleImmortalSerialization(
         parameters(`value simpleImmortalConstructors`) Immortal(Integer) constructor,
-        randomlyGenerated(3) Integer id) =>
+        randomlyGenerated(2) Integer id) =>
             assertFixtureSerialization(constructor(id));
 
     test
     shared void testKindedImmortalSerialization( // TODO: should randomize kind
         parameters(`value kindedImmortalConstructors`) Immortal(String, Integer) constructor,
-        randomlyGenerated(3) Integer id) =>
+        randomlyGenerated(2) Integer id) =>
             assertFixtureSerialization(constructor("kind", id));
 
     test
     shared void testMineSerialization( // TODO: should randomize kind
         enumeratedParameter(`class TownStatus`) TownStatus status,
-        randomlyGenerated(3) Integer id) =>
+        randomlyGenerated(2) Integer id) =>
             assertFixtureSerialization(Mine("mine kind", status, id));
 
     test
     shared void testMineralSerialization( // TODO: should randomize kind
         enumeratedParameter(`class Boolean`) Boolean exposed,
-        randomlyGenerated(3) Integer dc, randomlyGenerated(3) Integer id) =>
+        randomlyGenerated(2) Integer dc, randomlyGenerated(2) Integer id) =>
             assertFixtureSerialization(MineralVein("mineral kind", exposed, dc, id));
 
     test
     shared void testStoneSerialization( // TODO: should randomize kind
             enumeratedParameter(`class StoneKind`) StoneKind kind,
-            randomlyGenerated(3) Integer dc, randomlyGenerated(3) Integer id) =>
+            randomlyGenerated(2) Integer dc, randomlyGenerated(2) Integer id) =>
                 assertFixtureSerialization(StoneDeposit(kind, dc, id));
 
     test
-    shared void testShrubSerialization(randomlyGenerated(3) Integer id, // TODO: should randomize kind
-        randomlyGenerated(3) Integer count) =>
+    shared void testShrubSerialization(randomlyGenerated(2) Integer id, // TODO: should randomize kind
+        randomlyGenerated(2) Integer count) =>
             assertFixtureSerialization(Shrub("shrub kind", id, count));
 
     test
     shared void testSimpleTerrainSerialization(
         parameters(`value simpleTerrainConstructors`) TileFixture(Integer) constructor,
-        randomlyGenerated(3) Integer id) =>
+        randomlyGenerated(2) Integer id) =>
             assertFixtureSerialization(constructor(id));
 
     test
@@ -375,7 +375,7 @@ object dbio_tests {
     test
     shared void testVillageSerialization(
         enumeratedParameter(`class TownStatus`) TownStatus status,
-        randomlyGenerated(3) Integer id,
+        randomlyGenerated(1) Integer id,
         parameters(`value races`) String race) =>
             assertFixtureSerialization(Village(status, "village name", id,
                 PlayerImpl(1, "player name"), race));
