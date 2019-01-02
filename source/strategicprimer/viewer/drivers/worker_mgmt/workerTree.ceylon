@@ -412,6 +412,9 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         }
         cellRenderer = unitMemberCellRenderer;
 
+        String statHelper(WorkerStats stats)([String, Integer(WorkerStats)] tuple) =>
+            "``tuple.first`` ``WorkerStats.getModifierString(tuple.rest.first(stats))``";
+
         shared actual String? getToolTipText(MouseEvent event) {
             if (getRowForLocation(event.x, event.y) == -1) {
                 return null;
@@ -420,10 +423,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     getPathForLocation(event.x, event.y)?.lastPathComponent,
                     is IWorker localNode = wtModel.getModelObject(pathLast),
                     exists stats = localNode.stats) {
-                // TODO: convert lambda to class method
                 return "<html><p>``", ".join(statReferencesList
-                                .map(([desc, func]) => "``desc`` ``WorkerStats
-                                    .getModifierString(func(stats))``"))``</p></html>";
+                    .map(statHelper(stats)))``</p></html>";
             } else {
                 return null;
             }
