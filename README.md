@@ -2,7 +2,7 @@
 
 This repository contains a suite of assistive programs for players and Judges
 of the strategy game
-[Strategic Primer](https://shinecycle.wordpress.com/archives/strategic-primer).
+[Strategic Primer](https://strategicprimer.wordpress.com).
 The flagship application is a map viewer; players may also find the
 worker-management app useful. Other programs are primarily designed for use by
 the Judge in maintaining the master map.
@@ -29,8 +29,10 @@ bundles, and cross-platform "Java archive" (JAR) files.
 ### Development
 
 The viewer is under active development, as you can see by reading [the monthly
-development reports on the author's blog](
-https://shinecycle.wordpress.com/tag/assistive/) or examining the commits in
+development
+reports](https://strategicprimer.wordpress.com/category/development-reports)
+(and [older development reports on the the author's main blog](
+https://shinecycle.wordpress.com/tag/assistive/)) or examining the commits in
 this repository.  Interested developers or users can help by reporting issues,
 requesting features, or contributing patches.
 
