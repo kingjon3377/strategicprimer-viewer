@@ -98,7 +98,8 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                     job.addSkill(Skill(skillName, 0, 0));
                     skills.clear();
                     skills.addAll(job);
-                    if (exists temp = skills.find(matchingValue(skillName, ISkill.name))) {
+                    if (exists temp = skills.find(matchingValue(skillName,
+                            ISkill.name))) {
                         skill = temp;
                     } else {
                         cli.println("Select the new item at the next prompt.");
@@ -195,7 +196,8 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             skill.addHours(hours, singletonRandom.nextInteger(100));
             if (skill.level != oldLevel) {
                 if (oldLevel == 0, skill.name == "miscellaneous") {
-                    Boolean? chooseAnother = cli.inputBooleanInSeries("``worker.name`` gained ``skill.
+                    Boolean? chooseAnother =
+                        cli.inputBooleanInSeries("``worker.name`` gained ``skill.
                             level`` level(s) in miscellaneous, choose another skill?",
                         "misc-replacement");
                     switch (chooseAnother)
@@ -238,7 +240,8 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
     }
 
     "Ensure that there is a Job by the given name in each worker, and return a
-     collection of those Jobs." // FIXME: Test that this actually works when some workers lack the Job!
+     collection of those Jobs."
+    // FIXME: Test that this actually works when some workers lack the Job!
     {IJob*} getWorkerJobs(String jobName, IWorker* workers) =>
             workers.map(shuffle(IWorker.getJob)(jobName)).distinct;
 
@@ -261,7 +264,8 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                     }
                     skills.clear();
                     skills.addAll(ProxyJob(jobName, false, *workers));
-                    if (exists temp = skills.find(matchingValue(skillName, ISkill.name))) {
+                    if (exists temp =
+                            skills.find(matchingValue(skillName, ISkill.name))) {
                         skill = temp;
                     } else {
                         cli.println("Select the new item at the next prompt.");
@@ -306,7 +310,8 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             if (workers.empty) {
                 cli.println("No workers in unit.");
             } else {
-                MutableList<IJob> jobs = ArrayList { elements = ProxyWorker.fromUnit(unit); };
+                MutableList<IJob> jobs =
+                    ArrayList { elements = ProxyWorker.fromUnit(unit); };
                 while (true) {
                     value chosen = cli.chooseFromList(jobs, "Jobs in workers:",
                         "No existing jobs.", "Job to advance: ", false);

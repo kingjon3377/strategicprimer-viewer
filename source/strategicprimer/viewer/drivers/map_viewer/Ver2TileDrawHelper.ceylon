@@ -180,7 +180,8 @@ class Ver2TileDrawHelper(
         }
     }
 
-    object observerWrapper satisfies ImageObserver { // TODO: Drop (replace in caller(s) with observer()) once eclipse/ceylon#7380 fixed
+    // TODO: Drop (replace in caller(s) with observer()) once eclipse/ceylon#7380 fixed
+    object observerWrapper satisfies ImageObserver {
         shared actual Boolean imageUpdate(Image img, Integer infoflags, Integer x,
                 Integer y, Integer width, Integer height) =>
                 observer(img, infoflags, x, y, width, height);
@@ -260,7 +261,8 @@ class Ver2TileDrawHelper(
      at the given location"
     Boolean needsFixtureColor(IMapNG map, Point location) {
         if (hasTerrainFixture(map, location), exists top = getTopFixture(map, location)) {
-            if (exists bottom = getDrawableFixtures(map, location).last) { // TODO: Is this right? It looks like we're checking whether the top fixture, period, and the bottom fixture for which drawing is enabled are the same, regardless of whether either is a terrain fixture!
+            // TODO: Is this right? It looks like we're checking whether the top fixture, period, and the bottom fixture for which drawing is enabled are the same, regardless of whether either is a terrain fixture!
+            if (exists bottom = getDrawableFixtures(map, location).last) {
                 return top != bottom;
 //            } else if (map.mountainous[location]) {
             } else if (map.mountainous.get(location)) {

@@ -60,7 +60,8 @@ import lovelace.util.jvm {
 import lovelace.util.common {
     simpleMap,
     silentListener,
-    invoke
+    invoke,
+    todo
 }
 
 import strategicprimer.model.common.map {
@@ -128,9 +129,13 @@ import javax.swing.event {
 }
 
 "The main window for the exploration GUI."
-SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this back into ExplorationGUI?
-        MenuBroker menuHandler) { // TODO: Do what we can to convert nested objects/classes to top-level, etc.
-    Map<Direction, KeyStroke> arrowKeys = simpleMap( // TODO: Make a helper method keyStroke() that calls KeyStroke.getKeyStroke() and defaults modifiers to 0
+todo("Merge parts of this back into ExplorationGUI?",
+    "Do what we can to convert nested objects/classes to top-level, etc.",
+    "Use [[lovelace.util.jvm::createAccelerator]] instead of [[KeyStroke.getKeyStroke]]
+     throughout below")
+SPFrame explorationFrame(ExplorationGUI driver,
+        MenuBroker menuHandler) {
+    Map<Direction, KeyStroke> arrowKeys = simpleMap(
         Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkUp, 0),
         Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkDown, 0),
         Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkLeft, 0),
@@ -183,7 +188,9 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
     ComboBoxModel<Speed> speedModel = DefaultComboBoxModel<Speed>(
         ObjectArray<Speed>.with(sort(`Speed`.caseValues)));
 
-    object explorerSelectingPanel extends BorderedPanel() // TODO: Convert to top-level class, or better yet split appearance from controller-functionality
+    todo("Convert to top-level class, or better yet split appearance from
+          controller-functionality")
+    object explorerSelectingPanel extends BorderedPanel()
             satisfies PlayerChangeSource&CompletionSource {
         MutableList<PlayerChangeListener> listeners =
                 ArrayList<PlayerChangeListener>();
@@ -213,7 +220,8 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
         addPlayerChangeListener(unitListModel); // TODO: move out of the object (referring to this object rather than implicit 'this', of course)
 
         DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
-        object renderer satisfies ListCellRenderer<IUnit> { // TODO: convert to top-level class
+        todo("convert to top-level class")
+        object renderer satisfies ListCellRenderer<IUnit> {
             shared actual Component getListCellRendererComponent(
                     SwingList<out IUnit>? list, IUnit? val, Integer index,
                     Boolean isSelected, Boolean cellHasFocus) {
@@ -252,7 +260,8 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
     JPanel headerPanel = JPanel();
     FunctionalGroupLayout headerLayout = FunctionalGroupLayout(headerPanel);
 
-    object explorationPanel extends BorderedPanel() // TODO: try to split controller-functionality from presentation
+    todo("try to split controller-functionality from presentation")
+    object explorationPanel extends BorderedPanel()
             satisfies SelectionChangeListener&CompletionSource&MovementCostListener {
         shared actual void deduct(Integer cost) =>
             mpModel.\ivalue = JInteger.valueOf(mpModel.number.intValue() - cost);
@@ -273,9 +282,10 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
 
         {FixtureMatcher*} matchers = FixtureFilterTableModel();
 
-        class SpeedChangeListener(SelectionChangeListener scs) satisfies ListDataListener {
+        class SpeedChangeListener(SelectionChangeListener scs)
+                satisfies ListDataListener {
             shared variable Point point = Point.invalidPoint;
-            void apply() {
+            void apply() { // TODO: =>
                 scs.selectedPointChanged(null, point);
             }
             shared actual void contentsChanged(ListDataEvent event) => apply();
@@ -427,7 +437,8 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
                     value fixtures = selectedValuesList;
                     if (Direction.nowhere == direction) {
                         for ([query, method] in explorerActions) {
-                            Integer resp = JOptionPane.showConfirmDialog(null, query); // TODO: Extract confirmAction() method to lovelace.util.jvm
+                            // TODO: Extract confirmAction() method to lovelace.util.jvm
+                            Integer resp = JOptionPane.showConfirmDialog(null, query);
                             if (resp == JOptionPane.cancelOption) {
                                 return;
                             } else if (resp == JOptionPane.yesOption) {
@@ -506,7 +517,8 @@ SPFrame explorationFrame(ExplorationGUI driver, // TODO: Merge parts of this bac
         for (direction in sort(`Direction`.caseValues)) {
             SelectionChangeSupport mainPCS = SelectionChangeSupport();
             SwingList<TileFixture>&SelectionChangeListener mainList =
-                    fixtureList(tilesPanel, FixtureListModel(driver.model.map, tracksCreator),
+                    fixtureList(tilesPanel, FixtureListModel(driver.model.map,
+                        tracksCreator),
                 idf, markModified, driver.model.map.players);
             mainPCS.addSelectionChangeListener(mainList);
             tilesPanel.add(JScrollPane(mainList));

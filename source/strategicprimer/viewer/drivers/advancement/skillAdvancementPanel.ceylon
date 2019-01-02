@@ -37,9 +37,11 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 }
 
 "A panel to let a user add hours of experience to a Skill."
-JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() { // TODO: Try to convert back to class
+// TODO: Try to convert back to class
+JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
     JTextField hours = JTextField(3);
-    JPanel firstPanel = JPanel(); // TODO: Add FlowPanel to lovelace.util.jvm to condense this
+    JPanel firstPanel = JPanel();
+    // TODO: Add FlowPanel to lovelace.util.jvm to condense this
     firstPanel.add(JLabel("Add "));
     firstPanel.add(hours);
     firstPanel.add(JLabel(" hours to skill?"));
@@ -78,7 +80,8 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() { // TODO:
     hours.setActionCommand("OK");
     hours.addActionListener(okListener);
     JButton cancelButton = listenedButton("Cancel",
-                (ActionEvent event) => hours.text = ""); // TODO: Figure out a way to defer() an assignment
+        // TODO: Figure out a way to defer() an assignment
+                (ActionEvent event) => hours.text = "");
     platform.makeButtonsSegmented(okButton, cancelButton);
     JPanel secondPanel;
     if (platform.systemIsMac) {

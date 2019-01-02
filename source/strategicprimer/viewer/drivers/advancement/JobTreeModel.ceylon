@@ -109,7 +109,8 @@ class JobTreeModel() satisfies TreeModel&UnitMemberListener&AddRemoveListener {
                 Integer childCount = getChildCount(currentRoot);
                 currentRoot.addJob(job);
                 fireTreeNodesInserted(TreeModelEvent(this, TreePath(currentRoot),
-                    IntArray.with(Singleton(childCount)), ObjectArray.with(Singleton(job))));
+                    IntArray.with(Singleton(childCount)),
+                    ObjectArray.with(Singleton(job))));
             } else {
                 log.warn("Can't add a new Job when no worker selected");
             }

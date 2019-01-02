@@ -86,7 +86,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
         if (exists fixture) {
             cli.println(fixture.string);
             Boolean zero;
-            if (is HasOwner fixture, (fixture.owner != mover.owner || fixture is Village)) {
+            if (is HasOwner fixture,
+                    (fixture.owner != mover.owner || fixture is Village)) {
                 zero = true;
             } else if (is HasPopulation<out Anything>|HasExtent<out Anything> fixture) {
                 zero = true;
@@ -142,8 +143,9 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
                 } else {
                     cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``
                         speed.shortName``.");
+                    cli.print("""0: Set Speed, 1: SW, 2: S, 3: SE, 4: W, 5: Linger, """);
                     cli.println(
-                        """0: Set Speed, 1: SW, 2: S, 3: SE, 4: W, 5: Linger, 6: E, 7: NW, 8: N, 9: NE, 10: Toward Point, 11: Quit""");
+                        """6: E, 7: NW, 8: N, 9: NE, 10: Toward Point, 11: Quit""");
                     Integer directionNum = cli.inputNumber("Direction to move: ") else -1;
                     switch (directionNum)
                     case (0) { changeSpeed(); continue; }
@@ -247,15 +249,14 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
                     identity<TileFixture>, mover, speed);
 
                 if (!constants.empty || !noticed.empty) {
+                    cli.print("The following were ");
                     if (noticed.empty) {
-                        cli.println("The following were automatically noticed:");
+                        cli.println("automatically noticed:");
                     } else if (noticed.size > 1) {
-                        cli.println(
-                            "The following were noticed, all but the last ``noticed
-                                    .size`` automatically:");
+                        cli.println("noticed, all but the last ``noticed
+                            .size`` automatically:");
                     } else {
-                        cli.println(
-                            "The following were noticed, all but the last automatically:");
+                        cli.println("noticed, all but the last automatically:");
                     }
                     constants.addAll(noticed);
                     for (fixture in constants) {
@@ -325,14 +326,16 @@ class ExplorationAutomationConfig(Player player) {
             Condition<Immortal>("on meeting an immortal",
                 compose("a(n) ".plus, Immortal.shortDescription))];
     variable {Condition<out TileFixture>*}? enabledConditions = null;
-    Boolean matchesCondition(IMapNG map, Point point)(Condition<out TileFixture> condition) =>
-        condition.matches(map, point);
+    Boolean matchesCondition(IMapNG map,
+        Point point)(Condition<out TileFixture> condition) =>
+            condition.matches(map, point);
     shared Boolean stopAtPoint(ICLIHelper cli, IMapNG map, Point point) {
         {Condition<out TileFixture>*} localEnabledConditions;
         if (exists temp = enabledConditions) {
             localEnabledConditions = temp;
         } else {
-            MutableList<Condition<out TileFixture>> temp = ArrayList<Condition<out TileFixture>>();
+            MutableList<Condition<out TileFixture>> temp =
+                ArrayList<Condition<out TileFixture>>();
             for (condition in conditions) {
                 switch (cli.inputBooleanInSeries(
                     "Stop for instructions ``condition.configExplanation``?"))

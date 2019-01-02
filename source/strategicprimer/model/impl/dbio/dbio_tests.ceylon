@@ -303,7 +303,8 @@ object dbio_tests {
     }
 
     test
-    shared void testGroundSerialization(randomlyGenerated(2) Integer id, // TODO: should randomize kind
+    // TODO: should randomize kind
+    shared void testGroundSerialization(randomlyGenerated(2) Integer id,
         enumeratedParameter(`class Boolean`) Boolean exposed) =>
             assertFixtureSerialization(Ground(id, "ground kind", exposed));
 
@@ -323,7 +324,8 @@ object dbio_tests {
 
     test
     shared void testKindedImmortalSerialization( // TODO: should randomize kind
-        parameters(`value kindedImmortalConstructors`) Immortal(String, Integer) constructor,
+        parameters(`value kindedImmortalConstructors`)
+            Immortal(String, Integer) constructor,
         randomlyGenerated(2) Integer id) =>
             assertFixtureSerialization(constructor("kind", id));
 
@@ -345,8 +347,8 @@ object dbio_tests {
             randomlyGenerated(2) Integer dc, randomlyGenerated(2) Integer id) =>
                 assertFixtureSerialization(StoneDeposit(kind, dc, id));
 
-    test
-    shared void testShrubSerialization(randomlyGenerated(2) Integer id, // TODO: should randomize kind
+    test // TODO: should randomize kind
+    shared void testShrubSerialization(randomlyGenerated(2) Integer id,
         randomlyGenerated(2) Integer count) =>
             assertFixtureSerialization(Shrub("shrub kind", id, count));
 

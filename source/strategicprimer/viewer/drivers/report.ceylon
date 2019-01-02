@@ -461,7 +461,8 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
                 createReports(map, parsePath(file?.filename else "unknown.xml"));
             }
         } else {
-            createReports(model.map, parsePath(model.mapFile?.filename else "unknown.xml"));
+            createReports(model.map,
+                parsePath(model.mapFile?.filename else "unknown.xml"));
         }
 
         {Endpoint*} endpoints = builders.map(([file, table]->builder) =>

@@ -159,7 +159,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                     orders[unit] = "(From turn #``ordersTurn``) ``unitOrders``";
                 }
             }
-            writer.writeLine("[``playerName``"); // TODO: Add 'country' field to Player and use it here if non-empty
+            writer.writeLine("[``playerName``");
+            // TODO: Add 'country' field to Player and use it here if non-empty
             writer.writeLine("Turn ``turn``]");
             writer.writeLine();
             writer.writeLine("Inventions: TODO: any?");
@@ -184,7 +185,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                     if (!unit.empty) {
                         writer.write(" [");
                         if (unit.size > 4,
-                                "true" == options.getArgument("--summarize-large-units")) {
+                                "true" == options
+                                    .getArgument("--summarize-large-units")) {
                             summarizeUnitMembers(writer, unit);
                         } else {
                             writeMember(writer, unit.first);

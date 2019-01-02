@@ -22,9 +22,9 @@ import ceylon.decimal {
 }
 
 "Annotation to make a parameterized test randomly generate numbers. Apply to a parameter
- of a method annotated with [[ceylon.test::test]], and the test will be run [[count]] times
- (with the same values for all other parameters, as usual) with randomly generated numbers
- between 0 and [[max]] passed to the annotated parameter. Can currently generate
+ of a method annotated with [[ceylon.test::test]], and the test will be run [[count]]
+ times (with the same values for all other parameters, as usual) with randomly generated
+ numbers between 0 and [[max]] passed to the annotated parameter. Can currently generate
  [[integers|Integer]] and [[floats|Float]]."
 shared annotation RandomGenerationAnnotation randomlyGenerated(
         "How many different numbers to generate."
@@ -41,7 +41,8 @@ shared final annotation class RandomGenerationAnnotation(
                 Integer max)
         satisfies OptionalAnnotation<RandomGenerationAnnotation,ValueDeclaration>
         & ArgumentProvider {
-    object nothingProvider satisfies Iterator<Anything> { // TODO: Make static once eclipse/ceylon#7441 fixed
+    // TODO: Make static once eclipse/ceylon#7441 fixed
+    object nothingProvider satisfies Iterator<Anything> {
         suppressWarnings("expressionTypeNothing")
         shared actual Anything next() => nothing;
     }
@@ -76,7 +77,8 @@ shared final annotation class RandomGenerationAnnotation(
             return argumentsForSpecificType(type.declaration);
         }
         case (is OpenUnion) {
-            for (innerType in type.caseTypes) { // TODO: Extract helper method: this idiom occurs twice in this overlong class.
+            // TODO: Extract helper method: this idiom occurs twice in this overlong class
+            for (innerType in type.caseTypes) {
                 try {
                     return argumentsForType(innerType);
                 } catch (AssertionError error) {
@@ -84,7 +86,7 @@ shared final annotation class RandomGenerationAnnotation(
                 }
             }
             throw AssertionError(
-                "Can't randomly generate values for a union of types none of which we handle");
+                "Can't randomly generate values for union of all-unhandled types");
         }
         case (is OpenIntersection) {
             for (innerType in type.satisfiedTypes) {
@@ -95,7 +97,7 @@ shared final annotation class RandomGenerationAnnotation(
                 }
             }
             throw AssertionError(
-                "Can't randomly generate values for an intersection of types we don't handle");
+                "Can't randomly generate values for intersection of all-unhandled types");
         }
         case (is OpenTypeVariable) {
             throw AssertionError(

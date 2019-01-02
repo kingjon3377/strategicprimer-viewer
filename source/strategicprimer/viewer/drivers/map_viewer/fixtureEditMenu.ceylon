@@ -42,7 +42,7 @@ import lovelace.util.common {
 "A pop-up menu to let the user edit a fixture."
 shared class FixtureEditMenu(
         "The fixture to be edited. Its type determines what menu items are enabled."
-        IFixture fixture, 
+        IFixture fixture,
         "The players in the map(s)."
         {Player*} players,
         "A source for unique-in-the-map ID numbers."
@@ -51,7 +51,8 @@ shared class FixtureEditMenu(
         Anything() mutationListener,
         "Listeners to notify when something is renamed or changes kind."
         IWorkerTreeModel* changeListeners) extends JPopupMenu() {
-    void addMenuItem(JMenuItem item, Anything(ActionEvent) listener) { // TODO: Make a combined addMenuItem(item, handlerIfEnabled, conditionToEnable), to condense the below code
+    // TODO: Make combined addMenuItem(item, handlerIfEnabled, conditionToEnable) to condense the below code
+    void addMenuItem(JMenuItem item, Anything(ActionEvent) listener) {
         add(item);
         item.addActionListener(listener);
     }

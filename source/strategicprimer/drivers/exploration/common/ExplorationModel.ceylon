@@ -63,7 +63,8 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     """Check whether two fixtures are "equal enough" for the purposes of updating a map
        after digging. This method is needed because equals() in
        [[strategicprimer.model.common.map.fixtures.resources::StoneDeposit]] and
-       [[strategicprimer.model.common.map.fixtures.resources::MineralVein]] compares DCs."""
+       [[strategicprimer.model.common.map.fixtures.resources::MineralVein]] compares
+       DCs."""
     static Boolean areDiggablesEqual(IFixture firstFixture, IFixture secondFixture) =>
             firstFixture == secondFixture || firstFixture.copy(true) == secondFixture
                 .copy(true);
@@ -455,9 +456,9 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     }
 
     "If there is a currently selected unit, change one [[Ground]],
-     [[strategicprimer.model.common.map.fixtures.resources::StoneDeposit]], or [[MineralVein]] at
-     the location of that unit from unexposed to exposed (and discover it). This costs
-     MP."
+     [[strategicprimer.model.common.map.fixtures.resources::StoneDeposit]], or
+     [[MineralVein]] at the location of that unit from unexposed to exposed (and discover
+     it). This costs MP."
     shared actual void dig() {
         Point currentPoint = selection.first;
         if (currentPoint.valid) {

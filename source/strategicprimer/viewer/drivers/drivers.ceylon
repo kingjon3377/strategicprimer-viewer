@@ -122,7 +122,7 @@ object appChooserState {
         {String*} reserved = ["-g", "-c", "--gui", "--cli"];
         MutableMultimap<String, DriverFactory> conflicts =
                 ArrayListMultimap<String, DriverFactory>();
-        void addToCache(DriverFactory* factories) {
+        void addToCache(DriverFactory* factories) { // TODO: Take as Iterable to avoid spread below
             for (factory in factories) {
                 MutableMap<String, DriverFactory> cache;
                 if (factory.usage.graphical) {
@@ -284,7 +284,8 @@ class DriverWrapper(DriverFactory factory) {
 
     void fixCurrentTurn(SPOptions options, IDriverModel model) {
         if (options.hasOption("--current-turn")) {
-            if (is Integer currentTurn = Integer.parse(options.getArgument("--current-turn"))) {
+            if (is Integer currentTurn =
+                    Integer.parse(options.getArgument("--current-turn"))) {
                 if (is IMultiMapModel model) {
                     for (map->_ in model.allMaps) {
                         map.currentTurn = currentTurn;
@@ -311,8 +312,8 @@ class DriverWrapper(DriverFactory factory) {
                         }
                     } else {
                         assert (nonempty files = extendArguments(*args).sequence());
-                        value model = mapReaderAdapter.readMultiMapModel(warningLevels.warn,
-                            files.first, *files.rest);
+                        value model = mapReaderAdapter.readMultiMapModel(
+                            warningLevels.warn, files.first, *files.rest);
                         fixCurrentTurn(options, model);
                         factory.createDriver(cli, options, model).startDriver();
                     }
@@ -370,7 +371,8 @@ class AppStarter() {
                     [cli, currentOptionsTyped, *others]);
                 SwingUtilities.invokeLater(lambda);
             } else {
-                DriverWrapper(driver).startCatchingErrors(cli, currentOptionsTyped, *others);
+                DriverWrapper(driver)
+                    .startCatchingErrors(cli, currentOptionsTyped, *others);
             }
             // TODO: clear `others` here?
         }
@@ -540,10 +542,11 @@ class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
         value context = pen.fontRenderContext;
         variable Integer width = 0;
         variable Integer height = 10;
-        value drivers = `module strategicprimer.viewer`.findServiceProviders(`DriverFactory`)
-            .filter(includeInGUIList).sequence();
+        value drivers = `module strategicprimer.viewer`
+            .findServiceProviders(`DriverFactory`).filter(includeInGUIList).sequence();
         for (driver in drivers) {
-            value dimensions = font.getStringBounds(driver.usage.shortDescription, context);
+            value dimensions =
+                font.getStringBounds(driver.usage.shortDescription, context);
             width = Integer.largest(width, dimensions.width.integer);
             height += dimensions.height.integer;
         }

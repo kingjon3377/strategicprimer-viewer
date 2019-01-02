@@ -141,19 +141,24 @@ import ceylon.language.meta.declaration {
 
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"
-// TODO: Use a wrapper around parameters() to limit the number chosen each time instead of using take() here
+// TODO: Wrapper around parameters() to limit # chosen each time instead of take() here
 {String*} races => singletonRandom.elements(raceFactory.races.distinct).take(2);
-{String*} animalStatuses => singletonRandom.elements(["wild", "semi-domesticated", "domesticated", "tame"]).take(2);
-{String*} treeTypes => singletonRandom.elements(["oak", "larch", "terebinth", "elm", "skybroom", "silver maple"]).take(2);
-{String*} fieldTypes => singletonRandom.elements(["wheat", "amaranth", "bluegrass", "corn", "winter wheat"]).take(2);
-{String*} minerals => singletonRandom.elements(["coal", "platinum", "oil", "diamonds", "natural gas"]).take(2);
+{String*} animalStatuses => singletonRandom.elements(["wild", "semi-domesticated",
+    "domesticated", "tame"]).take(2);
+{String*} treeTypes => singletonRandom.elements(["oak", "larch", "terebinth", "elm",
+    "skybroom", "silver maple"]).take(2);
+{String*} fieldTypes => singletonRandom.elements(["wheat", "amaranth", "bluegrass",
+    "corn", "winter wheat"]).take(2);
+{String*} minerals => singletonRandom.elements(["coal", "platinum", "oil", "diamonds",
+    "natural gas"]).take(2);
 
 object xmlTests {
     """The "filename" to give to map-readers when they require one."""
     PathWrapper fakeFilename = PathWrapper("");
 
     "The map readers to test each other against."
-    [<ISPReader&IMapReader>+] readers = [testReaderFactory.oldReader, testReaderFactory.newReader];
+    [<ISPReader&IMapReader>+] readers = [testReaderFactory.oldReader,
+        testReaderFactory.newReader];
 
     "Assert that the given XML will produce the given kind of warning and that the warning
      satisfies the given additional assertions. If [[desideratum]] is [[null]], assert
@@ -295,8 +300,8 @@ object xmlTests {
             for (deprecated in `Boolean`.caseValues) {
                 obj.image = "xyzzy";
                 try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
-                    assertEquals(reader.readXML<HasMutableImage>(fakeFilename, stringReader,
-                        warningLevels.ignore).image, obj.image, message);
+                    assertEquals(reader.readXML<HasMutableImage>(fakeFilename,
+                        stringReader, warningLevels.ignore).image, obj.image, message);
                 }
                 obj.image = obj.defaultImage;
                 assertFalse(createSerializedForm(obj, deprecated).contains("image="),
@@ -461,7 +466,7 @@ object xmlTests {
         village.population = pop;
         assertSerialization("Village can have community stats", village);
         pop.addWorkedField(workedField);
-        // TODO: Here and below, randomize strings in production and consumption (and skills)
+        // TODO: Here and below, randomize strings in production, consumption, and skills
         // TODO: We'd like to randomize number of skills, number of worked fields, etc.
         pop.yearlyProduction.add(ResourcePile(producedId, "prodKind", "production",
             Quantity(producedQty, "single units")));
@@ -1723,7 +1728,8 @@ object xmlTests {
         assertEquivalentForms("ID numbers can contain commas", """<hill id="1,002" />""",
             """<hill id="1002" />""", warningLevels.die);
 
-    """Test that the old, now removed, "sandbar" tag produces only a warning if present in XML."""
+    """Test that the old, now removed, "sandbar" tag produces only a warning if present
+       in XML."""
     test
     shared void testOldSandbars() =>
         assertUnsupportedTag("""<view current_player="-1" current_turn="-1">

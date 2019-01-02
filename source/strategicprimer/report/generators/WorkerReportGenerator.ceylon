@@ -80,7 +80,8 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
         }
     }
 
-    [Second, First] reversePair<First, Second>([First, Second] pair) => // TODO: move to lovelace.util and use elsewhere
+    // TODO: move to lovelace.util and use elsewhere
+    [Second, First] reversePair<First, Second>([First, Second] pair) =>
             [pair.rest.first, pair.first];
 
     "Produce a sub-sub-report on all workers. This should never be called, but we'll

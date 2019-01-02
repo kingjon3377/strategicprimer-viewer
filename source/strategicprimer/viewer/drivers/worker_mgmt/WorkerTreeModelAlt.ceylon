@@ -47,7 +47,8 @@ import strategicprimer.drivers.common {
 "An alternative implementation of the worker tree model."
 shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeModel {
     "A base class for all nodes in the tree in this implementation of the tree model."
-    shared static class WorkerTreeNode<NodeObject>(NodeObject userObj, Boolean permitsChildren = true)
+    shared static class WorkerTreeNode<NodeObject>(NodeObject userObj,
+                Boolean permitsChildren = true)
             extends DefaultMutableTreeNode(userObj, permitsChildren)
             satisfies {TreeNode*} given NodeObject satisfies Object {
         "An iterator over the node's child-nodes."
@@ -183,7 +184,7 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
      i.e. when each unit and unit-member represents corresponding units and
      unit members in multiple maps and the same operations must be applied to
      all of them.
-     
+
      The proxy code is some of the most difficult and delicate code in the
      entire suite, and I'm *pretty* sure the algorithm this method implements
      is correct ..."

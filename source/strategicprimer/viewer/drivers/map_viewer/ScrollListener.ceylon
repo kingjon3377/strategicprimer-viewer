@@ -94,7 +94,8 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             defer(IViewerModel.mapDimensions, [mapModel]),
                     defer(IViewerModel.visibleDimensions, [mapModel]));
 
-        object adjustmentListener satisfies AdjustmentListener { // TODO: Move to top level of class, converting to class if needed
+        todo("Move to top level of class, converting to class if needed")
+        object adjustmentListener satisfies AdjustmentListener {
             shared actual void adjustmentValueChanged(AdjustmentEvent event) {
                 VisibleDimensions oldDimensions = model.visibleDimensions;
                 Integer newColumn = horizontalBar.\ivalue;

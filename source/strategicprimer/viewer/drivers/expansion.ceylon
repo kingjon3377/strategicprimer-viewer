@@ -93,17 +93,20 @@ shared class ExpansionDriverFactory() satisfies ModelDriverFactory {
 shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
         satisfies CLIDriver {
     shared actual IMultiMapModel model;
-    Boolean containsSwornVillage(IMapNG map, Player currentPlayer)(Point point) { // TODO: fat arrow once syntax sugar in place
+    // TODO: fat arrow once syntax sugar in place
+    Boolean containsSwornVillage(IMapNG map, Player currentPlayer)(Point point) {
 //        return map.fixtures[point].narrow<ITownFixture>() // TODO: syntax sugar once compiler bug fixed
         return map.fixtures.get(point).narrow<ITownFixture>()
             .map(HasOwner.owner).any(currentPlayer.equals);
     }
 
-    class Mock(owner) satisfies HasOwner { // TODO: make static if we convert to class-with-constructor
+    // TODO: make static if we convert to class-with-constructor
+    class Mock(owner) satisfies HasOwner {
         shared actual Player owner;
     }
 
-    void safeAdd(IMutableMapNG map, Player currentPlayer, Point point, TileFixture fixture) {
+    void safeAdd(IMutableMapNG map, Player currentPlayer, Point point,
+            TileFixture fixture) {
         if (map.fixtures.get(point).any(fixture.equals)) {
             return;
         } else if (is HasOwner fixture, !fixture is ITownFixture) {
@@ -127,7 +130,8 @@ shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
 
             Mock mock = Mock(currentPlayer);
 
-            for (point in map.locations.filter(containsSwornVillage(map, currentPlayer))) {
+            for (point in map.locations.filter(containsSwornVillage(map,
+                    currentPlayer))) {
                 for (neighbor in surroundingPointIterable(point,
                         map.dimensions)) {
                     if (!map.baseTerrain[neighbor] exists) {

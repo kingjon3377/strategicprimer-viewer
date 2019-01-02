@@ -66,7 +66,8 @@ import lovelace.util.common {
     matchingValue
 }
 
-variable Integer currentTurn = -1; // TODO: Use the one in the Animal maturityModel instead of here?
+// TODO: Use the one in the Animal maturityModel instead of here?
+variable Integer currentTurn = -1;
 
 "A reader for Strategic Primer maps."
 class YAMapReader("The Warning instance to use" Warning warner,
@@ -88,7 +89,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
     MutableMap<String, YAAbstractReader<out TileFixture>> readerCache =
             HashMap<String, YAAbstractReader<out TileFixture>>();
 
-    MutableMap<ClassOrInterface<TileFixture>, YAAbstractReader<out TileFixture>> writerCache =
+    MutableMap<ClassOrInterface<TileFixture>, YAAbstractReader<out TileFixture>>
+        writerCache =
             HashMap<ClassOrInterface<TileFixture>, YAAbstractReader<out TileFixture>>();
 
     "Get the first open-tag event in our namespace in the stream."
@@ -283,7 +285,8 @@ class YAMapReader("The Warning instance to use" Warning warner,
             } else if (is Characters event) {
                 String data = event.data.trimmed;
                 if (!data.empty) {
-                    retval.addFixture(point else Point.invalidPoint, TextFixture(data, -1));
+                    retval.addFixture(point else Point.invalidPoint,
+                        TextFixture(data, -1));
                 }
             }
         }

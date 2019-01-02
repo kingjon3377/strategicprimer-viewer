@@ -10,7 +10,8 @@ import lovelace.util.common {
    of the tile's contents."""
 class RiverFixture satisfies FakeFixture {
 
-    "A mapping from river-sets to filenames." // TODO: Find some way to share this between this class and Ver2TileDrawHelper
+    "A mapping from river-sets to filenames."
+    // TODO: Find some way to share this between this class and Ver2TileDrawHelper
     static Map<Set<River>, String> riverFiles = simpleMap(
         emptySet->"riv00.png", simpleSet(River.north)->"riv01.png",
         simpleSet(River.east)->"riv02.png", simpleSet(River.south)->"riv03.png",

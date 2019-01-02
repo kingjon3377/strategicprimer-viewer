@@ -197,7 +197,8 @@ object fluidResourceHandler extends FluidBase() {
         if (is TownStatus status) {
             return setImage(
                 Mine(getAttrWithDeprecatedForm(element, "kind", "product", warner),
-                    status, getOrGenerateID(element, warner, idFactory)), element, warner);
+                    status, getOrGenerateID(element, warner, idFactory)), element,
+                    warner);
         } else {
             throw MissingPropertyException(element, "status", status);
         }

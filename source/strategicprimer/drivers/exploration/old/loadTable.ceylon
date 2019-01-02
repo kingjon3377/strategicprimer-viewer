@@ -53,7 +53,8 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
         if (is String line = argument()) {
             switch (line[0])
             case (null) {
-                throw ParseException("File doesn't start by specifying which kind of table");
+                throw ParseException(
+                    "File doesn't start by specifying which kind of table");
             }
             case ('q'|'Q') {
                 if (is String firstLine = argument()) {
@@ -182,7 +183,7 @@ object loadTableTests {
         assertThatException(defer(loadTable,
             [LinkedList{"quadrant"}.accept, "testLoadQuadrantTable().illegal"]));
     }
-    
+
     "A mock object to make sure that tables other than [[QuadrantTable]] do not
      use the map dimensions."
     suppressWarnings("expressionTypeNothing")

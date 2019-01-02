@@ -96,8 +96,8 @@ shared class ResourceTabularReportGenerator()
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             Map<Integer, Integer> parentMap) {
         {[Integer, [Point, CacheFixture|Implement|ResourcePile]]*} values =
-                narrowedStream<Integer, [Point, CacheFixture|Implement|ResourcePile]>(fixtures)
-                    .sort(comparingOn(
+                narrowedStream<Integer, [Point, CacheFixture|Implement|ResourcePile]>
+                    (fixtures).sort(comparingOn(
                         Entry<Integer, [Point, CacheFixture|Implement|ResourcePile]>.item,
                         comparePairs)).map(Entry.pair);
         writeRow(ostream, headerRow.first, *headerRow.rest);
@@ -114,7 +114,7 @@ shared class ResourceTabularReportGenerator()
                 implementCounts[fixture.kind] = num + fixture.count;
                 fixtures.remove(key);
             } case (is CacheFixture) {
-                // FIXME: combine with ResourcePile case once compiler bug eclipse/ceylon#7372 fixed
+                // FIXME: combine with ResourcePile case once eclipse/ceylon#7372 fixed
                 value [row, *_] = produce(fixtures, fixture, key, loc, parentMap);
                 writeRow(ostream, row.first, *row.rest);
                 fixtures.remove(key);

@@ -52,12 +52,14 @@ import strategicprimer.drivers.gui.common {
 }
 import lovelace.util.common {
     silentListener,
-    defer
+    defer,
+    todo
 }
 
 "A GUI to let a user manage workers."
+todo("Try to convert/partially convert back to a class")
 SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
-        MenuBroker menuHandler, ModelDriver driver) { // TODO: Try to convert/partially convert back to a class
+        MenuBroker menuHandler, ModelDriver driver) {
     IMapNG map = model.map;
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
     IDRegistrar idf = createIDFactory(map);

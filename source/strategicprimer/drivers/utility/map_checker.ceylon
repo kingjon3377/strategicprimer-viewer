@@ -134,7 +134,7 @@ shared class MapCheckerCLI satisfies UtilityDriver {
                 if (!map.players.map(Player.playerId)
                         .any(fixture.owner.playerId.equals)) {
                     warner.handle(SPContentWarning(context,
-                        "Fixture owned by ``fixture.owner``, who is not known by the map"));
+                        "Fixture owned by ``fixture.owner``, not known by the map"));
                     retval = true;
                 }
             }
@@ -153,7 +153,8 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         }
     }
 
-    static Boolean oasisChecker(TileType terrain, Point context, IFixture fixture, Warning warner) {
+    static Boolean oasisChecker(TileType terrain, Point context, IFixture fixture,
+            Warning warner) {
         if (is Oasis fixture, TileType.desert != terrain) {
             warner.handle(SPContentWarning(context, "Oasis in non-desert"));
             return true;
@@ -173,8 +174,8 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         }
     }
 
-    static Boolean aquaticVillageChecker(TileType terrain, Point context, IFixture fixture,
-            Warning warner) {
+    static Boolean aquaticVillageChecker(TileType terrain, Point context,
+            IFixture fixture, Warning warner) {
         if (is Village fixture, landRaces.contains(fixture.race),
                 TileType.ocean == terrain) {
             warner.handle(SPContentWarning(context,
@@ -218,8 +219,8 @@ shared class MapCheckerCLI satisfies UtilityDriver {
     static {String+} placeholderKinds = [ "various", "unknown" ];
     static {String+} placeholderUnits = [ "unit", "units" ];
 
-    static Boolean resourcePlaceholderChecker(TileType terrain, Point context, IFixture fixture,
-            Warning warner) {
+    static Boolean resourcePlaceholderChecker(TileType terrain, Point context,
+            IFixture fixture, Warning warner) {
         if (is ResourcePile fixture) {
             if (placeholderKinds.contains(fixture.kind)) {
                 warner.handle(SPContentWarning(context,
@@ -227,8 +228,8 @@ shared class MapCheckerCLI satisfies UtilityDriver {
                             .kind``"));
             } else if (placeholderKinds.contains(fixture.contents)) {
                 warner.handle(SPContentWarning(context,
-                    "Resource pile, ID #``fixture.id``, has placeholder contents: ``fixture
-                            .contents``"));
+                    "Resource pile, ID #``fixture.id``, has placeholder contents: ``
+                            fixture.contents``"));
             } else if (placeholderUnits.contains(fixture.quantity.units)) {
                 warner.handle(SPContentWarning(context,
                     "Resource pile, ID #``fixture.id``, has placeholder units"));
@@ -242,10 +243,12 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         } else if (is ITownFixture fixture, exists stats = fixture.population) {
             variable Boolean retval = false;
             for (resource in stats.yearlyConsumption) {
-                retval = resourcePlaceholderChecker(terrain, context, resource, warner) || retval;
+                retval = resourcePlaceholderChecker(terrain, context, resource, warner)
+                    || retval;
             }
             for (resource in stats.yearlyProduction) {
-                retval = resourcePlaceholderChecker(terrain, context, resource, warner) || retval;
+                retval = resourcePlaceholderChecker(terrain, context, resource, warner)
+                    || retval;
             }
             return retval;
         } else {
@@ -280,7 +283,8 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         }
         if (total > 160.0) {
             warner.handle(SPContentWarning(context,
-                "More explicit acres (``Float.format(total, 0, 1)``) than tile should allow"));
+                "More explicit acres (``Float.format(total, 0, 1)
+                    ``) than tile should allow"));
             return true;
         }
         for (fixture in fixtures.narrow<ITownFixture>()) {
@@ -299,7 +303,8 @@ shared class MapCheckerCLI satisfies UtilityDriver {
             .filter(Integer.positive).fold(0)(plus) / 500;
         if (total > 160.0) {
             warner.handle(SPContentWarning(context,
-                "Counting towns and groves, more acres (``Float.format(total, 0, 1)``) used than tile should allow"));
+                "Counting towns and groves, more acres (``Float.format(total, 0, 1)
+                    ``) used than tile should allow"));
             return true;
         } else {
             return retval;
@@ -309,12 +314,13 @@ shared class MapCheckerCLI satisfies UtilityDriver {
     static {Checker+} extraChecks = [ lateriteChecker, aquaticVillageChecker,
         suspiciousSkillCheck, resourcePlaceholderChecker, oasisChecker ];
 
-    static Boolean contentCheck(Checker checker, TileType terrain, Point context, Warning warner,
-            IFixture* list) {
+    static Boolean contentCheck(Checker checker, TileType terrain, Point context,
+            Warning warner, IFixture* list) {
         variable Boolean retval = false;
         for (fixture in list) {
             if (is {IFixture*} fixture) {
-                retval = contentCheck(checker, terrain, context, warner, *fixture) || retval;
+                retval = contentCheck(checker, terrain, context, warner, *fixture) ||
+                    retval;
             }
             retval = checker(terrain, context, fixture, warner) || retval;
         }
@@ -369,7 +375,8 @@ shared class MapCheckerCLI satisfies UtilityDriver {
 
         for (location in map.locations) {
             if (exists terrain = map.baseTerrain[location]) {
-                result = acreageChecker(location, warner, map.fixtures.get(location)) || result;
+                result = acreageChecker(location, warner, map.fixtures.get(location))
+                    || result;
             }
             if (map.mountainous.get(location), // TODO: syntax sugar
                     !map.fixtures.get(location).narrow<Hill>().empty) { // TODO: syntax sugar
@@ -381,7 +388,8 @@ shared class MapCheckerCLI satisfies UtilityDriver {
         if (file.filename.contains("world_turn")) {
             for (location->fixture in map.fixtures) {
                 if (exists terrain = map.baseTerrain[location]) {
-                    result = animalTracksChecker(terrain, location, fixture, warner) || result;
+                    result =
+                        animalTracksChecker(terrain, location, fixture, warner) || result;
                 }
             }
         }

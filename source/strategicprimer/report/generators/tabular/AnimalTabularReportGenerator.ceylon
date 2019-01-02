@@ -17,7 +17,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     AnimalTracks
 }
 
-"A report generator for [[animal populations|Animal]] and [[sightings of animals|AnimalTracks]]."
+"A report generator for [[animal populations|Animal]] and
+ [[sightings of animals|AnimalTracks]]."
 shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
         Integer currentTurn) satisfies ITableGenerator<Animal|AnimalTracks> {
     "The header row for the table."

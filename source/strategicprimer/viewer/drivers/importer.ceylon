@@ -172,8 +172,8 @@ class ImporterDriver(ICLIHelper cli, SPOptions options) satisfies UtilityDriver 
                     } else if (terrain == TileType.borealForest) {
                         if (exists forest = cli.inputString(
                                 "Kind of tree for a boreal forest:")) {
-                            fixAdjacentForests(finalRetval, location, TileType.borealForest,
-                                forest);
+                            fixAdjacentForests(finalRetval, location,
+                                TileType.borealForest, forest);
                         } else {
                             return;
                         }

@@ -103,7 +103,8 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
         }
     }
 
-    static class CoalescedHolder<Type,Key>(Key(Type) extractor, shared Type({Type+}) combiner)
+    static class CoalescedHolder<Type,Key>(Key(Type) extractor,
+                shared Type({Type+}) combiner)
             satisfies NonNullCorrespondence<Type, MutableList<Type>>&{List<Type>*}
             given Type satisfies IFixture given Key satisfies Object {
         MutableMap<Key, MutableList<Type>> map = HashMap<Key, MutableList<Type>>();
@@ -159,8 +160,8 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
         given Type satisfies HasExtent<Type> => one.combined(two);
 
     "A two-parameter wrapper around [[HasPopulation.combined]]."
-    static Type combine<Type>(Type one, Type two) given Type satisfies HasPopulation<Type> =>
-            one.combined(two);
+    static Type combine<Type>(Type one, Type two)
+        given Type satisfies HasPopulation<Type> => one.combined(two);
 
     "Combine like extents into a single object. We assume all are identical except for
      acreage."
@@ -259,7 +260,8 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
             Anything(IFixture) add, Anything(IFixture) remove) {
         Map<ClassOrInterface<IFixture>, CoalescedHolder<out IFixture, out Object>> mapping
                 = simpleMap(
-            `ResourcePile`->CoalescedHolder<ResourcePile, [String, String, String, Integer]>(
+            `ResourcePile`->CoalescedHolder<ResourcePile, [String, String, String,
+                    Integer]>(
                 (pile) => [pile.kind, pile.contents, pile.quantity.units, pile.created],
                 combineResources),
             `Animal`->CoalescedHolder<Animal, [String, String, Integer]>(
@@ -318,7 +320,8 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
                 cli.println(
                     "The following ``helper.plural.lowercased`` can be combined:");
                 list.map(Object.string).each(cli.println);
-                switch (cli.inputBooleanInSeries("Combine them? ", memberKind(list.first)))
+                switch (cli.inputBooleanInSeries("Combine them? ",
+                    memberKind(list.first)))
                 case (true) {
                     IFixture combined = helper.combineRaw(list);
                     list.each(remove);

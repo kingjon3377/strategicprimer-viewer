@@ -46,7 +46,9 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
 
     variable {UnitMember*} cachedIterable = [];
 
-    SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) { // TODO: Isn't there a Map constructor method that does almost what we want, only needing us to define a method for what to do in case of key collisions
+    todo("Isn't there a Map constructor method that does almost what we want, only
+          needing us to define a method for what to do in case of key collisions")
+    SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) {
         MutableMap<Integer,String>&SortedMap<Integer, String> retval =
                 TreeMap<Integer, String>(increasing, []);
         for (key->item in proxiedList.map(method).flatMap(identity)) {

@@ -46,7 +46,8 @@ class NumberState of valid|nonNumeric|negative|overflow {
 "A dialog to let the user select a tile by coordinates."
 class SelectTileDialog(Frame? parentFrame, IViewerModel model)
         extends SPDialog(parentFrame, "Go To ...") {
-    JLabel mainLabel = JLabel("Coordinates of tile to select:"); // TODO: Make a subclass/factory method in lovelace.util.jvm taking alignment as constructor parameters
+    // TODO: Make a subclass/factory method in lovelace.util.jvm taking alignment as constructor parameters
+    JLabel mainLabel = JLabel("Coordinates of tile to select:");
     mainLabel.alignmentX = Component.centerAlignment;
     mainLabel.alignmentY = Component.topAlignment;
 
@@ -74,7 +75,8 @@ class SelectTileDialog(Frame? parentFrame, IViewerModel model)
         }
     }
 
-    String getErrorMessage(NumberState state, Integer bound) { // TODO: put into NumberState, as a method taking Integer (for the overflow case)?
+    // TODO: put into NumberState, as a method taking Integer (for the overflow case)?
+    String getErrorMessage(NumberState state, Integer bound) {
         switch (state)
         case (NumberState.valid) { return ""; }
         case (NumberState.nonNumeric) { return "must be a whole number. "; }

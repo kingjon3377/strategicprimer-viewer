@@ -185,8 +185,8 @@ shared class IOHandler satisfies ActionListener {
                             "writing to");
                     }
                 } else {
-                    actionPerformed(ActionEvent(event.source, event.id, "save as", event.when,
-                        event.modifiers));
+                    actionPerformed(ActionEvent(event.source, event.id, "save as",
+                        event.when, event.modifiers));
                 }
             } else {
                 log.error("IOHandler asked to save in driver it can't do that for");
@@ -201,7 +201,8 @@ shared class IOHandler satisfies ActionListener {
                         driver.model.mapFile = path;
                         driver.model.mapModified = false;
                     } catch (IOException except) {
-                        handleError(except, path.string, source, errorTitle, "writing to");
+                        handleError(except, path.string, source, errorTitle,
+                            "writing to");
                     }
                 });
             } else {

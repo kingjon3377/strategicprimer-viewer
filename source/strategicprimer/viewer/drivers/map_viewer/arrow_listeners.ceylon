@@ -54,7 +54,7 @@ object arrowListenerInitializer {
         KeyEvent.vkCircumflex->"caret", '#'.integer->"end",'^'.integer->"caret"
     ];
 
-    void repeatVoid(Anything() func, Integer times) { // Once lovelace.util.common::invoke exists, use it to condense this
+    void repeatVoid(Anything() func, Integer times) { // TODO: Condense with invoke()?
         for (i in 0:times) {
             func();
         }

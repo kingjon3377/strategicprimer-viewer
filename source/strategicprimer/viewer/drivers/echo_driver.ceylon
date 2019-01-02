@@ -86,13 +86,16 @@ shared class EchoDriver(SPOptions options) satisfies UtilityDriver {
             }
             IDRegistrar idFactory = createIDFactory(map);
             for (location in map.locations) {
+                // TODO: Use map's umber of columns instead of 176 in below.
                 if (exists mainForest = map.fixtures[location]?.narrow<Forest>()?.first,
                         mainForest.id < 0) {
-                    mainForest.id = idFactory.register(1147200 + location.row * 176 + location.column);
+                    mainForest.id = idFactory.register(
+                        1147200 + location.row * 176 + location.column);
                 }
                 if (exists mainGround = map.fixtures[location]?.narrow<Ground>()?.first,
                         mainGround.id < 0) {
-                    mainGround.id = idFactory.register(1171484 + location.row * 176 + location.column);
+                    mainGround.id = idFactory.register(
+                        1171484 + location.row * 176 + location.column);
                 }
 //                for (fixture in map.fixtures[location]) { // TODO: syntax sugar once compiler bug fixed
                 for (fixture in map.fixtures.get(location)) {

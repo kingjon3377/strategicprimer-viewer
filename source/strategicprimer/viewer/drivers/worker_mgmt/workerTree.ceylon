@@ -120,7 +120,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         showsRootHandles = true;
         dropMode = DropMode.on;
 
-        object workerTreeTransferHandler extends TransferHandler() { // TODO: Can we move out of the JTree, at least?
+        // TODO: Can we move out of the JTree, at least?
+        object workerTreeTransferHandler extends TransferHandler() {
             "Unit members can only be moved, not copied or linked."
             shared actual Integer getSourceActions(JComponent component) =>
                     TransferHandler.move;
@@ -232,7 +233,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         }
         transferHandler = workerTreeTransferHandler;
 
-        object unitMemberCellRenderer extends DefaultTreeCellRenderer() { // TODO: Can we move this out of the JTree, at least?
+        // TODO: Can we move this out of the JTree, at least?
+        object unitMemberCellRenderer extends DefaultTreeCellRenderer() {
             Icon createDefaultFixtureIcon() {
                 Integer imageSize = 24;
                 BufferedImage temp = BufferedImage(imageSize, imageSize,
@@ -340,13 +342,14 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         component.text = internal.name;
                     } else {
                         component.text =
-                            "``internal.name`` (``internal.narrow<IWorker>().size`` workers)";
+                            "``internal.name`` (``internal.narrow<IWorker>().size
+                                `` workers)";
                     }
                     String orders = internal.getLatestOrders(turnSource()).lowercased;
                     if (orderCheck, orders.contains("fixme"), !internal.empty) {
                         shouldError = true;
-                    } else if (orderCheck, (orders.contains("todo") || orders.contains("xxx")),
-                            !internal.empty) {
+                    } else if (orderCheck, (orders.contains("todo") ||
+                            orders.contains("xxx")), !internal.empty) {
                         shouldWarn = true;
                     }
                 } else if (orderCheck,
@@ -362,7 +365,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                                 shouldError = true;
                                 shouldWarn = false;
                                 break;
-                            } else if (orders.contains("todo") || orders.contains("xxx")) {
+                            } else if (orders.contains("todo") ||
+                                    orders.contains("xxx")) {
                                 shouldWarn = true;
                             }
                         }
@@ -376,7 +380,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                                 shouldError = true;
                                 shouldWarn = false;
                                 break;
-                            } else if (orders.contains("todo") || orders.contains("xxx")) {
+                            } else if (orders.contains("todo") ||
+                                    orders.contains("xxx")) {
                                 shouldWarn = true;
                             }
                         }
@@ -415,8 +420,10 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     getPathForLocation(event.x, event.y)?.lastPathComponent,
                     is IWorker localNode = wtModel.getModelObject(pathLast),
                     exists stats = localNode.stats) {
+                // TODO: convert lambda to class method
                 return "<html><p>``", ".join(statReferencesList
-                                .map(([desc, func]) => "``desc`` ``WorkerStats.getModifierString(func(stats))``"))``</p></html>";
+                                .map(([desc, func]) => "``desc`` ``WorkerStats
+                                    .getModifierString(func(stats))``"))``</p></html>";
             } else {
                 return null;
             }

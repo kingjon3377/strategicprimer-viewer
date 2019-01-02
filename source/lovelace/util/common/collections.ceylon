@@ -60,8 +60,8 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
     }
 
     "Add the given key to the to-remove list. If it was already there (the entry 'had been
-     removed' already), return [[null]]; otherwise, return the value that had been associated
-     with the key."
+     removed' already), return [[null]]; otherwise, return the value that had been
+     associated with the key."
     shared actual Item? remove(Integer key) {
         if (toRemove.contains(key)) {
             return null;

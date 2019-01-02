@@ -20,7 +20,8 @@ shared native object numberComparator satisfies Comparator<Number<out Anything>>
         case (is Whole) { return number.float; }
     }
     "Compare two numbers. If they are the same type, delegate to their built-in comparison
-     function; if not, convert both to [[Float]] and return the result of comparing those."
+     function; if not, convert both to [[Float]] and return the result of comparing
+     those."
     native shared actual Comparison compare(Number<out Anything> one,
             Number<out Anything> two) {
         if (is Integer one, is Integer two) {

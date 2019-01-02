@@ -52,7 +52,8 @@ shared object pathfinder {
                 }
                 return [currentDistance, path.reversed];
             } else if (currentDistance >= runtime.maxArraySize) {
-                log.debug("Considering an 'infinite-distance' tile after ``iterations`` iterations");
+                log.debug("Considering an 'infinite-distance' tile after ``
+                    iterations`` iterations");
                 return [currentDistance, []];
             }
             for (neighbor in surroundingPointIterable(current, map.dimensions, 1)) {
@@ -91,8 +92,8 @@ shared object pathfinder {
                         .filter(unvisited.contains).first) {
                 current = next;
             } else {
-                log.debug(
-                    "Couldn't find a smallest-estimate unchecked tile after ``iterations`` iterations");
+                log.debug("Couldn't find a smallest-estimate unchecked tile after ``
+                    iterations`` iterations");
                 return [runtime.maxArraySize, []];
             }
         }

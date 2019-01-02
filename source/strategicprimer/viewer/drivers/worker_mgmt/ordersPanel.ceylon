@@ -41,11 +41,15 @@ import strategicprimer.model.common.map.fixtures.mobile {
     ProxyUnit
 }
 import lovelace.util.common {
-    silentListener
+    silentListener,
+    todo
 }
 
 "A panel for the user to enter a unit's orders or read a unit's results."
-JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel( // TODO: Try to convert back to a class, or else split controller-functionality from appearance (perhaps either returning [JPanel, Applyable&...] or making this setupOrdersPanel(), taking the panel as a parameter?)
+todo("Try to convert back to a class, or else split controller-functionality from
+      appearance (perhaps either returning [JPanel, Applyable&...] or making this
+      setupOrdersPanel(), taking the panel as a parameter?)")
+JPanel&Applyable&Revertible&TreeSelectionListener&PlayerChangeListener ordersPanel(
         Integer currentTurn, variable Player currentPlayer,
         {IUnit*}(Player, String) playerUnits,
         String(IUnit, Integer) ordersSupplier,

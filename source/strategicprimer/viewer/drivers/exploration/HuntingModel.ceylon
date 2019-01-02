@@ -18,7 +18,8 @@ import strategicprimer.model.common.map.fixtures.resources {
 }
 import lovelace.util.common {
     matchingValue,
-    singletonRandom
+    singletonRandom,
+    todo
 }
 
 "A class to facilitate a better hunting/fishing driver."
@@ -95,7 +96,8 @@ shared class HuntingModel {
 
     """Get a stream of hunting results from the area surrounding the given tile. About
        half will be "nothing". May be an infinite stream."""
-    // TODO: We'd like to allow callers(?) to specify a proportion that *should* be tracks, perhaps replacing some of the NothingFound
+    todo("We'd like to allow callers(?) to specify a proportion that *should* be tracks,
+          perhaps replacing some of the NothingFound")
     shared {<Point->Animal|AnimalTracks|NothingFound>*} hunt(
             "Whereabouts to search"
             Point point) => chooseFromMap(point, animals);
@@ -109,7 +111,8 @@ shared class HuntingModel {
     "Given a location, return the stream of gathering results from just that
      tile."
     {<Point->Grove|Meadow|Shrub|NothingFound>*} gatherImpl(Point point) =>
-            plants(point).map(curry(Entry<Point, Grove|Meadow|Shrub|NothingFound>)(point));
+            plants(point)
+                .map(curry(Entry<Point, Grove|Meadow|Shrub|NothingFound>)(point));
 
     """Get a stream of gathering results from the area surrounding the given tile. Many
        will be "nothing," especially from desert and tundra tiles and less from jungle

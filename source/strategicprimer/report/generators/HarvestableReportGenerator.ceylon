@@ -139,7 +139,8 @@ shared class HarvestableReportGenerator
             ostream(item.string);
         }
         case (is MineralVein) {
-            ostream((item.exposed) then "An exposed vein of " else "An unexposed vein of ");
+            ostream((item.exposed) then "An exposed vein of " else
+                "An unexposed vein of ");
             ostream(item.kind);
         }
         case (is Shrub) {
@@ -305,7 +306,8 @@ shared class HarvestableReportGenerator
         SortedSectionListReportNode stoneNode = SortedSectionListReportNode(5,
             "Exposed Stone Deposits");
         stoneNode.appendNodes(*stone.items);
-        for (node in [mines, meadows, groves, caches]) { // TODO: Replace loop with Iterable.each(), if that'll compile.
+        // TODO: Replace loop with Iterable.each(), if that'll compile.
+        for (node in [mines, meadows, groves, caches]) {
             node.resume();
         }
         SectionReportNode retval = SectionReportNode(4, "Resource Sources");

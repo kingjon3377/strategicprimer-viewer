@@ -99,7 +99,8 @@ shared class FunctionalGroupLayout extends GroupLayout {
 "An extension to [[JComboBox]] to improve it by making the Tab key do what one expects."
 shared class ImprovedComboBox<Element> extends JComboBox<Element> {
     shared new () extends JComboBox<Element>() { }
-    shared new withModel(ComboBoxModel<Element> boxModel) extends JComboBox<Element>(boxModel) { }
+    shared new withModel(ComboBoxModel<Element> boxModel)
+        extends JComboBox<Element>(boxModel) { }
     editable = true;
     "Handle a key-press. If Tab is pressed when the pop-up list is visible, treat it like
      Enter."
@@ -156,7 +157,8 @@ shared class BoxAxis of lineAxis | pageAxis {
     shared new pageAxis { axis = BoxLayout.pageAxis; }
 }
 
-"An interface to provide helper methods for a [[panel|JPanel]] laid out by a [[BoxLayout]]."
+"An interface to provide helper methods for a [[panel|JPanel]] laid out by a
+ [[BoxLayout]]."
 see(`function boxPanel`)
 shared sealed interface BoxPanel {
     "Which direction the panel is laid out, for use in the helper methods."
@@ -418,9 +420,10 @@ shared class InterpolatedLabel<Args> extends JLabel
     }
 }
 
-"A wrapper around an [[ActionListener]] (or equivalent lambda) that extends [[AbstractAction]],
- for the exceedingly common case of a JDK method requiring an [[Action]] when we don't need
- more functionality than a single method accepting an [[ActionEvent]]."
+"A wrapper around an [[ActionListener]] (or equivalent lambda) that extends
+ [[AbstractAction]], for the exceedingly common case of a JDK method requiring an
+ [[Action]] when we don't need more functionality than a single method accepting an
+ [[ActionEvent]]."
 shared class ActionWrapper(Anything(ActionEvent)|ActionListener wrappedListener)
         extends AbstractAction() {
     Anything(ActionEvent) wrapped;
@@ -432,9 +435,9 @@ shared class ActionWrapper(Anything(ActionEvent)|ActionListener wrappedListener)
     shared actual void actionPerformed(ActionEvent event) => wrapped(event);
 }
 
-"An extension of the [[DefaultListModel]] class to add an implementation of the [[Reorderable]]
- interface. For the convenience of callers, the class also takes its initial elements as initializer
- parameters."
+"An extension of the [[DefaultListModel]] class to add an implementation of the
+ [[Reorderable]] interface. For the convenience of callers, the class also takes its
+ initial elements as initializer parameters."
 shared class ReorderableListModel<Element>(Element* initialElements)
         extends DefaultListModel<Element>() satisfies Reorderable {
     shared actual void reorder(Integer fromIndex, Integer toIndex) {

@@ -30,9 +30,10 @@ shared class AnimalImpl(kind, talking, status, id, born = -1, population = 1)
     shared actual Integer population;
 
     "Clone the animal."
+    todo("""TODO: change, here and elsewhere, so that "unknown" is -1 population""")
     shared actual Animal copy(Boolean zero) {
         AnimalImpl retval = AnimalImpl(kind, talking, status, id,
-            (zero) then -1 else born, (zero) then 1 else population); // TODO: change, here and elsewhere, so that "unknown" is -1 population
+            (zero) then -1 else born, (zero) then 1 else population);
         retval.image = image;
         return retval;
     }

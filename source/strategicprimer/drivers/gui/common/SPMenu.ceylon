@@ -57,7 +57,7 @@ shared class SPMenu extends JMenuBar {
         }
         return item;
     }
-    
+
     "If the given driver is of the specified driver type, disable the given
      menu item; regardless, return the menu item."
     static JMenuItem disabledForDriver<Driver>(JMenuItem item, ISPDriver driver)
@@ -101,7 +101,8 @@ shared class SPMenu extends JMenuBar {
             createAccelerator(KeyEvent.vkO, HotKeyModifier.shift)), driver));
 
         fileMenu.add(enabledForDriver<ModelDriver>(createMenuItem("Save",
-            KeyEvent.vkS, saveCaption, handler, createAccelerator(KeyEvent.vkS)), driver));
+                KeyEvent.vkS, saveCaption, handler, createAccelerator(KeyEvent.vkS)),
+            driver));
         fileMenu.add(enabledForDriver<ModelDriver>(createMenuItem("Save As",
             KeyEvent.vkA, saveAsCaption, handler, createAccelerator(KeyEvent.vkS,
                 HotKeyModifier.shift)), driver));
@@ -164,9 +165,10 @@ shared class SPMenu extends JMenuBar {
             createAccelerator(KeyEvent.vkT)), driver));
 
         Integer findKey = KeyEvent.vkF;
-        retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Find a fixture", findKey,
-            "Find a fixture by name, kind or ID #", handler, createAccelerator(findKey),
-            KeyStroke.getKeyStroke(KeyEvent.vkSlash, 0)), driver));
+        retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Find a fixture",
+                findKey, "Find a fixture by name, kind or ID #", handler,
+                createAccelerator(findKey), KeyStroke.getKeyStroke(KeyEvent.vkSlash, 0)),
+            driver));
 
         Integer nextKey = KeyEvent.vkN;
         retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Find next", nextKey,
@@ -188,8 +190,9 @@ shared class SPMenu extends JMenuBar {
             "Decrease the visible size of each tile", handler,
             createAccelerator(KeyEvent.vkMinus)), driver));
 
-        retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Reset zoom", KeyEvent.vkR,
-            "Reset the zoom level", handler, createAccelerator(KeyEvent.vk0)), driver));
+        retval.add(enabledForDriver<ViewerDriver>(createMenuItem("Reset zoom",
+            KeyEvent.vkR, "Reset the zoom level", handler,
+            createAccelerator(KeyEvent.vk0)), driver));
         retval.addSeparator();
 
         KeyStroke centerHotkey;

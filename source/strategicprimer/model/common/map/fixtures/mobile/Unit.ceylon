@@ -143,7 +143,8 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
      player with the same kind and name and neither has any members that are
      not equal-ignoring-ID to any member of the other."
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
-        if (is IUnit fixture, fixture.owner.playerId == owner.playerId, fixture.kind == kind, fixture.name == name) {
+        if (is IUnit fixture, fixture.owner.playerId == owner.playerId,
+                fixture.kind == kind, fixture.name == name) {
             for (member in this) {
                 if (!fixture.any(member.equalsIgnoringID)) {
                     return false;

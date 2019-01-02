@@ -273,8 +273,8 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
     }
 
     suppressWarnings("deprecation")
-    void fixAdjacentForests(IMutableMapNG map, IDRegistrar idf, Point location, TileType tileType,
-            String forest) {
+    void fixAdjacentForests(IMutableMapNG map, IDRegistrar idf, Point location,
+            TileType tileType, String forest) {
         TileType destination;
         switch (tileType)
         case (TileType.temperateForest) {

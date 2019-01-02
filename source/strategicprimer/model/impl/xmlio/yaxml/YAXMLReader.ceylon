@@ -66,8 +66,8 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
             {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
             IDRegistrar idFactory = IDFactory();
             if (exists event = eventReader.narrow<StartElement>().first) {
-                assert (is Element retval = YAReaderAdapter(warner, idFactory).parse(event, QName("root"),
-                    eventReader));
+                assert (is Element retval = YAReaderAdapter(warner, idFactory)
+                    .parse(event, QName("root"), eventReader));
                 return retval;
             }
         } catch (XMLStreamException except) {

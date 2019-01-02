@@ -55,8 +55,8 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
      [[strategicprimer.model.common.map.fixtures.resources::HarvestableFixture]] objects
      themselves, because that would require XML parsing to grow an additional pass, but
      every number here should be the ID number of a
-     [[strategicprimer.model.common.map.fixtures.resources::HarvestableFixture]] that is not
-     claimed by any other community."
+     [[strategicprimer.model.common.map.fixtures.resources::HarvestableFixture]] that is
+     not claimed by any other community."
     MutableSet<Integer> workedFieldIDs = HashSet<Integer>();
 
     "ID numbers of fields, orchards, and the like that this community cultivates. We don't
@@ -64,8 +64,8 @@ shared class CommunityStats(populationCount) satisfies Subsettable<CommunityStat
      [[strategicprimer.model.common.map.fixtures.resources::HarvestableFixture]] objects
      themselves, because that would require XML parsing to grow an additional pass, but
      every number here should be the ID number of a
-      [[strategicprimer.model.common.map.fixtures.resources::HarvestableFixture]] that is not
-      claimed by any other community."
+     [[strategicprimer.model.common.map.fixtures.resources::HarvestableFixture]] that is
+     not claimed by any other community."
     shared {Integer*} workedFields => workedFieldIDs.sequence();
 
     "Add a field (or orchard, or other harvestable resource source) (ID number) to the

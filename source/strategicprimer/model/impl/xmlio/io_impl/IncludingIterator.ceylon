@@ -52,9 +52,9 @@ import java.nio.file {
 "An extension to the [[Iterator]] of [[XMLEvent]] to automatically handle
  `include` tags."
 shared class IncludingIterator satisfies Iterator<XMLEvent> {
-    """Get the appropriate reader based on the given filename: if it begins "string:<", strip
-       the "string:" prefix, pass the remainder to a [[StringReader]], and return it;
-       otherwise return a [[FileReader]]."""
+    """Get the appropriate reader based on the given filename: if it begins "string:<",
+       strip the "string:" prefix, pass the remainder to a [[StringReader]], and return
+       it; otherwise return a [[FileReader]]."""
     throws(`class MissingFileException`)
     static JReader magicReader(String possibleFilename) {
         if (possibleFilename.startsWith("string:<")) {

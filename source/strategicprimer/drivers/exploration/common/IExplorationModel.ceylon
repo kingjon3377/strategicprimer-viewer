@@ -122,7 +122,7 @@ shared interface IExplorationModel
     "If there is a currently selected unit, change one
      [[strategicprimer.model.common.map.fixtures::Ground]],
      [[strategicprimer.model.common.map.fixtures.resources::StoneDeposit]], or
-     [[strategicprimer.model.common.map.fixtures.resources::MineralVein]] at the location of that
-     unit from unexposed to exposed (and discover it). This costs MP."
+     [[strategicprimer.model.common.map.fixtures.resources::MineralVein]] at the location
+     of that unit from unexposed to exposed (and discover it). This costs MP."
     shared formal void dig();
 }

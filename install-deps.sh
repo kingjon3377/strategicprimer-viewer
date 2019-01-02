@@ -27,5 +27,6 @@ if test -n "${TRAVIS_TAG}"; then
 	echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\|[0-9]*\.[0-9]*\|[0-9]*[-_]rc[0-9]*\)$@s:SNAPSHOT:\1:@' | \
 		sed -f - -i version.properties
 fi
-wget "https://ceylon-lang.org/download/dist/$(echo "${ceylon_version}" | sed 's@\.@_@g')" --output-document=ceylon.zip
+wget "https://ceylon-lang.org/download/dist/$(echo "${ceylon_version}"|sed 's@\.@_@g')" \
+	--output-document=ceylon.zip
 unzip ceylon.zip

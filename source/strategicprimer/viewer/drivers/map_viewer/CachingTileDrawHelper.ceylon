@@ -29,9 +29,9 @@ import java.lang {
 }
 
 "A class to do the drawing of a tile, whether on a component representing a single tile or
- a single-component map, using cached [[Shapes|Shape]]. Note that this is limited to version-1
- maps.
- 
+ a single-component map, using cached [[Shapes|Shape]]. Note that this is limited to
+ version-1 maps.
+
  This is a class, not an object, because the cached [[Shapes|Shape]] are fixed
  at one zoom level, and have to be recomputed if the zoom level ever changes;
  if this were a singleton object (and were used as the main [[tile draw

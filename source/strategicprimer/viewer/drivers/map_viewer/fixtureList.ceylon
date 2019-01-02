@@ -58,7 +58,8 @@ import strategicprimer.model.common.idreg {
 
 "A visual list-based representation of the contents of a tile."
 // Can't make a class (yet) because the createDefaultDragGestureRecognizer() line would
-// have an unavoidable 'this' reference // TODO: Try to work around that to fool the typechecker into allowing it
+// have an unavoidable 'this' reference
+todo("Try to work around that to fool the typechecker into allowing it")
 shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtureList(
         JComponent parentComponent, FixtureListModel listModel, IDRegistrar idf,
         Anything() mutationListener, {Player*} players) {

@@ -103,9 +103,11 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         // separateByStatus() sorts using pairComparator, which should be by distance
         // from HQ
         separateByStatus(separated, fixtures.items,
-                    (MutableMap<ITownFixture, Point> mapping, pair) => // TODO: Work out method-reference logic that's sugar for, to avoid lambda, or convert to class (or better yet static) method
+                    (MutableMap<ITownFixture, Point> mapping, pair) =>
+                    // TODO: Work out method-reference logic to avoid lambda, or convert to class (or better yet static) method
                             mapping[pair.rest.first] = pair.first);
-        if (separated.items.any(not(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
+        // N.b. Sugaring Iterable<Anything> to {Anything*} won't compile
+        if (separated.items.any(not(Iterable<Anything>.empty))) {
             ostream("""<h4>Cities, towns, and/or fortifications you know about:</h4>
                    """);
             for (mapping in [abandoned, active, burned, ruined]) {

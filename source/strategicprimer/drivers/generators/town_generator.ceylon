@@ -374,7 +374,8 @@ class TownGenerator(ICLIHelper cli) {
     "Generate expertise and production and consumption data for the given town."
     CommunityStats generateStats(IDRegistrar idf, Point location, ModifiableTown town,
             IMapNG map) {
-        "To ensure consistency between runs of this algorithm, seed the random number generator with the town's ID."
+        "To ensure consistency between runs of this algorithm, seed the random number
+         generator with the town's ID."
         Random rng = DefaultRandom(town.id);
         "A die roll using our pre-seeded RNG."
         Integer roll(Integer die) => rng.nextInteger(die) + 1;

@@ -180,7 +180,8 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         return end - start;
     }
 
-    static Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps, Integer tileSize) {
+    static Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps,
+            Integer tileSize) {
         MapDimensions mapDimensions = map.dimensions;
         BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
             tileSize * mapDimensions.rows, BufferedImage.typeIntRgb);
@@ -254,8 +255,8 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         for ([testDesc, test] in tests) {
             cli.println("``testDesc``:");
             for ([testCase, caseDesc] in helpers) {
-                Accumulator<Integer> accumulator = getResultsAccumulator(fileName, caseDesc,
-                    testDesc);
+                Accumulator<Integer> accumulator = getResultsAccumulator(fileName,
+                    caseDesc, testDesc);
                 accumulator.add(printStats(caseDesc, test(testCase, map, repetitions,
                     scaleZoom(ViewerModel.defaultZoomLevel, map.dimensions.version)),
                 repetitions));

@@ -50,7 +50,8 @@ import com.vasileff.ceylon.structures {
     Multimap
 }
 
-"""A report generator for [["immortals"|Immortal]]---dragons, fairies, centaurs, and such."""
+"""A report generator for [["immortals"|Immortal]]---dragons, fairies, centaurs, and
+   such."""
 shared class ImmortalsReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, MapDimensions dimensions,
         Point hq = Point.invalidPoint)

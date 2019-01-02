@@ -482,7 +482,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         return setImage(retval, element, warner);
     }
 
-    IMutableMapNG mapOrViewTagHandler(StartElement element, QName parent, // TODO: Can we inline this into its reference(s)?
+    // TODO: Can we inline this into its reference(s)?
+    IMutableMapNG mapOrViewTagHandler(StartElement element, QName parent,
         {XMLEvent*} stream, IMutablePlayerCollection players, Warning warner,
         IDRegistrar idFactory) =>
             readMapOrViewTag(element, parent, stream, players, warner, idFactory);
@@ -545,7 +546,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
             IMutablePlayerCollection players = PlayerCollection();
             IDRegistrar idFactory = IDFactory();
-            if (exists event = eventReader.narrow<StartElement>().find(isSPStartElement)) {
+            if (exists event = eventReader.narrow<StartElement>()
+                    .find(isSPStartElement)) {
                 assert (is Type retval = readSPObject(event, QName("root"), eventReader,
                     players, warner, idFactory));
                 return retval;

@@ -159,7 +159,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         }
     }
 
-    void okListener(ActionEvent event) { // TODO: Make a void function and use silentListener()?
+    // TODO: Make a void function and use silentListener()?
+    void okListener(ActionEvent event) {
         search();
         setVisible(false);
         parent.requestFocus();
@@ -183,7 +184,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
 
     JButton okButton = listenedButton("OK", okListener);
 
-    void cancelListener(ActionEvent event) { // TODO: Make a void function and use silentListener()?
+    // TODO: Make a void function and use silentListener()?
+    void cancelListener(ActionEvent event) {
         setVisible(false);
         parent.requestFocus();
         dispose();

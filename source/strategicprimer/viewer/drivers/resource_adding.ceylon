@@ -110,7 +110,8 @@ import strategicprimer.drivers.gui.common.about {
 }
 import lovelace.util.common {
     PathWrapper,
-    defer
+    defer,
+    todo
 }
 
 "A driver model for resource-entering drivers."
@@ -251,8 +252,8 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
             return;
         }
         String contents;
-        switch (cli.inputBooleanInSeries("Qualify the particular resource with a prefix? ",
-                "prefix " + origContents))
+        switch (cli.inputBooleanInSeries(
+            "Qualify the particular resource with a prefix? ", "prefix " + origContents))
         case (true) {
             if (exists prefix = cli.inputString("Prefix to use: ")) {
                 contents = prefix + " " + origContents;
@@ -286,10 +287,12 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
         }
     }
 
+    todo("Add a loopOnPlayers() helper method to CLIDriver interface, since there are
+          several disparate CLI drivers that do that.")
     shared actual void startDriver() {
         MutableList<Player> players = ArrayList { elements = model.players; };
         IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
-        while (!players.empty, exists chosen = cli.chooseFromList(players, // TODO: Add a loopOnPlayers() helper method to CLIDriver interface, since there are several disparate CLI drivers that do that.
+        while (!players.empty, exists chosen = cli.chooseFromList(players,
                 "Players in the maps:", "No players found.",
                 "Player to add resources for: ", false).item) {
             players.remove(chosen);
@@ -353,7 +356,8 @@ shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
         }
     }
 
-    shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options, IDriverModel model) {
+    shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
+            IDriverModel model) {
         if (is ResourceManagementDriverModel model) {
             return ResourceAddingGUI(cli, options, model);
         } else {
@@ -368,7 +372,8 @@ shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
 
 class ResourceAddingGUI satisfies MultiMapGUIDriver {
     "Extends [[ImprovedComboBox]] to keep a running collection of values."
-    static class UpdatedComboBox(Anything(String) logger) extends ImprovedComboBox<String>() {
+    static class UpdatedComboBox(Anything(String) logger)
+            extends ImprovedComboBox<String>() {
         "The values we've had in the past."
         MutableSet<String> values = HashSet<String>();
         "Clear the combo box, but if its value was one we haven't had previously, add it
@@ -429,7 +434,8 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         BorderedPanel.verticalPanel(first, null, second);
 
     static String resourceLabelText(Player player) => "Add resource for ``player.name``:";
-    static String equipmentLabelText(Player player) => "Add equipment for ``player.name``:";
+    static String equipmentLabelText(Player player) =>
+        "Add equipment for ``player.name``:";
 
     static String css = """color:black; margin-bottom: 0.5em; margin-top: 0.5em;""";
     static void logAddition(StreamingLabel logLabel, Player currentPlayer, String addend)
@@ -450,7 +456,8 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
     }
 
     "A window to let the user enter resources etc. Note that this is not a dialog to enter
-     one resource and close." // TODO: Move methods embedded in this method to top level of class
+     one resource and close."
+    // TODO: Move methods embedded in this method to top level of class
     SPFrame&PlayerChangeListener resourceAddingFrame(Anything(ActionEvent) menuHandler) {
         IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
         variable Player currentPlayer = PlayerImpl(-1, "");

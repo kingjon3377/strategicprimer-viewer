@@ -85,7 +85,8 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
         MutableMultimap<String, Point> items = ArrayListMultimap<String, Point>();
         for (key->[loc, animal] in
                 narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
-                .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item, pairComparator))) {
+                .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item,
+                    pairComparator))) {
             String desc;
             if (is AnimalTracks animal) {
                 desc = "tracks or traces of ``animal.kind``";

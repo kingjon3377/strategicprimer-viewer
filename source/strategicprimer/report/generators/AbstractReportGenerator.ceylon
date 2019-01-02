@@ -31,7 +31,7 @@ shared sealed abstract class AbstractReportGenerator<Type>(
          being prepared."
         Point referencePoint = Point.invalidPoint)
         satisfies IReportGenerator<Type> given Type satisfies IFixture {
-    "A calculator-comparator for subclasses to use to compare fixtures on the basis of 
+    "A calculator-comparator for subclasses to use to compare fixtures on the basis of
      distance from [[referencePoint]] and to print that distance in the report."
     shared DistanceComparator distCalculator = DistanceComparator(referencePoint,
         mapDimensions);
@@ -120,7 +120,8 @@ shared sealed abstract class AbstractReportGenerator<Type>(
         shared actual Integer size => wrapped.size;
         shared actual Boolean empty => wrapped.empty;
         shared actual Integer hash => wrapped.hash;
-        shared actual Boolean equals(Object that) => (this of Map<Key, Value>).equals(that);
+        shared actual Boolean equals(Object that) =>
+            (this of Map<Key, Value>).equals(that);
         shared actual void clear() => wrapped.clear();
         shared actual MutableMap<Key,Value> clone() => HeadedMapImpl<Key, Value>(header,
             comparator, initial);

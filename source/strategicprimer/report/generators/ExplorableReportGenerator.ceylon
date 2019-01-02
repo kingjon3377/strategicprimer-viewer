@@ -88,8 +88,9 @@ shared class ExplorableReportGenerator(
         if (!caves.empty || !battles.empty || !portals.empty) {
             ostream("<h4>Caves, Battlefields, and Portals</h4>
                      <ul>");
+            // N.b. Sugaring Iterable<Anything> to {Anything*} won't compile
             for (list in [ caves, battles, portals ]
-                    .filter(not(Iterable<Anything>.empty))) { // Sugaring to {Anything*} won't compile
+                    .filter(not(Iterable<Anything>.empty))) {
                 ostream("<li>``list``</li>");
             }
             ostream("</ul>``operatingSystem.newline``");

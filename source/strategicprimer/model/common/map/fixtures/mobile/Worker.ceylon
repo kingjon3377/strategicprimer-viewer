@@ -24,8 +24,8 @@ import ceylon.collection {
 }
 
 "A worker (or soldier) in a unit. This is deliberately not a
- [[TileFixture|strategicprimer.model.common.map::TileFixture]]: these should only be part of a
- unit, not as a top-level tag."
+ [[TileFixture|strategicprimer.model.common.map::TileFixture]]: these should only be part
+ of a unit, not as a top-level tag."
 todo("Convert some other [[MobileFixture]]s similarly?")
 shared class Worker satisfies IWorker&HasPortrait {
     "Whether neither of two collections of Jobs contains a nonempty Job the other does

@@ -253,7 +253,8 @@ class StatGeneratingCLI satisfies CLIDriver {
     "Let the user enter which Jobs a worker's levels are in."
     void enterWorkerJobs(IWorker worker, Integer levels) {
         for (i in 0:levels) {
-            if (exists jobName = cli.inputString("Which Job does worker have a level in? ")) {
+            if (exists jobName =
+                    cli.inputString("Which Job does worker have a level in? ")) {
                 IJob job = worker.getJob(jobName);
                 job.level += 1;
             } else {
@@ -295,11 +296,13 @@ class StatGeneratingCLI satisfies CLIDriver {
     "Racial stat bonuses."
     MutableMap<String, WorkerStats> racialBonuses = HashMap<String, WorkerStats>();
 
-    "Load racial stat bonuses for the given race from the cache, or if not present there from file."
+    "Load racial stat bonuses for the given race from the cache, or if not present there
+     from file."
     WorkerStats loadRacialBonus(String race) {
         if (exists retval = racialBonuses[race]) {
             return retval;
-        } else if (exists textContent = readFileContents(`module strategicprimer.model.common`,
+        } else if (exists textContent = readFileContents(
+                `module strategicprimer.model.common`,
                 "racial_stat_adjustments/``race``.txt")) {
             value parsed = textContent.lines.map(Integer.parse)
                     .narrow<Integer>().sequence();
@@ -314,7 +317,8 @@ class StatGeneratingCLI satisfies CLIDriver {
         }
     }
 
-    "Whether the user has said to always give a human's racial stat bonus to the lowest stat."
+    "Whether the user has said to always give a human's racial stat bonus to the lowest
+     stat."
     variable Boolean alwaysLowest = false;
 
     "Create randomly-generated stats for a worker, with racial adjustments applied."
@@ -391,7 +395,8 @@ class StatGeneratingCLI satisfies CLIDriver {
                 cli.println("No training available in ``village.name``.");
                 WorkerStats stats = createWorkerStats(village.race, 0);
                 worker.stats = stats;
-                cli.println("``name`` is a ``village.race`` from ``village.name``. Stats:");
+                cli.print(name);
+                cli.println(" is a ``village.race`` from ``village.name``. Stats:");
                 cli.println(", ".join(zipPairs(statLabelArray,
                     stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
                 return worker;
@@ -401,7 +406,8 @@ class StatGeneratingCLI satisfies CLIDriver {
                     worker.addJob(training);
                     WorkerStats stats = createWorkerStats(village.race, training.level);
                     cli.println(
-                        "``name``, a ``village.race``, is a level-``training.level`` ``training.name`` from ``village.name``. Proposed stats:");
+                        "``name``, a ``village.race``, is a level-``training.level`` ``
+                            training.name`` from ``village.name``. Proposed stats:");
                     cli.println(", ".join(zipPairs(statLabelArray,
                         stats.array.map(WorkerStats.getModifierString)).map(" ".join)));
                     assert (exists acceptance =

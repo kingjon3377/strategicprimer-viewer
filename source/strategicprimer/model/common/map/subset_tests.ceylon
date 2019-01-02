@@ -67,8 +67,9 @@ object subsetTests {
                 assertTrue(one.isSubset(two, noop), message);
     """Assert that [[two]] is *not* a "strict subset," even by our loose
        definition, of [[one]]."""
-    void assertNotSubset<SpecificType,GeneralType=SpecificType>(SpecificType&GeneralType one,
-                SpecificType&GeneralType two, String message)
+    void assertNotSubset<SpecificType,GeneralType=SpecificType>(
+                SpecificType&GeneralType one, SpecificType&GeneralType two,
+                String message)
             given SpecificType satisfies Subsettable<GeneralType>
             given GeneralType satisfies Object =>
                 assertFalse(one.isSubset(two, noop), message);

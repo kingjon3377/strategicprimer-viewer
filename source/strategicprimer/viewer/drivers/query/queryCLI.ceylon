@@ -135,8 +135,9 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
     "A description of what could be a single animal or a population of animals."
     static String populationDescription(Animal animal) {
         if (animal.population > 1) {
-//            return "a group of perhaps ``animal.population`` ``animalPlurals[animal.kind]``"; // TODO: syntax sugar
-            return "a group of perhaps ``animal.population`` ``animalPlurals.get(animal.kind)``";
+            return "a group of perhaps ``animal.population
+//              `` ``animalPlurals[animal.kind]``"; // TODO: syntax sugar
+                `` ``animalPlurals.get(animal.kind)``";
         } else {
             return animal.kind;
         }
@@ -202,9 +203,11 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
                 exists groundTravel =
                     cli.inputBoolean("Compute ground travel distance?")) {
             if (groundTravel) {
-                cli.println("Distance (on the ground, in MP cost):\t``pathfinder.getTravelDistance(map, start, end).first``");
+                cli.print("Distance (on the ground, in MP cost):\t");
+                cli.println(pathfinder.getTravelDistance(map, start, end).first.string);
             }
             else {
+                // TODO: Replace interpolation with two method calls, as above
                 cli.println("Distance (as the crow flies, in tiles):\t``Float
                     .format(distance(start, end, map.dimensions), 0, 0)``");
             }
@@ -267,7 +270,8 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
                "process", e.g."""
             String verb,
             "The source of encounters."
-            variable {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*} encounters) {
+            variable {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*}
+                encounters) {
         while (time > 0, exists loc->encounter = encounters.first) {
             encounters = encounters.rest;
             if (is HuntingModel.NothingFound encounter) {
@@ -285,7 +289,8 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
                 if (is Null fight) {
                     return;
                 } else if (fight) {
-                    Integer cost = cli.inputNumber("Time to ``verb``: ") else runtime.maxArraySize;
+                    Integer cost = cli.inputNumber("Time to ``verb``: ")
+                        else runtime.maxArraySize;
                     time -= cost;
                     Boolean? processNow =
                         cli.inputBooleanInSeries("Handle processing now?");
@@ -295,10 +300,14 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
                         // TODO: somehow handle processing-in-parallel case
                         for (i in 0:(cli.inputNumber("How many animals?") else 0)) {
                             Integer mass =
-                                cli.inputNumber("Weight of this animal's meat in pounds: ") else runtime.maxArraySize;
+                                cli.inputNumber(
+                                    "Weight of this animal's meat in pounds: ")
+                                else runtime.maxArraySize;
                             Integer hands =
-                                cli.inputNumber("# of workers processing this carcass: ") else 1;
-                            time -= round(HuntingModel.processingTime(mass) / hands).integer;
+                                cli.inputNumber("# of workers processing this carcass: ")
+                                else 1;
+                            time -=
+                                round(HuntingModel.processingTime(mass) / hands).integer;
                         }
                     }
                     switch (cli.inputBooleanInSeries("Reduce animal group population of ``
@@ -344,7 +353,8 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
                     "Found ``encounter.shortDescription````
                     meadowStatus(encounter)``. Should they gather?", encounter.kind))
                 case (true) {
-                    Integer cost = cli.inputNumber("Time to gather: ") else runtime.maxArraySize;
+                    Integer cost = cli.inputNumber("Time to gather: ")
+                        else runtime.maxArraySize;
                     time -= cost;
                     // TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
                     if (is Shrub encounter, encounter.population>0) {
@@ -398,7 +408,8 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
         Quantity base = bird.scaledProduction(count);
         Float production = base.floatNumber;
         cli.println("This produces ``Float.format(production, 0, 0)`` ``
-            base.units``, totaling ``formatFloat(bird.scaledPoundsProduction(count))`` lbs.");
+            base.units``, totaling ``formatFloat(bird.scaledPoundsProduction(count))
+            `` lbs.");
         Integer cost;
         assert (exists cleaning =
             cli.inputBooleanInSeries("Do they do the cleaning this turn? "));
@@ -413,7 +424,8 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
     "Run herding."
     void herd() {
         assert (exists herdModel = cli.chooseFromList(
-            `MammalModel`.getValueConstructors().chain(`PoultryModel`.getValueConstructors())
+            `MammalModel`.getValueConstructors()
+                .chain(`PoultryModel`.getValueConstructors())
                 .narrow<ValueConstructor<HerdModel>>()
                 .map((model) => model.get()).sequence(),
             "What kind of animals are these?", "No animal kinds found",
@@ -557,7 +569,8 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
         }
     }
 
-    Anything() deferAction(Anything(Point, Integer) method, String verb) => // TODO: Replace with method-reference logic using defer()
+    Anything() deferAction(Anything(Point, Integer) method, String verb) =>
+        // TODO: Replace with method-reference logic using defer()
                     () {
                         if (exists location = cli.inputPoint("Location to ``verb``? ")) {
                             return method (location, hunterHours * 60);

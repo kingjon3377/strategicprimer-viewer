@@ -32,15 +32,15 @@ shared class FixtureMatcher {
 
     "Factory method for two matchers covering fixtures of the given type that
      match and that do not match the given predicate."
-    shared static {FixtureMatcher*} complements<out FixtureType>(Boolean(FixtureType) method,
-        String firstDescription, String secondDescription)
+    shared static {FixtureMatcher*} complements<out FixtureType>(
+        Boolean(FixtureType) method, String firstDescription, String secondDescription)
             given FixtureType satisfies TileFixture =>
                 [simpleMatcher<FixtureType>(method, firstDescription),
                     simpleMatcher<FixtureType>(not(method), secondDescription)];
 
     "Whether this matcher matches (applies to) the given fixture."
     shared Boolean matches(TileFixture fixture);
-    
+
     "Whether fixtures that this matcher matches should be displayed."
     shared variable Boolean displayed = true;
 

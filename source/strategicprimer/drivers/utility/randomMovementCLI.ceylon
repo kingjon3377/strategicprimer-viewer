@@ -28,16 +28,17 @@ import ceylon.random {
     DefaultRandom
 }
 import lovelace.util.common {
-    PathWrapper
+    PathWrapper,
+    todo
 }
 
 "A factory for an app to move independent units around at random."
 service(`interface DriverFactory`)
+todo("We'd like a GUI for this, perhaps adding customization or limiting the area or something")
 shared class RandomMovementFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(false, ["-v", "--move"],
         ParamCount.one, "Move independent units at random",
-        "Move independent units randomly around the map.",
-        true, false); // TODO: We'd like a GUI for this, perhaps adding customization or limiting the area or something
+        "Move independent units randomly around the map.", true, false);
 
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
