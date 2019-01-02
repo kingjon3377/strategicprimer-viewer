@@ -207,9 +207,8 @@ class QueryHelper { // TODO: Merge back into QueryCLI.
                 cli.println(pathfinder.getTravelDistance(map, start, end).first.string);
             }
             else {
-                // TODO: Replace interpolation with two method calls, as above
-                cli.println("Distance (as the crow flies, in tiles):\t``Float
-                    .format(distance(start, end, map.dimensions), 0, 0)``");
+                cli.print("Distance (as the crow files, in tiles):\t");
+                cli.println(Float.format(distance(start, end, map.dimensions), 0, 0));
             }
         }
     }
