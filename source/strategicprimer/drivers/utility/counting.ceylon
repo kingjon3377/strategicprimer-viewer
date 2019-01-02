@@ -91,13 +91,23 @@ class DecimalHolder(variable Decimal count) satisfies Accumulator<Decimal> {
  groups on the basis of a field (or equivalent mapping) provided to its
  constructor and increments the total by the value of another field instead of
  a constant value."
-todo("Document parameters and other members",
-     "Move to lovelace.util? (If so, leave Key as-is.)")
-class MappedCounter<Base, Key, Count>(Key(Base) keyExtractor, Count(Base) countExtractor, // TODO: Is Key ever anything other than String? If not, drop the type parameter
-            Accumulator<Count>(Count) factory, Count zero) satisfies {<Key->Count>*}
+todo("Move to lovelace.util? (If so, leave Key as-is.)")
+class MappedCounter<Base, Key, Count>( // TODO: Is Key ever anything other than String? If not, drop the type parameter
+            "An accessor method to get the key to use for each object that is to be
+             counted."
+            Key(Base) keyExtractor,
+            "An accessor method to get the quantity to increment the count by for each
+             object that is to be counted."
+            Count(Base) countExtractor,
+            "A constructor for an accumulator for the count type."
+            Accumulator<Count>(Count) factory,
+            "Zero in the count type."
+            Count zero) satisfies {<Key->Count>*}
         given Base satisfies Object given Key satisfies Object
         given Count satisfies Summable<Count>&Comparable<Count> {
     MutableMap<Key, Accumulator<Count>> totals = HashMap<Key, Accumulator<Count>>();
+
+    "Increment the count for the given key by the given amount."
     shared void addDirectly(Key key, Count addend) {
         if (exists count = totals[key]) {
             count.add(addend);
@@ -106,12 +116,15 @@ class MappedCounter<Base, Key, Count>(Key(Base) keyExtractor, Count(Base) countE
         }
     }
 
+    "Increment the count for the key and by the quantity extracted from the given object."
     shared void add(Base obj) => addDirectly(keyExtractor(obj), countExtractor(obj));
 
+    "A stream of keys and associated counts seen so far."
     shared actual Iterator<Key->Count> iterator() =>
             totals.map(entryMap(identity<Key>, Accumulator<Count>.sum))
                 .sort(comparingOn(Entry<Key, Count>.item, decreasing<Count>)).iterator();
 
+    "The total counted for all keys taken together."
     shared Count total => totals.items.map(Accumulator<Count>.sum).fold(zero)(plus);
 }
 
