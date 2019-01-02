@@ -122,7 +122,7 @@ object appChooserState {
         {String*} reserved = ["-g", "-c", "--gui", "--cli"];
         MutableMultimap<String, DriverFactory> conflicts =
                 ArrayListMultimap<String, DriverFactory>();
-        void addToCache(DriverFactory* factories) { // TODO: Take as Iterable to avoid spread below
+        void addToCache({DriverFactory*} factories) {
             for (factory in factories) {
                 MutableMap<String, DriverFactory> cache;
                 if (factory.usage.graphical) {
@@ -151,7 +151,7 @@ object appChooserState {
                 }
             }
         }
-        addToCache(*`module strategicprimer.viewer`.findServiceProviders(`DriverFactory`));
+        addToCache(`module strategicprimer.viewer`.findServiceProviders(`DriverFactory`));
         return [cliCache, guiCache];
     }
 
