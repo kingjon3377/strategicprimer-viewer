@@ -118,7 +118,7 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
     shared actual Decimal? inputDecimal(String prompt) {
         variable Decimal retval = decimalNumber(-1);
         Decimal zero = decimalNumber(0);
-        while (retval.compare(zero) == smaller) { // TODO: Just say while (retval < zero)
+        while (retval < zero) {
             writePrompt(prompt);
             if (exists input = istream()) {
                 if (exists temp = parseDecimal(input.trimmed)) {
