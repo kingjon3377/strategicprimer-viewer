@@ -285,9 +285,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
         class SpeedChangeListener(SelectionChangeListener scs)
                 satisfies ListDataListener {
             shared variable Point point = Point.invalidPoint;
-            void apply() { // TODO: =>
-                scs.selectedPointChanged(null, point);
-            }
+            void apply() => scs.selectedPointChanged(null, point);
             shared actual void contentsChanged(ListDataEvent event) => apply();
             shared actual void intervalAdded(ListDataEvent event) => apply();
             shared actual void intervalRemoved(ListDataEvent event) => apply();
