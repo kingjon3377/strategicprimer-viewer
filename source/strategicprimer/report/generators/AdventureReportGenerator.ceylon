@@ -26,15 +26,15 @@ shared class AdventureReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Point hq = Point.invalidPoint)
         extends AbstractReportGenerator<AdventureFixture>(comp, dimensions, hq) {
+    AdventureFixture->Point toEntry([Point, AdventureFixture] pair) =>
+        pair.rest.first->pair.first;
     "Produce the report on all adventure hooks in the map."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
             Anything(String) ostream) {
         MutableHeadedMap<AdventureFixture, Point> adventures =
-                HeadedMapImpl<AdventureFixture, Point>("<h4>Possible Adventures</h4>");
-        for ([loc, item] in fixtures.items.narrow<[Point, AdventureFixture]>()
-                .sort(pairComparator)) { // TODO: Use Tuple.entry() and reverseEntry() and put these into [[adventures]] as its 'initial' in one line.
-            adventures[item] = loc;
-        }
+                HeadedMapImpl<AdventureFixture, Point>("<h4>Possible Adventures</h4>",
+                    null, fixtures.items.narrow<[Point, AdventureFixture]>()
+                        .sort(pairComparator).map(toEntry));
         writeMap(ostream, adventures, defaultFormatter(fixtures, map));
     }
 
