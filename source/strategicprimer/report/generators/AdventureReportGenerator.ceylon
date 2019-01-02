@@ -30,13 +30,11 @@ shared class AdventureReportGenerator(
         pair.rest.first->pair.first;
     "Produce the report on all adventure hooks in the map."
     shared actual void produce(DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
-            Anything(String) ostream) {
-        MutableHeadedMap<AdventureFixture, Point> adventures =
-                HeadedMapImpl<AdventureFixture, Point>("<h4>Possible Adventures</h4>",
-                    null, fixtures.items.narrow<[Point, AdventureFixture]>()
-                        .sort(pairComparator).map(toEntry));
-        writeMap(ostream, adventures, defaultFormatter(fixtures, map));
-    }
+            Anything(String) ostream) =>
+        writeMap(ostream, HeadedMapImpl<AdventureFixture, Point>(
+            "<h4>Possible Adventures</h4>", null,
+            fixtures.items.narrow<[Point, AdventureFixture]>().sort(pairComparator)
+                .map(toEntry)), defaultFormatter(fixtures, map));
 
     "Produce a more verbose sub-report on an adventure hook."
     shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
