@@ -91,8 +91,9 @@ class DecimalHolder(variable Decimal count) satisfies Accumulator<Decimal> {
  groups on the basis of a field (or equivalent mapping) provided to its
  constructor and increments the total by the value of another field instead of
  a constant value."
-todo("Move to lovelace.util? (If so, leave Key as-is.)")
-class MappedCounter<Base, Key, Count>( // TODO: Is Key ever anything other than String? If not, drop the type parameter
+todo("If Key only ever String, drop type parameter",
+    "Move to lovelace.util? (If so, leave Key as-is.)")
+class MappedCounter<Base, Key, Count>(
             "An accessor method to get the key to use for each object that is to be
              counted."
             Key(Base) keyExtractor,
