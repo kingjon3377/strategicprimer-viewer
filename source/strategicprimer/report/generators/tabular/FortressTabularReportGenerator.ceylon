@@ -18,7 +18,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 
 "A tabular report generator for fortresses."
 shared class FortressTabularReportGenerator(Player player, Point hq,
-        MapDimensions dimensions) satisfies ITableGenerator<Fortress> {
+        MapDimensions dimensions) extends AbstractTableGenerator<Fortress>() {
     "The header fields are Distance, Location, Owner, and Name."
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Name"];
 
@@ -40,30 +40,34 @@ shared class FortressTabularReportGenerator(Player player, Point hq,
         return [retval];
     }
 
-    "Compare two Point-Fortress pairs."
-    shared actual Comparison comparePairs([Point, Fortress] one,
-            [Point, Fortress] two) {
-        Comparison(Point, Point) comparator =
-                DistanceComparator(hq, dimensions).compare;
-        Fortress first = one.rest.first;
-        Fortress second = two.rest.first;
-        Comparison cmp = comparator(one.first, two.first);
-        if (player == first.owner, player != second.owner) { // TODO: Extract special cases to separate methods so we can just use comparing() for everything
+    "Compare two fortresses based on whether they are owned by the player for whom the
+     report is being produced."
+    Comparison compareOwners(Fortress one, Fortress two) {
+        if (player == one.owner, player != two.owner) {
             return smaller;
-        } else if (player != first.owner, player == second.owner) {
+        } else if (player == two.owner, player != one.owner) {
             return larger;
-        } else if (cmp == equal) {
-            if ("HQ" == first.name, "HQ" != second.name) {
-                return smaller;
-            } else if ("HQ" != first.name, "HQ" == second.name) {
-                return larger;
-            } else {
-                 return comparing(
-                    comparingOn(Fortress.name, increasing<String>),
-                        comparingOn(Fortress.owner, increasing<Player>))(first, second);
-            }
         } else {
-            return cmp;
+            return equal;
         }
     }
+
+    "Compare two fortresses' names, with a special case so HQ goes at the top."
+    Comparison compareNames(Fortress one, Fortress two) {
+        if ("HQ" == one.name, "HQ" != two.name) {
+            return smaller;
+        } else if ("HQ" == two.name, "HQ" != one.name) {
+            return larger;
+        } else {
+            return one.name <=> two.name;
+        }
+    }
+
+    "Compare two Point-Fortress pairs."
+    shared actual Comparison comparePairs([Point, Fortress] one, [Point, Fortress] two) =>
+        comparing(comparingOn(pairFixture, compareOwners),
+                comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+                comparingOn(pairFixture, compareNames),
+                comparingOn(compose(Fortress.owner, pairFixture), increasing<Player>))
+            (one, two);
 }
