@@ -294,7 +294,8 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
         value remaining =
                 allFixtures.filter(exclude<Animal|Shrub|Grove|Meadow|Immortal|Fortress
                     |IUnit|AbstractTown|Village|Portal|AdventureFixture|CacheFixture|Mine|
-                    MineralVein|StoneDeposit|Ground|Forest|Hill|Oasis|AnimalTracks|Cave|Battlefield>);
+                    MineralVein|StoneDeposit|Ground|Forest|Hill|Oasis|AnimalTracks|Cave|
+                    Battlefield>);
 
         if (!remaining.empty) {
             cli.println();
