@@ -1,5 +1,4 @@
-"Common code for [Strategic
- Primer](https://strategicprimer.wordpress.com) GUIs."
+"Common code for [Strategic Primer](https://strategicprimer.wordpress.com) GUIs."
 // TODO: Write user-introductory documentation for this module
 // TODO: add tagged() annotations throughout
 license("GPL-3")

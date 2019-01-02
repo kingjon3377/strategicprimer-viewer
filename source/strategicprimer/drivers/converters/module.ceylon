@@ -1,6 +1,5 @@
 "Various converters for the [Strategic
- Primer](https://strategicprimer.wordpress.com) assistive programs
- suite."
+ Primer](https://strategicprimer.wordpress.com) assistive programs suite."
 // TODO: Write user-introductory documentation
 license("GPL-3")
 native("jvm")

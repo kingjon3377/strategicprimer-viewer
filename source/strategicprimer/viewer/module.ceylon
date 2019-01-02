@@ -1,5 +1,5 @@
-"Assistive programs for players and Judges of
- [Strategic Primer](https://strategicprimer.wordpress.com)"
+"Assistive programs for players and Judges of [Strategic
+ Primer](https://strategicprimer.wordpress.com)"
 // TODO: Expand into user-introductory documentation for the suite
 // TODO: add tagged() annotations throughout
 license("GPL-3")
