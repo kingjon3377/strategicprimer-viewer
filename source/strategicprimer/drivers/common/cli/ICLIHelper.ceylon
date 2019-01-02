@@ -62,7 +62,8 @@ shared interface ICLIHelper {
 
     """Ask the user a yes-or-no question, allowing "yes to all" or "no to all" to
        forestall further similar questions. Returns [[null]] on EOF or if
-       [[quitResultFactory]] returns [[null]].""" // TODO: Move the "quit" handling to inputBoolean as well, since it now returns null on EOF anyway?
+       [[quitResultFactory]] returns [[null]]."""
+    // TODO: Move "quit" handling to inputBoolean as well? (It returns null on EOF anyway)
     shared formal Boolean? inputBooleanInSeries(
             "The prompt to prompt the user with." String prompt,
             """The prompt (or other key) to compare to others to define "similar"
