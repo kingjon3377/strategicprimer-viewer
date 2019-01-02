@@ -1,5 +1,5 @@
 """"Utility" apps for [Strategic
-   Primer](https://shinecycle.wordpress.com/archives/strategic-primer)"""
+   Primer](https://strategicprimer.wordpress.com)"""
 // TODO: Write user-introductory documentation for this module
 // TODO: Make only what's needed native("jvm") instead of the whole module
 // TODO: add tagged() annotations throughout

@@ -1,5 +1,5 @@
 "Functions to generate HTML and tabular (CSV) reports of the contents of [Strategic
- Primer](https://shinecycle.wordpress.com/archives/strategic-primer) maps."
+ Primer](https://strategicprimer.wordpress.com) maps."
 // TODO: Add user-introductory documentation, like that of the SDK
 license("GPL-3")
 native("jvm")

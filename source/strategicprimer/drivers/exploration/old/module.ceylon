@@ -1,6 +1,6 @@
 "Model objects, tests, and debugging methods for the old, table-based,
  encounter/exploration-results model of [Strategic
- Primer](https://shinecycle.wordpress.com/archives/strategic-primer)"
+ Primer](https://strategicprimer.wordpress.com)"
 // TODO: Write user-introductory documentation for the module
 license("GPL-3")
 native("jvm")

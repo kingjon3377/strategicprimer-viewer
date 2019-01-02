@@ -1,5 +1,5 @@
 "Common functionality needed by pretty much all of the [Strategic
- Primer](https://shinecycle.wordpress.com/archives/strategic-primer) assistive programs,
+ Primer](https://strategicprimer.wordpress.com) assistive programs,
  one level up from `strategicprimer.model.common`."
 license("GPL-3")
 // TODO: add tagged() annotations throughout

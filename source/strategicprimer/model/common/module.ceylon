@@ -1,5 +1,5 @@
 "Pure-Ceylon model-object-related code for the [Strategic
- Primer](https://shinecycle.wordpress.com/archives/strategic-primer) assitive programs
+ Primer](https://strategicprimer.wordpress.com) assitive programs
  suite."
 // TODO: Write user-introductory documentation for the module
 module strategicprimer.model.common "0.4.9017" {

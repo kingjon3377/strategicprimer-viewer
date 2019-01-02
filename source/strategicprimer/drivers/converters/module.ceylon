@@ -1,5 +1,5 @@
 "Various converters for the [Strategic
- Primer](https://shinecycle.wordpress.com/archives/strategic-primer) assistive programs
+ Primer](https://strategicprimer.wordpress.com) assistive programs
  suite."
 // TODO: Write user-introductory documentation
 license("GPL-3")
