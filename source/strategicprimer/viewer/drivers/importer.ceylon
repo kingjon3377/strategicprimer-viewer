@@ -28,7 +28,8 @@ import javax.imageio {
 import lovelace.util.common {
     EnumCounter,
     comparingOn,
-    PathWrapper
+    PathWrapper,
+    todo
 }
 import strategicprimer.model.common.map {
     TileType,
@@ -36,7 +37,9 @@ import strategicprimer.model.common.map {
     IMutableMapNG,
     SPMapNG,
     MapDimensionsImpl,
-    PlayerCollection
+    PlayerCollection,
+    HasName,
+    IMapNG
 }
 import strategicprimer.model.impl.xmlio {
     mapIOHelper
@@ -65,14 +68,31 @@ shared class ImporterFactory() satisfies UtilityDriverFactory {
         ImporterDriver(cli, options);
 }
 
+todo("Make a static inner class of ImporterDriver")
+class ImportableTerrain of mountain|borealForest|temperateForest satisfies HasName {
+    shared actual String name;
+    shared new mountain {
+        name = "mountain";
+    }
+
+    shared new borealForest {
+        name = "boreal forest";
+    }
+
+    shared new temperateForest {
+        name = "temperate forest";
+    }
+
+}
 "An app to let the user create a map from an image."
 class ImporterDriver(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
     String pixelString(Integer pixel) =>
         "(``pixel.rightLogicalShift(16).and(#ff)``, ``pixel.rightLogicalShift(8).and(#ff)
             ``, ``pixel.and(#ff)``)";
-    TileType? askFor(Integer color) => cli.chooseFromList(`TileType`.caseValues,
-        "Tile type represented by ``pixelString(color)``",
-        "No tile types found to choose from", "Tile type:", false).item;
+    TileType|ImportableTerrain? askFor(Integer color) =>
+        cli.chooseFromList(`TileType`.caseValues.chain(`ImportableTerrain`.caseValues)
+                .sequence(), "Tile type represented by ``pixelString(color)``",
+            "No tile types found to choose from", "Tile type:", false).item;
     []|Range<Integer> customRange(Integer base, Integer span, Integer max) {
         if (base + span > max + 1) {
             return base..(max - 1);
@@ -81,31 +101,9 @@ class ImporterDriver(ICLIHelper cli, SPOptions options) satisfies UtilityDriver 
         }
     }
     IDRegistrar idf = IDFactory();
-    suppressWarnings("deprecation")
-    void fixAdjacentForests(IMutableMapNG map, Point location, TileType tileType,
-            String forest) {
-        TileType destination;
-        switch (tileType)
-        case (TileType.temperateForest) {
-            destination = TileType.plains;
-        }
-        case (TileType.borealForest) {
-            destination = TileType.steppe;
-        }
-        else {
-            throw AssertionError(
-                "tileType to convert must be temperate or boreal forest");
-        }
-        if (exists terrain = map.baseTerrain[location], terrain == tileType) {
-            map.baseTerrain[location] = destination;
-            map.addFixture(location, Forest(forest, false, idf.createID()));
-            for (neighbor in surroundingPointIterable(location, map.dimensions, 1)
-                    .filter(not(location.equals))) {
-                fixAdjacentForests(map, neighbor, tileType, forest);
-            }
-        }
-    }
-    suppressWarnings("deprecation")
+    String? findAdjacentForest(IMapNG map, Point location) =>
+        randomize(surroundingPointIterable(location, map.dimensions, 1).flatMap(map.fixtures.get)
+            .narrow<Forest>()).map(Forest.kind).first;
     shared actual void startDriver(String* args) {
         assert (is Integer size = Integer.parse(options.getArgument("--size")));
         log.debug("--size parameter is ``size``");
@@ -118,9 +116,11 @@ class ImporterDriver(ICLIHelper cli, SPOptions options) satisfies UtilityDriver 
             Integer height = image.height;
             log.debug("Image is ``width``x``height``");
             variable Integer baseRow = 0;
-            MutableMap<Integer, TileType> mapping = HashMap<Integer, TileType>();
+            MutableMap<Integer, TileType|ImportableTerrain> mapping =
+                HashMap<Integer, TileType|ImportableTerrain>();
             variable Integer mapRow = 0;
-            MutableMap<Point, TileType> retval = HashMap<Point, TileType>();
+            MutableMap<Point, TileType|ImportableTerrain> retval =
+                HashMap<Point, TileType|ImportableTerrain>();
             while (baseRow < height) {
                 variable Integer baseColumn = 0;
                 variable Integer mapColumn = 0;
@@ -154,29 +154,38 @@ class ImporterDriver(ICLIHelper cli, SPOptions options) satisfies UtilityDriver 
                 PlayerCollection(), -1);
             for (point->type in retval) {
                 log.trace("Setting ``point`` to ``type``");
-                finalRetval.baseTerrain[point] = type;
-            }
-            for (location in randomize(finalRetval.locations)) {
-                if (exists terrain = finalRetval.baseTerrain[location]) {
-                    if (terrain == TileType.mountain) {
-                        finalRetval.baseTerrain[location] = TileType.plains;
-                        finalRetval.mountainous[location] = true;
-                    } else if (terrain == TileType.temperateForest) {
-                        if (exists forest = cli.inputString(
-                                "Kind of tree for a temperate forest: ")) {
-                            fixAdjacentForests(finalRetval, location,
-                                TileType.temperateForest, forest);
-                        } else {
-                            return;
-                        }
-                    } else if (terrain == TileType.borealForest) {
-                        if (exists forest = cli.inputString(
-                                "Kind of tree for a boreal forest:")) {
-                            fixAdjacentForests(finalRetval, location,
-                                TileType.borealForest, forest);
-                        } else {
-                            return;
-                        }
+                switch (type)
+                case (is TileType) {
+                    finalRetval.baseTerrain[point] = type;
+                }
+                case (ImportableTerrain.mountain) {
+                    finalRetval.baseTerrain[point] = TileType.plains;
+                    finalRetval.mountainous[point] = true;
+                }
+                case (ImportableTerrain.temperateForest) {
+                    finalRetval.baseTerrain[point] = TileType.plains;
+                    if (exists forest = findAdjacentForest(finalRetval, point)) {
+                        finalRetval.addFixture(point, Forest(forest, false,
+                            idf.createID()));
+                    } else if (exists forest =
+                            cli.inputString("Kind of tree for a temperate forest: ")) {
+                        finalRetval.addFixture(point,
+                            Forest(forest, false, idf.createID()));
+                    } else {
+                        return;
+                    }
+                }
+                case (ImportableTerrain.borealForest) {
+                    finalRetval.baseTerrain[point] = TileType.steppe;
+                    if (exists forest = findAdjacentForest(finalRetval, point)) {
+                        finalRetval.addFixture(point, Forest(forest, false,
+                            idf.createID()));
+                    } else if (exists forest =
+                        cli.inputString("Kind of tree for a boreal forest: ")) {
+                        finalRetval.addFixture(point,
+                            Forest(forest, false, idf.createID()));
+                    } else {
+                        return;
                     }
                 }
             }
