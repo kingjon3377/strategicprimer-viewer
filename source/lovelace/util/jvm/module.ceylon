@@ -78,8 +78,6 @@
    that invoked it is added to the stream instead; if a component is a
    [[javax.swing::JMenu]] and its parent is null, its
    [[popupMenu|javax.swing::JMenu.popupMenu]] member is added to the stream instead.
- - The [[ceylonComparator]] function converts a Java comparator to a Ceylon comparator.
-   This is the converse of [[ceylon.interop.java::JavaComparator]].
  - The [[ConvertingIterable]] class wraps a Java [[java.lang::Iterable]] or
    [[java.util::Iterator]], of any or no generic type, into a Ceylon
    [[ceylon.language::Iterable]], asserting that each element it produces is of the
