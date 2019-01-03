@@ -152,9 +152,7 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         repaint();
     }
 
-    shared actual void mapChanged() {
-        helper = Ver2TileDrawHelper(imageUpdate, zof, matchers);//TODO: Why regenerate it?
-    }
+    shared actual void mapChanged() {}
 
     void drawMapPortion(Graphics context, Integer tileSize, Integer minX,
             Integer minY, Integer maxX, Integer maxY) {
