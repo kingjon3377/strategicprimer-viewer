@@ -57,8 +57,7 @@ shared object die satisfies Warning {
 }
 
 "A warning handler that takes a user-provided handler."
-todo("Why isn't this [[final]]?")
-shared class CustomWarningHandler satisfies Warning {
+shared final class CustomWarningHandler satisfies Warning {
     static void defaultHandler(Anything(String) handler)(Throwable warning) {
         if (is SPFormatException warning) {
             handler("SP format warning: ``warning.message``");
