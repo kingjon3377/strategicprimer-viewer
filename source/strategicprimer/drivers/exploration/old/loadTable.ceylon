@@ -110,8 +110,8 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                 }
             }
             case ('t'|'T') {
-                MutableList<TileType->String> list =
-                        ArrayList<TileType->String>();
+                MutableList<String->String> list =
+                        ArrayList<String->String>();
                 variable Boolean first = true;
                 while (is String tableLine = argument()) {
                     value splitted = tableLine.split(' '.equals, true, false);
@@ -125,9 +125,9 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                             log.info("It was '``tableLine``'");
                         }
                     } else {
-                        "Terrain tables must only contain recognized tile types"
-                        assert (is TileType leftVal = TileType.parse(splitted.first));
-                        list.add(leftVal->(" ".join(splitted.rest)));
+                        // N.B. first must be a recognized tile type (including ver-1
+                        // types), but that's checked by TerrainTable.
+                        list.add(splitted.first->(" ".join(splitted.rest)));
                     }
                     first = false;
                 }

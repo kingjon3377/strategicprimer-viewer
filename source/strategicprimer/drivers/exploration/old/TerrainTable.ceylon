@@ -10,27 +10,31 @@ import strategicprimer.model.common.map.fixtures.terrain {
 
 "An [[EncounterTable]] that gives its result based on the terrain type of the tile in
  question."
-class TerrainTable(<TileType->String>* items) satisfies EncounterTable {
-    Map<TileType, String> mapping = map(items);
-    suppressWarnings("deprecation")
+class TerrainTable(<String->String>* items) satisfies EncounterTable {
+    for (key->item in items) {
+        assert (`TileType`.caseValues.map(TileType.xml)
+            .chain(["mountain", "boreal_forest", "temperate_forest"]).contains(key));
+    }
+    Map<String, String> mapping = map(items);
+
     shared actual String generateEvent(Point point, TileType? terrain,
             Boolean mountainous, {TileFixture*} fixtures, MapDimensions mapDimensions) {
         "Terrain table can only account for visible terrain"
         assert (exists terrain);
-        TileType actual;
+        String actual;
         Boolean forested = !fixtures.narrow<Forest>().empty;
         if (mountainous) {
-            actual = TileType.mountain;
+            actual = "mountain";
         } else if (terrain == TileType.plains, forested) {
-            actual = TileType.temperateForest;
+            actual = "temperate_forest";
         } else if (terrain == TileType.steppe, forested) {
-            actual = TileType.borealForest;
+            actual = "boreal_forest";
         } else {
-            actual = terrain;
+            actual = terrain.xml;
         }
         if (exists retval = mapping[actual]) {
             return retval;
-        } else if (exists retval = mapping[terrain]) {
+        } else if (exists retval = mapping[terrain.xml]) {
             return retval;
         } else {
             throw AssertionError("Table does not account for terrain type ``terrain``");
