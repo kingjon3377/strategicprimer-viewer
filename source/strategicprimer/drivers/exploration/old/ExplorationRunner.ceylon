@@ -181,7 +181,6 @@ shared class ExplorationRunner() {
                 mountainous, fixtures, mapDimensions);
 
     "Get the primary forest at the given location."
-    suppressWarnings("deprecation")
     shared String getPrimaryTree(
             "The tile's location."
             Point location,
@@ -194,13 +193,7 @@ shared class ExplorationRunner() {
             "The dimensions of the map."
             MapDimensions mapDimensions) {
         switch (terrain)
-        case (TileType.borealForest) {
-            return consultTable("boreal_major_tree", location, terrain,
-                mountainous, fixtures, mapDimensions);
-        } case (TileType.temperateForest) {
-            return consultTable("temperate_major_tree", location, terrain,
-                mountainous, fixtures, mapDimensions);
-        } case (TileType.steppe) {
+        case (TileType.steppe) {
             if (!fixtures.narrow<Forest>().empty) {
                 return consultTable("boreal_major_tree", location, terrain,
                     mountainous, fixtures, mapDimensions);
@@ -216,7 +209,6 @@ shared class ExplorationRunner() {
 
     """Get the "default results" (primary rock and primary forest) for the given
        location."""
-    suppressWarnings("deprecation")
     shared String defaultResults(
             "The tile's location."
             Point location,
@@ -228,9 +220,8 @@ shared class ExplorationRunner() {
             {TileFixture*} fixtures,
             "The dimensions of the map."
             MapDimensions mapDimensions) {
-        if (terrain == TileType.borealForest || terrain == TileType.temperateForest ||
-                (!fixtures.narrow<Forest>().empty && (terrain == TileType.steppe ||
-                    terrain == TileType.plains))) {
+        if (!fixtures.narrow<Forest>().empty && (terrain == TileType.steppe ||
+                    terrain == TileType.plains)) {
             return "The primary rock type here is ``getPrimaryRock(location, terrain,
                         mountainous, fixtures, mapDimensions)``.
                     The main kind of tree is ``getPrimaryTree(location, terrain,
@@ -282,25 +273,17 @@ object explorationRunnerTests {
 
     "Test of the [[ExplorationRunner.getPrimaryTree]] method."
     test
-    suppressWarnings("deprecation")
     shared void testGetPrimaryTree() {
         ExplorationRunner runner = ExplorationRunner();
-        runner.loadTable("boreal_major_tree", MockTable("boreal_major_test",
-            "boreal_second_test"));
-        runner.loadTable("temperate_major_tree", MockTable("temperate_major_test",
-            "temperate_second_test"));
+        runner.loadTable("boreal_major_tree", MockTable("boreal_major_test"));
+        runner.loadTable("temperate_major_tree", MockTable("temperate_major_test"));
         Point point = Point(0, 0);
         MapDimensions dimensions = MapDimensionsImpl(69, 88, 2);
-        assertEquals(runner.getPrimaryTree(point, TileType.borealForest, false, [],
-            dimensions), "boreal_major_test", "primary tree test for boreal forest");
-        assertEquals(runner.getPrimaryTree(point, TileType.temperateForest, false, [],
-            dimensions), "temperate_major_test",
-            "primary tree test for temperate forest");
         assertEquals(runner.getPrimaryTree(point, TileType.steppe, false,
-            {Forest("kind", false, 3)}, dimensions), "boreal_second_test",
+            {Forest("kind", false, 3)}, dimensions), "boreal_major_test",
             "primary tree test for forest in steppe");
         assertEquals(runner.getPrimaryTree(point, TileType.plains, false,
-            {Forest("second", false, 4)}, dimensions), "temperate_second_test",
+            {Forest("second", false, 4)}, dimensions), "temperate_major_test",
             "primary tree test for forest in plains");
     }
 
@@ -358,7 +341,6 @@ object explorationRunnerTests {
 
     "Test the [[ExplorationRunner.defaultResults]] method."
     test
-    suppressWarnings("deprecation")
     shared void testDefaultResults() {
         ExplorationRunner runner = ExplorationRunner();
         runner.loadTable("major_rock", ConstantTable("test_rock"));
@@ -370,13 +352,13 @@ object explorationRunnerTests {
             false, [], dimensions), """The primary rock type here is test_rock.
                                 """,
             "defaultResults in non-forest");
-        assertEquals(runner.defaultResults(point, TileType.borealForest,
-            false, [], dimensions),
+        assertEquals(runner.defaultResults(point, TileType.steppe,
+            false, [Forest("boreal_tree", false, 1)], dimensions),
             """The primary rock type here is test_rock.
                The main kind of tree is boreal_tree.
                """, "defaultResults in boreal forest");
-        assertEquals(runner.defaultResults(point, TileType.temperateForest,
-            false, [], dimensions),
+        assertEquals(runner.defaultResults(point, TileType.plains,
+            false, [Forest("temperate_tree", false, 2)], dimensions),
             """The primary rock type here is test_rock.
                The main kind of tree is temperate_tree.
                """, "defaultResults in temperate forest");
