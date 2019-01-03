@@ -77,24 +77,8 @@ shared class DrawHelperComparatorFactory satisfies UtilityDriverFactory {
 
 "A driver to compare the performance of TileDrawHelpers."
 shared class DrawHelperComparator satisfies UtilityDriver {
-    "The first test: all in one place."
+    "The first test: Basic drawing."
     static Integer first(TileDrawHelper helper, IMapNG map, Integer reps,
-            Integer tileSize) {
-        BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
-        Integer start = system.milliseconds;
-        for (rep in 0:reps) {
-            image.flush();
-            for (point in map.locations) {
-                helper.drawTileTranslated(image.createGraphics(), map, point, tileSize,
-                    tileSize);
-            }
-        }
-        Integer end = system.milliseconds;
-        return end - start;
-    }
-
-    "The second test: Translating."
-    static Integer second(TileDrawHelper helper, IMapNG map, Integer reps,
             Integer tileSize) {
         MapDimensions mapDimensions = map.dimensions;
         BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
@@ -113,25 +97,8 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         return end - start;
     }
 
-    "Third test: in-place, reusing Graphics."
-    static Integer third(TileDrawHelper helper, IMapNG map, Integer reps,
-            Integer tileSize) {
-        BufferedImage image = BufferedImage(tileSize, tileSize, BufferedImage.typeIntRgb);
-        Integer start = system.milliseconds;
-        for (rep in 0:reps) {
-            image.flush();
-            Graphics pen = image.createGraphics();
-            for (point in map.locations) {
-                helper.drawTileTranslated(pen, map, point, tileSize, tileSize);
-            }
-            pen.dispose();
-        }
-        Integer end = system.milliseconds;
-        return end - start;
-    }
-
-    "Fourth test: translating, reusing Graphics."
-    static Integer fourth(TileDrawHelper helper, IMapNG map, Integer reps,
+    "Second test: Basic drawing, reusing Graphics."
+    static Integer second(TileDrawHelper helper, IMapNG map, Integer reps,
             Integer tileSize) {
         MapDimensions mapDimensions = map.dimensions;
         BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
@@ -154,8 +121,8 @@ shared class DrawHelperComparator satisfies UtilityDriver {
     static Range<Integer> testRowSpan = 20..40; // TODO: randomize these a bit?
     static Range<Integer> testColSpan = 55..82;
 
-    "Fifth test, part one: iterating."
-    static Integer fifthOne(TileDrawHelper helper, IMapNG map, Integer reps,
+    "Third test, part one: iterating."
+    static Integer thirdOne(TileDrawHelper helper, IMapNG map, Integer reps,
             Integer tileSize) {
         MapDimensions mapDimensions = map.dimensions;
         BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
@@ -178,7 +145,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         return end - start;
     }
 
-    static Integer fifthTwo(TileDrawHelper helper, IMapNG map, Integer reps,
+    static Integer thirdTwo(TileDrawHelper helper, IMapNG map, Integer reps,
             Integer tileSize) {
         MapDimensions mapDimensions = map.dimensions;
         BufferedImage image = BufferedImage(tileSize * mapDimensions.columns,
@@ -203,12 +170,10 @@ shared class DrawHelperComparator satisfies UtilityDriver {
     }
 
     static {[String, Integer(TileDrawHelper, IMapNG, Integer, Integer)]*} tests = [
-        ["1. All in one place", first],
-        ["2. Translating", second],
-        ["3. In-place, reusing Graphics", third],
-        ["4. Translating, reusing Graphics", fourth],
-        ["5a. Ordered iteration vs filtering: Iteration", fifthOne],
-        ["5b. Ordered iteration vs filtering: Filtering", fifthTwo]
+        ["1. Basic Drawing", first],
+        ["2. Basic Drawing, reusing Graphics", second],
+        ["3a. Ordered iteration vs filtering: Iteration", thirdOne],
+        ["3b. Ordered iteration vs filtering: Filtering", thirdTwo]
     ];
 
     static Boolean dummyObserver(Image? image, Integer infoflags,
