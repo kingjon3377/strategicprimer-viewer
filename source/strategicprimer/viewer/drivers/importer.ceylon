@@ -28,8 +28,7 @@ import javax.imageio {
 import lovelace.util.common {
     EnumCounter,
     comparingOn,
-    PathWrapper,
-    todo
+    PathWrapper
 }
 import strategicprimer.model.common.map {
     TileType,
@@ -68,27 +67,33 @@ shared class ImporterFactory() satisfies UtilityDriverFactory {
         ImporterDriver(cli, options);
 }
 
-todo("Make a static inner class of ImporterDriver")
-class ImportableTerrain of mountain|borealForest|temperateForest satisfies HasName {
-    shared actual String name;
-    shared new mountain {
-        name = "mountain";
-    }
-
-    shared new borealForest {
-        name = "boreal forest";
-    }
-
-    shared new temperateForest {
-        name = "temperate forest";
-    }
-
-}
 "An app to let the user create a map from an image."
-class ImporterDriver(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
-    String pixelString(Integer pixel) =>
+class ImporterDriver satisfies UtilityDriver {
+    static class ImportableTerrain of mountain|borealForest|temperateForest
+            satisfies HasName {
+        shared actual String name;
+        shared new mountain {
+            name = "mountain";
+        }
+
+        shared new borealForest {
+            name = "boreal forest";
+        }
+
+        shared new temperateForest {
+            name = "temperate forest";
+        }
+    }
+    static String pixelString(Integer pixel) =>
         "(``pixel.rightLogicalShift(16).and(#ff)``, ``pixel.rightLogicalShift(8).and(#ff)
-            ``, ``pixel.and(#ff)``)";
+        ``, ``pixel.and(#ff)``)";
+    ICLIHelper cli;
+    SPOptions options;
+    shared new (ICLIHelper cli, SPOptions options) {
+        this.cli = cli;
+        this.options = options;
+    }
+
     TileType|ImportableTerrain? askFor(Integer color) =>
         cli.chooseFromList(`TileType`.caseValues.chain(`ImportableTerrain`.caseValues)
                 .sequence(), "Tile type represented by ``pixelString(color)``",
