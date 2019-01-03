@@ -116,14 +116,12 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
     "Get the simplified-terrain-model instance covering the map's terrain at the given
      location."
     // We don't just use TileType because we need mountains and forests in ver-2 maps.
-    suppressWarnings("deprecation")
     SimpleTerrain getTerrain(IMapNG map, Point location) {
         switch (map.baseTerrain[location])
-        case (TileType.jungle|TileType.borealForest|TileType.temperateForest|
-                TileType.swamp) {
+        case (TileType.jungle|TileType.swamp) {
             return SimpleTerrain.forested;
         }
-        case (TileType.desert|TileType.mountain|TileType.tundra|null) {
+        case (TileType.desert|TileType.tundra|null) {
             return SimpleTerrain.unforested; }
         case (TileType.ocean) { return SimpleTerrain.ocean; }
         case (TileType.plains|TileType.steppe) {
@@ -135,6 +133,9 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
             } else {
                 return SimpleTerrain.unforested;
             }
+        }
+        else {
+            return SimpleTerrain.forested;
         }
     }
 
