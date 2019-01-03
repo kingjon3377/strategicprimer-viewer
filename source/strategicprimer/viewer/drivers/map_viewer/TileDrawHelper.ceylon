@@ -1,21 +1,9 @@
-import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
-}
 import strategicprimer.model.common.map {
     Point,
     IMapNG
 }
-import strategicprimer.model.common.map.fixtures {
-    IEvent
-}
-import strategicprimer.model.common.map.fixtures.mobile {
-    IUnit
-}
 import java.awt {
     Graphics
-}
-import lovelace.util.common {
-    todo
 }
 
 "An interface for helpers that do the drawing of tiles in various components."
@@ -33,18 +21,3 @@ shared interface TileDrawHelper {
             "The width ('x') and height ('y') to draw the tile within."
             Coordinate dimensions);
 }
-
-"Whether the given map has any fortresses at the given location."
-Boolean hasAnyForts(IMapNG map, Point location) => // TODO: Once ver-1-map support removed, remove this if no remaining callers
-//        !map.fixtures[location].narrow<Fortress>().empty; // TODO: syntax sugar once compiler bug fixed
-        !map.fixtures.get(location).narrow<Fortress>().empty;
-
-"Whether the given map has any units at the given location."
-Boolean hasAnyUnits(IMapNG map, Point location) => // TODO: Once ver-1-map support removed, remove this if no remaining callers
-//        !map.fixtures[location].narrow<IUnit>().empty;
-        !map.fixtures.get(location).narrow<IUnit>().empty;
-
-"""Whether the given map has any "events" at the given location."""
-Boolean hasEvent(IMapNG map, Point location) => // TODO: Once ver-1-map support removed, remove this if no remaining callers
-//        !map.fixtures[location].narrow<IEvent>().empty;
-        !map.fixtures.get(location).narrow<IEvent>().empty;
