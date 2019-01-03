@@ -47,7 +47,8 @@ import strategicprimer.model.impl.xmlio.exceptions {
     MissingChildException,
     MissingPropertyException,
     UnwantedChildException,
-    UnsupportedTagException
+    UnsupportedTagException,
+    MapVersionException
 }
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
@@ -192,9 +193,17 @@ class YAMapReader("The Warning instance to use" Warning warner,
             throw UnwantedChildException.listingExpectedTags(QName("xml"), element,
                 ["map", "view"]);
         }
-        MapDimensions dimensions = MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
+        MapDimensions dimensions;
+        MapDimensions readDimensions = MapDimensionsImpl(getIntegerParameter(mapTag, "rows"),
             getIntegerParameter(mapTag, "columns"),
             getIntegerParameter(mapTag, "version"));
+        if (readDimensions.version == 2) {
+            dimensions = readDimensions;
+        } else {
+            warner.handle(MapVersionException(mapTag, readDimensions.version, 2, 2));
+            dimensions =
+                MapDimensionsImpl(readDimensions.rows, readDimensions.columns, 2);
+        }
         Stack<QName> tagStack = LinkedList<QName>();
         tagStack.push(element.name);
         tagStack.push(mapTag.name);

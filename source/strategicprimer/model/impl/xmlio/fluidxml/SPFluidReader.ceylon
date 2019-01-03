@@ -104,7 +104,8 @@ import strategicprimer.model.impl.xmlio.exceptions {
     UnsupportedTagException,
     MissingChildException,
     UnwantedChildException,
-    MissingPropertyException
+    MissingPropertyException,
+    MapVersionException
 }
 import strategicprimer.model.impl.xmlio.io_impl {
     IncludingIterator
@@ -286,10 +287,17 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         else {
             throw UnwantedChildException(parent, element);
         }
-        MapDimensions dimensions = MapDimensionsImpl(
+        MapDimensions dimensions;
+        MapDimensions readDimensions = MapDimensionsImpl(
             getIntegerAttribute(mapTag, "rows"),
             getIntegerAttribute(mapTag, "columns"),
             getIntegerAttribute(mapTag, "version"));
+        if (readDimensions.version != 2) {
+            warner.handle(MapVersionException(mapTag, readDimensions.version, 2, 2));
+            dimensions = MapDimensionsImpl(readDimensions.rows, readDimensions.columns, 2);
+        } else {
+            dimensions = readDimensions;
+        }
         Stack<QName> tagStack = LinkedList<QName>();
         tagStack.push(element.name);
         tagStack.push(mapTag.name);
@@ -299,7 +307,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             if (is StartElement event, isSPStartElement(event)) {
                 String type = event.name.localPart.lowercased;
                 if ("row" == type || isFutureTag(event, warner)) {
-                    expectAttributes(event, warner, "index");
+                    expectAttributes(event, warner, "index"); // TODO: Expecting only 'index' in a future tag?
                     tagStack.push(event.name);
                     // Deliberately ignore
                     continue;
