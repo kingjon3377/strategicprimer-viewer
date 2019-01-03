@@ -6,14 +6,13 @@ import strategicprimer.model.common.map {
     IFixture
 }
 import strategicprimer.model.common.map.fixtures {
-    IEvent,
     MineralFixture
 }
 
 "A deposit (always exposed for now) of stone."
 todo("Support non-exposed deposits")
 shared class StoneDeposit(stone, dc, id)
-        satisfies IEvent&HarvestableFixture&MineralFixture {
+        satisfies HarvestableFixture&MineralFixture {
     "What kind of stone this deposit is."
     shared StoneKind stone;
 
@@ -33,8 +32,6 @@ shared class StoneDeposit(stone, dc, id)
         retval.image = image;
         return retval;
     }
-
-    shared actual String text => "There is an exposed ``stone`` deposit here.";
 
     shared actual Boolean equals(Object obj) {
         if (is StoneDeposit obj) {

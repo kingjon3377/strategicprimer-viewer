@@ -9,13 +9,10 @@ import strategicprimer.model.common.map {
     HasMutableImage,
     Player
 }
-import strategicprimer.model.common.map.fixtures {
-    IEvent
-}
 
 "An abstract superclass for towns etc."
 shared abstract class AbstractTown(status, townSize, name, owner, dc)
-        satisfies IEvent&HasMutableImage&ITownFixture&Subsettable<AbstractTown> {
+        satisfies HasMutableImage&ITownFixture&Subsettable<AbstractTown> {
     "The status of the town, fortification, or city"
     shared actual TownStatus status;
 
@@ -78,12 +75,6 @@ shared abstract class AbstractTown(status, townSize, name, owner, dc)
         }
         return retval;
     }
-
-    "Exploration-result text for the town."
-    shared actual String text => "There is a ``(townSize == TownSize.medium) then
-            "medium-size" else townSize.string`` ``(status == TownStatus.burned) then
-            "burned-out" else status.string`` ``kind````name.empty then "" else
-            ", ``name``,"`` here.";
 
     "A helper method for equals() that checks everything except the type of the object."
     shared Boolean equalsContents(AbstractTown fixture) => fixture.townSize == townSize &&

@@ -6,13 +6,12 @@ import strategicprimer.model.common.map {
     IFixture
 }
 import strategicprimer.model.common.map.fixtures {
-    IEvent,
     MineralFixture
 }
 
 "A vein of a mineral."
 shared class MineralVein(kind, exposed, dc, id)
-        satisfies IEvent&HarvestableFixture&MineralFixture {
+        satisfies HarvestableFixture&MineralFixture {
     "What kind of mineral this is a vein of"
     shared actual String kind;
 
@@ -34,10 +33,6 @@ shared class MineralVein(kind, exposed, dc, id)
         retval.image = image;
         return retval;
     }
-
-    shared actual String text =>
-            (exposed) then "There is an exposed vein of ``kind`` here."
-                else "There is a vein of ``kind`` here, but it's not exposed.";
 
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         if (is MineralVein fixture) {

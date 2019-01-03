@@ -1,12 +1,9 @@
-import strategicprimer.model.common.map.fixtures {
-    IEvent
-}
 import strategicprimer.model.common.map {
     IFixture
 }
 
 """"There are extensive caves beneath this tile"."""
-shared class Cave(dc, id) satisfies IEvent&ExplorableFixture {
+shared class Cave(dc, id) satisfies ExplorableFixture {
     "The required Perception check result to discover the caves."
     shared actual Integer dc;
 
@@ -22,8 +19,6 @@ shared class Cave(dc, id) satisfies IEvent&ExplorableFixture {
         retval.image = image;
         return retval;
     }
-
-    shared actual String text = "There are extensive caves beneath this tile.";
 
     shared actual Boolean equals(Object obj) {
         if (is Cave obj) {
