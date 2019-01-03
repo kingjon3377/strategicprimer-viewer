@@ -5,10 +5,8 @@ import lovelace.util.common {
 
 "Possible tile types."
 todo("Other additional types for use in other worlds' maps?")
-suppressWarnings("deprecation")
 shared class TileType
-        of tundra|desert|mountain|borealForest|temperateForest|ocean|plains|jungle
-            |steppe|swamp satisfies HasName {
+        of tundra|desert|ocean|plains|jungle|steppe|swamp satisfies HasName {
     "All tile types the given version supports."
     todo("Write tests for this")
     shared static {TileType*} valuesForVersion(Integer version) =>
@@ -35,41 +33,23 @@ shared class TileType
     }
 
     "Tundra."
-    shared new tundra extends delegate("tundra", "tundra", 1, 2) {}
+    shared new tundra extends delegate("tundra", "tundra", 2) {}
 
     "Desert."
-    shared new desert extends delegate("desert", "desert", 1, 2) {}
-
-    "Mountain. Starting in version 2, this is represented in XML as [[plains]],
-     [[steppe]], or [[desert]] plus a mountain on the tile, and in the data model as
-     [[plains]], [[steppe]], or [[desert]] that is additionally mountainous."
-    deprecated("Format version 1 only")
-    shared new mountain extends delegate("mountain", "mountain", 1) {}
-
-    "Boreal forest. Starting in version 2, this is represented as [[steppe]] with a
-     [[strategicprimer.model.common.map.fixtures.terrain::Forest]]
-     on the tile."
-    deprecated("Format version 1 only")
-    shared new borealForest extends delegate("boreal forest", "boreal_forest", 1) {}
-
-    "Temperate forest. Starting in version 2, this is represented as [[plains]] with a
-     [[strategicprimer.model.common.map.fixtures.terrain::Forest]] on the tile."
-    deprecated("Format version 1 only")
-    shared new temperateForest
-            extends delegate("temperate forest", "temperate_forest", 1) {}
+    shared new desert extends delegate("desert", "desert", 2) {}
 
     "Ocean, or water more generally."
-    shared new ocean extends delegate("ocean", "ocean", 1, 2) {}
+    shared new ocean extends delegate("ocean", "ocean", 2) {}
 
     "Plains."
-    shared new plains extends delegate("plains", "plains", 1, 2) {}
+    shared new plains extends delegate("plains", "plains", 2) {}
 
     "Jungle."
-    shared new jungle extends delegate("jungle", "jungle", 1, 2) {}
+    shared new jungle extends delegate("jungle", "jungle", 2) {}
 
     "Steppe. This is like plains, but higher-latitude and colder. Beginning in version
      2, a temperate forest is plains plus forest, and a boreal forest is steppe plus
-     forest, while [[mountain]] is either a desert, a plain, or a steppe that is
+     forest, while a mountain tile is either a desert, a plain, or a steppe that is
      mountainous."
     shared new steppe extends delegate("steppe", "steppe", 2) {}
 

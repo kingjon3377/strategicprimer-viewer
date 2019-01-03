@@ -134,9 +134,6 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 return SimpleTerrain.unforested;
             }
         }
-        else {
-            return SimpleTerrain.forested;
-        }
     }
 
     "Search for and fix aquatic villages with non-aquatic races."
