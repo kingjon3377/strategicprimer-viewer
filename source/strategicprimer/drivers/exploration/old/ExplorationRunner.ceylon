@@ -248,7 +248,6 @@ shared class ExplorationRunner() {
     todo("Consider whether non-test uses are reasonable",
         "Move tests *into* this class instead")
     shared restricted(`module strategicprimer.drivers.exploration.old`,
-                `module strategicprimer.drivers.converters`,
                 `module strategicprimer.drivers.generators`)
         void loadTable(String name, EncounterTable table) => tables[name] = table;
 }
