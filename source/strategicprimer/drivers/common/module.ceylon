@@ -7,7 +7,7 @@ license("GPL-3")
 native("jvm") // TODO: Remove once ceylon.decimal becomes cross-platform, eclipse/ceylon#2448
 module strategicprimer.drivers.common "0.4.9017" {
     value ceylonVersion = "1.3.3";
-    value lovelaceUtilsVersion = "0.1.0";
+    value lovelaceUtilsVersion = "0.1.1";
     shared import strategicprimer.model.common "0.4.9017";
     import ceylon.logging ceylonVersion;
     shared import lovelace.util.common lovelaceUtilsVersion;

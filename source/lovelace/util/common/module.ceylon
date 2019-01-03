@@ -134,7 +134,7 @@ todo("Once Ceylon bug #6986 is fixed, combine with `lovelace.util.jvm` in one mo
       with only the parts requiring the JVM marked as `native`.",
      "After that, and once things have stabilized somewhat, move to a separate repository
       and perhaps publish to the Herd.")
-module lovelace.util.common "0.1.0" {
+module lovelace.util.common "0.1.1" {
     value ceylonVersion = "1.3.3";
     shared import ceylon.collection ceylonVersion;
     shared import ceylon.test ceylonVersion;

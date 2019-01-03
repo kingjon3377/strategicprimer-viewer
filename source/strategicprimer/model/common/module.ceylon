@@ -3,7 +3,7 @@
 // TODO: Write user-introductory documentation for the module
 module strategicprimer.model.common "0.4.9017" {
     value ceylonVersion = "1.3.3";
-    value lovelaceUtilsVersion = "0.1.0";
+    value lovelaceUtilsVersion = "0.1.1";
     value javaVersion = "8";
     import ceylon.logging ceylonVersion;
     import ceylon.numeric ceylonVersion;

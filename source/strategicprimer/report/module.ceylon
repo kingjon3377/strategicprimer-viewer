@@ -6,7 +6,7 @@ native("jvm")
 module strategicprimer.report "0.4.9017" {
     value ceylonVersion = "1.3.3";
     value javaVersion = "8";
-    value lovelaceUtilsVersion = "0.1.0";
+    value lovelaceUtilsVersion = "0.1.1";
     import lovelace.util.jvm lovelaceUtilsVersion;
     import ceylon.regex ceylonVersion;
     import java.base javaVersion;

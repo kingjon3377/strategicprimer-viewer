@@ -103,13 +103,13 @@
    and so it is here more as a curiosity or an exercise than intended for practical use."
 license("GPL-3")
 native("jvm")
-module lovelace.util.jvm "0.1.0" {
+module lovelace.util.jvm "0.1.1" {
     value ceylonVersion = "1.3.3";
     value javaVersion = "8";
     import ceylon.collection ceylonVersion;
     shared import java.base javaVersion;
     shared import java.desktop javaVersion;
-    shared import lovelace.util.common "0.1.0";
+    shared import lovelace.util.common "0.1.1";
     import ceylon.interop.java ceylonVersion;
     // TODO: Uncomment tests once Ceylon bug #6986 is fixed
 //    import ceylon.test ceylonVersion;

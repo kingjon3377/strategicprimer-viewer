@@ -15,7 +15,7 @@ module strategicprimer.drivers.utility "0.4.9017" {
     import strategicprimer.model.impl spVersion;
     import java.desktop javaVersion;
     import ceylon.regex ceylonVersion;
-    import lovelace.util.jvm "0.1.0";
+    import lovelace.util.jvm "0.1.1";
     import strategicprimer.drivers.gui.common spVersion;
 //    import maven:"com.pump:pump-swing" "1.0.00";
     import com.pump.swing "1.0.00";
