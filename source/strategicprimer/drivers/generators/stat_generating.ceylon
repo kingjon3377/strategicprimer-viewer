@@ -111,13 +111,6 @@ shared class StatGeneratingCLIFactory() satisfies ModelDriverFactory {
 class StatGeneratingCLI satisfies CLIDriver {
     static String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
 
-    "Whether the unit has any workers without stats."
-    static Boolean hasUnstattedWorker(IUnit unit) =>
-            unit.narrow<Worker>().any(matchingValue(null, Worker.stats));
-
-    "The units in the given collection that have workers without stats."
-    static IUnit[] removeStattedUnits(IUnit* units) => units.select(hasUnstattedWorker);
-
     "Find a fixture in a given iterable with the given ID."
     static IFixture? findInIterable(Integer id, IFixture* fixtures) { // TODO: Take two parameter lists, so we can convert the loop in find() to an Iterable.map().find() call.
         for (fixture in fixtures) {
@@ -178,76 +171,6 @@ class StatGeneratingCLI satisfies CLIDriver {
         return WorkerStats(maxHP, maxHP, inputNumber("Str: "), inputNumber("Dex: "), // TODO: Replace last 6 params with *statLabelArray.map(shuffle(plus)(": ")).map(inputNumber)
             inputNumber("Con: "), inputNumber("Int: "), inputNumber("Wis: "),
             inputNumber("Cha: "));
-    }
-
-    "Let the user enter stats for one worker in particular."
-    void enterStatsForWorker(Integer id) {
-        WorkerStats stats = enterStatsCollection();
-        for (map in model.allMaps.map(Entry.key)) {
-            if (is Worker fixture = find(map, id), !fixture.stats exists) {
-                fixture.stats = stats;
-                model.setModifiedFlag(map, true);
-            }
-        }
-    }
-
-    "Let the user enter stats for workers already in the maps that are part of one
-     particular unit."
-    void enterStatsInUnit(IUnit unit) {
-        MutableList<Worker> workers = ArrayList { elements = unit.narrow<Worker>()
-            .filter(matchingValue(null, Worker.stats)); };
-        while (!workers.empty, exists chosen = cli.chooseFromList(workers,
-                "Which worker do you want to enter stats for?",
-                "There are no workers without stats in that unit.",
-                "Worker to modify: ", false).item) {
-            workers.remove(chosen);
-            enterStatsForWorker(chosen.id);
-            if (exists continuation = cli.inputBoolean("Choose another worker?"),
-                    continuation) {
-                // continue;
-            } else {
-                break;
-            }
-        }
-    }
-
-    "Let the user enter stats for workers already in the maps that belong to one
-     particular player."
-    void enterStatsForPlayer(Player player) {
-        // TODO: can we avoid either the spread or the named-argument invocation?
-        MutableList<IUnit> units = ArrayList { elements =
-            removeStattedUnits(*model.getUnits(player)); };
-        while (!units.empty, exists chosen = cli.chooseFromList(units,
-                "Which unit contains the worker in question?",
-                "All that player's units already have stats.", "Unit selection: ",
-                false).item) {
-            units.remove(chosen);
-            enterStatsInUnit(chosen);
-            if (exists continuation = cli.inputBoolean("Choose another unit?"),
-                    continuation) {
-                // continue;
-            } else {
-                break;
-            }
-        }
-    }
-
-    "Let the user enter stats for workers already in the maps."
-    void enterStats() {
-        MutableList<Player> players = ArrayList { elements = model.playerChoices; };
-        while (!players.empty, exists chosen = cli.chooseFromList(players,
-                "Which player owns the worker in question?",
-                "There are no players shared by all the maps.", "Player selection: ",
-                true).item) {
-            players.remove(chosen);
-            enterStatsForPlayer(chosen);
-            if (exists continuation = cli.inputBoolean("Choose another player?"),
-                    continuation) {
-                // continue;
-            } else {
-                break;
-            }
-        }
     }
 
     "Let the user enter which Jobs a worker's levels are in."
@@ -619,10 +542,6 @@ class StatGeneratingCLI satisfies CLIDriver {
     }
 
     shared actual void startDriver() {
-        switch (cli.inputBooleanInSeries(
-                "Enter pregenerated stats for existing workers?"))
-        case (true) { enterStats(); }
-        case (false) { createWorkers(createIDFactory(model.allMaps.map(Entry.key))); }
-        case (null) {}
+        createWorkers(createIDFactory(model.allMaps.map(Entry.key))); // TODO: inline
     }
 }
