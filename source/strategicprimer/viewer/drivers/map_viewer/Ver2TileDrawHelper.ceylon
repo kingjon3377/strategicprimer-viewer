@@ -38,7 +38,7 @@ import lovelace.util.common {
 }
 
 "A [[TileDrawHelper]] for version-2 maps."
-class Ver2TileDrawHelper(
+shared class Ver2TileDrawHelper(
         "The object to arrange to be notified as images finish drawing. In Java it's the
          [[ImageObserver]] interface, but we don't want to have to construct *objects*
          for this when a lambda will do."

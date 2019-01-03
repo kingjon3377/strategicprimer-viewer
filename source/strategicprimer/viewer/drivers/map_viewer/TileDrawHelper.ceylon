@@ -19,8 +19,7 @@ import lovelace.util.common {
 }
 
 "An interface for helpers that do the drawing of tiles in various components."
-todo("Once ver-1 maps are no longer supported, remove whichever of the two
-      methods below is a pure delegation in Ver2TileDrawHelper")
+todo("Once ver-1 maps are no longer supported, remove drawTileTranslated")
 shared interface TileDrawHelper {
     "Draw a tile. Assumes that the graphics context has been translated so that its origin
      coincides with the tile's upper-left-hand corner."

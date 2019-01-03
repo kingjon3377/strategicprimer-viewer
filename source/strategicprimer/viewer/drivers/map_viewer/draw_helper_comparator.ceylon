@@ -6,8 +6,6 @@ import java.awt.image {
     BufferedImage
 }
 import strategicprimer.viewer.drivers.map_viewer {
-    CachingTileDrawHelper,
-    directTileDrawHelper,
     Ver2TileDrawHelper
 }
 import strategicprimer.drivers.common {
@@ -219,8 +217,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
 
     static Boolean dummyFilter(TileFixture? fix) => true;
 
-    static {[TileDrawHelper, String]*} helpers = [ [CachingTileDrawHelper(), "Caching:"],
-        [directTileDrawHelper, "Direct:"],
+    static {[TileDrawHelper, String]*} helpers = [
         [Ver2TileDrawHelper(dummyObserver, dummyFilter,
             Singleton(FixtureMatcher(dummyFilter, "test"))), "Ver 2:"]
     ];

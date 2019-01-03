@@ -8,8 +8,8 @@ import javax.swing {
 }
 
 import strategicprimer.viewer.drivers.map_viewer {
-    tileDrawHelperFactory,
-    TileDrawHelper
+    TileDrawHelper,
+    Ver2TileDrawHelper
 }
 import strategicprimer.model.common.map {
     Point,
@@ -35,7 +35,7 @@ class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matche
         repaint();
     }
 
-    TileDrawHelper helper = tileDrawHelperFactory(2, super.imageUpdate,
+    TileDrawHelper helper = Ver2TileDrawHelper(super.imageUpdate,
                 (TileFixture fix) => true, matchers);
 
     shared actual void paintComponent(Graphics pen) {

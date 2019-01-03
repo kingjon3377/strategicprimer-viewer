@@ -62,8 +62,7 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         this.matchers = matchers;
         cml = ComponentMouseListener(model, zof, matchers.compare);
         dsl = DirectionSelectionChanger(model);
-        helper = tileDrawHelperFactory(model.mapDimensions.version, imageUpdate, zof,
-            matchers);
+        helper = Ver2TileDrawHelper(imageUpdate, zof, matchers);
         doubleBuffered = true;
     }
 
@@ -154,8 +153,7 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
     }
 
     shared actual void mapChanged() {
-        helper = tileDrawHelperFactory(mapModel.mapDimensions.version,
-            imageUpdate, zof, matchers);
+        helper = Ver2TileDrawHelper(imageUpdate, zof, matchers);//TODO: Why regenerate it?
     }
 
     void drawMapPortion(Graphics context, Integer tileSize, Integer minX,
