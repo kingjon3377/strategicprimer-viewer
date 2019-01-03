@@ -119,7 +119,6 @@
             <module name="strategicprimer.model.impl" />
             <module name="strategicprimer.report" />
             <module name="strategicprimer.drivers.worker.common" />
-            <module name="strategicprimer.drivers.converters" />
             <module name="strategicprimer.drivers.common" />
             <module name="strategicprimer.drivers.exploration.common" />
         </moduleset>
