@@ -56,11 +56,10 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     JCheckBoxMenuItem mountainItem = JCheckBoxMenuItem("Mountainous");
 
-    suppressWarnings("deprecation")
     void toggleMountains() {
         Point localPoint = point;
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
-                terrain != TileType.ocean, terrain != TileType.mountain) {
+                terrain != TileType.ocean) {
             Boolean newValue = !model.map.mountainous.get(localPoint);
             model.map.mountainous[localPoint] = newValue;
             model.mapModified = true;
@@ -121,7 +120,6 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     shared actual void removeSelectionChangeListener(SelectionChangeListener listener)
             => scs.removeSelectionChangeListener(listener);
 
-    suppressWarnings("deprecation")
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         point = newPoint;
         if (newPoint.valid, model.map.baseTerrain[newPoint] exists) {
@@ -130,7 +128,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
             newUnitItem.enabled = false;
         }
         if (newPoint.valid, exists terrain = model.map.baseTerrain[newPoint],
-                terrain != TileType.ocean, terrain != TileType.mountain) {
+                terrain != TileType.ocean) {
 //          mountainItem.model.selected = model.map.mountainous[newPoint]; // TODO: syntax sugar once compiler bug fixed
             mountainItem.model.selected = model.map.mountainous.get(newPoint);
             mountainItem.enabled = true;
