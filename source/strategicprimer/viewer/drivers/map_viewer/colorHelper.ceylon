@@ -112,11 +112,3 @@ object colorHelper {
     "The color to use for background mountains."
     shared Color mountainColor = Color(249, 137, 28);
 }
-
-// TODO: Remove these, as I presume they're now unused
-"A fortress is drawn in brown."
-Color fortColor = Color(160, 82, 45);
-"Units are drawn in purple."
-Color unitColor = Color(148, 0, 211);
-"Events are drawn in pink."
-Color eventColor = Color.pink;
