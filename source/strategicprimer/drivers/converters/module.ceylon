@@ -3,10 +3,10 @@
 // TODO: Write user-introductory documentation
 license("GPL-3")
 native("jvm")
-module strategicprimer.drivers.converters "0.4.9017" {
+module strategicprimer.drivers.converters "0.4.9018" {
     value ceylonVersion = "1.3.3";
     value lovelaceUtilsVersion = "0.1.1";
-    value spVersion = "0.4.9017";
+    value spVersion = "0.4.9018";
     import ceylon.collection ceylonVersion;
     import strategicprimer.model.impl spVersion;
     import ceylon.test ceylonVersion;

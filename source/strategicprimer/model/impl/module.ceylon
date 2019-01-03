@@ -6,11 +6,11 @@ license("GPL-3")
 // TODO: Write user-introductory documentation for this module
 // TODO: Make only the I/O parts "native"; blocked by eclipse/ceylon#7336
 native("jvm")
-module strategicprimer.model.impl "0.4.9017" {
+module strategicprimer.model.impl "0.4.9018" {
     value ceylonVersion = "1.3.3";
     value javaVersion = "8";
     value lovelaceUtilsVersion = "0.1.1";
-    value spVersion = "0.4.9017";
+    value spVersion = "0.4.9018";
     shared import strategicprimer.model.common spVersion;
     shared import java.base javaVersion;
     shared import javax.xml javaVersion;

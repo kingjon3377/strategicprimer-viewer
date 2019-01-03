@@ -6,10 +6,10 @@
 // TODO: Write user-introductory documentation of the module.
 license("GPL-3")
 native("jvm")
-module strategicprimer.drivers.worker.common "0.4.9017" {
+module strategicprimer.drivers.worker.common "0.4.9018" {
     value ceylonVersion = "1.3.3";
     value javaVersion = "8";
-    value spVersion = "0.4.9017";
+    value spVersion = "0.4.9018";
     shared import java.base javaVersion;
     import ceylon.collection ceylonVersion;
     shared import strategicprimer.drivers.common spVersion;
