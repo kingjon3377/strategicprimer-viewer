@@ -96,11 +96,7 @@
    in a [[java.io::Reader]] instead) that satisfies the Ceylon [[Iterable]] interface, and
    also closes the provided reader (if it is [[java.io::Closeable]]) before returning
    [[finished]] for the first time. Callers can also pass in additional methods to call
-   before first returning [[finished]].
- - The [[CeylonReader]] class is an adapter from the Ceylon SDK
-   [[ceylon.buffer.readers::Reader]] interface to the Java [[java.io::Reader]] API, which
-   the Java STaX XML-reading API requires. This is almost certain to be egregiously slow,
-   and so it is here more as a curiosity or an exercise than intended for practical use."
+   before first returning [[finished]]."
 license("GPL-3")
 native("jvm")
 module lovelace.util.jvm "0.1.1" {
