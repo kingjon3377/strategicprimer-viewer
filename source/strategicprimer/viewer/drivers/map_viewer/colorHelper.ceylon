@@ -24,15 +24,11 @@ import lovelace.util.common {
 object colorHelper {
     String wrap(String wrapped) => "<html><p>``wrapped``</p></html>";
     "Descriptions of the types."
-    suppressWarnings("deprecation")
     Map<TileType, String> descriptions = simpleMap(
-        TileType.borealForest->wrap("Boreal Forest"),
         TileType.desert->wrap("Desert"),
         TileType.jungle->wrap("Jungle"),
-        TileType.mountain->wrap("Mountains"),
         TileType.ocean->wrap("Ocean"),
         TileType.plains->wrap("Plains"),
-        TileType.temperateForest->wrap("Temperate Forest"),
         TileType.tundra->wrap("Tundra"),
         TileType.steppe->wrap("Steppe"),
         TileType.swamp->wrap("Swamp")
@@ -48,18 +44,7 @@ object colorHelper {
     );
 
     "A map from map versions to maps from tile-types to colors."
-    suppressWarnings("deprecation")
     Map<Integer, Map<TileType, Color>> colors = simpleMap(
-        1->simpleMap(
-            TileType.borealForest->Color(72, 218, 164),
-            TileType.desert->Color(249, 233, 28),
-            TileType.jungle->Color(229, 46, 46),
-            TileType.mountain->Color(249, 137, 28),
-            TileType.ocean->Color.\iBLUE,
-            TileType.plains->Color(0, 117, 0),
-            TileType.temperateForest->Color(72, 250, 72),
-            TileType.tundra->Color(153, 153, 153)
-        ),
         2->simpleMap(
             TileType.desert->Color(249, 233, 28),
             TileType.jungle->Color(229, 46, 46),
@@ -128,6 +113,7 @@ object colorHelper {
     shared Color mountainColor = Color(249, 137, 28);
 }
 
+// TODO: Remove these, as I presume they're now unused
 "A fortress is drawn in brown."
 Color fortColor = Color(160, 82, 45);
 "Units are drawn in purple."
