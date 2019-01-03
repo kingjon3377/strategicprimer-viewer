@@ -19,22 +19,7 @@ import lovelace.util.common {
 }
 
 "An interface for helpers that do the drawing of tiles in various components."
-todo("Once ver-1 maps are no longer supported, remove drawTileTranslated")
 shared interface TileDrawHelper {
-    "Draw a tile. Assumes that the graphics context has been translated so that its origin
-     coincides with the tile's upper-left-hand corner."
-    shared formal void drawTileTranslated(
-            "The graphics context"
-            Graphics pen,
-            "The map to draw a tile from"
-            IMapNG map,
-            "The (location of the) tile to draw"
-            Point location,
-            "The width of the drawing area (i.e. how wide to draw the tile)"
-            Integer width,
-            "The height of the drawing area (i.e. how tall to draw the tile)"
-            Integer height);
-
     "Draw a tile, at the given coordinates."
     shared formal void drawTile(
             "The graphics context"

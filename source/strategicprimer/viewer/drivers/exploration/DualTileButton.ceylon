@@ -9,7 +9,8 @@ import javax.swing {
 
 import strategicprimer.viewer.drivers.map_viewer {
     TileDrawHelper,
-    Ver2TileDrawHelper
+    Ver2TileDrawHelper,
+    Coordinate
 }
 import strategicprimer.model.common.map {
     Point,
@@ -40,11 +41,13 @@ class DualTileButton(IMapNG master, IMapNG subordinate, {FixtureMatcher*} matche
 
     shared actual void paintComponent(Graphics pen) {
         super.paintComponent(pen);
+        Coordinate origin = Coordinate(0, 0);
+        Coordinate dimensions = Coordinate(width, height);
         pen.clip = Polygon(IntArray.with([width - margin, margin, margin]),
             IntArray.with([margin, height - margin, margin]), 3);
-        helper.drawTileTranslated(pen, master, point, width, height);
+        helper.drawTile(pen, master, point, origin, dimensions);
         pen.clip = Polygon(IntArray.with([width - margin, width - margin, margin]),
             IntArray.with([margin, height - margin, height - margin]), 3);
-        helper.drawTileTranslated(pen, subordinate, point, width, height);
+        helper.drawTile(pen, subordinate, point, origin, dimensions);
     }
 }
