@@ -81,7 +81,13 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Simurgh,
     Minotaur,
     immortalAnimals,
-    maturityModel
+    maturityModel,
+    Snowbird,
+    Thunderbird,
+    Pegasus,
+    Unicorn,
+    Kraken,
+    ImmortalAnimal
 }
 import strategicprimer.model.common.map.fixtures.terrain {
     Hill,
@@ -128,11 +134,13 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         String tag = element.name.localPart.lowercased;
         if (namespace.empty || namespace == spNamespace ||
                 namespace == XMLConstants.nullNsUri) {
-            if (exists reader = readers[tag]) {
+            if ("animal" == tag,
+                        immortalAnimals.contains(getAttribute(element, "kind")),
+                    !getBooleanAttribute(element, "traces", false)) {
+                return setImage(ImmortalAnimal.parse(getAttribute(element, "kind"))
+                    (getIntegerAttribute(element, "id")), element, warner);
+            } else if (exists reader = readers[tag]) {
                 return reader(element, parent, stream, players, warner, idFactory);
-            } else if (immortalAnimals.contains(tag)) {
-                return unitMemberHandler.readAnimal(element, parent, stream, players,
-                    warner, idFactory);
             }
         }
         throw UnsupportedTagException.future(element);
@@ -544,7 +552,12 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         SimpleFixtureReader("ogre", `Ogre`).entry,
         SimpleFixtureReader("phoenix", `Phoenix`).entry,
         SimpleFixtureReader("simurgh", `Simurgh`).entry,
-        SimpleFixtureReader("troll", `Troll`).entry);
+        SimpleFixtureReader("troll", `Troll`).entry,
+        SimpleFixtureReader("snowbird", `Snowbird`).entry,
+        SimpleFixtureReader("thunderbird", `Thunderbird`).entry,
+        SimpleFixtureReader("pegasus", `Pegasus`).entry,
+        SimpleFixtureReader("unicorn", `Unicorn`).entry,
+        SimpleFixtureReader("kraken", `Kraken`).entry);
 
     shared actual Type readXML<Type>(PathWrapper file, JReader istream, Warning warner)
             given Type satisfies Object {

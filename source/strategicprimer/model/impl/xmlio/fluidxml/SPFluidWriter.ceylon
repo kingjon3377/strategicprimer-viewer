@@ -51,7 +51,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
     Dragon,
     Animal,
-    AnimalTracks
+    AnimalTracks,
+    ImmortalAnimal
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
@@ -361,6 +362,8 @@ shared class SPFluidWriter() satisfies SPWriter {
         simpleFixtureWriter(`Fairy`, "fairy"),
         simpleFixtureWriter(`Giant`, "giant"),
         `SimpleImmortal`->castingWriter<SimpleImmortal>(
+            unitMemberHandler.writeSimpleImmortal),
+        `ImmortalAnimal`->castingWriter<ImmortalAnimal>(
             unitMemberHandler.writeSimpleImmortal),
         `TextFixture`->castingWriter<TextFixture>(
             fluidExplorableHandler.writeTextFixture),

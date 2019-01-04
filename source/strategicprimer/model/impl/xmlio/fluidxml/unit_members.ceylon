@@ -21,11 +21,11 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
     Worker,
     SimpleImmortal,
-    immortalAnimals,
     Animal,
     maturityModel,
     AnimalImpl,
-    AnimalTracks
+    AnimalTracks,
+    ImmortalAnimal
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
@@ -189,7 +189,7 @@ object unitMemberHandler extends FluidBase() {
     shared Animal|AnimalTracks readAnimal(StartElement element, QName parent,
             {XMLEvent*} stream, IPlayerCollection players, Warning warner,
             IDRegistrar idFactory) {
-        requireTag(element, parent, "animal", *immortalAnimals);
+        requireTag(element, parent, "animal");
         String tag = element.name.localPart.lowercased;
         String kind;
         if (tag == "animal") {
@@ -278,8 +278,8 @@ object unitMemberHandler extends FluidBase() {
         writeImage(ostream, obj);
     }
 
-    shared void writeSimpleImmortal(XMLStreamWriter ostream, SimpleImmortal obj,
-            Integer indentation) {
+    shared void writeSimpleImmortal(XMLStreamWriter ostream,
+            SimpleImmortal|ImmortalAnimal obj, Integer indentation) {
         writeTag(ostream, obj.kind, indentation, true);
         writeAttributes(ostream, "id"->obj.id);
         writeImage(ostream, obj);

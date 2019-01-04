@@ -33,7 +33,13 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Griffin,
     Djinn,
     Simurgh,
-    Minotaur
+    Minotaur,
+    ImmortalAnimal,
+    Thunderbird,
+    Kraken,
+    Snowbird,
+    Unicorn,
+    Pegasus
 }
 import strategicprimer.report {
     IReportNode
@@ -70,7 +76,7 @@ shared class ImmortalsReportGenerator(
         MutableMap<Type<IFixture>, Anything(String, Point)> meta =
                 HashMap<Type<IFixture>, Anything(String, Point)>();
         MutableMultimap<String, Point> simples = HashMultimap<String, Point>();
-        void handleSimple(Type<SimpleImmortal> type, String plural) =>
+        void handleSimple(Type<SimpleImmortal|ImmortalAnimal> type, String plural) =>
                 meta.put(type, (_, point) => simples.put(plural, point));
         handleSimple(`Sphinx`, "Sphinx(es)");
         handleSimple(`Djinn`, "Djinn(i)");
@@ -80,6 +86,11 @@ shared class ImmortalsReportGenerator(
         handleSimple(`Phoenix`, "Phoenix(es)");
         handleSimple(`Simurgh`, "Simurgh(s)");
         handleSimple(`Troll`, "Troll(s)");
+        handleSimple(`Snowbird`, "Snowbird(s)");
+        handleSimple(`Thunderbird`, "Thunderbird(s)");
+        handleSimple(`Pegasus`, "Pegasi");
+        handleSimple(`Unicorn`, "Unicorn(s)");
+        handleSimple(`Kraken`, "Kraken(s)");
         MutableMultimap<String, Point> handleComplex(Type<Immortal> type,
                 String plural = "(s)") {
             MutableMultimap<String, Point> retval = HashMultimap<String, Point>();

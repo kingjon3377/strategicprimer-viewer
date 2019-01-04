@@ -33,8 +33,7 @@ import strategicprimer.model.common.map {
     PlayerCollection
 }
 import strategicprimer.model.common.map.fixtures.mobile {
-    ProxyFor,
-    immortalAnimals
+    ProxyFor
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
@@ -114,17 +113,6 @@ class YAReaderAdapter(
                 return reader.read(element, parent, stream);
             }
         } else {
-            if (immortalAnimals.contains(tag)) {
-                if (exists reader = readerCache["animal"]) {
-                    return reader.read(element, parent, stream);
-                } else {
-                    for (reader in readers) {
-                        if (reader.isSupportedTag("animal")) {
-                            return reader.read(element, parent, stream);
-                        }
-                    }
-                }
-            }
             throw UnwantedChildException(parent, element);
         }
     }

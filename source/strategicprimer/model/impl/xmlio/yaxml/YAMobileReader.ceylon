@@ -42,7 +42,13 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     maturityModel,
     AnimalImpl,
-    AnimalTracks
+    AnimalTracks,
+    Snowbird,
+    Thunderbird,
+    Pegasus,
+    Unicorn,
+    Kraken,
+    ImmortalAnimal
 }
 import strategicprimer.model.common.xmlio {
     Warning
@@ -59,16 +65,17 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         `Fairy`->"fairy", `Giant`->"giant", `Sphinx`->"sphinx",
         `Djinn`->"djinn", `Griffin`->"griffin", `Minotaur`->"minotaur",
         `Ogre`->"ogre", `Phoenix`->"phoenix", `Simurgh`->"simurgh",
-        `Troll`->"troll"
+        `Troll`->"troll", `Snowbird`->"snowbird", `Thunderbird`->"thunderbird",
+        `Pegasus`->"pegasus", `Unicorn`->"unicorn", `Kraken`->"kraken"
     );
 
     Set<String> supportedTags = set(tagMap.items);
 
-    Map<String, Class<SimpleImmortal, [Integer]>> simples = simpleMap(
-        "sphinx"->`Sphinx`,
+    Map<String, Class<SimpleImmortal|ImmortalAnimal, [Integer]>> simples = simpleMap(
+        "sphinx"->`Sphinx`, "snowbird"->`Snowbird`, "thunderbird"->`Thunderbird`,
         "djinn"->`Djinn`, "griffin"->`Griffin`, "minotaur"->`Minotaur`,
         "ogre"->`Ogre`, "phoenix"->`Phoenix`, "simurgh"->`Simurgh`,
-        "troll"->`Troll`);
+        "troll"->`Troll`, "pegasus"->`Pegasus`, "unicorn"->`Unicorn`, "kraken"->`Kraken`);
 
     MobileFixture createAnimal(StartElement element) {
         String tag = element.name.localPart.lowercased;
@@ -84,6 +91,9 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
                 hasParameter(element, "traces") &&
                 getParameter(element, "traces", "").empty);
             if (!tracks) {
+                if (immortalAnimals.contains(kind)) {
+                    return ImmortalAnimal.parse(kind)(getIntegerParameter(element, "id"));
+                }
                 expectAttributes(element, "traces", "id", "count", "talking", "kind",
                     "status", "wild", "born", "image");
             }
@@ -121,7 +131,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
 
     shared actual MobileFixture read(StartElement element, QName parent,
             {XMLEvent*} stream) {
-        requireTag(element, parent, *supportedTags.chain(immortalAnimals));
+        requireTag(element, parent, *supportedTags);
         MobileFixture twoParam(MobileFixture(String, Integer) constr) {
             expectAttributes(element, "id", "kind", "image");
                 return constr(getParameter(element, "kind"), getOrGenerateID(element));
@@ -134,12 +144,8 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
         case ("fairy") { retval = twoParam(Fairy); }
         case ("giant") { retval = twoParam(Giant); }
         else {
-            if (supportedTags.contains(type)) {
-                expectAttributes(element, "image", "id");
-                retval = readSimple(type, getOrGenerateID(element));
-            } else /*if (immortalAnimals.contains(type))*/ {
-                retval = createAnimal(element);
-            }
+            expectAttributes(element, "image", "id");
+            retval = readSimple(type, getOrGenerateID(element));
         }
         spinUntilEnd(element.name, stream);
         if (is HasMutableImage retval) {
@@ -181,7 +187,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
                 writeProperty(ostream, "count", obj.population);
             }
             writeImageXML(ostream, obj);
-        } else if (is SimpleImmortal obj) {
+        } else if (is SimpleImmortal|ImmortalAnimal obj) {
             writeTag(ostream, obj.kind, indent);
             writeProperty(ostream, "id", obj.id);
             writeImageXML(ostream, obj);

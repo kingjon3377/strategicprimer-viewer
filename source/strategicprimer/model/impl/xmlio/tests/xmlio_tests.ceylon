@@ -1428,15 +1428,15 @@ object xmlTests {
             "Animal population count is checked in equals()");
     }
 
-    """Test that the future idiom for "immortal animals" is already supported
-       for reading, but warned about."""
+    """Test that the former and current idioms for "immortal animals" produce equivalent
+       results."""
     test
     shared void testImmortalAnimalDeserialization(
             parameters(`value immortalAnimals`) String animal,
-            randomlyGenerated(2) Integer id,
-            randomlyGenerated(2) Integer count) =>
-        assertUnsupportedTag("<``animal`` id=\"``id``\" count=\"``count``\" />",
-            animal, AnimalImpl(animal, false, "wild", id, -1, count));
+            randomlyGenerated(2) Integer id) =>
+        assertEquivalentForms(animal + " as animal deserializes to immortal",
+            "<``animal`` id=\"``id``\" />",
+            "<animal kind=\"``animal``\" id=\"``id``\" />", warningLevels.die);
 
     "Test [[CacheFixture]] (de)serialization."
     todo("Randomize and condense")
