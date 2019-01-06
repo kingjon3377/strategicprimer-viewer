@@ -224,6 +224,182 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
         }
     }
+    object unitMemberCellRenderer extends DefaultTreeCellRenderer() {
+        Icon createDefaultFixtureIcon() {
+            Integer imageSize = 24;
+            BufferedImage temp = BufferedImage(imageSize, imageSize,
+                BufferedImage.typeIntArgb);
+            Graphics2D pen = temp.createGraphics();
+            Color saveColor = pen.color;
+            pen.color = Color.\iRED;
+            Float margin = 0.15;
+            Integer firstCorner = halfEven(imageSize * margin).integer + 1;
+            Integer firstDimension = halfEven(imageSize * (1.0 - (margin * 2.0)))
+                .integer;
+            Integer firstArcDimension = halfEven(imageSize * (margin / 2.0)).integer;
+            pen.fillRoundRect(firstCorner, firstCorner, firstDimension,
+                firstDimension, firstArcDimension, firstArcDimension);
+            pen.color = saveColor;
+            Integer secondCorner = halfEven((imageSize / 2.0) - (imageSize * margin))
+                .integer + 1;
+            Integer secondDimension = halfEven(imageSize * margin * 2.0).integer;
+            Integer secondArcDimension = halfEven((imageSize * margin) / 2.0).integer;
+            pen.fillRoundRect(secondCorner, secondCorner, secondDimension,
+                secondDimension, secondArcDimension, secondArcDimension);
+            pen.dispose();
+            return ImageIcon(temp);
+        }
+        Icon defaultFixtureIcon = createDefaultFixtureIcon();
+        Icon? getIconForFile(String filename) {
+            try {
+                return imageLoader.loadIcon(filename);
+            }  catch (MissingFileException except) {
+                log.error("Image file images/``filename`` not found`");
+                log.debug("with stack trace", except);
+                return null;
+            } catch (IOException except) {
+                log.error("I/O error reading image", except);
+                return null;
+            }
+        }
+
+        String jobCSL(IWorker worker) {
+            StringBuilder builder = StringBuilder();
+            {IJob*} jobs = worker.filter(matchingValue(false, IJob.emptyJob));
+            if (exists first = jobs.first) {
+                builder.append(" (``first.name`` ``first.level``");
+                for (job in jobs.rest) {
+                    builder.append(", ``job.name`` ``job.level``");
+                }
+                builder.append(")");
+                return builder.string;
+            } else {
+                return "";
+            }
+        }
+
+        Icon getIcon(HasImage obj) {
+            String image = obj.image;
+            if (!image.empty, exists icon = getIconForFile(image)) {
+                return icon;
+            } else if (exists icon = getIconForFile(obj.defaultImage)) {
+                return icon;
+            } else {
+                return defaultFixtureIcon;
+            }
+        }
+
+        shared actual Component getTreeCellRendererComponent(JTree? tree,
+            Object? item, Boolean selected, Boolean expanded, Boolean leaf,
+            Integer row, Boolean hasFocus) {
+            assert (exists tree, exists item);
+            Component component = super.getTreeCellRendererComponent(tree, item,
+                selected, expanded, leaf, row, hasFocus);
+            Object internal = as<DefaultMutableTreeNode>(item)?.userObject else item;
+            if (is HasImage internal, is JLabel component) {
+                component.icon = getIcon(internal);
+            }
+            variable Boolean shouldWarn = false;
+            variable Boolean shouldError = false;
+            if (is IWorker internal, is JLabel component) {
+                if ("human" == internal.race) {
+                    component.text = "<html><p>``internal
+                        .name````jobCSL(internal)``</p></html>";
+                } else {
+                    component.text = "<html><p>``internal.name``, a ``internal
+                        .race````jobCSL(internal)``</p></html>";
+                }
+            } else if (is Animal internal, internal.born >= 0,
+                maturityModel.currentTurn >= 0,
+                exists maturityAge = maturityModel.maturityAges[internal.kind],
+                maturityModel.currentTurn - internal.born < maturityAge,
+                is JLabel component) {
+                Integer age = maturityModel.currentTurn - internal.born;
+                if (internal.population>1) {
+                    component.text = "``internal.population`` ``age``-turn-old ``
+//                                animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed
+                    animalPlurals.get(internal.kind)``";
+                } else {
+                    component.text = "``age``-turn-old ``internal.kind``";
+                }
+            } else if (is Animal internal, internal.population > 1,
+                is JLabel component) {
+//                    component.text = "``internal.population`` ``animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed
+                component.text = "``internal.population`` ``animalPlurals.get(internal
+                    .kind)``";
+            } else if (is IUnit internal, is DefaultTreeCellRenderer component) {
+                if (expanded || internal.empty) {
+                    component.text = internal.name;
+                } else {
+                    component.text =
+                    "``internal.name`` (``internal.narrow<IWorker>().size
+                    `` workers)";
+                }
+                String orders = internal.getLatestOrders(turnSource()).lowercased;
+                if (orderCheck, orders.contains("fixme"), !internal.empty) {
+                    shouldError = true;
+                } else if (orderCheck, (orders.contains("todo") ||
+                orders.contains("xxx")), !internal.empty) {
+                    shouldWarn = true;
+                }
+            } else if (orderCheck,
+                is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
+                for (unit in item
+                    .narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()
+                    .map(WorkerTreeModelAlt.WorkerTreeNode<IUnit>
+                    .userObjectNarrowed)) {
+                    if (!unit.empty) {
+                        String orders = unit.getLatestOrders(turnSource())
+                            .lowercased;
+                        if (orders.contains("fixme")) {
+                            shouldError = true;
+                            shouldWarn = false;
+                            break;
+                        } else if (orders.contains("todo") ||
+                        orders.contains("xxx")) {
+                            shouldWarn = true;
+                        }
+                    }
+                }
+            } else if (orderCheck, is String|JString item) { // TODO: Find a way to unify with previous case
+                for (unit in wtModel.childrenOf(item).narrow<IUnit>()) {
+                    if (!unit.empty) {
+                        String orders = unit.getLatestOrders(turnSource())
+                            .lowercased;
+                        if (orders.contains("fixme")) {
+                            shouldError = true;
+                            shouldWarn = false;
+                            break;
+                        } else if (orders.contains("todo") ||
+                        orders.contains("xxx")) {
+                            shouldWarn = true;
+                        }
+                    }
+                }
+            }
+            if (is DefaultTreeCellRenderer component) {
+                if (shouldError) {
+                    component.backgroundSelectionColor = Color.pink;
+                    component.backgroundNonSelectionColor = Color.pink;
+                    component.textSelectionColor = Color.black;
+                    component.textNonSelectionColor = Color.black;
+                } else if (shouldWarn) {
+                    component.backgroundSelectionColor = Color.yellow;
+                    component.backgroundNonSelectionColor = Color.yellow;
+                    component.textSelectionColor = Color.black;
+                    component.textNonSelectionColor = Color.black;
+                } else {
+                    component.backgroundSelectionColor = defaultStorer
+                        .backgroundSelectionColor;
+                    component.backgroundNonSelectionColor = defaultStorer
+                        .backgroundNonSelectionColor;
+                    component.textSelectionColor = Color.white;
+                    component.textNonSelectionColor = Color.black;
+                }
+            }
+            return component;
+        }
+    }
     object retval extends JTree()
             satisfies UnitMemberSelectionSource&UnitSelectionSource {
         model = wtModel;
@@ -234,183 +410,6 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
 
         transferHandler = WorkerTreeTransferHandler(selectionModel);
 
-        // TODO: Can we move this out of the JTree, at least?
-        object unitMemberCellRenderer extends DefaultTreeCellRenderer() {
-            Icon createDefaultFixtureIcon() {
-                Integer imageSize = 24;
-                BufferedImage temp = BufferedImage(imageSize, imageSize,
-                    BufferedImage.typeIntArgb);
-                Graphics2D pen = temp.createGraphics();
-                Color saveColor = pen.color;
-                pen.color = Color.\iRED;
-                Float margin = 0.15;
-                Integer firstCorner = halfEven(imageSize * margin).integer + 1;
-                Integer firstDimension = halfEven(imageSize * (1.0 - (margin * 2.0)))
-                    .integer;
-                Integer firstArcDimension = halfEven(imageSize * (margin / 2.0)).integer;
-                pen.fillRoundRect(firstCorner, firstCorner, firstDimension,
-                    firstDimension, firstArcDimension, firstArcDimension);
-                pen.color = saveColor;
-                Integer secondCorner = halfEven((imageSize / 2.0) - (imageSize * margin))
-                    .integer + 1;
-                Integer secondDimension = halfEven(imageSize * margin * 2.0).integer;
-                Integer secondArcDimension = halfEven((imageSize * margin) / 2.0).integer;
-                pen.fillRoundRect(secondCorner, secondCorner, secondDimension,
-                    secondDimension, secondArcDimension, secondArcDimension);
-                pen.dispose();
-                return ImageIcon(temp);
-            }
-            Icon defaultFixtureIcon = createDefaultFixtureIcon();
-            Icon? getIconForFile(String filename) {
-                try {
-                    return imageLoader.loadIcon(filename);
-                }  catch (MissingFileException except) {
-                    log.error("Image file images/``filename`` not found`");
-                    log.debug("with stack trace", except);
-                    return null;
-                } catch (IOException except) {
-                    log.error("I/O error reading image", except);
-                    return null;
-                }
-            }
-
-            String jobCSL(IWorker worker) {
-                StringBuilder builder = StringBuilder();
-                {IJob*} jobs = worker.filter(matchingValue(false, IJob.emptyJob));
-                if (exists first = jobs.first) {
-                    builder.append(" (``first.name`` ``first.level``");
-                    for (job in jobs.rest) {
-                        builder.append(", ``job.name`` ``job.level``");
-                    }
-                    builder.append(")");
-                    return builder.string;
-                } else {
-                    return "";
-                }
-            }
-
-            Icon getIcon(HasImage obj) {
-                String image = obj.image;
-                if (!image.empty, exists icon = getIconForFile(image)) {
-                    return icon;
-                } else if (exists icon = getIconForFile(obj.defaultImage)) {
-                    return icon;
-                } else {
-                    return defaultFixtureIcon;
-                }
-            }
-
-            shared actual Component getTreeCellRendererComponent(JTree? tree,
-                    Object? item, Boolean selected, Boolean expanded, Boolean leaf,
-                    Integer row, Boolean hasFocus) {
-                assert (exists tree, exists item);
-                Component component = super.getTreeCellRendererComponent(tree, item,
-                    selected, expanded, leaf, row, hasFocus);
-                Object internal = as<DefaultMutableTreeNode>(item)?.userObject else item;
-                if (is HasImage internal, is JLabel component) {
-                    component.icon = getIcon(internal);
-                }
-                variable Boolean shouldWarn = false;
-                variable Boolean shouldError = false;
-                if (is IWorker internal, is JLabel component) {
-                    if ("human" == internal.race) {
-                        component.text = "<html><p>``internal
-                            .name````jobCSL(internal)``</p></html>";
-                    } else {
-                        component.text = "<html><p>``internal.name``, a ``internal
-                            .race````jobCSL(internal)``</p></html>";
-                    }
-                } else if (is Animal internal, internal.born >= 0,
-                        maturityModel.currentTurn >= 0,
-                        exists maturityAge = maturityModel.maturityAges[internal.kind],
-                        maturityModel.currentTurn - internal.born < maturityAge,
-                        is JLabel component) {
-                    Integer age = maturityModel.currentTurn - internal.born;
-                    if (internal.population>1) {
-                        component.text = "``internal.population`` ``age``-turn-old ``
-//                                animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed
-                                animalPlurals.get(internal.kind)``";
-                    } else {
-                        component.text = "``age``-turn-old ``internal.kind``";
-                    }
-                } else if (is Animal internal, internal.population > 1,
-                        is JLabel component) {
-//                    component.text = "``internal.population`` ``animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed
-                    component.text = "``internal.population`` ``animalPlurals.get(internal
-                        .kind)``";
-                } else if (is IUnit internal, is DefaultTreeCellRenderer component) {
-                    if (expanded || internal.empty) {
-                        component.text = internal.name;
-                    } else {
-                        component.text =
-                            "``internal.name`` (``internal.narrow<IWorker>().size
-                                `` workers)";
-                    }
-                    String orders = internal.getLatestOrders(turnSource()).lowercased;
-                    if (orderCheck, orders.contains("fixme"), !internal.empty) {
-                        shouldError = true;
-                    } else if (orderCheck, (orders.contains("todo") ||
-                            orders.contains("xxx")), !internal.empty) {
-                        shouldWarn = true;
-                    }
-                } else if (orderCheck,
-                        is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
-                    for (unit in item
-                            .narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()
-                            .map(WorkerTreeModelAlt.WorkerTreeNode<IUnit>
-                                .userObjectNarrowed)) {
-                        if (!unit.empty) {
-                            String orders = unit.getLatestOrders(turnSource())
-                                .lowercased;
-                            if (orders.contains("fixme")) {
-                                shouldError = true;
-                                shouldWarn = false;
-                                break;
-                            } else if (orders.contains("todo") ||
-                                    orders.contains("xxx")) {
-                                shouldWarn = true;
-                            }
-                        }
-                    }
-                } else if (orderCheck, is String|JString item) { // TODO: Find a way to unify with previous case
-                    for (unit in wtModel.childrenOf(item).narrow<IUnit>()) {
-                        if (!unit.empty) {
-                            String orders = unit.getLatestOrders(turnSource())
-                                .lowercased;
-                            if (orders.contains("fixme")) {
-                                shouldError = true;
-                                shouldWarn = false;
-                                break;
-                            } else if (orders.contains("todo") ||
-                                    orders.contains("xxx")) {
-                                shouldWarn = true;
-                            }
-                        }
-                    }
-                }
-                if (is DefaultTreeCellRenderer component) {
-                    if (shouldError) {
-                        component.backgroundSelectionColor = Color.pink;
-                        component.backgroundNonSelectionColor = Color.pink;
-                        component.textSelectionColor = Color.black;
-                        component.textNonSelectionColor = Color.black;
-                    } else if (shouldWarn) {
-                        component.backgroundSelectionColor = Color.yellow;
-                        component.backgroundNonSelectionColor = Color.yellow;
-                        component.textSelectionColor = Color.black;
-                        component.textNonSelectionColor = Color.black;
-                    } else {
-                        component.backgroundSelectionColor = defaultStorer
-                            .backgroundSelectionColor;
-                        component.backgroundNonSelectionColor = defaultStorer
-                            .backgroundNonSelectionColor;
-                        component.textSelectionColor = Color.white;
-                        component.textNonSelectionColor = Color.black;
-                    }
-                }
-                return component;
-            }
-        }
         cellRenderer = unitMemberCellRenderer;
 
         String statHelper(WorkerStats stats)([String, Integer(WorkerStats)] tuple) =>
