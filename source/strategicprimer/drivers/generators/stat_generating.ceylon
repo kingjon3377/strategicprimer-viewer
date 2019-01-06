@@ -76,17 +76,15 @@ import strategicprimer.model.common.map.fixtures.towns {
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.generators`);
 
-"A factory for a driver to let the user enter pre-generated stats for existing workers or
- generate new workers."
+"A factory for a driver to generate new workers."
 service(`interface DriverFactory`)
 shared class StatGeneratingCLIFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage {
+    shared actual IDriverUsage usage = DriverUsage { 
         graphical = false;
         invocations = ["-t", "--stats"];
         paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "Enter worker stats or generate new workers.";
-        longDescription = "Enter stats for existing workers or generate new workers
-                           randomly.";
+        shortDescription = "Generate new workers.";
+        longDescription = "Generate new workers with random stats and experience.";
         includeInCLIList = true;
         includeInGUIList = false;
         supportedOptions = [ "--current-turn=NN" ];
@@ -105,9 +103,8 @@ shared class StatGeneratingCLIFactory() satisfies ModelDriverFactory {
             ExplorationModel(map, path);
 }
 
-"A driver to let the user enter pre-generated stats for existing workers or generate new
- workers."
-// FIXME: Write stat-generating/stat-entering GUI
+"A driver to generate new workers."
+// FIXME: Write stat-generating GUI
 class StatGeneratingCLI satisfies CLIDriver {
     static String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
 
