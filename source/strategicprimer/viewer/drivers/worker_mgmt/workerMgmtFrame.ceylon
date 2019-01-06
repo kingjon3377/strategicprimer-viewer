@@ -110,6 +110,9 @@ import strategicprimer.drivers.gui.common {
 import ceylon.interop.java {
     JavaRunnable
 }
+import strategicprimer.viewer.drivers.worker_mgmt.orderspanel {
+    ordersPanel
+}
 
 "A window to let the player manage units."
 class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
