@@ -23,7 +23,6 @@ import strategicprimer.model.common.map {
     Player
 }
 import java.awt.event {
-    KeyAdapter,
     KeyEvent
 }
 import lovelace.util.common {
@@ -73,14 +72,7 @@ shared JPanel&OrdersContainer ordersPanel(Integer currentTurn, Player currentPla
     area.wrapStyleWord = true;
     spinnerModel.addChangeListener(revertListener);
 
-    object modifiedEnterListener extends KeyAdapter() {
-        shared actual void keyPressed(KeyEvent event) {
-            if (event.keyCode == KeyEvent.vkEnter, platform.hotKeyPressed(event)) {
-                retval.apply();
-            }
-        }
-    }
-    area.addKeyListener(modifiedEnterListener);
+    area.addKeyListener(EnterListener(retval.apply));
 
     Integer keyMask = platform.shortcutMask;
     createHotKey(retval, "openOrders", (event) { // TODO: Convert to method on OrdersPanel?
