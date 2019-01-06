@@ -72,4 +72,12 @@ class OrdersPanel(Integer currentTurn, variable Player currentPlayer,
 
     shared actual void playerChanged(Player? old, Player newPlayer) =>
         currentPlayer = newPlayer;
+
+    shared void focusOnArea() {
+        Boolean newlyGainingFocus = !area.focusOwner;
+        area.requestFocusInWindow();
+        if (newlyGainingFocus) {
+            area.selectAll();
+        }
+    }
 }

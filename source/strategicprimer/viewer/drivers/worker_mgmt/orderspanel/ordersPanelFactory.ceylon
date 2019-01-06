@@ -75,12 +75,7 @@ shared JPanel&OrdersContainer ordersPanel(Integer currentTurn, Player currentPla
     area.addKeyListener(EnterListener(retval.apply));
 
     Integer keyMask = platform.shortcutMask;
-    createHotKey(retval, "openOrders", (event) { // TODO: Convert to method on OrdersPanel?
-        Boolean newlyGainingFocus = !area.focusOwner;
-        area.requestFocusInWindow();
-        if (newlyGainingFocus) {
-            area.selectAll();
-        }
-    }, JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkD, keyMask)); // TODO: Use createAccelerator()
+    createHotKey(retval, "openOrders", silentListener(retval.focusOnArea),
+        JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkD, keyMask)); // TODO: Use createAccelerator()
     return retval;
 }
