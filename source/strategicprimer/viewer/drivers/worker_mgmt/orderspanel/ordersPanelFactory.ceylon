@@ -39,11 +39,9 @@ shared JPanel&OrdersContainer ordersPanel(Integer currentTurn, Player currentPla
     value retval = OrdersPanel(currentTurn, currentPlayer, playerUnits, ordersSupplier,
         ordersConsumer, modificationListener, spinnerModel, area);
 
-    value revertListener = silentListener(retval.revert);
-
     if (exists ordersConsumer) {
         JButton applyButton = listenedButton("Apply", silentListener(retval.apply));
-        JButton revertButton = listenedButton("Revert", revertListener);
+        JButton revertButton = listenedButton("Revert", silentListener(retval.revert));
         platform.makeButtonsSegmented(applyButton, revertButton);
 
         JPanel buttonPanel = (platform.systemIsMac) then
