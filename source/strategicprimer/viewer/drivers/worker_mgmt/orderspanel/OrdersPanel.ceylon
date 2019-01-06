@@ -1,5 +1,7 @@
 import lovelace.util.jvm {
-    BorderedPanel
+    BorderedPanel,
+    createHotKey,
+    platform
 }
 import strategicprimer.model.common.map {
     Player
@@ -10,13 +12,21 @@ import strategicprimer.model.common.map.fixtures.mobile {
 }
 import javax.swing {
     SpinnerNumberModel,
-    JTextArea
+    JTextArea,
+    JComponent,
+    KeyStroke
 }
 import javax.swing.event {
     TreeSelectionEvent
 }
 import javax.swing.tree {
     DefaultMutableTreeNode
+}
+import lovelace.util.common {
+    silentListener
+}
+import java.awt.event {
+    KeyEvent
 }
 class OrdersPanel(Integer currentTurn, variable Player currentPlayer,
             {IUnit*}(Player, String) playerUnits,
@@ -80,4 +90,12 @@ class OrdersPanel(Integer currentTurn, variable Player currentPlayer,
             area.selectAll();
         }
     }
+
+    spinnerModel.addChangeListener(silentListener(revert));
+
+    area.addKeyListener(EnterListener(apply));
+
+    createHotKey(area, "openOrders", silentListener(focusOnArea),
+        JComponent.whenInFocusedWindow,
+        KeyStroke.getKeyStroke(KeyEvent.vkD, platform.shortcutMask));
 }

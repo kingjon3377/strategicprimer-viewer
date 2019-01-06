@@ -5,25 +5,19 @@ import javax.swing {
     JLabel,
     JTextArea,
     JPanel,
-    JButton,
-    JComponent,
-    KeyStroke
+    JButton
 }
 import lovelace.util.jvm {
     BorderedPanel,
     centeredHorizontalBox,
     platform,
-    listenedButton,
-    createHotKey
+    listenedButton
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 import strategicprimer.model.common.map {
     Player
-}
-import java.awt.event {
-    KeyEvent
 }
 import lovelace.util.common {
     silentListener
@@ -70,12 +64,6 @@ shared JPanel&OrdersContainer ordersPanel(Integer currentTurn, Player currentPla
     retval.center = JScrollPane(area);
     area.lineWrap = true;
     area.wrapStyleWord = true;
-    spinnerModel.addChangeListener(revertListener);
 
-    area.addKeyListener(EnterListener(retval.apply));
-
-    Integer keyMask = platform.shortcutMask;
-    createHotKey(retval, "openOrders", silentListener(retval.focusOnArea),
-        JComponent.whenInFocusedWindow, KeyStroke.getKeyStroke(KeyEvent.vkD, keyMask)); // TODO: Use createAccelerator()
     return retval;
 }
