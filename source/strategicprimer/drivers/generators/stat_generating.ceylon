@@ -159,20 +159,6 @@ class StatGeneratingCLI satisfies CLIDriver {
         this.model = model;
     }
 
-    "Let the user enter a number, assert that there was not EOF, and return the number."
-    Integer inputNumber(String prompt) {
-        assert (exists retval = cli.inputNumber(prompt));
-        return retval;
-    }
-
-    "Let the user enter stats for a worker."
-    WorkerStats enterStatsCollection() {
-        Integer maxHP = inputNumber("Max HP: ");
-        return WorkerStats(maxHP, maxHP, inputNumber("Str: "), inputNumber("Dex: "), // TODO: Replace last 6 params with *statLabelArray.map(shuffle(plus)(": ")).map(inputNumber)
-            inputNumber("Con: "), inputNumber("Int: "), inputNumber("Wis: "),
-            inputNumber("Cha: "));
-    }
-
     "Let the user enter which Jobs a worker's levels are in."
     void enterWorkerJobs(IWorker worker, Integer levels) {
         for (i in 0:levels) {
@@ -370,20 +356,11 @@ class StatGeneratingCLI satisfies CLIDriver {
             } else if (levels > 1) {
                 cli.println("Worker has ``levels`` Job levels.");
             }
-            switch (cli.inputBooleanInSeries("Enter pregenerated stats?" ))
-            case (true) {
-                worker.stats = enterStatsCollection();
-            }
-            case (false) {
-                WorkerStats stats = createWorkerStats(race, levels);
-                worker.stats = stats;
-                if (levels > 0) {
-                    cli.println("Generated stats:");
-                    cli.print(stats.string);
-                }
-            }
-            case (null) {
-                return;
+            WorkerStats stats = createWorkerStats(race, levels);
+            worker.stats = stats;
+            if (levels > 0) {
+                cli.println("Generated stats:");
+                cli.print(stats.string);
             }
             enterWorkerJobs(worker, levels);
             addWorkerToUnit(unit, worker);
