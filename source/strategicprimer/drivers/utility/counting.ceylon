@@ -27,7 +27,6 @@ import lovelace.util.common {
     EnumCounter,
     comparingOn,
     entryMap,
-    IntHolder,
     matchingValue,
     todo
 }
@@ -77,13 +76,6 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Immortal,
     Animal,
     AnimalTracks
-}
-
-"An implementation of [[Accumulator]] for [[arbitrary-precision floating-point
- numbers|Decimal]]."
-class DecimalHolder(variable Decimal count) satisfies Accumulator<Decimal> {
-    shared actual void add(Decimal addend) => count += addend;
-    shared actual Decimal sum => count;
 }
 
 "A class that, like the [[EnumCounter|lovelace.util.common::EnumCounter]]
@@ -175,7 +167,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
     MappedCounter<Type, String, Integer> simpleCounter<Type>(String(Type) keyExtractor)
             given Type satisfies Object =>
             MappedCounter<Type, String, Integer>(keyExtractor,
-                compose(Iterable<Type>.size, Singleton<Type>), IntHolder, 0);
+                compose(Iterable<Type>.size, Singleton<Type>), Accumulator<Integer>, 0);
 
     void countSimply<Type>({Anything*} stream, String title, String(Type) extractor)
             given Type satisfies Object {
@@ -200,7 +192,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
         cli.println();
         {TileFixture*} allFixtures = map.locations.flatMap(map.fixtures.get);
         MappedCounter<Forest, String, Decimal> forests = MappedCounter(Forest.kind,
-            compose(decimalize, Forest.acres), DecimalHolder, decimalNumber(0));
+            compose(decimalize, Forest.acres), Accumulator<Decimal>, decimalNumber(0));
         allFixtures.narrow<Forest>().each(forests.add);
         printSummary(forests,
                     (Decimal total) => "There are ``total`` acres of forest, including:",
@@ -283,7 +275,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
 
         MappedCounter<Animal, String, Integer> animals =
                 MappedCounter<Animal, String, Integer>(Animal.kind, Animal.population,
-                    IntHolder, 0);
+                    Accumulator<Integer>, 0);
         allFixtures.narrow<Animal>().filter(not(Animal.talking)).each(animals.add);
         allFixtures.narrow<IUnit>().flatMap(identity).narrow<Animal>().each(animals.add);
         allFixtures.narrow<Fortress>().flatMap(identity).narrow<IUnit>().flatMap(identity)

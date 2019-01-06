@@ -46,8 +46,7 @@ import ceylon.file {
 }
 import lovelace.util.common {
     PathWrapper,
-    Accumulator,
-    IntHolder
+    Accumulator
 }
 
 "A factory for a driver to compare the performance of TileDrawHelpers."
@@ -195,7 +194,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
         if (exists retval = results[tuple]) {
             return retval;
         } else {
-            Accumulator<Integer> retval = IntHolder(0);
+            Accumulator<Integer> retval = Accumulator(0);
             results.put(tuple, retval);
             return retval;
         }
