@@ -263,18 +263,15 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
         }
 
+        String jobString(IJob job) => "``job.name`` ``job.level``";
+
         String jobCSL(IWorker worker) {
-            StringBuilder builder = StringBuilder();
-            {IJob*} jobs = worker.filter(matchingValue(false, IJob.emptyJob));
-            if (exists first = jobs.first) {
-                builder.append(" (``first.name`` ``first.level``");
-                for (job in jobs.rest) {
-                    builder.append(", ``job.name`` ``job.level``");
-                }
-                builder.append(")");
-                return builder.string;
-            } else {
+            {String*} jobs = worker.filter(matchingValue(false, IJob.emptyJob))
+                .map(jobString);
+            if (jobs.empty) {
                 return "";
+            } else {
+                return " (``", ".join(jobs)``)";
             }
         }
 
