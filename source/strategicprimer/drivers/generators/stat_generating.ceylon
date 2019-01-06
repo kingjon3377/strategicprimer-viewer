@@ -79,7 +79,7 @@ Logger log = logger(`module strategicprimer.drivers.generators`);
 "A factory for a driver to generate new workers."
 service(`interface DriverFactory`)
 shared class StatGeneratingCLIFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage { 
+    shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["-t", "--stats"];
         paramsWanted = ParamCount.atLeastOne;

@@ -54,7 +54,8 @@ import strategicprimer.viewer.drivers.map_viewer {
 import javax.swing.tree {
     TreePath,
     DefaultMutableTreeNode,
-    DefaultTreeCellRenderer
+    DefaultTreeCellRenderer,
+    TreeSelectionModel
 }
 import java.awt.event {
     MouseAdapter,
@@ -112,6 +113,117 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                                 ["Wis", WorkerStats.wisdom],
                                 ["Cha", WorkerStats.charisma]];
 
+    class WorkerTreeTransferHandler(TreeSelectionModel selectionModel)
+            extends TransferHandler() {
+        "Unit members can only be moved, not copied or linked."
+        shared actual Integer getSourceActions(JComponent component) =>
+            TransferHandler.move;
+        "Create a transferable representing the selected node(s)."
+        shared actual UnitMemberTransferable|UnitTransferable? createTransferable(
+                JComponent component) {
+            value paths = selectionModel.selectionPaths;
+            MutableList<[UnitMember, IUnit]> membersToTransfer =
+                ArrayList<[UnitMember, IUnit]>();
+            MutableList<IUnit&HasMutableKind> unitsToTransfer =
+                ArrayList<IUnit&HasMutableKind>();
+
+            for (path in paths) {
+                if (exists last = path.lastPathComponent,
+                    exists parentObj = path.parentPath?.lastPathComponent) {
+                    if (is IUnit parent = wtModel.getModelObject(parentObj),
+                        is UnitMember selection = wtModel.getModelObject(last)) {
+                        membersToTransfer.add([selection, parent]);
+                    } else if (is IUnit&HasMutableKind selection =
+                        wtModel.getModelObject(last)) {
+                        unitsToTransfer.add(selection);
+                    } else {
+                        log.info("Selection included non-UnitMember: ``
+                        type(wtModel.getModelObject(last))``");
+                    }
+                }
+            }
+
+            if (membersToTransfer.empty) {
+                if (unitsToTransfer.empty) {
+                    return null;
+                } else {
+                    return UnitTransferable(*unitsToTransfer);
+                }
+            } else {
+                if (!unitsToTransfer.empty) {
+                    log.warn("Selection included both units and unit members");
+                }
+                return UnitMemberTransferable(*membersToTransfer);
+            }
+        }
+
+        "Whether a drag here is possible."
+        shared actual Boolean canImport(TransferSupport support) {
+            if (support.isDataFlavorSupported(UnitMemberTransferable.flavor),
+                is JTree.DropLocation dropLocation = support.dropLocation,
+                exists last = dropLocation.path?.lastPathComponent,
+                is IUnit|UnitMember lastObj = wtModel.getModelObject(last)) {
+                return true;
+            } else if (support.isDataFlavorSupported(UnitTransferable.flavor),
+                is JTree.DropLocation dropLocation = support.dropLocation,
+                exists last = dropLocation.path?.lastPathComponent,
+                is String lastObj = wtModel.getModelObject(last)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        "Handle a drop."
+        shared actual Boolean importData(TransferSupport support) {
+            if (canImport(support),
+                is JTree.DropLocation dropLocation = support.dropLocation,
+                exists path = dropLocation.path,
+                exists pathLast = path.lastPathComponent) {
+                Object tempTarget;
+                Object local = wtModel.getModelObject(pathLast);
+                if (is UnitMember local) {
+                    TreePath pathParent = path.parentPath;
+                    tempTarget = wtModel.getModelObject(pathParent.lastPathComponent);
+                } else {
+                    tempTarget = local;
+                }
+                Transferable trans = support.transferable;
+                try {
+                    if (is IUnit tempTarget,
+                        trans.isDataFlavorSupported(
+                            UnitMemberTransferable.flavor)) {
+                        assert (is [UnitMember, IUnit][] list =
+                            trans.getTransferData(UnitMemberTransferable.flavor));
+                        for ([member, unit] in list) {
+                            wtModel.moveMember(member, unit, tempTarget);
+                        }
+                        return true;
+                    } else if (is String tempTarget,
+                        trans.isDataFlavorSupported(UnitTransferable.flavor)) {
+                        assert (is <IUnit&HasMutableKind>[] list =
+                            trans.getTransferData(UnitTransferable.flavor));
+                        for (unit in list) {
+                            String priorKind = unit.kind;
+                            unit.kind = tempTarget;
+                            wtModel.moveItem(unit, priorKind);
+                        }
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } catch (UnsupportedFlavorException except) {
+                    log.error("Impossible unsupported data flavor", except);
+                    return false;
+                } catch (IOException except) {
+                    log.error("I/O error in transfer after we checked", except);
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+    }
     object retval extends JTree()
             satisfies UnitMemberSelectionSource&UnitSelectionSource {
         model = wtModel;
@@ -120,118 +232,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         showsRootHandles = true;
         dropMode = DropMode.on;
 
-        // TODO: Can we move out of the JTree, at least?
-        object workerTreeTransferHandler extends TransferHandler() {
-            "Unit members can only be moved, not copied or linked."
-            shared actual Integer getSourceActions(JComponent component) =>
-                    TransferHandler.move;
-            "Create a transferable representing the selected node(s)."
-            shared actual UnitMemberTransferable|UnitTransferable? createTransferable(
-                    JComponent component) {
-                value paths = selectionModel.selectionPaths;
-                MutableList<[UnitMember, IUnit]> membersToTransfer =
-                        ArrayList<[UnitMember, IUnit]>();
-                MutableList<IUnit&HasMutableKind> unitsToTransfer =
-                        ArrayList<IUnit&HasMutableKind>();
-
-                for (path in paths) {
-                    if (exists last = path.lastPathComponent,
-                            exists parentObj = path.parentPath?.lastPathComponent) {
-                        if (is IUnit parent = wtModel.getModelObject(parentObj),
-                                is UnitMember selection = wtModel.getModelObject(last)) {
-                            membersToTransfer.add([selection, parent]);
-                        } else if (is IUnit&HasMutableKind selection =
-                                wtModel.getModelObject(last)) {
-                            unitsToTransfer.add(selection);
-                        } else {
-                            log.info("Selection included non-UnitMember: ``
-                                type(wtModel.getModelObject(last))``");
-                        }
-                    }
-                }
-
-                if (membersToTransfer.empty) {
-                    if (unitsToTransfer.empty) {
-                        return null;
-                    } else {
-                        return UnitTransferable(*unitsToTransfer);
-                    }
-                } else {
-                    if (!unitsToTransfer.empty) {
-                        log.warn("Selection included both units and unit members");
-                    }
-                    return UnitMemberTransferable(*membersToTransfer);
-                }
-            }
-
-            "Whether a drag here is possible."
-            shared actual Boolean canImport(TransferSupport support) {
-                if (support.isDataFlavorSupported(UnitMemberTransferable.flavor),
-                        is JTree.DropLocation dropLocation = support.dropLocation,
-                        exists last = dropLocation.path?.lastPathComponent,
-                        is IUnit|UnitMember lastObj = wtModel.getModelObject(last)) {
-                    return true;
-                } else if (support.isDataFlavorSupported(UnitTransferable.flavor),
-                        is JTree.DropLocation dropLocation = support.dropLocation,
-                        exists last = dropLocation.path?.lastPathComponent,
-                        is String lastObj = wtModel.getModelObject(last)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-
-            "Handle a drop."
-            shared actual Boolean importData(TransferSupport support) {
-                if (canImport(support),
-                        is JTree.DropLocation dropLocation = support.dropLocation,
-                        exists path = dropLocation.path,
-                        exists pathLast = path.lastPathComponent) {
-                    Object tempTarget;
-                    Object local = wtModel.getModelObject(pathLast);
-                    if (is UnitMember local) {
-                        TreePath pathParent = path.parentPath;
-                        tempTarget = wtModel.getModelObject(pathParent.lastPathComponent);
-                    } else {
-                        tempTarget = local;
-                    }
-                    Transferable trans = support.transferable;
-                    try {
-                        if (is IUnit tempTarget,
-                                trans.isDataFlavorSupported(
-                                    UnitMemberTransferable.flavor)) {
-                            assert (is [UnitMember, IUnit][] list =
-                                    trans.getTransferData(UnitMemberTransferable.flavor));
-                            for ([member, unit] in list) {
-                                wtModel.moveMember(member, unit, tempTarget);
-                            }
-                            return true;
-                        } else if (is String tempTarget,
-                                trans.isDataFlavorSupported(UnitTransferable.flavor)) {
-                            assert (is <IUnit&HasMutableKind>[] list =
-                                    trans.getTransferData(UnitTransferable.flavor));
-                            for (unit in list) {
-                                String priorKind = unit.kind;
-                                unit.kind = tempTarget;
-                                wtModel.moveItem(unit, priorKind);
-                            }
-                            return true;
-                        } else {
-                            return false;
-                        }
-                    } catch (UnsupportedFlavorException except) {
-                        log.error("Impossible unsupported data flavor", except);
-                        return false;
-                    } catch (IOException except) {
-                        log.error("I/O error in transfer after we checked", except);
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            }
-        }
-        transferHandler = workerTreeTransferHandler;
+        transferHandler = WorkerTreeTransferHandler(selectionModel);
 
         // TODO: Can we move this out of the JTree, at least?
         object unitMemberCellRenderer extends DefaultTreeCellRenderer() {
