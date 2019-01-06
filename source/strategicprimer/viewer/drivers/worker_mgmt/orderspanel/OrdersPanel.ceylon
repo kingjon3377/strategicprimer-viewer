@@ -28,13 +28,28 @@ import lovelace.util.common {
 import java.awt.event {
     KeyEvent
 }
-class OrdersPanel(Integer currentTurn, variable Player currentPlayer,
-            {IUnit*}(Player, String) playerUnits,
-            String(IUnit, Integer) ordersSupplier,
+final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
+    variable Player currentPlayer;
+    {IUnit*}(Player, String) playerUnits;
+    String(IUnit, Integer) ordersSupplier;
+    Anything(IUnit, Integer, String)? ordersConsumer;
+    Anything() modificationListener;
+    SpinnerNumberModel spinnerModel;
+    JTextArea area;
+    shared new (Integer currentTurn, Player currentPlayer,
+            {IUnit*}(Player, String) playerUnits, String(IUnit, Integer) ordersSupplier,
             Anything(IUnit, Integer, String)? ordersConsumer,
             Anything() modificationListener, SpinnerNumberModel spinnerModel,
-            JTextArea area)
-        extends BorderedPanel() satisfies OrdersContainer {
+            JTextArea area) extends BorderedPanel() {
+        this.currentPlayer = currentPlayer;
+        this.playerUnits = playerUnits;
+        this.ordersSupplier = ordersSupplier;
+        this.ordersConsumer = ordersConsumer;
+        this.modificationListener = modificationListener;
+        this.spinnerModel = spinnerModel;
+        this.area = area;
+    }
+
     variable Anything selection = null;
     "If a unit is selected, change its orders to what the user wrote."
     shared actual void apply() {
