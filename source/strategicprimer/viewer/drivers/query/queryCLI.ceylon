@@ -646,8 +646,13 @@ shared class QueryCLIFactory() satisfies ModelDriverFactory {
 
 "A driver for 'querying' the driver model about various things."
 // FIXME: Write GUI equivalent of query CLI
-shared class QueryCLI(ICLIHelper cli, model) satisfies CLIDriver {
+shared class QueryCLI satisfies CLIDriver {
     shared actual IDriverModel model;
+    ICLIHelper cli;
+    shared new (ICLIHelper cli, IDriverModel model) {
+        this.cli = cli;
+        this.model = model;
+    }
     "Accept and respond to commands."
     shared actual void startDriver() {
         QueryHelper helper = QueryHelper(model, cli, HuntingModel(model.map));
