@@ -257,6 +257,14 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel);
     tree.addUnitMemberListener(mdp);
 
+    void selectTodoText() {
+        for (string in ["fixme", "todo", "xxx"]) {
+            if (ordersPanelObj.selectText(string)) {
+                break;
+            }
+        }
+    }
+
     void jumpNext() {
         assert (is IWorkerTreeModel treeModel = tree.model);
         TreePath? currentSelection = tree.selectionModel.selectionPath;
@@ -264,7 +272,9 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
                 treeModel.nextProblem(currentSelection, mainMap.currentTurn)) {
             tree.expandPath(nextPath);
             tree.setSelectionRow(tree.getRowForPath(nextPath));
-            // TODO: Should select the "TODO" or "FIXME" in the orders window.
+            // selectTodoText isn't inlined because we need to make sure the
+            // tree-selection listeners get updated
+            SwingUtilities.invokeLater(selectTodoText);
         } else {
             log.trace("Nowhere to jump to, about to beep");
             Toolkit.defaultToolkit.beep();

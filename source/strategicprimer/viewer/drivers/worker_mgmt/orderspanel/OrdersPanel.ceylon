@@ -106,6 +106,19 @@ final class OrdersPanel extends BorderedPanel satisfies OrdersContainer {
         }
     }
 
+    shared actual Boolean selectText(String selection) {
+        String text = area.text.lowercased;
+        Integer index = text.indexOf(selection.lowercased);
+        if (index.negative) {
+            return false;
+        } else {
+            area.requestFocusInWindow();
+            area.caretPosition = index;
+            area.moveCaretPosition(index + selection.size);
+            return true;
+        }
+    }
+
     spinnerModel.addChangeListener(silentListener(revert));
 
     area.addKeyListener(EnterListener(apply));
