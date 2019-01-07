@@ -257,7 +257,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel);
     tree.addUnitMemberListener(mdp);
 
-    void jumpNext(ActionEvent _) {
+    void jumpNext() {
         assert (is IWorkerTreeModel treeModel = tree.model);
         TreePath? currentSelection = tree.selectionModel.selectionPath;
         if (exists nextPath =
@@ -271,7 +271,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         }
     }
     value jumpButton = listenedButton(
-        "Jump to Next Blank (``platform.shortcutDescription``J)", jumpNext);
+        "Jump to Next Blank (``platform.shortcutDescription``J)", silentListener(jumpNext));
 
     StrategyExporter strategyExporter = StrategyExporter(model, options);
     void writeStrategy(PathWrapper file) => strategyExporter
@@ -291,8 +291,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
             JLabel("Contents of the world you know about, for reference:"),
             JScrollPane(createReportTree(reportModel)), null), mdp, 0.6));
 
-    createHotKey(jumpButton, "jumpToNext", jumpNext, JComponent.whenInFocusedWindow,
-        createAccelerator(KeyEvent.vkJ));
+    createHotKey(jumpButton, "jumpToNext", silentListener(jumpNext),
+        JComponent.whenInFocusedWindow, createAccelerator(KeyEvent.vkJ));
 
     TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
     menuHandler.register(silentListener(expander.expandAll), "expand all");
