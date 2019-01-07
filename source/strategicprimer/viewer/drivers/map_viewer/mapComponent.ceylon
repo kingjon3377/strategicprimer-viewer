@@ -210,41 +210,32 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
     arrowListenerInitializer.setUpArrowListeners(dsl, localInputMap, localActionMap);
 
     object mapSizeListener extends ComponentAdapter() {
+        // TODO: Split the difference instead of only expanding/contracting on  'max' side
+        Integer[2] constrain(Integer total, Integer visible, Integer oldMinimum) {
+            if (visible >= total) {
+                return [0, total - 1];
+            } else if (oldMinimum + visible >= total) {
+                return [total - visible - 2, total - 1];
+            } else {
+                return [oldMinimum, oldMinimum + visible - 1];
+            }
+        }
+        Integer[4] concat(Integer[2] one, Integer[2] two) =>
+            [one.first, one.rest.first, two.first, two.rest.first];
         shared actual void componentResized(ComponentEvent event) {
             Integer tileSize = scaleZoom(mapModel.zoomLevel,
                 mapModel.mapDimensions.version);
             Integer visibleColumns = outer.width / tileSize;
             Integer visibleRows = outer.height / tileSize;
-            variable Integer minimumColumn = mapModel.visibleDimensions.minimumColumn;
-            variable Integer maximumColumn = mapModel.visibleDimensions.maximumColumn;
-            variable Integer minimumRow = mapModel.visibleDimensions.minimumRow;
-            variable Integer maximumRow = mapModel.visibleDimensions.maximumRow;
+            VisibleDimensions oldDimensions = mapModel.visibleDimensions;
             MapDimensions mapDimensions = mapModel.mapDimensions;
-            if (visibleColumns != mapModel.visibleDimensions.width ||
-                    visibleRows != mapModel.visibleDimensions.height) {
-                // TODO: Extract a helper function, producing [min, max] Tuples, since we use the same algorithm for columns and rows
-                Integer totalColumns = mapDimensions.columns;
-                if (visibleColumns >= totalColumns) {
-                    minimumColumn = 0;
-                    maximumColumn = totalColumns - 1;
-                } else if (minimumColumn + visibleColumns >= totalColumns) {
-                    maximumColumn = totalColumns - 1;
-                    minimumColumn = totalColumns - visibleColumns - 2;
-                } else {
-                    maximumColumn = (minimumColumn + visibleColumns) - 1;
-                }
-                Integer totalRows = mapDimensions.rows;
-                if (visibleRows >= totalRows) {
-                    minimumRow = 0;
-                    maximumRow = totalRows - 1;
-                } else if ((minimumRow + visibleRows) >= totalRows) {
-                    maximumRow = totalRows - 1;
-                    minimumRow = totalRows - visibleRows - 2;
-                } else {
-                    maximumRow = minimumRow + visibleRows - 1;
-                }
-                mapModel.visibleDimensions = VisibleDimensions(minimumRow, maximumRow,
-                    minimumColumn, maximumColumn);
+            if (visibleColumns != oldDimensions.width ||
+                    visibleRows != oldDimensions.height) {
+                mapModel.visibleDimensions =
+                    VisibleDimensions(*concat(constrain(mapDimensions.rows, visibleRows,
+                            oldDimensions.minimumRow),
+                        constrain(mapDimensions.columns, visibleColumns,
+                            oldDimensions.minimumColumn)));
             }
         }
 
