@@ -159,8 +159,11 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                     orders[unit] = "(From turn #``ordersTurn``) ``unitOrders``";
                 }
             }
-            writer.writeLine("[``playerName``");
-            // TODO: Add 'country' field to Player and use it here if non-empty
+            writer.writeLine("[Player: ``playerName``");
+            if (exists country = currentPlayer.country, !country.empty) {
+                writer.write("Country: ");
+                writer.writeLine(country);
+            }
             writer.writeLine("Turn ``turn``]");
             writer.writeLine();
             writer.writeLine("Inventions: TODO: any?");
