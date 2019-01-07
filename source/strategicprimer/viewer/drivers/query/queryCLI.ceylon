@@ -393,15 +393,21 @@ shared class QueryCLI satisfies CLIDriver {
 
     """Handle herding mammals. Returns how many hours each herder spends "herding." """
     Integer herdMammals(MammalModel animal, Integer count, Integer flockPerHerder) {
-        // TODO: Use multiple print()s instead of interpolation
-        cli.println("Taking the day's two milkings together, tending the animals takes ``
-            flockPerHerder * animal.dailyTimePerHead`` minutes, or ``flockPerHerder *
-            (animal.dailyTimePerHead - 10)`` with expert herders, plus ``
-            animal.dailyTimeFloor`` minutes to gather them");
+        cli.print("Taking the day's two milkings together, tending the animals takes ");
+        cli.print((flockPerHerder * animal.dailyTimePerHead).string);
+        cli.println(" minutes, or");
+        cli.print((flockPerHerder * (animal.dailyTimePerHead - 10)).string);
+        cli.print(" with expert herders, plus ");
+        cli.print(animal.dailyTimeFloor.string);
+        cli.println(" minutes to gather them. This produces ");
         Quantity base = animal.scaledProduction(count);
         Float production = base.floatNumber;
-        cli.println("This produces ``formatFloat(production)`` ``base.units``, ``
-            formatFloat(animal.scaledPoundsProduction(count))`` lbs, of milk per day.`");
+        cli.print(formatFloat(production));
+        cli.print(" ");
+        cli.print(base.units);
+        cli.print(", ");
+        cli.print(formatFloat(animal.scaledPoundsProduction(count)));
+        cli.println(" lbs, of milk per day.");
         Integer cost;
         assert (exists experts = cli.inputBooleanInSeries("Are the herders experts? "));
         if (experts) {
@@ -414,17 +420,22 @@ shared class QueryCLI satisfies CLIDriver {
 
     """Handle herding mammals. Returns how many hours each herder spends "herding." """
     Integer herdPoultry(PoultryModel bird, Integer count, Integer flockPerHerder) {
-        // TODO: Reformat to avoid interpolations
-        cli.println("Gathering eggs takes ``bird
-            .dailyTime(flockPerHerder)`` minutes; cleaning up after them,");
-        cli.println("which should be done at least every ``bird.extraChoresInterval
-            + 1`` turns, takes ``formatFloat(bird
-                .dailyExtraTime(flockPerHerder) / 60.0)`` hours.");
+        cli.print("Gathering eggs takes ");
+        cli.print(bird.dailyTime(flockPerHerder).string);
+        cli.println(" minutes; cleaning up after them,");
+        cli.print("which should be done at least every ");
+        cli.print((bird.extraChoresInterval + 1).string);
+        cli.print(" turns, takes ");
+        cli.print(formatFloat(bird.dailyExtraTime(flockPerHerder) / 60.0));
+        cli.println(" hours. This produces");
         Quantity base = bird.scaledProduction(count);
         Float production = base.floatNumber;
-        cli.println("This produces ``Float.format(production, 0, 0)`` ``
-            base.units``, totaling ``formatFloat(bird.scaledPoundsProduction(count))
-            `` lbs.");
+        cli.print(Float.format(production, 0, 0));
+        cli.print(" ");
+        cli.print(base.units);
+        cli.print(", totaling ");
+        cli.print(formatFloat(bird.scaledPoundsProduction(count)));
+        cli.println(" lbs.");
         Integer cost;
         assert (exists cleaning =
             cli.inputBooleanInSeries("Do they do the cleaning this turn? "));
@@ -533,27 +544,36 @@ shared class QueryCLI satisfies CLIDriver {
                 //for (town in map.fixtures[location].narrow<ITownFixture>()) { // TODO: syntax sugar once compiler bug fixed
                 if (town.status == TownStatus.active, exists population = town.population,
                         !population.yearlyProduction.empty) {
-                    // TODO: Refactor to avoid interpolations
-                    cli.print(
-                        "At ``location````comparator.distanceString(location, "base")``");
-                    cli.print(": ``town.name``, a ``town.townSize`` ");
+                    cli.print("At ");
+                    cli.print(location.string);
+                    cli.print(comparator.distanceString(location, "base"));
+                    cli.print(": ");
+                    cli.print(town.name);
+                    cli.print(", a");
+                    cli.print(town.townSize.string);
+                    cli.print(" ");
                     if (is Village town, town.race != "human") {
-                        cli.print("``town.race`` village");
+                        cli.print(town.race);
+                        cli.print(" village");
                     } else {
                         cli.print(town.kind);
                     }
                     cli.println(". Its yearly production:");
                     for (resource in population.yearlyProduction) {
-                        String unitsString;
+                        cli.print("- ");
+                        cli.print(resource.kind);
+                        cli.print(": ");
+                        cli.print(resource.quantity.number.string);
                         if (resource.quantity.units.empty) {
-                            unitsString = "";
+                            cli.print(" ");
                         } else if ("dozen" == resource.quantity.units) {
-                            unitsString = "dozen ";
+                            cli.print(" dozen ");
                         } else {
-                            unitsString = "``resource.quantity.units`` of ";
+                            cli.print(" ");
+                            cli.print(resource.quantity.units);
+                            cli.print(" of ");
                         }
-                        cli.println("- ``resource.kind``: ``resource.quantity.number`` ``
-                        unitsString````resource.contents``");
+                        cli.println(resource.contents);
                         if (resource.contents == "milk") {
                             cli.println("- Corresponding livestock");
                         } else if (resource.contents == "eggs") {
