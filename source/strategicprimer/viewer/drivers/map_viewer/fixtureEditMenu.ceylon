@@ -51,15 +51,13 @@ shared class FixtureEditMenu(
         Anything() mutationListener,
         "Listeners to notify when something is renamed or changes kind."
         IWorkerTreeModel* changeListeners) extends JPopupMenu() {
-    // TODO: Make combined addMenuItem(item, handlerIfEnabled, conditionToEnable) to condense the below code
-    void addMenuItem(JMenuItem item, Anything(ActionEvent) listener) {
+    void addMenuItem(JMenuItem item, Anything(ActionEvent) listener, Boolean enabled) {
         add(item);
-        item.addActionListener(listener);
-    }
-
-    void addDisabledMenuItem(JMenuItem item) {
-        add(item);
-        item.enabled = false;
+        if (enabled) {
+            item.addActionListener(listener);
+        } else {
+            item.enabled = false;
+        }
     }
 
     void renameHandler() {
@@ -80,11 +78,8 @@ shared class FixtureEditMenu(
         }
     }
 
-    if (is HasMutableName fixture) {
-        addMenuItem(JMenuItem("Rename", KeyEvent.vkN), silentListener(renameHandler));
-    } else {
-        addDisabledMenuItem(JMenuItem("Rename", KeyEvent.vkN));
-    }
+    addMenuItem(JMenuItem("Rename", KeyEvent.vkN), silentListener(renameHandler),
+        fixture is HasMutableName);
 
     void changeKindHandler() {
         assert (is HasMutableKind fixture);
@@ -104,12 +99,8 @@ shared class FixtureEditMenu(
         }
     }
 
-    if (is HasMutableKind fixture) {
-        addMenuItem(JMenuItem("Change kind", KeyEvent.vkK),
-            silentListener(changeKindHandler));
-    } else {
-        addDisabledMenuItem(JMenuItem("Change kind", KeyEvent.vkK));
-    }
+    addMenuItem(JMenuItem("Change kind", KeyEvent.vkK),
+        silentListener(changeKindHandler), fixture is HasMutableKind);
 
     void changeOwnerHandler() {
         assert (is HasMutableOwner fixture);
@@ -122,12 +113,8 @@ shared class FixtureEditMenu(
         }
     }
 
-    if (is HasMutableOwner fixture) {
-        addMenuItem(JMenuItem("Change owner", KeyEvent.vkO),
-            silentListener(changeOwnerHandler));
-    } else {
-        addDisabledMenuItem(JMenuItem("Change owner", KeyEvent.vkO));
-    }
+    addMenuItem(JMenuItem("Change owner", KeyEvent.vkO),
+        silentListener(changeOwnerHandler), fixture is HasMutableOwner);
 
     void dismissHandler() {
         assert (is UnitMember fixture);
@@ -143,11 +130,8 @@ shared class FixtureEditMenu(
         }
     }
 
-    if (is UnitMember fixture) {
-        addMenuItem(JMenuItem("Dismiss", KeyEvent.vkD), silentListener(dismissHandler));
-    } else {
-        addDisabledMenuItem(JMenuItem("Dismiss", KeyEvent.vkD));
-    }
+    addMenuItem(JMenuItem("Dismiss", KeyEvent.vkD), silentListener(dismissHandler),
+        fixture is UnitMember);
 
     todo("Generalize splitting to HasPopulation more generally")
     void splitAnimalHandler() {
@@ -171,11 +155,14 @@ shared class FixtureEditMenu(
         }
     }
 
-    if (is Animal fixture, fixture.population > 1) {
-        addMenuItem(JMenuItem("Split animal population", KeyEvent.vkS),
-            silentListener(splitAnimalHandler));
+    Boolean isAnimalPopulation;
+    if (is Animal fixture) {
+        isAnimalPopulation = fixture.population > 1;
     } else {
-        addDisabledMenuItem(JMenuItem("Split animal population", KeyEvent.vkS));
+        isAnimalPopulation = false;
     }
+
+    addMenuItem(JMenuItem("Split animal population", KeyEvent.vkS),
+        silentListener(splitAnimalHandler), isAnimalPopulation);
     // TODO: Add "Sort" for units and fortresses
 }
