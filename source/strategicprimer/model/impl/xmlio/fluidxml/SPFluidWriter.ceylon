@@ -170,6 +170,9 @@ shared class SPFluidWriter() satisfies SPWriter {
             writeTag(ostream, "player", indentation, true);
             writeAttributes(ostream, "number"->obj.playerId, "code_name"->obj.name);
             writeNonEmptyAttributes(ostream, "portrait"->obj.portrait);
+            if (exists country = obj.country) {
+                writeNonEmptyAttributes(ostream, "country"->country);
+            }
         }
     }
 

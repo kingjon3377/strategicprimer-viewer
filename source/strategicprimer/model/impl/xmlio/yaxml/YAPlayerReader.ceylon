@@ -22,16 +22,18 @@ class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
         extends YAAbstractReader<Player>(warning, idRegistrar) {
     shared actual Player read(StartElement element, QName parent, {XMLEvent*} stream) {
         requireTag(element, parent, "player");
-        expectAttributes(element, "number", "code_name", "portrait");
+        expectAttributes(element, "number", "code_name", "portrait", "country");
         requireNonEmptyParameter(element, "number", true);
         requireNonEmptyParameter(element, "code_name", true);
+        String countryRaw = getParameter(element, "country", "");
+        String? country = if (countryRaw.empty) then null else countryRaw;
         // We're thinking about storing "standing orders" in the XML under the <player>
         // tag; so as to not require players to upgrade to even read their maps once we
         // start doing so, we *now* only *warn* instead of *dying* if the XML contains
         // that idiom.
         spinUntilEnd(element.name, stream, ["orders", "results", "science"]);
         value retval = PlayerImpl(getIntegerParameter(element, "number"),
-            getParameter(element, "code_name"));
+            getParameter(element, "code_name"), country);
         retval.portrait = getParameter(element, "portrait", "");
         return retval;
     }
@@ -44,6 +46,9 @@ class YAPlayerReader(Warning warning, IDRegistrar idRegistrar)
             writeProperty(ostream, "number", obj.playerId);
             writeProperty(ostream, "code_name", obj.name);
             writeNonemptyProperty(ostream, "portrait", obj.portrait);
+            if (exists country = obj.country) {
+                writeNonemptyProperty(ostream, "country", country);
+            }
             closeLeafTag(ostream);
         }
     }

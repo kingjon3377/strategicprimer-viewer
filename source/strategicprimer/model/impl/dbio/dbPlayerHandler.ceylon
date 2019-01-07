@@ -13,6 +13,12 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+import java.sql {
+    Types
+}
+import lovelace.util.common {
+    as
+}
 
 object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
         satisfies MapContentsReader {
@@ -21,20 +27,23 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
                id INTEGER NOT NULL,
                codename VARCHAR(64) NOT NULL,
                current BOOLEAN NOT NULL,
-               portrait VARCHAR(256)
+               portrait VARCHAR(256),
+               country VARCHAR(64)
            );"""
     ];
 
     shared actual void write(Sql db, Player obj, IMapNG context) =>
-        db.Insert("""INSERT INTO players (id, codename, current, portrait)
-                     VALUES(?, ?, ?, ?);""")
-                .execute(obj.playerId, obj.name, obj.current, obj.portrait);
+        db.Insert("""INSERT INTO players (id, codename, current, portrait, country)
+                     VALUES(?, ?, ?, ?, ?);""")
+                .execute(obj.playerId, obj.name, obj.current, obj.portrait,
+                    obj.country else SqlNull(Types.varchar));
 
     void readPlayer(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
         assert (is Integer id = row["id"], is String name = row["codename"],
             is Boolean current = dbMapReader.databaseBoolean(row["current"]),
-            is String|SqlNull portrait = row["portrait"]);
-        value player = PlayerImpl(id, name);
+            is String|SqlNull portrait = row["portrait"],
+            is String|SqlNull country = row["country"]);
+        value player = PlayerImpl(id, name, as<String>(country));
         player.current = current;
         if (is String portrait) {
             player.portrait = portrait;

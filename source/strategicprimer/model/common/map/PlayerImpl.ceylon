@@ -1,9 +1,10 @@
 import lovelace.util.common {
-    todo
+    todo,
+    anythingEqual
 }
 
 "A representation of a player in the game."
-shared class PlayerImpl(playerId, name) satisfies MutablePlayer {
+shared class PlayerImpl(playerId, name, country = null) satisfies MutablePlayer {
     "The player's number."
     shared actual Integer playerId;
 
@@ -14,10 +15,14 @@ shared class PlayerImpl(playerId, name) satisfies MutablePlayer {
     todo("Should this really be encapsulated in Player, not PlayerCollection?")
     shared actual variable Boolean current = false;
 
-    "An object is equal iff it is a Player with the same number and name."
+    "The country the player is associated with."
+    shared actual String? country;
+
+    "An object is equal iff it is a Player with the same number, name, and country."
     shared actual Boolean equals(Object obj) {
         if (is Player obj) {
-            return playerId == obj.playerId && name == obj.name;
+            return playerId == obj.playerId && name == obj.name &&
+                anythingEqual(country, obj.country);
         } else {
             return false;
         }

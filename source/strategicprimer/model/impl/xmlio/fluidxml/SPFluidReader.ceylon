@@ -365,7 +365,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         requireTag(element, parent, "player");
         requireNonEmptyAttribute(element, "number", true, warner);
         requireNonEmptyAttribute(element, "code_name", true, warner);
-        expectAttributes(element, warner, "number", "code_name", "portrait");
+        String country = getAttribute(element, "country", "");
+        expectAttributes(element, warner, "number", "code_name", "country", "portrait");
         // We're thinking about storing "standing orders" in the XML under the <player>
         // tag, and also possibly scientific progress; so as to not require players to
         // upgrade to even read their maps once we start doing so, we *now* only *warn*
@@ -384,7 +385,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             }
         }
         value retval = PlayerImpl(getIntegerAttribute(element, "number"),
-            getAttribute(element, "code_name"));
+            getAttribute(element, "code_name"),
+            if (country.empty) then null else country);
         retval.portrait = getAttribute(element, "portrait", "");
         return retval;
     }

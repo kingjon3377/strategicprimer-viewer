@@ -12,4 +12,7 @@ shared interface Player satisfies Comparable<Player>&HasName&HasPortrait {
 
     "The filename of a flag for the player."
     shared formal actual variable String portrait;
+
+    "The country the player is associated with."
+    shared formal String? country;
 }

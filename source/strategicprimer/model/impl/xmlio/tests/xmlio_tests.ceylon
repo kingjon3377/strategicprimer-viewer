@@ -687,6 +687,7 @@ object xmlTests {
     shared void testPlayerSerialization() {
         assertSerialization("First Player serialization test", PlayerImpl(1, "one"));
         assertSerialization("Second Player serialization test", PlayerImpl(2, "two"));
+        assertSerialization("Player with country", PlayerImpl(3, "three", "country"));
         assertUnwantedChild<Player>(
             """<player code_name="one" number="1"><troll /></player>""", null);
         assertMissingProperty<Player>("""<player code_name="one" />""", "number", null);
