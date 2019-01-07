@@ -270,8 +270,10 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
             Toolkit.defaultToolkit.beep();
         }
     }
+    void jumpNextWrapped() => SwingUtilities.invokeLater(jumpNext);
     value jumpButton = listenedButton(
-        "Jump to Next Blank (``platform.shortcutDescription``J)", silentListener(jumpNext));
+        "Jump to Next Blank (``platform.shortcutDescription``J)",
+        silentListener(jumpNextWrapped));
 
     StrategyExporter strategyExporter = StrategyExporter(model, options);
     void writeStrategy(PathWrapper file) => strategyExporter
@@ -291,7 +293,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
             JLabel("Contents of the world you know about, for reference:"),
             JScrollPane(createReportTree(reportModel)), null), mdp, 0.6));
 
-    createHotKey(jumpButton, "jumpToNext", silentListener(jumpNext),
+    createHotKey(jumpButton, "jumpToNext",
+        silentListener(jumpNextWrapped),
         JComponent.whenInFocusedWindow, createAccelerator(KeyEvent.vkJ));
 
     TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
