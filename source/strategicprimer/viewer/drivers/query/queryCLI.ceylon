@@ -40,7 +40,6 @@ import strategicprimer.drivers.common.cli {
 }
 import lovelace.util.common {
     todo,
-    matchingValue,
     simpleMap,
     defer,
     PathWrapper
@@ -234,8 +233,7 @@ shared class QueryCLI satisfies CLIDriver {
     void addToSubMaps(Point point, TileFixture fixture, Boolean zero) {
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.subordinateMaps) {
-                if (!map.fixtures.get(point) // TODO: Replace matchingValue() with .map().any(fixture.id.equals)
-                        .any(matchingValue(fixture.id, TileFixture.id))) {
+                if (!map.fixtures.get(point).map(TileFixture.id).any(fixture.id.equals)) {
                     map.addFixture(point, fixture.copy(zero));
                 }
             }
