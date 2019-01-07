@@ -614,42 +614,33 @@ shared class QueryCLI satisfies CLIDriver {
         "trade"->tradeCommand
     );
 
-    """Ask the user for a command; if "quit", or on EOF, return false, otherwise handle it
-       and return true."""
-    // TODO: Inline into sole caller
-    shared Boolean handleCommand() {
-        String? command = cli.inputString("Command:")?.lowercased;
-        if (is Null command) {
-            return false;
-        }
-        {<String->Anything()>*} matches =
-            commands.filterKeys(shuffle(String.startsWith)(command));
-        if ("quit".startsWith(command) || "exit".startsWith(command)) {
-            if (matches.empty) {
-                return false;
-            } else {
+    "Accept and respond to commands."
+    shared actual void startDriver() {
+        while (exists command = cli.inputString("Command:")?.lowercased) {
+            {<String->Anything()>*} matches =
+                commands.filterKeys(shuffle(String.startsWith)(command));
+            if ("quit".startsWith(command) || "exit".startsWith(command)) {
+                if (matches.empty) {
+                    return;
+                } else {
+                    cli.println("That command was ambiguous between the following: ");
+                    cli.println(", ".join(["quit", "exit"]
+                        .filter(shuffle(String.startsWith)(command))
+                        .chain(matches.map(Entry.key))));
+                    replUsage();
+                    continue;
+                }
+            }
+            if (!matches.rest.empty) {
                 cli.println("That command was ambiguous between the following: ");
-                cli.println(", ".join(["quit", "exit"]
-                    .filter(shuffle(String.startsWith)(command))
-                    .chain(matches.map(Entry.key))));
+                cli.println(", ".join(matches.map(Entry.key)));
+                replUsage();
+            } else if (exists first = matches.first) {
+                first.item();
+            } else {
+                cli.println("Unknown command.");
                 replUsage();
             }
         }
-        if (!matches.rest.empty) {
-            cli.println("That command was ambiguous between the following: ");
-            cli.println(", ".join(matches.map(Entry.key)));
-            replUsage();
-        } else if (exists first = matches.first) {
-            first.item();
-        } else {
-            cli.println("Unknown command.");
-            replUsage();
-        }
-        return true;
-    }
-
-    "Accept and respond to commands."
-    shared actual void startDriver() {
-        while (handleCommand()) {}
     }
 }
