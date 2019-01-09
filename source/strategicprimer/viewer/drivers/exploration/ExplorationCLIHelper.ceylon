@@ -41,7 +41,8 @@ import strategicprimer.drivers.exploration.common {
     MovementCostListener,
     TraversalImpossibleException,
     simpleMovementModel,
-    pathfinder
+    pathfinder,
+    HuntingModel
 }
 import strategicprimer.model.common.map.fixtures.towns {
     Village,
@@ -208,10 +209,10 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
                 assert (exists terrain = model.map.baseTerrain[destPoint]);
                 if (TileType.ocean == terrain) {
                     tracksAnimal = huntingModel.fish(destPoint).map(Entry.item).first
-                        else HuntingModel.NothingFound.nothingFound;
+                        else HuntingModel.nothingFound;
                 } else {
                     tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first
-                        else HuntingModel.NothingFound.nothingFound;
+                        else HuntingModel.nothingFound;
                 }
 
                 if (is Animal tracksAnimal) {

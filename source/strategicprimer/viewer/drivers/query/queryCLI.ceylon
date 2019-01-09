@@ -60,13 +60,11 @@ import strategicprimer.model.common.map.fixtures.mobile {
 }
 import strategicprimer.drivers.exploration.common {
     surroundingPointIterable,
-    pathfinder
+    pathfinder,
+    HuntingModel
 }
 import strategicprimer.model.common {
     DistanceComparator
-}
-import strategicprimer.viewer.drivers.exploration {
-    HuntingModel
 }
 import ceylon.logging {
     logger,

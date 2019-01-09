@@ -105,7 +105,8 @@ import strategicprimer.drivers.exploration.common {
     MovementCostListener,
     MovementCostSource,
     TraversalImpossibleException,
-    simpleMovementModel
+    simpleMovementModel,
+    HuntingModel
 }
 import strategicprimer.drivers.common {
     SelectionChangeListener,

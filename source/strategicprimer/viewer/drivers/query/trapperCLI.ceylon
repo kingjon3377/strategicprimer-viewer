@@ -19,9 +19,6 @@ import strategicprimer.model.common.map {
     HasName,
     IMutableMapNG
 }
-import strategicprimer.viewer.drivers.exploration {
-    HuntingModel
-}
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
@@ -36,6 +33,9 @@ import ceylon.numeric.float {
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     AnimalTracks
+}
+import strategicprimer.drivers.exploration.common {
+    HuntingModel
 }
 
 "Possible actions in the trapping CLI; top-level so we can switch on the cases,

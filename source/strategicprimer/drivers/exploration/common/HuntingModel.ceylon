@@ -29,6 +29,10 @@ shared class HuntingModel {
         shared new nothingFound {}
     }
 
+    // TODO: Remove once Ceylon 1.4 (or even 1.3.4) is released
+    // (workaround for eclipse/ceylon#7376)
+    shared static NothingFound nothingFound => NothingFound.nothingFound;
+
     """The "nothing" value we insert."""
     shared static String noResults = "Nothing ...";
 
