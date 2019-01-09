@@ -20,7 +20,7 @@ import ceylon.collection {
 import lovelace.util.jvm {
     platform,
     BoxAxis,
-    listenedButton,
+    ListenedButton,
     boxPanel
 }
 
@@ -48,7 +48,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     setPanelSizes(retval);
 
     JPanel first = boxPanel(BoxAxis.lineAxis);
-    first.add(listenedButton("+", (ActionEvent event) {
+    first.add(ListenedButton("+", (ActionEvent event) {
         // I had wondered if Component.requestFocusInWindow() would make CardLayout flip
         // to the card containing the component, but it apparently doesn't work that way.
         layoutObj.next(retval);
@@ -73,10 +73,10 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     field.setActionCommand("OK");
 
     JPanel okPanel = boxPanel(BoxAxis.lineAxis);
-    JButton okButton = listenedButton("OK", okListener);
+    JButton okButton = ListenedButton("OK", okListener);
     okPanel.add(okButton);
 
-    JButton cancelButton = listenedButton("Cancel", (ActionEvent event) {
+    JButton cancelButton = ListenedButton("Cancel", (ActionEvent event) {
         layoutObj.first(retval);
         field.text = "";
     });

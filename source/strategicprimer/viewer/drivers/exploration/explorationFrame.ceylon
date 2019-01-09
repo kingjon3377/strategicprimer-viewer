@@ -49,7 +49,7 @@ import lovelace.util.jvm {
     horizontalSplit,
     ListModelWrapper,
     BorderedPanel,
-    listenedButton,
+    ListenedButton,
     createHotKey,
     verticalSplit,
     ImprovedComboBox,
@@ -253,7 +253,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
                 null, mpField),
             BorderedPanel.horizontalPanel(JLabel("Unit's Relative Speed"),
                 null, ImprovedComboBox<Speed>.withModel(speedModel)),
-            listenedButton("Start exploring!", buttonListener))));
+            ListenedButton("Start exploring!", buttonListener))));
 
     JPanel tilesPanel = JPanel(GridLayout(3, 12, 2, 2));
 
@@ -319,7 +319,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
         shared actual void removeCompletionListener(Anything() listener) =>
                 completionListeners.remove(listener);
 
-        JButton explorerChangeButton = listenedButton("Select a different explorer",
+        JButton explorerChangeButton = ListenedButton("Select a different explorer",
             (ActionEvent event) {
                 for (listener in completionListeners) {
                     listener();

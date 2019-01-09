@@ -10,7 +10,7 @@ import javax.swing {
 }
 
 import lovelace.util.jvm {
-    listenedButton,
+    ListenedButton,
     BorderedPanel,
     verticalSplit,
     horizontalSplit,
@@ -129,7 +129,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
 
     JLabel html(String string) => JLabel("<html><p align=\"left\">``string``</p></html>");
     retval.contentPane = horizontalSplit(BorderedPanel.verticalPanel(playerLabel,
-            JScrollPane(tree), listenedButton("Add worker to selected unit ...",
+            JScrollPane(tree), ListenedButton("Add worker to selected unit ...",
                 newWorkerListener)),
         verticalSplit(BorderedPanel.verticalPanel(html("Worker's Jobs and Skills:"),
             JScrollPane(jobsTreeObject), null), BorderedPanel.verticalPanel(null,

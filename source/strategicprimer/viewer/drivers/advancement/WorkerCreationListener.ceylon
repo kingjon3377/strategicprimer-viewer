@@ -20,7 +20,7 @@ import javax.swing {
 import lovelace.util.jvm {
     showErrorDialog,
     platform,
-    listenedButton,
+    ListenedButton,
     BorderedPanel
 }
 
@@ -143,7 +143,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
 
         JPanel buttonPanel = JPanel(GridLayout(0, 2));
 
-        JButton addButton = listenedButton("Add Worker", silentListener(accept));
+        JButton addButton = ListenedButton("Add Worker", silentListener(accept));
         buttonPanel.add(addButton);
 
         shared void revert() {
@@ -155,7 +155,7 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
             dispose();
         }
 
-        JButton cancelButton = listenedButton("Cancel", silentListener(revert));
+        JButton cancelButton = ListenedButton("Cancel", silentListener(revert));
         buttonPanel.add(cancelButton);
 
         platform.makeButtonsSegmented(addButton, cancelButton);

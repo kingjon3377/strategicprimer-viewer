@@ -25,7 +25,7 @@ import lovelace.util.jvm {
     platform,
     centeredHorizontalBox,
     BoxAxis,
-    listenedButton
+    ListenedButton
 }
 
 import lovelace.util.common {
@@ -76,10 +76,10 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
         // skill
         hours.text = "";
     }
-    JButton okButton = listenedButton("OK", okListener);
+    JButton okButton = ListenedButton("OK", okListener);
     hours.setActionCommand("OK");
     hours.addActionListener(okListener);
-    JButton cancelButton = listenedButton("Cancel",
+    JButton cancelButton = ListenedButton("Cancel",
         // TODO: Figure out a way to defer() an assignment
                 (ActionEvent event) => hours.text = "");
     platform.makeButtonsSegmented(okButton, cancelButton);

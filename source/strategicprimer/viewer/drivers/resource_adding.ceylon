@@ -37,7 +37,7 @@ import javax.swing {
 }
 
 import lovelace.util.jvm {
-    listenedButton,
+    ListenedButton,
     ImprovedComboBox,
     StreamingLabel,
     centeredHorizontalBox,
@@ -530,7 +530,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         }
 
         resourcePanel.add(pairPanel(JLabel(""),
-            listenedButton("Add Resource", resourceListener)));
+            ListenedButton("Add Resource", resourceListener)));
         resourceUnitsBox.addSubmitListener(resourceListener);
 
         if (is JTextField editor = creationSpinner.editor) {
@@ -594,7 +594,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         }
 
         mainPanel.add(centeredHorizontalBox(implementQuantityField,
-            implementKindBox, listenedButton("Add Equipment", implementListener)));
+            implementKindBox, ListenedButton("Add Equipment", implementListener)));
         mainPanel.addGlue();
         JScrollPane scrolledLog = JScrollPane(logLabel);
         scrolledLog.minimumSize = logLabel.minimumSize;

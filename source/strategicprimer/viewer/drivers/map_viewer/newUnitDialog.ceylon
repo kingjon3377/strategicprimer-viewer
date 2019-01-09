@@ -24,7 +24,7 @@ import javax.swing {
 
 import lovelace.util.jvm {
     platform,
-    listenedButton
+    ListenedButton
 }
 
 import strategicprimer.drivers.common {
@@ -113,7 +113,7 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
     add(JLabel("ID #: "));
     idField.columns = 10;
     setupField(idField);
-    JButton okButton = listenedButton("OK", okListener);
+    JButton okButton = ListenedButton("OK", okListener);
     add(okButton);
 
     void cancelListener() {
@@ -123,7 +123,7 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
         dispose();
     }
 
-    JButton cancelButton = listenedButton("Cancel", silentListener(cancelListener));
+    JButton cancelButton = ListenedButton("Cancel", silentListener(cancelListener));
     platform.makeButtonsSegmented(okButton, cancelButton);
     add(cancelButton);
     setMinimumSize(Dimension(200, 100));

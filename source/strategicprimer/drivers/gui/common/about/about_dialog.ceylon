@@ -20,7 +20,7 @@ import javax.swing {
     JDialog
 }
 import lovelace.util.jvm {
-    listenedButton,
+    ListenedButton,
     centeredHorizontalBox,
     platform
 }
@@ -59,7 +59,7 @@ shared JDialog aboutDialog(Component? parentComponent, String? app) {
     scrollPane.minimumSize = Dimension(300, 400);
     scrollPane.preferredSize = Dimension(400, 500);
     retval.add(scrollPane, Types.nativeString(BorderLayout.center));
-    retval.add(centeredHorizontalBox(listenedButton("Close",
+    retval.add(centeredHorizontalBox(ListenedButton("Close",
                 silentListener(retval.dispose))),
         Types.nativeString(BorderLayout.pageEnd));
     retval.pack();

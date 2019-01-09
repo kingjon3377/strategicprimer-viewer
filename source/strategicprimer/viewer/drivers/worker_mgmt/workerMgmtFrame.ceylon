@@ -43,7 +43,7 @@ import javax.swing.tree {
 
 import lovelace.util.jvm {
     platform,
-    listenedButton,
+    ListenedButton,
     createHotKey,
     horizontalSplit,
     BorderedPanel,
@@ -281,7 +281,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         }
     }
     void jumpNextWrapped() => SwingUtilities.invokeLater(jumpNext);
-    value jumpButton = listenedButton(
+    value jumpButton = ListenedButton(
         "Jump to Next Blank (``platform.shortcutDescription``J)",
         silentListener(jumpNextWrapped));
 
@@ -291,8 +291,8 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     void strategyWritingListener() => SPFileChooser.save(null,
         filteredFileChooser(false, ".", null)).call(writeStrategy);
     BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
-        listenedButton("Add New Unit", silentListener(newUnitFrame.showWindow)),
-        ordersPanelObj, listenedButton("Export a proto-strategy",
+        ListenedButton("Add New Unit", silentListener(newUnitFrame.showWindow)),
+        ordersPanelObj, ListenedButton("Export a proto-strategy",
             silentListener(strategyWritingListener)));
     contentPane = horizontalSplit(verticalSplit(
         BorderedPanel.verticalPanel(

@@ -39,18 +39,16 @@ import java.lang {
     Types
 }
 
-"A factory method to construct a button and add listeners to it in one step."
-shared JButton listenedButton("The text to put on the button" String text,
-        Anything(ActionEvent)|ActionListener* listeners) {
-    JButton retval = JButton(text);
+"A button that takes its listeners as initializer parameters."
+shared class ListenedButton("The text to put on the button" String text,
+        Anything(ActionEvent)|ActionListener* listeners) extends JButton(text) {
     for (listener in listeners) {
         if (is ActionListener listener) {
-            retval.addActionListener(listener);
+            addActionListener(listener);
         } else {
-            retval.addActionListener(listener);
+            addActionListener(listener);
         }
     }
-    return retval;
 }
 
 "Show an error dialog to the user."

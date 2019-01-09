@@ -20,7 +20,7 @@ import javax.swing {
 import lovelace.util.jvm {
     platform,
     BoxAxis,
-    listenedButton,
+    ListenedButton,
     boxPanel,
     BoxPanel
 }
@@ -143,7 +143,7 @@ class SelectTileDialog(Frame? parentFrame, IViewerModel model)
 
     JPanel&BoxPanel buttonPanel = boxPanel(BoxAxis.lineAxis);
     buttonPanel.addGlue();
-    JButton okButton = listenedButton("OK", handleOK);
+    JButton okButton = ListenedButton("OK", handleOK);
 
     void cancelHandler() {
         setVisible(false);
@@ -151,7 +151,7 @@ class SelectTileDialog(Frame? parentFrame, IViewerModel model)
         columnField.text = "-1";
         dispose();
     }
-    JButton cancelButton = listenedButton("Cancel", silentListener(cancelHandler));
+    JButton cancelButton = ListenedButton("Cancel", silentListener(cancelHandler));
 
     platform.makeButtonsSegmented(okButton, cancelButton);
     buttonPanel.add(okButton);

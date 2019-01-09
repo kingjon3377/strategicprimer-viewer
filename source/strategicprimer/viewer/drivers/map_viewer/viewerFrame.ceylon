@@ -38,7 +38,7 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     centeredHorizontalBox,
     platform,
-    listenedButton,
+    ListenedButton,
     horizontalSplit,
     BorderedPanel,
     verticalSplit
@@ -156,9 +156,9 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
         table.preferredScrollableViewportSize = table.preferredSize;
         table.fillsViewportHeight = true;
         table.autoResizeMode = JTable.autoResizeLastColumn;
-        JButton allButton = listenedButton("Display All",
+        JButton allButton = ListenedButton("Display All",
             silentListener(displayAllListener));
-        JButton noneButton = listenedButton("Display None",
+        JButton noneButton = ListenedButton("Display None",
             silentListener(displayNoneListener));
         platform.makeButtonsSegmented(allButton, noneButton);
         JPanel buttonPanel = (platform.systemIsMac) then

@@ -44,7 +44,7 @@ import lovelace.util.jvm {
     showErrorDialog,
     BorderedPanel,
     platform,
-    listenedButton
+    ListenedButton
 }
 
 import strategicprimer.drivers.common {
@@ -580,7 +580,7 @@ class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
             }
         }
         for (driver in drivers) {
-            buttonPanel.add(listenedButton(driver.usage.shortDescription,
+            buttonPanel.add(ListenedButton(driver.usage.shortDescription,
                         (evt) => buttonHandler(driver)));
         }
         frame.contentPane = BorderedPanel.verticalPanel( // TODO: Extract local variable to refer to here and below

@@ -10,9 +10,8 @@
    macOS it is decidedly *not*, so to conform to the platform's HIG we must use the AWT
    equivalent. This class leaves the choice of which one to use to its callers, but
    abstracts over the differences between them.
- - The [[listenedButton]] method constructs a [[javax.swing::JButton]] and adds
-   [[listeners|java.awt.event::ActionListener]] to it in (as far as callers are concerned)
-   one operation.
+ - The [[ListenedButton]] class is a [[javax.swing::JButton]] that takes its
+   [[listeners|java.awt.event::ActionListener]] as initializer parameters.
  - The [[showErrorDialog]] method shows an error dialog to the user; it's a trivial
    wrapper around [[javax.swing::JOptionPane.showMessageDialog]].
  - The [[FunctionalGroupLayout]] class is an extension to the [[javax.swing::GroupLayout]]

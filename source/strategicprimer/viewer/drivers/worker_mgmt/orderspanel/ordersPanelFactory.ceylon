@@ -11,7 +11,7 @@ import lovelace.util.jvm {
     BorderedPanel,
     centeredHorizontalBox,
     platform,
-    listenedButton
+    ListenedButton
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
@@ -40,8 +40,8 @@ shared JPanel&OrdersContainer ordersPanel(Integer currentTurn, Player currentPla
         ordersConsumer, modificationListener, spinnerModel, area);
 
     if (exists ordersConsumer) {
-        JButton applyButton = listenedButton("Apply", silentListener(retval.apply));
-        JButton revertButton = listenedButton("Revert", silentListener(retval.revert));
+        JButton applyButton = ListenedButton("Apply", silentListener(retval.apply));
+        JButton revertButton = ListenedButton("Revert", silentListener(retval.revert));
         platform.makeButtonsSegmented(applyButton, revertButton);
 
         JPanel buttonPanel = (platform.systemIsMac) then

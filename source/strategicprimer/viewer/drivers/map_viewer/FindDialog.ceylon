@@ -19,7 +19,7 @@ import javax.swing {
 
 import lovelace.util.jvm {
     platform,
-    listenedButton,
+    ListenedButton,
     BoxPanel,
     horizontalSplit,
     BoxAxis,
@@ -182,7 +182,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     JPanel&BoxPanel buttonPanel = boxPanel(BoxAxis.lineAxis); // TODO: Use a better layout
     buttonPanel.addGlue();
 
-    JButton okButton = listenedButton("OK", okListener);
+    JButton okButton = ListenedButton("OK", okListener);
 
     // TODO: Make a void function and use silentListener()?
     void cancelListener(ActionEvent event) {
@@ -190,7 +190,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         parent.requestFocus();
         dispose();
     }
-    JButton cancelButton = listenedButton("Cancel", cancelListener);
+    JButton cancelButton = ListenedButton("Cancel", cancelListener);
 
     platform.makeButtonsSegmented(okButton, cancelButton);
     buttonPanel.add(okButton);
