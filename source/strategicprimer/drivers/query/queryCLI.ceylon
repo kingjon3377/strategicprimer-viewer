@@ -86,7 +86,7 @@ import ceylon.language.meta.model {
 }
 
 "A logger."
-Logger log = logger(`module strategicprimer.viewer`);
+Logger log = logger(`module strategicprimer.drivers.query`);
 
 """A factory for the driver to "query" the driver model about various things."""
 service(`interface DriverFactory`)
