@@ -36,11 +36,12 @@ import strategicprimer.model.common.map.fixtures {
     Quantity
 }
 import strategicprimer.drivers.common.cli {
-    ICLIHelper
+    ICLIHelper,
+    Applet,
+    AppletChooser
 }
 import lovelace.util.common {
     todo,
-    simpleMap,
     defer,
     PathWrapper
 }
@@ -102,6 +103,10 @@ shared class QueryCLIFactory() satisfies ModelDriverFactory {
             SimpleMultiMapModel(map, path);
 
 }
+
+class QueryApplet(shared actual void invoke(),
+    shared actual String description,
+    shared actual String+ commands) satisfies Applet {}
 
 "A driver for 'querying' the driver model about various things."
 // FIXME: Write GUI equivalent of query CLI
@@ -168,22 +173,6 @@ shared class QueryCLI satisfies CLIDriver {
 
     "Print the String representation of a Float to one decimal place."
     static String formatFloat(Float num) => Float.format(num, 0, 1);
-
-    static String usageMessage =
-        """The following commands are supported:
-           help, ?: Print this list of commands.
-           fortress: Show what a player automatically knows about a fortress's tile.
-           hunt, fish: Generate encounters with animals.
-           gather: Generate encounters with fields, meadows, groves, orchards, or shrubs.
-           herd: Determine the output from and time required for maintaining a herd.
-           trap: Switch to a trap-modeling program to run trapping or fish-trapping.
-           distance: Report the distance between two points.
-           count: Count how many workers belong to a player.
-           unexplored: Find the nearest unexplored tile not behind water.
-           trade: Suggest possible trading partners.
-           quit, exit: Exit the program.
-           Any string that is the beginning of only one command is also accepted for that command.
-           """;
 
     shared actual IDriverModel model;
     ICLIHelper cli;
@@ -583,8 +572,6 @@ shared class QueryCLI satisfies CLIDriver {
         }
     }
 
-    "Print a usage message for the REPL"
-    void replUsage() => cli.print(usageMessage);
     void findUnexploredCommand() {
         if (exists base = cli.inputPoint("Starting point? ")) {
             if (exists unexplored = findUnexplored(base)) {
@@ -613,49 +600,39 @@ shared class QueryCLI satisfies CLIDriver {
             }
         };
 
-    Map<String, Anything()> commands = simpleMap(
-        "?"->replUsage,
-        "help"->replUsage,
-        "fortress"->defer(compose(fortressInfo, cli.inputPoint),
-            ["Location of fortress?"]),
-        "hunt"->deferAction(hunt, "hunt"),
-        "fish"->deferAction(fish, "fish"),
-        "gather"->deferAction(gather, "gather"),
-        "herd"->herd,
-        "trap"->compose(TrappingCLI.startDriver,
-            TrappingCLI)(cli, model),
-        "distance"->printDistance,
-        "count"->defer(countWorkers, [model.map.players]),
-        "unexplored"->findUnexploredCommand,
-        "trade"->tradeCommand
-    );
+    AppletChooser<QueryApplet> appletChooser = AppletChooser(cli,
+        QueryApplet(defer(compose(fortressInfo, cli.inputPoint),
+                ["Location of fortress?"]),
+            "Show what a player automatically knows about a fortress's tile.",
+            "fortress"),
+        QueryApplet(deferAction(hunt, "hunt"), "Generate encounters with land animals",
+            "hunt"),
+        QueryApplet(deferAction(fish, "fish"), "Generate encounters with aquatic animals",
+            "fish"),
+        QueryApplet(deferAction(gather, "gather"),
+            "Generate encounters with fields, meadows, groves, orchards, or shrubs.",
+            "gather"),
+        QueryApplet(herd,
+            "Determine the output from and time required for maintaining a herd.",
+            "herd"),
+        QueryApplet(compose(TrappingCLI.startDriver, TrappingCLI)(cli, model),
+            "Switch to a trap-modeling program to run trapping or fish-trapping.",
+            "trap"),
+        QueryApplet(printDistance, "Report the distance between two points.", "distance"),
+        QueryApplet(defer(countWorkers, [model.map.players]),
+            "Count how many workers belong to a player", "count"),
+        QueryApplet(findUnexploredCommand,
+            "Find the nearest unexplored tile not behind water.", "unexplored"),
+        QueryApplet(tradeCommand, "Suggest possible trading partners.", "trade"));
 
     "Accept and respond to commands."
     shared actual void startDriver() {
-        while (exists command = cli.inputString("Command:")?.lowercased) {
-            {<String->Anything()>*} matches =
-                commands.filterKeys(shuffle(String.startsWith)(command));
-            if ("quit".startsWith(command) || "exit".startsWith(command)) {
-                if (matches.empty) {
-                    return;
-                } else {
-                    cli.println("That command was ambiguous between the following: ");
-                    cli.println(", ".join(["quit", "exit"]
-                        .filter(shuffle(String.startsWith)(command))
-                        .chain(matches.map(Entry.key))));
-                    replUsage();
-                    continue;
-                }
-            }
-            if (!matches.rest.empty) {
-                cli.println("That command was ambiguous between the following: ");
-                cli.println(", ".join(matches.map(Entry.key)));
-                replUsage();
-            } else if (exists first = matches.first) {
-                first.item();
-            } else {
-                cli.println("Unknown command.");
-                replUsage();
+        while (true) {
+            switch (selection = appletChooser.chooseApplet())
+            case (null|true) { continue; }
+            case (false) { break; }
+            case (is QueryApplet) {
+                selection.invoke();
             }
         }
     }
