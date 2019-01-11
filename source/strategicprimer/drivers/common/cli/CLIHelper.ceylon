@@ -187,4 +187,35 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
 
     "Print the specified string."
     shared actual void print(String text) => ostream(text);
+
+    "Ask the user for a multiline string."
+    shared actual String? inputMultilineString(String prompt) {
+        StringBuilder builder = StringBuilder();
+        ostream("Type . on a line by itself to end input, or , to start over.");
+        while (true) {
+            if (builder.empty) {
+                ostream(prompt);
+                assert (exists last = prompt.last);
+                if (!last.whitespace) {
+                    ostream(" ");
+                }
+            } else {
+                ostream("> ");
+            }
+            switch (line = istream())
+            case (null) {
+                return null;
+            }
+            case (".") {
+                return builder.string.trimmed;
+            }
+            case (",") {
+                builder.clear();
+            }
+            else {
+                builder.append(line);
+                builder.appendNewline();
+            }
+        }
+    }
 }

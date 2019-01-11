@@ -55,6 +55,12 @@ shared interface ICLIHelper {
             "The prompt to prompt the user with."
             String prompt);
 
+    "Read a multiline string from the user. It is trimmed of leading and trailing
+     whitespace. Returns [[null]] on EOF."
+    shared formal String? inputMultilineString(
+            "The prompt to prompt the user with."
+            String prompt);
+
     "Ask the user a yes-or-no question. Returns [[null]] on EOF."
     shared formal Boolean? inputBoolean(
             "The prompt to prompt the user with."
