@@ -2,7 +2,9 @@ import strategicprimer.drivers.common {
     CLIDriver
 }
 import strategicprimer.drivers.common.cli {
-    ICLIHelper
+    ICLIHelper,
+    Applet,
+    AppletChooser
 }
 import ceylon.collection {
     MutableList,
@@ -14,13 +16,22 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.drivers.exploration.common {
     IExplorationModel
 }
+import strategicprimer.viewer.drivers.exploration {
+    ExplorationCLIHelper
+}
+class TurnApplet(shared actual void invoke(), shared actual String description,
+    shared actual String+ commands) satisfies Applet {}
 class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IExplorationModel model;
     Boolean unfinishedResults(Integer turn)(IUnit unit) {
         String results = unit.getResults(turn);
         return results.empty || results.lowercased.containsAny(["fixme", "todo", "xxx"]);
     }
+    ExplorationCLIHelper explorationCLI = ExplorationCLIHelper(model, cli);
+    AppletChooser<TurnApplet> appletChooser =
+        AppletChooser(cli, TurnApplet(explorationCLI.moveUntilDone, "move", "move a unit"));
     String createResults(IUnit unit, Integer turn) {
+        model.selectedUnit = unit;
         cli.print("Orders for unit ");
         cli.print(unit.name);
         cli.print(" (");
@@ -29,6 +40,15 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         cli.print(turn.string);
         cli.print(": ");
         cli.println(unit.getLatestOrders(turn));
+        while (true) {
+            switch (command = appletChooser.chooseApplet())
+            case (null|true) { continue; }
+            case (false) { return ""; }
+            case (is TurnApplet) {
+                command.invoke();
+                break;
+            }
+        }
         return cli.inputMultilineString("Results: ") else "";
     }
     shared actual void startDriver() {
