@@ -29,7 +29,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         cli.print(turn.string);
         cli.print(": ");
         cli.println(unit.getLatestOrders(turn));
-        return cli.inputString("Results: ") else "";
+        return cli.inputMultilineString("Results: ") else "";
     }
     shared actual void startDriver() {
         Integer currentTurn = model.map.currentTurn;
