@@ -3,7 +3,7 @@ import strategicprimer.model.common.map.fixtures {
 }
 
 "Models of (game statistics for) herding mammals."
-class MammalModel satisfies HerdModel {
+shared final class MammalModel satisfies HerdModel {
     "How much time, per head, in minutes, must be spent to milk, or otherwise collect the
      food produced by the animals."
     shared actual Integer dailyTimePerHead;

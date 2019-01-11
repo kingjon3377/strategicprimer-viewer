@@ -3,7 +3,7 @@ import strategicprimer.model.common.map.fixtures {
 }
 
 "Models of (game statistics for) herding poultry."
-class PoultryModel satisfies HerdModel {
+shared final class PoultryModel satisfies HerdModel {
     "The amount produced per head per turn."
     shared actual Quantity productionPerHead;
 
