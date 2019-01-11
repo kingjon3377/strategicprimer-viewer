@@ -28,7 +28,7 @@ module strategicprimer.viewer "0.4.9018" {
     import strategicprimer.report spVersion;
     shared import strategicprimer.drivers.common spVersion;
     import strategicprimer.drivers.exploration.old spVersion;
-    import strategicprimer.drivers.exploration.common spVersion;
+    shared import strategicprimer.drivers.exploration.common spVersion;
     shared import strategicprimer.drivers.worker.common spVersion;
     import ceylon.random ceylonVersion;
     import strategicprimer.drivers.generators spVersion;

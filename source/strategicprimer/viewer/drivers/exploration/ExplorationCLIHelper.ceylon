@@ -51,8 +51,10 @@ import strategicprimer.model.common.map.fixtures.towns {
     TownStatus
 }
 
-"The logic split out of [[ExplorationCLI]]" // TODO: Merge back in
-class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
+"The logic split out of [[ExplorationCLI]], some also used in
+ [[strategicprimer.viewer.drivers.turnrunning::TurnRunningCLI]]"
+// TODO: Merge methods not used in TurnRunningCLI back in
+shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
     HuntingModel huntingModel = HuntingModel(model.map);
 
     "Have the user choose a player."
@@ -106,7 +108,8 @@ class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
 
     "Ask the user for directions the unit should move until it runs out of MP or the user
       decides to quit."
-    todo("Inline back into [[ExplorationCLI]]?")
+    todo("Inline back into [[ExplorationCLI]]?",
+        "Split up so TurnRunningCLI can add to results between moves")
     // No need to set the 'modified' flag anywhere in this method, as
     // ExplorationModel.move() always sets it.
     shared void moveUntilDone() {
