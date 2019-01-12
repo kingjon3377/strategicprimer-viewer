@@ -368,16 +368,14 @@ class AppStarter() {
         void startChosenDriver(DriverFactory driver, SPOptions currentOptionsTyped) {
             if (driver.usage.graphical) {
                 value lambda = defer(DriverWrapper(driver).startCatchingErrors,  // TODO: inline once eclipse/ceylon#7379 fixed
-                    [cli, currentOptionsTyped, *others]);
+                    [cli, currentOptionsTyped, *others.rest]);
                 SwingUtilities.invokeLater(lambda);
             } else {
                 DriverWrapper(driver)
-                    .startCatchingErrors(cli, currentOptionsTyped, *others);
+                    .startCatchingErrors(cli, currentOptionsTyped, *others.rest);
             }
-            // TODO: clear `others` here?
         }
 
-        variable DriverFactory? currentDriver = null;
         for (arg in args.coalesced) {
             if (arg == "-g" || arg == "--gui") {
                 log.trace("User specified either -g or --gui");
@@ -406,36 +404,6 @@ class AppStarter() {
                 else "");
                 log.trace(
                     "User specified ``broken.first``=``broken.rest.first else ""``");
-            } else if (!gui, driverCache[0].defines(arg.lowercased)) {
-                log.trace("User specified app-choosing option ``arg`` while in CLI mode");
-                if (exists temp = currentDriver) {
-                    log.trace("Starting previously chosen CLI app.");
-                    startChosenDriver(temp, currentOptions.copy());
-                }
-                currentDriver = driverCache[0][arg.lowercased];
-            } else if (gui, driverCache[1].defines(arg.lowercased)) {
-                log.trace("User specified app-choosing option ``arg`` while in GUI mode");
-                if (exists temp = currentDriver) {
-                    log.trace("Starting previously chosen GUI app.");
-                    startChosenDriver(temp, currentOptions.copy());
-                }
-                currentDriver = driverCache[1][arg.lowercased];
-            } else if (driverCache[0].defines(arg.lowercased)) {
-                log.warn("We're in GUI mode, but CLI-only app specified");
-                log.trace("User specified CLI app ``arg`` while in GUI mode");
-                if (exists temp = currentDriver) {
-                    log.trace("Starting previously chosen GUI app.");
-                    startChosenDriver(temp, currentOptions.copy());
-                }
-                currentDriver = driverCache[0][arg.lowercased];
-            } else if (driverCache[1].defines(arg.lowercased)) {
-                log.warn("We're in CLI mode, but GUI-only app specified");
-                log.trace("User specified GUI app ``arg`` while in CLI mode.");
-                if (exists temp = currentDriver) {
-                    log.trace("Starting previously chosen CLI app.");
-                    startChosenDriver(temp, currentOptions.copy());
-                }
-                currentDriver = driverCache[1][arg.lowercased];
             } else if (arg.startsWith("-")) {
                 log.trace("User specified non-app-choosing option ``arg``");
                 currentOptions.addOption(arg);
@@ -445,7 +413,30 @@ class AppStarter() {
             }
         }
 
-        log.trace("Reached the end of options");
+        log.trace("Reached the end of arguments");
+        // TODO: Use appletChooser so we can support prefixes
+        DriverFactory? currentDriver;
+        if (gui) {
+            if (exists first = others.first, exists driver = driverCache[1][first]) {
+                log.trace("Found a GUI driver in GUI mode");
+                currentDriver = driver;
+            } else if (exists first = others.first, exists driver = driverCache[0][first]) {
+                log.warn("We're in GUI mode, but CLI-only app specified");
+                currentDriver = driver;
+            } else {
+                log.trace("No matching driver found");
+                currentDriver = null;
+            }
+        } else if (exists first = others.first, exists driver = driverCache[0][first]) {
+            log.trace("Found a CLI driver in CLI mode");
+            currentDriver = driver;
+        } else if (exists first = others.first, exists driver = driverCache[1][first]) {
+            log.warn("We're in CLI mode, but GUI-only app specified");
+            currentDriver = driver;
+        } else {
+            log.trace("No matching driver found when in CLI mode");
+            currentDriver = null;
+        }
         if (currentOptions.hasOption("--help")) { // TODO: Handle --help in startChosenDriver() instead, so it works for drivers other than the last (TODO: figure out how to ma
             if (exists currentUsage = currentDriver?.usage) {
                 log.trace("Giving usage information for selected driver");

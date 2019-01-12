@@ -82,7 +82,7 @@ import lovelace.util.common {
 "A driver for an app to copy selected contents from one map to another."
 service(`interface DriverFactory`)
 shared class MapTradeFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, ["--trade"], ParamCount.two,
+    shared actual IDriverUsage usage = DriverUsage(false, ["trade-maps"], ParamCount.two,
         "Trade maps", "Copy contents from one map to another.", true, false, "source.xml",
         "destination.xml");
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,

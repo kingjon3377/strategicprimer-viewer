@@ -81,7 +81,7 @@ service(`interface DriverFactory`)
 shared class StatGeneratingCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["-t", "--stats"];
+        invocations = ["generate-stats"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Generate new workers.";
         longDescription = "Generate new workers with random stats and experience.";

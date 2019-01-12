@@ -126,7 +126,7 @@ service(`interface DriverFactory`)
 shared class CountingCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["--count"];
+        invocations = ["count"];
         paramsWanted = ParamCount.one;
         shortDescription = "Calculate statistics of map contents";
         longDescription = "Print statistical report of map contents.";

@@ -92,7 +92,7 @@ Logger log = logger(`module strategicprimer.drivers.query`);
 """A factory for the driver to "query" the driver model about various things."""
 service(`interface DriverFactory`)
 shared class QueryCLIFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, ["-q", "--query"],
+    shared actual IDriverUsage usage = DriverUsage(false, ["query"],
         ParamCount.atLeastOne, "Answer questions about a map.",
         "Look a tiles on a map. Or run hunting, gathering, or fishing.", true, false);
 

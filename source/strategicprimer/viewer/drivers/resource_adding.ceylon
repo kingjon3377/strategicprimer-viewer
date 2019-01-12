@@ -155,7 +155,7 @@ service(`interface DriverFactory`)
 shared class ResourceAddingCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["-d", "--add-resource"];
+        invocations = ["add-resource"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Add resources to maps";
         longDescription = "Add resources for players to maps.";
@@ -337,7 +337,7 @@ service(`interface DriverFactory`)
 shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
-        invocations = ["-d", "--add-resource"];
+        invocations = ["add-resource"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Add resources to maps";
         longDescription = "Add resources for players to maps";

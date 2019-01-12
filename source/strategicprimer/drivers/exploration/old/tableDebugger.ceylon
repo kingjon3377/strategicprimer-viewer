@@ -21,7 +21,7 @@ import strategicprimer.drivers.common.cli {
    "exploration results" framework I implemented."""
 service(`interface DriverFactory`)
 shared class TableDebuggerFactory satisfies UtilityDriverFactory {
-    shared static IDriverUsage staticUsage = DriverUsage(false, ["-T", "--table-debug"],
+    shared static IDriverUsage staticUsage = DriverUsage(false, ["table-debug"],
         ParamCount.none, "Debug old-model encounter tables",
         "See whether old-model encounter tables refer to a nonexistent table", false,
         false);

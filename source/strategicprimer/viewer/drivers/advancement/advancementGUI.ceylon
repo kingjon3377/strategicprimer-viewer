@@ -60,7 +60,7 @@ service(`interface DriverFactory`)
 shared class AdvancementGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
-        invocations = ["-a", "--adv"];
+        invocations = ["advance"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Worker Skill Advancement";
         longDescription = """View a player's units, the workers in those units, each

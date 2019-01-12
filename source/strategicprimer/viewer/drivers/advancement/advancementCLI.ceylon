@@ -55,7 +55,7 @@ service(`interface DriverFactory`)
 shared class AdvancementCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["-a", "--adv"];
+        invocations = ["advance"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "View a player's workers and manage their advancement";
         longDescription = """View a player's units, the workers in those units, each

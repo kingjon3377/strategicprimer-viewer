@@ -40,7 +40,7 @@ import lovelace.util.common {
  implementations."
 service(`interface DriverFactory`)
 shared class ReaderComparatorFactory() satisfies UtilityDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, ["--test", "--compare-readers"],
+    shared actual IDriverUsage usage = DriverUsage(false, ["compare-readers"],
         ParamCount.atLeastOne, "Test map readers",
         "Test map-reading implementations by comparing their results on the same file.",
         true, false);

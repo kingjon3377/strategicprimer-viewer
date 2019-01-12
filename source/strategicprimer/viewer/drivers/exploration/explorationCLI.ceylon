@@ -35,7 +35,7 @@ service(`interface DriverFactory`)
 shared class ExplorationCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["-x", "--explore"];
+        invocations = ["explore"];
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Run exploration.";
         longDescription = "Move a unit around the map, updating the player's map with

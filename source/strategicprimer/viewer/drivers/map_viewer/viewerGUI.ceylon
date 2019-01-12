@@ -56,7 +56,7 @@ service(`interface DriverFactory`)
 shared class ViewerGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
-        invocations = ["-m", "--map"];
+        invocations = ["view-map"];
         paramsWanted = ParamCount.one;
         shortDescription = "Map viewer";
         longDescription = "Look at the map visually. This is probably the app you want.";

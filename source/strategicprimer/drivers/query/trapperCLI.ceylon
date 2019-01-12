@@ -70,7 +70,7 @@ class QueueWrapper<Type>(variable {Type*} wrapped) satisfies Queue<Type> {
 "A factory for a driver to run a player's trapping activity."
 service(`interface DriverFactory`)
 shared class TrappingCLIFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, ["-r", "--trap"],
+    shared actual IDriverUsage usage = DriverUsage(false, ["trap"],
         ParamCount.atLeastOne, "Run a player's trapping",
         "Determine the results a player's trapper finds.", true, false);
 
