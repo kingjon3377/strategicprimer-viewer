@@ -176,6 +176,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             }
         }
         return cli.inputMultilineString("Results: ") else "";
+        // TODO: Do and report on advancement
     }
     shared actual void startDriver() {
         Integer currentTurn = model.map.currentTurn;

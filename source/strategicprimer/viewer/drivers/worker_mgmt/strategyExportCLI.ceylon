@@ -41,7 +41,7 @@ shared class StrategyExportFactory() satisfies ModelDriverFactory {
         includeInGUIList = false;
         supportedOptions = [ "--current-turn=NN", "--print-empty",
             "--export=filename.txt", "--include-unleveled-jobs",
-            "--summarize-large-units" ];
+            "--summarize-large-units", "--results" ];
     };
 
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,

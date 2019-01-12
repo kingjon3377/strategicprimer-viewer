@@ -200,15 +200,36 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                         }
                         writer.write("]");
                     }
-                    writer.writeLine(":");
-                    writer.writeLine();
-                    if (exists unitOrders = orders[unit], !unitOrders.empty) {
-                        writer.writeLine(unitOrders);
+                    if (options.hasOption("--results")) {
+                        writer.write(": ");
+                        if (exists unitOrders = orders[unit], !unitOrders.empty) {
+                            writer.writeLine(unitOrders);
+                        } else {
+                            writer.writeLine("TODO");
+                        }
+                        writer.writeLine();
+                        String results = unit.getResults(turn);
+                        if (results.empty) {
+                            writer.writeLine("TODO: run");
+                        }
+                        writer.writeLine();
+                        writer.writeLine("TODO: advancement");
                     } else {
-                        writer.writeLine("TODO");
+                        writer.writeLine(":");
+                        writer.writeLine();
+                        if (exists unitOrders = orders[unit], !unitOrders.empty) {
+                            writer.writeLine(unitOrders);
+                        } else {
+                            writer.writeLine("TODO");
+                        }
                     }
                     writer.writeLine();
                 }
+            }
+            if (options.hasOption("--results")) {
+                writer.writeLine("Resources:");
+                writer.writeLine();
+                writer.writeLine("- TODO"); // TODO: List equipment and resources
             }
         }
     }
