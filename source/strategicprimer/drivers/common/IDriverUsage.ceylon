@@ -1,7 +1,12 @@
+import lovelace.util.common {
+    todo
+}
 "An interface for objects representing usage information for drivers, for use in the app
  starter and in help text."
 shared interface IDriverUsage {
     "Whether the driver is a GUI."
+    todo("We'd like to get rid of this as a general thing, and make it instead an option
+          that the most important drivers respect.")
     shared formal Boolean graphical;
 
     "Options with which the user can select this driver."
