@@ -115,6 +115,9 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             if (exists number = cli.inputNumber("MP the unit has: ")) {
                 movement = totalMP = number;
             }
+            if (automationConfig.player != newSelection.owner) {
+                automationConfig = ExplorationAutomationConfig(newSelection.owner);
+            }
         }
     }
     "If the unit has a proposed path, move one more tile along it; otherwise, ask the user
@@ -280,10 +283,6 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     // ExplorationModel.move() always sets it.
     shared void moveUntilDone() {
         if (exists mover = model.selectedUnit) {
-            if (automationConfig.player != mover.owner) {
-                automationConfig = ExplorationAutomationConfig(mover.owner);
-            }
-
             while (movement > 0) {
                 moveOneStep();
             }
