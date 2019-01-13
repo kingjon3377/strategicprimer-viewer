@@ -196,6 +196,13 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
     }
 
+    "Tell listeners that the selected unit changed."
+    void fireSelectedUnitChange(IUnit? old, IUnit? newSelection) {
+        for (listener in scListeners) {
+            listener.selectedUnitChanged(old, newSelection);
+        }
+    }
+
     "Tell listeners to deduct a cost from their movement-point totals."
     void fireMovementCost(Integer cost) {
         for (listener in mcListeners) {
@@ -359,6 +366,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     "Select the given unit."
     assign selectedUnit {
         Point oldLoc = selection.first;
+        IUnit? oldSelection = selection.rest.first;
         Point loc;
         if (exists selectedUnit) {
             log.trace("Setting a newly selected unit");
@@ -374,6 +382,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
         selection = [loc, selectedUnit];
         fireSelectionChange(oldLoc, loc);
+        fireSelectedUnitChange(oldSelection, selectedUnit);
     }
 
     "The location of the currently selected unit."
