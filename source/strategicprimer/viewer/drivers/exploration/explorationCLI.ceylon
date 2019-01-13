@@ -83,7 +83,9 @@ class ExplorationCLI(ICLIHelper cli, model) satisfies CLIDriver {
         model.addMovementCostListener(eCLI);
         if (exists player = choosePlayer(), exists unit = chooseUnit(player)) {
             model.selectedUnit = unit;
-            eCLI.moveUntilDone();
+            while (eCLI.movement > 0) {
+                eCLI.moveOneStep();
+            }
         }
     }
 }

@@ -5,7 +5,6 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    todo,
     matchingValue
 }
 
@@ -96,9 +95,10 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     }
 
     variable Integer totalMP = 0;
-    variable Integer movement = 0;
+    variable Integer runningTotal = 0;
+    shared Integer movement => runningTotal;
 
-    shared actual void deduct(Integer cost) => movement -= cost;
+    shared actual void deduct(Integer cost) => runningTotal -= cost;
 
     MutableList<Point>&Queue<Point> proposedPath = ArrayList<Point>();
     variable ExplorationAutomationConfig automationConfig =
@@ -113,7 +113,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             cli.println("):");
             cli.println(newSelection.verbose);
             if (exists number = cli.inputNumber("MP the unit has: ")) {
-                movement = totalMP = number;
+                runningTotal = totalMP = number;
             }
             if (automationConfig.player != newSelection.owner) {
                 automationConfig = ExplorationAutomationConfig(newSelection.owner);
@@ -139,10 +139,10 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         proposedDestination`` isn't adjacent to ``point``");
                     return;
                 }
-                cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``
+                cli.println("``runningTotal``/``totalMP`` MP remaining. Current speed: ``
                     speed.shortName``.");
             } else {
-                cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``
+                cli.println("``runningTotal``/``totalMP`` MP remaining. Current speed: ``
                     speed.shortName``.");
                 cli.print("""0: Set Speed, 1: SW, 2: S, 3: SE, 4: W, 5: Linger, """);
                 cli.println(
@@ -173,11 +173,11 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                         }
                         return;
                     } else {
-                        movement = 0;
+                        runningTotal = 0;
                         return;
                     }
                 }
-                else { movement = 0; return; }
+                else { runningTotal = 0; return; }
             }
 
             Point destPoint = model.getDestination(point, direction);
@@ -275,21 +275,6 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         }
     }
 
-    "Ask the user for directions the unit should move until it runs out of MP or the user
-      decides to quit."
-    todo("Inline back into [[ExplorationCLI]]?",
-        "Split up so TurnRunningCLI can add to results between moves")
-    // No need to set the 'modified' flag anywhere in this method, as
-    // ExplorationModel.move() always sets it.
-    shared void moveUntilDone() {
-        if (exists mover = model.selectedUnit) {
-            while (movement > 0) {
-                moveOneStep();
-            }
-        } else {
-            cli.println("No unit is selected");
-        }
-    }
     shared actual void selectedPointChanged(Point? previousSelection, Point newSelection) {}
 }
 

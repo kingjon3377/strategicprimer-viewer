@@ -153,9 +153,21 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     }
     ExplorationCLIHelper explorationCLI = ExplorationCLIHelper(model, cli);
     model.addMovementCostListener(explorationCLI);
+    // FIXME: Allow user to add to results after each move
+    void explore() {
+        model.addSelectionChangeListener(explorationCLI);
+        assert (exists mover = model.selectedUnit);
+        // Ask the user about total MP
+        model.selectedUnit = mover;
+        while (explorationCLI.movement > 0) {
+            explorationCLI.moveOneStep();
+        }
+        // We don't want to be asked about MP for any other applets
+        model.removeSelectionChangeListener(explorationCLI);
+    }
     AppletChooser<TurnApplet> appletChooser =
         AppletChooser(cli,
-            TurnApplet(explorationCLI.moveUntilDone, "move", "move a unit"),
+            TurnApplet(explore, "move", "move a unit"),
             TurnApplet(herd, "herd", "milk or gather eggs from animals"));
     String createResults(IUnit unit, Integer turn) {
         model.selectedUnit = unit;
