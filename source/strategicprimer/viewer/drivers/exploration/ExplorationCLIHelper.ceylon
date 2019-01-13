@@ -57,21 +57,6 @@ import strategicprimer.model.common.map.fixtures.towns {
 shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
     HuntingModel huntingModel = HuntingModel(model.map);
 
-    "Have the user choose a player."
-    shared Player? choosePlayer() {
-        Player[] players = model.playerChoices.sequence();
-        return cli.chooseFromList(players,
-            "Players shared by all the maps:", "No players shared by all the maps:",
-            "Chosen player: ", true).item;
-    }
-
-    "Have the user choose a unit belonging to that player."
-    shared IUnit? chooseUnit(Player player) {
-        IUnit[] units = model.getUnits(player).sequence();
-        return cli.chooseFromList(units, "Player's units:",
-            "That player has no units in the master map", "Chosen unit: ", true).item;
-    }
-
     "The explorer's current movement speed."
     variable Speed speed = Speed.normal;
 

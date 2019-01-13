@@ -24,7 +24,11 @@ import lovelace.util.common {
     PathWrapper
 }
 import strategicprimer.model.common.map {
-    IMutableMapNG
+    IMutableMapNG,
+    Player
+}
+import strategicprimer.model.common.map.fixtures.mobile {
+    IUnit
 }
 
 "A logger."
@@ -62,10 +66,20 @@ shared class ExplorationCLIFactory() satisfies ModelDriverFactory {
 "A CLI to help running exploration."
 class ExplorationCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IExplorationModel model;
+    "Have the user choose a player."
+    shared Player? choosePlayer() =>
+        cli.chooseFromList(model.playerChoices.sequence(),
+            "Players shared by all the maps:", "No players shared by all the maps:",
+            "Chosen player: ", true).item;
+
+    "Have the user choose a unit belonging to that player."
+    shared IUnit? chooseUnit(Player player) =>
+        cli.chooseFromList(model.getUnits(player).sequence(), "Player's units:",
+            "That player has no units in the master map", "Chosen unit: ", true).item;
+
     shared actual void startDriver() {
         ExplorationCLIHelper eCLI = ExplorationCLIHelper(model, cli);
-        if (exists player = eCLI.choosePlayer(),
-                exists unit = eCLI.chooseUnit(player)) {
+        if (exists player = choosePlayer(), exists unit = chooseUnit(player)) {
             model.selectedUnit = unit;
             eCLI.moveUntilDone();
         }
