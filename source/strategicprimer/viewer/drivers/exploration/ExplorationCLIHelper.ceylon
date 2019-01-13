@@ -50,12 +50,15 @@ import strategicprimer.model.common.map.fixtures.towns {
     AbstractTown,
     TownStatus
 }
+import strategicprimer.drivers.common {
+    SelectionChangeListener
+}
 
 "The logic split out of [[ExplorationCLI]], some also used in
  [[strategicprimer.viewer.drivers.turnrunning::TurnRunningCLI]]"
 // TODO: Merge methods not used in TurnRunningCLI back in
 shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
-        satisfies MovementCostListener {
+        satisfies MovementCostListener&SelectionChangeListener {
     HuntingModel huntingModel = HuntingModel(model.map);
 
     "The explorer's current movement speed."
@@ -102,6 +105,19 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     variable ExplorationAutomationConfig automationConfig =
         ExplorationAutomationConfig(model.map.currentPlayer);
 
+    "When the selected unit changes, print the unit's details and ask how many MP the unit
+     has."
+    shared actual void selectedUnitChanged(IUnit? old, IUnit? newSelection) {
+        if (exists newSelection) {
+            cli.print("Details of the unit (apparently at ");
+            cli.print(model.selectedUnitLocation.string);
+            cli.println("):");
+            cli.println(newSelection.verbose);
+            if (exists number = cli.inputNumber("MP the unit has: ")) {
+                movement = totalMP = number;
+            }
+        }
+    }
     "If the unit has a proposed path, move one more tile along it; otherwise, ask the user
      for directions once and make that move, then return to the caller."
     // No need to set the 'modified' flag anywhere in this method, as
@@ -265,11 +281,6 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     // ExplorationModel.move() always sets it.
     shared void moveUntilDone() {
         if (exists mover = model.selectedUnit) {
-            cli.println("Details of the unit:");
-            cli.println("That unit appears to be at ``model.selectedUnitLocation``");
-            cli.println(mover.verbose);
-            Integer totalMP = cli.inputNumber("MP the unit has: ") else 0;
-            movement = totalMP;
             if (!addedAsListener) {
                 model.addMovementCostListener(this);
                 addedAsListener = true;
@@ -286,6 +297,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             cli.println("No unit is selected");
         }
     }
+    shared actual void selectedPointChanged(Point? previousSelection, Point newSelection) {}
 }
 
 class ExplorationAutomationConfig(shared Player player) {

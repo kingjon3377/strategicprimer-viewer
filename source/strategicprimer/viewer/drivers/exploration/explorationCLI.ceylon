@@ -79,6 +79,7 @@ class ExplorationCLI(ICLIHelper cli, model) satisfies CLIDriver {
 
     shared actual void startDriver() {
         ExplorationCLIHelper eCLI = ExplorationCLIHelper(model, cli);
+        model.addSelectionChangeListener(eCLI);
         if (exists player = choosePlayer(), exists unit = chooseUnit(player)) {
             model.selectedUnit = unit;
             eCLI.moveUntilDone();
