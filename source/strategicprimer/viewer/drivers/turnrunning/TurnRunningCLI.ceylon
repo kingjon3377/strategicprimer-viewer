@@ -152,6 +152,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         cli.println(" hours.");
     }
     ExplorationCLIHelper explorationCLI = ExplorationCLIHelper(model, cli);
+    model.addMovementCostListener(explorationCLI);
     AppletChooser<TurnApplet> appletChooser =
         AppletChooser(cli,
             TurnApplet(explorationCLI.moveUntilDone, "move", "move a unit"),

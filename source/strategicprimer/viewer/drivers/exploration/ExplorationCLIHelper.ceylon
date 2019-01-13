@@ -99,7 +99,6 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     variable Integer movement = 0;
 
     shared actual void deduct(Integer cost) => movement -= cost;
-    variable Boolean addedAsListener = false;
 
     MutableList<Point>&Queue<Point> proposedPath = ArrayList<Point>();
     variable ExplorationAutomationConfig automationConfig =
@@ -281,11 +280,6 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     // ExplorationModel.move() always sets it.
     shared void moveUntilDone() {
         if (exists mover = model.selectedUnit) {
-            if (!addedAsListener) {
-                model.addMovementCostListener(this);
-                addedAsListener = true;
-            }
-
             if (automationConfig.player != mover.owner) {
                 automationConfig = ExplorationAutomationConfig(mover.owner);
             }
