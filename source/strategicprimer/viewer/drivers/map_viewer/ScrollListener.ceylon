@@ -26,6 +26,9 @@ import javax.swing {
     JComponent,
     InputVerifier
 }
+import strategicprimer.model.common.map.fixtures.mobile {
+    IUnit
+}
 
 "A class to change the visible area of the map based on the user's use of the scrollbars."
 todo("Maybe keep track of visible dimensions and selected point directly instaed of
@@ -192,4 +195,5 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     }
 
     shared actual void mapMetadataChanged() {}
+    shared actual void selectedUnitChanged(IUnit? oldSelection, IUnit? newSelection) {}
 }

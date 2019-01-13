@@ -15,7 +15,8 @@ import ceylon.collection {
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
-    AnimalTracks
+    AnimalTracks,
+    IUnit
 }
 import javax.swing.event {
     ListDataListener,
@@ -32,6 +33,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
     variable Point point = Point.invalidPoint;
     variable TileFixture[] cachedTerrainList = [];
 
+    shared actual void selectedUnitChanged(IUnit? oldSelection, IUnit? newSelection) {}
     """Any animal tracks that have been "added" to the current tile but kept out of the
        map."""
     MutableList<AnimalTracks> currentTracks = ArrayList<AnimalTracks>();

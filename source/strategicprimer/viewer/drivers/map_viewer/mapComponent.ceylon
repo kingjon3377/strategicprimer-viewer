@@ -34,6 +34,9 @@ import strategicprimer.model.common.map {
     TileFixture,
     MapDimensions
 }
+import strategicprimer.model.common.map.fixtures.mobile {
+    IUnit
+}
 
 "An interface for a UI representing a map."
 shared interface MapGUI {
@@ -196,9 +199,12 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         super.paint(pen);
     }
 
+    shared actual void selectedUnitChanged(IUnit? old, IUnit? newUnit) {}
     object cmlDelegate satisfies SelectionChangeListener {
         shared actual void selectedPointChanged(Point? oldSelection, Point newSelection)
                 => outer.selectedPointChanged(oldSelection, newSelection);
+        shared actual void selectedUnitChanged(IUnit? oldSelection, IUnit? newSelection) =>
+            outer.selectedUnitChanged(oldSelection, newSelection);
     }
     cml.addSelectionChangeListener(cmlDelegate);
 

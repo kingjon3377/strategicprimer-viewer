@@ -48,6 +48,9 @@ import strategicprimer.model.common.idreg {
 import lovelace.util.common {
     todo
 }
+import strategicprimer.model.common.map.fixtures.mobile {
+    IUnit
+}
 
 "A panel to show the details of a tile, using a list rather than sub-panels with chits
  for its fixtures."
@@ -104,6 +107,8 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
             delegate.selectedPointChanged(old, newPoint);
             header.arguments = [newPoint];
         }
+        shared actual void selectedUnitChanged(IUnit? old, IUnit? newUnit) =>
+            delegate.selectedUnitChanged(old, newUnit);
     }
 
     void markModified() => model.mapModified = true;

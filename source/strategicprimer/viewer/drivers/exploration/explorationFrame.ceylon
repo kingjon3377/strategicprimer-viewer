@@ -266,6 +266,8 @@ SPFrame explorationFrame(ExplorationGUI driver,
             satisfies SelectionChangeListener&CompletionSource&MovementCostListener {
         shared actual void deduct(Integer cost) =>
             mpModel.\ivalue = JInteger.valueOf(mpModel.number.intValue() - cost);
+        // TODO: Cache selected unit here instead of always referring to it via the model?
+        shared actual void selectedUnitChanged(IUnit? old, IUnit? newSelection) {}
 
         String locLabelText(Point point) =>
                 "<html><body>Currently exploring ``point``; click a tile to explore it.
@@ -507,6 +509,8 @@ SPFrame explorationFrame(ExplorationGUI driver,
         object selectionChangeListenerObject satisfies SelectionChangeListener {
             shared actual void selectedPointChanged(Point? old, Point newSel) =>
                     outer.selectedPointChanged(old, newSel);
+            shared actual void selectedUnitChanged(IUnit? old, IUnit? newSel) =>
+                outer.selectedUnitChanged(old, newSel);
         }
 
         object movementCostProxy satisfies MovementCostListener {
@@ -570,9 +574,10 @@ SPFrame explorationFrame(ExplorationGUI driver,
                         outsideCritical = true;
                     }
                 }
-                shared actual void selectedPointChanged(Point? old, Point newPoint) {
+                shared actual void selectedPointChanged(Point? old, Point newPoint) { // TODO: =>
                     SwingUtilities.invokeLater(selectedPointChangedImpl);
                 }
+                shared actual void selectedUnitChanged(IUnit? old, IUnit? newSel) {}
             }
 
             // mainList.model.addListDataListener(ell);

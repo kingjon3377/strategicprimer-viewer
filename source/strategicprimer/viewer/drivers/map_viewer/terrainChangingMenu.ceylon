@@ -152,6 +152,8 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         }
     }
 
+    shared actual void selectedUnitChanged(IUnit? oldSelection, IUnit? newSelection) {}
+
     updateForVersion(mapVersion);
     // Can't use silentListener(nuDialog.showWindow): triggers eclipse/ceylon#7379
     newUnitItem.addActionListener((ActionEvent event) => nuDialog.setVisible(true));

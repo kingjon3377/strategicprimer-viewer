@@ -55,6 +55,9 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.common.idreg {
     IDRegistrar
 }
+import strategicprimer.model.common.map.fixtures.mobile {
+    IUnit
+}
 
 "A visual list-based representation of the contents of a tile."
 // Can't make a class (yet) because the createDefaultDragGestureRecognizer() line would
@@ -67,6 +70,8 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
             satisfies DragGestureListener&SelectionChangeListener {
         cellRenderer = FixtureCellRenderer();
         selectionMode = ListSelectionModel.multipleIntervalSelection;
+
+        shared actual void selectedUnitChanged(IUnit? old, IUnit? newSel) {}
 
         shared actual void dragGestureRecognized(DragGestureEvent event) {
             List<TileFixture> selection = CeylonList(selectedValuesList);
