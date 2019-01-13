@@ -54,7 +54,8 @@ import strategicprimer.model.common.map.fixtures.towns {
 "The logic split out of [[ExplorationCLI]], some also used in
  [[strategicprimer.viewer.drivers.turnrunning::TurnRunningCLI]]"
 // TODO: Merge methods not used in TurnRunningCLI back in
-shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
+shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
+        satisfies MovementCostListener {
     HuntingModel huntingModel = HuntingModel(model.map);
 
     "The explorer's current movement speed."
@@ -91,6 +92,171 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
         }
     }
 
+    variable Integer totalMP = 0;
+    variable Integer movement = 0;
+
+    shared actual void deduct(Integer cost) => movement -= cost;
+    variable Boolean addedAsListener = false;
+
+    MutableList<Point>&Queue<Point> proposedPath = ArrayList<Point>();
+    variable ExplorationAutomationConfig automationConfig =
+        ExplorationAutomationConfig(model.map.currentPlayer);
+
+    "If the unit has a proposed path, move one more tile along it; otherwise, ask the user
+     for directions once and make that move, then return to the caller."
+    // No need to set the 'modified' flag anywhere in this method, as
+    // ExplorationModel.move() always sets it.
+    shared void moveOneStep() {
+        if (exists mover = model.selectedUnit) {
+            Point point = model.selectedUnitLocation;
+            Direction direction;
+            if (exists proposedDestination = proposedPath.accept()) {
+                direction = `Direction`.caseValues.find(
+                    matchingValue(proposedDestination,
+                        curry(model.getDestination)(point))) else Direction.nowhere;
+                if (proposedDestination == point) {
+                    return;
+                } else if (direction == Direction.nowhere) {
+                    cli.println("Next step ``
+                        proposedDestination`` isn't adjacent to ``point``");
+                    return;
+                }
+                cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``
+                    speed.shortName``.");
+            } else {
+                cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``
+                    speed.shortName``.");
+                cli.print("""0: Set Speed, 1: SW, 2: S, 3: SE, 4: W, 5: Linger, """);
+                cli.println(
+                    """6: E, 7: NW, 8: N, 9: NE, 10: Toward Point, 11: Quit""");
+                Integer directionNum = cli.inputNumber("Direction to move: ") else -1;
+                switch (directionNum)
+                case (0) { changeSpeed(); return; }
+                case (1) { direction = Direction.southwest; }
+                case (2) { direction = Direction.south; }
+                case (3) { direction = Direction.southeast; }
+                case (4) { direction = Direction.west; }
+                case (5) { direction = Direction.nowhere; }
+                case (6) { direction = Direction.east; }
+                case (7) { direction = Direction.northwest; }
+                case (8) { direction = Direction.north; }
+                case (9) { direction = Direction.northeast; }
+                case (10) {
+                    if (exists destination =
+                            cli.inputPoint("Location to move toward: ")) {
+                        value [cost, path] = pathfinder.getTravelDistance(model
+                            .subordinateMaps.first?.key else model.map,
+                            point, destination);
+                        if (path.empty) {
+                            cli.println(
+                                "S/he doesn't know how to get there from here.");
+                        } else {
+                            proposedPath.addAll(path);
+                        }
+                        return;
+                    } else {
+                        movement = 0;
+                        return;
+                    }
+                }
+                else { movement = 0; return; }
+            }
+
+            Point destPoint = model.getDestination(point, direction);
+            try {
+                model.move(direction, speed);
+            } catch (TraversalImpossibleException except) {
+                log.debug("Attempted movement to impossible destination");
+                cli.println("That direction is impassable; we've made sure all maps show
+                             that at a cost of 1 MP");
+                return;
+            }
+
+            MutableList<TileFixture> constants = ArrayList<TileFixture>();
+            IMutableMapNG map = model.map;
+            MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
+
+            //        for (fixture in map.fixtures[destPoint]) { // TODO: syntax sugar once compiler bug fixed
+            for (fixture in map.fixtures.get(destPoint)) {
+                if (simpleMovementModel.shouldAlwaysNotice(mover, fixture)) {
+                    constants.add(fixture);
+                } else if (simpleMovementModel.shouldSometimesNotice(mover, speed,
+                        fixture)) {
+                    allFixtures.add(fixture);
+                }
+            }
+
+            Animal|AnimalTracks|HuntingModel.NothingFound tracksAnimal;
+            // Since not-visible terrain is impassable, by this point we know the tile
+            // is visible.
+            assert (exists terrain = model.map.baseTerrain[destPoint]);
+            if (TileType.ocean == terrain) {
+                tracksAnimal = huntingModel.fish(destPoint).map(Entry.item).first
+                else HuntingModel.nothingFound;
+            } else {
+                tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first
+                else HuntingModel.nothingFound;
+            }
+
+            if (is Animal tracksAnimal) {
+                allFixtures.add(AnimalTracks(tracksAnimal.kind));
+            } else if (is AnimalTracks tracksAnimal) {
+                allFixtures.add(tracksAnimal.copy(false));
+            }
+
+            if (Direction.nowhere == direction) {
+                switch (cli.inputBooleanInSeries(
+                    "Should any village here swear to the player?  "))
+                case (true) { model.swearVillages(); }
+                case (null) { return; }
+                case (false) {}
+                switch (cli.inputBooleanInSeries("Dig to expose some ground here? "))
+                case (true) { model.dig(); }
+                case (false) {}
+                case (null) { return; }
+            }
+
+            String mtn;
+            //        if (map.mountainous[destPoint]) { // TODO: syntax sugar once compiler bug fixed
+            if (map.mountainous.get(destPoint)) {
+                mtn = "mountainous ";
+                for (subMap->[file, _] in model.subordinateMaps) {
+                    subMap.mountainous[destPoint] = true;
+                }
+            } else {
+                mtn = "";
+            }
+
+            cli.println("The explorer comes to ``destPoint``, a ``mtn````
+                map.baseTerrain[destPoint] else "unknown-terrain"`` tile");
+            {TileFixture*} noticed = simpleMovementModel.selectNoticed(allFixtures,
+                identity<TileFixture>, mover, speed);
+
+            if (!constants.empty || !noticed.empty) {
+                cli.print("The following were ");
+                if (noticed.empty) {
+                    cli.println("automatically noticed:");
+                } else if (noticed.size > 1) {
+                    cli.println("noticed, all but the last ``noticed
+                        .size`` automatically:");
+                } else {
+                    cli.println("noticed, all but the last automatically:");
+                }
+                constants.addAll(noticed);
+                for (fixture in constants) {
+                    printAndTransferFixture(destPoint, fixture, mover);
+                }
+            }
+
+            if (!proposedPath.empty, automationConfig.stopAtPoint(cli,
+                model.subordinateMaps.first?.key else model.map, destPoint)) {
+                proposedPath.clear();
+            }
+        } else {
+            cli.println("No unit is selected");
+        }
+    }
+
     "Ask the user for directions the unit should move until it runs out of MP or the user
       decides to quit."
     todo("Inline back into [[ExplorationCLI]]?",
@@ -103,160 +269,18 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
             cli.println("That unit appears to be at ``model.selectedUnitLocation``");
             cli.println(mover.verbose);
             Integer totalMP = cli.inputNumber("MP the unit has: ") else 0;
-            variable Integer movement = totalMP;
-            object handleCost satisfies MovementCostListener {
-                shared actual void deduct(Integer cost) => movement -= cost;
+            movement = totalMP;
+            if (!addedAsListener) {
+                model.addMovementCostListener(this);
+                addedAsListener = true;
             }
-            model.addMovementCostListener(handleCost);
 
-            MutableList<Point>&Queue<Point> proposedPath = ArrayList<Point>();
-            ExplorationAutomationConfig automationConfig =
-                ExplorationAutomationConfig(mover.owner);
+            if (automationConfig.player != mover.owner) {
+                automationConfig = ExplorationAutomationConfig(mover.owner);
+            }
 
             while (movement > 0) {
-                Point point = model.selectedUnitLocation;
-                Direction direction;
-                if (exists proposedDestination = proposedPath.accept()) {
-                    direction = `Direction`.caseValues.find(
-                        matchingValue(proposedDestination,
-                            curry(model.getDestination)(point))) else Direction.nowhere;
-                    if (proposedDestination == point) {
-                        continue;
-                    } else if (direction == Direction.nowhere) {
-                        cli.println("Next step ``
-                            proposedDestination`` isn't adjacent to ``point``");
-                        continue;
-                    }
-                    cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``
-                        speed.shortName``.");
-                } else {
-                    cli.println("``movement``/``totalMP`` MP remaining. Current speed: ``
-                        speed.shortName``.");
-                    cli.print("""0: Set Speed, 1: SW, 2: S, 3: SE, 4: W, 5: Linger, """);
-                    cli.println(
-                        """6: E, 7: NW, 8: N, 9: NE, 10: Toward Point, 11: Quit""");
-                    Integer directionNum = cli.inputNumber("Direction to move: ") else -1;
-                    switch (directionNum)
-                    case (0) { changeSpeed(); continue; }
-                    case (1) { direction = Direction.southwest; }
-                    case (2) { direction = Direction.south; }
-                    case (3) { direction = Direction.southeast; }
-                    case (4) { direction = Direction.west; }
-                    case (5) { direction = Direction.nowhere; }
-                    case (6) { direction = Direction.east; }
-                    case (7) { direction = Direction.northwest; }
-                    case (8) { direction = Direction.north; }
-                    case (9) { direction = Direction.northeast; }
-                    case (10) {
-                        if (exists destination =
-                                cli.inputPoint("Location to move toward: ")) {
-                            value [cost, path] = pathfinder.getTravelDistance(model
-                                .subordinateMaps.first?.key else model.map,
-                                point, destination);
-                            if (path.empty) {
-                                cli.println(
-                                    "S/he doesn't know how to get there from here.");
-                            } else {
-                                proposedPath.addAll(path);
-                            }
-                            continue;
-                        } else {
-                            return;
-                        }
-                    }
-                    else { movement = 0; continue; }
-                }
-
-                Point destPoint = model.getDestination(point, direction);
-                try {
-                    model.move(direction, speed);
-                } catch (TraversalImpossibleException except) {
-                    log.debug("Attempted movement to impossible destination");
-                    cli.println("That direction is impassable; we've made sure all maps
-                                 show that at a cost of 1 MP");
-                    continue;
-                }
-
-                MutableList<TileFixture> constants = ArrayList<TileFixture>();
-                IMutableMapNG map = model.map;
-                MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
-
-                //        for (fixture in map.fixtures[destPoint]) { // TODO: syntax sugar once compiler bug fixed
-                for (fixture in map.fixtures.get(destPoint)) {
-                    if (simpleMovementModel.shouldAlwaysNotice(mover, fixture)) {
-                        constants.add(fixture);
-                    } else if (simpleMovementModel.shouldSometimesNotice(mover, speed,
-                            fixture)) {
-                        allFixtures.add(fixture);
-                    }
-                }
-
-                Animal|AnimalTracks|HuntingModel.NothingFound tracksAnimal;
-                // Since not-visible terrain is impassable, by this point we know the tile
-                // is visible.
-                assert (exists terrain = model.map.baseTerrain[destPoint]);
-                if (TileType.ocean == terrain) {
-                    tracksAnimal = huntingModel.fish(destPoint).map(Entry.item).first
-                        else HuntingModel.nothingFound;
-                } else {
-                    tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first
-                        else HuntingModel.nothingFound;
-                }
-
-                if (is Animal tracksAnimal) {
-                    allFixtures.add(AnimalTracks(tracksAnimal.kind));
-                } else if (is AnimalTracks tracksAnimal) {
-                    allFixtures.add(tracksAnimal.copy(false));
-                }
-
-                if (Direction.nowhere == direction) {
-                    switch (cli.inputBooleanInSeries(
-                        "Should any village here swear to the player?  "))
-                    case (true) { model.swearVillages(); }
-                    case (null) { return; }
-                    case (false) {}
-                    switch (cli.inputBooleanInSeries("Dig to expose some ground here? "))
-                    case (true) { model.dig(); }
-                    case (false) {}
-                    case (null) { return; }
-                }
-
-                String mtn;
-                //        if (map.mountainous[destPoint]) { // TODO: syntax sugar once compiler bug fixed
-                if (map.mountainous.get(destPoint)) {
-                    mtn = "mountainous ";
-                    for (subMap->[file, _] in model.subordinateMaps) {
-                        subMap.mountainous[destPoint] = true;
-                    }
-                } else {
-                    mtn = "";
-                }
-
-                cli.println("The explorer comes to ``destPoint``, a ``mtn````
-                    map.baseTerrain[destPoint] else "unknown-terrain"`` tile");
-                {TileFixture*} noticed = simpleMovementModel.selectNoticed(allFixtures,
-                    identity<TileFixture>, mover, speed);
-
-                if (!constants.empty || !noticed.empty) {
-                    cli.print("The following were ");
-                    if (noticed.empty) {
-                        cli.println("automatically noticed:");
-                    } else if (noticed.size > 1) {
-                        cli.println("noticed, all but the last ``noticed
-                            .size`` automatically:");
-                    } else {
-                        cli.println("noticed, all but the last automatically:");
-                    }
-                    constants.addAll(noticed);
-                    for (fixture in constants) {
-                        printAndTransferFixture(destPoint, fixture, mover);
-                    }
-                }
-
-                if (!proposedPath.empty, automationConfig.stopAtPoint(cli,
-                        model.subordinateMaps.first?.key else model.map, destPoint)) {
-                    proposedPath.clear();
-                }
+                moveOneStep();
             }
         } else {
             cli.println("No unit is selected");
@@ -264,7 +288,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli) {
     }
 }
 
-class ExplorationAutomationConfig(Player player) {
+class ExplorationAutomationConfig(shared Player player) {
     class Condition<Type>(configExplanation, stopExplanation, conditions)
         given Type satisfies TileFixture {
         "A description to use in the question asking wheter to stop for this condition."
