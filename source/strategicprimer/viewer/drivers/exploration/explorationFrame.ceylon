@@ -433,6 +433,45 @@ SPFrame explorationFrame(ExplorationGUI driver,
                 ["Should the explorer dig to find what kind of ground is here?",
                     driver.model.dig]];
 
+            "Copy fixtures from the given list to subordinate maps."
+            void discoverFixtures({TileFixture*} fixtures) {
+                Point destPoint = driver.model.selectedUnitLocation;
+                Player player = driver.model.selectedUnit ?. owner else
+                PlayerImpl(- 1, "no-one");
+
+                MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
+                for (map->[file, _] in driver.model.subordinateMaps) {
+                    map.baseTerrain[destPoint] = driver.model.map
+//                              .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
+                        .baseTerrain.get(destPoint);
+                    for (fixture in fixtures) {
+                        if (is FakeFixture fixture) {
+                            // Skip it! It'll corrupt the output XML!
+                            continue;
+                            //} else if (!map.fixtures[destPoint].any(fixture.equals)) { // TODO: syntax sugar once compiler bug fixed
+                        } else if (!map.fixtures.get(destPoint).any(fixture.equals)) {
+                            Boolean zero;
+                            if (is HasOwner fixture, fixture.owner != player || // TODO: add clarifying parentheses
+                            fixture is Village) {
+                                zero = true;
+                            } else if (is HasPopulation<Anything>|HasExtent<out Anything> fixture) {
+                                zero = true;
+                            } else {
+                                zero = false;
+                            }
+                            map.addFixture(destPoint, fixture.copy(zero));
+                            if (is CacheFixture fixture) {
+                                caches.add(fixture);
+                            }
+                        }
+                    }
+                    driver.model.setModifiedFlag(map, true);
+                }
+                for (cache in caches) {
+                    driver.model.map.removeFixture(destPoint, cache);
+                }
+            }
+
             void actionPerformedImpl() {
                 try {
                     value fixtures = selectedValuesList;
@@ -449,41 +488,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
                     }
 
                     driver.model.move(direction, speedSource());
-                    Point destPoint = driver.model.selectedUnitLocation;
-                    Player player = driver.model.selectedUnit ?. owner else
-                        PlayerImpl(- 1, "no-one");
-
-                    MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
-                    for (map->[file, _] in driver.model.subordinateMaps) {
-                        map.baseTerrain[destPoint] = driver.model.map
-//                              .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
-                                .baseTerrain.get(destPoint);
-                        for (fixture in fixtures) {
-                            if (is FakeFixture fixture) {
-                                // Skip it! It'll corrupt the output XML!
-                                continue;
-                            //} else if (!map.fixtures[destPoint].any(fixture.equals)) { // TODO: syntax sugar once compiler bug fixed
-                            } else if (!map.fixtures.get(destPoint).any(fixture.equals)) {
-                                Boolean zero;
-                                if (is HasOwner fixture, fixture.owner != player || // TODO: add clarifying parentheses
-                                        fixture is Village) {
-                                    zero = true;
-                                } else if (is HasPopulation<Anything>|HasExtent<out Anything> fixture) {
-                                    zero = true;
-                                } else {
-                                    zero = false;
-                                }
-                                map.addFixture(destPoint, fixture.copy(zero));
-                                if (is CacheFixture fixture) {
-                                    caches.add(fixture);
-                                }
-                            }
-                        }
-                        driver.model.setModifiedFlag(map, true);
-                    }
-                    for (cache in caches) {
-                        driver.model.map.removeFixture(destPoint, cache);
-                    }
+                    discoverFixtures(fixtures);
                 } catch (TraversalImpossibleException except) {
                     log.debug("Attempted movement to impassable destination", except);
                     Point selection = driver.model.selectedUnitLocation;
