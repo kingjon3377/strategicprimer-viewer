@@ -1,7 +1,7 @@
 import java.awt {
     Dimension,
-    Component,
-    GridLayout
+    GridLayout,
+    Container
 }
 import java.awt.event {
     ActionEvent
@@ -33,7 +33,7 @@ import lovelace.util.jvm {
 
 import lovelace.util.common {
     silentListener,
-    todo
+    PathWrapper
 }
 
 import strategicprimer.model.common.map {
@@ -56,16 +56,13 @@ import strategicprimer.model.impl.xmlio {
 }
 
 "The main window for the exploration GUI."
-todo("Merge parts of this back into ExplorationGUI?",
-    "Do what we can to convert nested objects/classes to top-level, etc.")
-SPFrame explorationFrame(ExplorationGUI driver,
-        MenuBroker menuHandler) {
+class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
+        extends SPFrame("Exploration", driver, Dimension(768, 48), true) {
+    shared actual void acceptDroppedFile(PathWrapper file) =>
+        driver.model.addSubordinateMap(mapIOHelper.readMap(file), file);
+    SimpleCardLayout layoutObj = SimpleCardLayout(contentPane);
+    setLayout(layoutObj);
 
-    SPFrame retval = SPFrame("Exploration", driver, Dimension(768, 48), true,
-        (file) => driver.model.addSubordinateMap(mapIOHelper.readMap(file), file)); // TODO: Use driver-interface method once it's available
-
-    SimpleCardLayout layoutObj = SimpleCardLayout(retval);
-    retval.setLayout(layoutObj);
     SpinnerNumberModel mpModel = SpinnerNumberModel(0, 0, 2000, 0);
     JSpinner mpField = JSpinner(mpModel);
 
@@ -82,7 +79,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
     void handlePlayerChanged() {
         layoutObj.goFirst();
         if (!playerList.selectionEmpty,
-                exists newPlayer = playerList.selectedValue) {
+            exists newPlayer = playerList.selectedValue) {
             unitListModel.playerChanged(null, newPlayer);
         }
     }
@@ -119,7 +116,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
         mpEditor.addActionListener(buttonListener);
     }
 
-    explorerSelectingPanel.center = horizontalSplit(
+    explorerSelectingPanel.center = horizontalSplit( // TODO: inline into initializer
         BorderedPanel.verticalPanel(JLabel("Players in all maps:"), playerList,
             null),
         BorderedPanel.verticalPanel(JLabel(
@@ -133,15 +130,14 @@ SPFrame explorationFrame(ExplorationGUI driver,
                     null, ImprovedComboBox<Speed>.withModel(speedModel)),
                 ListenedButton("Start exploring!", buttonListener))));
 
-    retval.add(explorerSelectingPanel);
-    retval.add(explorationPanel);
+    add(explorerSelectingPanel);
+    add(explorationPanel);
 
-    (retval of Component).preferredSize = Dimension(1024, 640);
+    (super of Container).preferredSize = Dimension(1024, 640);
 
-    retval.jMenuBar = SPMenu.forWindowContaining(explorationPanel,
+    jMenuBar = SPMenu.forWindowContaining(explorationPanel,
         SPMenu.createFileMenu(menuHandler.actionPerformed, driver),
         SPMenu.disabledMenu(SPMenu.createMapMenu(menuHandler.actionPerformed, driver)),
         SPMenu.createViewMenu(menuHandler.actionPerformed, driver));
-    retval.pack();
-    return retval;
+    pack();
 }

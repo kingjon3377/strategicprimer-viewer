@@ -87,7 +87,7 @@ class ExplorationGUI(ICLIHelper cli, SPOptions options, model)
         satisfies MultiMapGUIDriver {
     shared actual IExplorationModel model;
     void createWindow(MenuBroker menuHandler) {
-        SPFrame frame = explorationFrame(this, menuHandler);
+        SPFrame frame = ExplorationFrame(this, menuHandler);
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
         menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
             "about");
