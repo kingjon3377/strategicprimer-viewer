@@ -138,7 +138,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
                         immortalAnimals.contains(getAttribute(element, "kind")),
                     !getBooleanAttribute(element, "traces", false)) {
                 return setImage(ImmortalAnimal.parse(getAttribute(element, "kind"))
-                    (getIntegerAttribute(element, "id")), element, warner);
+                    (getOrGenerateID(element, warner, idFactory)), element, warner);
             } else if (exists reader = readers[tag]) {
                 return reader(element, parent, stream, players, warner, idFactory);
             }

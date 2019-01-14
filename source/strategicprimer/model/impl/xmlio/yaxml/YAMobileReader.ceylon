@@ -92,7 +92,7 @@ class YAMobileReader(Warning warning, IDRegistrar idRegistrar)
                 getParameter(element, "traces", "").empty);
             if (!tracks) {
                 if (immortalAnimals.contains(kind)) {
-                    return ImmortalAnimal.parse(kind)(getIntegerParameter(element, "id"));
+                    return ImmortalAnimal.parse(kind)(getOrGenerateID(element));
                 }
                 expectAttributes(element, "traces", "id", "count", "talking", "kind",
                     "status", "wild", "born", "image");
