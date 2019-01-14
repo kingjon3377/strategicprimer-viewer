@@ -178,7 +178,6 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             seconds[direction]?.selectedPointChanged(previous, point);
             if (exists button = buttons[direction]) {
                 button.point = point;
-                button.repaint(); // TODO: Drop: setter already calls it
             }
             log.trace("ExplorationPanel.selectedPointChanged: Ending ``direction``");
         }
