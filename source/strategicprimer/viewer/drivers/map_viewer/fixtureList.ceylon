@@ -47,7 +47,8 @@ import javax.swing {
     KeyStroke,
     SwingList=JList,
     ListSelectionModel,
-    JComponent
+    JComponent,
+    SwingUtilities
 }
 import strategicprimer.drivers.common {
     SelectionChangeListener
@@ -97,7 +98,8 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
 
         shared actual Integer hash => listModel.hash;
         shared actual void selectedPointChanged(Point? old, Point newPoint) =>
-                listModel.selectedPointChanged(old, newPoint);
+                SwingUtilities.invokeLater(
+                        () => listModel.selectedPointChanged(old, newPoint));
 
         object fixtureMouseListener extends MouseAdapter() {
             void handleMouseEvent(MouseEvent event) {
