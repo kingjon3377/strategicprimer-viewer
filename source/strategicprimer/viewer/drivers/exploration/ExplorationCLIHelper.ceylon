@@ -31,7 +31,9 @@ import strategicprimer.model.common.map.fixtures.resources {
 }
 
 import strategicprimer.drivers.common.cli {
-    ICLIHelper
+    ICLIHelper,
+    Applet,
+    AppletChooser
 }
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
@@ -52,6 +54,9 @@ import strategicprimer.model.common.map.fixtures.towns {
 import strategicprimer.drivers.common {
     SelectionChangeListener
 }
+
+class ExplorationApplet(shared actual void invoke(), shared actual String description,
+    shared actual String+ commands) satisfies Applet {}
 
 "The logic split out of [[ExplorationCLI]], some also used in
  [[strategicprimer.viewer.drivers.turnrunning::TurnRunningCLI]]"
@@ -120,6 +125,10 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
         }
     }
+    AppletChooser<ExplorationApplet> appletChooser = AppletChooser(cli,
+        ExplorationApplet(model.swearVillages, "Swear any village here to the player",
+            "swear"),
+        ExplorationApplet(model.dig, "Dig to expose some ground here", "dig"));
     "If the unit has a proposed path, move one more tile along it; otherwise, ask the user
      for directions once and make that move, then return to the caller."
     // No need to set the 'modified' flag anywhere in this method, as
@@ -223,15 +232,13 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
 
             if (Direction.nowhere == direction) {
-                switch (cli.inputBooleanInSeries(
-                    "Should any village here swear to the player?  "))
-                case (true) { model.swearVillages(); }
-                case (null) { return; }
-                case (false) {}
-                switch (cli.inputBooleanInSeries("Dig to expose some ground here? "))
-                case (true) { model.dig(); }
-                case (false) {}
-                case (null) { return; }
+                while (exists response =
+                        cli.inputBooleanInSeries("Take an action here?"), response) {
+                    switch (applet = appletChooser.chooseApplet())
+                    case (true|null) { continue; }
+                    case (false) { break; }
+                    case (is ExplorationApplet) { applet.invoke(); }
+                }
             }
 
             String mtn;
