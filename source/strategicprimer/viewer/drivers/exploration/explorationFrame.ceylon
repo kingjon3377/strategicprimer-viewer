@@ -1,5 +1,4 @@
 import java.awt {
-    CardLayout,
     Dimension,
     Component,
     GridLayout
@@ -28,7 +27,8 @@ import lovelace.util.jvm {
     BorderedPanel,
     ListenedButton,
     ImprovedComboBox,
-    FunctionalGroupLayout
+    FunctionalGroupLayout,
+    SimpleCardLayout
 }
 
 import lovelace.util.common {
@@ -64,7 +64,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
     SPFrame retval = SPFrame("Exploration", driver, Dimension(768, 48), true,
         (file) => driver.model.addSubordinateMap(mapIOHelper.readMap(file), file)); // TODO: Use driver-interface method once it's available
 
-    CardLayout layoutObj = CardLayout();
+    SimpleCardLayout layoutObj = SimpleCardLayout(retval);
     retval.setLayout(layoutObj);
     SpinnerNumberModel mpModel = SpinnerNumberModel(0, 0, 2000, 0);
     JSpinner mpField = JSpinner(mpModel);
@@ -80,7 +80,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
 
     driver.model.addMapChangeListener(playerListModel);
     void handlePlayerChanged() {
-        layoutObj.first(retval.contentPane);
+        layoutObj.goFirst();
         if (!playerList.selectionEmpty,
                 exists newPlayer = playerList.selectedValue) {
             unitListModel.playerChanged(null, newPlayer);
@@ -109,13 +109,15 @@ SPFrame explorationFrame(ExplorationGUI driver,
 
     variable Boolean onFirstPanel = true;
     void swapPanels() {
+        // TODO: These validate() calls shouldn't be necessary
         explorationPanel.validate();
         explorerSelectingPanel.validate();
+        // TODO: Since CardLayout.next() wraps around, use goNext() unconditionally
         if (onFirstPanel) {
-            layoutObj.next(retval.contentPane);
+            layoutObj.goNext();
             onFirstPanel = false;
         } else {
-            layoutObj.first(retval.contentPane);
+            layoutObj.goFirst();
             onFirstPanel = true;
         }
     }

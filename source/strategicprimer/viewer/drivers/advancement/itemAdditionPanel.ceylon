@@ -2,7 +2,6 @@ import lovelace.util.common {
     todo
 }
 import java.awt {
-    CardLayout,
     Dimension
 }
 import java.awt.event {
@@ -21,24 +20,26 @@ import lovelace.util.jvm {
     platform,
     BoxAxis,
     ListenedButton,
-    boxPanel
+    boxPanel,
+    SimpleCardLayout
 }
 
 "A panel to be the GUI to add items to a list."
 todo("Move to lovelace.util?",
      "At least make a FlipPanel (JPanel laid out by CardLayout with methods to
-      flip forward and back) this can inherit from")
+      flip forward and back) this can inherit from",
+     "Or try to convert back to a class now we have SimpleCardLayout")
 JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
-    CardLayout layoutObj = CardLayout();
     MutableList<AddRemoveListener> listeners = ArrayList<AddRemoveListener>();
     JTextField field = JTextField(10);
 
-    object retval extends JPanel(layoutObj) satisfies AddRemoveSource {
+    object retval extends JPanel() satisfies AddRemoveSource {
         shared actual void addAddRemoveListener(AddRemoveListener listener) =>
                 listeners.add(listener);
         shared actual void removeAddRemoveListener(AddRemoveListener listener) =>
                 listeners.remove(listener);
     }
+    SimpleCardLayout layoutObj = SimpleCardLayout(retval);
 
     void setPanelSizes(JPanel panel) {
         panel.minimumSize = Dimension(60, 40);
@@ -51,7 +52,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     first.add(ListenedButton("+", (ActionEvent event) {
         // I had wondered if Component.requestFocusInWindow() would make CardLayout flip
         // to the card containing the component, but it apparently doesn't work that way.
-        layoutObj.next(retval);
+        layoutObj.goNext();
         field.requestFocusInWindow();
     }));
     setPanelSizes(first);
@@ -65,7 +66,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
         for (listener in listeners) {
             listener.add(what, text);
         }
-        layoutObj.first(retval);
+        layoutObj.goFirst();
         field.text = "";
     }
 
@@ -77,7 +78,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     okPanel.add(okButton);
 
     JButton cancelButton = ListenedButton("Cancel", (ActionEvent event) {
-        layoutObj.first(retval);
+        layoutObj.goFirst();
         field.text = "";
     });
 
