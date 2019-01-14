@@ -181,22 +181,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
     menuHandler.register(silentListener(handlePlayerChanged),
         "change current player");
 
-    DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
-    todo("convert to top-level class")
-    object renderer satisfies ListCellRenderer<IUnit> {
-        shared actual Component getListCellRendererComponent(
-            SwingList<out IUnit>? list, IUnit? val, Integer index,
-            Boolean isSelected, Boolean cellHasFocus) {
-            Component retval = defaultRenderer.getListCellRendererComponent(list,
-                val, index, isSelected, cellHasFocus);
-            if (exists val, is JLabel retval) {
-                retval.text = "``val.name`` (``val.kind``)";
-            }
-            return retval;
-        }
-    }
-
-    unitList.cellRenderer = renderer;
+    unitList.cellRenderer = UnitCellRenderer();
 
     speedModel.selectedItem = Speed.normal;
 
