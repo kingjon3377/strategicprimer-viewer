@@ -149,7 +149,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
     {FixtureMatcher*} matchers = FixtureFilterTableModel();
 
     class SpeedChangeListener(SelectionChangeListener scs)
-        satisfies ListDataListener {
+            satisfies ListDataListener {
         shared variable Point point = Point.invalidPoint;
         void apply() => scs.selectedPointChanged(null, point);
         shared actual void contentsChanged(ListDataEvent event) => apply();
@@ -238,8 +238,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
     }
 
     class ExplorationClickListener(Direction direction,
-        SwingList<TileFixture>&SelectionChangeListener mainList)
-        satisfies SelectionChangeSource&ActionListener {
+            SwingList<TileFixture>&SelectionChangeListener mainList)
+            satisfies SelectionChangeSource&ActionListener {
         MutableList<SelectionChangeListener> selectionListeners =
             ArrayList<SelectionChangeListener>();
         shared actual void addSelectionChangeListener(
@@ -279,17 +279,17 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
             for (map->[file, _] in driverModel.subordinateMaps) {
                 map.baseTerrain[destPoint] = driverModel.map
-//                              .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
+//                    .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
                     .baseTerrain.get(destPoint);
                 for (fixture in fixtures) {
                     if (is FakeFixture fixture) {
                         // Skip it! It'll corrupt the output XML!
                         continue;
-                        //} else if (!map.fixtures[destPoint].any(fixture.equals)) { // TODO: syntax sugar once compiler bug fixed
+                    //} else if (!map.fixtures[destPoint].any(fixture.equals)) { // TODO: syntax sugar once compiler bug fixed
                     } else if (!map.fixtures.get(destPoint).any(fixture.equals)) {
                         Boolean zero;
                         if (is HasOwner fixture, fixture.owner != player || // TODO: add clarifying parentheses
-                        fixture is Village) {
+                                fixture is Village) {
                             zero = true;
                         } else if (is HasPopulation<Anything>|HasExtent<out Anything> fixture) {
                             zero = true;
