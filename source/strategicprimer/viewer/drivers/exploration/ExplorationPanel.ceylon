@@ -4,7 +4,6 @@ import lovelace.util.jvm {
     createHotKey,
     ListenedButton,
     InterpolatedLabel,
-    ListModelWrapper,
     FunctionalPopupMenu,
     ImprovedComboBox,
     FunctionalGroupLayout,
@@ -18,15 +17,11 @@ import strategicprimer.drivers.common {
 import strategicprimer.drivers.exploration.common {
     MovementCostListener,
     MovementCostSource,
-    simpleMovementModel,
     HuntingModel,
     Speed,
     Direction,
     TraversalImpossibleException,
     IExplorationModel
-}
-import ceylon.random {
-    randomize
 }
 import strategicprimer.model.common.map.fixtures.towns {
     Village
@@ -401,47 +396,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         ecl.addSelectionChangeListener(selectionChangeListenerObject);
         ecl.addMovementCostListener(movementDeductionTracker);
 
-        """A list-data-listener to select a random but suitable set of fixtures to
-            be "discovered" if the tile is explored."""
-        object ell satisfies SelectionChangeListener {
-            variable Boolean outsideCritical = true;
-            void selectedPointChangedImpl() {
-                if (outsideCritical, exists selectedUnit =
-                    driverModel.selectedUnit) {
-                    outsideCritical = false;
-                    mainList.clearSelection();
-                    MutableList<[Integer, TileFixture]> constants =
-                        ArrayList<[Integer, TileFixture]>();
-                    MutableList<[Integer, TileFixture]> possibles =
-                        ArrayList<[Integer, TileFixture]>();
-                    for (index->fixture in ListModelWrapper(mainList.model)
-                        .indexed) {
-                        if (simpleMovementModel.shouldAlwaysNotice(selectedUnit,
-                            fixture)) {
-                            constants.add([index, fixture]);
-                        } else if (simpleMovementModel
-                            .shouldSometimesNotice(selectedUnit,
-                            speedSource(), fixture)) {
-                            possibles.add([index, fixture]);
-                        }
-                    }
-                    constants.addAll(simpleMovementModel.selectNoticed(
-                        randomize(possibles),
-                        compose(Tuple<TileFixture, TileFixture, []>.first,
-                            Tuple<Integer|TileFixture, Integer,
-                            [TileFixture]>.rest),
-                        selectedUnit, speedSource()));
-                    IntArray indices = IntArray.with(
-                        constants.map(Tuple.first));
-                    mainList.selectedIndices = indices;
-                    outsideCritical = true;
-                }
-            }
-            shared actual void selectedPointChanged(Point? old, Point newPoint) { // TODO: =>
-                SwingUtilities.invokeLater(selectedPointChangedImpl);
-            }
-            shared actual void selectedUnitChanged(IUnit? old, IUnit? newSel) {}
-        }
+        RandomDiscoverySelector ell = RandomDiscoverySelector(driverModel, mainList,
+            speedSource);
 
         // mainList.model.addListDataListener(ell);
         driverModel.addSelectionChangeListener(ell);
