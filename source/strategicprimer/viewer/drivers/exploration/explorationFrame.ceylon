@@ -107,15 +107,11 @@ SPFrame explorationFrame(ExplorationGUI driver,
 
     driver.model.addSelectionChangeListener(explorationPanel);
 
-    void swapPanels() {
-        layoutObj.goNext();
-    }
-
     void buttonListener(ActionEvent event) {
         if (exists selectedValue = unitList.selectedValue,
-            !unitList.selectionEmpty) {
+            !unitList.selectionEmpty) { // FIXME: indentation
             driver.model.selectedUnit = selectedValue;
-            swapPanels();
+            layoutObj.goNext();
         }
     }
 
@@ -137,7 +133,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
                     null, ImprovedComboBox<Speed>.withModel(speedModel)),
                 ListenedButton("Start exploring!", buttonListener))));
 
-    explorationPanel.addCompletionListener(swapPanels);
+    explorationPanel.addCompletionListener(layoutObj.goNext);
     retval.add(explorerSelectingPanel);
     retval.add(explorationPanel);
 
