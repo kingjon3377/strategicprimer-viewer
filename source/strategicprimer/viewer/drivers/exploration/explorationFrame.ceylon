@@ -105,10 +105,13 @@ class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
     driver.model.addSelectionChangeListener(explorationPanel);
 
     void buttonListener(ActionEvent event) {
+        log.trace("In ExplorationFrame.buttonListener");
         if (exists selectedValue = unitList.selectedValue, !unitList.selectionEmpty) {
             driver.model.selectedUnit = selectedValue;
+            log.trace("ExplorationFrame.buttonListener: after selectedUnit setter call");
             layoutObj.goNext();
         }
+        log.trace("End of ExplorationFrame.buttonListener");
     }
 
     if (is JTextField mpEditor = mpField.editor) {

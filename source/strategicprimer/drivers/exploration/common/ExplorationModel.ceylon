@@ -192,6 +192,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     "Tell listeners that the selected point changed."
     void fireSelectionChange(Point old, Point newSelection) {
         for (listener in scListeners) {
+            log.trace("Notifying a listener of selected-point change");
             listener.selectedPointChanged(old, newSelection);
         }
     }
@@ -199,6 +200,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     "Tell listeners that the selected unit changed."
     void fireSelectedUnitChange(IUnit? old, IUnit? newSelection) {
         for (listener in scListeners) {
+            log.trace("Notifying a listener of selected-unit change");
             listener.selectedUnitChanged(old, newSelection);
         }
     }

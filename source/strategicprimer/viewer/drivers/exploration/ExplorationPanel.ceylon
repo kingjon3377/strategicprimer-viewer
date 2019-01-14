@@ -107,6 +107,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             Anything() explorerChangeButtonListener)
         extends BorderedPanel(verticalSplit(headerPanel, tilesPanel))
         satisfies SelectionChangeListener {
+    log.trace("In ExplorationPanel initializer");
     KeyStroke key(Integer code) => KeyStroke.getKeyStroke(code, 0);
     Map<Direction, KeyStroke> arrowKeys = simpleMap(
         Direction.north->key(KeyEvent.vkUp), Direction.south->key(KeyEvent.vkDown),
@@ -163,7 +164,9 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         if (exists old, old == newPoint) {
             return;
         }
+        log.trace("In ExplorationPanel.selectedPointChanged");
         for (direction in `Direction`.caseValues) {
+            log.trace("ExplorationPanel.selectedPointChanged: Beginning ``direction``");
             Point point = driverModel.getDestination(newPoint, direction);
             Point? previous;
             if (exists speedChangeListener = speedChangeListeners[direction]) {
@@ -178,6 +181,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
                 button.point = point;
                 button.repaint(); // TODO: Drop: setter already calls it
             }
+            log.trace("ExplorationPanel.selectedPointChanged: Ending ``direction``");
         }
         locLabel.arguments = [newPoint];
     }
@@ -204,11 +208,15 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
     headerPanel.add(speedLabel);
     headerPanel.add(speedBox);
 
+    log.trace("ExplorationPanel: headerPanel contents added");
+
     headerLayout.setHorizontalGroup(headerLayout
         .sequentialGroupOf(explorerChangeButton, locLabel,
         remainingMPLabel, mpField, speedLabel, speedBox));
     headerLayout.setVerticalGroup(headerLayout.parallelGroupOf(explorerChangeButton,
         locLabel, remainingMPLabel, mpField, speedLabel, speedBox));
+
+    log.trace("ExplorationPanel: headerPanel layout adjusted");
 
     IMutableMapNG secondMap; // TODO: Add 'secondMap' field to IExplorationModel (as IMap), to improve no-second-map to a-second-map transition
     if (exists entry = driverModel.subordinateMaps.first) {
@@ -219,6 +227,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
 
     IDRegistrar idf = createIDFactory(driverModel.allMaps.map(Entry.key));
     HuntingModel huntingModel = HuntingModel(driverModel.map);
+
+    log.trace("ExplorationPanel: huntingModel created");
 
     AnimalTracks? tracksCreator(Point point) {
         if (exists terrain = driverModel.map.baseTerrain[point]) {
@@ -356,6 +366,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
     }
 
     for (direction in sort(`Direction`.caseValues)) {
+        log.trace("ExplorationPanel: Starting to initialize for ``direction``");
         SelectionChangeSupport mainPCS = SelectionChangeSupport();
         SwingList<TileFixture>&SelectionChangeListener mainList =
             fixtureList(tilesPanel, FixtureListModel(driverModel.map, tracksCreator),
@@ -363,9 +374,12 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         mainPCS.addSelectionChangeListener(mainList);
         tilesPanel.add(JScrollPane(mainList));
 
+        log.trace("ExplorationPanel: main list set up for ``direction``");
+
         DualTileButton dtb = DualTileButton(driverModel.map, secondMap, matchers);
         // At some point we tried wrapping the button in a JScrollPane.
         tilesPanel.add(dtb);
+        log.trace("ExplorationPanel: Added button for ``direction``");
 
         ExplorationClickListener ecl = ExplorationClickListener(direction, mainList);
         if (Direction.nowhere == direction) {
@@ -381,12 +395,16 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         driverModel.addSelectionChangeListener(ell);
         ecl.addSelectionChangeListener(ell);
 
+        log.trace("ExplorationPanel: ell set up for ``direction``");
+
         SwingList<TileFixture>&SelectionChangeListener secList =
             fixtureList(tilesPanel, FixtureListModel(secondMap, (point) => null),
                 idf, markModified, secondMap.players);
         SelectionChangeSupport secPCS = SelectionChangeSupport();
         secPCS.addSelectionChangeListener(secList);
         tilesPanel.add(JScrollPane(secList));
+
+        log.trace("ExploratonPanel: Second list set up for ``direction``");
 
         SpeedChangeListener scl = SpeedChangeListener(ell);
         speedModel.addListDataListener(scl);
@@ -396,5 +414,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         buttons[direction] = dtb;
         seconds[direction] = secPCS;
         ell.selectedPointChanged(null, driverModel.selectedUnitLocation);
+        log.trace("ExplorationPanel: Done with ``direction``");
     }
+    log.trace("End of ExplorationPanel initializer");
 }
