@@ -165,14 +165,18 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         }
         for (direction in `Direction`.caseValues) {
             Point point = driverModel.getDestination(newPoint, direction);
+            Point? previous;
             if (exists speedChangeListener = speedChangeListeners[direction]) {
+                previous = speedChangeListener.point;
                 speedChangeListener.point = point;
+            } else {
+                previous = old;
             }
-            mains[direction]?.fireChanges(old, point); // TODO: 'old' wasn't previous selection *in this direction* ...
-            seconds[direction]?.fireChanges(old, point);
+            mains[direction]?.fireChanges(previous, point);
+            seconds[direction]?.fireChanges(previous, point);
             if (exists button = buttons[direction]) {
                 button.point = point;
-                button.repaint();
+                button.repaint(); // TODO: Drop: setter already calls it
             }
         }
         locLabel.arguments = [newPoint];
