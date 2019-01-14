@@ -62,6 +62,9 @@
  - The [[FunctionalPopupMenu]] class is a trivial [[javax.swing::JPopupMenu]] subclass
    that takes its menu items as initializer parameters, allowing it to be completely
    initialized in a single line of caller code.
+ - The [[SimpleCardLayout]] class is a convenience extension to [[java.awt::CardLayout]]
+   that encapsulates a reference to the container it is laying out instead of requiring
+   callers to provide that reference to every card-flipping call.
 
  - The [[platform]] object encapsulates a number of utility constants and functions that
    differ between Mac and non-Mac platforms, including the usual shortcut-key modifier as
