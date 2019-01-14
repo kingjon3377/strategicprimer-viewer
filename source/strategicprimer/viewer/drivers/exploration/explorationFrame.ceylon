@@ -107,16 +107,8 @@ SPFrame explorationFrame(ExplorationGUI driver,
 
     driver.model.addSelectionChangeListener(explorationPanel);
 
-    variable Boolean onFirstPanel = true;
     void swapPanels() {
-        // TODO: Since CardLayout.next() wraps around, use goNext() unconditionally
-        if (onFirstPanel) {
-            layoutObj.goNext();
-            onFirstPanel = false;
-        } else {
-            layoutObj.goFirst();
-            onFirstPanel = true;
-        }
+        layoutObj.goNext();
     }
 
     void buttonListener(ActionEvent event) {
