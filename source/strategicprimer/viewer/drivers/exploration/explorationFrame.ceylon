@@ -103,7 +103,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
     FunctionalGroupLayout headerLayout = FunctionalGroupLayout(headerPanel);
 
     ExplorationPanel explorationPanel = ExplorationPanel(mpModel, speedModel, headerPanel,
-        headerLayout, tilesPanel, driver.model);
+        headerLayout, tilesPanel, driver.model, layoutObj.goNext);
 
     driver.model.addSelectionChangeListener(explorationPanel);
 
@@ -133,7 +133,6 @@ SPFrame explorationFrame(ExplorationGUI driver,
                     null, ImprovedComboBox<Speed>.withModel(speedModel)),
                 ListenedButton("Start exploring!", buttonListener))));
 
-    explorationPanel.addCompletionListener(layoutObj.goNext);
     retval.add(explorerSelectingPanel);
     retval.add(explorationPanel);
 

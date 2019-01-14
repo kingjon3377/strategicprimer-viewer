@@ -102,15 +102,17 @@ import ceylon.collection {
 }
 import lovelace.util.common {
     todo,
-    simpleMap
+    simpleMap,
+    silentListener
 }
 
 todo("try to split controller-functionality from presentation")
 class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedModel,
             JPanel headerPanel, FunctionalGroupLayout headerLayout,
-            JPanel tilesPanel, IExplorationModel driverModel)
+            JPanel tilesPanel, IExplorationModel driverModel,
+            Anything() explorerChangeButtonListener)
         extends BorderedPanel(verticalSplit(headerPanel, tilesPanel))
-        satisfies SelectionChangeListener&CompletionSource {
+        satisfies SelectionChangeListener {
     KeyStroke key(Integer code) => KeyStroke.getKeyStroke(code, 0);
     Map<Direction, KeyStroke> arrowKeys = simpleMap(
         Direction.north->key(KeyEvent.vkUp), Direction.south->key(KeyEvent.vkDown),
@@ -182,19 +184,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         locLabel.arguments = [newPoint];
     }
 
-    MutableList<Anything()> completionListeners =
-        ArrayList<Anything()>();
-    shared actual void addCompletionListener(Anything() listener) =>
-        completionListeners.add(listener);
-    shared actual void removeCompletionListener(Anything() listener) =>
-        completionListeners.remove(listener);
-
     JButton explorerChangeButton = ListenedButton("Select a different explorer",
-            (ActionEvent event) {
-            for (listener in completionListeners) {
-                listener();
-            }
-        });
+            silentListener(explorerChangeButtonListener));
 
     JLabel remainingMPLabel = JLabel("Remaining Movement Points:");
     JSpinner mpField = JSpinner(mpModel);
