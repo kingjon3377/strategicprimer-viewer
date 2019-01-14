@@ -36,7 +36,6 @@ import java.awt.event {
 }
 import strategicprimer.viewer.drivers.map_viewer {
     FixtureFilterTableModel,
-    SelectionChangeSupport,
     FixtureListModel,
     fixtureList
 }
@@ -140,10 +139,10 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
     InterpolatedLabel<[Point]> locLabel = InterpolatedLabel<[Point]>(locLabelText,
         [Point.invalidPoint]);
 
-    MutableMap<Direction, SelectionChangeSupport> mains =
-        HashMap<Direction, SelectionChangeSupport>();
-    MutableMap<Direction, SelectionChangeSupport> seconds =
-        HashMap<Direction, SelectionChangeSupport>();
+    MutableMap<Direction, SelectionChangeListener> mains =
+        HashMap<Direction, SelectionChangeListener>();
+    MutableMap<Direction, SelectionChangeListener> seconds =
+        HashMap<Direction, SelectionChangeListener>();
     MutableMap<Direction, DualTileButton> buttons =
         HashMap<Direction, DualTileButton>();
 
@@ -175,8 +174,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             } else {
                 previous = old;
             }
-            mains[direction]?.fireChanges(previous, point);
-            seconds[direction]?.fireChanges(previous, point);
+            mains[direction]?.selectedPointChanged(previous, point);
+            seconds[direction]?.selectedPointChanged(previous, point);
             if (exists button = buttons[direction]) {
                 button.point = point;
                 button.repaint(); // TODO: Drop: setter already calls it
@@ -367,11 +366,9 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
 
     for (direction in sort(`Direction`.caseValues)) {
         log.trace("ExplorationPanel: Starting to initialize for ``direction``");
-        SelectionChangeSupport mainPCS = SelectionChangeSupport();
         SwingList<TileFixture>&SelectionChangeListener mainList =
             fixtureList(tilesPanel, FixtureListModel(driverModel.map, tracksCreator),
                 idf, markModified, driverModel.map.players);
-        mainPCS.addSelectionChangeListener(mainList);
         tilesPanel.add(JScrollPane(mainList));
 
         log.trace("ExplorationPanel: main list set up for ``direction``");
@@ -400,8 +397,6 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         SwingList<TileFixture>&SelectionChangeListener secList =
             fixtureList(tilesPanel, FixtureListModel(secondMap, (point) => null),
                 idf, markModified, secondMap.players);
-        SelectionChangeSupport secPCS = SelectionChangeSupport();
-        secPCS.addSelectionChangeListener(secList);
         tilesPanel.add(JScrollPane(secList));
 
         log.trace("ExploratonPanel: Second list set up for ``direction``");
@@ -410,9 +405,9 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         speedModel.addListDataListener(scl);
         speedChangeListeners[direction] = scl;
 
-        mains[direction] = mainPCS;
+        mains[direction] = mainList;
         buttons[direction] = dtb;
-        seconds[direction] = secPCS;
+        seconds[direction] = secList;
         ell.selectedPointChanged(null, driverModel.selectedUnitLocation);
         log.trace("ExplorationPanel: Done with ``direction``");
     }
