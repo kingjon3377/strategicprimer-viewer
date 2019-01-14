@@ -61,7 +61,6 @@ import lovelace.util.jvm {
 import lovelace.util.common {
     simpleMap,
     silentListener,
-    invoke,
     todo
 }
 
@@ -166,17 +165,6 @@ SPFrame explorationFrame(ExplorationGUI driver,
     PlayerListModel playerListModel = PlayerListModel(driver.model);
     SwingList<Player> playerList = SwingList<Player>(playerListModel);
 
-    MutableList<Anything()> completionListeners =
-            ArrayList<Anything()>();
-
-    void buttonListener(ActionEvent event) {
-        if (exists selectedValue = unitList.selectedValue,
-                !unitList.selectionEmpty) {
-            driver.model.selectedUnit = selectedValue;
-            completionListeners.each(invoke);
-        }
-    }
-
     ComboBoxModel<Speed> speedModel = DefaultComboBoxModel<Speed>(
         ObjectArray<Speed>.with(sort(`Speed`.caseValues)));
 
@@ -209,25 +197,10 @@ SPFrame explorationFrame(ExplorationGUI driver,
     }
 
     unitList.cellRenderer = renderer;
-    if (is JTextField mpEditor = mpField.editor) {
-        mpEditor.addActionListener(buttonListener);
-    }
+
     speedModel.selectedItem = Speed.normal;
 
     BorderedPanel explorerSelectingPanel = BorderedPanel();
-    explorerSelectingPanel.center = horizontalSplit(
-        BorderedPanel.verticalPanel(JLabel("Players in all maps:"), playerList,
-            null),
-        BorderedPanel.verticalPanel(JLabel(
-            """<html><body><p>Units belonging to that player:</p>
-               <p>(Selected unit will be used for exploration.)</p>
-               </body></html>"""),
-        JScrollPane(unitList), BorderedPanel.verticalPanel(
-            BorderedPanel.horizontalPanel(JLabel("Unit's Movement Points"),
-                null, mpField),
-            BorderedPanel.horizontalPanel(JLabel("Unit's Relative Speed"),
-                null, ImprovedComboBox<Speed>.withModel(speedModel)),
-            ListenedButton("Start exploring!", buttonListener))));
 
     JPanel tilesPanel = JPanel(GridLayout(3, 12, 2, 2));
 
@@ -601,7 +574,32 @@ SPFrame explorationFrame(ExplorationGUI driver,
         }
     }
 
-    completionListeners.add(swapPanels);
+    void buttonListener(ActionEvent event) {
+        if (exists selectedValue = unitList.selectedValue,
+            !unitList.selectionEmpty) {
+            driver.model.selectedUnit = selectedValue;
+            swapPanels();
+        }
+    }
+
+    if (is JTextField mpEditor = mpField.editor) {
+        mpEditor.addActionListener(buttonListener);
+    }
+
+    explorerSelectingPanel.center = horizontalSplit(
+        BorderedPanel.verticalPanel(JLabel("Players in all maps:"), playerList,
+            null),
+        BorderedPanel.verticalPanel(JLabel(
+            """<html><body><p>Units belonging to that player:</p>
+               <p>(Selected unit will be used for exploration.)</p>
+               </body></html>"""),
+            JScrollPane(unitList), BorderedPanel.verticalPanel(
+                BorderedPanel.horizontalPanel(JLabel("Unit's Movement Points"),
+                    null, mpField),
+                BorderedPanel.horizontalPanel(JLabel("Unit's Relative Speed"),
+                    null, ImprovedComboBox<Speed>.withModel(speedModel)),
+                ListenedButton("Start exploring!", buttonListener))));
+
     explorationPanel.addCompletionListener(swapPanels);
     retval.add(explorerSelectingPanel);
     retval.add(explorationPanel);
