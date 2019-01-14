@@ -91,7 +91,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
             cachedTerrainList = [TileTypeFixture(terrain)];
         }
         if (nonempty rivers = map.rivers.get(newPoint).sequence()) { // TODO: syntax sugar
-            cachedTerrainList = cachedTerrainList.withTrailing(RiverFixture(*rivers));
+            cachedTerrainList = cachedTerrainList.withTrailing(RiverFixture(rivers));
         }
 //        if (map.mountainous[newPoint]) { // TODO: syntax sugar
         if (map.mountainous.get(newPoint)) {
@@ -150,7 +150,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
                         cachedTerrainList.firstIndexWhere(`RiverFixture`.typeOf));
                     fireContentsChanged(index..index);
                     cachedTerrainList =
-                        cachedTerrainList.patch([RiverFixture(*map.rivers.get(point))],
+                        cachedTerrainList.patch([RiverFixture(map.rivers.get(point))],
                             index, 1).sequence();
                 }
             } else {

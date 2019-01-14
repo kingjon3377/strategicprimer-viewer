@@ -47,7 +47,7 @@ class RiverFixture satisfies FakeFixture {
     shared actual String defaultImage;
 
     shared {River*} rivers;
-    shared new (River* rivers) {
+    shared new ({River*} rivers) {
         this.rivers = rivers;
         assert (exists img = riverFiles[simpleSet<River>(*rivers)]);
         defaultImage = img;
@@ -59,7 +59,7 @@ class RiverFixture satisfies FakeFixture {
                 should never be called.")
     shared actual RiverFixture copy(Boolean zero) {
         log.warn("TileTypeFixture.copy called", Exception("dummy"));
-        return RiverFixture(*rivers);
+        return RiverFixture(rivers);
     }
 
     shared actual Boolean equals(Object obj) {
