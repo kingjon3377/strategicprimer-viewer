@@ -109,9 +109,6 @@ SPFrame explorationFrame(ExplorationGUI driver,
 
     variable Boolean onFirstPanel = true;
     void swapPanels() {
-        // TODO: These validate() calls shouldn't be necessary
-        explorationPanel.validate();
-        explorerSelectingPanel.validate();
         // TODO: Since CardLayout.next() wraps around, use goNext() unconditionally
         if (onFirstPanel) {
             layoutObj.goNext();
