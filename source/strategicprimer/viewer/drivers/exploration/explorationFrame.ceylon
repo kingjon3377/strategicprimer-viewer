@@ -133,28 +133,25 @@ import javax.swing.event {
 
 "The main window for the exploration GUI."
 todo("Merge parts of this back into ExplorationGUI?",
-    "Do what we can to convert nested objects/classes to top-level, etc.",
-    "Use [[lovelace.util.jvm::createAccelerator]] instead of [[KeyStroke.getKeyStroke]]
-     throughout below")
+    "Do what we can to convert nested objects/classes to top-level, etc.")
 SPFrame explorationFrame(ExplorationGUI driver,
         MenuBroker menuHandler) {
+    KeyStroke key(Integer code) => KeyStroke.getKeyStroke(code, 0);
     Map<Direction, KeyStroke> arrowKeys = simpleMap(
-        Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkUp, 0),
-        Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkDown, 0),
-        Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkLeft, 0),
-        Direction.east->KeyStroke.getKeyStroke(KeyEvent.vkRight, 0)
+        Direction.north->key(KeyEvent.vkUp), Direction.south->key(KeyEvent.vkDown),
+        Direction.west->key(KeyEvent.vkLeft), Direction.east->key(KeyEvent.vkRight)
     );
 
     Map<Direction, KeyStroke> numKeys = simpleMap(
-        Direction.north->KeyStroke.getKeyStroke(KeyEvent.vkNumpad8, 0),
-        Direction.south->KeyStroke.getKeyStroke(KeyEvent.vkNumpad2, 0),
-        Direction.west->KeyStroke.getKeyStroke(KeyEvent.vkNumpad4, 0),
-        Direction.east->KeyStroke.getKeyStroke(KeyEvent.vkNumpad6, 0),
-        Direction.northeast->KeyStroke.getKeyStroke(KeyEvent.vkNumpad9, 0),
-        Direction.northwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad7, 0),
-        Direction.southeast->KeyStroke.getKeyStroke(KeyEvent.vkNumpad3, 0),
-        Direction.southwest->KeyStroke.getKeyStroke(KeyEvent.vkNumpad1, 0),
-        Direction.nowhere->KeyStroke.getKeyStroke(KeyEvent.vkNumpad5, 0)
+        Direction.north->key(KeyEvent.vkNumpad8),
+        Direction.south->key(KeyEvent.vkNumpad2),
+        Direction.west->key(KeyEvent.vkNumpad4),
+        Direction.east->key(KeyEvent.vkNumpad6),
+        Direction.northeast->key(KeyEvent.vkNumpad9),
+        Direction.northwest->key(KeyEvent.vkNumpad7),
+        Direction.southeast->key(KeyEvent.vkNumpad3),
+        Direction.southwest->key(KeyEvent.vkNumpad1),
+        Direction.nowhere->key(KeyEvent.vkNumpad5)
     );
 
     SPFrame retval = SPFrame("Exploration", driver, Dimension(768, 48), true,
