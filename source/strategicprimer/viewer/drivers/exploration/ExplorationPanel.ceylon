@@ -110,7 +110,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             JPanel headerPanel, FunctionalGroupLayout headerLayout,
             JPanel tilesPanel, IExplorationModel driverModel)
         extends BorderedPanel(verticalSplit(headerPanel, tilesPanel))
-        satisfies SelectionChangeListener&CompletionSource&MovementCostListener {
+        satisfies SelectionChangeListener&CompletionSource {
     KeyStroke key(Integer code) => KeyStroke.getKeyStroke(code, 0);
     Map<Direction, KeyStroke> arrowKeys = simpleMap(
         Direction.north->key(KeyEvent.vkUp), Direction.south->key(KeyEvent.vkDown),
@@ -128,9 +128,11 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         Direction.southwest->key(KeyEvent.vkNumpad1),
         Direction.nowhere->key(KeyEvent.vkNumpad5)
     );
-    // TODO: Extract to a separate object, passed in as needed
-    shared actual void deduct(Integer cost) =>
-        mpModel.\ivalue = JInteger.valueOf(mpModel.number.intValue() - cost);
+    object movementDeductionTracker satisfies MovementCostListener {
+        shared actual void deduct(Integer cost) =>
+            mpModel.\ivalue =JInteger.valueOf(mpModel.number.intValue() - cost);
+    }
+    driverModel.addMovementCostListener(movementDeductionTracker);
     // TODO: Cache selected unit here instead of always referring to it via the model?
     shared actual void selectedUnitChanged(IUnit? old, IUnit? newSelection) {}
 
@@ -384,10 +386,6 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             outer.selectedUnitChanged(old, newSel);
     }
 
-    object movementCostProxy satisfies MovementCostListener {
-        shared actual void deduct(Integer cost) => outer.deduct(cost);
-    }
-
     for (direction in sort(`Direction`.caseValues)) {
         SelectionChangeSupport mainPCS = SelectionChangeSupport();
         SwingList<TileFixture>&SelectionChangeListener mainList =
@@ -410,7 +408,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         *[arrowKeys[direction], numKeys[direction]].coalesced);
         dtb.addActionListener(ecl);
         ecl.addSelectionChangeListener(selectionChangeListenerObject);
-        ecl.addMovementCostListener(movementCostProxy);
+        ecl.addMovementCostListener(movementDeductionTracker);
 
         """A list-data-listener to select a random but suitable set of fixtures to
             be "discovered" if the tile is explored."""

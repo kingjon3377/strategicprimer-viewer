@@ -105,7 +105,6 @@ SPFrame explorationFrame(ExplorationGUI driver,
     ExplorationPanel explorationPanel = ExplorationPanel(mpModel, speedModel, headerPanel,
         headerLayout, tilesPanel, driver.model);
 
-    driver.model.addMovementCostListener(explorationPanel);
     driver.model.addSelectionChangeListener(explorationPanel);
 
     variable Boolean onFirstPanel = true;
