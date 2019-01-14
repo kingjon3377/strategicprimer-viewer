@@ -59,6 +59,9 @@
    to implement the [[lovelace.util.common::Reorderable]] interface.
  - The [[ListModelWrapper]] class wraps a [[javax.swing::ListModel]] to meet the Ceylon
    [[List]] interface.
+ - The [[FunctionalPopupMenu]] class is a trivial [[javax.swing::JPopupMenu]] subclass
+   that takes its menu items as initializer parameters, allowing it to be completely
+   initialized in a single line of caller code.
 
  - The [[platform]] object encapsulates a number of utility constants and functions that
    differ between Mac and non-Mac platforms, including the usual shortcut-key modifier as
