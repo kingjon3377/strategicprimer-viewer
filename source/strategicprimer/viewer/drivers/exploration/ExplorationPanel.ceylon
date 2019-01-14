@@ -339,6 +339,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             } catch (TraversalImpossibleException except) {
                 log.debug("Attempted movement to impassable destination", except);
                 Point selection = driverModel.selectedUnitLocation;
+                outer.selectedPointChanged(null, selection);
                 for (listener in selectionListeners) {
                     listener.selectedPointChanged(null, selection);
                 }
@@ -354,13 +355,6 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         for (map->_ in driverModel.allMaps) {
             driverModel.setModifiedFlag(map, true);
         }
-    }
-
-    object selectionChangeListenerObject satisfies SelectionChangeListener {
-        shared actual void selectedPointChanged(Point? old, Point newSel) =>
-            outer.selectedPointChanged(old, newSel);
-        shared actual void selectedUnitChanged(IUnit? old, IUnit? newSel) =>
-            outer.selectedUnitChanged(old, newSel);
     }
 
     for (direction in sort(`Direction`.caseValues)) {
@@ -384,7 +378,6 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         createHotKey(dtb, direction.string, ecl, JComponent.whenInFocusedWindow,
         *[arrowKeys[direction], numKeys[direction]].coalesced);
         dtb.addActionListener(ecl);
-        ecl.addSelectionChangeListener(selectionChangeListenerObject);
 
         RandomDiscoverySelector ell = RandomDiscoverySelector(driverModel, mainList,
             speedSource);
