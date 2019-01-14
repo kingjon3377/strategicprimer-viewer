@@ -28,7 +28,6 @@ import javax.swing {
     DefaultComboBoxModel,
     JTextField,
     JScrollPane,
-    DefaultListModel,
     DefaultListCellRenderer,
     KeyStroke,
     ComboBoxModel,
@@ -162,13 +161,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
     SpinnerNumberModel mpModel = SpinnerNumberModel(0, 0, 2000, 0);
     JSpinner mpField = JSpinner(mpModel);
 
-    object unitListModel extends DefaultListModel<IUnit>()
-            satisfies PlayerChangeListener {
-        shared actual void playerChanged(Player? old, Player newPlayer) {
-            clear();
-            driver.model.getUnits(newPlayer).each(addElement);
-        }
-    }
+    UnitListModel unitListModel = UnitListModel(driver.model);
     SwingList<IUnit> unitList = SwingList<IUnit>(unitListModel);
 
     PlayerListModel playerListModel = PlayerListModel(driver.model);
