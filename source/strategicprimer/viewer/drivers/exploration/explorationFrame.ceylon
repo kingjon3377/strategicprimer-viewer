@@ -105,8 +105,7 @@ class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
     driver.model.addSelectionChangeListener(explorationPanel);
 
     void buttonListener(ActionEvent event) {
-        if (exists selectedValue = unitList.selectedValue,
-            !unitList.selectionEmpty) { // FIXME: indentation
+        if (exists selectedValue = unitList.selectedValue, !unitList.selectionEmpty) {
             driver.model.selectedUnit = selectedValue;
             layoutObj.goNext();
         }
