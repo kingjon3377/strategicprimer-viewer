@@ -291,10 +291,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
                         if (is HasOwner fixture, fixture.owner != player || // TODO: add clarifying parentheses
                                 fixture is Village) {
                             zero = true;
-                        } else if (is HasPopulation<Anything>|HasExtent<out Anything> fixture) {
-                            zero = true;
                         } else {
-                            zero = false;
+                            zero = fixture is HasPopulation<Anything>|HasExtent<out Anything>;
                         }
                         map.addFixture(destPoint, fixture.copy(zero));
                         if (is CacheFixture fixture) {
