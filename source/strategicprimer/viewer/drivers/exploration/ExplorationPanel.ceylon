@@ -358,14 +358,12 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
     for (direction in sort(`Direction`.caseValues)) {
         SelectionChangeSupport mainPCS = SelectionChangeSupport();
         SwingList<TileFixture>&SelectionChangeListener mainList =
-            fixtureList(tilesPanel, FixtureListModel(driverModel.map,
-                tracksCreator),
+            fixtureList(tilesPanel, FixtureListModel(driverModel.map, tracksCreator),
                 idf, markModified, driverModel.map.players);
         mainPCS.addSelectionChangeListener(mainList);
         tilesPanel.add(JScrollPane(mainList));
 
-        DualTileButton dtb = DualTileButton(driverModel.map, secondMap,
-            matchers);
+        DualTileButton dtb = DualTileButton(driverModel.map, secondMap, matchers);
         // At some point we tried wrapping the button in a JScrollPane.
         tilesPanel.add(dtb);
 
@@ -377,8 +375,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         *[arrowKeys[direction], numKeys[direction]].coalesced);
         dtb.addActionListener(ecl);
 
-        RandomDiscoverySelector ell = RandomDiscoverySelector(driverModel, mainList,
-            speedSource);
+        value ell = RandomDiscoverySelector(driverModel, mainList, speedSource);
 
         // mainList.model.addListDataListener(ell);
         driverModel.addSelectionChangeListener(ell);
