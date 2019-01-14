@@ -32,7 +32,6 @@ import javax.swing {
     DefaultListCellRenderer,
     KeyStroke,
     ComboBoxModel,
-    JOptionPane,
     ListModel,
     JPanel,
     SwingList=JList,
@@ -42,7 +41,8 @@ import javax.swing {
     SwingUtilities,
     JButton,
     JSpinner,
-    SpinnerNumberModel
+    SpinnerNumberModel,
+    JPopupMenu
 }
 
 import lovelace.util.jvm {
@@ -54,7 +54,9 @@ import lovelace.util.jvm {
     verticalSplit,
     ImprovedComboBox,
     FunctionalGroupLayout,
-    InterpolatedLabel
+    InterpolatedLabel,
+    FunctionalPopupMenu,
+    createMenuItem
 }
 
 import lovelace.util.common {
@@ -424,15 +426,6 @@ SPFrame explorationFrame(ExplorationGUI driver,
                     .narrow<Village>().each(selectedValuesList.add);
             }
 
-            "A list of things the explorer can do: pairs of explanations (in the
-             form of questions to ask the user to see if the explorer does them)
-             and references to methods for doing them."
-            {[String, Anything()]*} explorerActions = [[
-                "Should the explorer swear any villages on this tile?",
-                    villageSwearingAction],
-                ["Should the explorer dig to find what kind of ground is here?",
-                    driver.model.dig]];
-
             "Copy fixtures from the given list to subordinate maps."
             void discoverFixtures({TileFixture*} fixtures) {
                 Point destPoint = driver.model.selectedUnitLocation;
@@ -472,23 +465,33 @@ SPFrame explorationFrame(ExplorationGUI driver,
                 }
             }
 
+            "The action of searching the current tile, since on moving 'nowhere' the
+             listener now aborts its normal process."
+            void searchCurrentTile() {
+                value fixtures = selectedValuesList;
+                driver.model.move(Direction.nowhere, speedSource());
+                discoverFixtures(fixtures);
+            }
+
+            "A menu of actions the explorer can take when moving 'nowhere'."
+            shared JPopupMenu explorerActionsMenu = FunctionalPopupMenu(
+                createMenuItem("Swear any villages", KeyEvent.vkV,
+                    "Swear any independent villages on this tile to the player's service",
+                    villageSwearingAction),
+                createMenuItem("Dig to expose ground", KeyEvent.vkD,
+                    "Dig to find what kind of ground is here", driver.model.dig),
+                createMenuItem("Search again", KeyEvent.vkS,
+                    "Search this tile, as if arriving on it again", searchCurrentTile));
+
             void actionPerformedImpl() {
                 try {
                     value fixtures = selectedValuesList;
                     if (Direction.nowhere == direction) {
-                        for ([query, method] in explorerActions) {
-                            // TODO: Extract confirmAction() method to lovelace.util.jvm
-                            Integer resp = JOptionPane.showConfirmDialog(null, query);
-                            if (resp == JOptionPane.cancelOption) {
-                                return;
-                            } else if (resp == JOptionPane.yesOption) {
-                                method();
-                            }
-                        }
+                        explorerActionsMenu.show(mainList, mainList.width, 0);
+                    } else {
+                        driver.model.move(direction, speedSource());
+                        discoverFixtures(fixtures);
                     }
-
-                    driver.model.move(direction, speedSource());
-                    discoverFixtures(fixtures);
                 } catch (TraversalImpossibleException except) {
                     log.debug("Attempted movement to impassable destination", except);
                     Point selection = driver.model.selectedUnitLocation;
@@ -537,6 +540,9 @@ SPFrame explorationFrame(ExplorationGUI driver,
             tilesPanel.add(dtb);
 
             ExplorationClickListener ecl = ExplorationClickListener(direction, mainList);
+            if (Direction.nowhere == direction) {
+                dtb.componentPopupMenu = ecl.explorerActionsMenu;
+            }
             createHotKey(dtb, direction.string, ecl, JComponent.whenInFocusedWindow,
                 *[arrowKeys[direction], numKeys[direction]].coalesced);
             dtb.addActionListener(ecl);
