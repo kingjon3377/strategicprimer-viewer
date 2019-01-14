@@ -110,6 +110,8 @@ class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
             driver.model.selectedUnit = selectedValue;
             log.trace("ExplorationFrame.buttonListener: after selectedUnit setter call");
             layoutObj.goNext();
+        } else {
+            log.warn("Apparently no unit selected");
         }
         log.trace("End of ExplorationFrame.buttonListener");
     }

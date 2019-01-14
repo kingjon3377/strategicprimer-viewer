@@ -230,13 +230,16 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
 
     AnimalTracks? tracksCreator(Point point) {
         if (exists terrain = driverModel.map.baseTerrain[point]) {
+            log.trace("In ExplorationPanel.tracksCreator");
             {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*}(Point) source;
             if (terrain == TileType.ocean) {
                 source = huntingModel.fish;
             } else {
                 source = huntingModel.hunt;
             }
+            log.trace("ExplorationPanel.tracksCreator: Determined which source to use");
             value animal = source(point).map(Entry.item).first;
+            log.trace("ExplorationPanel.tracksCreator: Got first item from source");
             if (is Animal animal) {
                 return AnimalTracks(animal.kind);
             } else if (is AnimalTracks animal) {

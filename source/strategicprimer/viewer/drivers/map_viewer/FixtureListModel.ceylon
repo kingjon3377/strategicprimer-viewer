@@ -85,25 +85,32 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
     }
 
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
+        log.trace("Starting FixtureListModel.selectedPointChanged");
         Integer oldSize = size;
         cachedTerrainList = [];
         if (exists terrain = map.baseTerrain[newPoint]) {
             cachedTerrainList = [TileTypeFixture(terrain)];
         }
+        log.trace("FixtureListModel.selectedPointChanged: Accounted for base terrain");
         if (nonempty rivers = map.rivers.get(newPoint).sequence()) { // TODO: syntax sugar
             cachedTerrainList = cachedTerrainList.withTrailing(RiverFixture(rivers));
         }
+        log.trace("FixtureListModel.selectedPointChanged: Accounted for rivers");
 //        if (map.mountainous[newPoint]) { // TODO: syntax sugar
         if (map.mountainous.get(newPoint)) {
             cachedTerrainList = cachedTerrainList.withTrailing(MountainFixture());
         }
+        log.trace("FixtureListModel.selectedPointChanged: Accounted for mountain");
         point = newPoint;
         currentTracks.clear();
         if (exists tracks = tracksSource(newPoint)) {
             currentTracks.add(tracks);
         }
+        log.trace("FixtureListModel.selectedPointChanged: Accounted for animal tracks");
         Integer newSize = size;
+        log.trace("FixtureListModel.selectedPointChanged: About to notify listeners");
         fireIntervalReplaced(0..(oldSize - 1), 0..(newSize - 1));
+        log.trace("End of FixtureListModel.selectedPointChanged");
     }
 
     shared actual TileFixture getElementAt(Integer index) {
