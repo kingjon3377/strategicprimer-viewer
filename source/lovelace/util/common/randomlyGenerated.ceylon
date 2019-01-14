@@ -77,27 +77,13 @@ shared final annotation class RandomGenerationAnnotation(
             return argumentsForSpecificType(type.declaration);
         }
         case (is OpenUnion) {
-            // TODO: Extract helper method: this idiom occurs twice in this overlong class
-            for (innerType in type.caseTypes) {
-                try {
-                    return argumentsForType(innerType);
-                } catch (AssertionError error) {
-                    // ignore
-                }
-            }
-            throw AssertionError(
-                "Can't randomly generate values for union of all-unhandled types");
+            return tryUntilSuccess(argumentsForType, type.caseTypes, defer(AssertionError,
+                ["Can't randomly generate values for union of all-unhandled types"]));
         }
         case (is OpenIntersection) {
-            for (innerType in type.satisfiedTypes) {
-                try {
-                    return argumentsForType(innerType);
-                } catch (AssertionError error) {
-                    // ignore
-                }
-            }
-            throw AssertionError(
-                "Can't randomly generate values for intersection of all-unhandled types");
+            return tryUntilSuccess(argumentsForType, type.satisfiedTypes,
+                defer(AssertionError,
+                    ["Can't generate values for intersection of all-unhandled types"]));
         }
         case (is OpenTypeVariable) {
             throw AssertionError(
