@@ -256,13 +256,9 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             ListModel<TileFixture> listModel = mainList.model;
             MutableList<TileFixture> retval = ArrayList<TileFixture>();
             for (index in selections) {
-                if (index < listModel.size) {
-                    assert (exists item = listModel.getElementAt(index));
-                    retval.add(item);
-                } else {
-                    assert (exists item = listModel.getElementAt(listModel.size - 1));
-                    retval.add(item);
-                }
+                assert (exists item = listModel.getElementAt(
+                    (index < listModel.size) then index else listModel.size - 1));
+                retval.add(item);
             }
             return retval;
         }
