@@ -372,7 +372,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             dtb.componentPopupMenu = ecl.explorerActionsMenu;
         }
         createHotKey(dtb, direction.string, ecl, JComponent.whenInFocusedWindow,
-        *[arrowKeys[direction], numKeys[direction]].coalesced);
+            *[arrowKeys[direction], numKeys[direction]].coalesced);
         dtb.addActionListener(ecl);
 
         value ell = RandomDiscoverySelector(driverModel, mainList, speedSource);
