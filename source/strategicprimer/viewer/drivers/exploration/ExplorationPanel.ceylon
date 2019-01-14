@@ -16,7 +16,6 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.drivers.exploration.common {
     MovementCostListener,
-    MovementCostSource,
     HuntingModel,
     Speed,
     Direction,
@@ -240,19 +239,13 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
 
     class ExplorationClickListener(Direction direction,
         SwingList<TileFixture>&SelectionChangeListener mainList)
-        satisfies MovementCostSource&SelectionChangeSource&ActionListener {
-        MutableList<MovementCostListener> movementListeners =
-            ArrayList<MovementCostListener>();
+        satisfies SelectionChangeSource&ActionListener {
         MutableList<SelectionChangeListener> selectionListeners =
             ArrayList<SelectionChangeListener>();
         shared actual void addSelectionChangeListener(
             SelectionChangeListener listener) => selectionListeners.add(listener);
         shared actual void removeSelectionChangeListener(
             SelectionChangeListener listener) => selectionListeners.remove(listener);
-        shared actual void addMovementCostListener(MovementCostListener listener) =>
-            movementListeners.add(listener);
-        shared actual void removeMovementCostListener(MovementCostListener listener)
-            => movementListeners.remove(listener);
 
         MutableList<TileFixture> selectedValuesList {
             IntArray selections = mainList.selectedIndices;
@@ -349,9 +342,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
                 for (listener in selectionListeners) {
                     listener.selectedPointChanged(null, selection);
                 }
-                for (listener in movementListeners) {
-                    listener.deduct(1);
-                }
+                movementDeductionTracker.deduct(1);
             }
         }
 
@@ -394,7 +385,6 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         *[arrowKeys[direction], numKeys[direction]].coalesced);
         dtb.addActionListener(ecl);
         ecl.addSelectionChangeListener(selectionChangeListenerObject);
-        ecl.addMovementCostListener(movementDeductionTracker);
 
         RandomDiscoverySelector ell = RandomDiscoverySelector(driverModel, mainList,
             speedSource);
