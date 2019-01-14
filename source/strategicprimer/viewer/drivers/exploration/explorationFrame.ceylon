@@ -112,7 +112,6 @@ import strategicprimer.drivers.exploration.common {
 import strategicprimer.drivers.common {
     SelectionChangeListener,
     SelectionChangeSource,
-    PlayerChangeListener,
     FixtureMatcher
 }
 import ceylon.random {
@@ -181,59 +180,41 @@ SPFrame explorationFrame(ExplorationGUI driver,
     ComboBoxModel<Speed> speedModel = DefaultComboBoxModel<Speed>(
         ObjectArray<Speed>.with(sort(`Speed`.caseValues)));
 
-    todo("Convert to top-level class, or better yet split appearance from
-          controller-functionality")
-    object explorerSelectingPanel extends BorderedPanel()
-            satisfies PlayerChangeSource&CompletionSource {
-        MutableList<PlayerChangeListener> listeners =
-                ArrayList<PlayerChangeListener>();
-        shared actual void addPlayerChangeListener(PlayerChangeListener listener) =>
-                listeners.add(listener);
-        shared actual void removePlayerChangeListener(PlayerChangeListener listener)
-                => listeners.remove(listener);
-        shared actual void addCompletionListener(Anything() listener) =>
-                completionListeners.add(listener);
-        shared actual void removeCompletionListener(Anything() listener) =>
-                completionListeners.remove(listener);
-
-        driver.model.addMapChangeListener(playerListModel); // TODO: Move this out of the object
-        void handlePlayerChanged() {
-            layoutObj.first(retval.contentPane);
-            if (!playerList.selectionEmpty,
-                    exists newPlayer = playerList.selectedValue) {
-                for (listener in listeners) {
-                    listener.playerChanged(null, newPlayer);
-                }
-            }
+    driver.model.addMapChangeListener(playerListModel);
+    void handlePlayerChanged() {
+        layoutObj.first(retval.contentPane);
+        if (!playerList.selectionEmpty,
+                exists newPlayer = playerList.selectedValue) {
+            unitListModel.playerChanged(null, newPlayer);
         }
-
-        playerList.addListSelectionListener(silentListener(handlePlayerChanged));
-        menuHandler.register(silentListener(handlePlayerChanged),
-            "change current player");
-        addPlayerChangeListener(unitListModel); // TODO: move out of the object (referring to this object rather than implicit 'this', of course)
-
-        DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
-        todo("convert to top-level class")
-        object renderer satisfies ListCellRenderer<IUnit> {
-            shared actual Component getListCellRendererComponent(
-                    SwingList<out IUnit>? list, IUnit? val, Integer index,
-                    Boolean isSelected, Boolean cellHasFocus) {
-                Component retval = defaultRenderer.getListCellRendererComponent(list,
-                    val, index, isSelected, cellHasFocus);
-                if (exists val, is JLabel retval) {
-                    retval.text = "``val.name`` (``val.kind``)";
-                }
-                return retval;
-            }
-        }
-
-        unitList.cellRenderer = renderer;
-        if (is JTextField mpEditor = mpField.editor) {
-            mpEditor.addActionListener(buttonListener);
-        }
-        speedModel.selectedItem = Speed.normal;
     }
 
+    playerList.addListSelectionListener(silentListener(handlePlayerChanged));
+    menuHandler.register(silentListener(handlePlayerChanged),
+        "change current player");
+
+    DefaultListCellRenderer defaultRenderer = DefaultListCellRenderer();
+    todo("convert to top-level class")
+    object renderer satisfies ListCellRenderer<IUnit> {
+        shared actual Component getListCellRendererComponent(
+            SwingList<out IUnit>? list, IUnit? val, Integer index,
+            Boolean isSelected, Boolean cellHasFocus) {
+            Component retval = defaultRenderer.getListCellRendererComponent(list,
+                val, index, isSelected, cellHasFocus);
+            if (exists val, is JLabel retval) {
+                retval.text = "``val.name`` (``val.kind``)";
+            }
+            return retval;
+        }
+    }
+
+    unitList.cellRenderer = renderer;
+    if (is JTextField mpEditor = mpField.editor) {
+        mpEditor.addActionListener(buttonListener);
+    }
+    speedModel.selectedItem = Speed.normal;
+
+    BorderedPanel explorerSelectingPanel = BorderedPanel();
     explorerSelectingPanel.center = horizontalSplit(
         BorderedPanel.verticalPanel(JLabel("Players in all maps:"), playerList,
             null),
@@ -620,7 +601,7 @@ SPFrame explorationFrame(ExplorationGUI driver,
         }
     }
 
-    explorerSelectingPanel.addCompletionListener(swapPanels);
+    completionListeners.add(swapPanels);
     explorationPanel.addCompletionListener(swapPanels);
     retval.add(explorerSelectingPanel);
     retval.add(explorationPanel);
