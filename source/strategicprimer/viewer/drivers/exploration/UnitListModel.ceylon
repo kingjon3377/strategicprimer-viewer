@@ -24,7 +24,9 @@ class UnitListModel(IExplorationModel model) extends DefaultListModel<IUnit>()
         satisfies PlayerChangeListener {
     shared actual void playerChanged(Player? old, Player newPlayer) {
         log.trace("Regenerating UnitListModel");
-        // TODO: Skip this if old and new are equal
+        if (exists old, old == newPlayer) {
+            return;
+        }
         clear();
         model.getUnits(newPlayer).each(addElement);
     }
