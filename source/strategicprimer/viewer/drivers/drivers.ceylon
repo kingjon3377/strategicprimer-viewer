@@ -574,11 +574,12 @@ class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
             buttonPanel.add(ListenedButton(driver.usage.shortDescription,
                         (evt) => buttonHandler(driver)));
         }
-        frame.contentPane = BorderedPanel.verticalPanel( // TODO: Extract local variable to refer to here and below
+        value mainPanel = BorderedPanel.verticalPanel(
             JLabel("Please choose one of the applications below"),
             JScrollPane(buttonPanel), null);
+        frame.contentPane = mainPanel;
         frame.pack();
-        frame.jMenuBar = SPMenu.forWindowContaining(frame.contentPane,
+        frame.jMenuBar = SPMenu.forWindowContaining(mainPanel,
             SPMenu.createFileMenu(IOHandler(this).actionPerformed, this),
             SPMenu.disabledMenu(SPMenu.createMapMenu(noop, this)),
             SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)));
