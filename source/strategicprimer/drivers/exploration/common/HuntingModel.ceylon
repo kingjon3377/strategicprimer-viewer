@@ -44,6 +44,32 @@ shared class HuntingModel {
     shared static Float processingTime(Integer weight) =>
             0.855 + 0.0239 * weight - 0.000000872 * weight * weight;
 
+    "An infinite iterator consisting of items taken randomly from a given stream with
+     [[NothingFound]] instances interspersed in a given percentage."
+    static class ResultIterator<Type, Absent=NothingFound>(stream, nothingProportion,
+            Absent nothingValue)
+            satisfies Iterator<Type|Absent> given Type satisfies Object {
+        {Type*} stream;
+        Float nothingProportion;
+        shared actual Type|Absent next() {
+            if (singletonRandom.nextFloat() < nothingProportion) {
+                return nothingValue;
+            } else if (exists retval = singletonRandom.nextElement(stream)) {
+                return retval;
+            } else {
+                log.warn("Random.nextElement() returned null");
+                return nothingValue;
+            }
+        }
+    }
+
+    static class ResultStream<Type, Absent=NothingFound>({Type*} stream,
+            Float nothingProportion, Absent nothingValue)
+            satisfies {<Type|Absent>*} given Type satisfies Object {
+        shared actual Iterator<Type|Absent> iterator() =>
+            ResultIterator(stream, nothingProportion, nothingValue);
+    }
+
     "The map to hunt in" IMapNG map;
     shared new (IMapNG map) {
         this.map = map;
@@ -73,13 +99,12 @@ shared class HuntingModel {
        sufficient to give the proportion we want for that tile type."""
     {Grove|Meadow|Shrub|NothingFound*} plants(Point point) {
         value retval = map.fixtures.get(point).narrow<Grove|Meadow|Shrub>();
-        Integer length = retval.size - 1;
-        Integer nothings;
+        Float nothingProportion;
         switch (tileType = map.baseTerrain[point])
-        case (TileType.desert|TileType.tundra) { nothings = length * 3; }
-        case (TileType.jungle) { nothings = length / 2; }
-        else { nothings = length; }
-        return retval.chain(Singleton(NothingFound.nothingFound).repeat(nothings));
+        case (TileType.desert|TileType.tundra) { nothingProportion = 0.75; }
+        case (TileType.jungle) { nothingProportion = 1.0 / 3.0; }
+        else { nothingProportion = 0.5; }
+        return ResultStream(retval, nothingProportion, NothingFound.nothingFound);
     }
 
     "A helper method for hunting or fishing."
@@ -88,14 +113,12 @@ shared class HuntingModel {
             Point point,
             "Filter/provider to use to find the animals."
             {Type|NothingFound*}(Point) chosenMap) given Type satisfies Object {
-        variable {<Point->Type|NothingFound>*} choices =
+        {<Point->Type|NothingFound>*} choices = // TODO: inline
                 surroundingPointIterable(point, dimensions)
-                    .map((loc) => chosenMap(loc).map(
+                    .map((loc) => chosenMap(loc).map( // TODO: convert lambda to named method
                         curry(Entry<Point, Type|NothingFound>)(loc)))
                     .coalesced.flatMap(identity);
-        choices = choices.chain(Singleton(point->NothingFound.nothingFound)
-            .repeat(choices.size));
-        return singletonRandom.elements(choices);
+        return ResultStream(choices, 0.5, point->NothingFound.nothingFound);
     }
 
     """Get a stream of hunting results from the area surrounding the given tile. About
