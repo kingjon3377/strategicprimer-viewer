@@ -92,8 +92,6 @@ class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
 
     speedModel.selectedItem = Speed.normal;
 
-    BorderedPanel explorerSelectingPanel = BorderedPanel();
-
     JPanel tilesPanel = JPanel(GridLayout(3, 12, 2, 2));
 
     JPanel headerPanel = JPanel();
@@ -120,7 +118,7 @@ class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
         mpEditor.addActionListener(buttonListener);
     }
 
-    explorerSelectingPanel.center = horizontalSplit( // TODO: inline into initializer
+    add(BorderedPanel(horizontalSplit(
         BorderedPanel.verticalPanel(JLabel("Players in all maps:"), playerList,
             null),
         BorderedPanel.verticalPanel(JLabel(
@@ -132,9 +130,8 @@ class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
                     null, mpField),
                 BorderedPanel.horizontalPanel(JLabel("Unit's Relative Speed"),
                     null, ImprovedComboBox<Speed>.withModel(speedModel)),
-                ListenedButton("Start exploring!", buttonListener))));
+                ListenedButton("Start exploring!", buttonListener))))));
 
-    add(explorerSelectingPanel);
     add(explorationPanel);
 
     (super of Container).preferredSize = Dimension(1024, 640);
