@@ -437,7 +437,7 @@ class AppStarter() {
             log.trace("No matching driver found when in CLI mode");
             currentDriver = null;
         }
-        if (currentOptions.hasOption("--help")) { // TODO: Handle --help in startChosenDriver() instead, so it works for drivers other than the last (TODO: figure out how to ma
+        if (currentOptions.hasOption("--help")) {
             if (exists currentUsage = currentDriver?.usage) {
                 log.trace("Giving usage information for selected driver");
                 process.writeLine(appChooserState.usageMessage(currentUsage,
