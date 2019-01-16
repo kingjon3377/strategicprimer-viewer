@@ -207,7 +207,13 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
                 return null;
             }
             case (".") {
-                return builder.string.trimmed;
+                String retval = builder.string;
+                if (retval.endsWith(operatingSystem.newline + operatingSystem.newline)) {
+                    return retval.trimmed + operatingSystem.newline +
+                        operatingSystem.newline;
+                } else {
+                    return retval.trimmed;
+                }
             }
             case (",") {
                 builder.clear();

@@ -56,7 +56,8 @@ shared interface ICLIHelper {
             String prompt);
 
     "Read a multiline string from the user. It is trimmed of leading and trailing
-     whitespace. Returns [[null]] on EOF."
+     whitespace, except that if it ends with multiple newlines two of them will be
+     retained. Returns [[null]] on EOF."
     shared formal String? inputMultilineString(
             "The prompt to prompt the user with."
             String prompt);
