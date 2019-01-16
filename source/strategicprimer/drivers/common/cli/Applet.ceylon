@@ -5,5 +5,5 @@ shared interface Applet {
     "What this applet does: a description presented to the user."
     shared formal String description;
     "What should happen when the user calls for this applet."
-    shared formal void invoke();
+    shared formal Anything() invoke;
 }

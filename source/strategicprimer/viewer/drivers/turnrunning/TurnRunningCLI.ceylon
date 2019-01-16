@@ -53,7 +53,7 @@ import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }
-class TurnApplet(shared actual void invoke(), shared actual String description,
+class TurnApplet(shared actual Anything() invoke, shared actual String description,
     shared actual String+ commands) satisfies Applet {}
 class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IExplorationModel model;

@@ -55,7 +55,7 @@ import strategicprimer.drivers.common {
     SelectionChangeListener
 }
 
-class ExplorationApplet(shared actual void invoke(), shared actual String description,
+class ExplorationApplet(shared actual Anything() invoke, shared actual String description,
     shared actual String+ commands) satisfies Applet {}
 
 "The logic split out of [[ExplorationCLI]], some also used in

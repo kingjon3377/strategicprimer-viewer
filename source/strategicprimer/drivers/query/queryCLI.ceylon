@@ -104,7 +104,7 @@ shared class QueryCLIFactory() satisfies ModelDriverFactory {
 
 }
 
-class QueryApplet(shared actual void invoke(),
+class QueryApplet(shared actual Anything() invoke,
     shared actual String description,
     shared actual String+ commands) satisfies Applet {}
 
