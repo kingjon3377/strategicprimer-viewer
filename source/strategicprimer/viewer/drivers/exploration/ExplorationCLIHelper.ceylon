@@ -32,7 +32,7 @@ import strategicprimer.model.common.map.fixtures.resources {
 
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
-    Applet,
+    SimpleApplet,
     AppletChooser
 }
 import strategicprimer.drivers.exploration.common {
@@ -54,9 +54,6 @@ import strategicprimer.model.common.map.fixtures.towns {
 import strategicprimer.drivers.common {
     SelectionChangeListener
 }
-
-class ExplorationApplet(shared actual Anything() invoke, shared actual String description,
-    shared actual String+ commands) satisfies Applet {}
 
 "The logic split out of [[ExplorationCLI]], some also used in
  [[strategicprimer.viewer.drivers.turnrunning::TurnRunningCLI]]"
@@ -125,10 +122,10 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
         }
     }
-    AppletChooser<ExplorationApplet> appletChooser = AppletChooser(cli,
-        ExplorationApplet(model.swearVillages, "Swear any village here to the player",
+    AppletChooser<SimpleApplet> appletChooser = AppletChooser(cli,
+        SimpleApplet(model.swearVillages, "Swear any village here to the player",
             "swear"),
-        ExplorationApplet(model.dig, "Dig to expose some ground here", "dig"));
+        SimpleApplet(model.dig, "Dig to expose some ground here", "dig"));
     "If the unit has a proposed path, move one more tile along it; otherwise, ask the user
      for directions once and make that move, then return to the caller."
     // No need to set the 'modified' flag anywhere in this method, as
@@ -237,7 +234,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                     switch (applet = appletChooser.chooseApplet())
                     case (true|null) { continue; }
                     case (false) { break; }
-                    case (is ExplorationApplet) { applet.invoke(); }
+                    case (is SimpleApplet) { applet.invoke(); }
                 }
             }
 

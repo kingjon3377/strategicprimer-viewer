@@ -37,7 +37,7 @@ import strategicprimer.model.common.map.fixtures {
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
-    Applet,
+    SimpleApplet,
     AppletChooser
 }
 import lovelace.util.common {
@@ -103,10 +103,6 @@ shared class QueryCLIFactory() satisfies ModelDriverFactory {
             SimpleMultiMapModel(map, path);
 
 }
-
-class QueryApplet(shared actual Anything() invoke,
-    shared actual String description,
-    shared actual String+ commands) satisfies Applet {}
 
 "A driver for 'querying' the driver model about various things."
 // FIXME: Write GUI equivalent of query CLI
@@ -600,30 +596,30 @@ shared class QueryCLI satisfies CLIDriver {
             }
         };
 
-    AppletChooser<QueryApplet> appletChooser = AppletChooser(cli,
-        QueryApplet(defer(compose(fortressInfo, cli.inputPoint),
+    AppletChooser<SimpleApplet> appletChooser = AppletChooser(cli,
+        SimpleApplet(defer(compose(fortressInfo, cli.inputPoint),
                 ["Location of fortress?"]),
             "Show what a player automatically knows about a fortress's tile.",
             "fortress"),
-        QueryApplet(deferAction(hunt, "hunt"), "Generate encounters with land animals",
+        SimpleApplet(deferAction(hunt, "hunt"), "Generate encounters with land animals",
             "hunt"),
-        QueryApplet(deferAction(fish, "fish"), "Generate encounters with aquatic animals",
+        SimpleApplet(deferAction(fish, "fish"), "Generate encounters with aquatic animals",
             "fish"),
-        QueryApplet(deferAction(gather, "gather"),
+        SimpleApplet(deferAction(gather, "gather"),
             "Generate encounters with fields, meadows, groves, orchards, or shrubs.",
             "gather"),
-        QueryApplet(herd,
+        SimpleApplet(herd,
             "Determine the output from and time required for maintaining a herd.",
             "herd"),
-        QueryApplet(compose(TrappingCLI.startDriver, TrappingCLI)(cli, model),
+        SimpleApplet(compose(TrappingCLI.startDriver, TrappingCLI)(cli, model),
             "Switch to a trap-modeling program to run trapping or fish-trapping.",
             "trap"),
-        QueryApplet(printDistance, "Report the distance between two points.", "distance"),
-        QueryApplet(defer(countWorkers, [model.map.players]),
+        SimpleApplet(printDistance, "Report the distance between two points.", "distance"),
+        SimpleApplet(defer(countWorkers, [model.map.players]),
             "Count how many workers belong to a player", "count"),
-        QueryApplet(findUnexploredCommand,
+        SimpleApplet(findUnexploredCommand,
             "Find the nearest unexplored tile not behind water.", "unexplored"),
-        QueryApplet(tradeCommand, "Suggest possible trading partners.", "trade"));
+        SimpleApplet(tradeCommand, "Suggest possible trading partners.", "trade"));
 
     "Accept and respond to commands."
     shared actual void startDriver() {
@@ -631,7 +627,7 @@ shared class QueryCLI satisfies CLIDriver {
             switch (selection = appletChooser.chooseApplet())
             case (null|true) { continue; }
             case (false) { break; }
-            case (is QueryApplet) {
+            case (is SimpleApplet) {
                 selection.invoke();
             }
         }
