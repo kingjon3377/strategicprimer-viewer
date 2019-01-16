@@ -53,7 +53,7 @@ import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }
-class TurnApplet(shared actual Anything() invoke, shared actual String description,
+class TurnApplet(shared actual String() invoke, shared actual String description,
     shared actual String+ commands) satisfies Applet {}
 class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IExplorationModel model;
@@ -71,8 +71,9 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             .narrow<ValueConstructor<HerdModel>>().map((model) => model.get()).sequence(),
         "What kind of animal(s) is/are ``animal``?", "No animal kinds found",
         "Kind of animal:", false).item;
-    void herd() {
+    String herd() {
         assert (exists unit = model.selectedUnit);
+        StringBuilder buffer = StringBuilder();
         Fortress? home = containingFortress(unit);
         for (kind in unit.narrow<Animal>().map(Animal.kind).distinct
                 .filter(not(herdModels.keys.contains))) {
@@ -80,7 +81,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 herdModels[kind] = herdModel;
             } else {
                 cli.println("Aborting ...");
-                return;
+                return "";
             }
         }
         MutableMultimap<HerdModel, Animal> modelMap = HashMultimap<HerdModel, Animal>();
@@ -94,7 +95,20 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         Boolean experts = unit.narrow<IWorker>().map((worker) => worker.getJob("herder"))
             .map(IJob.level).map((-5).plus).any(Integer.positive);
         variable Integer minutesSpent = 0;
+        void addToOrders(String string) {
+            cli.print(string);
+            buffer.append(string);
+        }
+        void addLineToOrders(String string) {
+            cli.println(string);
+            buffer.append(string);
+            buffer.appendNewline();
+        }
         for (herdModel->animals in modelMap.asMap) {
+            if (!buffer.empty) {
+                buffer.appendNewline();
+                buffer.appendNewline();
+            }
             assert (exists combinedAnimal = animals.reduce(uncurry(Animal.combined)));
             Integer flockPerHerder =
                 (combinedAnimal.population + workerCount - 1) / workerCount;
@@ -106,40 +120,40 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 resourceProduced = combinedAnimal.kind + " eggs";
                 Boolean? cleaningDay = cli.inputBoolean("Is this the one turn in every ``
                         herdModel.extraChoresInterval + 1`` to clean up after birds?");
-                cli.print("Gathering ``combinedAnimal`` eggs took the ``workerCount`` ");
-                cli.println("workers ``herdModel.dailyTime(flockPerHerder)`` min.");
+                addToOrders("Gathering ``combinedAnimal`` eggs took the ``workerCount``");
+                addLineToOrders(" workers ``herdModel.dailyTime(flockPerHerder)`` min.");
                 minutesSpent += herdModel.dailyTimePerHead * flockPerHerder;
                 if (exists cleaningDay, cleaningDay) {
-                    cli.print("Cleaning up after them takes ");
-                    cli.print(Float.format(
+                    addToOrders("Cleaning up after them takes ");
+                    addToOrders(Float.format(
                         herdModel.dailyExtraTime(flockPerHerder) / 60.0, 0, 1));
-                    cli.println(" hours.");
+                    addLineToOrders(" hours.");
                     minutesSpent += herdModel.extraTimePerHead * flockPerHerder;
                 } else if (is Null cleaningDay) {
-                    return;
+                    return "";
                 }
             }
             case (is MammalModel) {
                 resourceProduced = "milk";
-                cli.print("Between two milkings, tending the ");
-                cli.print(animalPlurals.get(combinedAnimal.kind));
+                addToOrders("Between two milkings, tending the ");
+                addToOrders(animalPlurals.get(combinedAnimal.kind));
                 Integer baseCost;
                 if (experts) {
                     baseCost = flockPerHerder * (herdModel.dailyTimePerHead - 10);
                 } else {
                     baseCost = flockPerHerder * herdModel.dailyTimePerHead;
                 }
-                cli.print(" took ``baseCost`` min, plus ");
-                cli.print(herdModel.dailyTimeFloor.string);
-                cli.println(" min to gather them.");
+                addToOrders(" took ``baseCost`` min, plus ");
+                addToOrders(herdModel.dailyTimeFloor.string);
+                addLineToOrders(" min to gather them.");
                 minutesSpent += baseCost;
                 minutesSpent += herdModel.dailyTimeFloor;
             }
-            cli.print("This produced ");
-            cli.print(Float.format(production.floatNumber, 0, 1));
-            cli.print(" ``production.units``, ");
-            cli.print(Float.format(pounds, 0, 1));
-            cli.print(" lbs, of ``resourceProduced``.");
+            addToOrders("This produced ");
+            addToOrders(Float.format(production.floatNumber, 0, 1));
+            addToOrders(" ``production.units``, ");
+            addToOrders(Float.format(pounds, 0, 1));
+            addLineToOrders(" lbs, of ``resourceProduced``.");
             if (exists home) {
                 ResourcePile createdResource = ResourcePile(idf.createID(), "food", resourceProduced,
                     production);
@@ -147,23 +161,31 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 home.addMember(createdResource);
             }
         }
-        cli.print("In all, tending the animals took ``minutesSpent`` min, or ");
-        cli.print(Float.format(minutesSpent / 60.0, 0, 1));
-        cli.println(" hours.");
+        addToOrders("In all, tending the animals took ``minutesSpent`` min, or ");
+        addToOrders(Float.format(minutesSpent / 60.0, 0, 1));
+        addLineToOrders(" hours.");
+        // TODO: aid option to account for remaining time in results
+        return buffer.string.trimmed;
     }
     ExplorationCLIHelper explorationCLI = ExplorationCLIHelper(model, cli);
     model.addMovementCostListener(explorationCLI);
-    // FIXME: Allow user to add to results after each move
-    void explore() {
+    String explore() {
+        StringBuilder buffer = StringBuilder();
         model.addSelectionChangeListener(explorationCLI);
         assert (exists mover = model.selectedUnit);
         // Ask the user about total MP
         model.selectedUnit = mover;
         while (explorationCLI.movement > 0) {
             explorationCLI.moveOneStep();
+            if (exists addendum = cli.inputMultilineString("Add to results:")) {
+                buffer.append(addendum);
+            } else {
+                return "";
+            }
         }
         // We don't want to be asked about MP for any other applets
         model.removeSelectionChangeListener(explorationCLI);
+        return buffer.string;
     }
     AppletChooser<TurnApplet> appletChooser =
         AppletChooser(cli,
@@ -179,16 +201,28 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         cli.print(turn.string);
         cli.print(": ");
         cli.println(unit.getLatestOrders(turn));
+        StringBuilder buffer = StringBuilder();
         while (true) {
             switch (command = appletChooser.chooseApplet())
             case (null|true) { continue; }
             case (false) { return ""; }
             case (is TurnApplet) {
-                command.invoke();
+                buffer.append(command.invoke());
                 break;
             }
         }
-        return cli.inputMultilineString("Results: ") else "";
+        String prompt;
+        if (buffer.empty) {
+            prompt = "Results: ";
+        } else {
+            prompt = "Additional Results: ";
+        }
+        if (exists addendum = cli.inputMultilineString(prompt)) {
+            buffer.append(addendum);
+            return buffer.string.trimmed;
+        } else {
+            return "";
+        }
         // TODO: Do and report on advancement
     }
     shared actual void startDriver() {
