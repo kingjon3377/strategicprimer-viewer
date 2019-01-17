@@ -504,12 +504,6 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         return setImage(retval, element, warner);
     }
 
-    // TODO: Can we inline this into its reference(s)?
-    IMutableMapNG mapOrViewTagHandler(StartElement element, QName parent,
-        {XMLEvent*} stream, IMutablePlayerCollection players, Warning warner,
-        IDRegistrar idFactory) =>
-            readMapOrViewTag(element, parent, stream, players, warner, idFactory);
-
     readers = simpleMap("adventure"->fluidExplorableHandler.readAdventure,
         "portal"->fluidExplorableHandler.readPortal,
         "cave"->fluidExplorableHandler.readCave,
@@ -545,8 +539,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         "city"->fluidTownHandler.readCity,
         "fortification"->fluidTownHandler.readFortification,
         "village"->fluidTownHandler.readVillage,
-        "map"->mapOrViewTagHandler,
-        "view"->mapOrViewTagHandler,
+        "map"->readMapOrViewTag,
+        "view"->readMapOrViewTag,
         "river"->fluidTerrainHandler.readRiver,
         "lake"->fluidTerrainHandler.readLake,
         "player"->readPlayer,
