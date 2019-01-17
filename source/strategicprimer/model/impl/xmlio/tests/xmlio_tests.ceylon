@@ -343,11 +343,13 @@ object xmlTests {
             String xml,
             "A lambda to check the state of the deserialized object"
             todo("Should this be Anything(Type) instead?")
-            Boolean(Type) assertion) given Type satisfies Object {
+            Boolean(Type) assertion,
+            "The warning level to use for this assertion."
+            Warning warner = warningLevels.die) given Type satisfies Object {
         for (reader in readers) {
             try (stringReader = StringReader(xml)) {
                 assertTrue(assertion(reader.readXML<Type>(fakeFilename, stringReader,
-                    warningLevels.die)), message);
+                    warner)), message);
             }
         }
     }
