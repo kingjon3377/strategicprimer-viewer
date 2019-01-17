@@ -524,9 +524,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                 resourceCreatedModel.\ivalue = JInteger.valueOf(-1);
                 resourceQuantityModel.\ivalue = JInteger.valueOf(0);
             } else {
-                // TODO: Add appendLine() to StreamingLabel, to add the newline for us
-                logLabel.append("Failed to convert quantity into the form we need.
-                                 ");
+                logLabel.appendLine("Failed to convert quantity into the form we need.");
             }
         }
 
@@ -539,20 +537,16 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         } else if (is JSpinner.DefaultEditor editor = creationSpinner.editor) {
             editor.textField.addActionListener(resourceListener);
         } else {
-            // TODO: Two calls to append() to avoid interpolation // TODO: Add appendLine() there, to add the newline for us
-            logLabel.append("Turn-created spinner's editor wasn't a text field, but a ``
-                    classDeclaration(creationSpinner.editor)``
-                             ");
+            logLabel.append("Turn-created spinner's editor wasn't a text field, but a ");
+            logLabel.appendLine(classDeclaration(creationSpinner.editor).string);
         }
         if (is JTextField editor = resourceQuantitySpinner.editor) {
             editor.addActionListener(resourceListener);
         } else if (is JSpinner.DefaultEditor editor = creationSpinner.editor) {
             editor.textField.addActionListener(resourceListener);
         } else {
-            // TODO: Two calls to append() to avoid interpolation // TODO: Add appendLine() there, to add the newline for us
-            logLabel.append("Quantity spinner's editor wasn't a text field, but a ``
-                    classDeclaration(resourceQuantitySpinner.editor)``
-                             ");
+            logLabel.append("Quantity spinner's editor wasn't a text field, but a ");
+            logLabel.appendLine(classDeclaration(resourceQuantitySpinner.editor).string);
         }
 
         resourceBox.addSubmitListener(resourceListener);
@@ -590,10 +584,9 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         } else if (is JSpinner.DefaultEditor editor = implementQuantityField.editor) {
             editor.textField.addActionListener(implementListener);
         } else {
-            logLabel.append( // TODO: Two calls to append() to avoid interpolation // TODO: Add appendLine() there, to add the newline for us
-                "Implement quantity spinner's editor wasn't a text field, but a ``
-                    classDeclaration(implementQuantityField.editor)``
-                             ");
+            logLabel.append(
+                "Implement quantity spinner's editor wasn't a text field, but a ");
+            logLabel.appendLine(classDeclaration(implementQuantityField.editor).string);
         }
 
         mainPanel.add(centeredHorizontalBox(implementQuantityField,
