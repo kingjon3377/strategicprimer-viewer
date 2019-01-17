@@ -102,6 +102,7 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     jobsTreeObject.addSkillSelectionListener(levelListener);
 
     value hoursAdditionPanel = SkillAdvancementPanel();
+    tree.addUnitMemberListener(hoursAdditionPanel);
     jobsTreeObject.addSkillSelectionListener(hoursAdditionPanel);
     hoursAdditionPanel.addLevelGainListener(levelListener);
     hoursAdditionPanel.addLevelGainListener(flaggingListener);

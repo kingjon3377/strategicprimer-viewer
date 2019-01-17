@@ -26,16 +26,26 @@ import lovelace.util.jvm {
 }
 
 import lovelace.util.common {
-    singletonRandom
+    singletonRandom,
+    as
 }
 
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     ISkill
 }
+import strategicprimer.viewer.drivers.worker_mgmt {
+    UnitMemberListener
+}
+import strategicprimer.model.common.map.fixtures {
+    UnitMember
+}
+import strategicprimer.model.common.map.fixtures.mobile {
+    IWorker
+}
 
 "A panel to let a user add hours of experience to a Skill."
 final class SkillAdvancementPanel extends BorderedPanel
-        satisfies SkillSelectionListener&LevelGainSource {
+        satisfies SkillSelectionListener&LevelGainSource&UnitMemberListener {
     static JPanel secondPanelFactory(JButton* buttons) {
         platform.makeButtonsSegmented(*buttons);
         if (platform.systemIsMac) {
@@ -46,6 +56,7 @@ final class SkillAdvancementPanel extends BorderedPanel
     }
     late JTextField hours;
     variable ISkill? skill = null;
+    variable IWorker? worker = null;
     MutableList<LevelGainListener> listeners = ArrayList<LevelGainListener>();
     void okListener(ActionEvent event) {
         if (exists local = skill) {
@@ -68,9 +79,10 @@ final class SkillAdvancementPanel extends BorderedPanel
             Integer newLevel = local.level;
             if (newLevel != level) {
                 for (listener in listeners) {
-                    // FIXME: Track worker and Job names
-                    listener.level("unknown", "unknown", local.name, newLevel - level,
-                        newLevel);
+                    // TODO: Track Job containing the skill
+                    // TODO: What if it's a proxy for all workers in a unit?
+                    listener.level(worker?.name else "unknown", "unknown", local.name,
+                        newLevel - level, newLevel);
                 }
             }
         }
@@ -103,4 +115,6 @@ final class SkillAdvancementPanel extends BorderedPanel
         => listeners.add(listener);
     shared actual void removeLevelGainListener(LevelGainListener listener)
         => listeners.remove(listener);
+    shared actual void memberSelected(UnitMember? previousSelection,
+            UnitMember? selected) => worker = as<IWorker>(selected);
 }
