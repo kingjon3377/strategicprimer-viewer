@@ -25,7 +25,6 @@ import lovelace.util.common {
     PathWrapper,
     Accumulator,
     EnumCounter,
-    comparingOn,
     entryMap,
     matchingValue,
     todo
