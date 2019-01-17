@@ -31,7 +31,8 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map.fixtures.mobile.worker {
-    ISkill
+    ISkill,
+    IJob
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
     UnitMemberListener
@@ -56,6 +57,7 @@ final class SkillAdvancementPanel extends BorderedPanel
     }
     late JTextField hours;
     variable ISkill? skill = null;
+    variable IJob? job = null;
     variable IWorker? worker = null;
     MutableList<LevelGainListener> listeners = ArrayList<LevelGainListener>();
     void okListener(ActionEvent event) {
@@ -79,10 +81,9 @@ final class SkillAdvancementPanel extends BorderedPanel
             Integer newLevel = local.level;
             if (newLevel != level) {
                 for (listener in listeners) {
-                    // TODO: Track Job containing the skill
                     // TODO: What if it's a proxy for all workers in a unit?
-                    listener.level(worker?.name else "unknown", "unknown", local.name,
-                        newLevel - level, newLevel);
+                    listener.level(worker?.name else "unknown", job?.name else "unknown",
+                        local.name, newLevel - level, newLevel);
                 }
             }
         }
@@ -111,6 +112,7 @@ final class SkillAdvancementPanel extends BorderedPanel
             hours.requestFocusInWindow();
         }
     }
+    shared actual void selectJob(IJob? selectedJob) => job = selectedJob;
     shared actual void addLevelGainListener(LevelGainListener listener)
         => listeners.add(listener);
     shared actual void removeLevelGainListener(LevelGainListener listener)

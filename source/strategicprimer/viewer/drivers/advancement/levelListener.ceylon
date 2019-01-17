@@ -8,7 +8,8 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     UnitMemberListener
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
-    ISkill
+    ISkill,
+    IJob
 }
 
 "A listener to print a line whenever a worker gains a level."
@@ -21,6 +22,8 @@ object levelListener
     variable ISkill? skill = null;
 
     shared actual void selectSkill(ISkill? selectedSkill) => skill = selectedSkill;
+    "We don't actually print the Job name, so we don't track it."
+    shared actual void selectJob(IJob? selectedJob) {}
 
     shared actual void memberSelected(UnitMember? old, UnitMember? selected) =>
             worker = selected;

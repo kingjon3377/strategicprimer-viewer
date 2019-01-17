@@ -11,10 +11,12 @@ import ceylon.collection {
     MutableList
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
-    ISkill
+    ISkill,
+    IJob
 }
 import lovelace.util.common {
-    todo
+    todo,
+    as
 }
 
 "A tree representing a worker's Jobs and Skills."
@@ -45,13 +47,17 @@ class JobsTree(JobTreeModel jtModel) extends JTree(jtModel)
 
     void handleTreeSelectionChange(TreeSelectionEvent event) {
         ISkill? retval;
+        IJob? job;
         if (exists selectionPath = event.newLeadSelectionPath,
                 is ISkill component = selectionPath.lastPathComponent) {
             retval = component;
+            job = as<IJob>(selectionPath.path.array.reversed.rest.first);
         } else {
             retval = null;
+            job = null;
         }
         for (listener in listeners) {
+            listener.selectJob(job);
             listener.selectSkill(retval);
         }
     }
