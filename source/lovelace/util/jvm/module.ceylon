@@ -67,6 +67,10 @@
    callers to provide that reference to every card-flipping call.
  - [[FlowPanel]] is a [[javax.swing::JPanel]] taking child components as initializer
    parameters.
+ - [[AlignedLabel]] is a [[javax.swing::JLabel]] taking its horizontal and vertical
+   alignment as initializer parameters; labels don't *often* need their alignment
+   configured differently from the defaults, but when they do, without something like this
+   configuring it is somewhat cumbersome.
 
  - The [[platform]] object encapsulates a number of utility constants and functions that
    differ between Mac and non-Mac platforms, including the usual shortcut-key modifier as
