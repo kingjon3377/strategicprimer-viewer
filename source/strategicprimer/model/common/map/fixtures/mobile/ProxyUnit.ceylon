@@ -130,11 +130,13 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         }
     }
 
-    todo("Implement") // FIXME
     shared actual Boolean equalsIgnoringID(IFixture fixture) {
         log.error("ProxyUnit.equalsIgnoringID called");
-        "Unimplemented operation"
-        assert (false);
+        if (is ProxyUnit fixture) {
+            return proxied.every((item) => fixture.proxied.any(item.equals));
+        } else {
+            return false;
+        }
     }
 
     shared actual Comparison compare(TileFixture fixture) {
