@@ -25,4 +25,10 @@ shared class MapVersionException extends SPFormatException {
             "Unsupported SP map version ``version`` in tag " + context.name.localPart +
                 messageFragment(minimum, maximum),
             context.location.lineNumber, context.location.columnNumber) {}
+
+    shared new nonXML("The requested map version." Integer version,
+        "The lowest version the code supports" Integer minimum,
+        "The highest version the code supports" Integer maximum)
+        extends SPFormatException("Unsupported SP map version " + version.string +
+            messageFragment(minimum, maximum), -1, -1) {}
 }
