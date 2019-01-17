@@ -491,13 +491,13 @@ class StatGeneratingCLI satisfies CLIDriver {
         }
     }
 
-    "Allow the user to create randomly-generated workers."
-    void createWorkers(IDRegistrar idf) {
+    shared actual void startDriver() {
+        IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
         MutableList<Player> players = ArrayList { elements = model.playerChoices; };
         while (!players.empty, exists chosen = cli.chooseFromList(players,
                 "Which player owns the new worker(s)?",
-                "There are no players shared by all the maps.",
-                "Player selection: ", false).item) {
+                "There are no players shared by all the maps.", "Player selection: ",
+                false).item) {
             players.remove(chosen);
             while (true) {
                 createWorkersForPlayer(idf, chosen);
@@ -513,9 +513,5 @@ class StatGeneratingCLI satisfies CLIDriver {
                 break;
             }
         }
-    }
-
-    shared actual void startDriver() {
-        createWorkers(createIDFactory(model.allMaps.map(Entry.key))); // TODO: inline
     }
 }
