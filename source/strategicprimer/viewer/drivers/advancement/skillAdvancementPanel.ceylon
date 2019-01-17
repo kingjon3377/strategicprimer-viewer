@@ -5,7 +5,6 @@ import ceylon.collection {
 
 import java.awt {
     FlowLayout,
-    Container,
     Dimension
 }
 import java.awt.event {
@@ -16,16 +15,15 @@ import javax.swing {
     JButton,
     JTextField,
     JPanel,
-    JLabel,
-    BoxLayout
+    JLabel
 }
 
 import lovelace.util.jvm {
     showErrorDialog,
     platform,
     centeredHorizontalBox,
-    BoxAxis,
-    ListenedButton
+    ListenedButton,
+    BorderedPanel
 }
 
 import lovelace.util.common {
@@ -93,7 +91,7 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
         secondPanel.add(okButton);
         secondPanel.add(cancelButton);
     }
-    object retval extends JPanel()
+    object retval extends BorderedPanel()
             satisfies SkillSelectionListener&LevelGainSource {
         shared actual void selectSkill(ISkill? selectedSkill) {
             skill = selectedSkill;
@@ -106,9 +104,8 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
         shared actual void removeLevelGainListener(LevelGainListener listener)
                 => listeners.remove(listener);
     }
-    (retval of Container).layout = BoxLayout(retval, BoxAxis.pageAxis.axis);
-    retval.add(firstPanel);
-    retval.add(secondPanel);
+    retval.pageStart = firstPanel;
+    retval.pageEnd = secondPanel;
     retval.minimumSize = Dimension(200, 40);
     retval.preferredSize = Dimension(220, 60);
     retval.maximumSize = Dimension(240, 60);
