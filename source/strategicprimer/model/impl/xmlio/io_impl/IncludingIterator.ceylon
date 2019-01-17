@@ -41,7 +41,8 @@ import strategicprimer.model.common.xmlio {
     Warning
 }
 import strategicprimer.model.impl.xmlio.exceptions {
-    MissingPropertyException
+    MissingPropertyException,
+    UnsupportedTagException
 }
 import java.lang {
     AutoCloseable
@@ -134,6 +135,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     todo("Ensure that any thrown exceptions make clear that there's inclusion involved")
     // TODO: In 0.4.9019 (and release candidates leading to it), drop support for "include" tags altogether.
     void handleInclude(StartElement tag) {
+        warner.handle(UnsupportedTagException.obsolete(tag));
         try {
             String file = getFileAttribute(tag);
             // FIXME: Reader (and thus the file it opens!) gets leaked if not finished
