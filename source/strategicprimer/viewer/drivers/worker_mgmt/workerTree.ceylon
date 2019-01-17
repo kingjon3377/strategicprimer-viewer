@@ -286,6 +286,38 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
         }
 
+        "Returns [[true]] if orders contain FIXME, [[false]], if orders contain TODO or
+         XXX, and [[null]] otherwise."
+        Boolean? shouldChangeBackground(String|JString|IUnit item) {
+            switch (item)
+            case (is IUnit) {
+                if (item.empty) {
+                    return null;
+                }
+                String orders = item.getLatestOrders(turnSource()).lowercased;
+                if (orders.contains("fixme")) {
+                    return true;
+                } else if (orders.contains("todo") || orders.contains("xxx")) {
+                    return false;
+                } else {
+                    return null;
+                }
+            }
+            else {
+                variable Boolean? retval = null;
+                for (unit in wtModel.childrenOf(item).narrow<IUnit>()) {
+                    if (exists unitPaint = shouldChangeBackground(unit)) {
+                        if (unitPaint) {
+                            return true;
+                        } else {
+                            retval = false;
+                        }
+                    }
+                }
+                return retval;
+            }
+        }
+
         shared actual Component getTreeCellRendererComponent(JTree? tree,
             Object? item, Boolean selected, Boolean expanded, Boolean leaf,
             Integer row, Boolean hasFocus) {
@@ -314,12 +346,12 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 Integer age = maturityModel.currentTurn - internal.born;
                 if (internal.population>1) {
                     component.text = "``internal.population`` ``age``-turn-old ``
-//                                animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed
+//                                animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed // FIXME: Indentation
                     animalPlurals.get(internal.kind)``";
                 } else {
                     component.text = "``age``-turn-old ``internal.kind``";
                 }
-            } else if (is Animal internal, internal.population > 1,
+            } else if (is Animal internal, internal.population > 1, // FIXME: Indentation
                 is JLabel component) {
 //                    component.text = "``internal.population`` ``animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed
                 component.text = "``internal.population`` ``animalPlurals.get(internal
@@ -328,51 +360,25 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 if (expanded || internal.empty) {
                     component.text = internal.name;
                 } else {
-                    component.text =
+                    component.text = // FIXME: Indentation
                     "``internal.name`` (``internal.narrow<IWorker>().size
                     `` workers)";
                 }
-                String orders = internal.getLatestOrders(turnSource()).lowercased;
-                if (orderCheck, orders.contains("fixme"), !internal.empty) {
+                switch (result = shouldChangeBackground(internal))
+                case (true) {
                     shouldError = true;
-                } else if (orderCheck, (orders.contains("todo") ||
-                orders.contains("xxx")), !internal.empty) {
-                    shouldWarn = true;
+                    shouldWarn = false;
                 }
-            } else if (orderCheck,
-                is WorkerTreeModelAlt.WorkerTreeNode<String> item) {
-                for (unit in item
-                    .narrow<WorkerTreeModelAlt.WorkerTreeNode<IUnit>>()
-                    .map(WorkerTreeModelAlt.WorkerTreeNode<IUnit>
-                    .userObjectNarrowed)) {
-                    if (!unit.empty) {
-                        String orders = unit.getLatestOrders(turnSource())
-                            .lowercased;
-                        if (orders.contains("fixme")) {
-                            shouldError = true;
-                            shouldWarn = false;
-                            break;
-                        } else if (orders.contains("todo") ||
-                        orders.contains("xxx")) {
-                            shouldWarn = true;
-                        }
-                    }
+                case (false) { shouldWarn = true; }
+                case (null) {}
+            } else if (orderCheck, is String|JString internal) {
+                switch (result = shouldChangeBackground(internal))
+                case (true) {
+                    shouldError = true;
+                    shouldWarn = false;
                 }
-            } else if (orderCheck, is String|JString item) { // TODO: Find a way to unify with previous case
-                for (unit in wtModel.childrenOf(item).narrow<IUnit>()) {
-                    if (!unit.empty) {
-                        String orders = unit.getLatestOrders(turnSource())
-                            .lowercased;
-                        if (orders.contains("fixme")) {
-                            shouldError = true;
-                            shouldWarn = false;
-                            break;
-                        } else if (orders.contains("todo") ||
-                        orders.contains("xxx")) {
-                            shouldWarn = true;
-                        }
-                    }
-                }
+                case (false) { shouldWarn = true; }
+                case (null) {}
             }
             if (is DefaultTreeCellRenderer component) {
                 if (shouldError) {
