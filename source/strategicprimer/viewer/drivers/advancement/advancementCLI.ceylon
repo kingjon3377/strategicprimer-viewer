@@ -138,22 +138,19 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                 while (remaining > 0) {
                     skill.addHours(Integer.largest(remaining, hoursPerHour),
                         singletonRandom.nextInteger(100));
-                    if (skill.level != oldLevel) {
-                        cli.println("``workerName`` gained a level in ``skill.name``");
-                        // FIXME: Keep a running count and only fire one event per skill
-                        fireLevelEvent(workerName, job.name, skill.name, 1, skill.level);
-                    }
                     remaining -= hoursPerHour;
                 }
             } else {
                 for (hour in 0:hours) {
                     skill.addHours(1, singletonRandom.nextInteger(100));
-                    if (skill.level != oldLevel) {
-                        cli.println("``workerName`` gained a level in ``skill.name``");
-                        // FIXME: Keep a running count and only fire one event per skill
-                        fireLevelEvent(workerName, job.name, skill.name, 1, skill.level);
-                    }
                 }
+            }
+            if (skill.level != oldLevel) {
+                String count = (skill.level - oldLevel == 1) then "a level"
+                    else (skill.level - oldLevel).string + " levels";
+                cli.println("``workerName`` gained ``count`` in ``skill.name``");
+                fireLevelEvent(workerName, job.name, skill.name, skill.level - oldLevel,
+                    skill.level);
             }
             if (exists continuation =
                     cli.inputBoolean("Select another Skill in this Job?"), continuation) {
