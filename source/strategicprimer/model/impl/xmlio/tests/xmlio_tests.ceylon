@@ -1017,7 +1017,7 @@ object xmlTests {
     shared void testInclude() {
         assertForwardDeserialization<SimpleImmortal>("Reading Ogre via <include>",
             """<include file="string:&lt;ogre id=&quot;1&quot; /&gt;" />""",
-            Ogre(1).equals);
+            Ogre(1).equals, warningLevels.ignore);
         String exceptionMessage =
                 """ParseError at [row,col]:[1,10]
                    Message: XML document structures must start and end within the same entity.""";
