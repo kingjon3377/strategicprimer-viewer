@@ -81,8 +81,20 @@ shared class AdvancementCLIFactory() satisfies ModelDriverFactory {
 
 "The worker-advancement CLI driver."
 shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
-        satisfies CLIDriver {
+        satisfies CLIDriver&LevelGainSource {
     shared actual IWorkerModel model;
+
+    MutableList<LevelGainListener> levelListeners = ArrayList<LevelGainListener>();
+
+    shared actual void addLevelGainListener(LevelGainListener listener) =>
+        levelListeners.add(listener);
+    shared actual void removeLevelGainListener(LevelGainListener listener) =>
+        levelListeners.remove(listener);
+    void fireLevelEvent() {
+        for (listener in levelListeners) {
+            listener.level();
+        }
+    }
 
     "Let the user add hours to a Skill or Skills in a Job."
     void advanceJob(IJob job, Boolean allowExpertMentoring) {
@@ -127,6 +139,7 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                         singletonRandom.nextInteger(100));
                     if (skill.level != oldLevel) {
                         cli.println("Worker(s) gained a level in ``skill.name``");
+                        fireLevelEvent();
                     }
                     remaining -= hoursPerHour;
                 }
@@ -135,6 +148,7 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                     skill.addHours(1, singletonRandom.nextInteger(100));
                     if (skill.level != oldLevel) {
                         cli.println("Worker(s) gained a level in ``skill.name``");
+                        fireLevelEvent();
                     }
                 }
             }
@@ -227,13 +241,16 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                     for (name->count in gains.frequencies()) {
                         if (count == 1) {
                             cli.println("``worker.name`` gained a level in ``name``");
+                            fireLevelEvent();
                         } else {
                             cli.println(
                                 "``worker.name`` gained ``count`` levels in ``name``");
+                            fireLevelEvent();
                         }
                     }
                 } else {
                     cli.println("``worker.name`` gained a level in ``skill.name``");
+                    fireLevelEvent();
                 }
             }
         }
