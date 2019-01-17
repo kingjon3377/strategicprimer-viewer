@@ -1,9 +1,3 @@
-"Given a function and an expected value, produces a predicate that applies that function
- to each object and returns true iff it produces the expected value. This is intended to
- be used with [[Iterable.filter]] and the like."
-shared Boolean(Type) matchingValue<Type, Field>(Field expected, Field(Type) field)
-        given Type satisfies Object =>
-            compose(curry(anythingEqual)(expected), field);
 "Given an [[Entry]], return true iff its key and item are the given types.
 
  Using [[Iterable.narrow]] on a stream of [[tuples|Tuple]] works, but doing so on a stream
@@ -18,6 +12,7 @@ Key->Item entryIdentity<Key, Item>(Object->Anything entry) given Key satisfies O
     assert (is Key key = entry.key, is Item item = entry.item);
     return key->item;
 }
+
 "Given a stream of [[entries|Entry]], return a version of it narrowed to the given type
  parameters.  [[Iterable.narrow]] returns the empty stream, since [[Entry]] does not have
  the special handling to set its type parameters to the objects' precise types that
