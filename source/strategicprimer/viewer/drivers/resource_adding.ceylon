@@ -457,13 +457,13 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
 
     "A window to let the user enter resources etc. Note that this is not a dialog to enter
      one resource and close."
-    // TODO: Convert this method to an inner class
-    SPFrame&PlayerChangeListener resourceAddingFrame(Anything(ActionEvent) menuHandler) {
+    class ResourceAddingFrame(Anything(ActionEvent) menuHandler)
+            extends SPFrame("Resource Entry", outer, null, true) satisfies PlayerChangeListener {
         IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
         variable Player currentPlayer = PlayerImpl(-1, "");
         JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
         InterpolatedLabel<[Player]> resourceLabel =
-                InterpolatedLabel<[Player]>(resourceLabelText, [currentPlayer]);
+            InterpolatedLabel<[Player]>(resourceLabelText, [currentPlayer]);
 
         mainPanel.add(resourceLabel);
         JPanel resourcePanel = boxPanel(BoxAxis.lineAxis);
@@ -524,6 +524,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                 resourceCreatedModel.\ivalue = JInteger.valueOf(-1);
                 resourceQuantityModel.\ivalue = JInteger.valueOf(0);
             } else {
+                // TODO: Add appendLine() to StreamingLabel, to add the newline for us
                 logLabel.append("Failed to convert quantity into the form we need.
                                  ");
             }
@@ -538,8 +539,9 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         } else if (is JSpinner.DefaultEditor editor = creationSpinner.editor) {
             editor.textField.addActionListener(resourceListener);
         } else {
+            // TODO: Two calls to append() to avoid interpolation // TODO: Add appendLine() there, to add the newline for us
             logLabel.append("Turn-created spinner's editor wasn't a text field, but a ``
-                                classDeclaration(creationSpinner.editor)``
+                    classDeclaration(creationSpinner.editor)``
                              ");
         }
         if (is JTextField editor = resourceQuantitySpinner.editor) {
@@ -547,8 +549,9 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         } else if (is JSpinner.DefaultEditor editor = creationSpinner.editor) {
             editor.textField.addActionListener(resourceListener);
         } else {
+            // TODO: Two calls to append() to avoid interpolation // TODO: Add appendLine() there, to add the newline for us
             logLabel.append("Quantity spinner's editor wasn't a text field, but a ``
-                                classDeclaration(resourceQuantitySpinner.editor)``
+                    classDeclaration(resourceQuantitySpinner.editor)``
                              ");
         }
 
@@ -572,7 +575,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                 return;
             }
             Integer quantity = implementQuantityModel.number.intValue();
-            for (i in 0:quantity) {
+            for (i in 0:quantity) { // FIXME: Use quantity field instead of creating copies!
                 model.addResource(Implement(kind, idf.createID()), currentPlayer);
             }
             logAddition(logLabel, currentPlayer, "``quantity`` x ``kind``");
@@ -587,9 +590,9 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         } else if (is JSpinner.DefaultEditor editor = implementQuantityField.editor) {
             editor.textField.addActionListener(implementListener);
         } else {
-            logLabel.append(
+            logLabel.append( // TODO: Two calls to append() to avoid interpolation // TODO: Add appendLine() there, to add the newline for us
                 "Implement quantity spinner's editor wasn't a text field, but a ``
-                                classDeclaration(implementQuantityField.editor)``
+                    classDeclaration(implementQuantityField.editor)``
                              ");
         }
 
@@ -599,32 +602,29 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         JScrollPane scrolledLog = JScrollPane(logLabel);
         scrolledLog.minimumSize = logLabel.minimumSize;
 
-        object retval extends SPFrame("Resource Entry", outer, null, true,
-                    (file) => model.addSubordinateMap(mapIOHelper.readMap(file), file))
-                satisfies PlayerChangeListener {
-            shared actual void playerChanged(Player? old, Player newPlayer) {
-                currentPlayer = newPlayer;
-                resourceLabel.arguments = [currentPlayer];
-                implementLabel.arguments = [currentPlayer];
-            }
+        shared actual void playerChanged(Player? old, Player newPlayer) {
+            currentPlayer = newPlayer;
+            resourceLabel.arguments = [currentPlayer];
+            implementLabel.arguments = [currentPlayer];
         }
 
-        retval.add(verticalSplit(mainPanel, scrolledLog, 0.2, 0.1));
-        retval.jMenuBar = workerMenu(menuHandler, retval, this);
-        retval.pack();
+        shared actual void acceptDroppedFile(PathWrapper file) =>
+            model.addSubordinateMap(mapIOHelper.readMap(file), file);
 
-        logLabel.minimumSize = Dimension(retval.width - 20, 50);
+        add(verticalSplit(mainPanel, scrolledLog, 0.2, 0.1));
+        jMenuBar = workerMenu(menuHandler, mainPanel, outer);
+        pack();
+        logLabel.minimumSize = Dimension(width - 20, 50);
         JComponent temp = logLabel;
-        temp.preferredSize = Dimension(retval.width, 100);
+        temp.preferredSize = Dimension(width, 100);
         JInteger maximum = JInteger.valueOf(runtime.maxArraySize);
         resourceCreatedModel.maximum = maximum;
         resourceQuantityModel.maximum = maximum;
         implementQuantityModel.maximum = maximum;
-        return retval;
     }
 
     void startDriverImpl(PlayerChangeMenuListener pcml, MenuBroker menuHandler) {
-        value frame = resourceAddingFrame(menuHandler.actionPerformed);
+        value frame = ResourceAddingFrame(menuHandler.actionPerformed);
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
         menuHandler.registerWindowShower(
             aboutDialog(frame, frame.windowName), "about");
