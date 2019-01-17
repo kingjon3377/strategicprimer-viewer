@@ -5,7 +5,8 @@ import ceylon.collection {
 
 import lovelace.util.common {
     DelayedRemovalMap,
-    invoke
+    invoke,
+    simpleMap
 }
 
 import strategicprimer.model.common.map {
@@ -253,21 +254,16 @@ shared class HarvestableReportGenerator
                 SortedSectionListReportNode(5, "Groves and Orchards");
         SortedSectionListReportNode caches = SortedSectionListReportNode(5,
             "Caches collected by your explorers and workers:");
+        value typeMap = simpleMap(`Mine`->mines, `Meadow`->meadows, `Grove`->groves,
+            `CacheFixture`->caches);
         mines.suspend();
         meadows.suspend();
         groves.suspend();
         caches.suspend();
-        // TODO: use Maps by type to condense below
         for ([loc, item] in fixtures.items.narrow<[Point, HarvestableFixture]>()
                 .sort(pairComparator)) {
-            if (is CacheFixture item) {
-                caches.appendNode(produceRIRSingle(fixtures, map, item, loc));
-            } else if (is Grove item) {
-                groves.appendNode(produceRIRSingle(fixtures, map, item, loc));
-            } else if (is Meadow item) {
-                meadows.appendNode(produceRIRSingle(fixtures, map, item, loc));
-            } else if (is Mine item) {
-                mines.appendNode(produceRIRSingle(fixtures, map, item, loc));
+            if (exists groupNode = typeMap[type(item)]) {
+                groupNode.appendNode(produceRIRSingle(fixtures, map, item, loc));
             } else if (is MineralVein item) {
                 IReportNode node;
                 if (exists temp = minerals[item.shortDescription]) {
