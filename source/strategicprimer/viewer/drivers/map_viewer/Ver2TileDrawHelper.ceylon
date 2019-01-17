@@ -255,8 +255,8 @@ shared class Ver2TileDrawHelper(
      at the given location"
     Boolean needsFixtureColor(IMapNG map, Point location) {
         if (hasTerrainFixture(map, location), exists top = getTopFixture(map, location)) {
-            // TODO: Is this right? It looks like we're checking whether the top fixture, period, and the bottom fixture for which drawing is enabled are the same, regardless of whether either is a terrain fixture!
-            if (exists bottom = getDrawableFixtures(map, location).last) {
+            if (exists bottom = getDrawableFixtures(map, location)
+                    .narrow<TerrainFixture>().last) {
                 return top != bottom;
 //            } else if (map.mountainous[location]) {
             } else if (map.mountainous.get(location)) {
