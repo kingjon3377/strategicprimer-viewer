@@ -107,6 +107,11 @@ shared class HuntingModel {
         return ResultStream(retval, nothingProportion, NothingFound.nothingFound);
     }
 
+    "A helper method for the helper method for hunting, fishing, etc."
+    {<Point->Type|HuntingModel.NothingFound>*} chooseFromMapImpl<out Type>(
+        {Type|NothingFound*}(Point) chosenMap)(Point loc)
+            given Type satisfies Object => chosenMap(loc).map(curry(Entry<Point, Type|NothingFound>)(loc));
+
     "A helper method for hunting or fishing."
     {<Point->Type|NothingFound>*} chooseFromMap<out Type>(
             "Whereabouts to search"
@@ -115,9 +120,7 @@ shared class HuntingModel {
             {Type|NothingFound*}(Point) chosenMap) given Type satisfies Object {
         {<Point->Type|NothingFound>*} choices = // TODO: inline
                 surroundingPointIterable(point, dimensions)
-                    .map((loc) => chosenMap(loc).map( // TODO: convert lambda to named method
-                        curry(Entry<Point, Type|NothingFound>)(loc)))
-                    .coalesced.flatMap(identity);
+                    .map(chooseFromMapImpl(chosenMap)).coalesced.flatMap(identity);
         return ResultStream(choices, 0.5, point->NothingFound.nothingFound);
     }
 
