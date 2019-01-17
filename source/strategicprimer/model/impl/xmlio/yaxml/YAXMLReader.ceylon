@@ -63,7 +63,8 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
             given Element satisfies Object {
         try {
             Iterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
-            {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
+            {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader,
+                warner));
             IDRegistrar idFactory = IDFactory();
             if (exists event = eventReader.narrow<StartElement>().first) {
                 assert (is Element retval = YAReaderAdapter(warner, idFactory)

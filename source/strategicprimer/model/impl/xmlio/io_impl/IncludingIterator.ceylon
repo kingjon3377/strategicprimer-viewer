@@ -37,7 +37,8 @@ import lovelace.util.jvm {
 
 import strategicprimer.model.common.xmlio {
     SPFormatException,
-    spNamespace
+    spNamespace,
+    Warning
 }
 import strategicprimer.model.impl.xmlio.exceptions {
     MissingPropertyException
@@ -83,7 +84,9 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
     "The stack of iterators we're working with."
     Stack<[String, Iterator<XMLEvent>]> stack =
             LinkedList<[String, Iterator<XMLEvent>]>();
-    shared new (PathWrapper file, Iterator<XMLEvent> iter) {
+    Warning warner;
+    shared new (PathWrapper file, Iterator<XMLEvent> iter, Warning warner) {
+        this.warner = warner;
         stack.push([file.filename, iter]);
     }
 
@@ -129,6 +132,7 @@ shared class IncludingIterator satisfies Iterator<XMLEvent> {
         "on XML parsing error in parsing the <include> tag or opening the included file")
     throws(`class SPFormatException`, "on SP format problem in <include>")
     todo("Ensure that any thrown exceptions make clear that there's inclusion involved")
+    // TODO: In 0.4.9019 (and release candidates leading to it), drop support for "include" tags altogether.
     void handleInclude(StartElement tag) {
         try {
             String file = getFileAttribute(tag);

@@ -566,7 +566,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         try {
             // TODO: Pass in Closeables, to pass to TypesafeMLEventReader, to close file descriptor
             Iterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
-            {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader));
+            {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader,
+                warner));
             IMutablePlayerCollection players = PlayerCollection();
             IDRegistrar idFactory = IDFactory();
             if (exists event = eventReader.narrow<StartElement>()
