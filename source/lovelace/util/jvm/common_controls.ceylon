@@ -145,6 +145,13 @@ shared class StreamingLabel extends JEditorPane {
         text = "<html><body bgcolor=\"#ffffff\">``buffer``</body></html>";
         repaint();
     }
+    "Add text to the label, followed by a newline."
+    shared void appendLine(String string) {
+        buffer.append(string);
+        buffer.append("<br />");
+        text = "<html><body bgcolor=\"#ffffff\">``buffer``</body></html>";
+        repaint();
+    }
 }
 
 "The possible axes that a [[BoxLayout]] can be laid out on."
