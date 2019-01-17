@@ -115,7 +115,7 @@ class MappedCounter<Base, Key, Count>(
     "A stream of keys and associated counts seen so far."
     shared actual Iterator<Key->Count> iterator() =>
             totals.map(entryMap(identity<Key>, Accumulator<Count>.sum))
-                .sort(comparingOn(Entry<Key, Count>.item, decreasing<Count>)).iterator();
+                .sort(byDecreasing(Entry<Key, Count>.item)).iterator();
 
     "The total counted for all keys taken together."
     shared Count total => totals.items.map(Accumulator<Count>.sum).fold(zero)(plus);
@@ -185,8 +185,8 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
         EnumCounter<TileType> tileTypeCounts = EnumCounter<TileType>();
         tileTypeCounts.countMany(*map.locations.map(map.baseTerrain.get).coalesced);
         cli.println();
-        for (type->count in tileTypeCounts.allCounts.sort(comparingOn(
-                Entry<TileType, Integer>.item, decreasing<Integer>))) {
+        for (type->count in tileTypeCounts.allCounts.sort(byDecreasing(
+                Entry<TileType, Integer>.item))) {
             cli.println("- ``count`` are ``type``");
         }
         cli.println();
