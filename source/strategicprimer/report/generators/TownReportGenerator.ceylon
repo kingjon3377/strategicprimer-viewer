@@ -84,6 +84,9 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         }
     }
 
+    void separateByStatusInner(MutableMap<ITownFixture, Point> mapping,
+        [Point, ITownFixture] pair) => mapping[pair.rest.first] = pair.first;
+
     "Produce a report on all towns. This report omits fortresses and villages, and is
      sorted in a way that I hope is helpful. We remove the town from the set of fixtures."
     shared actual void produce(DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
@@ -102,10 +105,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                         TownStatus.burned->burned, TownStatus.ruined->ruined);
         // separateByStatus() sorts using pairComparator, which should be by distance
         // from HQ
-        separateByStatus(separated, fixtures.items,
-                    (MutableMap<ITownFixture, Point> mapping, pair) =>
-                    // TODO: Work out method-reference logic to avoid lambda, or convert to class (or better yet static) method
-                            mapping[pair.rest.first] = pair.first);
+        separateByStatus(separated, fixtures.items, separateByStatusInner);
         // N.b. Sugaring Iterable<Anything> to {Anything*} won't compile
         if (separated.items.any(not(Iterable<Anything>.empty))) {
             ostream("""<h4>Cities, towns, and/or fortifications you know about:</h4>
