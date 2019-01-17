@@ -47,7 +47,7 @@ shared class FixtureEditMenu(
         {Player*} players,
         "A source for unique-in-the-map ID numbers."
         IDRegistrar idf,
-        // TODO: What is this for?
+        "A method to call to mark the maps as modified whenever any change is made."
         Anything() mutationListener,
         "Listeners to notify when something is renamed or changes kind."
         IWorkerTreeModel* changeListeners) extends JPopupMenu() {
