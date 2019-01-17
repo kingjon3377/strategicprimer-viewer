@@ -339,30 +339,29 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         .race````jobCSL(internal)``</p></html>";
                 }
             } else if (is Animal internal, internal.born >= 0,
-                maturityModel.currentTurn >= 0,
-                exists maturityAge = maturityModel.maturityAges[internal.kind],
-                maturityModel.currentTurn - internal.born < maturityAge,
-                is JLabel component) {
+                    maturityModel.currentTurn >= 0,
+                    exists maturityAge = maturityModel.maturityAges[internal.kind],
+                    maturityModel.currentTurn - internal.born < maturityAge,
+                    is JLabel component) {
                 Integer age = maturityModel.currentTurn - internal.born;
                 if (internal.population>1) {
                     component.text = "``internal.population`` ``age``-turn-old ``
-//                                animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed // FIXME: Indentation
+//                    animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed
                     animalPlurals.get(internal.kind)``";
                 } else {
                     component.text = "``age``-turn-old ``internal.kind``";
                 }
-            } else if (is Animal internal, internal.population > 1, // FIXME: Indentation
-                is JLabel component) {
-//                    component.text = "``internal.population`` ``animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed
+            } else if (is Animal internal, internal.population > 1,
+                    is JLabel component) {
+//                component.text = "``internal.population`` ``animalPlurals[internal.kind]``"; // TODO: syntax sugar once compiler bug fixed
                 component.text = "``internal.population`` ``animalPlurals.get(internal
                     .kind)``";
             } else if (is IUnit internal, is DefaultTreeCellRenderer component) {
                 if (expanded || internal.empty) {
                     component.text = internal.name;
                 } else {
-                    component.text = // FIXME: Indentation
-                    "``internal.name`` (``internal.narrow<IWorker>().size
-                    `` workers)";
+                    component.text = "``internal.name`` (``internal.narrow<IWorker>()
+                        .size`` workers)";
                 }
                 switch (result = shouldChangeBackground(internal))
                 case (true) {
