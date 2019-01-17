@@ -5,81 +5,10 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.common.map {
     Point,
     Player,
-    HasName,
     TileFixture
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
-}
-
-"An enumeration of directions of possible travel."
-shared class Direction
-        of north|northeast|east|southeast|south|southwest|west|northwest|nowhere
-        satisfies Comparable<Direction> {
-    "A representation of the direction for debugging purposes."
-    shared actual String string;
-    "An index, for getting a consistent sort order for UI purposes."
-    Integer ordinal;
-    "North."
-    shared new north { string = "north"; ordinal = 1; }
-    "Northeast."
-    shared new northeast { string = "northeast"; ordinal = 2; }
-    "East."
-    shared new east { string = "east"; ordinal = 5; }
-    "Southeast."
-    shared new southeast { string = "southeast"; ordinal = 8; }
-    "South."
-    shared new south { string = "south"; ordinal = 7; }
-    "Southwest."
-    shared new southwest { string = "southwest"; ordinal = 6; }
-    "West."
-    shared new west { string = "west"; ordinal = 3; }
-    "Northwest."
-    shared new northwest { string = "northwest"; ordinal = 0; }
-    "Stand still."
-    shared new nowhere { string = "nowhere"; ordinal = 4; }
-
-    shared actual Comparison compare(Direction other) => ordinal <=> other.ordinal;
-}
-
-"An enumeration of possible movement speeds, joining their effects on MP costs and
- Perception. Traveling to [[Direction.nowhere]] should give an additional bonus (+2?) to
- Perception."
-shared class Speed of hurried|normal|observant|careful|meticulous
-        satisfies HasName&Comparable<Speed> {
-    "The multiplicative modifier to apply to movement costs."
-    shared Float mpMultiplier;
-    "The modifier to add to Perception checks."
-    shared Integer perceptionModifier;
-    "A description to use in menus."
-    shared actual String name;
-    "A description to use in prose text."
-    shared String shortName;
-
-    abstract new delegate(Float multMod, Integer addMod, String desc) {
-        mpMultiplier = multMod;
-        perceptionModifier = addMod;
-        String perceptionString = (addMod >= 0) then "+``addMod``" else addMod.string;
-        name = "``desc``: x``Float.format(multMod, 0,
-            1)`` MP costs, ``perceptionString`` Perception";
-        shortName = desc;
-    }
-
-    "Traveling as quickly as possible."
-    shared new hurried extends delegate(0.66, -6, "Hurried") {}
-    "Normal speed."
-    shared new normal extends delegate(1.0, -4, "Normal") {}
-    "Moving slowly enough to notice one's surroundings."
-    shared new observant extends delegate(1.5, -2, "Observant") {}
-    "Looking carefully at one's surroundings to try not to miss anything important."
-    shared new careful extends delegate(2.0, 0, "Careful") {}
-    "Painstaking searches."
-    shared new meticulous extends delegate(2.5, 2, "Meticulous") {}
-
-    "A description to use in GUI menus."
-    shared actual String string => name;
-    shared actual Comparison compare(Speed other) =>
-            perceptionModifier <=> other.perceptionModifier;
 }
 
 "A model for exploration apps."
