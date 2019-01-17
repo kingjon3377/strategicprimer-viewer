@@ -4,7 +4,8 @@ import ceylon.collection {
 }
 
 import lovelace.util.common {
-    DelayedRemovalMap
+    DelayedRemovalMap,
+    invoke
 }
 
 import strategicprimer.model.common.map {
@@ -306,10 +307,8 @@ shared class HarvestableReportGenerator
         SortedSectionListReportNode stoneNode = SortedSectionListReportNode(5,
             "Exposed Stone Deposits");
         stoneNode.appendNodes(*stone.items);
-        // TODO: Replace loop with Iterable.each(), if that'll compile.
-        for (node in [mines, meadows, groves, caches]) {
-            node.resume();
-        }
+        [mines, meadows, groves, caches].map(SortedSectionListReportNode.resume)
+            .each(invoke);
         SectionReportNode retval = SectionReportNode(4, "Resource Sources");
         retval.addIfNonEmpty(caches, groves, meadows, mines, mineralsNode, stoneNode,
             shrubsNode);
