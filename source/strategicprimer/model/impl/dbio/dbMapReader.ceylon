@@ -21,6 +21,9 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.xmlio {
     Warning
 }
+import strategicprimer.model.impl.xmlio.exceptions {
+    MapVersionException
+}
 
 object dbMapReader {
     {MapContentsReader*} readers = [dbPlayerHandler, dbCacheHandler, dbExplorableHandler,
@@ -56,7 +59,9 @@ object dbMapReader {
                 .execute().first, is Integer version = metadata["version"],
             is Integer rows = metadata["rows"], is Integer columns = metadata["columns"],
             is Integer turn = metadata["current_turn"]);
-        // TODO: Warn if map version != 2
+        if (version != 2) {
+            warner.handle(MapVersionException.nonXML(version, 2, 2));
+        }
         IMutablePlayerCollection players = PlayerCollection();
         log.trace("About to read players");
         for (row in db.Select("""SELECT id, codename, current FROM players""")
