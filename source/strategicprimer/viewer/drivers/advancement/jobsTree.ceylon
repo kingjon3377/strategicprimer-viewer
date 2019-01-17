@@ -46,7 +46,7 @@ class JobsTree(JobTreeModel jtModel) extends JTree(jtModel)
     void handleTreeSelectionChange(TreeSelectionEvent event) {
         ISkill? retval;
         if (exists selectionPath = event.newLeadSelectionPath,
-            is ISkill component = selectionPath.lastPathComponent) {
+                is ISkill component = selectionPath.lastPathComponent) {
             retval = component;
         } else {
             retval = null;
