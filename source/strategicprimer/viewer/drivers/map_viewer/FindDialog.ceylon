@@ -170,15 +170,6 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     searchField.addActionListener(okListener);
     searchField.setActionCommand("OK");
 
-    JPanel searchBoxPane = JPanel(); // TODO: Use a different layout than BoxLayout for contentPanel so we won't have to wrap searchField in a JPanel
-    searchBoxPane.add(searchField);
-
-    JPanel contentPanel = boxPanel(BoxAxis.pageAxis);
-    contentPanel.add(searchBoxPane);
-    contentPanel.add(backwards);
-    contentPanel.add(vertically);
-    contentPanel.add(caseSensitive);
-
     JPanel&BoxPanel buttonPanel = boxPanel(BoxAxis.lineAxis); // TODO: Use a better layout
     buttonPanel.addGlue();
 
@@ -208,7 +199,8 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
 
     buttonPanel.add(cancelButton);
     buttonPanel.addGlue();
-    contentPanel.add(buttonPanel);
+    JPanel contentPanel = BorderedPanel.verticalPanel(searchField,
+        BorderedPanel.verticalPanel(backwards, vertically, caseSensitive), buttonPanel);
 
     void populate(Anything fixture) {
         if (is TileFixture fixture) {
