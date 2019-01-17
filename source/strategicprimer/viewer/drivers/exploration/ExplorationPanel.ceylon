@@ -299,8 +299,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
                     //} else if (!map.fixtures[destPoint].any(fixture.equals)) { // TODO: syntax sugar once compiler bug fixed
                     } else if (!map.fixtures.get(destPoint).any(fixture.equals)) {
                         Boolean zero;
-                        if (is HasOwner fixture, fixture.owner != player || // TODO: add clarifying parentheses
-                                fixture is Village) {
+                        if (is HasOwner fixture, (fixture.owner != player ||
+                                fixture is Village)) {
                             zero = true;
                         } else {
                             zero = fixture is HasPopulation<Anything>|HasExtent<out Anything>;
