@@ -57,7 +57,6 @@ import strategicprimer.drivers.common {
 
 "The logic split out of [[ExplorationCLI]], some also used in
  [[strategicprimer.viewer.drivers.turnrunning::TurnRunningCLI]]"
-// TODO: Merge methods not used in TurnRunningCLI back in
 shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         satisfies MovementCostListener&SelectionChangeListener {
     HuntingModel huntingModel = HuntingModel(model.map);
