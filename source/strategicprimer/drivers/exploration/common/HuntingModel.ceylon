@@ -117,12 +117,11 @@ shared class HuntingModel {
             "Whereabouts to search"
             Point point,
             "Filter/provider to use to find the animals."
-            {Type|NothingFound*}(Point) chosenMap) given Type satisfies Object {
-        {<Point->Type|NothingFound>*} choices = // TODO: inline
-                surroundingPointIterable(point, dimensions)
-                    .map(chooseFromMapImpl(chosenMap)).coalesced.flatMap(identity);
-        return ResultStream(choices, 0.5, point->NothingFound.nothingFound);
-    }
+            {Type|NothingFound*}(Point) chosenMap) given Type satisfies Object =>
+        ResultStream(
+            surroundingPointIterable(point, dimensions)
+                .map(chooseFromMapImpl(chosenMap)).coalesced.flatMap(identity), 0.5,
+            point->NothingFound.nothingFound);
 
     """Get a stream of hunting results from the area surrounding the given tile. About
        half will be "nothing". May be an infinite stream."""
