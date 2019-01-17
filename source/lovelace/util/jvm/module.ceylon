@@ -65,6 +65,8 @@
  - The [[SimpleCardLayout]] class is a convenience extension to [[java.awt::CardLayout]]
    that encapsulates a reference to the container it is laying out instead of requiring
    callers to provide that reference to every card-flipping call.
+ - [[FlowPanel]] is a [[javax.swing::JPanel]] taking child components as initializer
+   parameters.
 
  - The [[platform]] object encapsulates a number of utility constants and functions that
    differ between Mac and non-Mac platforms, including the usual shortcut-key modifier as
