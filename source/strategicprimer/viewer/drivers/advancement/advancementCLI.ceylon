@@ -90,14 +90,15 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
         levelListeners.add(listener);
     shared actual void removeLevelGainListener(LevelGainListener listener) =>
         levelListeners.remove(listener);
-    void fireLevelEvent() {
+    void fireLevelEvent(String workerName, String jobName, String skillName,
+            Integer gains, Integer currentLevel) {
         for (listener in levelListeners) {
-            listener.level();
+            listener.level(workerName, jobName, skillName, gains, currentLevel);
         }
     }
 
     "Let the user add hours to a Skill or Skills in a Job."
-    void advanceJob(IJob job, Boolean allowExpertMentoring) {
+    void advanceJob(String workerName, IJob job, Boolean allowExpertMentoring) {
         MutableList<ISkill> skills = ArrayList{ elements = job; };
         while (true) {
             value chosen = cli.chooseFromList(skills, "Skills in Job:",
@@ -138,8 +139,9 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                     skill.addHours(Integer.largest(remaining, hoursPerHour),
                         singletonRandom.nextInteger(100));
                     if (skill.level != oldLevel) {
-                        cli.println("Worker(s) gained a level in ``skill.name``");
-                        fireLevelEvent();
+                        cli.println("``workerName`` gained a level in ``skill.name``");
+                        // FIXME: Keep a running count and only fire one event per skill
+                        fireLevelEvent(workerName, job.name, skill.name, 1, skill.level);
                     }
                     remaining -= hoursPerHour;
                 }
@@ -147,8 +149,9 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                 for (hour in 0:hours) {
                     skill.addHours(1, singletonRandom.nextInteger(100));
                     if (skill.level != oldLevel) {
-                        cli.println("Worker(s) gained a level in ``skill.name``");
-                        fireLevelEvent();
+                        cli.println("``workerName`` gained a level in ``skill.name``");
+                        // FIXME: Keep a running count and only fire one event per skill
+                        fireLevelEvent(workerName, job.name, skill.name, 1, skill.level);
                     }
                 }
             }
@@ -188,7 +191,7 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
             } else {
                 break;
             }
-            advanceJob(job, allowExpertMentoring);
+            advanceJob(worker.name, job, allowExpertMentoring);
             if (exists continuation =
                         cli.inputBoolean("Select another Job in this worker?"),
                     continuation) {
@@ -241,16 +244,17 @@ shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
                     for (name->count in gains.frequencies()) {
                         if (count == 1) {
                             cli.println("``worker.name`` gained a level in ``name``");
-                            fireLevelEvent();
                         } else {
                             cli.println(
                                 "``worker.name`` gained ``count`` levels in ``name``");
-                            fireLevelEvent();
                         }
+                        fireLevelEvent(worker.name, job.name, name, count,
+                            job.getSkill(name).level);
                     }
                 } else {
                     cli.println("``worker.name`` gained a level in ``skill.name``");
-                    fireLevelEvent();
+                    fireLevelEvent(worker.name, job.name, skill.name,
+                        skill.level - oldLevel, skill.level);
                 }
             }
         }

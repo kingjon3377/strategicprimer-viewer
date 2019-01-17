@@ -12,5 +12,6 @@ shared interface LevelGainListener satisfies EventListener {
     "Handle a gained level."
     todo("If possible, specify what skill, what worker, etc. here, so callers don't have
           to deduce that information")
-    shared formal void level();
+    shared formal void level(String workerName, String jobName, String skillName,
+        Integer gains, Integer currentLevel);
 }

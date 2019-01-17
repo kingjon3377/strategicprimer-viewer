@@ -68,7 +68,9 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
             Integer newLevel = local.level;
             if (newLevel != level) {
                 for (listener in listeners) {
-                    listener.level();
+                    // FIXME: Track worker and Job names
+                    listener.level("unknown", "unknown", local.name, newLevel - level,
+                        newLevel);
                 }
             }
         }

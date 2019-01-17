@@ -81,7 +81,8 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
 
     object flaggingListener satisfies LevelGainListener&AddRemoveListener {
         shared actual void add(String category, String addendum) => markModified();
-        shared actual void level() => markModified();
+        shared actual void level(String workerName, String jobName, String skillName,
+            Integer gains, Integer currentLevel) => markModified();
     }
 
     JobTreeModel jobsTreeModel = JobTreeModel();

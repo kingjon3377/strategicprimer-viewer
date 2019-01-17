@@ -36,10 +36,25 @@ object levelListener
     }
 
     "Notify the user of a gained level."
-    shared actual void level() {
-        if (exists localWorker = worker, exists localSkill = skill) {
-            process.writeLine("``getName(localWorker)`` gained a level in ``getName(
-                localSkill)``");
+    shared actual void level(String workerName, String jobName, String skillName,
+            Integer gains, Integer currentLevel) {
+        String actualWorkerName;
+        String actualSkillName;
+        if (!workerName.empty, workerName != "unknown") {
+            actualWorkerName = workerName;
+        } else if (exists localWorker = worker) {
+            actualWorkerName = getName(localWorker);
+        } else {
+            return;
         }
+        if (!skillName.empty, skillName != "unknown") {
+            actualSkillName = skillName;
+        } else if (exists localSkill = skill) {
+            actualSkillName = getName(localSkill);
+        } else {
+            return;
+        }
+        String count = (gains == 1) then "a level" else gains.string + " levels";
+        process.writeLine("``actualWorkerName`` gained ``count`` in ``actualSkillName``");
     }
 }
