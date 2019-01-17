@@ -457,7 +457,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
 
     "A window to let the user enter resources etc. Note that this is not a dialog to enter
      one resource and close."
-    // TODO: Move methods embedded in this method to top level of class
+    // TODO: Convert this method to an inner class
     SPFrame&PlayerChangeListener resourceAddingFrame(Anything(ActionEvent) menuHandler) {
         IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
         variable Player currentPlayer = PlayerImpl(-1, "");
