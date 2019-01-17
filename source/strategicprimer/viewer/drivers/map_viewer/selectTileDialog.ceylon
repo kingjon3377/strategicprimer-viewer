@@ -22,7 +22,8 @@ import lovelace.util.jvm {
     BoxAxis,
     ListenedButton,
     boxPanel,
-    BoxPanel
+    BoxPanel,
+    AlignedLabel
 }
 
 import strategicprimer.drivers.gui.common {
@@ -46,10 +47,8 @@ class NumberState of valid|nonNumeric|negative|overflow {
 "A dialog to let the user select a tile by coordinates."
 class SelectTileDialog(Frame? parentFrame, IViewerModel model)
         extends SPDialog(parentFrame, "Go To ...") {
-    // TODO: Make a subclass/factory method in lovelace.util.jvm taking alignment as constructor parameters
-    JLabel mainLabel = JLabel("Coordinates of tile to select:");
-    mainLabel.alignmentX = Component.centerAlignment;
-    mainLabel.alignmentY = Component.topAlignment;
+    JLabel mainLabel = AlignedLabel("Coordinates of tile to select:",
+        Component.centerAlignment, Component.topAlignment);
 
     NumberFormat numParser = NumberFormat.integerInstance;
 
