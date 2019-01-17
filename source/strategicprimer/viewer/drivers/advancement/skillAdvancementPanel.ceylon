@@ -4,7 +4,6 @@ import ceylon.collection {
 }
 
 import java.awt {
-    FlowLayout,
     Dimension
 }
 import java.awt.event {
@@ -22,8 +21,8 @@ import lovelace.util.jvm {
     showErrorDialog,
     platform,
     centeredHorizontalBox,
-    ListenedButton,
-    BorderedPanel
+    BorderedPanel,
+    FlowPanel
 }
 
 import lovelace.util.common {
@@ -35,14 +34,17 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 }
 
 "A panel to let a user add hours of experience to a Skill."
-// TODO: Try to convert back to class
-JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
-    JTextField hours = JTextField(3);
-    JPanel firstPanel = JPanel();
-    // TODO: Add FlowPanel to lovelace.util.jvm to condense this
-    firstPanel.add(JLabel("Add "));
-    firstPanel.add(hours);
-    firstPanel.add(JLabel(" hours to skill?"));
+final class SkillAdvancementPanel extends BorderedPanel
+        satisfies SkillSelectionListener&LevelGainSource {
+    static JPanel secondPanelFactory(JButton* buttons) {
+        platform.makeButtonsSegmented(*buttons);
+        if (platform.systemIsMac) {
+            return centeredHorizontalBox(*buttons);
+        } else {
+            return FlowPanel(*buttons);
+        }
+    }
+    late JTextField hours;
     variable ISkill? skill = null;
     MutableList<LevelGainListener> listeners = ArrayList<LevelGainListener>();
     void okListener(ActionEvent event) {
@@ -76,38 +78,29 @@ JPanel&SkillSelectionListener&LevelGainSource skillAdvancementPanel() {
         // skill
         hours.text = "";
     }
-    JButton okButton = ListenedButton("OK", okListener);
-    hours.setActionCommand("OK");
-    hours.addActionListener(okListener);
-    JButton cancelButton = ListenedButton("Cancel",
-        // TODO: Figure out a way to defer() an assignment
-                (ActionEvent event) => hours.text = "");
-    platform.makeButtonsSegmented(okButton, cancelButton);
-    JPanel secondPanel;
-    if (platform.systemIsMac) {
-        secondPanel = centeredHorizontalBox(okButton, cancelButton);
-    } else {
-        secondPanel = JPanel(FlowLayout());
-        secondPanel.add(okButton);
-        secondPanel.add(cancelButton);
+    void cancelListener(ActionEvent event) => hours.text = "";
+    shared new delegate(JTextField hours, JButton okButton, JButton cancelButton)
+        extends BorderedPanel(null, FlowPanel(JLabel("Add "), hours,
+        JLabel(" hours to skill?")),
+        secondPanelFactory(okButton, cancelButton)) {
+        okButton.addActionListener(okListener);
+        cancelButton.addActionListener(cancelListener);
+        hours.setActionCommand("OK");
+        hours.addActionListener(okListener);
+        this.hours = hours;
+        minimumSize = Dimension(200, 40);
+        preferredSize = Dimension(220, 60);
+        maximumSize = Dimension(240, 60);
     }
-    object retval extends BorderedPanel()
-            satisfies SkillSelectionListener&LevelGainSource {
-        shared actual void selectSkill(ISkill? selectedSkill) {
-            skill = selectedSkill;
-            if (selectedSkill exists) {
-                hours.requestFocusInWindow();
-            }
+    shared new () extends delegate(JTextField(3), JButton("OK"), JButton("Cancel")) {}
+    shared actual void selectSkill(ISkill? selectedSkill) {
+        skill = selectedSkill;
+        if (selectedSkill exists) {
+            hours.requestFocusInWindow();
         }
-        shared actual void addLevelGainListener(LevelGainListener listener)
-                => listeners.add(listener);
-        shared actual void removeLevelGainListener(LevelGainListener listener)
-                => listeners.remove(listener);
     }
-    retval.pageStart = firstPanel;
-    retval.pageEnd = secondPanel;
-    retval.minimumSize = Dimension(200, 40);
-    retval.preferredSize = Dimension(220, 60);
-    retval.maximumSize = Dimension(240, 60);
-    return retval;
+    shared actual void addLevelGainListener(LevelGainListener listener)
+        => listeners.add(listener);
+    shared actual void removeLevelGainListener(LevelGainListener listener)
+        => listeners.remove(listener);
 }
