@@ -228,8 +228,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
 
         MappedCounter<AdventureFixture, String, Integer> adventures =
                 simpleCounter(AdventureFixture.briefDescription);
-        allFixtures.narrow<AdventureFixture>()
-            .each(adventures.add);
+        allFixtures.narrow<AdventureFixture>().each(adventures.add);
         adventures.addDirectly("Portal to another world",
             separateTiles.count(anyIs<Portal>));
         adventures.addDirectly("Ancient battlefield",
