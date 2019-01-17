@@ -314,8 +314,12 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             QName? stackTop = tagStack.top;
             if (is StartElement event, isSPStartElement(event)) {
                 String type = event.name.localPart.lowercased;
-                if ("row" == type || isFutureTag(event, warner)) {
-                    expectAttributes(event, warner, "index"); // TODO: Expecting only 'index' in a future tag?
+                if ("row" == type) {
+                    expectAttributes(event, warner, "index");
+                    tagStack.push(event.name);
+                    // Deliberately ignore
+                    continue;
+                } else if (isFutureTag(event, warner)) {
                     tagStack.push(event.name);
                     // Deliberately ignore
                     continue;
