@@ -50,7 +50,6 @@ import strategicprimer.model.common.map.fixtures.terrain {
 }
 import ceylon.numeric.float {
     ceiling,
-    sqrt,
     round=halfEven
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -127,24 +126,8 @@ shared class QueryCLI satisfies CLIDriver {
     }
 
     "The distance between two points in a map with the given dimensions."
-    todo("Delegate to DistanceComparator instead of duplicating the algorithm here?")
-    static Float distance(Point base, Point destination, MapDimensions dimensions) {
-        Integer rawXDiff = base.row - destination.row;
-        Integer rawYDiff = base.column - destination.column;
-        Integer xDiff;
-        if (rawXDiff < (dimensions.rows / 2)) {
-            xDiff = rawXDiff;
-        } else {
-            xDiff = dimensions.rows - rawXDiff;
-        }
-        Integer yDiff;
-        if (rawYDiff < (dimensions.columns / 2)) {
-            yDiff = rawYDiff;
-        } else {
-            yDiff = dimensions.columns - rawYDiff;
-        }
-        return sqrt((xDiff * xDiff + yDiff * yDiff).float);
-    }
+    static Float distance(Point base, Point destination, MapDimensions dimensions) =>
+        dimensions.distance(base, destination);
 
     "A description of what could be a single animal or a population of animals."
     static String populationDescription(Animal animal) {
