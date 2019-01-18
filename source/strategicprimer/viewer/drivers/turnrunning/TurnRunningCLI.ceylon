@@ -10,14 +10,17 @@ import ceylon.collection {
     MutableList,
     ArrayList,
     HashMap,
-    MutableMap
+    MutableMap,
+    naturalOrderTreeMap
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Animal,
     IWorker,
     animalPlurals,
-    AnimalTracks
+    AnimalTracks,
+    ProxyUnit,
+    ProxyFor
 }
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
@@ -31,7 +34,8 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 import lovelace.util.common {
     matchingValue,
-    todo
+    todo,
+    comparingOn
 }
 import strategicprimer.drivers.query {
     HerdModel,
@@ -87,6 +91,45 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     Boolean unfinishedResults(Integer turn)(IUnit unit) {
         String results = unit.getResults(turn);
         return results.empty || results.lowercased.containsAny(["fixme", "todo", "xxx"]);
+    }
+    "If [[the argument|fixture]] is a [[Fortress]], return it; otherwise,
+     return a [[Singleton]] of the argument. This allows callers to get a
+     flattened stream of units, including those in fortresses."
+    {Anything*} flatten(Anything fixture) {
+        if (is Fortress fixture) {
+            return fixture;
+        } else {
+            return Singleton(fixture);
+        }
+    }
+
+    "Flatten and filter the stream to include only units, and only those owned by the
+     given player."
+    {IUnit*} getUnitsImpl({Anything*} iter, Player player) =>
+        iter.flatMap(flatten).narrow<IUnit>()
+            .filter(compose(matchingValue(player.playerId, Player.playerId),
+            IUnit.owner));
+
+    {IUnit*} getUnits(Player player) {
+        value temp = model.allMaps.map(Entry.key)
+            .flatMap((indivMap) =>
+        getUnitsImpl(indivMap.fixtures.map(Entry.item), player));
+        MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
+            naturalOrderTreeMap<Integer, IUnit&ProxyFor<IUnit>>([]);
+        for (unit in temp) {
+            Integer key = unit.id;
+            ProxyFor<IUnit> proxy;
+            if (exists item = tempMap[key]) {
+                proxy = item;
+            } else {
+                value newProxy = ProxyUnit.fromParallelMaps(key);
+                tempMap[key] = newProxy;
+                proxy = newProxy;
+            }
+            proxy.addProxied(unit);
+        }
+        return tempMap.items.sort(comparingOn(IUnit.name,
+            byIncreasing(String.lowercased)));
     }
     Fortress? containingFortress(IUnit unit) =>
         model.map.fixtures.get(model.find(unit)).narrow<Fortress>()
@@ -608,7 +651,11 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 "trap"),
             TurnApplet(supplierNoop, "something no applet supports", "other"));
     String createResults(IUnit unit, Integer turn) {
-        model.selectedUnit = unit;
+        if (is ProxyFor<out IUnit> unit) {
+            model.selectedUnit = unit.proxied.first;
+        } else {
+            model.selectedUnit = unit;
+        }
         cli.print("Orders for unit ");
         cli.print(unit.name);
         cli.print(" (");
@@ -670,7 +717,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 "Players in the maps:", "No players found", "Player to run:",
                 false).item) {
             MutableList<IUnit> units = ArrayList {
-                elements = model.getUnits(player).filter(unfinishedResults(currentTurn));
+                elements = getUnits(player).filter(unfinishedResults(currentTurn));
             };
             while (true) {
                 value index->unit = cli.chooseFromList(units,
