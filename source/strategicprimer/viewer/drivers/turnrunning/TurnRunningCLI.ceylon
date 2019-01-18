@@ -76,7 +76,6 @@ import ceylon.numeric.float {
 }
 class TurnApplet(shared actual String() invoke, shared actual String description,
     shared actual String+ commands) satisfies Applet {}
-todo("Report times in hours and minutes rather than just minutes")
 class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IExplorationModel model;
     IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
@@ -87,6 +86,14 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     Fortress? containingFortress(IUnit unit) =>
         model.map.fixtures.get(model.find(unit)).narrow<Fortress>()
             .find(matchingValue(unit.owner, Fortress.owner));
+    // TODO: If class converted from initializer to constructor, make this static
+    String inHours(Integer minutes) {
+        if (minutes < 60) {
+            return "``minutes`` minutes";
+        } else {
+            return "``minutes / 60`` hours, ``minutes % 60`` minutes";
+        }
+    }
     MutableMap<String, HerdModel> herdModels = HashMap<String, HerdModel>();
     HerdModel? chooseHerdModel(String animal) => cli.chooseFromList(
         `MammalModel`.getValueConstructors().chain(`PoultryModel`.getValueConstructors())
@@ -183,10 +190,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 home.addMember(createdResource);
             }
         }
-        addToOrders("In all, tending the animals took ``minutesSpent`` min, or ");
-        addToOrders(Float.format(minutesSpent / 60.0, 0, 1));
-        addLineToOrders(" hours.");
-        // TODO: aid option to account for remaining time in results
+        addToOrders("In all, tending the animals took ``inHours(minutesSpent)``.");
         return buffer.string.trimmed;
     }
     ExplorationCLIHelper explorationCLI = ExplorationCLIHelper(model, cli);
@@ -266,6 +270,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             addToSubMaps(point, fixture, zero);
         }
     }
+    // TODO: Add a way to add production of gatherers, hunters, etc. as resources
     String gather() {
         StringBuilder buffer = StringBuilder();
         // TODO: Ask player to confirm the distance this takes the unit from
@@ -293,13 +298,15 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                                 "Reduce shrub population here?"))
                             case (true) {
                                 reducePopulation(loc, find, "plants", true);
-                                cli.println("``time`` minutes remaining.");
+                                cli.print(inHours(time));
+                                cli.println("remaining.");
                                 continue;
                             }
                             case (false) {}
                             case (null) { return ""; }
                         }
-                        cli.println("``time`` minutes remaining.");
+                        cli.print(inHours(time));
+                        cli.println(" remaining.");
                     }
                     case (false) { time -= noResultCost; }
                     case (null) { return ""; }
@@ -380,7 +387,8 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                         case (true) { reducePopulation(loc, find, "animals", true); }
                         case (false) { addToSubMaps(loc, find, true); }
                         case (null) { return ""; }
-                        cli.println("``time`` minutes remaining.");
+                        cli.print(inHours(time));
+                        cli.println(" remaining.");
                     } else {
                         addToSubMaps(loc, find, true);
                         time -= noResultCost;
@@ -518,8 +526,8 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                         time -= 45;
                     }
                 }
-                cli.print(time.string);
-                cli.println(" minutes remaining.");
+                cli.print(inHours(time));
+                cli.println(" remaining.");
                 if (exists addendum = cli.inputMultilineString(
                     "Add to results about that:")) {
                     buffer.append(addendum);
