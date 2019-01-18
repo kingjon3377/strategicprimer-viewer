@@ -582,8 +582,9 @@ shared class QueryCLI satisfies CLIDriver {
     }
 
     void tradeCommand() {
-        if (exists location = cli.inputPoint("Base location? ")) {
-            suggestTrade(location, cli.inputNumber("Within how many tiles? ") else 0);
+        if (exists location = cli.inputPoint("Base location? "),
+                exists distance = cli.inputNumber("Within how many tiles? ")) {
+            suggestTrade(location, distance);
         }
     }
 
