@@ -183,11 +183,9 @@ shared class QueryCLI satisfies CLIDriver {
 
     "Count the workers belonging to a player."
     void countWorkers({Player*} players) {
-        Player[] playerList = players.sequence();
-        value choice = cli.chooseFromList(playerList,
-            "Players in the map:", "Map contains no players",
-            "Owner of workers to count: ", true);
-        if (exists player = choice.item) {
+        if (exists player = cli.chooseFromList(players.sequence(),
+                "Players in the map:", "Map contains no players",
+                "Owner of workers to count: ", true).item) {
             Integer count = countWorkersInIterable(player,
                 map.fixtures.map(Entry.item));
             cli.println("``player.name`` has ``count`` workers");
