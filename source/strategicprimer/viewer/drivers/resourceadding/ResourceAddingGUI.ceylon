@@ -1,372 +1,98 @@
-import ceylon.collection {
-    HashMap,
-    MutableSet,
-    MutableMap,
-    HashSet,
-    MutableList,
-    ArrayList
-}
-import ceylon.language.meta {
-    classDeclaration
-}
-import ceylon.decimal {
-    parseDecimal
-}
-
-import java.awt {
-    Component,
-    Dimension
+import strategicprimer.model.impl.xmlio {
+    mapIOHelper
 }
 import java.awt.event {
     ActionEvent
 }
+import ceylon.language.meta {
+    classDeclaration
+}
 import java.lang {
-    JInteger=Integer,
-    JString=String
-}
-
-import javax.swing {
-    SwingUtilities,
-    SpinnerNumberModel,
-    JSpinner,
-    JLabel,
-    JPanel,
-    JTextField,
-    JScrollPane,
-    JComponent
-}
-
-import lovelace.util.jvm {
-    ListenedButton,
-    ImprovedComboBox,
-    StreamingLabel,
-    centeredHorizontalBox,
-    BoxAxis,
-    BoxPanel,
-    boxPanel,
-    verticalSplit,
-    FileChooser,
-    InterpolatedLabel,
-    BorderedPanel
-}
-
-import strategicprimer.drivers.common {
-    SimpleMultiMapModel,
-    IDriverModel,
-    SPOptions,
-    IDriverUsage,
-    DriverFailedException,
-    ParamCount,
-    DriverUsage,
-    PlayerChangeListener,
-    CLIDriver,
-    GUIDriver,
-    ModelDriverFactory,
-    DriverFactory,
-    ModelDriver,
-    GUIDriverFactory,
-    MultiMapGUIDriver
+    JString=String,
+    JInteger=Integer
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
+}
+import java.awt {
+    Dimension,
+    Component
+}
+import strategicprimer.model.common.map {
+    IMutableMapNG,
+    Player,
+    PlayerImpl
+}
+import strategicprimer.viewer.drivers {
+    PlayerChangeMenuListener,
+    IOHandler
+}
+import strategicprimer.model.common.map.fixtures {
+    ResourcePile,
+    Quantity,
+    Implement
 }
 import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }
-import strategicprimer.model.common.map {
-    Player,
-    PlayerImpl,
-    IMutableMapNG,
-    IMapNG
-}
-import strategicprimer.model.common.map.fixtures {
-    ResourcePile,
-    Implement,
-    FortressMember,
-    Quantity
-}
-import strategicprimer.model.common.map.fixtures.towns {
-    Fortress
+import strategicprimer.drivers.gui.common.about {
+    aboutDialog
 }
 import strategicprimer.viewer.drivers.worker_mgmt {
     workerMenu
 }
-import strategicprimer.model.impl.xmlio {
-    mapIOHelper
+import strategicprimer.drivers.common {
+    PlayerChangeListener,
+    SPOptions,
+    MultiMapGUIDriver,
+    DriverFailedException
+}
+import ceylon.collection {
+    MutableSet,
+    HashSet
 }
 import strategicprimer.drivers.gui.common {
-    SPFrame,
-    WindowCloseListener,
     MenuBroker,
-    SPFileChooser
-}
-import com.vasileff.ceylon.structures {
-    MutableMultimap,
-    HashMultimap
-}
-import strategicprimer.drivers.gui.common.about {
-    aboutDialog
+    SPFrame,
+    SPFileChooser,
+    WindowCloseListener
 }
 import lovelace.util.common {
-    PathWrapper,
     defer,
-    todo
+    PathWrapper
 }
-
-"A driver model for resource-entering drivers."
-class ResourceManagementDriverModel extends SimpleMultiMapModel {
-    shared new fromMap(IMutableMapNG map, PathWrapper? file) extends
-        SimpleMultiMapModel(map, file) { }
-    shared new fromDriverModel(IDriverModel driverModel) extends
-        SimpleMultiMapModel.copyConstructor(driverModel) { }
-
-    "All the players in all the maps."
-    shared {Player*} players =>
-            allMaps.map(Entry.key).flatMap(IMapNG.players).distinct;
-
-    "Add a resource to a player's HQ."
-    shared void addResource(FortressMember resource, Player player) {
-        for (map->_ in allMaps) {
-            Player mapPlayer = map.currentPlayer;
-            if (mapPlayer.independent || mapPlayer.playerId < 0 ||
-                    mapPlayer.playerId == player.playerId) {
-                addResourceToMap(resource.copy(false), map, player);
-                setModifiedFlag(map, true);
-            } // Else log why we're skipping the map
-        }
-    }
-
-    "Add a resource to a player's HQ in a particular map."
-    shared void addResourceToMap(FortressMember resource, IMapNG map, Player player) {
-        for (fixture in map.fixtures.map(Entry.item).narrow<Fortress>()) {
-            if ("HQ" == fixture.name, player.playerId == fixture.owner.playerId) {
-                fixture.addMember(resource);
-            }
-        }
-    }
-
-    "Get the current player. If none is current, returns null."
-    shared Player? currentPlayer => players.find(Player.current);
+import javax.swing {
+    SpinnerNumberModel,
+    JTextField,
+    JPanel,
+    JScrollPane,
+    JComponent,
+    JLabel,
+    JSpinner,
+    SwingUtilities
 }
-
-"A factory for a driver to let the user enter a player's resources and equipment."
-service(`interface DriverFactory`)
-shared class ResourceAddingCLIFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = false;
-        invocations = ["add-resource"];
-        paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "Add resources to maps";
-        longDescription = "Add resources for players to maps.";
-        includeInCLIList = true;
-        includeInGUIList = false;
-        supportedOptions = [ "--current-turn=NN" ];
-    };
-
-    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is ResourceManagementDriverModel model) {
-            return ResourceAddingCLI(cli, options, model);
-        } else {
-            return createDriver(cli, options,
-                ResourceManagementDriverModel.fromDriverModel(model));
-        }
-    }
-
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            ResourceManagementDriverModel.fromMap(map, path);
+import lovelace.util.jvm {
+    centeredHorizontalBox,
+    ListenedButton,
+    StreamingLabel,
+    BoxPanel,
+    FileChooser,
+    InterpolatedLabel,
+    BoxAxis,
+    boxPanel,
+    BorderedPanel,
+    verticalSplit,
+    ImprovedComboBox
 }
-
-"A driver to let the user enter a player's resources and equipment."
-class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLIDriver {
-    shared actual ResourceManagementDriverModel model;
-
-    MutableSet<String> resourceKinds = HashSet<String>();
-    MutableMultimap<String, String> resourceContents =
-            HashMultimap<String, String>();
-    MutableMap<String, String> resourceUnits = HashMap<String, String>();
-
-    "Ask the user to choose or enter a resource kind. Returns [[null]] on EOF."
-    String? getResourceKind() {
-        String[] list = resourceKinds.sequence();
-        value choice = cli.chooseStringFromList(list, "Possible kinds of resources:",
-            "No resource kinds entered yet", "Chosen kind: ", false);
-        if (exists retval = choice.item) {
-            return retval;
-        } else if (exists retval = cli.inputString("Resource kind to use: ")) {
-            resourceKinds.add(retval);
-            return retval;
-        } else {
-            return null;
-        }
-    }
-
-    "Ask the user to choose or enter a resource-content-type for a given resource kind.
-     Returns [[null]] on EOF."
-    String? getResourceContents(String kind) {
-        String[] list = resourceContents.get(kind).sequence();
-        value num->item = cli.chooseStringFromList(list,
-            "Possible resources in the ``kind`` category`", "No resources entered yet",
-            "Choose resource: ", false);
-        if (exists item) {
-            return item;
-        } else if (exists retval = cli.inputString("Resource to use: ")) {
-            resourceContents.put(kind, retval);
-            return retval;
-        } else {
-            return null;
-        }
-    }
-
-    "Ask the user to choose units for a type of resource. Returns [[null]] on EOF."
-    String? getResourceUnits(String resource) {
-        if (exists unit = resourceUnits[resource]) {
-            switch (cli.inputBooleanInSeries(
-                "Is ``unit`` the correct unit for ``resource``? ",
-                "correct;``unit``;``resource``"))
-            case (true) { return unit; }
-            case (null) { return null; }
-            case (false) {}
-        }
-        if (exists retval = cli.inputString("Unit to use for ``resource``: ")) {
-            resourceUnits[resource] = retval;
-            return retval;
-        } else {
-            return null;
-        }
-    }
-
-    "Ask the user to enter a resource."
-    void enterResource(IDRegistrar idf, Player player) {
-        if (exists kind = getResourceKind(),
-                exists origContents = getResourceContents(kind),
-                exists units = getResourceUnits(origContents),
-                exists usePrefix = cli.inputBooleanInSeries(
-                    "Qualify the particular resource with a prefix?",
-                    "prefix " + origContents)) {
-            String contents;
-            if (usePrefix) {
-                if (exists prefix = cli.inputString("Prefix to use: ")) {
-                    contents = prefix + " " + origContents;
-                } else {
-                    return;
-                }
-            } else {
-                contents = origContents;
-            }
-            if (exists quantity = cli.inputDecimal("Quantity in ``units``?")) {
-                model.addResource(ResourcePile(idf.createID(), kind, contents, Quantity(
-                    quantity, units)), player);
-            }
-        }
-    }
-
-    "Ask the user to enter an Implement (a piece of equipment)"
-    void enterImplement(IDRegistrar idf, Player player) {
-        if (exists kind = cli.inputString("Kind of equipment: "),
-                exists multiple = cli.inputBooleanInSeries("Add more than one? ")) {
-            Integer count;
-            if (multiple) {
-                if (exists temp = cli.inputNumber("Number to add: ")) {
-                    count = temp;
-                } else {
-                    return;
-                }
-            } else {
-                count = 1;
-            }
-            model.addResource(Implement(kind, idf.createID(), count), player);
-        }
-    }
-
-    todo("Add a loopOnPlayers() helper method to CLIDriver interface, since there are
-          several disparate CLI drivers that do that.")
-    shared actual void startDriver() {
-        MutableList<Player> players = ArrayList { elements = model.players; };
-        IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
-        while (!players.empty, exists chosen = cli.chooseFromList(players,
-                "Players in the maps:", "No players found.",
-                "Player to add resources for: ", false).item) {
-            players.remove(chosen);
-            while (true) {
-                switch (cli.inputBoolean("Keep going? "))
-                case (true) {
-                    switch (cli.inputBooleanInSeries(
-                        "Enter a (quantified) resource? "))
-                    case (true) {
-                        enterResource(idf, chosen);
-                        continue;
-                    }
-                    case (false) {}
-                    case (null) { return; }
-                    switch (cli.inputBooleanInSeries(
-                        "Enter equipment etc.? "))
-                    case (true) {
-                        enterImplement(idf, chosen);
-                    }
-                    case (false) {}
-                    case (null) { return; }
-                }
-                case (null) {
-                    return;
-                }
-                case (false) {
-                    break;
-                }
-            }
-            Boolean? continuation = cli.inputBoolean("Choose another player?");
-            if (exists continuation, continuation) {
-                // continue;
-            } else {
-                break;
-            }
-        }
-    }
-}
-
-"A factory for the resource-adding GUI app."
-service(`interface DriverFactory`)
-shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = true;
-        invocations = ["add-resource"];
-        paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "Add resources to maps";
-        longDescription = "Add resources for players to maps";
-        includeInCLIList = false;
-        includeInGUIList = true;
-        supportedOptions = [ "--current-turn=NN" ];
-    };
-
-    "Ask the user to choose a file or files."
-    shared actual {PathWrapper*} askUserForFiles() {
-        try {
-            return SPFileChooser.open(null).files;
-        } catch (FileChooser.ChoiceInterruptedException except) {
-            throw DriverFailedException(except,
-                "Choice interrupted or user didn't choose");
-        }
-    }
-
-    shared actual GUIDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is ResourceManagementDriverModel model) {
-            return ResourceAddingGUI(cli, options, model);
-        } else {
-            return createDriver(cli, options,
-                ResourceManagementDriverModel.fromDriverModel(model));
-        }
-    }
-
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            ResourceManagementDriverModel.fromMap(map, path);
+import ceylon.decimal {
+    parseDecimal
 }
 
 class ResourceAddingGUI satisfies MultiMapGUIDriver {
     "Extends [[ImprovedComboBox]] to keep a running collection of values."
     static class UpdatedComboBox(Anything(String) logger)
-            extends ImprovedComboBox<String>() {
+        extends ImprovedComboBox<String>() {
         "The values we've had in the past."
         MutableSet<String> values = HashSet<String>();
         "Clear the combo box, but if its value was one we haven't had previously, add it
@@ -418,7 +144,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                 inner.addActionListener(listener);
             } else {
                 logger("Editor wasn't a text field, but a ``
-                    classDeclaration(inner)``");
+                classDeclaration(inner)``");
             }
         }
     }
@@ -433,7 +159,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
     static String css = """color:black; margin-bottom: 0.5em; margin-top: 0.5em;""";
     static void logAddition(StreamingLabel logLabel, Player currentPlayer, String addend)
         => logLabel.append(
-            "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``</p>");
+        "<p style=\"``css``\">Added ``addend`` for ``currentPlayer.name``</p>");
     static String errorCSS = """color:red; margin-bottom: 0.5em; margin-top: 0.5em;""";
     static void logError(StreamingLabel logLabel)(String message) =>
         logLabel.append("<p style=\"``errorCSS``\">``message``</p>");
@@ -451,7 +177,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
     "A window to let the user enter resources etc. Note that this is not a dialog to enter
      one resource and close."
     class ResourceAddingFrame(Anything(ActionEvent) menuHandler)
-            extends SPFrame("Resource Entry", outer, null, true) satisfies PlayerChangeListener {
+        extends SPFrame("Resource Entry", outer, null, true) satisfies PlayerChangeListener {
         IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
         variable Player currentPlayer = PlayerImpl(-1, "");
         JPanel&BoxPanel mainPanel = boxPanel(BoxAxis.pageAxis);
@@ -642,7 +368,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(ResourceAddingGUI.startDriver,
                 ResourceAddingGUI), [cli, options,
-                    ResourceManagementDriverModel.fromMap(map, path)]));
+                ResourceManagementDriverModel.fromMap(map, path)]));
         } else {
             model.setMap(map, path);
         }
