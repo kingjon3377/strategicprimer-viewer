@@ -16,7 +16,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Animal,
     IWorker,
-    animalPlurals
+    animalPlurals,
+    AnimalTracks
 }
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
@@ -67,6 +68,9 @@ import strategicprimer.model.common.map.fixtures.resources {
     Grove,
     Shrub,
     Meadow
+}
+import ceylon.numeric.float {
+    round=halfEven
 }
 class TurnApplet(shared actual String() invoke, shared actual String description,
     shared actual String+ commands) satisfies Applet {}
@@ -261,7 +265,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     }
     String gather() {
         StringBuilder buffer = StringBuilder();
-        // TODO: Ask player to confirm the distance this takes the unit from 
+        // TODO: Ask player to confirm the distance this takes the unit from
         if (exists center = cli.inputPoint("Location to search around: "),
                 exists startingTime = cli.inputNumber("Minutes to spend gathering: ")) {
             variable Integer time = startingTime;
@@ -309,12 +313,97 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         return buffer.string.trimmed;
     }
 
+    "A description of what could be a single animal or a population of animals."
+    // TODO: If this class converts from initializer to constructor, make static
+    String populationDescription(Animal animal) {
+        if (animal.population > 1) {
+            return "a group of perhaps ``animal.population
+//              `` ``animalPlurals[animal.kind]``"; // TODO: syntax sugar
+            `` ``animalPlurals.get(animal.kind)``";
+        } else {
+            return animal.kind;
+        }
+    }
+
+    String huntGeneral(String command, String verb,
+            {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*}(Point) encounterSrc)
+            () {
+        StringBuilder buffer = StringBuilder();
+        // TODO: Ask player to confirm the distance this takes the unit from
+        if (exists center = cli.inputPoint("Location to search around: "),
+                exists startingTime = cli
+                    .inputNumber("Minutes to spend ``command``ing: ")) {
+            variable Integer time = startingTime;
+            variable {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*} encounters
+                = encounterSrc(center);
+            while (time > 0, exists loc->find = encounters.first) {
+                encounters = encounters.rest;
+                if (is HuntingModel.NothingFound find) {
+                    cli.println("Found nothing for the next ``noResultCost`` minutes.");
+                    time -= noResultCost;
+                } else if (is AnimalTracks find) {
+                    addToSubMaps(loc, find, true);
+                    cli.println("Found only tracks or traces from ``
+                        find.kind`` for the next ``noResultCost`` minutes.");
+                    time -= noResultCost;
+                } else {
+                    Boolean? fight = cli.inputBooleanInSeries("Found ``
+                            populationDescription(find)``. Should they ``verb``?",
+                        find.kind);
+                    if (is Null fight) {
+                        return "";
+                    } else if (fight) {
+                        Integer cost = cli.inputNumber("Time to ``verb``: ")
+                            else runtime.maxArraySize;
+                        time -= cost;
+                        Boolean? processNow =
+                            cli.inputBooleanInSeries("Handle processing now?");
+                        if (is Null processNow) {
+                            return "";
+                        } else if (processNow) {
+                            // TODO: somehow handle processing-in-parallel case
+                            for (i in 0:(cli.inputNumber("How many animals?") else 0)) {
+                                Integer mass = cli.inputNumber(
+                                            "Weight of this animal's meat in pounds: ")
+                                        else runtime.maxArraySize;
+                                Integer hands = cli.inputNumber(
+                                    "# of workers processing this carcass: ")else 1;
+                                time -= round(HuntingModel.processingTime(mass) / hands)
+                                    .integer;
+                            }
+                        }
+                        switch (cli.inputBooleanInSeries(
+                            "Reduce animal group population of ``find.population``?"))
+                        case (true) { reducePopulation(loc, find, "animals", true); }
+                        case (false) { addToSubMaps(loc, find, true); }
+                        case (null) { return ""; }
+                        cli.println("``time`` minutes remaining.");
+                    } else {
+                        addToSubMaps(loc, find, true);
+                        time -= noResultCost;
+                    }
+                }
+                if (exists addendum = cli.inputMultilineString(
+                        "Add to results about that:")) {
+                    buffer.append(addendum);
+                } else {
+                    return "";
+                }
+            }
+        }
+        return buffer.string.trimmed;
+    }
+
     AdvancementCLIHelper advancementCLI = AdvancementCLIHelper(cli);
     AppletChooser<TurnApplet> appletChooser =
-        AppletChooser(cli,
+        AppletChooser(cli, // FIXME: These have command and description switched!
             TurnApplet(explore, "move", "move a unit"),
             TurnApplet(herd, "herd", "milk or gather eggs from animals"),
-            TurnApplet(gather, "gather", "gather vegetation from surrounding area"));
+            TurnApplet(gather, "gather", "gather vegetation from surrounding area"),
+            TurnApplet(huntGeneral("hunt", "fight and process", huntingModel.hunt),
+                "hunt", "search for wild animals"),
+            TurnApplet(huntGeneral("fish", "try to catch and process", huntingModel.fish),
+                "fish", "search for aquatic animals"));
     String createResults(IUnit unit, Integer turn) {
         model.selectedUnit = unit;
         cli.print("Orders for unit ");

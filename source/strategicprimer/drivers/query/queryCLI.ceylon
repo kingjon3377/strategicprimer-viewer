@@ -238,6 +238,7 @@ shared class QueryCLI satisfies CLIDriver {
         }
     }
 
+    // TODO: Remove hunting & fishing from QueryCLI now they're included in TurnRunningCLI
     void huntGeneral(
             "How much time is left in the day."
             variable Integer time,
