@@ -396,14 +396,14 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
 
     AdvancementCLIHelper advancementCLI = AdvancementCLIHelper(cli);
     AppletChooser<TurnApplet> appletChooser =
-        AppletChooser(cli, // FIXME: These have command and description switched!
-            TurnApplet(explore, "move", "move a unit"),
-            TurnApplet(herd, "herd", "milk or gather eggs from animals"),
-            TurnApplet(gather, "gather", "gather vegetation from surrounding area"),
+        AppletChooser(cli,
+            TurnApplet(explore, "move a unit", "move"),
+            TurnApplet(herd, "milk or gather eggs from animals", "herd"),
+            TurnApplet(gather, "gather vegetation from surrounding area", "gather"),
             TurnApplet(huntGeneral("hunt", "fight and process", huntingModel.hunt),
-                "hunt", "search for wild animals"),
+                "search for wild animals", "hunt"),
             TurnApplet(huntGeneral("fish", "try to catch and process", huntingModel.fish),
-                "fish", "search for aquatic animals"));
+                "search for aquatic animals", "fish"));
     String createResults(IUnit unit, Integer turn) {
         model.selectedUnit = unit;
         cli.print("Orders for unit ");
