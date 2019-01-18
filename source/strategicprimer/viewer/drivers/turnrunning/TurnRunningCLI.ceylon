@@ -19,7 +19,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     animalPlurals
 }
 import strategicprimer.drivers.exploration.common {
-    IExplorationModel
+    IExplorationModel,
+    HuntingModel
 }
 import strategicprimer.viewer.drivers.exploration {
     ExplorationCLIHelper
@@ -56,6 +57,16 @@ import strategicprimer.model.common.idreg {
 import strategicprimer.viewer.drivers.advancement {
     LevelGainListener,
     AdvancementCLIHelper
+}
+import strategicprimer.model.common.map {
+    Point,
+    TileFixture,
+    HasPopulation
+}
+import strategicprimer.model.common.map.fixtures.resources {
+    Grove,
+    Shrub,
+    Meadow
 }
 class TurnApplet(shared actual String() invoke, shared actual String description,
     shared actual String+ commands) satisfies Applet {}
@@ -191,11 +202,119 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         model.removeSelectionChangeListener(explorationCLI);
         return buffer.string;
     }
+
+    HuntingModel huntingModel = HuntingModel(model.map);
+
+    Integer encountersPerHour = 4;
+
+    Integer noResultCost = 60 / encountersPerHour;
+
+    "If argument is a meadow, its status in the format used below; otherwise the empty
+     string."
+    // TODO: If this class switches from initializer to constructor, make static
+    String meadowStatus(Anything argument) {
+        if (is Meadow argument) {
+            return " (``argument.status``)";
+        } else {
+            return "";
+        }
+    }
+    "Add a copy of the given fixture to all submaps at the given location iff no fixture
+     with the same ID is already there."
+    void addToSubMaps(Point point, TileFixture fixture, Boolean zero) {
+        for (map->[file, _] in model.subordinateMaps) {
+            if (!map.fixtures.get(point).map(TileFixture.id).any(fixture.id.equals)) {
+                map.addFixture(point, fixture.copy(zero));
+            }
+        }
+    }
+    "Reduce the population of a group of plants, animals, etc., and copy the reduced form
+     into all subordinate maps."
+    void reducePopulation(Point point, HasPopulation<out TileFixture>&TileFixture fixture,
+        String plural, Boolean zero) {
+        Integer count = Integer.smallest(cli.inputNumber(
+            "How many ``plural`` to remove: ") else 0, fixture.population);
+        if (count > 0) {
+            model.map.removeFixture(point, fixture);
+            Integer remaining = fixture.population - count;
+            if (remaining > 0) {
+                value addend = fixture.reduced(remaining);
+                model.map.addFixture(point, addend);
+                for (map->[file , _]in model.subordinateMaps) {
+                    if (exists found = map.fixtures.get(point)
+                            .find(shuffle(curry(fixture.isSubset))(noop))) {
+                        map.removeFixture(point, found);
+                    }
+                    map.addFixture(point, addend.copy(zero));
+                }
+            } else {
+                for (map->[file, _] in model.subordinateMaps) {
+                    if (exists found = map.fixtures.get(point)
+                            .find(shuffle(curry(fixture.isSubset))(noop))) {
+                        map.removeFixture(point, found);
+                    }
+                }
+            }
+        } else {
+            addToSubMaps(point, fixture, zero);
+        }
+    }
+    String gather() {
+        StringBuilder buffer = StringBuilder();
+        // TODO: Ask player to confirm the distance this takes the unit from 
+        if (exists center = cli.inputPoint("Location to search around: "),
+                exists startingTime = cli.inputNumber("Minutes to spend gathering: ")) {
+            variable Integer time = startingTime;
+            variable {<Point->Grove|Shrub|Meadow|HuntingModel.NothingFound>*} encounters =
+                huntingModel.gather(center);
+            while (time > 0, exists loc->find = encounters.first) {
+                encounters = encounters.rest;
+                if (is HuntingModel.NothingFound find) {
+                    cli.println("Found nothing for the next ``noResultCost`` minutes.");
+                    time -= noResultCost;
+                } else {
+                    switch (cli.inputBooleanInSeries(
+                        "Gather from ``find.shortDescription````meadowStatus(find)``?",
+                        find.kind))
+                    case (true) {
+                        Integer cost = cli.inputNumber("Time to gather: ")
+                            else runtime.maxArraySize;
+                        time -= cost;
+                        // TODO: Once model supports remaining-quantity-in-fields data, offer to reduce it here
+                        if (is Shrub find, find.population>0) {
+                            switch (cli.inputBooleanInSeries(
+                                "Reduce shrub population here?"))
+                            case (true) {
+                                reducePopulation(loc, find, "plants", true);
+                                cli.println("``time`` minutes remaining.");
+                                continue;
+                            }
+                            case (false) {}
+                            case (null) { return ""; }
+                        }
+                        cli.println("``time`` minutes remaining.");
+                    }
+                    case (false) { time -= noResultCost; }
+                    case (null) { return ""; }
+                    addToSubMaps(loc, find, true);
+                }
+                if (exists addendum = cli.inputMultilineString(
+                        "Add to results about that:")) {
+                    buffer.append(addendum);
+                } else {
+                    return "";
+                }
+            }
+        }
+        return buffer.string.trimmed;
+    }
+
     AdvancementCLIHelper advancementCLI = AdvancementCLIHelper(cli);
     AppletChooser<TurnApplet> appletChooser =
         AppletChooser(cli,
             TurnApplet(explore, "move", "move a unit"),
-            TurnApplet(herd, "herd", "milk or gather eggs from animals"));
+            TurnApplet(herd, "herd", "milk or gather eggs from animals"),
+            TurnApplet(gather, "gather", "gather vegetation from surrounding area"));
     String createResults(IUnit unit, Integer turn) {
         model.selectedUnit = unit;
         cli.print("Orders for unit ");

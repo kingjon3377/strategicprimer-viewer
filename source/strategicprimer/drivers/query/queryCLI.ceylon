@@ -314,6 +314,7 @@ shared class QueryCLI satisfies CLIDriver {
         Integer time) => huntGeneral(time, 60 / hourlyEncounters,
             "try to catch and process", huntModel.fish(point));
 
+    // TODO: Remove gathering from QueryCLI now it's in TurnRunningCLI.
     """Run food-gathering---that is, produce a list of "encounters"."""
     void gather(Point point, variable Integer time) {
         variable {<Point->Grove|Shrub|Meadow|HuntingModel.NothingFound>*} encounters =
