@@ -70,6 +70,44 @@ shared class HuntingModel {
             ResultIterator(stream, nothingProportion, nothingValue);
     }
 
+    "A *non-infinite* iterator that returns 'nothing found' values in the desired
+     proportion, but should be more efficient than appending a Singleton cycled to the
+     desired length."
+    static class FiniteResultIterator<Type, Absent=NothingFound>(stream,
+            nothingProportion, Absent nothingValue)
+            satisfies Iterator<Type|Absent> given Type satisfies Object {
+        {Type*} stream;
+        Iterator<Type> wrapped = stream.iterator();
+        Float nothingProportion;
+        variable Integer counter = 0;
+        variable Boolean switched = false;
+        shared actual Type|Absent|Finished next() {
+            if (switched) {
+                if (counter <= 0) {
+                    return finished;
+                } else {
+                    counter--;
+                    return nothingValue;
+                }
+            }
+            value retval = wrapped.next();
+            if (retval is Finished) {
+                switched = true;
+                counter = (counter * nothingProportion).integer;
+                return nothingValue;
+            } else {
+                return retval;
+            }
+        }
+    }
+
+    static class FiniteResultStream<Type, Absent=NothingFound>({Type*} stream,
+            Float nothingProportion, Absent nothingValue)
+            satisfies {<Type|Absent>*} given Type satisfies Object {
+        shared actual Iterator<Type|Absent> iterator() => FiniteResultIterator(stream,
+            nothingProportion, nothingValue);
+    }
+
     "The map to hunt in" IMapNG map;
     shared new (IMapNG map) {
         this.map = map;
@@ -104,7 +142,7 @@ shared class HuntingModel {
         case (TileType.desert|TileType.tundra) { nothingProportion = 0.75; }
         case (TileType.jungle) { nothingProportion = 1.0 / 3.0; }
         else { nothingProportion = 0.5; }
-        return ResultStream(retval, nothingProportion, NothingFound.nothingFound);
+        return FiniteResultStream(retval, nothingProportion, NothingFound.nothingFound);
     }
 
     "A helper method for the helper method for hunting, fishing, etc."
