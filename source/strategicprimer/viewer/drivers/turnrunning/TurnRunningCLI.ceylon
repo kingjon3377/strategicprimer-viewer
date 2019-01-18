@@ -76,6 +76,7 @@ import ceylon.numeric.float {
 }
 class TurnApplet(shared actual String() invoke, shared actual String description,
     shared actual String+ commands) satisfies Applet {}
+todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
 class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IExplorationModel model;
     IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
