@@ -10,9 +10,6 @@ import strategicprimer.model.common.map {
     IMapNG,
     Point
 }
-import lovelace.util.common {
-    comparingOn
-}
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
@@ -87,9 +84,8 @@ shared object pathfinder {
             log.trace("Finished checking neighbors of ``current``");
             unvisited.remove(current);
             if (exists next =
-                    tentativeDistances.sort(comparingOn(Entry<Point, Integer>.item,
-                    increasing<Integer>)).map(Entry.key)
-                        .filter(unvisited.contains).first) {
+                    tentativeDistances.sort(byIncreasing(Entry<Point, Integer>.item))
+                        .map(Entry.key).filter(unvisited.contains).first) {
                 current = next;
             } else {
                 log.debug("Couldn't find a smallest-estimate unchecked tile after ``

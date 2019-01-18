@@ -114,7 +114,7 @@ class MiningModel(initial, seed, kind) {
     }
 
     for (column->points in unnormalized.keys.group(getColumn).
-            sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, increasing<Integer>))) {
+            sort(byIncreasing(Entry<Integer, [Integer[2]+]>.key))) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }

@@ -68,6 +68,6 @@ shared class FortressTabularReportGenerator(Player player, Point hq,
         comparing(comparingOn(pairFixture, compareOwners),
                 comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
                 comparingOn(pairFixture, compareNames),
-                comparingOn(compose(Fortress.owner, pairFixture), increasing<Player>))
+                byIncreasing(compose(Fortress.owner, pairFixture)))
             (one, two);
 }

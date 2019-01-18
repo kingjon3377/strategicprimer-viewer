@@ -130,8 +130,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             // Just in case I missed something in the proxy implementation, make sure
             // things work correctly when there's only one map.
             return getUnitsImpl(map.fixtures.map(Entry.item), player)
-                .sort(comparingOn(IUnit.name, comparingOn(String.lowercased,
-                    increasing<String>)));
+                .sort(comparingOn(IUnit.name, byIncreasing(String.lowercased)));
         } else {
             value temp = allMaps.map(Entry.key)
                     .flatMap((indivMap) =>
@@ -151,14 +150,14 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 proxy.addProxied(unit);
             }
             return tempMap.items.sort(comparingOn(IUnit.name,
-                comparingOn(String.lowercased, increasing<String>)));
+                byIncreasing(String.lowercased)));
         }
     }
 
     """All the "kinds" of units the given player has."""
     shared actual {String*} getUnitKinds(Player player) =>
             getUnits(player).map(IUnit.kind).distinct
-                .sort(comparingOn(String.lowercased, increasing<String>));
+                .sort(byIncreasing(String.lowercased));
 
     "Add the given unit at the given location in all maps."
     void addUnitAtLocation(IUnit unit, Point location) {

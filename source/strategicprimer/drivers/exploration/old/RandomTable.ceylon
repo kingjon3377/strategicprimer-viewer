@@ -5,14 +5,13 @@ import strategicprimer.model.common.map {
     TileFixture
 }
 import lovelace.util.common {
-    comparingOn,
     singletonRandom
 }
 
 "An [[EncounterTable]] where the event is selected at random."
 class RandomTable([Integer, String]* items) satisfies EncounterTable {
     [Integer, String][] table =
-            items.sort(comparingOn<[Integer, String], Integer>(Tuple.first, increasing));
+            items.sort(byIncreasing<[Integer, String], Integer>(Tuple.first));
 
     "Get the first item in the table whose numeric value is above the given value."
     String lowestMatch(Integer val) {

@@ -1,6 +1,5 @@
 import lovelace.util.common {
     DelayedRemovalMap,
-    comparingOn,
     narrowedStream
 }
 
@@ -44,11 +43,10 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             IMapNG map, Anything(String) ostream) {
         {<Integer->[Point, TextFixture]>*} items =
                 narrowedStream<Integer, [Point, TextFixture]>(fixtures).sort(
-                    comparingOn(compose(TextFixture.turn,
+                    byIncreasing(compose(TextFixture.turn,
                         compose(Tuple<TextFixture, TextFixture, []>.first,
                             compose(Tuple<Point|TextFixture, Point, [TextFixture]>.rest,
-                                Entry<Integer, [Point, TextFixture]>.item))),
-                        increasing<Integer>));
+                                Entry<Integer, [Point, TextFixture]>.item)))));
         if (!items.empty) {
             ostream("""<h4>Miscellaneous Notes</h4>
                        <ul>

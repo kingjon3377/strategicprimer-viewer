@@ -54,6 +54,6 @@ shared class Quantity
     shared actual Integer hash => units.hash.or(number.hash);
 
     shared actual Comparison compare(Quantity quantity) =>
-            comparing(comparingOn(Quantity.units, increasing<String>),
+            comparing(byIncreasing(Quantity.units),
                 comparingOn(Quantity.number, numberComparator.compare))(this, quantity);
 }

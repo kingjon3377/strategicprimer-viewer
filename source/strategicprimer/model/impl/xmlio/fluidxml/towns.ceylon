@@ -46,9 +46,6 @@ import ceylon.collection {
 import strategicprimer.model.common.map.fixtures {
     ResourcePile
 }
-import lovelace.util.common {
-    comparingOn
-}
 
 object fluidTownHandler extends FluidBase() {
     shared Town readTown(StartElement element, QName parent, {XMLEvent*} stream,
@@ -294,8 +291,8 @@ object fluidTownHandler extends FluidBase() {
             Integer indent) {
         writeTag(ostream, "population", indent, false);
         writeAttributes(ostream, "size"->obj.population);
-        for (skill->level in obj.highestSkillLevels.sort(comparingOn(
-            Entry<String, Integer>.key, increasing<String>))) {
+        for (skill->level in obj.highestSkillLevels.sort(byIncreasing(
+                Entry<String, Integer>.key))) {
             writeTag(ostream, "expertise", indent + 1, true);
             writeAttributes(ostream, "skill"->skill, "level"->level);
         }

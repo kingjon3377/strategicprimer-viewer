@@ -50,9 +50,6 @@ import ceylon.collection {
     Stack,
     LinkedList
 }
-import lovelace.util.common {
-    comparingOn
-}
 
 "A reader for fortresses, villages, and other towns."
 class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection players)
@@ -316,7 +313,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         writeProperty(ostream, "size", obj.population);
         finishParentTag(ostream);
         for (skill->level in obj.highestSkillLevels.sort(
-                comparingOn(Entry<String, Integer>.key, increasing<String>))) {
+                byIncreasing(Entry<String, Integer>.key))) {
             writeTag(ostream, "expertise", tabs + 1);
             writeProperty(ostream, "skill", skill);
             writeProperty(ostream, "level", level);
