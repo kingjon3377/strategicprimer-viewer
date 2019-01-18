@@ -191,7 +191,7 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
     "Ask the user for a multiline string."
     shared actual String? inputMultilineString(String prompt) {
         StringBuilder builder = StringBuilder();
-        ostream("Type . on a line by itself to end input, or , to start over.");
+        println("Type . on a line by itself to end input, or , to start over.");
         while (true) {
             if (builder.empty) {
                 ostream(prompt);
