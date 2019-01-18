@@ -195,16 +195,19 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
         this.model = model;
     }
 
-    Boolean approveRemoval(Point location, TileFixture fixture,
-            TileFixture matching) {
-        String fCls = classDeclaration(fixture).name;
-        String mCls = classDeclaration(matching).name;
-        if (exists retval = cli.inputBooleanInSeries(
+    "If [[matching]] is not [[null]], ask the user whether to remove [[fixture]], and
+     return the user's answer (null on EOF). If [[matching]] is [[null]], return
+     [[false]]."
+    Boolean? approveRemoval(Point location, TileFixture fixture,
+            TileFixture? matching) {
+        if (exists matching) {
+            String fCls = classDeclaration(fixture).name;
+            String mCls = classDeclaration(matching).name;
+            return cli.inputBooleanInSeries(
                 "At ``location``: Remove '``fixture.shortDescription``', of class '``
                 fCls``', ID #``fixture.id``, which matches '``
                 matching.shortDescription``', of class '``mCls``', ID #``
-                matching.id``?", "duplicate``fCls````mCls``"), retval) {
-            return true; // TODO: allow returning null on EOF
+                matching.id``?", "duplicate``fCls````mCls``");
         } else {
             return false;
         }
@@ -230,10 +233,12 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
                 } else if (is HasExtent<out Anything> fixture, fixture.acres.positive) {
                     continue;
                 }
-                if (exists matching = fixtures.find(fixture.equalsIgnoringID),
-                        approveRemoval(location, fixture, matching)) {
+                switch (approveRemoval(location, fixture,
+                    fixtures.find(fixture.equalsIgnoringID)))
+                case (true) {
                     toRemove.add(fixture);
-                } else {
+                }
+                case (false) {
                     fixtures.add(fixture);
                     if (is IUnit fixture) {
                         coalesceResources(context, fixture,
@@ -244,6 +249,9 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
                             ifApplicable(fixture.addMember),
                             ifApplicable(fixture.removeMember));
                     }
+                }
+                case (null) {
+                    return;
                 }
             }
             for (fixture in toRemove) {
