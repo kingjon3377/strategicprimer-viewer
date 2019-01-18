@@ -136,8 +136,8 @@ class ImporterDriver satisfies UtilityDriver {
                             counter.countMany(image.getRGB(row, column));
                         }
                     }
-                    if (exists dominant = counter.allCounts.sort(comparingOn(
-                            Entry<Integer, Integer>.item, decreasing<Integer>)).first) {
+                    if (exists dominant = counter.allCounts.sort(byDecreasing(
+                            Entry<Integer, Integer>.item)).first) {
                         if (exists type = mapping[dominant.key]) {
                             log.trace("Type for (``mapRow``, ``mapColumn
                                 ``) deduced to be ``type``");

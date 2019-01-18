@@ -106,7 +106,7 @@ class MiningModel(initial, seed, kind) {
 
     process.writeLine("Pruned ``pruneCounter`` branches beyond our boundaries");
     for (row->points in unnormalized.keys.group(Tuple.first).
-            sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, decreasing<Integer>))) {
+            sort(byDecreasing(Entry<Integer, [Integer[2]+]>.key))) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
@@ -122,7 +122,7 @@ class MiningModel(initial, seed, kind) {
     }
 
     for (column->points in unnormalized.keys.group(getColumn).
-            sort(comparingOn(Entry<Integer, [Integer[2]+]>.key, decreasing<Integer>))) {
+            sort(byDecreasing(Entry<Integer, [Integer[2]+]>.key))) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
