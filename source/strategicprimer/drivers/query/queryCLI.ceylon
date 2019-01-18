@@ -22,11 +22,11 @@ import strategicprimer.drivers.common {
     IDriverUsage,
     DriverUsage,
     IDriverModel,
-    CLIDriver,
     ModelDriverFactory,
     DriverFactory,
     ModelDriver,
-    SimpleMultiMapModel
+    ReadOnlyDriver,
+    SimpleDriverModel
 }
 import strategicprimer.model.common.map.fixtures {
     Ground
@@ -71,20 +71,20 @@ Logger log = logger(`module strategicprimer.drivers.query`);
 service(`interface DriverFactory`)
 shared class QueryCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(false, ["query"],
-        ParamCount.atLeastOne, "Answer questions about a map.",
+        ParamCount.one, "Answer questions about a map.",
         "Look a tiles on a map. Or run hunting, gathering, or fishing.", true, false);
 
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => QueryCLI(cli, model);
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleMultiMapModel(map, path);
+            SimpleDriverModel(map, path);
 
 }
 
 "A driver for 'querying' the driver model about various things."
 // FIXME: Write GUI equivalent of query CLI
-shared class QueryCLI satisfies CLIDriver {
+shared class QueryCLI satisfies ReadOnlyDriver {
     "Count the workers in an Iterable belonging to a player."
     static Integer countWorkersInIterable(Player player, {IFixture*} fixtures) {
         variable Integer retval = 0;
