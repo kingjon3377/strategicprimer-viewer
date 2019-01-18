@@ -92,9 +92,9 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
         }
     }
 
-    "Ask the user to enter a resource."
-    void enterResource(IDRegistrar idf, Player player) {
-        if (exists kind = getResourceKind(),
+    "Ask the user to enter a resource, which is returned; [[null]] is returned on EOF."
+    ResourcePile? enterResource(IDRegistrar idf) {
+        if (exists kind = getResourceKind(), // TODO: indentation
             exists origContents = getResourceContents(kind),
             exists units = getResourceUnits(origContents),
             exists usePrefix = cli.inputBooleanInSeries(
@@ -105,33 +105,40 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
                 if (exists prefix = cli.inputString("Prefix to use: ")) {
                     contents = prefix + " " + origContents;
                 } else {
-                    return;
+                    return null;
                 }
             } else {
                 contents = origContents;
             }
             if (exists quantity = cli.inputDecimal("Quantity in ``units``?")) {
-                model.addResource(ResourcePile(idf.createID(), kind, contents, Quantity(
-                    quantity, units)), player);
+                return ResourcePile(idf.createID(), kind, contents, Quantity(quantity,
+                    units));
+            } else {
+                return null;
             }
+        } else {
+            return null;
         }
     }
 
-    "Ask the user to enter an Implement (a piece of equipment)"
-    void enterImplement(IDRegistrar idf, Player player) {
-        if (exists kind = cli.inputString("Kind of equipment: "),
+    "Ask the user to enter an Implement (a piece of equipment), which is returned;
+     [[null]] is returned on EOF."
+    Implement? enterImplement(IDRegistrar idf) {
+        if (exists kind = cli.inputString("Kind of equipment: "), // TODO: indentation
             exists multiple = cli.inputBooleanInSeries("Add more than one? ")) {
             Integer count;
             if (multiple) {
                 if (exists temp = cli.inputNumber("Number to add: ")) {
                     count = temp;
                 } else {
-                    return;
+                    return null;
                 }
             } else {
                 count = 1;
             }
-            model.addResource(Implement(kind, idf.createID(), count), player);
+            return Implement(kind, idf.createID(), count);
+        } else {
+            return null;
         }
     }
 
@@ -150,15 +157,23 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
                     switch (cli.inputBooleanInSeries(
                         "Enter a (quantified) resource? "))
                     case (true) {
-                        enterResource(idf, chosen);
-                        continue;
+                        if (exists resource = enterResource(idf)) {
+                            model.addResource(resource, chosen);
+                            continue;
+                        } else {
+                            return;
+                        }
                     }
                     case (false) {}
                     case (null) { return; }
                     switch (cli.inputBooleanInSeries(
                         "Enter equipment etc.? "))
                     case (true) {
-                        enterImplement(idf, chosen);
+                        if (exists implement = enterImplement(idf)) {
+                            model.addResource(implement, chosen);
+                        } else {
+                            return;
+                        }
                     }
                     case (false) {}
                     case (null) { return; }
