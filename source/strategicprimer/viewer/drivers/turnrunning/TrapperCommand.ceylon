@@ -4,7 +4,7 @@ import strategicprimer.model.common.map {
 
 "Possible actions a trapper can take; top-level so we can switch on the cases,
  since the other alternative, `static`, isn't feasible where this is used right now."
-shared class TrapperCommand of setTrap | check | move | easyReset | quit
+class TrapperCommand of setTrap | check | move | easyReset | quit
         satisfies HasName&Comparable<TrapperCommand> {
     shared actual String name;
     Integer ordinal;

@@ -36,8 +36,7 @@ import lovelace.util.common {
 import strategicprimer.drivers.query {
     HerdModel,
     MammalModel,
-    PoultryModel,
-    TrapperCommand
+    PoultryModel
 }
 import ceylon.language.meta.model {
     ValueConstructor
