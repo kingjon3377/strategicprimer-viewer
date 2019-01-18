@@ -592,6 +592,8 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         return buffer.string;
     }
 
+    String supplierNoop() => "";
+
     AdvancementCLIHelper advancementCLI = AdvancementCLIHelper(cli);
     AppletChooser<TurnApplet> appletChooser =
         AppletChooser(cli,
@@ -603,7 +605,8 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             TurnApplet(huntGeneral("fish", "try to catch and process", huntingModel.fish),
                 "search for aquatic animals", "fish"),
             TurnApplet(trap, "check traps for animals or fish they may have caught",
-                "trap"));
+                "trap"),
+            TurnApplet(supplierNoop, "something no applet supports", "other"));
     String createResults(IUnit unit, Integer turn) {
         model.selectedUnit = unit;
         cli.print("Orders for unit ");
@@ -620,7 +623,9 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             case (null|true) { continue; }
             case (false) { return ""; }
             case (is TurnApplet) {
-                buffer.append(command.invoke());
+                if (!"other" in command.commands) {
+                    buffer.append(command.invoke());
+                }
                 break;
             }
         }
