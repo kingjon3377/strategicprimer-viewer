@@ -73,6 +73,9 @@ import strategicprimer.model.common.map.fixtures.resources {
 import ceylon.numeric.float {
     round=halfEven
 }
+import strategicprimer.viewer.drivers.resourceadding {
+    ResourceAddingCLIHelper
+}
 class TurnApplet(shared actual String() invoke, shared actual String description,
     shared actual String+ commands) satisfies Applet {}
 todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
@@ -270,6 +273,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             addToSubMaps(point, fixture, zero);
         }
     }
+    ResourceAddingCLIHelper resourceAddingHelper = ResourceAddingCLIHelper(cli, idf);
     // TODO: Add a way to add production of gatherers, hunters, etc. as resources
     String gather() {
         StringBuilder buffer = StringBuilder();

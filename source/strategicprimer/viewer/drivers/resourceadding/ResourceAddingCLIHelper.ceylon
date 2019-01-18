@@ -34,6 +34,9 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
         if (exists retval = choice.item) {
             return retval;
         } else if (exists retval = cli.inputString("Resource kind to use: ")) {
+            if (retval.empty) {
+                return null;
+            }
             resourceKinds.add(retval);
             return retval;
         } else {
@@ -51,6 +54,9 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
         if (exists item) {
             return item;
         } else if (exists retval = cli.inputString("Resource to use: ")) {
+            if (retval.empty) {
+                return null;
+            }
             resourceContents.put(kind, retval);
             return retval;
         } else {
@@ -69,6 +75,9 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
             case (false) {}
         }
         if (exists retval = cli.inputString("Unit to use for ``resource``: ")) {
+            if (retval.empty) {
+                return null;
+            }
             resourceUnits[resource] = retval;
             return retval;
         } else {
@@ -86,7 +95,7 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
                     "prefix " + origContents)) {
             String contents;
             if (usePrefix) {
-                if (exists prefix = cli.inputString("Prefix to use: ")) {
+                if (exists prefix = cli.inputString("Prefix to use: "), !prefix.empty) {
                     contents = prefix + " " + origContents;
                 } else {
                     return null;
@@ -94,7 +103,8 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
             } else {
                 contents = origContents;
             }
-            if (exists quantity = cli.inputDecimal("Quantity in ``units``?")) {
+            if (exists quantity = cli.inputDecimal("Quantity in ``units``?"),
+                    quantity.positive) {
                 return ResourcePile(idf.createID(), kind, contents, Quantity(quantity,
                     units));
             } else {
@@ -108,7 +118,7 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
     "Ask the user to enter an Implement (a piece of equipment), which is returned;
      [[null]] is returned on EOF."
     shared Implement? enterImplement() {
-        if (exists kind = cli.inputString("Kind of equipment: "),
+        if (exists kind = cli.inputString("Kind of equipment: "), !kind.empty,
                 exists multiple = cli.inputBooleanInSeries("Add more than one? ")) {
             Integer count;
             if (multiple) {
@@ -120,7 +130,11 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
             } else {
                 count = 1;
             }
-            return Implement(kind, idf.createID(), count);
+            if (count >= 1) {
+                return Implement(kind, idf.createID(), count);
+            } else {
+                return null;
+            }
         } else {
             return null;
         }
