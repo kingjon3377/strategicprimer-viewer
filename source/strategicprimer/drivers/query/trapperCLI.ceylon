@@ -40,7 +40,7 @@ import strategicprimer.drivers.exploration.common {
 
 "Possible actions in the trapping CLI; top-level so we can switch on the cases,
  since the other alternative, `static`, isn't possible in an `object` anymore."
-class TrapperCommand of setTrap | check | move | easyReset | quit
+shared class TrapperCommand of setTrap | check | move | easyReset | quit
         satisfies HasName&Comparable<TrapperCommand> {
     shared actual String name;
     Integer ordinal;
