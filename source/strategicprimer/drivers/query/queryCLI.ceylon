@@ -372,6 +372,7 @@ shared class QueryCLI satisfies CLIDriver {
         }
     }
 
+    // TODO: Remove herding from QueryCLI now it's in TurnRunningCLI
     """Handle herding mammals. Returns how many hours each herder spends "herding." """
     Integer herdMammals(MammalModel animal, Integer count, Integer flockPerHerder) {
         cli.print("Taking the day's two milkings together, tending the animals takes ");
@@ -399,6 +400,7 @@ shared class QueryCLI satisfies CLIDriver {
         return (ceiling(cost / 60.0) + 0.1).integer;
     }
 
+    // TODO: Remove herding from QueryCLI now it's in TurnRunningCLI
     """Handle herding mammals. Returns how many hours each herder spends "herding." """
     Integer herdPoultry(PoultryModel bird, Integer count, Integer flockPerHerder) {
         cli.print("Gathering eggs takes ");
@@ -428,6 +430,7 @@ shared class QueryCLI satisfies CLIDriver {
         return (ceiling((flockPerHerder * cost) / 60.0) + 0.1).integer;
     }
 
+    // TODO: Remove herding from QueryCLI now it's in TurnRunningCLI
     "Run herding."
     void herd() {
         assert (exists herdModel = cli.chooseFromList(
@@ -476,11 +479,11 @@ shared class QueryCLI satisfies CLIDriver {
             Ground[] ground = map.fixtures.get(location).narrow<Ground>().sequence();
 //          Forest[] forests = map.fixtures[location].narrow<Forest>().sequence();
             Forest[] forests = map.fixtures.get(location).narrow<Forest>().sequence();
-            if (nonempty ground) {
+            if (nonempty ground) { // TODO: Inline once syntax sugar in place above
                 cli.println("Kind(s) of ground (rock) on the tile:");
                 ground.map(Object.string).each(cli.println);
             }
-            if (nonempty forests) {
+            if (nonempty forests) { // TODO: Inline once syntax sugar in place above
                 cli.println("Kind(s) of forests on the tile:");
                 forests.map(Object.string).each(cli.println);
             }
