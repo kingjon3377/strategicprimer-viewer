@@ -24,6 +24,7 @@ shared interface ModelDriverFactory satisfies DriverFactory {
             IDriverModel model);
 
     "Create a model to pass to [[createDriver]]. The 'modified' flag is set to [[false]]."
-    shared formal IDriverModel createModel("The map." IMutableMapNG map,
-            "The file it was loaded from" PathWrapper? path); // TODO: Default to SimpleDriverModel()?
+    shared default IDriverModel createModel("The map." IMutableMapNG map,
+            "The file it was loaded from" PathWrapper? path) =>
+        SimpleDriverModel(map, path);
 }
