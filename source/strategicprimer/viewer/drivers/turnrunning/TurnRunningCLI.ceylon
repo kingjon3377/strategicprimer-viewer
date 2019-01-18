@@ -336,6 +336,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         }
     }
 
+    // TODO: Distinguish hunting from fishing in no-result time cost (encounters / hour)?
     String huntGeneral(String command, String verb,
             {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*}(Point) encounterSrc)
             () {
