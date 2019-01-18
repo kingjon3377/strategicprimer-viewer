@@ -53,6 +53,10 @@ import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }
+import strategicprimer.viewer.drivers.advancement {
+    LevelGainListener,
+    AdvancementCLIHelper
+}
 class TurnApplet(shared actual String() invoke, shared actual String description,
     shared actual String+ commands) satisfies Applet {}
 class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
@@ -187,6 +191,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         model.removeSelectionChangeListener(explorationCLI);
         return buffer.string;
     }
+    AdvancementCLIHelper advancementCLI = AdvancementCLIHelper(cli);
     AppletChooser<TurnApplet> appletChooser =
         AppletChooser(cli,
             TurnApplet(explore, "move", "move a unit"),
@@ -219,11 +224,32 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         }
         if (exists addendum = cli.inputMultilineString(prompt)) {
             buffer.append(addendum);
-            return buffer.string.trimmed;
         } else {
             return "";
         }
-        // TODO: Do and report on advancement
+        if (exists runAdvancement =
+                    cli.inputBooleanInSeries("Run advancement for this unit now?"),
+                exists expertMentoring = cli.inputBooleanInSeries(
+                    "Account for expert mentoring?")) {
+            buffer.appendNewline();
+            buffer.appendNewline();
+            object levelListener satisfies LevelGainListener {
+                shared actual void level(String workerName, String jobName,
+                        String skillName, Integer gains, Integer currentLevel) {
+                    buffer.append(workerName);
+                    buffer.append(" showed improvement in the skill of ");
+                    buffer.append(skillName);
+                    if (gains > 1) {
+                        buffer.append(" ``gains`` skill ranks)");
+                    }
+                    buffer.append(". ");
+                }
+            }
+            advancementCLI.addLevelGainListener(levelListener);
+            advancementCLI.advanceWorkersInUnit(unit, expertMentoring);
+            advancementCLI.removeLevelGainListener(levelListener);
+        }
+        return buffer.string.trimmed;
     }
     shared actual void startDriver() {
         Integer currentTurn = model.map.currentTurn;
