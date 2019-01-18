@@ -195,9 +195,9 @@ shared class QueryCLI satisfies CLIDriver {
     "Report the distance between two points."
     void printDistance() {
         if (exists start = cli.inputPoint("Starting point:\t"),
-            exists end = cli.inputPoint("Destination:\t"),
-            exists groundTravel =
-                cli.inputBoolean("Compute ground travel distance?")) {
+                exists end = cli.inputPoint("Destination:\t"),
+                exists groundTravel =
+                    cli.inputBoolean("Compute ground travel distance?")) {
             if (groundTravel) {
                 cli.print("Distance (on the ground, in MP cost):\t");
                 cli.println(pathfinder.getTravelDistance(map, start, end).first.string);
