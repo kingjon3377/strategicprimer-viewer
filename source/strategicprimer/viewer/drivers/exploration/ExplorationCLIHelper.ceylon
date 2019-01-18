@@ -214,11 +214,9 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             // is visible.
             assert (exists terrain = model.map.baseTerrain[destPoint]);
             if (TileType.ocean == terrain) {
-                tracksAnimal = huntingModel.fish(destPoint).map(Entry.item).first
-                else HuntingModel.nothingFound;
+                tracksAnimal = huntingModel.fish(destPoint).map(Entry.item).first;
             } else {
-                tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first
-                else HuntingModel.nothingFound;
+                tracksAnimal = huntingModel.hunt(destPoint).map(Entry.item).first;
             }
 
             if (is Animal tracksAnimal) {

@@ -65,7 +65,7 @@ shared class HuntingModel {
 
     static class ResultStream<Type, Absent=NothingFound>({Type*} stream,
             Float nothingProportion, Absent nothingValue)
-            satisfies {<Type|Absent>*} given Type satisfies Object {
+            satisfies {<Type|Absent>+} given Type satisfies Object {
         shared actual Iterator<Type|Absent> iterator() =>
             ResultIterator(stream, nothingProportion, nothingValue);
     }
@@ -151,7 +151,7 @@ shared class HuntingModel {
             given Type satisfies Object => chosenMap(loc).map(curry(Entry<Point, Type|NothingFound>)(loc));
 
     "A helper method for hunting or fishing."
-    {<Point->Type|NothingFound>*} chooseFromMap<out Type>(
+    {<Point->Type|NothingFound>+} chooseFromMap<out Type>(
             "Whereabouts to search"
             Point point,
             "Filter/provider to use to find the animals."
@@ -165,13 +165,13 @@ shared class HuntingModel {
        half will be "nothing". May be an infinite stream."""
     todo("We'd like to allow callers(?) to specify a proportion that *should* be tracks,
           perhaps replacing some of the NothingFound")
-    shared {<Point->Animal|AnimalTracks|NothingFound>*} hunt(
+    shared {<Point->Animal|AnimalTracks|NothingFound>+} hunt(
             "Whereabouts to search"
             Point point) => chooseFromMap(point, animals);
 
     """Get a stream of fishing results from the area surrounding the given tile. About
        half will be "nothing". May be an infinite stream."""
-    shared {<Point->Animal|AnimalTracks|NothingFound>*} fish(
+    shared {<Point->Animal|AnimalTracks|NothingFound>+} fish(
             "Whereabouts to search"
             Point point) => chooseFromMap(point, waterAnimals);
 
