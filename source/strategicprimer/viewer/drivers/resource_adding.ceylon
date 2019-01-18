@@ -239,50 +239,43 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
 
     "Ask the user to enter a resource."
     void enterResource(IDRegistrar idf, Player player) {
-        String? kind = getResourceKind();
-        if (is Null kind) {
-            return;
-        }
-        String? origContents = getResourceContents(kind);
-        if (is Null origContents) {
-            return;
-        }
-        String? units = getResourceUnits(origContents);
-        if (is Null units) {
-            return;
-        }
-        String contents;
-        switch (cli.inputBooleanInSeries(
-            "Qualify the particular resource with a prefix? ", "prefix " + origContents))
-        case (true) {
-            if (exists prefix = cli.inputString("Prefix to use: ")) {
-                contents = prefix + " " + origContents;
+        if (exists kind = getResourceKind(),
+                exists origContents = getResourceContents(kind),
+                exists units = getResourceUnits(origContents),
+                exists usePrefix = cli.inputBooleanInSeries(
+                    "Qualify the particular resource with a prefix?",
+                    "prefix " + origContents)) {
+            String contents;
+            if (usePrefix) {
+                if (exists prefix = cli.inputString("Prefix to use: ")) {
+                    contents = prefix + " " + origContents;
+                } else {
+                    return;
+                }
             } else {
-                return;
+                contents = origContents;
             }
-        }
-        case (false) { contents = origContents; }
-        case (null) { return; }
-        if (exists quantity = cli.inputDecimal("Quantity in ``units``?")) {
-            model.addResource(ResourcePile(idf.createID(), kind, contents, Quantity(
-                quantity, units)), player);
+            if (exists quantity = cli.inputDecimal("Quantity in ``units``?")) {
+                model.addResource(ResourcePile(idf.createID(), kind, contents, Quantity(
+                    quantity, units)), player);
+            }
         }
     }
 
     "Ask the user to enter an Implement (a piece of equipment)"
     void enterImplement(IDRegistrar idf, Player player) {
-        if (exists kind = cli.inputString("Kind of equipment: ")) {
+        if (exists kind = cli.inputString("Kind of equipment: "),
+                exists multiple = cli.inputBooleanInSeries("Add more than one? ")) {
             Integer count;
-            switch (cli.inputBooleanInSeries("Add more than one? "))
-            case (true) {
+            if (multiple) {
                 if (exists temp = cli.inputNumber("Number to add: ")) {
                     count = temp;
                 } else {
                     return;
                 }
+            } else {
+                count = 1;
             }
-            case (false) { count = 1; }
-            case (null) { return; }
             model.addResource(Implement(kind, idf.createID(), count), player);
         }
     }
