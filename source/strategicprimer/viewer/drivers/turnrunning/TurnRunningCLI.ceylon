@@ -50,7 +50,8 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 }
 import strategicprimer.model.common.map.fixtures {
     Quantity,
-    ResourcePile
+    ResourcePile,
+    FortressMember
 }
 import strategicprimer.model.common.idreg {
     IDRegistrar,
@@ -63,7 +64,8 @@ import strategicprimer.viewer.drivers.advancement {
 import strategicprimer.model.common.map {
     Point,
     TileFixture,
-    HasPopulation
+    HasPopulation,
+    Player
 }
 import strategicprimer.model.common.map.fixtures.resources {
     Grove,
@@ -274,7 +276,29 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         }
     }
     ResourceAddingCLIHelper resourceAddingHelper = ResourceAddingCLIHelper(cli, idf);
-    // TODO: Add a way to add production of gatherers, hunters, etc. as resources
+    void addResourceToMaps(FortressMember resource, Player owner) {
+        for (map in model.allMaps.map(Entry.key)) {
+            // TODO: Make a way to add to fortresses other than HQ, or to units
+            Fortress hq;
+            variable Fortress? fort = null;
+            for (fortress in map.fixtures.map(Entry.item).narrow<Fortress>()
+                    .filter(matchingValue(owner, Fortress.owner))) {
+                if (fortress.name == "HQ") {
+                    hq = fortress;
+                    break;
+                } else if (!fort exists) {
+                    fort = fortress;
+                }
+            } else {
+                if (exists fortress = fort) {
+                    hq = fortress;
+                } else {
+                    continue;
+                }
+            }
+            hq.addMember(resource);
+        }
+    }
     String gather() {
         StringBuilder buffer = StringBuilder();
         // TODO: Ask player to confirm the distance this takes the unit from
@@ -293,6 +317,14 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                         "Gather from ``find.shortDescription````meadowStatus(find)``?",
                         find.kind))
                     case (true) {
+                        if (exists unit = model.selectedUnit) {
+                            cli.println(
+                                "Enter details of harvest (any empty string aborts):");
+                            while (exists resource =
+                                    resourceAddingHelper.enterResource()) {
+                                addResourceToMaps(resource, unit.owner);
+                            }
+                        }
                         Integer cost = cli.inputNumber("Time to gather: ")
                             else runtime.maxArraySize;
                         time -= cost;
@@ -394,6 +426,14 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                         case (null) { return ""; }
                         cli.print(inHours(time));
                         cli.println(" remaining.");
+                        if (exists unit = model.selectedUnit) {
+                            cli.println(
+                                "Enter resources produced (any empty string aborts):");
+                            while (exists resource =
+                                resourceAddingHelper.enterResource()) {
+                                addResourceToMaps(resource, unit.owner);
+                            }
+                        }
                     } else {
                         addToSubMaps(loc, find, true);
                         time -= noResultCost;
@@ -512,6 +552,14 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                         }
                         case (null) {
                             return "";
+                        }
+                        if (exists unit = model.selectedUnit) {
+                            cli.println(
+                                "Enter resources produced (any empty string aborts):");
+                            while (exists resource =
+                                resourceAddingHelper.enterResource()) {
+                                addResourceToMaps(resource, unit.owner);
+                            }
                         }
                     }
                 }
