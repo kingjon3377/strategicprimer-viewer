@@ -29,9 +29,9 @@ class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLID
           several disparate CLI drivers that do that.")
     shared actual void startDriver() {
         MutableList<Player> players = ArrayList { elements = model.players; };
-        while (!players.empty, exists chosen = cli.chooseFromList(players, // TODO: indentation
-            "Players in the maps:", "No players found.",
-            "Player to add resources for: ", false).item) {
+        while (!players.empty, exists chosen = cli.chooseFromList(players,
+                "Players in the maps:", "No players found.",
+                "Player to add resources for: ", false).item) {
             players.remove(chosen);
             while (true) {
                 switch (cli.inputBoolean("Keep going? "))
