@@ -288,9 +288,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
                 return;
             }
             Integer quantity = implementQuantityModel.number.intValue();
-            for (i in 0:quantity) { // FIXME: Use quantity field instead of creating copies!
-                model.addResource(Implement(kind, idf.createID()), currentPlayer);
-            }
+            model.addResource(Implement(kind, idf.createID(), quantity), currentPlayer);
             logAddition(logLabel, currentPlayer, "``quantity`` x ``kind``");
             implementQuantityModel.\ivalue = JInteger.valueOf(1);
             implementKindBox.checkAndClear();
