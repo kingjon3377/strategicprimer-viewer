@@ -70,15 +70,10 @@ shared class AdvancementCLIFactory() satisfies ModelDriverFactory {
 
 "The worker-advancement CLI driver."
 shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
-        satisfies CLIDriver&LevelGainSource { // TODO: Drop LevelGainSource interface here
+        satisfies CLIDriver {
     shared actual IWorkerModel model;
 
     AdvancementCLIHelper helper = AdvancementCLIHelper(cli);
-
-    shared actual void addLevelGainListener(LevelGainListener listener) =>
-        helper.addLevelGainListener(listener);
-    shared actual void removeLevelGainListener(LevelGainListener listener) =>
-        helper.removeLevelGainListener(listener);
 
     "Let the user add experience to a player's workers."
     void advanceWorkers(IWorkerModel model, Player player, Boolean allowExpertMentoring) {
