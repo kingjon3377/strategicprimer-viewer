@@ -130,7 +130,7 @@ object reportGeneratorHelper {
     "Create a mapping from child ID numbers to parent ID numbers."
     shared Map<Integer, Integer> getParentMap(IMapNG map) {
         MutableMap<Integer, Integer> retval = HashMap<Integer, Integer>();
-        for (fixture in map.fixtures.map(Entry.item).narrow<{IFixture*}>()) {
+        for (fixture in map.fixtures.items.narrow<{IFixture*}>()) {
             parentMapImpl(retval, fixture, fixture);
         }
         return retval;

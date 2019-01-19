@@ -333,15 +333,15 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
         }
     }
     shared actual void startDriver() {
-        for (kind in model.map.fixtures.map(Entry.item).narrow<Animal>()
+        for (kind in model.map.fixtures.items.narrow<Animal>()
                     .filter(not(compose(Integer.positive, Animal.population)))
                 .map(Animal.kind).distinct) {
             generateAnimalPopulations(true, kind);
             generateAnimalPopulations(false, kind);
         }
-        model.map.fixtures.map(Entry.item).narrow<Grove>().map(Grove.kind).distinct
+        model.map.fixtures.items.narrow<Grove>().map(Grove.kind).distinct
             .each(generateGroveCounts);
-        model.map.fixtures.map(Entry.item).narrow<Shrub>().map(Shrub.kind).distinct
+        model.map.fixtures.items.narrow<Shrub>().map(Shrub.kind).distinct
             .each(generateShrubCounts);
         generateFieldExtents();
         generateForestExtents();

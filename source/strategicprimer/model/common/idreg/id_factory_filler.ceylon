@@ -15,7 +15,7 @@ shared IDRegistrar createIDFactory(IMapNG|{IMapNG*}|{IFixture*} arg) {
 
 void recursiveRegister(IDRegistrar factory, IMapNG|{IMapNG*}|{IFixture*} arg) {
     if (is IMapNG map = arg) {
-        recursiveRegister(factory, map.fixtures.map(Entry.item));
+        recursiveRegister(factory, map.fixtures.items);
     } else if (is {IMapNG*} model = arg) {
         for (map in model) {
             recursiveRegister(factory, map);

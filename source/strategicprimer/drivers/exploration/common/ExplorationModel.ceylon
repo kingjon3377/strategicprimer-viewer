@@ -186,7 +186,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 
     "Collect all the units in the main map belonging to the specified player."
     shared actual {IUnit*} getUnits(Player player) =>
-            map.fixtures.map(Entry.item).flatMap(unflattenNonFortresses)
+            map.fixtures.items.flatMap(unflattenNonFortresses)
                 .narrow<IUnit>().filter(matchingValue(player, HasOwner.owner));
 
     "Tell listeners that the selected point changed."

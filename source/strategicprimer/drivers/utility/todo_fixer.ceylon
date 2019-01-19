@@ -235,7 +235,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
 
     "Search for and fix units with kinds missing."
     void fixAllUnits(IMapNG map) {
-        totalCount = map.fixtures.map(Entry.item).narrow<Unit>()
+        totalCount = map.fixtures.items.narrow<Unit>()
             .count(matchingValue("TODO", Unit.kind));
         for (point in map.locations) {
             SimpleTerrain terrain = getTerrain(map, point);

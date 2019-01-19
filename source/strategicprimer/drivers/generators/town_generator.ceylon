@@ -197,7 +197,7 @@ class TownGenerator(ICLIHelper cli) {
     "Get the fixture in the given [[map]] identified by the given [[ID
      number|id]]."
     IFixture? findByID(IMapNG map, Integer id) => map.fixtures
-        .map(Entry.item).find(matchingValue(id, IFixture.id));
+        .items.find(matchingValue(id, IFixture.id));
 
     "Find the location in the given [[map]] of the fixture identified by the
      given [[ID number|id]]."
@@ -208,8 +208,7 @@ class TownGenerator(ICLIHelper cli) {
     "Whether, in the given [[map]], any town claims a resource identified by
      the given [[ID number|id]]."
     Boolean isClaimedField(IMapNG map, Integer id) => map.fixtures
-        .map(Entry.item).narrow<ITownFixture>()
-        .map(ITownFixture.population).coalesced
+        .items.narrow<ITownFixture>().map(ITownFixture.population).coalesced
         .flatMap(CommunityStats.workedFields).contains(id);
 
     "Whether, in the given [[map]], the given [[ID number|id]] refers to [[a

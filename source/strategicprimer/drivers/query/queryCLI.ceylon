@@ -118,8 +118,7 @@ shared class QueryCLI satisfies ReadOnlyDriver {
         if (exists player = cli.chooseFromList(players.sequence(),
                 "Players in the map:", "Map contains no players",
                 "Owner of workers to count: ", true).item) {
-            Integer count = countWorkersInIterable(player,
-                map.fixtures.map(Entry.item));
+            Integer count = countWorkersInIterable(player, map.fixtures.items);
             cli.println("``player.name`` has ``count`` workers");
         }
     }

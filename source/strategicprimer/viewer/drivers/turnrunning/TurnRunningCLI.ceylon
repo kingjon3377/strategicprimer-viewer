@@ -113,7 +113,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     {IUnit*} getUnits(Player player) {
         value temp = model.allMaps.map(Entry.key)
             .flatMap((indivMap) =>
-        getUnitsImpl(indivMap.fixtures.map(Entry.item), player));
+        getUnitsImpl(indivMap.fixtures.items, player));
         MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
             naturalOrderTreeMap<Integer, IUnit&ProxyFor<IUnit>>([]);
         for (unit in temp) {
@@ -324,7 +324,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             // TODO: Make a way to add to fortresses other than HQ, or to units
             Fortress hq;
             variable Fortress? fort = null;
-            for (fortress in map.fixtures.map(Entry.item).narrow<Fortress>()
+            for (fortress in map.fixtures.items.narrow<Fortress>()
                     .filter(matchingValue(owner, Fortress.owner))) {
                 if (fortress.name == "HQ") {
                     hq = fortress;
