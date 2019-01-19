@@ -17,7 +17,8 @@ import strategicprimer.model.common.map {
     Player,
     TileFixture,
     HasPopulation,
-    HasExtent
+    HasExtent,
+    River
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -246,8 +247,19 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 mtn = "";
             }
 
-            cli.println("The explorer comes to ``destPoint``, a ``mtn````
+            cli.print("The explorer comes to ``destPoint``, a ``mtn````
                 map.baseTerrain[destPoint] else "unknown-terrain"`` tile");
+            {River*} rivers = map.rivers.get(destPoint);
+            if (rivers.any(River.lake.equals)) {
+                if (rivers.any(not(River.lake.equals))) {
+                    cli.print(" with a lake and (a) river(s) flowing ");
+                } else {
+                    cli.print(" with a lake");
+                }
+            } else if (!rivers.empty) {
+                cli.print(" with (a) river(s) flowing ");
+            }
+            cli.println(", ".join(rivers));
             {TileFixture*} noticed = simpleMovementModel.selectNoticed(allFixtures,
                 identity<TileFixture>, mover, speed);
 
