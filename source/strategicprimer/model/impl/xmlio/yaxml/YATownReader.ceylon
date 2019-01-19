@@ -312,8 +312,7 @@ class YATownReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         writeTag(ostream, "population", tabs);
         writeProperty(ostream, "size", obj.population);
         finishParentTag(ostream);
-        for (skill->level in obj.highestSkillLevels.sort(
-                byIncreasing(Entry<String, Integer>.key))) {
+        for (skill->level in obj.highestSkillLevels.sort(increasingKey)) {
             writeTag(ostream, "expertise", tabs + 1);
             writeProperty(ostream, "skill", skill);
             writeProperty(ostream, "level", level);

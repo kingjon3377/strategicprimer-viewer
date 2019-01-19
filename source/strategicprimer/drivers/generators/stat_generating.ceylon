@@ -63,7 +63,6 @@ import ceylon.logging {
 import lovelace.util.common {
     readFileContents,
     matchingValue,
-    comparingOn,
     singletonRandom,
     narrowedStream,
     entryMap,
@@ -136,7 +135,7 @@ class StatGeneratingCLI satisfies CLIDriver {
 
     "Get the index of the lowest value in an array."
     static Integer getMinIndex(Integer[] array) =>
-            array.indexed.max(byDecreasing(Entry<Integer, Integer>.item))?.key else 0;
+            array.indexed.max(decreasingItem)?.key else 0;
 
     "Simulate a die-roll."
     static Integer die(Integer max) => singletonRandom.nextInteger(max) + 1;

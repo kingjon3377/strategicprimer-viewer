@@ -291,8 +291,7 @@ object fluidTownHandler extends FluidBase() {
             Integer indent) {
         writeTag(ostream, "population", indent, false);
         writeAttributes(ostream, "size"->obj.population);
-        for (skill->level in obj.highestSkillLevels.sort(byIncreasing(
-                Entry<String, Integer>.key))) {
+        for (skill->level in obj.highestSkillLevels.sort(increasingKey)) {
             writeTag(ostream, "expertise", indent + 1, true);
             writeAttributes(ostream, "skill"->skill, "level"->level);
         }

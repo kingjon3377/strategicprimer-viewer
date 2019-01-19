@@ -84,7 +84,7 @@ shared object pathfinder {
             log.trace("Finished checking neighbors of ``current``");
             unvisited.remove(current);
             if (exists next =
-                    tentativeDistances.sort(byIncreasing(Entry<Point, Integer>.item))
+                    tentativeDistances.sort(increasingItem)
                         .map(Entry.key).filter(unvisited.contains).first) {
                 current = next;
             } else {

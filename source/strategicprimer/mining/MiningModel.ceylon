@@ -9,9 +9,6 @@ import ceylon.random {
     DefaultRandom,
     Random
 }
-import lovelace.util.common {
-    comparingOn
-}
 
 "Kinds of mines we know how to create."
 class MineKind of normal | banded {
@@ -105,24 +102,21 @@ class MiningModel(initial, seed, kind) {
     process.writeLine();
 
     process.writeLine("Pruned ``pruneCounter`` branches beyond our boundaries");
-    for (row->points in unnormalized.keys.group(Tuple.first).
-            sort(byDecreasing(Entry<Integer, [Integer[2]+]>.key))) {
+    for (row->points in unnormalized.keys.group(Tuple.first).sort(decreasingKey)) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
         points.each(unnormalized.remove);
     }
 
-    for (column->points in unnormalized.keys.group(getColumn).
-            sort(byIncreasing(Entry<Integer, [Integer[2]+]>.key))) {
+    for (column->points in unnormalized.keys.group(getColumn).sort(increasingKey)) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
         points.each(unnormalized.remove);
     }
 
-    for (column->points in unnormalized.keys.group(getColumn).
-            sort(byDecreasing(Entry<Integer, [Integer[2]+]>.key))) {
+    for (column->points in unnormalized.keys.group(getColumn).sort(decreasingKey)) {
         if (!points.map(unnormalized.get).coalesced.empty) {
             break;
         }
