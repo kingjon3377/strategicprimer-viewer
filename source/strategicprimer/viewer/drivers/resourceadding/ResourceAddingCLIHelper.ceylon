@@ -28,10 +28,9 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
 
     "Ask the user to choose or enter a resource kind. Returns [[null]] on EOF."
     String? getResourceKind() {
-        String[] list = resourceKinds.sequence(); // TODO: inline
-        value choice = cli.chooseStringFromList(list, "Possible kinds of resources:",
-            "No resource kinds entered yet", "Chosen kind: ", false);
-        if (exists retval = choice.item) {
+        if (exists retval = cli.chooseStringFromList(resourceKinds.sequence(),
+                "Possible kinds of resources:", "No resource kinds entered yet",
+                "Chosen kind: ", false).item) {
             return retval;
         } else if (exists retval = cli.inputString("Resource kind to use: ")) {
             if (retval.empty) {
@@ -47,11 +46,9 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
     "Ask the user to choose or enter a resource-content-type for a given resource kind.
      Returns [[null]] on EOF."
     String? getResourceContents(String kind) {
-        String[] list = resourceContents.get(kind).sequence(); // TODO: inline
-        value num->item = cli.chooseStringFromList(list,
-            "Possible resources in the ``kind`` category`", "No resources entered yet",
-            "Choose resource: ", false);
-        if (exists item) {
+        if (exists item = cli.chooseStringFromList(resourceContents.get(kind).sequence(),
+                "Possible resources in the ``kind`` category`",
+                "No resources entered yet", "Choose resource: ", false).item) {
             return item;
         } else if (exists retval = cli.inputString("Resource to use: ")) {
             if (retval.empty) {
