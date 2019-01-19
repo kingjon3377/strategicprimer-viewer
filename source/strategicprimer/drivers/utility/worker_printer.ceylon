@@ -95,14 +95,12 @@ class WorkerPrintCLI satisfies ReadOnlyDriver {
     }
 
     shared actual void startDriver() {
-        value playerChoice = cli.chooseFromList(model.playerChoices.sequence(), // TODO: inline
-            "Players in the map:", "No players", "Player owning the unit:", false);
-        if (exists player = playerChoice.item) {
-            value unitChoice = cli.chooseFromList(model.getUnits(player).sequence(), // TODO: inline
-                "Units of that player:", "No units", "Unit to print:", false);
-            if (exists unit = unitChoice.item) { // TODO: Once inlining done, combine if statements
-                printWorkers(unit);
-            }
+        if (exists player = cli.chooseFromList(model.playerChoices.sequence(),
+                "Players in the map:", "No players", "Player owning the unit:",
+                false).item, exists unit = cli.chooseFromList(model.getUnits(player)
+                    .sequence(), "Units of that player:", "No units", "Unit to print:",
+                    false).item) {
+            printWorkers(unit);
         }
     }
 }
