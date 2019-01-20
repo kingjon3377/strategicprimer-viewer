@@ -689,7 +689,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         }
         if (exists runAdvancement =
                     cli.inputBooleanInSeries("Run advancement for this unit now?"),
-                exists expertMentoring = cli.inputBooleanInSeries(
+                runAdvancement, exists expertMentoring = cli.inputBooleanInSeries(
                     "Account for expert mentoring?")) {
             buffer.appendNewline();
             buffer.appendNewline();
