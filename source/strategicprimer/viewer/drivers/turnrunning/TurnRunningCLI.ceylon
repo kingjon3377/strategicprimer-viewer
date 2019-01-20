@@ -40,7 +40,8 @@ import lovelace.util.common {
 import strategicprimer.drivers.query {
     HerdModel,
     MammalModel,
-    PoultryModel
+    PoultryModel,
+    SmallAnimalModel
 }
 import ceylon.language.meta.model {
     ValueConstructor
@@ -145,6 +146,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     MutableMap<String, HerdModel> herdModels = HashMap<String, HerdModel>();
     HerdModel? chooseHerdModel(String animal) => cli.chooseFromList(
         `MammalModel`.getValueConstructors().chain(`PoultryModel`.getValueConstructors())
+            .chain(`SmallAnimalModel`.getValueConstructors())
             .narrow<ValueConstructor<HerdModel>>().map((model) => model.get()).sequence(),
         "What kind of animal(s) is/are ``animal``?", "No animal kinds found",
         "Kind of animal:", false).item;
@@ -225,6 +227,31 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 addLineToOrders(" min to gather them.");
                 minutesSpent += baseCost;
                 minutesSpent += herdModel.dailyTimeFloor;
+            }
+            case (is SmallAnimalModel) {
+                addToOrders("Tending the ");
+                addToOrders(animalPlurals.get(combinedAnimal.kind));
+                Integer baseCost;
+                if (experts) {
+                    baseCost = ((flockPerHerder * herdModel.dailyTimePerHead +
+                        herdModel.dailyTimeFloor) * 0.9).integer;
+                } else {
+                    baseCost = flockPerHerder * herdModel.dailyTimePerHead +
+                        herdModel.dailyTimeFloor;
+                }
+                minutesSpent += baseCost;
+                addLineToOrders(" took the ``workerCount`` workers ``baseCost`` min.");
+                switch (cli.inputBoolean("Is this the one turn in every ``
+                    herdModel.extraChoresInterval + 1`` to clean up after the animals?"))
+                case (true) {
+                    addToOrders("Cleaning up after them took ");
+                    addToOrders((herdModel.extraTimePerHead * flockPerHerder).string);
+                    addLineToOrders(" minutes.");
+                    minutesSpent += herdModel.extraTimePerHead * flockPerHerder;
+                }
+                case (false) {}
+                case (null) { return ""; }
+                continue;
             }
             addToOrders("This produced ");
             addToOrders(Float.format(production.floatNumber, 0, 1));

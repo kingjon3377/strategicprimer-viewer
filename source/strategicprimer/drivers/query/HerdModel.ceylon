@@ -7,7 +7,8 @@ import strategicprimer.model.common.map {
 }
 
 "Models of (game statistics for) herding."
-shared sealed interface HerdModel of PoultryModel | MammalModel satisfies HasName {
+shared sealed interface HerdModel of PoultryModel | MammalModel | SmallAnimalModel
+        satisfies HasName {
     "How much is produced per head per turn, in some model-specified unit."
     shared formal Quantity productionPerHead;
 
