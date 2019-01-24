@@ -95,7 +95,7 @@ shared sealed abstract class AbstractReportGenerator<Type>(
             if (empty) {
                 return "";
             } else {
-                return "``header`` ``commaSeparatedList(this)``";
+                return "``header`` ``commaSeparatedList(*this)``";
             }
         }
     }
