@@ -31,8 +31,8 @@ shared class Worker satisfies IWorker&HasPortrait {
     "Whether neither of two collections of Jobs contains a nonempty Job the other does
      not."
     static Boolean jobSetsEqual({IJob*} first, {IJob*} second) =>
-            set(first.filter(matchingValue(false, IJob.emptyJob))) ==
-            set(second.filter(matchingValue(false, IJob.emptyJob)));
+            set(first.filter(not(IJob.emptyJob))) ==
+            set(second.filter(not(IJob.emptyJob)));
 
     "The set of Jobs the worker is trained or experienced in."
     MutableSet<IJob> jobSet;

@@ -82,7 +82,6 @@ import strategicprimer.model.common.idreg {
 }
 import lovelace.util.common {
     as,
-    matchingValue,
     MissingFileException
 }
 import java.lang {
@@ -266,8 +265,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         String jobString(IJob job) => "``job.name`` ``job.level``";
 
         String jobCSL(IWorker worker) {
-            {String*} jobs = worker.filter(matchingValue(false, IJob.emptyJob))
-                .map(jobString);
+            {String*} jobs = worker.filter(not(IJob.emptyJob)).map(jobString);
             if (jobs.empty) {
                 return "";
             } else {

@@ -42,9 +42,6 @@ import strategicprimer.model.impl.xmlio.exceptions {
     UnsupportedPropertyException,
     UnsupportedTagException
 }
-import lovelace.util.common {
-    matchingValue
-}
 
 object unitMemberHandler extends FluidBase() {
     shared Worker readWorker(StartElement element, QName parent, {XMLEvent*} stream,
@@ -130,7 +127,7 @@ object unitMemberHandler extends FluidBase() {
 
     shared void writeWorker(XMLStreamWriter ostream, IWorker obj, Integer indentation) {
         WorkerStats? stats = obj.stats;
-        {IJob*} jobs = obj.filter(matchingValue(false, IJob.emptyJob));
+        {IJob*} jobs = obj.filter(not(IJob.emptyJob));
         Boolean hasJobs = !jobs.empty;
         writeTag(ostream, "worker", indentation, !hasJobs && !stats exists);
         writeAttributes(ostream, "name"->obj.name);

@@ -31,7 +31,6 @@ import strategicprimer.drivers.common {
     FixtureMatcher
 }
 import lovelace.util.common {
-    matchingValue,
     simpleSet,
     simpleMap,
     MissingFileException
@@ -131,7 +130,7 @@ shared class Ver2TileDrawHelper(
     Color? getFixtureColor(IMapNG map, Point location) {
         if (exists top = getTopFixture(map, location)) {
             if (exists topTerrain = getDrawableFixtures(map, location)
-                    .filter(matchingValue(false, top.equals))
+                    .filter(not(top.equals)) // TODO: reformat now lines are shorter
                     .narrow<TerrainFixture>()
                     .first, exists color = colorHelper.getFeatureColor(topTerrain)) {
                 return color;
