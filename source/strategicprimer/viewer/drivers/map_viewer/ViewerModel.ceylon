@@ -181,9 +181,8 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         } else if ((0:currDims.width).contains(column)) {
             minColumn = 0;
             maxColumn = currDims.width - 1;
-        } else if (
-                ((map.dimensions.columns - currDims.width)..(map.dimensions.columns - 1))
-                    .contains(column)) {
+        } else if (column in
+                (map.dimensions.columns - currDims.width)..(map.dimensions.columns - 1)) {
             minColumn = map.dimensions.columns - currDims.width;
             maxColumn = map.dimensions.columns - 1;
         } else {
