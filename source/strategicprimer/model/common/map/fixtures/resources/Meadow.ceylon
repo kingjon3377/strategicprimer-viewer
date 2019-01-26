@@ -127,7 +127,8 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
     shared actual String plural = "Fields and meadows";
 
     "The required Perception check to find the fixture."
-    shared actual Integer dc = 18; // TODO: reflect size
+    shared actual Integer dc =>
+        (20 - 3.0 / 40.0 * numberComparator.floatValue(acres)).integer;
 
     shared actual Integer hash => id;
 
