@@ -27,6 +27,9 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "The maximum zoom level, to make sure that the tile size never overflows."
     static Integer maxZoomLevel = runtime.maxArraySize / 2;
 
+    "The distance a 'jump' will take the cursor."
+    static Integer jumpInterval = 5;
+
     "The list of graphical-parameter listeners."
     MutableList<GraphicalParamsListener> gpListeners =
             ArrayList<GraphicalParamsListener>();
@@ -145,10 +148,10 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         if (currDims.rows.contains(row)) {
             minRow = currDims.minimumRow;
             maxRow = currDims.maximumRow;
-        } else if (currDims.minimumRow > row, currDims.minimumRow - row < 6) { // TODO: Why '6' here? ("Magic number is a code smell")
+        } else if (currDims.minimumRow > row, currDims.minimumRow - row <= jumpInterval) {
             minRow = row;
             maxRow = currDims.maximumRow - (currDims.minimumRow - row);
-        } else if (currDims.maximumRow < row, row - currDims.maximumRow < 6) { // TODO: Why '6' here? ("Magic number is a code smell")
+        } else if (currDims.maximumRow < row, row - currDims.maximumRow <= jumpInterval) {
             minRow = currDims.minimumRow + (row - currDims.maximumRow);
             maxRow = row;
         } else if ((0:currDims.height).contains(row)) {
@@ -167,10 +170,12 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         if (currDims.columns.contains(column)) {
             minColumn = currDims.minimumColumn;
             maxColumn = currDims.maximumColumn;
-        } else if (currDims.minimumColumn > column, currDims.minimumColumn - column < 6) { // TODO: Why '6' here? ("Magic number is a code smell")
+        } else if (currDims.minimumColumn > column,
+                currDims.minimumColumn - column <= jumpInterval) {
             minColumn = column;
             maxColumn = currDims.maximumColumn - (currDims.minimumColumn - column);
-        } else if (currDims.maximumColumn < column, column - currDims.maximumColumn < 6) { // TODO: Why '6' here? ("Magic number is a code smell")
+        } else if (currDims.maximumColumn < column,
+                column - currDims.maximumColumn <= jumpInterval) {
             minColumn = currDims.minimumColumn + (column - currDims.maximumColumn);
             maxColumn = column;
         } else if ((0:currDims.width).contains(column)) {
