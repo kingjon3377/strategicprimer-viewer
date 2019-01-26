@@ -5,7 +5,8 @@ import strategicprimer.model.common.map {
     TileType,
     MapDimensions,
     Point,
-    IMapNG
+    IMapNG,
+    TileFixture
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
@@ -44,30 +45,43 @@ shared class HuntingModel {
     shared static Float processingTime(Integer weight) =>
             0.855 + 0.0239 * weight - 0.000000872 * weight * weight;
 
-    "An infinite iterator consisting of items taken randomly from a given stream with
+    static Integer dcIfFound(TileFixture|NothingFound item) {
+        switch (item)
+        case (is TileFixture) {
+            return item.dc;
+        }
+        case (is NothingFound) {
+            return 60;
+        }
+    }
+
+    "An infinite iterator consisting of items taken randomly, but in proportions such that
+     lower-discovery-DC items are found more often, from a given stream with
      [[NothingFound]] instances interspersed in a given percentage."
-    static class ResultIterator<Type, Absent=NothingFound>(stream, nothingProportion,
-            Absent nothingValue)
+    static class ResultIterator<Type, Absent=NothingFound>({Type*} stream,
+            nothingProportion, Absent nothingValue, Integer(Type) dc)
             satisfies Iterator<Type|Absent> given Type satisfies Object {
-        {Type*} stream;
         Float nothingProportion;
         shared actual Type|Absent next() {
             if (singletonRandom.nextFloat() < nothingProportion) {
                 return nothingValue;
-            } else if (exists retval = singletonRandom.nextElement(stream)) {
-                return retval;
+            }
+            for (item in singletonRandom.elements(stream)) {
+                if (15 + singletonRandom.nextInteger(20) >= dc(item)) {
+                    return item;
+                }
             } else {
-                log.warn("Random.nextElement() returned null");
+                log.warn("Ran out of items to encounter");
                 return nothingValue;
             }
         }
     }
 
     static class ResultStream<Type, Absent=NothingFound>({Type*} stream,
-            Float nothingProportion, Absent nothingValue)
+            Float nothingProportion, Absent nothingValue, Integer(Type) dc)
             satisfies {<Type|Absent>+} given Type satisfies Object {
         shared actual Iterator<Type|Absent> iterator() =>
-            ResultIterator(stream, nothingProportion, nothingValue);
+            ResultIterator(stream, nothingProportion, nothingValue, dc);
     }
 
     "A *non-infinite* iterator that returns 'nothing found' values in the desired
@@ -155,11 +169,12 @@ shared class HuntingModel {
             "Whereabouts to search"
             Point point,
             "Filter/provider to use to find the animals."
-            {Type|NothingFound*}(Point) chosenMap) given Type satisfies Object =>
-        ResultStream(
+            {Type|NothingFound*}(Point) chosenMap)
+        given Type satisfies Object&TileFixture => ResultStream(
             surroundingPointIterable(point, dimensions)
                 .map(chooseFromMapImpl(chosenMap)).coalesced.flatMap(identity), 0.5,
-            point->NothingFound.nothingFound);
+            point->NothingFound.nothingFound,
+                compose(dcIfFound, Entry<Point, TileFixture|NothingFound>.item));
 
     """Get a stream of hunting results from the area surrounding the given tile. About
        half will be "nothing". May be an infinite stream."""
