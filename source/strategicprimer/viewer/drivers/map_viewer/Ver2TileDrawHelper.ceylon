@@ -130,8 +130,7 @@ shared class Ver2TileDrawHelper(
     Color? getFixtureColor(IMapNG map, Point location) {
         if (exists top = getTopFixture(map, location)) {
             if (exists topTerrain = getDrawableFixtures(map, location)
-                    .filter(not(top.equals)) // TODO: reformat now lines are shorter
-                    .narrow<TerrainFixture>()
+                    .filter(not(top.equals)).narrow<TerrainFixture>()
                     .first, exists color = colorHelper.getFeatureColor(topTerrain)) {
                 return color;
 //            } else if (map.mountainous[location]) { // TODO: syntax sugar once compiler bug fixed
