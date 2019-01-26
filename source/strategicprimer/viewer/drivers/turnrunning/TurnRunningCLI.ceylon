@@ -369,10 +369,31 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             hq.addMember(resource);
         }
     }
+
+    Point? confirmPoint(String prompt) {
+        if (exists retval = cli.inputPoint(prompt)) {
+            Point selectedLocation = model.selectedUnitLocation;
+            if (selectedLocation.valid) {
+                value confirmation = cli.inputBoolean("``retval`` is ``Float.format(model
+                    .mapDimensions.distance(retval, selectedLocation), 0, 1)
+                `` away. Is that right?");
+                if (exists confirmation, confirmation) {
+                    return retval;
+                } else {
+                    return null;
+                }
+            } else {
+                cli.println("No base location, so can't estimate distance.");
+                return retval;
+            }
+        } else {
+            return null;
+        }
+    }
+
     String gather() {
         StringBuilder buffer = StringBuilder();
-        // TODO: Ask player to confirm the distance this takes the unit from
-        if (exists center = cli.inputPoint("Location to search around: "),
+        if (exists center = confirmPoint("Location to search around: "),
                 exists startingTime = cli.inputNumber("Minutes to spend gathering: ")) {
             variable Integer time = startingTime;
             variable {<Point->Grove|Shrub|Meadow|HuntingModel.NothingFound>*} encounters =
@@ -446,8 +467,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*}(Point) encounterSrc)
             () {
         StringBuilder buffer = StringBuilder();
-        // TODO: Ask player to confirm the distance this takes the unit from
-        if (exists center = cli.inputPoint("Location to search around: "),
+        if (exists center = confirmPoint("Location to search around: "),
                 exists startingTime = cli
                     .inputNumber("Minutes to spend ``command``ing: ")) {
             variable Integer time = startingTime;
@@ -525,10 +545,9 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
 
     String trap() {
         StringBuilder buffer = StringBuilder();
-        // TODO: Ask player to confirm the distance this takes the unit from
         if (exists fishing = cli.inputBooleanInSeries(
                     "Is this a fisherman trapping fish rather than a trapper?"),
-                exists center = cli.inputPoint("Location to search around: "),
+                exists center = confirmPoint("Location to search around: "),
                 exists startingTime = cli
                     .inputNumber("Minutes to spend working: ")) {
             variable {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*} encounters;
