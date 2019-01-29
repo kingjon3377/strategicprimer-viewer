@@ -49,6 +49,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.drivers.exploration.common {
     surroundingPointIterable,
     pathfinder,
+    Pathfinder,
     HuntingModel
 }
 import strategicprimer.model.common {
@@ -113,6 +114,8 @@ shared class QueryCLI satisfies ReadOnlyDriver {
         huntModel = HuntingModel(map);
     }
 
+    Pathfinder pather = pathfinder(map);
+
     "Count the workers belonging to a player."
     void countWorkers({Player*} players) {
         if (exists player = cli.chooseFromList(players.sequence(),
@@ -131,7 +134,7 @@ shared class QueryCLI satisfies ReadOnlyDriver {
                     cli.inputBoolean("Compute ground travel distance?")) {
             if (groundTravel) {
                 cli.print("Distance (on the ground, in MP cost):\t");
-                cli.println(pathfinder.getTravelDistance(map, start, end).first.string);
+                cli.println(pather.getTravelDistance(start, end).first.string);
             }
             else {
                 cli.print("Distance (as the crow files, in tiles):\t");

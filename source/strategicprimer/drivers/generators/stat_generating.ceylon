@@ -54,6 +54,7 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
     ExplorationModel,
+    Pathfinder,
     pathfinder
 }
 import ceylon.logging {
@@ -390,8 +391,9 @@ class StatGeneratingCLI satisfies CLIDriver {
                 return;
             }
         }
+        Pathfinder pather = pathfinder(model.map);
         Integer travelDistance(Point dest) =>
-                pathfinder.getTravelDistance(model.map, hqLoc, dest).first;
+                pather.getTravelDistance(hqLoc, dest).first;
         value villages = narrowedStream<Point, Village>(model.map.fixtures)
             .filter(matchingValue(unit.owner,
                 compose(Village.owner, Entry<Point, Village>.item)))

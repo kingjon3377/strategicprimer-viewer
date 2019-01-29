@@ -44,6 +44,7 @@ import strategicprimer.drivers.exploration.common {
     TraversalImpossibleException,
     simpleMovementModel,
     pathfinder,
+    Pathfinder,
     HuntingModel
 }
 import strategicprimer.model.common.map.fixtures.towns {
@@ -126,6 +127,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
         SimpleApplet(model.swearVillages, "Swear any village here to the player",
             "swear"),
         SimpleApplet(model.dig, "Dig to expose some ground here", "dig"));
+    Pathfinder pather = pathfinder(model.subordinateMaps.first?.key else model.map);
     "If the unit has a proposed path, move one more tile along it; otherwise, ask the user
      for directions once and make that move, then return to the caller."
     // No need to set the 'modified' flag anywhere in this method, as
@@ -168,9 +170,8 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 case (10) {
                     if (exists destination =
                             cli.inputPoint("Location to move toward: ")) {
-                        value [cost, path] = pathfinder.getTravelDistance(model
-                            .subordinateMaps.first?.key else model.map,
-                            point, destination);
+                        value [cost, path] = pather.getTravelDistance(point,
+                            destination);
                         if (path.empty) {
                             cli.println(
                                 "S/he doesn't know how to get there from here.");
