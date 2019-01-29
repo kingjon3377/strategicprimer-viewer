@@ -134,7 +134,7 @@ shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource arg
                 return TerrainTable(*list);
             }
             else {
-                throw AssertionError("unknown table type '``line`` in file ``name``");
+                throw ParseException("unknown table type '``line`` in file ``name``");
             }
         } else {
             throw ParseException("File ``name`` doesn't specify a table type");
