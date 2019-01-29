@@ -43,21 +43,26 @@ shared sealed interface Pathfinder {
         
 class PathfinderImpl(IMapNG map) satisfies Pathfinder {
     MutableMap<[Point, Point], Integer> tentativeDistances = 
-        HashMap<[Point, Point], Integer> { entries = map.locations.product(map.locations)
-                .map(shuffle(curry(Entry<[Point, Point], Integer>))(
-                    runtime.maxArraySize)); };
+        HashMap<[Point, Point], Integer>();
+    Boolean forUs(Point base, Set<Point> unvisited)(<[Point, Point]->Integer> entry) =>
+            entry.key.first == base && entry.key.first in unvisited;
     Point? nextUnvisited(Point base, Set<Point> unvisited) {
-        for ([start, point] in tentativeDistances.sort(increasingItem).map(Entry.key)) {
-            if (base == start, point in unvisited) {
-                return point;
+            if (exists [start, dest] = tentativeDistances.filter(forUs(base, unvisited))
+                    .sort(increasingItem).first?.key) {
+                return dest;
+            } else {
+                return null;
             }
-        }
-        return null;
     }
     "The shortest-path distance, avoiding obstacles, in MP, between two points, using
      Dijkstra's algorithm."
     shared actual [Integer, {Point*}] getTravelDistance(Point start, Point end) {
         MutableSet<Point> unvisited = HashSet { elements = map.locations; };
+        for (point in map.locations) {
+            if (!tentativeDistances.contains([start, point])) {
+                tentativeDistances[[start, point]] = runtime.maxArraySize;
+            }
+        }
         tentativeDistances[[start, start]] = 0;
         variable Point current = start;
         variable Integer iterations = 0;
