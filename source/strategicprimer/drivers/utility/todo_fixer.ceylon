@@ -136,6 +136,32 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
         }
     }
 
+    variable ExplorationRunner? _runner = null;
+    ExplorationRunner runner {
+        if (exists retval = _runner) {
+            return retval;
+        } else {
+            value retval = ExplorationRunner();
+            _runner = retval;
+            "TODO fixer requires a tables directory"
+            assert (is Directory directory = parsePath("tables").resource);
+            loadAllTables(directory, retval);
+            return retval;
+        }
+    }
+
+    String simpleTerrain(IMapNG map, Point loc) {
+        if (exists terrain = map.baseTerrain[loc], terrain == TileType.ocean) {
+            return "ocean";
+        } else if (map.mountainous.get(loc)) { // TODO: syntax sugar
+            return "mountain";
+        } else if (map.fixtures.get(loc).narrow<Forest>().empty) { // TODO: syntax sugar
+            return "plains";
+        } else {
+            return "forest";
+        }
+    }
+
     "Search for and fix aquatic villages with non-aquatic races."
     void fixAllVillages(IMapNG map) {
         {Village*} villages = map.locations
@@ -176,10 +202,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
                         ResourcePile.contents).any(shuffle(String.contains)('#')));
 
         if (!brokenTownContents.empty) {
-            value runner = ExplorationRunner();
-            "TODO fixer requires a tables directory"
-            assert (is Directory directory = parsePath("tables").resource);
-            loadAllTables(directory, runner);
+            value eRunner = runner;
             for ([loc, population] in brokenTownContents) {
                 value production = population.yearlyProduction;
                 for (resource in production.filter(compose(shuffle(String.contains)('#'),
@@ -187,13 +210,42 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
                     assert (exists table = resource.contents
                         .split('#'.equals, true, true).sequence()[1]);
                     value replacement = ResourcePile(resource.id, resource.kind,
-                        runner.recursiveConsultTable(table, loc, map.baseTerrain[loc],
+                        eRunner.recursiveConsultTable(table, loc, map.baseTerrain[loc],
                             //map.mountainous[loc],  map.fixtures[loc], // TODO: syntax sugar once compiler bug fixed
                             map.mountainous.get(loc),  map.fixtures.get(loc),
                             map.dimensions), resource.quantity);
                     production.remove(resource);
                     production.add(replacement);
                 }
+            }
+        }
+
+        {[Point, CommunityStats]*} brokenExpertise =
+            narrowedStream<Point, ITownFixture>(map.fixtures)
+                .map(entryMap(identity<Point>, ITownFixture.population))
+                .map(Entry.pair).narrow<[Point, CommunityStats]>()
+                .filter(([loc, pop]) => pop.highestSkillLevels.map(Entry.key).any(String.empty));
+        if (!brokenExpertise.empty) {
+            value eRunner = runner;
+            for ([loc, population] in brokenExpertise) {
+                assert (exists level = population.highestSkillLevels[""]);
+                population.setSkillLevel("", 0);
+                variable String newSkill = eRunner.recursiveConsultTable(
+                    simpleTerrain(map, loc) + "_skills", loc, map.baseTerrain[loc],
+                    //map.mountainous[loc],  map.fixtures[loc], map.dimensions);// TODO: syntax sugar once compiler bug fixed
+                    map.mountainous.get(loc),  map.fixtures.get(loc), map.dimensions);
+                if (exists existingLevel = population.highestSkillLevels[newSkill],
+                        existingLevel >= level) {
+                    newSkill = eRunner.recursiveConsultTable("regional_specialty", loc,
+                        //map.baseTerrain[loc], map.mountainous[loc],  map.fixtures[loc]);// TODO: syntax sugar once compiler bug fixed
+                        map.baseTerrain[loc], map.mountainous.get(loc),  map.fixtures.get(loc),
+                        map.dimensions);
+                }
+                if (exists existingLevel = population.highestSkillLevels[newSkill],
+                        existingLevel >= level) {
+                    continue;
+                }
+                population.setSkillLevel(newSkill, level);
             }
         }
     }
