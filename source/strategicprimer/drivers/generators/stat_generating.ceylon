@@ -392,12 +392,14 @@ class StatGeneratingCLI satisfies CLIDriver {
             }
         }
         Pathfinder pather = pathfinder(model.map);
-        Integer travelDistance(Point dest) =>
-                pather.getTravelDistance(hqLoc, dest).first;
+        [Integer, Float] travelDistance(Point dest) =>
+                [pather.getTravelDistance(hqLoc, dest).first, model.mapDimensions.distance(hqLoc, dest)];
         value villages = narrowedStream<Point, Village>(model.map.fixtures)
             .filter(matchingValue(unit.owner,
                 compose(Village.owner, Entry<Point, Village>.item)))
-            .map(entryMap(travelDistance, identity<Village>)).sort(increasingKey);
+            .map(entryMap(travelDistance, identity<Village>))
+            .sort(byIncreasing(compose(Tuple<Integer|Float, Integer, [Float]>.first,
+                Entry<[Integer, Float], Village>.key)));
         Integer mpPerDay = cli.inputNumber("MP per day for village volunteers:") else -1;
         for (i in 0:count) {
             String name;
@@ -409,11 +411,11 @@ class StatGeneratingCLI satisfies CLIDriver {
                 break;
             }
             Village? home;
-            for (distance->village in villages) {
+            for ([mpDistance, tileDistance]->village in villages) {
                 if (hasLeviedRecently(village)) {
                     continue;
                 } else if (singletonRandom.nextFloat() <
-                        villageChance(distance / mpPerDay + 1)) {
+                        villageChance(smallest(mpDistance.float / mpPerDay, tileDistance / 12.0).integer + 1)) {
                     excludedVillages[village] = true;
                     home = village;
                     break;
