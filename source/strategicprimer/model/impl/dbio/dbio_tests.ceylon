@@ -59,7 +59,12 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Worker,
     Giant,
     AnimalImpl,
-    AnimalTracks
+    AnimalTracks,
+    Snowbird,
+    Thunderbird,
+    Pegasus,
+    Unicorn,
+    Kraken
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     raceFactory,
@@ -104,7 +109,8 @@ import lovelace.util.common {
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"
 {Immortal(Integer)*} simpleImmortalConstructors =
-        [`Sphinx`, `Djinn`, `Griffin`, `Minotaur`, `Ogre`, `Phoenix`, `Simurgh`, `Troll`];
+        [`Sphinx`, `Djinn`, `Griffin`, `Minotaur`, `Ogre`, `Phoenix`, `Simurgh`, `Troll`,
+         `Snowbird`, `Thunderbird`, `Pegasus`, `Unicorn`, `Kraken`];
 
 {Immortal(String, Integer)*} kindedImmortalConstructors = [`Centaur`, `Dragon`, `Fairy`,
     `Giant`];

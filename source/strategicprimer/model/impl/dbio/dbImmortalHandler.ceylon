@@ -28,7 +28,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Ogre,
     Phoenix,
     Simurgh,
-    Troll
+    Troll,
+    ImmortalAnimal
 }
 import strategicprimer.model.common.xmlio {
     Warning
@@ -47,7 +48,8 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
                        OR (row IS NULL AND parent IS NOT NULL)),
                type VARCHAR(16) NOT NULL
                    CHECK (type IN('sphinx', 'djinn', 'griffin', 'minotaur', 'ogre',
-                       'phoenix', 'simurgh', 'troll')),
+                       'phoenix', 'simurgh', 'troll', 'snowbird', 'thunderbird',
+                       'pegasus', 'unicorn', 'kraken')),
                id INTEGER NOT NULL,
                image VARCHAR(255)
            );""",
@@ -68,7 +70,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
     ];
 
     shared actual void write(Sql db, Immortal obj, Point|IUnit context) {
-        if (is SimpleImmortal obj) {
+        if (is SimpleImmortal|ImmortalAnimal obj) {
             value insertion = db.Insert("""INSERT INTO simple_immortals (row, column,
                                                parent, type, id, image)
                                            VALUES(?, ?, ?, ?, ?, ?);""");
@@ -114,7 +116,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
             Warning warner) {
         assert (is String type = dbRow["type"], is Integer id = dbRow["id"],
             is String|SqlNull image = dbRow["image"]);
-        SimpleImmortal immortal;
+        SimpleImmortal|ImmortalAnimal immortal;
         switch (type)
         case ("sphinx") {
             immortal = Sphinx(id);
@@ -141,7 +143,11 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
             immortal = Troll(id);
         }
         else {
-            throw AssertionError("Unhandled 'simple immortal' type");
+            try {
+                immortal = ImmortalAnimal.parse(type)(id);
+            } catch (ParseException exception) {
+                throw AssertionError("Unhandled 'simple immortal' type");
+            }
         }
         if (is String image) {
             immortal.image = image;
