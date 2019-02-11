@@ -109,12 +109,12 @@ class StatGeneratingCLI satisfies CLIDriver {
     static String[6] statLabelArray = ["Str", "Dex", "Con", "Int", "Wis", "Cha"];
 
     "Find a fixture in a given iterable with the given ID."
-    static IFixture? findInIterable(Integer id, IFixture* fixtures) { // TODO: Take two parameter lists, so we can convert the loop in find() to an Iterable.map().find() call.
+    static IFixture? findInIterable(Integer id, {IFixture*} fixtures) { // TODO: Take two parameter lists, so we can convert the loop in find() to an Iterable.map().find() call.
         for (fixture in fixtures) {
             if (fixture.id == id) {
                 return fixture;
             } else if (is {IFixture*} fixture,
-                    exists result = findInIterable(id, *fixture)) {
+                    exists result = findInIterable(id, fixture)) {
                 return result;
             }
         }
@@ -127,7 +127,7 @@ class StatGeneratingCLI satisfies CLIDriver {
         // which is probably an eager operation on that *huge* stream.
         for (location in map.locations) {
 //            if (exists result = findInIterable(id, *map.fixtures[location])) { // TODO: syntax sugar once compiler bug fixed
-            if (exists result = findInIterable(id, *map.fixtures.get(location))) {
+            if (exists result = findInIterable(id, map.fixtures.get(location))) {
                 return result;
             }
         }
