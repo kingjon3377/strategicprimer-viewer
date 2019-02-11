@@ -50,7 +50,6 @@ import strategicprimer.viewer.drivers.worker_mgmt {
     NewUnitSource
 }
 import lovelace.util.common {
-    silentListener,
     isNumeric,
     parseInt
 }
@@ -72,7 +71,7 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
     shared actual void removeNewUnitListener(NewUnitListener listener) =>
             listeners.remove(listener);
 
-    void okListener(ActionEvent event) {
+    void okListener(ActionEvent event) { // TODO: drop parameter?
         String name = nameField.text.trimmed;
         String kind = kindField.text.trimmed;
         if (name.empty) {
@@ -123,7 +122,7 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
         dispose();
     }
 
-    JButton cancelButton = ListenedButton("Cancel", silentListener(cancelListener));
+    JButton cancelButton = ListenedButton("Cancel", cancelListener);
     platform.makeButtonsSegmented(okButton, cancelButton);
     add(cancelButton);
     setMinimumSize(Dimension(200, 100));

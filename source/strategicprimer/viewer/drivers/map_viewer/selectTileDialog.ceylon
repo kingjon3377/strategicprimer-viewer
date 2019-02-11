@@ -33,9 +33,6 @@ import strategicprimer.model.common.map {
     MapDimensions,
     Point
 }
-import lovelace.util.common {
-    silentListener
-}
 
 class NumberState of valid|nonNumeric|negative|overflow {
     shared new valid { }
@@ -83,7 +80,7 @@ class SelectTileDialog(Frame? parentFrame, IViewerModel model)
         case (NumberState.overflow) { return "must be less than ``bound``."; }
     }
 
-    void handleOK(ActionEvent ignored) {
+    void handleOK(ActionEvent ignored) { // TODO: drop parameter?
         String rowText = rowField.text;
         String columnText = columnField.text;
         errorLabel.text = "";
@@ -150,7 +147,7 @@ class SelectTileDialog(Frame? parentFrame, IViewerModel model)
         columnField.text = "-1";
         dispose();
     }
-    JButton cancelButton = ListenedButton("Cancel", silentListener(cancelHandler));
+    JButton cancelButton = ListenedButton("Cancel", cancelHandler);
 
     platform.makeButtonsSegmented(okButton, cancelButton);
     buttonPanel.add(okButton);

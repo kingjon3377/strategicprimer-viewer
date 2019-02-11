@@ -100,6 +100,9 @@ import java.awt.image {
 import strategicprimer.model.impl.xmlio {
     mapIOHelper
 }
+import java.awt.event {
+    ActionEvent
+}
 
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
@@ -558,7 +561,7 @@ class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
         }
         for (driver in drivers) {
             buttonPanel.add(ListenedButton(driver.usage.shortDescription,
-                        (evt) => buttonHandler(driver)));
+                        (ActionEvent evt) => buttonHandler(driver))); // TODO: Use defer() instead
         }
         value mainPanel = BorderedPanel.verticalPanel(
             JLabel("Please choose one of the applications below"),

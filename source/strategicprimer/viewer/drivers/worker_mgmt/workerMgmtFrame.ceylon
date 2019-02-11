@@ -282,18 +282,17 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     }
     void jumpNextWrapped() => SwingUtilities.invokeLater(jumpNext);
     value jumpButton = ListenedButton(
-        "Jump to Next Blank (``platform.shortcutDescription``J)",
-        silentListener(jumpNextWrapped));
+        "Jump to Next Blank (``platform.shortcutDescription``J)", jumpNextWrapped);
 
     StrategyExporter strategyExporter = StrategyExporter(model, options);
     void writeStrategy(PathWrapper file) => strategyExporter
         .writeStrategy(parsePath(file.string).resource, treeModel.dismissed);
     void strategyWritingListener() => SPFileChooser.save(null,
         filteredFileChooser(false, ".", null)).call(writeStrategy);
-    BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
-        ListenedButton("Add New Unit", silentListener(newUnitFrame.showWindow)),
+    BorderedPanel lowerLeft = BorderedPanel.verticalPanel( // TODO: reformat next few lines
+        ListenedButton("Add New Unit", newUnitFrame.showWindow),
         ordersPanelObj, ListenedButton("Export a proto-strategy",
-            silentListener(strategyWritingListener)));
+            strategyWritingListener));
     contentPane = horizontalSplit(verticalSplit(
         BorderedPanel.verticalPanel(
             BorderedPanel.horizontalPanel(playerLabel, null, jumpButton),

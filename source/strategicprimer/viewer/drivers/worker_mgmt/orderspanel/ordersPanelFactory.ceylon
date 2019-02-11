@@ -19,9 +19,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.model.common.map {
     Player
 }
-import lovelace.util.common {
-    silentListener
-}
+
 "Create and return a panel for the user to enter a unit's orders or read a unit's
  results."
 shared JPanel&OrdersContainer ordersPanel(Integer currentTurn, Player currentPlayer,
@@ -40,8 +38,8 @@ shared JPanel&OrdersContainer ordersPanel(Integer currentTurn, Player currentPla
         ordersConsumer, modificationListener, spinnerModel, area);
 
     if (exists ordersConsumer) {
-        JButton applyButton = ListenedButton("Apply", silentListener(retval.apply));
-        JButton revertButton = ListenedButton("Revert", silentListener(retval.revert));
+        JButton applyButton = ListenedButton("Apply", retval.apply);
+        JButton revertButton = ListenedButton("Revert", retval.revert);
         platform.makeButtonsSegmented(applyButton, revertButton);
 
         JPanel buttonPanel = (platform.systemIsMac) then

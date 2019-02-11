@@ -31,7 +31,6 @@ import javax.swing.table {
 
 import lovelace.util.common {
     Comparator,
-    silentListener,
     defer,
     PathWrapper
 }
@@ -156,10 +155,8 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
         table.preferredScrollableViewportSize = table.preferredSize;
         table.fillsViewportHeight = true;
         table.autoResizeMode = JTable.autoResizeLastColumn;
-        JButton allButton = ListenedButton("Display All",
-            silentListener(displayAllListener));
-        JButton noneButton = ListenedButton("Display None",
-            silentListener(displayNoneListener));
+        JButton allButton = ListenedButton("Display All", displayAllListener);
+        JButton noneButton = ListenedButton("Display None", displayNoneListener);
         platform.makeButtonsSegmented(allButton, noneButton);
         JPanel buttonPanel = (platform.systemIsMac) then
         centeredHorizontalBox(allButton, noneButton)

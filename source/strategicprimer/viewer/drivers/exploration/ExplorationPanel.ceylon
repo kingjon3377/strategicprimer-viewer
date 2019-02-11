@@ -95,8 +95,7 @@ import ceylon.collection {
 }
 import lovelace.util.common {
     todo,
-    simpleMap,
-    silentListener
+    simpleMap
 }
 
 todo("try to split controller-functionality from presentation")
@@ -185,7 +184,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
     }
 
     JButton explorerChangeButton = ListenedButton("Select a different explorer",
-            silentListener(explorerChangeButtonListener));
+            explorerChangeButtonListener);
 
     JLabel remainingMPLabel = JLabel("Remaining Movement Points:");
     JSpinner mpField = JSpinner(mpModel);

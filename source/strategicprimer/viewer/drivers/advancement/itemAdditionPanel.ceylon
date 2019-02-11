@@ -49,7 +49,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     setPanelSizes(retval);
 
     JPanel first = boxPanel(BoxAxis.lineAxis);
-    first.add(ListenedButton("+", (ActionEvent event) {
+    first.add(ListenedButton("+", (ActionEvent event) { // TODO: Drop parameter
         // I had wondered if Component.requestFocusInWindow() would make CardLayout flip
         // to the card containing the component, but it apparently doesn't work that way.
         layoutObj.goNext();
@@ -61,7 +61,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     JPanel second = boxPanel(BoxAxis.pageAxis);
     second.add(field);
 
-    void okListener(ActionEvent event) {
+    void okListener(ActionEvent event) { // TODO: drop parameter?
         String text = field.text;
         for (listener in listeners) {
             listener.add(what, text);
@@ -77,7 +77,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     JButton okButton = ListenedButton("OK", okListener);
     okPanel.add(okButton);
 
-    JButton cancelButton = ListenedButton("Cancel", (ActionEvent event) {
+    JButton cancelButton = ListenedButton("Cancel", (ActionEvent event) { // TODO: drop parameter
         layoutObj.goFirst();
         field.text = "";
     });

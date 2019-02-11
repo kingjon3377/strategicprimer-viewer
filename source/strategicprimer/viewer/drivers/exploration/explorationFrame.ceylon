@@ -102,7 +102,7 @@ class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
 
     driver.model.addSelectionChangeListener(explorationPanel);
 
-    void buttonListener(ActionEvent event) {
+    void buttonListener(ActionEvent event) { // TODO: drop parameter?
         log.trace("In ExplorationFrame.buttonListener");
         if (exists selectedValue = unitList.selectedValue, !unitList.selectionEmpty) {
             driver.model.selectedUnit = selectedValue;
