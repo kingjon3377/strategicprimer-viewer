@@ -75,7 +75,7 @@ class WorkerPrintCLI satisfies ReadOnlyDriver {
         for (worker in unit.narrow<IWorker>()) {
             cli.print("- ", worker.name);
             if (worker.race != "human") {
-                cli.print(" (``worker.race``)"); // TODO: Avoid interpolation
+                cli.print(" (", worker.race, ")");
             }
 
             {IJob*} jobs = worker.filter(compose(Integer.positive, IJob.level));
@@ -83,9 +83,9 @@ class WorkerPrintCLI satisfies ReadOnlyDriver {
                 cli.print(" (", ", ".join(jobs.map(jobString)), ")");
             }
 
-            if (exists stats = worker.stats) { // TODO: avoid interpolation
-                cli.print(" [``", ".join(zipPairs(statLabelArray,
-                    stats.array.map(WorkerStats.getModifierString)).map(" ".join))``]");
+            if (exists stats = worker.stats) {
+                cli.print(" [", ", ".join(zipPairs(statLabelArray,
+                    stats.array.map(WorkerStats.getModifierString)).map(" ".join)), "]");
             }
             cli.println();
         }
