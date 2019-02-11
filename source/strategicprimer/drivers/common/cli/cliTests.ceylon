@@ -335,7 +335,7 @@ object cliTests {
 
     "Test [[ICLIHelper.print]] and [[println|ICLIHelper.println]]."
     test
-    shared void testPrinting() { // TODO: Test varargs form of print()
+    shared void testPrinting() {
         StringBuilder ostream = StringBuilder();
         CLIHelper(LinkedList<String>().accept, ostream.append).print("test string");
         assertEquals(ostream.string, "test string", "print() prints string");
@@ -343,6 +343,10 @@ object cliTests {
         CLIHelper(LinkedList<String>().accept, ostream.append).println("test two");
         assertEquals(ostream.string, "test two``operatingSystem.newline``",
             "println() adds newline");
+        ostream.clear();
+        CLIHelper(LinkedList<String>().accept, ostream.append).print("test three ", "test four");
+        assertEquals(ostream.string, "test three test four",
+            "print() with multiple arguments works");
     }
 
     "Test [[ICLIHelper.inputPoint]]."
