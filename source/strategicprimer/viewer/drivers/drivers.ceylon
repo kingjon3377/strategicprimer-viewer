@@ -1,6 +1,4 @@
 import ceylon.collection {
-    MutableMap,
-    HashMap,
     ArrayList,
     MutableList
 }
@@ -88,11 +86,13 @@ import lovelace.util.common {
     defer,
     silentListener,
     PathWrapper,
-    MissingFileException
+    MissingFileException,
+    matchingValue
 }
 import com.vasileff.ceylon.structures {
     MutableMultimap,
-    ArrayListMultimap
+    ArrayListMultimap,
+    HashMultimap
 }
 import java.awt.image {
     BufferedImage
@@ -116,19 +116,13 @@ object appChooserState {
     }
 
     "Create the cache of driver objects."
-    shared [Map<String, DriverFactory>, Map<String, DriverFactory>] createCache() {
-        MutableMap<String, DriverFactory> cliCache = HashMap<String, DriverFactory>();
-        MutableMap<String, DriverFactory> guiCache = HashMap<String, DriverFactory>();
+    shared Map<String, {DriverFactory*}> createCache() {
+        MutableMultimap<String, DriverFactory> cache =
+            HashMultimap<String, DriverFactory>();
         MutableMultimap<String, DriverFactory> conflicts =
                 ArrayListMultimap<String, DriverFactory>();
         void addToCache({DriverFactory*} factories) {
             for (factory in factories) {
-                MutableMap<String, DriverFactory> cache;
-                if (factory.usage.graphical) {
-                    cache = guiCache;
-                } else {
-                    cache = cliCache;
-                }
                 for (command in factory.usage.invocations) {
                     if (command.startsWith("-")) {
                         log.error("A driver wants to register an option, ``command
@@ -137,21 +131,23 @@ object appChooserState {
                         log.warn("Additional conflict for '``command``': '``
                             factory.usage.shortDescription``'");
                         conflicts.put(command, factory);
-                    } else if (exists existing = cache[command]) {
+                    } else if (exists existing = cache.get(command)
+                            .find(matchingValue(factory.usage.graphical,
+                                compose(IDriverUsage.graphical, DriverFactory.usage)))) {
                         log.warn("Invocation command conflict for '``command``' between '``
                             factory.usage.shortDescription``' and '``
                             existing.usage.shortDescription``'");
                         conflicts.put(command, factory);
                         conflicts.put(command, existing);
-                        cache.remove(command);
+                        cache.remove(command, existing);
                     } else {
-                        cache[command] = factory;
+                        cache.put(command, factory);
                     }
                 }
             }
         }
         addToCache(`module strategicprimer.viewer`.findServiceProviders(`DriverFactory`));
-        return [cliCache, guiCache];
+        return cache.asMap;
     }
 
     "Create the usage message for a particular driver."
@@ -351,7 +347,7 @@ class DriverWrapper(DriverFactory factory) {
 }
 
 class AppStarter() {
-    [Map<String, DriverFactory>, Map<String, DriverFactory>] driverCache =
+    Map<String, {DriverFactory*}> driverCache =
             appChooserState.createCache(); // TODO: Can we inline that into here?
 
     Boolean includeInCLIList(DriverFactory driver) => driver.usage.includeInList(false);
@@ -415,25 +411,19 @@ class AppStarter() {
         log.trace("Reached the end of arguments");
         // TODO: Use appletChooser so we can support prefixes
         DriverFactory? currentDriver;
-        if (gui) {
-            if (exists first = others.first, exists driver = driverCache[1][first]) {
-                log.trace("Found a GUI driver in GUI mode");
-                currentDriver = driver;
-            } else if (exists first = others.first, exists driver = driverCache[0][first]) {
-                log.trace("We're in GUI mode, but CLI-only app specified");
-                currentDriver = driver;
+        if (exists command = others.first, exists drivers = driverCache[command],
+                exists first = drivers.first) {
+            log.trace("Found a driver or drivers");
+            if (drivers.rest.empty) {
+                log.trace("Only one driver registered for that command");
+                currentDriver = first;
             } else {
-                log.trace("No matching driver found");
-                currentDriver = null;
+                log.trace("Multiple drivers registered; filtering by interface");
+                currentDriver = drivers.find(matchingValue(gui,
+                    compose(IDriverUsage.graphical, DriverFactory.usage)));
             }
-        } else if (exists first = others.first, exists driver = driverCache[0][first]) {
-            log.trace("Found a CLI driver in CLI mode");
-            currentDriver = driver;
-        } else if (exists first = others.first, exists driver = driverCache[1][first]) {
-            log.trace("We're in CLI mode, but GUI-only app specified");
-            currentDriver = driver;
         } else {
-            log.trace("No matching driver found when in CLI mode");
+            log.trace("No matching driver found");
             currentDriver = null;
         }
         if (currentOptions.hasOption("--help")) {
@@ -447,8 +437,7 @@ class AppStarter() {
                 process.writeLine(
                     "No app specified; use one of the following invocations:");
                 process.writeLine();
-                for (driver in driverCache[0].chain(driverCache[1])
-                        .map(Entry.item).distinct) {
+                for (driver in driverCache.flatMap(Entry.item).distinct) {
                     value lines = appChooserState.usageMessage(driver.usage,
                         options.getArgument("--verbose") == "true").lines;
                     String invocationExample = lines.first.replace("Usage: ", "");
@@ -474,7 +463,7 @@ class AppStarter() {
                 }
             } else {
                 if (exists chosenDriver = cli.chooseFromList(
-                        driverCache.first.items.distinct.filter(includeInCLIList)
+                        driverCache.flatMap(Entry.item).distinct.filter(includeInCLIList)
                             .sequence(),
                         "CLI apps available:", "No applications available",
                         "App to start: ", true).item) {
