@@ -561,7 +561,7 @@ class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
         }
         for (driver in drivers) {
             buttonPanel.add(ListenedButton(driver.usage.shortDescription,
-                        (ActionEvent evt) => buttonHandler(driver))); // TODO: Use defer() instead
+                        defer(buttonHandler, [driver])));
         }
         value mainPanel = BorderedPanel.verticalPanel(
             JLabel("Please choose one of the applications below"),
