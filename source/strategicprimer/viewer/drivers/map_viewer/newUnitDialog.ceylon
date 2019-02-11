@@ -8,9 +8,6 @@ import java.awt {
     GridLayout,
     Container
 }
-import java.awt.event {
-    ActionEvent
-}
 import java.text {
     NumberFormat
 }

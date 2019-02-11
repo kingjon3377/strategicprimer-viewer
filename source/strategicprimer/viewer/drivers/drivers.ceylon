@@ -100,9 +100,6 @@ import java.awt.image {
 import strategicprimer.model.impl.xmlio {
     mapIOHelper
 }
-import java.awt.event {
-    ActionEvent
-}
 
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);

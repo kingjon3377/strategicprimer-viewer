@@ -2,9 +2,6 @@ import java.awt {
     Component,
     Frame
 }
-import java.awt.event {
-    ActionEvent
-}
 
 import javax.swing {
     JTextField,

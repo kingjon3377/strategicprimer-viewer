@@ -5,9 +5,6 @@ import lovelace.util.common {
 import java.awt {
     Dimension
 }
-import java.awt.event {
-    ActionEvent
-}
 import javax.swing {
     JButton,
     JTextField,
