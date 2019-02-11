@@ -421,7 +421,7 @@ class AppStarter() {
                 log.trace("Found a GUI driver in GUI mode");
                 currentDriver = driver;
             } else if (exists first = others.first, exists driver = driverCache[0][first]) {
-                log.warn("We're in GUI mode, but CLI-only app specified");
+                log.trace("We're in GUI mode, but CLI-only app specified");
                 currentDriver = driver;
             } else {
                 log.trace("No matching driver found");
@@ -431,7 +431,7 @@ class AppStarter() {
             log.trace("Found a CLI driver in CLI mode");
             currentDriver = driver;
         } else if (exists first = others.first, exists driver = driverCache[1][first]) {
-            log.warn("We're in CLI mode, but GUI-only app specified");
+            log.trace("We're in CLI mode, but GUI-only app specified");
             currentDriver = driver;
         } else {
             log.trace("No matching driver found when in CLI mode");
