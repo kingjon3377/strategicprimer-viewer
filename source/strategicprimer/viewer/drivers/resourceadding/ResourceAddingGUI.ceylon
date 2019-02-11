@@ -215,7 +215,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             playerIsDefault = false;
         }
 
-        void resourceListener(ActionEvent event) { // TODO: drop parameter?
+        void resourceListener(ActionEvent ignored) { // Param required for fields, below
             confirmPlayer();
             String kind = resourceKindBox.selectedString;
             String resource = resourceBox.selectedString;
@@ -280,7 +280,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         SpinnerNumberModel implementQuantityModel = SpinnerNumberModel(1, 1, 2000, 1);
         JSpinner implementQuantityField = JSpinner(implementQuantityModel);
         UpdatedComboBox implementKindBox = UpdatedComboBox(logLabel.append);
-        void implementListener(ActionEvent event) { // TODO: drop parameter?
+        void implementListener(ActionEvent ignored) { // Param required for fields, below
             confirmPlayer();
             String kind = implementKindBox.selectedString;
             if (kind.empty) {

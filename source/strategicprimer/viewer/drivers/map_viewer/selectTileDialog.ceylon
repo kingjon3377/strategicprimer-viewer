@@ -80,7 +80,7 @@ class SelectTileDialog(Frame? parentFrame, IViewerModel model)
         case (NumberState.overflow) { return "must be less than ``bound``."; }
     }
 
-    void handleOK(ActionEvent ignored) { // TODO: drop parameter?
+    void handleOK(ActionEvent ignored) { // Param needed because added to two JTextFields
         String rowText = rowField.text;
         String columnText = columnField.text;
         errorLabel.text = "";
