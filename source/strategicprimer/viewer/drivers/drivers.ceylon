@@ -129,23 +129,23 @@ object appChooserState {
                 } else {
                     cache = cliCache;
                 }
-                for (option in factory.usage.invocations) {
-                    if (option.startsWith("-")) {
-                        log.error("A driver wants to register an option, ``option
+                for (command in factory.usage.invocations) {
+                    if (command.startsWith("-")) {
+                        log.error("A driver wants to register an option, ``command
                             ``, not a subcommand");
-                    } else if (conflicts.defines(option)) {
-                        log.warn("Additional conflict for '``option``': '``
+                    } else if (conflicts.defines(command)) {
+                        log.warn("Additional conflict for '``command``': '``
                             factory.usage.shortDescription``'");
-                        conflicts.put(option, factory);
-                    } else if (exists existing = cache[option]) {
-                        log.warn("Invocation option conflict for '``option``' between '``
+                        conflicts.put(command, factory);
+                    } else if (exists existing = cache[command]) {
+                        log.warn("Invocation command conflict for '``command``' between '``
                             factory.usage.shortDescription``' and '``
                             existing.usage.shortDescription``'");
-                        conflicts.put(option, factory);
-                        conflicts.put(option, existing);
-                        cache.remove(option);
+                        conflicts.put(command, factory);
+                        conflicts.put(command, existing);
+                        cache.remove(command);
                     } else {
-                        cache[option] = factory;
+                        cache[command] = factory;
                     }
                 }
             }
