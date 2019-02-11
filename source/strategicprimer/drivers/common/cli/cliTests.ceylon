@@ -333,22 +333,16 @@ object cliTests {
             "chooseStringFromList handles empty list");
     }
 
-    "A helper method for testing [[ICLIHelper]] methods that don't take input
-     from the user or return values." // TODO: Test varargs form of print()
-    void assertPrintingOutput(Method<ICLIHelper, Anything, [String]> method,
-            String argument, String expected, String message) {
-        StringBuilder ostream = StringBuilder();
-        method(CLIHelper(LinkedList<String>().accept, ostream.append))(argument);
-        assertEquals(ostream.string, expected, message);
-    }
-
     "Test [[ICLIHelper.print]] and [[println|ICLIHelper.println]]."
     test
-    shared void testPrinting() {
-        assertPrintingOutput(`ICLIHelper.print`, "test string", "test string",
-            "print() prints string");
-        assertPrintingOutput(`ICLIHelper.println`, "test two",
-            "test two``operatingSystem.newline``", "println() adds newline");
+    shared void testPrinting() { // TODO: Test varargs form of print()
+        StringBuilder ostream = StringBuilder();
+        CLIHelper(LinkedList<String>().accept, ostream.append).print("test string");
+        assertEquals(ostream.string, "test string", "print() prints string");
+        ostream.clear();
+        CLIHelper(LinkedList<String>().accept, ostream.append).println("test two");
+        assertEquals(ostream.string, "test two``operatingSystem.newline``",
+            "println() adds newline");
     }
 
     "Test [[ICLIHelper.inputPoint]]."
