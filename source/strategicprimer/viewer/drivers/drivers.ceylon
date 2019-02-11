@@ -121,32 +121,30 @@ object appChooserState {
             HashMultimap<String, DriverFactory>();
         MutableMultimap<String, DriverFactory> conflicts =
                 ArrayListMultimap<String, DriverFactory>();
-        void addToCache({DriverFactory*} factories) {
-            for (factory in factories) {
-                for (command in factory.usage.invocations) {
-                    if (command.startsWith("-")) {
-                        log.error("A driver wants to register an option, ``command
-                            ``, not a subcommand");
-                    } else if (conflicts.defines(command)) {
-                        log.warn("Additional conflict for '``command``': '``
-                            factory.usage.shortDescription``'");
-                        conflicts.put(command, factory);
-                    } else if (exists existing = cache.get(command)
-                            .find(matchingValue(factory.usage.graphical,
-                                compose(IDriverUsage.graphical, DriverFactory.usage)))) {
-                        log.warn("Invocation command conflict for '``command``' between '``
-                            factory.usage.shortDescription``' and '``
-                            existing.usage.shortDescription``'");
-                        conflicts.put(command, factory);
-                        conflicts.put(command, existing);
-                        cache.remove(command, existing);
-                    } else {
-                        cache.put(command, factory);
-                    }
+        for (factory in `module strategicprimer.viewer`
+                .findServiceProviders(`DriverFactory`)) {
+            for (command in factory.usage.invocations) {
+                if (command.startsWith("-")) {
+                    log.error("A driver wants to register an option, ``command
+                        ``, not a subcommand");
+                } else if (conflicts.defines(command)) {
+                    log.warn("Additional conflict for '``command``': '``
+                        factory.usage.shortDescription``'");
+                    conflicts.put(command, factory);
+                } else if (exists existing = cache.get(command)
+                        .find(matchingValue(factory.usage.graphical,
+                            compose(IDriverUsage.graphical, DriverFactory.usage)))) {
+                    log.warn("Invocation command conflict for '``command``' between '``
+                        factory.usage.shortDescription``' and '``
+                        existing.usage.shortDescription``'");
+                    conflicts.put(command, factory);
+                    conflicts.put(command, existing);
+                    cache.remove(command, existing);
+                } else {
+                    cache.put(command, factory);
                 }
             }
         }
-        addToCache(`module strategicprimer.viewer`.findServiceProviders(`DriverFactory`));
         return cache.asMap;
     }
 
