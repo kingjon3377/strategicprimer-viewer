@@ -35,8 +35,8 @@ import lovelace.util.common {
     randomlyGenerated,
     PathWrapper,
     MissingFileException,
-    singletonRandom,
-    MalformedXMLException
+    MalformedXMLException,
+    fewParameters
 }
 
 import strategicprimer.model.common.idreg {
@@ -141,16 +141,11 @@ import ceylon.language.meta.declaration {
 
 // Unfortunately, encapsulating anything referred to by parameters()
 // results in a compile error about it being a "metamodel reference to local declaration"
-// TODO: Wrapper around parameters() to limit # chosen each time instead of take() here
-{String*} races => singletonRandom.elements(raceFactory.races.distinct).take(2);
-{String*} animalStatuses => singletonRandom.elements(["wild", "semi-domesticated",
-    "domesticated", "tame"]).take(2);
-{String*} treeTypes => singletonRandom.elements(["oak", "larch", "terebinth", "elm",
-    "skybroom", "silver maple"]).take(2);
-{String*} fieldTypes => singletonRandom.elements(["wheat", "amaranth", "bluegrass",
-    "corn", "winter wheat"]).take(2);
-{String*} minerals => singletonRandom.elements(["coal", "platinum", "oil", "diamonds",
-    "natural gas"]).take(2);
+{String*} races => raceFactory.races.distinct;
+{String*} animalStatuses = ["wild", "semi-domesticated", "domesticated", "tame"];
+{String*} treeTypes = ["oak", "larch", "terebinth", "elm", "skybroom", "silver maple"];
+{String*} fieldTypes = ["wheat", "amaranth", "bluegrass", "corn", "winter wheat"];
+{String*} minerals = ["coal", "platinum", "oil", "diamonds", "natural gas"];
 
 object xmlTests {
     """The "filename" to give to map-readers when they require one."""
@@ -421,7 +416,7 @@ object xmlTests {
     shared void testVillageWantsName(
             enumeratedParameter(`class TownStatus`) TownStatus status,
             randomlyGenerated(2) Integer id,
-            parameters(`value races`) String race,
+            fewParameters(`value races`, 3) String race,
             enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
         Village village = Village(status, "", id, PlayerImpl(-1, ""), race);
         assertMissingProperty(createSerializedForm(village, deprecatedWriter),
@@ -430,9 +425,11 @@ object xmlTests {
 
     "Test basic (de)serialization of [[villages|Village]]."
     test
-    shared void testBasicVillageSerialization(parameters(`value treeTypes`) String name,
+    shared void testBasicVillageSerialization(
+            fewParameters(`value treeTypes`, 2) String name,
             enumeratedParameter(`class TownStatus`) TownStatus status,
-            parameters(`value races`) String race, randomlyGenerated(1) Integer id) {
+            fewParameters(`value races`, 3) String race,
+            randomlyGenerated(1) Integer id) {
         Player owner = PlayerImpl(-1, "");
         Village village = Village(status, name, id, owner, race);
         assertSerialization("Basic Village serialization", Village(status, name, id,
@@ -456,7 +453,7 @@ object xmlTests {
     test
     shared void testVillagePopulationSerialization(
             enumeratedParameter(`class TownStatus`) TownStatus status,
-            parameters(`value races`) String race, randomlyGenerated(1) Integer id,
+            fewParameters(`value races`, 3) String race, randomlyGenerated(1) Integer id,
             randomlyGenerated(1) Integer populationSize,
             randomlyGenerated(1) Integer workedField,
             randomlyGenerated(1) Integer producedId,
@@ -494,7 +491,7 @@ object xmlTests {
     shared void testCitySerialization(enumeratedParameter(`class TownSize`) TownSize size,
             enumeratedParameter(`class TownStatus`) TownStatus status,
             randomlyGenerated(1) Integer id, randomlyGenerated(1) Integer dc,
-            parameters(`value treeTypes`) String name) {
+            fewParameters(`value treeTypes`, 2) String name) {
         Player owner = PlayerImpl(-1, "");
         assertSerialization("City serialization",
             City(status, size, dc, name, id, owner));
@@ -513,10 +510,11 @@ object xmlTests {
     "Test (de)serialization of [[cities'|City]] [[population
      details|CommunityStats]]."
     test
-    shared void testCityPopulationSerialization(parameters(`value treeTypes`) String name,
+    shared void testCityPopulationSerialization(
+            fewParameters(`value treeTypes`, 2) String name,
             enumeratedParameter(`class TownSize`) TownSize size,
             enumeratedParameter(`class TownStatus`) TownStatus status,
-            parameters(`value races`) String race, randomlyGenerated(1) Integer id,
+            fewParameters(`value races`, 3) String race, randomlyGenerated(1) Integer id,
             randomlyGenerated(1) Integer dc,
             randomlyGenerated(1) Integer populationSize,
             randomlyGenerated(1) Integer workedField,
@@ -1070,7 +1068,7 @@ object xmlTests {
     test
     shared void testGroveSerialization(enumeratedParameter(`class Boolean`) Boolean fruit,
             enumeratedParameter(`class Boolean`) Boolean cultivated,
-            parameters(`value treeTypes`) String trees,
+            fewParameters(`value treeTypes`, 2) String trees,
             randomlyGenerated(2) Integer id) {
         assertSerialization("Test of [[Grove]] serialization",
             Grove(fruit, cultivated, trees, id));
@@ -1099,7 +1097,7 @@ object xmlTests {
     test
     shared void testMeadowSerialization(randomlyGenerated(2) Integer id,
             enumeratedParameter(`class FieldStatus`) FieldStatus status,
-            parameters(`value fieldTypes`) String kind,
+            fewParameters(`value fieldTypes`, 2) String kind,
             enumeratedParameter(`class Boolean`) Boolean field,
             enumeratedParameter(`class Boolean`) Boolean cultivated) {
         assertSerialization("Test of [[Meadow]] serialization",
@@ -1127,7 +1125,7 @@ object xmlTests {
     todo("Further randomize (use provided parameters in missing-property assertions")
     test
     shared void testMineSerialization(randomlyGenerated(2) Integer id,
-            parameters(`value minerals`) String kind,
+            fewParameters(`value minerals`, 2) String kind,
             enumeratedParameter(`class TownStatus`) TownStatus status,
             enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
         Mine mine = Mine(kind, status, id);
@@ -1148,7 +1146,7 @@ object xmlTests {
     todo("Further randomize (use provided parameters in missing-property assertions")
     test
     shared void testShrubSerialization(randomlyGenerated(2) Integer id,
-            parameters(`value fieldTypes`) String kind,
+            fewParameters(`value fieldTypes`, 2) String kind,
             enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
         Shrub shrub = Shrub(kind, id);
         assertSerialization("First test of Shrub serialization", shrub);
@@ -1201,8 +1199,8 @@ object xmlTests {
     shared void testUnitWarnings(
             enumeratedParameter(`class Boolean`) Boolean deprecatedWriter,
             randomlyGenerated(2) Integer id,
-            parameters(`value treeTypes`) String name,
-            parameters(`value fieldTypes`) String kind) {
+            fewParameters(`value treeTypes`, 2) String name,
+            fewParameters(`value fieldTypes`, 2) String kind) {
         // TODO: should probably test spaces in name and kind
         assertUnwantedChild<IUnit>("<unit><unit /></unit>", null);
         IUnit firstUnit = Unit(PlayerImpl(1, ""), kind, name, id);
@@ -1374,7 +1372,8 @@ object xmlTests {
     "Test that [[animal tracks|AnimalTracks]] are properly (de)serialized,
      including that the old now-deprecated XML idiom is still read properly."
     test
-    shared void testAnimalTracksSerialization(parameters(`value treeTypes`) String kind) {
+    shared void testAnimalTracksSerialization(
+            fewParameters(`value treeTypes`, 2) String kind) {
         assertSerialization("Test of animal-track serialization", AnimalTracks(kind));
         assertUnwantedChild<AnimalTracks>(
             """<animal kind="tracks" traces="true"><troll /></animal>""", null);
@@ -1688,7 +1687,7 @@ object xmlTests {
     shared void testMineralSerialization(
             randomlyGenerated(2) Integer dc,
             randomlyGenerated(2) Integer id,
-            parameters(`value minerals`) String kind,
+            fewParameters(`value minerals`, 2) String kind,
             enumeratedParameter(`class Boolean`) Boolean exposed,
             enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
         MineralVein secondVein = MineralVein(kind, exposed, dc, id);

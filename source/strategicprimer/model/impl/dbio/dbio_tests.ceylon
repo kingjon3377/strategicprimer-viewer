@@ -103,7 +103,8 @@ import strategicprimer.model.common.xmlio {
 import lovelace.util.common {
     enumeratedParameter,
     randomlyGenerated,
-    todo
+    todo,
+    fewParameters
 }
 
 // Unfortunately, encapsulating anything referred to by parameters()
@@ -384,7 +385,7 @@ object dbio_tests {
     shared void testVillageSerialization(
         enumeratedParameter(`class TownStatus`) TownStatus status,
         randomlyGenerated(1) Integer id,
-        parameters(`value races`) String race) =>
+        fewParameters(`value races`, 3) String race) =>
             assertFixtureSerialization(Village(status, "village name", id,
                 PlayerImpl(1, "player name"), race));
 }
