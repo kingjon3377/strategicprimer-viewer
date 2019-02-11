@@ -54,7 +54,7 @@ object arrowListenerInitializer {
         KeyEvent.vkCircumflex->"caret", '#'.integer->"end",'^'.integer->"caret"
     ];
 
-    void repeatVoid(Anything() func, Integer times) { // TODO: Condense with invoke()?
+    void repeatVoid(Anything() func, Integer times) {
         for (i in 0:times) {
             func();
         }
