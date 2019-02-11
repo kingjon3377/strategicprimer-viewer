@@ -1,5 +1,6 @@
 import lovelace.util.common {
-    todo
+    todo,
+    silentListener
 }
 import java.awt {
     Dimension
@@ -49,7 +50,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     setPanelSizes(retval);
 
     JPanel first = boxPanel(BoxAxis.lineAxis);
-    first.add(ListenedButton("+", (ActionEvent event) { // TODO: Drop parameter
+    first.add(ListenedButton("+", () {
         // I had wondered if Component.requestFocusInWindow() would make CardLayout flip
         // to the card containing the component, but it apparently doesn't work that way.
         layoutObj.goNext();
@@ -61,7 +62,7 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
     JPanel second = boxPanel(BoxAxis.pageAxis);
     second.add(field);
 
-    void okListener(ActionEvent event) { // TODO: drop parameter?
+    void okListener() {
         String text = field.text;
         for (listener in listeners) {
             listener.add(what, text);
@@ -70,14 +71,14 @@ JPanel&AddRemoveSource itemAdditionPanel("What we're adding" String what) {
         field.text = "";
     }
 
-    field.addActionListener(okListener);
+    field.addActionListener(silentListener(okListener));
     field.setActionCommand("OK");
 
     JPanel okPanel = boxPanel(BoxAxis.lineAxis);
     JButton okButton = ListenedButton("OK", okListener);
     okPanel.add(okButton);
 
-    JButton cancelButton = ListenedButton("Cancel", (ActionEvent event) { // TODO: drop parameter
+    JButton cancelButton = ListenedButton("Cancel", () {
         layoutObj.goFirst();
         field.text = "";
     });
