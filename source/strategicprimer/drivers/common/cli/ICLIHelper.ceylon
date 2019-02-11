@@ -85,10 +85,10 @@ shared interface ICLIHelper {
             "The line to print"
             String line = "");
 
-    "Print the specified string."
+    "Print the specified strings."
     shared formal void print(
-            "The string to print."
-            String text);
+            "The strings to print."
+            String+ text);
 
     "Get a [[Point]] from the user. This is a convenience wrapper around [[inputNumber]].
      Returns [[null]] on EOF."

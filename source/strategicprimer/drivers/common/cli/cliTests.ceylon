@@ -334,7 +334,7 @@ object cliTests {
     }
 
     "A helper method for testing [[ICLIHelper]] methods that don't take input
-     from the user or return values."
+     from the user or return values." // TODO: Test varargs form of print()
     void assertPrintingOutput(Method<ICLIHelper, Anything, [String]> method,
             String argument, String expected, String message) {
         StringBuilder ostream = StringBuilder();

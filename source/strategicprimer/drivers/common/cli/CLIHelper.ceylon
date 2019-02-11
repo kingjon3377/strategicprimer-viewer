@@ -186,7 +186,11 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
                 identity);
 
     "Print the specified string."
-    shared actual void print(String text) => ostream(text);
+    shared actual void print(String+ text) {
+        for (part in text) {
+            ostream(part);
+        }
+    }
 
     "Ask the user for a multiline string."
     shared actual String? inputMultilineString(String prompt) {
