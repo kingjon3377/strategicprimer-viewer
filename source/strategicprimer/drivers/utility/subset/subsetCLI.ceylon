@@ -60,7 +60,7 @@ shared class SubsetCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
     shared actual void startDriver() {
         for (map->[file, _] in model.subordinateMaps) {
             String filename = file?.string else "map without a filename";
-            cli.print("``filename``\t...\t\t");
+            cli.print("``filename``\t...\t\t"); // TODO: avoid interpolation
             if (model.map.isSubset(map, report(filename))) {
                 cli.println("OK");
             } else {

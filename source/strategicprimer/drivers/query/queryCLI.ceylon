@@ -202,14 +202,9 @@ shared class QueryCLI satisfies ReadOnlyDriver {
                 //for (town in map.fixtures[location].narrow<ITownFixture>()) { // TODO: syntax sugar once compiler bug fixed
                 if (town.status == TownStatus.active, exists population = town.population,
                         !population.yearlyProduction.empty) {
-                    cli.print("At ");
-                    cli.print(location.string);
-                    cli.print(comparator.distanceString(location, "base"));
-                    cli.print(": ");
-                    cli.print(town.name);
-                    cli.print(", a");
-                    cli.print(town.townSize.string);
-                    cli.print(" ");
+                    cli.print("At ", location.string);
+                    cli.print(comparator.distanceString(location, "base"), ": ");
+                    cli.print(town.name, ", a", town.townSize.string, " ");
                     if (is Village town, town.race != "human") {
                         cli.print(town.race);
                         cli.print(" village");
@@ -218,18 +213,14 @@ shared class QueryCLI satisfies ReadOnlyDriver {
                     }
                     cli.println(". Its yearly production:");
                     for (resource in population.yearlyProduction) {
-                        cli.print("- ");
-                        cli.print(resource.kind);
-                        cli.print(": ");
+                        cli.print("- ", resource.kind, ": ");
                         cli.print(resource.quantity.number.string);
                         if (resource.quantity.units.empty) {
                             cli.print(" ");
                         } else if ("dozen" == resource.quantity.units) {
                             cli.print(" dozen ");
                         } else {
-                            cli.print(" ");
-                            cli.print(resource.quantity.units);
-                            cli.print(" of ");
+                            cli.print(" ", resource.quantity.units, " of ");
                         }
                         cli.println(resource.contents);
                         if (resource.contents == "milk") {

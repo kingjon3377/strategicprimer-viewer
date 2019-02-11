@@ -702,13 +702,8 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         } else {
             model.selectedUnit = unit;
         }
-        cli.print("Orders for unit ");
-        cli.print(unit.name);
-        cli.print(" (");
-        cli.print(unit.kind);
-        cli.print(") for turn ");
-        cli.print(turn.string);
-        cli.print(": ");
+        cli.print("Orders for unit ", unit.name, " (", unit.kind);
+        cli.print(") for turn ", turn.string, ": ");
         cli.println(unit.getLatestOrders(turn));
         StringBuilder buffer = StringBuilder();
         while (true) {

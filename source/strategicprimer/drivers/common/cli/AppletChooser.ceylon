@@ -23,8 +23,7 @@ shared class AppletChooser<AppletClass>(ICLIHelper cli, AppletClass* applets)
     void usageMessage() {
         cli.println("The following commands are supported:");
         for (applet in applets) {
-            cli.print(", ".join(applet.commands));
-            cli.print(": ");
+            cli.print(", ".join(applet.commands), ": ");
             cli.println(applet.description);
         }
         cli.println("help, ?: Print this list of commands.");
