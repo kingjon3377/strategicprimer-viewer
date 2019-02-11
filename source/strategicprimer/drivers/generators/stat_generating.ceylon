@@ -114,7 +114,7 @@ class StatGeneratingCLI satisfies CLIDriver {
             if (fixture.id == id) {
                 return fixture;
             } else if (is {IFixture*} fixture,
-                exists result = findInIterable(id, *fixture)) {
+                    exists result = findInIterable(id, *fixture)) {
                 return result;
             }
         }
