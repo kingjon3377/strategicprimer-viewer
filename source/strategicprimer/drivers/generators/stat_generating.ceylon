@@ -123,8 +123,6 @@ class StatGeneratingCLI satisfies CLIDriver {
 
     "Find a fixture in a map by ID number."
     static IFixture? find(IMapNG map, Integer id) {
-        // We don't want to use fixtureEntries here because we'd have to spread it,
-        // which is probably an eager operation on that *huge* stream.
         for (location in map.locations) {
 //            if (exists result = findInIterable(id, *map.fixtures[location])) { // TODO: syntax sugar once compiler bug fixed
             if (exists result = findInIterable(id, map.fixtures.get(location))) {
