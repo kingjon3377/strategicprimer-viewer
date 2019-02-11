@@ -51,7 +51,8 @@ import strategicprimer.viewer.drivers.worker_mgmt {
 }
 import lovelace.util.common {
     isNumeric,
-    parseInt
+    parseInt,
+    silentListener
 }
 
 "A dialog to let the user add a new unit."
@@ -71,7 +72,7 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
     shared actual void removeNewUnitListener(NewUnitListener listener) =>
             listeners.remove(listener);
 
-    void okListener(ActionEvent event) { // TODO: drop parameter?
+    void okListener() {
         String name = nameField.text.trimmed;
         String kind = kindField.text.trimmed;
         if (name.empty) {
@@ -102,7 +103,7 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
     add(JLabel("<html><b>Unit Name:&nbsp;</b></html>"));
     void setupField(JTextField field) {
         field.setActionCommand("OK");
-        field.addActionListener(okListener);
+        field.addActionListener(silentListener(okListener));
         add(field);
     }
 
