@@ -159,15 +159,14 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
         }
     }
 
-    // TODO: Make a void function
-    void okListener(ActionEvent event) {
+    void okListener() {
         search();
         setVisible(false);
         parent.requestFocus();
         dispose();
     }
 
-    searchField.addActionListener(okListener);
+    searchField.addActionListener(silentListener(okListener));
     searchField.setActionCommand("OK");
 
     JPanel&BoxPanel buttonPanel = boxPanel(BoxAxis.lineAxis); // TODO: Use a better layout
@@ -175,8 +174,7 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
 
     JButton okButton = ListenedButton("OK", okListener);
 
-    // TODO: Make a void function
-    void cancelListener(ActionEvent event) {
+    void cancelListener() {
         setVisible(false);
         parent.requestFocus();
         dispose();
