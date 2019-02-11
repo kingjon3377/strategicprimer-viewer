@@ -289,10 +289,9 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         .writeStrategy(parsePath(file.string).resource, treeModel.dismissed);
     void strategyWritingListener() => SPFileChooser.save(null,
         filteredFileChooser(false, ".", null)).call(writeStrategy);
-    BorderedPanel lowerLeft = BorderedPanel.verticalPanel( // TODO: reformat next few lines
-        ListenedButton("Add New Unit", newUnitFrame.showWindow),
-        ordersPanelObj, ListenedButton("Export a proto-strategy",
-            strategyWritingListener));
+    BorderedPanel lowerLeft = BorderedPanel.verticalPanel(
+        ListenedButton("Add New Unit", newUnitFrame.showWindow), ordersPanelObj,
+        ListenedButton("Export a proto-strategy", strategyWritingListener));
     contentPane = horizontalSplit(verticalSplit(
         BorderedPanel.verticalPanel(
             BorderedPanel.horizontalPanel(playerLabel, null, jumpButton),
