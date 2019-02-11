@@ -119,7 +119,6 @@ object appChooserState {
     shared [Map<String, DriverFactory>, Map<String, DriverFactory>] createCache() {
         MutableMap<String, DriverFactory> cliCache = HashMap<String, DriverFactory>();
         MutableMap<String, DriverFactory> guiCache = HashMap<String, DriverFactory>();
-        {String*} reserved = ["-g", "-c", "--gui", "--cli"];
         MutableMultimap<String, DriverFactory> conflicts =
                 ArrayListMultimap<String, DriverFactory>();
         void addToCache({DriverFactory*} factories) {
@@ -131,9 +130,9 @@ object appChooserState {
                     cache = cliCache;
                 }
                 for (option in factory.usage.invocations) {
-                    if (reserved.contains(option)) {
-                        log.error("A driver wants to register for a reserved option '``
-                            option``': claims to be ``factory.usage.shortDescription``");
+                    if (option.startsWith("-")) {
+                        log.error("A driver wants to register an option, ``option
+                            ``, not a subcommand");
                     } else if (conflicts.defines(option)) {
                         log.warn("Additional conflict for '``option``': '``
                             factory.usage.shortDescription``'");
