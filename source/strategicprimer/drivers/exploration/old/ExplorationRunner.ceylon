@@ -601,7 +601,7 @@ object explorationRunnerTests {
         assertEquals(runner.consultTable(table, Point.invalidPoint, TileType.ocean, false,
             [], mockDimensions), "three", "loading terrain table: ocean");
         assertEquals(runner.consultTable(table, Point.invalidPoint, TileType.plains,
-            false, {Forest("forestKind", false, 1)}, mockDimensions), "five", // TODO: [] instead of {}
+            false, [Forest("forestKind", false, 1)], mockDimensions), "five",
             "loading terrain table: version 2 equivalent of temperate forest");
         assertEquals(runner.consultTable(table, Point.invalidPoint, TileType.plains, true,
             [], mockDimensions), "four",
