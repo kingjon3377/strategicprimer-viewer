@@ -4,7 +4,9 @@ import ceylon.collection {
     MutableMap,
     HashMap,
     MutableSet,
-    HashSet
+    HashSet,
+    ArrayList,
+    MutableList
 }
 import ceylon.test {
     assertEquals,
@@ -16,7 +18,8 @@ import ceylon.test {
 
 import lovelace.util.common {
     todo,
-    defer
+    defer,
+    readFileContents
 }
 
 import strategicprimer.model.common.map {
@@ -28,6 +31,12 @@ import strategicprimer.model.common.map {
 }
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
+}
+import ceylon.file {
+    File
+}
+import ceylon.language.meta.declaration {
+    Module
 }
 
 """A class to create exploration results. The initial implementation is a bit hackish, and
@@ -241,6 +250,116 @@ shared class ExplorationRunner() {
     shared restricted(`module strategicprimer.drivers.exploration.old`,
                 `module strategicprimer.drivers.generators`)
         void loadTable(String name, EncounterTable table) => tables[name] = table;
+
+    "Load a table from a data stream into the runner. This is shared so tests can use it,
+     but shouldn't be used beyond that."
+    shared restricted(`module strategicprimer.drivers.exploration.old`)
+    void loadTableFromDataStream(<String|Finished>?() source, String name) {
+        if (is String line = source()) {
+            switch (line[0])
+            case (null) {
+                throw ParseException(
+                    "File doesn't start by specifying which kind of table");
+            }
+            case ('q'|'Q') {
+                if (is String firstLine = source()) {
+                    value rows = Integer.parse(firstLine);
+                    if (is Integer rows) {
+                        MutableList<String> items = LinkedList<String>();
+                        while (is String tableLine = source()) {
+                            items.add(tableLine);
+                        }
+                        loadTable(name, QuadrantTable(rows, *items));
+                    } else {
+                        throw Exception(
+                            "File doesn't start with number of rows of quadrants", rows);
+                    }
+                } else {
+                    throw Exception(
+                        "File doesn't start with number of rows of quadrants");
+                }
+            }
+            case ('r'|'R') {
+                MutableList<[Integer, String]> list = ArrayList<[Integer, String]>();
+                variable Boolean first = true;
+                while (is String tableLine = source()) {
+                    value splitted = tableLine.split(' '.equals, true, false);
+                    if (splitted.size < 2) {
+                        if (first, tableLine == line) {
+                            log.debug("Ceylon tried to read the same line twice again");
+                        } else if (tableLine.empty) {
+                            log.debug("Unexpected blank line");
+                        } else {
+                            log.error("Line with no blanks, coninuing ...");
+                            log.info("It was '``tableLine``'");
+                        }
+                    } else {
+                        String left = splitted.first;
+                        value leftNum = Integer.parse(left);
+                        if (is Integer leftNum) {
+                            list.add([leftNum, " ".join(splitted.rest)]);
+                        } else {
+                            throw Exception("Non-numeric data", leftNum);
+                        }
+                    }
+                    first = false;
+                }
+                loadTable(name, RandomTable(*list));
+            }
+            case ('c'|'C') {
+                if (is String tableLine = source()) {
+                    loadTable(name, ConstantTable(tableLine));
+                } else {
+                    throw ParseException("constant value not present");
+                }
+            }
+            case ('t'|'T') {
+                MutableList<String->String> list = ArrayList<String->String>();
+                variable Boolean first = true;
+                while (is String tableLine = source()) {
+                    value splitted = tableLine.split(' '.equals, true, false);
+                    if (splitted.size < 2) {
+                        if (first, tableLine == line) {
+                            log.debug("Ceylon tried to read the same line twice again");
+                        } else if (tableLine.empty) {
+                            log.debug("Unexpected blank line");
+                        } else {
+                            log.error("Line with no blanks, coninuing ...");
+                            log.info("It was '``tableLine``'");
+                        }
+                    } else {
+                        // N.B. first must be a recognized tile type (including ver-1
+                        // types), but that's checked by TerrainTable.
+                        list.add(splitted.first->(" ".join(splitted.rest)));
+                    }
+                    first = false;
+                }
+                loadTable(name, TerrainTable(*list));
+            } else {
+                throw ParseException("unknown table type '``line`` in file ``name``");
+            }
+        }
+    }
+    "Load a table from file into the runner. If the file*name* is provided, as a Tuple,
+     the name is relative to a `tables/` directory."
+    shared void loadTableFromFile(File|Resource|[Module, String] file) {
+        if (is File file) {
+            try (reader = file.Reader()) {
+                loadTableFromDataStream(reader.readLine, file.name);
+            }
+        } else if (is Resource file) {
+            loadTableFromDataStream(
+                LinkedList(file.textContent().split('\n'.equals)).accept, file.name);
+        } else {
+            assert (exists tableContents = readFileContents(file.first,
+                "tables/" + file.rest.first));
+            loadTableFromDataStream(LinkedList(tableContents.lines).accept,
+                file.rest.first);
+        }
+    }
+    "All possible results from the given table."
+    throws(`class MissingTableException`, "if that table has not been loaded")
+    shared {String*} getTableContents(String table) => getTable(table).allEvents;
 }
 
 "A mock [[EncounterTable]] for the apparatus to test the ExplorationRunner, to

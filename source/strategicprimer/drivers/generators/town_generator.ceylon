@@ -58,8 +58,7 @@ import ceylon.random {
     randomize
 }
 import strategicprimer.drivers.exploration.old {
-    ExplorationRunner,
-    loadTable
+    ExplorationRunner
 }
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
@@ -129,11 +128,9 @@ class TownGenerator(ICLIHelper cli) {
         };
         Stack<String> secondTables = LinkedList<String>();
         while (exists table = firstTables.pop()) {
-            assert (exists tableContents = readFileContents(
-                `module strategicprimer.drivers.generators`, "tables/``table``"));
-            value loadedTable = loadTable(tableContents.lines, "tables/``table``");
-            retval.loadTable(table, loadedTable);
-            for (reference in loadedTable.allEvents) {
+            retval.loadTableFromFile([`module strategicprimer.drivers.generators`,
+                table]);
+            for (reference in retval.getTableContents(table)) {
                 if (reference.contains('#')) {
                     assert (exists temp = reference.split('#'.equals, true, false, 2)
                         .rest.first);
@@ -146,11 +143,9 @@ class TownGenerator(ICLIHelper cli) {
             }
         }
         while (exists table = secondTables.pop()) {
-            assert (exists tableContents = readFileContents(
-                `module strategicprimer.drivers.generators`, "tables/``table``"));
-            value loadedTable = loadTable(tableContents.lines, "tables/``table``");
-            retval.loadTable(table, loadedTable);
-            for (reference in loadedTable.allEvents) {
+            retval.loadTableFromFile([`module strategicprimer.drivers.generators`,
+                table]);
+            for (reference in retval.getTableContents(table)) {
                 if (reference.contains('#')) {
                     assert (exists temp = reference.split('#'.equals, true, false, 2)
                         .rest.first);
