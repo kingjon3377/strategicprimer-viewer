@@ -2,9 +2,6 @@ import ceylon.collection {
     LinkedList,
     Queue
 }
-import ceylon.file {
-    Directory
-}
 import ceylon.test {
     assertEquals,
     test,
@@ -26,26 +23,6 @@ import strategicprimer.model.common.map.fixtures.terrain {
 }
 import lovelace.util.common {
     defer
-}
-
-Logger log = logger(`module strategicprimer.drivers.exploration.old`);
-
-"Load all tables in the specified path."
-shared void loadAllTables(Directory path, ExplorationRunner runner) {
-    // While it would probably be possible to exclude dotfiles using the `filter`
-    // parameter to `Directory.files()`, this would be inefficient.
-    for (child in path.files()) {
-        if (child.hidden || child.name.startsWith(".")) {
-            log.info("``child.name`` looks like a hidden file, skipping ...");
-        } else {
-            try {
-                runner.loadTableFromFile(child);
-            } catch (Exception except) {
-                log.error("Error loading ``child.name``, continuing ...");
-                log.debug("Details of that error:", except);
-            }
-        }
-    }
 }
 
 "Tests of the table-loading functionality."// TODO: merge w/ other ExplorationRunner tests

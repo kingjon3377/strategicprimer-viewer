@@ -76,7 +76,7 @@ shared class TableDebugger(Anything(String) ostream) satisfies UtilityDriver {
         "Table debugger requires a tables directory"
         assert (is Directory directory = parsePath("tables").resource);
         ExplorationRunner runner = ExplorationRunner();
-        loadAllTables(directory, runner);
+        runner.loadAllTables(directory);
         runner.verboseGlobalRecursiveCheck(ostream);
         EncounterTable mainTable = runner.getTable("main");
         debugSingleTable(runner, "", "", mainTable, "main", []);

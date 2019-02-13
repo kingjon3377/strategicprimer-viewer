@@ -52,8 +52,7 @@ import strategicprimer.model.common.map.fixtures {
     ResourcePile
 }
 import strategicprimer.drivers.exploration.old {
-    ExplorationRunner,
-    loadAllTables
+    ExplorationRunner
 }
 import ceylon.file {
     parsePath,
@@ -145,7 +144,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
             _runner = retval;
             "TODO fixer requires a tables directory"
             assert (is Directory directory = parsePath("tables").resource);
-            loadAllTables(directory, retval);
+            retval.loadAllTables(directory);
             return retval;
         }
     }

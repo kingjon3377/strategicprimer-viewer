@@ -33,11 +33,18 @@ import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import ceylon.file {
-    File
+    File,
+    Directory
 }
 import ceylon.language.meta.declaration {
     Module
 }
+import ceylon.logging {
+    logger,
+    Logger
+}
+
+Logger log = logger(`module strategicprimer.drivers.exploration.old`);
 
 """A class to create exploration results. The initial implementation is a bit hackish, and
    should be generalized and improved---except that the entire idea of generating results
@@ -360,6 +367,24 @@ shared class ExplorationRunner() {
     "All possible results from the given table."
     throws(`class MissingTableException`, "if that table has not been loaded")
     shared {String*} getTableContents(String table) => getTable(table).allEvents;
+
+    "Load all tables in the specified path into the runner."
+    shared void loadAllTables(Directory path) {
+        // While it would probably be possible to exclude dotfiles using the `filter`
+        // parameter to `Directory.files()`, this would be inefficient.
+        for (child in path.files()) {
+            if (child.hidden || child.name.startsWith(".")) {
+                log.info("``child.name`` looks like a hidden file, skipping ...");
+            } else {
+                try {
+                    loadTableFromFile(child);
+                } catch (Exception except) {
+                    log.error("Error loading ``child.name``, continuing ...");
+                    log.debug("Details of that error:", except);
+                }
+            }
+        }
+    }
 }
 
 "A mock [[EncounterTable]] for the apparatus to test the ExplorationRunner, to
