@@ -28,15 +28,13 @@ import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
 import lovelace.util.common {
-    defer,
-    todo
+    defer
 }
 
 Logger log = logger(`module strategicprimer.drivers.exploration.old`);
 
 "Load a table from file (or from provided data). This is [[shared]] because it
  is used by [[strategicprimer.drivers.generators::TownGenerator]]."
-todo("Is it really?", "List any other uses")
 suppressWarnings("doclink")
 shared EncounterTable loadTable(<String|Finished>?()|{String*}|File|Resource argument,
         String name) {

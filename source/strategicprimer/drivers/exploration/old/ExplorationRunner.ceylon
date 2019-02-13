@@ -33,9 +33,9 @@ import strategicprimer.model.common.map.fixtures.terrain {
 """A class to create exploration results. The initial implementation is a bit hackish, and
    should be generalized and improved---except that the entire idea of generating results
    from "encounter tables" instead of selecting from "fixtures" stored in the map has been
-   abandoned. This old method remains primarily as a way of generating the
-   map's contents *once* per campaign."""
-todo("List any other uses of this module left in the codebase; if none, remove it!")
+   abandoned, after using it to generate the tile-fixtures in each tile in the main map.
+   This old method is now only used in the town-contents generator and in the TODO-fixing
+   driver's handling of broken town production, consumption, and skill levels."""
 shared class ExplorationRunner() {
     MutableMap<String, EncounterTable> tables = HashMap<String, EncounterTable>();
 
