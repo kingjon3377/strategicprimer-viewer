@@ -356,7 +356,7 @@ shared class ExplorationRunner() {
             }
         } else if (is Resource file) {
             loadTableFromDataStream(
-                LinkedList(file.textContent().split('\n'.equals)).accept, file.name);
+                LinkedList(file.textContent().lines).accept, file.name);
         } else {
             assert (exists tableContents = readFileContents(file.first,
                 "tables/" + file.rest.first));
