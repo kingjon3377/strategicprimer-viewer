@@ -15,4 +15,5 @@ module strategicprimer.model.common "0.4.9018" {
     native("jvm") import ceylon.interop.java ceylonVersion;
     import ceylon.whole ceylonVersion;
     native("jvm") import ceylon.decimal ceylonVersion;
+    native("jvm") import maven:"com.zaxxer:SparseBitSet" "1.2";
 }

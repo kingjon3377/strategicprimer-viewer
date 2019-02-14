@@ -2,8 +2,8 @@ import ceylon.interop.java {
     synchronize
 }
 
-import java.util {
-    BitSet
+import com.zaxxer.sparsebits {
+    SparseBitSet
 }
 
 import lovelace.util.common {
@@ -73,7 +73,7 @@ native("jvm")
 shared class IDFactory() satisfies IDRegistrar {
     "The set of IDs used already."
     todo("If the Ceylon SDK ever gets an equivalent, use it instead.")
-    BitSet usedIDs = BitSet();
+    SparseBitSet usedIDs = SparseBitSet();
 
     "Whether the given ID is unused."
     native("jvm")
