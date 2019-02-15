@@ -60,26 +60,6 @@ import ceylon.collection {
     MutableSet,
     HashSet
 }
-import ceylon.io {
-    SocketAddress
-}
-import ceylon.http.server {
-    newServer,
-    AsynchronousEndpoint,
-    Endpoint,
-    Request,
-    Response,
-    startsWith,
-    matchEquals=equals,
-    isRoot
-}
-import ceylon.http.server.endpoints {
-    redirect
-}
-import ceylon.http.common {
-    get,
-    Header
-}
 import lovelace.util.common {
     matchingValue,
     silentListener,
@@ -88,6 +68,24 @@ import lovelace.util.common {
 }
 import lovelace.util.jvm {
     FileChooser
+}
+import org.takes.facets.fork {
+    Fork,
+    FkRegex,
+    TkFork
+}
+import org.takes.rs {
+    RsHtml,
+    RsWithType,
+    RsWithHeader,
+    RsText
+}
+import org.takes.tk {
+    TkRedirect
+}
+import org.takes.http {
+    FtBasic,
+    Exit
 }
 
 "An object to help us present files with only as much of their paths as
@@ -139,7 +137,7 @@ shared class ReportCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
         invocations = ["create-report"];
-        paramsWanted = ParamCount.one;
+        paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Report Generator";
         longDescription = "Produce HTML report of the contents of a map";
         includeInCLIList = true;
@@ -187,48 +185,36 @@ class ReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver {
             value localCache = cache.map(
                         (file->report) => suffixHelper.shortestSuffix(cache.keys,
                     file.absolutePath)->report);
-            {Endpoint*} endpoints = localCache.map((file->report) =>
-            Endpoint {
-                path = startsWith("/``file``");
-                service(Request request, Response response) =>
-                        response.writeString(report);
-            });
-            Endpoint|AsynchronousEndpoint rootHandler;
+            {Fork*} endpoints = localCache.map((file->report) => FkRegex("/``file``",
+                RsHtml(report)));
+            Fork rootHandler;
             if (localCache.size == 1) {
                 assert (exists soleFile = localCache.first?.key);
-                rootHandler = AsynchronousEndpoint {
-                    path = isRoot();
-                    acceptMethod = [ get ];
-                    service = redirect("/" + soleFile);
-                };
+                rootHandler = FkRegex("/", TkRedirect("/" + soleFile));
             } else {
-                rootHandler = Endpoint {
-                    path = isRoot();
-                    void service(Request request, Response response) {
-                        response.writeString(
-                            "<!DOCTYPE html>
-                             <html>
-                                 <head>
-                                     <title>Strategic Primer Reports</title>
-                                 </head>
-                                 <body>
-                                     <h1>Strategic Primer Reports</h1>
-                                     <ul>
-                             ");
-                        for (file->report in localCache) {
-                            response.writeString(
-                                "            <li><a href=\"/``file``\">``file``</a></li>");
-                        }
-                        response.writeString("        </ul>
-                                                  </body>
-                                              </html>");
-                    }
-                };
+                StringBuilder builder = StringBuilder();
+                builder.append(
+                    """<!DOCTYPE html>
+                       <html>
+                           <head>
+                               <title>Strategic Primer Reports</title>
+                           </head>
+                           <body>
+                               <h1>Strategic Primer Reports</h1>
+                               <ul>
+                       """);
+                for (file->report in localCache) {
+                    builder.appendAll(["            <li><a href=\"", file, "\">", file,
+                        "</a></li>"]);
+                    builder.appendNewline();
+                }
+                builder.append("""         </ul>
+                                      </body>
+                                  </html>""");
+                rootHandler = FkRegex("/", RsHtml(builder.string));
             }
             log.info("About to start serving on port ``port``");
-            newServer {
-                rootHandler, *endpoints
-            }.start(SocketAddress("127.0.0.1", port));
+            FtBasic(TkFork(rootHandler, *endpoints), port).start(Exit.never);
         }
     }
 
@@ -465,72 +451,66 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
                 parsePath(model.mapFile?.filename else "unknown.xml"));
         }
 
-        {Endpoint*} endpoints = builders.map(([file, table]->builder) =>
-            Endpoint {
-                path = matchEquals("/``file``.``table``.csv");
-                void service(Request request, Response response) {
-                    response.addHeader(Header("Content-Disposition",
-                        "attachment; filename=\"``table``.csv\""));
-                    response.writeString(builder.string);
-                }
-            });
-
-        {Endpoint*} tocs = mapping.keys
-            .map(curry(suffixHelper.shortestSuffix)(mapping.keys)).map(
-                    (path) => Endpoint {
-                path = matchEquals("/``path``").or(matchEquals("/``path``/"));
-                void service(Request request, Response response) {
-                    response.writeString(
-                        "<!DOCTYPE html>
-                         <html>
-                             <head>
-                                 <title>Tabular reports for ``path``</title>
-                                     </head>
-                                     <body>
-                                         <h1>Tabular reports for ``path``</h1>
-                                         <ul>
-                                 ");
-                    for ([mapFile, table] in builders.keys
-                        .filter(matchingValue(path,
-                        Tuple<String, String, String[]>.first))) {
-                        response.writeString("            <li><a href=\"/``mapFile
-                        ``.``table``.csv\">``table``.csv</a></li>\n");
-                    }
-                    response.writeString("        </ul>
-                                                      </body>
-                                                  </html>");
-                }
-            });
-
-        Endpoint rootHandler = Endpoint {
-            path = isRoot();
-            void service(Request request, Response response) {
-                response.writeString(
-                    "<!DOCTYPE html>
-                     <html>
-                         <head>
-                             <title>Strategic Primer Tabular Reports</title>
-                         </head>
-                         <body>
-                             <h1>Strategic Primer Tabular Reports</h1>
-                             <ul>
-                     ");
-                for (file in mapping.keys
-                    .map(curry(suffixHelper.shortestSuffix)(mapping.keys))) {
-                    response.writeString(
-                        "            <li><a href=\"/``file``\">``file``</a></li>");
-                }
-                response.writeString(
-                    "        </ul>
-                         </body>
-                     </html>");
+        {Fork*} endpoints = builders
+            .map(([file, table]->builder) => FkRegex("/``file``.``table``.csv",
+                RsWithType(RsWithHeader(RsText(builder.string),
+                        "Content-Disposition", "attachment; filename=\"``table``.csv\""),
+                    "text/csv")));
+        String tocHtml(String path) {
+            StringBuilder builder = StringBuilder();
+            builder.append(
+                "<!DOCTYPE html>
+                 <html>
+                     <head>
+                         <title>Tabular reports for ``path``</title>
+                     </head>
+                     <body>
+                         <h1>Tabular reports for ``path``</h1>
+                         <ul>
+                 ");
+            for ([mapFile, table] in builders.keys.filter(matchingValue(path,
+                    Tuple<String, String, [String]>.first))) {
+                builder.appendAll(["            <li><a href=\"/", mapFile, ".", table,
+                    ".csv\">", table, ".csv</a></li>"]);
+                builder.appendNewline();
             }
-        };
+            builder.append(
+                """        </ul>
+                       </body>
+                   </html>""");
+            return builder.string;
+        }
+        {Fork*} tocs = mapping.keys.map(curry(suffixHelper.shortestSuffix)(mapping.keys))
+            .flatMap(
+                (path) => [FkRegex("/``path``", RsHtml(tocHtml(path))),
+                    FkRegex("/``path``/", RsHtml(tocHtml(path)))]);
+
+        StringBuilder rootDocument = StringBuilder();
+        rootDocument.append(
+            """<!DOCTYPE html>
+               <html>
+                   <head>
+                       <title>Strategic Primer Tabular Reports</title>
+                   </head>
+                   <body>
+                       <h1>Strategic Primer Tabular Reports</h1>
+                       <ul>
+               """);
+        for (file in mapping.keys.map(curry(suffixHelper.shortestSuffix)(mapping.keys))) {
+            rootDocument.appendAll(["            <li><a href=\"/", file, "\">", file,
+                "</a></li>"]);
+            rootDocument.appendNewline();
+        }
+        rootDocument.append(
+            """        </ul>
+                   </body>
+               </html>""");
 
         log.info("About to start serving on port ``port``");
-        newServer {
-            rootHandler, *endpoints.chain(tocs)
-        }.start(SocketAddress("127.0.0.1", port));
+        FtBasic(
+            TkFork(FkRegex("/", RsHtml(rootDocument.string)), FkRegex("/index.html",
+                RsHtml(rootDocument.string)), *tocs.chain(endpoints).sequence()), port)
+            .start(Exit.never);
     }
 
     shared actual void startDriver() {
