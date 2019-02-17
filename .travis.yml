@@ -27,7 +27,7 @@ deploy:
   file_glob: true
   skip_cleanup: true
   file:
-    - release/viewer-*.tbz2
+    - release/viewer-*.t*z*
     - release/viewer-*.dmg
     - release/viewer-*.exe
     - release/viewer-*.jar
