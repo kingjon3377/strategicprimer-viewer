@@ -14,7 +14,8 @@ import strategicprimer.model.common.xmlio {
     Warning
 }
 import java.sql {
-    Types
+    Types,
+    SQLException
 }
 import lovelace.util.common {
     as
@@ -32,11 +33,22 @@ object dbPlayerHandler extends AbstractDatabaseWriter<Player, IMapNG>()
            );"""
     ];
 
-    shared actual void write(Sql db, Player obj, IMapNG context) =>
-        db.Insert("""INSERT INTO players (id, codename, current, portrait, country)
-                     VALUES(?, ?, ?, ?, ?);""")
+    shared actual void write(Sql db, Player obj, IMapNG context) {
+        try {
+            db.Insert("""INSERT INTO players (id, codename, current, portrait, country)
+                         VALUES(?, ?, ?, ?, ?);""")
                 .execute(obj.playerId, obj.name, obj.current, obj.portrait,
                     obj.country else SqlNull(Types.varchar));
+        } catch (SQLException except) {
+            if (except.message.endsWith("table players has no column named country)")) {
+                db.Statement("""ALTER TABLE players ADD COLUMN country VARCHAR(64)""")
+                    .execute();
+                write(db, obj, context);
+            } else {
+                throw except;
+            }
+        }
+    }
 
     void readPlayer(IMutableMapNG map)(Map<String, Object> row, Warning warner) {
         assert (is Integer id = row["id"], is String name = row["codename"],

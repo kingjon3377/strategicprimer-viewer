@@ -4,7 +4,8 @@ import ceylon.dbc {
 }
 
 import java.sql {
-    Types
+    Types,
+    SQLException
 }
 
 import strategicprimer.model.common.map {
@@ -71,15 +72,34 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
 
     shared actual void write(Sql db, Immortal obj, Point|IUnit context) {
         if (is SimpleImmortal|ImmortalAnimal obj) {
-            value insertion = db.Insert("""INSERT INTO simple_immortals (row, column,
-                                               parent, type, id, image)
-                                           VALUES(?, ?, ?, ?, ?, ?);""");
-            if (is Point context) {
-                insertion.execute(context.row, context.column, SqlNull(Types.integer),
-                    obj.kind, obj.id, obj.image);
-            } else {
-                insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer),
-                    context.id, obj.kind, obj.id, obj.image);
+            try {
+                value insertion = db.Insert("""INSERT INTO simple_immortals (row, column,
+                                                    parent, type, id, image)
+                                               VALUES(?, ?, ?, ?, ?, ?);""");
+                if (is Point context) {
+                    insertion.execute(context.row, context.column, SqlNull(Types.integer),
+                        obj.kind, obj.id, obj.image);
+                } else {
+                    insertion.execute(SqlNull(Types.integer), SqlNull(Types.integer),
+                        context.id, obj.kind, obj.id, obj.image);
+                }
+            } catch (SQLException except) {
+                if (except.message.endsWith("constraint failed: simple_immortals)")) {
+                    try (tx = db.Transaction()) {
+                        assert (exists initializer = initializers
+                            .find((s) => s.contains("simple_immortals"))?.replace(
+                            "simple_immortals ", "simple_immortals_replacement "));
+                        db.Statement(initializer).execute();
+                        db.Statement("INSERT INTO simple_immortals_replacement
+                                      SELECT * FROM simple_immortals").execute();
+                        db.Statement("DROP TABLE simple_immortals").execute();
+                        db.Statement("ALTER TABLE simple_immortals_replacement
+                                      RENAME TO simple_immortals").execute();
+                    }
+                    write(db, obj, context);
+                } else {
+                    throw except;
+                }
             }
         } else {
             assert (is HasKind obj);
