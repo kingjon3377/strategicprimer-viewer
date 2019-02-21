@@ -2,8 +2,8 @@ import ceylon.interop.java {
     synchronize
 }
 
-import com.zaxxer.sparsebits {
-    SparseBitSet
+import org.roaringbitmap {
+    RoaringBitmap
 }
 
 import lovelace.util.common {
@@ -73,11 +73,11 @@ native("jvm")
 shared class IDFactory() satisfies IDRegistrar {
     "The set of IDs used already."
     todo("If the Ceylon SDK ever gets an equivalent, use it instead.")
-    SparseBitSet usedIDs = SparseBitSet();
+    RoaringBitmap usedIDs = RoaringBitmap();
 
     "Whether the given ID is unused."
     native("jvm")
-    shared actual Boolean isIDUnused(Integer id) => id >= 0 && !usedIDs.get(id);
+    shared actual Boolean isIDUnused(Integer id) => id >= 0 && !usedIDs.contains(id);
 
     "Register, and return, the given ID, using the given Warning instance to report if it
      has already been registered."
@@ -87,7 +87,7 @@ shared class IDFactory() satisfies IDRegistrar {
              caller isn't an XML reader."
             [Integer, Integer]? location) {
         if (id >= 0) {
-            if (usedIDs.get(id)) {
+            if (usedIDs.contains(id)) {
                 if (exists location) {
                     warning.handle(DuplicateIDException.atLocation(id,
                         location.first, location.rest.first));
@@ -95,7 +95,7 @@ shared class IDFactory() satisfies IDRegistrar {
                     warning.handle(DuplicateIDException(id));
                 }
             }
-            usedIDs.set(id);
+            usedIDs.add(id);
         }
         return id;
     }
@@ -105,8 +105,8 @@ shared class IDFactory() satisfies IDRegistrar {
     shared actual Integer createID() {
         variable Integer retval = -1;
         synchronize(usedIDs, () {
-            assert (usedIDs.cardinality() < runtime.maxArraySize);
-            retval = register(usedIDs.nextClearBit(0));
+            assert (usedIDs.cardinality < runtime.maxArraySize);
+            retval = register(usedIDs.nextAbsentValue(0));
         });
         assert (retval >= 0);
         return retval;
