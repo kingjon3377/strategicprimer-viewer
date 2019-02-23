@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Ceylon: org.nanohttpd:nanohttpd/2.3.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.m2/repository/org/nanohttpd/nanohttpd/2.3.1/nanohttpd-2.3.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.m2/repository/org/nanohttpd/nanohttpd/2.3.1/nanohttpd-2.3.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -245,6 +245,7 @@
     <x-rebuild />
     <tar destfile="${release}/${basename}.tbz2" compression="bzip2">
       <tarfileset dir="${project_home}" prefix="${basename}">
+        <include name="NanoHTTPD_LICENSE.md" />
         <include name="*.properties" />
         <include name="build.xml" />
         <include name=".checkstyle" />

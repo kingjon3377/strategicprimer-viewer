@@ -34,7 +34,7 @@ module strategicprimer.viewer "0.4.9019" {
     shared import strategicprimer.drivers.gui.common spVersion;
     import strategicprimer.drivers.utility spVersion;
 //    import ceylon.http.server ceylonVersion;
-    import maven:"org.takes:takes" "1.19";
+    import maven:"org.nanohttpd:nanohttpd" "2.3.1";
     import com.vasileff.ceylon.structures "1.1.3";
     import strategicprimer.mining spVersion;
     import strategicprimer.drivers.query spVersion;

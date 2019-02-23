@@ -68,23 +68,16 @@ import lovelace.util.common {
 import lovelace.util.jvm {
     FileChooser
 }
-import org.takes.facets.fork {
-    Fork,
-    FkRegex,
-    TkFork
+import fi.iki.elonen {
+    NanoHTTPD
 }
-import org.takes.rs {
-    RsHtml,
-    RsWithType,
-    RsWithHeader,
-    RsText
+import java.util {
+    JMap=Map,
+    JCollections=Collections
 }
-import org.takes.tk {
-    TkRedirect
-}
-import org.takes.http {
-    FtBasic,
-    Exit
+import java.lang {
+    JString=String,
+    overloaded
 }
 
 "An object to help us present files with only as much of their paths as
@@ -162,6 +155,40 @@ shared class ReportCLIFactory() satisfies ModelDriverFactory {
             SimpleMultiMapModel(map);
 }
 
+"""How we serve "files" to HTTP clients."""
+abstract class ReportHTTPServer(Integer port) extends NanoHTTPD(port) {
+    shared formal Response? serveFile(String uri);
+    shared Response redirect(String target) {
+        value retval = newFixedLengthResponse(Response.Status.redirect,
+            NanoHTTPD.mimeHtml,
+            "<html><body>Redirecting to <a href=\"``target``\">``target
+                ``</a></body></html>");
+        retval.addHeader("Location", target);
+        return retval;
+    }
+    shared actual overloaded Response serve(String uri, Method method,
+            JMap<JString, JString> headers, JMap<JString, JString> parameters,
+            JMap<JString, JString> submittedFiles) {
+        if (method == Method.put) {
+            return newFixedLengthResponse(Response.Status.methodNotAllowed,
+                NanoHTTPD.mimePlaintext, "PUT unsupported");
+        } else if (method != Method.get) {
+            return newFixedLengthResponse(Response.Status.methodNotAllowed,
+                NanoHTTPD.mimePlaintext, "Unsupported HTTP method");
+        } else if (exists retval = serveFile(uri)) {
+            return retval;
+        } else if (uri.endsWith("/")) {
+            return redirect(uri + "index.html");
+        } else {
+            return newFixedLengthResponse(Response.Status.notFound,
+                NanoHTTPD.mimePlaintext, "File Not Found");
+        }
+    }
+    suppressWarnings("deprecation")
+    shared actual overloaded Response serve(IHTTPSession session) => serve(session.uri,
+        session.method, session.headers, session.parms,
+        JCollections.emptyMap<JString, JString>());
+}
 """A driver to "serve" a report on the contents of a map on an embedded HTTP server."""
 class ReportServingCLI(options, model, ICLIHelper cli) satisfies ReadOnlyDriver {
     shared actual SPOptions options;
@@ -182,39 +209,49 @@ class ReportServingCLI(options, model, ICLIHelper cli) satisfies ReadOnlyDriver 
         if (cache.empty) {
             return;
         } else {
-            value localCache = cache.map(
+            value localCache = map(cache.map(
                         (file->report) => suffixHelper.shortestSuffix(cache.keys,
-                    file.absolutePath)->report);
-            {Fork*} endpoints = localCache.map((file->report) => FkRegex("/``file``",
-                RsHtml(report)));
-            Fork rootHandler;
-            if (localCache.size == 1) {
-                assert (exists soleFile = localCache.first?.key);
-                rootHandler = FkRegex("/", TkRedirect("/" + soleFile));
-            } else {
-                StringBuilder builder = StringBuilder();
-                builder.append(
-                    """<!DOCTYPE html>
-                       <html>
-                           <head>
-                               <title>Strategic Primer Reports</title>
-                           </head>
-                           <body>
-                               <h1>Strategic Primer Reports</h1>
-                               <ul>
-                       """);
-                for (file->report in localCache) {
-                    builder.appendAll(["            <li><a href=\"", file, "\">", file,
-                        "</a></li>"]);
-                    builder.appendNewline();
+                    file.absolutePath)->report));
+            object server extends ReportHTTPServer(port) {
+                shared actual Response? serveFile(String uri) {
+                    if (exists retval = localCache[uri.removeInitial("/")
+                            .removeTerminal(".html")]) {
+                        return newFixedLengthResponse(Response.Status.ok,
+                            NanoHTTPD.mimeHtml, retval);
+                    } else if (uri == "/index.html") {
+                        if (localCache.rest.empty) {
+                            assert (exists soleFile = localCache.first?.key);
+                            return redirect("/" + soleFile);
+                        } else {
+                            StringBuilder builder = StringBuilder();
+                            builder.append(
+                                """<!DOCTYPE html>
+                                   <html>
+                                       <head>
+                                           <title>Strategic Primer Reports</title>
+                                       </head>
+                                       <body>
+                                           <h1>Strategic Primer Reports</h1>
+                                           <ul>
+                                   """);
+                            for (file in localCache.keys) {
+                                builder.appendAll(["            <li><a href=\"", file,
+                                    "\">", file, "</a></li>"]);
+                                builder.appendNewline();
+                            }
+                            builder.append("""        </ul>
+                                                  </body>
+                                              </html>""");
+                            return newFixedLengthResponse(Response.Status.ok,
+                                NanoHTTPD.mimeHtml, builder.string);
+                        }
+                    } else {
+                        return null;
+                    }
                 }
-                builder.append("""         </ul>
-                                      </body>
-                                  </html>""");
-                rootHandler = FkRegex("/", RsHtml(builder.string));
             }
             log.info("About to start serving on port ``port``");
-            FtBasic(TkFork(rootHandler, *endpoints), port).start(Exit.never);
+            server.start(NanoHTTPD.socketReadTimeout, false);
         }
     }
 
@@ -445,66 +482,76 @@ class TabularReportServingCLI(ICLIHelper cli, options, model) satisfies ReadOnly
                 parsePath(model.map.filename?.filename else "unknown.xml"));
         }
 
-        {Fork*} endpoints = builders
-            .map(([file, table]->builder) => FkRegex("/``file``.``table``.csv",
-                RsWithType(RsWithHeader(RsText(builder.string),
-                        "Content-Disposition", "attachment; filename=\"``table``.csv\""),
-                    "text/csv")));
-        String tocHtml(String path) {
-            StringBuilder builder = StringBuilder();
-            builder.append(
-                "<!DOCTYPE html>
-                 <html>
-                     <head>
-                         <title>Tabular reports for ``path``</title>
-                     </head>
-                     <body>
-                         <h1>Tabular reports for ``path``</h1>
-                         <ul>
-                 ");
-            for ([mapFile, table] in builders.keys.filter(matchingValue(path,
-                    Tuple<String, String, [String]>.first))) {
-                builder.appendAll(["            <li><a href=\"/", mapFile, ".", table,
-                    ".csv\">", table, ".csv</a></li>"]);
-                builder.appendNewline();
+        {String*} tocs = mapping.keys
+            .map(curry(suffixHelper.shortestSuffix)(mapping.keys));
+        object server extends ReportHTTPServer(port) {
+            shared actual NanoHTTPD.Response? serveFile(String uri) {
+                String unprefixed = uri.removeInitial("/");
+                {String+} split = unprefixed.split('.'.equals);
+                if (split.size == 3, split.last == "csv") {
+                    String file = split.first;
+                    assert (exists table = split.rest.first);
+                    if (exists builder = builders[[file, table]]) {
+                        value retval = newFixedLengthResponse(Response.Status.ok,
+                            "text/csv", builder.string);
+                        retval.addHeader("Content-Disposition",
+                            "attachment; filename=\"``table``.csv\"");
+                        return retval;
+                    }
+                }
+                String minusSlash = unprefixed.removeTerminal("/");
+                if (minusSlash in tocs) {
+                    StringBuilder builder = StringBuilder();
+                    builder.append(
+                        "<!DOCTYPE html>
+                         <html>
+                             <head>
+                                 <title>Tabular reports for ``minusSlash``</title>
+                             </head>
+                             <body>
+                                 <h1>Tabular reports for ``minusSlash``</h1>
+                                 <ul>
+                         ");
+                    for ([mapFile, table] in builders.keys.filter(
+                            matchingValue(minusSlash,
+                                Tuple<String, String, String[]>.first))) {
+                        builder.appendAll(["            <li><a href=\"", mapFile, ".",
+                            table, ".csv\">", table, ".csv</a></li>"]);
+                        builder.appendNewline();
+                    }
+                    builder.append("""        </ul>
+                                          </body>
+                                      </html>""");
+                    return newFixedLengthResponse(builder.string);
+                } else if (uri == "/" || uri == "/index.html") {
+                    StringBuilder builder = StringBuilder();
+                    builder.append(
+                        """<!DOCTYPE html>
+                           <html>
+                               <head>
+                                   <title>Strategic Primer Tabular Reports</title>
+                               </head>
+                               <body>
+                                   <h1>Strategic Primer Tabular Reports</h1>
+                                   <ul>
+                           """);
+                    for (toc in tocs) {
+                        builder.appendAll(["            <li><a href=\"", toc, "\">", toc,
+                            "</a></li>"]);
+                        builder.appendNewline();
+                    }
+                    builder.append("""        </ul>
+                                          </body>
+                                      </html>""");
+                    return newFixedLengthResponse(builder.string);
+                } else {
+                    return null;
+                }
             }
-            builder.append(
-                """        </ul>
-                       </body>
-                   </html>""");
-            return builder.string;
         }
-        {Fork*} tocs = mapping.keys.map(curry(suffixHelper.shortestSuffix)(mapping.keys))
-            .flatMap(
-                (path) => [FkRegex("/``path``", RsHtml(tocHtml(path))),
-                    FkRegex("/``path``/", RsHtml(tocHtml(path)))]);
-
-        StringBuilder rootDocument = StringBuilder();
-        rootDocument.append(
-            """<!DOCTYPE html>
-               <html>
-                   <head>
-                       <title>Strategic Primer Tabular Reports</title>
-                   </head>
-                   <body>
-                       <h1>Strategic Primer Tabular Reports</h1>
-                       <ul>
-               """);
-        for (file in mapping.keys.map(curry(suffixHelper.shortestSuffix)(mapping.keys))) {
-            rootDocument.appendAll(["            <li><a href=\"/", file, "\">", file,
-                "</a></li>"]);
-            rootDocument.appendNewline();
-        }
-        rootDocument.append(
-            """        </ul>
-                   </body>
-               </html>""");
 
         log.info("About to start serving on port ``port``");
-        FtBasic(
-            TkFork(FkRegex("/", RsHtml(rootDocument.string)), FkRegex("/index.html",
-                RsHtml(rootDocument.string)), *tocs.chain(endpoints).sequence()), port)
-            .start(Exit.never);
+        server.start(NanoHTTPD.socketReadTimeout, false);
     }
 
     shared actual void startDriver() {
