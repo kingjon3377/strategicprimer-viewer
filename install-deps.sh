@@ -14,9 +14,7 @@ wget https://download.sourceforge.net/launch4j/launch4j-${launch4j_major}/${laun
 tar xzf "launch4j-${launch4j_version}-linux.tgz"
 wget "https://github.com/UltraMixer/JarBundler/releases/download/${jarbundler_version}/jarbundler-core-${jarbundler_version}.jar" \
 		-O "${HOME}/.ant/lib/jarbundler-core-${jarbundler_version}.jar"
-for jar in pump-swing pump-common pump-awt pump-image pump-button;do
-	wget "https://github.com/mickleness/pumpernickel/raw/master/pump-release/com/pump/${jar}/${pumpernickel_version}/${jar}-${pumpernickel_version}.jar"
-done
+wget "https://github.com/mickleness/pumpernickel/raw/master/release/jars/Pumpernickel.jar"
 wget "https://repo.maven.apache.org/maven2/com/yuvimasory/orange-extensions/${orange_version}/orange-extensions-${orange_version}.jar"
 sudo apt-get update -qq
 sudo apt-get install genisoimage

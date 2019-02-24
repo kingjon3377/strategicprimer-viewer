@@ -18,8 +18,7 @@ module strategicprimer.viewer "0.4.9018" {
     shared import ceylon.numeric ceylonVersion;
     shared import ceylon.file ceylonVersion;
 //    import ceylon.io ceylonVersion;
-//    import maven:"com.pump:pump-swing" "1.0.00";
-    import com.pump.swing "1.0.00";
+    import com.pump "0.0";
     shared import java.desktop javaVersion;
     shared import lovelace.util.jvm lovelaceUtilsVersion;
     import ceylon.regex ceylonVersion;
