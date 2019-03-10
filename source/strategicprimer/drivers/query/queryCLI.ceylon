@@ -73,7 +73,7 @@ service(`interface DriverFactory`)
 shared class QueryCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage(false, ["query"],
         ParamCount.one, "Answer questions about a map.",
-        "Look a tiles on a map. Or run hunting, gathering, or fishing.", true, false);
+        "Answer questions about a map, such as counting workers or calculating distances.", true, false);
 
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) => QueryCLI(cli, model);
