@@ -57,6 +57,11 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Minotaur,
     Troll,
     Simurgh,
+    Snowbird,
+    Thunderbird,
+    Pegasus,
+    Unicorn,
+    Kraken,
     Animal,
     AnimalTracks
 }
@@ -138,6 +143,11 @@ shared class MapTradeCLI satisfies CLIDriver {
             FixtureMatcher.trivialMatcher(`Fairy`, "Fairies"),
             FixtureMatcher.trivialMatcher(`Giant`),
             FixtureMatcher.trivialMatcher(`Dragon`),
+            FixtureMatcher.trivialMatcher(`Pegasus`, "Pegasi"),
+            FixtureMatcher.trivialMatcher(`Snowbird`),
+            FixtureMatcher.trivialMatcher(`Thunderbird`),
+            FixtureMatcher.trivialMatcher(`Unicorn`),
+            FixtureMatcher.trivialMatcher(`Kraken`),
             FixtureMatcher.trivialMatcher(`Cave`),
             FixtureMatcher.trivialMatcher(`Battlefield`),
             FixtureMatcher.complements<Grove>(Grove.orchard, "Orchards", "Groves"),
