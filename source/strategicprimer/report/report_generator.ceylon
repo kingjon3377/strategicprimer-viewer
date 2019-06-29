@@ -51,9 +51,6 @@ import strategicprimer.report.generators {
     TextReportGenerator,
     AdventureReportGenerator
 }
-import strategicprimer.report.nodes {
-    RootReportNode
-}
 import ceylon.collection {
     MutableMap,
     HashMap
@@ -251,85 +248,5 @@ shared object reportGenerator {
             process.writeLine("Unhandled fixture:\t``fixture``");
         }
         return builder.string;
-    }
-
-    "Produce sub-reports in report-intermediate-representation, adding them to the root
-     node and calling coalesce() on the fixtures collection after each."
-    void createSubReportsIR(IReportNode root,
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
-            Player player, IReportGenerator<out Object>* generators) {
-        for (generator in generators) {
-            root.appendNode(generator.produceRIR(fixtures, map));
-            fixtures.coalesce();
-        }
-    }
-
-    "Create the report, in report-intermediate-representation, based on the given map."
-    shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer) {
-        IReportNode retval = RootReportNode("Strategic Primer map summary report");
-        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
-                reportGeneratorHelper.getFixtures(map);
-        MapDimensions dimensions = map.dimensions;
-        Point? hq = reportGeneratorHelper.findHQ(map, player);
-        Comparison([Point, IFixture], [Point, IFixture]) comparator;
-        if (exists hq) {
-            comparator = pairComparator(DistanceComparator(hq, dimensions).compare,
-                byIncreasing(IFixture.hash));
-        } else {
-            comparator = pairComparator((Anything one, Anything two) => equal,
-                byIncreasing(IFixture.hash));
-        }
-        createSubReportsIR(retval, fixtures, map, player,
-            FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            TextReportGenerator(comparator, dimensions, hq),
-            TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            AdventureReportGenerator(comparator, player, dimensions, hq),
-            ExplorableReportGenerator(comparator, player, dimensions, hq),
-            HarvestableReportGenerator(comparator, dimensions, hq),
-            FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn,
-                hq),
-            AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
-            VillageReportGenerator(comparator, player, dimensions, hq),
-            ImmortalsReportGenerator(comparator, dimensions, hq));
-        return retval;
-    }
-
-    "Create a slightly abbreviated report, omitting the player's fortresses and units, in
-     intermediate representation."
-    shared IReportNode createAbbreviatedReportIR(IMapNG map,
-            Player player = map.currentPlayer) {
-        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper
-            .getFixtures(map);
-        MapDimensions dimensions = map.dimensions;
-        Point? hq = reportGeneratorHelper.findHQ(map, player);
-        Comparison([Point, IFixture], [Point, IFixture]) comparator;
-        if (exists hq) {
-            comparator = pairComparator(DistanceComparator(hq, dimensions).compare,
-                byIncreasing(IFixture.hash));
-        } else {
-            comparator = pairComparator((Anything one, Anything two) => equal,
-                byIncreasing(IFixture.hash));
-        }
-        fixtures.items.map(Tuple.rest).map(Tuple.first).narrow<IUnit|Fortress>()
-                .filter(matchingValue(player, HasOwner.owner)).map(IFixture.id)
-            .each(fixtures.remove);
-        fixtures.coalesce();
-        IReportNode retval = RootReportNode(
-            "Strategic Primer map summary abbreviated report");
-        createSubReportsIR(retval, fixtures, map, player,
-            FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn,
-                hq),
-            FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            TextReportGenerator(comparator, dimensions, hq),
-            TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            AdventureReportGenerator(comparator, player, dimensions, hq),
-            ExplorableReportGenerator(comparator, player, dimensions, hq),
-            HarvestableReportGenerator(comparator, dimensions, hq),
-            AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
-            VillageReportGenerator(comparator, player, dimensions, hq),
-            ImmortalsReportGenerator(comparator, dimensions, hq));
-        return retval;
     }
 }
