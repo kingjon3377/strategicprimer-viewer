@@ -1,8 +1,6 @@
 import ceylon.collection {
     MutableList,
-    MutableMap,
-    ArrayList,
-    HashMap
+    ArrayList
 }
 
 import lovelace.util.common {
@@ -27,16 +25,6 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Animal,
     AnimalOrTracks
-}
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    ListReportNode,
-    SimpleReportNode,
-    SectionListReportNode,
-    emptyReportNode,
-    SectionReportNode
 }
 import com.vasileff.ceylon.structures {
     MutableMultimap,
@@ -205,121 +193,6 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             }
             writeMap(ostream, ours, unitFormatter);
             writeMap(ostream, foreign, unitFormatter);
-        }
-    }
-
-    "Produce a sub-sub-report on a unit (we assume we're already in the middle of a
-     paragraph or bullet point)."
-    shared actual IReportNode produceRIRSingle(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, IUnit item, Point loc) {
-        String base;
-        if (item.owner.independent) {
-            base = "Unit ``item.name`` (``item.kind``), independent.";
-        } else if (item.owner == currentPlayer) {
-            base = "Unit ``item.name`` (``item.kind``), owned by you.";
-        } else {
-            base = "Unit ``item.name`` (``item.kind``), owned by ``item.owner``.";
-        }
-        fixtures.remove(item.id);
-        ListReportNode workers = ListReportNode("Workers:");
-        ListReportNode animals = ListReportNode("Animals:");
-        ListReportNode equipment = ListReportNode("Equipment:");
-        ListReportNode resources = ListReportNode("Resources:");
-        ListReportNode others = ListReportNode("Others:");
-        MutableMap<String, IReportNode> resourcesMap = HashMap<String, IReportNode>();
-        IReportNode retval = ListReportNode("``base`` Members of the unit:", loc);
-        IReportGenerator<IWorker> workerReportGenerator;
-        if (item.owner == currentPlayer) {
-            workerReportGenerator = ourWorkerReportGenerator;
-        } else {
-            workerReportGenerator = otherWorkerReportGenerator;
-        }
-        for (member in item) {
-            if (is IWorker member) {
-                workers.add(workerReportGenerator.produceRIRSingle(fixtures, map, member,
-                    loc));
-            } else if (is Animal member) {
-                animals.add(animalReportGenerator
-                    .produceRIRSingle(fixtures, map, member, loc));
-            } else if (is Implement member) {
-                equipment.add(memberReportGenerator.produceRIRSingle(fixtures, map,
-                    member, loc));
-            } else if (is ResourcePile member) {
-                IReportNode resourceNode;
-                if (exists temp = resourcesMap.get(member.kind)) {
-                    resourceNode = temp;
-                } else {
-                    resourceNode = ListReportNode("``member.kind``:");
-                    resourcesMap.put(member.kind, resourceNode);
-                    resources.add(resourceNode);
-                }
-                resourceNode.appendNode(memberReportGenerator.produceRIRSingle(fixtures,
-                    map, member, loc));
-            } else {
-                others.add(SimpleReportNode(member.string, loc));
-            }
-            fixtures.remove(member.id);
-        }
-        retval.addIfNonEmpty(workers, animals, equipment, resources, others);
-        ListReportNode ordersNode = ListReportNode("Orders and Results:");
-        for (turn in sort(item.allOrders.keys.chain(item.allResults.keys)).distinct) {
-            ListReportNode current = ListReportNode("Turn ``turn``:");
-            String orders = item.getOrders(turn);
-            if (!orders.empty) {
-                current.add(SimpleReportNode("Orders: ``orders``"));
-            }
-            String results = item.getResults(turn);
-            if (!results.empty) {
-                current.add(SimpleReportNode("Results: ``results``"));
-            }
-            ordersNode.addIfNonEmpty(current);
-        }
-        retval.addIfNonEmpty(ordersNode);
-        if (retval.childCount == 0) {
-            return SimpleReportNode(base, loc);
-        } else {
-            return retval;
-        }
-    }
-
-    "Produce the part of the report dealing with all units not already covered."
-    shared actual IReportNode produceRIR(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map) {
-        IReportNode theirs = SectionListReportNode(5, "Foreign Units");
-        IReportNode ours = SectionListReportNode(5, "Your Units");
-        for ([loc, unit] in fixtures.items.narrow<[Point, IUnit]>()
-                .sort(pairComparator)) {
-            IReportNode unitNode = produceRIRSingle(fixtures, map, unit,
-                loc);
-            unitNode.text = "At ``loc``: ``unitNode.text`` ``distanceString(loc)``";
-            if (currentPlayer == unit.owner) {
-                ours.appendNode(unitNode);
-            } else {
-                theirs.appendNode(unitNode);
-            }
-        }
-        IReportNode textNode = SimpleReportNode(
-            "(Any units reported above are not described again.)");
-        if (ours.childCount == 0) {
-            if (theirs.childCount == 0) {
-                return emptyReportNode;
-            } else {
-                theirs.addAsFirst(textNode);
-                theirs.text = "Foreign units in the map:";
-                return theirs;
-            }
-        } else if (theirs.childCount == 0) {
-            ours.addAsFirst(textNode);
-            ours.text = "Your units in the map:";
-            return ours;
-        } else {
-            IReportNode retval = SectionReportNode(4, "Units in the map:");
-            retval.appendNode(textNode);
-            retval.appendNode(ours);
-            retval.appendNode(theirs);
-            return retval;
         }
     }
 }

@@ -1,16 +1,9 @@
 import ceylon.collection {
     MutableList
 }
-import ceylon.language.meta {
-    type
-}
-import ceylon.language.meta.model {
-    Type
-}
 
 import lovelace.util.common {
-    DRMap=DelayedRemovalMap,
-    simpleMap
+    DRMap=DelayedRemovalMap
 }
 
 import strategicprimer.model.common.map {
@@ -24,15 +17,6 @@ import strategicprimer.model.common.map.fixtures.explorable {
     Cave,
     Portal,
     Battlefield
-}
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    SimpleReportNode,
-    ListReportNode,
-    SectionListReportNode,
-    emptyReportNode
 }
 
 "A report generator for caves, battlefields, and portals."
@@ -94,41 +78,6 @@ shared class ExplorableReportGenerator(
                 ostream("<li>``list``</li>");
             }
             ostream("</ul>``operatingSystem.newline``");
-        }
-    }
-
-    "Produces a more verbose sub-report on a cave, battlefield, or portal."
-    shared actual IReportNode produceRIRSingle(DRMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Battlefield|Cave|Portal item, Point loc) {
-        StringBuilder builder = StringBuilder();
-        produceSingle(fixtures, map, builder.append, item, loc);
-        return SimpleReportNode(builder.string, loc);
-    }
-
-    "Produces the report section on all caves, battlefields, and portals."
-    shared actual IReportNode produceRIR(
-            DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
-        IReportNode portals = ListReportNode("Portals");
-        IReportNode battles = ListReportNode("Battlefields");
-        IReportNode caves = ListReportNode("Caves");
-        Map<Type<IFixture>, IReportNode> nodes =
-                simpleMap(`Portal`->portals, `Battlefield`->battles,
-            `Cave`->caves);
-//        for ([loc, item] in fixtures.items.narrow<[Point, Battlefield|Cave|Portal]>().sort(pairComparator)) { // TODO: switch to this form once eclipse/ceylon#7372 fixed
-//            if (exists node = nodes[type(item)]) {
-        for ([loc, item] in fixtures.items.sort(pairComparator)) {
-            if (is Battlefield|Cave|Portal item,
-                    exists node = nodes[type(item)]) {
-                node.appendNode(produceRIRSingle(fixtures, map, item, loc));
-            }
-        }
-        IReportNode retval = SectionListReportNode(4,
-            "Caves, Battlefields, and Portals");
-        retval.addIfNonEmpty(caves, battles, portals);
-        if (retval.childCount == 0) {
-            return emptyReportNode;
-        } else {
-            return retval;
         }
     }
 }

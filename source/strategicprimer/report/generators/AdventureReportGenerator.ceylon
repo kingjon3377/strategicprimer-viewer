@@ -12,14 +12,6 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.explorable {
     AdventureFixture
 }
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    SimpleReportNode,
-    SectionListReportNode,
-    emptyReportNode
-}
 
 "A report generator for adventure hooks."
 shared class AdventureReportGenerator(
@@ -51,38 +43,5 @@ shared class AdventureReportGenerator(
             }
             ostream(" (already investigated by ``player``)");
         }
-    }
-
-    "Produce the report on all adventure hooks in the map."
-    shared actual IReportNode produceRIR(
-            DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
-        IReportNode adventures = SectionListReportNode(4, "Possible Adventures");
-        for ([loc, item] in fixtures.items.narrow<[Point, AdventureFixture]>()
-                .sort(pairComparator)) {
-            adventures.appendNode(produceRIRSingle(fixtures, map, item, loc));
-        }
-        if (adventures.childCount == 0) {
-            return emptyReportNode;
-        } else {
-            return adventures;
-        }
-    }
-
-    "Produce a more verbose sub-report on an adventure hook."
-    shared actual IReportNode produceRIRSingle(
-            DRMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
-            AdventureFixture item, Point loc) {
-        fixtures.remove(item.id);
-        String ownerString;
-        if (item.owner.independent) {
-            ownerString = "";
-        } else if (currentPlayer == item.owner) {
-            ownerString = " (already investigated by you)";
-        } else {
-            ownerString = " (already investigated by another player)";
-        }
-        return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
-                .fullDescription`` ``distanceString(loc)````ownerString``",
-            loc);
     }
 }

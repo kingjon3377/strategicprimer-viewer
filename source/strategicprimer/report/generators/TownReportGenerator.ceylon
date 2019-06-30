@@ -22,14 +22,6 @@ import strategicprimer.model.common.map.fixtures.towns {
     Village,
     AbstractTown
 }
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    SimpleReportNode,
-    SectionListReportNode,
-    emptyReportNode
-}
 
 "A report generator for towns."
 todo("Figure out some way to report what was found at any of the towns.")
@@ -37,9 +29,6 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
         Player currentPlayer, MapDimensions dimensions, Integer currentTurn,
         Point? hq = null)
         extends AbstractReportGenerator<ITownFixture>(comp, dimensions, hq) {
-    {TownStatus+} statuses = [TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
-        TownStatus.burned];
-
     "Separate towns by status."
     void separateByStatus<T>(Map<TownStatus, T> mapping,
             Collection<[Point, IFixture]> collection,
@@ -113,64 +102,6 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             for (mapping in [abandoned, active, burned, ruined]) {
                 writeMap(ostream, mapping, defaultFormatter(fixtures, map));
             }
-        }
-    }
-
-    "Produce a report for a town. Handling of fortresses and villages is delegated
-     to their dedicated report-generating classes. We remove the town from the set of
-     fixtures."
-    shared actual IReportNode produceRIRSingle(
-            DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
-            IMapNG map, ITownFixture item, Point loc) {
-        assert (is Village|Fortress|AbstractTown item);
-        switch (item)
-        case (is Village) {
-            return VillageReportGenerator(comp, currentPlayer, dimensions, hq)
-                .produceRIRSingle(fixtures, map, item, loc);
-        }
-        case (is Fortress) {
-            return FortressReportGenerator(comp, currentPlayer, dimensions,
-                currentTurn, hq).produceRIRSingle(fixtures, map, item, loc);
-        }
-        case (is AbstractTown) {
-            fixtures.remove(item.id);
-            if (item.owner.independent) {
-                return SimpleReportNode("At ``loc``: ``item.name``, an independent ``
-                    item.townSize`` ``item.status`` ``item.kind`` ``distanceString(loc)``", loc);
-            } else if (item.owner == currentPlayer) {
-                return SimpleReportNode("At ``loc``: ``item.name``, a ``item.townSize
-                    `` ``item.status`` ``item.kind`` allied with you ``distanceString(loc)``", loc);
-            } else {
-                return SimpleReportNode("At ``loc``: ``item.name``, a ``item.townSize
-                    `` ``item.status`` ``item.kind`` allied with ``item.owner`` ``
-                    distanceString(loc)``", loc);
-            }
-        }
-    }
-
-    "Produce a report for all towns. (Fortresses and villages are not included in this
-     report.) We remove the towns from the set of fixtures."
-    shared actual IReportNode produceRIR(
-            DelayedRemovalMap<Integer,[Point, IFixture]> fixtures,
-            IMapNG map) {
-        Map<TownStatus, IReportNode> separated = simpleMap(
-            TownStatus.abandoned->SectionListReportNode(5, "Abandoned Communities"),
-                TownStatus.active->SectionListReportNode(5, "Active Communities"),
-                TownStatus.burned->SectionListReportNode(5,
-                    "Burned-Out Communities"),
-                TownStatus.ruined->SectionListReportNode(5,
-                    "Ruined Communities"));
-        separateByStatus(separated, fixtures.items,
-                    (IReportNode node, pair) =>
-                node.appendNode(produceRIRSingle(fixtures, map, pair.rest.first,
-                    pair.first)));
-        IReportNode retval = SectionListReportNode(4,
-            "Cities, towns, and/or fortifications you know about:");
-        statuses.map(separated.get).coalesced.each(retval.addIfNonEmpty);
-        if (retval.childCount == 0) {
-            return emptyReportNode;
-        } else {
-            return retval;
         }
     }
 }

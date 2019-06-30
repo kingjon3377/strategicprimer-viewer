@@ -12,14 +12,6 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures {
     TextFixture
 }
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    SimpleReportNode,
-    SectionListReportNode,
-    emptyReportNode
-}
 
 "A report generator for arbitrary-text notes."
 shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
@@ -60,39 +52,6 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             }
             ostream("""</ul>
                        """);
-        }
-    }
-
-    "Produce the part of the report dealing with an arbitrary-text note, in report
-     intermediate representation. This does *not* remove it from the collection, because
-     this method doesn't know the synthetic ID # that was assigned to it."
-    shared actual IReportNode produceRIRSingle(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, TextFixture item, Point loc) {
-        if (item.turn>=0) {
-            return SimpleReportNode("At ``loc`` ``distanceString(loc)`` On turn ``item
-                .turn``: ``item.text``");
-        } else {
-            return SimpleReportNode("At ``loc`` ``distanceString(loc)``: ``item.text``");
-        }
-    }
-
-    "Produce the part of the report dealing with arbitrary-text note(s), in
-     report intermediate representation."
-    shared actual IReportNode produceRIR(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map) {
-        IReportNode retval = SectionListReportNode(4, "Miscellaneous Notes");
-        for (key->[loc, item] in fixtures) {
-            if (is TextFixture fixture = item) {
-                retval.appendNode(produceRIRSingle(fixtures, map, fixture, loc));
-                fixtures.remove(key);
-            }
-        }
-        if (retval.childCount > 0) {
-            return retval;
-        } else {
-            return emptyReportNode;
         }
     }
 }
