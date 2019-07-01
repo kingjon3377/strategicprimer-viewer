@@ -24,14 +24,14 @@ import strategicprimer.report.nodes {
 "A report generator for arbitrary-text notes."
 shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Point? hq = null)
-        extends AbstractReportGenerator<TextFixture>(comp, dimensions, hq else Point.invalidPoint) {
+        extends AbstractReportGenerator<TextFixture>(comp, dimensions, hq) {
     "Produce the part of the report dealing with an arbitrary-text note. This does *not*
      remove it from the collection, because this method doesn't know the synthetic ID #
      that was assigned to it."
     shared actual void produceSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, TextFixture item, Point loc) {
-        ostream("At ``loc`` ``distCalculator.distanceString(loc)``");
+        ostream("At ``loc`` ``distanceString(loc)``");
         if (item.turn>=0) {
             ostream(": On turn ``item.turn``");
         }
@@ -70,12 +70,10 @@ shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, TextFixture item, Point loc) {
         if (item.turn>=0) {
-            return SimpleReportNode("At ``loc`` ``distCalculator
-                .distanceString(loc)`` On turn ``item
+            return SimpleReportNode("At ``loc`` ``distanceString(loc)`` On turn ``item
                 .turn``: ``item.text``");
         } else {
-            return SimpleReportNode("At ``loc`` ``distCalculator
-                .distanceString(loc)``: ``item.text``");
+            return SimpleReportNode("At ``loc`` ``distanceString(loc)``: ``item.text``");
         }
     }
 

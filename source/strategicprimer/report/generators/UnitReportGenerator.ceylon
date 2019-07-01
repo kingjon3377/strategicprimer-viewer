@@ -47,7 +47,7 @@ import com.vasileff.ceylon.structures {
 shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         Player currentPlayer, MapDimensions dimensions, Integer currentTurn,
         Point? hq = null)
-        extends AbstractReportGenerator<IUnit>(comp, dimensions, hq else Point.invalidPoint) {
+        extends AbstractReportGenerator<IUnit>(comp, dimensions, hq) {
     IReportGenerator<FortressMember> memberReportGenerator =
             FortressMemberReportGenerator(comp, currentPlayer, dimensions, currentTurn,
                 hq);
@@ -200,7 +200,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                        """);
             void unitFormatter(IUnit->Point entry, Anything(String) formatter) {
                 formatter(
-                    "At ``entry.item````distCalculator.distanceString(entry.item)``");
+                    "At ``entry.item````distanceString(entry.item)``");
                 produceSingle(fixtures, map, formatter, entry.key, entry.item);
             }
             writeMap(ostream, ours, unitFormatter);
@@ -293,8 +293,7 @@ shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 .sort(pairComparator)) {
             IReportNode unitNode = produceRIRSingle(fixtures, map, unit,
                 loc);
-            unitNode.text = "At ``loc``: ``unitNode.text`` ``distCalculator
-                .distanceString(loc)``";
+            unitNode.text = "At ``loc``: ``unitNode.text`` ``distanceString(loc)``";
             if (currentPlayer == unit.owner) {
                 ours.appendNode(unitNode);
             } else {

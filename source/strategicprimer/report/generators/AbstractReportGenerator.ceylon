@@ -22,19 +22,29 @@ import strategicprimer.model.common.map {
 shared sealed abstract class AbstractReportGenerator<Type>(
         "A comparator of [[Point]]-fixture pairs."
         shared Comparison([Point, IFixture], [Point, IFixture]) pairComparator,
-        "The dimensions of the map. If [[null]], [[distCalculator]] will give
-         inaccurate results whenever the shortest distance between two points
+        "The dimensions of the map. If [[null]], [[distComparator]] and [[distanceString]]
+         will give inaccurate results whenever the shortest distance between two points
          involves wrapping around an edge of the map."
         MapDimensions? mapDimensions,
         "The base point to use for distance calculations. Usually the
          location of the headquarters of the player for whom the report is
-         being prepared." // TODO: Make nullable
-        Point referencePoint = Point.invalidPoint)
+         being prepared."
+        Point? referencePoint)
         satisfies IReportGenerator<Type> given Type satisfies IFixture {
-    "A calculator-comparator for subclasses to use to compare fixtures on the basis of
-     distance from [[referencePoint]] and to print that distance in the report."
-    shared DistanceComparator distCalculator = DistanceComparator(referencePoint,
-        mapDimensions);
+    "A comparator for subclasses to use to compare fixtures on the basis of distance
+     from [[referencePoint]]."
+    shared Comparison(Point, Point) distComparator;
+    "A method to print the distance from [[referencePoint]], or \"unknown\" if it is [[null]]."
+    shared String(Point) distanceString;
+    if (exists referencePoint) {
+        DistanceComparator distCalculator = DistanceComparator(referencePoint,
+            mapDimensions);
+        distComparator = distCalculator.compare;
+        distanceString = distCalculator.distanceString;
+    } else {
+        distComparator = (Point one, Point two) => equal;
+        distanceString = (Point ignored) => "unknown";
+    }
     "A list that produces HTML in its [[string]] attribute."
     shared class HtmlList(shared actual String header, {String*} initial = [])
             extends ArrayList<String>(0, 1.5, initial)

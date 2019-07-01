@@ -25,7 +25,7 @@ import strategicprimer.report.nodes {
 shared class AdventureReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Point? hq = null)
-        extends AbstractReportGenerator<AdventureFixture>(comp, dimensions, hq else Point.invalidPoint) {
+        extends AbstractReportGenerator<AdventureFixture>(comp, dimensions, hq) {
     AdventureFixture->Point toEntry([Point, AdventureFixture] pair) =>
         pair.rest.first->pair.first;
     "Produce the report on all adventure hooks in the map."
@@ -41,7 +41,7 @@ shared class AdventureReportGenerator(
             IMapNG map, Anything(String) ostream, AdventureFixture item, Point loc) {
         fixtures.remove(item.id);
         ostream("``item.briefDescription`` at ``loc``: ``item
-            .fullDescription`` ``distCalculator.distanceString(loc)``");
+            .fullDescription`` ``distanceString(loc)``");
         if (!item.owner.independent) {
             String player;
             if (item.owner == currentPlayer) {
@@ -82,7 +82,7 @@ shared class AdventureReportGenerator(
             ownerString = " (already investigated by another player)";
         }
         return SimpleReportNode("``item.briefDescription`` at ``loc``: ``item
-                .fullDescription`` ``distCalculator.distanceString(loc)````ownerString``",
+                .fullDescription`` ``distanceString(loc)````ownerString``",
             loc);
     }
 }

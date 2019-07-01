@@ -31,7 +31,7 @@ import strategicprimer.report.nodes {
 shared class VillageReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Point? hq = null)
-        extends AbstractReportGenerator<Village>(comp, dimensions, hq else Point.invalidPoint) {
+        extends AbstractReportGenerator<Village>(comp, dimensions, hq) {
     "Produce the report on all known villages."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
         IMapNG map, Anything(String) ostream) {
@@ -64,7 +64,7 @@ shared class VillageReportGenerator(
             }
         }
         Comparison byDistance(Village->Point first, Village->Point second) =>
-                distCalculator.compare(first.item, second.item);
+                distComparator(first.item, second.item);
         Anything(Village->Point, Anything(String)) writer =
                 defaultFormatter(fixtures, map);
         writeMap(ostream, own, writer, byDistance);
@@ -92,7 +92,7 @@ shared class VillageReportGenerator(
         } else {
             ostream("sworn to ``item.owner.name`` ");
         }
-        ostream(distCalculator.distanceString(loc));
+        ostream(distanceString(loc));
     }
 
     "Produce the report on all known villages."
@@ -138,16 +138,14 @@ shared class VillageReportGenerator(
         fixtures.remove(item.id);
         if (item.owner.independent) {
             return SimpleReportNode("At ``loc``: ``item.name``, a(n) ``item
-                .race`` village, independent ``distCalculator.distanceString(loc)``",
+                .race`` village, independent ``distanceString(loc)``",
             loc);
         } else if (item.owner == currentPlayer) {
             return SimpleReportNode("At ``loc``: ``item.name``, a(n) ``item
-                .race`` village, sworn to you ``distCalculator
-                    .distanceString(loc)``", loc);
+                .race`` village, sworn to you ``distanceString(loc)``", loc);
         } else {
             return SimpleReportNode("At ``loc``: ``item.name``, a(n) ``item
-                .race`` village, sworn to ``item.owner`` ``distCalculator
-                    .distanceString(loc)``", loc);
+                .race`` village, sworn to ``item.owner`` ``distanceString(loc)``", loc);
         }
     }
 }

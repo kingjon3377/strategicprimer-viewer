@@ -36,7 +36,7 @@ import strategicprimer.report.nodes {
 shared class FortressMemberReportGenerator(
             Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
             MapDimensions dimensions, Integer currentTurn, Point? hq = null)
-        extends AbstractReportGenerator<FortressMember>(comp, dimensions, hq else Point.invalidPoint) {
+        extends AbstractReportGenerator<FortressMember>(comp, dimensions, hq) {
     "Produces a sub-report on a resource or piece of equipment. All fixtures referred
      to in this report are removed from the collection."
     shared actual void produceSingle(

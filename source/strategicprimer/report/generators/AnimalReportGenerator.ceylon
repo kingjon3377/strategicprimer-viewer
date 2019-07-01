@@ -40,7 +40,7 @@ import com.vasileff.ceylon.structures {
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Integer currentTurn, Point? hq = null)
         extends AbstractReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks>(comp,
-            dimensions, hq else Point.invalidPoint) {
+            dimensions, hq) {
     "Produce the sub-report about an individual Animal. We assume that individual
      Animals are members of the player's units, or that for some other reason the player
      is allowed to see the precise count of the population."
@@ -76,7 +76,7 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
                     }
                 }
             }
-            ostream(" ``distCalculator.distanceString(loc)``");
+            ostream(" ``distanceString(loc)``");
     }
 
     "Produce the sub-report about animals."
@@ -118,13 +118,12 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
             IMapNG map, /*Animal|AnimalTracks*/AnimalOrTracks item, Point loc) {
         if (is AnimalTracks item) {
             return SimpleReportNode("At ``loc``: tracks or traces of ``item
-                .kind`` ``distCalculator.distanceString(loc)``", loc);
+                .kind`` ``distanceString(loc)``", loc);
         } else if (item.talking) {
             return SimpleReportNode("At ``loc``: talking ``item
-                .kind`` ``distCalculator.distanceString(loc)``", loc);
+                .kind`` ``distanceString(loc)``", loc);
         } else {
-            return SimpleReportNode("At ``loc``: ``item.kind`` ``distCalculator
-                .distanceString(loc)``", loc);
+            return SimpleReportNode("At ``loc``: ``item.kind`` ``distanceString(loc)``", loc);
         }
     }
 

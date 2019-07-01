@@ -36,7 +36,7 @@ todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         Player currentPlayer, MapDimensions dimensions, Integer currentTurn,
         Point? hq = null)
-        extends AbstractReportGenerator<ITownFixture>(comp, dimensions, hq else Point.invalidPoint) {
+        extends AbstractReportGenerator<ITownFixture>(comp, dimensions, hq) {
     {TownStatus+} statuses = [TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
         TownStatus.burned];
 
@@ -80,7 +80,7 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
                 ostream("a ``item.townSize`` ``item.status`` allied with ``
                     item.owner``");
             }
-            ostream(" ``distCalculator.distanceString(loc)``");
+            ostream(" ``distanceString(loc)``");
         }
     }
 
@@ -136,16 +136,14 @@ shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]
             fixtures.remove(item.id);
             if (item.owner.independent) {
                 return SimpleReportNode("At ``loc``: ``item.name``, an independent ``
-                    item.townSize`` ``item.status`` ``item.kind`` ``distCalculator
-                    .distanceString(loc)``", loc);
+                    item.townSize`` ``item.status`` ``item.kind`` ``distanceString(loc)``", loc);
             } else if (item.owner == currentPlayer) {
                 return SimpleReportNode("At ``loc``: ``item.name``, a ``item.townSize
-                    `` ``item.status`` ``item.kind`` allied with you ``distCalculator
-                        .distanceString(loc)``", loc);
+                    `` ``item.status`` ``item.kind`` allied with you ``distanceString(loc)``", loc);
             } else {
                 return SimpleReportNode("At ``loc``: ``item.name``, a ``item.townSize
                     `` ``item.status`` ``item.kind`` allied with ``item.owner`` ``
-                    distCalculator.distanceString(loc)``", loc);
+                    distanceString(loc)``", loc);
             }
         }
     }

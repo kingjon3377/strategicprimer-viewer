@@ -101,8 +101,7 @@ shared class HarvestableReportGenerator
 
     shared new (Comparison([Point, IFixture], [Point, IFixture]) comp,
         MapDimensions dimensions, Point? hq = null)
-            extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions,
-                hq else Point.invalidPoint) { }
+            extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) { }
 
     "Convert a Map from kinds to Points to a HtmlList."
     // Can't be static because HtmlList isn't and can't be
@@ -153,7 +152,7 @@ shared class HarvestableReportGenerator
             ostream("An exposed ``item.kind`` deposit");
         }
         ostream(" ");
-        ostream(distCalculator.distanceString(loc));
+        ostream(distanceString(loc));
     }
 
     """Produce the sub-report(s) dealing with "harvestable" fixtures. All fixtures

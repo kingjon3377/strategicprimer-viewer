@@ -61,13 +61,13 @@ import com.vasileff.ceylon.structures {
 shared class ImmortalsReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, MapDimensions dimensions,
         Point? hq = null)
-        extends AbstractReportGenerator<Immortal>(comp, dimensions, hq else Point.invalidPoint) {
+        extends AbstractReportGenerator<Immortal>(comp, dimensions, hq) {
     "Produce a report on an individual immortal."
     shared actual void produceSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Immortal item, Point loc) {
         fixtures.remove(item.id);
-        ostream("At ``loc``: A(n) ``item`` ``distCalculator.distanceString(loc)``");
+        ostream("At ``loc``: A(n) ``item`` ``distanceString(loc)``");
     }
 
     "Produce a report on all immortals."
@@ -131,8 +131,7 @@ shared class ImmortalsReportGenerator(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Immortal item, Point loc) {
         fixtures.remove(item.id);
-        return SimpleReportNode("At ``loc``: A(n) ``item`` ``distCalculator
-            .distanceString(loc)``", loc);
+        return SimpleReportNode("At ``loc``: A(n) ``item`` ``distanceString(loc)``", loc);
     }
 
     "Produce a report node on an individual immortal, or the intermediate-representation

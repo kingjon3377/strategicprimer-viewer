@@ -39,7 +39,7 @@ import strategicprimer.report.nodes {
 shared class ExplorableReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Point? hq = null)
-        extends AbstractReportGenerator<Battlefield|Cave|Portal>(comp, dimensions, hq else Point.invalidPoint) {
+        extends AbstractReportGenerator<Battlefield|Cave|Portal>(comp, dimensions, hq) {
     "Produces a more verbose sub-report on a cave, battlefield, or portal."
     shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Battlefield|Cave|Portal item,
@@ -58,7 +58,7 @@ shared class ExplorableReportGenerator(
             ostream("A portal to another world at ");
         }
         if (loc.valid) {
-            ostream(loc.string + distCalculator.distanceString(loc));
+            ostream(loc.string + distanceString(loc));
         } else {
             ostream("an unknown location");
         }

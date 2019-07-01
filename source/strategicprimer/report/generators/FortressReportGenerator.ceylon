@@ -53,7 +53,7 @@ import com.vasileff.ceylon.structures {
 shared class FortressReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
         MapDimensions dimensions, Integer currentTurn, Point? hq = null)
-        extends AbstractReportGenerator<Fortress>(comp, dimensions, hq else Point.invalidPoint) {
+        extends AbstractReportGenerator<Fortress>(comp, dimensions, hq) {
     IReportGenerator<IUnit> urg =
             UnitReportGenerator(comp, currentPlayer, dimensions, currentTurn, hq);
     IReportGenerator<FortressMember> memberReportGenerator =
@@ -126,7 +126,7 @@ shared class FortressReportGenerator(
         ostream((item.owner == currentPlayer) then "you" else item.owner.string);
         ostream("</h5>
                  <ul>
-                     <li>Located at ``loc`` ``distCalculator.distanceString(loc)``</li>
+                     <li>Located at ``loc`` ``distanceString(loc)``</li>
                      <li>``terrain(map, loc, fixtures)``</li>
                      ");
         //            riversToString(ostream, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
@@ -219,8 +219,7 @@ shared class FortressReportGenerator(
         IReportNode retval = SectionListReportNode(5, // TODO: Extract playerNameOrYou() helper into superclass
             "Fortress ``item.name`` belonging to ``
             (item.owner == currentPlayer) then "you" else item.owner.string``", loc);
-        retval.appendNode(SimpleReportNode("Located at ``loc`` ``distCalculator
-            .distanceString(loc)``", loc));
+        retval.appendNode(SimpleReportNode("Located at ``loc`` ``distanceString(loc)``", loc));
         // This is a no-op if no rivers, so avoid an if
 //            riversToNode(loc, retval, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
         riversToNode(loc, retval, *map.rivers.get(loc));
