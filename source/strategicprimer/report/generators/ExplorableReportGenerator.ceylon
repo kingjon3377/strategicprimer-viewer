@@ -38,8 +38,8 @@ import strategicprimer.report.nodes {
 "A report generator for caves, battlefields, and portals."
 shared class ExplorableReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
-        MapDimensions dimensions, Point hq = Point.invalidPoint)
-        extends AbstractReportGenerator<Battlefield|Cave|Portal>(comp, dimensions, hq) {
+        MapDimensions dimensions, Point? hq = null)
+        extends AbstractReportGenerator<Battlefield|Cave|Portal>(comp, dimensions, hq else Point.invalidPoint) {
     "Produces a more verbose sub-report on a cave, battlefield, or portal."
     shared actual void produceSingle(DRMap<Integer, [Point, IFixture]> fixtures,
             IMapNG map, Anything(String) ostream, Battlefield|Cave|Portal item,

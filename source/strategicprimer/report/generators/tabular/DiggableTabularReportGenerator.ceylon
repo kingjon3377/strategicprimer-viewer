@@ -23,7 +23,7 @@ import strategicprimer.model.common.map.fixtures.resources {
 
 "A tabular report generator for resources that can be mined---mines, mineral veins, stone
  deposits, and Ground."
-shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
+shared class DiggableTabularReportGenerator(Point? hq, MapDimensions dimensions)
         extends AbstractTableGenerator<MineralFixture>()
         satisfies ITableGenerator<MineralFixture> {
     "The header row for the table."
@@ -32,6 +32,13 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
 
     "The file-name to (by default) write this table to."
     shared actual String tableName = "minerals";
+
+    Comparison(Point, Point) distanceComparator;
+    if (exists hq) {
+        distanceComparator = DistanceComparator(hq, dimensions).compare;
+    } else {
+        distanceComparator = (Point one, Point two) => equal;
+    }
 
     "Create a GUI table row representing a fixture."
     shared actual {{String+}*} produce(
@@ -68,6 +75,6 @@ shared class DiggableTabularReportGenerator(Point hq, MapDimensions dimensions)
     shared actual Comparison comparePairs([Point, MineralFixture] one,
             [Point, MineralFixture] two) =>
         comparing(byIncreasing(compose(MineralFixture.kind, pairFixture)),
-            comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+            comparingOn(pairPoint, distanceComparator),
             byIncreasing(compose(Object.hash, pairFixture)))(one, two);
 }

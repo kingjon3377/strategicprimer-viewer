@@ -19,7 +19,7 @@ import ceylon.language.meta {
 }
 
 """A tabular report generator for [["immortals."|Immortal]]"""
-shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
+shared class ImmortalsTabularReportGenerator(Point? hq, MapDimensions dimensions)
         extends AbstractTableGenerator<Immortal>()
         /*satisfies ITableGenerator<Immortal>*/ {
     "The header row for this table."
@@ -27,6 +27,13 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
 
     "The file-name to (by default) write this table to."
     shared actual String tableName = "immortals";
+
+    Comparison(Point, Point) distanceComparator;
+    if (exists hq) {
+        distanceComparator = DistanceComparator(hq, dimensions).compare;
+    } else {
+        distanceComparator = (Point one, Point two) => equal;
+    }
 
     "Create a GUI table row representing the given fixture."
     shared actual [{String+}+] produce(
@@ -39,7 +46,7 @@ shared class ImmortalsTabularReportGenerator(Point hq, MapDimensions dimensions)
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, Immortal] one,
             [Point, Immortal] two) =>
-            comparing(comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+            comparing(comparingOn(pairPoint, distanceComparator),
                 comparingOn(pairFixture,
                     comparing(byIncreasing(compose(Object.hash, type<Immortal>)),
                     byIncreasing(Object.hash))))(one, two);

@@ -100,8 +100,9 @@ shared class HarvestableReportGenerator
     }
 
     shared new (Comparison([Point, IFixture], [Point, IFixture]) comp,
-        MapDimensions dimensions, Point hq = Point.invalidPoint)
-            extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions, hq) { }
+        MapDimensions dimensions, Point? hq = null)
+            extends AbstractReportGenerator<HarvestableFixture>(comp, dimensions,
+                hq else Point.invalidPoint) { }
 
     "Convert a Map from kinds to Points to a HtmlList."
     // Can't be static because HtmlList isn't and can't be

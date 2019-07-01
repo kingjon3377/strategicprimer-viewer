@@ -19,7 +19,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 
 "A report generator for [[animal populations|Animal]] and
  [[sightings of animals|AnimalTracks]]."
-shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
+shared class AnimalTabularReportGenerator(Point? hq, MapDimensions dimensions,
         Integer currentTurn) satisfies ITableGenerator<Animal|AnimalTracks> {
     "The header row for the table."
     shared actual [String+] headerRow = ["Distance", "Location", "Number", "Kind", "Age"];
@@ -81,7 +81,12 @@ shared class AnimalTabularReportGenerator(Point hq, MapDimensions dimensions,
     "Compare two pairs of Animals and locations."
     shared actual Comparison comparePairs([Point, Animal|AnimalTracks] one,
             [Point, Animal|AnimalTracks] two) {
-        Comparison cmp = DistanceComparator(hq, dimensions).compare(one.first, two.first);
+        Comparison cmp;
+        if (exists hq) {
+            cmp = DistanceComparator(hq, dimensions).compare(one.first, two.first);
+        } else {
+            cmp = equal;
+        }
         if (cmp == equal) {
             if (is Animal first = one.rest.first) { // TODO: Extract the comparison on type to a function so we can put it and the distance comparison into comparing()
                 if (is Animal second = two.rest.first) {

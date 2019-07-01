@@ -60,8 +60,8 @@ import com.vasileff.ceylon.structures {
    such."""
 shared class ImmortalsReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, MapDimensions dimensions,
-        Point hq = Point.invalidPoint)
-        extends AbstractReportGenerator<Immortal>(comp, dimensions, hq) {
+        Point? hq = null)
+        extends AbstractReportGenerator<Immortal>(comp, dimensions, hq else Point.invalidPoint) {
     "Produce a report on an individual immortal."
     shared actual void produceSingle(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,

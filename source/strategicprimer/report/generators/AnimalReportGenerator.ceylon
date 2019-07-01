@@ -38,9 +38,9 @@ import com.vasileff.ceylon.structures {
 
 "A report generator for sightings of animals."
 shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        MapDimensions dimensions, Integer currentTurn, Point hq = Point.invalidPoint)
+        MapDimensions dimensions, Integer currentTurn, Point? hq = null)
         extends AbstractReportGenerator</*Animal|AnimalTracks*/AnimalOrTracks>(comp,
-            dimensions, hq) {
+            dimensions, hq else Point.invalidPoint) {
     "Produce the sub-report about an individual Animal. We assume that individual
      Animals are members of the player's units, or that for some other reason the player
      is allowed to see the precise count of the population."

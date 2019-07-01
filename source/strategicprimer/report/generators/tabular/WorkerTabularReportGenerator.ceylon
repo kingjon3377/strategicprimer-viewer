@@ -20,7 +20,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 
 "A report generator for workers. We do not cover Jobs or Skills; see
  [[SkillTabularReportGenerator]] for that."
-shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
+shared class WorkerTabularReportGenerator(Point? hq, MapDimensions dimensions)
         extends AbstractTableGenerator<IWorker>()
         satisfies ITableGenerator<IWorker> {
     "The header row of the table."
@@ -30,6 +30,13 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
 
     "The file-name to (by default) write this table to."
     shared actual String tableName = "workers";
+
+    Comparison(Point, Point) distanceComparator;
+    if (exists hq) {
+        distanceComparator = DistanceComparator(hq, dimensions).compare;
+    } else {
+        distanceComparator = (Point one, Point two) => equal;
+    }
 
     "Create a GUI table row representing a worker."
     shared actual {{String+}+} produce(
@@ -49,6 +56,6 @@ shared class WorkerTabularReportGenerator(Point hq, MapDimensions dimensions)
     "Compare two worker-location pairs."
     shared actual Comparison comparePairs([Point, IWorker] one,
             [Point, IWorker] two) =>
-        comparing(comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+        comparing(comparingOn(pairPoint, distanceComparator),
             byIncreasing(compose(IWorker.name, pairFixture)))(one, two);
 }

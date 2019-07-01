@@ -23,8 +23,8 @@ import strategicprimer.report.nodes {
 
 "A report generator for arbitrary-text notes."
 shared class TextReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-        MapDimensions dimensions, Point hq = Point.invalidPoint)
-        extends AbstractReportGenerator<TextFixture>(comp, dimensions, hq) {
+        MapDimensions dimensions, Point? hq = null)
+        extends AbstractReportGenerator<TextFixture>(comp, dimensions, hq else Point.invalidPoint) {
     "Produce the part of the report dealing with an arbitrary-text note. This does *not*
      remove it from the collection, because this method doesn't know the synthetic ID #
      that was assigned to it."

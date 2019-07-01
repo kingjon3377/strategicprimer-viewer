@@ -46,8 +46,8 @@ import com.vasileff.ceylon.structures {
 "A report generator for units."
 shared class UnitReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         Player currentPlayer, MapDimensions dimensions, Integer currentTurn,
-        Point hq = Point.invalidPoint)
-        extends AbstractReportGenerator<IUnit>(comp, dimensions, hq) {
+        Point? hq = null)
+        extends AbstractReportGenerator<IUnit>(comp, dimensions, hq else Point.invalidPoint) {
     IReportGenerator<FortressMember> memberReportGenerator =
             FortressMemberReportGenerator(comp, currentPlayer, dimensions, currentTurn,
                 hq);

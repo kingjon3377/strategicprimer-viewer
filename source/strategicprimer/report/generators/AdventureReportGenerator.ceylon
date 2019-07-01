@@ -24,8 +24,8 @@ import strategicprimer.report.nodes {
 "A report generator for adventure hooks."
 shared class AdventureReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
-        MapDimensions dimensions, Point hq = Point.invalidPoint)
-        extends AbstractReportGenerator<AdventureFixture>(comp, dimensions, hq) {
+        MapDimensions dimensions, Point? hq = null)
+        extends AbstractReportGenerator<AdventureFixture>(comp, dimensions, hq else Point.invalidPoint) {
     AdventureFixture->Point toEntry([Point, AdventureFixture] pair) =>
         pair.rest.first->pair.first;
     "Produce the report on all adventure hooks in the map."

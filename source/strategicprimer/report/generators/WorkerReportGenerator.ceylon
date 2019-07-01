@@ -31,8 +31,8 @@ import strategicprimer.report.nodes {
 
 "A report generator for Workers."
 class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-            Boolean details, MapDimensions dimensions, Point hq = Point.invalidPoint)
-        extends AbstractReportGenerator<IWorker>(comp, dimensions, hq) {
+            Boolean details, MapDimensions dimensions, Point? hq = null)
+        extends AbstractReportGenerator<IWorker>(comp, dimensions, hq else Point.invalidPoint) {
     "Produce the sub-sub-report on a worker's stats."
     String statsString(WorkerStats stats) {
         return "He or she has the following stats: ``stats.hitPoints`` / ``stats

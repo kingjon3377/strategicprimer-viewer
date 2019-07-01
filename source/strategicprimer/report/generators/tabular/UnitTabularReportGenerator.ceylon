@@ -18,7 +18,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 }
 
 "A tabular report generator for units."
-shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions dimensions)
+shared class UnitTabularReportGenerator(Player player, Point? hq, MapDimensions dimensions)
         extends AbstractTableGenerator<IUnit>()
         satisfies ITableGenerator<IUnit> {
     "The header row for this table."
@@ -27,6 +27,13 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
 
     "The file-name to (by default) write this table to."
     shared actual String tableName = "units";
+
+    Comparison(Point, Point) distanceComparator;
+    if (exists hq) {
+        distanceComparator = DistanceComparator(hq, dimensions).compare;
+    } else {
+        distanceComparator = (Point one, Point two) => equal;
+    }
 
     "Create a GUI table row representing the unit."
     shared actual {{String+}+} produce(
@@ -53,7 +60,7 @@ shared class UnitTabularReportGenerator(Player player, Point hq, MapDimensions d
 
     "Compare two location-unit pairs."
     shared actual Comparison comparePairs([Point, IUnit] one, [Point, IUnit] two) =>
-        comparing(comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+        comparing(comparingOn(pairPoint, distanceComparator),
             comparingOn(pairFixture, comparing(byIncreasing(IUnit.owner),
                 byIncreasing(IUnit.kind), byIncreasing(IUnit.name))))(one, two);
 }

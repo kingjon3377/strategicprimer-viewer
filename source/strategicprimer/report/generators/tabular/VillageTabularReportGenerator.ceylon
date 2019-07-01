@@ -17,7 +17,7 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 
 "A tabular report generator for villages."
-shared class VillageTabularReportGenerator(Player player, Point hq,
+shared class VillageTabularReportGenerator(Player player, Point? hq,
         MapDimensions dimensions) extends AbstractTableGenerator<Village>()
         satisfies ITableGenerator<Village> {
     "The header of this table."
@@ -25,6 +25,13 @@ shared class VillageTabularReportGenerator(Player player, Point hq,
 
     "The file-name to (by default) write this table to."
     shared actual String tableName = "villages";
+
+    Comparison(Point, Point) distanceComparator;
+    if (exists hq) {
+        distanceComparator = DistanceComparator(hq, dimensions).compare;
+    } else {
+        distanceComparator = (Point one, Point two) => equal;
+    }
 
     "Create a GUI table row representing the village."
     shared actual {{String+}+} produce(
@@ -38,7 +45,7 @@ shared class VillageTabularReportGenerator(Player player, Point hq,
     "Compare two location-and-village pairs."
     shared actual Comparison comparePairs([Point, Village] one,
             [Point, Village] two) =>
-        comparing(comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+        comparing(comparingOn(pairPoint, distanceComparator),
             comparingOn(pairFixture, comparing(byIncreasing(Village.owner),
                 byIncreasing(Village.name))))(one, two);
 }

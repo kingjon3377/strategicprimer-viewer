@@ -17,13 +17,20 @@ import strategicprimer.model.common.map.fixtures.towns {
 }
 
 "A tabular report generator for fortresses."
-shared class FortressTabularReportGenerator(Player player, Point hq,
+shared class FortressTabularReportGenerator(Player player, Point? hq,
         MapDimensions dimensions) extends AbstractTableGenerator<Fortress>() {
     "The header fields are Distance, Location, Owner, and Name."
     shared actual [String+] headerRow = ["Distance", "Location", "Owner", "Name"];
 
     "The file-name to (by default) write this table to."
     shared actual String tableName = "fortresses";
+
+    Comparison(Point, Point) distanceComparator;
+    if (exists hq) {
+        distanceComparator = DistanceComparator(hq, dimensions).compare;
+    } else {
+        distanceComparator = (Point one, Point two) => equal;
+    }
 
     "Create a GUI table row representing the fortress."
     shared actual [{String+}+] produce(
@@ -66,7 +73,7 @@ shared class FortressTabularReportGenerator(Player player, Point hq,
     "Compare two Point-Fortress pairs."
     shared actual Comparison comparePairs([Point, Fortress] one, [Point, Fortress] two) =>
         comparing(comparingOn(pairFixture, compareOwners),
-                comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+                comparingOn(pairPoint, distanceComparator),
                 comparingOn(pairFixture, compareNames),
                 byIncreasing(compose(Fortress.owner, pairFixture)))
             (one, two);

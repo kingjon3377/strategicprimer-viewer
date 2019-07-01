@@ -72,7 +72,7 @@ shared object tabularReportGenerator {
         Map<Integer, Integer> parentMap = reportGeneratorHelper.getParentMap(map);
         Player player = map.currentPlayer;
         MapDimensions dimensions = map.dimensions;
-        Point hq = reportGeneratorHelper.findHQ(map, player);
+        Point? hq = reportGeneratorHelper.findHQ(map, player);
         {ITableGenerator<out Object>*} generators = [
             FortressTabularReportGenerator(player, hq, dimensions),
             UnitTabularReportGenerator(player, hq, dimensions),
@@ -134,7 +134,7 @@ shared object tabularReportGenerator {
         Map<Integer, Integer> parentMap = reportGeneratorHelper.getParentMap(map);
         Player player = map.currentPlayer;
         MapDimensions dimensions = map.dimensions;
-        Point hq = reportGeneratorHelper.findHQ(map, player);
+        Point? hq = reportGeneratorHelper.findHQ(map, player);
         {ITableGenerator<out Object>*} generators = [
             FortressTabularReportGenerator(player, hq, dimensions),
             UnitTabularReportGenerator(player, hq, dimensions),

@@ -68,12 +68,18 @@ shared class CropTabularReportGenerator
         }
     }
 
-    Point hq;
+    Point? hq;
     MapDimensions dimensions;
-    shared new (Point hq, MapDimensions dimensions)
+    Comparison(Point, Point) distanceComparator;
+    shared new (Point? hq, MapDimensions dimensions)
             extends AbstractTableGenerator<Forest|Shrub|Meadow|Grove>() {
         this.hq = hq;
         this.dimensions = dimensions;
+        if (exists hq) {
+            distanceComparator = DistanceComparator(hq, dimensions).compare;
+        } else {
+            distanceComparator = (Point one, Point two) => equal;
+        }
     }
 
     "The header row for the table."
@@ -151,7 +157,7 @@ shared class CropTabularReportGenerator
     shared actual Comparison comparePairs([Point, Forest|Shrub|Meadow|Grove] one,
         [Point, Forest|Shrub|Meadow|Grove] two) =>
         comparing(byIncreasing(compose(HasKind.kind, pairFixture)),
-            comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+            comparingOn(pairPoint, distanceComparator),
             byIncreasing(compose(Object.hash, compose(typeOf<TileFixture>, pairFixture))),
             byIncreasing(compose(TileFixture.hash, pairFixture)))(one, two);
 }

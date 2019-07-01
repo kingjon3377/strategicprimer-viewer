@@ -28,7 +28,7 @@ shared sealed abstract class AbstractReportGenerator<Type>(
         MapDimensions? mapDimensions,
         "The base point to use for distance calculations. Usually the
          location of the headquarters of the player for whom the report is
-         being prepared."
+         being prepared." // TODO: Make nullable
         Point referencePoint = Point.invalidPoint)
         satisfies IReportGenerator<Type> given Type satisfies IFixture {
     "A calculator-comparator for subclasses to use to compare fixtures on the basis of

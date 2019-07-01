@@ -35,8 +35,8 @@ import strategicprimer.report.nodes {
 todo("Figure out some way to report what was found at any of the towns.")
 shared class TownReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
         Player currentPlayer, MapDimensions dimensions, Integer currentTurn,
-        Point hq = Point.invalidPoint)
-        extends AbstractReportGenerator<ITownFixture>(comp, dimensions, hq) {
+        Point? hq = null)
+        extends AbstractReportGenerator<ITownFixture>(comp, dimensions, hq else Point.invalidPoint) {
     {TownStatus+} statuses = [TownStatus.active, TownStatus.abandoned, TownStatus.ruined,
         TownStatus.burned];
 

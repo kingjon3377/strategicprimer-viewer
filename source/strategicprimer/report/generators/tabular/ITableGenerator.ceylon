@@ -111,11 +111,11 @@ shared interface ITableGenerator<T> given T satisfies IFixture {
 
     "A String showing the distance between two points, suitable to be displayed, rounded
      to a tenth of a tile. This default implementation just takes the square root of
-     [[distance]] and formats it, unless one or both of the points are invalid, in which
-     case it prints \"unknown\" instead.."
-    shared default String distanceString(Point first, Point second,
+     [[distance]] and formats it, unless one or both of the points is [[null]]
+     or invalid, in which case it prints \"unknown\" instead.."
+    shared default String distanceString(Point? first, Point? second,
                 MapDimensions dimensions) {
-        if (first.valid, second.valid) {
+        if (exists first, exists second, first.valid, second.valid) {
             return Float.format(sqrt(distance(first, second, dimensions).float),
                 1, 1);
         } else {

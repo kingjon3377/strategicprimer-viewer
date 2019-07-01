@@ -64,9 +64,9 @@ Logger log = logger(`module strategicprimer.report`);
 
 "An encapsulation of helper methods for report generators."
 object reportGeneratorHelper {
-    "Find the location of the given player's HQ in the given map."
-    todo("""Return null instead of an "invalid" Point when not found?""")
-    shared Point findHQ(IMapNG map, Player player) {
+    "Find the location of the given player's HQ in the given map, or [[null]]
+     if not found."
+    shared Point? findHQ(IMapNG map, Player player) {
         variable Point? retval = null;
         for (location->fixture in narrowedStream<Point, Fortress>(map.fixtures)
                 .filter(compose(matchingValue(player, Fortress.owner),
@@ -77,7 +77,7 @@ object reportGeneratorHelper {
                 retval = location;
             }
         } else {
-            return retval else Point.invalidPoint;
+            return retval;
         }
     }
 
@@ -163,9 +163,15 @@ shared object reportGenerator {
                           """);
         DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
                 reportGeneratorHelper.getFixtures(map);
-        Point hq = reportGeneratorHelper.findHQ(map, player);
-        Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-            DistanceComparator(hq, dimensions).compare, byIncreasing(IFixture.hash));
+        Point? hq = reportGeneratorHelper.findHQ(map, player);
+        Comparison([Point, IFixture], [Point, IFixture]) comparator;
+        if (exists hq) {
+            comparator = pairComparator(DistanceComparator(hq, dimensions).compare,
+                byIncreasing(IFixture.hash));
+        } else {
+            comparator = pairComparator((Anything one, Anything two) => equal,
+                byIncreasing(IFixture.hash));
+        }
         createSubReports(builder, fixtures, map, player,
             FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
             UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
@@ -206,9 +212,15 @@ shared object reportGenerator {
                 """);
         DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
                 reportGeneratorHelper.getFixtures(map);
-        Point hq = reportGeneratorHelper.findHQ(map, player);
-        Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-            DistanceComparator(hq, dimensions).compare, byIncreasing(IFixture.hash));
+        Point? hq = reportGeneratorHelper.findHQ(map, player);
+        Comparison([Point, IFixture], [Point, IFixture]) comparator;
+        if (exists hq) {
+            comparator = pairComparator(DistanceComparator(hq, dimensions).compare,
+                byIncreasing(IFixture.hash));
+        } else {
+            comparator = pairComparator((Anything one, Anything two) => equal,
+                byIncreasing(IFixture.hash));
+        }
         fixtures.items.map(Tuple.rest).map(Tuple.first).narrow<IUnit|Fortress>()
                 .filter(matchingValue(player, HasOwner.owner)).map(IFixture.id)
             .each(fixtures.remove);
@@ -258,9 +270,15 @@ shared object reportGenerator {
         DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
                 reportGeneratorHelper.getFixtures(map);
         MapDimensions dimensions = map.dimensions;
-        Point hq = reportGeneratorHelper.findHQ(map, player);
-        Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-            DistanceComparator(hq, dimensions).compare, byIncreasing(IFixture.hash));
+        Point? hq = reportGeneratorHelper.findHQ(map, player);
+        Comparison([Point, IFixture], [Point, IFixture]) comparator;
+        if (exists hq) {
+            comparator = pairComparator(DistanceComparator(hq, dimensions).compare,
+                byIncreasing(IFixture.hash));
+        } else {
+            comparator = pairComparator((Anything one, Anything two) => equal,
+                byIncreasing(IFixture.hash));
+        }
         createSubReportsIR(retval, fixtures, map, player,
             FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
             UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
@@ -284,10 +302,15 @@ shared object reportGenerator {
         DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper
             .getFixtures(map);
         MapDimensions dimensions = map.dimensions;
-        Point hq = reportGeneratorHelper.findHQ(map, player);
-        Comparison([Point, IFixture], [Point, IFixture]) comparator = pairComparator(
-            DistanceComparator(hq, dimensions).compare,
-            byIncreasing(IFixture.hash));
+        Point? hq = reportGeneratorHelper.findHQ(map, player);
+        Comparison([Point, IFixture], [Point, IFixture]) comparator;
+        if (exists hq) {
+            comparator = pairComparator(DistanceComparator(hq, dimensions).compare,
+                byIncreasing(IFixture.hash));
+        } else {
+            comparator = pairComparator((Anything one, Anything two) => equal,
+                byIncreasing(IFixture.hash));
+        }
         fixtures.items.map(Tuple.rest).map(Tuple.first).narrow<IUnit|Fortress>()
                 .filter(matchingValue(player, HasOwner.owner)).map(IFixture.id)
             .each(fixtures.remove);

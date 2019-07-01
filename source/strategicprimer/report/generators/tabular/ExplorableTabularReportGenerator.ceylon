@@ -26,7 +26,7 @@ import strategicprimer.model.common.map.fixtures.explorable {
 
 "A tabular report generator for things that can be explored and are not covered elsewhere:
   caves, battlefields, adventure hooks, and portals."
-shared class ExplorableTabularReportGenerator(Player player, Point hq,
+shared class ExplorableTabularReportGenerator(Player player, Point? hq,
         MapDimensions dimensions)
         extends AbstractTableGenerator<ExplorableFixture|TextFixture>()
         satisfies ITableGenerator<ExplorableFixture|TextFixture> {
@@ -36,6 +36,13 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq,
 
     "The file-name to (by default) write this table to."
     shared actual String tableName = "explorables";
+
+    Comparison(Point, Point) distanceComparator;
+    if (exists hq) {
+        distanceComparator = DistanceComparator(hq, dimensions).compare;
+    } else {
+        distanceComparator = (Point one, Point two) => equal;
+    }
 
     "Create a GUI table row representing the given fixture."
     shared actual {{String+}*} produce(
@@ -96,6 +103,6 @@ shared class ExplorableTabularReportGenerator(Player player, Point hq,
     "Compare two Point-fixture pairs."
     shared actual Comparison comparePairs([Point, ExplorableFixture|TextFixture] one,
             [Point, ExplorableFixture|TextFixture] two) =>
-        comparing(comparingOn(pairPoint, DistanceComparator(hq, dimensions).compare),
+        comparing(comparingOn(pairPoint, distanceComparator),
             byIncreasing(compose(TileFixture.string, pairFixture)))(one, two);
 }

@@ -30,8 +30,8 @@ import strategicprimer.report.nodes {
 "A report generator for Villages."
 shared class VillageReportGenerator(
         Comparison([Point, IFixture], [Point, IFixture]) comp, Player currentPlayer,
-        MapDimensions dimensions, Point hq = Point.invalidPoint)
-        extends AbstractReportGenerator<Village>(comp, dimensions, hq) {
+        MapDimensions dimensions, Point? hq = null)
+        extends AbstractReportGenerator<Village>(comp, dimensions, hq else Point.invalidPoint) {
     "Produce the report on all known villages."
     shared actual void produce(DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
         IMapNG map, Anything(String) ostream) {
