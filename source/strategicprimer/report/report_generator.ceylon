@@ -71,7 +71,7 @@ object reportGeneratorHelper {
         for (location->fixture in narrowedStream<Point, Fortress>(map.fixtures)
                 .filter(compose(matchingValue(player, Fortress.owner),
                     Entry<Point, Fortress>.item))) {
-            if ("hq" == fixture.name) {
+            if ("hq" == fixture.name.lowercased) {
                 return location;
             } else if (location.valid, !retval exists) {
                 retval = location;
