@@ -3,9 +3,7 @@ import java.awt {
     GridLayout,
     Container
 }
-import java.awt.event {
-    ActionEvent
-}
+
 import java.lang {
     ObjectArray
 }
@@ -102,7 +100,7 @@ class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
 
     driver.model.addSelectionChangeListener(explorationPanel);
 
-    void buttonListener(ActionEvent event) { // TODO: drop parameter?
+    void buttonListener() {
         log.trace("In ExplorationFrame.buttonListener");
         if (exists selectedValue = unitList.selectedValue, !unitList.selectionEmpty) {
             driver.model.selectedUnit = selectedValue;
@@ -115,7 +113,7 @@ class ExplorationFrame(ExplorationGUI driver, MenuBroker menuHandler)
     }
 
     if (is JTextField mpEditor = mpField.editor) {
-        mpEditor.addActionListener(buttonListener);
+        mpEditor.addActionListener(silentListener(buttonListener));
     }
 
     add(BorderedPanel(horizontalSplit(
