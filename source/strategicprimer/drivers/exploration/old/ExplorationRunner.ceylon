@@ -252,10 +252,8 @@ shared class ExplorationRunner() {
 
     "Add a table. This is shared so that tests can use it, but shouldn't be used beyond
      that."
-    todo("Consider whether non-test uses are reasonable",
-        "Move tests *into* this class instead")
-    shared restricted(`module strategicprimer.drivers.exploration.old`,
-                `module strategicprimer.drivers.generators`)
+    todo("Move tests *into* this class instead")
+    shared restricted(`module strategicprimer.drivers.exploration.old`)
         void loadTable(String name, EncounterTable table) => tables[name] = table;
 
     "Load a table from a data stream into the runner. This is shared so tests can use it,
