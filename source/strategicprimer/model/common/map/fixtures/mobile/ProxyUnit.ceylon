@@ -3,12 +3,7 @@ import ceylon.collection {
     ArrayList,
     MutableMap,
     naturalOrderTreeMap,
-    SortedMap,
-    TreeMap
-}
-
-import lovelace.util.common {
-    todo
+    SortedMap
 }
 
 import strategicprimer.model.common.map {
@@ -34,6 +29,10 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     ProxyWorker
 }
 
+import ceylon.language {
+    createMap=map
+}
+
 "A proxy for units in multiple maps, or all a player's units of one kind."
 shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutableImage
         &HasMutableName&HasMutableOwner {
@@ -46,22 +45,11 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
 
     variable {UnitMember*} cachedIterable = [];
 
-    todo("Isn't there a Map constructor method that does almost what we want, only
-          needing us to define a method for what to do in case of key collisions")
-    SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) {
-        MutableMap<Integer,String>&SortedMap<Integer, String> retval =
-                TreeMap<Integer, String>(increasing, []);
-        for (key->item in proxiedList.map(method).flatMap(identity)) {
-            if (exists existing = retval[key]) {
-                if (item != existing) {
-                    retval[key] = "";
-                }
-            } else {
-                retval[key] = item;
-            }
-        }
-        return retval;
-    }
+    String mergeHelper(String earlier, String later) =>
+        if (earlier == later) then earlier else "";
+
+    SortedMap<Integer, String> mergeMaps(SortedMap<Integer, String>(IUnit) method) =>
+        naturalOrderTreeMap(createMap(proxiedList.map(method).flatMap(identity), mergeHelper));
 
     "If we're proxying parallel units, their ID; if we're proxying all units of a given
      kind, their kind."
