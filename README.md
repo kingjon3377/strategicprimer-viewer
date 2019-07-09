@@ -1,5 +1,8 @@
 ## Strategic Primer Assistive Programs
 
+[![GitHub release](https://img.shields.io/github/release/kingjon3377/strategicprimer-viewer.svg?label=stable&style=plastic) ![GitHub Release Date](https://img.shields.io/github/release-date/kingjon3377/strategicprimer-viewer.svg?style=plastic)](https://github.com/kingjon3377/strategicprimer-viewer/releases/latest)
+[![GitHub release](https://img.shields.io/github/release-pre/kingjon3377/strategicprimer-viewer.svg?label=latest&style=plastic) ![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/kingjon3377/strategicprimer-viewer.svg?style=plastic)](https://github.com/kingjon3377/strategicprimer-viewer/releases)
+
 This repository contains a suite of assistive programs for players and Judges
 of the strategy game
 [Strategic Primer](https://strategicprimer.wordpress.com).
