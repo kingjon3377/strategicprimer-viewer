@@ -1142,7 +1142,6 @@ object xmlTests {
     }
 
     "Test proper [[Shrub]] (de)serialization."
-    todo("Further randomize (use provided parameters in missing-property assertions")
     test
     shared void testShrubSerialization(randomlyGenerated(2) Integer id,
             fewParameters(`value fieldTypes`, 2) String kind,
@@ -1151,9 +1150,9 @@ object xmlTests {
         assertSerialization("First test of Shrub serialization", shrub);
         assertDeprecatedProperty(createSerializedForm(shrub, deprecatedWriter)
             .replace("kind", "shrub"), "shrub", "kind", "shrub", shrub);
-        assertUnwantedChild<Shrub>("""<shrub kind="shrub"><troll /></shrub>""", null);
+        assertUnwantedChild<Shrub>("<shrub kind=\"``kind``\"><troll /></shrub>", null);
         assertMissingProperty<Shrub>("<shrub />", "kind", null);
-        assertMissingProperty<Shrub>("""<shrub kind="kind" />""", "id", Shrub("kind", 0));
+        assertMissingProperty<Shrub>("<shrub kind=\"``kind``\" />", "id", Shrub(kind, 0));
         assertImageSerialization("Shrub image property is preserved", shrub);
         assertSerialization("Shrub can have 'count' property", Shrub(kind, id, 3));
     }
