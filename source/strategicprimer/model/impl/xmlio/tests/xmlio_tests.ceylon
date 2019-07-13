@@ -1158,24 +1158,21 @@ object xmlTests {
     }
 
     "Test proper [[TextFixture]] (de)serialization."
-    todo("Split, randomize to condense")
     test
-    shared void testTextSerialization() {
-        assertSerialization("First test of [[TextFixture]] serialization",
-            TextFixture("one", -1));
-        assertSerialization("Second test of [[TextFixture]] serialization",
-            TextFixture("two", 2));
-        TextFixture third = TextFixture("three", 10);
-        assertSerialization("Third test of [[TextFixture]] serialization", third);
-        assertUnwantedChild<TextFixture>("""<text turn="1"><troll /></text>""", null);
-        assertImageSerialization("Text image property is preserved", third);
+    shared void testTextSerialization(randomlyGenerated(2) Integer baseTurn,
+            fewParameters(`value fieldTypes`, 2) String text) {
+        Integer turn = baseTurn - 2; // Make sure negative turns occasionally get checked.
+        TextFixture testee = TextFixture(text, turn);
+        assertSerialization("Test of [[TextFixture]] serialization", testee);
+        assertUnwantedChild<TextFixture>("<text turn=\"``turn``\"><troll /></text>", null);
+        assertImageSerialization("Text image property is preserved", testee);
         IMutableMapNG wrapper = createSimpleMap(Point(1, 1),
             Point(0, 0)->TileType.plains);
-        wrapper.addFixture(Point(0, 0), TextFixture("one", -1));
+        wrapper.addFixture(Point(0, 0), TextFixture(text, -1));
         wrapper.currentTurn = 0;
         assertForwardDeserialization("Deprecated text-in-map still works",
-            """<map version="2" rows="1" columns="1" current_player="-1">
-               <tile row="0" column="0" kind="plains">one</tile></map>""",
+            "<map version=\"2\" rows=\"1\" columns=\"1\" current_player=\"-1\">
+             <tile row=\"0\" column=\"0\" kind=\"plains\">``text``</tile></map>",
             wrapper.equals);
     }
 
