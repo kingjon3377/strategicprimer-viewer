@@ -1122,7 +1122,6 @@ object xmlTests {
     }
 
     "Test proper [[Mine]] (de)serialization."
-    todo("Further randomize (use provided parameters in missing-property assertions")
     test
     shared void testMineSerialization(randomlyGenerated(2) Integer id,
             fewParameters(`value minerals`, 2) String kind,
@@ -1134,11 +1133,11 @@ object xmlTests {
         assertDeprecatedProperty(createSerializedForm(mine, deprecatedWriter)
             .replace("kind=", "product="), "product", "kind", "mine", mine);
         assertUnwantedChild<Mine>(
-            """<mine kind="gold" status="active"><troll /></mine>""", null);
-        assertMissingProperty<Mine>("""<mine status="active" />""", "kind", null);
-        assertMissingProperty<Mine>("""<mine kind="gold" />""", "status", null);
-        assertMissingProperty<Mine>("""<mine kind="kind" status="active" />""", "id",
-            Mine("kind", TownStatus.active, 0));
+            "<mine kind=\"``kind``\" status=\"``status``\"><troll /></mine>", null);
+        assertMissingProperty<Mine>("<mine status=\"``status``\" />", "kind", null);
+        assertMissingProperty<Mine>("<mine kind=\"``kind``\" />", "status", null);
+        assertMissingProperty<Mine>("<mine kind=\"``kind``\" status=\"``status``\" />", "id",
+            Mine(kind, status, 0));
         assertImageSerialization("Mine image property is preserved", mine);
     }
 
