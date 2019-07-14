@@ -1382,46 +1382,46 @@ object xmlTests {
     }
 
     "Test [[Animal]] (de)serialization."
-    todo("Randomize to condense")
     test
     shared void testAnimalSerialization(randomlyGenerated(2) Integer id,
             parameters(`value animalStatuses`) String status,
+            fewParameters(`value treeTypes`, 2) String kind,
             enumeratedParameter(`class Boolean`) Boolean talking) {
         assertSerialization("Test of [[Animal]] serialization",
-            AnimalImpl("animalKind", talking, status, id));
-        assertUnwantedChild<Animal>("""<animal kind="animal"><troll /></animal>"""",
+            AnimalImpl(kind, talking, status, id));
+        assertUnwantedChild<Animal>("<animal kind=\"``kind``\"><troll /></animal>",
             null);
         assertMissingProperty<Animal>("<animal />", "kind", null);
         assertForwardDeserialization<Animal>("Forward-looking in re talking",
-            "<animal kind=\"animalFive\" talking=\"false\" id=\"``id``\" />",
-            AnimalImpl("animalFive", false, "wild", id).equals);
-        assertMissingProperty<Animal>("""<animal kind="animalSix" talking="true" />""",
-            "id", AnimalImpl("animalSix", true, "wild", 0));
-        assertMissingProperty<Animal>("""<animal kind="animalEight" id="nonNumeric" />""",
+            "<animal kind=\"``kind``\" talking=\"false\" id=\"``id``\" />",
+            AnimalImpl(kind, false, "wild", id).equals);
+        assertMissingProperty<Animal>("<animal kind=\"``kind``\" talking=\"``talking``\" />",
+            "id", AnimalImpl(kind, talking, "wild", 0));
+        assertMissingProperty<Animal>("<animal kind=\"``kind``\" id=\"nonNumeric\" />",
             "id", null);
         assertForwardDeserialization<Animal>("Explicit default status of animal",
-            "<animal kind=\"animalSeven\" status=\"wild\" id=\"``id``\" />",
-            AnimalImpl("animalSeven", false, "wild", id).equals);
+            "<animal kind=\"``kind``\" status=\"wild\" id=\"``id``\" />",
+            AnimalImpl(kind, false, "wild", id).equals);
         assertImageSerialization("Animal image property is preserved",
-            AnimalImpl("animalFour", true, "status", id));
+            AnimalImpl(kind, talking, status, id));
         assertForwardDeserialization<Animal>("Namespaced attribute",
-            "<animal xmlns:sp=\"``spNamespace``\" sp:kind=\"animalNine\"
-             sp:talking=\"true\" sp:traces=\"false\" sp:status=\"tame\"
+            "<animal xmlns:sp=\"``spNamespace``\" sp:kind=\"``kind``\"
+             sp:talking=\"``talking``\" sp:traces=\"false\" sp:status=\"``status``\"
                  sp:id=\"``id``\" />",
-            AnimalImpl("animalNine", true, "tame", id).equals);
+            AnimalImpl(kind, talking, status, id).equals);
         assertEquivalentForms("""Supports 'traces="false"'""",
-            "<animal kind=\"kind\" status=\"wild\" id=\"``id``\" />",
-            "<animal kind=\"kind\" traces=\"false\" status=\"wild\" id=\"``id``\" />",
+            "<animal kind=\"``kind``\" status=\"``status``\" id=\"``id``\" />",
+            "<animal kind=\"``kind``\" traces=\"false\" status=\"``status``\" id=\"``id``\" />",
             warningLevels.die);
         assertSerialization("Animal age is preserved",
             AnimalImpl("youngKind", talking, status, id, 8));
         assertSerialization("Animal population count is preserved",
-            AnimalImpl("population", talking, status, id, -1, 55));
-        assertNotEquals(AnimalImpl("animal", talking, status, id, -1),
-            AnimalImpl("animal", talking, status, id, 8),
+            AnimalImpl(kind, talking, status, id, -1, 55));
+        assertNotEquals(AnimalImpl(kind, talking, status, id, -1),
+            AnimalImpl(kind, talking, status, id, 8),
             "But animal age is checked in equals()");
-        assertNotEquals(AnimalImpl("animal", talking, status, id, -1, 1),
-            AnimalImpl("animal", talking, status, id, -1, 2),
+        assertNotEquals(AnimalImpl(kind, talking, status, id, -1, 1),
+            AnimalImpl(kind, talking, status, id, -1, 2),
             "Animal population count is checked in equals()");
     }
 
