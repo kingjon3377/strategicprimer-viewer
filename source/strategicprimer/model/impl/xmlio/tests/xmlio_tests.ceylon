@@ -1436,83 +1436,75 @@ object xmlTests {
             "<animal kind=\"``animal``\" id=\"``id``\" />", warningLevels.die);
 
     "Test [[CacheFixture]] (de)serialization."
-    todo("Randomize and condense")
     test
-    shared void testCacheSerialization(randomlyGenerated(3) Integer id) {
-        assertSerialization("First test of Cache serialization", CacheFixture("kindOne",
-            "contentsOne", id));
-        assertSerialization("Second test of Cache serialization", CacheFixture("kindTwo",
-            "contentsTwo", id));
+    shared void testCacheSerialization(randomlyGenerated(3) Integer id,
+            fewParameters(`value treeTypes`, 2) String kind,
+            fewParameters(`value fieldTypes`, 2) String contents) {
+        CacheFixture testee = CacheFixture(kind, contents, id);
+        assertSerialization("Test of Cache serialization", testee);
         assertUnwantedChild<CacheFixture>(
-            """<cache kind="kind" contents="contents"><troll /></cache>""", null);
-        assertMissingProperty<CacheFixture>("""<cache contents="contents" />""", "kind",
+            "<cache kind=\"``kind``\" contents=\"``contents``\"><troll /></cache>", null);
+        assertMissingProperty<CacheFixture>("<cache contents=\"``contents``\" />", "kind",
             null);
-        assertMissingProperty<CacheFixture>("""<cache kind="kind" />""", "contents",
+        assertMissingProperty<CacheFixture>("<cache kind=\"``kind``\" />", "contents",
             null);
         assertMissingProperty<CacheFixture>(
-            """<cache kind="kind" contents="contents" />""",
-            "id", CacheFixture("kind", "contents", 0));
-        assertImageSerialization("Cache image property is preserved",
-            CacheFixture("kindThree", "contentsThree", id));
+            "<cache kind=\"``kind``\" contents=\"``contents``\" />",
+            "id", CacheFixture(kind, contents, 0));
+        assertImageSerialization("Cache image property is preserved", testee);
     }
 
     "Test [[Centaur]] (de)serialization."
-    todo("Randomize and condense")
     test
-    shared void testCentaurSerialization(randomlyGenerated(3) Integer id) {
-        assertSerialization("First test of Centaur serialization",
-            Centaur("firstCentaur", id));
-        assertSerialization("Second test of Centaur serialization",
-            Centaur("secondCentaur", id));
-        assertUnwantedChild<Centaur>("""<centaur kind="forest"><troll /></centaur>""",
+    shared void testCentaurSerialization(randomlyGenerated(3) Integer id,
+            fewParameters(`value treeTypes`, 2) String kind) {
+        Centaur testee = Centaur(kind, id);
+        assertSerialization("Test of Centaur serialization", testee);
+        assertUnwantedChild<Centaur>("<centaur kind=\"``kind``\"><troll /></centaur>",
             null);
         assertMissingProperty<Centaur>("<centaur />", "kind", null);
-        assertMissingProperty<Centaur>("""<centaur kind="kind" />""", "id",
-            Centaur("kind", 0));
-        assertImageSerialization("Centaur image property is preserved",
-            Centaur("thirdCentaur", id));
+        assertMissingProperty<Centaur>("<centaur kind=\"``kind``\" />", "id",
+            Centaur(kind, 0));
+        assertImageSerialization("Centaur image property is preserved", testee);
     }
 
     "Test [[Dragon]] (de)serialization."
-    todo("Randomize and condense")
     test
-    shared void testDragonSerialization(randomlyGenerated(3) Integer id) {
-        assertSerialization("First test of Dragon serialization", Dragon("", id));
-        assertSerialization("Second test of Dragon serialization",
-            Dragon("secondDragon", id));
-        assertUnwantedChild<Dragon>("""<dragon kind="ice"><hill /></dragon>""", null);
+    shared void testDragonSerialization(randomlyGenerated(3) Integer id,
+            fewParameters(`value treeTypes`, 2) String kind) {
+        Dragon testee = Dragon(kind, id);
+        assertSerialization("Test of Dragon serialization", testee);
+        assertSerialization("Dragon with no kind (de-)serialization", Dragon("", id));
+        assertUnwantedChild<Dragon>("<dragon kind=\"ice\"><hill /></dragon>", null);
         assertMissingProperty<Dragon>("<dragon />", "kind", null);
-        assertMissingProperty<Dragon>("""<dragon kind="kind" />""", "id",
-            Dragon("kind", 0));
-        assertImageSerialization("Dragon image property is preserved",
-            Dragon("thirdDragon", id));
+        assertMissingProperty<Dragon>("<dragon kind=\"``kind``\" />", "id",
+            Dragon(kind, 0));
+        assertImageSerialization("Dragon image property is preserved", testee);
     }
 
     "Test [[Fairy]] (de)serialization."
-    todo("Randomize and condense")
     test
-    shared void testFairySerialization(randomlyGenerated(3) Integer id) {
-        assertSerialization("First test of Fairy serialization", Fairy("oneFairy", id));
-        assertSerialization("Second test of Fairy serialization", Fairy("twoFairy", id));
-        assertUnwantedChild<Fairy>("""<fairy kind="great"><hill /></fairy>""", null);
+    shared void testFairySerialization(randomlyGenerated(3) Integer id,
+            fewParameters(`value treeTypes`, 2) String kind) {
+        Fairy testee = Fairy(kind, id);
+        assertSerialization("Test of Fairy serialization", testee);
+        assertUnwantedChild<Fairy>("<fairy kind=\"``kind``\"><hill /></fairy>", null);
         assertMissingProperty<Fairy>("<fairy />", "kind", null);
-        assertMissingProperty<Fairy>("""<fairy kind="kind" />""", "id", Fairy("kind", 0));
-        assertImageSerialization("Fairy image property is preserved",
-            Fairy("threeFairy", id));
+        assertMissingProperty<Fairy>("<fairy kind=\"``kind``\" />", "id", Fairy(kind, 0));
+        assertImageSerialization("Fairy image property is preserved", testee);
     }
 
     "Test [[Forest]] (de)serialization."
-    todo("Randomize, condense, and perhaps split")
+    todo("Split non-randomizable parts out")
     test
-    shared void testForestSerialization(randomlyGenerated(3) Integer id) {
-        assertSerialization("First test of Forest serialization",
-            Forest("firstForest", false, id));
-        assertSerialization("Second test of Forest serialization",
-            Forest("secondForest", true, id));
-        assertUnwantedChild<Forest>("""<forest kind="trees"><hill /></forest>""", null);
+    shared void testForestSerialization(randomlyGenerated(3) Integer id,
+            fewParameters(`value treeTypes`, 2) String kind,
+            enumeratedParameter(`class Boolean`) Boolean rows) {
+        Forest testee = Forest(kind, rows, id);
+        assertSerialization("Test of Forest serialization", testee);
+        assertUnwantedChild<Forest>("<forest kind=\"``kind``\"><hill /></forest>", null);
         assertMissingProperty<Forest>("<forest />", "kind", null);
-        assertImageSerialization("Forest image property is preserved",
-            Forest("thirdForest", true, id));
+        assertImageSerialization("Forest image property is preserved", testee);
         Point loc = Point(0, 0);
         IMutableMapNG map = createSimpleMap(Point(1, 1),
             loc->TileType.plains);
@@ -1533,8 +1525,8 @@ object xmlTests {
             encapsulateTileString(
                 "<forest kind=\"trees\" rows=\"false\" id=\"``id``\" />"),
             warningLevels.ignore);
-        assertSerialization("Forests can have acreage numbers", Forest("thirdForest",
-            false, 6, decimalNumber(3).divided(decimalNumber(2))));
+        assertSerialization("Forests can have acreage numbers", Forest(kind,
+            rows, id, decimalNumber(3).divided(decimalNumber(2))));
     }
 
     "Test [[Fortress]] (de)serialization in the simplest cases."
@@ -1564,15 +1556,15 @@ object xmlTests {
     }
 
     "Test [[Giant]] (de)serialization."
-    todo("Randomize")
     test
-    shared void testGiantSerialization(randomlyGenerated(3) Integer id) {
-        assertSerialization("Test of Giant serialization", Giant("one", id));
-        assertSerialization("Second test of Giant serialization", Giant("two", id));
-        assertUnwantedChild<Giant>("""<giant kind="hill"><hill /></giant>""", null);
+    shared void testGiantSerialization(randomlyGenerated(3) Integer id,
+            fewParameters(`value treeTypes`, 2) String kind) {
+        Giant testee = Giant(kind, id);
+        assertSerialization("Test of Giant serialization", testee);
+        assertUnwantedChild<Giant>("<giant kind=\"``kind``\"><hill /></giant>", null);
         assertMissingProperty<Giant>("<giant />", "kind", null);
-        assertMissingProperty<Giant>("""<giant kind="kind" />""", "id", Giant("kind", 0));
-        assertImageSerialization("Giant image property is preserved", Giant("three", id));
+        assertMissingProperty<Giant>("<giant kind=\"``kind``\" />", "id", Giant(kind, 0));
+        assertImageSerialization("Giant image property is preserved", testee);
     }
 
     "Test [[Ground]] (de)serialization"
