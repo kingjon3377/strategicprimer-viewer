@@ -22,7 +22,6 @@ import strategicprimer.model.common.map {
     IFixture,
     Player,
     TileFixture,
-    HasOwner,
     Point,
     MapDimensions,
     IMapNG
@@ -31,9 +30,7 @@ import strategicprimer.model.common.map.fixtures {
     TerrainFixture,
     Ground
 }
-import strategicprimer.model.common.map.fixtures.mobile {
-    IUnit
-}
+
 import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
