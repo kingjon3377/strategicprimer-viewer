@@ -1,6 +1,7 @@
 #!/bin/sh
 set -ex
 if test -f "${TRAVIS_BUILD_DIR}/dependencies.sh"; then
+	# shellcheck source=./dependencies.sh
 	. "${TRAVIS_BUILD_DIR}/dependencies.sh"
 elif test -f dependencies.sh; then
 	. dependencies.sh
