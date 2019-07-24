@@ -9,22 +9,22 @@ else
 	exit 1
 fi
 mkdir -p "${HOME}/.ant/lib"
-wget https://download.sourceforge.net/launch4j/launch4j-${launch4j_major}/${launch4j_version}/launch4j-${launch4j_version}-linux.tgz \
-		-O "launch4j-${launch4j_version}-linux.tgz"
-tar xzf "launch4j-${launch4j_version}-linux.tgz"
-wget "https://github.com/UltraMixer/JarBundler/releases/download/${jarbundler_version}/jarbundler-core-${jarbundler_version}.jar" \
-		-O "${HOME}/.ant/lib/jarbundler-core-${jarbundler_version}.jar"
+wget https://download.sourceforge.net/launch4j/launch4j-${LAUNCH4J_MAJOR}/${LAUNCH4J_VERSION}/launch4j-${LAUNCH4J_VERSION}-linux.tgz \
+		-O "launch4j-${LAUNCH4J_VERSION}-linux.tgz"
+tar xzf "launch4j-${LAUNCH4J_VERSION}-linux.tgz"
+wget "https://github.com/UltraMixer/JarBundler/releases/download/${JARBUNDLER_VERSION}/jarbundler-core-${JARBUNDLER_VERSION}.jar" \
+		-O "${HOME}/.ant/lib/jarbundler-core-${JARBUNDLER_VERSION}.jar"
 wget "https://github.com/mickleness/pumpernickel/raw/master/release/jars/Pumpernickel.jar"
-wget "https://repo.maven.apache.org/maven2/com/yuvimasory/orange-extensions/${orange_version}/orange-extensions-${orange_version}.jar"
+wget "https://repo.maven.apache.org/maven2/com/yuvimasory/orange-extensions/${ORANGE_VERSION}/orange-extensions-${ORANGE_VERSION}.jar"
 sudo apt-get update -qq
 sudo apt-get install genisoimage
-wget "https://github.com/tofi86/universalJavaApplicationStub/archive/v${app_stub_version}.tar.gz" -O \
-		"universalJavaApplicationStub-${app_stub_version}.tar.gz"
-tar xzf "universalJavaApplicationStub-${app_stub_version}.tar.gz"
+wget "https://github.com/tofi86/universalJavaApplicationStub/archive/v${APP_STUB_VERSION}.tar.gz" -O \
+		"universalJavaApplicationStub-${APP_STUB_VERSION}.tar.gz"
+tar xzf "universalJavaApplicationStub-${APP_STUB_VERSION}.tar.gz"
 if test -n "${TRAVIS_TAG}"; then
 	echo "${TRAVIS_TAG}" | sed 's@^v[0-9]\.[0-9]\.\([0-9]*\|[0-9]*\.[0-9]*\|[0-9]*[-_]rc[0-9]*\)$@s:SNAPSHOT:\1:@' | \
 		sed -f - -i version.properties
 fi
-wget "https://ceylon-lang.org/download/dist/$(echo "${ceylon_version}"|sed 's@\.@_@g')" \
+wget "https://ceylon-lang.org/download/dist/$(echo "${CEYLON_VERSION}"|sed 's@\.@_@g')" \
 	--output-document=ceylon.zip
 unzip ceylon.zip

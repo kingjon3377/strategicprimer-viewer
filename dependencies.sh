@@ -1,8 +1,8 @@
 #!/bin/sh
-export app_stub_version=3.0.4
-export orange_version=1.3.0
-export ceylon_version=1.3.3
-launch4j_major=3
-launch4j_minor=12
-export launch4j_version=${launch4j_major}.${launch4j_minor}
-export jarbundler_version=3.3.0
+export APP_STUB_VERSION=3.0.4
+export ORANGE_VERSION=1.3.0
+export CEYLON_VERSION=1.3.3
+LAUNCH4J_MAJOR=3
+LAUNCH4J_MINOR=12
+export LAUNCH4J_VERSION=${LAUNCH4J_MAJOR}.${LAUNCH4J_MINOR}
+export JARBUNDLER_VERSION=3.3.0

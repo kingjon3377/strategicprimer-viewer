@@ -11,6 +11,6 @@ fi
 ant \
 	-Dlaunch4j.dir="$(pwd)/launch4j" \
 	-Dpumpernickel.path="$(pwd)/Pumpernickel.jar" \
-	-Dapple.extensions.path="$(pwd)/orange-extensions-${orange_version}.jar" \
-	-Dceylon.home="$(pwd)/ceylon-${ceylon_version}" \
+	-Dapple.extensions.path="$(pwd)/orange-extensions-${ORANGE_VERSION}.jar" \
+	-Dceylon.home="$(pwd)/ceylon-${CEYLON_VERSION}" \
 	test

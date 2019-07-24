@@ -14,7 +14,7 @@ ant \
 	-lib "$(pwd)/launch4j/lib" \
 	-Dlaunch4j.dir="$(pwd)/launch4j" \
 	-Dpumpernickel.path="$(pwd)/Pumpernickel.jar" \
-	-Dstub-script-path="$(pwd)/universalJavaApplicationStub-${app_stub_version}/src/universalJavaApplicationStub" \
-	-Dapple.extensions.path="$(pwd)/orange-extensions-${orange_version}.jar" \
-	-Dceylon.home="$(pwd)/ceylon-${ceylon_version}" \
+	-Dstub-script-path="$(pwd)/universalJavaApplicationStub-${APP_STUB_VERSION}/src/universalJavaApplicationStub" \
+	-Dapple.extensions.path="$(pwd)/orange-extensions-${ORANGE_VERSION}.jar" \
+	-Dceylon.home="$(pwd)/ceylon-${CEYLON_VERSION}" \
 	release
