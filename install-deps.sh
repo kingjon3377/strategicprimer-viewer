@@ -10,7 +10,7 @@ else
 	exit 1
 fi
 mkdir -p "${HOME}/.ant/lib"
-wget https://download.sourceforge.net/launch4j/launch4j-${LAUNCH4J_MAJOR}/${LAUNCH4J_VERSION}/launch4j-${LAUNCH4J_VERSION}-linux.tgz \
+wget "https://download.sourceforge.net/launch4j/launch4j-${LAUNCH4J_MAJOR}/${LAUNCH4J_VERSION}/launch4j-${LAUNCH4J_VERSION}-linux.tgz" \
 		-O "launch4j-${LAUNCH4J_VERSION}-linux.tgz"
 tar xzf "launch4j-${LAUNCH4J_VERSION}-linux.tgz"
 wget "https://github.com/UltraMixer/JarBundler/releases/download/${JARBUNDLER_VERSION}/jarbundler-core-${JARBUNDLER_VERSION}.jar" \
