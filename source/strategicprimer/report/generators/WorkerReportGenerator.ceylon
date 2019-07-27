@@ -15,18 +15,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats {
         modifierString=getModifierString
     },
-    IJob,
     ISkill
-}
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    SimpleReportNode,
-    ComplexReportNode,
-    ListReportNode,
-    SectionListReportNode,
-    emptyReportNode
 }
 
 "A report generator for Workers."
@@ -48,11 +37,6 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
     "Produce text describing the given Skills."
     String skills(ISkill* job) =>
         (job.empty) then "" else "(``", ".join(job.map(skillString))``)";
-
-    "Produce the report-intermediate-representation sub-sub-report on a Job."
-    IReportNode produceJobRIR(IJob job, Point loc) =>
-        SimpleReportNode("``job.level`` levels in ``job.name`` ``skills(*job)``",
-            loc);
 
     "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
      paragraph or bullet point)."
@@ -102,48 +86,6 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
             }
             ostream("""</ul>
                        """);
-        }
-    }
-
-    "Produce a sub-sub-report on a worker (we assume we're already in the middle of a
-     paragraph or bullet point)."
-    shared actual IReportNode produceRIRSingle(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, IWorker worker, Point loc) {
-        if (details) {
-            IReportNode retval =
-                    ComplexReportNode("``worker.name``, a ``worker.race``", loc);
-            if (exists stats = worker.stats) {
-                retval.appendNode(SimpleReportNode(statsString(stats)));
-            }
-            if (!worker.empty) {
-                IReportNode jobs = ListReportNode(
-                    "Has training or experience in the following Jobs (Skills):",
-                    loc);
-                for (job in worker) {
-                    jobs.appendNode(produceJobRIR(job, loc));
-                }
-                retval.appendNode(jobs);
-            }
-            return retval;
-        } else {
-            return SimpleReportNode("``worker.name``, a ``worker.race``", loc);
-        }
-    }
-
-    "Produce a sub-sub-report on all workers. This should never be called, but we'll
-     implement it properly anyway)."
-    shared actual IReportNode produceRIR(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
-        IReportNode retval = SectionListReportNode(5, "Workers");
-        for ([loc, worker] in fixtures.items.narrow<[Point, IWorker]>()
-                .sort(pairComparator)) {
-            retval.appendNode(produceRIRSingle(fixtures, map, worker, loc));
-        }
-        if (retval.childCount == 0) {
-            return emptyReportNode;
-        } else {
-            return retval;
         }
     }
 }

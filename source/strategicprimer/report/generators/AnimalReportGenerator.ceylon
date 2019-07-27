@@ -1,8 +1,3 @@
-import ceylon.collection {
-    MutableMap,
-    HashMap
-}
-
 import lovelace.util.common {
     DRMap=DelayedRemovalMap,
     comparingOn,
@@ -22,15 +17,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     AnimalTracks,
     AnimalOrTracks
 }
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    SimpleReportNode,
-    ListReportNode,
-    emptyReportNode,
-    SectionListReportNode
-}
+
 import com.vasileff.ceylon.structures {
     ArrayListMultimap,
     MutableMultimap
@@ -110,48 +97,6 @@ shared class AnimalReportGenerator(Comparison([Point, IFixture], [Point, IFixtur
             }
             ostream("""</ul>
                    """);
-        }
-    }
-
-    "Produce the sub-report about an individual Animal."
-    shared actual IReportNode produceRIRSingle(DRMap<Integer,[Point,IFixture]> fixtures,
-            IMapNG map, /*Animal|AnimalTracks*/AnimalOrTracks item, Point loc) {
-        if (is AnimalTracks item) {
-            return SimpleReportNode("At ``loc``: tracks or traces of ``item
-                .kind`` ``distanceString(loc)``", loc);
-        } else if (item.talking) {
-            return SimpleReportNode("At ``loc``: talking ``item
-                .kind`` ``distanceString(loc)``", loc);
-        } else {
-            return SimpleReportNode("At ``loc``: ``item.kind`` ``distanceString(loc)``", loc);
-        }
-    }
-
-    "Produce the sub-report about animals."
-    shared actual IReportNode produceRIR(DRMap<Integer,[Point,IFixture]> fixtures,
-            IMapNG map) {
-        MutableMap<String, IReportNode> items = HashMap<String, IReportNode>();
-        for (key->[loc, animal] in
-                narrowedStream<Integer, [Point, Animal|AnimalTracks]>(fixtures)
-                .sort(comparingOn(Entry<Integer, [Point, IFixture]>.item,
-                    pairComparator))) {
-            IReportNode node;
-            if (exists temp = items[animal.kind]) {
-                node = temp;
-            } else {
-                node = ListReportNode(animal.kind);
-                items[animal.kind] = node;
-            }
-            node.appendNode(produceRIRSingle(fixtures, map, animal, loc));
-            fixtures.remove(key);
-        }
-        if (items.empty) {
-            return emptyReportNode;
-        } else {
-            IReportNode retval = SectionListReportNode(4,
-                "Animal sightings or encounters");
-            items.items.each(retval.appendNode);
-            return retval;
         }
     }
 }

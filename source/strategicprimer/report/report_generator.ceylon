@@ -22,7 +22,6 @@ import strategicprimer.model.common.map {
     IFixture,
     Player,
     TileFixture,
-    HasOwner,
     Point,
     MapDimensions,
     IMapNG
@@ -31,9 +30,7 @@ import strategicprimer.model.common.map.fixtures {
     TerrainFixture,
     Ground
 }
-import strategicprimer.model.common.map.fixtures.mobile {
-    IUnit
-}
+
 import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
@@ -50,9 +47,6 @@ import strategicprimer.report.generators {
     ImmortalsReportGenerator,
     TextReportGenerator,
     AdventureReportGenerator
-}
-import strategicprimer.report.nodes {
-    RootReportNode
 }
 import ceylon.collection {
     MutableMap,
@@ -198,138 +192,5 @@ shared object reportGenerator {
             process.writeLine("Unhandled fixture:\t``fixture`` (ID # ``fixture.id``)");
         }
         return builder.string;
-    }
-
-    "Create a slightly abbreviated report, omitting the player's fortresses and units."
-    shared String createAbbreviatedReport(IMapNG map, Player player = map.currentPlayer) {
-        MapDimensions dimensions = map.dimensions;
-        StringBuilder builder = StringBuilder();
-        builder.append(
-            """<!DOCTYPE html>
-               <html>
-                <head><title>Strategic Primer map summary abridged report</title></head>
-                <body>
-                """);
-        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
-                reportGeneratorHelper.getFixtures(map);
-        Point? hq = reportGeneratorHelper.findHQ(map, player);
-        Comparison([Point, IFixture], [Point, IFixture]) comparator;
-        if (exists hq) {
-            comparator = pairComparator(DistanceComparator(hq, dimensions).compare,
-                byIncreasing(IFixture.hash));
-        } else {
-            comparator = pairComparator((Anything one, Anything two) => equal,
-                byIncreasing(IFixture.hash));
-        }
-        fixtures.items.map(Tuple.rest).map(Tuple.first).narrow<IUnit|Fortress>()
-                .filter(matchingValue(player, HasOwner.owner)).map(IFixture.id)
-            .each(fixtures.remove);
-        fixtures.coalesce();
-        createSubReports(builder, fixtures, map, player,
-            FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn,
-                hq),
-            FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            TextReportGenerator(comparator, dimensions, hq),
-            TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            AdventureReportGenerator(comparator, player, dimensions, hq),
-            ExplorableReportGenerator(comparator, player, dimensions, hq),
-            HarvestableReportGenerator(comparator, dimensions, hq),
-            AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
-            VillageReportGenerator(comparator, player, dimensions, hq),
-            ImmortalsReportGenerator(comparator, dimensions, hq));
-        builder.append("""</body>
-                          </html>
-                          """);
-        for ([loc, fixture] in fixtures.items) {
-            if (fixture.id < 0) {
-                continue;
-            } else if (is TerrainFixture fixture) {
-                fixtures.remove(fixture.id);
-                continue;
-            }
-            process.writeLine("Unhandled fixture:\t``fixture``");
-        }
-        return builder.string;
-    }
-
-    "Produce sub-reports in report-intermediate-representation, adding them to the root
-     node and calling coalesce() on the fixtures collection after each."
-    void createSubReportsIR(IReportNode root,
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map,
-            Player player, IReportGenerator<out Object>* generators) {
-        for (generator in generators) {
-            root.appendNode(generator.produceRIR(fixtures, map));
-            fixtures.coalesce();
-        }
-    }
-
-    "Create the report, in report-intermediate-representation, based on the given map."
-    shared IReportNode createReportIR(IMapNG map, Player player = map.currentPlayer) {
-        IReportNode retval = RootReportNode("Strategic Primer map summary report");
-        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
-                reportGeneratorHelper.getFixtures(map);
-        MapDimensions dimensions = map.dimensions;
-        Point? hq = reportGeneratorHelper.findHQ(map, player);
-        Comparison([Point, IFixture], [Point, IFixture]) comparator;
-        if (exists hq) {
-            comparator = pairComparator(DistanceComparator(hq, dimensions).compare,
-                byIncreasing(IFixture.hash));
-        } else {
-            comparator = pairComparator((Anything one, Anything two) => equal,
-                byIncreasing(IFixture.hash));
-        }
-        createSubReportsIR(retval, fixtures, map, player,
-            FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            TextReportGenerator(comparator, dimensions, hq),
-            TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            AdventureReportGenerator(comparator, player, dimensions, hq),
-            ExplorableReportGenerator(comparator, player, dimensions, hq),
-            HarvestableReportGenerator(comparator, dimensions, hq),
-            FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn,
-                hq),
-            AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
-            VillageReportGenerator(comparator, player, dimensions, hq),
-            ImmortalsReportGenerator(comparator, dimensions, hq));
-        return retval;
-    }
-
-    "Create a slightly abbreviated report, omitting the player's fortresses and units, in
-     intermediate representation."
-    shared IReportNode createAbbreviatedReportIR(IMapNG map,
-            Player player = map.currentPlayer) {
-        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures = reportGeneratorHelper
-            .getFixtures(map);
-        MapDimensions dimensions = map.dimensions;
-        Point? hq = reportGeneratorHelper.findHQ(map, player);
-        Comparison([Point, IFixture], [Point, IFixture]) comparator;
-        if (exists hq) {
-            comparator = pairComparator(DistanceComparator(hq, dimensions).compare,
-                byIncreasing(IFixture.hash));
-        } else {
-            comparator = pairComparator((Anything one, Anything two) => equal,
-                byIncreasing(IFixture.hash));
-        }
-        fixtures.items.map(Tuple.rest).map(Tuple.first).narrow<IUnit|Fortress>()
-                .filter(matchingValue(player, HasOwner.owner)).map(IFixture.id)
-            .each(fixtures.remove);
-        fixtures.coalesce();
-        IReportNode retval = RootReportNode(
-            "Strategic Primer map summary abbreviated report");
-        createSubReportsIR(retval, fixtures, map, player,
-            FortressMemberReportGenerator(comparator, player, dimensions, map.currentTurn,
-                hq),
-            FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            UnitReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            TextReportGenerator(comparator, dimensions, hq),
-            TownReportGenerator(comparator, player, dimensions, map.currentTurn, hq),
-            AdventureReportGenerator(comparator, player, dimensions, hq),
-            ExplorableReportGenerator(comparator, player, dimensions, hq),
-            HarvestableReportGenerator(comparator, dimensions, hq),
-            AnimalReportGenerator(comparator, dimensions, map.currentTurn, hq),
-            VillageReportGenerator(comparator, player, dimensions, hq),
-            ImmortalsReportGenerator(comparator, dimensions, hq));
-        return retval;
     }
 }

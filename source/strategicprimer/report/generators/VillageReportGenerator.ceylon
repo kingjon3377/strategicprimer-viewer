@@ -17,15 +17,6 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.towns {
     Village
 }
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    SimpleReportNode,
-    SectionListReportNode,
-    SectionReportNode,
-    emptyReportNode
-}
 
 "A report generator for Villages."
 shared class VillageReportGenerator(
@@ -93,59 +84,5 @@ shared class VillageReportGenerator(
             ostream("sworn to ``item.owner.name`` ");
         }
         ostream(distanceString(loc));
-    }
-
-    "Produce the report on all known villages."
-    shared actual IReportNode produceRIR(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
-        IReportNode own = SectionListReportNode(5,
-            "Villages pledged to your service:");
-        IReportNode independents =
-                SectionListReportNode(5, "Villages you think are independent:");
-        MutableMap<Player, IReportNode> othersMap = HashMap<Player, IReportNode>();
-        for ([loc, village] in fixtures.items.narrow<[Point, Village]>()
-                .sort(pairComparator)) {
-            Player owner = village.owner;
-            IReportNode parent;
-            if (owner == currentPlayer) {
-                parent = own;
-            } else if (owner.independent) {
-                parent = independents;
-            } else if (exists temp = othersMap[owner]) {
-                parent = temp;
-            } else {
-                parent = SectionListReportNode(6, "Villages sworn to ``owner``");
-                othersMap[owner] = parent;
-            }
-            parent.appendNode(produceRIRSingle(fixtures, map, village, loc));
-        }
-        IReportNode others = SectionListReportNode(5,
-            "Other villages you know about:");
-        others.addIfNonEmpty(*othersMap.items);
-        IReportNode retval = SectionReportNode(4, "Villages:");
-        retval.addIfNonEmpty(own, independents, others);
-        if (retval.childCount == 0) {
-            return emptyReportNode;
-        } else {
-            return retval;
-        }
-    }
-
-    "Produce the (very brief) report for a particular village."
-    shared actual IReportNode produceRIRSingle(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Village item, Point loc) {
-        fixtures.remove(item.id);
-        if (item.owner.independent) {
-            return SimpleReportNode("At ``loc``: ``item.name``, a(n) ``item
-                .race`` village, independent ``distanceString(loc)``",
-            loc);
-        } else if (item.owner == currentPlayer) {
-            return SimpleReportNode("At ``loc``: ``item.name``, a(n) ``item
-                .race`` village, sworn to you ``distanceString(loc)``", loc);
-        } else {
-            return SimpleReportNode("At ``loc``: ``item.name``, a(n) ``item
-                .race`` village, sworn to ``item.owner`` ``distanceString(loc)``", loc);
-        }
     }
 }

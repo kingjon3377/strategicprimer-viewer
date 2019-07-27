@@ -1,12 +1,5 @@
-import ceylon.collection {
-    MutableMap,
-    HashMap
-}
-
 import lovelace.util.common {
-    DelayedRemovalMap,
-    invoke,
-    simpleMap
+    DelayedRemovalMap
 }
 
 import strategicprimer.model.common.map {
@@ -27,16 +20,7 @@ import strategicprimer.model.common.map.fixtures.resources {
     Grove,
     HarvestableFixture
 }
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    SimpleReportNode,
-    SortedSectionListReportNode,
-    ListReportNode,
-    SectionReportNode,
-    emptyReportNode
-}
+
 import ceylon.decimal {
     Decimal
 }
@@ -225,93 +209,6 @@ shared class HarvestableReportGenerator
                 writeMap(ostream, mapping, defaultFormatter(fixtures, map));
             }
             all.map(Object.string).each(ostream);
-        }
-    }
-
-    """Produce a sub-report dealing with a "harvestable" fixture. All fixtures
-       referred to in this report are to be removed from the collection."""
-    shared actual IReportNode produceRIRSingle(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, HarvestableFixture item, Point loc) {
-        assert (is CacheFixture|Grove|Meadow|Mine|MineralVein|Shrub|StoneDeposit item);
-        StringBuilder nodeText = StringBuilder();
-        produceSingle(fixtures, map, nodeText.append, item, loc);
-        fixtures.remove(item.id);
-        return SimpleReportNode(nodeText.string, loc);
-    }
-
-    """Produce the sub-reports dealing with "harvestable" fixture(s). All fixtures
-       referred to in this report are to be removed from the collection."""
-    shared actual IReportNode produceRIR(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
-        MutableMap<String, IReportNode> stone = HashMap<String, IReportNode>();
-        MutableMap<String, IReportNode> shrubs = HashMap<String, IReportNode>();
-        MutableMap<String, IReportNode> minerals = HashMap<String, IReportNode>();
-        SortedSectionListReportNode mines = SortedSectionListReportNode(5, "Mines");
-        SortedSectionListReportNode meadows =
-                SortedSectionListReportNode(5, "Meadows and Fields");
-        SortedSectionListReportNode groves =
-                SortedSectionListReportNode(5, "Groves and Orchards");
-        SortedSectionListReportNode caches = SortedSectionListReportNode(5,
-            "Caches collected by your explorers and workers:");
-        value typeMap = simpleMap(`Mine`->mines, `Meadow`->meadows, `Grove`->groves,
-            `CacheFixture`->caches);
-        mines.suspend();
-        meadows.suspend();
-        groves.suspend();
-        caches.suspend();
-        for ([loc, item] in fixtures.items.narrow<[Point, HarvestableFixture]>()
-                .sort(pairComparator)) {
-            if (exists groupNode = typeMap[type(item)]) {
-                groupNode.appendNode(produceRIRSingle(fixtures, map, item, loc));
-            } else if (is MineralVein item) {
-                IReportNode node;
-                if (exists temp = minerals[item.shortDescription]) {
-                    node = temp;
-                } else {
-                    node = ListReportNode(item.shortDescription);
-                    minerals[item.shortDescription] = node;
-                }
-                node.appendNode(produceRIRSingle(fixtures, map, item, loc));
-            } else if (is Shrub item) {
-                IReportNode node;
-                if (exists temp = shrubs[item.shortDescription]) {
-                    node = temp;
-                } else {
-                    node = ListReportNode(item.shortDescription);
-                    shrubs[item.shortDescription] = node;
-                }
-                node.appendNode(produceRIRSingle(fixtures, map, item, loc));
-            } else if (is StoneDeposit item) {
-                IReportNode node;
-                if (exists temp = stone[item.kind]) {
-                    node = temp;
-                } else {
-                    node = ListReportNode(item.kind);
-                    stone[item.kind] = node;
-                }
-                node.appendNode(produceRIRSingle(fixtures, map, item, loc));
-            }
-        }
-        SortedSectionListReportNode shrubsNode = SortedSectionListReportNode(5,
-            "Shrubs, Small Trees, etc.");
-        // TODO: Does IReportNode have something we can use with Iterable.each() to avoid spreading here?
-        shrubsNode.appendNodes(*shrubs.items);
-        SortedSectionListReportNode mineralsNode = SortedSectionListReportNode(5,
-            "Mineral Deposits");
-        mineralsNode.appendNodes(*minerals.items);
-        SortedSectionListReportNode stoneNode = SortedSectionListReportNode(5,
-            "Exposed Stone Deposits");
-        stoneNode.appendNodes(*stone.items);
-        [mines, meadows, groves, caches].map(SortedSectionListReportNode.resume)
-            .each(invoke);
-        SectionReportNode retval = SectionReportNode(4, "Resource Sources");
-        retval.addIfNonEmpty(caches, groves, meadows, mines, mineralsNode, stoneNode,
-            shrubsNode);
-        if (retval.childCount == 0) {
-            return emptyReportNode;
-        } else {
-            return retval;
         }
     }
 }

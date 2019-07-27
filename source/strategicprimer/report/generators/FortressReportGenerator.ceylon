@@ -33,17 +33,7 @@ import strategicprimer.model.common.map.fixtures.terrain {
 import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    SimpleReportNode,
-    SectionListReportNode,
-    ListReportNode,
-    SectionReportNode,
-    emptyReportNode,
-    ComplexReportNode
-}
+
 import com.vasileff.ceylon.structures {
     MutableMultimap,
     ArrayListMultimap
@@ -99,21 +89,6 @@ shared class FortressReportGenerator(
             formatter(", ".join(temp.map(River.description)));
             formatter("""</li>
                          """);
-        }
-    }
-
-    "Add nodes representing rivers to a parent."
-    void riversToNode(Point loc, IReportNode parent, River* rivers) {
-        if (rivers.contains(River.lake)) {
-            parent.appendNode(SimpleReportNode("There is a nearby lake.", loc));
-        }
-        value temp = rivers.filter(not(River.lake.equals));
-        if (exists first = temp.first) {
-            StringBuilder builder = StringBuilder();
-            builder.append(
-                "There is a river on the tile, flowing through the following borders: ");
-            builder.append(", ".join(temp.map(River.description)));
-            parent.appendNode(SimpleReportNode(builder.string, loc));
         }
     }
 
@@ -208,82 +183,6 @@ shared class FortressReportGenerator(
             for (fort->loc in others) {
                 produceSingle(fixtures, map, ostream, fort, loc);
             }
-        }
-    }
-
-    "Produces a sub-report on a fortresss. All fixtures referred to in this report are
-     removed from the collection."
-    shared actual IReportNode produceRIRSingle(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Fortress item, Point loc) {
-        IReportNode retval = SectionListReportNode(5, // TODO: Extract playerNameOrYou() helper into superclass
-            "Fortress ``item.name`` belonging to ``
-            (item.owner == currentPlayer) then "you" else item.owner.string``", loc);
-        retval.appendNode(SimpleReportNode("Located at ``loc`` ``distanceString(loc)``", loc));
-        // This is a no-op if no rivers, so avoid an if
-//            riversToNode(loc, retval, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
-        riversToNode(loc, retval, *map.rivers.get(loc));
-        IReportNode units = ListReportNode("Units in the Fortress:");
-        IReportNode resources = ListReportNode("Resources:", loc);
-        MutableMap<String,IReportNode> resourceKinds = HashMap<String,IReportNode>();
-        IReportNode equipment = ListReportNode("Equipment:", loc);
-        IReportNode contents = ListReportNode("Other Contents of Fortress:", loc);
-        for (member in item) {
-            if (is IUnit member) {
-                units.appendNode(urg.produceRIRSingle(fixtures, map, member, loc));
-            } else if (is Implement member) {
-                equipment.appendNode(memberReportGenerator.produceRIRSingle(fixtures, map,
-                    member, loc));
-            } else if (is ResourcePile member) {
-                IReportNode node;
-                if (exists temp = resourceKinds[member.kind]) {
-                    node = temp;
-                } else {
-                    node = ListReportNode("``member.kind``:");
-                    resourceKinds[member.kind] = node;
-                }
-                node.appendNode(memberReportGenerator.produceRIRSingle(fixtures, map,
-                    member, loc));
-            } else {
-                contents.appendNode(memberReportGenerator.produceRIRSingle(fixtures, map,
-                    member, loc));
-            }
-        }
-        resources.addIfNonEmpty(*resourceKinds.items);
-        retval.addIfNonEmpty(units, resources, equipment, contents);
-        fixtures.remove(item.id);
-        return retval;
-    }
-
-    "Produces a sub-report on all fortresses. All fixtures referred to in this
-     report are removed from the collection."
-    shared actual IReportNode produceRIR(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
-        IReportNode foreign = SectionReportNode(4, "Foreign fortresses in the map:");
-        IReportNode ours = SectionReportNode(4, "Your fortresses in the map:");
-        for ([loc, fort] in fixtures.items.narrow<[Point, Fortress]>()
-                .sort(pairComparator)) {
-            if (currentPlayer == fort.owner) {
-                ours.appendNode(produceRIRSingle(fixtures, map, fort,
-                    loc));
-            } else {
-                foreign.appendNode(produceRIRSingle(fixtures, map, fort,
-                    loc));
-            }
-        }
-        if (ours.childCount == 0) {
-            if (foreign.childCount == 0) {
-                return emptyReportNode;
-            } else {
-                return foreign;
-            }
-        } else if (foreign.childCount == 0) {
-            return ours;
-        } else {
-            IReportNode retval = ComplexReportNode();
-            retval.appendNode(ours);
-            retval.appendNode(foreign);
-            return retval;
         }
     }
 }

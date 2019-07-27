@@ -8,9 +8,6 @@ import strategicprimer.model.common.map {
     IFixture,
     IMapNG
 }
-import strategicprimer.report {
-    IReportNode
-}
 import ceylon.collection {
     MutableMap
 }
@@ -55,29 +52,6 @@ shared interface IReportGenerator<T> given T satisfies IFixture {
         "The stream to write to"
         Anything(String) ostream,
         "The specific item to write about."
-        T item,
-        "Its location"
-        Point loc);
-
-    "Produce an intermediate-representation form of the report representing a group of
-     items. All fixtures that this report references should be removed from the set
-     before returning."
-    shared formal IReportNode produceRIR(
-            "The set of fixtures in the map."
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            "The map. (Needed to get terrain type for some reports.)"
-            IMapNG map);
-
-    "Produce an intermediate-representation form of the report representing an item. All
-     fixtures that this report references should be removed from the set before
-     returning."
-    todo("Move back into [[produceRIR]] once eclipse/ceylon#2147 fixed")
-    shared formal IReportNode produceRIRSingle(
-        "The set of fixtures in the map."
-        DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-        "The map. (Needed to get terrain type for some reports.)"
-        IMapNG map,
-        "The specific item to write about"
         T item,
         "Its location"
         Point loc);

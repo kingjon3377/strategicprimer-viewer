@@ -22,15 +22,6 @@ import strategicprimer.model.common.map.fixtures {
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    SimpleReportNode,
-    ListReportNode,
-    SectionListReportNode,
-    emptyReportNode
-}
 
 "A report generator for equipment and resources."
 shared class FortressMemberReportGenerator(
@@ -126,84 +117,6 @@ shared class FortressMemberReportGenerator(
             }
             ostream("""</ul>
                    """);
-        }
-    }
-
-    "Produces a sub-report on a resource or piece of equipment. All fixtures referred
-     to in this report are removed from the collection."
-    shared actual IReportNode produceRIRSingle(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, FortressMember item, Point loc) {
-        assert (is IUnit|ResourcePile|Implement item);
-        if (is IUnit item) {
-            return UnitReportGenerator(pairComparator, currentPlayer, dimensions,
-                currentTurn, hq).produceRIRSingle(fixtures, map, item, loc);
-        } else {
-            switch (item)
-            case (is ResourcePile) {
-                fixtures.remove(item.id);
-                String age;
-                if (item.created < 0) {
-                    age = "";
-                } else {
-                    age = " from turn ``item.created``";
-                }
-                if (item.quantity.units.empty) {
-                    return SimpleReportNode(
-                        "A pile of ``item.quantity.number`` ``item.contents`` (``item
-                                .kind``)``age``");
-                } else {
-                    return SimpleReportNode(
-                        "A pile of ``item.quantity`` of ``item.contents`` (``item
-                                .kind``)``age``");
-                }
-            }
-            case (is Implement) {
-                fixtures.remove(item.id);
-                if (item.count > 1) {
-                    return SimpleReportNode("Equipment: ``item.kind`` (``item.count``)");
-                } else {
-                    return SimpleReportNode("Equipment: ``item.kind``");
-                }
-            }
-        }
-    }
-
-    "Produces a sub-report on all fortress members. All fixtures referred to in this
-     report are removed from the collection. This method should probably never actually
-     be called, since nearly all resources will be in fortresses and should be reported
-     as such, but we'll handle this properly anyway."
-    shared actual IReportNode produceRIR(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
-        MutableMap<String, IReportNode> resourceKinds =
-                HashMap<String, IReportNode>();
-        IReportNode equipment = ListReportNode("Equipment:");
-        for ([loc, item] in fixtures.items.narrow<[Point, ResourcePile|Implement]>()
-                .sort(pairComparator)) {
-            if (is ResourcePile resource = item) {
-                String kind = resource.kind;
-                IReportNode node;
-                if (exists temp = resourceKinds[kind]) {
-                    node = temp;
-                } else {
-                    node = ListReportNode("``kind``:");
-                    resourceKinds[kind] = node;
-                }
-                node.appendNode(produceRIRSingle(fixtures, map, resource,
-                    loc));
-            } else if (is Implement implement = item) {
-                equipment.appendNode(produceRIRSingle(fixtures, map, implement,
-                    loc));
-            }
-        }
-        IReportNode resources = ListReportNode("Resources:");
-        resourceKinds.items.each(resources.addIfNonEmpty);
-        IReportNode retval = SectionListReportNode(4, "Resources and Equipment:");
-        retval.addIfNonEmpty(resources, equipment);
-        if (retval.childCount == 0) {
-            return emptyReportNode;
-        } else {
-            return retval;
         }
     }
 }

@@ -41,15 +41,6 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Unicorn,
     Pegasus
 }
-import strategicprimer.report {
-    IReportNode
-}
-import strategicprimer.report.nodes {
-    SimpleReportNode,
-    ListReportNode,
-    SectionListReportNode,
-    emptyReportNode
-}
 import com.vasileff.ceylon.structures {
     MutableMultimap,
     HashMultimap,
@@ -123,79 +114,6 @@ shared class ImmortalsReportGenerator(
                 }
             }
             ostream("</ul>``operatingSystem.newline``");
-        }
-    }
-
-    "Produce a report node on an individual immortal."
-    shared actual IReportNode produceRIRSingle(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
-            IMapNG map, Immortal item, Point loc) {
-        fixtures.remove(item.id);
-        return SimpleReportNode("At ``loc``: A(n) ``item`` ``distanceString(loc)``", loc);
-    }
-
-    "Produce a report node on an individual immortal, or the intermediate-representation
-     report on all immortals."
-    shared actual IReportNode produceRIR(
-            DelayedRemovalMap<Integer, [Point, IFixture]> fixtures, IMapNG map) {
-        MutableMap<String, IReportNode> simples = HashMap<String, IReportNode>();
-        MutableMap<String, IReportNode> centaurs = HashMap<String, IReportNode>();
-        MutableMap<String, IReportNode> giants = HashMap<String, IReportNode>();
-        MutableMap<String, IReportNode> fairies = HashMap<String, IReportNode>();
-        MutableMap<String, IReportNode> dragons = HashMap<String, IReportNode>();
-        IReportNode separateByKind(MutableMap<String, IReportNode> mapping,
-                Immortal item) {
-            // For the classes we deal with here, we don't want just the kind, we want
-            // the full `string`, so we use that instead of specifying HasKind and
-            // using `kind`.
-            if (exists node = mapping[item.string]) {
-                return node;
-            } else {
-                IReportNode node = ListReportNode(item.string);
-                mapping[item.string] = node;
-                return node;
-            }
-        }
-        for ([point, item] in fixtures.items.narrow<[Point, Immortal]>()
-                .sort(pairComparator)) {
-            IFixture immortal = item;
-            if (is Dragon immortal) {
-                separateByKind(dragons, immortal)
-                    .appendNode(produceRIRSingle(fixtures, map, immortal, point));
-            } else if (is Fairy immortal) {
-                separateByKind(fairies, immortal)
-                    .appendNode(produceRIRSingle(fixtures, map, immortal, point));
-            } else if (is SimpleImmortal immortal) {
-                IReportNode node;
-                if (exists temp = simples[immortal.plural]) {
-                    node = temp;
-                } else {
-                    node = ListReportNode(immortal.plural);
-                    simples[immortal.plural] = node;
-                }
-                node.appendNode(produceRIRSingle(fixtures, map, immortal, point));
-            } else if (is Giant immortal) {
-                separateByKind(giants, immortal)
-                    .appendNode(produceRIRSingle(fixtures, map, immortal, point));
-            } else if (is Centaur immortal) {
-                separateByKind(centaurs, immortal)
-                    .appendNode(produceRIRSingle(fixtures, map, immortal, point));
-            }
-        }
-        IReportNode retval = SectionListReportNode(4, "Immortals");
-        retval.addIfNonEmpty(*simples.items);
-        IReportNode coalesce(String header, Map<String, IReportNode> mapping) {
-            IReportNode retval = ListReportNode(header);
-            retval.addIfNonEmpty(*mapping.items);
-            return retval;
-        }
-        retval.addIfNonEmpty(coalesce("Dragons", dragons),
-            coalesce("Fairies", fairies), coalesce("Giants", giants),
-            coalesce("Centaurs", centaurs));
-        if (retval.childCount == 0) {
-            return emptyReportNode;
-        } else {
-            return retval;
         }
     }
 }
