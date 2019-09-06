@@ -14,6 +14,8 @@ import javax.swing {
     JLabel,
     WindowConstants,
     JFrame,
+    SpinnerNumberModel,
+    JSpinner,
     JComponent
 }
 
@@ -44,8 +46,11 @@ import strategicprimer.drivers.worker.common {
 }
 import lovelace.util.common {
     silentListener,
-    narrowedStream,
     singletonRandom
+}
+
+import java.lang {
+    JInteger=Integer
 }
 
 "A listener to keep track of the currently selected unit and listen for new-worker
@@ -69,32 +74,31 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         defaultCloseOperation = WindowConstants.disposeOnClose;
         JTextField name = JTextField();
         JTextField race = JTextField(raceFactory.randomRace());
-        JTextField hpBox = JTextField();
-        JTextField maxHP = JTextField();
-        JTextField strength = JTextField();
-        JTextField dexterity = JTextField();
-        JTextField constitution = JTextField();
-        JTextField intelligence = JTextField();
-        JTextField wisdom = JTextField();
-        JTextField charisma = JTextField();
+	SpinnerNumberModel hpModel = SpinnerNumberModel(0, -1, 100, 1);
+	SpinnerNumberModel maxHP = SpinnerNumberModel(0, -1, 100, 1);
+	SpinnerNumberModel strength = SpinnerNumberModel(0, -1, 32, 1);
+        SpinnerNumberModel dexterity = SpinnerNumberModel(0, -1, 32, 1);
+        SpinnerNumberModel constitution = SpinnerNumberModel(0, -1, 32, 1);
+        SpinnerNumberModel intelligence = SpinnerNumberModel(0, -1, 32, 1);
+        SpinnerNumberModel wisdom = SpinnerNumberModel(0, -1, 32, 1);
+        SpinnerNumberModel charisma = SpinnerNumberModel(0, -1, 32, 1);
         JPanel textPanel = JPanel(GridLayout(0, 2));
 
         void accept() {
             String nameText = name.text.trimmed;
             String raceText = race.text.trimmed;
-            value hpValue = Integer.parse(hpBox.text.trimmed);
-            value maxHPValue = Integer.parse(maxHP.text.trimmed);
-            value strValue = Integer.parse(strength.text.trimmed);
-            value dexValue = Integer.parse(dexterity.text.trimmed);
-            value conValue = Integer.parse(constitution.text.trimmed);
-            value intValue = Integer.parse(intelligence.text.trimmed);
-            value wisValue = Integer.parse(wisdom.text.trimmed);
-            value chaValue = Integer.parse(charisma.text.trimmed);
-            if (!nameText.empty, !raceText.empty, is Integer hpValue,
-                    is Integer maxHPValue, is Integer strValue,
-                    is Integer dexValue, is Integer conValue,
-                    is Integer intValue, is Integer wisValue,
-                    is Integer chaValue) {
+            value hpValue = hpModel.number.intValue();
+            value maxHPValue = maxHP.number.intValue();
+            value strValue = strength.number.intValue();
+            value dexValue = dexterity.number.intValue();
+            value conValue = constitution.number.intValue();
+            value intValue = intelligence.number.intValue();
+            value wisValue = wisdom.number.intValue();
+            value chaValue = charisma.number.intValue();
+            if (!nameText.empty, !raceText.empty, !hpValue.negative,
+                    !maxHPValue.negative, !strValue.negative, !dexValue.negative,
+                    !conValue.negative, !intValue.negative, !wisValue.negative,
+                    !chaValue.negative) {
                 log.debug("All worker-creation-dialog fields are acceptable");
                 Worker retval = Worker(nameText, raceText, factory.createID());
                 retval.stats = WorkerStats(hpValue, maxHPValue, strValue,
@@ -115,13 +119,12 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
                     builder.append("Worker needs a race.");
                     builder.appendNewline();
                 }
-                for (stat->val in narrowedStream<String, ParseException>(
-                        ["HP"->hpValue, "Max HP"->maxHPValue, "Strength"->strValue,
+                for (stat->val in ["HP"->hpValue, "Max HP"->maxHPValue, "Strength"->strValue,
                             "Dexterity"->dexValue, "Constitution"->conValue,
                             "Intelligence"->intValue, "Wisdom"->wisValue,
-                            "Charisma"->chaValue])) {
-                    log.debug("Worker not created because non-numeric ``stat`` provided");
-                    builder.append("``stat`` must be a number.");
+                            "Charisma"->chaValue]) {
+                    log.debug("Worker not created because non-positive ``stat`` provided");
+                    builder.append("``stat`` must be a non-negative number.");
                     builder.appendNewline();
                 }
                 showErrorDialog(parent, "Strategic Primer Worker Advancement",
@@ -147,9 +150,10 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         buttonPanel.add(addButton);
 
         shared void revert() {
-            for (field in [name, hpBox, maxHP, strength, dexterity, constitution,
+            name.text = "";
+            for (field in [hpModel, maxHP, strength, dexterity, constitution,
                     intelligence, wisdom, charisma]) {
-                field.text = "";
+                field.\ivalue = JInteger.valueOf(-1);
             }
             race.text = raceFactory.randomRace();
             dispose();
@@ -161,19 +165,19 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         platform.makeButtonsSegmented(addButton, cancelButton);
 
         JPanel statsPanel = JPanel(GridLayout(0, 4));
-        hpBox.text = "8";
-        addLabeledField(statsPanel, "HP:", hpBox);
+        hpModel.\ivalue = JInteger(8);
+        addLabeledField(statsPanel, "HP:", JSpinner(hpModel));
 
-        maxHP.text = "8";
-        addLabeledField(statsPanel, "Max HP:", maxHP);
+        maxHP.\ivalue = JInteger(8);
+        addLabeledField(statsPanel, "Max HP:", JSpinner(maxHP));
 
-        for ([stat, box] in [["Strength:", strength],
+        for ([stat, model] in [["Strength:", strength],
                 ["Intelligence:", intelligence], ["Dexterity:", dexterity],
                 ["Wisdom:", wisdom], ["Constitution:", constitution],
                 ["Charisma:", charisma]]) {
-            box.text = singletonRandom.elements(1..6).take(3)
-                .reduce(plus)?.string else "0";
-            addLabeledField(statsPanel, stat, box);
+            model.\ivalue = JInteger(singletonRandom.elements(1..6).take(3)
+                .reduce(plus) else 0);
+            addLabeledField(statsPanel, stat, JSpinner(model));
         }
 
         contentPane = BorderedPanel.verticalPanel(textPanel, statsPanel,
