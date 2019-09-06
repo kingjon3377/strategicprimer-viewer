@@ -59,7 +59,7 @@ final class SkillAdvancementPanel extends BorderedPanel
     variable ISkill? skill = null;
     variable IJob? job = null;
     variable IWorker? worker = null;
-    MutableList<LevelGainListener> listeners = ArrayList<LevelGainListener>();
+    late MutableList<LevelGainListener> listeners = ArrayList<LevelGainListener>(); // TODO: Report bug in runtime causing NPE on access without `late`
     void okListener(ActionEvent event) {
         if (exists local = skill) {
             Integer level = local.level;
