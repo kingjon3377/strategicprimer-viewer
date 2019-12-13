@@ -136,7 +136,7 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
              ``operatingSystem.newline.join(members)``";
 
     "An icon to represent units by default."
-    by("[jreijonen](http://opengameart.org/content/faction-symbols-allies-axis)")
+    by("[purzen](https://publicdomainvectors.org/en/free-clipart/Sword-and-shield-icon/79343.html)") // TODO: Replace with OpenClipart link if it ever comes up again
     shared actual String defaultImage = "unit.png";
 
     "If we ignore ID, a fixture is equal iff it is an IUnit owned by the same
