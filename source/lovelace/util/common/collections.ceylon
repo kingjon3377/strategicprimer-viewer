@@ -51,7 +51,7 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
 
     "An iterator over the entries in the map whose keys are not in the to-remove list."
     shared actual Iterator<Integer->Item> iterator() =>
-            backing.filterKeys(not(backing.contains)).iterator();
+            backing.filterKeys(not(toRemove.contains)).iterator();
 
     "Add an entry to the map, removing the key from the to-remove list if present there."
     shared actual Item? put(Integer key, Item item) {
