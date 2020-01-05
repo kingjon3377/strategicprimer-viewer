@@ -4,13 +4,16 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
+
 import ceylon.language.meta {
     classDeclaration,
     type
 }
+
 import ceylon.decimal {
     decimalNumber
 }
+
 import strategicprimer.model.common.map {
     IFixture,
     HasPopulation,
@@ -19,16 +22,19 @@ import strategicprimer.model.common.map {
     Point,
     IMutableMapNG
 }
+
 import strategicprimer.model.common.map.fixtures {
     ResourcePile,
     Quantity,
     Implement
 }
+
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Animal,
     AnimalImpl
 }
+
 import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture,
     Grove,
@@ -36,62 +42,37 @@ import strategicprimer.model.common.map.fixtures.resources {
     Shrub,
     FieldStatus
 }
+
 import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
+
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
+
 import strategicprimer.drivers.common {
-    SPOptions,
-    DriverUsage,
     IMultiMapModel,
-    IDriverUsage,
     IDriverModel,
-    CLIDriver,
-    ParamCount,
-    DriverFactory,
-    ModelDriverFactory,
-    ModelDriver,
-    SimpleMultiMapModel
+    CLIDriver
 }
+
 import lovelace.util.common {
     NonNullCorrespondence,
     simpleMap,
-    PathWrapper,
     as
 }
+
 import ceylon.language.meta.model {
     ClassOrInterface
 }
+
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
+
 import lovelace.util.jvm {
     decimalize
-}
-
-"A factory for a driver to remove duplicate hills, forests, etc., from the map (to reduce
- the disk space it takes up and the memory and CPU required to deal with it)."
-service(`interface DriverFactory`)
-shared class DuplicateFixtureRemoverFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = false;
-        invocations = ["remove-duplicates"];
-        paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "Remove duplicate fixtures";
-        longDescription = "Remove duplicate fixtures (identical except ID# and on the
-                           same tile) from a map.";
-        includeInCLIList = true;
-        includeInGUIList = false;
-        supportedOptions = [ "--current-turn=NN" ];
-    };
-
-    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => DuplicateFixtureRemoverCLI(cli, model);
-
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleMultiMapModel(map, path);
 }
 
 "A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it

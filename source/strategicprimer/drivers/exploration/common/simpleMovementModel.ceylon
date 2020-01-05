@@ -8,12 +8,14 @@ import lovelace.util.common {
     matchingValue,
     singletonRandom
 }
+
 import strategicprimer.model.common.map {
     River,
     TileType,
     TileFixture,
     HasOwner
 }
+
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats,
     ISkill
@@ -23,16 +25,20 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     IWorker
 }
+
 import strategicprimer.model.common.map.fixtures.terrain {
     Hill,
     Forest
 }
+
 import strategicprimer.model.common.map.fixtures.towns {
     ITownFixture
 }
+
 import strategicprimer.drivers.exploration.common {
     Direction
 }
+
 import ceylon.random {
     randomize
 }
@@ -187,8 +193,3 @@ shared object simpleMovementModel {
         return retval.sequence();
     }
 }
-
-"An exception thrown to signal traversal is impossible."
-todo("Ocean isn't impassable to everything, of course.") // FIXME
-shared class TraversalImpossibleException()
-        extends Exception("Traversal is impossible.") {}

@@ -1,45 +1,46 @@
 import strategicprimer.drivers.common {
-    IDriverUsage,
-    DriverUsage,
-    ParamCount,
-    SPOptions,
     IDriverModel,
-    CLIDriver,
-    DriverFactory,
-    ModelDriverFactory,
-    ModelDriver,
-    SimpleDriverModel
+    CLIDriver
 }
+
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
+
 import strategicprimer.model.common.map {
     Point,
     HasExtent,
     IMutableMapNG
 }
+
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal
 }
+
 import ceylon.random {
     Random,
     randomize
 }
+
 import strategicprimer.model.common.map.fixtures.resources {
     Grove,
     Shrub,
     Meadow
 }
+
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
+
 import strategicprimer.drivers.exploration.common {
     surroundingPointIterable
 }
+
 import strategicprimer.model.common.map.fixtures.towns {
     ITownFixture,
     TownSize
 }
+
 import ceylon.decimal {
     decimalNumber,
     round,
@@ -47,36 +48,16 @@ import ceylon.decimal {
     implicitlyRounded,
     Decimal
 }
+
 import lovelace.util.common {
     matchingValue,
     narrowedStream,
     singletonRandom,
-    PathWrapper,
     defer
 }
+
 import lovelace.util.jvm {
     decimalize
-}
-
-"A factory for a driver to let the user generate animal and shrub populations, meadow and
- grove sizes, and forest acreages."
-service(`interface DriverFactory`)
-shared class PopulationGeneratingCLIFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = false;
-        invocations = ["generate-populations"];
-        paramsWanted = ParamCount.one;
-        shortDescription = "Generate animal populations, etc.";
-        longDescription = "Generate animal and shrub populations, meadow and grove sizes, and forest acreages.";
-        includeInCLIList = true;
-        includeInGUIList = false; // TODO: We'd like a GUI equivalent
-    };
-
-    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => PopulationGeneratingCLI(cli, model);
-
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleDriverModel(map, path);
 }
 
 "A driver to let the user generate animal and shrub populations, meadow and grove sizes,

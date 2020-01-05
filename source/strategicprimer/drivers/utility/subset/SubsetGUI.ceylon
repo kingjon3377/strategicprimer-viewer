@@ -16,42 +16,22 @@ import lovelace.util.common {
 import strategicprimer.model.common.xmlio {
     SPFormatException
 }
+
 import strategicprimer.drivers.common {
     DriverFailedException,
-    DriverUsage,
-    ParamCount,
-    IDriverUsage,
     SPOptions,
     IncorrectUsageException,
-    UtilityDriver,
-    DriverFactory,
-    UtilityDriverFactory,
     UtilityGUI
 }
+
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
+
 import strategicprimer.drivers.gui.common {
     WindowCloseListener,
     UtilityMenuHandler,
     SPMenu
-}
-
-"A factory for a driver to check whether player maps are subsets of the main map and
- display the results graphically."
-service(`interface DriverFactory`)
-shared class SubsetGUIFactory satisfies UtilityDriverFactory {
-    shared static IDriverUsage staticUsage = DriverUsage(true, ["subset"],
-        ParamCount.atLeastOne, "Check players' maps against master",
-        "Check that subordinate maps are subsets of the main map, containing nothing that
-         it does not contain in the same place.", false, true);
-
-    shared actual IDriverUsage usage => staticUsage;
-
-    shared new () {}
-
-    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
-            SubsetGUI(cli, options);
 }
 
 "A driver to check whether player maps are subsets of the main map and display the

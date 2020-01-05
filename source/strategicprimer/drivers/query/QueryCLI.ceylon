@@ -5,9 +5,9 @@ import strategicprimer.model.common.map {
     TileType,
     MapDimensions,
     Point,
-    IMapNG,
-    IMutableMapNG
+    IMapNG
 }
+
 import ceylon.collection {
     MutableSet,
     LinkedList,
@@ -16,49 +16,50 @@ import ceylon.collection {
     HashSet,
     Queue
 }
+
 import strategicprimer.drivers.common {
-    SPOptions,
-    ParamCount,
-    IDriverUsage,
-    DriverUsage,
     IDriverModel,
-    ModelDriverFactory,
-    DriverFactory,
-    ModelDriver,
-    ReadOnlyDriver,
-    SimpleDriverModel
+    ReadOnlyDriver
 }
+
 import strategicprimer.model.common.map.fixtures {
     Ground
 }
+
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
     SimpleApplet,
     AppletChooser
 }
+
 import lovelace.util.common {
-    defer,
-    PathWrapper
+    defer
 }
+
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
+
 import strategicprimer.model.common.map.fixtures.mobile {
     IWorker
 }
+
 import strategicprimer.drivers.exploration.common {
     surroundingPointIterable,
     pathfinder,
     Pathfinder,
     HuntingModel
 }
+
 import strategicprimer.model.common {
     DistanceComparator
 }
+
 import ceylon.logging {
     logger,
     Logger
 }
+
 import strategicprimer.model.common.map.fixtures.towns {
     ITownFixture,
     TownStatus,
@@ -67,21 +68,6 @@ import strategicprimer.model.common.map.fixtures.towns {
 
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.query`);
-
-"""A factory for the driver to "query" the driver model about various things."""
-service(`interface DriverFactory`)
-shared class QueryCLIFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, ["query"],
-        ParamCount.one, "Answer questions about a map.",
-        "Answer questions about a map, such as counting workers or calculating distances.", true, false);
-
-    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => QueryCLI(cli, model);
-
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleDriverModel(map, path);
-
-}
 
 "A driver for 'querying' the driver model about various things."
 // FIXME: Write GUI equivalent of query CLI

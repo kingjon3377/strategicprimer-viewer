@@ -6,6 +6,7 @@ import ceylon.collection {
     MutableList,
     LinkedList
 }
+
 import ceylon.file {
     File,
     parsePath,
@@ -16,92 +17,63 @@ import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
 }
+
 import strategicprimer.model.common.map {
     IFixture,
     Player,
     TileFixture,
     Point,
     HasOwner,
-    IMapNG,
-    IMutableMapNG
+    IMapNG
 }
+
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     Unit,
     Worker,
     IWorker
 }
+
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     WorkerStats,
     IJob,
     raceFactory,
     Job
 }
+
 import strategicprimer.drivers.common {
-    IDriverModel,
-    IDriverUsage,
-    DriverUsage,
-    ParamCount,
-    SPOptions,
-    CLIDriver,
-    DriverFactory,
-    ModelDriverFactory,
-    ModelDriver
+    CLIDriver
 }
+
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
+
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
-    ExplorationModel,
     Pathfinder,
     pathfinder
 }
+
 import ceylon.logging {
     logger,
     Logger
 }
+
 import lovelace.util.common {
     readFileContents,
     matchingValue,
     singletonRandom,
     narrowedStream,
-    entryMap,
-    PathWrapper
+    entryMap
 }
+
 import strategicprimer.model.common.map.fixtures.towns {
     Village
 }
 
 "A logger."
 Logger log = logger(`module strategicprimer.drivers.generators`);
-
-"A factory for a driver to generate new workers."
-service(`interface DriverFactory`)
-shared class StatGeneratingCLIFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = false;
-        invocations = ["generate-stats"];
-        paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "Generate new workers.";
-        longDescription = "Generate new workers with random stats and experience.";
-        includeInCLIList = true;
-        includeInGUIList = false;
-        supportedOptions = [ "--current-turn=NN" ];
-    };
-
-    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) {
-        if (is IExplorationModel model) {
-            return StatGeneratingCLI(cli, model);
-        } else {
-            return createDriver(cli, options, ExplorationModel.copyConstructor(model));
-        }
-    }
-
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            ExplorationModel(map, path);
-}
 
 "A driver to generate new workers."
 // FIXME: Write stat-generating GUI

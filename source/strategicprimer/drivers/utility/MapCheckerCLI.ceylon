@@ -1,41 +1,17 @@
-import java.awt {
-    Dimension,
-    Color
-}
 import java.io {
     IOException
 }
 
-import javax.swing {
-    JScrollPane
-}
-
-import lovelace.util.jvm {
-    StreamingLabel,
-    LabelTextColor
-}
-
 import lovelace.util.common {
-    silentListener,
     PathWrapper,
     MissingFileException,
     MalformedXMLException
 }
 
 import strategicprimer.drivers.common {
-    UtilityDriver,
-    IDriverUsage,
-    DriverUsage,
-    ParamCount,
-    SPOptions,
-    UtilityDriverFactory,
-    DriverFactory,
-    ISPDriver,
-    UtilityGUI
+    UtilityDriver
 }
-import strategicprimer.drivers.common.cli {
-    ICLIHelper
-}
+
 import strategicprimer.model.common.map {
     HasExtent,
     IFixture,
@@ -45,71 +21,55 @@ import strategicprimer.model.common.map {
     TileType,
     IMapNG
 }
+
 import strategicprimer.model.common.map.fixtures.mobile {
     IWorker,
     AnimalTracks
 }
+
 import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob,
     suspiciousSkills,
     ISkill
 }
+
 import strategicprimer.model.common.map.fixtures.resources {
     StoneDeposit,
     StoneKind,
     Grove
 }
+
 import strategicprimer.model.common.map.fixtures.towns {
     Village,
     ITownFixture,
     TownSize
 }
+
 import strategicprimer.model.impl.xmlio {
     mapIOHelper
 }
+
 import strategicprimer.model.common.xmlio {
     Warning,
     warningLevels,
     SPFormatException
 }
+
 import strategicprimer.model.common.map.fixtures {
     ResourcePile
 }
-import strategicprimer.drivers.gui.common {
-    SPFrame,
-    WindowCloseListener,
-    SPMenu,
-    UtilityMenuHandler
-}
-import ceylon.logging {
-    Logger,
-    logger
-}
+
 import ceylon.decimal {
     Decimal
 }
+
 import ceylon.whole {
     Whole
 }
+
 import strategicprimer.model.common.map.fixtures.terrain {
     Hill,
     Oasis
-}
-
-Logger log = logger(`module strategicprimer.drivers.utility`);
-
-// Left outside mapCheckerCLI because it's also used in the todoFixerCLI.
-{String+} landRaces = [ "Danan", "dwarf", "elf", "half-elf", "gnome", "human" ];
-
-"A factory for a driver to check every map file in a list for errors."
-service(`interface DriverFactory`)
-shared class MapCheckerCLIFactory() satisfies UtilityDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, ["check"],
-        ParamCount.atLeastOne, "Check map for errors",
-        "Check a map file for errors, deprecated syntax, etc.", true, false);
-
-    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
-            MapCheckerCLI(cli.println, cli.println);
 }
 
 "A driver to check every map file in a list for errors."
@@ -407,75 +367,4 @@ shared class MapCheckerCLI satisfies UtilityDriver {
             check(PathWrapper(filename));
         }
     }
-}
-
-"The map-checker GUI window." // TODO: Merge into MapCheckerGUI
-class MapCheckerFrame(ISPDriver driver) extends SPFrame("Strategic Primer Map Checker",
-        driver, Dimension(640, 320), true, noop, "Map Checker") {
-    StreamingLabel label = StreamingLabel();
-    void printParagraph(String paragraph,
-            LabelTextColor color = LabelTextColor.black) {
-        label.append("<p style=\"color:``color``\">``paragraph``</p>");
-    }
-
-    void customPrinter(String string) =>
-            printParagraph(string, LabelTextColor.yellow);
-    setBackground(Color.white);
-    contentPane = JScrollPane(label);
-    contentPane.background = Color.white;
-
-    void outHandler(String text) {
-        if (text.startsWith("No errors")) {
-            printParagraph(text, LabelTextColor.green);
-        } else {
-            printParagraph(text);
-        }
-    }
-
-    void errHandler(String text) =>
-            printParagraph(text, LabelTextColor.red);
-
-    MapCheckerCLI mapCheckerCLI = MapCheckerCLI(outHandler, errHandler);
-
-    shared void check(PathWrapper filename) {
-        mapCheckerCLI.check(filename, warningLevels.custom(customPrinter));
-    }
-
-    shared actual void acceptDroppedFile(PathWrapper file) => check(file);
-}
-
-"A factory for a driver to check every map file in a list for errors and report the
- results in a window."
-service(`interface DriverFactory`)
-shared class MapCheckerGUIFactory() satisfies UtilityDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(true, ["check"],
-        ParamCount.anyNumber, "Check map for errors",
-        "Check a map file for errors, deprecated syntax, etc.", false, true);
-
-    shared actual UtilityDriver createDriver(ICLIHelper cli, SPOptions options) =>
-            MapCheckerGUI();
-}
-
-"A driver to check every map file in a list for errors and report the results in a
- window."
-shared class MapCheckerGUI() satisfies UtilityGUI {
-    late MapCheckerFrame window;
-    variable Boolean initialized = false;
-
-    shared actual void startDriver(String* args) {
-        if (!initialized) {
-            initialized = true;
-            window = MapCheckerFrame(this);
-            window.jMenuBar = SPMenu.forWindowContaining(window.contentPane,
-                SPMenu.createFileMenu(UtilityMenuHandler(this, window).handleEvent, this),
-                SPMenu.disabledMenu(SPMenu.createMapMenu(noop, this)),
-                SPMenu.disabledMenu(SPMenu.createViewMenu(noop, this)));
-            window.addWindowListener(WindowCloseListener(silentListener(window.dispose)));
-        }
-        window.showWindow();
-        args.coalesced.map(PathWrapper).each(window.check);
-    }
-
-    shared actual void open(PathWrapper path) => window.check(path);
-
 }

@@ -1,19 +1,12 @@
 import strategicprimer.drivers.common {
-    IDriverUsage,
-    DriverUsage,
-    ParamCount,
-    SPOptions,
     IDriverModel,
-    IMultiMapModel,
-    CLIDriver,
-    DriverFactory,
-    ModelDriverFactory,
-    ModelDriver,
-    SimpleMultiMapModel
+    IMultiMapModel
 }
+
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
+
 import strategicprimer.model.common.map.fixtures.towns {
     ITownFixture,
     TownStatus,
@@ -22,23 +15,25 @@ import strategicprimer.model.common.map.fixtures.towns {
     Village,
     TownSize
 }
+
 import strategicprimer.model.common.map {
     IFixture,
     TileFixture,
     Point,
     HasName,
     TileType,
-    IMapNG,
-    IMutableMapNG
+    IMapNG
 }
+
 import strategicprimer.model.common.map.fixtures {
     ResourcePile,
     Quantity
 }
+
 import strategicprimer.model.common.idreg {
-    IDRegistrar,
-    createIDFactory
+    IDRegistrar
 }
+
 import strategicprimer.model.common.map.fixtures.resources {
     HarvestableFixture,
     MineralVein,
@@ -49,20 +44,25 @@ import strategicprimer.model.common.map.fixtures.resources {
     CacheFixture,
     Shrub
 }
+
 import strategicprimer.drivers.exploration.common {
     surroundingPointIterable
 }
+
 import ceylon.random {
     Random,
     DefaultRandom,
     randomize
 }
+
 import strategicprimer.drivers.exploration.old {
     ExplorationRunner
 }
+
 import strategicprimer.model.common.map.fixtures.terrain {
     Forest
 }
+
 import ceylon.collection {
     LinkedList,
     Stack,
@@ -71,6 +71,7 @@ import ceylon.collection {
     MutableList,
     ArrayList
 }
+
 import lovelace.util.common {
     readFileContents,
     isNumeric,
@@ -78,8 +79,7 @@ import lovelace.util.common {
     matchingValue,
     anythingEqual,
     defer,
-    narrowedStream,
-    PathWrapper
+    narrowedStream
 }
 
 "A command-line app to generate population details for villages."
@@ -561,50 +561,6 @@ class TownGenerator(ICLIHelper cli) {
                     assignStatsInMap(subMap, location, town.id, stats);
                     model.setModifiedFlag(subMap, true);
                 }
-            }
-        }
-    }
-}
-
-"A factory for a driver to let the user enter or generate 'stats' for towns."
-service(`interface DriverFactory`)
-shared class TownGeneratingCLIFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage {
-        graphical = false;
-        invocations = ["generate-towns"];
-        paramsWanted = ParamCount.atLeastOne;
-        shortDescription = "Enter or generate stats and contents for towns and villages";
-        longDescription = "Enter or generate stats and contents for towns and villages";
-        includeInCLIList = true;
-        includeInGUIList = false;
-    };
-
-    shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => TownGeneratingCLI(cli, model);
-
-    shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleMultiMapModel(map, path);
-}
-
-"A driver to let the user enter or generate 'stats' for towns."
-// TODO: Write GUI to allow user to generate or enter town contents
-shared class TownGeneratingCLI(ICLIHelper cli, model) satisfies CLIDriver {
-    shared actual IDriverModel model;
-
-    shared actual void startDriver() {
-        TownGenerator generator = TownGenerator(cli); // TODO: Consider combining that with this class again.
-        IDRegistrar idf;
-        if (is IMultiMapModel model) {
-            idf = createIDFactory(model.allMaps.map(Entry.key));
-        } else {
-            idf = createIDFactory(model.map);
-        }
-        if (exists specific =
-                cli.inputBoolean("Enter or generate stats for just specific towns? ")) {
-            if (specific) {
-                generator.generateSpecificTowns(idf, model);
-            } else {
-                generator.generateAllTowns(idf, model);
             }
         }
     }
