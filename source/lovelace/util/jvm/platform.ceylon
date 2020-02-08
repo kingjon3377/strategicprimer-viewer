@@ -43,7 +43,7 @@ shared object platform {
             variable JButton last = first;
             for (button in buttons.rest) {
                 setStringProperty(button, "JButton.buttonType", "segmented");
-                setStringProperty(button, "JButton.segmentPosition", "last");
+                setStringProperty(button, "JButton.segmentPosition", "middle");
                 last = button;
             }
             setStringProperty(last, "JButton.segmentPosition", "last");
