@@ -88,7 +88,11 @@ shared class AnimalTabularReportGenerator(Point? hq, MapDimensions dimensions,
             cmp = equal;
         }
         if (cmp == equal) {
-            if (is Animal first = one.rest.first) { // TODO: Extract the comparison on type to a function so we can put it and the distance comparison into comparing()
+            // We'd like to extract the comparison on type to a function, which
+            // we would pass in to comparing() with the distance function above
+            // to reduce nesting, but there's too much here that can only be applied
+            // if both are [[Animal]]s or both are [[AnimalTracks]].
+            if (is Animal first = one.rest.first) {
                 if (is Animal second = two.rest.first) {
                     return comparing(comparingOn(Animal.talking, compareBools),
                         byIncreasing(Animal.kind), byDecreasing(Animal.population),
