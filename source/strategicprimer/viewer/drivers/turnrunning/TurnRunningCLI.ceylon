@@ -346,14 +346,14 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         }
     }
     ResourceAddingCLIHelper resourceAddingHelper = ResourceAddingCLIHelper(cli, idf);
-    void addResourceToMaps(FortressMember resource, Player owner) {
+    void addResourceToMaps(FortressMember resource, Player owner, String fortName = "HQ") {
         for (map in model.allMaps.map(Entry.key)) {
-            // TODO: Make a way to add to fortresses other than HQ, or to units
+            // TODO: Make a way to add to units
             Fortress hq;
             variable Fortress? fort = null;
             for (fortress in map.fixtures.items.narrow<Fortress>()
                     .filter(matchingValue(owner, Fortress.owner))) {
-                if (fortress.name == "HQ") {
+                if (fortress.name == fortName) {
                     hq = fortress;
                     break;
                 } else if (!fort exists) {
