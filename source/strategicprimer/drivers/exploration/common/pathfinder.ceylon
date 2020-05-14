@@ -54,6 +54,47 @@ class PathfinderImpl(IMapNG map) satisfies Pathfinder {
                 return null;
             }
     }
+
+    Direction getDirection(Point one, Point two) {
+        switch (one.row <=> two.row)
+        case (smaller) {
+            switch (one.column <=> two.column)
+            case (smaller) {
+                return Direction.northeast;
+            }
+            case (equal) {
+                return Direction.north;
+            }
+            case (larger) {
+                return Direction.northwest;
+            }
+        }
+        case (equal) {
+            switch (one.column <=> two.column)
+            case (smaller) {
+                return Direction.east;
+            }
+            case (equal) {
+                return Direction.nowhere;
+            }
+            case (larger) {
+                return Direction.west;
+            }
+        }
+        case (larger) {
+            switch (one.column <=> two.column)
+            case (smaller) {
+                return Direction.southeast;
+            }
+            case (equal) {
+                return Direction.south;
+            }
+            case (larger) {
+                return Direction.southwest;
+            }
+        }
+    }
+
     "The shortest-path distance, avoiding obstacles, in MP, between two points, using
      Dijkstra's algorithm."
     shared actual [Integer, {Point*}] getTravelDistance(Point start, Point end) {
@@ -95,7 +136,8 @@ class PathfinderImpl(IMapNG map) satisfies Pathfinder {
                     simpleMovementModel.movementCost(map.baseTerrain[neighbor],
                         !map.fixtures.get(neighbor).narrow<Forest>().empty,
                         map.mountainous.get(neighbor),
-                        !map.rivers.get(neighbor).empty || !map.rivers.get(current).empty, // FIXME: Use rivers-in-that-direction computation, not any-rivers-exist
+                        simpleMovementModel.riversSpeedTravel(getDirection(current, neighbor),
+                            map.rivers.get(current), map.rivers.get(neighbor)),
                         map.fixtures.get(neighbor));
                 log.trace(
                     "Old estimate ``estimate``, new estimate ``tentativeDistance``");
