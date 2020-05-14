@@ -22,6 +22,8 @@ import strategicprimer.model.common.map.fixtures {
 }
 
 "An interface for units."
+todo("Move [[setOrders]], [[setResults]], [[addMember]], and
+      [[removeMember]] to a 'mutable' interface?")
 shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
         {UnitMember*}&FortressMember&HasOwner {
     "The unit's orders history, a mapping from turns to the orders for those turns."
@@ -31,7 +33,6 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     shared formal String getOrders(Integer turn);
 
     "Set the unit's orders for a turn."
-    todo("Move to a 'mutable' interface?")
     shared formal void setOrders(Integer turn, String newOrders);
 
     "The unit's results for the given turn."
@@ -41,7 +42,6 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     shared formal SortedMap<Integer, String> allResults;
 
     "Set the unit's results for a turn."
-    todo("Move to a 'mutable' interface?")
     shared formal void setResults(Integer turn, String newResults);
 
     "The unit's latest orders as of the given turn."
@@ -69,11 +69,9 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     shared formal String verbose;
 
     "Add a member."
-    todo("Move to a 'mutable' interface?")
     shared formal void addMember(UnitMember member);
 
     "Remove a member"
-    todo("Move to a 'mutable' interface?")
     shared formal void removeMember(UnitMember member);
 
     "Clone the unit."
