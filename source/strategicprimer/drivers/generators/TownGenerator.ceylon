@@ -138,7 +138,7 @@ class TownGenerator(ICLIHelper cli) {
                         firstTables.push(temp.trimmed);
                     }
                 } else if (!reference.trimmed.empty) {
-                    secondTables.push("``reference``_production");
+                    secondTables.push("``reference``_production"); // TODO: should this be firstTables instead?
                 }
             }
         }

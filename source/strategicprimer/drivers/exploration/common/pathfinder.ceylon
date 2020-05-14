@@ -95,7 +95,7 @@ class PathfinderImpl(IMapNG map) satisfies Pathfinder {
                     simpleMovementModel.movementCost(map.baseTerrain[neighbor],
                         !map.fixtures.get(neighbor).narrow<Forest>().empty,
                         map.mountainous.get(neighbor),
-                        !map.rivers.get(neighbor).empty || !map.rivers.get(current).empty,
+                        !map.rivers.get(neighbor).empty || !map.rivers.get(current).empty, // FIXME: Use rivers-in-that-direction computation, not any-rivers-exist
                         map.fixtures.get(neighbor));
                 log.trace(
                     "Old estimate ``estimate``, new estimate ``tentativeDistance``");
