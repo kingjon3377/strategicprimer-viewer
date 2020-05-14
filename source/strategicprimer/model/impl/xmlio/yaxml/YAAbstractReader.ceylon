@@ -62,7 +62,7 @@ abstract class YAAbstractReader<Element>
         satisfies YAReader<Element> given Element satisfies Object {
     "Whether the given tag is in a namespace we support."
     shared static Boolean isSupportedNamespace(QName tag) =>
-            {spNamespace, XMLConstants.nullNsUri}.contains(tag.namespaceURI);
+            [spNamespace, XMLConstants.nullNsUri].contains(tag.namespaceURI);
 
     "Require that an element be one of the specified tags."
     shared static void requireTag(StartElement element, QName parent, String* tags) {

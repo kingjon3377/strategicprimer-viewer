@@ -200,7 +200,7 @@ shared class HarvestableReportGenerator
         {HeadedList<String>+} all = [mapToList(minerals, "<h5>Mineral Deposits</h5>"),
             mapToList(stone, "<h5>Exposed Stone Deposits</h5>"),
             mapToList(shrubs, "<h5>Shrubs, Small Trees, etc.</h5>") ];
-        if (!{caches, groves, meadows, mines}.every(Iterable.empty) ||
+        if (![caches, groves, meadows, mines].every(Iterable.empty) ||
                 !all.every(HeadedList.empty)) {
             ostream("""<h4>Resource Sources</h4>
                    """);

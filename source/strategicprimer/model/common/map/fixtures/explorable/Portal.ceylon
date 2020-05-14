@@ -67,7 +67,7 @@ shared class Portal(destinationWorld, destinationCoordinates, id)
             if (is Portal obj) {
                 Anything(String) localReport =
                         compose(report, "In portal with ID #``id``: ".plus);
-                if (!{destinationWorld, "unknown"}.contains(obj.destinationWorld)) {
+                if (![destinationWorld, "unknown"].contains(obj.destinationWorld)) {
                     localReport("Different destination world");
                     return false;
                 } else if (obj.destinationCoordinates.valid,
