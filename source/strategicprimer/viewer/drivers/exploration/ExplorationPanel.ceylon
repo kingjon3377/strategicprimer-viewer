@@ -365,6 +365,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         }
     }
 
+    AnimalTracks? createNull(Point point) => null;
+
     for (direction in sort(`Direction`.caseValues)) {
         log.trace("ExplorationPanel: Starting to initialize for ``direction``");
         SwingList<TileFixture>&SelectionChangeListener mainList =
@@ -396,7 +398,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         log.trace("ExplorationPanel: ell set up for ``direction``");
 
         SwingList<TileFixture>&SelectionChangeListener secList =
-            fixtureList(tilesPanel, FixtureListModel(secondMap, (point) => null),
+            fixtureList(tilesPanel, FixtureListModel(secondMap, createNull),
                 idf, markModified, secondMap.players);
         tilesPanel.add(JScrollPane(secList));
 
