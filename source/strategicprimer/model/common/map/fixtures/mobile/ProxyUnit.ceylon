@@ -243,7 +243,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
 
     shared actual Boolean isSubset(IFixture obj, Anything(String) report) {
         report("Called ProxyUnit.isSubset()");
-        return super.isSubset(obj, (String str) => report("In proxy unit:\t``str``"));
+        return super.isSubset(obj, compose(report, "In proxy unit:\t".plus));
     }
 
     shared actual String getOrders(Integer turn) =>
