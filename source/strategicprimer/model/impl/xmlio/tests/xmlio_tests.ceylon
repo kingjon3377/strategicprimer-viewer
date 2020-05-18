@@ -389,19 +389,20 @@ object xmlTests {
         }
     }
 
+    "Check whether an exception matches what is expected in [assertInvalid]."
+    void assertInvalidCheckException(Exception exception) {
+        if (is MissingPropertyException exception) {
+            assert (exception.tag.localPart == "include", exception.param == "file");
+        }
+    }
+
     "Assert that a given piece of XML will fail to deserialize with XML format errors, not
      SP format errors."
     void assertInvalid(String xml) {
         for (reader in readers) {
             assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
                     MalformedXMLException|MissingFileException|MissingPropertyException>(
-                reader,
-                xml, null, (Exception exception) {
-                    if (is MissingPropertyException exception) {
-                        assert (exception.tag.localPart == "include",
-                            exception.param == "file");
-                    }
-                });
+                reader, xml, null, assertInvalidCheckException);
         }
     }
 
