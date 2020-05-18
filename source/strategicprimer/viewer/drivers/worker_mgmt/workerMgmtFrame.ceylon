@@ -175,9 +175,11 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         JComponent.whenInFocusedWindow, createAccelerator(KeyEvent.vkJ));
 
     TreeExpansionOrderListener expander = TreeExpansionHandler(tree);
+    void expandTwo() => expander.expandSome(2);
+
     menuHandler.register(silentListener(expander.expandAll), "expand all");
     menuHandler.register(silentListener(expander.collapseAll), "collapse all");
-    menuHandler.register((event) => expander.expandSome(2), "expand unit kinds");
+    menuHandler.register(silentListener(expandTwo), "expand unit kinds");
     expander.expandAll();
 
     addWindowListener(object extends WindowAdapter() {

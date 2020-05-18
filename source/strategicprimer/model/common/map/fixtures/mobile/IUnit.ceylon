@@ -80,6 +80,8 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
     "The plural of Unit is Units"
     shared default actual String plural => "Units";
 
+    Entry<Integer,UnitMember> memberById(UnitMember member) => member.id->member;
+
     "A fixture is a subset if it is a unit with the same ID and no extra members, and all
      corresponding (by ID, presumably) members are either equal or themselves subsets."
     shared default actual Boolean isSubset(IFixture obj, Anything(String) report) {
@@ -97,8 +99,7 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
                     localSimpleReport("Kinds differ");
                     return false;
                 }
-                Map<Integer, UnitMember> ours =
-                        createMap(map((member) => member.id->member));
+                Map<Integer, UnitMember> ours = createMap(map(memberById));
                 variable Boolean retval = true;
                 Anything(String) localReport =
                         compose(report,

@@ -119,7 +119,8 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
     MapComponent mapPanel = MapComponent(mapModel, tableModel.shouldDisplay, tableModel);
 
     // can't use silentListener because repaint() is overloaded
-    tableModel.addTableModelListener((TableModelEvent event) => mapPanel.repaint());
+    void repaintMapPanel(TableModelEvent event) => mapPanel.repaint();
+    tableModel.addTableModelListener(repaintMapPanel);
     mapModel.addGraphicalParamsListener(mapPanel);
     mapModel.addMapChangeListener(mapPanel);
     mapModel.addSelectionChangeListener(mapPanel);

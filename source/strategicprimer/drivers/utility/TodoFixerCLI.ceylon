@@ -136,6 +136,12 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
         }
     }
 
+    Boolean productionContainsHash([Point, CommunityStats] pair) =>
+                pair.rest.first.yearlyProduction.map(ResourcePile.contents).any(shuffle(String.contains)('#'));
+
+    Boolean anyEmptySkills([Point, CommunityStats] pair) =>
+                pair.rest.first.highestSkillLevels.map(Entry.key).any(String.empty);
+
     "Search for and fix aquatic villages with non-aquatic races."
     void fixAllVillages(IMapNG map) {
         {Village*} villages = map.locations
@@ -172,8 +178,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
                     .map(entryMap(identity<Point>, ITownFixture.population))
                     .map(Entry.pair)
                     .narrow<[Point, CommunityStats]>()
-                    .filter(([loc, pop]) => pop.yearlyProduction.map(
-                        ResourcePile.contents).any(shuffle(String.contains)('#')));
+                    .filter(productionContainsHash);
 
         if (!brokenTownContents.empty) {
             value eRunner = runner;
@@ -198,7 +203,7 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
             narrowedStream<Point, ITownFixture>(map.fixtures)
                 .map(entryMap(identity<Point>, ITownFixture.population))
                 .map(Entry.pair).narrow<[Point, CommunityStats]>()
-                .filter(([loc, pop]) => pop.highestSkillLevels.map(Entry.key).any(String.empty));
+                .filter(anyEmptySkills);
         if (!brokenExpertise.empty) {
             value eRunner = runner;
             for ([loc, population] in brokenExpertise) {

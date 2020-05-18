@@ -70,6 +70,8 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
            );"""
     ];
 
+    Boolean containsSimpleImmortals(String s) => s.contains("simple_immortals");
+
     shared actual void write(Sql db, Immortal obj, Point|IUnit context) {
         if (is SimpleImmortal|ImmortalAnimal obj) {
             try {
@@ -87,7 +89,7 @@ object dbImmortalHandler extends AbstractDatabaseWriter<Immortal, Point|IUnit>()
                 if (except.message.endsWith("constraint failed: simple_immortals)")) {
                     try (tx = db.Transaction()) {
                         assert (exists initializer = initializers
-                            .find((s) => s.contains("simple_immortals"))?.replace(
+                            .find(containsSimpleImmortals)?.replace(
                             "simple_immortals ", "simple_immortals_replacement "));
                         db.Statement(initializer).execute();
                         db.Statement("INSERT INTO simple_immortals_replacement

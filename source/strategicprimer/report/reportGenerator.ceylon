@@ -56,6 +56,8 @@ shared object reportGenerator {
         }
     }
 
+    Comparison compareToEqual(Anything one, Anything two) => equal;
+
     "Create the report for the given player based on the given map."
     todo("Consider generating Markdown instead of HTML. OTOH, we'd have to keep a list
           nesting level parameter or something.")
@@ -75,8 +77,7 @@ shared object reportGenerator {
             comparator = pairComparator(DistanceComparator(hq, dimensions).compare,
                 byIncreasing(IFixture.hash));
         } else {
-            comparator = pairComparator((Anything one, Anything two) => equal,
-                byIncreasing(IFixture.hash));
+            comparator = pairComparator(compareToEqual, byIncreasing(IFixture.hash));
         }
         createSubReports(builder, fixtures, map, player,
             FortressReportGenerator(comparator, player, dimensions, map.currentTurn, hq),

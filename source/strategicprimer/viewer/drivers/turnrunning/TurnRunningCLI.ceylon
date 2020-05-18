@@ -171,7 +171,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             modelMap.put(herdModel, group);
         }
         Integer workerCount = unit.narrow<IWorker>().size;
-        Boolean experts = unit.narrow<IWorker>().map((worker) => worker.getJob("herder"))
+        Boolean experts = unit.narrow<IWorker>().map(shuffle(IWorker.getJob)("herder"))
             .map(IJob.level).map((-5).plus).any(Integer.positive);
         variable Integer minutesSpent = 0;
         void addToOrders(String string) {

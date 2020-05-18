@@ -78,9 +78,13 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
 
     Boolean anyIs<Type>({Anything*} stream) => !stream.narrow<Type>().empty;
 
+    String parameterizedCountSpaceKey<Key, Count>(Key->Count entry)
+        given Key satisfies Object given Count satisfies Number<Count> =>
+            "- ``entry.item`` ``entry.key``";
+
     void printSummary<Base, Key, Count>(MappedCounter<Base, Key, Count> counter,
             String(Count)|String total,
-            String(Key->Count) each = (Key key->Count count) => "- ``count`` ``key``")
+            String(Key->Count) each = parameterizedCountSpaceKey<Key, Count>)
             given Base satisfies Object given Key satisfies Object
             given Count satisfies Number<Count> {
         if (counter.total.positive) {
@@ -109,6 +113,22 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
 
     Boolean exclude<Type>(Anything obj) => !obj is Type;
 
+    String reportForestTotal(Decimal total) => "There are ``total`` acres of forest, including:";
+
+    Boolean hasLake(Iterable<River> iter) => iter.any(River.lake.equals);
+
+    Iterable<River> withNonLake(Iterable<River> iter) => iter.filter(not(River.lake.equals));
+
+    String countOfKind(String-><Decimal|Integer> entry) => "- ``entry.item`` of ``entry.key``";
+
+    String countTilesWithKind(String->Integer entry) => "- ``entry.item`` tiles with ``entry.key``";
+
+    String kindColonCount(String->Integer entry) => "- ``entry.key``: ``entry.item``";
+
+    String countSpaceKind(String->Integer entry) => "  - ``entry.item`` ``entry.key``";
+
+    String townSummary(AbstractTown t) => "``t.status`` ``t.townSize`` ``t.kind``";
+
     shared actual void startDriver() { // TODO: Reduce duplication
         IMapNG map = model.map;
         cli.println(
@@ -124,9 +144,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
         MappedCounter<Forest, String, Decimal> forests = MappedCounter(Forest.kind,
             compose(decimalize, Forest.acres), Accumulator<Decimal>, decimalNumber(0));
         allFixtures.narrow<Forest>().each(forests.add);
-        printSummary(forests,
-                    (Decimal total) => "There are ``total`` acres of forest, including:",
-                    (String kind->Decimal acres) => "- ``acres`` of ``kind``");
+        printSummary(forests, reportForestTotal, countOfKind);
 
         cli.println("Terrain fixtures:");
         cli.println();
@@ -136,16 +154,15 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
 	cli.println("- ``separateTiles.count(anyIs<Forest>)`` at least partly forested tiles");
         cli.println("- ``separateTiles.count(anyIs<Oasis>)`` oases");
         {{River*}*} tilesRivers = map.locations.map(map.rivers.get);
-        cli.println("- ``tilesRivers.filter((iter) => iter.any(River.lake.equals))
-            .count(not(Iterable<River>.empty))`` lakes");
-        cli.println("- ``tilesRivers.map((iter) => iter.filter(not(River.lake.equals)))
+        cli.println("- ``tilesRivers.filter(hasLake).count(not(Iterable<River>.empty))`` lakes");
+        cli.println("- ``tilesRivers.map(withNonLake)
             .count(not(Iterable<River>.empty))`` tiles with rivers");
         cli.println();
 
         MappedCounter<Ground, String, Integer> ground = simpleCounter(Ground.kind);
         allFixtures.narrow<Ground>().each(ground.add);
         printSummary(ground, "Ground (bedrock) (counting exposed/not separately):",
-                    (String kind->Integer count) => "- ``count`` tiles with ``kind``");
+                    countTilesWithKind);
 
         countSimply<StoneDeposit>(allFixtures, "Stone deposits:", StoneDeposit.kind);
         countSimply<MineralVein>(allFixtures, "Mineral veins:", MineralVein.kind);
@@ -154,8 +171,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
         MappedCounter<CacheFixture, String, Integer> caches =
                 simpleCounter(CacheFixture.kind);
         allFixtures.narrow<CacheFixture>().each(caches.add);
-        printSummary(caches, "Caches:",
-                    (String kind->Integer count) => "- ``count`` of ``kind``");
+        printSummary(caches, "Caches:", countOfKind);
 
         MappedCounter<AdventureFixture, String, Integer> adventures =
                 simpleCounter(AdventureFixture.briefDescription);
@@ -165,8 +181,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
         adventures.addDirectly("Ancient battlefield",
             allFixtures.narrow<Battlefield>().size);
         adventures.addDirectly("Cave system", allFixtures.narrow<Cave>().size);
-        printSummary(adventures, "Adventure Hooks and Portals:",
-                    (String kind->Integer count) => "- ``kind``: ``count``");
+        printSummary(adventures, "Adventure Hooks and Portals:", kindColonCount);
 
         cli.println("Active Communities:");
         cli.println();
@@ -177,11 +192,10 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
 
         MappedCounter<Village, String, Integer> villages = simpleCounter(Village.race);
         allFixtures.narrow<Village>().each(villages.add);
-        printSummary(villages, "- Villages, grouped by race:",
-                    (String race->Integer count) => "  - ``count`` ``race``");
+        printSummary(villages, "- Villages, grouped by race:", countSpaceKind);
 
         MappedCounter<AbstractTown, String, Integer> inactiveTowns = simpleCounter(
-                    (AbstractTown t) => "``t.status`` ``t.townSize`` ``t.kind``");
+            townSummary);
         allFixtures.narrow<AbstractTown>().filter(not(matchingValue(TownStatus.active,
             AbstractTown.status))).each(inactiveTowns.add);
         printSummary(inactiveTowns, "Inactive Communities:");
