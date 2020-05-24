@@ -83,16 +83,20 @@ import ceylon.numeric.float {
 import strategicprimer.viewer.drivers.resourceadding {
     ResourceAddingCLIHelper
 }
+
 class TurnApplet(shared actual String() invoke, shared actual String description,
     shared actual String+ commands) satisfies Applet {}
+
 todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
 class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IExplorationModel model;
     IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
+
     Boolean unfinishedResults(Integer turn)(IUnit unit) {
         String results = unit.getResults(turn);
         return results.empty || results.lowercased.containsAny(["fixme", "todo", "xxx"]);
     }
+
     "If [[the argument|fixture]] is a [[Fortress]], return it; otherwise,
      return a [[Singleton]] of the argument. This allows callers to get a
      flattened stream of units, including those in fortresses."
@@ -132,9 +136,11 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         return tempMap.items.sort(comparingOn(IUnit.name,
             byIncreasing(String.lowercased)));
     }
+
     Fortress? containingFortress(IUnit unit) =>
         model.map.fixtures.get(model.find(unit)).narrow<Fortress>()
             .find(matchingValue(unit.owner, Fortress.owner));
+
     // TODO: If class converted from initializer to constructor, make this static
     String inHours(Integer minutes) {
         if (minutes < 60) {
@@ -143,6 +149,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             return "``minutes / 60`` hours, ``minutes % 60`` minutes";
         }
     }
+
     MutableMap<String, HerdModel> herdModels = HashMap<String, HerdModel>();
     HerdModel? chooseHerdModel(String animal) => cli.chooseFromList(
         `MammalModel`.getValueConstructors().chain(`PoultryModel`.getValueConstructors())
@@ -150,6 +157,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             .narrow<ValueConstructor<HerdModel>>().map((model) => model.get()).sequence(),
         "What kind of animal(s) is/are ``animal``?", "No animal kinds found",
         "Kind of animal:", false).item;
+
     String herd() {
         assert (exists unit = model.selectedUnit);
         StringBuilder buffer = StringBuilder();
@@ -268,8 +276,10 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         addToOrders("In all, tending the animals took ``inHours(minutesSpent)``.");
         return buffer.string.trimmed;
     }
+
     ExplorationCLIHelper explorationCLI = ExplorationCLIHelper(model, cli);
     model.addMovementCostListener(explorationCLI);
+
     String explore() {
         StringBuilder buffer = StringBuilder();
         model.addSelectionChangeListener(explorationCLI);
@@ -305,6 +315,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             return "";
         }
     }
+
     "Add a copy of the given fixture to all submaps at the given location iff no fixture
      with the same ID is already there."
     void addToSubMaps(Point point, TileFixture fixture, Boolean zero) {
@@ -314,6 +325,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             }
         }
     }
+
     "Reduce the population of a group of plants, animals, etc., and copy the reduced form
      into all subordinate maps."
     void reducePopulation(Point point, HasPopulation<out TileFixture>&TileFixture fixture,
@@ -345,7 +357,9 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             addToSubMaps(point, fixture, zero);
         }
     }
+
     ResourceAddingCLIHelper resourceAddingHelper = ResourceAddingCLIHelper(cli, idf);
+
     void addResourceToMaps(FortressMember resource, Player owner, String fortName = "HQ") {
         for (map in model.allMaps.map(Entry.key)) {
             // TODO: Make a way to add to units
@@ -696,6 +710,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             TurnApplet(trap, "check traps for animals or fish they may have caught",
                 "trap"),
             TurnApplet(supplierNoop, "something no applet supports", "other"));
+
     String createResults(IUnit unit, Integer turn) {
         if (is ProxyFor<out IUnit> unit) {
             model.selectedUnit = unit.proxied.first;
@@ -752,6 +767,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         }
         return buffer.string.trimmed;
     }
+
     shared actual void startDriver() {
         Integer currentTurn = model.map.currentTurn;
         if (exists player = cli.chooseFromList(model.playerChoices.sequence(),
