@@ -33,7 +33,7 @@ import strategicprimer.model.common.map {
 
    Mutator methods, including those used in constructing the map object, are out of the
    scope of this interface."""
-shared interface IMapNG satisfies Subsettable<IMapNG> {
+shared interface IMapNG satisfies Subsettable<IMapNG>&Identifiable {
     "The dimensions (and version) of the map."
     shared formal MapDimensions dimensions;
 

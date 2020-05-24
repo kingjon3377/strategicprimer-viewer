@@ -35,7 +35,7 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
             Boolean modified) => subordinateMapsList.add(map->[file, modified]);
 
     shared actual void setModifiedFlag(IMutableMapNG map, Boolean modified) {
-        if (map == this.map) {
+        if (map === this.map) {
             mapModified = modified;
         } else if (exists index->entry = subordinateMapsList.locate(matchingValue(map,
                 Entry<IMutableMapNG, [PathWrapper?, Boolean]>.key))) {
