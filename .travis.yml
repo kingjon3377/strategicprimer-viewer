@@ -6,6 +6,7 @@ addons:
   apt:
     packages:
       - ant-optional
+      - ant-contrib
       - libc6:i386
       - icnsutils
       - icoutils
