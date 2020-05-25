@@ -709,7 +709,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         return model.map.locations.flatMap(model.map.fixtures.get).narrow<Fortress|IUnit>()
             .filter(matchingValue(player, HasOwner.owner)).flatMap(identity).narrow<ResourcePile>()
             .filter(matchingValue("food", ResourcePile.kind)).filter(matchingValue("pounds",
-                compose(Quantity.units, ResourcePile.quantity))).filter((r) => r.created =< turn).sequence();
+                compose(Quantity.units, ResourcePile.quantity))).filter((r) => r.created <= turn).sequence();
     }
 
     Type? chooseFromList<Type>(Type[]|List<Type> items, String description, String none, String prompt,
@@ -845,6 +845,36 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         }
     }
 
+    String? runFoodSpoilage(Player owner, Integer turn) {
+        StringBuilder buffer = StringBuilder();
+        for (food in getFoodFor(owner, turn)) {
+            if (turn < 0) { // rations whose spoilage isn't tracked
+                continue;
+            }
+            cli.print("Food is ");
+            cli.println(food.string);
+            if (exists type = FoodType.askFoodType(cli, food.kind)) {
+                switch (type.hasSpoiled(food, turn, cli))
+                case (true) {
+                    if (exists spoilage = type.amountSpoiling(food.quantity, cli)) {
+                        buffer.append(spoilage.string);
+                        buffer.append(" pounds of ");
+                        buffer.append(food.string);
+                        buffer.append(" spoiled.\n\n");
+                        reduceFoodBy(food, spoilage, owner);
+                    } else {
+                        return null;
+                    }
+                }
+                case (false) { continue; }
+                case (null) { return null; }
+            } else {
+                return null;
+            }
+        }
+        return buffer.string;
+    }
+
     String createResults(IUnit unit, Integer turn) {
         if (is ProxyFor<out IUnit> unit) {
             model.selectedUnit = unit.proxied.first;
@@ -902,6 +932,16 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         if (exists runFoodConsumptionAnswer = cli.inputBooleanInSeries(
                 "Run food consumption for this unit now?"), runFoodConsumptionAnswer) {
             runFoodConsumption(unit, turn);
+        }
+        if (exists runFoodSpoilageAnswer = cli.inputBooleanInSeries(
+                "Run food spoilage and report it under this unit's results?"),
+                runFoodSpoilageAnswer) {
+            if (exists foodSpoilageResult = runFoodSpoilage(unit.owner, turn)) {
+                buffer.appendNewline();
+                buffer.appendNewline();
+                buffer.append(foodSpoilageResult);
+                buffer.appendNewline();
+            }
         }
         return buffer.string.trimmed;
     }
