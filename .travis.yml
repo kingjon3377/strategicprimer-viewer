@@ -1,26 +1,26 @@
 language: java
 sudo: true #  until travis-ci/apt-package-whitelist#588 is fixed
 jdk:
-  - openjdk8
+- openjdk8
 addons:
   apt:
     packages:
-      - ant-optional
-      - ant-contrib
-      - libc6:i386
-      - icnsutils
-      - icoutils
+    - ant-optional
+    - ant-contrib
+    - libc6:i386
+    - icnsutils
+    - icoutils
 before_install:
-  - test -f .git/refs/heads/master || git checkout -b master
-  - ./install-deps.sh
+- test -f .git/refs/heads/master || git checkout -b master
+- "./install-deps.sh"
 install: true
 before-script:
- - test -f export_viewer.xml && mv export_viewer.xml build.xml || true
-script: ./run_tests.sh
+- test -f export_viewer.xml && mv export_viewer.xml build.xml || true
+script: "./run_tests.sh"
 before_deploy:
-- ./build_release.sh
+- "./build_release.sh"
 env:
-  - GIT_NAME="Travis CI" GIT_EMAIL="kingjon3377+travis@gmail.com"
+- GIT_NAME="Travis CI" GIT_EMAIL="kingjon3377+travis@gmail.com"
 deploy:
   provider: releases
   api_key:
@@ -28,10 +28,10 @@ deploy:
   file_glob: true
   skip_cleanup: true
   file:
-    - release/viewer-*.t*z*
-    - release/viewer-*.dmg
-    - release/viewer-*.exe
-    - release/viewer-*.jar
+  - release/viewer-*.t*z*
+  - release/viewer-*.dmg
+  - release/viewer-*.exe
+  - release/viewer-*.jar
   on:
     repo: kingjon3377/strategicprimer-viewer
     tags: true
