@@ -70,6 +70,7 @@ import strategicprimer.model.common.map {
     Point,
     TileFixture,
     HasPopulation,
+    HasOwner,
     Player
 }
 import strategicprimer.model.common.map.fixtures.resources {
@@ -82,6 +83,15 @@ import ceylon.numeric.float {
 }
 import strategicprimer.viewer.drivers.resourceadding {
     ResourceAddingCLIHelper
+}
+
+import ceylon.decimal {
+    Decimal,
+    decimalNumber
+}
+
+import lovelace.util.jvm {
+    decimalize
 }
 
 class TurnApplet(shared actual String() invoke, shared actual String description,
@@ -695,6 +705,69 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         return buffer.string;
     }
 
+    [ResourcePile*] getFoodFor(Player player, Integer turn) { // TODO: Move into the model?
+        return model.map.locations.flatMap(model.map.fixtures.get).narrow<Fortress|IUnit>()
+            .filter(matchingValue(player, HasOwner.owner)).flatMap(identity).narrow<ResourcePile>()
+            .filter(matchingValue("food", ResourcePile.kind)).filter(matchingValue("pounds",
+                compose(Quantity.units, ResourcePile.quantity))).filter((r) => r.created =< turn).sequence();
+    }
+
+    Type? chooseFromList<Type>(Type[]|List<Type> items, String description, String none, String prompt,
+            Boolean auto, String(Type) converter = Object.string) given Type satisfies Object {
+        value entry = cli.chooseStringFromList(items.map(converter).sequence(), description, none, prompt, auto);
+        if (entry.item exists) {
+            return items[entry.key];
+        } else {
+            return null;
+        }
+    }
+
+    void removeFoodStock(ResourcePile food, Player owner) {
+        for (map->_ in model.allMaps) {
+            for (container in map.locations.flatMap(map.fixtures.get).narrow<IUnit|Fortress>()
+                    .filter(matchingValue(owner, HasOwner.owner))) {
+                variable Boolean found = false;
+                for (item in container.narrow<ResourcePile>()) {
+                    if (food.isSubset(item, noop)) { // TODO: is that the right way around?
+                        switch (container)
+                        case (is IUnit) { container.removeMember(item); }
+                        else case (is Fortress) { container.removeMember(item); }
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
+            }
+        }
+    }
+
+    void reduceFoodBy(ResourcePile pile, Decimal amount, Player owner) {
+        for (map->_ in model.allMaps) {
+            for (container in map.locations.flatMap(map.fixtures.get).narrow<IUnit|Fortress>()
+                    .filter(matchingValue(owner, HasOwner.owner))) {
+                variable Boolean found = false;
+                for (item in container.narrow<ResourcePile>()) {
+                    if (pile.isSubset(item, noop)) { // TODO: is that the right way around?
+                        if (decimalize(item.quantity.number) <= amount) {
+                            switch (container)
+                            case (is IUnit) { container.removeMember(item); }
+                            else case (is Fortress) { container.removeMember(item); }
+                        } else {
+                            item.quantity = Quantity(decimalize(item.quantity.number) - amount, pile.quantity.units);
+                        }
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
+            }
+        }
+    }
+
     String supplierNoop() => "";
 
     AdvancementCLIHelper advancementCLI = AdvancementCLIHelper(cli);
@@ -710,6 +783,67 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             TurnApplet(trap, "check traps for animals or fish they may have caught",
                 "trap"),
             TurnApplet(supplierNoop, "something no applet supports", "other"));
+
+    void runFoodConsumption(IUnit unit, Integer turn) {
+        Integer workers = unit.narrow<IWorker>().size;
+        variable Decimal remainingConsumption = decimalNumber(4 * workers);
+        Decimal zero = decimalNumber(0);
+        while (remainingConsumption > zero) { // TODO: extract loop body as a function?
+            cli.print(remainingConsumption.string); // TODO: limit precision in printing here and elsewhere
+            cli.println(" pounds of consumption unaccounted-for");
+            value food = chooseFromList(getFoodFor(unit.owner, turn), "Food stocks owned by player:",
+                "No food stocks found", "Food to consume from:", false); // TODO: should only count food *in the same place* (but unit movement away from HQ should ask user how much food to take along, and to choose what food in a similar manner to this)
+            if (!food exists) {
+                return;
+            }
+            assert (exists food);
+            if (decimalize(food.quantity.number) <= remainingConsumption) {
+                switch (cli.inputBooleanInSeries("Consume all of the ``food``?",
+                        "consume-all-of"))
+                case (true) {
+                    removeFoodStock(food, unit.owner);
+                    remainingConsumption -= decimalize(food.quantity.number);
+                    continue;
+                }
+                case (false) { // TODO: extract this as a function?
+                    value amountToConsume = cli.inputDecimal("How many pounds of the ``food`` to consume:");
+                    if (exists amountToConsume, amountToConsume >= decimalize(food.quantity.number)) {
+                        removeFoodStock(food, unit.owner);
+                        remainingConsumption -= decimalize(food.quantity.number);
+                        continue;
+                    } else if (exists amountToConsume) {
+                        reduceFoodBy(food, amountToConsume, unit.owner);
+                        remainingConsumption -= amountToConsume;
+                        continue;
+                    } else {
+                        return;
+                    }
+                }
+                case (null) { return; }
+            } // else
+            switch (cli.inputBooleanInSeries("Eat all remaining ``remainingConsumption`` from the ``food``?",
+                "all-remaining"))
+            case (true) {
+                reduceFoodBy(food, remainingConsumption, unit.owner);
+                remainingConsumption = decimalize(0);
+            }
+            case (false) { // TODO: extract this as a function?
+                value amountToConsume = cli.inputDecimal("How many pounds of the ``food`` to consume:");
+                if (exists amountToConsume, amountToConsume >= remainingConsumption) {
+                    reduceFoodBy(food, remainingConsumption, unit.owner);
+                    remainingConsumption = decimalize(0);
+                    continue;
+                } else if (exists amountToConsume) {
+                    reduceFoodBy(food, amountToConsume, unit.owner);
+                    remainingConsumption -= amountToConsume;
+                    continue;
+                } else {
+                    return;
+                }
+            }
+            case (null) { return; }
+        }
+    }
 
     String createResults(IUnit unit, Integer turn) {
         if (is ProxyFor<out IUnit> unit) {
@@ -764,6 +898,10 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             advancementCLI.addLevelGainListener(levelListener);
             advancementCLI.advanceWorkersInUnit(unit, expertMentoring);
             advancementCLI.removeLevelGainListener(levelListener);
+        }
+        if (exists runFoodConsumptionAnswer = cli.inputBooleanInSeries(
+                "Run food consumption for this unit now?"), runFoodConsumptionAnswer) {
+            runFoodConsumption(unit, turn);
         }
         return buffer.string.trimmed;
     }
