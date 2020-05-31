@@ -58,6 +58,6 @@ object levelListener
             return;
         }
         String count = (gains == 1) then "a level" else gains.string + " levels";
-        process.writeLine("``actualWorkerName`` gained ``count`` in ``actualSkillName``");
+        process.writeLine("``actualWorkerName`` gained ``count`` in ``actualSkillName``"); // TODO: Take ICLIHelper instead of using stdout
     }
 }

@@ -102,7 +102,7 @@ shared object reportGenerator {
                 fixtures.remove(fixture.id);
                 continue;
             }
-            process.writeLine("Unhandled fixture:\t``fixture`` (ID # ``fixture.id``)");
+            process.writeLine("Unhandled fixture:\t``fixture`` (ID # ``fixture.id``)"); // TODO: Take ICLIHelper instead of using stdout; at laest ue stderr
         }
         return builder.string;
     }

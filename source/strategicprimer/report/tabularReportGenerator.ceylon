@@ -94,7 +94,7 @@ shared object tabularReportGenerator {
             if (is TerrainFixture fixture) {
                 fixtures.remove(fixture.id);
             } else {
-                process.writeLine("Unhandled fixture:   ``fixture``");
+                process.writeLine("Unhandled fixture:   ``fixture``"); // TODO: Take ICLIHelper rather than using stdout; at least use stderr
             }
         }
     }

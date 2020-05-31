@@ -84,7 +84,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
 //            for (fixture in map.fixtures[point].narrow<HasOwner>()) { // TODO: syntax sugar once compiler bug fixed
             for (fixture in map.fixtures.get(point).narrow<HasOwner>()) {
                 if (!fixture.owner.independent, fixture.owner != unit.owner) {
-                    process.writeLine(
+                    process.writeLine( // FIXME: Take ICLIHelper to report this on
                         "Motion of ``description`` to ``dest`` could be observed by ``
                             fixture.shortDescription`` at ``point``");
                 }

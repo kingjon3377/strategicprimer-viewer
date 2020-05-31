@@ -87,7 +87,7 @@ class MiningModel(initial, seed, kind) {
     while (exists point = queue.accept()) {
         counter++;
         if (100000.divides(counter)) {
-            process.writeLine(point.string);
+            process.writeLine(point.string); // TODO: Take ICLIHelper instead of using stdout
         } else if (1000.divides(counter)) {
             process.write(".");
         }

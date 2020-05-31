@@ -77,7 +77,7 @@ class QuadrantTable satisfies EncounterTable {
         if (exists retval = resultsMap[bestKey]) {
             return retval;
         } else {
-            process.writeLine("Key mapped to null");
+            process.writeLine("Key mapped to null"); // FIXME: Throw an exception, or at least report on stderr
             return "";
         }
     }
