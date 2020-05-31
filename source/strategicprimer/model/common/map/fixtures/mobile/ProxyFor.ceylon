@@ -24,6 +24,23 @@ shared interface ProxyFor<Type> /* satisfies T */ given Type satisfies Object {
         return retval;
     }
 
+    "If there is consensus on the given property among proxied items that define it, return it; otherwise return null."
+    shared default MemberType? getNullableConsensus<MemberType>(MemberType?(Type) accessor) given MemberType satisfies Object {
+        variable MemberType? retval = null;
+        for (item in proxied.map(accessor)) {
+            if (exists item) {
+                if (exists temp = retval) {
+                    if (temp != item) {
+                        return null;
+                    }
+                } else {
+                    retval = item;
+                }
+            }
+        }
+        return retval;
+    }
+
     "Whether this should be considered (if true) a proxy for multiple representations of
      the same item (such as in different maps), or (if false) a proxy for multiple related
      items (such as all workers in a single unit)."

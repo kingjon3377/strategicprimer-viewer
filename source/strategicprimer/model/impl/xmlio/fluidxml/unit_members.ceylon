@@ -7,6 +7,7 @@ import javax.xml.stream {
 import javax.xml.stream.events {
     StartElement,
     XMLEvent,
+    Characters,
     EndElement
 }
 
@@ -61,15 +62,33 @@ object unitMemberHandler extends FluidBase() {
                     warner, idFactory)); }
                 case ("stats") { retval.stats = readStats(event, element.name, stream,
                     players, warner, idFactory); }
+                case ("note") { retval.notes.put(players.getPlayer(getIntegerAttribute(event, "player")),
+                    readNote(event, element.name, stream, warner)); }
                 else {
                     throw UnwantedChildException.listingExpectedTags(element.name, event,
-                        ["job", "stats"]);
+                        ["job", "stats", "note"]);
                 }
             } else if (is EndElement event, element.name == event.name) {
                 break;
             }
         }
         return retval;
+    }
+
+    String readNote(StartElement element, QName parent, {XMLEvent*} stream, Warning warner) {
+        requireTag(element, parent, "note");
+        expectAttributes(element, warner, "player");
+        StringBuilder retval = StringBuilder();
+        for (event in stream) {
+            if (is StartElement event, isSPStartElement(event)) {
+                throw UnwantedChildException(element.name, event);
+            } else if (is EndElement event, element.name == event.name) {
+                break;
+            } else if (is Characters event) {
+                retval.append(event.data);
+            }
+        }
+        return retval.string.trimmed;
     }
 
     shared IJob readJob(StartElement element, QName parent, {XMLEvent*} stream,
@@ -145,10 +164,21 @@ object unitMemberHandler extends FluidBase() {
         for (job in jobs) {
             writeJob(ostream, job, indentation + 1);
         }
-        if (hasJobs || stats exists) {
+        for (player in obj.notesPlayers) {
+            assert (exists note = obj.notes.get(player));
+            writeNote(ostream, player, note, indentation +1);
+        }
+        if (hasJobs || stats exists || !obj.notesPlayers.empty) {
             indent(ostream, indentation);
             ostream.writeEndElement();
         }
+    }
+
+    void writeNote(XMLStreamWriter ostream, Integer player, String note, Integer indentation) {
+        writeTag(ostream, "note", indentation, false);
+        writeAttributes(ostream, "player"->player);
+        ostream.writeCharacters(note);
+        ostream.writeEndElement();
     }
 
     shared void writeStats(XMLStreamWriter ostream, WorkerStats obj,

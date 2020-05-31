@@ -5,6 +5,7 @@ import lovelace.util.common {
 import strategicprimer.model.common.map {
     HasMutableImage,
     HasName,
+    HasNotes,
     HasKind
 }
 import strategicprimer.model.common.map.fixtures {
@@ -16,7 +17,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 }
 
 "An interface for Workers."
-shared interface IWorker satisfies UnitMember&{IJob*}&HasName&HasKind&HasMutableImage {
+shared interface IWorker satisfies UnitMember&{IJob*}&HasName&HasKind&HasMutableImage&HasNotes {
     "Add a Job. Returns whether the number of Jobs changed as a result of this.
 
      Note that this does not guarantee that the worker will contain this Job object, nor

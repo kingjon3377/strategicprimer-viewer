@@ -64,6 +64,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Thunderbird,
     Pegasus,
     Unicorn,
+    IWorker,
+    IUnit,
     Kraken
 }
 import strategicprimer.model.common.map.fixtures.mobile.worker {
@@ -134,7 +136,7 @@ object dbio_tests {
         return deserialized;
     }
 
-    void assertFixtureSerialization(TileFixture fixture) {
+    FixtureType assertFixtureSerialization<FixtureType>(FixtureType fixture) given FixtureType satisfies TileFixture {
         MapDimensions dimensions = MapDimensionsImpl(2, 2, 2);
         IMutableMapNG firstMap = SPMapNG(dimensions, PlayerCollection(), -1);
         firstMap.addFixture(Point(0, 0), fixture);
@@ -147,6 +149,8 @@ object dbio_tests {
         IMapNG deserializedFirst = assertDatabaseSerialization(firstMap);
         IMapNG deserializedSecond = assertDatabaseSerialization(secondMap);
         assertNotEquals(deserializedFirst, deserializedSecond);
+        assert (is FixtureType retval = deserializedFirst.fixtures.get(Point(0, 0)).first);
+        return retval;
     }
 
     test
@@ -388,4 +392,16 @@ object dbio_tests {
         fewParameters(`value races`, 3) String race) =>
             assertFixtureSerialization(Village(status, "village name", id,
                 PlayerImpl(1, "player name"), race));
+
+    test shared void testNotesSerialization(randomlyGenerated(1) Integer id, randomlyGenerated(1) Integer player,
+            fewParameters(`value races`, 2) String note) {
+        Worker worker = Worker("test worker", "human", id);
+        Player playerObj = PlayerImpl(player, "");
+        worker.notes[playerObj] = note;
+        Unit unit = Unit(playerObj, "unitKind", "unitName", id + 1);
+        unit.addMember(worker);
+        IUnit deserializedUnit = assertFixtureSerialization(unit);
+        assert(is IWorker member = deserializedUnit.first);
+        assertEquals(member.notes.get(playerObj), note, "Note was deserialized");
+    }
 }

@@ -4,6 +4,7 @@ import javax.xml.namespace {
 }
 import javax.xml.stream.events {
     StartElement,
+    Characters,
     XMLEvent
 }
 
@@ -11,6 +12,7 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 import strategicprimer.model.common.map {
+    IPlayerCollection,
     HasPortrait
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -61,10 +63,20 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         }
     }
 
+    static void writeNote(Anything(String) ostream, Integer player, String note, Integer indent) {
+        writeTag(ostream, "note", indent);
+        writeProperty(ostream, "player", player);
+        ostream(">"); // We don't use finishParentTag() because we don't want a newline yet
+        ostream(note);
+        closeTag(ostream, 0, "note");
+    }
+
     Warning warner;
-    shared new (Warning warning, IDRegistrar idRegistrar)
+    IPlayerCollection players;
+    shared new (Warning warning, IDRegistrar idRegistrar, IPlayerCollection players)
             extends YAAbstractReader<IWorker>(warning, idRegistrar) {
         warner = warning;
+        this.players = players;
     }
 
     WorkerStats parseStats(StartElement element, QName parent,
@@ -83,6 +95,22 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         expectAttributes(element, "name", "level", "hours");
         return Skill(getParameter(element, "name"), getIntegerParameter(element, "level"),
             getIntegerParameter(element, "hours"));
+    }
+
+    String readNote(StartElement element, QName parent, {XMLEvent*} stream) {
+        requireTag(element, parent, "note");
+        expectAttributes(element, "player");
+        StringBuilder retval = StringBuilder();
+        for (event in stream) {
+            if (is StartElement event, isSupportedNamespace(event.name)) {
+                throw UnwantedChildException(element.name, event);
+            } else if (isMatchingEnd(element.name, event)) {
+                break;
+            } else if (is Characters event) {
+                retval.append(event.data);
+            }
+        }
+        return retval.string.trimmed;
     }
 
     IJob parseJob(StartElement element, QName parent, {XMLEvent*} stream) {
@@ -135,6 +163,9 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
                     retval.addJob(parseJob(event, element.name, stream));
                 } else if ("stats" == event.name.localPart.lowercased) {
                     retval.stats = parseStats(event, element.name, stream);
+                } else if ("note" == event.name.localPart.lowercased) {
+                    retval.notes.put(players.getPlayer(getIntegerParameter(event, "player")),
+                        readNote(event, element.name,stream));
                 } else {
                     throw UnwantedChildException.listingExpectedTags(element.name, event,
                         ["job", "stats"]);
@@ -158,11 +189,15 @@ class YAWorkerReader extends YAAbstractReader<IWorker> {
         if (is HasPortrait obj) {
             writeNonemptyProperty(ostream, "portrait", obj.portrait);
         }
-        if (!obj.empty || obj.stats exists) {
+        if (!obj.empty || obj.stats exists || !obj.notesPlayers.empty) {
             finishParentTag(ostream);
             writeStats(ostream, obj.stats, indent + 1);
             for (job in obj) {
                 writeJob(ostream, job, indent + 1);
+            }
+            for (player in obj.notesPlayers) {
+                assert (exists note = obj.notes.get(player));
+                writeNote(ostream, player, note, indent + 1);
             }
             closeTag(ostream, indent, "worker");
         } else {

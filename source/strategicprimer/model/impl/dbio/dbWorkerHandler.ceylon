@@ -16,6 +16,7 @@ import strategicprimer.model.common.idreg {
 }
 import strategicprimer.model.common.map {
     HasPortrait,
+    IMapNG,
     IMutableMapNG
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -157,6 +158,13 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
         worker.getJob(job).addSkill(Skill(skill, level, hours));
     }
 
+    void readWorkerNotes(IMapNG map, Map<Integer, Worker> workers)(Map<String, Object> row, Warning warner) {
+        assert(is Integer id = row["fixture"], is Integer player = row["player"], is String note = row["note"]);
+        if (exists worker = workers[id]) {
+            worker.notes[map.players.getPlayer(player)] = note;
+        }
+    }
+
     shared actual void readExtraMapContents(Sql db, IMutableMapNG map, Warning warner) {
         MutableMap<Integer, Worker> workers = HashMap<Integer, Worker>();
         handleQueryResults(db, warner, "worker stats", readWorkerStats(map, workers),
@@ -165,5 +173,7 @@ object dbWorkerHandler extends AbstractDatabaseWriter<IWorker, IUnit>()
             """SELECT * FROM worker_job_levels""");
         handleQueryResults(db, warner, "Skill levels", readSkillLevel(map, workers),
             """SELECT * FROM worker_skill_levels""");
+        handleQueryResults(db, warner, "Worker notes", readWorkerNotes(map, workers),
+            """SELECT * FROM notes""");
     }
 }

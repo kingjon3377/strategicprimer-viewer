@@ -55,6 +55,7 @@ import strategicprimer.model.common.map {
     PlayerCollection,
     IMutableMapNG,
     IMapNG,
+    HasNotes,
     SPMapNG
 }
 import strategicprimer.model.common.map.fixtures {
@@ -307,6 +308,23 @@ object xmlTests {
             }
         }
         obj.image = oldImage;
+    }
+
+    "Assert that the given object's notes property will be preserved when serialized and deserialized."
+    void assertNotesSerialization(String message, HasNotes obj) {
+        for (reader in readers) {
+            for (deprecated in  `Boolean`.caseValues) {
+                try (stringReader = StringReader(createSerializedForm(obj, deprecated))) {
+                    value read = reader.readXML<HasNotes>(fakeFilename, stringReader, warningLevels.ignore);
+                    for (player in obj.notesPlayers) {
+                        assertEquals(read.notes[player], obj.notes[player], message);
+                    }
+                    for (player in read.notesPlayers) {
+                        assertEquals(read.notes[player], obj.notes[player], message);
+                    }
+                }
+            }
+        }
     }
 
     "Assert that the given object, if serialized and deserialized, will have its portrait
@@ -1250,6 +1268,8 @@ object xmlTests {
                <worker name="name" id="1" /></tile></map>""", null);
         assertPortraitSerialization("Worker portrait property is preserved",
             secondWorker);
+        secondWorker.notes[PlayerImpl(1, "")] = "sample notes";
+        assertNotesSerialization("Worker notes property is preserved", secondWorker);
     }
 
     "Test (de)serialization of [[unit|IUnit]] orders."

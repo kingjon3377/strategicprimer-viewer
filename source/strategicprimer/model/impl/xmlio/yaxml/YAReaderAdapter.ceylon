@@ -82,7 +82,7 @@ class YAReaderAdapter(
         YAPortalReader(warning, idFactory), YAResourcePileReader(warning, idFactory),
         YAResourceReader(warning, idFactory), YATerrainReader(warning, idFactory),
         YATextReader(warning, idFactory), townReader,
-        YAUnitReader(warning, idFactory, players), YAWorkerReader(warning, idFactory) ];
+        YAUnitReader(warning, idFactory, players), YAWorkerReader(warning, idFactory, players) ];
 
     MutableMap<String, YAAbstractReader<out Object>> readerCache =
             HashMap<String, YAAbstractReader<out Object>>();

@@ -11,6 +11,7 @@ import lovelace.util.common {
 }
 import strategicprimer.model.common.map {
     IFixture,
+    Player,
     HasPortrait
 }
 
@@ -20,6 +21,8 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob
 }
 import ceylon.collection {
+    MutableMap,
+    HashMap,
     MutableSet
 }
 
@@ -36,6 +39,9 @@ shared class Worker satisfies IWorker&HasPortrait {
 
     "The set of Jobs the worker is trained or experienced in."
     MutableSet<IJob> jobSet;
+
+    "The notes players have associaed with this worker"
+    MutableMap<Integer, String> notesImpl = HashMap<Integer, String>();
 
     "The worker's ID number."
     shared actual Integer id;
@@ -169,4 +175,28 @@ shared class Worker satisfies IWorker&HasPortrait {
             return retval;
         }
     }
+
+    shared actual object notes satisfies Correspondence<Player|Integer, String>&KeyedCorrespondenceMutator<Player, String> {
+        shared actual Boolean defines(Player|Integer key) {
+            switch (key)
+            case (is Player) { return notesImpl.defines(key.playerId); }
+            case (is Integer) { return notesImpl.defines(key); }
+        }
+
+        shared actual String? get(Player|Integer key) {
+            switch (key)
+            case (is Player) { return notesImpl[key.playerId]; }
+            case (is Integer) { return notesImpl[key]; }
+        }
+
+        shared actual void put(Player key, String item) {
+            if (item.empty) {
+                notesImpl.remove(key.playerId);
+            } else {
+                notesImpl[key.playerId] = item;
+            }
+        }
+    }
+
+    shared actual {Integer*} notesPlayers => notesImpl.keys;
 }

@@ -38,7 +38,7 @@ class YAUnitReader(Warning warner, IDRegistrar idRegistrar, IPlayerCollection pl
         extends YAAbstractReader<IUnit>(warner, idRegistrar) {
     value readers = [ YAMobileReader(warner, idRegistrar),
         YAResourceReader(warner, idRegistrar), YATerrainReader(warner, idRegistrar),
-        YATextReader(warner, idRegistrar), YAWorkerReader(warner, idRegistrar),
+        YATextReader(warner, idRegistrar), YAWorkerReader(warner, idRegistrar, players),
         YAResourcePileReader(warner, idRegistrar), YAImplementReader(warner, idRegistrar)
     ];
 

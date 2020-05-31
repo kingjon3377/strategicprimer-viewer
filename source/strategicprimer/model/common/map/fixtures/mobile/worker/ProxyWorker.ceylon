@@ -6,6 +6,7 @@ import ceylon.collection {
 }
 
 import strategicprimer.model.common.map {
+    Player,
     IFixture
 }
 import strategicprimer.model.common.map.fixtures {
@@ -204,4 +205,21 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
     }
 
     shared actual WorkerStats? stats => statsCache;
+
+    shared actual object notes satisfies Correspondence<Player|Integer,String>&KeyedCorrespondenceMutator<Player,String> {
+        // FIXME: Convert lambda to method-reference logic using compose()
+        shared actual Boolean defines(Player|Integer key) => proxied.any((worker) => worker.notes.defines(key));
+
+        // FIXME: Convert lambda to method-reference logic using compose()
+        shared actual String? get(Player|Integer key) =>
+            getNullableConsensus<String>((worker) => worker.notes.get(key));
+
+        shared actual void put(Player key, String item) {
+            for (proxy in proxied) {
+                proxy.notes[key] = item;
+            }
+        }
+    }
+
+    shared actual {Integer*} notesPlayers => set(proxied.flatMap(IWorker.notesPlayers));
 }

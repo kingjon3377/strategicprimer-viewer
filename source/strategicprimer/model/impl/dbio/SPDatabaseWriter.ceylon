@@ -3,6 +3,8 @@ import strategicprimer.model.impl.xmlio {
 }
 import ceylon.collection {
     MutableMap,
+    MutableSet,
+    HashSet,
     HashMap
 }
 import ceylon.file {
@@ -25,6 +27,7 @@ import javax.sql {
     DataSource
 }
 import strategicprimer.model.common.map {
+    HasNotes,
     IMapNG
 }
 import ceylon.language.meta {
@@ -70,7 +73,34 @@ shared object spDatabaseWriter satisfies SPWriter {
         dbTownHandler, dbCommunityStatsHandler, dbVillageHandler, dbFortressHandler,
         dbUnitHandler, dbWorkerHandler];
 
+    String notesSchema = """CREATE TABLE IF NOT EXISTS notes (
+                                fixture INTEGER NOT NULL,
+                                player INTEGER NOT NULL,
+                                note VARCHAR(255) NOT NULL
+                            );""";
+
+    MutableSet<Sql> notesInitialized = HashSet<Sql>();
+
     shared void writeSPObjectInContext(Sql sql, Object obj, Object context) {
+        if (!sql in notesInitialized) {
+            sql.transaction(() {
+                sql.Statement(notesSchema).execute();
+                log.trace("Executed initializer beginning ``notesSchema.lines.first``");
+                notesInitialized.add(sql);
+                return true;
+            });
+        }
+        if (is HasNotes obj) {
+            sql.transaction(() {
+                for (player in obj.notesPlayers) {
+                    if (exists note = obj.notes.get(player)) {
+                        sql.Insert("INSERT INTO notes (fixture, player, note)
+                                    VALUES(?, ?, ?)").execute(obj.id, player, note);
+                    }
+                }
+                return true;
+            });
+        }
         for (writer in writers) {
             if (writer.canWrite(obj, context)) {
                 writer.initialize(sql);
