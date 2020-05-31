@@ -274,7 +274,7 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
                     .map(acreageExtent).filter(positiveNumber).map(decimalize)
                     .fold(decimalNumber(0))(plus).integer;
             if (reserved >= 160) {
-                process.writeLine(
+                cli.println(
                     "The whole tile or more was reserved, despite forests, at ``location``");
                 continue;
             }
