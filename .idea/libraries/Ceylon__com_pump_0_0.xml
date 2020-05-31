@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Ceylon: com.pump/0.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.ceylon/repo/com/pump/0.0/com.pump-0.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ceylon/repo/com/pump/0.0/com.pump-0.0.jar!/" />
+    </SOURCES>
+  </library>
+</component>
