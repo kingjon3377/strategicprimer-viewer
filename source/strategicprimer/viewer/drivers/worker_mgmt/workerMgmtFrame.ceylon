@@ -126,7 +126,10 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
         model.getUnits, uncurry(IUnit.getResults), null, noop);
     tree.addTreeSelectionListener(resultsPanel);
 
-    JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel);
+    value notesPanelInstance = notesPanel(model.map.currentPlayer);
+    tree.addUnitMemberListener(notesPanelInstance);
+
+    JPanel&UnitMemberListener mdp = memberDetailPanel(resultsPanel, notesPanelInstance);
     tree.addUnitMemberListener(mdp);
 
     void selectTodoText() {
@@ -187,7 +190,7 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     });
 
     {PlayerChangeListener+} pcListeners = [ newUnitFrame, treeModel, ordersPanelObj,
-        resultsPanel ];
+        resultsPanel, notesPanelInstance ];
     shared actual void playerChanged(Player? old, Player newPlayer) {
         for (listener in pcListeners) {
             listener.playerChanged(old, newPlayer);

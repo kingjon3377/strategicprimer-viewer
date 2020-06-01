@@ -18,12 +18,12 @@ import javax.swing {
     JComponent,
     BorderFactory,
     JScrollPane,
-    ScrollPaneConstants
+    ScrollPaneConstants,
+    JTabbedPane
 }
 
 import lovelace.util.jvm {
     FunctionalGroupLayout,
-    verticalSplit,
     horizontalSplit,
     BorderedPanel,
     platform,
@@ -55,7 +55,7 @@ import strategicprimer.viewer.drivers.map_viewer {
 }
 
 "A panel to show the details of the currently selected unit-member."
-JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
+JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel, JPanel notesPanel) {
     JPanel statPanel = JPanel();
     FunctionalGroupLayout statLayout = FunctionalGroupLayout(statPanel, true, true);
     statPanel.layout = statLayout;
@@ -143,12 +143,17 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
                 else ScrollPaneConstants.verticalScrollbarAsNeeded,
         (platform.systemIsMac) then ScrollPaneConstants.horizontalScrollbarAlways
                 else ScrollPaneConstants.horizontalScrollbarAsNeeded);
-    JComponent split = verticalSplit(statPanelWrapped, resultsPanel);
-    split.border = BorderFactory.createEmptyBorder();
+
+    variable UnitMember? current = null;
+
+
+    value tabbed = JTabbedPane();
+    tabbed.addTab("Stats",statPanelWrapped);
+    tabbed.addTab("Results", resultsPanel);
+    tabbed.addTab("Notes", notesPanel);
 
     String skillString(ISkill skill) => skill.name + " " + skill.level.string;
 
-    variable UnitMember? current = null;
     void recache() {
         UnitMember? local = current;
         jobsPanel.removeAll();
@@ -268,7 +273,7 @@ JPanel&UnitMemberListener memberDetailPanel(JPanel resultsPanel) {
     }
 
     retval.pageStart = JLabel("<html><h2>Unit Member Details:</h2></html>");
-    retval.center = split;
+    retval.center = tabbed;
     recache();
     return retval;
 }
