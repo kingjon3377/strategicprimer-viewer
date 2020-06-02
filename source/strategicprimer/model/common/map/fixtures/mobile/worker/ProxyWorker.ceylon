@@ -207,12 +207,12 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
     shared actual WorkerStats? stats => statsCache;
 
     shared actual object notes satisfies Correspondence<Player|Integer,String>&KeyedCorrespondenceMutator<Player,String> {
-        // FIXME: Convert lambda to method-reference logic using compose()
-        shared actual Boolean defines(Player|Integer key) => proxied.any((worker) => worker.notes.defines(key));
+        shared actual Boolean defines(Player|Integer key) =>
+            proxied.any(shuffle(compose(Correspondence<Player|Integer, String>.defines, IWorker.notes))(key));
 
-        // FIXME: Convert lambda to method-reference logic using compose()
         shared actual String? get(Player|Integer key) =>
-            getNullableConsensus<String>((worker) => worker.notes.get(key));
+            getNullableConsensus<String>(shuffle(compose(Correspondence<Player|Integer,String>.get,
+                IWorker.notes))(key));
 
         shared actual void put(Player key, String item) {
             for (proxy in proxied) {
