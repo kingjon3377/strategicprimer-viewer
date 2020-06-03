@@ -314,18 +314,18 @@ object dbio_tests {
     }
 
     test
-    // TODO: should randomize kind
     shared void testGroundSerialization(randomlyGenerated(2) Integer id,
-        enumeratedParameter(`class Boolean`) Boolean exposed) =>
-            assertFixtureSerialization(Ground(id, "ground kind", exposed));
+        enumeratedParameter(`class Boolean`) Boolean exposed, fewParameters(`value races`, 2) String kind) =>
+            assertFixtureSerialization(Ground(id, kind, exposed));
 
     test
-    shared void testGroveSerialization( // TODO: should randomize kind
+    shared void testGroveSerialization(
             enumeratedParameter(`class Boolean`) Boolean orchard,
             enumeratedParameter(`class Boolean`) Boolean cultivated,
             randomlyGenerated(2) Integer id,
-            randomlyGenerated(1) Integer count) =>
-                assertFixtureSerialization(Grove(orchard, cultivated, "kind", id, count));
+            randomlyGenerated(1) Integer count,
+            fewParameters(`value races`, 1) String kind) =>
+                assertFixtureSerialization(Grove(orchard, cultivated, kind, id, count));
 
     test
     shared void testSimpleImmortalSerialization(
@@ -334,34 +334,35 @@ object dbio_tests {
             assertFixtureSerialization(constructor(id));
 
     test
-    shared void testKindedImmortalSerialization( // TODO: should randomize kind
+    shared void testKindedImmortalSerialization(
         parameters(`value kindedImmortalConstructors`)
             Immortal(String, Integer) constructor,
-        randomlyGenerated(2) Integer id) =>
-            assertFixtureSerialization(constructor("kind", id));
+        randomlyGenerated(2) Integer id, fewParameters(`value races`, 1) String kind) =>
+            assertFixtureSerialization(constructor(kind, id));
 
     test
-    shared void testMineSerialization( // TODO: should randomize kind
+    shared void testMineSerialization(
         enumeratedParameter(`class TownStatus`) TownStatus status,
-        randomlyGenerated(2) Integer id) =>
-            assertFixtureSerialization(Mine("mine kind", status, id));
+        randomlyGenerated(2) Integer id, fewParameters(`value races`, 1) String kind) =>
+            assertFixtureSerialization(Mine(kind, status, id));
 
     test
-    shared void testMineralSerialization( // TODO: should randomize kind
+    shared void testMineralSerialization(
         enumeratedParameter(`class Boolean`) Boolean exposed,
-        randomlyGenerated(2) Integer dc, randomlyGenerated(2) Integer id) =>
-            assertFixtureSerialization(MineralVein("mineral kind", exposed, dc, id));
+        randomlyGenerated(2) Integer dc, randomlyGenerated(2) Integer id,
+        fewParameters(`value races`, 1) String kind) =>
+            assertFixtureSerialization(MineralVein(kind, exposed, dc, id));
 
     test
-    shared void testStoneSerialization( // TODO: should randomize kind
+    shared void testStoneSerialization(
             enumeratedParameter(`class StoneKind`) StoneKind kind,
             randomlyGenerated(2) Integer dc, randomlyGenerated(2) Integer id) =>
                 assertFixtureSerialization(StoneDeposit(kind, dc, id));
 
-    test // TODO: should randomize kind
+    test
     shared void testShrubSerialization(randomlyGenerated(2) Integer id,
-        randomlyGenerated(2) Integer count) =>
-            assertFixtureSerialization(Shrub("shrub kind", id, count));
+        randomlyGenerated(2) Integer count, fewParameters(`value races`, 1) String kind) =>
+            assertFixtureSerialization(Shrub(kind, id, count));
 
     test
     shared void testSimpleTerrainSerialization(
