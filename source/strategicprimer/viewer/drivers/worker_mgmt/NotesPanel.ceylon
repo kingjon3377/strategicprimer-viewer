@@ -23,6 +23,9 @@ import lovelace.util.common {
     as,
     silentListener
 }
+import java.awt {
+    Toolkit
+}
 
 final class NotesPanel extends BorderedPanel satisfies UnitMemberListener&PlayerChangeListener {
     JTextArea notesArea = JTextArea();
@@ -40,13 +43,17 @@ final class NotesPanel extends BorderedPanel satisfies UnitMemberListener&Player
     void saveNotes() {
         if (exists local = current) {
             local.notes[player] = notesArea.text.trimmed;
-        } // FIXME: Else beep
+        } else {
+            Toolkit.defaultToolkit.beep();
+        }
     }
     notesApplyButton.addActionListener(silentListener(saveNotes));
     void revertNotes() {
         if (exists local = current) {
             notesArea.text = local.notes.get(player) else "";
-        } // FIXME: Else beep
+        } else {
+            Toolkit.defaultToolkit.beep();
+        }
     }
     notesRevertButton.addActionListener(silentListener(revertNotes));
     shared actual void memberSelected(UnitMember? previousSelection, UnitMember? selected) {
