@@ -7,6 +7,7 @@ module strategicprimer.report "0.4.9018" {
     value ceylonVersion = "1.3.3";
     value javaVersion = "8";
     value lovelaceUtilsVersion = "0.1.1";
+    value spVersion = "0.4.9018";
     import lovelace.util.jvm lovelaceUtilsVersion;
     import ceylon.regex ceylonVersion;
     import java.base javaVersion;
@@ -15,10 +16,11 @@ module strategicprimer.report "0.4.9018" {
     import ceylon.collection ceylonVersion;
     import ceylon.logging ceylonVersion;
     import ceylon.numeric ceylonVersion;
-    shared import strategicprimer.model.common "0.4.9018";
+    shared import strategicprimer.model.common spVersion;
     shared import lovelace.util.common lovelaceUtilsVersion;
     import ceylon.test ceylonVersion;
     import ceylon.random ceylonVersion;
     import com.vasileff.ceylon.structures "1.1.3";
     import ceylon.decimal ceylonVersion;
+    shared import strategicprimer.drivers.common spVersion;
 }

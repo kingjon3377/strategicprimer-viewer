@@ -39,6 +39,9 @@ import strategicprimer.report.generators {
     TextReportGenerator,
     AdventureReportGenerator
 }
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
+}
 
 "A logger."
 Logger log = logger(`module strategicprimer.report`);
@@ -61,7 +64,7 @@ shared object reportGenerator {
     "Create the report for the given player based on the given map."
     todo("Consider generating Markdown instead of HTML. OTOH, we'd have to keep a list
           nesting level parameter or something.")
-    shared String createReport(IMapNG map, Player player = map.currentPlayer) {
+    shared String createReport(IMapNG map, ICLIHelper cli, Player player = map.currentPlayer) {
         MapDimensions dimensions = map.dimensions;
         StringBuilder builder = StringBuilder();
         builder.append("""<!DOCTYPE html>
@@ -102,7 +105,7 @@ shared object reportGenerator {
                 fixtures.remove(fixture.id);
                 continue;
             }
-            process.writeLine("Unhandled fixture:\t``fixture`` (ID # ``fixture.id``)"); // TODO: Take ICLIHelper instead of using stdout; at laest ue stderr
+            cli.println("Unhandled fixture:\t``fixture`` (ID # ``fixture.id``)"); // TODO: Use a logger instead?
         }
         return builder.string;
     }

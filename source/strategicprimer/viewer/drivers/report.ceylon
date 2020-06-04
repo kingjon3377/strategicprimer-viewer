@@ -153,9 +153,9 @@ shared class ReportCLIFactory() satisfies ModelDriverFactory {
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (options.hasOption("--serve")) {
-            return ReportServingCLI(options, model);
+            return ReportServingCLI(options, model, cli);
         } else {
-            return ReportCLI(options, model);
+            return ReportCLI(options, model, cli);
         }
     }
 
@@ -164,19 +164,19 @@ shared class ReportCLIFactory() satisfies ModelDriverFactory {
 }
 
 """A driver to "serve" a report on the contents of a map on an embedded HTTP server."""
-class ReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver {
+class ReportServingCLI(SPOptions options, model, ICLIHelper cli) satisfies ReadOnlyDriver {
     shared actual IDriverModel model;
     void serveReports(Integer port, Player? currentPlayer) {
         MutableMap<Path, String> cache = HashMap<Path, String>();
         if (is IMultiMapModel model) {
             for (map->[file, _] in model.allMaps) {
                 if (exists file, !cache.defines(parsePath(file.filename))) {
-                    cache[parsePath(file.filename)] = reportGenerator.createReport(map,
+                    cache[parsePath(file.filename)] = reportGenerator.createReport(map, cli,
                         currentPlayer else map.currentPlayer);
                 }
             }
         } else if (exists file = model.mapFile) {
-            cache[parsePath(file.filename)] = reportGenerator.createReport(model.map,
+            cache[parsePath(file.filename)] = reportGenerator.createReport(model.map, cli,
                 currentPlayer else model.map.currentPlayer);
         }
         if (cache.empty) {
@@ -243,7 +243,7 @@ class ReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver {
 }
 
 "A driver to produce a report of the contents of a map."
-shared class ReportCLI(SPOptions options, model) satisfies ReadOnlyDriver {
+shared class ReportCLI(SPOptions options, model, ICLIHelper cli) satisfies ReadOnlyDriver {
     shared actual IDriverModel model;
 
     void writeReport(Path? filename, IMapNG map) {
@@ -272,7 +272,7 @@ shared class ReportCLI(SPOptions options, model) satisfies ReadOnlyDriver {
             if (is Nil loc = outPath.resource) {
                 value file = loc.createFile();
                 try (writer = file.Overwriter()) {
-                    writer.write(reportGenerator.createReport(map, player));
+                    writer.write(reportGenerator.createReport(map, cli, player));
                 }
             }
         } else {
@@ -381,7 +381,7 @@ shared class TabularReportCLIFactory() satisfies ModelDriverFactory {
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
         if (options.hasOption("--serve")) {
-            return TabularReportServingCLI(options, model);
+            return TabularReportServingCLI(cli, options, model);
         } else {
             return TabularReportCLI(cli, options, model);
         }
@@ -391,7 +391,7 @@ shared class TabularReportCLIFactory() satisfies ModelDriverFactory {
             SimpleMultiMapModel(map, path);
 }
 
-class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver {
+class TabularReportServingCLI(ICLIHelper cli, SPOptions options, model) satisfies ReadOnlyDriver {
     shared actual IDriverModel model;
 
     Item->Key reverseEntry<Key, Item>(Key->Item entry)
@@ -433,7 +433,7 @@ class TabularReportServingCLI(SPOptions options, model) satisfies ReadOnlyDriver
             if (exists mapFile) {
                 try {
                     tabularReportGenerator.createTabularReports(map,
-                        filenameFunction(mapFile));
+                        filenameFunction(mapFile), cli);
                 } catch (IOException|IOError except) {
                     throw DriverFailedException(except);
                 }
@@ -567,7 +567,7 @@ shared class TabularReportCLI(ICLIHelper cli, SPOptions options, model)
         if (exists mapFile) {
             try {
                 tabularReportGenerator.createTabularReports(map,
-                    filenameFunction(parsePath(mapFile.string)));
+                    filenameFunction(parsePath(mapFile.string)), cli);
             } catch (IOException|IOError except) {
                 throw DriverFailedException(except);
             }

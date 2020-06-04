@@ -62,11 +62,14 @@ import javax.swing.table {
     TableRowSorter,
     TableModel
 }
+import strategicprimer.drivers.common.cli {
+    ICLIHelper
+}
 
 "A collection of methods to produce tabular reports for players."
 shared object tabularReportGenerator {
     "A method to produce tabular reports based on a map for a player."
-    shared void createTabularReports(IMapNG map, Anything(String)(String) source) {
+    shared void createTabularReports(IMapNG map, Anything(String)(String) source, ICLIHelper cli) {
         DelayedRemovalMap<Integer, [Point, IFixture]> fixtures =
                 reportGeneratorHelper.getFixtures(map);
         Map<Integer, Integer> parentMap = reportGeneratorHelper.getParentMap(map);
@@ -94,7 +97,7 @@ shared object tabularReportGenerator {
             if (is TerrainFixture fixture) {
                 fixtures.remove(fixture.id);
             } else {
-                process.writeLine("Unhandled fixture:   ``fixture``"); // TODO: Take ICLIHelper rather than using stdout; at least use stderr
+                cli.println("Unhandled fixture:   ``fixture``"); // TODO: Use a logger instead?
             }
         }
     }
