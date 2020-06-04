@@ -82,7 +82,7 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
         log.trace("User clicked on ``point``");
         if (point.valid, point.row < mapDimensions.rows,
                 point.column < mapDimensions.columns) {
-            model.selection = point; // TODO: Should we support the "left-click to select, right-click to modify without selecting" interaction model?
+            model.selection = point; // TODO: Support the "left-click to select, right-click to modify without selecting" interaction model
             if (event.popupTrigger) {
                 menu.show(event.component, event.x, event.y);
             }

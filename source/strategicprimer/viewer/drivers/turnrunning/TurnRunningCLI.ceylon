@@ -789,7 +789,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         variable Decimal remainingConsumption = decimalNumber(4 * workers);
         Decimal zero = decimalNumber(0);
         while (remainingConsumption > zero) { // TODO: extract loop body as a function?
-            cli.print(remainingConsumption.string); // TODO: limit precision in printing here and elsewhere
+            cli.print(Float.format(remainingConsumption.float, 0, 1));
             cli.println(" pounds of consumption unaccounted-for");
             value food = chooseFromList(getFoodFor(unit.owner, turn), "Food stocks owned by player:",
                 "No food stocks found", "Food to consume from:", false); // TODO: should only count food *in the same place* (but unit movement away from HQ should ask user how much food to take along, and to choose what food in a similar manner to this)
@@ -857,7 +857,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                 switch (type.hasSpoiled(food, turn, cli))
                 case (true) {
                     if (exists spoilage = type.amountSpoiling(food.quantity, cli)) {
-                        buffer.append(spoilage.string);
+                        buffer.append(Float.format(spoilage.float, 0, 2));
                         buffer.append(" pounds of ");
                         buffer.append(food.string);
                         buffer.append(" spoiled.\n\n");
