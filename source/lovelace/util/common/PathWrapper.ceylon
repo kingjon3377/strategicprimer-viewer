@@ -5,7 +5,7 @@ import ceylon.file {
 }
 
 "A wrapper around a filename."
-todo("Replace with [[Path]] once eclipse/ceylon-sdk#239 makes it
+todo("Replace with ceylon.file::Path once eclipse/ceylon-sdk#239 makes it
       non-JVM-specific")
 shared native class PathWrapper(shared String filename) {
     shared actual native Boolean equals(Object other) {
@@ -35,4 +35,20 @@ shared native("jvm") class PathWrapper(shared String filename) {
     }
     shared actual native("jvm") Integer hash => path.hash;
     shared native("jvm") Boolean possiblyReadable => path.resource is File;
+}
+shared native("js") class PathWrapper(shared String filename) {
+    shared actual native("js") Boolean equals(Object other) {
+        if (is PathWrapper other) {
+            return other.filename == filename;
+        } else {
+            return false;
+        }
+    }
+    shared actual native("js") Integer hash => filename.hash;
+    "False if we know the path represented by this instance will not be
+     readable (usually because there is not a file by that name); true
+     if it would be, or if this class has no way of knowing. (In the
+     default implementation this attribute always returns true, since
+     ceylon.file is JVM-only.)"
+    shared native("js") Boolean possiblyReadable => true;
 }
