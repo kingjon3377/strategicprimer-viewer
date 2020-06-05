@@ -211,8 +211,10 @@ shared class ProxyWorker satisfies UnitMember&IWorker&ProxyFor<IWorker> {
             proxied.any(shuffle(compose(Correspondence<Player|Integer, String>.defines, IWorker.notes))(key));
 
         shared actual String? get(Player|Integer key) =>
-            getNullableConsensus<String>(shuffle(compose(Correspondence<Player|Integer,String>.get,
-                IWorker.notes))(key));
+            getNullableConsensus((worker) => worker.notes.get(key)); // TODO: Replace with method-reference logic once eclipse/ceylon#7465 fixed, if
+//            getNullableConsensus<String>(shuffle<String?,[IWorker],[Player|Integer]>(
+//                compose<String?(Player|Integer),Correspondence<Player|Integer,String>,[IWorker]>(Correspondence<Player|Integer,String>.get,
+//                IWorker.notes))(key));
 
         shared actual void put(Player key, String item) {
             for (proxy in proxied) {
