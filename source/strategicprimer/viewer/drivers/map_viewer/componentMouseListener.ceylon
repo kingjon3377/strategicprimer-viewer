@@ -38,7 +38,7 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
             if (!builder.empty) {
                 builder.append("<br />");
             }
-            builder.append(fixture.string);
+            builder.append(fixture.shortDescription);
         }
 //        {TileFixture*} stream = map.fixtures[point].filter(zof).sort(comparator); // TODO: syntax sugar once compiler bug fixed
         {TileFixture*} stream = map.fixtures.get(point).filter(zof).sort(comparator);
