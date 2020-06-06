@@ -63,6 +63,15 @@ shared interface IMapNG satisfies Subsettable<IMapNG>&Identifiable {
     "The current player."
     shared formal Player currentPlayer;
 
+    "The current player's bookmarks."
+    shared formal Set<Point> bookmarks;
+
+    "Bookmarks for another player."
+    shared formal Set<Point> bookmarksFor(Player player);
+
+    "All bookmarks."
+    shared formal Multimap<Point, Player> allBookmarks;
+
     "Clone the map."
     shared formal IMapNG copy(
             """Whether to "zero" sensitive data"""
@@ -70,7 +79,7 @@ shared interface IMapNG satisfies Subsettable<IMapNG>&Identifiable {
             "The player for whom the copied map is being prepared, if any."
             Player? player);
 
-    "A location is empty if it has no terrain, no Ground, no Forest, no rivers, and no
+    "A location is empty if it has no terrain, no Ground, no Forest, no rivers, no bookmarks, and no
      other fixtures"
     shared default Boolean locationEmpty(Point location) {
         if (exists terrain = baseTerrain[location]) {
@@ -80,6 +89,8 @@ shared interface IMapNG satisfies Subsettable<IMapNG>&Identifiable {
         } else if (exists riverList = rivers[location], !riverList.empty) {
             return false;
         } else if (exists fixtureList = fixtures[location], !fixtureList.empty) {
+            return false;
+        } else if (!allBookmarks.get(location).empty) {
             return false;
         } else {
             return true;

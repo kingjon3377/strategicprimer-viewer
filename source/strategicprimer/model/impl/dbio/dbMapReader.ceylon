@@ -114,6 +114,11 @@ object dbMapReader {
             }
         }
         log.trace("Finished reading terrain");
+        for (dbRow in db.Select("""SELECT * FROM bookmarks""").Results()) {
+            assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+                is Integer playerNum = dbRow["player"]);
+            retval.addBookmark(Point(row, column), players.getPlayer(playerNum));
+        }
         for (reader in readers) {
             try {
                 reader.readMapContents(db, retval, warner);

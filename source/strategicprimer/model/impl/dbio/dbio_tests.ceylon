@@ -9,7 +9,9 @@ import ceylon.test {
     assertEquals,
     assertNotEquals,
     parameters,
-    test
+    test,
+    assertFalse,
+    assertTrue
 }
 
 import org.sqlite {
@@ -404,5 +406,18 @@ object dbio_tests {
         IUnit deserializedUnit = assertFixtureSerialization(unit);
         assert(is IWorker member = deserializedUnit.first);
         assertEquals(member.notes.get(playerObj), note, "Note was deserialized");
+    }
+
+    test
+    shared void testBookmarkSerialization() {
+        IMutableMapNG map = SPMapNG(MapDimensionsImpl(1, 1, 2), PlayerCollection(), 1);
+        Player player = map.players.getPlayer(1);
+        map.currentPlayer = player;
+        assertFalse(Point(0, 0) in map.bookmarks, "Map by default doesn't have a bookmark");
+        assertEquals(map.allBookmarks.size, 0, "Map by default has no bookmarks");
+        map.addBookmark(Point(0, 0));
+        value deserialized = assertDatabaseSerialization(map);
+        assertFalse(map === deserialized, "Deserialization doesn't just return the input");
+        assertTrue(Point(0, 0) in deserialized.bookmarks, "Deserialized map has the bookmark we saved");
     }
 }

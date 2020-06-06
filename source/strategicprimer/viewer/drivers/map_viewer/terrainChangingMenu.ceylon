@@ -73,6 +73,24 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     mountainItem.addActionListener(silentListener(toggleMountains));
 
+    JCheckBoxMenuItem bookmarkItem = JCheckBoxMenuItem("Bookmarked");
+
+    void toggleBookmarked() {
+        Point localPoint = point;
+        if (localPoint in model.map.bookmarks) {
+            model.map.removeBookmark(localPoint);
+            bookmarkItem.model.selected = false;
+        } else {
+            model.map.addBookmark(localPoint);
+            bookmarkItem.model.selected = true;
+        }
+        model.mapModified = true;
+        scs.fireChanges(null, localPoint);
+        model.interaction = null;
+    }
+
+    bookmarkItem.addActionListener(silentListener(toggleBookmarked));
+
     void toggleRiver(River river, JCheckBoxMenuItem item)() {
         Point localPoint = point;
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
@@ -99,6 +117,8 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     void updateForVersion(Integer version) {
         removeAll();
+        add(bookmarkItem);
+        addSeparator();
         for (type in TileType.valuesForVersion(version)) {
             JMenuItem item = JMenuItem(type.string);
             add(item);
@@ -160,6 +180,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
                 item.enabled = false;
             }
         }
+        bookmarkItem.model.selected = localPoint in model.map.bookmarks;
     }
 
     shared actual void selectedUnitChanged(IUnit? oldSelection, IUnit? newSelection) {}

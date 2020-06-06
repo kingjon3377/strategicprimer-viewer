@@ -211,6 +211,10 @@ shared class Ver2TileDrawHelper(
             pen.drawImage(getImage("mountain.png"), coordinates.x, coordinates.y,
                 dimensions.x, dimensions.y, observerWrapper);
         }
+        if (location in map.bookmarks) {
+            pen.drawImage(getImage("bookmark.png"), coordinates.x, coordinates.y,
+                dimensions.x, dimensions.y, observerWrapper);
+        }
         pen.color = Color.black;
         pen.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
     }

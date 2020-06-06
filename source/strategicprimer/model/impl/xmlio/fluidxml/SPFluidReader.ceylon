@@ -201,6 +201,10 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
         } else if ("mountain" == type) {
             map.mountainous[currentTile] = true;
             return;
+        } else if ("bookmark" == type) {
+            expectAttributes(element, warner, "player");
+            map.addBookmark(currentTile, players.getPlayer(getIntegerAttribute(element, "player")));
+            return;
         }
         Object child = readSPObject(element, parent.name, stream, players, warner,
             idFactory);

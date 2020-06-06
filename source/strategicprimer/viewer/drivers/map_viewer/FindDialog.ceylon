@@ -128,10 +128,15 @@ class FindDialog(Frame parent, IViewerModel model) extends SPDialog(parent, "Fin
     }
 
     Boolean matchesPoint(String pattern, Integer? id,
-            Boolean caseSensitivity)(Point point) { // TODO: => once syntax sugar in place
-//        return model.map.fixtures[point].any( // TODO: syntax sugar
-        return model.map.fixtures.get(point).any(
-            matches(pattern, id, caseSensitivity));
+            Boolean caseSensitivity)(Point point) {
+        if (("bookmark" == pattern || (caseSensitivity && "bookmark" == pattern.lowercased)) &&
+                point in model.map.bookmarks) {
+            return true;
+        } else {
+//            return model.map.fixtures[point].any( // TODO: syntax sugar
+            return model.map.fixtures.get(point).any(
+                matches(pattern, id, caseSensitivity));
+        }
     }
     "Search for the current pattern. If the pattern is found (as the ID of a fixture,
      or the name of a [[HasName]], or the kind of a [[HasKind]]), select the tile

@@ -287,6 +287,11 @@ shared class SPFluidWriter() satisfies SPWriter {
                         writeAttributes(ostream, "kind"->terrain.xml);
                     }
                     variable Boolean anyContents = false;
+                    for (bookmarkPlayer in obj.allBookmarks.get(loc)) {
+                        anyContents = true;
+                        writeTag(ostream, "bookmark", indentation + 4, true);
+                        writeAttributes(ostream, "player"->bookmarkPlayer.playerId);
+                    }
 //                        if (obj.mountainous[loc]) { // TODO: syntax sugar once compiler bug fixed
                     if (obj.mountainous.get(loc)) {
                         anyContents = true;

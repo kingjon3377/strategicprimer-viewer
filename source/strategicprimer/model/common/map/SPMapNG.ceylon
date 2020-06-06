@@ -87,6 +87,9 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The current turn."
     shared actual variable Integer currentTurn;
 
+    "The collection of bookmarks."
+    MutableMultimap<Point, Player> bookmarksImpl = HashMultimap<Point, Player>();
+
     shared new (MapDimensions dimensions, IMutablePlayerCollection players,
             Integer turn) {
         mapDimensions = dimensions;
@@ -140,6 +143,18 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The current player."
     shared actual Player currentPlayer => playerCollection.currentPlayer;
     assign currentPlayer => playerCollection.currentPlayer = currentPlayer;
+
+    Boolean withItem<Key, Item>(Item item)(Entry<Key, Item> entry) given Item satisfies Object => entry.item == item;
+
+    shared actual Set<Point> bookmarksFor(Player player) => set(bookmarksImpl.filter(withItem<Point,Player>(player)).map(Entry.key));
+
+    shared actual Set<Point> bookmarks => bookmarksFor(currentPlayer);
+
+    shared actual Multimap<Point, Player> allBookmarks => bookmarksImpl; // FIXME: Somehow make it impossible to get mutable view
+
+    shared actual void addBookmark(Point point, Player player) => bookmarksImpl.put(point, player);
+
+    shared actual void removeBookmark(Point point, Player player) => bookmarksImpl.remove(point, player);
 
     "Add a player."
     shared actual void addPlayer(Player player) => playerCollection.add(player);

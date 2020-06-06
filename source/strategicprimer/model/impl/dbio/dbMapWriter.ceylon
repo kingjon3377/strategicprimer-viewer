@@ -34,7 +34,12 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
            east_river BOOLEAN NOT NULL,
            west_river BOOLEAN NOT NULL,
            lake BOOLEAN NOT NULL
-       );"""
+       );""",
+        """CREATE TABLE IF NOT EXISTS bookmarks (
+               row INTEGER NOT NULL,
+               column INTEGER NOT NULL,
+               player INTEGER NOT NULL
+           );"""
     ];
 
     shared actual void write(Sql db, IMutableMapNG obj, IMapNG context) {
@@ -51,6 +56,8 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
             """INSERT INTO terrain (row, column, terrain, mountainous, north_river,
                    south_river, east_river, west_river, lake)
                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""");
+        value bookmarkInsertion = db.Insert(
+            """INSERT INTO bookmarks (row, column, player) VALUES(?, ?, ?)""");
         variable Integer count = 0;
         variable Integer fixtureCount = 0;
         for (location in obj.locations) {
@@ -62,6 +69,9 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
             for (fixture in obj.fixtures.get(location)) {
                 spDatabaseWriter.writeSPObjectInContext(db, fixture, location);
                 fixtureCount++;
+            }
+            for (player in obj.allBookmarks.get(location)) {
+                bookmarkInsertion.execute(location.row, location.column, player.playerId);
             }
             count++;
             if (25.divides(count)) {

@@ -264,6 +264,10 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     } else if ("mountain" == type) {
                         tagStack.push(event.name);
                         retval.mountainous[localPoint] = true;
+                    } else if ("bookmark" == type) {
+                        tagStack.push(event.name);
+                        expectAttributes(event, "player");
+                        retval.addBookmark(localPoint, players.getPlayer(getIntegerParameter(event, "player")));
                     } else {
                         assert (exists top = tagStack.top);
                         value child = parseFixture(event, top, stream);
@@ -369,9 +373,16 @@ class YAMapReader("The Warning instance to use" Warning warner,
                     }
                     ostream(">");
                     variable Boolean needEol = true;
+                    for (player in obj.allBookmarks.get(loc)) {
+                        eolIfNeeded(needEol, ostream);
+                        needEol = false;
+                        writeTag(ostream, "bookmark", tabs + 4);
+                        writeProperty(ostream, "player", player.playerId);
+                        closeLeafTag(ostream);
+                    }
 //                    if (obj.mountainous[loc]) { // TODO: syntax sugar once compiler bug fixed
                     if (obj.mountainous.get(loc)) {
-                        eolIfNeeded(true, ostream);
+                        eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeTag(ostream, "mountain", tabs + 4);
                         closeLeafTag(ostream);

@@ -1757,4 +1757,24 @@ object xmlTests {
         assertSerialization(
             """Map with fixture "elsewhere" should be properly serialized""", map);
     }
+
+    "Test serialization of players' bookmarks."
+    test
+    shared void testBookmarkSerialization(enumeratedParameter(`class Boolean`) Boolean deprecatedReader,
+            enumeratedParameter(`class Boolean`) Boolean deprecatedWriter) {
+        IMutableMapNG map = SPMapNG(MapDimensionsImpl(1, 1, 2), PlayerCollection(), 1);
+        Player player = map.players.getPlayer(1);
+        map.currentPlayer = player;
+        assertFalse(Point(0, 0) in map.bookmarks, "Map by default doesn't have a bookmark");
+        assertEquals(map.allBookmarks.size, 0, "Map by default has no bookmarks");
+        map.baseTerrain[Point(0, 0)] = TileType.plains;
+        map.addBookmark(Point(0, 0));
+        value reader = if (deprecatedReader) then readers.first else readers.last;
+        IMapNG deserialized;
+        try (stringReader = StringReader(createSerializedForm(map, deprecatedWriter))) {
+            deserialized = reader.readMapFromStream(fakeFilename, stringReader, warningLevels.die);
+        }
+        assertFalse(map === deserialized, "Deserialization doesn't just return the input");
+        assertTrue(Point(0, 0) in deserialized.bookmarks, "Deserialized map has the bookmark we saved");
+    }
 }

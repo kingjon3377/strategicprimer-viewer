@@ -41,4 +41,14 @@ shared interface IMutableMapNG satisfies IMapNG {
 
     "The current turn."
     shared actual formal variable Integer currentTurn;
+
+    "Add a bookmark."
+    shared formal void addBookmark(
+        "Where to place the bookmark" Point point,
+        "The player to place the bookmark for" Player player = currentPlayer);
+
+    "Remove a bookmark."
+    shared formal void removeBookmark(
+        "Where to remove the bookmark" Point point,
+        "The player to remove the bookmark for" Player player = currentPlayer);
 }
