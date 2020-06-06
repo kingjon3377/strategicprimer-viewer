@@ -49,14 +49,18 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
         return builder.string;
     }
 
-    shared actual String? getToolTipText(MouseEvent event) {
+    Point pointFor(MouseEvent event) {
         value eventPoint = event.point;
         MapDimensions mapDimensions = model.mapDimensions;
         Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
         VisibleDimensions visibleDimensions = model.visibleDimensions;
-        Point point = Point(
-            ((eventPoint.y / tileSize) + visibleDimensions.minimumRow).integer,
+        return Point(((eventPoint.y / tileSize) + visibleDimensions.minimumRow).integer,
             ((eventPoint.x / tileSize) + visibleDimensions.minimumColumn).integer);
+    }
+
+    shared actual String? getToolTipText(MouseEvent event) {
+        MapDimensions mapDimensions = model.mapDimensions;
+        Point point = pointFor(event);
         if (point.valid, point.row < mapDimensions.rows,
                 point.column < mapDimensions.columns) {
 //            String mountainString = (model.map.mountainous[point]) // TODO: syntax sugar once compiler bug fixed
@@ -72,13 +76,8 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
 
     shared actual void mouseClicked(MouseEvent event) {
         event.component.requestFocusInWindow();
-        value eventPoint = event.point;
-        VisibleDimensions visibleDimensions = model.visibleDimensions;
         MapDimensions mapDimensions = model.mapDimensions;
-        Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
-        Point point = Point(
-            ((eventPoint.y / tileSize) + visibleDimensions.minimumRow).integer,
-            ((eventPoint.x / tileSize) + visibleDimensions.minimumColumn).integer);
+        Point point = pointFor(event);
         log.trace("User clicked on ``point``");
         if (point.valid, point.row < mapDimensions.rows,
                 point.column < mapDimensions.columns) {
