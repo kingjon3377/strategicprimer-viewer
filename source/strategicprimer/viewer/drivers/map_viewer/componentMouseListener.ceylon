@@ -90,12 +90,14 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
 
     shared actual void mousePressed(MouseEvent event) {
         if (event.popupTrigger) {
+            model.selection = pointFor(event); // FIXME: What about out-of-bounds clicks?
             menu.show(event.component, event.x, event.y);
         }
     }
 
     shared actual void mouseReleased(MouseEvent event) {
         if (event.popupTrigger) {
+            model.selection = pointFor(event); // FIXME: What about out-of-bounds clicks?
             menu.show(event.component, event.x, event.y);
         }
     }
