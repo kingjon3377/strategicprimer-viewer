@@ -98,8 +98,9 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
 
         shared actual Integer hash => listModel.hash;
         shared actual void selectedPointChanged(Point? old, Point newPoint) =>
-                SwingUtilities.invokeLater(
+                SwingUtilities.invokeLater( // TODO: Replace lambda with defer()
                         () => listModel.selectedPointChanged(old, newPoint));
+        shared actual void interactionPointChanged() => SwingUtilities.invokeLater(listModel.interactionPointChanged);
 
         object fixtureMouseListener extends MouseAdapter() {
             void handleMouseEvent(MouseEvent event) {

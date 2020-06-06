@@ -33,4 +33,11 @@ shared class SelectionChangeSupport() satisfies SelectionChangeSource {
             listener.selectedPointChanged(oldSelection, newSelection);
         }
     }
+
+    "Tell all listeners about a change to the interaction point."
+    shared void fireInteraction() {
+        for (listener in listeners) {
+            listener.interactionPointChanged();
+        }
+    }
 }

@@ -109,6 +109,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         }
         shared actual void selectedUnitChanged(IUnit? old, IUnit? newUnit) =>
             delegate.selectedUnitChanged(old, newUnit);
+        shared actual void interactionPointChanged() {}
     }
 
     void markModified() => model.mapModified = true;

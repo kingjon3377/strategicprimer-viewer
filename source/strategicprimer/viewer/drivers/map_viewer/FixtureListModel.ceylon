@@ -219,4 +219,5 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
             }
         }
     }
+    shared actual void interactionPointChanged() {}
 }

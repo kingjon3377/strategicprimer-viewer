@@ -290,6 +290,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     }
 
     shared actual void selectedPointChanged(Point? previousSelection, Point newSelection) {}
+    shared actual void interactionPointChanged() {}
 }
 
 class ExplorationAutomationConfig(shared Player player) {

@@ -64,4 +64,5 @@ class RandomDiscoverySelector(IExplorationModel driverModel,
     shared actual void selectedPointChanged(Point? old, Point newPoint) =>
         SwingUtilities.invokeLater(selectedPointChangedImpl);
     shared actual void selectedUnitChanged(IUnit? old, IUnit? newSel) {}
+    shared actual void interactionPointChanged() {}
 }

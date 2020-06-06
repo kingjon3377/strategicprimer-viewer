@@ -196,4 +196,5 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
 
     shared actual void mapMetadataChanged() {}
     shared actual void selectedUnitChanged(IUnit? oldSelection, IUnit? newSelection) {}
+    shared actual void interactionPointChanged() {}
 }

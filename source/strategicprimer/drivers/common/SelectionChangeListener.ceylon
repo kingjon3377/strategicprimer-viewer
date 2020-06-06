@@ -12,4 +12,10 @@ shared interface SelectionChangeListener {
     shared formal void selectedPointChanged(Point? previousSelection, Point newSelection);
     "The selected unit changed."
     shared formal void selectedUnitChanged(IUnit? previousSelection, IUnit? newSelection);
+    """The "interaction point" changed. (That is, the user right-clicked on something.) Because
+       this the current value of the "interaction point" is not supposed to be cached, and is
+       supposed to basically expire as soon as the action is completed, this may or may not
+       be called when the point is set to null, and callers must get the value from where
+       it is stored themselves."""
+    shared formal void interactionPointChanged();
 }

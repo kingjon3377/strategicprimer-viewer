@@ -415,4 +415,5 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         log.trace("ExplorationPanel: Done with ``direction``");
     }
     log.trace("End of ExplorationPanel initializer");
+    shared actual void interactionPointChanged() {}
 }

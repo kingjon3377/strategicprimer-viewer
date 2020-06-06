@@ -36,6 +36,7 @@ import ceylon.collection {
 }
 
 "A popup menu to let the user change a tile's terrain type, or add a unit."
+// TODO: Why does this satisfy SelectionChangeSource?
 class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopupMenu()
         satisfies VersionChangeListener&SelectionChangeSource&SelectionChangeListener {
     NewUnitDialog nuDialog = NewUnitDialog(model.map.currentPlayer,
@@ -51,6 +52,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
             model.mapModified = true;
             model.selection = point;
             scs.fireChanges(null, point);
+            model.interaction = null;
         }
     });
 
@@ -66,6 +68,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
             mountainItem.model.selected = newValue;
             scs.fireChanges(null, localPoint);
         }
+        model.interaction = null;
     }
 
     mountainItem.addActionListener(silentListener(toggleMountains));
@@ -83,6 +86,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
             }
             model.mapModified = true;
             scs.fireChanges(null, localPoint);
+            model.interaction = null;
         }
     }
 
@@ -102,6 +106,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
                 model.map.baseTerrain[point] = type;
                 model.mapModified = true;
                 scs.fireChanges(null, point);
+                model.interaction = null;
             });
         }
         addSeparator();
@@ -120,23 +125,28 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     shared actual void removeSelectionChangeListener(SelectionChangeListener listener)
             => scs.removeSelectionChangeListener(listener);
 
-    shared actual void selectedPointChanged(Point? old, Point newPoint) {
-        point = newPoint;
-        if (newPoint.valid, model.map.baseTerrain[newPoint] exists) {
+    shared actual void selectedPointChanged(Point? old, Point newPoint) {}
+
+    shared actual void interactionPointChanged() {
+        // We default to the selected point if the model has no interaction point, in case the menu gets shown before
+        // the interaction point gets set somehow.
+        value localPoint = model.interaction else model.selection;
+        point = localPoint;
+        if (point.valid, model.map.baseTerrain[point] exists) {
             newUnitItem.enabled = true;
         } else {
             newUnitItem.enabled = false;
         }
-        if (newPoint.valid, exists terrain = model.map.baseTerrain[newPoint],
+        if (point.valid, exists terrain = model.map.baseTerrain[point],
                 terrain != TileType.ocean) {
 //          mountainItem.model.selected = model.map.mountainous[newPoint]; // TODO: syntax sugar once compiler bug fixed
-            mountainItem.model.selected = model.map.mountainous.get(newPoint);
+            mountainItem.model.selected = model.map.mountainous.get(point);
             mountainItem.enabled = true;
         } else {
             mountainItem.model.selected = false;
             mountainItem.enabled = false;
         }
-        if (newPoint.valid, exists terrain = model.map.baseTerrain[newPoint],
+        if (point.valid, exists terrain = model.map.baseTerrain[point],
                 terrain != TileType.ocean) {
 //        {River*} rivers = model.map.rivers[point]; // TODO: syntax sugar
             {River*} rivers = model.map.rivers.get(point);

@@ -70,6 +70,9 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "The currently selected point in the main map."
     variable Point selPoint = Point.invalidPoint;
 
+    "The point in the map the user has just right-clicked on, if any."
+    variable Point? interactionPoint = null;
+
     "The visible dimensions of the map."
     variable VisibleDimensions visDimensions;
 
@@ -211,8 +214,18 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         fixVisibility();
     }
 
+    "The point in the map the user has just right-clicked on, if any."
+    shared actual Point? interaction => interactionPoint;
+    assign interaction {
+        interactionPoint = interaction;
+        scs.fireInteraction();
+    }
+
     "Clear the selection."
-    shared void clearSelection() => selection = Point.invalidPoint;
+    shared void clearSelection() {
+        selection = Point.invalidPoint;
+        interaction = null;
+    }
 
     shared actual void addSelectionChangeListener(SelectionChangeListener listener) =>
             scs.addSelectionChangeListener(listener);
