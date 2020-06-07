@@ -151,7 +151,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
         {{TileFixture*}*} separateTiles = map.locations.map(map.fixtures.get);
         cli.println("- ``separateTiles.count(anyIs<Hill>)`` hilly tiles");
         cli.println("- ``map.locations.count(map.mountainous.get)`` mountainous tiles");
-	cli.println("- ``separateTiles.count(anyIs<Forest>)`` at least partly forested tiles");
+        cli.println("- ``separateTiles.count(anyIs<Forest>)`` at least partly forested tiles");
         cli.println("- ``separateTiles.count(anyIs<Oasis>)`` oases");
         {{River*}*} tilesRivers = map.locations.map(map.rivers.get);
         cli.println("- ``tilesRivers.filter(hasLake).count(not(Iterable<River>.empty))`` lakes");
