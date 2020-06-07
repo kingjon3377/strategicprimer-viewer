@@ -121,6 +121,13 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             }
             super.remove(child);
         }
+
+        shared void refreshChildren() {
+            removeAllChildren();
+            for (member in unit) {
+                super.add(UnitMemberNode(member));
+            }
+        }
     }
 
     """A class for tree-nodes representing unit kinds, grouping units sharing a
@@ -494,6 +501,16 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
             return obj;
         } else {
             return [];
+        }
+    }
+
+    shared actual void refreshChildren(IUnit parent) {
+        assert (is TreeNode playerNode = root);
+        if (is UnitNode parentNode = getNode(playerNode, parent)) {
+            parentNode.refreshChildren();
+            fireTreeStructureChanged(this, ObjectArray<Object>.with([root, parentNode]), null, null);
+        } else {
+            process.writeErrorLine("refreshChildren() called on unit not in the tree");
         }
     }
 }

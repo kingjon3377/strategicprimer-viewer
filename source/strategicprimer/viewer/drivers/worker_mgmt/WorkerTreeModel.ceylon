@@ -333,4 +333,11 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             return [];
         }
     }
+
+    shared actual void refreshChildren(IUnit parent) {
+        TreeModelEvent event = TreeModelEvent(this, TreePath(ObjectArray<Object>.with([root, parent.kind, parent])));
+        for (listener in listeners) {
+            listener.treeStructureChanged(event);
+        }
+    }
 }

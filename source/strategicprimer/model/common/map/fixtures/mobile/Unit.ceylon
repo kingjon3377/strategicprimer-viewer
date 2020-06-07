@@ -1,12 +1,12 @@
 import ceylon.collection {
     MutableMap,
     naturalOrderTreeMap,
-    SortedMap,
-    MutableSet
+    SortedMap
 }
 
 import lovelace.util.common {
     todo,
+    comparingOn,
     ArraySet
 }
 import strategicprimer.model.common.map {
@@ -20,6 +20,9 @@ import strategicprimer.model.common.map {
     Player
 }
 import strategicprimer.model.common.map.fixtures {
+    Implement,
+    ResourcePile,
+    Quantity,
     UnitMember
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -48,7 +51,7 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
             naturalOrderTreeMap<Integer, String>([]);
 
     "The members of the unit."
-    MutableSet<UnitMember> members = ArraySet<UnitMember>();
+    ArraySet<UnitMember> members = ArraySet<UnitMember>();
 
     "The ID number."
     shared actual Integer id;
@@ -206,4 +209,57 @@ shared class Unit(owner, kind, name, id) satisfies IUnit&HasMutableKind&
     shared actual Integer dc =>
             Integer.min(members.narrow<TileFixture>()
                 .map(TileFixture.dc).follow(25 - members.size));
+
+    Comparison memberComparison(UnitMember one, UnitMember two) {
+        if (is IWorker one) {
+            if (is IWorker two) {
+                return one.name <=> two.name;
+            } else {
+                return smaller;
+            }
+        } else if (is IWorker two) {
+            return larger;
+        } else if (is Immortal one) {
+            if (is Immortal two) {
+                return one.string <=> two.string;
+            } else {
+                return smaller;
+            }
+        } else if (is Immortal two) {
+            return larger;
+        } else if (is Animal one) {
+            if (is Animal two) {
+                return comparing(comparingOn(Animal.kind, increasing<String>),
+                    comparingOn(Animal.population, decreasing<Integer>))(one, two);
+            } else {
+                return smaller;
+            }
+        } else if (is Animal two) {
+            return larger;
+        } else if (is Implement one) {
+            if (is Implement two) {
+                return comparing(comparingOn(Implement.kind, increasing<String>),
+                    comparingOn(Implement.population, decreasing<Integer>))(one, two);
+            } else {
+                return smaller;
+            }
+        } else if (is Implement two) {
+            return larger;
+        } else if (is ResourcePile one) {
+            if (is ResourcePile two) {
+                return comparing(comparingOn(ResourcePile.kind, increasing<String>),
+                    comparingOn(ResourcePile.contents, increasing<String>), comparingOn(ResourcePile.quantity,
+                        decreasing<Quantity>))(one, two);
+            } else {
+                return larger;
+            }
+        } else if (is ResourcePile two) {
+            return larger;
+        } else {
+            process.writeErrorLine("Unhandled unit-member in sorting");
+            return one.string <=> two.string;
+        }
+    }
+
+    shared actual void sortMembers() => members.sortInPlace(memberComparison);
 }

@@ -374,4 +374,10 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         cachedIterable = [];
         proxiedList.add(item);
     }
+
+    shared actual void sortMembers() {
+        for (proxiedUnit in proxied) {
+            proxiedUnit.sortMembers();
+        }
+    }
 }

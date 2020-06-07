@@ -76,4 +76,7 @@ shared interface IWorkerTreeModel
     "If [[arg]] is a node in the tree, return its children, if any; otherwise, return
      the empty sequence."
     shared formal {Object*} childrenOf(Object arg);
+
+    "Refresh the children of the given tree-member, usually because it has been sorted."
+    shared formal void refreshChildren(IUnit parent);
 }

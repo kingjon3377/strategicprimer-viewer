@@ -24,6 +24,7 @@ import strategicprimer.drivers.worker.common {
     IWorkerTreeModel
 }
 import strategicprimer.model.common.map.fixtures.mobile {
+    IUnit,
     Animal
 }
 import strategicprimer.model.common.idreg {
@@ -164,5 +165,17 @@ shared class FixtureEditMenu(
 
     addMenuItem(JMenuItem("Split animal population", KeyEvent.vkS),
         silentListener(splitAnimalHandler), isAnimalPopulation);
-    // TODO: Add "Sort" for units and fortresses
+
+    void sortHandler() {
+        if (is IUnit fixture) {
+            fixture.sortMembers();
+            for (listener in changeListeners) {
+                listener.refreshChildren(fixture);
+            }
+            mutationListener();
+        }
+        // TODO: Allow sorting fortresses as well.
+    }
+
+    addMenuItem(JMenuItem("Sort", KeyEvent.vkR), silentListener(sortHandler), fixture is IUnit);
 }

@@ -133,4 +133,7 @@ shared interface IUnit satisfies MobileFixture&HasImage&HasKind&HasName&
             return false;
         }
     }
+
+    "Change the internal order of members to be sorted. Sort order is implementation-defined."
+    shared formal void sortMembers();
 }
