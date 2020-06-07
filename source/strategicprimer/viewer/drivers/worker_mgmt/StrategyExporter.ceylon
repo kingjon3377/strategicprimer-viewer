@@ -21,6 +21,8 @@ import strategicprimer.model.common.map {
     HasName
 }
 import strategicprimer.model.common.map.fixtures {
+    Implement,
+    ResourcePile,
     UnitMember
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -229,7 +231,30 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
             if (options.hasOption("--results")) {
                 writer.writeLine("Resources:");
                 writer.writeLine();
-                writer.writeLine("- TODO"); // TODO: List equipment and resources
+                for (fortress in model.getFortresses(currentPlayer)) {
+                    writer.write("- In ");
+                    writer.writeLine(fortress.name);
+                    value equipment = fortress.narrow<Implement>();
+                    if (!equipment.empty) {
+                        writer.writeLine("  - Equipment not in a unit:");
+                        for (item in equipment) {
+                            writer.write("    - ");
+                            writer.writeLine(item.string); // FIXME: This is egregiously verbose ("An implement of kind ...")
+                        }
+                    }
+                    for (kind->resources in fortress.narrow<ResourcePile>().group(ResourcePile.kind)) {
+                        writer.write("  - ");
+                        writer.write(kind);
+                        writer.writeLine(":");
+                        for (pile in resources) {
+                            writer.write("    - ");
+                            writer.writeLine(pile.string); // FIXME: This is egregiously verbose ("A pile of ...")
+                        }
+                    }
+                    if (fortress.size > fortress.narrow<Implement|ResourcePile|IUnit>().size) {
+                        process.writeErrorLine("Unhandled members in ``fortress.name``"); // TODO: Take ICLIHelper to report diagnostics on
+                    }
+                }
             }
         }
     }
