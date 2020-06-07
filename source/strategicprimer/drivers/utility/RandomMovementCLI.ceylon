@@ -9,12 +9,12 @@ import strategicprimer.drivers.common.cli {
 
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
-    Direction,
     Speed,
     TraversalImpossibleException
 }
 
 import strategicprimer.model.common.map {
+    Direction,
     Player
 }
 

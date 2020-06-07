@@ -18,7 +18,6 @@ import strategicprimer.drivers.exploration.common {
     MovementCostListener,
     HuntingModel,
     Speed,
-    Direction,
     TraversalImpossibleException,
     IExplorationModel
 }
@@ -60,6 +59,7 @@ import strategicprimer.model.common.map {
     HasOwner,
     TileType,
     Point,
+    Direction,
     HasPopulation
 }
 import javax.swing.event {

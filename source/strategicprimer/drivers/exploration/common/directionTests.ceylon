@@ -7,6 +7,7 @@ import strategicprimer.model.common.map {
     Point,
     PlayerCollection,
     MapDimensionsImpl,
+    Direction,
     SPMapNG
 }
 

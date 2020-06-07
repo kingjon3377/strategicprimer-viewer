@@ -1,4 +1,5 @@
 import strategicprimer.model.common.map {
+    Direction,
     HasName
 }
 

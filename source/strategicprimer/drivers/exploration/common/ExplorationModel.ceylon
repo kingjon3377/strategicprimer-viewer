@@ -20,6 +20,7 @@ import strategicprimer.model.common.map {
     TileFixture,
     TileType,
     IMutableMapNG,
+    Direction,
     IMapNG
 }
 import strategicprimer.model.common.map.fixtures {

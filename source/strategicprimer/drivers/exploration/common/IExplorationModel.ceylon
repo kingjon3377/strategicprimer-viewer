@@ -5,6 +5,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.common.map {
     Point,
     Player,
+    Direction,
     TileFixture
 }
 import strategicprimer.model.common.map.fixtures.mobile {

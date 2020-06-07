@@ -8,6 +8,7 @@ import ceylon.collection {
 }
 import strategicprimer.model.common.map {
     IMapNG,
+    Direction,
     Point
 }
 import strategicprimer.model.common.map.fixtures.terrain {

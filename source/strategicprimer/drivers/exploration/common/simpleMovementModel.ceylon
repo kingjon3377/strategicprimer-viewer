@@ -13,6 +13,7 @@ import strategicprimer.model.common.map {
     River,
     TileType,
     TileFixture,
+    Direction,
     HasOwner
 }
 
@@ -33,10 +34,6 @@ import strategicprimer.model.common.map.fixtures.terrain {
 
 import strategicprimer.model.common.map.fixtures.towns {
     ITownFixture
-}
-
-import strategicprimer.drivers.exploration.common {
-    Direction
 }
 
 import ceylon.random {

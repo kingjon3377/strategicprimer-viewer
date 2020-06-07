@@ -18,6 +18,7 @@ import strategicprimer.model.common.map {
     TileFixture,
     HasPopulation,
     HasExtent,
+    Direction,
     River
 }
 
@@ -39,7 +40,6 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.drivers.exploration.common {
     IExplorationModel,
     Speed,
-    Direction,
     MovementCostListener,
     TraversalImpossibleException,
     simpleMovementModel,
