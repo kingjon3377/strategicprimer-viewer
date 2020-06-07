@@ -485,15 +485,6 @@ class TownGenerator(ICLIHelper cli) {
         return retval;
     }
 
-    """If the given [[string]] is "quit", return null; otherwise return false."""
-    Boolean? nullIfQuit(String string) {
-        if ("quit" == string) {
-            return null;
-        } else {
-            return false;
-        }
-    }
-
     "Allow the user to create population details for specific towns."
     shared void generateSpecificTowns(IDRegistrar idf, IDriverModel model) {
         while (exists input = cli.inputString("ID or name of town to create stats for: "),
@@ -543,8 +534,7 @@ class TownGenerator(ICLIHelper cli) {
             cli.println("Next town is ``town.shortDescription``, at ``location``. ");
             CommunityStats stats;
             Boolean? resp = cli.inputBooleanInSeries(
-                "Enter stats rather than generating them?", "enter stats",
-                nullIfQuit);
+                "Enter stats rather than generating them?", "enter stats");
             if (exists resp) {
                 if (resp) {
                     stats = enterStats(cli, idf, model.map, location, town);

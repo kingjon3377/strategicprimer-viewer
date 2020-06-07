@@ -62,14 +62,23 @@ shared interface ICLIHelper {
             "The prompt to prompt the user with."
             String prompt);
 
+    """Returns [[null]] if [[input]] is "quit" and [[false]] otherwise."""
+    shared default Boolean? defaultQuitHandler(String input) {
+        if ("quit" == input) {
+            return null;
+        } else {
+            return false;
+        }
+    }
+
     "Ask the user a yes-or-no question. Returns [[null]] on EOF or if [[quitResultFactory]]
-     returns [[null]]." // TODO: Update callers to support 'quit' // TODO: Maybe define a default handler method in this interface
+     returns [[null]]."
     shared formal Boolean? inputBoolean(
             "The prompt to prompt the user with."
             String prompt,
             "A function to produce [[null]] (to return) if an input should
              short-circuit the loop. By default just returns [[false]] to keep looping."
-            Boolean?(String) quitResultFactory = (String str) => false);
+            Boolean?(String) quitResultFactory = defaultQuitHandler);
 
     """Ask the user a yes-or-no question, allowing "yes to all" or "no to all" to
        forestall further similar questions. Returns [[null]] on EOF or if
@@ -81,7 +90,7 @@ shared interface ICLIHelper {
             String key = prompt,
             "A function to produce [[null]] (to return) if an input should
              short-circuit the loop. By default just returns [[false]] to keep looping."
-            Boolean?(String) quitResultFactory = (String str) => false);
+            Boolean?(String) quitResultFactory = defaultQuitHandler);
 
     "Print the specified string, then a newline."
     shared formal void println(
