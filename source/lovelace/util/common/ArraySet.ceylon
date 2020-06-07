@@ -1,6 +1,5 @@
 import ceylon.collection {
     ArrayList,
-    MutableList,
     MutableSet
 }
 
@@ -8,7 +7,7 @@ import ceylon.collection {
 shared class ArraySet<Element> satisfies MutableSet<Element>
         given Element satisfies Object {
     "The backing array."
-    MutableList<Element> impl;
+    variable ArrayList<Element> impl;
     shared new ({Element*} initial = []) { impl = ArrayList { elements = initial; }; }
     shared new copy(ArraySet<Element> orig) { impl = orig.impl.clone(); }
     "Hash value."
@@ -34,4 +33,6 @@ shared class ArraySet<Element> satisfies MutableSet<Element>
     shared actual void clear() => impl.clear();
     "Clone the set."
     shared actual ArraySet<Element> clone() => ArraySet.copy(this);
+    "Sort the underlying array by [[the given comparison function|comparing]]"
+    shared void sortInPlace(Comparison(Element,Element) comparing) => impl.sortInPlace(comparing);
 }
