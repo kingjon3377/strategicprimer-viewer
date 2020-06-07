@@ -62,15 +62,18 @@ shared interface ICLIHelper {
             "The prompt to prompt the user with."
             String prompt);
 
-    "Ask the user a yes-or-no question. Returns [[null]] on EOF."
+    "Ask the user a yes-or-no question. Returns [[null]] on EOF or if [[quitResultFactory]]
+     returns [[null]]." // TODO: Update callers to support 'quit' // TODO: Maybe define a default handler method in this interface
     shared formal Boolean? inputBoolean(
             "The prompt to prompt the user with."
-            String prompt);
+            String prompt,
+            "A function to produce [[null]] (to return) if an input should
+             short-circuit the loop. By default just returns [[false]] to keep looping."
+            Boolean?(String) quitResultFactory = (String str) => false);
 
     """Ask the user a yes-or-no question, allowing "yes to all" or "no to all" to
        forestall further similar questions. Returns [[null]] on EOF or if
        [[quitResultFactory]] returns [[null]]."""
-    // TODO: Move "quit" handling to inputBoolean as well? (It returns null on EOF anyway)
     shared formal Boolean? inputBooleanInSeries(
             "The prompt to prompt the user with." String prompt,
             """The prompt (or other key) to compare to others to define "similar"

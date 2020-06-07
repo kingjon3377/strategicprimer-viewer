@@ -44,9 +44,13 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
     }
 
     "Ask the user a yes-or-no question. Returns [[null]] on EOF."
-    shared actual Boolean? inputBoolean(String prompt) {
+    shared actual Boolean? inputBoolean(String prompt, Boolean?(String) quitResultFactory) {
         while (true) {
-            switch(input = inputString(prompt)?.lowercased)
+            String? input = inputString(prompt)?.lowercased;
+            if (exists input, is Null result = quitResultFactory(input)) {
+                return result;
+            }
+            switch (input)
             case ("yes"|"true"|"y"|"t") { return true; }
             case ("no"|"false"|"n"|"f") { return false; }
             case (null) { return null; }
