@@ -118,6 +118,9 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
                 .filter(compose(matchingValue(player.playerId, Player.playerId),
                     IUnit.owner));
 
+    shared actual {Fortress*} getFortresses(Player player) =>
+            map.fixtures.items.narrow<Fortress>().filter(matchingValue(player, Fortress.owner));
+
     "All the players in all the maps."
     shared actual {Player*} players =>
             allMaps.map(Entry.key).flatMap(IMutableMapNG.players).distinct;

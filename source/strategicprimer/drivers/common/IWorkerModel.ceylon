@@ -7,6 +7,9 @@ import strategicprimer.model.common.map.fixtures.mobile {
 import strategicprimer.drivers.common {
     IMultiMapModel
 }
+import strategicprimer.model.common.map.fixtures.towns {
+    Fortress
+}
 
 "A driver model for the worker management app and the advancement app, aiming
  to provide a hierarchical view of the units in the map and their members,
@@ -35,4 +38,9 @@ shared interface IWorkerModel satisfies IMultiMapModel {
 
     "The player that the UI seems to be concerned with."
     shared formal variable Player currentPlayer;
+
+    "The fortresses belonging to the current player."
+    // TODO: Return their positions with them?
+    shared formal {Fortress*} getFortresses(
+            "The player whose fortresses we want" Player player);
 }
