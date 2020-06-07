@@ -3,10 +3,6 @@ import java.awt.event {
     MouseEvent
 }
 
-import strategicprimer.drivers.common {
-    SelectionChangeSource,
-    SelectionChangeListener
-}
 import strategicprimer.model.common.map {
     MapDimensions,
     Point,
@@ -26,7 +22,7 @@ interface ToolTipSource {
 "A mouse listener for the map panel, to show the terrain-changing menu as needed."
 class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
             Comparison(TileFixture, TileFixture) comparator) extends MouseAdapter()
-        satisfies ToolTipSource&SelectionChangeSource {
+        satisfies ToolTipSource {
     TerrainChangingMenu menu = TerrainChangingMenu(model.mapDimensions.version, model);
     model.addSelectionChangeListener(menu);
     model.addVersionChangeListener(menu);
@@ -104,8 +100,8 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
         }
     }
 
-    shared actual void addSelectionChangeListener(SelectionChangeListener listener) =>
-            menu.addSelectionChangeListener(listener);
-    shared actual void removeSelectionChangeListener(SelectionChangeListener listener)
-            => menu.removeSelectionChangeListener(listener);
+//    shared actual void addSelectionChangeListener(SelectionChangeListener listener) =>
+//            menu.addSelectionChangeListener(listener);
+//    shared actual void removeSelectionChangeListener(SelectionChangeListener listener)
+//            => menu.removeSelectionChangeListener(listener);
 }

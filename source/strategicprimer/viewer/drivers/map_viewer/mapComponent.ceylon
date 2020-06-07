@@ -201,15 +201,6 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
 
     shared actual void interactionPointChanged() {}
     shared actual void selectedUnitChanged(IUnit? old, IUnit? newUnit) {}
-    object cmlDelegate satisfies SelectionChangeListener {
-        shared actual void selectedPointChanged(Point? oldSelection, Point newSelection)
-                => outer.selectedPointChanged(oldSelection, newSelection);
-        shared actual void selectedUnitChanged(IUnit? oldSelection, IUnit? newSelection) =>
-            outer.selectedUnitChanged(oldSelection, newSelection);
-        shared actual void interactionPointChanged() => outer.interactionPointChanged();
-
-    }
-    cml.addSelectionChangeListener(cmlDelegate);
 
     addMouseListener(cml);
     addMouseWheelListener(dsl);

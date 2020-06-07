@@ -10,8 +10,7 @@ import javax.swing {
 
 import strategicprimer.drivers.common {
     VersionChangeListener,
-    SelectionChangeListener,
-    SelectionChangeSource
+    SelectionChangeListener
 }
 import strategicprimer.drivers.worker.common {
     NewUnitListener
@@ -36,9 +35,8 @@ import ceylon.collection {
 }
 
 "A popup menu to let the user change a tile's terrain type, or add a unit."
-// TODO: Why does this satisfy SelectionChangeSource?
 class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopupMenu()
-        satisfies VersionChangeListener&SelectionChangeSource&SelectionChangeListener {
+        satisfies VersionChangeListener&SelectionChangeListener {
     NewUnitDialog nuDialog = NewUnitDialog(model.map.currentPlayer,
         createIDFactory(model.map));
 
@@ -139,11 +137,6 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     shared actual void changeVersion(Integer old, Integer newVersion) =>
             updateForVersion(newVersion);
-
-    shared actual void addSelectionChangeListener(SelectionChangeListener listener) =>
-            scs.addSelectionChangeListener(listener);
-    shared actual void removeSelectionChangeListener(SelectionChangeListener listener)
-            => scs.removeSelectionChangeListener(listener);
 
     shared actual void selectedPointChanged(Point? old, Point newPoint) {}
 
