@@ -98,7 +98,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
 
         shared actual Integer hash => listModel.hash;
         shared actual void selectedPointChanged(Point? old, Point newPoint) =>
-                SwingUtilities.invokeLater( // TODO: Replace lambda with defer()
+                SwingUtilities.invokeLater( // TODO: Replace lambda with defer() once eclipse/ceylon#7379 fixed
                         () => listModel.selectedPointChanged(old, newPoint));
         shared actual void interactionPointChanged() => SwingUtilities.invokeLater(listModel.interactionPointChanged);
 
