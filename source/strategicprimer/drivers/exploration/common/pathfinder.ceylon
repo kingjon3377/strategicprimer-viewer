@@ -41,9 +41,9 @@ shared sealed interface Pathfinder {
     "The shortest-path distance, avoiding obstacles, in MP, between two points."
     shared formal [Integer, {Point*}] getTravelDistance(Point start, Point end);
 }
-        
+
 class PathfinderImpl(IMapNG map) satisfies Pathfinder {
-    MutableMap<[Point, Point], Integer> tentativeDistances = 
+    MutableMap<[Point, Point], Integer> tentativeDistances =
         HashMap<[Point, Point], Integer>();
     Boolean forUs(Point base, Set<Point> unvisited)(<[Point, Point]->Integer> entry) =>
             entry.key.first == base && entry.key.first in unvisited;
