@@ -124,7 +124,7 @@ shared sealed abstract class AbstractReportGenerator<Type>(
             (this of Map<Key, Value>).equals(that);
         shared actual void clear() => wrapped.clear();
         shared actual MutableMap<Key,Value> clone() => HeadedMapImpl<Key, Value>(header,
-            comparator, initial);
+            comparator, wrapped);
         shared actual Boolean defines(Object key) => wrapped.defines(key);
         shared actual Value? get(Object key) => wrapped.get(key);
         shared actual Iterator<Key->Value> iterator() => wrapped.iterator();
