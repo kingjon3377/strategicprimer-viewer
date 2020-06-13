@@ -23,28 +23,17 @@ import ceylon.logging {
 Logger log = logger(`module lovelace.util.common`);
 
 native object numParsingHelper {
-    native shared Boolean isNumeric(String string) =>
-        Integer.parse(string) is Integer;
-    native shared Integer? parseInt(String string) {
-        if (is Integer retval = Integer.parse(string)) {
-            return retval;
-        } else {
-            return null;
-        }
-    }
+    native shared Boolean isNumeric(String string);
+    native shared Integer? parseInt(String string);
     shared test
     void testIsNumeric() {
         assertTrue(isNumeric("1"), "1 is numeric");
         assertFalse(isNumeric("xyzzy"), "xyzzy is not numeric");
     }
     shared native test
-    void testJVMIsNumeric() {
-        assumeTrue(false);
-    }
+    void testJVMIsNumeric();
     shared native test
-    void testJVMParseInt() {
-        assumeTrue(false);
-    }
+    void testJVMParseInt();
 }
 native("jvm") object numParsingHelper {
     NumberFormat parser = NumberFormat.integerInstance;
@@ -77,6 +66,25 @@ native("jvm") object numParsingHelper {
             "parseInt() parses comma-containing numbers");
         assertEquals(parseInt("2345"), 2345, "parseInt() doesn't require commas");
         assertNull(parseInt("alphabetic"));
+    }
+}
+native("js") object numParsingHelper {
+    native("js") shared Boolean isNumeric(String string) =>
+        Integer.parse(string) is Integer;
+    native("js") shared Integer? parseInt(String string) {
+        if (is Integer retval = Integer.parse(string)) {
+            return retval;
+        } else {
+            return null;
+        }
+    }
+    shared native("js") test
+    void testJVMIsNumeric() {
+        assumeTrue(false);
+    }
+    shared native("js") test
+    void testJVMParseInt() {
+        assumeTrue(false);
     }
 }
 "Whether the given string contains numeric data"
