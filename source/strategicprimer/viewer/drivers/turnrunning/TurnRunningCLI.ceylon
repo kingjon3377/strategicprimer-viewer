@@ -289,6 +289,91 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     ExplorationCLIHelper explorationCLI = ExplorationCLIHelper(model, cli);
     model.addMovementCostListener(explorationCLI);
 
+    Type? chooseFromList<Type>(Type[]|List<Type> items, String description, String none, String prompt,
+        Boolean auto, String(Type) converter = Object.string) given Type satisfies Object {
+        value entry = cli.chooseStringFromList(items.map(converter).sequence(), description, none, prompt, auto);
+        if (entry.item exists) {
+            return items[entry.key];
+        } else {
+            return null;
+        }
+    }
+
+    void removeFoodStock(ResourcePile food, Player owner) {
+        for (map->_ in model.allMaps) {
+            for (container in map.locations.flatMap(map.fixtures.get).narrow<IUnit|Fortress>()
+                .filter(matchingValue(owner, HasOwner.owner))) {
+                variable Boolean found = false;
+                for (item in container.narrow<ResourcePile>()) {
+                    if (food.isSubset(item, noop)) { // TODO: is that the right way around?
+                        switch (container)
+                        case (is IUnit) { container.removeMember(item); }
+                        else case (is Fortress) { container.removeMember(item); }
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
+            }
+        }
+    }
+
+    void reduceFoodBy(ResourcePile pile, Decimal amount, Player owner) {
+        for (map->_ in model.allMaps) {
+            for (container in map.locations.flatMap(map.fixtures.get).narrow<IUnit|Fortress>()
+                .filter(matchingValue(owner, HasOwner.owner))) {
+                variable Boolean found = false;
+                for (item in container.narrow<ResourcePile>()) {
+                    if (pile.isSubset(item, noop)) { // TODO: is that the right way around?
+                        if (decimalize(item.quantity.number) <= amount) {
+                            switch (container)
+                            case (is IUnit) { container.removeMember(item); }
+                            else case (is Fortress) { container.removeMember(item); }
+                        } else {
+                            item.quantity = Quantity(decimalize(item.quantity.number) - amount, pile.quantity.units);
+                        }
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    break;
+                }
+            }
+        }
+    }
+
+    void packFood(ICLIHelper cli, Fortress? fortress, IUnit unit) {
+        if (is Null fortress) {
+            return;
+        }
+        MutableList<ResourcePile> resources = ArrayList { elements = fortress.narrow<ResourcePile>(); };
+        while (exists chosen = chooseFromList(resources, "Resources in ``fortress.name``:", "No resources in fortress.",
+                "Resource to take (from):", false)) {
+            switch (cli.inputBooleanInSeries("Take it all?"))
+            case (true) {
+                removeFoodStock(chosen, unit.owner);
+                unit.addMember(chosen);
+                resources.remove(chosen);
+            }
+            case (false) {
+                if (exists amount = cli.inputDecimal("Amount to take (in ``chosen.quantity.units``):"),
+                        amount.positive) {
+                    reduceFoodBy(chosen, amount, unit.owner);
+                    unit.addMember(ResourcePile(idf.createID(), chosen.kind, chosen.contents,
+                        Quantity(amount, chosen.quantity.units)));
+                    resources.clear();
+                    resources.addAll(fortress.narrow<ResourcePile>());
+                }
+            }
+            case (null) {
+                return;
+            }
+        }
+    }
+
     String explore() {
         StringBuilder buffer = StringBuilder();
         model.addSelectionChangeListener(explorationCLI);
@@ -296,7 +381,19 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         // Ask the user about total MP
         model.selectedUnit = mover;
         while (explorationCLI.movement > 0) {
+            Point oldPosition = model.selectedUnitLocation;
             explorationCLI.moveOneStep();
+            Point newPosition = model.selectedUnitLocation;
+            if (model.map.fixtures.get(oldPosition).narrow<Fortress>().any(matchingValue(mover.owner, HasOwner.owner)),
+                    !model.map.fixtures.get(newPosition).narrow<Fortress>().any(matchingValue(mover.owner, HasOwner.owner))) {
+                switch (pack = cli.inputBooleanInSeries("Leaving a fortress. Take provisions along?"))
+                case (true) {
+                    packFood(cli, model.map.fixtures.get(oldPosition).narrow<Fortress>().find(matchingValue(mover.owner,
+                        HasOwner.owner)), mover);
+                }
+                case (false) {}
+                case (null) { return ""; }
+            }
             if (exists addendum = cli.inputMultilineString("Add to results:")) {
                 buffer.append(addendum);
             } else {
@@ -709,62 +806,6 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             .filter(matchingValue(player, HasOwner.owner)).flatMap(identity).narrow<ResourcePile>()
             .filter(matchingValue("food", ResourcePile.kind)).filter(matchingValue("pounds",
                 compose(Quantity.units, ResourcePile.quantity))).filter((r) => r.created <= turn).sequence();
-    }
-
-    Type? chooseFromList<Type>(Type[]|List<Type> items, String description, String none, String prompt,
-            Boolean auto, String(Type) converter = Object.string) given Type satisfies Object {
-        value entry = cli.chooseStringFromList(items.map(converter).sequence(), description, none, prompt, auto);
-        if (entry.item exists) {
-            return items[entry.key];
-        } else {
-            return null;
-        }
-    }
-
-    void removeFoodStock(ResourcePile food, Player owner) {
-        for (map->_ in model.allMaps) {
-            for (container in map.locations.flatMap(map.fixtures.get).narrow<IUnit|Fortress>()
-                    .filter(matchingValue(owner, HasOwner.owner))) {
-                variable Boolean found = false;
-                for (item in container.narrow<ResourcePile>()) {
-                    if (food.isSubset(item, noop)) { // TODO: is that the right way around?
-                        switch (container)
-                        case (is IUnit) { container.removeMember(item); }
-                        else case (is Fortress) { container.removeMember(item); }
-                        found = true;
-                        break;
-                    }
-                }
-                if (found) {
-                    break;
-                }
-            }
-        }
-    }
-
-    void reduceFoodBy(ResourcePile pile, Decimal amount, Player owner) {
-        for (map->_ in model.allMaps) {
-            for (container in map.locations.flatMap(map.fixtures.get).narrow<IUnit|Fortress>()
-                    .filter(matchingValue(owner, HasOwner.owner))) {
-                variable Boolean found = false;
-                for (item in container.narrow<ResourcePile>()) {
-                    if (pile.isSubset(item, noop)) { // TODO: is that the right way around?
-                        if (decimalize(item.quantity.number) <= amount) {
-                            switch (container)
-                            case (is IUnit) { container.removeMember(item); }
-                            else case (is Fortress) { container.removeMember(item); }
-                        } else {
-                            item.quantity = Quantity(decimalize(item.quantity.number) - amount, pile.quantity.units);
-                        }
-                        found = true;
-                        break;
-                    }
-                }
-                if (found) {
-                    break;
-                }
-            }
-        }
     }
 
     String supplierNoop() => "";
