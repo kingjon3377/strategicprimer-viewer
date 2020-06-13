@@ -127,8 +127,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
 
     {IUnit*} getUnits(Player player) {
         value temp = model.allMaps.map(Entry.key)
-            .flatMap((indivMap) =>
-        getUnitsImpl(indivMap.fixtures.items, player));
+            .flatMap((indivMap) => getUnitsImpl(indivMap.fixtures.items, player));
         MutableMap<Integer, IUnit&ProxyFor<IUnit>> tempMap =
             naturalOrderTreeMap<Integer, IUnit&ProxyFor<IUnit>>([]);
         for (unit in temp) {
