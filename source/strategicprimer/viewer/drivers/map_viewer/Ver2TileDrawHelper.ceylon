@@ -19,7 +19,6 @@ import java.io {
 import strategicprimer.model.common.map {
     HasImage,
     Point,
-    River,
     TileFixture,
     IMapNG,
     FakeFixture
@@ -31,8 +30,6 @@ import strategicprimer.drivers.common {
     FixtureMatcher
 }
 import lovelace.util.common {
-    simpleSet,
-    simpleMap,
     MissingFileException
 }
 
@@ -65,38 +62,6 @@ shared class Ver2TileDrawHelper(
 
     "Images we've already determined aren't there."
     MutableSet<String> missingFiles = HashSet<String>();
-    "A mapping from river-sets to filenames."
-    Map<Set<River>, String> riverFiles = simpleMap(
-        emptySet->"riv00.png", simpleSet(River.north)->"riv01.png",
-        simpleSet(River.east)->"riv02.png", simpleSet(River.south)->"riv03.png",
-        simpleSet(River.west)->"riv04.png", simpleSet(River.lake)->"riv05.png",
-        simpleSet(River.north, River.east)->"riv06.png",
-        simpleSet(River.north,River.south)->"riv07.png",
-        simpleSet(River.north,River.west)->"riv08.png",
-        simpleSet(River.north,River.lake)->"riv09.png",
-        simpleSet(River.east,River.south)->"riv10.png",
-        simpleSet(River.east,River.west)->"riv11.png",
-        simpleSet(River.east,River.lake)->"riv12.png",
-        simpleSet(River.south,River.west)->"riv13.png",
-        simpleSet(River.south,River.lake)->"riv14.png",
-        simpleSet(River.west,River.lake)->"riv15.png",
-        simpleSet(River.north,River.east,River.south)->"riv16.png",
-        simpleSet(River.north,River.east,River.west)->"riv17.png",
-        simpleSet(River.north,River.east,River.lake)->"riv18.png",
-        simpleSet(River.north,River.south,River.west)->"riv19.png",
-        simpleSet(River.north,River.south,River.lake)->"riv20.png",
-        simpleSet(River.north,River.west,River.lake)->"riv21.png",
-        simpleSet(River.east,River.south,River.west)->"riv22.png",
-        simpleSet(River.east,River.south,River.lake)->"riv23.png",
-        simpleSet(River.east,River.west,River.lake)->"riv24.png",
-        simpleSet(River.south,River.west,River.lake)->"riv25.png",
-        simpleSet(River.north,River.east,River.south,River.west)->"riv26.png",
-        simpleSet(River.north,River.south,River.west,River.lake)->"riv27.png",
-        simpleSet(River.north,River.east,River.west,River.lake)->"riv28.png",
-        simpleSet(River.north,River.east,River.south,River.lake)->"riv29.png",
-        simpleSet(River.east,River.south,River.west,River.lake)->"riv30.png",
-        simpleSet(River.north,River.east,River.south,River.west,River.lake)->"riv31.png"
-    );
 
     for (file in ["trees.png", "mountain.png"]) {
         try {
@@ -197,12 +162,10 @@ shared class Ver2TileDrawHelper(
                 map.baseTerrain.get(location)); // TODO: syntax sugar once compiler bug fixed
         }
         pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
-//        if (!map.rivers[location].empty) {
-        if (!map.rivers.get(location).empty) {
+//        for (river in map.rivers[location]) {
+        for (river in map.rivers.get(location)) {
             // TODO: Extract a helper drawIcon() method
-            // TODO: Switch to the model used for roads, to reduce the number of images for rivers from 32 to 5
-//            pen.drawImage(getRiverImage(map.rivers[location]), coordinates.x,
-            pen.drawImage(getRiverImage(map.rivers.get(location)), coordinates.x,
+            pen.drawImage(getImage("river``river.ordinal``.png"), coordinates.x,
                 coordinates.y, dimensions.x, dimensions.y, observerWrapper);
         }
         for (direction->_ in map.roads[location] else []) {
@@ -230,16 +193,6 @@ shared class Ver2TileDrawHelper(
 //        return map.fixtures[location] // TODO: syntax sugar once compiler bug fixed
         return map.fixtures.get(location).filter(not(`FakeFixture`.typeOf))
             .filter(filter).sort(compareFixtures);
-    }
-
-    "Get the image representing the given configuration of rivers."
-    Image getRiverImage({River*} rivers) {
-        if (exists file = riverFiles[set(rivers)]) {
-            return getImage(file);
-        } else {
-            log.error("No image found for the River set ``set(rivers)``");
-            return getImage("riv00.png");
-        }
     }
 
     """Get the "top" fixture at the given location"""

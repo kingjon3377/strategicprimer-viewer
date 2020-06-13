@@ -17,7 +17,7 @@ shared class River of north|east|south|west|lake satisfies Comparable<River> {
     shared String description;
 
     "A unique-per-case number for consistent sorting."
-    Integer ordinal;
+    shared Integer ordinal;
 
     "North."
     shared new north {
