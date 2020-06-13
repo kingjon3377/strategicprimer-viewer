@@ -84,6 +84,9 @@ shared class SPMapNG satisfies IMutableMapNG {
     "The rivers in the map."
     MutableMultimap<Point, River> riversMap = HashMultimap<Point, River>();
 
+    "Roads in the map."
+    MutableMap<Point, MutableMap<Direction, Integer>> roadsMap = HashMap<Point, MutableMap<Direction, Integer>>();
+
     "The current turn."
     shared actual variable Integer currentTurn;
 
@@ -136,6 +139,23 @@ shared class SPMapNG satisfies IMutableMapNG {
 
     "The rivers, if any, at the given location."
     shared actual Multimap<Point, River> rivers => riversMap;
+
+    "The directions and quality levels of roads at various locations."
+    shared actual Map<Point, Map<Direction, Integer>> roads => roadsMap;
+
+    shared actual void setRoadLevel(Point point, Direction direction, Integer quality) {
+        if (direction == Direction.nowhere) {
+            return;
+        }
+        assert (quality >= 0);
+        if (exists roadsAtPoint = roadsMap[point]) {
+            roadsAtPoint[direction] = quality;
+        } else {
+            value roadsAtPoint = HashMap<Direction, Integer>();
+            roadsAtPoint[direction] = quality;
+            roadsMap[point] = roadsAtPoint;
+        }
+    }
 
     "The tile fixtures (other than rivers and mountains) at the given location."
     shared actual Multimap<Point, TileFixture> fixtures => fixturesMap;
@@ -227,6 +247,7 @@ shared class SPMapNG satisfies IMutableMapNG {
                             set(rivers.get(point)) != set(obj.rivers.get(point)) ||
                             //!fixtures[point].containsEvery(obj.fixtures[point]) || // TODO: syntax sugar
                             !fixtures.get(point).containsEvery(obj.fixtures.get(point)) ||
+                            !anythingEqual(roads[point], obj.roads[point]) ||
                             //!obj.fixtures[point].containsEvery(fixtures[point])) { // TODO: syntax sugar
                             !obj.fixtures.get(point).containsEvery(fixtures.get(point))) {
                         return false;
@@ -431,6 +452,24 @@ shared class SPMapNG satisfies IMutableMapNG {
                     localReport("Extra river(s)");
                     retval = false; // return false;
                     break;
+                }
+                if (exists theirRoads = obj.roads[point]) { // TODO: Extract road-subset method
+                    if (exists ourRoads = roads[point]) {
+                        for (direction->quality in theirRoads) {
+                            value ourQuality = ourRoads[direction];
+                            if (exists ourQuality, ourQuality >= quality) {
+                                continue;
+                            } else {
+                                localReport("Has road information we don't");
+                                retval = false;
+                                break;
+                            }
+                        }
+                    } else {
+                        localReport("Has road information we don't");
+                        retval = false;
+                        continue;
+                    }
                 }
             }
             return retval;

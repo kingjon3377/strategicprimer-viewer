@@ -28,6 +28,9 @@ shared interface IMutableMapNG satisfies IMapNG {
     "Remove rivers at a location."
     shared formal void removeRivers(Point location, River* removedRivers);
 
+    "Set the road level at a location for a direction."
+    shared formal void setRoadLevel(Point location, Direction direction, Integer quality);
+
     "Add a tile fixture at the given location. Return whether the collection of fixtures
      has an additional member as a result of this operation; if the fixture was already
      present, or if it replaces one that was present, this returns false."

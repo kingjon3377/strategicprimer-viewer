@@ -11,7 +11,8 @@ import ceylon.test {
     parameters,
     test,
     assertFalse,
-    assertTrue
+    assertTrue,
+    assumeFalse
 }
 
 import org.sqlite {
@@ -29,7 +30,9 @@ import strategicprimer.model.common.map {
     Player,
     TileFixture,
     Point,
-    PlayerCollection
+    PlayerCollection,
+    Direction,
+    TileType
 }
 import strategicprimer.model.common.map.fixtures {
     ResourcePile,
@@ -419,5 +422,20 @@ object dbio_tests {
         value deserialized = assertDatabaseSerialization(map);
         assertFalse(map === deserialized, "Deserialization doesn't just return the input");
         assertTrue(Point(0, 0) in deserialized.bookmarks, "Deserialized map has the bookmark we saved");
+    }
+
+    test
+    shared void testRoadSerialization(enumeratedParameter(`class Direction`) Direction directionOne,
+            randomlyGenerated(1, 8) Integer qualityOne, enumeratedParameter(`class Direction`) Direction directionTwo,
+            randomlyGenerated(1, 8) Integer qualityTwo) {
+        assumeFalse(directionOne == directionTwo,  "We can't have the same direction twice");
+        IMutableMapNG map = SPMapNG(MapDimensionsImpl(1, 1, 2), PlayerCollection(), 1);
+        map.baseTerrain[Point(0, 0)] = TileType.plains;
+        for (direction->quality in [directionOne->qualityOne, directionTwo->qualityTwo]) {
+            if (direction != Direction.nowhere) {
+                map.setRoadLevel(Point(0, 0), direction, quality);
+            }
+        }
+        assertDatabaseSerialization(map);
     }
 }

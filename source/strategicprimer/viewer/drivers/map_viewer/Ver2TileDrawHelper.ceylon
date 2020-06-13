@@ -199,9 +199,15 @@ shared class Ver2TileDrawHelper(
         pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 //        if (!map.rivers[location].empty) {
         if (!map.rivers.get(location).empty) {
+            // TODO: Extract a helper drawIcon() method
+            // TODO: Switch to the model used for roads, to reduce the number of images for rivers from 32 to 5
 //            pen.drawImage(getRiverImage(map.rivers[location]), coordinates.x,
             pen.drawImage(getRiverImage(map.rivers.get(location)), coordinates.x,
                 coordinates.y, dimensions.x, dimensions.y, observerWrapper);
+        }
+        for (direction->_ in map.roads[location] else []) {
+            pen.drawImage(getImage("road``direction.ordinal``.png"), coordinates.x, coordinates.y,
+                dimensions.x, dimensions.y, observerWrapper);
         }
         if (exists top = getTopFixture(map, location)) {
             pen.drawImage(getImageForFixture(top), coordinates.x, coordinates.y,

@@ -113,6 +113,8 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         riverItems[direction] = item;
     }
 
+    // TODO: Make some way to manipulate roads?
+
     void updateForVersion(Integer version) {
         removeAll();
         add(bookmarkItem);

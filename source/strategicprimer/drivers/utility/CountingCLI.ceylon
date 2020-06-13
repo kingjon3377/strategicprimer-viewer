@@ -157,6 +157,7 @@ class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
         cli.println("- ``tilesRivers.filter(hasLake).count(not(Iterable<River>.empty))`` lakes");
         cli.println("- ``tilesRivers.map(withNonLake)
             .count(not(Iterable<River>.empty))`` tiles with rivers");
+        // TODO: Count tiles with roads of each type
         cli.println();
 
         MappedCounter<Ground, String, Integer> ground = simpleCounter(Ground.kind);

@@ -54,6 +54,11 @@ shared interface IMapNG satisfies Subsettable<IMapNG>&Identifiable {
     "The rivers in the map."
     shared formal Multimap<Point, River> rivers;
 
+    "Roads in the map."
+    // TODO: Should we have Road objects instead?
+    // TODO: Make a RoadQuality enum
+    shared formal Map<Point, Map<Direction, Integer>> roads;
+
     "The tile-fixtures at the various locations."
     shared formal Multimap<Point, TileFixture> fixtures;
 
@@ -79,14 +84,16 @@ shared interface IMapNG satisfies Subsettable<IMapNG>&Identifiable {
             "The player for whom the copied map is being prepared, if any."
             Player? player);
 
-    "A location is empty if it has no terrain, no Ground, no Forest, no rivers, no bookmarks, and no
-     other fixtures"
+    "A location is empty if it has no terrain, no Ground, no Forest, no rivers, no roads, no
+     bookmarks, and no other fixtures"
     shared default Boolean locationEmpty(Point location) {
         if (exists terrain = baseTerrain[location]) {
             return false;
         } else if (exists mountain = mountainous[location], mountain) {
             return false;
         } else if (exists riverList = rivers[location], !riverList.empty) {
+            return false;
+        } else if (exists tileRoads = roads[location], !tileRoads.empty) {
             return false;
         } else if (exists fixtureList = fixtures[location], !fixtureList.empty) {
             return false;

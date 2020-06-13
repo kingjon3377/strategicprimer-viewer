@@ -1,11 +1,16 @@
+import lovelace.util.common {
+    matchingValue
+}
 "An enumeration of directions of possible travel."
 shared class Direction
         of north|northeast|east|southeast|south|southwest|west|northwest|nowhere
         satisfies Comparable<Direction> {
+    shared static Direction? parse(String direction) =>
+        `Direction`.caseValues.find(matchingValue(direction, Object.string));
     "A representation of the direction for debugging purposes."
     shared actual String string;
     "An index, for getting a consistent sort order for UI purposes."
-    Integer ordinal;
+    shared Integer ordinal;
     "North."
     shared new north { string = "north"; ordinal = 1; }
     "Northeast."

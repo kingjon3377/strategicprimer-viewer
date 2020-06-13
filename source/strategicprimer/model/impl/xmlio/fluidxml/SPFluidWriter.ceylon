@@ -28,7 +28,8 @@ import strategicprimer.model.common.map {
     River,
     TileType,
     IMapNG,
-    TileFixture
+    TileFixture,
+    Direction
 }
 import strategicprimer.model.common.map.fixtures {
     Implement,
@@ -95,7 +96,8 @@ import lovelace.util.common {
     todo,
     simpleMap,
     TypeStream,
-    MalformedXMLException
+    MalformedXMLException,
+    comparingOn
 }
 import strategicprimer.model.impl.xmlio.fluidxml {
     FluidBase { ... }
@@ -301,6 +303,11 @@ shared class SPFluidWriter() satisfies SPWriter {
                     for (river in sort(obj.rivers.get(loc))) {
                         anyContents = true;
                         writeSPObjectImpl(ostream, river, indentation + 4);
+                    }
+                    for (direction->quality in obj.roads.getOrDefault(loc, [])
+                            .sort(comparingOn(Entry<Direction,Integer>.key, increasing<Direction>))) {
+                        writeTag(ostream, "road", indentation + 4, true);
+                        writeAttributes(ostream, "direction"->direction.string, "quality"->quality);
                     }
                     // To avoid breaking map-format-conversion tests, and to
                     // avoid churn in existing maps, put the first Ground and Forest

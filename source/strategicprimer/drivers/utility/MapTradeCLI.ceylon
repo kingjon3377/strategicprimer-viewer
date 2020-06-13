@@ -184,6 +184,10 @@ shared class MapTradeCLI satisfies CLIDriver {
         if (is Null copyRivers) {
             return;
         }
+        Boolean? copyRoads = cli.inputBoolean("Include roads?");
+        if (is Null copyRoads) {
+            return;
+        }
         matchers.each(askAbout);
         Boolean zeroFixtures;
         if (first.currentPlayer.independent || second.currentPlayer.independent ||
@@ -215,6 +219,17 @@ shared class MapTradeCLI satisfies CLIDriver {
                 //second.addRivers(location, *first.rivers[location]); // TODO: syntax sugar
                 second.addRivers(location, *first.rivers.get(location));
                 model.setModifiedFlag(second, true);
+            }
+            if (copyRoads, exists roads = first.roads[location]) {
+                value existingRoads = second.roads[location];
+                for (direction->quality in roads) {
+                    value existingRoad = existingRoads?.get(direction);
+                    if (exists existingRoad, existingRoad >= quality) {
+                        continue;
+                    } else {
+                        second.setRoadLevel(location, direction, quality);
+                    }
+                }
             }
             count++;
         }

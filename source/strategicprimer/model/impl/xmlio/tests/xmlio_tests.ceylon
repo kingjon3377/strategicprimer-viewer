@@ -9,7 +9,8 @@ import ceylon.test {
     parameters,
     test,
     assertNotEquals,
-    assertThatException
+    assertThatException,
+    assumeFalse
 }
 
 import java.io {
@@ -56,7 +57,8 @@ import strategicprimer.model.common.map {
     IMutableMapNG,
     IMapNG,
     HasNotes,
-    SPMapNG
+    SPMapNG,
+    Direction
 }
 import strategicprimer.model.common.map.fixtures {
     TextFixture,
@@ -1776,5 +1778,20 @@ object xmlTests {
         }
         assertFalse(map === deserialized, "Deserialization doesn't just return the input");
         assertTrue(Point(0, 0) in deserialized.bookmarks, "Deserialized map has the bookmark we saved");
+    }
+
+    "Test serialization of roads."
+    test
+    shared void testRoadSerialization(enumeratedParameter(`class Direction`) Direction directionOne,
+            randomlyGenerated(1, 8) Integer qualityOne, enumeratedParameter(`class Direction`) Direction directionTwo,
+            randomlyGenerated(1, 8) Integer qualityTwo) {
+        assumeFalse(directionOne == directionTwo,  "We can't have the same direction twice");
+        IMutableMapNG map = createSimpleMap(Point(1, 1), Point(0, 0)->TileType.plains);
+        for (direction->quality in [directionOne->qualityOne, directionTwo->qualityTwo]) {
+            if (direction != Direction.nowhere) {
+                map.setRoadLevel(Point(0, 0), direction, quality);
+            }
+        }
+        assertSerialization("Map with roads is serialized properly.", map, warningLevels.die);
     }
 }

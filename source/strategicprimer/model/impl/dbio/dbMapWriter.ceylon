@@ -39,7 +39,16 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
                row INTEGER NOT NULL,
                column INTEGER NOT NULL,
                player INTEGER NOT NULL
-           );"""
+           );""",
+        """CREATE TABLE IF NOT EXISTS roads (
+               row INTEGER NOT NULL,
+               column INTEGER NOT NULL,
+               direction VARCHAR(9) NOT NULL
+                  CHECK (direction IN ('north', 'south', 'east', 'west', 'northeast',
+                        'southeast', 'northwest', 'southwest')),
+               quality INTEGER NOT NULL
+
+           )"""
     ];
 
     shared actual void write(Sql db, IMutableMapNG obj, IMapNG context) {
@@ -58,6 +67,8 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
                VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);""");
         value bookmarkInsertion = db.Insert(
             """INSERT INTO bookmarks (row, column, player) VALUES(?, ?, ?)""");
+        value roadsInsertion = db.Insert(
+            """INSERT INTO roads (row, column, direction, quality) VALUES(?, ?, ?, ?)""");
         variable Integer count = 0;
         variable Integer fixtureCount = 0;
         for (location in obj.locations) {
@@ -72,6 +83,9 @@ object dbMapWriter extends AbstractDatabaseWriter<IMutableMapNG, IMapNG>() {
             }
             for (player in obj.allBookmarks.get(location)) {
                 bookmarkInsertion.execute(location.row, location.column, player.playerId);
+            }
+            for (direction->quality in obj.roads.getOrDefault(location, [])) {
+                roadsInsertion.execute(location.row, location.column, direction.string, quality);
             }
             count++;
             if (25.divides(count)) {

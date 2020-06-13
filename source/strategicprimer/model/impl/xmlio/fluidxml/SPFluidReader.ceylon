@@ -58,7 +58,8 @@ import strategicprimer.model.common.map {
     TileFixture,
     PlayerCollection,
     IMutableMapNG,
-    SPMapNG
+    SPMapNG,
+    Direction
 }
 import strategicprimer.model.common.map.fixtures {
     FortressMember,
@@ -205,6 +206,14 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
             expectAttributes(element, warner, "player");
             map.addBookmark(currentTile, players.getPlayer(getIntegerAttribute(element, "player")));
             return;
+        } else if ("road" == type) {
+            expectAttributes(element, warner, "direction", "quality");
+            if (is Direction direction = Direction.parse(getAttribute(element, "direction"))) {
+                map.setRoadLevel(currentTile, direction, getIntegerAttribute(element, "quality"));
+                return;
+            } else {
+                throw MissingPropertyException(element, "direction");
+            }
         }
         Object child = readSPObject(element, parent.name, stream, players, warner,
             idFactory);

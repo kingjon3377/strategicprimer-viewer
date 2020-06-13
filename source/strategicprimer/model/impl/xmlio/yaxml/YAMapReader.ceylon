@@ -33,7 +33,8 @@ import strategicprimer.model.common.map {
     TileFixture,
     IMutableMapNG,
     IMapNG,
-    SPMapNG
+    SPMapNG,
+    Direction
 }
 import strategicprimer.model.common.map.fixtures {
     TextFixture,
@@ -64,7 +65,8 @@ import ceylon.language.meta.model {
     ClassOrInterface
 }
 import lovelace.util.common {
-    matchingValue
+    matchingValue,
+    comparingOn
 }
 
 // TODO: Use the one in the Animal maturityModel instead of here?
@@ -268,6 +270,14 @@ class YAMapReader("The Warning instance to use" Warning warner,
                         tagStack.push(event.name);
                         expectAttributes(event, "player");
                         retval.addBookmark(localPoint, players.getPlayer(getIntegerParameter(event, "player")));
+                    } else if ("road" == type) {
+                        tagStack.push(event.name);
+                        expectAttributes(event, "direction", "quality");
+                        if (exists direction = Direction.parse(getParameter(event, "direction"))) {
+                            retval.setRoadLevel(localPoint, direction, getIntegerParameter(event, "quality"));
+                        } else {
+                            throw MissingPropertyException(event, "direction");
+                        }
                     } else {
                         assert (exists top = tagStack.top);
                         value child = parseFixture(event, top, stream);
@@ -392,6 +402,15 @@ class YAMapReader("The Warning instance to use" Warning warner,
                         eolIfNeeded(needEol, ostream);
                         needEol = false;
                         writeRiver(ostream, river, tabs + 4);
+                    }
+                    for (direction->quality in obj.roads.getOrDefault(loc, [])
+                            .sort(comparingOn(Entry<Direction,Integer>.key, increasing<Direction>))) {
+                        eolIfNeeded(needEol, ostream);
+                        needEol = false;
+                        writeTag(ostream, "road", tabs + 4);
+                        writeProperty(ostream, "direction", direction.string);
+                        writeProperty(ostream, "quality", quality);
+                        closeLeafTag(ostream);
                     }
                     // To avoid breaking map-format-conversion tests, and to
                     // avoid churn in existing maps, put the first Ground and Forest

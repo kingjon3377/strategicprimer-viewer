@@ -122,6 +122,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
         }
         //map.addRivers(point, *mainMap.rivers[point]); // TODO: syntax sugar
         map.addRivers(point, *mainMap.rivers.get(point));
+        // TODO: Should we copy roads here?
     }
 
     "Whether the given fixture is contained in the given stream."

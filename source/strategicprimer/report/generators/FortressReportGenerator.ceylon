@@ -106,6 +106,12 @@ shared class FortressReportGenerator(
                      ");
         //            riversToString(ostream, *map.rivers[loc]); // TODO: syntax sugar once compiler bug fixed
         riversToString(ostream, *map.rivers.get(loc));
+        if (exists roads = map.roads[loc], !roads.empty) {
+            ostream("<li>There are roads going in the the following directions:");
+            ostream(", ".join(roads.keys)); // TODO: Report what kinds of roads they are
+            ostream("""</li>
+                       """);
+        }
         MutableList<IUnit> units = ArrayList<IUnit>();
         MutableList<Implement> equipment = ArrayList<Implement>();
         MutableMultimap<String, ResourcePile> resources =

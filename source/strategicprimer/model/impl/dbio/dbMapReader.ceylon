@@ -16,7 +16,8 @@ import strategicprimer.model.common.map {
     TileType,
     River,
     IMutablePlayerCollection,
-    PlayerCollection
+    PlayerCollection,
+    Direction
 }
 import strategicprimer.model.common.xmlio {
     Warning
@@ -112,6 +113,13 @@ object dbMapReader {
             if (50.divides(count)) {
                 log.trace("Read terrain for ``count`` tiles");
             }
+        }
+        for (dbRow in db.Select("""SELECT * FROM roads""").Results()) {
+            assert (is Integer row = dbRow["row"], is Integer column = dbRow["column"],
+                is String direction = dbRow["direction"], is Direction directionObj = Direction.parse(direction),
+                is Integer quality = dbRow["quality"]);
+            retval.setRoadLevel(Point(row, column), directionObj, quality);
+
         }
         log.trace("Finished reading terrain");
         for (dbRow in db.Select("""SELECT * FROM bookmarks""").Results()) {

@@ -85,6 +85,7 @@ shared object simpleMovementModel {
     }
 
     "Get the cost of movement in the given conditions."
+    // FIXME: Reduce cost when roads present (TODO: rebalance base costs?)
     shared Integer movementCost(
             """The terrain being traversed. Null if "not visible.""""
             TileType? terrain,

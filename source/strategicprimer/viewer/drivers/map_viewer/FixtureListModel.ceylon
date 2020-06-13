@@ -95,6 +95,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
         if (nonempty rivers = map.rivers.get(newPoint).sequence()) { // TODO: syntax sugar
             cachedTerrainList = cachedTerrainList.withTrailing(RiverFixture(rivers));
         }
+        // TODO: Add support for roads
         log.trace("FixtureListModel.selectedPointChanged: Accounted for rivers");
 //        if (map.mountainous[newPoint]) { // TODO: syntax sugar
         if (map.mountainous.get(newPoint)) {
@@ -165,7 +166,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
                 Integer index = cachedTerrainList.size;
                 cachedTerrainList = cachedTerrainList.withTrailing(fixture);
                 fireIntervalAdded(index..index);
-            }
+            } // TODO: Handle roads
         } else if (is MountainFixture fixture) {
 //        if (map.mountainous[point]) { // TODO: syntax sugar
             if (map.mountainous.get(point)) {

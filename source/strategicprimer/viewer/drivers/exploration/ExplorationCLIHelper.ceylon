@@ -251,16 +251,30 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             cli.print("The explorer comes to ``destPoint``, a ``mtn````
                 map.baseTerrain[destPoint] else "unknown-terrain"`` tile");
             {River*} rivers = map.rivers.get(destPoint);
+            Boolean anyRivers;
             if (rivers.any(River.lake.equals)) {
+                anyRivers = true;
                 if (rivers.any(not(River.lake.equals))) {
                     cli.print(" with a lake and (a) river(s) flowing ");
                 } else {
                     cli.print(" with a lake");
                 }
             } else if (!rivers.empty) {
+                anyRivers = true;
                 cli.print(" with (a) river(s) flowing ");
+            } else {
+                anyRivers = false;
             }
             cli.println(", ".join(rivers));
+
+            if (exists roads = map.roads[destPoint], !roads.empty) {
+                if (anyRivers) {
+                    cli.print("There are (a) road(s) to the ");
+                } else {
+                    cli.print(" with (a) road(s) to the ");
+                }
+                cli.println(", ".join(roads.keys)); // TODO: Report on road quality
+            }
             {TileFixture*} noticed = simpleMovementModel.selectNoticed(allFixtures,
                 identity<TileFixture>, mover, speed);
 
