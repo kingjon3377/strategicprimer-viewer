@@ -149,6 +149,15 @@ shared class Ver2TileDrawHelper(
                 observer(img, infoflags, x, y, width, height);
     }
 
+    "Draw an icon at the specified coordinates."
+    void drawIcon(Graphics pen, String|Image icon, Coordinate coordinates, Coordinate dimensions) {
+        Image image;
+        switch (icon)
+        case (is Image) { image = icon; }
+        case (is String) { image = getImage(icon); }
+        pen.drawImage(image, coordinates.x, coordinates.y, dimensions.x, dimensions.y, observerWrapper);
+    }
+
     "Draw a tile at the specified coordinates. Because this is at present only called in
      a loop that's the last thing before the graphics context is disposed, we alter the
      state freely and don't restore it."
@@ -164,25 +173,19 @@ shared class Ver2TileDrawHelper(
         pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
 //        for (river in map.rivers[location]) {
         for (river in map.rivers.get(location)) {
-            // TODO: Extract a helper drawIcon() method
-            pen.drawImage(getImage("river``river.ordinal``.png"), coordinates.x,
-                coordinates.y, dimensions.x, dimensions.y, observerWrapper);
+            drawIcon(pen, "river``river.ordinal``.png", coordinates, dimensions);
         }
         for (direction->_ in map.roads[location] else []) {
-            pen.drawImage(getImage("road``direction.ordinal``.png"), coordinates.x, coordinates.y,
-                dimensions.x, dimensions.y, observerWrapper);
+            drawIcon(pen, "road``direction.ordinal``.png", coordinates, dimensions);
         }
         if (exists top = getTopFixture(map, location)) {
-            pen.drawImage(getImageForFixture(top), coordinates.x, coordinates.y,
-                dimensions.x, dimensions.y, observerWrapper);
+            drawIcon(pen, getImageForFixture(top), coordinates, dimensions);
 //        } else if (map.mountainous[location]) { // TODO: syntax sugar once compiler bug fixed
         } else if (map.mountainous.get(location)) {
-            pen.drawImage(getImage("mountain.png"), coordinates.x, coordinates.y,
-                dimensions.x, dimensions.y, observerWrapper);
+            drawIcon(pen, "mountain.png", coordinates, dimensions);
         }
         if (location in map.bookmarks) {
-            pen.drawImage(getImage("bookmark.png"), coordinates.x, coordinates.y,
-                dimensions.x, dimensions.y, observerWrapper);
+            drawIcon(pen, "bookmark.png", coordinates, dimensions);
         }
         pen.color = Color.black;
         pen.drawRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
