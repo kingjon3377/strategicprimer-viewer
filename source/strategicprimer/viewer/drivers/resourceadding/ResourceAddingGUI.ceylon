@@ -164,6 +164,17 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
     static void logError(StreamingLabel logLabel)(String message) =>
         logLabel.append("<p style=\"``errorCSS``\">``message``</p>");
 
+    static void addListenerToField(JSpinner field, Anything(ActionEvent) listener, StreamingLabel logLabel) {
+        if (is JTextField editor = field.editor) {
+            editor.addActionListener(listener);
+        } else if (is JSpinner.DefaultEditor editor = field.editor) {
+            editor.textField.addActionListener(listener);
+        } else {
+            logLabel.append("Spinner's editor wasn't a text field, but a ");
+            logLabel.appendLine(classDeclaration(field.editor).string);
+        }
+    }
+
 
     shared actual ResourceManagementDriverModel model;
     ICLIHelper cli;
@@ -251,22 +262,8 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
             ListenedButton("Add Resource", resourceListener)));
         resourceUnitsBox.addSubmitListener(resourceListener);
 
-        if (is JTextField editor = creationSpinner.editor) {
-            editor.addActionListener(resourceListener);
-        } else if (is JSpinner.DefaultEditor editor = creationSpinner.editor) {
-            editor.textField.addActionListener(resourceListener);
-        } else {
-            logLabel.append("Turn-created spinner's editor wasn't a text field, but a ");
-            logLabel.appendLine(classDeclaration(creationSpinner.editor).string);
-        }
-        if (is JTextField editor = resourceQuantitySpinner.editor) {
-            editor.addActionListener(resourceListener);
-        } else if (is JSpinner.DefaultEditor editor = creationSpinner.editor) {
-            editor.textField.addActionListener(resourceListener);
-        } else {
-            logLabel.append("Quantity spinner's editor wasn't a text field, but a ");
-            logLabel.appendLine(classDeclaration(resourceQuantitySpinner.editor).string);
-        }
+        addListenerToField(creationSpinner, resourceListener, logLabel);
+        addListenerToField(resourceQuantitySpinner, resourceListener, logLabel);
 
         resourceBox.addSubmitListener(resourceListener);
         resourceKindBox.addSubmitListener(resourceListener);
@@ -296,15 +293,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         }
 
         implementKindBox.addSubmitListener(implementListener);
-        if (is JTextField editor = implementQuantityField.editor) {
-            editor.addActionListener(implementListener);
-        } else if (is JSpinner.DefaultEditor editor = implementQuantityField.editor) {
-            editor.textField.addActionListener(implementListener);
-        } else {
-            logLabel.append(
-                "Implement quantity spinner's editor wasn't a text field, but a ");
-            logLabel.appendLine(classDeclaration(implementQuantityField.editor).string);
-        }
+        addListenerToField(implementQuantityField, implementListener, logLabel);
 
         mainPanel.add(centeredHorizontalBox(implementQuantityField,
             implementKindBox, ListenedButton("Add Equipment", implementListener)));
