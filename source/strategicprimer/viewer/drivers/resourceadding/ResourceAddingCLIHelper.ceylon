@@ -47,7 +47,7 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
      Returns [[null]] on EOF."
     String? getResourceContents(String kind) {
         if (exists item = cli.chooseStringFromList(resourceContents.get(kind).sequence(),
-                "Possible resources in the ``kind`` category`",
+                "Possible resources in the ``kind`` category:",
                 "No resources entered yet", "Choose resource: ", false).item) {
             return item;
         } else if (exists retval = cli.inputString("Resource to use: ")) {
