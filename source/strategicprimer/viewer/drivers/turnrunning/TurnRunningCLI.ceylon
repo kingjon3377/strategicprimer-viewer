@@ -533,6 +533,9 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                                 "Enter details of harvest (any empty string aborts):");
                             while (exists resource =
                                     resourceAddingHelper.enterResource()) {
+                                if (resource.kind == "food") {
+                                    resource.created = model.map.currentTurn;
+                                }
                                 addResourceToMaps(resource, unit.owner);
                             }
                         }
@@ -641,6 +644,9 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                                 "Enter resources produced (any empty string aborts):");
                             while (exists resource =
                                 resourceAddingHelper.enterResource()) {
+                                if (resource.kind == "food") {
+                                    resource.created = model.map.currentTurn;
+                                }
                                 addResourceToMaps(resource, unit.owner);
                             }
                         }
@@ -767,6 +773,9 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                                 "Enter resources produced (any empty string aborts):");
                             while (exists resource =
                                 resourceAddingHelper.enterResource()) {
+                                if (resource.kind == "food") {
+                                    resource.created = model.map.currentTurn;
+                                }
                                 addResourceToMaps(resource, unit.owner);
                             }
                         }
