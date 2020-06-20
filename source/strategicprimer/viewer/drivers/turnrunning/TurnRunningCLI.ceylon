@@ -634,6 +634,7 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
                         }
                         switch (cli.inputBooleanInSeries(
                             "Reduce animal group population of ``find.population``?"))
+                        // FIXME: Support capturing animals
                         case (true) { reducePopulation(loc, find, "animals", true); }
                         case (false) { addToSubMaps(loc, find, true); }
                         case (null) { return ""; }
