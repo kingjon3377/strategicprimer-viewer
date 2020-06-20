@@ -18,6 +18,9 @@ import ceylon.collection {
 import lovelace.util.common {
     MalformedXMLException
 }
+import java.lang {
+    JBoolean=Boolean
+}
 
 """A wrapper around [[XMLEventReader]] that hides its "raw type" from callers,
    additionally satisfying [[the Ceylon Iterable interface|Iterable]] instead
@@ -39,7 +42,10 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent>&Destroyable {
             }
         } else {
             try {
-                wrapped = XMLInputFactory.newInstance().createXMLEventReader(reader);
+                value factory = XMLInputFactory.newInstance();
+                factory.setProperty(XMLInputFactory.supportDtd, JBoolean.false);
+                factory.setProperty("javax.xml.stream.isSupportingExternalEntities", JBoolean.false);
+                wrapped = factory.createXMLEventReader(reader);
             } catch (XMLStreamException except) {
                 throw MalformedXMLException(except);
             }
