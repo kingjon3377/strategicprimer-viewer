@@ -117,13 +117,22 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     InterpolatedLabel<[Player]> playerLabel =
             InterpolatedLabel<[Player]>(playerLabelText, [model.currentPlayer]);
 
-    value ordersPanelObj = ordersPanel(mainMap.currentTurn, model.currentPlayer,
+    value ordersPanelObj = ordersPanel("Orders", mainMap.currentTurn, model.currentPlayer,
         model.getUnits, uncurry(IUnit.getLatestOrders), uncurry(IUnit.setOrders),
         markModified);
     tree.addTreeSelectionListener(ordersPanelObj);
 
-    value resultsPanel = ordersPanel(mainMap.currentTurn, model.currentPlayer,
-        model.getUnits, uncurry(IUnit.getResults), null, noop);
+    Anything(IUnit, Integer, String)? resultsSupplier;
+    Anything() resultsModListener;
+    if ("true" == options.getArgument("--edit-results")) {
+        resultsSupplier = uncurry(IUnit.setResults);
+        resultsModListener = markModified;
+    } else {
+        resultsSupplier = null;
+        resultsModListener = noop;
+    }
+    value resultsPanel = ordersPanel("Results", mainMap.currentTurn, model.currentPlayer,
+        model.getUnits, uncurry(IUnit.getResults), resultsSupplier, resultsModListener);
     tree.addTreeSelectionListener(resultsPanel);
 
     value notesPanelInstance = notesPanel(model.map.currentPlayer);

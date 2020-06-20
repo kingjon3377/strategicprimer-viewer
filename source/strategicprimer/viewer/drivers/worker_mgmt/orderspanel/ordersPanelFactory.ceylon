@@ -22,8 +22,8 @@ import strategicprimer.model.common.map {
 
 "Create and return a panel for the user to enter a unit's orders or read a unit's
  results."
-shared JPanel&OrdersContainer ordersPanel(Integer currentTurn, Player currentPlayer,
-        {IUnit*}(Player, String) playerUnits,
+shared JPanel&OrdersContainer ordersPanel(String description, Integer currentTurn,
+	Player currentPlayer, {IUnit*}(Player, String) playerUnits,
         String(IUnit, Integer) ordersSupplier,
         Anything(IUnit, Integer, String)? ordersConsumer,
         Anything() modificationListener) {
@@ -37,6 +37,15 @@ shared JPanel&OrdersContainer ordersPanel(Integer currentTurn, Player currentPla
     value retval = OrdersPanel(currentTurn, currentPlayer, playerUnits, ordersSupplier,
         ordersConsumer, modificationListener, spinnerModel, area);
 
+    String topLabel;
+    if (description == "Orders") {
+        String prefix = platform.shortcutDescription;
+        topLabel = "Orders for current selection, if a unit: (``prefix``D)";
+    } else {
+        topLabel = description + " for current selection, if a unit:";
+    }
+    retval.pageStart = BorderedPanel.horizontalPanel(JLabel(topLabel), null,
+        BorderedPanel.horizontalPanel(null, JLabel("Turn "), JSpinner(spinnerModel)));
     if (exists ordersConsumer) {
         JButton applyButton = ListenedButton("Apply", retval.apply);
         JButton revertButton = ListenedButton("Revert", retval.revert);
@@ -45,17 +54,7 @@ shared JPanel&OrdersContainer ordersPanel(Integer currentTurn, Player currentPla
         JPanel buttonPanel = (platform.systemIsMac) then
             centeredHorizontalBox(revertButton, applyButton)
             else BorderedPanel.horizontalPanel(revertButton, null, applyButton);
-        String prefix = platform.shortcutDescription;
-        retval.pageStart = BorderedPanel.horizontalPanel(
-            JLabel("Orders for current selection, if a unit: (``prefix``D)"), null,
-            BorderedPanel.horizontalPanel(null, JLabel("Turn "),
-                JSpinner(spinnerModel)));
         retval.pageEnd = buttonPanel;
-    } else {
-        retval.pageStart = BorderedPanel.horizontalPanel(
-            JLabel("Results for current selection, if a unit"), null,
-            BorderedPanel.horizontalPanel(null, JLabel("Turn "),
-                JSpinner(spinnerModel)));
     }
     retval.center = JScrollPane(area);
     area.lineWrap = true;

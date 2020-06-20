@@ -70,7 +70,7 @@ shared class WorkerMgmtGUIFactory() satisfies GUIDriverFactory {
         includeInCLIList = false;
         includeInGUIList = true;
         supportedOptions = [ "--current-turn=NN", "--print-empty",
-            "--include-unleveled-jobs", "--summarize-large-units" ];
+            "--include-unleveled-jobs", "--summarize-large-units", "--edit-results" ];
     };
 
     "Ask the user to choose a file or files."
