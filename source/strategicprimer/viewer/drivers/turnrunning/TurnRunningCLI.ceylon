@@ -171,8 +171,8 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
         assert (exists unit = model.selectedUnit);
         StringBuilder buffer = StringBuilder();
         Fortress? home = containingFortress(unit);
-        for (kind in unit.narrow<Animal>().map(Animal.kind).distinct
-                .filter(not(herdModels.keys.contains))) {
+        for (kind in unit.narrow<Animal>().filter((animal) => ["domesticated", "tame"].contains(animal.status))
+                .map(Animal.kind).distinct .filter(not(herdModels.keys.contains))) {
             if (exists herdModel = chooseHerdModel(kind)) {
                 herdModels[kind] = herdModel;
             } else {
