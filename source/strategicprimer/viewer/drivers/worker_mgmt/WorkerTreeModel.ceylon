@@ -327,6 +327,8 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             return model.getUnitKinds(obj);
         } else if (is String obj) {
             return model.getUnits(root, obj);
+        } else if (is JString obj) {
+            return model.getUnits(root, obj.string);
         } else if (is IUnit obj) {
             return obj;
         } else {

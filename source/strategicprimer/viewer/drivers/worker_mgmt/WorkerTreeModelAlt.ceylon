@@ -497,8 +497,11 @@ shared class WorkerTreeModelAlt extends DefaultTreeModel satisfies IWorkerTreeMo
     shared actual void mapMetadataChanged() {}
 
     shared actual {TreeNode*} childrenOf(Object obj) {
+        assert (is PlayerNode temp = root);
         if (is WorkerTreeNode<out Object> obj) {
             return obj;
+        } else if (exists node = getNode(temp, obj)) {
+            return childrenOf(node);
         } else {
             return [];
         }

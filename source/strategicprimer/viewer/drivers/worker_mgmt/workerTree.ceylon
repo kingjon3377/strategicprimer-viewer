@@ -303,7 +303,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
             }
             else {
                 variable Boolean? retval = null;
-                for (unit in wtModel.childrenOf(item).narrow<IUnit>()) {
+                for (unit in wtModel.childrenOf(item).map(wtModel.getModelObject)
+                        .narrow<IUnit>()) {
                     if (exists unitPaint = shouldChangeBackground(unit)) {
                         if (unitPaint) {
                             return true;
