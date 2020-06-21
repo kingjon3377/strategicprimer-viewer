@@ -6,8 +6,8 @@ import lovelace.util.common {
     simpleMap
 }
 "A class to allow CLI drivers to present a menu of applets to the user."
-shared class AppletChooser<AppletClass>(ICLIHelper cli, AppletClass* applets)
-        given AppletClass satisfies Applet {
+shared class AppletChooser<AppletClass, AppletArgs=[]>(ICLIHelper cli, AppletClass* applets)
+        given AppletClass satisfies Applet<AppletArgs> given AppletArgs satisfies Anything[] {
     Map<String, AppletClass> createCommandsMap() {
         MutableMap<String, AppletClass> retval = HashMap<String, AppletClass>();
         for (applet in applets) {

@@ -123,10 +123,10 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
         }
     }
-    AppletChooser<SimpleApplet> appletChooser = AppletChooser(cli,
-        SimpleApplet(model.swearVillages, "Swear any village here to the player",
+    AppletChooser<SimpleApplet<[]>, []> appletChooser = AppletChooser(cli,
+        SimpleApplet<[]>(model.swearVillages, "Swear any village here to the player",
             "swear"),
-        SimpleApplet(model.dig, "Dig to expose some ground here", "dig"));
+        SimpleApplet<[]>(model.dig, "Dig to expose some ground here", "dig"));
     Pathfinder pather = pathfinder(model.subordinateMaps.first?.key else model.map);
     "If the unit has a proposed path, move one more tile along it; otherwise, ask the user
      for directions once and make that move, then return to the caller."
@@ -233,7 +233,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                     switch (applet = appletChooser.chooseApplet())
                     case (true|null) { continue; }
                     case (false) { break; }
-                    case (is SimpleApplet) { applet.invoke(); }
+                    case (is SimpleApplet<[]>) { applet.invoke(); }
                 }
             }
 

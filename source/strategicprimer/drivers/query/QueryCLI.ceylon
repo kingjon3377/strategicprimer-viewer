@@ -239,7 +239,7 @@ shared class QueryCLI satisfies ReadOnlyDriver {
         }
     }
 
-    AppletChooser<SimpleApplet> appletChooser = AppletChooser(cli,
+    AppletChooser<SimpleApplet<[]>, []> appletChooser = AppletChooser(cli,
         SimpleApplet(defer(compose(fortressInfo, cli.inputPoint),
                 ["Location of fortress?"]),
             "Show what a player automatically knows about a fortress's tile.",
@@ -257,7 +257,7 @@ shared class QueryCLI satisfies ReadOnlyDriver {
             switch (selection = appletChooser.chooseApplet())
             case (null|true) { continue; }
             case (false) { break; }
-            case (is SimpleApplet) {
+            case (is SimpleApplet<[]>) {
                 selection.invoke();
             }
         }
