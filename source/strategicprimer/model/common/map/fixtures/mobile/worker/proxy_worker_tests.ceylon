@@ -28,6 +28,10 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
     IJob
 }
 
+import lovelace.util.common {
+    as
+}
+
 "Tests that the proxy classes work as expected."
 object proxyWorkerTests {
     "Assert that a worker contains a Job and that this Job is not empty."
@@ -217,5 +221,38 @@ object proxyWorkerTests {
             "Common skill isn't there after being removed");
         assertFalse(jobTwo.map(ISkill.name).any("skillOne".equals),
             "Common skill isn't there after being removed");
+    }
+
+    "Test that sorting workers via a proxy works properly."
+    test
+    shared void testSorting() {
+        IWorker workerOne = Worker("f", "human", 1);
+        IWorker workerTwo = Worker("f", "human", 1);
+        IWorker workerThree = Worker("e", "human", 2);
+        IWorker workerFour = Worker("d", "human", 3);
+        IWorker workerFive = Worker("c", "human", 4);
+        IWorker workerSix = Worker("c", "human", 4);
+        IWorker workerSeven = Worker("b", "human", 5);
+        IWorker workerEight = Worker("a", "human", 6);
+        IWorker workerNine = Worker("a", "human", 6);
+        value player = PlayerImpl(1, "player");
+        IUnit unitOne = Unit(player, "unit", "unit", 7);
+        for (worker in [workerOne, workerThree, workerFour, workerFive, workerSeven, workerEight]) {
+            unitOne.addMember(worker);
+        }
+        IUnit unitTwo = Unit(player, "unit", "unit", 7);
+        for (worker in [workerTwo, workerSix, workerNine]) {
+            unitTwo.addMember(worker);
+        }
+        value proxy = ProxyUnit.fromParallelMaps(7);
+        proxy.addProxied(unitOne);
+        proxy.addProxied(unitTwo);
+        assertEquals(as<IWorker>(unitOne.first)?.name, "f", "Unit is not initially sorted");
+        assertEquals(as<IWorker>(unitTwo.first)?.name, "f", "Unit is not initially sorted");
+        assertEquals(as<IWorker>(proxy.first)?.name, "f", "Proxy unit is not initially sorted");
+        proxy.sortMembers();
+        assertEquals(as<IWorker>(unitOne.first)?.name, "a", "Sorting proxy sorts the units");
+        assertEquals(as<IWorker>(unitTwo.first)?.name, "a", "Sorting proxy sorts the units");
+        assertEquals(as<IWorker>(proxy.first)?.name, "a", "Sorting proxy works");
     }
 }

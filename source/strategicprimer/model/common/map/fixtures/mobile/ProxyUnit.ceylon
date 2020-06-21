@@ -3,6 +3,8 @@ import ceylon.collection {
     ArrayList,
     MutableMap,
     naturalOrderTreeMap,
+    HashMap,
+    linked,
     SortedMap
 }
 
@@ -179,8 +181,8 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         } else {
             MutableMap<Integer, UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|
                         IWorker&ProxyFor<IWorker>> map =
-                    naturalOrderTreeMap<Integer, UnitMember&ProxyFor<UnitMember>|
-                        Animal&ProxyFor<Animal>|IWorker&ProxyFor<IWorker>>([]);
+                    HashMap<Integer, UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|
+                        IWorker&ProxyFor<IWorker>>(linked);
             for (member in proxiedList.flatMap(identity)) {
                 UnitMember&ProxyFor<UnitMember>|Animal&ProxyFor<Animal>|
                     IWorker&ProxyFor<IWorker> proxy;
@@ -379,5 +381,6 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
         for (proxiedUnit in proxied) {
             proxiedUnit.sortMembers();
         }
+        cachedIterable = [];
     }
 }
