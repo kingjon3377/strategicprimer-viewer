@@ -134,4 +134,7 @@ shared class Meadow(kind, field, cultivated, id, status, acres = -1)
 
     shared actual Meadow combined(Meadow other) =>
         Meadow(kind, field, cultivated, id, status, sum(acres, other.acres));
+
+    shared actual Meadow reduced(Number<out Number<out Anything>> subtrahend) =>
+        Meadow(kind, field, cultivated, id, status, sum(acres, subtrahend.negated));
 }

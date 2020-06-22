@@ -129,4 +129,6 @@ shared interface HasExtent<Self> satisfies IFixture&Subsettable<IFixture>
     "Returns a copy o this object, except with its extent increased by the extent of the
      [[addend]], which must be of the same type."
     shared formal Self combined(Self addend);
+    "Returns a copy of this object, except with its extent reduced by [[subtrahend]] acres."
+    shared formal Self reduced(Number<out Number<out Anything>> subtrahend);
 }

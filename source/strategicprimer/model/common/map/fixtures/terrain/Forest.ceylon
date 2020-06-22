@@ -112,4 +112,7 @@ shared class Forest(kind, rows, id, acres = -1)
 
     shared actual Forest combined(Forest other) =>
         Forest(kind, rows, id, sum(acres, other.acres));
+
+    shared actual Forest reduced(Number<out Number<out Anything>> subtrahend) =>
+        Forest(kind, rows, id, sum(acres, subtrahend.negated));
 }
