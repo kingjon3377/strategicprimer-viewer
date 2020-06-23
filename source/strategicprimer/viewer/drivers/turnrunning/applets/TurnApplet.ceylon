@@ -56,7 +56,7 @@ shared interface TurnApplet satisfies Applet<[]> {
 }
 
 // TODO: Most of these 'default' functions should probably go into a 'TurnRunningModel' interface
-abstract class AbstractTurnApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) satisfies TurnApplet {
+shared abstract class AbstractTurnApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) satisfies TurnApplet {
     shared Type? chooseFromList<Type>(Type[]|List<Type> items, String description, String none,
             String prompt, Boolean auto, String(Type) converter = Object.string) given Type satisfies Object {
         value entry = cli.chooseStringFromList(items.map(converter).sequence(), description, none, prompt, auto);
@@ -202,4 +202,12 @@ abstract class AbstractTurnApplet(IExplorationModel model, ICLIHelper cli, IDReg
             }
         }
     }
+
+    shared [ResourcePile*] getFoodFor(Player player, Integer turn) { // TODO: Move into the model?
+        return model.map.locations.flatMap(model.map.fixtures.get).narrow<Fortress|IUnit>()
+            .filter(matchingValue(player, HasOwner.owner)).flatMap(identity).narrow<ResourcePile>()
+            .filter(matchingValue("food", ResourcePile.kind)).filter(matchingValue("pounds",
+                compose(Quantity.units, ResourcePile.quantity))).filter((r) => r.created <= turn).sequence();
+    }
+
 }
