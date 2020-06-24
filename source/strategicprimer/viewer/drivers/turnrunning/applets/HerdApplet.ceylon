@@ -88,7 +88,14 @@ class HerdApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
             assert (exists herdModel = herdModels[group.kind]);
             modelMap.put(herdModel, group);
         }
-        Integer workerCount = unit.narrow<IWorker>().size;
+        variable Integer workerCount = unit.narrow<IWorker>().size;
+        if (exists addendum = cli.inputNumber(
+                    "``workerCount`` workers in this unit. Any additional workers to account for:"),
+                !addendum.negative) {
+            workerCount += addendum;
+        } else {
+            return null;
+        }
         Boolean experts = unit.narrow<IWorker>().map(shuffle(IWorker.getJob)("herder"))
             .map(IJob.level).map((-5).plus).any(Integer.positive);
         variable Integer minutesSpent = 0;
