@@ -28,7 +28,7 @@ service(`interface DriverFactory`)
 shared class PopulationGeneratingCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["generate-populations"];
+        invocation = "generate-populations";
         paramsWanted = ParamCount.one;
         shortDescription = "Generate animal populations, etc.";
         longDescription = "Generate animal and shrub populations, meadow and grove sizes, and forest acreages.";

@@ -49,7 +49,7 @@ service(`interface DriverFactory`)
 shared class ExplorationGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
-        invocations = ["explore"];
+        invocation = "explore";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Run exploration.";
         longDescription = "Move a unit around the map, updating the player's map with what

@@ -53,7 +53,7 @@ import lovelace.util.common {
  map-reading logic and to correct deprecated syntax."
 service(`interface DriverFactory`)
 shared class EchoDriverFactory satisfies UtilityDriverFactory {
-    shared static IDriverUsage staticUsage = DriverUsage(false, ["echo"],
+    shared static IDriverUsage staticUsage = DriverUsage(false, "echo",
         ParamCount.two, "Read, then write a map.",
         "Read and write a map, correcting deprecated syntax.",
         true, false, "input.xml", "output.xml", "--current-turn=NN");
@@ -132,7 +132,7 @@ shared class EchoDriver(SPOptions options) satisfies UtilityDriver {
  player maps."
 service(`interface DriverFactory`)
 shared class ForestFixerFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, ["fix-forests"],
+    shared actual IDriverUsage usage = DriverUsage(false, "fix-forests",
         ParamCount.atLeastTwo, "Fix forest IDs",
         "Make sure that forest IDs in submaps match the main map", false, false);
 

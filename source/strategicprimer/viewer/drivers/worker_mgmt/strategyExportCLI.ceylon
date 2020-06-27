@@ -33,7 +33,7 @@ service(`interface DriverFactory`)
 shared class StrategyExportFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["export-strategy"];
+        invocation = "export-strategy";
         paramsWanted = ParamCount.one;
         shortDescription = "Export a proto-strategy";
         longDescription = "Create a proto-strategy using orders stored in the map";

@@ -58,7 +58,7 @@ import strategicprimer.drivers.exploration.common {
 "A factory for an app to let the user create a map from an image."
 service(`interface DriverFactory`)
 shared class ImporterFactory() satisfies UtilityDriverFactory {
-    shared actual DriverUsage usage = DriverUsage(false, ["import"],
+    shared actual DriverUsage usage = DriverUsage(false, "import",
         ParamCount.atLeastOne, "Import terrain data from a raster image",
         "Import terrain data from a raster image", false, false, "/path/to/image.png",
         "/path/to/image.png", "--size=NN");

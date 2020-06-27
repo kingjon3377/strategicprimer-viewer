@@ -10,7 +10,7 @@ shared interface IDriverUsage {
     shared formal Boolean graphical;
 
     "The subcomand with which the user can select this driver."
-    shared formal {String+} invocations; // FIXME: After 0.4.9018 released, change to simply String and rename to "invocation"
+    shared formal String invocation;
 
     "How many non-option parameters this driver wants."
     shared formal ParamCount paramsWanted;

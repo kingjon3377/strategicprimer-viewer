@@ -26,7 +26,7 @@ service(`interface DriverFactory`)
 shared class TurnRunningCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["run-turn"];
+        invocation = "run-turn";
         paramsWanted = ParamCount.atLeastTwo;
         shortDescription = "Run a turn's orders and enter results";
         longDescription = "Run a player's orders for a turn and enter results.";

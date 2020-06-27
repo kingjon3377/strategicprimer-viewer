@@ -26,7 +26,7 @@ import strategicprimer.model.common.map {
    "TODO" for their "kind" and aquatic villages with non-aquatic races."""
 service(`interface DriverFactory`)
 shared class TodoFixerFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, ["fix-todos"],
+    shared actual IDriverUsage usage = DriverUsage(false, "fix-todos",
         ParamCount.atLeastOne, "Fix TODOs in maps",
         "Fix TODOs in unit kinds and aquatic villages with non-aquatic races", false,
         false);

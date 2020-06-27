@@ -64,7 +64,7 @@ service(`interface DriverFactory`)
 shared class ExpansionDriverFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["expand"];
+        invocation = "expand";
         paramsWanted = ParamCount.atLeastTwo;
         shortDescription = "Expand a player's map.";
         longDescription = "Ensure a player's map covers all terrain allied villages can
@@ -208,7 +208,7 @@ service(`interface DriverFactory`)
 shared class MapPopulatorFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["populate-map"];
+        invocation = "populate-map";
         paramsWanted = ParamCount.one;
         shortDescription = "Add missing fixtures to a map";
         longDescription = "Add specified kinds of fixtures to suitable points throughout

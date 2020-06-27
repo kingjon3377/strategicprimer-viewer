@@ -136,7 +136,7 @@ service(`interface DriverFactory`)
 shared class ReportCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["create-report"];
+        invocation = "create-report";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Report Generator";
         longDescription = "Produce HTML report of the contents of a map";
@@ -300,7 +300,7 @@ shared class ReportCLI(SPOptions options, model, ICLIHelper cli) satisfies ReadO
  GUI."
 service(`interface DriverFactory`)
 shared class TabularReportGUIFactory() satisfies GUIDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(true, ["tabular-report"],
+    shared actual IDriverUsage usage = DriverUsage(true, "tabular-report",
         ParamCount.one, "Tabular Report Viewer",
         "Show the contents of a map in tabular form", false, true);
     "Ask the user to choose a file."
@@ -369,7 +369,7 @@ service(`interface DriverFactory`)
 shared class TabularReportCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["tabular-report"];
+        invocation = "tabular-report";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Tabular Report Generator";
         longDescription = "Produce CSV reports of the contents of a map.";

@@ -28,7 +28,7 @@ service(`interface DriverFactory`)
 shared class DuplicateFixtureRemoverFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["remove-duplicates"];
+        invocation = "remove-duplicates";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Remove duplicate fixtures";
         longDescription = "Remove duplicate fixtures (identical except ID# and on the

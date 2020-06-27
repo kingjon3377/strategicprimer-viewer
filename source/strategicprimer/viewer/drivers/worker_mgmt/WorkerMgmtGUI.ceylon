@@ -63,7 +63,7 @@ service(`interface DriverFactory`)
 shared class WorkerMgmtGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
-        invocations = ["worker-mgmt"];
+        invocation = "worker-mgmt";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Unit Orders and Worker Management";
         longDescription = "Organize the members of a player's units.";

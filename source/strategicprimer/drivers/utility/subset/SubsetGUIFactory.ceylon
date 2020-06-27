@@ -16,7 +16,7 @@ import strategicprimer.drivers.common.cli {
  display the results graphically."
 service(`interface DriverFactory`)
 shared class SubsetGUIFactory satisfies UtilityDriverFactory {
-    shared static IDriverUsage staticUsage = DriverUsage(true, ["subset"],
+    shared static IDriverUsage staticUsage = DriverUsage(true, "subset",
         ParamCount.atLeastOne, "Check players' maps against master",
         "Check that subordinate maps are subsets of the main map, containing nothing that
          it does not contain in the same place.", false, true);

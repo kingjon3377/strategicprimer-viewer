@@ -26,7 +26,7 @@ import lovelace.util.common {
 """A factory for the driver to "query" the driver model about various things."""
 service(`interface DriverFactory`)
 shared class QueryCLIFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, ["query"],
+    shared actual IDriverUsage usage = DriverUsage(false, "query",
         ParamCount.one, "Answer questions about a map.",
         "Answer questions about a map, such as counting workers or calculating distances.", true, false);
 

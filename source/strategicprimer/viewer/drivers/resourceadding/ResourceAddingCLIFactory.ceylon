@@ -23,7 +23,7 @@ service(`interface DriverFactory`)
 shared class ResourceAddingCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["add-resource"];
+        invocation = "add-resource";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Add resources to maps";
         longDescription = "Add resources for players to maps.";

@@ -30,7 +30,7 @@ service(`interface DriverFactory`)
 shared class ResourceAddingGUIFactory() satisfies GUIDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = true;
-        invocations = ["add-resource"];
+        invocation = "add-resource";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Add resources to maps";
         longDescription = "Add resources for players to maps";

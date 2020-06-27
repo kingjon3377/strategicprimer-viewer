@@ -27,7 +27,7 @@ service(`interface DriverFactory`)
 shared class TownGeneratingCLIFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["generate-towns"];
+        invocation = "generate-towns";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Enter or generate stats and contents for towns and villages";
         longDescription = "Enter or generate stats and contents for towns and villages";

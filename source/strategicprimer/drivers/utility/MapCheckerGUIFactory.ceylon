@@ -16,7 +16,7 @@ import strategicprimer.drivers.common.cli {
  results in a window."
 service(`interface DriverFactory`)
 shared class MapCheckerGUIFactory() satisfies UtilityDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(true, ["check"],
+    shared actual IDriverUsage usage = DriverUsage(true, "check",
         ParamCount.anyNumber, "Check map for errors",
         "Check a map file for errors, deprecated syntax, etc.", false, true);
 

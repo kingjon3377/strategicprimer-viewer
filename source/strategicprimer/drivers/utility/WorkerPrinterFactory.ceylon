@@ -32,7 +32,7 @@ service(`interface DriverFactory`)
 shared class WorkerPrinterFactory() satisfies ModelDriverFactory {
     shared actual IDriverUsage usage = DriverUsage {
         graphical = false;
-        invocations = ["print-stats"];
+        invocation = "print-stats";
         paramsWanted = ParamCount.one;
         shortDescription = "Print stats of workers";
         longDescription = "Print stats of workers in a unit in a brief list.";

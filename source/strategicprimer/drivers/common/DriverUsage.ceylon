@@ -5,7 +5,7 @@ shared class DriverUsage satisfies IDriverUsage {
     "Options with which one can invoke this driver. Usually there's a short (if possible
      one-character) option and a longer (and probably more memorable and descriptive)
      option."
-    shared actual {String+} invocations;
+    shared actual String invocation;
 
     "How many parameters this driver wants."
     shared actual ParamCount paramsWanted;
@@ -35,10 +35,8 @@ shared class DriverUsage satisfies IDriverUsage {
     shared new (
             "Whether this driver is graphical or not."
             Boolean graphical,
-            "Options with which one can invoke this driver. Usually there's a short (if
-             possible one-character) option and a longer (and probably more memorable and
-             descriptive) option."
-            {String+} invocations,
+            "Subcommand with which one can invoke this driver."
+            String invocation,
             "How many parameters this driver wants."
             ParamCount paramsWanted,
             "A short description of the driver"
@@ -58,7 +56,7 @@ shared class DriverUsage satisfies IDriverUsage {
             "The options this driver supports."
             String* supportedOptions) {
         this.graphical = graphical;
-        this.invocations = invocations;
+        this.invocation = invocation;
         this.paramsWanted = paramsWanted;
         this.shortDescription = shortDescription;
         this.longDescription = longDescription;

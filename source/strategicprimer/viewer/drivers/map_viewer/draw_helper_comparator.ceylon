@@ -54,7 +54,7 @@ service(`interface DriverFactory`)
 shared class DrawHelperComparatorFactory satisfies UtilityDriverFactory {
     shared static IDriverUsage staticUsage = DriverUsage {
         graphical = true;
-        invocations = ["drawing-performance"];
+        invocation = "drawing-performance";
         paramsWanted = ParamCount.atLeastOne;
         shortDescription = "Test drawing performance.";
         longDescription =

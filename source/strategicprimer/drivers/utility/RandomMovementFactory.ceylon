@@ -31,7 +31,7 @@ import lovelace.util.common {
 service(`interface DriverFactory`)
 todo("We'd like a GUI for this, perhaps adding customization or limiting the area or something")
 shared class RandomMovementFactory() satisfies ModelDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, ["random-move"],
+    shared actual IDriverUsage usage = DriverUsage(false, "random-move",
         ParamCount.one, "Move independent units at random",
         "Move independent units randomly around the map.", true, false);
 

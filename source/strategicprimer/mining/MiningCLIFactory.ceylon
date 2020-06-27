@@ -20,7 +20,7 @@ native("jvm") // TODO: remove once ceylon.file and ceylon.decimal are implemente
 shared class MiningCLIFactory satisfies UtilityDriverFactory {
     shared static IDriverUsage staticUsage = DriverUsage {
         graphical = false;
-        invocations = ["mining"];
+        invocation = "mining";
         paramsWanted = ParamCount.two;
         shortDescription = "Create a model of a mine";
         longDescription = "Create a CSV spreadsheet representing a mine's area";

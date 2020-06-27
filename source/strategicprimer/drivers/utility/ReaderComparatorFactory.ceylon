@@ -16,7 +16,7 @@ import strategicprimer.drivers.common.cli {
  implementations."
 service(`interface DriverFactory`)
 shared class ReaderComparatorFactory() satisfies UtilityDriverFactory {
-    shared actual IDriverUsage usage = DriverUsage(false, ["compare-readers"],
+    shared actual IDriverUsage usage = DriverUsage(false, "compare-readers",
         ParamCount.atLeastOne, "Test map readers",
         "Test map-reading implementations by comparing their results on the same file.",
         true, false);
