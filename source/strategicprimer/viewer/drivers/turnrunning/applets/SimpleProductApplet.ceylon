@@ -7,10 +7,6 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.model.common.idreg {
     IDRegistrar
 }
-import ceylon.collection {
-    ArrayList,
-    MutableList
-}
 import strategicprimer.viewer.drivers.resourceadding {
     ResourceAddingCLIHelper
 }
