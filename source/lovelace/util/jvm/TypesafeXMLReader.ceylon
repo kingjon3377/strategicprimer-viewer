@@ -27,9 +27,8 @@ import java.lang {
    of [[the Java Iterable interface|java.lang::Iterable]].  Also contains
    factory methods so callers don't need to deal *at all* with the object this
    wraps. If the provided reader is [[Closeable|JCloseable]], we call its
-   `close` method before returning [[finished]], to help mitigate the resource
-   leak in IncludingIterator. Callers can also pass in additional methods
-   to call before returning [[finished]]."""
+   `close` method before returning [[finished]].  Callers can also pass in
+   additional methods to call before returning [[finished]]."""
 shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent>&Destroyable {
     XMLEventReader wrapped;
     Queue<Anything()> closeHandles = LinkedList<Anything()>();

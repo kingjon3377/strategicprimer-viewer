@@ -409,20 +409,13 @@ object xmlTests {
         }
     }
 
-    "Check whether an exception matches what is expected in [assertInvalid]."
-    void assertInvalidCheckException(Exception exception) {
-        if (is MissingPropertyException exception) {
-            assert (exception.tag.localPart == "include", exception.param == "file");
-        }
-    }
-
     "Assert that a given piece of XML will fail to deserialize with XML format errors, not
      SP format errors."
     void assertInvalid(String xml) {
         for (reader in readers) {
             assertFormatIssue<Object, NoSuchElementException|IllegalArgumentException|
-                    MalformedXMLException|MissingFileException|MissingPropertyException>(
-                reader, xml, null, assertInvalidCheckException);
+                    MalformedXMLException|MissingFileException>(
+                reader, xml, null);
         }
     }
 
@@ -1029,26 +1022,6 @@ object xmlTests {
             }
     }
 
-    "Test that the `include` tag is handled properly."
-    todo("Remove this functionality? AFAICS, it is used only here, and it
-          complicates the XML-reading architecture significantly.")
-    test
-    shared void testInclude() {
-        assertForwardDeserialization<SimpleImmortal>("Reading Ogre via <include>",
-            """<include file="string:&lt;ogre id=&quot;1&quot; /&gt;" />""",
-            Ogre(1).equals, warningLevels.ignore);
-        String exceptionMessage =
-                """ParseError at [row,col]:[1,10]
-                   Message: XML document structures must start and end within the same entity.""";
-        for (reader in readers) {
-            assertFormatIssue<Object, MissingFileException>(reader,
-                """<include file="nosuchfile" />""", null);
-            assertFormatIssue<Object, MalformedXMLException>(reader,
-                """<include file="string:&lt;nonsense" />""", null,
-                (except) => assertThatException(except).hasMessage(exceptionMessage));
-        }
-    }
-
     "Test that duplicate IDs are warned about."
     test
     shared void testDuplicateID() {
@@ -1075,13 +1048,6 @@ object xmlTests {
         assertInvalid("""<map version="2" rows="1" columns="1" current_player="1">""");
         assertInvalid(
             """<map version="2" rows="1" columns="1" current_player="1"><></map>""");
-        assertInvalid("""<include file="nonexistent" />""");
-        assertInvalid("""<include file="string:&lt;ogre id=&quot;1&quot;&gt;" />""");
-        assertInvalid("<include />");
-        assertInvalid("""<include file="nonexistent">""");
-        assertInvalid("""<include file="string:&lt;""");
-        assertInvalid("""<include file="" />""");
-        assertInvalid("""<include file="string:&lt;xyzzy" />""");
     }
 
     "Test proper [[Grove]] (de)serialization."

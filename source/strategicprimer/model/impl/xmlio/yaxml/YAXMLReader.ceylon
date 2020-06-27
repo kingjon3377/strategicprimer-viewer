@@ -45,9 +45,6 @@ import strategicprimer.model.common.xmlio {
     SPFormatException,
     Warning
 }
-import strategicprimer.model.impl.xmlio.io_impl {
-    IncludingIterator
-}
 
 "Sixth-generation SP XML reader."
 shared object yaXMLReader satisfies IMapReader&ISPReader {
@@ -62,9 +59,8 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
             "The Warning instance to use for warnings" Warning warner)
             given Element satisfies Object {
         try {
-            Iterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
-            {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader,
-                warner));
+            Iterator<XMLEvent> reader = TypesafeXMLEventReader(istream); // TODO: try-with-resources
+            {XMLEvent*} eventReader = IteratorWrapper(reader);
             IDRegistrar idFactory = IDFactory();
             if (exists event = eventReader.narrow<StartElement>().first) {
                 assert (is Element retval = YAReaderAdapter(warner, idFactory)

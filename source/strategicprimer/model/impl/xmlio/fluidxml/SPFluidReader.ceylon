@@ -114,9 +114,6 @@ import strategicprimer.model.impl.xmlio.exceptions {
     MissingPropertyException,
     MapVersionException
 }
-import strategicprimer.model.impl.xmlio.io_impl {
-    IncludingIterator
-}
 import strategicprimer.model.impl.xmlio.fluidxml {
     FluidBase { ... }
 }
@@ -575,10 +572,8 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     shared actual Type readXML<Type>(PathWrapper file, JReader istream, Warning warner)
             given Type satisfies Object {
         try {
-            // TODO: Pass in Closeables, to pass to TypesafeMLEventReader, to close file descriptor
-            Iterator<XMLEvent> reader = TypesafeXMLEventReader(istream);
-            {XMLEvent*} eventReader = IteratorWrapper(IncludingIterator(file, reader,
-                warner));
+            Iterator<XMLEvent> reader = TypesafeXMLEventReader(istream); // TODO: try-with-resources
+            {XMLEvent*} eventReader = IteratorWrapper(reader);
             IMutablePlayerCollection players = PlayerCollection();
             IDRegistrar idFactory = IDFactory();
             if (exists event = eventReader.narrow<StartElement>()
