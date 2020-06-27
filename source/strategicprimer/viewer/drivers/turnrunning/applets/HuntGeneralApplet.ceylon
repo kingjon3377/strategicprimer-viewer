@@ -39,7 +39,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
     }
 
     // TODO: Distinguish hunting from fishing in no-result time cost (encounters / hour)?
-    shared String impl(String command,
+    shared String? impl(String command,
             {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*}(Point) encounterSrc) {
         StringBuilder buffer = StringBuilder();
         if (exists center = confirmPoint("Location to search around: "),
@@ -63,7 +63,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
                         populationDescription(find)``. Should they ``verb``?",
                             find.kind);
                     if (is Null fight) {
-                        return "";
+                        return null;
                     } else if (fight) {
                         Integer cost = cli.inputNumber("Time to ``verb``: ")
                         else runtime.maxArraySize;
@@ -71,7 +71,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
                         Boolean? processNow =
                             cli.inputBooleanInSeries("Handle processing now?");
                         if (is Null processNow) {
-                            return "";
+                            return null;
                         } else if (processNow) {
                             // TODO: somehow handle processing-in-parallel case
                             for (i in 0:(cli.inputNumber("How many animals?") else 0)) {
@@ -89,7 +89,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
                         // FIXME: Support capturing animals
                         case (true) { reducePopulation(loc, find, "animals", true); }
                         case (false) { addToSubMaps(loc, find, true); }
-                        case (null) { return ""; }
+                        case (null) { return null; }
                         cli.print(inHours(time));
                         cli.println(" remaining.");
                         if (exists unit = model.selectedUnit) {
@@ -112,7 +112,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
                     "Add to results about that:")) {
                     buffer.append(addendum);
                 } else {
-                    return "";
+                    return null;
                 }
             }
         }
