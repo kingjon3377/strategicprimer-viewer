@@ -38,6 +38,45 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         }
     }
 
+    Integer? handleFight(Point loc, Animal find, Integer time) {
+        variable Integer cost = cli.inputNumber("Time to ``verb``: ")
+            else runtime.maxArraySize;
+        Boolean? processNow =
+            cli.inputBooleanInSeries("Process carcasses now?");
+        if (is Null processNow) {
+            return null;
+        } else if (processNow) {
+            // TODO: somehow handle processing-in-parallel case
+            for (i in 0:(cli.inputNumber("How many carcasses?") else 0)) {
+                Integer mass = cli.inputNumber("Weight of this animal's meat in pounds: ")
+                    else runtime.maxArraySize;
+                Integer hands = cli.inputNumber(
+                    "# of workers processing this carcass: ") else 1;
+                cost += round(HuntingModel.processingTime(mass) / hands).integer;
+            }
+        }
+        switch (cli.inputBooleanInSeries(
+            "Reduce animal group population of ``find.population``?"))
+        // FIXME: Support capturing animals
+        case (true) { reducePopulation(loc, find, "animals", true); }
+        case (false) { addToSubMaps(loc, find, true); }
+        case (null) { return null; }
+        cli.print(inHours(time));
+        cli.println(" remaining.");
+        if (exists unit = model.selectedUnit) {
+            cli.println(
+                "Enter resources produced (any empty string aborts):");
+            while (exists resource =
+                resourceAddingHelper.enterResource()) {
+                if (resource.kind == "food") {
+                    resource.created = model.map.currentTurn;
+                }
+                addResourceToMaps(resource, unit.owner);
+            }
+        }
+        return cost;
+    }
+
     Integer? handleEncounter(StringBuilder buffer, Integer time, Point loc,
             Animal|AnimalTracks|HuntingModel.NothingFound find) {
         if (is HuntingModel.NothingFound find) {
@@ -55,44 +94,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
             if (is Null fight) {
                 return null;
             } else if (fight) {
-                variable Integer cost = cli.inputNumber("Time to ``verb``: ")
-                else runtime.maxArraySize;
-                Boolean? processNow =
-                    cli.inputBooleanInSeries("Handle processing now?");
-                if (is Null processNow) {
-                    return null;
-                } else if (processNow) {
-                    // TODO: somehow handle processing-in-parallel case
-                    for (i in 0:(cli.inputNumber("How many animals?") else 0)) {
-                        Integer mass = cli.inputNumber(
-                            "Weight of this animal's meat in pounds: ")
-                        else runtime.maxArraySize;
-                        Integer hands = cli.inputNumber(
-                            "# of workers processing this carcass: ") else 1;
-                        cost += round(HuntingModel.processingTime(mass) / hands)
-                            .integer;
-                    }
-                }
-                switch (cli.inputBooleanInSeries(
-                    "Reduce animal group population of ``find.population``?"))
-                // FIXME: Support capturing animals
-                case (true) { reducePopulation(loc, find, "animals", true); }
-                case (false) { addToSubMaps(loc, find, true); }
-                case (null) { return null; }
-                cli.print(inHours(time));
-                cli.println(" remaining.");
-                if (exists unit = model.selectedUnit) {
-                    cli.println(
-                        "Enter resources produced (any empty string aborts):");
-                    while (exists resource =
-                        resourceAddingHelper.enterResource()) {
-                        if (resource.kind == "food") {
-                            resource.created = model.map.currentTurn;
-                        }
-                        addResourceToMaps(resource, unit.owner);
-                    }
-                }
-                return cost;
+                return handleFight(loc, find, time);
             } else {
                 addToSubMaps(loc, find, true);
                 return noResultCost;
