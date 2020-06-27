@@ -11,6 +11,7 @@ import ceylon.numeric.float {
 import strategicprimer.model.common.map.fixtures.mobile {
     AnimalTracks,
     Animal,
+    AnimalImpl,
     animalPlurals
 }
 import strategicprimer.drivers.common.cli {
@@ -38,9 +39,35 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         }
     }
 
+    Boolean? handleCapture(Animal find) {
+        if (exists unit = chooseFromList(
+                model.getUnits(model.selectedUnit?.owner else model.map.currentPlayer).sequence(),
+                "Available Units:", "No units", "Unit to add animals to:", false)) {
+            if (exists num = cli.inputNumber("Number captured:")) {
+                if (!num.positive) {
+                    return false;
+                }
+                unit.addMember(AnimalImpl(find.kind, false, "wild", idf.createID(), -1, num));
+                return true;
+            } else {
+                return null;
+            }
+        } else {
+            return false;
+        }
+    }
+
     Integer? handleFight(Point loc, Animal find, Integer time) {
         variable Integer cost = cli.inputNumber("Time to ``verb``: ")
             else runtime.maxArraySize;
+        Boolean? capture = cli.inputBooleanInSeries("Capture any animals?");
+        if (is Null capture) {
+            return null;
+        } else if (capture) {
+            if (!handleCapture(find) exists) {
+                return null;
+            }
+        }
         Boolean? processNow =
             cli.inputBooleanInSeries("Process carcasses now?");
         if (is Null processNow) {
