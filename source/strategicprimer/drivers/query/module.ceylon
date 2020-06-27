@@ -3,9 +3,9 @@
  // TODO: Improve user-introductory documentation
 license("GPL-3")
 native("jvm")
-module strategicprimer.drivers.query "0.4.9018" {
+module strategicprimer.drivers.query "0.4.9019" {
     value ceylonVersion = "1.3.3";
-    value spVersion = "0.4.9018";
+    value spVersion = "0.4.9019";
     shared import strategicprimer.model.common spVersion;
     import ceylon.logging ceylonVersion;
     import ceylon.numeric ceylonVersion;

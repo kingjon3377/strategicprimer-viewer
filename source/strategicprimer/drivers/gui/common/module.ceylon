@@ -3,7 +3,7 @@
 // TODO: add tagged() annotations throughout
 license("GPL-3")
 native("jvm")
-module strategicprimer.drivers.gui.common "0.4.9018" {
+module strategicprimer.drivers.gui.common "0.4.9019" {
     value ceylonVersion = "1.3.3";
     value javaVersion = "8";
     value lovelaceUtilsVersion = "0.1.1";
@@ -15,5 +15,5 @@ module strategicprimer.drivers.gui.common "0.4.9018" {
     import maven:"com.massisframework:orange-extensions" "1.3.1";
     import com.pump "0.0";
     import ceylon.regex ceylonVersion;
-    shared import strategicprimer.drivers.common "0.4.9018";
+    shared import strategicprimer.drivers.common "0.4.9019";
 }

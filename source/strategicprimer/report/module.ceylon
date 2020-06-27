@@ -3,11 +3,11 @@
 // TODO: Add user-introductory documentation, like that of the SDK
 license("GPL-3")
 native("jvm")
-module strategicprimer.report "0.4.9018" {
+module strategicprimer.report "0.4.9019" {
     value ceylonVersion = "1.3.3";
     value javaVersion = "8";
     value lovelaceUtilsVersion = "0.1.1";
-    value spVersion = "0.4.9018";
+    value spVersion = "0.4.9019";
     import lovelace.util.jvm lovelaceUtilsVersion;
     import ceylon.regex ceylonVersion;
     import java.base javaVersion;

@@ -4,10 +4,10 @@
 // TODO: add tagged() annotations throughout
 license("GPL-3")
 native("jvm")
-module strategicprimer.drivers.utility "0.4.9018" {
+module strategicprimer.drivers.utility "0.4.9019" {
     value ceylonVersion = "1.3.3";
     value javaVersion = "8";
-    value spVersion = "0.4.9018";
+    value spVersion = "0.4.9019";
     import ceylon.collection ceylonVersion;
     import ceylon.decimal ceylonVersion;
     import ceylon.whole ceylonVersion;

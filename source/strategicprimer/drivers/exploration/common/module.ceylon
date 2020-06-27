@@ -2,9 +2,9 @@
 // TODO: Write user-introductory documentation for this module
 license("GPL-3")
 native("jvm")
-module strategicprimer.drivers.exploration.common "0.4.9018" {
+module strategicprimer.drivers.exploration.common "0.4.9019" {
     value ceylonVersion = "1.3.3";
-    value spVersion = "0.4.9018";
+    value spVersion = "0.4.9019";
     shared import strategicprimer.drivers.common spVersion;
     import strategicprimer.model.common spVersion;
     import ceylon.collection ceylonVersion;
