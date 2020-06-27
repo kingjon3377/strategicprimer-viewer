@@ -38,6 +38,68 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         }
     }
 
+    Integer? handleEncounter(StringBuilder buffer, Integer time, Point loc,
+            Animal|AnimalTracks|HuntingModel.NothingFound find) {
+        if (is HuntingModel.NothingFound find) {
+            cli.println("Found nothing for the next ``noResultCost`` minutes.");
+            return noResultCost;
+        } else if (is AnimalTracks find) {
+            addToSubMaps(loc, find, true);
+            cli.println("Found only tracks or traces from ``
+                find.kind`` for the next ``noResultCost`` minutes.");
+            return noResultCost;
+        } else {
+            Boolean? fight = cli.inputBooleanInSeries("Found ``
+                populationDescription(find)``. Should they ``verb``?",
+                    find.kind);
+            if (is Null fight) {
+                return null;
+            } else if (fight) {
+                variable Integer cost = cli.inputNumber("Time to ``verb``: ")
+                else runtime.maxArraySize;
+                Boolean? processNow =
+                    cli.inputBooleanInSeries("Handle processing now?");
+                if (is Null processNow) {
+                    return null;
+                } else if (processNow) {
+                    // TODO: somehow handle processing-in-parallel case
+                    for (i in 0:(cli.inputNumber("How many animals?") else 0)) {
+                        Integer mass = cli.inputNumber(
+                            "Weight of this animal's meat in pounds: ")
+                        else runtime.maxArraySize;
+                        Integer hands = cli.inputNumber(
+                            "# of workers processing this carcass: ") else 1;
+                        cost += round(HuntingModel.processingTime(mass) / hands)
+                            .integer;
+                    }
+                }
+                switch (cli.inputBooleanInSeries(
+                    "Reduce animal group population of ``find.population``?"))
+                // FIXME: Support capturing animals
+                case (true) { reducePopulation(loc, find, "animals", true); }
+                case (false) { addToSubMaps(loc, find, true); }
+                case (null) { return null; }
+                cli.print(inHours(time));
+                cli.println(" remaining.");
+                if (exists unit = model.selectedUnit) {
+                    cli.println(
+                        "Enter resources produced (any empty string aborts):");
+                    while (exists resource =
+                        resourceAddingHelper.enterResource()) {
+                        if (resource.kind == "food") {
+                            resource.created = model.map.currentTurn;
+                        }
+                        addResourceToMaps(resource, unit.owner);
+                    }
+                }
+                return cost;
+            } else {
+                addToSubMaps(loc, find, true);
+                return noResultCost;
+            }
+        }
+    }
+
     // TODO: Distinguish hunting from fishing in no-result time cost (encounters / hour)?
     shared String? impl(String command,
             {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*}(Point) encounterSrc) {
@@ -50,63 +112,10 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
                 = encounterSrc(center);
             while (time > 0, exists loc->find = encounters.first) {
                 encounters = encounters.rest;
-                if (is HuntingModel.NothingFound find) {
-                    cli.println("Found nothing for the next ``noResultCost`` minutes.");
-                    time -= noResultCost;
-                } else if (is AnimalTracks find) {
-                    addToSubMaps(loc, find, true);
-                    cli.println("Found only tracks or traces from ``
-                    find.kind`` for the next ``noResultCost`` minutes.");
-                    time -= noResultCost;
+                if (exists cost = handleEncounter(buffer, time, loc, find)) {
+                    time -= cost;
                 } else {
-                    Boolean? fight = cli.inputBooleanInSeries("Found ``
-                        populationDescription(find)``. Should they ``verb``?",
-                            find.kind);
-                    if (is Null fight) {
-                        return null;
-                    } else if (fight) {
-                        Integer cost = cli.inputNumber("Time to ``verb``: ")
-                        else runtime.maxArraySize;
-                        time -= cost;
-                        Boolean? processNow =
-                            cli.inputBooleanInSeries("Handle processing now?");
-                        if (is Null processNow) {
-                            return null;
-                        } else if (processNow) {
-                            // TODO: somehow handle processing-in-parallel case
-                            for (i in 0:(cli.inputNumber("How many animals?") else 0)) {
-                                Integer mass = cli.inputNumber(
-                                    "Weight of this animal's meat in pounds: ")
-                                else runtime.maxArraySize;
-                                Integer hands = cli.inputNumber(
-                                    "# of workers processing this carcass: ")else 1;
-                                time -= round(HuntingModel.processingTime(mass) / hands)
-                                    .integer;
-                            }
-                        }
-                        switch (cli.inputBooleanInSeries(
-                            "Reduce animal group population of ``find.population``?"))
-                        // FIXME: Support capturing animals
-                        case (true) { reducePopulation(loc, find, "animals", true); }
-                        case (false) { addToSubMaps(loc, find, true); }
-                        case (null) { return null; }
-                        cli.print(inHours(time));
-                        cli.println(" remaining.");
-                        if (exists unit = model.selectedUnit) {
-                            cli.println(
-                                "Enter resources produced (any empty string aborts):");
-                            while (exists resource =
-                                resourceAddingHelper.enterResource()) {
-                                if (resource.kind == "food") {
-                                    resource.created = model.map.currentTurn;
-                                }
-                                addResourceToMaps(resource, unit.owner);
-                            }
-                        }
-                    } else {
-                        addToSubMaps(loc, find, true);
-                        time -= noResultCost;
-                    }
+                    return null;
                 }
                 if (exists addendum = cli.inputMultilineString(
                     "Add to results about that:")) {
