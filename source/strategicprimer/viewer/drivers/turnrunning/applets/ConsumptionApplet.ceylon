@@ -11,6 +11,11 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     IWorker
 }
+
+import strategicprimer.model.common.map.fixtures {
+    ResourcePile
+}
+
 import ceylon.decimal {
     decimalNumber,
     Decimal
@@ -25,7 +30,15 @@ shared class ConsumptionApplet(IExplorationModel model, ICLIHelper cli, IDRegist
     shared variable IUnit? unit = model.selectedUnit;
     shared actual [String+] commands = ["consumption"];
 
-    shared actual String description = "Determine the food consumed bya unit.";
+    shared actual String description = "Determine the food consumed by a unit.";
+
+    String describeFood(ResourcePile food) {
+        if (food.created.negative) {
+            return "``food.quantity.number`` ``food.quantity.units`` of ``food.contents``";
+        } else {
+            return "``food.quantity.number`` ``food.quantity.units`` of ``food.contents`` (turn #``food.created``)";
+        }
+    }
 
     shared actual String? run() {
         value localUnit = unit;
@@ -39,7 +52,7 @@ shared class ConsumptionApplet(IExplorationModel model, ICLIHelper cli, IDRegist
             cli.print(Float.format(remainingConsumption.float, 0, 1));
             cli.println(" pounds of consumption unaccounted-for");
             value food = chooseFromList(getFoodFor(localUnit.owner, turn), "Food stocks owned by player:",
-                "No food stocks found", "Food to consume from:", false); // TODO: should only count food *in the same place* (but unit movement away from HQ should ask user how much food to take along, and to choose what food in a similar manner to this)
+                "No food stocks found", "Food to consume from:", false, describeFood); // TODO: should only count food *in the same place* (but unit movement away from HQ should ask user how much food to take along, and to choose what food in a similar manner to this)
             if (!food exists) {
                 return null;
             }

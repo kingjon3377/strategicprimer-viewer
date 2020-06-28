@@ -12,6 +12,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
     AnimalTracks,
     Animal,
     AnimalImpl,
+    IUnit,
     animalPlurals
 }
 import strategicprimer.drivers.common.cli {
@@ -39,10 +40,12 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         }
     }
 
+    String describeUnit(IUnit unit) => "``unit.name`` (``unit.kind``)";
+
     Boolean? handleCapture(Animal find) {
         if (exists unit = chooseFromList(
                 model.getUnits(model.selectedUnit?.owner else model.map.currentPlayer).sequence(),
-                "Available Units:", "No units", "Unit to add animals to:", false)) {
+                "Available Units:", "No units", "Unit to add animals to:", false, describeUnit)) {
             if (exists num = cli.inputNumber("Number captured:")) {
                 if (!num.positive) {
                     return false;
