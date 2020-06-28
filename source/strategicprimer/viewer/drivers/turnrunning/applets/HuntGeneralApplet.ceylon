@@ -92,8 +92,6 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         case (true) { reducePopulation(loc, find, "animals", true); }
         case (false) { addToSubMaps(loc, find, true); }
         case (null) { return null; }
-        cli.print(inHours(time));
-        cli.println(" remaining.");
         if (exists unit = model.selectedUnit) {
             cli.println(
                 "Enter resources produced (any empty string aborts):");
@@ -144,6 +142,8 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
             variable {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*} encounters
                 = encounterSrc(center);
             while (time > 0, exists loc->find = encounters.first) {
+                cli.print(inHours(time));
+                cli.println(" remaining.");
                 encounters = encounters.rest;
                 if (exists cost = handleEncounter(buffer, time, loc, find)) {
                     time -= cost;
