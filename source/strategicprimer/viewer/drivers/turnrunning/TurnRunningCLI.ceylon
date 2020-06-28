@@ -28,10 +28,6 @@ import lovelace.util.common {
     comparingOn
 }
 
-import strategicprimer.model.common.map.fixtures {
-    Quantity,
-    ResourcePile
-}
 import strategicprimer.model.common.idreg {
     IDRegistrar,
     createIDFactory
@@ -41,7 +37,6 @@ import strategicprimer.viewer.drivers.advancement {
     AdvancementCLIHelper
 }
 import strategicprimer.model.common.map {
-    HasOwner,
     Player
 }
 
@@ -107,13 +102,6 @@ class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
             .findServiceProviders(`TurnAppletFactory`).map((factory) => factory.create(model, cli, idf)));
 
     ConsumptionApplet consumptionApplet = ConsumptionApplet(model, cli, idf);
-
-    shared [ResourcePile*] getFoodFor(Player player, Integer turn) { // TODO: Move into the model?
-        return model.map.locations.flatMap(model.map.fixtures.get).narrow<Fortress|IUnit>()
-            .filter(matchingValue(player, HasOwner.owner)).flatMap(identity).narrow<ResourcePile>()
-            .filter(matchingValue("food", ResourcePile.kind)).filter(matchingValue("pounds",
-                compose(Quantity.units, ResourcePile.quantity))).filter((r) => r.created <= turn).sequence();
-    }
 
     SpoilageApplet spoilageApplet = SpoilageApplet(model, cli, idf);
 
