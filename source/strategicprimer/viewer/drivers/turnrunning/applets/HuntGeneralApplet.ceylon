@@ -58,8 +58,12 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
     }
 
     Integer? handleFight(Point loc, Animal find, Integer time) {
-        variable Integer cost = cli.inputNumber("Time to ``verb``: ")
-            else runtime.maxArraySize;
+        variable Integer cost;
+        if (exists temp = cli.inputNumber("Time to ``verb``: ")) {
+            cost = temp;
+        } else {
+            return null;
+        }
         Boolean? capture = cli.inputBooleanInSeries("Capture any animals?");
         if (is Null capture) {
             return null;
