@@ -76,6 +76,8 @@ class HerdApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                 .map(Animal.kind).distinct .filter(not(herdModels.keys.contains))) {
             if (exists herdModel = chooseHerdModel(kind)) {
                 herdModels[kind] = herdModel;
+            } else if (exists cont = cli.inputBoolean("Skip?"), cont) {
+                continue;
             } else {
                 cli.println("Aborting ...");
                 return null;
@@ -84,9 +86,10 @@ class HerdApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
         MutableMultimap<HerdModel, Animal> modelMap = HashMultimap<HerdModel, Animal>();
         for (group in unit.narrow<Animal>()
                 .filter(or(matchingValue("tame", Animal.status),
-                matchingValue("domesticated", Animal.status)))) {
-            assert (exists herdModel = herdModels[group.kind]);
-            modelMap.put(herdModel, group);
+                    matchingValue("domesticated", Animal.status)))) {
+            if (exists herdModel = herdModels[group.kind]) {
+                modelMap.put(herdModel, group);
+            }
         }
         variable Integer workerCount = unit.narrow<IWorker>().size;
         if (exists addendum = cli.inputNumber(
@@ -185,7 +188,7 @@ class HerdApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
             addLineToOrders(" lbs, of ``resourceProduced``.");
             if (exists home) {
                 ResourcePile createdResource = ResourcePile(idf.createID(), "food", resourceProduced,
-                    production);
+                    production); // FIXME: 'production' is in gallons; we want only pound-denominated food resources in the map
                 createdResource.created = model.map.currentTurn;
                 home.addMember(createdResource);
             }
