@@ -46,12 +46,15 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                 exists startingTime = cli.inputNumber("Minutes to spend working: ")) {
             variable {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*} encounters;
             String prompt;
+            Integer nothingCost;
             if (fishing) {
                 encounters = huntingModel.fish(center);
                 prompt = "What should the fisherman do next?";
+                nothingCost = 5;
             } else {
                 encounters = huntingModel.hunt(center);
                 prompt = "What should the trapper do next?";
+                nothingCost = 10;
             }
             variable Integer time = startingTime;
             while (time > 0, exists command = cli.chooseFromList(trapperCommands, prompt,
@@ -67,19 +70,11 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                     assert (exists loc->item = find);
                     if (is HuntingModel.NothingFound item) {
                         cli.println("Nothing in the trap");
-                        if (fishing) {
-                            time -= 5;
-                        } else {
-                            time -= 10;
-                        }
+                        time -= nothingCost;
                     } else if (is AnimalTracks item) {
                         cli.println("Found evidence of ``item.kind`` escaping");
                         addToSubMaps(center, item, true);
-                        if (fishing) {
-                            time -= 5;
-                        } else {
-                            time -= 10;
-                        }
+                        time -= nothingCost;
                     } else {
                         cli.println(
                             "Found either ``item.kind`` or evidence of it escaping.");
