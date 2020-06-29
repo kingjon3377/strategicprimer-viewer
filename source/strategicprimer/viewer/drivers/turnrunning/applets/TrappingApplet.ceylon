@@ -41,10 +41,9 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
     shared actual String? run() {
         StringBuilder buffer = StringBuilder();
         if (exists fishing = cli.inputBooleanInSeries(
-            "Is this a fisherman trapping fish rather than a trapper?"),
-            exists center = confirmPoint("Location to search around: "),
-            exists startingTime = cli
-                .inputNumber("Minutes to spend working: ")) {
+                    "Is this a fisherman trapping fish rather than a trapper?"),
+                exists center = confirmPoint("Location to search around: "),
+                exists startingTime = cli.inputNumber("Minutes to spend working: ")) {
             variable {<Point->Animal|AnimalTracks|HuntingModel.NothingFound>*} encounters;
             String prompt;
             if (fishing) {
@@ -56,8 +55,8 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
             }
             variable Integer time = startingTime;
             while (time > 0, exists command = cli.chooseFromList(trapperCommands, prompt,
-                "Oops! No commands", "Next action: ", false).item,
-                command != TrapperCommand.quit) {
+                    "Oops! No commands", "Next action: ", false).item,
+                    command != TrapperCommand.quit) {
                 switch (command)
                 case (TrapperCommand.check) {
                     value find = encounters.first;
@@ -85,7 +84,7 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                         cli.println(
                             "Found either ``item.kind`` or evidence of it escaping.");
                         if (exists num = cli.inputNumber(
-                            "How long to check and deal with the animal? ")) {
+                                "How long to check and deal with the animal? ")) {
                             time -= num;
                         } else {
                             return null;
@@ -93,9 +92,9 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                         switch (cli.inputBooleanInSeries("Handle processing now?"))
                         case (true) {
                             if (exists mass = cli.inputNumber(
-                                "Weight of meat in pounds: "),
-                                exists hands = cli.inputNumber(
-                                    "# of workers processing this carcass: ")) {
+                                        "Weight of meat in pounds: "),
+                                    exists hands = cli.inputNumber(
+                                        "# of workers processing this carcass: ")) {
                                 time -= round(HuntingModel.processingTime(mass) / hands)
                                     .integer;
                             } else {
@@ -113,8 +112,8 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                                 if (count > 0) {
                                     for (map in model.allMaps.map(Entry.key)) {
                                         if (exists population = map.fixtures.get(loc)
-                                            .narrow<Animal>().find(matchingValue(item.id,
-                                            Animal.id)), population.population > 0) {
+                                                .narrow<Animal>().find(matchingValue(item.id,
+                                                Animal.id)), population.population > 0) {
                                             map.removeFixture(loc, population);
                                             Integer remaining =
                                                 population.population - count;
@@ -125,7 +124,7 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                                         }
                                     }
                                     if (model.map.fixtures.get(loc).narrow<Animal>()
-                                        .any(matchingValue(item.id, Animal.id))) {
+                                            .any(matchingValue(item.id, Animal.id))) {
                                         addToSubMaps(center, AnimalTracks(item.kind), false);
                                     }
                                 }
@@ -140,7 +139,7 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                             cli.println(
                                 "Enter resources produced (any empty string aborts):");
                             while (exists resource =
-                                resourceAddingHelper.enterResource()) {
+                                    resourceAddingHelper.enterResource()) {
                                 if (resource.kind == "food") {
                                     resource.created = model.map.currentTurn;
                                 }
@@ -168,7 +167,7 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                 cli.print(inHours(time));
                 cli.println(" remaining.");
                 if (exists addendum = cli.inputMultilineString(
-                    "Add to results about that:")) {
+                        "Add to results about that:")) {
                     buffer.append(addendum);
                 } else {
                     return null;
