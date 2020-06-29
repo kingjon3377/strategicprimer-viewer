@@ -58,7 +58,7 @@ shared class ConsumptionApplet(IExplorationModel model, ICLIHelper cli, IDRegist
             }
             assert (exists food);
             if (decimalize(food.quantity.number) <= remainingConsumption) {
-                switch (cli.inputBooleanInSeries("Consume all of the ``food``?",
+                switch (cli.inputBooleanInSeries("Consume all of the ``food.contents``?",
                     "consume-all-of"))
                 case (true) {
                     removeFoodStock(food, localUnit.owner);
@@ -66,7 +66,7 @@ shared class ConsumptionApplet(IExplorationModel model, ICLIHelper cli, IDRegist
                     continue;
                 }
                 case (false) { // TODO: extract this as a function?
-                    value amountToConsume = cli.inputDecimal("How many pounds of the ``food`` to consume:");
+                    value amountToConsume = cli.inputDecimal("How many pounds of the ``food.contents`` to consume:");
                     if (exists amountToConsume, amountToConsume >= decimalize(food.quantity.number)) {
                         removeFoodStock(food, localUnit.owner);
                         remainingConsumption -= decimalize(food.quantity.number);
@@ -81,14 +81,14 @@ shared class ConsumptionApplet(IExplorationModel model, ICLIHelper cli, IDRegist
                 }
                 case (null) { return null; }
             } // else
-            switch (cli.inputBooleanInSeries("Eat all remaining ``remainingConsumption`` from the ``food``?",
+            switch (cli.inputBooleanInSeries("Eat all remaining ``remainingConsumption`` from the ``food.contents``?",
                 "all-remaining"))
             case (true) {
                 reduceFoodBy(food, remainingConsumption, localUnit.owner);
                 remainingConsumption = decimalize(0);
             }
             case (false) { // TODO: extract this as a function?
-                value amountToConsume = cli.inputDecimal("How many pounds of the ``food`` to consume:");
+                value amountToConsume = cli.inputDecimal("How many pounds of the ``food.contents`` to consume:");
                 if (exists amountToConsume, amountToConsume >= remainingConsumption) {
                     reduceFoodBy(food, remainingConsumption, localUnit.owner);
                     remainingConsumption = decimalize(0);
