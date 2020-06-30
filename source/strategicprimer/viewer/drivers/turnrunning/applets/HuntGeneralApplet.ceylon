@@ -1,4 +1,5 @@
 import strategicprimer.model.common.map {
+    Player,
     Point
 }
 import strategicprimer.drivers.exploration.common {
@@ -78,6 +79,16 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         return cost;
     }
 
+    shared void resourceEntry(Player owner) {
+        cli.println("Enter resources produced (any empty string aborts):");
+        while (exists resource = resourceAddingHelper.enterResource()) {
+            if (resource.kind == "food") {
+                resource.created = model.map.currentTurn;
+            }
+            addResourceToMaps(resource, owner);
+        }
+    }
+
     Integer? handleFight(Point loc, Animal find, Integer time) {
         variable Integer cost;
         if (exists temp = cli.inputNumber("Time to ``verb``: ")) {
@@ -110,15 +121,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         case (false) { addToSubMaps(loc, find, true); }
         case (null) { return null; }
         if (exists unit = model.selectedUnit) {
-            cli.println(
-                "Enter resources produced (any empty string aborts):");
-            while (exists resource =
-                resourceAddingHelper.enterResource()) {
-                if (resource.kind == "food") {
-                    resource.created = model.map.currentTurn;
-                }
-                addResourceToMaps(resource, unit.owner);
-            }
+            resourceEntry(unit.owner);
         }
         return cost;
     }
