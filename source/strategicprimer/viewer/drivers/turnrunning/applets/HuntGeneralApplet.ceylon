@@ -60,6 +60,24 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         }
     }
 
+    Integer? processMeat() {
+        variable Integer cost = 0;
+        // TODO: somehow handle processing-in-parallel case
+        value iterations = cli.inputNumber("How many carcasses?");
+        if (is Null iterations) {
+            return null;
+        }
+        for (i in 0:iterations) {
+            if (exists mass = cli.inputNumber("Weight of this animal's meat in pounds: "),
+                    exists hands = cli.inputNumber("# of workers processing this carcass: ")) {
+                cost += round(HuntingModel.processingTime(mass) / hands).integer;
+            } else {
+                return null;
+            }
+        }
+        return cost;
+    }
+
     Integer? handleFight(Point loc, Animal find, Integer time) {
         variable Integer cost;
         if (exists temp = cli.inputNumber("Time to ``verb``: ")) {
@@ -80,13 +98,10 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         if (is Null processNow) {
             return null;
         } else if (processNow) {
-            // TODO: somehow handle processing-in-parallel case
-            for (i in 0:(cli.inputNumber("How many carcasses?") else 0)) {
-                Integer mass = cli.inputNumber("Weight of this animal's meat in pounds: ")
-                    else runtime.maxArraySize;
-                Integer hands = cli.inputNumber(
-                    "# of workers processing this carcass: ") else 1;
-                cost += round(HuntingModel.processingTime(mass) / hands).integer;
+            if (exists processingTime = processMeat()) {
+                cost += processingTime;
+            } else {
+                return null;
             }
         }
         switch (cli.inputBooleanInSeries(
