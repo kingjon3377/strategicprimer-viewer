@@ -38,6 +38,66 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
     HuntingModel huntingModel = HuntingModel(model.map);
     ResourceAddingCLIHelper resourceAddingHelper = ResourceAddingCLIHelper(cli, idf);
 
+    Integer? handleFound(Point center, Point loc, Animal item) {
+        variable Integer cost;
+        cli.println("Found either ``item.kind`` or evidence of it escaping.");
+        if (exists num = cli.inputNumber("How long to check and deal with the animal? ")) {
+            cost = num;
+        } else {
+            return null;
+        }
+        switch (cli.inputBooleanInSeries("Handle processing now?"))
+        case (true) {
+            if (exists mass = cli.inputNumber("Weight of meat in pounds: "),
+                    exists hands = cli.inputNumber( "# of workers processing this carcass: ")) {
+                cost += round(HuntingModel.processingTime(mass) / hands)
+                    .integer;
+            } else {
+                return null;
+            }
+        }
+        case (false) { }
+        case (null) { return null; }
+        switch (cli.inputBooleanInSeries(
+            "Reduce animal group population of ``item.population``?"))
+        case (true) {
+            if (exists delenda = cli.inputNumber("Animals to remove: ")) {
+                Integer count = Integer.smallest(delenda, item.population);
+                if (count > 0) {
+                    for (map in model.allMaps.map(Entry.key)) {
+                        if (exists population = map.fixtures.get(loc).narrow<Animal>()
+                                .find(matchingValue(item.id, Animal.id)), population.population > 0) {
+                            map.removeFixture(loc, population);
+                            Integer remaining = population.population - count;
+                            if (remaining > 0) {
+                                map.addFixture(loc, population.reduced(remaining));
+                            }
+                        }
+                    }
+                    if (model.map.fixtures.get(loc).narrow<Animal>()
+                            .any(matchingValue(item.id, Animal.id))) {
+                        addToSubMaps(center, AnimalTracks(item.kind), false);
+                    }
+                }
+            }
+        } case (false) {
+            addToSubMaps(center, AnimalTracks(item.kind), false);
+        }
+        case (null) {
+            return null;
+        }
+        if (exists unit = model.selectedUnit) {
+            cli.println("Enter resources produced (any empty string aborts):");
+            while (exists resource = resourceAddingHelper.enterResource()) {
+                if (resource.kind == "food") {
+                    resource.created = model.map.currentTurn;
+                }
+                addResourceToMaps(resource, unit.owner);
+            }
+        }
+        return cost;
+    }
+
     shared actual String? run() {
         StringBuilder buffer = StringBuilder();
         if (exists fishing = cli.inputBooleanInSeries(
@@ -75,72 +135,10 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                         cli.println("Found evidence of ``item.kind`` escaping");
                         addToSubMaps(center, item, true);
                         time -= nothingCost;
+                    } else if (exists cost = handleFound(center, loc, item)) {
+                        time -= cost;
                     } else {
-                        cli.println(
-                            "Found either ``item.kind`` or evidence of it escaping.");
-                        if (exists num = cli.inputNumber(
-                                "How long to check and deal with the animal? ")) {
-                            time -= num;
-                        } else {
-                            return null;
-                        }
-                        switch (cli.inputBooleanInSeries("Handle processing now?"))
-                        case (true) {
-                            if (exists mass = cli.inputNumber(
-                                        "Weight of meat in pounds: "),
-                                    exists hands = cli.inputNumber(
-                                        "# of workers processing this carcass: ")) {
-                                time -= round(HuntingModel.processingTime(mass) / hands)
-                                    .integer;
-                            } else {
-                                return null;
-                            }
-                        }
-                        case (false) { }
-                        case (null) { return null; }
-                        switch (cli.inputBooleanInSeries(
-                            "Reduce animal group population of ``item.population``?"))
-                        case (true) {
-                            if (exists delenda = cli.inputNumber("Animals to remove: ")) {
-                                Integer count = Integer.smallest(delenda,
-                                    item.population);
-                                if (count > 0) {
-                                    for (map in model.allMaps.map(Entry.key)) {
-                                        if (exists population = map.fixtures.get(loc)
-                                                .narrow<Animal>().find(matchingValue(item.id,
-                                                Animal.id)), population.population > 0) {
-                                            map.removeFixture(loc, population);
-                                            Integer remaining =
-                                                population.population - count;
-                                            if (remaining > 0) {
-                                                map.addFixture(loc,
-                                                    population.reduced(remaining));
-                                            }
-                                        }
-                                    }
-                                    if (model.map.fixtures.get(loc).narrow<Animal>()
-                                            .any(matchingValue(item.id, Animal.id))) {
-                                        addToSubMaps(center, AnimalTracks(item.kind), false);
-                                    }
-                                }
-                            }
-                        } case (false) {
-                            addToSubMaps(center, AnimalTracks(item.kind), false);
-                        }
-                        case (null) {
-                            return null;
-                        }
-                        if (exists unit = model.selectedUnit) {
-                            cli.println(
-                                "Enter resources produced (any empty string aborts):");
-                            while (exists resource =
-                                    resourceAddingHelper.enterResource()) {
-                                if (resource.kind == "food") {
-                                    resource.created = model.map.currentTurn;
-                                }
-                                addResourceToMaps(resource, unit.owner);
-                            }
-                        }
+                        return null;
                     }
                 }
                 case (TrapperCommand.easyReset) {
