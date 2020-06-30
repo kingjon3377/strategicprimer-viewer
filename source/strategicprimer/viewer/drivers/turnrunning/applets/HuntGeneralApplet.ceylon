@@ -106,7 +106,6 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         }
         switch (cli.inputBooleanInSeries(
             "Reduce animal group population of ``find.population``?"))
-        // FIXME: Support capturing animals
         case (true) { reducePopulation(loc, find, "animals", true); }
         case (false) { addToSubMaps(loc, find, true); }
         case (null) { return null; }
