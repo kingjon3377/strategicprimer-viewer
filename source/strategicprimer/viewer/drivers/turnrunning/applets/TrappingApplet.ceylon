@@ -15,9 +15,6 @@ import strategicprimer.model.common.map.fixtures.mobile {
     AnimalTracks,
     Animal
 }
-import strategicprimer.viewer.drivers.resourceadding {
-    ResourceAddingCLIHelper
-}
 
 service(`interface TurnAppletFactory`)
 shared class TrappingAppletFactory() satisfies TurnAppletFactory {
@@ -29,7 +26,6 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
     shared actual [String+] commands = ["trap"];
     shared actual String description = "check traps for animals or fish they may have caught";
     TrapperCommand[] trapperCommands = sort(`TrapperCommand`.caseValues);
-    ResourceAddingCLIHelper resourceAddingHelper = ResourceAddingCLIHelper(cli, idf);
 
     Integer? handleFound(Point center, Point loc, Animal item) {
         variable Integer cost;
@@ -67,13 +63,7 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
             return null;
         }
         if (exists unit = model.selectedUnit) {
-            cli.println("Enter resources produced (any empty string aborts):");
-            while (exists resource = resourceAddingHelper.enterResource()) {
-                if (resource.kind == "food") {
-                    resource.created = model.map.currentTurn;
-                }
-                addResourceToMaps(resource, unit.owner);
-            }
+            resourceEntry(unit.owner);
         }
         return cost;
     }
