@@ -60,7 +60,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         }
     }
 
-    Integer? processMeat() {
+    shared Integer? processMeat() {
         variable Integer cost = 0;
         // TODO: somehow handle processing-in-parallel case
         value iterations = cli.inputNumber("How many carcasses?");

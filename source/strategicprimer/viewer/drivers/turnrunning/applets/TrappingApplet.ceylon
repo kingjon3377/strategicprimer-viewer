@@ -55,10 +55,8 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
         case (null) { return null; }
         switch (cli.inputBooleanInSeries("Handle processing now?"))
         case (true) {
-            if (exists mass = cli.inputNumber("Weight of meat in pounds: "),
-                    exists hands = cli.inputNumber( "# of workers processing this carcass: ")) {
-                cost += round(HuntingModel.processingTime(mass) / hands)
-                    .integer;
+            if (exists processingTime = processMeat()) {
+                cost += processingTime;
             } else {
                 return null;
             }
