@@ -31,11 +31,10 @@ shared class TrappingAppletFactory() satisfies TurnAppletFactory {
         TrappingApplet(model, cli, idf);
 }
 class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
-        extends AbstractTurnApplet(model, cli, idf) {
+        extends HuntGeneralApplet("trap", model, cli, idf) {
     shared actual [String+] commands = ["trap"];
     shared actual String description = "check traps for animals or fish they may have caught";
     TrapperCommand[] trapperCommands = sort(`TrapperCommand`.caseValues);
-    HuntingModel huntingModel = HuntingModel(model.map);
     ResourceAddingCLIHelper resourceAddingHelper = ResourceAddingCLIHelper(cli, idf);
 
     Integer? handleFound(Point center, Point loc, Animal item) {
@@ -46,6 +45,14 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
         } else {
             return null;
         }
+        switch (cli.inputBooleanInSeries("Is an animal captured live?"))
+        case (true) {
+            if (handleCapture(item) is Null) {
+                return null;
+            }
+        }
+        case (false) {}
+        case (null) { return null; }
         switch (cli.inputBooleanInSeries("Handle processing now?"))
         case (true) {
             if (exists mass = cli.inputNumber("Weight of meat in pounds: "),

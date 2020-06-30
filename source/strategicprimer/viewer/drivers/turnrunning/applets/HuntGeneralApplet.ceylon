@@ -25,7 +25,7 @@ import strategicprimer.viewer.drivers.resourceadding {
     ResourceAddingCLIHelper
 }
 abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
-        of HuntingApplet|FishingApplet extends AbstractTurnApplet(model, cli, idf) {
+        of HuntingApplet|FishingApplet|TrappingApplet extends AbstractTurnApplet(model, cli, idf) {
     shared HuntingModel huntingModel = HuntingModel(model.map);
     ResourceAddingCLIHelper resourceAddingHelper = ResourceAddingCLIHelper(cli, idf);
 
@@ -42,7 +42,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
 
     String describeUnit(IUnit unit) => "``unit.name`` (``unit.kind``)";
 
-    Boolean? handleCapture(Animal find) {
+    shared Boolean? handleCapture(Animal find) {
         if (exists unit = chooseFromList(
                 model.getUnits(model.selectedUnit?.owner else model.map.currentPlayer).sequence(),
                 "Available Units:", "No units", "Unit to add animals to:", false, describeUnit)) {
