@@ -8,14 +8,8 @@ import strategicprimer.drivers.exploration.common {
     IExplorationModel,
     HuntingModel
 }
-import lovelace.util.common {
-    matchingValue
-}
 import strategicprimer.model.common.map {
     Point
-}
-import ceylon.numeric.float {
-    round=halfEven
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     AnimalTracks,
@@ -65,27 +59,8 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
         case (null) { return null; }
         switch (cli.inputBooleanInSeries(
             "Reduce animal group population of ``item.population``?"))
-        case (true) {
-            if (exists delenda = cli.inputNumber("Animals to remove: ")) {
-                Integer count = Integer.smallest(delenda, item.population);
-                if (count > 0) {
-                    for (map in model.allMaps.map(Entry.key)) {
-                        if (exists population = map.fixtures.get(loc).narrow<Animal>()
-                                .find(matchingValue(item.id, Animal.id)), population.population > 0) {
-                            map.removeFixture(loc, population);
-                            Integer remaining = population.population - count;
-                            if (remaining > 0) {
-                                map.addFixture(loc, population.reduced(remaining));
-                            }
-                        }
-                    }
-                    if (model.map.fixtures.get(loc).narrow<Animal>()
-                            .any(matchingValue(item.id, Animal.id))) {
-                        addToSubMaps(center, AnimalTracks(item.kind), false);
-                    }
-                }
-            }
-        } case (false) {
+        case (true) { reducePopulation(loc, item, "animals", true); }
+        case (false) {
             addToSubMaps(center, AnimalTracks(item.kind), false);
         }
         case (null) {
