@@ -102,16 +102,18 @@ shared class ResourceAddingCLIHelper(ICLIHelper cli, IDRegistrar idf) {
             }
             if (exists quantity = cli.inputDecimal("Quantity in ``units``?"),
                     quantity.positive) {
-                if (exists created = cli.inputNumber("Turn created? (Negative for none)")) {
-                    value retval = ResourcePile(idf.createID(), kind, contents,
-                        Quantity(quantity, units));
-                    if (!created.negative) {
+                value retval = ResourcePile(idf.createID(), kind, contents,
+                    Quantity(quantity, units));
+                switch (value setCreated = cli.inputBooleanInSeries("Set created date?",
+                    "created" + origContents))
+                case (true) {
+                    if (exists created = cli.inputNumber("Turn created?")) {
                         retval.created = created;
                     }
-                    return retval;
-                } else {
-                    return null;
                 }
+                case (false) {}
+                case (null) { return null; }
+                return retval;
             } else {
                 return null;
             }
