@@ -43,8 +43,7 @@ class PreservationApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar id
         StringBuilder builder = StringBuilder();
         assert (exists unit = model.selectedUnit);
         MutableList<String> foods = ArrayList<String>();
-        ResourcePile[] list = getFoodFor(unit.owner, model.map.currentTurn);
-        while (exists item = chooseFromList(list, "Available food:",
+        while (exists item = chooseFromList(getFoodFor(unit.owner, model.map.currentTurn), "Available food:",
                 "No food available", "Choose food to convert:", false, describePile)) {
             String convertedForm;
             if (exists temp = chooseFromList(foods, "Preserved food types:", "", "Type that converts into:", false)) {
