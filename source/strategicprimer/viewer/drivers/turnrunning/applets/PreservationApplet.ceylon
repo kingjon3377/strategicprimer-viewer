@@ -31,13 +31,21 @@ class PreservationApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar id
 
     shared actual String description => "Convert food into less-perishable form.";
 
+    String describePile(ResourcePile pile) {
+        if (pile.created.negative) {
+            return "``pile.quantity`` of ``pile.contents``";
+        } else {
+            return "``pile.quantity`` of ``pile.contents`` (turn #``pile.created``)";
+        }
+    }
+
     shared actual String? run() {
         StringBuilder builder = StringBuilder();
         assert (exists unit = model.selectedUnit);
         MutableList<String> foods = ArrayList<String>();
         ResourcePile[] list = getFoodFor(unit.owner, model.map.currentTurn);
         while (exists item = chooseFromList(list, "Available food:",
-                "No food available", "Choose food to convert:", false, ResourcePile.string)) {
+                "No food available", "Choose food to convert:", false, describePile)) {
             String convertedForm;
             if (exists temp = chooseFromList(foods, "Preserved food types:", "", "Type that converts into:", false)) {
                 convertedForm = temp;
