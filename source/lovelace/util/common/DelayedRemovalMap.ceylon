@@ -1,7 +1,7 @@
 import ceylon.collection {
-    ArrayList,
+    HashSet,
     MutableMap,
-    MutableList,
+    MutableSet,
     HashMap
 }
 
@@ -17,7 +17,7 @@ shared interface DelayedRemovalMap<Key, Item> satisfies MutableMap<Key, Item>
 shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
     MutableMap<Integer, Item> backing = HashMap<Integer, Item>();
     // TODO: Use a bitmap?
-    MutableList<Integer> toRemove = ArrayList<Integer>();
+    MutableSet<Integer> toRemove = HashSet<Integer>();
 
     "Add all entries in the map to the to-remove list."
     shared actual void clear() => toRemove.addAll(backing.keys);
