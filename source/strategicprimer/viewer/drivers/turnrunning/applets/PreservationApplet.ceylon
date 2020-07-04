@@ -68,6 +68,7 @@ class PreservationApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar id
                 return null;
             }
             ResourcePile converted = ResourcePile(idf.createID(), "food", convertedForm, Quantity(newPounds, "pounds"));
+            converted.created = turn;
             switch (cli.inputBoolean("Use all ``item.quantity``?"))
             case (true) {
                 super.removeFoodStock(item, unit.owner);
