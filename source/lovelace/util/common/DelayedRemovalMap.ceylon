@@ -16,6 +16,7 @@ shared interface DelayedRemovalMap<Key, Item> satisfies MutableMap<Key, Item>
 "Implementation of [[DelayedRemovalMap]] for [[Integer]] keys."
 shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
     MutableMap<Integer, Item> backing = HashMap<Integer, Item>();
+    // TODO: Use a bitmap?
     MutableList<Integer> toRemove = ArrayList<Integer>();
 
     "Add all entries in the map to the to-remove list."
@@ -59,15 +60,16 @@ shared class IntMap<Item>() satisfies DelayedRemovalMap<Integer, Item> {
     }
 
     "Add the given key to the to-remove list. If it was already there (the entry 'had been
-     removed' already), return [[null]]; otherwise, return the value that had been
-     associated with the key."
+     removed' already), or there was no value associated with that key, return [[null]]; otherwise,
+     return the value that had been associated with the key."
     shared actual Item? remove(Integer key) {
         if (toRemove.contains(key)) {
             return null;
-        } else {
-            Item? retval = get(key);
+        } else if (exists retval = backing[key]) {
             toRemove.add(key);
             return retval;
+        } else {
+            return null;
         }
     }
 
