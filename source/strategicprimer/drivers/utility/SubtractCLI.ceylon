@@ -4,12 +4,22 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.common.map {
     IMapNG,
+    Subsettable,
+    IFixture,
     Direction
 }
 
 "An app to produce a difference between two maps, to aid understanding what an explorer has
  found. This modifies non-main maps in place; only run on copies or under version control!"
 shared class SubtractCLI(shared actual IMultiMapModel model) satisfies CLIDriver {
+    Boolean isSubset(IFixture one, IFixture two) {
+        if (is Subsettable<IFixture> one) {
+            return one.isSubset(two, noop);
+        } else {
+            return one == two;
+        }
+    }
+
     shared actual void startDriver() {
         IMapNG first = model.map;
         for (map->[path, modified] in model.subordinateMaps) {
@@ -29,8 +39,10 @@ shared class SubtractCLI(shared actual IMultiMapModel model) satisfies CLIDriver
                 if (first.mountainous.get(loc)) { // TODO: syntax sugar
                     map.mountainous[loc] = false;
                 }
-                for (fixture in first.fixtures.get(loc)) { // TODO: syntax sugar // TODO: what about subsets?
-                    map.removeFixture(loc, fixture);
+		for (fixture in map.fixtures.get(loc)) { // TODO: syntax sugar
+		    if (first.fixtures.get(loc).any((item) => isSubset(item, fixture))) { // TODO: syntax sugar
+                        map.removeFixture(loc, fixture);
+                    }
                 }
             }
         }
