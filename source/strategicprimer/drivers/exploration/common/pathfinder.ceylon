@@ -46,7 +46,7 @@ class PathfinderImpl(IMapNG map) satisfies Pathfinder {
     MutableMap<[Point, Point], Integer> tentativeDistances =
         HashMap<[Point, Point], Integer>();
     Boolean forUs(Point base, Set<Point> unvisited)(<[Point, Point]->Integer> entry) =>
-            entry.key.first == base && entry.key.first in unvisited;
+            entry.key.first == base && entry.key.rest.first in unvisited;
     Point? nextUnvisited(Point base, Set<Point> unvisited) {
             if (exists [start, dest] = tentativeDistances.filter(forUs(base, unvisited))
                     .sort(increasingItem).first?.key) {
