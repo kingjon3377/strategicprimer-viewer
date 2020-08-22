@@ -70,3 +70,14 @@ shared JPanel&BoxPanel centeredHorizontalBox(Component* items) {
     retval.addGlue();
     return retval;
 }
+
+"Create a panel laid out by a [[BoxLayout]] in the page axis, with glue at each end and between each component."
+shared JPanel&BoxPanel verticalBox(Component* items) {
+    JPanel&BoxPanel retval = boxPanel(BoxAxis.pageAxis);
+    retval.addGlue();
+    for (component in items) {
+        retval.add(component);
+        retval.addGlue();
+    }
+    return retval;
+}
