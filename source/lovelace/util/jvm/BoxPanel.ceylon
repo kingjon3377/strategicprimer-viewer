@@ -58,7 +58,7 @@ shared JPanel&BoxPanel boxPanel(BoxAxis layoutAxis) {
 "Create a panel laid out by a [[BoxLayout]] on the line axis, with glue at each end and a
  small rigid area between each component."
 shared JPanel&BoxPanel centeredHorizontalBox(Component* items) {
-    JPanel&BoxPanel retval = BoxPanelImpl(BoxAxis.lineAxis);
+    JPanel&BoxPanel retval = boxPanel(BoxAxis.lineAxis);
     retval.addGlue();
     if (exists first = items.first) {
         retval.add(first);
