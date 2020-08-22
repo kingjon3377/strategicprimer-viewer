@@ -8,7 +8,6 @@ import ceylon.language.meta {
     classDeclaration
 }
 import java.lang {
-    JString=String,
     JInteger=Integer
 }
 import strategicprimer.drivers.common.cli {
@@ -48,10 +47,7 @@ import strategicprimer.drivers.common {
     MultiMapGUIDriver,
     DriverFailedException
 }
-import ceylon.collection {
-    MutableSet,
-    HashSet
-}
+
 import strategicprimer.drivers.gui.common {
     MenuBroker,
     SPFrame,
@@ -83,72 +79,13 @@ import lovelace.util.jvm {
     boxPanel,
     BorderedPanel,
     verticalSplit,
-    ImprovedComboBox
+    MemoizedComboBox
 }
 import ceylon.decimal {
     parseDecimal
 }
 
 class ResourceAddingGUI satisfies MultiMapGUIDriver {
-    "Extends [[ImprovedComboBox]] to keep a running collection of values."
-    static class UpdatedComboBox(Anything(String) logger)
-        extends ImprovedComboBox<String>() {
-        "The values we've had in the past."
-        MutableSet<String> values = HashSet<String>();
-        "Clear the combo box, but if its value was one we haven't had previously, add it
-         to the drop-down list."
-        shared void checkAndClear() {
-            assert (is String temp = selectedItem);
-            String item = temp.trimmed;
-            if (!values.contains(item)) {
-                values.add(item);
-                addItem(item);
-            }
-            selectedItem = null;
-        }
-
-        shared actual Object? selectedItem {
-            Anything retval = super.selectedItem;
-            if (is String retval) {
-                return retval.trimmed;
-            } else if (exists retval) {
-                return retval.string.trimmed;
-            } else {
-                return "";
-            }
-        }
-
-        assign selectedItem {
-            if (is String|JString selectedItem) {
-                super.selectedItem = selectedItem;
-            } else {
-                logger("Failed to set selectedItem: must be a String.");
-            }
-        }
-
-        shared String selectedString {
-            if (is JTextField inner = editor.editorComponent) {
-                value text = inner.text;
-                if (!text.empty) {
-                    selectedItem = text;
-                    return text;
-                }
-            }
-            assert (is String retval = selectedItem);
-            return retval;
-        }
-
-        shared void addSubmitListener(Anything(ActionEvent) listener) {
-            value inner = editor.editorComponent;
-            if (is JTextField inner) {
-                inner.addActionListener(listener);
-            } else {
-                logger("Editor wasn't a text field, but a ``
-                classDeclaration(inner)``");
-            }
-        }
-    }
-
     static JPanel pairPanel(Component first, Component second) =>
         BorderedPanel.verticalPanel(first, null, second);
 
@@ -199,7 +136,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         JPanel resourcePanel = boxPanel(BoxAxis.lineAxis);
         StreamingLabel logLabel = StreamingLabel();
 
-        UpdatedComboBox resourceKindBox = UpdatedComboBox(logError(logLabel));
+        MemoizedComboBox resourceKindBox = MemoizedComboBox(logError(logLabel));
         resourcePanel.add(pairPanel(JLabel("General Category"), resourceKindBox));
 
         // If we set the maximum high at this point, the fields would try to be
@@ -208,14 +145,14 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
         JSpinner creationSpinner = JSpinner(resourceCreatedModel);
         resourcePanel.add(pairPanel(JLabel("Turn created"), creationSpinner));
 
-        UpdatedComboBox resourceBox = UpdatedComboBox(logError(logLabel));
+        MemoizedComboBox resourceBox = MemoizedComboBox(logError(logLabel));
         resourcePanel.add(pairPanel(JLabel("Specific Resource"), resourceBox));
 
         SpinnerNumberModel resourceQuantityModel = SpinnerNumberModel(0, 0, 2000, 1);
         JSpinner resourceQuantitySpinner = JSpinner(resourceQuantityModel);
         resourcePanel.add(pairPanel(JLabel("Quantity"), resourceQuantitySpinner));
 
-        UpdatedComboBox resourceUnitsBox = UpdatedComboBox(logError(logLabel));
+        MemoizedComboBox resourceUnitsBox = MemoizedComboBox(logError(logLabel));
         resourcePanel.add(pairPanel(JLabel("Units"), resourceUnitsBox));
 
         variable Boolean playerIsDefault = true;
@@ -276,7 +213,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
 
         SpinnerNumberModel implementQuantityModel = SpinnerNumberModel(1, 1, 2000, 1);
         JSpinner implementQuantityField = JSpinner(implementQuantityModel);
-        UpdatedComboBox implementKindBox = UpdatedComboBox(logLabel.append);
+        MemoizedComboBox implementKindBox = MemoizedComboBox(logLabel.append);
         void implementListener(ActionEvent ignored) { // Param required for fields, below
             confirmPlayer();
             String kind = implementKindBox.selectedString;
