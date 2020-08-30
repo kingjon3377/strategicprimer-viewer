@@ -74,6 +74,11 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
             model.setMountainous(localPoint, newValue);
             mountainItem.model.selected = newValue;
             scs.fireChanges(null, localPoint);
+        } else if (localPoint.valid, !model.map.baseTerrain[localPoint] exists) {
+            Boolean newValue = !model.map.mountainous.get(localPoint);
+            model.setMountainous(localPoint, newValue);
+            mountainItem.model.selected = newValue;
+            scs.fireChanges(null, localPoint);
         }
         model.interaction = null;
     }
@@ -87,6 +92,14 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         Point localPoint = point;
         if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
                 terrain != TileType.ocean) {
+            if (model.map.fixtures.get(localPoint).narrow<Hill>().empty) { // TODO: syntax sugar
+                model.addFixture(localPoint, Hill(idf.createID()));
+            } else {
+                model.removeMatchingFixtures(localPoint, `Hill`.typeOf);
+            }
+            hillItem.model.selected = !model.map.fixtures.get(localPoint).empty; // TODO: syntax sugar
+            scs.fireChanges(null, localPoint);
+        } else if (localPoint.valid, !model.map.baseTerrain[localPoint] exists) {
             if (model.map.fixtures.get(localPoint).narrow<Hill>().empty) { // TODO: syntax sugar
                 model.addFixture(localPoint, Hill(idf.createID()));
             } else {
@@ -149,6 +162,17 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
                 model.addRiver(localPoint, river);
                 item.model.selected = true;
             }
+            scs.fireChanges(null, localPoint);
+            model.interaction = null;
+        } else if (localPoint.valid, !model.map.baseTerrain[localPoint] exists) {
+            if (river in model.map.rivers.get(localPoint)) {
+                model.removeRiver(localPoint, river);
+                item.model.selected = false;
+            } else {
+                model.addRiver(localPoint, river);
+                item.model.selected = true;
+            }
+            model.mapModified = true;
             scs.fireChanges(null, localPoint);
             model.interaction = null;
         }
@@ -245,6 +269,12 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
             hillItem.model.selected = !model.map.fixtures.get(point).narrow<Hill>().empty; // TODO: syntax sugar
             hillItem.enabled = true;
             newForestItem.enabled = true;
+        } else if (point.valid, !model.map.baseTerrain[point] exists) {
+            mountainItem.model.selected =model.map.mountainous.get(point);
+            mountainItem.enabled = true;
+            hillItem.model.selected = !model.map.fixtures.get(point).narrow<Hill>().empty; // TODO: syntax sugar
+            hillItem.enabled = true;
+            newForestItem.enabled = true;
         } else {
             mountainItem.model.selected = false;
             mountainItem.enabled = false;
@@ -255,6 +285,12 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         if (point.valid, exists terrain = model.map.baseTerrain[point],
                 terrain != TileType.ocean) {
 //        {River*} rivers = model.map.rivers[point]; // TODO: syntax sugar
+            {River*} rivers = model.map.rivers.get(point);
+            for (direction->item in riverItems) {
+                item.enabled = true;
+                item.model.selected = direction in rivers;
+            }
+        } else if (point.valid, !model.map.baseTerrain[point] exists) {
             {River*} rivers = model.map.rivers.get(point);
             for (direction->item in riverItems) {
                 item.enabled = true;
