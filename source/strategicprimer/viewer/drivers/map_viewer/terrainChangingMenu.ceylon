@@ -10,18 +10,21 @@ import javax.swing {
 
 import strategicprimer.drivers.common {
     VersionChangeListener,
-    SelectionChangeListener
+    SelectionChangeListener,
+    NewFixtureListener
 }
 import strategicprimer.drivers.worker.common {
     NewUnitListener
 }
 import strategicprimer.model.common.idreg {
-    createIDFactory
+    createIDFactory,
+    IDRegistrar
 }
 import strategicprimer.model.common.map {
     Point,
     TileType,
-    River
+    River,
+    TileFixture
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
@@ -33,21 +36,27 @@ import ceylon.collection {
     MutableMap,
     HashMap
 }
+import strategicprimer.model.common.map.fixtures.terrain {
+    Hill
+}
+import strategicprimer.drivers.gui.common {
+    SPDialog
+}
 
 "A popup menu to let the user change a tile's terrain type, or add a unit."
 class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopupMenu()
         satisfies VersionChangeListener&SelectionChangeListener {
-    NewUnitDialog nuDialog = NewUnitDialog(model.map.currentPlayer,
-        createIDFactory(model.map));
+    IDRegistrar idf = createIDFactory(model.map);
+    NewUnitDialog nuDialog = NewUnitDialog(model.map.currentPlayer, idf);
 
     SelectionChangeSupport scs = SelectionChangeSupport();
 
-    JMenuItem newUnitItem = JMenuItem("Add New Unit");
+    JMenuItem newUnitItem = JMenuItem("Add New Unit ...");
     variable Point point = Point.invalidPoint;
     nuDialog.addNewUnitListener(object satisfies NewUnitListener {
         shared actual void addNewUnit(IUnit unit) {
             model.map.addFixture(point, unit);
-            model.mapModified = true;
+            model.mapModified = true; // FIXME: Extract a method for the 'set modified flag, fire changes, reset interaction' procedure
             model.selection = point;
             scs.fireChanges(null, point);
             model.interaction = null;
@@ -70,6 +79,48 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     }
 
     mountainItem.addActionListener(silentListener(toggleMountains));
+
+    JCheckBoxMenuItem hillItem = JCheckBoxMenuItem("Hill(s)");
+
+    void toggleHill() {
+        Point localPoint = point;
+        if (localPoint.valid, exists terrain = model.map.baseTerrain[localPoint],
+                terrain != TileType.ocean) {
+            if (model.map.fixtures.get(localPoint).narrow<Hill>().empty) { // TODO: syntax sugar
+                // FIXME: get an ID factory somehow
+                model.map.addFixture(localPoint, Hill(idf.createID()));
+            } else {
+                for (hill in model.map.fixtures.get(localPoint).narrow<Hill>()) { // TODO: syntax sugar
+                    model.map.removeFixture(localPoint, hill);
+                }
+            }
+            model.mapModified = true;
+            hillItem.model.selected = !model.map.fixtures.get(localPoint).empty; // TODO: syntax sugar
+            scs.fireChanges(null, localPoint);
+        }
+        model.interaction = null;
+    }
+
+    hillItem.addActionListener(silentListener(toggleHill));
+
+    JMenuItem newForestItem = JMenuItem("Add New Forest ...");
+    NewForestDialog nfDialog = NewForestDialog(idf);
+    object newFixtureListener satisfies NewFixtureListener {
+        shared actual void addNewFixture(TileFixture fixture) {
+            model.map.addFixture(point, fixture);
+            model.mapModified = true;
+            model.selection = point; // TODO: We probably don't always want to do this ...
+            scs.fireChanges(null, point);
+            model.interaction = null;
+        }
+    }
+
+    nfDialog.addNewFixtureListener(newFixtureListener);
+
+    JMenuItem textNoteItem = JMenuItem("Add Text Note ...");
+    Integer currentTurn() => model.map.currentTurn;
+    TextNoteDialog tnDialog = TextNoteDialog(currentTurn);
+    tnDialog.addNewFixtureListener(newFixtureListener);
 
     JCheckBoxMenuItem bookmarkItem = JCheckBoxMenuItem("Bookmarked");
 
@@ -115,10 +166,21 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     // TODO: Make some way to manipulate roads?
 
+    void removeTerrain(ActionEvent event) {
+        model.map.baseTerrain[point] = null;
+        model.mapModified = true;
+        scs.fireChanges(null, point);
+        model.interaction = null;
+    }
+
     void updateForVersion(Integer version) {
         removeAll();
         add(bookmarkItem);
+        add(textNoteItem);
         addSeparator();
+        JMenuItem removalItem = JMenuItem("Remove terrain");
+        add(removalItem);
+        removalItem.addActionListener(removeTerrain);
         for (type in TileType.valuesForVersion(version)) {
             JMenuItem item = JMenuItem(type.string);
             add(item);
@@ -132,6 +194,8 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         addSeparator();
         add(newUnitItem);
         add(mountainItem);
+        add(hillItem);
+        add(newForestItem);
         for (direction->item in riverItems) {
             add(item);
         }
@@ -155,11 +219,17 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         if (point.valid, exists terrain = model.map.baseTerrain[point],
                 terrain != TileType.ocean) {
 //          mountainItem.model.selected = model.map.mountainous[newPoint]; // TODO: syntax sugar once compiler bug fixed
-            mountainItem.model.selected = model.map.mountainous.get(point);
+            mountainItem.model.selected =model.map.mountainous.get(point);
             mountainItem.enabled = true;
+            hillItem.model.selected = !model.map.fixtures.get(point).narrow<Hill>().empty; // TODO: syntax sugar
+            hillItem.enabled = true;
+            newForestItem.enabled = true;
         } else {
             mountainItem.model.selected = false;
             mountainItem.enabled = false;
+            hillItem.model.selected = false;
+            hillItem.enabled = false;
+            newForestItem.enabled = false;
         }
         if (point.valid, exists terrain = model.map.baseTerrain[point],
                 terrain != TileType.ocean) {
@@ -182,8 +252,10 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     updateForVersion(mapVersion);
     // Can't use silentListener(nuDialog.showWindow): triggers eclipse/ceylon#7379
-    void showDialogImpl(ActionEvent event) => nuDialog.setVisible(true);
-    newUnitItem.addActionListener(showDialogImpl);
+    void showDialogImpl(SPDialog dialog)(ActionEvent event) => dialog.setVisible(true);
+    newUnitItem.addActionListener(showDialogImpl(nuDialog));
+    newForestItem.addActionListener(showDialogImpl(nfDialog));
+    textNoteItem.addActionListener(showDialogImpl(tnDialog));
     nuDialog.dispose();
 }
 

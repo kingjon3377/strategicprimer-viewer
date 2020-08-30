@@ -53,6 +53,7 @@ import lovelace.util.common {
 }
 
 "A dialog to let the user add a new unit."
+// TODO: Use NewFixtureSource/NewFixtureListener for listeners that might want to handle other kinds of fixtures
 shared class NewUnitDialog(variable Player player, IDRegistrar idf)
         extends SPDialog(null, "Add a New Unit")
         satisfies NewUnitSource&PlayerChangeListener {
