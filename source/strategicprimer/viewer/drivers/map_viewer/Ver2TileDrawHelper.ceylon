@@ -163,14 +163,18 @@ shared class Ver2TileDrawHelper(
      state freely and don't restore it."
     shared actual void drawTile(Graphics pen, IMapNG map, Point location,
             Coordinate coordinates, Coordinate dimensions) {
+        Color? localColor;
         if (needsFixtureColor(map, location)) {
-            pen.color = getFixtureColor(map, location);
+            localColor = getFixtureColor(map, location);
         } else {
-            pen.color = colorHelper.get(map.dimensions.version,
+            localColor = colorHelper.get(map.dimensions.version,
 //                map.baseTerrain[location]); // TODO: syntax sugar once compiler bug fixed
                 map.baseTerrain.get(location)); // TODO: syntax sugar once compiler bug fixed
         }
-        pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
+        if (exists localColor) {
+            pen.color = localColor;
+            pen.fillRect(coordinates.x, coordinates.y, dimensions.x, dimensions.y);
+        }
 //        for (river in map.rivers[location]) {
         for (river in map.rivers.get(location)) {
             drawIcon(pen, "river``river.ordinal``.png", coordinates, dimensions);

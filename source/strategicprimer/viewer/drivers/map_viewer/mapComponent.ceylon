@@ -37,6 +37,9 @@ import strategicprimer.model.common.map {
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
+import java.awt.image {
+    BufferedImage
+}
 
 "An interface for a UI representing a map."
 shared interface MapGUI {
@@ -57,6 +60,8 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
     ComponentMouseListener cml;
     DirectionSelectionChanger dsl;
     variable TileDrawHelper helper;
+
+    shared variable BufferedImage? backgroundImage = null;
 
     shared new (IViewerModel model, Boolean(TileFixture) zof,
             {FixtureMatcher*}&Comparator<TileFixture> matchers) extends JComponent() {
@@ -157,6 +162,28 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
 
     shared actual void mapChanged() {}
 
+    void drawBackgroundImage(Graphics context, Integer tileSize) {
+        if (exists temp = backgroundImage) {
+            value visibleDimensions = mapModel.visibleDimensions;
+            value mapDimensions = mapModel.mapDimensions;
+            Float horizontalScaling = temp.width.float / mapDimensions.columns;
+            Float verticalScaling = temp.height.float / mapDimensions.rows;
+            Integer x = (visibleDimensions.minimumColumn * horizontalScaling).integer;
+            Integer y = (visibleDimensions.minimumRow * verticalScaling).integer;
+            Integer sliceWidth = (visibleDimensions.width * horizontalScaling).integer;
+            Integer sliceHeight = (visibleDimensions.height * verticalScaling).integer;
+            // FIXME: Cache this, regenerating when visible dimensions change, somehow
+            value sliced = temp.getSubimage(Integer.largest(0, x), Integer.largest(0, y),
+                Integer.smallest(temp.width - x - 1, sliceWidth), Integer.smallest(temp.height - y - 1, sliceHeight));
+            context.drawImage(sliced, 0, 0, visibleDimensions.width * tileSize, visibleDimensions.height * tileSize,
+                null); // TODO: supply observer
+        } else {
+            context.color = Color.white;
+            context.fillRect(0, 0, width, height);
+        }
+    }
+
+    // FIXME: Are these map or screen coordinates? If screen coordinates, what are they relative to?
     void drawMapPortion(Graphics context, Integer tileSize, Integer minX,
             Integer minY, Integer maxX, Integer maxY) {
         Integer minRow = mapModel.visibleDimensions.minimumRow;
@@ -186,6 +213,7 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
             Rectangle bounds = boundsCheck(context.clipBounds);
             MapDimensions mapDimensions = mapModel.mapDimensions;
             Integer tileSize = scaleZoom(mapModel.zoomLevel, mapDimensions.version);
+            drawBackgroundImage(context, tileSize);
             drawMapPortion(context, tileSize, halfEven(bounds.minX / tileSize)
                 .plus(0.1).integer,
                 halfEven(bounds.minY / tileSize).plus(0.1).integer,

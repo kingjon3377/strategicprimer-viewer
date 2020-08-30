@@ -34,7 +34,6 @@ import strategicprimer.viewer.drivers {
     IOHandler
 }
 import strategicprimer.drivers.gui.common {
-    SPFrame,
     WindowCloseListener,
     MenuBroker,
     SPFileChooser
@@ -46,6 +45,14 @@ import lovelace.util.common {
 }
 import lovelace.util.jvm {
     FileChooser
+}
+
+import javax.imageio {
+    ImageIO
+}
+
+import java.io {
+    JFile=File
 }
 
 "A logger."
@@ -62,7 +69,7 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
         longDescription = "Look at the map visually. This is probably the app you want.";
         includeInCLIList = false;
         includeInGUIList = true;
-        supportedOptions = [ "--current-turn=NN" ];
+        supportedOptions = [ "--current-turn=NN", "--background=image.png" ];
     };
 
     "Ask the user to choose a file or files."
@@ -134,7 +141,11 @@ shared class ViewerGUI(model, options) satisfies ViewerDriver {
     shared actual void resetZoom() => model.resetZoom();
 
     void createWindow(MenuBroker menuHandler) {
-        SPFrame&MapGUI frame = ViewerFrame(model, menuHandler.actionPerformed, this, options);
+        ViewerFrame frame = ViewerFrame(model, menuHandler.actionPerformed, this, options);
+        value backgroundFile = options.getArgument("--background");
+        if (!backgroundFile.empty) {
+            frame.backgroundImage = ImageIO.read(JFile(backgroundFile));
+        }
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
         value selectTileDialogInstance = SelectTileDialog(frame, model);
         menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");

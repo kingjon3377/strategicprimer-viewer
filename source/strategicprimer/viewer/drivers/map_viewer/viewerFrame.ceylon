@@ -66,6 +66,9 @@ import strategicprimer.drivers.gui.common {
 import java.lang {
     JThread=Thread
 }
+import java.awt.image {
+    BufferedImage
+}
 
 "The main window for the map viewer app."
 shared final class ViewerFrame extends SPFrame satisfies MapGUI {
@@ -120,6 +123,12 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
     shared actual Boolean supportsDroppedFiles = true;
 
     MapComponent mapPanel = MapComponent(mapModel, tableModel.shouldDisplay, tableModel);
+
+    shared BufferedImage? backgroundImage => mapPanel.backgroundImage;
+
+    assign backgroundImage {
+        mapPanel.backgroundImage = backgroundImage;
+    }
 
     // can't use silentListener because repaint() is overloaded
     void repaintMapPanel(TableModelEvent event) => mapPanel.repaint();

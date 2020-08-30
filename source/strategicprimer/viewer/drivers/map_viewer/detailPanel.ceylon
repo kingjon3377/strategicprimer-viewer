@@ -35,7 +35,8 @@ import java.awt {
     Image,
     Graphics,
     GridLayout,
-    Dimension
+    Dimension,
+    Color
 }
 import strategicprimer.drivers.common {
     VersionChangeListener,
@@ -65,7 +66,7 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
         JPanel&BoxPanel panel = boxPanel(BoxAxis.pageAxis);
         panel.addRigidArea(4);
         Integer tileSize = scaleZoom(ViewerModel.defaultZoomLevel, version);
-        assert (exists color = colorHelper.get(version, type));
+        Color color = colorHelper.get(version, type) else Color.white;
         panel.add(KeyElementComponent(color, Dimension(4, 4),
             Dimension(8, 8), Dimension(tileSize, tileSize)));
         panel.addRigidArea(4);

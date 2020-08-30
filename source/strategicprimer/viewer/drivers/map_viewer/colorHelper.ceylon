@@ -82,7 +82,7 @@ object colorHelper {
                 return null;
             }
         } else {
-            return Color.white;
+            return null;
         }
     }
 
