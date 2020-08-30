@@ -129,6 +129,11 @@ import common.map.fixtures.terrain.Hill;
 			model.setMountainous(localPoint, newValue);
 			mountainItem.getModel().setSelected(newValue);
 			scs.fireChanges(null, localPoint);
+		} else if (localPoint.isValid() && terrain == null) {
+			final boolean newValue = !model.getMap().isMountainous(localPoint);
+			model.setMountainous(localPoint, newValue);
+			mountainItem.getModel().setSelected(newValue);
+			scs.fireChanges(null, localPoint);
 		}
 		model.setInteraction(null);
 	}
@@ -137,6 +142,16 @@ import common.map.fixtures.terrain.Hill;
 		final Point localPoint = point;
 		final TileType terrain = model.getMap().getBaseTerrain(localPoint);
 		if (localPoint.isValid() && terrain != null && TileType.Ocean != terrain) {
+			if (model.getMap().getFixtures(localPoint).stream()
+					.noneMatch(Hill.class::isInstance)) {
+				model.addFixture(localPoint, new Hill(idf.createID()));
+			} else {
+				model.removeMatchingFixtures(localPoint, Hill.class::isInstance);
+			}
+			hillItem.getModel().setSelected(model.getMap().getFixtures(localPoint)
+				.stream().anyMatch(Hill.class::isInstance));
+			scs.fireChanges(null, localPoint);
+		} else if (localPoint.isValid() && terrain == null) {
 			if (model.getMap().getFixtures(localPoint).stream()
 					.noneMatch(Hill.class::isInstance)) {
 				model.addFixture(localPoint, new Hill(idf.createID()));
@@ -179,6 +194,16 @@ import common.map.fixtures.terrain.Hill;
 			final Point localPoint = point;
 			final TileType terrain = model.getMap().getBaseTerrain(localPoint);
 			if (localPoint.isValid() && terrain != null && TileType.Ocean != terrain) {
+				if (model.getMap().getRivers(localPoint).contains(river)) {
+					model.removeRiver(localPoint, river);
+					item.getModel().setSelected(false);
+				} else {
+					model.addRiver(localPoint, river);
+					item.getModel().setSelected(true);
+				}
+				scs.fireChanges(null, localPoint);
+				model.setInteraction(null);
+			} else if (localPoint.isValid() && terrain == null) {
 				if (model.getMap().getRivers(localPoint).contains(river)) {
 					model.removeRiver(localPoint, river);
 					item.getModel().setSelected(false);
@@ -282,6 +307,18 @@ import common.map.fixtures.terrain.Hill;
 		final TileType terrain = model.getMap().getBaseTerrain(point);
 		newUnitItem.setEnabled(point.isValid() && terrain != null);
 		if (point.isValid() && terrain != null && TileType.Ocean != terrain) {
+			mountainItem.getModel().setSelected(model.getMap().isMountainous(point));
+			mountainItem.setEnabled(true);
+			hillItem.getModel().setSelected(model.getMap().getFixtures(point).stream()
+				.anyMatch(Hill.class::isInstance));
+			hillItem.setEnabled(true);
+			newForestItem.setEnabled(true);
+			final Collection<River> rivers = model.getMap().getRivers(point);
+			for (final Map.Entry<River, JCheckBoxMenuItem> entry : riverItems.entrySet()) {
+				entry.getValue().setEnabled(true);
+				entry.getValue().getModel().setSelected(rivers.contains(entry.getKey()));
+			}
+		} else if (point.isValid() && terrain == null) {
 			mountainItem.getModel().setSelected(model.getMap().isMountainous(point));
 			mountainItem.setEnabled(true);
 			hillItem.getModel().setSelected(model.getMap().getFixtures(point).stream()
