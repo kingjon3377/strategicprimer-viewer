@@ -69,8 +69,8 @@ shared class AdvancementCLIFactory() satisfies ModelDriverFactory {
 }
 
 "The worker-advancement CLI driver."
-shared class AdvancementCLI(ICLIHelper cli, SPOptions options, model)
-        satisfies CLIDriver {
+shared class AdvancementCLI(ICLIHelper cli, options, model) satisfies CLIDriver {
+    shared actual SPOptions options;
     shared actual IWorkerModel model;
 
     AdvancementCLIHelper helper = AdvancementCLIHelper(cli);

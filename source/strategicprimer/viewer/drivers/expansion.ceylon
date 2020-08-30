@@ -90,8 +90,8 @@ shared class ExpansionDriverFactory() satisfies ModelDriverFactory {
 """A driver to update a player's map to include a certain minimum distance around allied
    villages."""
 // FIXME: Write GUI for map-expanding driver
-shared class ExpansionDriver(ICLIHelper cli, SPOptions options, model)
-        satisfies CLIDriver {
+shared class ExpansionDriver(ICLIHelper cli, options, model) satisfies CLIDriver {
+    shared actual SPOptions options;
     shared actual IMultiMapModel model;
     // TODO: fat arrow once syntax sugar in place
     Boolean containsSwornVillage(IMapNG map, Player currentPlayer)(Point point) {
@@ -228,8 +228,8 @@ shared class MapPopulatorFactory() satisfies ModelDriverFactory {
 """A driver to add some kind of fixture to suitable tiles throughout the map. Customize
    the [[populator]] field before each use."""
 // TODO: Write GUI equivalent of Map Populator Driver
-shared class MapPopulatorDriver(ICLIHelper cli, SPOptions options, model)
-        satisfies CLIDriver {
+shared class MapPopulatorDriver(ICLIHelper cli, options, model) satisfies CLIDriver {
+    shared actual SPOptions options;
     shared actual IDriverModel model;
 
     "The object that does the heavy lifting of populating the map. This is the one field

@@ -46,7 +46,8 @@ import lovelace.util.jvm {
 import strategicprimer.drivers.common {
     VersionChangeListener,
     SelectionChangeListener,
-    FixtureMatcher
+    FixtureMatcher,
+    SPOptions
 }
 import strategicprimer.model.common.map {
     TileFixture,
@@ -81,21 +82,23 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
             FixtureFilterTableModel();
 
     shared actual IViewerModel mapModel;
+    SPOptions options;
     shared actual String windowName = "Map Viewer";
     Anything(ActionEvent) menuHandler;
     ViewerGUI driver;
 
-    shared new(IViewerModel model, Anything(ActionEvent) menuListener, ViewerGUI driver)
+    shared new(IViewerModel model, Anything(ActionEvent) menuListener, ViewerGUI driver, SPOptions options)
             extends SPFrame("Map Viewer", driver) {
         mapModel = model;
         menuHandler = menuListener;
         this.driver = driver;
+        this.options = options;
     }
 
     void acceptDroppedFileImpl(PathWrapper file) {
         value map = mapReaderAdapter.readMapModel(file, warningLevels.default);
         SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver, ViewerGUI),
-            [ViewerModel.copyConstructor(map)]));
+            [ViewerModel.copyConstructor(map), options.copy()]));
     }
 
     void setMapWrapper(IMutableMapNG map, PathWrapper file, Boolean modified) =>

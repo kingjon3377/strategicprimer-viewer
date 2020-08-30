@@ -1,6 +1,8 @@
 import strategicprimer.drivers.common {
     IMultiMapModel,
-    ReadOnlyDriver
+    ReadOnlyDriver,
+    emptyOptions,
+    SPOptions
 }
 
 import strategicprimer.drivers.common.cli {
@@ -10,6 +12,7 @@ import strategicprimer.drivers.common.cli {
 "A driver to check whether player maps are subsets of the main map."
 shared class SubsetCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
     shared actual IMultiMapModel model;
+    shared actual SPOptions options = emptyOptions;
 
     void report(String filename)(String string) =>
             cli.println("In ``filename``: ``string``");

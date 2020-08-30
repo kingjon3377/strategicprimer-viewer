@@ -97,8 +97,8 @@ shared class WorkerMgmtGUIFactory() satisfies GUIDriverFactory {
 }
 
 "A driver to start the worker management GUI."
-shared class WorkerMgmtGUI(ICLIHelper cli, SPOptions options, model)
-        satisfies MultiMapGUIDriver&WorkerGUI {
+shared class WorkerMgmtGUI(ICLIHelper cli, options, model) satisfies MultiMapGUIDriver&WorkerGUI {
+    shared actual SPOptions options;
     shared actual IWorkerModel model;
 
     void createWindow(MenuBroker menuHandler, PlayerChangeMenuListener pcml) {

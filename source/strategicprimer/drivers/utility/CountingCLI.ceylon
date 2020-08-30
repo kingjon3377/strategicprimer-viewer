@@ -1,6 +1,8 @@
 import strategicprimer.drivers.common {
     IDriverModel,
-    ReadOnlyDriver
+    ReadOnlyDriver,
+    emptyOptions,
+    SPOptions
 }
 
 import strategicprimer.drivers.common.cli {
@@ -75,6 +77,7 @@ import strategicprimer.model.common.map.fixtures.mobile {
 "An app to report statistics on the contents of the map."
 class CountingCLI(ICLIHelper cli, model) satisfies ReadOnlyDriver {
     shared actual IDriverModel model;
+    shared actual SPOptions options = emptyOptions;
 
     Boolean anyIs<Type>({Anything*} stream) => !stream.narrow<Type>().empty;
 

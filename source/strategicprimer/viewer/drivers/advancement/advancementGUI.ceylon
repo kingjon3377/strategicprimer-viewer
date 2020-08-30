@@ -95,8 +95,8 @@ shared class AdvancementGUIFactory() satisfies GUIDriverFactory {
 }
 
 "The worker-advancement GUI driver."
-shared class AdvancementGUI(ICLIHelper cli, SPOptions options, model)
-        satisfies MultiMapGUIDriver&WorkerGUI {
+shared class AdvancementGUI(ICLIHelper cli, options, model) satisfies MultiMapGUIDriver&WorkerGUI {
+    shared actual SPOptions options;
     shared actual IWorkerModel model;
 
     void reload(PlayerChangeListener frame) =>

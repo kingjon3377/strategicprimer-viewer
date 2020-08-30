@@ -201,7 +201,7 @@ shared class DrawHelperComparator satisfies UtilityDriver {
     }
 
     ICLIHelper cli;
-    SPOptions options;
+    shared actual SPOptions options;
     shared new (ICLIHelper cli, SPOptions options) {
         this.cli = cli;
         this.options = options;

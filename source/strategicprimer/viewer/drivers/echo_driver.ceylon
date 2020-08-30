@@ -69,7 +69,8 @@ shared class EchoDriverFactory satisfies UtilityDriverFactory {
 """A driver that reads in maps and then writes them out again---this is primarily to make
    sure that the map format is properly read, but is also useful for correcting deprecated
    syntax. (Because of that usage, warnings are disabled.)"""
-shared class EchoDriver(SPOptions options) satisfies UtilityDriver {
+shared class EchoDriver(options) satisfies UtilityDriver {
+    shared actual SPOptions options;
     """Run the driver: read the map, then write it, correcting deprecated syntax and
        forest and Ground IDs."""
     shared actual void startDriver(String* args) {
@@ -150,8 +151,8 @@ shared class ForestFixerFactory() satisfies ModelDriverFactory {
 }
 
 "A driver to fix ID mismatches between forests and Ground in the main and player maps."
-shared class ForestFixerDriver(ICLIHelper cli, SPOptions options, model)
-        satisfies CLIDriver {
+shared class ForestFixerDriver(ICLIHelper cli, options, model) satisfies CLIDriver {
+    shared actual SPOptions options;
     shared actual IMultiMapModel model;
     {Forest*} extractForests(IMapNG map, Point location) =>
 //            map.fixtures[location].narrow<Forest>(); // TODO: syntax sugar once compiler bug fixed

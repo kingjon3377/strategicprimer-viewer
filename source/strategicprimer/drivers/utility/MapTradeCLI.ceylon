@@ -1,7 +1,9 @@
 import strategicprimer.drivers.common {
     IMultiMapModel,
     FixtureMatcher,
-    CLIDriver
+    CLIDriver,
+    SPOptions,
+    emptyOptions
 }
 
 import strategicprimer.drivers.common.cli {
@@ -141,6 +143,7 @@ shared class MapTradeCLI satisfies CLIDriver {
         ].flatMap(flatten);
 
     ICLIHelper cli;
+    shared actual SPOptions options = emptyOptions;
     shared actual IMultiMapModel model;
     shared new (ICLIHelper cli, IMultiMapModel model) {
         this.cli = cli;

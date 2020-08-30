@@ -1,5 +1,7 @@
 import strategicprimer.drivers.common {
-    ReadOnlyDriver
+    ReadOnlyDriver,
+    emptyOptions,
+    SPOptions
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -28,6 +30,7 @@ class WorkerPrintCLI satisfies ReadOnlyDriver {
 
     ICLIHelper cli;
     shared actual IExplorationModel model;
+    shared actual SPOptions options = emptyOptions;
     shared new (ICLIHelper cli, IExplorationModel model) {
         this.cli = cli;
         this.model = model;

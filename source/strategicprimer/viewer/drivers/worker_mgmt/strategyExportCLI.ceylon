@@ -58,7 +58,8 @@ shared class StrategyExportFactory() satisfies ModelDriverFactory {
 }
 
 "A command-line program to export a proto-strategy for a player from orders in a map."
-shared class StrategyExportCLI(SPOptions options, model) satisfies ReadOnlyDriver {
+shared class StrategyExportCLI(options, model) satisfies ReadOnlyDriver {
+    shared actual SPOptions options;
     shared actual IWorkerModel model;
 
     shared actual void startDriver() {

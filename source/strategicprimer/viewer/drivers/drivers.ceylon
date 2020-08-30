@@ -507,7 +507,8 @@ shared void run() {
     }
 }
 
-class AppChooserGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
+class AppChooserGUI(ICLIHelper cli, options) satisfies UtilityGUI {
+    shared actual SPOptions options;
     MutableList<String> additionalFiles = ArrayList<String>();
     Boolean includeInGUIList(DriverFactory driver) => driver.usage.includeInList(true);
     shared actual void startDriver(String* args) {

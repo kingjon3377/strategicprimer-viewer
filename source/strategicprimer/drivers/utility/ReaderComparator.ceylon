@@ -24,7 +24,9 @@ import strategicprimer.model.impl.xmlio {
 }
 
 import strategicprimer.drivers.common {
-    UtilityDriver
+    UtilityDriver,
+    SPOptions,
+    emptyOptions
 }
 
 import strategicprimer.drivers.common.cli {
@@ -47,6 +49,8 @@ shared class ReaderComparator satisfies UtilityDriver {
         }
         return builder.string;
     }
+
+    shared actual SPOptions options = emptyOptions;
 
     ICLIHelper cli;
     shared new (ICLIHelper cli) {

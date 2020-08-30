@@ -11,7 +11,8 @@ import strategicprimer.drivers.common {
     CLIDriver,
     DriverFactory,
     ModelDriverFactory,
-    ModelDriver
+    ModelDriver,
+    emptyOptions
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper
@@ -66,6 +67,7 @@ shared class ExplorationCLIFactory() satisfies ModelDriverFactory {
 "A CLI to help running exploration."
 class ExplorationCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IExplorationModel model;
+    shared actual SPOptions options = emptyOptions;
     "Have the user choose a player."
     shared Player? choosePlayer() =>
         cli.chooseFromList(model.playerChoices.sequence(),

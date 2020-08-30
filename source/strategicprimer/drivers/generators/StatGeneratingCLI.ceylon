@@ -42,7 +42,9 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 }
 
 import strategicprimer.drivers.common {
-    CLIDriver
+    CLIDriver,
+    emptyOptions,
+    SPOptions
 }
 
 import strategicprimer.drivers.common.cli {
@@ -120,6 +122,7 @@ class StatGeneratingCLI satisfies CLIDriver {
 
     ICLIHelper cli;
     shared actual IExplorationModel model;
+    shared actual SPOptions options = emptyOptions;
     shared new (ICLIHelper cli, IExplorationModel model) {
         this.cli = cli;
         this.model = model;

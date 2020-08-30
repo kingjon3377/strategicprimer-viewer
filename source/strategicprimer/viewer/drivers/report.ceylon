@@ -164,7 +164,8 @@ shared class ReportCLIFactory() satisfies ModelDriverFactory {
 }
 
 """A driver to "serve" a report on the contents of a map on an embedded HTTP server."""
-class ReportServingCLI(SPOptions options, model, ICLIHelper cli) satisfies ReadOnlyDriver {
+class ReportServingCLI(options, model, ICLIHelper cli) satisfies ReadOnlyDriver {
+    shared actual SPOptions options;
     shared actual IDriverModel model;
     void serveReports(Integer port, Player? currentPlayer) {
         MutableMap<Path, String> cache = HashMap<Path, String>();
@@ -243,7 +244,8 @@ class ReportServingCLI(SPOptions options, model, ICLIHelper cli) satisfies ReadO
 }
 
 "A driver to produce a report of the contents of a map."
-shared class ReportCLI(SPOptions options, model, ICLIHelper cli) satisfies ReadOnlyDriver {
+shared class ReportCLI(options, model, ICLIHelper cli) satisfies ReadOnlyDriver {
+    shared actual SPOptions options;
     shared actual IDriverModel model;
 
     void writeReport(Path? filename, IMapNG map) {
@@ -322,9 +324,10 @@ shared class TabularReportGUIFactory() satisfies GUIDriverFactory {
 }
 
 "A driver to show tabular reports of the contents of a player's map in a GUI."
-shared class TabularReportGUI(ICLIHelper cli, SPOptions options, model)
+shared class TabularReportGUI(ICLIHelper cli, options, model)
         satisfies GUIDriver {
     shared actual IDriverModel model;
+    shared actual SPOptions options;
 
     shared actual void startDriver() {
         SPFrame window = SPFrame("Tabular Report", this, Dimension(640, 480));
@@ -391,7 +394,8 @@ shared class TabularReportCLIFactory() satisfies ModelDriverFactory {
             SimpleMultiMapModel(map, path);
 }
 
-class TabularReportServingCLI(ICLIHelper cli, SPOptions options, model) satisfies ReadOnlyDriver {
+class TabularReportServingCLI(ICLIHelper cli, options, model) satisfies ReadOnlyDriver {
+    shared actual SPOptions options;
     shared actual IDriverModel model;
 
     Item->Key reverseEntry<Key, Item>(Key->Item entry)
@@ -531,8 +535,8 @@ class TabularReportServingCLI(ICLIHelper cli, SPOptions options, model) satisfie
 }
 
 "A driver to produce tabular (CSV) reports of the contents of a player's map."
-shared class TabularReportCLI(ICLIHelper cli, SPOptions options, model)
-        satisfies ReadOnlyDriver {
+shared class TabularReportCLI(ICLIHelper cli, options, model) satisfies ReadOnlyDriver {
+    shared actual SPOptions options;
     shared actual IDriverModel model;
 
     MutableMap<String,Writer> writers = HashMap<String,Writer>();

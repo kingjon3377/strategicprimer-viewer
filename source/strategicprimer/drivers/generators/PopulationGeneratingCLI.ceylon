@@ -1,6 +1,8 @@
 import strategicprimer.drivers.common {
     IDriverModel,
-    CLIDriver
+    CLIDriver,
+    emptyOptions,
+    SPOptions
 }
 
 import strategicprimer.drivers.common.cli {
@@ -71,6 +73,7 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
 
     ICLIHelper cli;
     shared actual IDriverModel model;
+    shared actual SPOptions options = emptyOptions;
     shared new(ICLIHelper cli, IDriverModel model) {
         this.cli = cli;
         this.model = model;

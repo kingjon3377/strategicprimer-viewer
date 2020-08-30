@@ -145,7 +145,7 @@ shared class IOHandler satisfies ActionListener {
      [[SwingUtilities.invokeLater]]."
     void startNewViewerWindow(ModelDriver driver) =>
         ViewerGUI(vgf.createModel(SPMapNG(driver.model.mapDimensions, PlayerCollection(),
-            driver.model.map.currentTurn), null)).startDriver();
+            driver.model.map.currentTurn), null), driver.options.copy()).startDriver();
 
     shared actual void actionPerformed(ActionEvent event) {
         Component? source = as<Component>(event.source);
@@ -252,7 +252,7 @@ shared class IOHandler satisfies ActionListener {
         case ("open in map viewer") {
             if (is ModelDriver driver) {
                 SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
-                    ViewerGUI), [ViewerModel.copyConstructor(driver.model)]));
+                    ViewerGUI), [ViewerModel.copyConstructor(driver.model), driver.options.copy()]));
             } else {
                 log.error(
                     "IOHandler asked to 'open in map viewer' in unsupported driver");
@@ -263,7 +263,7 @@ shared class IOHandler satisfies ActionListener {
             if (is MultiMapGUIDriver driver) {
                 if (exists mapEntry = driver.model.subordinateMaps.first) {
                     SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
-                        ViewerGUI), [ViewerModel.fromEntry(mapEntry)]));
+                        ViewerGUI), [ViewerModel.fromEntry(mapEntry), driver.options.copy()]));
                 } else {
                     log.error(
                         "IOHandler asked to 'open secondary in map viewer'; none there");

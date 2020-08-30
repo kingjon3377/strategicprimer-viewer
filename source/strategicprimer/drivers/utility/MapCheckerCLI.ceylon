@@ -9,7 +9,9 @@ import lovelace.util.common {
 }
 
 import strategicprimer.drivers.common {
-    UtilityDriver
+    UtilityDriver,
+    emptyOptions,
+    SPOptions
 }
 
 import strategicprimer.model.common.map {
@@ -289,6 +291,7 @@ shared class MapCheckerCLI satisfies UtilityDriver {
 
     Anything(String) stdout;
     Anything(String) stderr;
+    shared actual SPOptions options = emptyOptions;
     shared new (Anything(String) stdout, Anything(String) stderr) {
         this.stdout = stdout;
         this.stderr = stderr;

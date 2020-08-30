@@ -5,12 +5,15 @@ import ceylon.file {
 
 import strategicprimer.drivers.common {
     UtilityDriver,
-    IncorrectUsageException
+    IncorrectUsageException,
+    SPOptions,
+    emptyOptions
 }
 
 """A driver to help debug "exploration tables", which were the second "exploration
    results" framework I implemented."""
 shared class TableDebugger(Anything(String) ostream) satisfies UtilityDriver {
+    shared actual SPOptions options = emptyOptions;
     "Print all possible results from a table."
     void debugSingleTable(
             "The exploration-runner to use for testing"

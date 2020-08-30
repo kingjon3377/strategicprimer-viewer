@@ -19,7 +19,9 @@ import ceylon.collection {
 
 import strategicprimer.drivers.common {
     IDriverModel,
-    ReadOnlyDriver
+    ReadOnlyDriver,
+    emptyOptions,
+    SPOptions
 }
 
 import strategicprimer.model.common.map.fixtures {
@@ -93,6 +95,7 @@ shared class QueryCLI satisfies ReadOnlyDriver {
     ICLIHelper cli;
     IMapNG map;
     HuntingModel huntModel;
+    shared actual SPOptions options = emptyOptions;
     shared new (ICLIHelper cli, IDriverModel model) {
         this.cli = cli;
         this.model = model;

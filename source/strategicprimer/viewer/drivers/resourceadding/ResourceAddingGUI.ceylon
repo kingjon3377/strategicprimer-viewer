@@ -115,7 +115,7 @@ class ResourceAddingGUI satisfies MultiMapGUIDriver {
 
     shared actual ResourceManagementDriverModel model;
     ICLIHelper cli;
-    SPOptions options;
+    shared actual SPOptions options;
     shared new (ICLIHelper cli, SPOptions options, ResourceManagementDriverModel model) {
         this.cli = cli;
         this.options = options;

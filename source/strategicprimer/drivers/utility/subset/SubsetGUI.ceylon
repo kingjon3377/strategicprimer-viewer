@@ -37,7 +37,8 @@ import strategicprimer.drivers.gui.common {
 "A driver to check whether player maps are subsets of the main map and display the
  results graphically."
 todo("Unify with [[SubsetCLI]], like the map-checker GUI")
-shared class SubsetGUI(ICLIHelper cli, SPOptions options) satisfies UtilityGUI {
+shared class SubsetGUI(ICLIHelper cli, options) satisfies UtilityGUI {
+    shared actual SPOptions options;
     late SubsetFrame frame;
 
     variable Boolean initialized = false;

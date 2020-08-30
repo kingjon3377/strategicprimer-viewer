@@ -1,6 +1,8 @@
 import strategicprimer.drivers.common {
     CLIDriver,
-    IMultiMapModel
+    IMultiMapModel,
+    emptyOptions,
+    SPOptions
 }
 import strategicprimer.model.common.map {
     IMapNG,
@@ -12,13 +14,15 @@ import strategicprimer.model.common.map {
 "An app to produce a difference between two maps, to aid understanding what an explorer has
  found. This modifies non-main maps in place; only run on copies or under version control!"
 shared class SubtractCLI(shared actual IMultiMapModel model) satisfies CLIDriver {
-    Boolean isSubset(IFixture one, IFixture two) {
+    Boolean isSubset(IFixture one, IFixture two) { // TODO: Make static if we convert to constructor
         if (is Subsettable<IFixture> one) {
             return one.isSubset(two, noop);
         } else {
             return one == two;
         }
     }
+
+    shared actual SPOptions options = emptyOptions;
 
     shared actual void startDriver() {
         IMapNG first = model.map;

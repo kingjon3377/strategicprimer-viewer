@@ -79,7 +79,7 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
             IDriverModel model) {
         if (is IViewerModel model) {
             log.trace("Creating a viewer-GUI instance for a model of the proper type");
-            return ViewerGUI(model);
+            return ViewerGUI(model, options);
         } else {
             log.trace("Creating a viewer-GUI instance after converting its type");
             return createDriver(cli, options, ViewerModel.copyConstructor(model));
@@ -97,8 +97,9 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
 }
 
 "A driver to start the map viewer."
-shared class ViewerGUI(model) satisfies ViewerDriver {
+shared class ViewerGUI(model, options) satisfies ViewerDriver {
     shared actual IViewerModel model;
+    shared actual SPOptions options;
     log.trace("In ViewerGUI constructor");
 
     shared actual void center() {
@@ -133,7 +134,7 @@ shared class ViewerGUI(model) satisfies ViewerDriver {
     shared actual void resetZoom() => model.resetZoom();
 
     void createWindow(MenuBroker menuHandler) {
-        SPFrame&MapGUI frame = ViewerFrame(model, menuHandler.actionPerformed, this);
+        SPFrame&MapGUI frame = ViewerFrame(model, menuHandler.actionPerformed, this, options);
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
         value selectTileDialogInstance = SelectTileDialog(frame, model);
         menuHandler.registerWindowShower(selectTileDialogInstance, "go to tile");
@@ -183,7 +184,7 @@ shared class ViewerGUI(model) satisfies ViewerDriver {
     shared actual void open(IMutableMapNG map, PathWrapper? path) {
         if (model.mapModified) {
             SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
-                ViewerGUI), [ViewerModel(map, path)]));
+                ViewerGUI), [ViewerModel(map, path), options.copy()]));
         } else {
             model.setMap(map, path);
         }

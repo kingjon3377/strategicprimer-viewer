@@ -54,7 +54,9 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.drivers.common {
     IMultiMapModel,
     IDriverModel,
-    CLIDriver
+    CLIDriver,
+    emptyOptions,
+    SPOptions
 }
 
 import lovelace.util.common {
@@ -171,6 +173,7 @@ shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
 
     ICLIHelper cli;
     shared actual IDriverModel model;
+    shared actual SPOptions options = emptyOptions;
     shared new (ICLIHelper cli, IDriverModel model) {
         this.cli = cli;
         this.model = model;

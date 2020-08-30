@@ -19,7 +19,8 @@ import strategicprimer.drivers.common.cli {
    LodeStatus values array)."""
 // TODO: Write GUI to allow user to visually explore a mine
 native("jvm") // TODO: Try removing once strategicprimer.drivers.common isn't declared entirely "native".
-shared class MiningCLI(ICLIHelper cli, SPOptions options) satisfies UtilityDriver {
+shared class MiningCLI(ICLIHelper cli, options) satisfies UtilityDriver {
+    shared actual SPOptions options;
     shared actual void startDriver(String* args) {
         if (exists filename = args.first, exists second = args.rest.first,
                 args.size == 2) {

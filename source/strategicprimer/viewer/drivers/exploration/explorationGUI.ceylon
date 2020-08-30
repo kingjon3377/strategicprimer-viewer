@@ -83,9 +83,9 @@ shared class ExplorationGUIFactory() satisfies GUIDriverFactory {
 }
 
 "An object to start the exploration GUI."
-class ExplorationGUI(ICLIHelper cli, SPOptions options, model)
-        satisfies MultiMapGUIDriver {
+class ExplorationGUI(ICLIHelper cli, options, model) satisfies MultiMapGUIDriver {
     shared actual IExplorationModel model;
+    shared actual SPOptions options;
     void createWindow(MenuBroker menuHandler) {
         SPFrame frame = ExplorationFrame(this, menuHandler);
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));

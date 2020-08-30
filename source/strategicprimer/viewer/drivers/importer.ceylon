@@ -87,7 +87,7 @@ class ImporterDriver satisfies UtilityDriver {
         "(``pixel.rightLogicalShift(16).and(#ff)``, ``pixel.rightLogicalShift(8).and(#ff)
         ``, ``pixel.and(#ff)``)";
     ICLIHelper cli;
-    SPOptions options;
+    shared actual SPOptions options;
     shared new (ICLIHelper cli, SPOptions options) {
         this.cli = cli;
         this.options = options;

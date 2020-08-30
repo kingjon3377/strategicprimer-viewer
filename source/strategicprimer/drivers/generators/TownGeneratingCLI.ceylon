@@ -1,7 +1,9 @@
 import strategicprimer.drivers.common {
     IDriverModel,
     IMultiMapModel,
-    CLIDriver
+    CLIDriver,
+    emptyOptions,
+    SPOptions
 }
 
 import strategicprimer.drivers.common.cli {
@@ -17,6 +19,7 @@ import strategicprimer.model.common.idreg {
 // TODO: Write GUI to allow user to generate or enter town contents
 shared class TownGeneratingCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IDriverModel model;
+    shared actual SPOptions options = emptyOptions;
 
     shared actual void startDriver() {
         TownGenerator generator = TownGenerator(cli); // TODO: Consider combining that with this class again.

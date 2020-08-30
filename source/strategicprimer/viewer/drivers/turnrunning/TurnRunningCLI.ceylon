@@ -1,5 +1,7 @@
 import strategicprimer.drivers.common {
-    CLIDriver
+    CLIDriver,
+    emptyOptions,
+    SPOptions
 }
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
@@ -50,6 +52,7 @@ import strategicprimer.viewer.drivers.turnrunning.applets {
 todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
 class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IExplorationModel model;
+    shared actual SPOptions options = emptyOptions;
     IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
 
     Boolean unfinishedResults(Integer turn)(IUnit unit) {

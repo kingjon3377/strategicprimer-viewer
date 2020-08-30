@@ -20,7 +20,8 @@ import ceylon.collection {
 }
 
 "A driver to let the user enter a player's resources and equipment."
-class ResourceAddingCLI(ICLIHelper cli, SPOptions options, model) satisfies CLIDriver {
+class ResourceAddingCLI(ICLIHelper cli, options, model) satisfies CLIDriver {
+    shared actual SPOptions options;
     shared actual ResourceManagementDriverModel model;
 
     ResourceAddingCLIHelper helper = ResourceAddingCLIHelper(cli,

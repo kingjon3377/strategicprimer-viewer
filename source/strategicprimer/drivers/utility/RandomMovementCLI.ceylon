@@ -24,8 +24,10 @@ import ceylon.random {
 }
 
 "An app to move independent units around at random."
-class RandomMovementCLI(ICLIHelper cli, SPOptions options, model) satisfies CLIDriver {
+class RandomMovementCLI(ICLIHelper cli, options, model) satisfies CLIDriver {
     shared actual IExplorationModel model;
+
+    shared actual SPOptions options;
 
     shared actual void startDriver() {
         for (unit in model.playerChoices.filter(Player.independent)

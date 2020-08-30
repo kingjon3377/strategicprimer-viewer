@@ -4,7 +4,9 @@ import lovelace.util.common {
 }
 
 import strategicprimer.drivers.common {
-    UtilityGUI
+    UtilityGUI,
+    emptyOptions,
+    SPOptions
 }
 
 import strategicprimer.drivers.gui.common {
@@ -17,6 +19,7 @@ import strategicprimer.drivers.gui.common {
  window."
 shared class MapCheckerGUI() satisfies UtilityGUI {
     late MapCheckerFrame window;
+    shared actual SPOptions options = emptyOptions;
     variable Boolean initialized = false;
 
     shared actual void startDriver(String* args) {
