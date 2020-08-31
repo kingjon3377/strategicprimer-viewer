@@ -158,12 +158,30 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
     // Can't take method reference to requestFocusInWindow() because it's overloaded
     void requestFocusNarrowly() => requestFocusInWindow();
 
+    "If the point is currently visible, call the overloading of [[repaint]] that takes
+     coordinates, passing the coordinates describing the point."
+    void repaintPoint(Point point) {
+        value visibleDimensions = mapModel.visibleDimensions;
+        Integer row = largest(point.row, 0);
+        Integer column = largest(point.column, 0);
+        Integer tileSize = scaleZoom(mapModel.zoomLevel, mapModel.mapDimensions.version);
+        if (row in visibleDimensions.rows, column in visibleDimensions.columns) {
+            repaint((column - visibleDimensions.minimumColumn) * tileSize,
+                (row - visibleDimensions.minimumRow) * tileSize, tileSize, tileSize);
+        }
+    }
+
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         SwingUtilities.invokeLater(requestFocusNarrowly);
-        if (!selectionVisible) {
+        if (selectionVisible) {
+            if (exists old, old != newPoint) {
+                repaintPoint(old);
+            }
+            repaintPoint(newPoint);
+        } else {
             fixVisibility();
+            repaint();
         }
-        repaint();
     }
 
     shared actual void mapChanged() {}
@@ -212,6 +230,7 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
     }
 
     shared actual void paint(Graphics pen) {
+        super.paint(pen);
         Graphics context = pen.create();
         try {
             context.color = Color.white;
@@ -230,7 +249,6 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         } finally {
             context.dispose();
         }
-        super.paint(pen);
     }
 
     shared actual void interactionPointChanged() {}
