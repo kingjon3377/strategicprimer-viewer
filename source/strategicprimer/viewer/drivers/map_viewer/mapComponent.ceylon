@@ -3,11 +3,14 @@ import ceylon.numeric.float {
 }
 
 import java.awt {
+    Component,
     Graphics,
     Color,
     Rectangle
 }
 import java.awt.event {
+    ActionEvent,
+    KeyEvent,
     ComponentEvent,
     MouseMotionAdapter,
     MouseEvent,
@@ -15,11 +18,14 @@ import java.awt.event {
 }
 
 import javax.swing {
+    AbstractAction,
+    KeyStroke,
     JComponent,
     SwingUtilities
 }
 
 import lovelace.util.common {
+    as,
     Comparator
 }
 
@@ -236,6 +242,11 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
     assert (exists localActionMap = actionMap, exists localInputMap =
             getInputMap(JComponent.whenAncestorOfFocusedComponent));
     arrowListenerInitializer.setUpArrowListeners(dsl, localInputMap, localActionMap);
+    localInputMap.put(KeyStroke.getKeyStroke(KeyEvent.vkT, 0), "show-terrain-menu");
+    localActionMap.put("show-terrain-menu", object extends AbstractAction() {
+        shared actual void actionPerformed(ActionEvent event) =>
+            cml.showMenuAtSelection(as<Component>(event.source));
+    });
 
     object mapSizeListener extends ComponentAdapter() {
         // TODO: Split the difference instead of only expanding/contracting on  'max' side

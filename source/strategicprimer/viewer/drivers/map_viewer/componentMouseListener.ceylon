@@ -13,6 +13,10 @@ import strategicprimer.model.common.map.fixtures {
     TerrainFixture
 }
 
+import java.awt {
+    Component
+}
+
 "An interface for the method to get the tool-tip message for the location the mouse
  cursor is over."
 interface ToolTipSource {
@@ -98,6 +102,19 @@ class ComponentMouseListener(IViewerModel model, Boolean(TileFixture) zof,
             model.interaction  = pointFor(event);
             menu.show(event.component, event.x, event.y);
         }
+    }
+
+    [Integer, Integer] screenPointFor(Point point) {
+        MapDimensions mapDimensions = model.mapDimensions;
+        Integer tileSize = scaleZoom(model.zoomLevel, mapDimensions.version);
+        VisibleDimensions visibleDimensions = model.visibleDimensions;
+        return [(point.column - visibleDimensions.minimumColumn) * tileSize + tileSize / 2,
+            (point.row - visibleDimensions.minimumRow) * tileSize + tileSize / 2];
+    }
+
+    shared void showMenuAtSelection(Component? parent) {
+        model.interaction = model.selection;
+        menu.show(parent, *screenPointFor(model.selection));
     }
 
 //    shared actual void addSelectionChangeListener(SelectionChangeListener listener) =>
