@@ -78,7 +78,7 @@ shared class NewForestDialog(IDRegistrar idf) extends SPDialog(null, "Add a New 
             for (listener in listeners) {
                 listener.addNewFixture(forest);
             }
-            kindField.text = "";
+//            kindField.text = "";
             acresField.text = "-1";
             setVisible(false);
             dispose();
@@ -107,7 +107,7 @@ shared class NewForestDialog(IDRegistrar idf) extends SPDialog(null, "Add a New 
     add(okButton);
 
     void cancelListener() {
-        kindField.text = "";
+//        kindField.text = "";
         acresField.text = "-1";
         setVisible(false);
         dispose();
