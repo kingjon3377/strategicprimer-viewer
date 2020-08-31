@@ -1,4 +1,5 @@
 import java.awt.event {
+    KeyEvent,
     ActionEvent
 }
 
@@ -64,6 +65,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     });
 
     JCheckBoxMenuItem mountainItem = JCheckBoxMenuItem("Mountainous");
+    mountainItem.mnemonic = KeyEvent.vkM;
 
     void toggleMountains() {
         Point localPoint = point;
@@ -81,6 +83,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     mountainItem.addActionListener(silentListener(toggleMountains));
 
     JCheckBoxMenuItem hillItem = JCheckBoxMenuItem("Hill(s)");
+    hillItem.mnemonic = KeyEvent.vkH;
 
     void toggleHill() {
         Point localPoint = point;
@@ -104,6 +107,7 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     hillItem.addActionListener(silentListener(toggleHill));
 
     JMenuItem newForestItem = JMenuItem("Add New Forest ...");
+    newForestItem.mnemonic = KeyEvent.vkF;
     NewForestDialog nfDialog = NewForestDialog(idf);
     object newFixtureListener satisfies NewFixtureListener {
         shared actual void addNewFixture(TileFixture fixture) {
@@ -118,11 +122,13 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     nfDialog.addNewFixtureListener(newFixtureListener);
 
     JMenuItem textNoteItem = JMenuItem("Add Text Note ...");
+    textNoteItem.mnemonic = KeyEvent.vkX;
     Integer currentTurn() => model.map.currentTurn;
     TextNoteDialog tnDialog = TextNoteDialog(currentTurn);
     tnDialog.addNewFixtureListener(newFixtureListener);
 
     JCheckBoxMenuItem bookmarkItem = JCheckBoxMenuItem("Bookmarked");
+    bookmarkItem.mnemonic = KeyEvent.vkB;
 
     void toggleBookmarked() {
         Point localPoint = point;
@@ -159,7 +165,16 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     MutableMap<River, JCheckBoxMenuItem> riverItems = HashMap<River, JCheckBoxMenuItem>();
     for (direction in `River`.caseValues) {
-        JCheckBoxMenuItem item = JCheckBoxMenuItem(direction.description + " river");
+        String desc;
+        Integer mnemonic;
+        switch (direction)
+        case (River.lake) { desc = "lake"; mnemonic = KeyEvent.vkK; }
+        case (River.north) { desc = "north river"; mnemonic = KeyEvent.vkN; }
+        case (River.south) { desc = "south river"; mnemonic = KeyEvent.vkS; }
+        case (River.east) { desc = "east river"; mnemonic = KeyEvent.vkE; }
+        case (River.west) { desc = "west river"; mnemonic = KeyEvent.vkW; }
+        JCheckBoxMenuItem item = JCheckBoxMenuItem(desc);
+        item.mnemonic = mnemonic;
         item.addActionListener(silentListener(toggleRiver(direction, item)));
         riverItems[direction] = item;
     }
@@ -179,10 +194,25 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
         add(textNoteItem);
         addSeparator();
         JMenuItem removalItem = JMenuItem("Remove terrain");
+        removalItem.mnemonic = KeyEvent.vkV;
         add(removalItem);
         removalItem.addActionListener(removeTerrain);
         for (type in TileType.valuesForVersion(version)) {
-            JMenuItem item = JMenuItem(type.string);
+            String desc;
+            Integer? mnemonic;
+            switch (type)
+            case (TileType.tundra) { desc = "tundra"; mnemonic = KeyEvent.vkT; }
+            case (TileType.desert) { desc = "desert"; mnemonic = KeyEvent.vkD; }
+            case (TileType.ocean) { desc = "ocean"; mnemonic = KeyEvent.vkO; }
+            case (TileType.plains) { desc = "plains"; mnemonic = KeyEvent.vkL; }
+            case (TileType.jungle) { desc = "jungle"; mnemonic = KeyEvent.vkJ; }
+            case (TileType.steppe) { desc = "steppe"; mnemonic = KeyEvent.vkP; }
+            case (TileType.swamp) { desc = "swamp"; mnemonic = KeyEvent.vkA; }
+            // else { desc = type.string; mnemonic = null; }
+            JMenuItem item = JMenuItem(desc);
+            if (exists mnemonic) {
+                item.mnemonic = mnemonic;
+            }
             add(item);
             item.addActionListener((ActionEvent event) {
                 model.map.baseTerrain[point] = type;
