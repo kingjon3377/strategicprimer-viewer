@@ -67,7 +67,7 @@ shared class NewForestDialog(IDRegistrar idf) extends SPDialog(null, "Add a New 
         } else {
             String reqId = idField.text.trimmed;
             variable Integer idNum;
-            if (isNumeric(reqId), exists temp = parseInt(reqId)) {
+            if (isNumeric(reqId), exists temp = parseInt(reqId), temp >= 0) {
                 idNum = temp;
                 idf.register(idNum);
             } else {
