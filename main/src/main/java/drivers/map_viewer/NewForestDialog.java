@@ -123,7 +123,7 @@ public final class NewForestDialog extends SPDialog implements NewFixtureSource 
 			for (final NewFixtureListener listener : listeners) {
 				listener.addNewFixture(forest);
 			}
-			kindField.setText("");
+//			kindField.setText("");
 			acresField.setText("-1");
 			setVisible(false);
 			dispose();
@@ -137,7 +137,7 @@ public final class NewForestDialog extends SPDialog implements NewFixtureSource 
 	}
 
 	private void cancelListener() {
-		kindField.setText("");
+//		kindField.setText("");
 		acresField.setText("-1");
 		setVisible(false);
 		dispose();
