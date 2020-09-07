@@ -47,8 +47,8 @@ shared class SubtractCLI(shared actual IMultiMapModel model) satisfies CLIDriver
                 if (first.mountainous.get(loc)) { // TODO: syntax sugar
                     map.mountainous[loc] = false;
                 }
-		for (fixture in map.fixtures.get(loc)) { // TODO: syntax sugar
-		    if (first.fixtures.get(loc).any((item) => isSubset(item, fixture))) { // TODO: syntax sugar
+                for (fixture in map.fixtures.get(loc)) { // TODO: syntax sugar
+                    if (first.fixtures.get(loc).any((item) => isSubset(item, fixture))) { // TODO: syntax sugar
                         map.removeFixture(loc, fixture);
                     }
                 }
