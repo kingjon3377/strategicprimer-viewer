@@ -143,7 +143,7 @@ shared class ViewerGUI(model, options) satisfies ViewerDriver {
     void createWindow(MenuBroker menuHandler) {
         ViewerFrame frame = ViewerFrame(model, menuHandler.actionPerformed, this, options);
         value backgroundFile = options.getArgument("--background");
-        if (!backgroundFile.empty) {
+        if (!backgroundFile.empty && backgroundFile != "false") {
             frame.backgroundImage = ImageIO.read(JFile(backgroundFile));
         }
         frame.addWindowListener(WindowCloseListener(menuHandler.actionPerformed));
