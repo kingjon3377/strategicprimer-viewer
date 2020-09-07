@@ -27,8 +27,12 @@ shared class SubtractCLI(shared actual IMultiMapModel model) satisfies CLIDriver
     shared actual void startDriver() {
         IMapNG first = model.map;
         for (map->[path, modified] in model.subordinateMaps) {
+            variable Boolean modifiedFlag = modified;
             for (loc in map.locations) {
-                model.setModifiedFlag(map, true);
+                if (!modifiedFlag) {
+                    model.setModifiedFlag(map, true);
+                    modifiedFlag = true;
+                }
                 if (exists terrain = first.baseTerrain[loc], exists ours = map.baseTerrain[loc], terrain == ours) {
                     map.baseTerrain[loc] = null;
                 }
