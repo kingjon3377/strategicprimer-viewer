@@ -9,7 +9,12 @@ import lovelace.util.common {
     narrowedStream
 }
 
+import strategicprimer.model.common {
+    DistanceComparator
+}
+
 import strategicprimer.model.common.map {
+    MapDimensions,
     IFixture,
     Point
 }
@@ -23,12 +28,22 @@ import strategicprimer.model.common.map.fixtures.resources {
 
 "A tabular report generator for resources, including [[caches|CacheFixture]],
  [[resource piles|ResourcePile]], and [[equipment|Implement]]."
-shared class ResourceTabularReportGenerator()
+shared class ResourceTabularReportGenerator(Point? hq, MapDimensions dimensions)
+        extends AbstractTableGenerator<Implement|CacheFixture|ResourcePile>()
         satisfies ITableGenerator<Implement|CacheFixture|ResourcePile> {
     "The file-name to (by default) write this table to."
     shared actual String tableName = "resources";
     "The header row for this table."
-    shared actual [String+] headerRow = ["Kind", "Quantity", "Specifics"];
+    shared actual [String+] headerRow = ["Distance", "Location", "Kind",
+        "Quantity", "Specifics"];
+
+    Comparison(Point, Point) distanceComparator;
+    if (exists hq) {
+        distanceComparator = DistanceComparator(hq, dimensions).compare;
+    } else {
+        distanceComparator = (Point one, Point two) => equal;
+    }
+
     "Create a GUI table row representing the given fixture."
     shared actual [{String+}+] produce(
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
@@ -54,14 +69,12 @@ shared class ResourceTabularReportGenerator()
             specifics = item.contents;
         }
         fixtures.remove(key);
-        return [[kind, quantity, specifics]];
+        return [[distanceString(loc, hq, dimensions), locationString(loc),
+            kind, quantity, specifics]];
     }
-    "Compare two Point-fixture pairs."
-    shared actual Comparison comparePairs(
-            [Point, Implement|CacheFixture|ResourcePile] one,
-            [Point, Implement|CacheFixture|ResourcePile] two) {
-        value first = one.rest.first;
-        value second = two.rest.first;
+
+    Comparison compareItems(Implement|CacheFixture|ResourcePile first,
+            Implement|CacheFixture|ResourcePile second) {
         switch (first)
         case (is ResourcePile) {
             if (is ResourcePile second) {
@@ -91,6 +104,14 @@ shared class ResourceTabularReportGenerator()
             }
         }
     }
+
+    "Compare two Point-fixture pairs."
+    shared actual Comparison comparePairs(
+            [Point, Implement|CacheFixture|ResourcePile] one,
+            [Point, Implement|CacheFixture|ResourcePile] two) =>
+        comparing(comparingOn(pairPoint, distanceComparator),
+            comparingOn(pairFixture, compareItems))(one, two);
+
     "Write rows for equipment, counting multiple identical Implements in one line."
     shared actual void produceTable(Anything(String) ostream,
             DelayedRemovalMap<Integer, [Point, IFixture]> fixtures,
@@ -101,17 +122,18 @@ shared class ResourceTabularReportGenerator()
                         Entry<Integer, [Point, CacheFixture|Implement|ResourcePile]>.item,
                         comparePairs)).map(Entry.pair);
         writeRow(ostream, headerRow.first, *headerRow.rest);
-        MutableMap<String, Integer> implementCounts = HashMap<String, Integer>();
+        MutableMap<[Point, String], Integer> implementCounts =
+            HashMap<[Point, String], Integer>();
         for ([key, [loc, fixture]] in values) {
             switch (fixture)
             case (is Implement) {
                 Integer num;
-                if (exists temp = implementCounts[fixture.kind]) {
+                if (exists temp = implementCounts[[loc, fixture.kind]]) {
                     num = temp;
                 } else {
                     num = 0;
                 }
-                implementCounts[fixture.kind] = num + fixture.count;
+                implementCounts[[loc, fixture.kind]] = num + fixture.count;
                 fixtures.remove(key);
             } case (is CacheFixture) {
                 // FIXME: combine with ResourcePile case once eclipse/ceylon#7372 fixed
@@ -124,8 +146,9 @@ shared class ResourceTabularReportGenerator()
                 fixtures.remove(key);
             }
         }
-        for (key->count in implementCounts) {
-            writeRow(ostream, "equipment", count.string, key);
+        for ([loc, key]->count in implementCounts) {
+            writeRow(ostream, distanceString(loc, hq, dimensions), locationString(loc),
+                "equipment", count.string, key);
         }
         fixtures.coalesce();
     }

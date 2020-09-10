@@ -86,7 +86,7 @@ shared object tabularReportGenerator {
             TownTabularReportGenerator(player, hq, dimensions),
             CropTabularReportGenerator(hq, dimensions),
             DiggableTabularReportGenerator(hq, dimensions),
-            ResourceTabularReportGenerator(),
+            ResourceTabularReportGenerator(hq, dimensions),
             ImmortalsTabularReportGenerator(hq, dimensions),
             ExplorableTabularReportGenerator(player, hq, dimensions)
         ];
@@ -148,7 +148,7 @@ shared object tabularReportGenerator {
             TownTabularReportGenerator(player, hq, dimensions),
             CropTabularReportGenerator(hq, dimensions),
             DiggableTabularReportGenerator(hq, dimensions),
-            ResourceTabularReportGenerator(),
+            ResourceTabularReportGenerator(hq, dimensions),
             ImmortalsTabularReportGenerator(hq, dimensions),
             ExplorableTabularReportGenerator(player, hq, dimensions)
         ];
