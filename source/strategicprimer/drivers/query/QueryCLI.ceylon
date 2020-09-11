@@ -193,7 +193,7 @@ shared class QueryCLI satisfies ReadOnlyDriver {
                         !population.yearlyProduction.empty) {
                     cli.print("At ", location.string);
                     cli.print(comparator.distanceString(location, "base"), ": ");
-                    cli.print(town.name, ", a", town.townSize.string, " ");
+                    cli.print(town.name, ", a ", town.townSize.string, " ");
                     if (is Village town, town.race != "human") {
                         cli.print(town.race);
                         cli.print(" village");
