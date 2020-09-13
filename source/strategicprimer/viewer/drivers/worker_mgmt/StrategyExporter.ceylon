@@ -213,6 +213,8 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                         String results = unit.getResults(turn);
                         if (results.empty) {
                             writer.writeLine("TODO: run");
+                        } else {
+                            writer.writeLine(results);
                         }
                         writer.writeLine();
                         writer.writeLine("TODO: advancement");
