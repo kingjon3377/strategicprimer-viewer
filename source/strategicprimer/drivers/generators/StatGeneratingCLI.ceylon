@@ -145,12 +145,16 @@ class StatGeneratingCLI satisfies CLIDriver {
     void addWorkerToUnit(IFixture unit, IWorker worker) {
         for (map->[file, _] in model.allMaps) {
             if (is IUnit fixture = find(map, unit.id)) {
-                fixture.addMember(worker.copy(false));
                 Integer turn = map.currentTurn;
+                value addend = worker.copy(false);
+                if (!turn.negative) {
+                    addend.notes[fixture.owner] = "Newcomer in turn #``turn``";
+                }
+                fixture.addMember(addend);
                 if (fixture.getOrders(turn).empty) {
                     fixture.setOrders(turn, "TODO: assign");
                 }
-                model.setModifiedFlag(map, true);
+                model.setModifiedFlag(map, true); // FIXME: Check before setting, '_' above
             }
         }
     }
