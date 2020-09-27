@@ -3,6 +3,7 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map {
+    Player,
     IFixture,
     Point,
     MapDimensions,
@@ -20,7 +21,7 @@ import strategicprimer.model.common.map.fixtures.mobile.worker {
 
 "A report generator for Workers."
 class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) comp,
-            Boolean details, MapDimensions dimensions, Point? hq = null)
+            Boolean details, MapDimensions dimensions, Player currentPlayer, Point? hq = null)
         extends AbstractReportGenerator<IWorker>(comp, dimensions, hq) {
     "Produce the sub-sub-report on a worker's stats."
     String statsString(WorkerStats stats) {
@@ -61,6 +62,10 @@ class WorkerReportGenerator(Comparison([Point, IFixture], [Point, IFixture]) com
             }
             ostream("""</ul>
                    """);
+        }
+        if (details, exists note = worker.notes.get(currentPlayer), !note.empty) {
+            ostream("<p>``note``</p>
+                    ");
         }
     }
 
