@@ -168,9 +168,11 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             addUnitAtLocationImpl(unit, location, map);
             mapModified = true;
         } else {
-            for (eachMap->_ in allMaps) {
+            for (eachMap->[eachFile, modifiedFlag] in allMaps) {
                 addUnitAtLocationImpl(unit, location, eachMap);
-                setModifiedFlag(eachMap, true);
+                if (!modifiedFlag) {
+                    setModifiedFlag(eachMap, true);
+                }
             }
         }
     }

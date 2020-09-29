@@ -30,13 +30,15 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
 
     "Add a resource to a player's HQ."
     shared void addResource(FortressMember resource, Player player) {
-        for (map->_ in allMaps) {
+        for (map->[file, modifiedFlag] in allMaps) {
             Player mapPlayer = map.currentPlayer;
             if (mapPlayer.independent || mapPlayer.playerId < 0 ||
             mapPlayer.playerId == player.playerId) {
                 addResourceToMap(resource.copy(false), map, player);
-                setModifiedFlag(map, true);
-            } // Else log why we're skipping the map
+                if (!modifiedFlag) {
+                    setModifiedFlag(map, true);
+                }
+            } // TODO: Else log why we're skipping the map
         }
     }
 
@@ -45,7 +47,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
         for (fixture in map.fixtures.items.narrow<Fortress>()) {
             if ("HQ" == fixture.name, player.playerId == fixture.owner.playerId) {
                 fixture.addMember(resource);
-            }
+            } // TODO: Set modified flag for that map
         }
     }
 

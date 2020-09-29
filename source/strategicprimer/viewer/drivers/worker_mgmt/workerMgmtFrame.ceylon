@@ -96,8 +96,10 @@ class WorkerMgmtFrame extends SPFrame satisfies PlayerChangeListener {
     IWorkerTreeModel treeModel = WorkerTreeModelAlt(model);
 
     void markModified() {
-        for (subMap->_ in model.allMaps) {
-            model.setModifiedFlag(subMap, true);
+        for (subMap->[file, modifiedFlag] in model.allMaps) {
+            if (!modifiedFlag) {
+                model.setModifiedFlag(subMap, true);
+            }
         }
     }
 

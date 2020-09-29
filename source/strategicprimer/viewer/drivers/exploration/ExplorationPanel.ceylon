@@ -287,7 +287,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             PlayerImpl(- 1, "no-one");
 
             MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
-            for (map->[file, _] in driverModel.subordinateMaps) {
+            for (map->[file, modifiedFlag] in driverModel.subordinateMaps) {
                 map.baseTerrain[destPoint] = driverModel.map
 //                    .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
                     .baseTerrain.get(destPoint);
@@ -310,7 +310,9 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
                         }
                     }
                 }
-                driverModel.setModifiedFlag(map, true);
+                if (!modifiedFlag) {
+                    driverModel.setModifiedFlag(map, true);
+                }
             }
             for (cache in caches) {
                 driverModel.map.removeFixture(destPoint, cache);

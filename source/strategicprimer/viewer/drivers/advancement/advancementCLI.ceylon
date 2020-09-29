@@ -92,8 +92,10 @@ shared class AdvancementCLI(ICLIHelper cli, options, model) satisfies CLIDriver 
                 break;
             }
         }
-        for (map->_ in model.allMaps) {
-            model.setModifiedFlag(map, true);
+        for (map->[file, modifiedFlag] in model.allMaps) {
+            if (!modifiedFlag) {
+                model.setModifiedFlag(map, true);
+            }
         }
     }
 

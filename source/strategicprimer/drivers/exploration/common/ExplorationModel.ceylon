@@ -311,12 +311,14 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             removeImpl(map, point, unit);
             map.addFixture(dest, unit);
             mapModified = true;
-            for (subMap->[subFile, _] in subordinateMaps) {
+            for (subMap->[subFile, modifiedFlag] in subordinateMaps) {
                 if (doesLocationHaveFixture(subMap, point, unit)) {
                     ensureTerrain(map, subMap, dest);
                     removeImpl(subMap, point, unit);
                     subMap.addFixture(dest, unit);
-                    setModifiedFlag(subMap, true);
+                    if (!modifiedFlag) {
+                        setModifiedFlag(subMap, true);
+                    }
                 }
             }
             selection = [dest, unit];
@@ -344,9 +346,11 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     log.trace("Unknown reason for movement-impossible condition");
                 }
             }
-            for (subMap->[path, _] in subordinateMaps) {
+            for (subMap->[path, modifiedFlag] in subordinateMaps) {
                 ensureTerrain(map, subMap, dest);
-                setModifiedFlag(subMap, true);
+                if (!modifiedFlag) {
+                    setModifiedFlag(subMap, true);
+                }
             }
             fireMovementCost(1);
             throw TraversalImpossibleException();
@@ -421,10 +425,12 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 variable Boolean subordinate = false;
                 for (village in villages) {
                     village.owner = owner;
-                    for (subMap->[file, _] in allMaps) {
+                    for (subMap->[file, modifiedFlag] in allMaps) {
                         subMap.addFixture(currentPoint, village.copy(subordinate));
                         subordinate = true;
-                        setModifiedFlag(subMap, true);
+                        if (!modifiedFlag) {
+                            setModifiedFlag(subMap, true);
+                        }
                     }
                 }
                 // Note that we never need to call setModifiedFlag() again in this method;
@@ -505,10 +511,12 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 map.addFixture(currentPoint, newFixture.copy(condition));
             }
             variable Boolean subsequent = false;
-            for (subMap->[file, _] in allMaps) {
+            for (subMap->[file, modifiedFlag] in allMaps) {
                 addToMap(subMap, subsequent);
                 subsequent = true;
-                setModifiedFlag(subMap, true);
+                if (!modifiedFlag) {
+                    setModifiedFlag(subMap, true);
+                }
             }
             fireMovementCost(4);
         }

@@ -298,14 +298,18 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
 
     shared actual void startDriver() {
         if (is IMultiMapModel model) {
-            for (map->[path, _] in model.allMaps) {
+            for (map->[path, modifiedFlag] in model.allMaps) {
                 fixAllUnits(map);
                 fixAllVillages(map);
-                model.setModifiedFlag(map, true);
+                if (!modifiedFlag) {
+                    model.setModifiedFlag(map, true);
+                }
             }
-            for (map->[path, _] in model.subordinateMaps) {
+            for (map->[path, modifiedFlag] in model.subordinateMaps) {
                 fixMissingRivers(model.map, map);
-                model.setModifiedFlag(map, true);
+                if (!modifiedFlag) {
+                    model.setModifiedFlag(map, true);
+                }
             }
         } else {
             fixAllUnits(model.map);

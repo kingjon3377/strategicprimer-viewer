@@ -65,8 +65,10 @@ SPFrame&PlayerChangeListener advancementFrame(IWorkerModel model,
     IDRegistrar idf = createIDFactory(map);
 
     void markModified() {
-        for (subMap->_ in model.allMaps) {
-            model.setModifiedFlag(subMap, true);
+        for (subMap->[file, modifiedFlag] in model.allMaps) {
+            if (!modifiedFlag) {
+                model.setModifiedFlag(subMap, true);
+            }
         }
     }
 
