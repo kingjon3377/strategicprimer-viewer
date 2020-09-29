@@ -11,6 +11,10 @@ import lovelace.util.common {
     PathWrapper
 }
 
+Boolean(Type) matchingReference<Type, Field>(Field expected, Field(Type) field)
+    given Type satisfies Object given Field satisfies Object&Identifiable =>
+        (Type obj) => field(obj) === expected;
+
 "A superclass for implementations of interfaces inheriting from [[IMultiMapModel]]."
 shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapModel {
     "The collection of subordinate maps."
@@ -37,6 +41,11 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
     shared actual void setModifiedFlag(IMutableMapNG map, Boolean modified) {
         if (map === this.map) {
             mapModified = modified;
+        } else if (exists index->entry = subordinateMapsList.locate(
+                matchingReference(map, Entry<IMutableMapNG, [PathWrapper?, Boolean]>.key))) {
+            if (entry.item.rest.first != modified) {
+                subordinateMapsList[index] = entry.key->[entry.item.first, modified];
+            }
         } else if (exists index->entry = subordinateMapsList.locate(matchingValue(map,
                 Entry<IMutableMapNG, [PathWrapper?, Boolean]>.key))) {
             if (entry.item.rest.first != modified) {
