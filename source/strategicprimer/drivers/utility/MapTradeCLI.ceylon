@@ -238,6 +238,7 @@ shared class MapTradeCLI satisfies CLIDriver {
                         continue;
                     } else {
                         second.setRoadLevel(location, direction, quality);
+                        setModifiedFlag();
                     }
                 }
             }
