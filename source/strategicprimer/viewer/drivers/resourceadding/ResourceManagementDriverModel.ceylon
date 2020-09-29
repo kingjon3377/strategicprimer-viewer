@@ -33,7 +33,7 @@ class ResourceManagementDriverModel extends SimpleMultiMapModel {
         for (map->[file, modifiedFlag] in allMaps) {
             Player mapPlayer = map.currentPlayer;
             if (mapPlayer.independent || mapPlayer.playerId < 0 ||
-            mapPlayer.playerId == player.playerId) {
+                    mapPlayer.playerId == player.playerId) {
                 addResourceToMap(resource.copy(false), map, player);
                 if (!modifiedFlag) {
                     setModifiedFlag(map, true);
