@@ -257,6 +257,22 @@ class StrategyExporter(IWorkerModel model, SPOptions options)
                         process.writeErrorLine("Unhandled members in ``fortress.name``"); // TODO: Take ICLIHelper to report diagnostics on
                     }
                 }
+                for (unit in model.getUnits(currentPlayer)) {
+                    if (unit.empty) {
+                        continue;
+                    }
+                    writer.write("- With unit ");
+                    writer.write(unit.name);
+                    writer.write(" (");
+                    writer.write(unit.kind);
+                    writer.writeLine("):");
+                    for (member in unit) {
+                        if (!member is IWorker) {
+                            writer.write("  - ");
+                            writer.writeLine(member.string);
+                        }
+                    }
+                }
             }
         }
     }
