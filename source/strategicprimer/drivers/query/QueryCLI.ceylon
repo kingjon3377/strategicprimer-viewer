@@ -200,6 +200,12 @@ shared class QueryCLI satisfies ReadOnlyDriver {
                     } else {
                         cli.print(town.kind);
                     }
+                    if (town.owner.independent) {
+                        cli.print(", independent");
+                    } else if (town.owner != map.currentPlayer) {
+                        cli.print(", allied to ");
+                        cli.print(town.owner.string);
+                    }
                     cli.println(". Its yearly production:");
                     for (resource in population.yearlyProduction) {
                         cli.print("- ", resource.kind, ": ");
