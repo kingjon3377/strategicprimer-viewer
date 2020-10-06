@@ -148,7 +148,11 @@ class StatGeneratingCLI satisfies CLIDriver {
                 Integer turn = map.currentTurn;
                 value addend = worker.copy(false);
                 if (!turn.negative) {
-                    addend.notes[fixture.owner] = "Newcomer in turn #``turn``";
+                    variable String existing = addend.notes.get(fixture.owner) else "";
+                    if (!existing.empty) {
+                        existing = existing + " ";
+                    }
+                    addend.notes[fixture.owner] = existing + "Newcomer in turn #``turn``.";
                 }
                 fixture.addMember(addend);
                 if (fixture.getOrders(turn).empty) {
@@ -252,6 +256,7 @@ class StatGeneratingCLI satisfies CLIDriver {
      given village."
     Worker generateWorkerFrom(Village village, String name, IDRegistrar idf) {
         Worker worker = Worker(name, village.race, idf.createID());
+	worker.notes[village.owner] = "From ``village.name``.";
         if (exists populationDetails = village.population) {
             MutableList<IJob> candidates = ArrayList<IJob>();
             for (job->level in populationDetails.highestSkillLevels) {
