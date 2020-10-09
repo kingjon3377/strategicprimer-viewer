@@ -143,15 +143,17 @@ class StatGeneratingCLI satisfies CLIDriver {
 
     "Add a worker to a unit in all maps."
     void addWorkerToUnit(IFixture unit, IWorker worker) {
+        String existing;
+        if (is HasOwner unit, exists temp = worker.notes.get(unit.owner), !temp.empty) {
+            existing = temp + " ";
+        } else {
+            existing = "";
+        }
         for (map->[file, modifiedFlag] in model.allMaps) {
             if (is IUnit fixture = find(map, unit.id)) {
                 Integer turn = map.currentTurn;
                 value addend = worker.copy(false);
                 if (!turn.negative) {
-                    variable String existing = addend.notes.get(fixture.owner) else "";
-                    if (!existing.empty) {
-                        existing = existing + " ";
-                    }
                     addend.notes[fixture.owner] = existing + "Newcomer in turn #``turn``.";
                 }
                 fixture.addMember(addend);
