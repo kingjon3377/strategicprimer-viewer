@@ -129,15 +129,17 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         Point selectedPoint = mapModel.selection;
         horizontalBar = horizontal;
         horizontal.model.setRangeProperties(constrainToRange(selectedPoint.column,
-                0, mapDimensions.columns - 1), 1, 0,
-            mapDimensions.columns - visibleDimensions.width, false);
+                0, mapDimensions.columns - 1),
+            smallest(mapDimensions.columns, visibleDimensions.width), 0,
+            mapDimensions.columns, false);
         horizontal.inputVerifier = ScrollInputVerifier.horizontal(
             defer(IViewerModel.mapDimensions, [mapModel]),
                     defer(IViewerModel.visibleDimensions, [mapModel]));
         verticalBar = vertical;
         vertical.model.setRangeProperties(constrainToRange(selectedPoint.row, 0,
-                mapDimensions.rows - 1), 1, 0,
-            mapDimensions.rows - visibleDimensions.height, false);
+                mapDimensions.rows - 1),
+            smallest(mapDimensions.rows, visibleDimensions.height), 0,
+            mapDimensions.rows, false);
         vertical.inputVerifier = ScrollInputVerifier.vertical(
             defer(IViewerModel.mapDimensions, [mapModel]),
                     defer(IViewerModel.visibleDimensions, [mapModel]));
@@ -168,10 +170,12 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         if (mutex) {
             mutex = false;
             visibleDimensions = newDimensions;
-            horizontalBar.model.setRangeProperties(largest(model.selection.column, 0), 1,
-                0, mapDimensions.columns - newDimensions.width, false);
-            verticalBar.model.setRangeProperties(largest(model.selection.row, 0), 1, 0,
-                mapDimensions.rows - newDimensions.height, false);
+            horizontalBar.model.setRangeProperties(largest(model.selection.column, 0),
+                smallest(newDimensions.width, mapDimensions.columns),
+                0, mapDimensions.columns, false);
+            verticalBar.model.setRangeProperties(largest(model.selection.row, 0),
+                smallest(newDimensions.height, mapDimensions.rows), 0,
+                mapDimensions.rows, false);
             mutex = true;
         }
     }
@@ -198,10 +202,12 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     shared actual void mapChanged() {
         mapDimensions = model.mapDimensions;
         visibleDimensions = model.visibleDimensions;
-        horizontalBar.model.setRangeProperties(0, 1, 0,
-            mapDimensions.columns - visibleDimensions.width, false);
-        verticalBar.model.setRangeProperties(0, 1, 0,
-            mapDimensions.rows - visibleDimensions.height, false);
+        horizontalBar.model.setRangeProperties(0,
+            smallest(visibleDimensions.width, mapDimensions.columns), 0,
+            mapDimensions.columns, false);
+        verticalBar.model.setRangeProperties(0,
+            smallest(visibleDimensions.height, mapDimensions.rows), 0,
+            mapDimensions.rows, false);
     }
 
     shared actual void mapMetadataChanged() {}
