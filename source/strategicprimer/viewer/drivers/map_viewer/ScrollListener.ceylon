@@ -37,25 +37,18 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         GraphicalParamsListener {
     static class LocalInputVerifier extends InputVerifier {
         Integer() mapDimension;
-        Integer() visibleDimension;
-        shared new horizontal(MapDimensions() mapDimsSource,
-                VisibleDimensions() visibleDimsSource) extends InputVerifier() {
+        shared new horizontal(MapDimensions() mapDimsSource) extends InputVerifier() {
             mapDimension = compose(MapDimensions.columns, mapDimsSource);
-            visibleDimension = compose(VisibleDimensions.height, visibleDimsSource);
         }
 
-        shared new vertical(MapDimensions() mapDimsSource,
-                VisibleDimensions() visibleDimsSource) extends InputVerifier() {
+        shared new vertical(MapDimensions() mapDimsSource) extends InputVerifier() {
             mapDimension = compose(MapDimensions.rows, mapDimsSource);
-            visibleDimension = compose(VisibleDimensions.height, visibleDimsSource);
         }
 
-        "A scrollbar is valid if its value is between 0 and the size of the map minus the
-         visible size of the map (that subtraction is to prevent scrolling so far that
-         empty tiles show to the right of or below the map)."
+        "A scrollbar is valid if its value is between 0 and the size of the map."
         shared actual Boolean verify(JComponent input) {
             if (is JScrollBar input) {
-                return (0:(mapDimension() - visibleDimension())).contains(input.\ivalue);
+                return (0:(mapDimension())).contains(input.\ivalue);
             } else {
                 return false;
             }
@@ -88,16 +81,14 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             smallest(mapDimensions.columns, visibleDimensions.width), 0,
             mapDimensions.columns, false);
         horizontal.inputVerifier = LocalInputVerifier.horizontal(
-            defer(IViewerModel.mapDimensions, [mapModel]),
-                    defer(IViewerModel.visibleDimensions, [mapModel]));
+            defer(IViewerModel.mapDimensions, [mapModel]));
         verticalBar = vertical;
         vertical.model.setRangeProperties(constrainToRange(selectedPoint.row, 0,
                 mapDimensions.rows - 1),
             smallest(mapDimensions.rows, visibleDimensions.height), 0,
             mapDimensions.rows, false);
         vertical.inputVerifier = LocalInputVerifier.vertical(
-            defer(IViewerModel.mapDimensions, [mapModel]),
-                    defer(IViewerModel.visibleDimensions, [mapModel]));
+            defer(IViewerModel.mapDimensions, [mapModel]));
 
         todo("Move to top level of class, converting to class if needed")
         object adjustmentListener satisfies AdjustmentListener {
