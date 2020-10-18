@@ -112,8 +112,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                                 ["Wis", WorkerStats.wisdom],
                                 ["Cha", WorkerStats.charisma]];
 
-    class WorkerTreeTransferHandler(TreeSelectionModel selectionModel)
-            extends TransferHandler() {
+    class WorkerTreeTransferHandler(TreeSelectionModel selectionModel, Boolean(TreePath) isExpanded,
+            Anything(TreePath) collapsePath) extends TransferHandler() {
         "Unit members can only be moved, not copied or linked."
         shared actual Integer getSourceActions(JComponent component) =>
             TransferHandler.move;
@@ -181,13 +181,16 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                     exists pathLast = path.lastPathComponent) {
                 Object tempTarget;
                 Object local = wtModel.getModelObject(pathLast);
+                TreePath targetPath;
                 if (is UnitMember local) {
-                    TreePath pathParent = path.parentPath;
-                    tempTarget = wtModel.getModelObject(pathParent.lastPathComponent);
+                    targetPath = path.parentPath;
+                    tempTarget = wtModel.getModelObject(targetPath.lastPathComponent);
                 } else {
+                    targetPath = path;
                     tempTarget = local;
                 }
                 Transferable trans = support.transferable;
+                Boolean shouldBeExpanded = isExpanded(targetPath);
                 try {
                     if (is IUnit tempTarget,
                             trans.isDataFlavorSupported(
@@ -196,6 +199,9 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                             trans.getTransferData(UnitMemberTransferable.flavor));
                         for ([member, unit] in list) {
                             wtModel.moveMember(member, unit, tempTarget);
+                        }
+                        if (!shouldBeExpanded) {
+                            collapsePath(targetPath);
                         }
                         return true;
                     } else if (is String tempTarget,
@@ -409,7 +415,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         showsRootHandles = true;
         dropMode = DropMode.on;
 
-        transferHandler = WorkerTreeTransferHandler(selectionModel);
+        transferHandler = WorkerTreeTransferHandler(selectionModel, (TreePath p) => isExpanded(p), collapsePath);
 
         cellRenderer = unitMemberCellRenderer;
 
