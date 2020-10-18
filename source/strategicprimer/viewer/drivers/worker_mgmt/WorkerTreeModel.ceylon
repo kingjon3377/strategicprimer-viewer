@@ -315,6 +315,17 @@ class WorkerTreeModel satisfies IWorkerTreeModel {
             String orders = unit.getOrders(turn).lowercased;
             if (orders.empty || orders.contains("todo") || orders.contains("fixme") ||
                     orders.contains("xxx")) {
+                if (orders.empty) {
+                    log.trace("Orders are empty");
+                } else if (orders.contains("todo")) {
+                    log.trace("Orders contain 'todo'");
+                } else if (orders.contains("fixme")) {
+                    log.trace("Orders contain 'fixme'");
+                } else if (orders.contains("xxx")) {
+                    log.trace("Orders contain 'xxx'");
+                } else {
+                    log.warn("Orders are not problematic, but called a problem anyway");
+                }
                 return TreePath(ObjectArray<Object>.with([root, unit.kind, unit]));
             }
         }
