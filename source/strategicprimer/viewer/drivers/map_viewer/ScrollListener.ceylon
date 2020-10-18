@@ -92,38 +92,43 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
 
         todo("Move to top level of class, converting to class if needed")
         object adjustmentListener satisfies AdjustmentListener {
+            variable Boolean mutex = true;
             shared actual void adjustmentValueChanged(AdjustmentEvent event) {
-                VisibleDimensions oldDimensions = model.visibleDimensions;
-                Integer newColumn = horizontalBar.\ivalue;
-                Integer newRow = verticalBar.\ivalue;
-                Integer newMinColumn;
-                Integer newMaxColumn;
-                if (oldDimensions.minimumColumn > newColumn) {
-                    newMinColumn = newColumn;
-                    newMaxColumn = newColumn + visibleDimensions.width - 1;
-                } else if (oldDimensions.maximumColumn < newColumn) {
-                    newMaxColumn = newColumn;
-                    newMinColumn = newColumn - visibleDimensions.width + 1;
-                } else {
-                    newMaxColumn = oldDimensions.maximumColumn;
-                    newMinColumn = oldDimensions.minimumColumn;
-                }
-                Integer newMinRow;
-                Integer newMaxRow;
-                if (oldDimensions.minimumRow > newRow) {
-                    newMinRow = newRow;
-                    newMaxRow = newRow + visibleDimensions.height - 1;
-                } else if (oldDimensions.maximumRow < newRow) {
-                    newMaxRow = newRow;
-                    newMinRow = newRow - visibleDimensions.height + 1;
-                } else {
-                    newMaxRow = oldDimensions.maximumRow;
-                    newMinRow = oldDimensions.minimumRow;
-                }
-                VisibleDimensions newDimensions = VisibleDimensions(newMinRow,
-                    newMaxRow, newMinColumn, newMaxColumn);
-                if (oldDimensions != newDimensions) {
-                    model.visibleDimensions = newDimensions;
+                if (mutex) {
+                    mutex = false;
+                    VisibleDimensions oldDimensions = model.visibleDimensions;
+                    Integer newColumn = horizontalBar.\ivalue;
+                    Integer newRow = verticalBar.\ivalue;
+                    Integer newMinColumn;
+                    Integer newMaxColumn;
+                    if (oldDimensions.minimumColumn > newColumn) {
+                        newMinColumn = newColumn;
+                        newMaxColumn = newColumn + visibleDimensions.width - 1;
+                    } else if (oldDimensions.maximumColumn < newColumn) {
+                        newMaxColumn = newColumn;
+                        newMinColumn = newColumn - visibleDimensions.width + 1;
+                    } else {
+                        newMaxColumn = oldDimensions.maximumColumn;
+                        newMinColumn = oldDimensions.minimumColumn;
+                    }
+                    Integer newMinRow;
+                    Integer newMaxRow;
+                    if (oldDimensions.minimumRow > newRow) {
+                        newMinRow = newRow;
+                        newMaxRow = newRow + visibleDimensions.height - 1;
+                    } else if (oldDimensions.maximumRow < newRow) {
+                        newMaxRow = newRow;
+                        newMinRow = newRow - visibleDimensions.height + 1;
+                    } else {
+                        newMaxRow = oldDimensions.maximumRow;
+                        newMinRow = oldDimensions.minimumRow;
+                    }
+                    VisibleDimensions newDimensions = VisibleDimensions(newMinRow,
+                        newMaxRow, newMinColumn, newMaxColumn);
+                    if (oldDimensions != newDimensions) {
+                        model.visibleDimensions = newDimensions;
+                    }
+                    mutex = true;
                 }
             }
         }
