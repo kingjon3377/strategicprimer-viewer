@@ -30,38 +30,38 @@ import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
 }
 
-"A class to change the visible area of the map based on the user's use of the scrollbars."
-todo("Maybe keep track of visible dimensions and selected point directly instaed of
-      through the model, so we can drop the reference to the model.")
-class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
-        GraphicalParamsListener {
-    static class LocalInputVerifier extends InputVerifier {
-        Integer() mapDimension;
-        Integer() visibleDimension;
-        shared new horizontal(MapDimensions() mapDimsSource,
-                VisibleDimensions() visibleDimsSource) extends InputVerifier() {
-            mapDimension = compose(MapDimensions.columns, mapDimsSource);
-            visibleDimension = compose(VisibleDimensions.height, visibleDimsSource);
-        }
-
-        shared new vertical(MapDimensions() mapDimsSource,
-                VisibleDimensions() visibleDimsSource) extends InputVerifier() {
-            mapDimension = compose(MapDimensions.rows, mapDimsSource);
-            visibleDimension = compose(VisibleDimensions.height, visibleDimsSource);
-        }
-
-        "A scrollbar is valid if its value is between 0 and the size of the map minus the
-         visible size of the map (that subtraction is to prevent scrolling so far that
-         empty tiles show to the right of or below the map)."
-        shared actual Boolean verify(JComponent input) {
-            if (is JScrollBar input) {
-                return (0:(mapDimension() - visibleDimension())).contains(input.\ivalue);
-            } else {
-                return false;
-            }
-        }
+"A class, formerly static within [[ScrollListener]], to verify that scroll
+ inputs are within the valid range."
+class ScrollInputVerifier extends InputVerifier {
+    Integer() mapDimension;
+    Integer() visibleDimension;
+    shared new horizontal(MapDimensions() mapDimsSource,
+            VisibleDimensions() visibleDimsSource) extends InputVerifier() {
+        mapDimension = compose(MapDimensions.columns, mapDimsSource);
+        visibleDimension = compose(VisibleDimensions.height, visibleDimsSource);
     }
 
+    shared new vertical(MapDimensions() mapDimsSource,
+            VisibleDimensions() visibleDimsSource) extends InputVerifier() {
+        mapDimension = compose(MapDimensions.rows, mapDimsSource);
+        visibleDimension = compose(VisibleDimensions.height, visibleDimsSource);
+    }
+
+    "A scrollbar is valid if its value is between 0 and the size of the map minus the
+     visible size of the map (that subtraction is to prevent scrolling so far that
+     empty tiles show to the right of or below the map)."
+    shared actual Boolean verify(JComponent input) {
+        if (is JScrollBar input) {
+            return (0:(mapDimension() - visibleDimension())).contains(input.\ivalue);
+        } else {
+            return false;
+        }
+    }
+}
+
+"A class to change the visible area of the map based on the user's use of the scrollbars."
+class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
+        GraphicalParamsListener {
     static Integer constrainToRange(Integer val, Integer min, Integer max) {
         if (val < min) {
             return min;
@@ -86,14 +86,14 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         horizontal.model.setRangeProperties(constrainToRange(selectedPoint.column,
             0, mapDimensions.columns - 1), 1, 0,
             mapDimensions.columns - visibleDimensions.width, false);
-        horizontal.inputVerifier = LocalInputVerifier.horizontal(
+        horizontal.inputVerifier = ScrollInputVerifier.horizontal(
             defer(IViewerModel.mapDimensions, [mapModel]),
                     defer(IViewerModel.visibleDimensions, [mapModel]));
         verticalBar = vertical;
         vertical.model.setRangeProperties(constrainToRange(selectedPoint.row, 0,
             mapDimensions.rows - 1), 1, 0,
             mapDimensions.rows - visibleDimensions.height, false);
-        vertical.inputVerifier = LocalInputVerifier.vertical(
+        vertical.inputVerifier = ScrollInputVerifier.vertical(
             defer(IViewerModel.mapDimensions, [mapModel]),
                     defer(IViewerModel.visibleDimensions, [mapModel]));
 
