@@ -34,19 +34,29 @@ import strategicprimer.model.common.map.fixtures.mobile {
  inputs are within the valid range."
 class ScrollInputVerifier extends InputVerifier {
     Integer() mapDimension;
+    String dimension;
     shared new horizontal(MapDimensions() mapDimsSource) extends InputVerifier() {
         mapDimension = compose(MapDimensions.columns, mapDimsSource);
+        dimension = "horizontal";
     }
 
     shared new vertical(MapDimensions() mapDimsSource) extends InputVerifier() {
         mapDimension = compose(MapDimensions.rows, mapDimsSource);
+        dimension = "vertical";
     }
 
     "A scrollbar is valid if its value is between 0 and the size of the map."
     shared actual Boolean verify(JComponent input) {
         if (is JScrollBar input) {
-            return (0:(mapDimension())).contains(input.\ivalue);
+            if ((0:(mapDimension())).contains(input.\ivalue)) {
+                log.trace("``input.\ivalue`` is a valid ``dimension`` coordinate");
+                return true;
+            } else {
+                log.trace("``input.\ivalue`` is not a valid ``dimension`` coordinate");
+                return false;
+            }
         } else {
+            log.trace("ScrollInputVerifier called on non-scroll-bar input");
             return false;
         }
     }
@@ -56,37 +66,49 @@ class ScrollAdjustmentListener(IViewerModel model, BoundedRangeModel horizontalB
         BoundedRangeModel verticalBarModel) satisfies ChangeListener&GraphicalParamsListener {
     shared variable VisibleDimensions visibleDimensions = model.visibleDimensions;
     shared actual void stateChanged(ChangeEvent event) {
+        log.trace("ScrollAdjustment listener starting to respond to scroll-bar change");
         VisibleDimensions oldDimensions = model.visibleDimensions;
         Integer newColumn = horizontalBarModel.\ivalue;
         Integer newRow = verticalBarModel.\ivalue;
         Integer newMinColumn;
         Integer newMaxColumn;
+        log.trace("Columns were from ``oldDimensions.minimumColumn`` to ``oldDimensions.maximumColumn``; new column is ``newColumn``");
         if (oldDimensions.minimumColumn > newColumn) {
+            log.trace("User scrolled left");
             newMinColumn = newColumn;
             newMaxColumn = newColumn + visibleDimensions.width - 1;
         } else if (oldDimensions.maximumColumn < newColumn) {
+            log.trace("User scrolled right");
             newMaxColumn = newColumn;
             newMinColumn = newColumn - visibleDimensions.width + 1;
         } else {
+            log.trace("User didn't scroll horizontally");
             newMaxColumn = oldDimensions.maximumColumn;
             newMinColumn = oldDimensions.minimumColumn;
         }
         Integer newMinRow;
         Integer newMaxRow;
+        log.trace("Rows were from ``oldDimensions.minimumRow`` to ``oldDimensions.maximumRow``; new column is ``newRow``");
         if (oldDimensions.minimumRow > newRow) {
+            log.trace("User scrolled up");
             newMinRow = newRow;
             newMaxRow = newRow + visibleDimensions.height - 1;
         } else if (oldDimensions.maximumColumn < newColumn) {
+            log.trace("user scrolled down");
             newMaxRow = newColumn;
             newMinRow = newRow - visibleDimensions.height + 1;
         } else {
+            log.trace("User didn't scroll vertically");
             newMaxRow = oldDimensions.maximumRow;
             newMinRow = oldDimensions.minimumRow;
         }
         VisibleDimensions newDimensions = VisibleDimensions(newMinRow,
             newMaxRow, newMinColumn, newMaxColumn);
         if (oldDimensions != newDimensions) {
+            log.trace("Replacing old viewport dimensions with new one.");
             model.visibleDimensions = newDimensions;
+        } else {
+            log.trace("Viewport dimensions did not change");
         }
     }
     "Handle a change in visible dimensions."
