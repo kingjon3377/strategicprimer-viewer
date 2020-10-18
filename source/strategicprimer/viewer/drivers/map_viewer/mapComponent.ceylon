@@ -76,12 +76,13 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         doubleBuffered = true;
     }
 
+    // TODO: cache this?
+    Integer tileSize => scaleZoom(mapModel.zoomLevel, mapModel.mapDimensions.version);
+
     Rectangle boundsCheck(Rectangle? rect) {
         if (exists rect) {
             return rect;
         } else {
-            Integer tileSize = scaleZoom(mapModel.zoomLevel,
-                mapModel.mapDimensions.version);
             VisibleDimensions dimensions = mapModel.visibleDimensions;
             return Rectangle(0, 0, dimensions.width * tileSize,
                 dimensions.height * tileSize);
@@ -160,7 +161,6 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         value visibleDimensions = mapModel.visibleDimensions;
         Integer row = largest(point.row, 0);
         Integer column = largest(point.column, 0);
-        Integer tileSize = scaleZoom(mapModel.zoomLevel, mapModel.mapDimensions.version);
         if (row in visibleDimensions.rows, column in visibleDimensions.columns) {
             repaint((column - visibleDimensions.minimumColumn) * tileSize,
                 (row - visibleDimensions.minimumRow) * tileSize, tileSize, tileSize);
@@ -233,7 +233,6 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
             context.fillRect(0, 0, width, height);
             Rectangle bounds = boundsCheck(context.clipBounds);
             MapDimensions mapDimensions = mapModel.mapDimensions;
-            Integer tileSize = scaleZoom(mapModel.zoomLevel, mapDimensions.version);
             drawBackgroundImage(context, tileSize);
             drawMapPortion(context, tileSize, halfEven(bounds.minX / tileSize)
                 .plus(0.1).integer,
@@ -276,8 +275,6 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         Integer[4] concat(Integer[2] one, Integer[2] two) =>
             [one.first, one.rest.first, two.first, two.rest.first];
         shared actual void componentResized(ComponentEvent event) {
-            Integer tileSize = scaleZoom(mapModel.zoomLevel,
-                mapModel.mapDimensions.version);
             Integer visibleColumns = outer.width / tileSize;
             Integer visibleRows = outer.height / tileSize;
             VisibleDimensions oldDimensions = mapModel.visibleDimensions;
