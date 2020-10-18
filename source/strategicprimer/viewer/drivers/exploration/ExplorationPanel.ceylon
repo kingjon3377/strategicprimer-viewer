@@ -372,8 +372,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
     for (direction in sort(`Direction`.caseValues)) {
         log.trace("ExplorationPanel: Starting to initialize for ``direction``");
         SwingList<TileFixture>&SelectionChangeListener mainList =
-            fixtureList(tilesPanel, FixtureListModel(driverModel.map, tracksCreator),
-                idf, markModified, driverModel.map.players);
+            fixtureList(tilesPanel, FixtureListModel(driverModel.map, tracksCreator,
+                increasing<TileFixture>), idf, markModified, driverModel.map.players);
         tilesPanel.add(JScrollPane(mainList));
 
         log.trace("ExplorationPanel: main list set up for ``direction``");
@@ -400,8 +400,8 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         log.trace("ExplorationPanel: ell set up for ``direction``");
 
         SwingList<TileFixture>&SelectionChangeListener secList =
-            fixtureList(tilesPanel, FixtureListModel(secondMap, createNull),
-                idf, markModified, secondMap.players);
+            fixtureList(tilesPanel, FixtureListModel(secondMap, createNull,
+                increasing<TileFixture>), idf, markModified, secondMap.players);
         tilesPanel.add(JScrollPane(secList));
 
         log.trace("ExploratonPanel: Second list set up for ``direction``");
