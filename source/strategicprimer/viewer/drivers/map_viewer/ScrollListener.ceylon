@@ -112,9 +112,9 @@ class ScrollAdjustmentListener(IViewerModel model, BoundedRangeModel horizontalB
                 log.trace("User scrolled up");
                 newMinRow = newRow;
                 newMaxRow = newRow + visibleDimensions.height - 1;
-            } else if (oldDimensions.maximumColumn < newColumn) {
+            } else if (oldDimensions.maximumRow < newRow) {
                 log.trace("user scrolled down");
-                newMaxRow = newColumn;
+                newMaxRow = newRow;
                 newMinRow = newRow - visibleDimensions.height + 1;
             } else {
                 log.trace("User didn't scroll vertically");
