@@ -1,6 +1,6 @@
-import java.awt.event {
-    AdjustmentEvent,
-    AdjustmentListener
+import javax.swing.event {
+    ChangeEvent,
+    ChangeListener
 }
 import java.awt {
     BorderLayout,
@@ -59,12 +59,12 @@ class ScrollInputVerifier extends InputVerifier {
 }
 
 class ScrollAdjustmentListener(IViewerModel model, JScrollBar horizontalBar, JScrollBar verticalBar)
-        satisfies AdjustmentListener&GraphicalParamsListener {
+        satisfies ChangeListener&GraphicalParamsListener {
     shared variable VisibleDimensions visibleDimensions = model.visibleDimensions;
-    shared actual void adjustmentValueChanged(AdjustmentEvent event) {
+    shared actual void stateChanged(ChangeEvent event) {
         VisibleDimensions oldDimensions = model.visibleDimensions;
-        Integer newColumn = horizontalBar.\ivalue;
-        Integer newRow = verticalBar.\ivalue;
+        Integer newColumn = horizontalBar.model.\ivalue;
+        Integer newRow = verticalBar.model.\ivalue;
         Integer newMinColumn;
         Integer newMaxColumn;
         if (oldDimensions.minimumColumn > newColumn) {
@@ -147,8 +147,8 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         value adjustmentListener = ScrollAdjustmentListener(model, horizontalBar, verticalBar);
         mapModel.addGraphicalParamsListener(adjustmentListener);
 
-        horizontalBar.addAdjustmentListener(adjustmentListener);
-        verticalBar.addAdjustmentListener(adjustmentListener);
+        horizontalBar.model.addChangeListener(adjustmentListener);
+        verticalBar.model.addChangeListener(adjustmentListener);
     }
 
     "Alternate constructor that adds new scroll-bars to an existing component. This only
