@@ -35,4 +35,13 @@ shared class VisibleDimensions(minimumRow, maximumRow, minimumColumn, maximumCol
 
     "The number of rows visible."
     shared Integer height => (minimumRow..maximumRow).size;
+
+    shared actual Boolean equals(Object that) {
+        if (is VisibleDimensions that, that.minimumRow == minimumRow, that.maximumRow == maximumRow,
+                that.minimumColumn == minimumColumn, that.maximumColumn == maximumColumn) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
