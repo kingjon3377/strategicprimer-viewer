@@ -61,8 +61,6 @@ shared interface MapGUI {
 class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         SelectionChangeListener&GraphicalParamsListener {
     shared actual IViewerModel mapModel;
-    Boolean(TileFixture) zof;
-    {FixtureMatcher*}&Comparator<TileFixture> matchers;
     ComponentMouseListener cml;
     DirectionSelectionChanger dsl;
     variable TileDrawHelper helper;
@@ -72,8 +70,6 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
     shared new (IViewerModel model, Boolean(TileFixture) zof,
             {FixtureMatcher*}&Comparator<TileFixture> matchers) extends JComponent() {
         mapModel = model;
-        this.zof = zof;
-        this.matchers = matchers;
         cml = ComponentMouseListener(model, zof, matchers.compare);
         dsl = DirectionSelectionChanger(model);
         helper = Ver2TileDrawHelper(imageUpdate, zof, matchers);
