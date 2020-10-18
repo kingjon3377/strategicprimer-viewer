@@ -176,9 +176,9 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         "Handle a drop."
         shared actual Boolean importData(TransferSupport support) {
             if (canImport(support),
-                is JTree.DropLocation dropLocation = support.dropLocation,
-                exists path = dropLocation.path,
-                exists pathLast = path.lastPathComponent) {
+                    is JTree.DropLocation dropLocation = support.dropLocation,
+                    exists path = dropLocation.path,
+                    exists pathLast = path.lastPathComponent) {
                 Object tempTarget;
                 Object local = wtModel.getModelObject(pathLast);
                 if (is UnitMember local) {
@@ -190,8 +190,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                 Transferable trans = support.transferable;
                 try {
                     if (is IUnit tempTarget,
-                        trans.isDataFlavorSupported(
-                            UnitMemberTransferable.flavor)) {
+                            trans.isDataFlavorSupported(
+                                UnitMemberTransferable.flavor)) {
                         assert (is [UnitMember, IUnit][] list =
                             trans.getTransferData(UnitMemberTransferable.flavor));
                         for ([member, unit] in list) {
@@ -199,7 +199,7 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
                         }
                         return true;
                     } else if (is String tempTarget,
-                        trans.isDataFlavorSupported(UnitTransferable.flavor)) {
+                            trans.isDataFlavorSupported(UnitTransferable.flavor)) {
                         assert (is <IUnit&HasMutableKind>[] list =
                             trans.getTransferData(UnitTransferable.flavor));
                         for (unit in list) {
@@ -318,8 +318,8 @@ shared JTree&UnitMemberSelectionSource&UnitSelectionSource workerTree(
         }
 
         shared actual Component getTreeCellRendererComponent(JTree? tree,
-            Object? item, Boolean selected, Boolean expanded, Boolean leaf,
-            Integer row, Boolean hasFocus) {
+                Object? item, Boolean selected, Boolean expanded, Boolean leaf,
+                Integer row, Boolean hasFocus) {
             assert (exists tree, exists item);
             Component component = super.getTreeCellRendererComponent(tree, item,
                 selected, expanded, leaf, row, hasFocus);
