@@ -23,6 +23,7 @@ import strategicprimer.drivers.common {
 import javax.swing {
     JScrollBar,
     JComponent,
+    BoundedRangeModel,
     InputVerifier
 }
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -58,13 +59,13 @@ class ScrollInputVerifier extends InputVerifier {
     }
 }
 
-class ScrollAdjustmentListener(IViewerModel model, JScrollBar horizontalBar, JScrollBar verticalBar)
-        satisfies ChangeListener&GraphicalParamsListener {
+class ScrollAdjustmentListener(IViewerModel model, BoundedRangeModel horizontalBarModel,
+        BoundedRangeModel verticalBarModel) satisfies ChangeListener&GraphicalParamsListener {
     shared variable VisibleDimensions visibleDimensions = model.visibleDimensions;
     shared actual void stateChanged(ChangeEvent event) {
         VisibleDimensions oldDimensions = model.visibleDimensions;
-        Integer newColumn = horizontalBar.model.\ivalue;
-        Integer newRow = verticalBar.model.\ivalue;
+        Integer newColumn = horizontalBarModel.\ivalue;
+        Integer newRow = verticalBarModel.\ivalue;
         Integer newMinColumn;
         Integer newMaxColumn;
         if (oldDimensions.minimumColumn > newColumn) {
@@ -118,25 +119,26 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     }
 
     IViewerModel model;
-    JScrollBar horizontalBar;
-    JScrollBar verticalBar;
+    BoundedRangeModel horizontalBarModel;
+    BoundedRangeModel verticalBarModel;
     variable MapDimensions mapDimensions;
     variable VisibleDimensions visibleDimensions;
+    // Can't take scroll-bar models instead of scroll bars because we have to set up input verifiers as well.
     shared new (IViewerModel mapModel, JScrollBar horizontal, JScrollBar vertical) {
         model = mapModel;
         visibleDimensions = mapModel.visibleDimensions;
         mapDimensions = mapModel.mapDimensions;
         Point selectedPoint = mapModel.selection;
-        horizontalBar = horizontal;
-        horizontal.model.setRangeProperties(constrainToRange(selectedPoint.column,
+        horizontalBarModel = horizontal.model;
+        horizontalBarModel.setRangeProperties(constrainToRange(selectedPoint.column,
                 0, mapDimensions.columns - 1),
             smallest(mapDimensions.columns, visibleDimensions.width), 0,
             mapDimensions.columns, false);
         horizontal.inputVerifier = ScrollInputVerifier.horizontal(
             defer(IViewerModel.mapDimensions, [mapModel]),
                     defer(IViewerModel.visibleDimensions, [mapModel]));
-        verticalBar = vertical;
-        vertical.model.setRangeProperties(constrainToRange(selectedPoint.row, 0,
+        verticalBarModel = vertical.model;
+        verticalBarModel.setRangeProperties(constrainToRange(selectedPoint.row, 0,
                 mapDimensions.rows - 1),
             smallest(mapDimensions.rows, visibleDimensions.height), 0,
             mapDimensions.rows, false);
@@ -144,24 +146,28 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             defer(IViewerModel.mapDimensions, [mapModel]),
                     defer(IViewerModel.visibleDimensions, [mapModel]));
 
-        value adjustmentListener = ScrollAdjustmentListener(model, horizontalBar, verticalBar);
+        value adjustmentListener = ScrollAdjustmentListener(model, horizontalBarModel, verticalBarModel);
         mapModel.addGraphicalParamsListener(adjustmentListener);
 
-        horizontalBar.model.addChangeListener(adjustmentListener);
-        verticalBar.model.addChangeListener(adjustmentListener);
+        horizontalBarModel.addChangeListener(adjustmentListener);
+        verticalBarModel.addChangeListener(adjustmentListener);
     }
 
-    "Alternate constructor that adds new scroll-bars to an existing component. This only
+    "Alternate constructor that adds (new) scroll-bars to an existing component. This only
      works if that component is laid out using a [[BorderLayout]] and doesn't already have
       members at page-end and line-end."
-    shared new createScrollBars(IViewerModel mapModel, BorderedPanel component)
-            extends ScrollListener(mapModel, JScrollBar(Adjustable.horizontal),
-                JScrollBar(Adjustable.vertical)) {
+    new addScrollBars(IViewerModel mapModel, BorderedPanel component, JScrollBar horizontalBar,
+                JScrollBar verticalBar)
+            extends ScrollListener(mapModel, horizontalBar, verticalBar) {
         "We don't want to replace existing components with scrollbars"
         assert (!component.pageEnd exists, !component.lineEnd exists);
         component.pageEnd = horizontalBar;
         component.lineEnd = verticalBar;
     }
+
+    shared new createScrollBars(IViewerModel mapModel, BorderedPanel component)
+            extends addScrollBars(mapModel, component, JScrollBar(Adjustable.horizontal),
+                JScrollBar(Adjustable.vertical)) {}
 
     variable Boolean mutex = true;
     "Handle a change in visible dimensions."
@@ -170,10 +176,10 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         if (mutex) {
             mutex = false;
             visibleDimensions = newDimensions;
-            horizontalBar.model.setRangeProperties(largest(model.selection.column, 0),
+            horizontalBarModel.setRangeProperties(largest(model.selection.column, 0),
                 smallest(newDimensions.width, mapDimensions.columns),
                 0, mapDimensions.columns, false);
-            verticalBar.model.setRangeProperties(largest(model.selection.row, 0),
+            verticalBarModel.setRangeProperties(largest(model.selection.row, 0),
                 smallest(newDimensions.height, mapDimensions.rows), 0,
                 mapDimensions.rows, false);
             mutex = true;
@@ -191,10 +197,10 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     shared actual void selectedPointChanged(Point? old, Point newPoint) {
         VisibleDimensions temp = model.visibleDimensions;
         if (!temp.columns.contains(newPoint.column)) {
-            horizontalBar.model.\ivalue = largest(newPoint.column, 0);
+            horizontalBarModel.\ivalue = largest(newPoint.column, 0);
         }
         if (!temp.rows.contains(newPoint.row)) {
-            verticalBar.model.\ivalue = largest(newPoint.row, 0);
+            verticalBarModel.\ivalue = largest(newPoint.row, 0);
         }
     }
 
@@ -202,10 +208,10 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
     shared actual void mapChanged() {
         mapDimensions = model.mapDimensions;
         visibleDimensions = model.visibleDimensions;
-        horizontalBar.model.setRangeProperties(0,
+        horizontalBarModel.setRangeProperties(0,
             smallest(visibleDimensions.width, mapDimensions.columns), 0,
             mapDimensions.columns, false);
-        verticalBar.model.setRangeProperties(0,
+        verticalBarModel.setRangeProperties(0,
             smallest(visibleDimensions.height, mapDimensions.rows), 0,
             mapDimensions.rows, false);
     }
