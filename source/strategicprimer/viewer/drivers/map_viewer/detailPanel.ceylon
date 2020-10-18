@@ -58,7 +58,8 @@ import strategicprimer.model.common.map.fixtures.mobile {
 todo("Separate controller functionality from presentation",
      "Try to convert back to a class")
 JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
-        variable Integer version, IDriverModel model) {
+        variable Integer version, IDriverModel model,
+        Comparison(TileFixture, TileFixture) sortOrder) {
     JComponent keyElement(Integer version, TileType? type) {
         JPanel&BoxPanel retval = boxPanel(BoxAxis.lineAxis);
         retval.addGlue();
@@ -116,7 +117,8 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
     void markModified() => model.mapModified = true;
 
     SwingList<TileFixture>&SelectionChangeListener fixtureListObject =
-            fixtureList(retval, FixtureListModel(model.map, (point) => null),
+            fixtureList(retval,
+                FixtureListModel(model.map, (point) => null, sortOrder),
                 createIDFactory(model.map), markModified,
                     model.map.players);
 

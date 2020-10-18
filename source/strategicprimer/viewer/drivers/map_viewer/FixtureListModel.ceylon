@@ -27,7 +27,8 @@ import java.lang {
 }
 
 "A model for the list-based representation of the contents of a tile."
-shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSource)
+shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSource,
+            Comparison(TileFixture, TileFixture) comparator)
         satisfies ListModel<TileFixture>&SelectionChangeListener {
     "The currently selected point."
     variable Point point = Point.invalidPoint;
@@ -116,7 +117,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
 
     shared actual TileFixture getElementAt(Integer index) {
         //TileFixture[] main = map.fixtures[point].sequence(); // TODO: syntax sugar
-        TileFixture[] main = map.fixtures.get(point).sequence();
+        TileFixture[] main = map.fixtures.get(point).sort(comparator);
         if (index < 0) {
             throw ArrayIndexOutOfBoundsException(index);
         } else if (exists retval = cachedTerrainList.getFromFirst(index)) {

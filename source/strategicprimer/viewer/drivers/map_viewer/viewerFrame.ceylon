@@ -138,7 +138,7 @@ shared final class ViewerFrame extends SPFrame satisfies MapGUI {
     mapModel.addSelectionChangeListener(mapPanel);
 
     JComponent&SelectionChangeListener&VersionChangeListener detailPane =
-            detailPanel(mapModel.mapDimensions.version, mapModel);
+            detailPanel(mapModel.mapDimensions.version, mapModel, tableModel.compare);
     mapModel.addVersionChangeListener(detailPane);
     mapModel.addSelectionChangeListener(detailPane);
 
