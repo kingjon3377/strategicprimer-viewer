@@ -129,14 +129,14 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         Point selectedPoint = mapModel.selection;
         horizontalBar = horizontal;
         horizontal.model.setRangeProperties(constrainToRange(selectedPoint.column,
-            0, mapDimensions.columns - 1), 1, 0,
+                0, mapDimensions.columns - 1), 1, 0,
             mapDimensions.columns - visibleDimensions.width, false);
         horizontal.inputVerifier = ScrollInputVerifier.horizontal(
             defer(IViewerModel.mapDimensions, [mapModel]),
                     defer(IViewerModel.visibleDimensions, [mapModel]));
         verticalBar = vertical;
         vertical.model.setRangeProperties(constrainToRange(selectedPoint.row, 0,
-            mapDimensions.rows - 1), 1, 0,
+                mapDimensions.rows - 1), 1, 0,
             mapDimensions.rows - visibleDimensions.height, false);
         vertical.inputVerifier = ScrollInputVerifier.vertical(
             defer(IViewerModel.mapDimensions, [mapModel]),
@@ -154,7 +154,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
       members at page-end and line-end."
     shared new createScrollBars(IViewerModel mapModel, BorderedPanel component)
             extends ScrollListener(mapModel, JScrollBar(Adjustable.horizontal),
-        JScrollBar(Adjustable.vertical)) {
+                JScrollBar(Adjustable.vertical)) {
         "We don't want to replace existing components with scrollbars"
         assert (!component.pageEnd exists, !component.lineEnd exists);
         component.pageEnd = horizontalBar;
