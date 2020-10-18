@@ -76,7 +76,15 @@ class ScrollAdjustmentListener(IViewerModel model, BoundedRangeModel horizontalB
             Integer newMinColumn;
             Integer newMaxColumn;
             log.trace("Columns were from ``oldDimensions.minimumColumn`` to ``oldDimensions.maximumColumn``; new column is ``newColumn``");
-            if (oldDimensions.minimumColumn > newColumn) {
+            if (newColumn.negative) {
+                log.trace("'New column' is negative, skipping horizontal scrolling.");
+                newMaxColumn = oldDimensions.maximumColumn;
+                newMinColumn = oldDimensions.minimumColumn;
+            } else if (newColumn >= model.mapDimensions.columns) {
+                log.trace("'New column' is above max column, skipping horizontal scrolling.");
+                newMaxColumn = oldDimensions.maximumColumn;
+                newMinColumn = oldDimensions.minimumColumn;
+            } else if (oldDimensions.minimumColumn > newColumn) {
                 log.trace("User scrolled left");
                 newMinColumn = newColumn;
                 newMaxColumn = newColumn + visibleDimensions.width - 1;
@@ -92,7 +100,15 @@ class ScrollAdjustmentListener(IViewerModel model, BoundedRangeModel horizontalB
             Integer newMinRow;
             Integer newMaxRow;
             log.trace("Rows were from ``oldDimensions.minimumRow`` to ``oldDimensions.maximumRow``; new column is ``newRow``");
-            if (oldDimensions.minimumRow > newRow) {
+            if (newRow.negative) {
+                log.trace("'New row' is negative, skipping vertical scrolling.");
+                newMaxRow = oldDimensions.maximumRow;
+                newMinRow = oldDimensions.minimumRow;
+            } else if (newRow >= model.mapDimensions.rows) {
+                log.trace("'New row' is above max row, skipping vertical scrolling.");
+                newMaxRow = oldDimensions.maximumRow;
+                newMinRow = oldDimensions.minimumRow;
+            } else if (oldDimensions.minimumRow > newRow) {
                 log.trace("User scrolled up");
                 newMinRow = newRow;
                 newMaxRow = newRow + visibleDimensions.height - 1;
