@@ -91,6 +91,7 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
             }
             kindField.text = "";
             nameField.text = "";
+            idField.text = "";
             setVisible(false);
             dispose();
         }
@@ -116,6 +117,7 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
     void cancelListener() {
         nameField.text = "";
         kindField.text = "";
+        idField.text = "";
         setVisible(false);
         dispose();
     }
