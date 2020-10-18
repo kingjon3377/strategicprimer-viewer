@@ -177,6 +177,9 @@ shared class FileChooser {
                 if (nonempty retval) {
                     log.trace("Saving the file(s) the user chose via Swing");
                     storedFile = retval;
+                } else if (exists selectedFile = chooser.selectedFile) {
+                    log.trace("Saving the singular file the user chose via Swing");
+                    storedFile = Singleton(fileToPath(selectedFile));
                 } else {
                     log.info("User pressed approve but selected no files");
                     storedFile = null;
@@ -189,6 +192,9 @@ shared class FileChooser {
             if (nonempty retval) {
                 log.trace("Saving the file(s) the user chose via AWT");
                 storedFile = retval;
+            } else if (exists selectedFile = chooser.file) {
+                log.trace("Saving the singular file the user chose via AWT");
+                storedFile = Singleton(PathWrapper(selectedFile));
             } else {
                 log.debug("User failed to choose?");
                 log.debug("Returned iterable was ``retval`` (``type(retval)``");
