@@ -101,7 +101,10 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
                     Integer newRow = verticalBar.\ivalue;
                     Integer newMinColumn;
                     Integer newMaxColumn;
-                    if (oldDimensions.minimumColumn > newColumn) {
+                    if (newColumn.negative || newColumn >= model.mapDimensions.columns) {
+                        newMaxColumn = oldDimensions.maximumColumn;
+                        newMinColumn = oldDimensions.minimumColumn;
+                    } else if (oldDimensions.minimumColumn > newColumn) {
                         newMinColumn = newColumn;
                         newMaxColumn = newColumn + visibleDimensions.width - 1;
                     } else if (oldDimensions.maximumColumn < newColumn) {
@@ -113,7 +116,10 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
                     }
                     Integer newMinRow;
                     Integer newMaxRow;
-                    if (oldDimensions.minimumRow > newRow) {
+                    if (newRow.negative || newRow >= model.mapDimensions.rows) {
+                        newMaxRow = oldDimensions.maximumRow;
+                        newMinRow = oldDimensions.minimumRow;
+                    } else if (oldDimensions.minimumRow > newRow) {
                         newMinRow = newRow;
                         newMaxRow = newRow + visibleDimensions.height - 1;
                     } else if (oldDimensions.maximumRow < newRow) {
