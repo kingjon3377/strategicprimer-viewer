@@ -120,8 +120,8 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
                 if (oldDimensions.minimumRow > newRow) {
                     newMinRow = newRow;
                     newMaxRow = newRow + visibleDimensions.height - 1;
-                } else if (oldDimensions.maximumColumn < newColumn) {
-                    newMaxRow = newColumn;
+                } else if (oldDimensions.maximumRow < newRow) {
+                    newMaxRow = newRow;
                     newMinRow = newRow - visibleDimensions.height + 1;
                 } else {
                     newMaxRow = oldDimensions.maximumRow;
