@@ -40,7 +40,7 @@ shared class Ground(id, kind, exposed) satisfies MineralFixture&HasMutableImage 
     shared actual Integer hash => id;
 
     shared actual String shortDescription =>
-            "``(exposed) then "Exposed" else "Unexposed"`` ground of kind ``kind``";
+            "``(exposed) then "Exposed" else "Unexposed"`` ``kind`` ground";
 
     shared actual String string => "``shortDescription``, ID #``id``";
 
