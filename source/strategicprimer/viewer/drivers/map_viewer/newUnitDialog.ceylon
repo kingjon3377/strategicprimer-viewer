@@ -81,6 +81,12 @@ shared class NewUnitDialog(variable Player player, IDRegistrar idf)
             String reqId = idField.text.trimmed;
             variable Integer idNum;
             if (isNumeric(reqId), exists temp = parseInt(reqId)) {
+                if (!idf.isIDUnused(temp)) {
+                    // TODO: Show an error message
+                    idField.text = "";
+                    idField.requestFocusInWindow();
+                    return;
+                }
                 idNum = temp;
                 idf.register(idNum);
             } else {
