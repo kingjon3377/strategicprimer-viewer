@@ -1,6 +1,5 @@
 import javax.swing.event {
-    ChangeEvent,
-    ChangeListener
+    ChangeEvent
 }
 import java.awt {
     BorderLayout,
@@ -62,85 +61,119 @@ class ScrollInputVerifier extends InputVerifier {
     }
 }
 
-class ScrollAdjustmentListener(IViewerModel model, BoundedRangeModel horizontalBarModel,
-        BoundedRangeModel verticalBarModel) satisfies ChangeListener&GraphicalParamsListener {
-    shared variable VisibleDimensions visibleDimensions = model.visibleDimensions;
-    variable Boolean mutex = true;
-    shared actual void stateChanged(ChangeEvent event) {
-        log.trace("ScrollAdjustment listener starting to respond to scroll-bar change");
-        if (mutex) {
-            mutex = false;
-            VisibleDimensions oldDimensions = model.visibleDimensions;
-            Integer newColumn = horizontalBarModel.\ivalue;
-            Integer newRow = verticalBarModel.\ivalue;
+class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some events so we can reset on map or selected point change
+    // TODO: Do we really need to track these, or can we just rely on [[model.cursor]]?
+    variable Integer? oldRow = null;
+    variable Integer? oldColumn = null;
+
+    shared void horizontalScroll(ChangeEvent event) {
+        assert (is BoundedRangeModel source = event.source);
+        if (source.valueIsAdjusting) {
+            // TODO: We'd like to do *some* handling, in case the user is dragging the tongue. Mutex flag again?
+            log.trace("Waiting for scrollbar to stop adjusting before handling horizontal scroll");
+            return;
+        }
+        log.trace("Starting to respond to horizontal scroll");
+        // TODO: Skip on source.valueIsAdjusting?
+        VisibleDimensions oldDimensions = model.visibleDimensions;
+        Integer newValue = source.\ivalue;
+        VisibleDimensions newDimensions;
+        if (newValue.negative) {
+            log.warn("Tried to scroll to negative column, skipping ...");
+            return;
+        } else if (newValue > (model.mapDimensions.columns + oldDimensions.columns.size)) {
+            log.warn("Tried to scroll too far to the right, skipping ...");
+            return;
+        } else if (exists oldValue = oldColumn) {
+            if (oldValue == newValue) {
+                log.trace("Horizontal scroll to same value, possibly reentrant. Skipping ...");
+                return;
+            }
+            Integer offset = newValue - oldValue;
+            log.trace("User scrolled horizontally by ``offset`` tiles.");
+            oldColumn = newValue;
+            newDimensions = VisibleDimensions(oldDimensions.minimumRow,
+                oldDimensions.maximumRow, oldDimensions.minimumColumn + offset,
+                oldDimensions.maximumColumn + offset);
+        } else {
             Integer newMinColumn;
             Integer newMaxColumn;
-            log.trace("Columns were from ``oldDimensions.minimumColumn`` to ``oldDimensions.maximumColumn``; new column is ``newColumn``");
-            if (newColumn.negative) {
-                log.trace("'New column' is negative, skipping horizontal scrolling.");
-                newMaxColumn = oldDimensions.maximumColumn;
-                newMinColumn = oldDimensions.minimumColumn;
-            } else if (newColumn >= model.mapDimensions.columns) {
-                log.trace("'New column' is above max column, skipping horizontal scrolling.");
-                newMaxColumn = oldDimensions.maximumColumn;
-                newMinColumn = oldDimensions.minimumColumn;
-            } else if (oldDimensions.minimumColumn > newColumn) {
+            if (oldDimensions.minimumColumn > newValue) {
                 log.trace("User scrolled left");
-                newMinColumn = newColumn;
-                newMaxColumn = newColumn + visibleDimensions.width - 1;
-            } else if (oldDimensions.maximumColumn < newColumn) {
+                newMinColumn = newValue;
+                newMaxColumn = newValue + oldDimensions.width - 1;
+            } else if (oldDimensions.maximumColumn < newValue) {
                 log.trace("User scrolled right");
-                newMaxColumn = newColumn;
-                newMinColumn = newColumn - visibleDimensions.width + 1;
+                newMaxColumn = newValue;
+                newMinColumn = newValue - oldDimensions.width + 1;
             } else {
-                log.trace("User didn't scroll horizontally");
-                newMaxColumn = oldDimensions.maximumColumn;
-                newMinColumn = oldDimensions.minimumColumn;
+                log.trace("No cached horizontal coordinate and new value within previous visible area, skipping ...");
+                oldColumn = newValue;
+                return;
             }
+            oldColumn = newValue;
+            newDimensions = VisibleDimensions(oldDimensions.minimumRow,
+                oldDimensions.maximumRow, newMinColumn, newMaxColumn);
+        }
+        Boolean oldVIA = source.valueIsAdjusting;
+        source.valueIsAdjusting = true;
+        model.visibleDimensions = newDimensions;
+        source.valueIsAdjusting = oldVIA;
+    }
+
+    shared void verticalScroll(ChangeEvent event) {
+        assert (is BoundedRangeModel source = event.source);
+        if (source.valueIsAdjusting) {
+            // TODO: We'd like to do *some* handling, in case the user is dragging the tongue. Mutex flag again?
+            log.trace("Waiting for scrollbar to stop adjusting before handling vertical scroll");
+            return;
+        }
+        log.trace("Starting to respond to vertical scroll");
+        Integer newValue = source.\ivalue;
+        VisibleDimensions oldDimensions = model.visibleDimensions;
+        VisibleDimensions newDimensions;
+        if (newValue.negative) {
+            log.warn("Tried to scroll to negative row, skipping ...");
+            return;
+        } else if (newValue > (model.mapDimensions.rows + model.visibleDimensions.rows.size)) {
+            log.warn("Tried to scroll too far to the right, skipping ...");
+            return;
+        } else if (exists oldValue = oldRow) {
+            if (oldValue == newValue) {
+                log.trace("Vertical scroll to same value, possibly reentrant. Skipping ...");
+                return;
+            }
+            Integer offset = newValue - oldValue;
+            log.trace("User scrolled vertically by ``offset`` tiles.");
+            oldRow = newValue;
+            newDimensions = VisibleDimensions(oldDimensions.minimumRow + offset,
+                oldDimensions.maximumRow + offset, oldDimensions.minimumColumn,
+                oldDimensions.maximumColumn);
+        } else {
             Integer newMinRow;
             Integer newMaxRow;
-            log.trace("Rows were from ``oldDimensions.minimumRow`` to ``oldDimensions.maximumRow``; new column is ``newRow``");
-            if (newRow.negative) {
-                log.trace("'New row' is negative, skipping vertical scrolling.");
-                newMaxRow = oldDimensions.maximumRow;
-                newMinRow = oldDimensions.minimumRow;
-            } else if (newRow >= model.mapDimensions.rows) {
-                log.trace("'New row' is above max row, skipping vertical scrolling.");
-                newMaxRow = oldDimensions.maximumRow;
-                newMinRow = oldDimensions.minimumRow;
-            } else if (oldDimensions.minimumRow > newRow) {
+            if (oldDimensions.minimumRow > newValue) {
+                log.trace("User scrolled down");
+                newMinRow = newValue;
+                newMaxRow = newValue + model.visibleDimensions.height - 1;
+            } else if (oldDimensions.maximumRow < newValue) {
                 log.trace("User scrolled up");
-                newMinRow = newRow;
-                newMaxRow = newRow + visibleDimensions.height - 1;
-            } else if (oldDimensions.maximumRow < newRow) {
-                log.trace("user scrolled down");
-                newMaxRow = newRow;
-                newMinRow = newRow - visibleDimensions.height + 1;
+                newMaxRow = newValue;
+                newMinRow = newValue - model.visibleDimensions.height + 1;
             } else {
-                log.trace("User didn't scroll vertically");
-                newMaxRow = oldDimensions.maximumRow;
-                newMinRow = oldDimensions.minimumRow;
+                log.trace("No cached vertical coordinate and new value within previous visible area, skipping ...");
+                oldRow = newValue;
+                return;
             }
-            VisibleDimensions newDimensions = VisibleDimensions(newMinRow,
-                newMaxRow, newMinColumn, newMaxColumn);
-            if (oldDimensions != newDimensions) {
-                log.trace("Replacing old viewport dimensions with new one.");
-                model.visibleDimensions = newDimensions;
-            } else {
-                log.trace("Viewport dimensions did not change");
-            }
-            mutex = true;
-        } else {
-            log.trace("Detected reentrant handling: skipping");
+            oldRow = newValue;
+            newDimensions = VisibleDimensions(newMinRow, newMaxRow,
+                oldDimensions.minimumColumn, oldDimensions.maximumColumn);
         }
+        Boolean oldVIA = source.valueIsAdjusting;
+        source.valueIsAdjusting = true;
+        model.visibleDimensions = newDimensions;
+        source.valueIsAdjusting = oldVIA;
     }
-    "Handle a change in visible dimensions."
-    shared actual void dimensionsChanged(VisibleDimensions oldDimensions,
-            VisibleDimensions newDimensions) => visibleDimensions = newDimensions;
-
-    "Ignored; other listeners will adjust the dimensions, causing [[dimensionsChanged]] to
-     be called."
-    shared actual void tileSizeChanged(Integer oldSize, Integer newSize) { }
 }
 
 "A class to change the visible area of the map based on the user's use of the scrollbars."
@@ -182,11 +215,10 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         vertical.inputVerifier = ScrollInputVerifier.vertical(
             defer(IViewerModel.mapDimensions, [mapModel]));
 
-        value adjustmentListener = ScrollAdjustmentListener(model, horizontalBarModel, verticalBarModel);
-        mapModel.addGraphicalParamsListener(adjustmentListener);
+        value adjustmentListener = ScrollAdjustmentListener(model);
 
-        horizontalBarModel.addChangeListener(adjustmentListener);
-        verticalBarModel.addChangeListener(adjustmentListener);
+        horizontalBarModel.addChangeListener(adjustmentListener.horizontalScroll);
+        verticalBarModel.addChangeListener(adjustmentListener.verticalScroll);
     }
 
     "Alternate constructor that adds (new) scroll-bars to an existing component. This only
