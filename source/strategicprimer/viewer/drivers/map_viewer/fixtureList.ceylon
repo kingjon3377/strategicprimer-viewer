@@ -73,6 +73,7 @@ shared SwingList<TileFixture>&DragGestureListener&SelectionChangeListener fixtur
         selectionMode = ListSelectionModel.multipleIntervalSelection;
 
         shared actual void selectedUnitChanged(IUnit? old, IUnit? newSel) {}
+        shared actual void cursorPointChanged(Point? old, Point newCursor) {}
 
         shared actual void dragGestureRecognized(DragGestureEvent event) {
             List<TileFixture> selection = CeylonList(selectedValuesList);

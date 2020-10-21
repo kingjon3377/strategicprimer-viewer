@@ -70,6 +70,9 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     "The currently selected point in the main map."
     variable Point selPoint = Point.invalidPoint;
 
+    "The point currently pointed to by the scroll-bars."
+    variable Point cursorPoint = Point(0, 0);
+
     "The point in the map the user has just right-clicked on, if any."
     variable Point? interactionPoint = null;
 
@@ -205,11 +208,24 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
         fixVisibility();
     }
 
+    "The point currently pointed to by the scroll-bars."
+    shared actual Point cursor => cursorPoint;
+    assign cursor {
+        Point oldCursor = cursorPoint;
+        cursorPoint = cursor;
+        scs.fireCursorChanges(oldCursor, cursor);
+    }
+
    "The currently selected point in the map."
     shared actual Point selection => selPoint;
     assign selection {
         Point oldSel = selPoint;
         selPoint = selection;
+        if (selection.valid) {
+            cursor = selection;
+        } else {
+            cursor = Point(largest(selection.row, 0), largest(selection.column, 0));
+        }
         scs.fireChanges(oldSel, selPoint);
         fixVisibility();
     }

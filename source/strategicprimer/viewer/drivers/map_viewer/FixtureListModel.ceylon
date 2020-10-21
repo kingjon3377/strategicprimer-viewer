@@ -35,6 +35,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
     variable TileFixture[] cachedTerrainList = [];
 
     shared actual void selectedUnitChanged(IUnit? oldSelection, IUnit? newSelection) {}
+    shared actual void cursorPointChanged(Point? old, Point newCursor) {}
     """Any animal tracks that have been "added" to the current tile but kept out of the
        map."""
     MutableList<AnimalTracks> currentTracks = ArrayList<AnimalTracks>();

@@ -34,6 +34,13 @@ shared class SelectionChangeSupport() satisfies SelectionChangeSource {
         }
     }
 
+    "Tell all listeners about a change to the cursor location."
+    shared void fireCursorChanges(Point? oldCursor, Point newCursor) {
+        for (listener in listeners) {
+            listener.cursorPointChanged(oldCursor, newCursor);
+        }
+    }
+
     "Tell all listeners about a change to the interaction point."
     shared void fireInteraction() {
         for (listener in listeners) {

@@ -418,4 +418,5 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
     }
     log.trace("End of ExplorationPanel initializer");
     shared actual void interactionPointChanged() {}
+    shared actual void cursorPointChanged(Point? oldCursor, Point newCursor) {}
 }

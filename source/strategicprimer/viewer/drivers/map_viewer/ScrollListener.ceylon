@@ -166,16 +166,16 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         model = mapModel;
         visibleDimensions = mapModel.visibleDimensions;
         mapDimensions = mapModel.mapDimensions;
-        Point selectedPoint = mapModel.selection;
+        Point cursor = mapModel.cursor;
         horizontalBarModel = horizontal.model;
-        horizontalBarModel.setRangeProperties(constrainToRange(selectedPoint.column,
+        horizontalBarModel.setRangeProperties(constrainToRange(cursor.column,
                 0, mapDimensions.columns - 1),
             smallest(mapDimensions.columns, visibleDimensions.width), 0,
             mapDimensions.columns, false);
         horizontal.inputVerifier = ScrollInputVerifier.horizontal(
             defer(IViewerModel.mapDimensions, [mapModel]));
         verticalBarModel = vertical.model;
-        verticalBarModel.setRangeProperties(constrainToRange(selectedPoint.row, 0,
+        verticalBarModel.setRangeProperties(constrainToRange(cursor.row, 0,
                 mapDimensions.rows - 1),
             smallest(mapDimensions.rows, visibleDimensions.height), 0,
             mapDimensions.rows, false);
@@ -212,10 +212,10 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         if (mutex) {
             mutex = false;
             visibleDimensions = newDimensions;
-            horizontalBarModel.setRangeProperties(largest(model.selection.column, 0),
+            horizontalBarModel.setRangeProperties(largest(model.cursor.column, 0),
                 smallest(newDimensions.width, mapDimensions.columns),
                 0, mapDimensions.columns, false);
-            verticalBarModel.setRangeProperties(largest(model.selection.row, 0),
+            verticalBarModel.setRangeProperties(largest(model.cursor.row, 0),
                 smallest(newDimensions.height, mapDimensions.rows), 0,
                 mapDimensions.rows, false);
             mutex = true;
@@ -226,19 +226,21 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
      be called."
     shared actual void tileSizeChanged(Integer oldSize, Integer newSize) { }
 
-    "Handle a change to the selected location in the map. The property-change based
-     version this replaced went to the model for the selected point rather than looking
-     at the reported new value; since it's typesafe here, and probably faster, this
-     switched to using the new value it was passed."
-    shared actual void selectedPointChanged(Point? old, Point newPoint) {
+    "Handle a change to the cursor location."
+    shared actual void cursorPointChanged(Point? previous, Point newCursor) {
         VisibleDimensions temp = model.visibleDimensions;
-        if (!temp.columns.contains(newPoint.column)) {
-            horizontalBarModel.\ivalue = largest(newPoint.column, 0);
+        if (!temp.columns.contains(newCursor.column),
+                horizontalBarModel.\ivalue != largest(newCursor.column, 0)) {
+            horizontalBarModel.\ivalue = largest(newCursor.column, 0);
         }
-        if (!temp.rows.contains(newPoint.row)) {
-            verticalBarModel.\ivalue = largest(newPoint.row, 0);
+        if (!temp.rows.contains(newCursor.row),
+                verticalBarModel.\ivalue != largest(newCursor.row, 0)) {
+            verticalBarModel.\ivalue = largest(newCursor.row, 0);
         }
     }
+
+    "Scrolling deals only with the cursor location, not with the selection."
+    shared actual void selectedPointChanged(Point? previousSelection, Point newSelection) {}
 
     "Handle notification that a new map was loaded."
     shared actual void mapChanged() {

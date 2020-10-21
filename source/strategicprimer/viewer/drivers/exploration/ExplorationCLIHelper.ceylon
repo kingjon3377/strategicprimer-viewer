@@ -305,6 +305,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
 
     shared actual void selectedPointChanged(Point? previousSelection, Point newSelection) {}
     shared actual void interactionPointChanged() {}
+    shared actual void cursorPointChanged(Point? previousCursor, Point newCursor) {}
 }
 
 class ExplorationAutomationConfig(shared Player player) {

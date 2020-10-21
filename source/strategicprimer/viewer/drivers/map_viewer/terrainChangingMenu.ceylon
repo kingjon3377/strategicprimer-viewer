@@ -236,6 +236,8 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
 
     shared actual void selectedPointChanged(Point? old, Point newPoint) {}
 
+    shared actual void cursorPointChanged(Point? old, Point newCursor) {}
+
     shared actual void interactionPointChanged() {
         // We default to the selected point if the model has no interaction point, in case the menu gets shown before
         // the interaction point gets set somehow.

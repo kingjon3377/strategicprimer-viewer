@@ -17,38 +17,52 @@ import lovelace.util.common {
 }
 
 "A class for moving the cursor around the single-component map UI, including scrolling
- using a mouse wheel."
+ using a mouse wheel. When methods (e.g. [[up]]) are called with the default [[true]], they
+ move the selection; when they are called with [[false]], they scroll the window but do not
+ move the selection."
 todo("Add withRow() and withColumn() methods to Point to condense the below slightly")
 class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener {
+    "Get the base point for the current mode (selection vs cursor)."
+    Point get(Boolean selection) => (selection) then model.selection else model.cursor;
+
+    "Assign the given point correctly for the given mode."
+    void set(Boolean selection, Point point) {
+        if (selection) {
+            model.selection = point;
+        } else {
+            model.cursor = point;
+        }
+    }
+
     "Move the cursor up a row."
-    shared void up() {
-        Point old = model.selection;
+    shared void up(Boolean selection = true) {
+        Point old = get(selection);
         if (old.row > 0) {
-            model.selection = Point(old.row - 1, old.column);
+            set(selection, Point(old.row - 1, old.column));
         }
     }
 
     "Move the cursor left a column."
-    shared void left() {
-        Point old = model.selection;
+    shared void left(Boolean selection = true) {
+        Point old = get(selection);
         if (old.column > 0) {
-            model.selection = Point(old.row, old.column - 1);
+            set(selection, Point(old.row, old.column - 1));
         }
     }
 
     "Move the cursor down a row."
-    shared void down() {
-        Point old = model.selection;
+    shared void down(Boolean selection = true) {
+        Point old = get(selection);
         if (old.row < model.mapDimensions.rows - 1) {
-            model.selection = Point(old.row + 1, old.column);
+            set(selection, Point(old.row + 1, old.column));
         }
     }
 
     "Move the cursor right a column."
-    shared void right() {
-        Point old = model.selection;
+    shared void right(Boolean selection = true) {
+        Point old = get(selection);
         if (old.column<model.mapDimensions.columns - 1) {
-            model.selection = Point(old.row, old.column + 1);
+            set(selection, Point(old.row, old.column + 1));
         }
     }
 
@@ -84,11 +98,12 @@ class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener
         }
     }
 
+    // FIXME: A multi-tile scroll should only set the selection (or cursor) *once*, not for each tile it passes through ... but we still need to make sure we don't go beyond bounds.
     "Scroll."
     void scroll("Whether to scroll horizontally" Boolean horizontal,
             "Whether to scroll forward (down/right)" Boolean forward,
             "How many times to scroll" Integer count) {
-        Anything() func;
+        Anything(Boolean) func;
         if (horizontal, forward) {
             func = right;
         } else if (horizontal) {
@@ -98,7 +113,7 @@ class DirectionSelectionChanger(IViewerModel model) satisfies MouseWheelListener
         } else {
             func = up;
         }
-        (0:count).each(silentListener(func));
+        (0:count).each((num) => func(false));
     }
 
     "Scroll when the user scrolls the mouse wheel: zooming when Command (on

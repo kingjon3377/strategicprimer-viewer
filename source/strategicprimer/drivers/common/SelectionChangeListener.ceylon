@@ -18,4 +18,6 @@ shared interface SelectionChangeListener {
        be called when the point is set to null, and callers must get the value from where
        it is stored themselves."""
     shared formal void interactionPointChanged();
+    "The point pointed to by the scroll-bars changed."
+    shared formal void cursorPointChanged(Point? previousCursor, Point newCursor);
 }

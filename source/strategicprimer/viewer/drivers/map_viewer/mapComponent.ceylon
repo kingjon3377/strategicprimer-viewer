@@ -180,6 +180,8 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
         }
     }
 
+    shared actual void cursorPointChanged(Point? old, Point newCursor) {} // TODO: check visibility of cursor point here?
+
     shared actual void mapChanged() {}
 
     void drawBackgroundImage(Graphics context, Integer tileSize) {
