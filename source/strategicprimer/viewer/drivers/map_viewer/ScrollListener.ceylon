@@ -205,6 +205,49 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             extends addScrollBars(mapModel, component, JScrollBar(Adjustable.horizontal),
                 JScrollBar(Adjustable.vertical)) {}
 
+    Integer countChanges(BoundedRangeModel model, Integer val, Integer extent,
+            Integer minimum, Integer maximum) {
+        variable Integer retval = 0;
+        if (model.\ivalue != val) {
+            retval++;
+        }
+        if (model.minimum != minimum) {
+            retval++;
+        }
+        if (model.extent != extent) {
+            retval++;
+        }
+        if (model.maximum != maximum) {
+            retval++;
+        }
+        return retval;
+    }
+
+    void setRangeProperties(BoundedRangeModel model, Integer val, Integer extent,
+            Integer minimum, Integer maximum) {
+        Integer differences = countChanges(model, val, minimum, extent, maximum);
+        if (!differences.positive) {
+            return;
+        } else if (differences < 3) {
+            model.valueIsAdjusting = true;
+            if (model.\ivalue != val) {
+                model.\ivalue = val;
+            }
+            if (model.minimum != minimum) {
+                model.minimum = minimum;
+            }
+            if (model.maximum != maximum) {
+                model.maximum = maximum;
+            }
+            if (model.extent != extent) {
+                model.extent = extent;
+            }
+            model.valueIsAdjusting = false;
+        } else {
+            model.setRangeProperties(val, extent, minimum, maximum, false);
+        }
+    }
+
     variable Boolean mutex = true;
     "Handle a change in visible dimensions."
     shared actual void dimensionsChanged(VisibleDimensions oldDimensions,
@@ -212,12 +255,12 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         if (mutex) {
             mutex = false;
             visibleDimensions = newDimensions;
-            horizontalBarModel.setRangeProperties(largest(model.cursor.column, 0),
+            setRangeProperties(horizontalBarModel, largest(model.cursor.column, 0),
                 smallest(newDimensions.width, mapDimensions.columns),
-                0, mapDimensions.columns, false);
-            verticalBarModel.setRangeProperties(largest(model.cursor.row, 0),
+                0, mapDimensions.columns);
+            setRangeProperties(verticalBarModel, largest(model.cursor.row, 0),
                 smallest(newDimensions.height, mapDimensions.rows), 0,
-                mapDimensions.rows, false);
+                mapDimensions.rows);
             mutex = true;
         }
     }
