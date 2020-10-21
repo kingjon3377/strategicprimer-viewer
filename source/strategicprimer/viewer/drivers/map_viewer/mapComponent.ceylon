@@ -128,6 +128,9 @@ class MapComponent extends JComponent satisfies MapGUI&MapChangeListener&
 
     void paintTile(Graphics pen, Integer tileSize, Point point, Integer row,
             Integer column, Boolean selected) {
+        if (!point in mapModel.map.dimensions) {
+            return;
+        }
         helper.drawTile(pen, mapModel.map, point,
             Coordinate(column * tileSize, row * tileSize),
             Coordinate(tileSize, tileSize));
