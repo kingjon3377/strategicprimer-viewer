@@ -117,6 +117,7 @@ class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some ev
         }
         Boolean oldVIA = source.valueIsAdjusting;
         source.valueIsAdjusting = true;
+        model.cursor = Point(model.cursor.row, newValue);
         model.visibleDimensions = newDimensions;
         source.valueIsAdjusting = oldVIA;
     }
@@ -171,6 +172,7 @@ class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some ev
         }
         Boolean oldVIA = source.valueIsAdjusting;
         source.valueIsAdjusting = true;
+        model.cursor = Point(newValue, model.cursor.column);
         model.visibleDimensions = newDimensions;
         source.valueIsAdjusting = oldVIA;
     }
