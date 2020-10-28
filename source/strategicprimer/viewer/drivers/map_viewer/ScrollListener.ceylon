@@ -264,6 +264,8 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
         if (!differences.positive) {
             return;
         } else if (differences < 3) {
+            // TODO: Set ScrollAdjustmentListener.adjusting?
+            value oldVIA = model.valueIsAdjusting;
             model.valueIsAdjusting = true;
             if (model.\ivalue != val) {
                 model.\ivalue = val;
@@ -277,7 +279,7 @@ class ScrollListener satisfies MapChangeListener&SelectionChangeListener&
             if (model.extent != extent) {
                 model.extent = extent;
             }
-            model.valueIsAdjusting = false;
+            model.valueIsAdjusting = oldVIA;
         } else {
             model.setRangeProperties(val, extent, minimum, maximum, false);
         }
