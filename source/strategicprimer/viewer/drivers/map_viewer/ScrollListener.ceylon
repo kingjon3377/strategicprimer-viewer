@@ -66,15 +66,16 @@ class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some ev
     variable Integer? oldRow = null;
     variable Integer? oldColumn = null;
 
+    // TODO: Should probably track horizonal and vertical scrolling separately
+    shared variable Boolean adjusting = false;
+
     shared void horizontalScroll(ChangeEvent event) {
         assert (is BoundedRangeModel source = event.source);
-        if (source.valueIsAdjusting) {
-            // TODO: We'd like to do *some* handling, in case the user is dragging the tongue. Mutex flag again?
+        if (adjusting) {
             log.trace("Waiting for scrollbar to stop adjusting before handling horizontal scroll");
             return;
         }
         log.trace("Starting to respond to horizontal scroll");
-        // TODO: Skip on source.valueIsAdjusting?
         VisibleDimensions oldDimensions = model.visibleDimensions;
         Integer newValue = source.\ivalue;
         VisibleDimensions newDimensions;
@@ -115,16 +116,16 @@ class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some ev
             newDimensions = VisibleDimensions(oldDimensions.minimumRow,
                 oldDimensions.maximumRow, newMinColumn, newMaxColumn);
         }
-        Boolean oldVIA = source.valueIsAdjusting;
-        source.valueIsAdjusting = true;
+        Boolean oldAdjusting = adjusting;
+        adjusting = true;
         model.cursor = Point(model.cursor.row, newValue);
         model.visibleDimensions = newDimensions;
-        source.valueIsAdjusting = oldVIA;
+        adjusting = oldAdjusting;
     }
 
     shared void verticalScroll(ChangeEvent event) {
         assert (is BoundedRangeModel source = event.source);
-        if (source.valueIsAdjusting) {
+        if (adjusting) {
             // TODO: We'd like to do *some* handling, in case the user is dragging the tongue. Mutex flag again?
             log.trace("Waiting for scrollbar to stop adjusting before handling vertical scroll");
             return;
@@ -170,11 +171,11 @@ class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some ev
             newDimensions = VisibleDimensions(newMinRow, newMaxRow,
                 oldDimensions.minimumColumn, oldDimensions.maximumColumn);
         }
-        Boolean oldVIA = source.valueIsAdjusting;
-        source.valueIsAdjusting = true;
+        Boolean oldAdjusting = adjusting;
+        adjusting = true;
         model.cursor = Point(newValue, model.cursor.column);
         model.visibleDimensions = newDimensions;
-        source.valueIsAdjusting = oldVIA;
+        adjusting = oldAdjusting;
     }
 }
 
