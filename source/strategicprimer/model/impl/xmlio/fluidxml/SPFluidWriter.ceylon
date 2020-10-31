@@ -157,7 +157,7 @@ shared class SPFluidWriter() satisfies SPWriter {
             else {
                 throw IOException("``path`` exists but is not a file");
             }
-            try (writer = file.Overwriter()) {
+            try (writer = file.Overwriter("UTF-8")) {
                 writeSPObject(writer.write, obj);
             }
         }
