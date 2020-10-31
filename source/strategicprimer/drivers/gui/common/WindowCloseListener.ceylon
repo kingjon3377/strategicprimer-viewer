@@ -9,6 +9,9 @@ import java.awt.event {
    close"."""
 shared class WindowCloseListener(Anything(ActionEvent) menuListener)
         extends WindowAdapter() {
-    shared actual void windowClosing(WindowEvent evt) =>
-            menuListener(ActionEvent(evt.source, ActionEvent.actionFirst, "Close"));
+    shared actual void windowClosing(WindowEvent evt) {
+        log.trace("About to send synthetic Close menu event");
+        menuListener(ActionEvent(evt.source, ActionEvent.actionFirst, "Close"));
+        log.trace("Returned from Close menu handler");
+    }
 }
