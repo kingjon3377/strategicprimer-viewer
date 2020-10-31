@@ -284,7 +284,7 @@ shared class IOHandler satisfies ActionListener {
                     log.error("IOHandler asked to close in unsupported app");
                 }
             } else {
-                log.error("IOHandler asked to save but couldn't get current window");
+                log.error("IOHandler asked to close but couldn't get current window");
                 log.debug("Event details: ``event``");
                 log.debug("Source: ``source else "null"``");
                 log.trace("Stack trace:", AssertionError("Stack trace"));
