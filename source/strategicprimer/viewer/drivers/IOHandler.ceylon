@@ -88,7 +88,7 @@ shared class IOHandler satisfies ActionListener {
         }
 
         if (is MultiMapGUIDriver driver, driver.model.subordinateMaps.map(Entry.item)
-            .map(Tuple.last).coalesced.any(true.equals)) {
+                .map(Tuple.last).coalesced.any(true.equals)) {
             Integer answer = JOptionPane.showConfirmDialog(window,
                 "Subordinate map(s) have unsaved changes. Save all before ``verb``?",
                 "Save Changes?", JOptionPane.yesNoCancelOption,
