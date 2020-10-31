@@ -93,9 +93,21 @@ class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some ev
             Integer offset = newValue - oldValue;
             log.debug("User scrolled horizontally by ``offset`` tiles, to ``newValue``.");
             oldColumn = newValue;
-            newDimensions = VisibleDimensions(oldDimensions.minimumRow,
-                oldDimensions.maximumRow, oldDimensions.minimumColumn + offset,
-                oldDimensions.maximumColumn + offset);
+            if (oldDimensions.minimumColumn + offset < 0) {
+                log.debug("Offset would make negative columns visible, constraining the view.");
+                newDimensions = VisibleDimensions(oldDimensions.minimumRow,
+                    oldDimensions.maximumRow, 0, oldDimensions.columns.size - 1);
+            } else if (oldDimensions.maximumColumn + offset > model.mapDimensions.columns) {
+                log.debug("Offset would go too far to the right ([``oldDimensions.maximumColumn`` + ``offset``] / ``model.mapDimensions.columns``), constraining the view.");
+                newDimensions = VisibleDimensions(oldDimensions.minimumRow,
+                    oldDimensions.maximumRow,
+                    largest(0, model.mapDimensions.columns - oldDimensions.columns.size - 1),
+                    model.mapDimensions.columns - 1);
+            } else { // TODO: check how this constraint effect makes scrolling feel
+                newDimensions = VisibleDimensions(oldDimensions.minimumRow,
+                    oldDimensions.maximumRow, oldDimensions.minimumColumn + offset,
+                    oldDimensions.maximumColumn + offset);
+            }
         } else {
             Integer newMinColumn;
             Integer newMaxColumn;
@@ -148,9 +160,21 @@ class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some ev
             Integer offset = newValue - oldValue;
             log.debug("User scrolled vertically by ``offset`` tiles, to ``newValue``.");
             oldRow = newValue;
-            newDimensions = VisibleDimensions(oldDimensions.minimumRow + offset,
-                oldDimensions.maximumRow + offset, oldDimensions.minimumColumn,
-                oldDimensions.maximumColumn);
+            if (oldDimensions.minimumRow + offset < 0) {
+                log.debug("Offset would make negative rows visible, constraining the view.");
+                newDimensions = VisibleDimensions(0, oldDimensions.rows.size - 1,
+                    oldDimensions.minimumColumn, oldDimensions.maximumColumn);
+            } else if (oldDimensions.maximumRow + offset > model.mapDimensions.rows) {
+                log.debug("Offset would go too far down ([``oldDimensions.maximumRow`` + ``offset``] / ``model.mapDimensions.rows``), constraining the view.");
+                newDimensions = VisibleDimensions(largest(0,
+                        model.mapDimensions.rows - oldDimensions.rows.size - 1),
+                    model.mapDimensions.rows - 1, oldDimensions.minimumColumn,
+                    oldDimensions.maximumColumn);
+            } else { // TODO: check how this constraint effect makes scrolling feel
+                newDimensions = VisibleDimensions(oldDimensions.minimumRow + offset,
+                    oldDimensions.maximumRow + offset, oldDimensions.minimumColumn,
+                    oldDimensions.maximumColumn);
+            }
         } else {
             Integer newMinRow;
             Integer newMaxRow;
