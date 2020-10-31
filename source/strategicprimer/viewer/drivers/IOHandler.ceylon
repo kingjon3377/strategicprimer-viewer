@@ -70,7 +70,9 @@ shared class IOHandler satisfies ActionListener {
     void maybeSave(String verb, Frame? window, Component? source,
             Anything() ifNotCanceled) {
         assert (is ModelDriver driver);
+        log.trace("Checking if we need to save ...");
         if (driver.model.mapModified) {
+            log.trace("main map was modified.");
             String prompt;
             if (is MultiMapGUIDriver driver) {
                 prompt = "Save changes to main map before ``verb``?";
@@ -81,24 +83,40 @@ shared class IOHandler satisfies ActionListener {
                 "Save Changes?", JOptionPane.yesNoCancelOption,
                 JOptionPane.questionMessage);
             if (answer == JOptionPane.cancelOption) {
+                log.trace("User selected 'Cancel'");
                 return;
             } else if (answer == JOptionPane.yesOption) {
+                log.trace("User selected 'Yes'; invoking 'Save' menu ...");
                 actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save"));
+                log.trace("Finished saving main map");
+            } else {
+                log.trace("User said not to save main map");
             }
+        } else {
+            log.trace("main map was not modified");
         }
 
         if (is MultiMapGUIDriver driver, driver.model.subordinateMaps.map(Entry.item)
                 .map(Tuple.last).coalesced.any(true.equals)) {
+            log.trace("Subordinate map(s) modified.");
             Integer answer = JOptionPane.showConfirmDialog(window,
                 "Subordinate map(s) have unsaved changes. Save all before ``verb``?",
                 "Save Changes?", JOptionPane.yesNoCancelOption,
                 JOptionPane.questionMessage);
             if (answer == JOptionPane.cancelOption) {
+                log.trace("User selected 'Cancel' rather than save-all.");
                 return;
             } else if (answer == JOptionPane.yesOption) {
+                log.trace("User selected 'Yes'; invoking 'Save All' menu ...");
                 actionPerformed(ActionEvent(source, ActionEvent.actionFirst, "save all"));
+                log.trace("Finished saving");
+            } else {
+                log.trace("User said not to save subordinate maps");
             }
+        } else {
+            log.trace("No subordinate maps modified");
         }
+        log.trace("About to carry out action ...");
         ifNotCanceled();
     }
 
@@ -161,6 +179,8 @@ shared class IOHandler satisfies ActionListener {
         } else {
             errorTitle = "Strategic Primer Assistive Programs";
         }
+
+	log.trace("Menu item invoked: ``event.actionCommand``");
 
         switch (event.actionCommand.lowercased)
         case ("load") { // TODO: Open in another window if modified flag set instead of prompting before overwriting
@@ -277,8 +297,10 @@ shared class IOHandler satisfies ActionListener {
         case ("close") {
             if (exists parentWindow) {
                 if (is ModelDriver driver) {
+		    log.trace("This operates on a model, maybe we should save ...");
                     maybeSave("closing", parentWindow, source, parentWindow.dispose);
                 } else if (is UtilityGUI driver) {
+		    log.trace("This is a utility GUI, so we just dispose the window.");
                     parentWindow.dispose();
                 } else {
                     log.error("IOHandler asked to close in unsupported app");
