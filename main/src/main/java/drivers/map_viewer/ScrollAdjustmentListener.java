@@ -78,9 +78,25 @@ import javax.swing.event.ChangeEvent;
 			final int offset = newValue - oldColumn;
 			LovelaceLogger.debug("User scrolled horizontally by %d tiles, to %d.", offset, newValue);
 			oldColumn = newValue;
-			newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
-				oldDimensions.getMaximumRow(), oldDimensions.getMinimumColumn() + offset,
-				oldDimensions.getMaximumColumn() + offset);
+			if (oldDimensions.getMinimumColumn() + offset < 0) {
+				LovelaceLogger.debug("Offset would make negative columns visible, constraining the view.");
+				newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
+					oldDimensions.getMaximumRow(), 0, oldDimensions.getColumns().size() - 1);
+			} else if (oldDimensions.getMaximumColumn() + offset >
+					model.getMapDimensions().columns()) {
+				LovelaceLogger.debug("Offset would go too far to the right ([%d + %d] / %d), constraining the view.",
+					oldDimensions.getMaximumColumn(), offset,
+					model.getMapDimensions().columns());
+				newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
+					oldDimensions.getMaximumRow(),
+					Math.max(0, model.getMapDimensions().columns() -
+						oldDimensions.getColumns().size() - 1),
+					model.getMapDimensions().columns() - 1);
+			} else { // TODO: check how this constraint effect makes scrolling feel
+				newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow(),
+					oldDimensions.getMaximumRow(), oldDimensions.getMinimumColumn() + offset,
+					oldDimensions.getMaximumColumn() + offset);
+			}
 		}
 		final boolean oldAdjusting = adjusting;
 		adjusting = true;
@@ -117,9 +133,23 @@ import javax.swing.event.ChangeEvent;
 			final int offset = newValue - oldRow;
 			LovelaceLogger.debug("User scrolled vertically by %d tiles, to %d.", offset, newValue);
 			oldRow = newValue;
-			newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow() + offset,
-				oldDimensions.getMaximumRow() + offset, oldDimensions.getMinimumColumn(),
-				oldDimensions.getMaximumColumn());
+			if (oldDimensions.getMinimumRow() + offset < 0) {
+				LovelaceLogger.debug("Offset would make negative rows visible, constraining the view.");
+				newDimensions = new VisibleDimensions(0, oldDimensions.getRows().size() - 1,
+					oldDimensions.getMinimumColumn(), oldDimensions.getMaximumColumn());
+			} else if (oldDimensions.getMaximumRow() + offset > model.getMapDimensions().rows()) {
+				LovelaceLogger.debug("Offset would go too far down ([%d + %d] / %d), constraining the view.",
+					oldDimensions.getMaximumRow(), offset, model.getMapDimensions().rows());
+				newDimensions = new VisibleDimensions(
+					Math.max(0, model.getMapDimensions().rows() -
+						oldDimensions.getRows().size() - 1),
+					model.getMapDimensions().rows() - 1,
+					oldDimensions.getMinimumColumn(), oldDimensions.getMaximumColumn());
+			} else { // TODO: check how this constraint effect makes scrolling feel
+				newDimensions = new VisibleDimensions(oldDimensions.getMinimumRow() + offset,
+					oldDimensions.getMaximumRow() + offset, oldDimensions.getMinimumColumn(),
+					oldDimensions.getMaximumColumn());
+			}
 		} else {
 			final int newMinRow;
 			final int newMaxRow;
