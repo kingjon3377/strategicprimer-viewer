@@ -48,14 +48,14 @@ class ScrollInputVerifier extends InputVerifier {
     shared actual Boolean verify(JComponent input) {
         if (is JScrollBar input) {
             if ((0:(mapDimension())).contains(input.\ivalue)) {
-                log.trace("``input.\ivalue`` is a valid ``dimension`` coordinate");
+                log.debug("``input.\ivalue`` is a valid ``dimension`` coordinate");
                 return true;
             } else {
-                log.trace("``input.\ivalue`` is not a valid ``dimension`` coordinate");
+                log.debug("``input.\ivalue`` is not a valid ``dimension`` coordinate");
                 return false;
             }
         } else {
-            log.trace("ScrollInputVerifier called on non-scroll-bar input");
+            log.debug("ScrollInputVerifier called on non-scroll-bar input");
             return false;
         }
     }
@@ -91,7 +91,7 @@ class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some ev
                 return;
             }
             Integer offset = newValue - oldValue;
-            log.trace("User scrolled horizontally by ``offset`` tiles.");
+            log.debug("User scrolled horizontally by ``offset`` tiles, to ``newValue``.");
             oldColumn = newValue;
             newDimensions = VisibleDimensions(oldDimensions.minimumRow,
                 oldDimensions.maximumRow, oldDimensions.minimumColumn + offset,
@@ -100,15 +100,15 @@ class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some ev
             Integer newMinColumn;
             Integer newMaxColumn;
             if (oldDimensions.minimumColumn > newValue) {
-                log.trace("User scrolled left");
+                log.debug("User scrolled left");
                 newMinColumn = newValue;
                 newMaxColumn = newValue + oldDimensions.width - 1;
             } else if (oldDimensions.maximumColumn < newValue) {
-                log.trace("User scrolled right");
+                log.debug("User scrolled right");
                 newMaxColumn = newValue;
                 newMinColumn = newValue - oldDimensions.width + 1;
             } else {
-                log.trace("No cached horizontal coordinate and new value within previous visible area, skipping ...");
+                log.debug("No cached horizontal coordinate and new value within previous visible area, skipping ...");
                 oldColumn = newValue;
                 return;
             }
@@ -146,7 +146,7 @@ class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some ev
                 return;
             }
             Integer offset = newValue - oldValue;
-            log.trace("User scrolled vertically by ``offset`` tiles.");
+            log.debug("User scrolled vertically by ``offset`` tiles, to ``newValue``.");
             oldRow = newValue;
             newDimensions = VisibleDimensions(oldDimensions.minimumRow + offset,
                 oldDimensions.maximumRow + offset, oldDimensions.minimumColumn,
@@ -155,15 +155,15 @@ class ScrollAdjustmentListener(IViewerModel model) { // FIXME: Listen to some ev
             Integer newMinRow;
             Integer newMaxRow;
             if (oldDimensions.minimumRow > newValue) {
-                log.trace("User scrolled down");
+                log.debug("User scrolled down");
                 newMinRow = newValue;
                 newMaxRow = newValue + model.visibleDimensions.height - 1;
             } else if (oldDimensions.maximumRow < newValue) {
-                log.trace("User scrolled up");
+                log.debug("User scrolled up");
                 newMaxRow = newValue;
                 newMinRow = newValue - model.visibleDimensions.height + 1;
             } else {
-                log.trace("No cached vertical coordinate and new value within previous visible area, skipping ...");
+                log.debug("No cached vertical coordinate and new value within previous visible area, skipping ...");
                 oldRow = newValue;
                 return;
             }
