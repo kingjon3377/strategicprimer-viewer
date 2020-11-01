@@ -22,6 +22,10 @@ import java.lang {
     JBoolean=Boolean
 }
 
+import java.nio.charset {
+    MalformedInputException
+}
+
 """A wrapper around [[XMLEventReader]] that hides its "raw type" from callers,
    additionally satisfying [[the Ceylon Iterable interface|Iterable]] instead
    of [[the Java Iterable interface|java.lang::Iterable]].  Also contains
@@ -76,7 +80,12 @@ shared class TypesafeXMLEventReader satisfies Iterator<XMLEvent>&Destroyable {
                     return finished;
                 }
             } catch (XMLStreamException exception) {
-                throw MalformedXMLException(exception);
+                value cause = exception.cause;
+                if (is MalformedInputException cause) {
+                    throw MalformedXMLException(cause, "Invalid character in map file, probably a different encoding.");
+                } else {
+                    throw MalformedXMLException(exception);
+                }
             }
         }
     }
