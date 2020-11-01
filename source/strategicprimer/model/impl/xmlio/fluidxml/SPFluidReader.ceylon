@@ -118,6 +118,10 @@ import strategicprimer.model.impl.xmlio.fluidxml {
     FluidBase { ... }
 }
 
+import java.nio.charset {
+    StandardCharsets
+}
+
 "The main reader-from-XML class in the 'fluid XML' implementation."
 shared class SPFluidReader() satisfies IMapReader&ISPReader {
     alias LocalXMLReader=>Object(StartElement, QName, {XMLEvent*},
@@ -590,7 +594,7 @@ shared class SPFluidReader() satisfies IMapReader&ISPReader {
     }
 
     shared actual IMutableMapNG readMap(PathWrapper file, Warning warner) {
-        try (istream = JFiles.newBufferedReader(JPaths.get(file.string))) {
+        try (istream = JFiles.newBufferedReader(JPaths.get(file.string), StandardCharsets.utf8)) {
             return readMapFromStream(file, istream, warner);
         } catch (FileNotFoundException|NoSuchFileException except) {
             throw MissingFileException(file, except);

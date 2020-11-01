@@ -46,6 +46,10 @@ import strategicprimer.model.common.xmlio {
     Warning
 }
 
+import java.nio.charset {
+    StandardCharsets
+}
+
 "Sixth-generation SP XML reader."
 shared object yaXMLReader satisfies IMapReader&ISPReader {
     "Read an object from XML."
@@ -89,7 +93,7 @@ shared object yaXMLReader satisfies IMapReader&ISPReader {
     throws(`class SPFormatException`, "on SP format problems")
     shared actual IMutableMapNG readMap("The file to read from" PathWrapper file,
             "The Warning instance to use for warnings" Warning warner) {
-        try (istream = JFiles.newBufferedReader(JPaths.get(file.string))) {
+        try (istream = JFiles.newBufferedReader(JPaths.get(file.string), StandardCharsets.utf8)) {
             return readMapFromStream(file, istream, warner);
         } catch (FileNotFoundException|NoSuchFileException except) {
             throw MissingFileException(file, except);
