@@ -66,7 +66,7 @@ class WoodcuttingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf
 
     shared actual String? run() {
         StringBuilder builder = StringBuilder();
-        // TODO: support other forms of woodcutting: logs, long beams, land-clearing, etc.
+        // FIXME: support other forms of woodcutting: logs, long beams, land-clearing, etc.
         value loc = confirmPoint("Where are they cutting wood?");
         if (is Null loc) {
             return null;
