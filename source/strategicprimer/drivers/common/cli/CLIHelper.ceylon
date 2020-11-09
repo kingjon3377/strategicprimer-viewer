@@ -31,16 +31,16 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
 
     "Print a prompt, adding whitespace if the prompt didn't end with it."
     void writePrompt(String prompt) {
-        ostream(prompt);
+        print(prompt);
         if (exists last = prompt.last, !last.whitespace) {
-            ostream(" ");
+            print(" ");
         }
     }
 
     "Print the specified string, then a newline."
     shared actual void println(String line) {
-        ostream(line);
-        ostream(operatingSystem.newline);
+        print(line);
+        print(operatingSystem.newline);
     }
 
     "Ask the user a yes-or-no question. Returns [[null]] on EOF."
@@ -55,9 +55,9 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
             case ("no"|"false"|"n"|"f") { return false; }
             case (null) { return null; }
             else {
-                ostream("""Please enter "yes", "no", "true", or "false",
-                           or the first character of any of those.
-                           """);
+                print("""Please enter "yes", "no", "true", or "false",
+                         or the first character of any of those.
+                         """);
             }
         }
     }
@@ -173,7 +173,7 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
                 case ("yes"|"true"|"y"|"t") { return true; }
                 case ("no"|"false"|"n"|"f") { return false; }
                 else {
-                    ostream(
+                    print(
                         """Please enter "yes", "no", "true", or "false", the first
                            character of any of those, or "all", "none", "always", or
                            "never" to use the same answer for all further questions
@@ -202,13 +202,13 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
         println("Type . on a line by itself to end input, or , to start over.");
         while (true) {
             if (builder.empty) {
-                ostream(prompt);
+                print(prompt);
                 assert (exists last = prompt.last);
                 if (!last.whitespace) {
-                    ostream(" ");
+                    print(" ");
                 }
             } else {
-                ostream("> ");
+                print("> ");
             }
             switch (line = istream())
             case (null) {
