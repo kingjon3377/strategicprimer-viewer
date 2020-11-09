@@ -29,11 +29,18 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
      present if set, and the boolean value is what to return."
     MutableMap<String, Boolean> seriesState = HashMap<String, Boolean>();
 
-    "Print a prompt, adding whitespace if the prompt didn't end with it."
-    void writePrompt(String prompt) {
-        print(prompt);
-        if (exists last = prompt.last, !last.whitespace) {
-            print(" ");
+    MutableMap<String, Integer> intervals = HashMap<String, Integer>();
+
+    "Print the specified string."
+    shared actual void print(String+ text) {
+        Integer newlines = Integer.sum(text.map((str) => str.count((ch) => ch in ['\n', '\r'])));
+        if (newlines.positive) {
+            for (string->lines in intervals) {
+                intervals[string] = lines + newlines;
+            }
+        }
+        for (part in text) {
+            ostream(part);
         }
     }
 
@@ -41,6 +48,14 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
     shared actual void println(String line) {
         print(line);
         print(operatingSystem.newline);
+    }
+
+    "Print a prompt, adding whitespace if the prompt didn't end with it."
+    void writePrompt(String prompt) {
+        print(prompt);
+        if (exists last = prompt.last, !last.whitespace) {
+            print(" ");
+        }
     }
 
     "Ask the user a yes-or-no question. Returns [[null]] on EOF."
@@ -189,13 +204,6 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
         chooseFromListImpl<String>(items, description, none, prompt, auto,
                 identity);
 
-    "Print the specified string."
-    shared actual void print(String+ text) {
-        for (part in text) {
-            ostream(part);
-        }
-    }
-
     "Ask the user for a multiline string."
     shared actual String? inputMultilineString(String prompt) {
         StringBuilder builder = StringBuilder();
@@ -230,6 +238,15 @@ shared final class CLIHelper(istream = process.readLine, ostream = process.write
                 builder.append(line);
                 builder.appendNewline();
             }
+        }
+    }
+
+    shared actual void printlnAtInterval(String line, Integer interval) {
+        if (exists count = intervals[line], count < interval) {
+            // do nothing
+        } else {
+            println(line);
+            intervals[line] = 0;
         }
     }
 }

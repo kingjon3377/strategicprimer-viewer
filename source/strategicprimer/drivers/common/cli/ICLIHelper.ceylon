@@ -102,6 +102,14 @@ shared interface ICLIHelper {
             "The strings to print."
             String+ text);
 
+    "Print the specified string, if it hasn't been printed in the last [[interval]] lines."
+    // TODO: Add test of this in cliTests
+    shared formal void printlnAtInterval(
+            "The line to print"
+            String line,
+            "The minimum number of lines between occurrences"
+            Integer interval = 30);
+
     "Get a [[Point]] from the user. This is a convenience wrapper around [[inputNumber]].
      Returns [[null]] on EOF."
     shared default Point? inputPoint(
