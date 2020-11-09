@@ -53,7 +53,7 @@ class GatherApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                 huntingModel.gather(center);
             while (time > 0, exists loc->find = encounters.first) {
                 encounters = encounters.rest;
-                if (is HuntingModel.NothingFound find) {
+                if (is HuntingModel.NothingFound find) { // TODO: We'd like to combine consecutive 'no result' results before telling the user about them.
                     cli.println("Found nothing for the next ``noResultCost`` minutes.");
                     time -= noResultCost;
                 } else {
