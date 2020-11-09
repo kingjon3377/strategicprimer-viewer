@@ -111,23 +111,33 @@ shared class ViewerGUI(model, options) satisfies ViewerDriver {
 
     shared actual void center() {
         Point selection = model.selection;
+	log.trace("Asked to center on ``selection``.");
         MapDimensions dimensions = model.mapDimensions;
         VisibleDimensions visible = model.visibleDimensions;
+	log.trace("Visible area is currently from (``visible.minimumRow``, ``
+		visible.minimumColumn``) to (``visible.maximumRow`` to ``
+		visible.maximumColumn``), ``visible.height`` rows x ``visible.width`` cols.");
         Integer topRow;
         if (selection.row - (visible.height / 2) <= 0) {
+	    log.trace("Close enough to the top to go flush to it");
             topRow = 0;
         } else if (selection.row + (visible.height / 2) >= dimensions.rows) {
+	    log.trace("Close enough to the bottom to go flush to it");
             topRow = dimensions.rows - visible.height;
         } else {
             topRow = selection.row - (visible.height / 2);
+	    log.trace("Setting top row to ``topRow``");
         }
         Integer leftColumn;
         if (selection.column - (visible.width / 2) <= 0) {
+	    log.trace("Close enough to left edge to go flush to it");
             leftColumn = 0;
         } else if (selection.column + (visible.width / 2) >= dimensions.columns) {
+	    log.trace("Close enough to right edge to go flush to it");
             leftColumn = dimensions.columns - visible.width;
         } else {
             leftColumn = selection.column - (visible.width / 2);
+	    log.trace("Setting left column to ``leftColumn``");
         }
         // Java version had topRow + dimensions.rows and
         // leftColumn + dimensions.columns as max row and column; this seems
