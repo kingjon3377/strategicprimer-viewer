@@ -107,6 +107,10 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     variable ExplorationAutomationConfig automationConfig =
         ExplorationAutomationConfig(model.map.currentPlayer);
 
+    String[] commands = ["Set Speed", "SW", "S", "SE", "W", "Linger", "E", "NW", "N", "NE", "Toward Point", "Quit"];
+
+    String usage = ", ".join(commands.indexed.map((index->command) => "``index``: ``command``"));
+
     "When the selected unit changes, print the unit's details and ask how many MP the unit
      has."
     shared actual void selectedUnitChanged(IUnit? old, IUnit? newSelection) {
@@ -152,9 +156,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             } else {
                 cli.println("``runningTotal``/``totalMP`` MP remaining. Current speed: ``
                     speed.shortName``.");
-                cli.print("""0: Set Speed, 1: SW, 2: S, 3: SE, 4: W, 5: Linger, """);
-                cli.println(
-                    """6: E, 7: NW, 8: N, 9: NE, 10: Toward Point, 11: Quit""");
+                cli.printlnAtInterval(usage);
                 Integer directionNum = cli.inputNumber("Direction to move: ") else -1;
                 switch (directionNum)
                 case (0) { changeSpeed(); return; }
