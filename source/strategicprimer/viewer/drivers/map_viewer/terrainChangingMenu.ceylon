@@ -288,6 +288,8 @@ class TerrainChangingMenu(Integer mapVersion, IViewerModel model) extends JPopup
     newUnitItem.addActionListener(showDialogImpl(nuDialog));
     newForestItem.addActionListener(showDialogImpl(nfDialog));
     textNoteItem.addActionListener(showDialogImpl(tnDialog));
+    tnDialog.dispose();
+    nfDialog.dispose();
     nuDialog.dispose();
 }
 
