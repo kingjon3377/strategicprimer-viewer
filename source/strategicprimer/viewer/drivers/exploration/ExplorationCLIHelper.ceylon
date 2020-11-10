@@ -76,9 +76,14 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
     }
 
     "Copy the given fixture to subordinate maps and print it to the output stream."
-    void printAndTransferFixture(Point destPoint, TileFixture? fixture, HasOwner mover) {
+    void printAndTransferFixture(Point destPoint, TileFixture? fixture, HasOwner mover, Boolean automatic) {
         if (exists fixture) {
-            cli.println(fixture.string);
+            if (automatic) {
+                cli.print(fixture.string);
+                cli.println(" (automatically)");
+            } else {
+                cli.println(fixture.string);
+            }
             Boolean zero;
             if (is HasOwner fixture,
                     (fixture.owner != mover.owner || fixture is Village)) {
@@ -281,18 +286,12 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
                 identity<TileFixture>, mover, speed);
 
             if (!constants.empty || !noticed.empty) {
-                cli.print("The following were ");
-                if (noticed.empty) {
-                    cli.println("automatically noticed:");
-                } else if (noticed.size > 1) {
-                    cli.println("noticed, all but the last ``noticed
-                        .size`` automatically:");
-                } else {
-                    cli.println("noticed, all but the last automatically:");
-                }
-                constants.addAll(noticed);
+                cli.println("The following were noticed:");
                 for (fixture in constants) {
-                    printAndTransferFixture(destPoint, fixture, mover);
+                    printAndTransferFixture(destPoint, fixture, mover, true);
+                }
+                for (fixture in noticed) {
+                    printAndTransferFixture(destPoint, fixture, mover, false);
                 }
             }
 
