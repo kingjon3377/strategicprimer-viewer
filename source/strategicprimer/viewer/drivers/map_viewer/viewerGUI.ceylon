@@ -69,7 +69,7 @@ shared class ViewerGUIFactory() satisfies GUIDriverFactory {
         longDescription = "Look at the map visually. This is probably the app you want.";
         includeInCLIList = false;
         includeInGUIList = true;
-        supportedOptions = [ "--current-turn=NN", "--background=image.png" ];
+        supportedOptions = [ "--current-turn=NN", "--background=image.png", "--starting-row=NN --starting-column=NN"];
     };
 
     "Ask the user to choose a file or files."
@@ -175,6 +175,26 @@ shared class ViewerGUI(model, options) satisfies ViewerDriver {
             getFindDialog)()), "find next");
         menuHandler.registerWindowShower(aboutDialog(frame, frame.windowName),
             "about");
+        // TODO: We'd like to have the starting position stored in the map
+        // file, in system preferences, or some such, or simply default to HQ.
+        if (options.hasOption("--starting-row"), options.hasOption("--starting-column")) {
+            value startingRow = Integer.parse(options.getArgument("--starting-row"));
+            value startingCol = Integer.parse(options.getArgument("--starting-column"));
+            if (is Integer startingRow, is Integer startingCol) {
+                value starting = Point(startingRow, startingCol);
+                if (starting in model.mapDimensions) {
+                    model.selection = starting;
+                } else {
+                    log.warn("Starting coordinates must be within the map's dimensions");
+                }
+            } else {
+                log.warn("Arguments to --starting-row and --starting-column must be numeric");
+            }
+        } else if (options.hasOption("--starting-row")) {
+            log.warn("--starting-row requires --starting-column");
+        } else if (options.hasOption("--starting-column")) {
+            log.warn("--starting-column requires --starting-row");
+        }
         log.trace("About to show viewer GUI window");
         frame.showWindow();
     }
