@@ -1,3 +1,8 @@
+import ceylon.logging {
+    logger,
+    Logger
+}
+
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
@@ -10,6 +15,10 @@ import strategicprimer.model.common.idreg {
 import strategicprimer.model.common.map {
     Player
 }
+
+"A logger."
+Logger log = logger(`module strategicprimer.viewer`);
+
 // We *deliberately* do not make a factory with the `service` annotation.
 shared class SpoilageApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
         extends AbstractTurnApplet(model, cli, idf) {
@@ -36,12 +45,17 @@ shared class SpoilageApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar
                         buffer.append(" spoiled.\n\n");
                         reduceFoodBy(food, spoilage, owner);
                     } else {
+                        log.warn("Non-numeric spoilage amount");
                         return null;
                     }
                 }
                 case (false) { continue; }
-                case (null) { return null; }
+                case (null) {
+                    log.warn("EOF on has-this-spoiled");
+                    return null;
+                }
             } else {
+                log.warn("Didn't get a food type");
                 return null;
             }
         }
