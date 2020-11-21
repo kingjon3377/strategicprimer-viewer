@@ -1,5 +1,4 @@
 import strategicprimer.drivers.common {
-    IDriverModel,
     CLIDriver,
     emptyOptions,
     SPOptions
@@ -12,7 +11,7 @@ import strategicprimer.drivers.common.cli {
 import strategicprimer.model.common.map {
     Point,
     HasExtent,
-    IMutableMapNG
+    IMapNG
 }
 
 import strategicprimer.model.common.map.fixtures.mobile {
@@ -72,13 +71,13 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
     static Boolean negativeNumber(Number<out Anything> number) => number.negative;
 
     ICLIHelper cli;
-    shared actual IDriverModel model;
+    shared actual PopulationGeneratingModel model;
     shared actual SPOptions options = emptyOptions;
-    shared new(ICLIHelper cli, IDriverModel model) {
+    shared new(ICLIHelper cli, PopulationGeneratingModel model) {
         this.cli = cli;
         this.model = model;
     }
-    IMutableMapNG map = model.map;
+    IMapNG map = model.map;
 
     "Generate [[Animal]] populations."
     void generateAnimalPopulations(Boolean talking, String kind) {
@@ -117,13 +116,7 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
                 nextPopulation =
                         rng.nextInteger(remainingTotal - (remainingCount * 2) - 2) + 2;
             }
-            //if (exists animal = map.fixtures[location].narrow<Animal>() // TODO: syntax sugar
-            if (exists animal = map.fixtures.get(location).narrow<Animal>()
-                    .filter(matchingValue(talking, Animal.talking))
-                    .find(matchingValue(kind, Animal.kind))) {
-                Animal replacement = animal.reduced(nextPopulation);
-                map.removeFixture(location, animal);
-                map.addFixture(location, replacement);
+            if (model.setAnimalPopulation(location, talking, kind, nextPopulation)) {
                 remainingCount--;
                 remainingTotal -= nextPopulation;
             }
@@ -153,13 +146,7 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             }
             Integer nextPopulation = if (remainingCount == 1) then remainingTotal else
                 rng.nextInteger(remainingTotal-remainingCount - 1) + 1;
-            //if (exists grove = map.fixtures[location].narrow<Grove>() // TODO: syntax sugar
-            if (exists grove = map.fixtures.get(location).narrow<Grove>()
-                    .find(matchingValue(kind, Grove.kind))) {
-                Grove replacement = Grove(grove.orchard, grove.cultivated, grove.kind,
-                    grove.id, nextPopulation);
-                map.removeFixture(location, grove);
-                map.addFixture(location, replacement);
+            if (model.setGrovePopulation(location, kind, nextPopulation)) {
                 remainingCount--;
                 remainingTotal -= nextPopulation;
             }
@@ -190,12 +177,7 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
             }
             Integer nextPopulation = if (remainingCount == 1) then remainingTotal else
                 rng.nextInteger(remainingTotal-remainingCount - 1) + 1;
-            //if (exists grove = map.fixtures[location].narrow<Shrub>() // TODO: syntax sugar
-            if (exists shrub = map.fixtures.get(location).narrow<Shrub>()
-                    .find(matchingValue(kind, Shrub.kind))) {
-                Shrub replacement = Shrub(kind, shrub.id, nextPopulation);
-                map.removeFixture(location, shrub);
-                map.addFixture(location, replacement);
+            if (model.setShrubPopulation(location, kind, nextPopulation)) {
                 remainingCount--;
                 remainingTotal -= nextPopulation;
             }
@@ -210,9 +192,7 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
         Random rng = singletonRandom;
         for (loc->field in entries) {
             Float acres = rng.nextFloat() * 5.5 + 0.5;
-            map.removeFixture(loc, field);
-            map.addFixture(loc, Meadow(field.kind, field.field, field.cultivated,
-                field.id, field.status, acres));
+            model.setFieldExtent(loc, field, acres);
         }
     }
 
@@ -282,19 +262,15 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
                 continue;
             }
             if (otherForests.empty) {
-                Forest replacement;
+                Integer acreage; // FIXME: Should this be Float instead?
                 if (adjacentCount > 7) {
-                    replacement = Forest(primaryForest.kind, primaryForest.rows,
-                        primaryForest.id, 160 - reserved);
+                    acreage = 160 - reserved;
                 } else if (adjacentCount > 4) {
-                    replacement = Forest(primaryForest.kind, primaryForest.rows,
-                        primaryForest.id, (160 - reserved) * 4 / 5);
+                    acreage = (160 - reserved) * 4 / 5;
                 } else {
-                    replacement = Forest(primaryForest.kind, primaryForest.rows,
-                        primaryForest.id, (160 - reserved) * 2 / 5);
+                    acreage = (160 - reserved) * 2 / 5;
                 }
-                map.removeFixture(location, primaryForest);
-                map.addFixture(location, replacement);
+                model.setForestExtent(location, primaryForest, acreage);
             } else {
                 Integer acreage;
                 if (adjacentCount > 4) {
@@ -302,16 +278,12 @@ shared class PopulationGeneratingCLI satisfies CLIDriver {
                 } else {
                     acreage = (160 - reserved) * 2 / 5;
                 }
-                map.removeFixture(location, primaryForest);
-                map.addFixture(location, Forest(primaryForest.kind, primaryForest.rows,
-                    primaryForest.id, acreage));
+                model.setForestExtent(location, primaryForest, acreage);
                 reserved += acreage;
                 for (forest in otherForests) {
-                    map.removeFixture(location, forest);
-                    map.addFixture(location, Forest(forest.kind, forest.rows, forest.id,
-                        implicitlyRounded(
-                            defer(perForestAcreage, [reserved, otherForests.size]),
-                            round(12, halfEven))));
+                    model.setForestExtent(location, forest, implicitlyRounded(
+                        defer(perForestAcreage, [reserved, otherForests.size]),
+                        round(12, halfEven)));
                 }
             }
         }
