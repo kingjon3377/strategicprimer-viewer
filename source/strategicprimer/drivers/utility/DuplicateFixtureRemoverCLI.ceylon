@@ -79,6 +79,7 @@ import lovelace.util.jvm {
 
 "A driver to remove duplicate hills, forests, etc. from the map (to reduce the size it
  takes up on disk and the memory and CPU it takes to deal with it)."
+// FIXME: Move map-mutating operations into a driver model
 shared class DuplicateFixtureRemoverCLI satisfies CLIDriver {
     static void ifApplicable<Desired, Provided>(Anything(Desired) func)(Provided item) {
         if (is Desired item) {

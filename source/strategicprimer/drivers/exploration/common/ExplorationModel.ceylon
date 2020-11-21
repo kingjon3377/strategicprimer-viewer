@@ -419,7 +419,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             Player owner = unit.owner;
             {Village*} villages = allMaps.map(Entry.key)
                 .flatMap(shuffle(compose(Multimap<Point, TileFixture>.get,
-                    IMutableMapNG.fixtures))(currentPoint))
+                    IMapNG.fixtures))(currentPoint))
                 .narrow<Village>().filter(compose(Player.independent, Village.owner));
             if (!villages.empty) {
                 variable Boolean subordinate = false;

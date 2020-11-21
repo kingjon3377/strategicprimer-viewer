@@ -406,9 +406,9 @@ class TabularReportServingCLI(ICLIHelper cli, options, model) satisfies ReadOnly
         Map<Path, IMapNG> mapping;
         if (is IMultiMapModel model) {
             mapping = map(model.allMaps.coalesced
-                .map(entryMap(identity<IMutableMapNG>, Tuple<PathWrapper?|Boolean,
+                .map(entryMap(identity<IMapNG>, Tuple<PathWrapper?|Boolean,
             PathWrapper?, [Boolean]>.first)).map(Entry.coalesced).coalesced
-                .map(entryMap(identity<IMutableMapNG>,
+                .map(entryMap(identity<IMapNG>,
                 compose(parsePath, PathWrapper.filename)))
                 .map(reverseEntry));
         } else if (exists path = model.mapFile) {

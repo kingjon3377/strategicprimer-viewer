@@ -27,6 +27,7 @@ import java.lang {
 }
 
 "A model for the list-based representation of the contents of a tile."
+// FIXME: Use a driver model, not an [[IMutableMapNG]], for map-mutating operations
 shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSource,
             Comparison(TileFixture, TileFixture) comparator)
         satisfies ListModel<TileFixture>&SelectionChangeListener {

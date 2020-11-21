@@ -9,7 +9,6 @@ import lovelace.util.common {
 }
 
 import strategicprimer.model.common.map {
-    IMutableMapNG,
     IMapNG,
     TileType,
     Point,
@@ -205,7 +204,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             }
 
             MutableList<TileFixture> constants = ArrayList<TileFixture>();
-            IMutableMapNG map = model.map;
+            IMapNG map = model.map;
             MutableList<TileFixture> allFixtures = ArrayList<TileFixture>();
 
             //        for (fixture in map.fixtures[destPoint]) { // TODO: syntax sugar once compiler bug fixed

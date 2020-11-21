@@ -11,6 +11,7 @@ import ceylon.test {
 }
 
 import strategicprimer.model.common.map {
+    IMapNG,
     IMutableMapNG,
     SPMapNG,
     Point,
@@ -123,7 +124,7 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
 
     "All the players in all the maps."
     shared actual {Player*} players =>
-            allMaps.map(Entry.key).flatMap(IMutableMapNG.players).distinct;
+            allMaps.map(Entry.key).flatMap(IMapNG.players).distinct;
 
     "Get all the given player's units, or only those of a specified kind."
     shared actual {IUnit*} getUnits(Player player, String? kind) {

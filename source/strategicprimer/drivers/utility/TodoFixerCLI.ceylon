@@ -66,6 +66,7 @@ import ceylon.file {
 """A hackish driver to fix TODOs (missing content) in the map, namely units with "TODO"
    for their "kind" and aquatic villages with non-aquatic races."""
 todo("Write tests of this functionality") // This'll have to wait until eclipse/ceylon#6986 is fixed
+// FIXME: Move mutation operations into a driver model
 shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
     shared actual IDriverModel model;
     shared actual SPOptions options = emptyOptions;

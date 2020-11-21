@@ -105,6 +105,7 @@ shared class ExpansionDriver(ICLIHelper cli, options, model) satisfies CLIDriver
         shared actual Player owner;
     }
 
+    // FIXME: Move to a driver model class, along with other map-mutating operations
     void safeAdd(IMutableMapNG map, Player currentPlayer, Point point,
             TileFixture fixture) {
         if (map.fixtures.get(point).any(fixture.equals)) {

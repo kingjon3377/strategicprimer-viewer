@@ -400,7 +400,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         log.trace("ExplorationPanel: ell set up for ``direction``");
 
         SwingList<TileFixture>&SelectionChangeListener secList =
-            fixtureList(tilesPanel, FixtureListModel(secondMap, createNull,
+            fixtureList(tilesPanel, FixtureListModel(secondMap, createNull, // FIXME: Make FixtureListModel work through the driver-model instead of taking IMutableMapNG, so we can declare [[secondMap]] as an IMapNG instead
                 increasing<TileFixture>), idf, markModified, secondMap.players);
         tilesPanel.add(JScrollPane(secList));
 
