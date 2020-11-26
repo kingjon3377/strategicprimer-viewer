@@ -8,7 +8,7 @@ import strategicprimer.model.common.map {
 
 "Something that can go on a tile."
 todo("Any other members?")
-shared interface TileFixture satisfies IFixture&Comparable<TileFixture> {
+shared interface TileFixture satisfies IFixture&Comparable<TileFixture>&Identifiable {
     "A *short*, no more than one line and preferably no more than two dozen characters,
      description of the fixture, suitable for saying what it is when an explorer happens
      on it."

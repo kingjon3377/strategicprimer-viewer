@@ -364,7 +364,7 @@ shared class ProxyUnit satisfies IUnit&ProxyFor<IUnit>&HasMutableKind&HasMutable
 
     "Proxy an additonal unit."
     shared actual void addProxied(IUnit item) {
-        if (is Identifiable item, item === this) {
+        if (item === this) {
             return;
         } else if (parallel) {
             "Unit must have ID #``identifier``"
