@@ -163,13 +163,13 @@ shared class WorkerModel extends SimpleMultiMapModel satisfies IWorkerModel {
             getUnits(player).map(IUnit.kind).distinct
                 .sort(byIncreasing(String.lowercased));
 
-    "Add the given unit at the given location in all maps."
+    "Add the given unit at the given location in all maps." // FIXME: Should copy into subordinate maps, and return either the unit (in one-map case) or a proxy
     void addUnitAtLocation(IUnit unit, Point location) {
         if (subordinateMaps.empty) {
-            addUnitAtLocationImpl(unit, location, map);
+            addUnitAtLocationImpl(unit, location, restrictedMap);
             mapModified = true;
         } else {
-            for (eachMap->[eachFile, modifiedFlag] in allMaps) {
+            for (eachMap->[eachFile, modifiedFlag] in restrictedAllMaps) {
                 addUnitAtLocationImpl(unit, location, eachMap);
                 if (!modifiedFlag) {
                     setModifiedFlag(eachMap, true);

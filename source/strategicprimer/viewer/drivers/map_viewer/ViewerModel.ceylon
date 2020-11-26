@@ -103,7 +103,7 @@ shared class ViewerModel extends SimpleDriverModel satisfies IViewerModel {
     }
 
     shared new copyConstructor(IDriverModel model)
-            extends SimpleDriverModel(model.map, model.mapFile) {
+            extends SimpleDriverModel(model.restrictedMap, model.mapFile) {
         if (is IViewerModel model) {
             visDimensions = model.visibleDimensions;
             selPoint = model.selection;

@@ -31,12 +31,12 @@ import strategicprimer.model.common.map.fixtures.resources {
 shared class PopulationGeneratingModel extends SimpleDriverModel { // TODO: extend to multi-map operation
     shared new (IMutableMapNG map, PathWrapper? path) extends SimpleDriverModel(map, path) {}
 
-    shared new copyConstructor(IDriverModel model) extends SimpleDriverModel(model.map, model.mapFile) {}
+    shared new copyConstructor(IDriverModel model) extends SimpleDriverModel(model.restrictedMap, model.mapFile) {}
 
     "Replace an existing fixture with a replacement." // TODO: Should this be provided by IMutableMapNG instead?
     void replace<Type>(Point location, Type original, Type replacement) given Type satisfies TileFixture {
-        map.removeFixture(location, original); // TODO: If these methods return Boolean, make this return Boolean too based on their return values
-        map.addFixture(location, replacement);
+        restrictedMap.removeFixture(location, original); // TODO: If these methods return Boolean, make this return Boolean too based on their return values
+        restrictedMap.addFixture(location, replacement);
     }
 
     "Set the population of [[kind]] animals (talking or not per [[talking]]) at

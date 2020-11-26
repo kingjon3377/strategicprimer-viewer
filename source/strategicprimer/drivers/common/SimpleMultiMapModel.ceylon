@@ -33,9 +33,9 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
             extends SimpleDriverModel(map, file, modified) { }
 
     shared new copyConstructor(IDriverModel model)
-            extends SimpleDriverModel(model.map, model.mapFile, model.mapModified) {
+            extends SimpleDriverModel(model.restrictedMap, model.mapFile, model.mapModified) {
         if (is IMultiMapModel model) {
-            subordinateMapsList.addAll(model.subordinateMaps);
+            subordinateMapsList.addAll(model.restrictedSubordinateMaps);
         }
     }
 

@@ -247,7 +247,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     .filter(matchingValue(target, Entry<Point, TileFixture>.item));
         // TODO: Unit vision range
         {Point*} points = surroundingPointIterable(base, map.dimensions, 2);
-        for (submap->[file, flag] in subordinateMaps) {
+        for (submap->[file, flag] in restrictedSubordinateMaps) { // TODO: Can we limit use of mutability to a narrower critical section?
             variable Boolean modifiedFlag = flag;
             for (point in points) {
                 for (fixture in submap.fixtures.get(point).narrow<MobileFixture>()) { // TODO: syntax sugar once bug fixed
@@ -308,10 +308,10 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                         map.rivers.get(dest)), fixtures);
             }
             Integer retval = (ceiling(base * speed.mpMultiplier) + 0.1).integer;
-            removeImpl(map, point, unit);
-            map.addFixture(dest, unit);
+            removeImpl(restrictedMap, point, unit);
+            restrictedMap.addFixture(dest, unit);
             mapModified = true;
-            for (subMap->[subFile, modifiedFlag] in subordinateMaps) {
+            for (subMap->[subFile, modifiedFlag] in restrictedSubordinateMaps) { // FIXME: Use copyToSubMaps()
                 if (doesLocationHaveFixture(subMap, point, unit)) {
                     ensureTerrain(map, subMap, dest);
                     removeImpl(subMap, point, unit);
@@ -346,7 +346,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                     log.trace("Unknown reason for movement-impossible condition");
                 }
             }
-            for (subMap->[path, modifiedFlag] in subordinateMaps) {
+            for (subMap->[path, modifiedFlag] in restrictedSubordinateMaps) {
                 ensureTerrain(map, subMap, dest);
                 if (!modifiedFlag) {
                     setModifiedFlag(subMap, true);
@@ -425,7 +425,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 variable Boolean subordinate = false;
                 for (village in villages) {
                     village.owner = owner;
-                    for (subMap->[file, modifiedFlag] in allMaps) {
+                    for (subMap->[file, modifiedFlag] in restrictedAllMaps) {
                         subMap.addFixture(currentPoint, village.copy(subordinate));
                         subordinate = true;
                         if (!modifiedFlag) {
@@ -442,7 +442,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 {Point*} surroundingPoints =
                         surroundingPointIterable(currentPoint, mapDimensions, 1);
                 for (point in surroundingPoints) {
-                    for (subMap->[path, _] in subordinateMaps) {
+                    for (subMap->[path, _] in restrictedSubordinateMaps) {
                         ensureTerrain(mainMap, subMap, point);
                         Forest? subForest =
                                 subMap.fixtures[point]?.narrow<Forest>()?.first;
@@ -460,7 +460,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                         .narrow<[Point, Meadow|Grove]>().first;
                 [Point, TileFixture]? animal = surroundingFixtures
                         .narrow<[Point, Animal]>().first;
-                for (subMap->[path, _] in subordinateMaps) {
+                for (subMap->[path, _] in restrictedSubordinateMaps) {
                     if (exists vegetation) {
                         subMap.addFixture(vegetation.first,
                             vegetation.rest.first.copy(true));
@@ -481,7 +481,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
     shared actual void dig() {
         Point currentPoint = selection.first;
         if (currentPoint.valid) {
-            IMutableMapNG mainMap = map;
+            IMutableMapNG mainMap = restrictedMap;
             variable {TileFixture*} diggables =
 //                    mainMap.fixtures[currentPoint].filter(isDiggable); // TODO: syntax sugar once compiler bug fixed
                     mainMap.fixtures.get(currentPoint).filter(isDiggable);
@@ -511,7 +511,7 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
                 map.addFixture(currentPoint, newFixture.copy(condition));
             }
             variable Boolean subsequent = false;
-            for (subMap->[file, modifiedFlag] in allMaps) {
+            for (subMap->[file, modifiedFlag] in restrictedAllMaps) {
                 addToMap(subMap, subsequent);
                 subsequent = true;
                 if (!modifiedFlag) {
