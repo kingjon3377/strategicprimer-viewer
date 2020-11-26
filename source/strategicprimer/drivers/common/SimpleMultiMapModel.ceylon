@@ -25,6 +25,10 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
     shared actual {<IMutableMapNG->[PathWrapper?, Boolean]>*} subordinateMaps =>
             subordinateMapsList.sequence();
 
+    "Subordinate maps and the files from which they were loaded, for use by subclasses only."
+    shared actual {<IMutableMapNG->[PathWrapper?, Boolean]>*} restrictedSubordinateMaps =>
+            subordinateMapsList.sequence();
+
     shared new (IMutableMapNG map, PathWrapper? file, Boolean modified = false)
             extends SimpleDriverModel(map, file, modified) { }
 

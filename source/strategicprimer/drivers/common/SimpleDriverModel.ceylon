@@ -67,6 +67,10 @@ shared class SimpleDriverModel satisfies IDriverModel {
 
     "The (main) map."
     shared actual IMutableMapNG map => mainMap;
+
+    "The (main) map, for use by subclasses only."
+    shared actual IMutableMapNG restrictedMap => mainMap;
+
     "The dimensions of the map."
     shared actual MapDimensions mapDimensions => mapDim;
 

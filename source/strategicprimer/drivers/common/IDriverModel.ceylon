@@ -19,6 +19,9 @@ shared interface IDriverModel satisfies MapChangeSource&VersionChangeSource {
     "The (main) map."
     shared formal IMutableMapNG map;
 
+    "The (main) map, for use by subclasses only."
+    shared formal IMutableMapNG restrictedMap;
+
     "Its dimensions."
     shared default MapDimensions mapDimensions => map.dimensions;
 
