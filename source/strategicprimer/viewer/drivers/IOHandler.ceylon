@@ -281,9 +281,9 @@ shared class IOHandler satisfies ActionListener {
 
         case ("open secondary map in map viewer") {
             if (is MultiMapGUIDriver driver) {
-                if (exists mapEntry = driver.model.subordinateMaps.first) {
+                if (exists newModel = driver.model.fromSecondMap()) {
                     SwingUtilities.invokeLater(defer(compose(ViewerGUI.startDriver,
-                        ViewerGUI), [ViewerModel.fromEntry(mapEntry), driver.options.copy()]));
+                        ViewerGUI), [ViewerModel.copyConstructor(newModel), driver.options.copy()]));
                 } else {
                     log.error(
                         "IOHandler asked to 'open secondary in map viewer'; none there");

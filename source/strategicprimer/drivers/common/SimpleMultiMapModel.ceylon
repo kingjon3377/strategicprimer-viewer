@@ -59,6 +59,14 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
         }
     }
 
+    shared actual IDriverModel? fromSecondMap() {
+        if (exists map->[file, modified] = restrictedSubordinateMaps.first) {
+            return SimpleDriverModel(map, file, modified);
+        } else {
+            return null;
+        }
+    }
+
     shared actual Integer currentTurn => allMaps.map(Entry.key).map(IMapNG.currentTurn)
         .find(not(Integer.negative)) else map.currentTurn;
 

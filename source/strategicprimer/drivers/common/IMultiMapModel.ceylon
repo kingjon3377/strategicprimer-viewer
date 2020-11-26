@@ -41,4 +41,7 @@ shared interface IMultiMapModel satisfies IDriverModel {
 
     "Set the 'modified' flag for the given map."
     shared formal void setModifiedFlag(IMapNG map, Boolean modified);
+
+    "A driver model with the second map as its first or sole map."
+    shared formal IDriverModel? fromSecondMap();
 }
