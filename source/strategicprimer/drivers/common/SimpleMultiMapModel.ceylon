@@ -57,4 +57,16 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
             }
         }
     }
+
+    shared actual Integer currentTurn => allMaps.map(Entry.key).map(IMapNG.currentTurn)
+        .find(not(Integer.negative)) else map.currentTurn;
+
+    assign currentTurn {
+        for (map->[file, modifiedFlag] in restrictedAllMaps) {
+            map.currentTurn = currentTurn;
+            if (!modifiedFlag) {
+                setModifiedFlag(map, true);
+            }
+        }
+    }
 }

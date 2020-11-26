@@ -94,4 +94,9 @@ shared class SimpleDriverModel satisfies IDriverModel {
     "Remove a version-change listener."
     shared actual void removeVersionChangeListener(VersionChangeListener listener) =>
             vcListeners.remove(listener);
+
+    shared actual default Integer currentTurn => mainMap.currentTurn;
+    assign currentTurn {
+        mainMap.currentTurn = currentTurn;
+    }
 }

@@ -30,4 +30,7 @@ shared interface IDriverModel satisfies MapChangeSource&VersionChangeSource {
 
     "Whether the map has been changed since it was loaded or last saved."
     shared formal variable Boolean mapModified;
+
+    "The current turn for the map."
+    shared formal variable Integer currentTurn;
 }
