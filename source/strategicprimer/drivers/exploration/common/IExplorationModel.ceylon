@@ -6,7 +6,9 @@ import strategicprimer.model.common.map {
     Point,
     Player,
     Direction,
-    TileFixture
+    River,
+    TileFixture,
+    TileType
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit
@@ -69,4 +71,23 @@ shared interface IExplorationModel
     "Copy terrain, including any mountain, rivers, and roads, from the main map
      to subordinate maps." // FIXME: Is this really necessary?
     shared formal void copyTerrainToSubMaps(Point location);
+
+    "Set sub-map terrain at the given location to the given type."
+    deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
+    shared formal void setSubMapTerrain(Point location, TileType? terrain);
+
+    "Copy the given rivers to sub-maps, if they are present in the main map."
+    shared formal void copyRiversToSubMaps(Point location, River* rivers);
+
+    "Remove the given rivers from sub-maps."
+    deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
+    shared formal void removeRiversFromSubMaps(Point location, River* rivers);
+
+    "Remove the given fixture from sub-maps."
+    deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
+    shared formal void removeFixtureFromSubMaps(Point location, TileFixture fixture);
+
+    "Set whether sub-maps have a mountain at the given location."
+    deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
+    shared formal void setMountainousInSubMap(Point location, Boolean mountainous);
 }

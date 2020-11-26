@@ -50,7 +50,7 @@ import java.awt {
 import strategicprimer.model.common.map {
     FakeFixture,
     HasExtent,
-    IMutableMapNG,
+    IMapNG,
     PlayerImpl,
     Player,
     TileFixture,
@@ -211,7 +211,7 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
 
     log.trace("ExplorationPanel: headerPanel layout adjusted");
 
-    IMutableMapNG secondMap; // TODO: Add 'secondMap' field to IExplorationModel (as IMap), to improve no-second-map to a-second-map transition
+    IMapNG secondMap; // TODO: Add 'secondMap' field to IExplorationModel (as IMap), to improve no-second-map to a-second-map transition
     if (exists entry = driverModel.subordinateMaps.first) {
         secondMap = entry.key;
     } else {
@@ -354,8 +354,10 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
     for (direction in sort(`Direction`.caseValues)) {
         log.trace("ExplorationPanel: Starting to initialize for ``direction``");
         SwingList<TileFixture>&SelectionChangeListener mainList =
-            fixtureList(tilesPanel, FixtureListModel(driverModel.map, tracksCreator,
-                increasing<TileFixture>), idf, markModified, driverModel.map.players);
+            fixtureList(tilesPanel, FixtureListModel(driverModel.map.fixtures.get, driverModel.map.baseTerrain.get,
+                    driverModel.map.rivers.get, driverModel.map.mountainous.get, tracksCreator,
+                    null, null, null, null, null, null, increasing<TileFixture>), // TODO: Replace nulls with implementations?
+                idf, markModified, driverModel.map.players);
         tilesPanel.add(JScrollPane(mainList));
 
         log.trace("ExplorationPanel: main list set up for ``direction``");
@@ -382,8 +384,11 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
         log.trace("ExplorationPanel: ell set up for ``direction``");
 
         SwingList<TileFixture>&SelectionChangeListener secList =
-            fixtureList(tilesPanel, FixtureListModel(secondMap, createNull, // FIXME: Make FixtureListModel work through the driver-model instead of taking IMutableMapNG, so we can declare [[secondMap]] as an IMapNG instead
-                increasing<TileFixture>), idf, markModified, secondMap.players);
+            fixtureList(tilesPanel, FixtureListModel(secondMap.fixtures.get, secondMap.baseTerrain.get,
+                    secondMap.rivers.get, secondMap.mountainous.get, createNull, driverModel.setSubMapTerrain,
+                    driverModel.copyRiversToSubMaps, driverModel.setMountainousInSubMap, driverModel.copyToSubMaps,
+                    driverModel.removeRiversFromSubMaps, driverModel.removeFixtureFromSubMaps, increasing<TileFixture>),
+                idf, markModified, secondMap.players);
         tilesPanel.add(JScrollPane(secList));
 
         log.trace("ExploratonPanel: Second list set up for ``direction``");

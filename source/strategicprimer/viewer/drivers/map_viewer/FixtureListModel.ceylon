@@ -1,7 +1,8 @@
 import strategicprimer.model.common.map {
-    TileFixture,
     Point,
-    IMutableMapNG
+    River,
+    TileFixture,
+    TileType
 }
 import javax.swing {
     ListModel
@@ -27,8 +28,11 @@ import java.lang {
 }
 
 "A model for the list-based representation of the contents of a tile."
-// FIXME: Use a driver model, not an [[IMutableMapNG]], for map-mutating operations
-shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSource,
+shared class FixtureListModel(Iterable<TileFixture>(Point) fixturesSource, TileType?(Point) terrainSource,
+            Iterable<River>(Point) riversSource, Boolean(Point) mountainSource, AnimalTracks?(Point) tracksSource,
+            Anything(Point, TileType?)? terrainSink, Anything(Point, River*)? addRivers,
+            Anything(Point, Boolean)? mountainSink, Boolean(Point, TileFixture)? addFixtureLambda,
+            Anything(Point, River*)? removeRivers, Anything(Point, TileFixture)? removeFixture,
             Comparison(TileFixture, TileFixture) comparator)
         satisfies ListModel<TileFixture>&SelectionChangeListener {
     "The currently selected point."
@@ -47,10 +51,8 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
     shared actual void removeListDataListener(ListDataListener listener) =>
             listDataListeners.remove(listener);
 
-    shared actual Integer size { // TODO: => once syntax sugar in place
-        //return map.fixtures[point].size + currentTracks.size + cachedTerrainList.size; // TODO: syntax sugar
-        return map.fixtures.get(point).size + currentTracks.size + cachedTerrainList.size;
-    }
+    shared actual Integer size =>
+            fixturesSource(point).size + currentTracks.size + cachedTerrainList.size;
 
     void fireIntervalReplaced(Range<Integer> oldRange, Range<Integer> newRange) {
         ListDataEvent removeEvent = ListDataEvent(this, ListDataEvent.intervalRemoved,
@@ -91,17 +93,16 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
         log.trace("Starting FixtureListModel.selectedPointChanged");
         Integer oldSize = size;
         cachedTerrainList = [];
-        if (exists terrain = map.baseTerrain[newPoint]) {
+        if (exists terrain = terrainSource(newPoint)) {
             cachedTerrainList = [TileTypeFixture(terrain)];
         }
         log.trace("FixtureListModel.selectedPointChanged: Accounted for base terrain");
-        if (nonempty rivers = map.rivers.get(newPoint).sequence()) { // TODO: syntax sugar
+        if (nonempty rivers = riversSource(newPoint).sequence()) {
             cachedTerrainList = cachedTerrainList.withTrailing(RiverFixture(rivers));
         }
         // TODO: Add support for roads
         log.trace("FixtureListModel.selectedPointChanged: Accounted for rivers");
-//        if (map.mountainous[newPoint]) { // TODO: syntax sugar
-        if (map.mountainous.get(newPoint)) {
+        if (mountainSource(newPoint)) {
             cachedTerrainList = cachedTerrainList.withTrailing(MountainFixture());
         }
         log.trace("FixtureListModel.selectedPointChanged: Accounted for mountain");
@@ -118,8 +119,7 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
     }
 
     shared actual TileFixture getElementAt(Integer index) {
-        //TileFixture[] main = map.fixtures[point].sequence(); // TODO: syntax sugar
-        TileFixture[] main = map.fixtures.get(point).sort(comparator);
+        TileFixture[] main = fixturesSource(point).sort(comparator); // TODO: cache this?
         if (index < 0) {
             throw ArrayIndexOutOfBoundsException(index);
         } else if (exists retval = cachedTerrainList.getFromFirst(index)) {
@@ -138,90 +138,128 @@ shared class FixtureListModel(IMutableMapNG map, AnimalTracks?(Point) tracksSour
         return index + cachedTerrainList.size;
     }
 
-    shared void addFixture(TileFixture fixture) {
+    "Returns true if the operation is accepted (succeeded), false if it is
+     rejected (failed). For now no-op operations are treated as successes."
+    // TODO: Provide a way of pre-rejecting operations, so drag-and-drop failures can be warned about before the drop
+    shared Boolean addFixture(TileFixture fixture) {
         if (is TileTypeFixture fixture) {
-            if (exists existingTerrain = map.baseTerrain[point]) {
+            if (exists existingTerrain = terrainSource(point)) {
                 if (existingTerrain == fixture.tileType) {
-                    return;
-                } else {
-                    map.baseTerrain[point] = fixture.tileType;
+                    return true;
+                } else if (exists terrainSink) {
+                    terrainSink(point, fixture.tileType);
                     fireContentsChanged(0..0);
+                    return true;
+                } else {
+                    return false;
                 }
-            } else {
-                map.baseTerrain[point] = fixture.tileType;
+            } else if (exists terrainSink) {
+                terrainSink(point, fixture.tileType);
                 fireIntervalAdded(0..0);
+                return true;
+            } else {
+                return false;
             }
         } else if (is RiverFixture fixture) {
-            if (nonempty existingRivers = map.rivers.get(point).sequence()) { // TODO: syntax sugar
+            if (nonempty existingRivers = riversSource(point).sequence()) { // TODO: syntax sugar
                 if (existingRivers.containsEvery(fixture.rivers)) {
-                    return;
-                } else {
-                    map.addRivers(point, *fixture.rivers);
+                    return true;
+                } else if (exists addRivers) {
+                    addRivers(point, *fixture.rivers);
                     assert (exists index =
                         cachedTerrainList.firstIndexWhere(`RiverFixture`.typeOf));
                     fireContentsChanged(index..index);
                     cachedTerrainList =
-                        cachedTerrainList.patch([RiverFixture(map.rivers.get(point))],
+                        cachedTerrainList.patch([RiverFixture(riversSource(point))],
                             index, 1).sequence();
+                    return true;
+                } else {
+                    return false;
                 }
-            } else {
-                map.addRivers(point, *fixture.rivers);
+            } else if (exists addRivers) {
+                addRivers(point, *fixture.rivers);
                 Integer index = cachedTerrainList.size;
                 cachedTerrainList = cachedTerrainList.withTrailing(fixture);
                 fireIntervalAdded(index..index);
+                return true;
+            } else {
+                return false;
             } // TODO: Handle roads
         } else if (is MountainFixture fixture) {
-//        if (map.mountainous[point]) { // TODO: syntax sugar
-            if (map.mountainous.get(point)) {
-                return;
-            } else {
+            if (mountainSource(point)) {
+                return true;
+            } else if (exists mountainSink) {
                 Integer index = cachedTerrainList.size;
-                map.mountainous[point] = true;
+                mountainSink(point, true);
                 fireIntervalAdded(index..index);
+                return true;
+            } else {
+                return false;
             }
-        } else if (map.addFixture(point, fixture),
-                exists index = map.fixtures[point]?.locate(fixture.equals)?.key) {
-            Integer adjusted = adjustedIndex(index);
+        } else if (exists addFixtureLambda, addFixtureLambda(point, fixture),
+                exists index = fixturesSource(point).locate(fixture.equals)?.key) {
+            Integer adjusted = adjustedIndex(index); // FIXME: Can this be right?
             fireIntervalAdded(adjusted..adjusted);
-        } else if (exists index = map.fixtures[point]?.locate(fixture.equals)?.key) {
+            return true;
+        } else if (exists addFixtureLambda, exists index = fixturesSource(point).locate(fixture.equals)?.key) {
             Integer adjusted = adjustedIndex(index);
             fireContentsChanged(adjusted..adjusted);
+            return true;
+        } else {
+            return false;
         }
     }
 
     "Remove the specified items from the tile and the list."
-    shared void removeAll(TileFixture* fixtures) {
+    shared Boolean removeAll(TileFixture* fixtures) {
+        variable Boolean retval = true;
         for (fixture in fixtures) {
             if (is TileTypeFixture fixture) {
-                if (exists currentTerrain = map.baseTerrain[point],
+                if (exists currentTerrain = terrainSource(point),
                         currentTerrain == fixture.tileType) {
-                    map.baseTerrain[point] = null;
-                    fireIntervalRemoved(0..0);
+                    if (exists terrainSink) {
+                        terrainSink(point, null);
+                        fireIntervalRemoved(0..0);
+                    } else {
+                        retval = false;
+                    }
                 }
             } else if (is RiverFixture fixture) {
-                assert (exists index = cachedTerrainList.locate(fixture.equals)?.key);
-                map.removeRivers(point, *fixture.rivers);
-                cachedTerrainList = cachedTerrainList.filter(not(fixture.equals))
-                    .sequence();
-                fireIntervalRemoved(index..index);
+                if (exists removeRivers) {
+                    assert (exists index = cachedTerrainList.locate(fixture.equals)?.key);
+                    removeRivers(point, *fixture.rivers);
+                    cachedTerrainList = cachedTerrainList.filter(not(fixture.equals))
+                        .sequence();
+                    fireIntervalRemoved(index..index);
+                } else {
+                    retval = false;
+                }
             } else if (is MountainFixture fixture) {
-                assert (exists index = cachedTerrainList.locate(fixture.equals)?.key);
-                map.mountainous[point] = false;
-                cachedTerrainList = cachedTerrainList.filter(not(fixture.equals))
-                    .sequence();
-                fireIntervalRemoved(index..index);
-                return;
-            } else if (exists index = map.fixtures[point]?.locate(fixture.equals)?.key) {
-                map.removeFixture(point, fixture);
-                Integer adjusted = adjustedIndex(index);
-                fireIntervalRemoved(adjusted..adjusted);
+                if (exists mountainSink) {
+                    assert (exists index = cachedTerrainList.locate(fixture.equals)?.key);
+                    mountainSink(point, false);
+                    cachedTerrainList = cachedTerrainList.filter(not(fixture.equals))
+                        .sequence();
+                    fireIntervalRemoved(index..index);
+                } else {
+                    retval = false;
+                }
+            } else if (exists index = fixturesSource(point).locate(fixture.equals)?.key) {
+                if (exists removeFixture) {
+                    removeFixture(point, fixture);
+                    Integer adjusted = adjustedIndex(index);
+                    fireIntervalRemoved(adjusted..adjusted);
+                } else {
+                    retval = false;
+                }
             } else if (is Animal fixture,
                     exists ctIndex = currentTracks.locate(fixture.equals)?.key) {
-                //Integer index = adjustedIndex(map.fixtures[point].size + ctIndex); // TODO: syntax sugar
-                Integer index = adjustedIndex(map.fixtures.get(point).size + ctIndex);
+                Integer index = adjustedIndex(fixturesSource(point).size + ctIndex);
+                // FIXME: Actually remove it from currentTracks
                 fireIntervalRemoved(index..index);
             }
         }
+        return retval;
     }
     shared actual void interactionPointChanged() {}
 }

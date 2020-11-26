@@ -602,4 +602,61 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             }
         }
     }
+
+    "Set sub-map terrain at the given location to the given type."
+    deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
+    shared actual void setSubMapTerrain(Point location, TileType? terrain) {
+        for (subMap->[file, modified] in restrictedSubordinateMaps) {
+            subMap.baseTerrain[location] = terrain;
+            if (!modified) {
+                setModifiedFlag(subMap, true);
+            }
+        }
+    }
+
+    "Copy the given rivers to sub-maps, if they are present in the main map."
+    shared actual void copyRiversToSubMaps(Point location, River* rivers) {
+        {River*} actualRivers = rivers.filter(map.rivers.get(location).contains); // TODO: syntax sugaar
+        for (subMap->[file, modified] in restrictedSubordinateMaps) {
+            subMap.addRivers(location, *actualRivers); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
+            if (!modified) {
+                setModifiedFlag(subMap, true);
+            }
+        }
+    }
+
+    "Remove the given rivers from sub-maps."
+    deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
+    shared actual void removeRiversFromSubMaps(Point location, River* rivers) {
+        for (subMap->[file, modified] in restrictedSubordinateMaps) {
+            subMap.removeRivers(location, *rivers); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
+            if (!modified) {
+                setModifiedFlag(subMap, true);
+            }
+        }
+    }
+
+    "Remove the given fixture from sub-maps."
+    deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
+    shared actual void removeFixtureFromSubMaps(Point location, TileFixture fixture) {
+        for (subMap->[file, modified] in restrictedSubordinateMaps) {
+            subMap.removeFixture(location, fixture); // TODO: Make it return Boolean if this was a change, and only set modified flag in that case
+            if (!modified) {
+                setModifiedFlag(subMap, true);
+            }
+        }
+    }
+
+    "Set whether sub-maps have a mountain at the given location."
+    deprecated("Can we redesign the fixture list to not need this for the exploration GUI?")
+    shared actual void setMountainousInSubMap(Point location, Boolean mountainous) {
+        for (subMap->[file, modified] in restrictedSubordinateMaps) {
+            if (subMap.mountainous.get(location) != mountainous) { // TODO: syntax sugar
+                subMap.mountainous[location] = mountainous;
+                if (!modified) {
+                    setModifiedFlag(subMap, true);
+                }
+            }
+        }
+    }
 }

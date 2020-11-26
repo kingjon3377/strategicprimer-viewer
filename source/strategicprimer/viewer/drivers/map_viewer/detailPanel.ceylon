@@ -119,7 +119,9 @@ JComponent&VersionChangeListener&SelectionChangeListener detailPanel(
 
     SwingList<TileFixture>&SelectionChangeListener fixtureListObject =
             fixtureList(retval,
-                FixtureListModel(model.map, (point) => null, sortOrder),
+                FixtureListModel(model.map.fixtures.get, model.map.baseTerrain.get,
+                    model.map.rivers.get, model.map.mountainous.get, (point) => null,
+                    null, null, null, null, null, null, sortOrder), // TODO: implementations instead of null?
                 createIDFactory(model.map), markModified,
                     model.map.players);
 
