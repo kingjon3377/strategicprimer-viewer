@@ -1,4 +1,5 @@
 import strategicprimer.model.common.map {
+    IMapNG,
     IMutableMapNG
 }
 
@@ -39,5 +40,5 @@ shared interface IMultiMapModel satisfies IDriverModel {
             restrictedSubordinateMaps.follow(restrictedMap->[mapFile, mapModified]);
 
     "Set the 'modified' flag for the given map."
-    shared formal void setModifiedFlag(IMutableMapNG map, Boolean modified);
+    shared formal void setModifiedFlag(IMapNG map, Boolean modified);
 }

@@ -4,6 +4,7 @@ import ceylon.collection {
 }
 
 import strategicprimer.model.common.map {
+    IMapNG,
     IMutableMapNG
 }
 import lovelace.util.common {
@@ -42,7 +43,7 @@ shared class SimpleMultiMapModel extends SimpleDriverModel satisfies IMultiMapMo
     shared actual void addSubordinateMap(IMutableMapNG map, PathWrapper? file,
             Boolean modified) => subordinateMapsList.add(map->[file, modified]);
 
-    shared actual void setModifiedFlag(IMutableMapNG map, Boolean modified) {
+    shared actual void setModifiedFlag(IMapNG map, Boolean modified) {
         if (map === this.map) {
             mapModified = modified;
         } else if (exists index->entry = subordinateMapsList.locate(
