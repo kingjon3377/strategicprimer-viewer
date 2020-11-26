@@ -74,9 +74,9 @@ class WorkerCreationListener(IWorkerTreeModel model, IDRegistrar factory)
         defaultCloseOperation = WindowConstants.disposeOnClose;
         JTextField name = JTextField();
         JTextField race = JTextField(raceFactory.randomRace());
-	SpinnerNumberModel hpModel = SpinnerNumberModel(0, -1, 100, 1);
-	SpinnerNumberModel maxHP = SpinnerNumberModel(0, -1, 100, 1);
-	SpinnerNumberModel strength = SpinnerNumberModel(0, -1, 32, 1);
+        SpinnerNumberModel hpModel = SpinnerNumberModel(0, -1, 100, 1);
+        SpinnerNumberModel maxHP = SpinnerNumberModel(0, -1, 100, 1);
+        SpinnerNumberModel strength = SpinnerNumberModel(0, -1, 32, 1);
         SpinnerNumberModel dexterity = SpinnerNumberModel(0, -1, 32, 1);
         SpinnerNumberModel constitution = SpinnerNumberModel(0, -1, 32, 1);
         SpinnerNumberModel intelligence = SpinnerNumberModel(0, -1, 32, 1);

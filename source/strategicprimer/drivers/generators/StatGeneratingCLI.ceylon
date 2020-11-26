@@ -258,7 +258,7 @@ class StatGeneratingCLI satisfies CLIDriver {
      given village."
     Worker generateWorkerFrom(Village village, String name, IDRegistrar idf) {
         Worker worker = Worker(name, village.race, idf.createID());
-	worker.notes[village.owner] = "From ``village.name``.";
+        worker.notes[village.owner] = "From ``village.name``.";
         if (exists populationDetails = village.population) {
             MutableList<IJob> candidates = ArrayList<IJob>();
             for (job->level in populationDetails.highestSkillLevels) {

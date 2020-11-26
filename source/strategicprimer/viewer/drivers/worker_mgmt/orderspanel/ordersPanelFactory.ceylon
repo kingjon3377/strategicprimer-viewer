@@ -23,7 +23,7 @@ import strategicprimer.model.common.map {
 "Create and return a panel for the user to enter a unit's orders or read a unit's
  results."
 shared JPanel&OrdersContainer ordersPanel(String description, Integer currentTurn,
-	Player currentPlayer, {IUnit*}(Player, String) playerUnits,
+        Player currentPlayer, {IUnit*}(Player, String) playerUnits,
         String(IUnit, Integer) ordersSupplier,
         Anything(IUnit, Integer, String)? ordersConsumer,
         Anything() modificationListener) {

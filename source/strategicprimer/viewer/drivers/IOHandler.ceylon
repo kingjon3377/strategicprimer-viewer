@@ -180,7 +180,7 @@ shared class IOHandler satisfies ActionListener {
             errorTitle = "Strategic Primer Assistive Programs";
         }
 
-	log.trace("Menu item invoked: ``event.actionCommand``");
+        log.trace("Menu item invoked: ``event.actionCommand``");
 
         switch (event.actionCommand.lowercased)
         case ("load") { // TODO: Open in another window if modified flag set instead of prompting before overwriting
@@ -297,10 +297,10 @@ shared class IOHandler satisfies ActionListener {
         case ("close") {
             if (exists parentWindow) {
                 if (is ModelDriver driver) {
-		    log.trace("This operates on a model, maybe we should save ...");
+                    log.trace("This operates on a model, maybe we should save ...");
                     maybeSave("closing", parentWindow, source, parentWindow.dispose);
                 } else if (is UtilityGUI driver) {
-		    log.trace("This is a utility GUI, so we just dispose the window.");
+                    log.trace("This is a utility GUI, so we just dispose the window.");
                     parentWindow.dispose();
                 } else {
                     log.error("IOHandler asked to close in unsupported app");
