@@ -27,9 +27,6 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
     AnimalTracks
 }
-import strategicprimer.model.common.map.fixtures.resources {
-    CacheFixture
-}
 
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
@@ -92,12 +89,7 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             } else {
                 zero = false;
             }
-            for (map->[file, _] in model.subordinateMaps) {
-                map.addFixture(destPoint, fixture.copy(zero));
-            }
-            if (is CacheFixture fixture) {
-                model.map.removeFixture(destPoint, fixture);
-            }
+            model.copyToSubMaps(destPoint, fixture, zero);
         }
     }
 
@@ -247,12 +239,10 @@ shared class ExplorationCLIHelper(IExplorationModel model, ICLIHelper cli)
             //        if (map.mountainous[destPoint]) { // TODO: syntax sugar once compiler bug fixed
             if (map.mountainous.get(destPoint)) {
                 mtn = "mountainous ";
-                for (subMap->[file, _] in model.subordinateMaps) {
-                    subMap.mountainous[destPoint] = true;
-                }
             } else {
                 mtn = "";
             }
+            model.copyTerrainToSubMaps(destPoint);
 
             cli.print("The explorer comes to ``destPoint``, a ``mtn````
                 map.baseTerrain[destPoint] else "unknown-terrain"`` tile");

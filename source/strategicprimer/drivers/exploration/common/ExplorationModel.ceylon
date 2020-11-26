@@ -12,11 +12,13 @@ import strategicprimer.drivers.common {
     SelectionChangeListener
 }
 import strategicprimer.model.common.map {
+    FakeFixture,
     IFixture,
     Player,
     HasOwner,
     MapDimensions,
     Point,
+    River,
     TileFixture,
     TileType,
     IMutableMapNG,
@@ -29,10 +31,12 @@ import strategicprimer.model.common.map.fixtures {
 }
 import strategicprimer.model.common.map.fixtures.mobile {
     Animal,
+    AnimalTracks,
     IUnit,
     MobileFixture
 }
 import strategicprimer.model.common.map.fixtures.resources {
+    CacheFixture,
     Grove,
     Meadow,
     Mine,
@@ -49,6 +53,7 @@ import ceylon.random {
     randomize
 }
 import lovelace.util.common {
+    anythingEqual,
     matchingValue,
     PathWrapper
 }
@@ -528,6 +533,72 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
             if (!modifiedFlag) {
                 setModifiedFlag(indivMap, true);
+            }
+        }
+    }
+
+    "Copy the given fixture from the main map to subordinate maps. (It is found
+     in the main map by ID, rather than trusting the input.) If it is a cache,
+     remove it from the main map. If [[zero]], remove sensitive information
+     from the copies."
+    shared actual Boolean copyToSubMaps(Point location, TileFixture fixture, Boolean zero) {
+        TileFixture? matching;
+        variable Boolean retval = false;
+        if (is FakeFixture fixture) {
+            // Skip it! It'll corrupt the output XML!
+            return false;
+        } else if (is AnimalTracks fixture) {
+            matching = fixture;
+        } else {
+            matching = map.fixtures.get(location).find(matchingValue(fixture, TileFixture.id));
+        }
+        if (exists matching) {
+            for (subMap->[file, modified] in restrictedSubordinateMaps) {
+                retval = subMap.addFixture(location, matching.copy(zero)) || retval;
+                if (!modified) { // We do *not* use the return value because it returns false if an existing fixture was *replaced*
+                    setModifiedFlag(subMap, true);
+                }
+            }
+
+            if (is CacheFixture matching) {
+                restrictedMap.removeFixture(location, matching); // TODO: make removeFixture() return Boolean, true if anything was removed
+                retval = true;
+                mapModified = true;
+            }
+        }
+        return retval;
+    }
+
+    "Copy any terrain, mountain, rivers, and roads from the main map to subordinate maps."
+    shared actual void copyTerrainToSubMaps(Point location) {
+        for (subMap->[file, modified] in restrictedSubordinateMaps) {
+            variable Boolean modFlag = modified;
+            void setModFlag() {
+                if (!modFlag) {
+                    setModifiedFlag(subMap, true);
+                    modFlag = true;
+                }
+            }
+            if (map.mountainous.get(location), !subMap.mountainous.get(location)) { // TODO: syntax sugar
+                subMap.mountainous[location] = true;
+                setModFlag();
+            }
+            if (exists terrain = map.baseTerrain[location], !anythingEqual(terrain, subMap.baseTerrain[location])) {
+                subMap.baseTerrain[location] = terrain;
+                setModFlag();
+            }
+            if (!map.rivers.get(location).every(subMap.rivers.get(location).contains)) { // TODO: syntax sugar
+                subMap.addRivers(location, *map.rivers.get(location)); // TODO: syntax sugar
+                setModFlag();
+            }
+            value subRoads = subMap.roads[location] else emptyMap;
+            if (exists roads = map.roads[location], !roads.empty) {
+                for (road->quality in roads) {
+                    if ((subRoads[road] else -1) < quality) {
+                        subMap.setRoadLevel(location, road, quality);
+                        setModFlag();
+                    }
+                }
             }
         }
     }

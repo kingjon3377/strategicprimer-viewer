@@ -58,4 +58,15 @@ shared interface IExplorationModel
 
     "Add the given [[unit]] at the given [[location]]."
     shared formal void addUnitAtLocation(IUnit unit, Point location);
+
+    "Copy the given fixture from the main map to subordinate maps. (It is found
+     in the main map by ID, rather than trusting the input, unless it is animal
+     tracks.) If it is a cache, remove it from the main map. If [[zero]],
+     remove sensitive information from the copies. Returns true if we think
+     this changed anything in any of the sub-maps."
+    shared formal Boolean copyToSubMaps(Point location, TileFixture fixture, Boolean zero = true);
+
+    "Copy terrain, including any mountain, rivers, and roads, from the main map
+     to subordinate maps." // FIXME: Is this really necessary?
+    shared formal void copyTerrainToSubMaps(Point location);
 }

@@ -38,9 +38,7 @@ import strategicprimer.viewer.drivers.map_viewer {
     FixtureListModel,
     fixtureList
 }
-import strategicprimer.model.common.map.fixtures.resources {
-    CacheFixture
-}
+
 import strategicprimer.model.common.map.fixtures.mobile {
     IUnit,
     AnimalTracks,
@@ -86,10 +84,8 @@ import strategicprimer.model.common.idreg {
     createIDFactory
 }
 import ceylon.collection {
-    MutableSet,
     ArrayList,
     MutableList,
-    HashSet,
     MutableMap,
     HashMap
 }
@@ -286,36 +282,22 @@ class ExplorationPanel(SpinnerNumberModel mpModel, ComboBoxModel<Speed> speedMod
             Player player = driverModel.selectedUnit ?. owner else
             PlayerImpl(- 1, "no-one");
 
-            MutableSet<CacheFixture> caches = HashSet<CacheFixture>();
-            for (map->[file, modifiedFlag] in driverModel.subordinateMaps) {
-                map.baseTerrain[destPoint] = driverModel.map
-//                    .baseTerrain[destPoint]; // TODO: syntax sugar once compiler bug fixed
-                    .baseTerrain.get(destPoint);
-                for (fixture in fixtures) {
-                    if (is FakeFixture fixture) {
-                        // Skip it! It'll corrupt the output XML!
-                        continue;
-                    //} else if (!map.fixtures[destPoint].any(fixture.equals)) { // TODO: syntax sugar once compiler bug fixed
-                    } else if (!map.fixtures.get(destPoint).any(fixture.equals)) {
-                        Boolean zero;
-                        if (is HasOwner fixture, (fixture.owner != player ||
-                                fixture is Village)) {
-                            zero = true;
-                        } else {
-                            zero = fixture is HasPopulation<Anything>|HasExtent<out Anything>;
-                        }
-                        map.addFixture(destPoint, fixture.copy(zero));
-                        if (is CacheFixture fixture) {
-                            caches.add(fixture);
-                        }
+            driverModel.copyTerrainToSubMaps(destPoint);
+            for (fixture in fixtures) {
+                if (is FakeFixture fixture) {
+                    // Skip it! It'll corrupt the output XML!
+                    continue;
+                //} else if (!map.fixtures[destPoint].any(fixture.equals)) { // TODO: syntax sugar once compiler bug fixed
+                } else {
+                    Boolean zero;
+                    if (is HasOwner fixture, (fixture.owner != player ||
+                            fixture is Village)) {
+                        zero = true;
+                    } else {
+                        zero = fixture is HasPopulation<Anything>|HasExtent<out Anything>;
                     }
+                    driverModel.copyToSubMaps(destPoint, fixture, zero);
                 }
-                if (!modifiedFlag) {
-                    driverModel.setModifiedFlag(map, true);
-                }
-            }
-            for (cache in caches) {
-                driverModel.map.removeFixture(destPoint, cache);
             }
         }
 
