@@ -521,4 +521,14 @@ shared class ExplorationModel extends SimpleMultiMapModel satisfies IExploration
             fireMovementCost(4);
         }
     }
+
+    "Add the given [[unit]] at the given [[location]]."
+    shared actual void addUnitAtLocation(IUnit unit, Point location) { // TODO: If more than one map, return a proxy for the units; otherwise, return the unit
+        for (indivMap->[file, modifiedFlag] in restrictedAllMaps) {
+            indivMap.addFixture(location, unit); // FIXME: Check for existing matching unit there already
+            if (!modifiedFlag) {
+                setModifiedFlag(indivMap, true);
+            }
+        }
+    }
 }

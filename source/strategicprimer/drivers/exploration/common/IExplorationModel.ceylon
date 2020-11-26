@@ -55,4 +55,7 @@ shared interface IExplorationModel
      [[strategicprimer.model.common.map.fixtures.resources::MineralVein]] at the location
      of that unit from unexposed to exposed (and discover it). This costs MP."
     shared formal void dig();
+
+    "Add the given [[unit]] at the given [[location]]."
+    shared formal void addUnitAtLocation(IUnit unit, Point location);
 }

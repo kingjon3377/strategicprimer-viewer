@@ -454,9 +454,7 @@ class StatGeneratingCLI satisfies CLIDriver {
                         exists kind = cli.inputString("Kind of unit: "),
                         exists name = cli.inputString("Unit name: ")) {
                     IUnit temp = Unit(player, kind, name, idf.createID());
-                    for (indivMap->[file, _] in model.allMaps) {
-                        indivMap.addFixture(point, temp);
-                    }
+                    model.addUnitAtLocation(temp, point);
                     units.add(temp);
                     item = temp;
                 } else {
