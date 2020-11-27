@@ -8,6 +8,7 @@ import strategicprimer.drivers.common {
 }
 import strategicprimer.model.common.map {
     SPMapNG,
+    IMapNG,
     IMutableMapNG,
     MapDimensions,
     MapDimensionsImpl,
@@ -66,7 +67,7 @@ shared class SimpleDriverModel satisfies IDriverModel {
     }
 
     "The (main) map."
-    shared actual IMutableMapNG map => mainMap;
+    shared actual IMapNG map => mainMap;
 
     "The (main) map, for use by subclasses only."
     shared actual IMutableMapNG restrictedMap => mainMap;

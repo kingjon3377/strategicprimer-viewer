@@ -21,7 +21,7 @@ shared interface IMultiMapModel satisfies IDriverModel {
 
     "Subordinate maps with their filenames (and the flag of whether the map has been
      modified since loaded or last saved), as [[Entries|Entry]]"
-    shared formal {<IMutableMapNG->[PathWrapper?, Boolean]>*} subordinateMaps;
+    shared formal {<IMapNG->[PathWrapper?, Boolean]>*} subordinateMaps;
 
     "Subordinate maps with their filenames (and the flag of whether the map has been
      modified since loaded or last saved), as [[Entries|Entry]]. For use by subclasses only."
@@ -30,7 +30,7 @@ shared interface IMultiMapModel satisfies IDriverModel {
     "All maps with their filenames (and the flag of whether the map has been
      modified since loaded or last saved), including the main map and the subordinate
      maps, as [[Entries|Entry]]"
-    shared default {<IMutableMapNG->[PathWrapper?, Boolean]>*} allMaps =>
+    shared default {<IMapNG->[PathWrapper?, Boolean]>*} allMaps =>
             subordinateMaps.follow(map->[mapFile, mapModified]);
 
     "All maps with their filenames (and the flag of whether the map has been

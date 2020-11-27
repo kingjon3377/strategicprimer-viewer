@@ -1,4 +1,5 @@
 import strategicprimer.model.common.map {
+    IMapNG,
     IMutableMapNG,
     MapDimensions
 }
@@ -17,7 +18,7 @@ shared interface IDriverModel satisfies MapChangeSource&VersionChangeSource {
             Boolean modified = false);
 
     "The (main) map."
-    shared formal IMutableMapNG map;
+    shared formal IMapNG map;
 
     "The (main) map, for use by subclasses only."
     shared formal IMutableMapNG restrictedMap;
