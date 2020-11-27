@@ -1,9 +1,7 @@
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.drivers.exploration.common {
-    IExplorationModel
-}
+
 import strategicprimer.model.common.idreg {
     IDRegistrar
 }
@@ -25,44 +23,24 @@ import strategicprimer.model.common.map {
     HasExtent,
     TileFixture
 }
+
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
 service(`interface TurnAppletFactory`)
 shared class WoodcuttingAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) =>
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
         WoodcuttingApplet(model, cli, idf);
 }
 
-class WoodcuttingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
+class WoodcuttingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         extends AbstractTurnApplet(model, cli, idf) {
     shared actual [String+] commands = ["woodcutting"];
     shared actual String description => "cut down trees for wood or to clear land";
 
     void reduceExtent(Point point, HasExtent<out HasExtent<out Anything>&TileFixture>&TileFixture fixture,
-            Decimal acres) {
-        if (acres.positive) {
-            if (acres >= decimalize(fixture.acres)) {
-                model.map.removeFixture(point, fixture);
-                for (map->[file, _] in model.subordinateMaps) {
-                    if (exists found = map.fixtures.get(point)
-                            .find(shuffle(curry(fixture.isSubset))(noop))) {
-                        map.removeFixture(point, found);
-                    }
-                }
-            } else {
-                model.map.removeFixture(point, fixture);
-                value addend = fixture.reduced(acres);
-                model.map.addFixture(point, addend);
-                for (map->[file , _]in model.subordinateMaps) {
-                    if (exists found = map.fixtures.get(point)
-                            .find(shuffle(curry(fixture.isSubset))(noop))) {
-                        map.removeFixture(point, found);
-                    }
-                    map.addFixture(point, addend.copy(true));
-                }
-            }
-        } else {
-            addToSubMaps(point, fixture, true);
-        }
-    }
+            Decimal acres) => model.reduceExtent(point, fixture, true, acres);
 
     shared actual String? run() {
         StringBuilder builder = StringBuilder();

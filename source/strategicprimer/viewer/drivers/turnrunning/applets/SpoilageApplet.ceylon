@@ -6,9 +6,7 @@ import ceylon.logging {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.drivers.exploration.common {
-    IExplorationModel
-}
+
 import strategicprimer.model.common.idreg {
     IDRegistrar
 }
@@ -16,11 +14,15 @@ import strategicprimer.model.common.map {
     Player
 }
 
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
 "A logger."
 Logger log = logger(`module strategicprimer.viewer`);
 
 // We *deliberately* do not make a factory with the `service` annotation.
-shared class SpoilageApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
+shared class SpoilageApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         extends AbstractTurnApplet(model, cli, idf) {
     shared variable Player owner = model.map.currentPlayer;
     shared variable Integer turn = model.map.currentTurn;

@@ -1,9 +1,7 @@
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.drivers.exploration.common {
-    IExplorationModel
-}
+
 import lovelace.util.common {
     matchingValue
 }
@@ -31,12 +29,17 @@ import ceylon.collection {
     ArrayList,
     MutableList
 }
+
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
 service(`interface TurnAppletFactory`)
 shared class MovementAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) =>
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
     MovementApplet(model, cli, idf);
 }
-class MovementApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
+class MovementApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         extends AbstractTurnApplet(model, cli, idf) {
     ExplorationCLIHelper explorationCLI = ExplorationCLIHelper(model, cli);
     model.addMovementCostListener(explorationCLI);

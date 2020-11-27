@@ -1,6 +1,3 @@
-import strategicprimer.drivers.exploration.common {
-    IExplorationModel
-}
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
@@ -19,13 +16,17 @@ import ceylon.decimal {
     Decimal
 }
 
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
 service(`interface TurnAppletFactory`)
 shared class PreservationAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) =>
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
         PreservationApplet(model, cli, idf);
 }
 
-class PreservationApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
+class PreservationApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         extends AbstractTurnApplet(model, cli, idf) {
     shared actual [String+] commands = ["preserve"]; // TODO: Or simply "cook"?
 

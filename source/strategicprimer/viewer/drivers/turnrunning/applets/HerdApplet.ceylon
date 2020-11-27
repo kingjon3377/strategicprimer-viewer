@@ -1,9 +1,7 @@
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.drivers.exploration.common {
-    IExplorationModel
-}
+
 import lovelace.util.common {
     matchingValue
 }
@@ -43,13 +41,18 @@ import ceylon.collection {
 import strategicprimer.model.common.idreg {
     IDRegistrar
 }
+
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
 service(`interface TurnAppletFactory`)
 shared class HerdAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) =>
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
         HerdApplet(model, cli, idf);
 }
 
-class HerdApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
+class HerdApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         extends AbstractTurnApplet(model, cli, idf) {
     shared actual [String+] commands = ["herd"];
     shared actual String description = "milk or gather eggs from animals";

@@ -5,7 +5,6 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.drivers.exploration.common {
-    IExplorationModel,
     HuntingModel
 }
 import strategicprimer.model.common.map {
@@ -19,13 +18,18 @@ import strategicprimer.model.common.map.fixtures.resources {
 import strategicprimer.viewer.drivers.resourceadding {
     ResourceAddingCLIHelper
 }
+
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
 service(`interface TurnAppletFactory`)
 shared class GatherAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) =>
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
         GatherApplet(model, cli, idf);
 }
 
-class GatherApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
+class GatherApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         extends AbstractTurnApplet(model, cli, idf) {
     HuntingModel huntingModel = HuntingModel(model.map);
     ResourceAddingCLIHelper resourceAddingHelper = ResourceAddingCLIHelper(cli, idf);
@@ -93,7 +97,7 @@ class GatherApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                     }
                     case (false) { time -= noResultCost; }
                     case (null) { return null; }
-                    addToSubMaps(loc, find, true);
+                    model.copyToSubMaps(loc, find, true);
                 }
                 if (exists addendum = cli.inputMultilineString(
                     "Add to results about that:")) {

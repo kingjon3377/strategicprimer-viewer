@@ -1,7 +1,3 @@
-import strategicprimer.drivers.exploration.common {
-    IExplorationModel
-}
-
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
     AppletChooser
@@ -11,13 +7,17 @@ import strategicprimer.model.common.idreg {
     IDRegistrar
 }
 
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
 service(`interface TurnAppletFactory`)
 shared class RepeatAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) =>
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
         RepeatApplet(model, cli, idf);
 }
 
-class RepeatApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) satisfies TurnApplet {
+class RepeatApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) satisfies TurnApplet {
     shared actual [String+] commands = ["repeat"];
     shared actual String description = "Run multiple commands for a single unit";
     Boolean isNotRepeat(TurnAppletFactory factory) => !factory is RepeatAppletFactory;

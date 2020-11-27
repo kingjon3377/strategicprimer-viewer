@@ -3,8 +3,7 @@ import strategicprimer.model.common.map {
     Point
 }
 import strategicprimer.drivers.exploration.common {
-    HuntingModel,
-    IExplorationModel
+    HuntingModel
 }
 import ceylon.numeric.float {
     round=halfEven
@@ -25,7 +24,12 @@ import strategicprimer.model.common.idreg {
 import strategicprimer.viewer.drivers.resourceadding {
     ResourceAddingCLIHelper
 }
-abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
+
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
+abstract class HuntGeneralApplet(String verb, ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         of HuntingApplet|FishingApplet|TrappingApplet extends AbstractTurnApplet(model, cli, idf) {
     shared HuntingModel huntingModel = HuntingModel(model.map);
     ResourceAddingCLIHelper resourceAddingHelper = ResourceAddingCLIHelper(cli, idf);
@@ -118,7 +122,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
         switch (cli.inputBooleanInSeries(
             "Reduce animal group population of ``find.population``?"))
         case (true) { reducePopulation(loc, find, "animals", true); }
-        case (false) { addToSubMaps(loc, find, true); }
+        case (false) { model.copyToSubMaps(loc, find, true); }
         case (null) { return null; }
         if (exists unit = model.selectedUnit) {
             resourceEntry(unit.owner);
@@ -132,7 +136,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
             cli.println("Found nothing for the next ``noResultCost`` minutes.");
             return noResultCost;
         } else if (is AnimalTracks find) {
-            addToSubMaps(loc, find, true);
+            model.copyToSubMaps(loc, find, true);
             cli.println("Found only tracks or traces from ``
                 find.kind`` for the next ``noResultCost`` minutes.");
             return noResultCost;
@@ -145,7 +149,7 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
             } else if (fight) {
                 return handleFight(loc, find, time);
             } else {
-                addToSubMaps(loc, find, true);
+                model.copyToSubMaps(loc, find, true);
                 return noResultCost;
             }
         }
@@ -184,11 +188,11 @@ abstract class HuntGeneralApplet(String verb, IExplorationModel model, ICLIHelpe
 
 service(`interface TurnAppletFactory`)
 shared class HuntingAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) =>
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
         HuntingApplet(model, cli, idf);
 }
 
-class HuntingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
+class HuntingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         extends HuntGeneralApplet("fight and process", model, cli, idf) {
     shared actual String description = "search for wild animals";
     shared actual [String+] commands = ["hunt"];
@@ -197,11 +201,11 @@ class HuntingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
 
 service(`interface TurnAppletFactory`)
 shared class FishingAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) =>
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
         FishingApplet(model, cli, idf);
 }
 
-class FishingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
+class FishingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         extends HuntGeneralApplet("try to catch and process", model, cli, idf) {
     shared actual String description = "search for aquatic animals";
     shared actual [String+] commands = ["fish"];

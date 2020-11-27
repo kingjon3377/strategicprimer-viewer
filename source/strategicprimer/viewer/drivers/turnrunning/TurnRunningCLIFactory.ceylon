@@ -17,10 +17,7 @@ import strategicprimer.model.common.map {
 import lovelace.util.common {
     PathWrapper
 }
-import strategicprimer.drivers.exploration.common {
-    ExplorationModel,
-    IExplorationModel
-}
+
 "A factory for the turn-running CLI app."
 service(`interface DriverFactory`)
 shared class TurnRunningCLIFactory() satisfies ModelDriverFactory {
@@ -37,13 +34,13 @@ shared class TurnRunningCLIFactory() satisfies ModelDriverFactory {
 
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
             IDriverModel model) {
-        if (is IExplorationModel model) {
+        if (is ITurnRunningModel model) {
             return TurnRunningCLI(cli, model);
         } else {
-            return createDriver(cli, options, ExplorationModel.copyConstructor(model));
+            return createDriver(cli, options, TurnRunningModel.copyConstructor(model));
         }
     }
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-        ExplorationModel(map, path);
+        TurnRunningModel(map, path);
 }

@@ -18,9 +18,6 @@ import strategicprimer.model.common.map.fixtures.mobile {
     ProxyUnit,
     ProxyFor
 }
-import strategicprimer.drivers.exploration.common {
-    IExplorationModel
-}
 import strategicprimer.model.common.map.fixtures.towns {
     Fortress
 }
@@ -51,7 +48,7 @@ import strategicprimer.viewer.drivers.turnrunning.applets {
 
 todo("Tests") // This'll have to wait until eclipse/ceylon#6986 is fixed
 class TurnRunningCLI(ICLIHelper cli, model) satisfies CLIDriver {
-    shared actual IExplorationModel model;
+    shared actual ITurnRunningModel model;
     shared actual SPOptions options = emptyOptions;
     IDRegistrar idf = createIDFactory(model.allMaps.map(Entry.key));
 

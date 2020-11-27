@@ -5,7 +5,6 @@ import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
 import strategicprimer.drivers.exploration.common {
-    IExplorationModel,
     HuntingModel
 }
 import strategicprimer.model.common.map {
@@ -16,12 +15,16 @@ import strategicprimer.model.common.map.fixtures.mobile {
     Animal
 }
 
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
 service(`interface TurnAppletFactory`)
 shared class TrappingAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) =>
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
         TrappingApplet(model, cli, idf);
 }
-class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
+class TrappingApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         extends HuntGeneralApplet("trap", model, cli, idf) {
     shared actual [String+] commands = ["trap"];
     shared actual String description = "check traps for animals or fish they may have caught";
@@ -57,7 +60,7 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
             "Reduce animal group population of ``item.population``?"))
         case (true) { reducePopulation(loc, item, "animals", true); }
         case (false) {
-            addToSubMaps(center, AnimalTracks(item.kind), false);
+            model.copyToSubMaps(center, AnimalTracks(item.kind), false);
         }
         case (null) {
             return null;
@@ -103,7 +106,7 @@ class TrappingApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
                         time -= nothingCost;
                     } else if (is AnimalTracks item) {
                         cli.println("Found evidence of ``item.kind`` escaping");
-                        addToSubMaps(center, item, true);
+                        model.copyToSubMaps(center, item, true);
                         time -= nothingCost;
                     } else if (exists cost = handleFound(center, loc, item)) {
                         time -= cost;

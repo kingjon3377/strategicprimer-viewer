@@ -4,12 +4,14 @@ import strategicprimer.model.common.idreg {
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.drivers.exploration.common {
-    IExplorationModel
+
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
 }
+
 service(`interface TurnAppletFactory`)
 shared class OtherAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) => OtherApplet();
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) => OtherApplet();
 }
 
 class OtherApplet() satisfies TurnApplet {

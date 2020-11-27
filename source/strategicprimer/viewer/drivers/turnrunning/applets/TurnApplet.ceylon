@@ -1,6 +1,3 @@
-import strategicprimer.drivers.exploration.common {
-    IExplorationModel
-}
 import strategicprimer.drivers.common.cli {
     ICLIHelper,
     Applet
@@ -36,8 +33,12 @@ import lovelace.util.jvm {
     decimalize
 }
 
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
 shared interface TurnAppletFactory {
-    shared formal TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf);
+    shared formal TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf);
 }
 
 shared interface TurnApplet satisfies Applet<[]> {
@@ -56,7 +57,7 @@ shared interface TurnApplet satisfies Applet<[]> {
 }
 
 // TODO: Most of these 'default' functions should probably go into a 'TurnRunningModel' interface
-shared abstract class AbstractTurnApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) satisfies TurnApplet {
+shared abstract class AbstractTurnApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) satisfies TurnApplet {
     shared Type? chooseFromList<Type>(Type[]|List<Type> items, String description, String none,
             String prompt, Boolean auto, String(Type) converter = Object.string) given Type satisfies Object {
         value entry = cli.chooseStringFromList(items.map(converter).sequence(), description, none, prompt, auto);
@@ -91,46 +92,13 @@ shared abstract class AbstractTurnApplet(IExplorationModel model, ICLIHelper cli
     shared Integer encountersPerHour = 4; // TODO: These should be configurable, either by callers or the user's SPOptions
     shared Integer noResultCost = 60 / encountersPerHour;
 
-    "Add a copy of the given fixture to all submaps at the given location iff no fixture
-     with the same ID is already there."
-    shared void addToSubMaps(Point point, TileFixture fixture, Boolean zero) {
-        for (map->[file, _] in model.subordinateMaps) {
-            if (!map.fixtures.get(point).map(TileFixture.id).any(fixture.id.equals)) {
-                map.addFixture(point, fixture.copy(zero));
-            }
-        }
-    }
-
     "Reduce the population of a group of plants, animals, etc., and copy the reduced form
      into all subordinate maps."
     shared void reducePopulation(Point point, HasPopulation<out TileFixture>&TileFixture fixture, String plural,
             Boolean zero) {
         Integer count = Integer.smallest(cli.inputNumber(
             "How many ``plural`` to remove: ") else 0, fixture.population);
-        if (count > 0) {
-            model.map.removeFixture(point, fixture);
-            Integer remaining = fixture.population - count;
-            if (remaining > 0) {
-                value addend = fixture.reduced(remaining);
-                model.map.addFixture(point, addend);
-                for (map->[file , _]in model.subordinateMaps) {
-                    if (exists found = map.fixtures.get(point)
-                            .find(shuffle(curry(fixture.isSubset))(noop))) {
-                        map.removeFixture(point, found);
-                    }
-                    map.addFixture(point, addend.copy(zero));
-                }
-            } else {
-                for (map->[file, _] in model.subordinateMaps) {
-                    if (exists found = map.fixtures.get(point)
-                            .find(shuffle(curry(fixture.isSubset))(noop))) {
-                        map.removeFixture(point, found);
-                    }
-                }
-            }
-        } else {
-            addToSubMaps(point, fixture, zero);
-        }
+        model.reducePopulation(point, fixture, zero, count);
     }
 
     shared void addResourceToMaps(FortressMember resource, Player owner, String fortName = "HQ") {

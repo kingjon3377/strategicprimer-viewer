@@ -1,9 +1,7 @@
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
-import strategicprimer.drivers.exploration.common {
-    IExplorationModel
-}
+
 import strategicprimer.model.common.idreg {
     IDRegistrar
 }
@@ -23,8 +21,13 @@ import ceylon.decimal {
 import lovelace.util.jvm {
     decimalize
 }
+
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
 // We *deliberately* do not make a factory with the `service` annotation.
-shared class ConsumptionApplet(IExplorationModel model, ICLIHelper cli, IDRegistrar idf)
+shared class ConsumptionApplet(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf)
         extends AbstractTurnApplet(model, cli, idf) {
     shared variable Integer turn = model.map.currentTurn;
     shared variable IUnit? unit = model.selectedUnit;

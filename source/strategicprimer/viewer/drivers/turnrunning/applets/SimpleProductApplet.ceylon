@@ -1,6 +1,3 @@
-import strategicprimer.drivers.exploration.common {
-    IExplorationModel
-}
 import strategicprimer.drivers.common.cli {
     ICLIHelper
 }
@@ -11,19 +8,23 @@ import strategicprimer.viewer.drivers.resourceadding {
     ResourceAddingCLIHelper
 }
 
+import strategicprimer.viewer.drivers.turnrunning {
+    ITurnRunningModel
+}
+
 service(`interface TurnAppletFactory`)
 shared class FarmingAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) =>
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
         SimpleProductApplet("farm", "Plant, weed or prune, or harvest a field, meadow, or orchard", model, cli, idf);
 }
 
 service(`interface TurnAppletFactory`)
 shared class MiningAppletFactory() satisfies TurnAppletFactory {
-    shared actual TurnApplet create(IExplorationModel model, ICLIHelper cli, IDRegistrar idf) =>
+    shared actual TurnApplet create(ITurnRunningModel model, ICLIHelper cli, IDRegistrar idf) =>
         SimpleProductApplet("mine", "Extract mineral resources from the ground", model, cli, idf);
 }
 
-class SimpleProductApplet(String name, shared actual String description, IExplorationModel model, ICLIHelper cli,
+class SimpleProductApplet(String name, shared actual String description, ITurnRunningModel model, ICLIHelper cli,
         IDRegistrar idf) extends AbstractTurnApplet(model, cli, idf) {
     ResourceAddingCLIHelper raHelper = ResourceAddingCLIHelper(cli, idf);
     shared actual [String+] commands = [name];
