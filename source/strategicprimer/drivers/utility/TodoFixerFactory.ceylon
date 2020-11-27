@@ -14,8 +14,7 @@ import strategicprimer.drivers.common {
     IDriverModel,
     DriverFactory,
     ModelDriverFactory,
-    ModelDriver,
-    SimpleMultiMapModel
+    ModelDriver
 }
 
 import strategicprimer.model.common.map {
@@ -32,8 +31,14 @@ shared class TodoFixerFactory() satisfies ModelDriverFactory {
         false);
 
     shared actual ModelDriver createDriver(ICLIHelper cli, SPOptions options,
-            IDriverModel model) => TodoFixerCLI(cli, model);
+            IDriverModel model) {
+        if (is UtilityDriverModel model) {
+            return TodoFixerCLI(cli, model);
+        } else {
+            return createDriver(cli, options, UtilityDriverModel.copyConstructor(model));
+        }
+    }
 
     shared actual IDriverModel createModel(IMutableMapNG map, PathWrapper? path) =>
-            SimpleMultiMapModel(map, path);
+            UtilityDriverModel(map, path);
 }

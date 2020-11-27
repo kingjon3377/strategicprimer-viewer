@@ -32,8 +32,6 @@ import strategicprimer.drivers.common.cli {
 }
 
 import strategicprimer.drivers.common {
-    IMultiMapModel,
-    IDriverModel,
     CLIDriver,
     emptyOptions,
     SPOptions
@@ -42,8 +40,7 @@ import strategicprimer.drivers.common {
 import strategicprimer.model.common.map {
     TileType,
     Point,
-    IMapNG,
-    IMutableMapNG
+    IMapNG
 }
 
 import strategicprimer.model.common.map.fixtures.terrain {
@@ -68,7 +65,7 @@ import ceylon.file {
 todo("Write tests of this functionality") // This'll have to wait until eclipse/ceylon#6986 is fixed
 // FIXME: Move mutation operations into a driver model
 shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
-    shared actual IDriverModel model;
+    shared actual UtilityDriverModel model;
     shared actual SPOptions options = emptyOptions;
     "A list of unit kinds (jobs) for plains etc."
     MutableList<String> plainsList = ArrayList<String>();
@@ -282,23 +279,8 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
         }
     }
 
-    "Add rivers missing from the subordinate map where it has other terrain information."
-    void fixMissingRivers(IMapNG mainMap, IMutableMapNG subordinateMap) {
-        for (location in mainMap.locations) {
-            if (exists mainTerrain = mainMap.baseTerrain[location],
-                    exists subTerrain = subordinateMap.baseTerrain[location],
-                    mainTerrain == subTerrain,
-                    //!mainMap.rivers[location].empty, subordinateMap.rivers[location].empty) { // TODO: syntax sugar
-                    !mainMap.rivers.get(location).empty,
-                    subordinateMap.rivers.get(location).empty) {
-                //subordinateMap.addRivers(location, *mainMap.rivers[location]); // TODO: syntax sugar
-                subordinateMap.addRivers(location, *mainMap.rivers.get(location));
-            }
-        }
-    }
-
     shared actual void startDriver() {
-        if (is IMultiMapModel model) {
+        if (!model.subordinateMaps.empty) {
             for (map->[path, modifiedFlag] in model.allMaps) {
                 fixAllUnits(map);
                 fixAllVillages(map);
@@ -306,11 +288,8 @@ shared class TodoFixerCLI(ICLIHelper cli, model) satisfies CLIDriver {
                     model.setModifiedFlag(map, true);
                 }
             }
-            for (map->[path, modifiedFlag] in model.subordinateMaps) {
-                fixMissingRivers(model.map, map);
-                if (!modifiedFlag) {
-                    model.setModifiedFlag(map, true);
-                }
+            for (location in model.map.locations) {
+                model.copyRiversAt(location);
             }
         } else {
             fixAllUnits(model.map);
